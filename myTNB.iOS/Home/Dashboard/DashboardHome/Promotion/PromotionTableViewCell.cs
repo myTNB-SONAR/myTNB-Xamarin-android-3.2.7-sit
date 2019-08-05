@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using CoreGraphics;
 using Foundation;
 using myTNB.SitecoreCMS.Model;
-using myTNB.SQLite.SQLiteDataManager;
 using UIKit;
 
 namespace myTNB
@@ -99,13 +97,43 @@ namespace myTNB
         private void AddContentData()
         {
             nfloat xLoc = 16f;
-            PromotionsEntity entity = new PromotionsEntity();
-            List<PromotionsModelV2> promotionList = entity.GetAllItemsV2();
+            List<PromotionsModelV2> promotionList = GetStaticPromotionList();
             nfloat promotionCount = promotionList.Count;
 
             if (promotionCount > 1)
             {
+                for (int i = 0; i < promotionCount; i++)
+                {
+                    PromotionsModelV2 promotion = promotionList[i];
+                    UIView viewParent = new UIView(new CGRect(xLoc, 8, cardWidth, cardHeight)) { BackgroundColor = UIColor.White };
+                    AddCardShadow(ref viewParent);
+                    UIImageView imgView = new UIImageView(new CGRect(0, 0, viewParent.Frame.Width, cardHeight * 0.50F))
+                    {
+                        Image = UIImage.FromBundle(promotion.LandscapeImage)
+                    };
 
+                    UILabel lblTitle = new UILabel(new CGRect(16, imgView.Frame.GetMaxY() + 16, viewParent.Frame.Width - 32, 16))
+                    {
+                        TextAlignment = UITextAlignment.Left,
+                        TextColor = MyTNBColor.WaterBlue,
+                        Font = MyTNBFont.MuseoSans12_500,
+                        Text = promotion.Title
+                    };
+
+                    UILabel lblDescription = new UILabel(new CGRect(16, lblTitle.Frame.GetMaxY() + 8, viewParent.Frame.Width - 32, 48))
+                    {
+                        TextAlignment = UITextAlignment.Left,
+                        TextColor = MyTNBColor.GreyishBrown,
+                        Font = MyTNBFont.MuseoSans12_300,
+                        Lines = 0,
+                        LineBreakMode = UILineBreakMode.WordWrap,
+                        Text = promotion.Text
+                    };
+
+                    viewParent.AddSubviews(new UIView[] { imgView, lblTitle, lblDescription });
+                    _scrollView.Add(viewParent);
+                    xLoc += cardWidth + 8.0F;
+                }
             }
             else
             {
@@ -152,6 +180,25 @@ namespace myTNB
             view.Layer.ShadowOffset = new CGSize(0, 0);
             view.Layer.ShadowRadius = 4;
             view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
+        }
+
+        private List<PromotionsModelV2> GetStaticPromotionList()
+        {
+            return new List<PromotionsModelV2>
+            {
+                new PromotionsModelV2
+                {
+                    Title="TNB Energy Night Run",
+                    Text = "Join some excited 3,500 runners to raise awareness towards energy conservation.",
+                    LandscapeImage = ""
+                },
+                new PromotionsModelV2
+                {
+                    Title="Maevi - Celcom Bonanza 2019",
+                    Text = "Get 15% discount off all MAEVI devices and extra 30% discount off MAEVI Gateway.",
+                    LandscapeImage = ""
+                }
+            };
         }
     }
 }

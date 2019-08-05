@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using CoreGraphics;
@@ -423,7 +422,7 @@ namespace myTNB
             }
         }
 
-        private void UpdateUI(bool isError, string message, double currentReading)
+        public void UpdateUI(bool isError, string message, double currentReading)
         {
             if (isError)
             {
@@ -523,6 +522,45 @@ namespace myTNB
                         }
                     }
                 }
+            }
+        }
+
+        public void UpdateMeterReadingValueFromOCR(string readingStr)
+        {
+            if (!string.IsNullOrEmpty(readingStr) && !string.IsNullOrWhiteSpace(readingStr))
+            {
+                string readingString = string.Empty;
+                string[] readingList = readingStr.Split(".");
+                if (readingList.Length > 1)
+                {
+                    readingString = readingList[0] + readingList[1];
+                }
+                else
+                {
+                    readingString = readingList[0] + "0";
+                }
+
+                var readingValueLength = readingString.Length - 1;
+                for (int i = 0; i < readingString.Length; i++)
+                {
+                    UIView[] subViews = _viewBoxContainer.Subviews;
+                    foreach (UIView view in subViews)
+                    {
+                        if (view.Tag == (i + 1))
+                        {
+                            UIView[] subSubViews = view.Subviews;
+                            if (subSubViews.Length > 0)
+                            {
+                                UITextField txtField = subSubViews[0] as UITextField;
+                                txtField.Enabled = true;
+                                txtField.Text = readingString.Substring(readingValueLength - i, 1);
+                            }
+                            break;
+                        }
+                    }
+                }
+                _meterReadingValue = readingString;
+                ValidateTextField();
             }
         }
 

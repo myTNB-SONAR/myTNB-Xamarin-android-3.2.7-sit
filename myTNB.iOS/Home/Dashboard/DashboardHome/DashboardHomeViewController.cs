@@ -131,13 +131,6 @@ namespace myTNB
                                 OnUpdateCell(DashboardHomeConstants.CellIndex_Help);
                             });
                         });
-                        GetPromotions().ContinueWith(promotionTask =>
-                        {
-                            InvokeOnMainThread(() =>
-                            {
-                                OnUpdateCell(DashboardHomeConstants.CellIndex_Promotion);
-                            });
-                        });
                     });
                 }
                 else
@@ -312,75 +305,6 @@ namespace myTNB
                     }
                 }
             });
-        }
-
-        private Task GetPromotions()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                GetItemsService iService = new GetItemsService(TNBGlobal.OS
-                    , DataManager.DataManager.SharedInstance.ImageSize, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
-                bool isValidTimeStamp = false;
-                string promotionTS = iService.GetPromotionsTimestampItem();
-                PromotionsTimestampResponseModel promotionTimeStamp = JsonConvert.DeserializeObject<PromotionsTimestampResponseModel>(promotionTS);
-                if (promotionTimeStamp != null && promotionTimeStamp.Status.Equals("Success")
-                    && promotionTimeStamp.Data != null && promotionTimeStamp.Data[0] != null
-                    && !string.IsNullOrEmpty(promotionTimeStamp.Data[0].Timestamp)
-                    && !string.IsNullOrWhiteSpace(promotionTimeStamp.Data[0].Timestamp))
-                {
-                    var sharedPreference = NSUserDefaults.StandardUserDefaults;
-                    string currentTS = sharedPreference.StringForKey(DashboardHomeConstants.Sitecore_Timestamp);
-                    if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
-                    {
-                        sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, DashboardHomeConstants.Sitecore_Timestamp);
-                        sharedPreference.Synchronize();
-                        isValidTimeStamp = true;
-                    }
-                    else
-                    {
-                        if (currentTS.Equals(promotionTimeStamp.Data[0].Timestamp))
-                        {
-                            isValidTimeStamp = false;
-                        }
-                        else
-                        {
-                            sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, DashboardHomeConstants.Sitecore_Timestamp);
-                            sharedPreference.Synchronize();
-                            isValidTimeStamp = true;
-                        }
-                    }
-                }
-
-                if (isValidTimeStamp)
-                {
-                    string promotionsItems = iService.GetPromotionsItem();
-                    PromotionsV2ResponseModel promotionResponse = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(promotionsItems);
-                    if (promotionResponse != null && promotionResponse.Status.Equals("Success")
-                        && promotionResponse.Data != null && promotionResponse.Data.Count > 0)
-                    {
-                        PromotionsEntity wsManager = new PromotionsEntity();
-                        PromotionsEntity.DeleteTable();
-                        wsManager.CreateTable();
-                        wsManager.InsertListOfItemsV2(SetValueForNullEndDate(promotionResponse.Data));
-                    }
-                }
-            });
-        }
-
-        private List<PromotionsModelV2> SetValueForNullEndDate(List<PromotionsModelV2> promotions)
-        {
-            List<PromotionsModelV2> promotionList = new List<PromotionsModelV2>();
-            foreach (var promo in promotions)
-            {
-                if (string.IsNullOrEmpty(promo.PromoEndDate))
-                {
-                    var nowDate = DateTime.Today.Date;
-                    DateTime endDate = nowDate.AddDays(90);
-                    promo.PromoEndDate = endDate.ToString(DashboardHomeConstants.Format_Date);
-                }
-                promotionList.Add(promo);
-            }
-            return promotionList;
         }
 
         private async Task<ServicesResponseModel> GetServices()

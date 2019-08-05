@@ -201,6 +201,10 @@ namespace myTNB.Model
         public bool IsValidManualReading { set; get; }
         [JsonIgnore]
         public string CurrentReading { set; get; }
+        [JsonIgnore]
+        public bool IsErrorFromOCR { set; get; }
+        [JsonIgnore]
+        public string ErrorMessage { set; get; }
     }
 
     public enum RegisterNumberEnum

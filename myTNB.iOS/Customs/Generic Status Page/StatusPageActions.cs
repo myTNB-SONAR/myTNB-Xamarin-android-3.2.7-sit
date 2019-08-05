@@ -6,9 +6,11 @@ namespace myTNB.Customs.GenericStatusPage
     public class StatusPageActions
     {
         readonly UIViewController _controller;
-        public StatusPageActions(UIViewController controller)
+        public UIViewController _nextViewController;
+        public StatusPageActions(UIViewController controller, UIViewController nextViewController = null)
         {
             _controller = controller;
+            _nextViewController = nextViewController;
         }
 
         internal void BackToHome()
@@ -26,6 +28,11 @@ namespace myTNB.Customs.GenericStatusPage
             ViewHelper.DismissControllersAndSelectTab(_controller, 0, true);
         }
 
+        internal void SSMRReadingTryAgain()
+        {
+            _controller.NavigationController.PopViewController(true);
+        }
+
         internal void BackToUsage()
         {
             ViewHelper.DismissControllersAndSelectTab(_controller, 0, true);
@@ -33,7 +40,7 @@ namespace myTNB.Customs.GenericStatusPage
 
         internal void ViewReadingHistory()
         {
-
+            _controller.NavigationController.PushViewController(_nextViewController, true);
         }
 
         internal void BackToFeedback()

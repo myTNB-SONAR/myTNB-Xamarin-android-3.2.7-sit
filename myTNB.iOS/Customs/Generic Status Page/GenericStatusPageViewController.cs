@@ -71,6 +71,11 @@ namespace myTNB
             SSMRReading
         }
 
+        public UIViewController NextViewController
+        {
+            set; get;
+        }
+
         public override void ViewDidLoad()
         {
             foreach (var view in this.View.Subviews)
@@ -83,7 +88,7 @@ namespace myTNB
             PageName = StatusPageConstants.PageName;
             NavigationController.NavigationBarHidden = true;
             base.ViewDidLoad();
-            _actions = new StatusPageActions(this);
+            _actions = new StatusPageActions(this, NextViewController);
             SetStatusCard();
             AddCTA();
         }
@@ -155,7 +160,7 @@ namespace myTNB
 
             viewCard.AddSubviews(new UIView[] { imgStatus, lblTitle, lblMessage });
             nfloat viewCardHeight = lblMessage.Frame.GetMaxY() + 16.0F;
-            if (IsSuccess)
+            if (IsSuccess && StatusDisplayType != StatusType.SSMRReading)
             {
                 UIView viewLine = GenericLine.GetLine(new CGRect(16, lblMessage.Frame.GetMaxY() + 16, viewCard.Frame.Width - 32, 1));
                 UILabel lblRef = new UILabel(new CGRect(16, viewLine.Frame.GetMaxY() + 16, viewCard.Frame.Width * 0.60F, 14))
@@ -261,11 +266,11 @@ namespace myTNB
                 GetCTA(ref btnSecondary, GetCommonI18NValue(StatusPageConstants.I18N_BacktoHome), false, _actions.BackToHome);
                 if (IsSuccess)
                 {
-                    GetCTA(ref btnPrimary, GetI18NValue(StatusPageConstants.I18N_SSMRTrackApplication), true, _actions.TrackApplication);
+                    GetCTA(ref btnPrimary, GetI18NValue(StatusPageConstants.I18N_SSMRTrackApplication), true, _actions.TrackApplication, true);
                 }
                 else
                 {
-                    GetCTA(ref btnPrimary, GetCommonI18NValue(StatusPageConstants.I18N_TryAgain), true, _actions.SSMRTryAgain);
+                    GetCTA(ref btnPrimary, GetCommonI18NValue(StatusPageConstants.I18N_TryAgain), true, _actions.SSMRTryAgain, true);
                 }
             }
             else if (StatusDisplayType == StatusType.SSMRDiscontinue)
@@ -273,27 +278,36 @@ namespace myTNB
                 GetCTA(ref btnSecondary, GetI18NValue(StatusPageConstants.I18N_SSMRBacktoUsage), false, _actions.BackToHome);
                 if (IsSuccess)
                 {
-                    GetCTA(ref btnPrimary, GetI18NValue(StatusPageConstants.I18N_SSMRTrackUsage), true, _actions.TrackApplication);
+                    GetCTA(ref btnPrimary, GetI18NValue(StatusPageConstants.I18N_SSMRTrackApplication), true, _actions.TrackApplication, true);
                 }
                 else
                 {
-                    GetCTA(ref btnPrimary, GetCommonI18NValue(StatusPageConstants.I18N_TryAgain), true, _actions.SSMRTryAgain);
+                    GetCTA(ref btnPrimary, GetCommonI18NValue(StatusPageConstants.I18N_TryAgain), true, _actions.SSMRTryAgain, true);
 
                 }
             }
             else if (StatusDisplayType == StatusType.SSMRReading)
             {
+                GetCTA(ref btnSecondary, GetI18NValue(StatusPageConstants.I18N_SSMRBacktoUsage), false, _actions.BackToHome);
+                if (IsSuccess)
+                {
+                    GetCTA(ref btnPrimary, GetI18NValue(StatusPageConstants.I18N_SSMRViewReadHistory), true, _actions.ViewReadingHistory, true);
+                }
+                else
+                {
+                    GetCTA(ref btnPrimary, GetCommonI18NValue(StatusPageConstants.I18N_TryAgain), true, _actions.SSMRReadingTryAgain, true);
 
+                }
             }
 
             View.AddSubviews(new UIView[] { btnPrimary, btnSecondary });
         }
 
-        private void GetCTA(ref UIButton btn, string title, bool isPrimary, Action ctaAction)
+        private void GetCTA(ref UIButton btn, string title, bool isPrimary, Action ctaAction, bool isWhiteBG = false)
         {
             CGSize size = new CGSize(ViewWidth - 32, 48);
             CGPoint point = new CGPoint(16, isPrimary ? ViewHeight - 48 : ViewHeight - 112);
-            btn = new CustomUIButtonV2()
+            btn = new CustomUIButtonV2(isWhiteBG)
             {
                 Frame = new CGRect(point, size)
             };

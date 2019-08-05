@@ -61,7 +61,7 @@
         "onboardingDescription1": "Self Meter Reading (SMR) is a service where you can easily read and submit your own meter readings. We will send you a reminder when it's time to submit.",
         "onboardingDescription2": "You get estimated bills when TNB meter readers can’t get access to your meter. With SMR, you will always get bills with accurate readings.",
         "onboardingDescription3": "We'll show you the accounts which are eligible for this service. Simply click Start Application and get started.",
-        "startApplication": "Start Application"
+        "startApplication": "Start"
     },
     "SSMRApplication": {
         "navTitleApply": "Subscribe Self Meter Reading",
@@ -106,14 +106,24 @@
         "backToFeedback": "Back to Feedback",
         "ssmrTrackApplication": "Track Application",
         "ssmrBackToUsage": "Back to My Usage",
-        "ssmrTrackUsage": "Track Application Usage"
+        "ssmrTrackUsage": "Track Application Usage",
+        "ssmrViewReadHistory": "View Reading History"
     },
     "SSMRReadingHistory": {
         "navTitle": "Self Meter Reading",
         "headerTitle": "My Meter Reading History"
     },
     "SSMRSubmitMeterReading": {
-        "navTitle": "Submit Meter Reading"
+        "navTitle": "Submit Meter Reading",
+        "dontShow": "Don’t show me again",
+        "tooltipTitle1": "Alright, what do I need to read?",
+        "tooltipTitle2": "But wait, how do I read my meter?",
+        "tooltipTitle3": "How do I enter these values?",
+        "tooltipDescription1": "You'll need to read 3 reading values (kWh, kVARh, kW). Your meter will automatically flash one after the other.",
+        "tooltipDescription2": "You can enter each reading manually or just snap/upload a photo, and we’ll do the reading for you.",
+        "tooltipDescription3": "Enter the numbers according to its unit in the input. You’ll see your previous month's reading as a reference.",
+        "headerDescription": "Please enter your meter reading for each respective units.",
+        "imReady": "I'm Ready!"
     },
     "SSMRCaptureMeter": {
         "ocrReading": "Please wait for a moment while we read your photos…",

@@ -70,5 +70,35 @@ namespace myTNB
                 return sharedPreference.BoolForKey("SSMROnboarding");
             }
         }
+
+        public static bool IsHideReadMeterWalkthrough
+        {
+            set
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                sharedPreference.SetBool(value, "ReadMeterWalkthrough");
+                sharedPreference.Synchronize();
+            }
+            get
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                return sharedPreference.BoolForKey("ReadMeterWalkthrough");
+            }
+        }
+
+        public static bool IsHideReadMeterWalkthroughV2
+        {
+            set
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                sharedPreference.SetBool(value, "ReadMeterWalkthroughV2");
+                sharedPreference.Synchronize();
+            }
+            get
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                return sharedPreference.BoolForKey("ReadMeterWalkthroughV2");
+            }
+        }
     }
 }
