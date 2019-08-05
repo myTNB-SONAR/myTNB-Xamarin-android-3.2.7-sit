@@ -1076,6 +1076,14 @@
     <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG3.imageset\SMR-ToolTip-BG3.png" />
     <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG3.imageset\SMR-ToolTip-BG3%402x.png" />
     <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG3.imageset\SMR-ToolTip-BG3%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Stub-Promotion-1.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Stub-Promotion-2.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Stub-Promotion-1.imageset\image1.png" />
+    <ImageAsset Include="Assets.xcassets\Stub-Promotion-1.imageset\image1%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Stub-Promotion-1.imageset\image1%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Stub-Promotion-2.imageset\image2.png" />
+    <ImageAsset Include="Assets.xcassets\Stub-Promotion-2.imageset\image2%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Stub-Promotion-2.imageset\image2%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1421,6 +1429,8 @@
     <Folder Include="Assets.xcassets\SMR-ToolTip-BG1.imageset\" />
     <Folder Include="Assets.xcassets\SMR-ToolTip-BG2.imageset\" />
     <Folder Include="Assets.xcassets\SMR-ToolTip-BG3.imageset\" />
+    <Folder Include="Assets.xcassets\Stub-Promotion-1.imageset\" />
+    <Folder Include="Assets.xcassets\Stub-Promotion-2.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

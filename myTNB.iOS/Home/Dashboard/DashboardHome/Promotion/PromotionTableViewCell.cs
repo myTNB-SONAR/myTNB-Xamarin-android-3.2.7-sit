@@ -190,13 +190,13 @@ namespace myTNB
                 {
                     Title="TNB Energy Night Run",
                     Text = "Join some excited 3,500 runners to raise awareness towards energy conservation.",
-                    LandscapeImage = ""
+                    LandscapeImage = "Stub-Promotion-1"
                 },
                 new PromotionsModelV2
                 {
                     Title="Maevi - Celcom Bonanza 2019",
                     Text = "Get 15% discount off all MAEVI devices and extra 30% discount off MAEVI Gateway.",
-                    LandscapeImage = ""
+                    LandscapeImage = "Stub-Promotion-2"
                 }
             };
         }

@@ -46,7 +46,6 @@ namespace myTNB.SSMR
                     displayImage = UIImage.FromBundle(SSMRDataObject.Image);
                 }             }
 
-
             UIImageView imgBackground = new UIImageView(new CGRect(0, 0, that.View.Frame.Width, that.View.Frame.Height * 0.60F))
             {
                 Image = displayImage
@@ -68,6 +67,8 @@ namespace myTNB.SSMR
                 Text = SSMRDataObject.Description ?? string.Empty
             };
 
+            CGSize size = GetLabelSize(lblDescription, that.View.Frame.Width - 32, 80);
+            lblDescription.Frame = new CGRect(16, lblTitle.Frame.GetMaxY() + 16, that.View.Frame.Width - 32, size.Height);
             that.View.AddSubviews(new UIView[] { imgBackground, lblTitle, lblDescription });
         }
     }

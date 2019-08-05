@@ -1,4 +1,5 @@
 ﻿using System;
+using CoreGraphics;
 using myTNB.Model;
 using myTNB.SSMR;
 using UIKit;
@@ -28,5 +29,10 @@ namespace myTNB
         public virtual void SetSubViews() { }
 
         public virtual void SetBackground() { }
+
+        public CGSize GetLabelSize(UILabel label, nfloat width, nfloat height)
+        {
+            return CustomUILabel.GetLabelSize(label, width, height);
+        }
     }
 }
