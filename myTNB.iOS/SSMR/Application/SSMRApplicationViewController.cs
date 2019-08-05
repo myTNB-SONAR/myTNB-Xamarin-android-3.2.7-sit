@@ -60,7 +60,10 @@ namespace myTNB
             {
                 OnGetTerminateReasons();
             }
-            OnGetContactInfo();
+            if (_selectedAccount != null)
+            {
+                OnGetContactInfo();
+            }
         }
 
         public override void ViewWillAppear(bool animated)
@@ -246,7 +249,7 @@ namespace myTNB
                     TextAlignment = UITextAlignment.Left,
                     Font = MyTNBFont.MuseoSans16_300,
                     Text = _selectedAccount != null && !string.IsNullOrEmpty(_selectedAccount.accountNickName)
-                       ? _selectedAccount.accountNickName : string.Empty
+                       ? _selectedAccount.accountNickName : TNBGlobal.EMPTY_ADDRESS
                 };
                 viewAccountName.AddSubviews(new UIView[] { _lblAccountName, imgDropdown });
                 UIView viewLine = new UIView(new CGRect(16, viewAccountName.Frame.GetMaxY() + 1, ViewWidth - 32, 1))
@@ -263,7 +266,7 @@ namespace myTNB
                     TextColor = MyTNBColor.CharcoalGrey,
                     Font = MyTNBFont.MuseoSans14_500,
                     TextAlignment = UITextAlignment.Left,
-                    Text = DataManager.DataManager.SharedInstance.SelectedAccount.accountNickName ?? string.Empty
+                    Text = DataManager.DataManager.SharedInstance.SelectedAccount.accountNickName ?? TNBGlobal.EMPTY_ADDRESS
                 };
                 viewAccountContainer.AddSubview(lblAccountName);
                 viewAccountContainer.Frame = new CGRect(0, 0, ViewWidth, lblAccountName.Frame.GetMaxY() + 8);
@@ -277,7 +280,7 @@ namespace myTNB
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.WordWrap,
                 Text = _selectedAccount != null && !string.IsNullOrEmpty(_selectedAccount.accountStAddress)
-                   ? _selectedAccount.accountStAddress : string.Empty
+                   ? _selectedAccount.accountStAddress : TNBGlobal.EMPTY_ADDRESS
             };
 
             viewMainDetails.AddSubviews(new UIView[] { viewAccountContainer, _lblAddress });
@@ -512,16 +515,17 @@ namespace myTNB
 
         private void ToggleCTA()
         {
-            if (_customEmailField != null && _customMobileField != null)
+            bool isValid = _selectedAccount != null && !string.IsNullOrEmpty(_selectedAccount.accountNickName);
+            if (isValid && _customEmailField != null && _customMobileField != null)
             {
-                bool isValid = _customEmailField.IsFieldValid && _customMobileField.IsFieldValid;
+                isValid = _customEmailField.IsFieldValid && _customMobileField.IsFieldValid;
                 if (!IsApplication && _viewOthersContainer != null && !_viewOthersContainer.Hidden)
                 {
                     isValid = isValid && (_txtViewReason.Text != GetI18NValue(SSMRConstants.I18N_StateReason));
                 }
-                _btnSubmit.Enabled = isValid;
-                _btnSubmit.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
             }
+            _btnSubmit.Enabled = isValid;
+            _btnSubmit.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
         }
 
         private void OnEdit()
@@ -671,7 +675,7 @@ namespace myTNB
                             status.IsSuccess = _ssmrApplicationStatus.d.IsSuccess;
                             status.StatusTitle = _ssmrApplicationStatus.d.DisplayTitle;
                             status.StatusMessage = _ssmrApplicationStatus.d.DisplayMessage;
-                            status.ReferenceNumber = _ssmrApplicationStatus.d.data.ServiceReqNo;
+                            status.ReferenceNumber = _ssmrApplicationStatus.d.data.ApplicationID;
                             status.ReferenceDate = _ssmrApplicationStatus.d.data.AppliedOn;
                             NavigationController.PushViewController(status, true);
                         }
