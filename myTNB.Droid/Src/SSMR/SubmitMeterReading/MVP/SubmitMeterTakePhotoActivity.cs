@@ -1,4 +1,6 @@
-﻿using AFollestad.MaterialDialogs;
+﻿using System;
+using System.Collections.Generic;
+using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
@@ -10,6 +12,7 @@ using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 {
@@ -17,9 +20,9 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
     public class SubmitMeterTakePhotoActivity : BaseToolbarAppCompatActivity, SubmitMeterTakePhotoContract.IView
     {
         Button btnGetMeterReadingOCR;
-        SubmitMeterTakePhotoContract.IPresenter mPresenter;
+        public SubmitMeterTakePhotoContract.IPresenter mPresenter;
         const string IMAGE_ID = "MYTNBAPP_SSMR_OCR_KWH_001";
-        string contractNumber = "220098081110";
+        string contractNumber = "";
 
         int selectedCapturedImage = 0;
 
@@ -34,6 +37,9 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         [BindView(Resource.Id.bottomLayout)]
         LinearLayout bottomLayout;
 
+        [BindView(Resource.Id.meter_capture_container)]
+        LinearLayout meterCapturePhotoContainer;
+
         public static readonly int PickImageId = 1000;
 
         private static bool isGalleryFirstPress = true;
@@ -44,6 +50,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         SubmitMeterAdjustPhotoFragment adjustPhotoFragment;
         OCRLoadingFragment ocrLoadingFragment;
+        List<MeterValidation> validatedMeterList;
+        List<MeterCapturedData> meteredCapturedDataList;
 
         public override int ResourceId()
         {
@@ -65,6 +73,43 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             base.OnCreate(savedInstanceState);
             mPresenter = new SubmitMeterTakePhotoPresenter(this);
             isGalleryFirstPress = true;
+
+            Bundle extras = Intent.Extras;
+            if (extras != null && extras.ContainsKey("IS_SINGLE_PHASE"))
+            {
+                isSinglePhase = extras.GetBoolean("IS_SINGLE_PHASE");
+            }
+
+            if (extras != null && extras.ContainsKey("CONTRACT_NUMBER"))
+            {
+                contractNumber = extras.GetString("CONTRACT_NUMBER");
+            }
+
+            if (extras != null && extras.ContainsKey("REQUEST_PHOTOS"))
+            {
+                List<MeterValidation> validationStateList = JsonConvert.DeserializeObject<List<MeterValidation>>(extras.GetString("REQUEST_PHOTOS"));
+                validatedMeterList = validationStateList.FindAll(validatedMeter => {return validatedMeter.validated == false;});
+                MeterCapturedData meteredCapturedData;
+                meteredCapturedDataList = new List<MeterCapturedData>();
+                foreach (MeterValidation nonValidatedMeter in validatedMeterList)
+                {
+                    meteredCapturedData = new MeterCapturedData();
+                    meteredCapturedData.meterId = nonValidatedMeter.meterId;
+                    meteredCapturedDataList.Add(meteredCapturedData);
+                }
+                meteredCapturedDataList[0].isSelected = true; //For initial selection;
+                CreateImageHolders();
+            }
+
+            if (isSinglePhase)
+            {
+                meterCapturePhotoContainer.Visibility = ViewStates.Gone;
+            }
+            else
+            {
+                meterCapturePhotoContainer.Visibility = ViewStates.Visible;
+            }
+
             if (savedInstanceState == null)
             {
                 FragmentManager.BeginTransaction().Replace(Resource.Id.photoContainer, SubmitMeterTakePhotoFragment.NewInstance()).Commit();
@@ -76,14 +121,101 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 mPresenter.GetMeterReadingOCRValue(contractNumber);
             };
             mPresenter.InitializeModelList();
+        }
 
-            // TODO: Logic to reflect the flag
-            isSinglePhase = false;
-            isTakePhotFirstEnter = true;
-            if (isTakePhotFirstEnter)
+        public void UpdateCapturedBorder()
+        {
+            for (int i=0; i < meteredCapturedDataList.Count; i++)
             {
-                ShowTakePhotoTooltip();
+                //Set default border first
+                meterCapturedContainer.GetChildAt(i).SetBackgroundDrawable(GetDrawable(Resource.Drawable.meter_capture_holder_inactive));
+
+                //Set border with Image already
+                if (meteredCapturedDataList[i].hasImage)
+                {
+                    meterCapturedContainer.GetChildAt(i).SetBackgroundDrawable(GetDrawable(Resource.Drawable.meter_capture_holder_active));
+                }
+
+                //Set next active
+                int nextSelectedItem = meteredCapturedDataList.FindIndex(capturedMeter => {
+                    return !capturedMeter.hasImage;
+                });
+                if (nextSelectedItem >= 0)
+                {
+                    meterCapturedContainer.GetChildAt(nextSelectedItem).SetBackgroundDrawable(GetDrawable(Resource.Drawable.meter_capture_holder_selected));
+                    meteredCapturedDataList[nextSelectedItem].isSelected = true;
+                }
             }
+        }
+
+        private void ShowImagePreView(bool isShown)
+        {
+            FrameLayout cameraContainer = FindViewById<FrameLayout>(Resource.Id.photoContainer);
+            cameraContainer.Visibility = isShown ? ViewStates.Gone : ViewStates.Visible;
+
+            RelativeLayout previewContainer = FindViewById<RelativeLayout>(Resource.Id.photoPreview);
+            previewContainer.Visibility = isShown ? ViewStates.Visible : ViewStates.Gone;
+        }
+
+        public class OnContainerClickListener : Java.Lang.Object, View.IOnClickListener
+        {
+            int containerPosition;
+            SubmitMeterTakePhotoActivity mActivity;
+            SubmitMeterTakePhotoPresenter mPresenter;
+            public OnContainerClickListener(SubmitMeterTakePhotoActivity activity, int position)
+            {
+                containerPosition = position;
+                mActivity = activity;
+                mPresenter = (SubmitMeterTakePhotoPresenter)activity.mPresenter;
+            }
+            public void OnClick(View v)
+            {
+                Bitmap selectedImage = mPresenter.GetMeterImages()[containerPosition - 1].ImageData;
+                bool isSelected = mActivity.meteredCapturedDataList[containerPosition - 1].isSelected;
+                bool hasImage = mActivity.meteredCapturedDataList[containerPosition - 1].hasImage;
+                if (hasImage)
+                {
+                    ImageView previewImage = mActivity.FindViewById<ImageView>(Resource.Id.adjust_photo_preview);
+                    previewImage.SetImageBitmap(selectedImage);
+                    mActivity.ShowImagePreView(true);
+                }
+                else
+                {
+                    if (isSelected)
+                    {
+                        mActivity.ShowImagePreView(false);
+                    }
+                }
+                mActivity.UpdateCapturedBorder();
+            }
+        }
+
+        public void CreateImageHolders()
+        {
+            LinearLayout container = meterCapturedContainer;
+            container.RemoveAllViews();
+            int holderText = 1;
+            float scale = Resources.DisplayMetrics.Density;
+
+            foreach (MeterCapturedData meterCapturedData in meteredCapturedDataList)
+            {
+                int size = (int)(52 * scale + 0.5f);
+                LinearLayout imageHolderContainer = new LinearLayout(this);
+                LinearLayout.LayoutParams containerParams = new LinearLayout.LayoutParams(size, size);
+                containerParams.SetMargins(10,0,10,0);
+                imageHolderContainer.LayoutParameters = containerParams;
+                imageHolderContainer.SetBackgroundDrawable(GetDrawable(Resource.Drawable.meter_capture_holder_inactive));
+                imageHolderContainer.SetOnClickListener(new OnContainerClickListener(this,holderText));
+
+                TextView imageHolderLabel = new TextView(this);
+                LinearLayout.LayoutParams imageHolderParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent, LinearLayout.LayoutParams.MatchParent);
+                imageHolderLabel.LayoutParameters = imageHolderParams;
+                imageHolderLabel.Gravity = GravityFlags.Center;
+                imageHolderLabel.Text = holderText++.ToString();
+                imageHolderContainer.AddView(imageHolderLabel);
+                container.AddView(imageHolderContainer);
+            }
+            UpdateCapturedBorder();
         }
 
         public override void OnBackPressed()
@@ -128,22 +260,39 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 adjustPhotoFragment.UpdateCapturedImage(myBitmap);
             }
             selectedCapturedImage = position;
+        }
 
-            //FragmentManager.PopBackStack(null, FragmentManager.PopBackStackInclusive);
-            //FragmentManager fm = this.FragmentManager;
-            //int count = fm.BackStackEntryCount;
-            //for (int i = 1; i < fm.BackStackEntryCount; ++i)
-            //{
-            //    fm.PopBackStack(;
-            //}
+        public void UpdateActivesBorders()
+        {
+            int position = 0;
+            foreach (MeterImageModel imageModel in mPresenter.GetMeterImages())
+            {
+                if (imageModel.ImageData != null)
+                {
+                    meterCapturedContainer.GetChildAt(position).SetBackgroundDrawable(GetDrawable(Resource.Drawable.meter_capture_holder_active));
+                }
+                position++;
+            }
         }
 
         public void AddCapturedImage(Bitmap capturedImage)
         {
-            mPresenter.AddMeterImageAt(selectedCapturedImage,contractNumber, IMAGE_ID, capturedImage);
-            LinearLayout container = (LinearLayout)meterCapturedContainer.GetChildAt(selectedCapturedImage);
-            container.SetBackgroundDrawable(GetDrawable(Resource.Drawable.meter_capture_holder_active));
-            AddCapturedImageInContainer(capturedImage);
+            int nextSelectedPosition = meteredCapturedDataList.FindIndex(meterCapturedData => { return !meterCapturedData.hasImage; });
+
+            if (isSinglePhase)
+            {
+                mPresenter.AddMeterImageAt(nextSelectedPosition, contractNumber, IMAGE_ID, capturedImage);
+                ShowAdjustFragment(nextSelectedPosition, capturedImage);
+            }
+            else
+            {
+                LinearLayout container = (LinearLayout)meterCapturedContainer.GetChildAt(nextSelectedPosition);
+                container.RemoveAllViews();
+                container.AddView(CreateImageView(capturedImage));
+                mPresenter.AddMeterImageAt(nextSelectedPosition, contractNumber, IMAGE_ID, capturedImage);
+                meteredCapturedDataList[nextSelectedPosition].hasImage = true;
+                UpdateCapturedBorder();
+            }
         }
 
         public void DeleteCapturedImage()
@@ -154,10 +303,13 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         private void AddCapturedImageInContainer(Bitmap capturedImage)
         {
-            LinearLayout container = (LinearLayout)meterCapturedContainer.GetChildAt(selectedCapturedImage);
+            int nextSelectedPosition = meteredCapturedDataList.FindIndex(meterCapturedData => { return !meterCapturedData.hasImage; });
+            LinearLayout container = (LinearLayout)meterCapturedContainer.GetChildAt(nextSelectedPosition);
+            container.RemoveAllViews();
             container.AddView(CreateImageView(capturedImage));
-            container.SetBackgroundDrawable(GetDrawable(Resource.Drawable.meter_capture_holder_active));
-            UpdateImageSelections();
+            mPresenter.AddMeterImageAt(nextSelectedPosition, contractNumber, IMAGE_ID, capturedImage);
+            meteredCapturedDataList[nextSelectedPosition].hasImage = true;
+            UpdateCapturedBorder();
         }
 
         private void DeleteCapturedImageInContainer()
@@ -165,7 +317,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             LinearLayout container = (LinearLayout)meterCapturedContainer.GetChildAt(selectedCapturedImage);
             container.SetBackgroundDrawable(GetDrawable(Resource.Drawable.meter_capture_holder_inactive));
             container.RemoveViewAt(0);
-            UpdateImageSelections();
+            //UpdateImageSelections();
+            UpdateCapturedBorder();
             adjustPhotoFragment = null;
             OnBackPressed();
         }
@@ -178,7 +331,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             imageView.SetPadding(1,1,1,1);
             imageView.SetScaleType(ImageView.ScaleType.FitXy);
             imageView.SetImageBitmap(bitmap);
-            imageView.SetOnClickListener(new OnCapturedImageClick(this,bitmap,selectedCapturedImage));
             return imageView;
         }
 
@@ -202,6 +354,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         private void UpdateImageSelections()
         {
             LinearLayout container;
+            List<MeterImageModel> modelList = mPresenter.GetMeterImages();
             selectedCapturedImage = mPresenter.GetMeterImages().FindIndex(model =>
             {
                 return model.ImageData == null;
@@ -214,7 +367,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
             else
             {
-                container = (LinearLayout)meterCapturedContainer.GetChildAt(selectedCapturedImage);
+                container = (LinearLayout)meterCapturedContainer.GetChildAt(selectedCapturedImage-1);
                 container.SetBackgroundDrawable(GetDrawable(Resource.Drawable.meter_capture_holder_selected));
             }
         }
@@ -249,9 +402,14 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public void ShowMeterReadingPage(string resultOCRResponseList)
         {
-            Intent intent = new Intent(this,typeof(SubmitMeterReadingActivity));
+            //Intent intent = new Intent(this,typeof(SubmitMeterReadingActivity));
+            //intent.PutExtra("OCR_RESULTS", resultOCRResponseList);
+            //StartActivityForResult(intent,7200);
+
+            Intent intent = new Intent();
             intent.PutExtra("OCR_RESULTS", resultOCRResponseList);
-            StartActivity(intent);
+            SetResult(Result.Ok, intent);
+            Finish();
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)

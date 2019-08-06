@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using Android.Runtime;
 using Android.Text;
+using Android.Views;
+using Android.Views.InputMethods;
 using Android.Widget;
 using Java.Lang;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
@@ -27,7 +30,21 @@ namespace myTNB_Android.Src.SSMR.Util
 
         public void SetEvent()
         {
-            editTextList[editTextList.Count-1].AddTextChangedListener(new TextChangeListener(this));
+            //editTextList[editTextList.Count-1].AddTextChangedListener(new TextChangeListener(this));
+            for(int i=0; i < editTextList.Count; i++)
+            {
+                if (i == (editTextList.Count-1))
+                {
+                    editTextList[i].SetOnEditorActionListener(new OnEditorActionChangeListener(this));
+                    editTextList[i].AddTextChangedListener(new TextChangeListener(this)); //For right to left input and validation
+                }
+                else
+                {
+                    editTextList[i].SetOnEditorActionListener(new OnEditorActionChangeListener(this));
+                    //editTextList[i].AddTextChangedListener(new OnValidateTextChangeListener(this)); //For validation
+                    editTextList[i].Enabled = false;
+                }
+            }
         }
 
         public void SetValue(string value)
@@ -51,9 +68,56 @@ namespace myTNB_Android.Src.SSMR.Util
             }
         }
 
+        public void UpdateLastDigit(string val)
+        {
+            editTextList[8].RemoveTextChangedListener(new TextChangeListener(this));
+            editTextList[8].Text = val;
+            editTextList[8].AddTextChangedListener(new TextChangeListener(this));
+        }
+
         public void ValidateMeterInput()
         {
             mView.ValidateMeterInput(meterCard);
+        }
+
+        public class OnEditorActionChangeListener : Java.Lang.Object, TextView.IOnEditorActionListener
+        {
+            MeterReadingValuesViewHelper mHelper;
+            public OnEditorActionChangeListener(MeterReadingValuesViewHelper helper)
+            {
+                mHelper = helper;
+            }
+            public bool OnEditorAction(TextView v, [GeneratedEnum] ImeAction actionId, KeyEvent e)
+            {
+                if (actionId == ImeAction.ImeNull)
+                {
+                    mHelper.ValidateMeterInput();
+                }
+                return false;
+            }
+        }
+
+        public class OnValidateTextChangeListener : Java.Lang.Object, Android.Text.ITextWatcher
+        {
+            MeterReadingValuesViewHelper mHelper;
+            public OnValidateTextChangeListener(MeterReadingValuesViewHelper helper)
+            {
+                mHelper = helper;
+            }
+            public void AfterTextChanged(IEditable s)
+            {
+                //throw new NotImplementedException();
+            }
+
+            public void BeforeTextChanged(ICharSequence s, int start, int count, int after)
+            {
+                //throw new NotImplementedException();
+            }
+
+            public void OnTextChanged(ICharSequence s, int start, int before, int count)
+            {
+                //mHelper.ValidateMeterInput();
+            }
         }
 
         public class TextChangeListener : Java.Lang.Object, Android.Text.ITextWatcher
@@ -63,7 +127,6 @@ namespace myTNB_Android.Src.SSMR.Util
             List<EditText> editTexts;
             bool startChange = false;
             string previousVal;
-            private SubmitMeterReadingActivity parentView;
 
             MeterReadingValuesViewHelper mHelper;
 
@@ -95,13 +158,12 @@ namespace myTNB_Android.Src.SSMR.Util
                     {
                         meterValue = meterValue + s.ToString();
                         string val = s.CharAt(0).ToString();
-                        //mHelper.UpdateMeterValue(meterValue);
                         editTexts[8].RemoveTextChangedListener(this);
                         editTexts[8].Text = "";
                         editTexts[8].Text = val;
                         editTexts[8].AddTextChangedListener(this);
 
-                        if (startChange)
+                        if (startChange && previousVal != "")
                         {
                             editTexts[0].Text = editTexts[1].Text;
                             editTexts[1].Text = editTexts[2].Text;
@@ -116,15 +178,28 @@ namespace myTNB_Android.Src.SSMR.Util
                         {
                             startChange = !startChange;
                         }
-
-                        mHelper.ValidateMeterInput();
                     }
                     else
                     {
                         editTexts[8].RemoveTextChangedListener(this);
                         editTexts[8].Text = "";
-                        editTexts[8].Text = previousVal;
                         editTexts[8].AddTextChangedListener(this);
+
+                    }
+
+                    for (int i=0; i < mHelper.editTextList.Count; i++)
+                    {
+                        if (i != (mHelper.editTextList.Count-1))
+                        {
+                            if (mHelper.editTextList[i].Text == "")
+                            {
+                                mHelper.editTextList[i].Enabled = false;
+                            }
+                            else
+                            {
+                                mHelper.editTextList[i].Enabled = true;
+                            }
+                        }
                     }
                 }
             }

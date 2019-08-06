@@ -32,6 +32,7 @@ using myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
 using myTNB_Android.Src.Notifications.Activity;
+using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.Charts;
@@ -188,6 +189,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private MaterialDialog mWhyThisAmtCardDialog;
 
         public readonly static int SSMR_METER_HISTORY_ACTIVITY_CODE = 8796;
+
+        public readonly static int SSMR_SUBMIT_METER_ACTIVITY_CODE = 8797;
 
         private SMRActivityInfoResponse smrResponse;
 
@@ -591,7 +594,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 if (isSubmitMeter)
                 {
-                    // REMARK TODO for Chris from LinSiong: Submit Meter Goes Here;
+                    StartSSMRSubmitMeterReadingPage();
                 }
                 else
                 {
@@ -610,6 +613,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             ssmr_history_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
             ssmr_history_activity.PutExtra(Constants.SMR_RESPONSE_KEY, JsonConvert.SerializeObject(smrResponse));
             StartActivityForResult(ssmr_history_activity, SSMR_METER_HISTORY_ACTIVITY_CODE);
+        }
+
+        private void StartSSMRSubmitMeterReadingPage()
+        {
+            Intent ssmr_submit_meter_activity = new Intent(this.Activity, typeof(SubmitMeterReadingActivity));
+            ssmr_submit_meter_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+            ssmr_submit_meter_activity.PutExtra(Constants.SMR_RESPONSE_KEY, JsonConvert.SerializeObject(smrResponse));
+            StartActivityForResult(ssmr_submit_meter_activity, SSMR_SUBMIT_METER_ACTIVITY_CODE);
         }
 
         internal void SetUp()

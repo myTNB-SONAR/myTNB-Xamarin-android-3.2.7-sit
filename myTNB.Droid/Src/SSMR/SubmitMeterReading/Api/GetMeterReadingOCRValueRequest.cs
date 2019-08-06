@@ -4,8 +4,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.Api
 {
     public class GetMeterReadingOCRValueRequest : BaseRequest
     {
-        public string contractAccount;
-        public MeterImage meterImage;
+        public string contractAccount = "";
+        public MeterImage meterImage = new MeterImage();
         public GetMeterReadingOCRValueRequest(string contractAccountValue, MeterImage meterImageValue)
         {
             contractAccount = contractAccountValue;

@@ -1782,6 +1782,16 @@
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Adapter\NewPromotionShimmerAdapter.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\NewPromotion.cs" />
     <Compile Include="Src\SSMR\Util\MeterReadingValuesViewHelper.cs" />
+    <AndroidResource Include="Resources\drawable\meter_reading_label_background_error.xml" />
+    <AndroidResource Include="Resources\drawable\meter_reading_label_background_ready.xml" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\MeterValidation.cs" />
+    <AndroidResource Include="Resources\drawable\light_button_background_disabled.xml" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\ReadingMeterFailedActivity.cs" />
+    <AndroidResource Include="Resources\layout\ReadingMeterFailedLayout.axml" />
+    <Compile Include="Src\SSMR\SSMRBase\MVP\ResponseSuccessActivity.cs" />
+    <AndroidResource Include="Resources\layout\SSMRResponseSuccessLayout.axml" />
+    <Compile Include="Src\SSMR\SSMRBase\MVP\ResponseFailedActivity.cs" />
+    <AndroidResource Include="Resources\layout\ResponseFailedLayout.axml" />
     <AndroidResource Include="Resources\menu\SSMRMeterSubmitMenu.xml">
       <SubType></SubType>
       <Generator></Generator>
@@ -1910,6 +1920,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\MeterCapturedData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -2291,6 +2302,8 @@
     <Folder Include="Src\SSMRTerminate\Api\" />
     <Folder Include="Src\SSMRTerminate\Adapter\" />
     <Folder Include="Src\SSMR\Util\" />
+    <Folder Include="Src\SSMR\SSMRBase\" />
+    <Folder Include="Src\SSMR\SSMRBase\MVP\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

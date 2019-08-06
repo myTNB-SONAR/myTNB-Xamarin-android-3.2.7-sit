@@ -6,12 +6,14 @@ using Android.Graphics;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.SSMR.SSMRBase.MVP;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.Api;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.GetMeterReadingOCRResponse;
 using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.GetMeterReadingOCRValueRequest;
 using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.SubmitMeterReadingRequest;
+using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.SubmitMeterReadingResponse;
 
 namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 {
@@ -19,6 +21,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
     {
         SubmitMeterReadingContract.IView mView;
         SubmitMeterReadingImpl api;
+        List<MeterReading> meterReadingList = new List<MeterReading>();
         public SubmitMeterReadingPresenter(SubmitMeterReadingContract.IView view)
         {
             this.mView = view;
@@ -29,13 +32,22 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         {
             SubmitMeterReadingRequest request = new SubmitMeterReadingRequest(contractAccountValue, isOwnedAccountValue, meterReadingList);
             SubmitMeterReadingResponse response = await api.SubmitSMRMeetingReading(request);
-            if (response.Data == null)
-            {
+            ////STUB - START
+            //SubmitMeterReadingResponse response = new SubmitMeterReadingResponse();
+            //SMRSubmitResponseData data = new SMRSubmitResponseData();
+            //data.ErrorCode = "7201";
+            //data.DisplayTitle = "Reading Submitted";
+            //data.DisplayMessage = "Thank you for your meter reading submission. We will notify you when your meter reading has been validated.";
+            //response.Data = data;
+            ////STUB - END
 
+            if(response.Data != null && response.Data.ErrorCode == "7200")
+            {
+                this.mView.OnRequestSuccessful(response.Data);
             }
             else
             {
-
+                this.mView.OnRequestFailed(response.Data);
             }
         }
 
@@ -45,6 +57,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             List<GetMeterReadingOCRResponse> ocrResponseList = JsonConvert.DeserializeObject<List<GetMeterReadingOCRResponse>>(jsonResponseList);
             List<GetMeterReadingOCRResponseDetails> smrRegisterDetailList = new List<GetMeterReadingOCRResponseDetails>();
             GetMeterReadingOCRResponseDetails details;
+            string errorMessage = "";
             foreach (GetMeterReadingOCRResponse ocrReadingResponse in ocrResponseList)
             {
                 if (ocrReadingResponse.Data.ErrorCode == "7200" && ocrReadingResponse.Data.ResponseDetailsData != null)
@@ -54,6 +67,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     details.OCRUnit = ocrReadingResponse.Data.ResponseDetailsData.OCRUnit;
                     details.OCRValue = ocrReadingResponse.Data.ResponseDetailsData.OCRValue;
                     smrRegisterDetailList.Add(details);
+                    mView.UpdateCurrentMeterReading(smrRegisterDetailList);
                 }
                 else
                 {
@@ -62,9 +76,20 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     details.OCRUnit = ocrReadingResponse.Data.ResponseDetailsData.OCRUnit;
                     details.OCRValue = ocrReadingResponse.Data.ResponseDetailsData.OCRValue;
                     smrRegisterDetailList.Add(details);
+                    mView.UpdateCurrentMeterReading(smrRegisterDetailList);
+                    errorMessage = ocrReadingResponse.Data.ErrorMessage;
                 }
             }
-            mView.UpdateCurrentMeterReading(smrRegisterDetailList);
+            this.mView.ShowMeterReadingOCRError(errorMessage);
+        }
+
+        public void AddMeterReading(string MroID, string RegisterNumber, string MeterReadingResult)
+        {
+            MeterReading newMeterReading = new MeterReading();
+            newMeterReading.MroID = MroID;
+            newMeterReading.RegisterNumber = RegisterNumber;
+            newMeterReading.MeterReadingResult = MeterReadingResult;
+            meterReadingList.Add(newMeterReading);
         }
 
         public async Task OnGetThreePhaseData()
