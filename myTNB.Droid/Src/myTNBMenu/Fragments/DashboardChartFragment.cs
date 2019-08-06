@@ -589,9 +589,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
-                if (true)//isSubmitMeter)
+                if (isSubmitMeter)
                 {
-                    // REMARK TODO for Chris from LinSiong: Submit Meter Goes Here;
                     StartSSMRSubmitMeterReadingPage();
                 }
                 else
