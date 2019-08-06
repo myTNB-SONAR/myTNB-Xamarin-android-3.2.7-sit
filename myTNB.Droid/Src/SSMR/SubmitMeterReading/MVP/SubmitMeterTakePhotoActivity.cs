@@ -120,6 +120,14 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 mPresenter.GetMeterReadingOCRValue(contractNumber);
             };
+
+            isTakePhotFirstEnter = true;
+
+            if (isTakePhotFirstEnter)
+            {
+                ShowTakePhotoTooltip();
+            }
+
             mPresenter.InitializeModelList();
         }
 
