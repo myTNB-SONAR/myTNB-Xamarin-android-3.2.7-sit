@@ -43,7 +43,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
 
             var results = await Task.WhenAll(ocrSubmitTasks);
-            //GetMeterReadingOCRResponse responseData = results[0];
             string resultResponse = JsonConvert.SerializeObject(results);
             mView.ShowMeterReadingPage(resultResponse);
         }

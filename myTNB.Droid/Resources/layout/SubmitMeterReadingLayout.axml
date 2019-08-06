@@ -88,7 +88,7 @@
                     android:layout_marginRight="16dp"
                     android:visibility="gone"
                     android:gravity="right"
-                    android:id="@+id/meterReadingTitle"
+                    android:id="@+id/meterReadingError"
                     android:text="We can’t read your photos. Please try again."
                     android:textColor="#e44b21"
                     android:textSize="10dp"/>

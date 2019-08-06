@@ -31,15 +31,15 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public async void SubmitMeterReading(string contractAccountValue, bool isOwnedAccountValue, List<MeterReading> meterReadingList)
         {
             SubmitMeterReadingRequest request = new SubmitMeterReadingRequest(contractAccountValue, isOwnedAccountValue, meterReadingList);
-            //SubmitMeterReadingResponse response = await api.SubmitSMRMeetingReading(request);
-            //STUB - START
-            SubmitMeterReadingResponse response = new SubmitMeterReadingResponse();
-            SMRSubmitResponseData data = new SMRSubmitResponseData();
-            data.ErrorCode = "7201";
-            data.DisplayTitle = "Reading Submitted";
-            data.DisplayMessage = "Thank you for your meter reading submission. We will notify you when your meter reading has been validated.";
-            response.Data = data;
-            //STUB - END
+            SubmitMeterReadingResponse response = await api.SubmitSMRMeetingReading(request);
+            ////STUB - START
+            //SubmitMeterReadingResponse response = new SubmitMeterReadingResponse();
+            //SMRSubmitResponseData data = new SMRSubmitResponseData();
+            //data.ErrorCode = "7201";
+            //data.DisplayTitle = "Reading Submitted";
+            //data.DisplayMessage = "Thank you for your meter reading submission. We will notify you when your meter reading has been validated.";
+            //response.Data = data;
+            ////STUB - END
 
             if(response.Data != null && response.Data.ErrorCode == "7200")
             {

@@ -22,7 +22,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         Button btnGetMeterReadingOCR;
         public SubmitMeterTakePhotoContract.IPresenter mPresenter;
         const string IMAGE_ID = "MYTNBAPP_SSMR_OCR_KWH_001";
-        string contractNumber = "220098081110";
+        string contractNumber = "";
 
         int selectedCapturedImage = 0;
 
@@ -36,6 +36,9 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         [BindView(Resource.Id.bottomLayout)]
         LinearLayout bottomLayout;
+
+        [BindView(Resource.Id.meter_capture_container)]
+        LinearLayout meterCapturePhotoContainer;
 
         public static readonly int PickImageId = 1000;
 
@@ -70,6 +73,16 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             isGalleryFirstPress = true;
 
             Bundle extras = Intent.Extras;
+            if (extras != null && extras.ContainsKey("IS_SINGLE_PHASE"))
+            {
+                isSinglePhase = extras.GetBoolean("IS_SINGLE_PHASE");
+            }
+
+            if (extras != null && extras.ContainsKey("CONTRACT_NUMBER"))
+            {
+                contractNumber = extras.GetString("CONTRACT_NUMBER");
+            }
+
             if (extras != null && extras.ContainsKey("REQUEST_PHOTOS"))
             {
                 List<MeterValidation> validationStateList = JsonConvert.DeserializeObject<List<MeterValidation>>(extras.GetString("REQUEST_PHOTOS"));
@@ -86,6 +99,14 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 CreateImageHolders();
             }
 
+            if (isSinglePhase)
+            {
+                meterCapturePhotoContainer.Visibility = ViewStates.Gone;
+            }
+            else
+            {
+                meterCapturePhotoContainer.Visibility = ViewStates.Visible;
+            }
 
             if (savedInstanceState == null)
             {
@@ -98,9 +119,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 mPresenter.GetMeterReadingOCRValue(contractNumber);
             };
             mPresenter.InitializeModelList();
-
-            // TODO: Logic to reflect the flag
-            isSinglePhase = false;
         }
 
         public void UpdateCapturedBorder()
@@ -126,30 +144,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     meteredCapturedDataList[nextSelectedItem].isSelected = true;
                 }
             }
-
-            //for (int i=0; i < meterCapturedContainer.ChildCount; i++)
-            //{
-            //    meterCapturedContainer.GetChildAt(i).SetBackgroundDrawable(GetDrawable(Resource.Drawable.meter_capture_holder_inactive));
-
-            //    int nextSelectedIndex = mPresenter.GetMeterImages().FindIndex(meterImage =>
-            //    {
-            //        return meterImage.ImageData == null;
-            //    });
-
-            //    if (nextSelectedIndex >= 0)
-            //    {
-            //        meterCapturedContainer.GetChildAt(nextSelectedIndex).SetBackgroundDrawable(GetDrawable(Resource.Drawable.meter_capture_holder_selected));
-            //    }
-            //}
-            //int position = 0;
-            //foreach (MeterImageModel imageModel in mPresenter.GetMeterImages())
-            //{
-            //    if (imageModel.ImageData != null)
-            //    {
-            //        meterCapturedContainer.GetChildAt(position).SetBackgroundDrawable(GetDrawable(Resource.Drawable.meter_capture_holder_active));
-            //    }
-            //    position++;
-            //}
         }
 
         private void ShowImagePreView(bool isShown)
@@ -281,7 +275,22 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public void AddCapturedImage(Bitmap capturedImage)
         {
-            AddCapturedImageInContainer(capturedImage);
+            int nextSelectedPosition = meteredCapturedDataList.FindIndex(meterCapturedData => { return !meterCapturedData.hasImage; });
+
+            if (isSinglePhase)
+            {
+                mPresenter.AddMeterImageAt(nextSelectedPosition, contractNumber, IMAGE_ID, capturedImage);
+                ShowAdjustFragment(nextSelectedPosition, capturedImage);
+            }
+            else
+            {
+                LinearLayout container = (LinearLayout)meterCapturedContainer.GetChildAt(nextSelectedPosition);
+                container.RemoveAllViews();
+                container.AddView(CreateImageView(capturedImage));
+                mPresenter.AddMeterImageAt(nextSelectedPosition, contractNumber, IMAGE_ID, capturedImage);
+                meteredCapturedDataList[nextSelectedPosition].hasImage = true;
+                UpdateCapturedBorder();
+            }
         }
 
         public void DeleteCapturedImage()
@@ -320,7 +329,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             imageView.SetPadding(1,1,1,1);
             imageView.SetScaleType(ImageView.ScaleType.FitXy);
             imageView.SetImageBitmap(bitmap);
-            //imageView.SetOnClickListener(new OnCapturedImageClick(this,bitmap,selectedCapturedImage));
             return imageView;
         }
 
@@ -392,9 +400,14 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public void ShowMeterReadingPage(string resultOCRResponseList)
         {
-            Intent intent = new Intent(this,typeof(SubmitMeterReadingActivity));
+            //Intent intent = new Intent(this,typeof(SubmitMeterReadingActivity));
+            //intent.PutExtra("OCR_RESULTS", resultOCRResponseList);
+            //StartActivityForResult(intent,7200);
+
+            Intent intent = new Intent();
             intent.PutExtra("OCR_RESULTS", resultOCRResponseList);
-            StartActivity(intent);
+            SetResult(Result.Ok, intent);
+            Finish();
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
