@@ -1437,6 +1437,7 @@
     <Folder Include="Assets.xcassets\Stub-Promotion-2.imageset\" />
     <Folder Include="Customs\Generic No Data Page\" />
     <Folder Include="Assets.xcassets\SSMR-NoData.imageset\" />
+    <Folder Include="DashboardV2\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1473,6 +1474,7 @@
     <InterfaceDefinition Include="Customs\Generic Tableview Selector\GenericSelector.storyboard" />
     <InterfaceDefinition Include="SSMR\SSMR.storyboard" />
     <InterfaceDefinition Include="Customs\Generic No Data Page\GenericNoData.storyboard" />
+    <InterfaceDefinition Include="DashboardV2\DashboardV2.storyboard" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -2220,6 +2222,11 @@
     <Compile Include="Customs\Generic No Data Page\GenericNodataViewController.designer.cs">
       <DependentUpon>GenericNodataViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="DashboardV2\DashboardV2ViewController.cs" />
+    <Compile Include="DashboardV2\DashboardV2ViewController.designer.cs">
+      <DependentUpon>DashboardV2ViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DashboardV2\DashboardConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

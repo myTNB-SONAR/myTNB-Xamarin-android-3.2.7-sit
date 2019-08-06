@@ -38,6 +38,7 @@ namespace myTNB
                 CreateImageGradient();
             }
             SetFrames();
+            ConfigureNavigationBar();
         }
 
         public override void ViewWillAppear(bool animated)
@@ -263,6 +264,10 @@ namespace myTNB
         {
             _statusBarView = new UIView(new CGRect(0, 0, View.Frame.Width, DeviceHelper.GetStatusBarHeight()));
             View.AddSubview(_statusBarView);
+        }
+        public virtual void ConfigureNavigationBar()
+        {
+
         }
         #endregion
 

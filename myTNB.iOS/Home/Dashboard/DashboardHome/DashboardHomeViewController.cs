@@ -330,10 +330,15 @@ namespace myTNB
                 var selected = DataManager.DataManager.SharedInstance.AccountRecordsList.d[index];
                 DataManager.DataManager.SharedInstance.SelectAccount(selected.accNum);
                 DataManager.DataManager.SharedInstance.IsSameAccount = false;
-                UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+                /*UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                 var vc = storyBoard.InstantiateViewController("DashboardViewController") as DashboardViewController;
                 vc.ShouldShowBackButton = true;
                 ShowViewController(vc, null);
+                */
+
+                UIStoryboard storyBoard = UIStoryboard.FromName("DashboardV2", null);
+                DashboardV2ViewController vc = storyBoard.InstantiateViewController("DashboardV2") as DashboardV2ViewController;
+                NavigationController.PushViewController(vc, true);
             }
         }
 
