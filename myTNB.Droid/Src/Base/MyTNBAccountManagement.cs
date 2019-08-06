@@ -95,14 +95,38 @@ namespace myTNB_Android.Src.Base
             return CustomerBillingAccount.GetIsSMROnboardingShown();
         }
 
-        public void UpdateIsSMRMeterReadingOnboardingShown()
+        public void UpdateIsSMRMeterReadingOnePhaseOnboardingShown(bool flag)
         {
-            CustomerBillingAccount.UpdateIsSMRMeterReadingOnBoardShown();
+            if (flag)
+            {
+                CustomerBillingAccount.SetIsSMRMeterReadingOnePhaseOnBoardShown();
+            }
+            else
+            {
+                CustomerBillingAccount.UnSetIsSMRMeterReadingOnePhaseOnBoardShown();
+            }
         }
 
-        public bool IsSMRMeterReadingOnboardingShown()
+        public bool GetSMRMeterReadingOnePhaseOnboardingShown()
         {
-            return CustomerBillingAccount.GetIsSMRMeterReadingOnBoardShown();
+            return CustomerBillingAccount.GetIsSMRMeterReadingOnePhaseOnBoardShown();
+        }
+
+        public void UpdateIsSMRMeterReadingThreePhaseOnboardingShown(bool flag)
+        {
+            if (flag)
+            {
+                CustomerBillingAccount.SetIsSMRMeterReadingThreePhaseOnBoardShown();
+            }
+            else
+            {
+                CustomerBillingAccount.UnSetIsSMRMeterReadingThreePhaseOnBoardShown();
+            }
+        }
+
+        public bool GetSMRMeterReadingThreePhaseOnboardingShown()
+        {
+            return CustomerBillingAccount.GetIsSMRMeterReadingThreePhaseOnBoardShown();
         }
     }
 }

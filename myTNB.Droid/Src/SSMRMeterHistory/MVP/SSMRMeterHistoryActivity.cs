@@ -147,44 +147,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     }
                 }
 
-                /* SMRPhotoTooltip */
-                // How to use SMRPhotoTooltip
-                // 1) need to build your own function for this
-                // 2) then call that function
-                // How to build your own function, refer to down there
-                // This tooltip must be only can be use after first call of GetSMRAccountActivityInfo
-
-                // Note:
-                // Button Integration is yet done on this
-
-                // Example, please uncomment the code for review
-                // OnShowSMRPhotoTooltip(true, true, this);
-                // OnShowSMRPhotoTooltip(true, false, this);
-                // OnShowSMRPhotoTooltip(false, true, this);
-                // OnShowSMRPhotoTooltip(false, false, this);
-                /* SMRPhotoTooltip */
-
-
-
-                /* SMRMeterReadingTooltip */
-                // How to use SMRMeterReadingTooltip
-                // SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(isSinglePhase, your Activity, SupportFragmentManager);
-
-                // Only Limitation
-                // Only Can be use on Activity
-
-                // Note:
-                // Button Integration is done on this (if I did not missed)
-                // When checked on the checkbox, and click I'm Ready, it will write to here:
-                // MyTNBAccountManagement.GetInstance().UpdateIsSMRMeterReadingOnboardingShown();
-                // The checking for that flag:
-                // MyTNBAccountManagement.GetInstance().IsSMRMeterReadingOnboardingShown();
-                // For customize code, you can go to SSMRMeterReadingDialogFragment for button customization
-
-                // Example, please uncomment the code for review
-                // SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(true, this, SupportFragmentManager);
-                // SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(false, this, SupportFragmentManager);
-                /* SMRMeterReadingTooltip */
+ 
             }
             catch (Exception e)
 			{
@@ -274,20 +237,28 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         {
             try
             {
-                ShowProgressDialog();
                 if (position != -1)
                 {
                     SSMRMeterHistoryMenuModel selectedMenu = ssmrMeterHistoryMenuList[position];
                     if (selectedMenu.MenuId == "1004")
                     {
+                        ShowProgressDialog();
                         Intent SSMRTerminateActivity = new Intent(this, typeof(SSMRTerminateActivity));
                         SSMRTerminateActivity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
                         StartActivityForResult(SSMRTerminateActivity, SSMR_METER_HISTORY_ACTIVITY_CODE);
+                        HideProgressDialog();
+                        SSMRMenuDialog.Dismiss();
+                    }
+                    else
+                    {
+                        SSMRMenuDialog.Dismiss();
                     }
                 }
+                else
+                {
+                    SSMRMenuDialog.Dismiss();
+                }
                 // ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
-                SSMRMenuDialog.Dismiss();
-                HideProgressDialog();
             }
             catch (System.Exception e)
             {
@@ -351,22 +322,5 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 					break;
 			}
 		}
-
-        /* SMRPhotoTooltip */
-        // How to use this Tooltip
-        private void OnShowSMRPhotoTooltip(bool isTakePhoto, bool isSinglePhase, Activity mActivity)
-        {
-            MaterialDialog myDiaLog = SMRPopUpUtils.OnBuildSMRPhotoTooltip(isTakePhoto, isSinglePhase, mActivity);
-            LinearLayout btnFirst = myDiaLog.FindViewById<LinearLayout>(Resource.Id.btnFirst);
-
-            btnFirst.Click += delegate
-            {
-                // Do your handling here
-                myDiaLog.Dismiss();
-            };
-
-            myDiaLog.Show();
-        }
-        /* SMRPhotoTooltip */
     }
 }

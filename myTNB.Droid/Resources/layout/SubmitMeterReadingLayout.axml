@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:background="@null"
+        android:visibility="visible"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        app:elevation="0dp">
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+    </android.support.design.widget.AppBarLayout>
+    <LinearLayout
+        android:id="@+id/bottomLayout"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="8dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white"
+        android:paddingTop="8dp">
+        <Button
+            android:id="@+id/btnTakePhoto"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Take Photo Instead"
+            android:textAllCaps="false"
+            android:textSize="16dp"
+            style="@style/LightButton" />
+        <Button
+            android:id="@+id/btnSubmitReading"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:text="Submit Reading"
+            android:textSize="16dp"
+            android:textAllCaps="false"
+            style="@style/DarkButton1"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:background="#F9F9F9"
+        android:layout_below="@+id/appBar"
+        android:layout_above="@+id/bottomLayout"
+        android:paddingBottom="16dp"
+        android:orientation="vertical">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
+            <LinearLayout android:id="@+id/scroll_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical" >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/meterReadingTitle"
+                    android:text="Please enter your meter reading for each respective units."
+                    android:textSize="16dp"
+                    android:textColor="#1c79ca"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:layout_marginBottom="4dp"/>
+                <include android:id="@+id/kwhCard"
+                         android:visibility="gone"
+                layout="@layout/SubmitMeterReadingCardLayout"/>
+                <include android:id="@+id/kVARhCard"
+                         android:visibility="gone"
+                layout="@layout/SubmitMeterReadingCardLayout"/>
+                <include android:id="@+id/kwCard"
+                         android:visibility="gone"
+                layout="@layout/SubmitMeterReadingCardLayout"/>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</RelativeLayout>

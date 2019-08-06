@@ -22,6 +22,7 @@ namespace myTNB_Android.Src.Database.Model
         [Column("Image")]
         public string Image { set; get; }
 
+
         public void CreateTable()
 		{
 			var db = DBHelper.GetSQLiteConnection();
@@ -53,7 +54,7 @@ namespace myTNB_Android.Src.Database.Model
 					item.Image = obj.Image.Replace(" ", "%20");
 					item.Title = obj.Title;
 					item.Description = obj.Description;
-					InsertItem(item);
+                    InsertItem(item);
 				}
 			}
 		}

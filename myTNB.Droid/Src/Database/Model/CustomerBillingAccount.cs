@@ -79,6 +79,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("IsSMRMeterReadingOnBoardShown")]
         public bool IsSMRMeterReadingOnBoardShown { get; set; }
 
+        [Column("IsSMRMeterReadingThreePhaseOnBoardShown")]
+        public bool IsSMRMeterReadingThreePhaseOnBoardShown { get; set; }
+
         public static int CreateTable()
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
@@ -612,13 +615,19 @@ namespace myTNB_Android.Src.Database.Model
             return isShown;
         }
 
-        public static void UpdateIsSMRMeterReadingOnBoardShown()
+        public static void SetIsSMRMeterReadingOnePhaseOnBoardShown()
         {
             var db = DBHelper.GetSQLiteConnection();
             db.Execute("Update CustomerBillingAccountEntity SET IsSMRMeterReadingOnBoardShown = 1");
         }
 
-        public static bool GetIsSMRMeterReadingOnBoardShown()
+        public static void UnSetIsSMRMeterReadingOnePhaseOnBoardShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            db.Execute("Update CustomerBillingAccountEntity SET IsSMRMeterReadingOnBoardShown = 0");
+        }
+
+        public static bool GetIsSMRMeterReadingOnePhaseOnBoardShown()
         {
             var db = DBHelper.GetSQLiteConnection();
             bool isShown = false;
@@ -626,6 +635,30 @@ namespace myTNB_Android.Src.Database.Model
             if (customerBillingAccounts.Count > 0)
             {
                 isShown = customerBillingAccounts[0].IsSMRMeterReadingOnBoardShown;
+            }
+            return isShown;
+        }
+
+        public static void SetIsSMRMeterReadingThreePhaseOnBoardShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            db.Execute("Update CustomerBillingAccountEntity SET IsSMRMeterReadingThreePhaseOnBoardShown = 1");
+        }
+
+        public static void UnSetIsSMRMeterReadingThreePhaseOnBoardShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            db.Execute("Update CustomerBillingAccountEntity SET IsSMRMeterReadingThreePhaseOnBoardShown = 0");
+        }
+
+        public static bool GetIsSMRMeterReadingThreePhaseOnBoardShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            bool isShown = false;
+            List<CustomerBillingAccount> customerBillingAccounts = db.Query<CustomerBillingAccount>("Select IsSMRMeterReadingThreePhaseOnBoardShown from CustomerBillingAccountEntity");
+            if (customerBillingAccounts.Count > 0)
+            {
+                isShown = customerBillingAccounts[0].IsSMRMeterReadingThreePhaseOnBoardShown;
             }
             return isShown;
         }

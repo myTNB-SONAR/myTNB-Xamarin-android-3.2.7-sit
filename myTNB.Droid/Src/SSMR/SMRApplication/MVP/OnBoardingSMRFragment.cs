@@ -77,8 +77,12 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             }
             else
             {
-                Bitmap bitmap = ImageUtils.GetImageBitmapFromUrl(imageUrl);
-                imageSource.SetImageBitmap(bitmap);
+                Bitmap bitmap = null;
+                bitmap = ImageUtils.GetImageBitmapFromUrl(imageUrl);
+                if (bitmap != null)
+                {
+                    imageSource.SetImageBitmap(bitmap);
+                }
             }
 
             titleView.Text = title;

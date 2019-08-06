@@ -47,8 +47,63 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.Adapter
 
             SSMRMeterReadingModel model = list[position];
 
-            Bitmap bitmap = ImageUtils.GetImageBitmapFromUrl(model.Image);
-            tooltipImg.SetImageBitmap(bitmap);
+            if (model.Image.Contains("tooltip_bg_"))
+            {
+                if (model.Image.Contains("1"))
+                {
+                    tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_1);
+                }
+                else if (model.Image.Contains("2"))
+                {
+                    tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_2);
+                }
+                else
+                {
+                    tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_3);
+                }
+            }
+            else if (model.ImageBitmap != null)
+            {
+                tooltipImg.SetImageBitmap(model.ImageBitmap);
+            }
+            else
+            {
+                Bitmap bitmap = null;
+                bitmap = ImageUtils.GetImageBitmapFromUrl(model.Image);
+                if (bitmap != null)
+                {
+                    tooltipImg.SetImageBitmap(bitmap);
+                }
+                else
+                {
+                    if (list.Count == 2)
+                    {
+                        if (position == 0)
+                        {
+                            tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_2);
+                        }
+                        else
+                        {
+                            tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_3);
+                        }
+                    }
+                    else if (list.Count == 3)
+                    {
+                        if (position == 0)
+                        {
+                            tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_1);
+                        }
+                        else if (position == 1)
+                        {
+                            tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_2);
+                        }
+                        else
+                        {
+                            tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_3);
+                        }
+                    }
+                }
+            }
 
             titleView.Text = model.Title;
             descriptionView.Text = model.Description;
@@ -72,6 +127,12 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.Adapter
         public override void DestroyItem(ViewGroup container, int position, Java.Lang.Object @object)
         {
             container.RemoveView((View)@object);
+        }
+
+        private Bitmap Base64ToBitmap(String base64String)
+        {
+            byte[] imageAsBytes = Base64.Decode(base64String, Base64Flags.Default);
+            return BitmapFactory.DecodeByteArray(imageAsBytes, 0, imageAsBytes.Length);
         }
     }
 }
