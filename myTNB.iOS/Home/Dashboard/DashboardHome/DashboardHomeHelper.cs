@@ -189,7 +189,7 @@ namespace myTNB
         public nfloat GetHeightForAccountCards()
         {
             nfloat additionalHeight = DashboardHomeConstants.GreetingViewHeight + DashboardHomeConstants.SearchViewHeight + DashboardHomeConstants.PageControlHeight;
-            nfloat pageViewHeight = 0f + additionalHeight;
+            nfloat pageViewHeight = 80f + additionalHeight;
             var groupAccountsList = DataManager.DataManager.SharedInstance.AccountsGroupList;
             if (groupAccountsList.Count > 1)
             {

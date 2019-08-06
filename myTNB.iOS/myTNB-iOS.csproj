@@ -1088,6 +1088,10 @@
     <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc%402x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Grey.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Grey.imageset\Add-Account-Icon-Grey.png" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Grey.imageset\Add-Account-Icon-Grey%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Grey.imageset\Add-Account-Icon-Grey%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1437,6 +1441,7 @@
     <Folder Include="Assets.xcassets\Stub-Promotion-2.imageset\" />
     <Folder Include="Customs\Generic No Data Page\" />
     <Folder Include="Assets.xcassets\SSMR-NoData.imageset\" />
+    <Folder Include="Assets.xcassets\Add-Account-Icon-Grey.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

@@ -49,6 +49,7 @@ namespace myTNB
             SetCardScrollView();
             SetScrollViewSubViews();
             LoadAccountsWithDues();
+            SetAddAccountCard();
         }
 
         public override void ViewWillAppear(bool animated)
@@ -91,6 +92,41 @@ namespace myTNB
             _dashboardHomeHeader.SetGreetingText(_homeViewController.GetGreeting());
             _dashboardHomeHeader.SetNameText(_dashboardHomeHelper.GetDisplayName());
             _parentView.AddSubview(_dashboardHomeHeader.GetUI());
+            _dashboardHomeHeader.SetNotificationActionRecognizer(new UITapGestureRecognizer(() =>
+            {
+                OnNotificationAction();
+            }));
+        }
+
+        private void SetAddAccountCard()
+        {
+            if (_groupAccountList.Count > 0)
+                return;
+
+            nfloat margin = 16f;
+            UIView addAcctView = new UIView(new CGRect(margin, _searchView.Frame.GetMaxY() + margin, ViewWidth - (margin * 2), 60f))
+            {
+                BackgroundColor = UIColor.White
+            };
+            addAcctView.Layer.CornerRadius = 5f;
+            UIImageView iconView = new UIImageView(new CGRect(12f, DeviceHelper.GetCenterYWithObjHeight(28f, addAcctView), 28f, 28f))
+            {
+                Image = UIImage.FromBundle("Add-Account-Icon-Grey"),
+                UserInteractionEnabled = true
+            };
+            iconView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                OnAddAccountAction();
+            }));
+            UILabel labelText = new UILabel(new CGRect(iconView.Frame.GetMaxX() + 12f, DeviceHelper.GetCenterYWithObjHeight(20f, addAcctView), addAcctView.Frame.Width - (iconView.Frame.GetMaxX() + 24f), 20f))
+            {
+                Font = MyTNBFont.MuseoSans14_500,
+                TextColor = MyTNBColor.GreyishBrownTwo,
+                Text = "Add an Electricity Account"
+            };
+            addAcctView.AddSubview(iconView);
+            addAcctView.AddSubview(labelText);
+            View.AddSubview(addAcctView);
         }
 
         public void UpdateGreeting(string greeting)
@@ -119,20 +155,40 @@ namespace myTNB
             _searchIcon = new UIImageView(new CGRect(sideIconXValue, 0, imageWidth, imageHeight))
             {
                 Image = UIImage.FromBundle("Search-Icon"),
+                UserInteractionEnabled = true,
                 Hidden = NoPaginationNeeded()
             };
-
+            _searchIcon.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                if (!NoPaginationNeeded())
+                {
+                    OnSearchAction();
+                }
+            }));
             _addAccountIcon = new UIImageView(new CGRect(NoPaginationNeeded() ? sideIconXValue : sideIconXValue - imageWidth - 8f, 0, imageWidth, imageHeight))
             {
-                Image = UIImage.FromBundle("Add-Account-Icon")
+                Image = UIImage.FromBundle("Add-Account-Icon"),
+                UserInteractionEnabled = true,
+                Hidden = _groupAccountList.Count <= 0
             };
-
+            _addAccountIcon.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                OnAddAccountAction();
+            }));
             var spacing = searchPadding + imageWidth + 8f;
             _textFieldView = new UIView(new CGRect(spacing, 0, _searchView.Frame.Width - spacing - searchPadding, 24f))
             {
-                BackgroundColor = UIColor.White
+                BackgroundColor = UIColor.White,
+                UserInteractionEnabled = true
             };
             _textFieldView.Layer.CornerRadius = 12f;
+            _textFieldView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                if (!NoPaginationNeeded())
+                {
+                    OnTypeSearchAction();
+                }
+            }));
             _textFieldSearch = new UITextField(new CGRect(12f, 0, _textFieldView.Frame.Width - 24f - imageWidth / 2, 24f))
             {
                 AttributedPlaceholder = new NSAttributedString(
@@ -151,11 +207,15 @@ namespace myTNB
             _textFieldView.AddSubview(_textFieldSearch);
             if (NoPaginationNeeded())
             {
-                _searchView.AddSubviews(new UIView { _headerTitle, _addAccountIcon });
+                _searchView.AddSubview(_headerTitle);
+                _searchView.AddSubview(_addAccountIcon);
             }
             else
             {
-                _searchView.AddSubviews(new UIView { _headerTitle, _textFieldView, _addAccountIcon, _searchIcon });
+                _searchView.AddSubview(_headerTitle);
+                _searchView.AddSubview(_textFieldView);
+                _searchView.AddSubview(_addAccountIcon);
+                _searchView.AddSubview(_searchIcon);
                 SetTextFieldEvents(_textFieldSearch);
             }
             _parentView.AddSubview(_searchView);
@@ -276,38 +336,11 @@ namespace myTNB
         public override void TouchesBegan(NSSet touches, UIEvent evt)
         {
             base.TouchesBegan(touches, evt);
-            var touch = touches.AnyObject as UITouch;
-
-            if (_searchIcon.Frame.Contains(touch.LocationInView(_searchView)) && !_searchIcon.Hidden && _searchIcon.Superview != null)
+            if (_isSearchMode)
             {
-                if (!NoPaginationNeeded())
-                {
-                    OnSearchAction();
-                }
-            }
-            else if (_addAccountIcon.Frame.Contains(touch.LocationInView(_searchView)))
-            {
-                OnAddAccountAction();
-            }
-            else if (_textFieldView.Frame.Contains(touch.LocationInView(_searchView)) && !_textFieldView.Hidden && _textFieldView.Superview != null)
-            {
-                if (!NoPaginationNeeded())
-                {
-                    OnTypeSearchAction();
-                }
-            }
-            else if (_dashboardHomeHeader._notificationView.Frame.Contains(touch.LocationInView(_dashboardHomeHeader.GetView())))
-            {
-                OnNotificationAction();
-            }
-            else
-            {
-                if (_isSearchMode)
-                {
-                    _textFieldSearch.ResignFirstResponder();
-                    _isSearchMode = false;
-                    SetViewForActiveSearch(_isSearchMode);
-                }
+                _textFieldSearch.ResignFirstResponder();
+                _isSearchMode = false;
+                SetViewForActiveSearch(_isSearchMode);
             }
         }
         #endregion
