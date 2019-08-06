@@ -31,6 +31,7 @@ namespace myTNB
         private CustomTextField _customMobileField;
         private CustomTextField _customEmailField;
         protected List<CustomerAccountRecordModel> _eligibleAccountList;
+        protected AccountsSMREligibilityResponseModel _smrEligibleList;
         protected CustomerAccountRecordModel _selectedAccount;
         protected ContactDetailsResponseModel _contactDetails;
         protected SSMRApplicationStatusResponseModel _ssmrApplicationStatus;
@@ -57,13 +58,10 @@ namespace myTNB
                 AddTerminateReason();
             }
             ToggleCTA();
-            if (!IsApplication)
+            if (!IsApplication) { OnGetTerminateReasons(); }
+            if (IsApplication && _eligibleAccountList != null && _eligibleAccountList.Count > 0)
             {
-                OnGetTerminateReasons();
-            }
-            if (!IsApplication && _selectedAccount != null)
-            {
-                OnGetContactInfo();
+                OnGetAccountsSMREligibility();
             }
         }
 
@@ -635,6 +633,27 @@ namespace myTNB
             });
         }
 
+        private void OnGetAccountsSMREligibility()
+        {
+            InvokeOnMainThread(async () =>
+            {
+                _smrEligibleList = await GetAccountsSMREligibility();
+                if (_smrEligibleList != null && _smrEligibleList.d != null
+                    && _smrEligibleList.d.IsSuccess && _smrEligibleList.d.data != null)
+                {
+                    for (int i = _eligibleAccountList.Count - 1; i > -1; i--)
+                    {
+                        CustomerAccountRecordModel item = _eligibleAccountList[i];
+                        int index = _smrEligibleList.d.data.FindIndex(x => x.ContractAccount == item.accNum);
+                        if (index < 0)
+                        {
+                            _eligibleAccountList.RemoveAt(i);
+                        }
+                    }
+                }
+            });
+        }
+
         private bool IsValidTerminateReason()
         {
             return _ssmrTerminationReasons != null && _ssmrTerminationReasons.d != null
@@ -739,6 +758,19 @@ namespace myTNB
             };
             TerminationReasonsResponseModel response = serviceManager
                 .OnExecuteAPIV6<TerminationReasonsResponseModel>(SSMRConstants.Service_GetTerminationReasons, request);
+            return response;
+        }
+
+        private async Task<AccountsSMREligibilityResponseModel> GetAccountsSMREligibility()
+        {
+            ServiceManager serviceManager = new ServiceManager();
+            object request = new
+            {
+                serviceManager.usrInf,
+                contractAccounts = _eligibleAccountList.Select(x => x.accNum).ToList()
+            };
+            AccountsSMREligibilityResponseModel response = serviceManager
+                .OnExecuteAPIV6<AccountsSMREligibilityResponseModel>(SSMRConstants.Service_GetAccountsSMREligibility, request);
             return response;
         }
 

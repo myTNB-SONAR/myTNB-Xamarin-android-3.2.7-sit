@@ -1437,6 +1437,7 @@
     <Folder Include="Assets.xcassets\Stub-Promotion-2.imageset\" />
     <Folder Include="Customs\Generic No Data Page\" />
     <Folder Include="Assets.xcassets\SSMR-NoData.imageset\" />
+    <Folder Include="Model\GetAccountsSMREligibility\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2220,6 +2221,7 @@
     <Compile Include="Customs\Generic No Data Page\GenericNodataViewController.designer.cs">
       <DependentUpon>GenericNodataViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\GetAccountsSMREligibility\GetAccountsSMREligibilityResponseModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
