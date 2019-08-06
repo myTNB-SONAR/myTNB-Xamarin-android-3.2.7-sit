@@ -15,10 +15,7 @@ namespace myTNB
 {
     public partial class SSMRApplicationViewController : CustomUIViewController
     {
-        public SSMRApplicationViewController(IntPtr handle) : base(handle)
-        {
-        }
-
+        public SSMRApplicationViewController(IntPtr handle) : base(handle) { }
         public bool IsApplication;
 
         private UIButton _btnSubmit;
@@ -615,11 +612,12 @@ namespace myTNB
                         if (_contactDetails != null && _contactDetails.d != null
                             && _contactDetails.d.IsSuccess && _contactDetails.d.data != null)
                         {
+                            _lblEditInfo.Hidden = true;
                             _customEmailField.SetValue(_contactDetails.d.data.Email);
                             _customMobileField.SetValue(_contactDetails.d.data.Mobile);
                             ToggleCTA();
-                            _customEmailField.SetState();
-                            _customMobileField.SetState();
+                            _customEmailField.SetState(true);
+                            _customMobileField.SetState(true);
                         }
                         ActivityIndicator.Hide();
                     });
@@ -642,11 +640,10 @@ namespace myTNB
                     && _smrEligibleList.d.IsSuccess && _smrEligibleList.d.data != null
                     && _smrEligibleList.d.data.accountEligibilities != null)
                 {
-                    for (int i = _eligibleAccountList.Count - 1; i > -1; i--)
+                    for (int i = _smrEligibleList.d.data.accountEligibilities.Count - 1; i > -1; i--)
                     {
-                        CustomerAccountRecordModel item = _eligibleAccountList[i];
-                        int index = _smrEligibleList.d.data.accountEligibilities.FindIndex(x => x.ContractAccount == item.accNum);
-                        if (index < 0)
+                        AccountsSMREligibilityModel item = _smrEligibleList.d.data.accountEligibilities[i];
+                        if (!item.IsEligible)
                         {
                             _eligibleAccountList.RemoveAt(i);
                         }

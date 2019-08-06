@@ -119,11 +119,11 @@ namespace myTNB
             }
         }
 
-        public void SetState()
+        public void SetState(bool isValid)
         {
-            LblError.Hidden = _isFieldValid;
-            _viewLine.BackgroundColor = _isFieldValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
-            TextField.TextColor = _isFieldValid ? TextColor : MyTNBColor.Tomato;
+            LblError.Hidden = isValid;
+            _viewLine.BackgroundColor = isValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
+            TextField.TextColor = isValid ? TextColor : MyTNBColor.Tomato;
         }
 
         public void ValidateField()
