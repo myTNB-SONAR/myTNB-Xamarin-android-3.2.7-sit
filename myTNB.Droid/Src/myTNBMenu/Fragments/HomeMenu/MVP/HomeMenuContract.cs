@@ -36,6 +36,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void OnSavedSSMRMeterReadingThreePhaseTimeStamp(string mSavedTimeStamp);
 
             void CheckSSMRMeterReadingThreePhaseTimeStamp();
+
+            void SetNewPromotionRecycleView();
+
+            void SetNewPromotionResult(List<NewPromotion> list);
         }
 
         public interface IHomeMenuPresenter
@@ -67,6 +71,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Task OnGetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
 
             Task OnGetSSMRMeterReadingThreePhaseScreens();
+
+            List<NewPromotion> LoadShimmerPromotionList(int count);
+
+            Task InitiateNewPromotion();
         }
 
         public interface IHomeMenuService

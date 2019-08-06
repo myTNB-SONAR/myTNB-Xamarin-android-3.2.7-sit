@@ -103,6 +103,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         ImageView addActionImage;
 
 
+        [BindView(Resource.Id.newPromotionTitle)]
+        TextView newPromotionTitle;
+
+        [BindView(Resource.Id.newPromotionShimmerView)]
+        LinearLayout newPromotionShimmerView;
+
+        [BindView(Resource.Id.newPromotionShimmerList)]
+        RecyclerView newPromotionShimmerList;
+
+        [BindView(Resource.Id.newPromotionView)]
+        LinearLayout newPromotionView;
+
+        [BindView(Resource.Id.newPromotionList)]
+        RecyclerView newPromotionList;
+
+
         AccountsRecyclerViewAdapter accountsAdapter;
 
         private string mSavedTimeStamp = "0000000";
@@ -125,6 +141,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         NewFAQShimmerAdapter newFAQShimmerAdapter;
 
         NewFAQAdapter newFAQAdapter;
+
+        NewPromotionShimmerAdapter newPromotionShimmerAdapter;
+
+        NewPromotionAdapter newPromotionAdapter;
 
         private LoadingOverlay loadingOverlay;
 
@@ -189,7 +209,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetAccountActionHeader();
                 SetupMyServiceView();
                 SetupNewFAQView();
-                TextViewUtils.SetMuseoSans500Typeface(myServiceTitle, newFAQTitle);
+                SetupNewPromotionView();
+                TextViewUtils.SetMuseoSans500Typeface(myServiceTitle, newFAQTitle, newPromotionTitle);
                 List<CustomerBillingAccount> customerBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
                 List<CustomerBillingAccount> list = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
                 List<SMRAccount> smrAccountList = new List<SMRAccount>();
@@ -266,6 +287,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             LinearLayoutManager linearShimmerLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
             newFAQShimmerList.SetLayoutManager(linearShimmerLayoutManager);
 
+        }
+
+        private void SetupNewPromotionView()
+        {
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
+            newPromotionShimmerList.SetLayoutManager(linearLayoutManager);
+
+            LinearLayoutManager linearShimmerLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
+            newPromotionList.SetLayoutManager(linearShimmerLayoutManager);
         }
 
         public void SetMyServiceRecycleView()
@@ -368,6 +398,51 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     currentNewFAQList.Clear();
                     currentNewFAQList.AddRange(list);
                     newFAQAdapter.ClickChanged += OnFAQClickChanged;
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void SetNewPromotionRecycleView()
+        {
+            SetupNewPromotionShimmerEffect();
+            this.presenter.InitiateNewPromotion();
+        }
+
+        public void SetNewPromotionResult(List<NewPromotion> list)
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    newPromotionShimmerAdapter = new NewPromotionShimmerAdapter(null, this.Activity);
+                    newPromotionShimmerList.SetAdapter(newPromotionShimmerAdapter);
+                    newPromotionShimmerView.Visibility = ViewStates.Gone;
+                    newPromotionView.Visibility = ViewStates.Visible;
+                    newPromotionAdapter = new NewPromotionAdapter(list, this.Activity);
+                    newPromotionList.SetAdapter(newPromotionAdapter);
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void SetupNewPromotionShimmerEffect()
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    newPromotionShimmerAdapter = new NewPromotionShimmerAdapter(this.presenter.LoadShimmerPromotionList(2), this.Activity);
+                    newPromotionShimmerList.SetAdapter(newPromotionShimmerAdapter);
+
+                    newPromotionShimmerView.Visibility = ViewStates.Visible;
+                    newPromotionView.Visibility = ViewStates.Gone;
                 });
             }
             catch (System.Exception e)
