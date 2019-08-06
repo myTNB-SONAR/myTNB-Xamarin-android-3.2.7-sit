@@ -82,21 +82,21 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             sMRMROValidateRegisterDetails.PrevMeterReading = "1234567";
             sMRMROValidateRegisterDetailsList.Add(sMRMROValidateRegisterDetails);
 
-            //sMRMROValidateRegisterDetails = new SMRMROValidateRegisterDetails();
-            //sMRMROValidateRegisterDetails.RegisterNumber = "002";
-            //sMRMROValidateRegisterDetails.MroID = "0000002432432";
-            //sMRMROValidateRegisterDetails.PrevMrDate = "2-8-2019";
-            //sMRMROValidateRegisterDetails.SchMrDate = "2-8-2019";
-            //sMRMROValidateRegisterDetails.PrevMeterReading = "1234567";
-            //sMRMROValidateRegisterDetailsList.Add(sMRMROValidateRegisterDetails);
+            sMRMROValidateRegisterDetails = new SMRMROValidateRegisterDetails();
+            sMRMROValidateRegisterDetails.RegisterNumber = "002";
+            sMRMROValidateRegisterDetails.MroID = "0000002432432";
+            sMRMROValidateRegisterDetails.PrevMrDate = "2-8-2019";
+            sMRMROValidateRegisterDetails.SchMrDate = "2-8-2019";
+            sMRMROValidateRegisterDetails.PrevMeterReading = "1234567";
+            sMRMROValidateRegisterDetailsList.Add(sMRMROValidateRegisterDetails);
 
-            //sMRMROValidateRegisterDetails = new SMRMROValidateRegisterDetails();
-            //sMRMROValidateRegisterDetails.RegisterNumber = "003";
-            //sMRMROValidateRegisterDetails.MroID = "0000002432432";
-            //sMRMROValidateRegisterDetails.PrevMrDate = "2-8-2019";
-            //sMRMROValidateRegisterDetails.SchMrDate = "2-8-2019";
-            //sMRMROValidateRegisterDetails.PrevMeterReading = "1234567";
-            //sMRMROValidateRegisterDetailsList.Add(sMRMROValidateRegisterDetails);
+            sMRMROValidateRegisterDetails = new SMRMROValidateRegisterDetails();
+            sMRMROValidateRegisterDetails.RegisterNumber = "003";
+            sMRMROValidateRegisterDetails.MroID = "0000002432432";
+            sMRMROValidateRegisterDetails.PrevMrDate = "2-8-2019";
+            sMRMROValidateRegisterDetails.SchMrDate = "2-8-2019";
+            sMRMROValidateRegisterDetails.PrevMeterReading = "1234567";
+            sMRMROValidateRegisterDetailsList.Add(sMRMROValidateRegisterDetails);
 
             return sMRMROValidateRegisterDetailsList;
         }
@@ -110,7 +110,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             btnTakePhoto.Click += delegate
             {
                 Intent photoIntent = new Intent(this, typeof(SubmitMeterTakePhotoActivity));
-                StartActivity(photoIntent);
+                photoIntent.PutExtra("REQUEST_PHOTOS",JsonConvert.SerializeObject(validationStateList));
+                StartActivityForResult(photoIntent, SSMR_SUBMIT_METER_ACTIVITY_CODE);
             };
 
             btnSubmitReading.Click += delegate
@@ -227,37 +228,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             if (Intent != null)
             {
-                List<SMRMROValidateRegisterDetails> sMRMROValidateRegisterDetailsList = DummyData(); //This is coming from session
-                SMRValidateRegisterDetailList = DummyData(); //Mock
-                validationStateList = new List<MeterValidation>();
-
-                MeterValidation meterValidation;
-                foreach (SMRMROValidateRegisterDetails validateRegisterDetails in sMRMROValidateRegisterDetailsList)
-                {
-                    if (validateRegisterDetails.RegisterNumber == "001")
-                    {
-                        meterValidation = new MeterValidation();
-                        meterValidation.meterId = validateRegisterDetails.RegisterNumber;
-                        meterValidation.mroID = validateRegisterDetails.MroID;
-                        validationStateList.Add(meterValidation);
-                        PopulateMeterReadingCard(METER_READING_TYPE.KWH, validateRegisterDetails);
-                    }
-                    else if (validateRegisterDetails.RegisterNumber == "002")
-                    {
-                        meterValidation = new MeterValidation();
-                        meterValidation.meterId = "002";
-                        validationStateList.Add(meterValidation);
-                        PopulateMeterReadingCard(METER_READING_TYPE.KVARH, validateRegisterDetails);
-                    }
-                    else if (validateRegisterDetails.RegisterNumber == "003")
-                    {
-                        meterValidation = new MeterValidation();
-                        meterValidation.meterId = "003";
-                        validationStateList.Add(meterValidation);
-                        PopulateMeterReadingCard(METER_READING_TYPE.KW, validateRegisterDetails);
-                    }
-                }
-
+                
                 string ocrResultList = Intent.GetStringExtra("OCR_RESULTS");
                 if (ocrResultList != null)
                 {
@@ -267,7 +238,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             else
             {
                 List<SMRMROValidateRegisterDetails> sMRMROValidateRegisterDetailsList = DummyData(); //This is coming from session
-
+                SMRValidateRegisterDetailList = DummyData(); //Mock
                 foreach (SMRMROValidateRegisterDetails validateRegisterDetails in sMRMROValidateRegisterDetailsList)
                 {
                     if (validateRegisterDetails.RegisterNumber == "001")
@@ -298,6 +269,37 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             mPresenter = new SubmitMeterReadingPresenter(this);
             InitializePage();
             isFirstLaunch = true;
+
+            List<SMRMROValidateRegisterDetails> sMRMROValidateRegisterDetailsList = DummyData(); //This is coming from session
+            SMRValidateRegisterDetailList = DummyData(); //Mock
+            validationStateList = new List<MeterValidation>();
+
+            MeterValidation meterValidation;
+            foreach (SMRMROValidateRegisterDetails validateRegisterDetails in sMRMROValidateRegisterDetailsList)
+            {
+                if (validateRegisterDetails.RegisterNumber == "001")
+                {
+                    meterValidation = new MeterValidation();
+                    meterValidation.meterId = validateRegisterDetails.RegisterNumber;
+                    meterValidation.mroID = validateRegisterDetails.MroID;
+                    validationStateList.Add(meterValidation);
+                    PopulateMeterReadingCard(METER_READING_TYPE.KWH, validateRegisterDetails);
+                }
+                else if (validateRegisterDetails.RegisterNumber == "002")
+                {
+                    meterValidation = new MeterValidation();
+                    meterValidation.meterId = "002";
+                    validationStateList.Add(meterValidation);
+                    PopulateMeterReadingCard(METER_READING_TYPE.KVARH, validateRegisterDetails);
+                }
+                else if (validateRegisterDetails.RegisterNumber == "003")
+                {
+                    meterValidation = new MeterValidation();
+                    meterValidation.meterId = "003";
+                    validationStateList.Add(meterValidation);
+                    PopulateMeterReadingCard(METER_READING_TYPE.KW, validateRegisterDetails);
+                }
+            }
         }
 
         private string GetType(string registerNumber)

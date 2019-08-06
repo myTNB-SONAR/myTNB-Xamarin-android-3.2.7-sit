@@ -1734,7 +1734,6 @@
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\ReadingMeterFailedActivity.cs" />
     <AndroidResource Include="Resources\layout\ReadingMeterFailedLayout.axml" />
     <Compile Include="Src\SSMR\SSMRBase\MVP\ResponseSuccessActivity.cs" />
-    <Compile Include="Src\SSMR\SSMRBase\MVP\ResponseSuccessData.cs" />
     <AndroidResource Include="Resources\layout\SSMRResponseSuccessLayout.axml" />
     <Compile Include="Src\SSMR\SSMRBase\MVP\ResponseFailedActivity.cs" />
     <AndroidResource Include="Resources\layout\ResponseFailedLayout.axml" />
@@ -1822,6 +1821,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\MeterCapturedData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
