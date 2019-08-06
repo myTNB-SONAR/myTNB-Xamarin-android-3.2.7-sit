@@ -56,10 +56,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             switch (currentCount)
             {
                 case 0:
-                    vh.PromoImage.SetBackgroundResource(Resource.Drawable.image_1);
+                    vh.PromoImage.SetImageResource(Resource.Drawable.image_1);
                     break;
                 case 1:
-                    vh.PromoImage.SetBackgroundResource(Resource.Drawable.image_2);
+                    vh.PromoImage.SetImageResource(Resource.Drawable.image_2);
                     break;
 
             }

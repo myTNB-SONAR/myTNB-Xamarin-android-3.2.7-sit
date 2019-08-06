@@ -19,9 +19,16 @@ namespace myTNB_Android.Src.Database.Model
 
         public void CreateTable()
         {
-            var db = DBHelper.GetSQLiteConnection();
-            List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("SSMRMeterReadingThreePhaseScreensParentEntity");
-            db.CreateTable<SSMRMeterReadingThreePhaseScreensParentEntity>();
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("SSMRMeterReadingThreePhaseScreensParentEntity");
+                db.CreateTable<SSMRMeterReadingThreePhaseScreensParentEntity>();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void InsertItem(SSMRMeterReadingThreePhaseScreensParentEntity item)
@@ -70,10 +77,8 @@ namespace myTNB_Android.Src.Database.Model
         {
             try
             {
-                using (var db = new SQLiteConnection(Constants.DB_PATH))
-                {
-                    db.DeleteAll<SSMRMeterReadingThreePhaseScreensParentEntity>();
-                }
+                var db = DBHelper.GetSQLiteConnection();
+                db.DeleteAll<SSMRMeterReadingThreePhaseScreensParentEntity>();
             }
             catch (Exception e)
             {
@@ -86,11 +91,10 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                int newRecord = db.Update(item);
+                db.Update(item);
             }
             catch (Exception e)
             {
-                Utility.LoggingNonFatalError(e);
                 Utility.LoggingNonFatalError(e);
             }
         }

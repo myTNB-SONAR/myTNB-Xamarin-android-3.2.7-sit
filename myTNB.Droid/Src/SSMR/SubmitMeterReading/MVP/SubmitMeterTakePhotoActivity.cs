@@ -38,6 +38,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         private static bool isGalleryFirstPress = true;
 
+        private static bool isTakePhotFirstEnter = true;
+
         private bool isSinglePhase = false;
 
         SubmitMeterAdjustPhotoFragment adjustPhotoFragment;
@@ -77,6 +79,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             // TODO: Logic to reflect the flag
             isSinglePhase = false;
+            isTakePhotFirstEnter = true;
+            if (isTakePhotFirstEnter)
+            {
+                ShowTakePhotoTooltip();
+            }
         }
 
         public override void OnBackPressed()
@@ -273,6 +280,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             btnFirst.Click += delegate
             {
+                isTakePhotFirstEnter = false;
                 myDiaLog.Dismiss();
             };
 

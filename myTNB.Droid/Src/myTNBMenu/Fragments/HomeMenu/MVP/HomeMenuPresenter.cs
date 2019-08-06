@@ -37,6 +37,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private static bool FirstTimeMyServiceInitiate = true;
         private static bool FirstTimeNewFAQInitiate = true;
         private static List<MyService> currentMyServiceList = new List<MyService>();
+        private static List<NewFAQ> currentNewFAQList = new List<NewFAQ>();
+        private static NewFAQParentEntity NewFAQParentManager;
+        private static NewFAQEntity NewFAQManager;
+        private static SSMRMeterReadingScreensParentEntity SSMRMeterReadingScreensParentManager;
+        private static SSMRMeterReadingScreensEntity SSMRMeterReadingScreensManager;
+        private static SSMRMeterReadingThreePhaseScreensParentEntity SSMRMeterReadingThreePhaseScreensParentManager;
+        private static SSMRMeterReadingThreePhaseScreensEntity SSMRMeterReadingThreePhaseScreensManager;
+
+
 
         public HomeMenuPresenter(HomeMenuContract.IHomeMenuView view)
         {
@@ -83,8 +92,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     if (response.Data != null && response.Data.Status.ToUpper() == Constants.REFRESH_MODE)
                     {
-                        //mView.ShowRefreshSummaryDashboard(true, response.Data.RefreshMessage, response.Data.RefreshBtnText);
-                        //LoadEmptySummaryDetails();
+                        this.mView.ShowRefreshScreen(response.Data.RefreshMessage, response.Data.RefreshBtnText);
                     }
                     else if (response.Data != null && !response.Data.isError && response.Data.data != null && response.Data.data.Count > 0)
                     {
@@ -175,28 +183,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         MyTNBAccountManagement.GetInstance().UpdateCustomerBillingDetails(billingDetails);
                         this.mView.UpdateAccountListCards(summaryDetails);
 
-
-                        //SummaryData(summaryDetails);
-                        //mView.ShowRefreshSummaryDashboard(false, null, null);
-
                     }
                     else
                     {
-                        //mView.ShowRefreshSummaryDashboard(true, null, null);
-                        //LoadEmptySummaryDetails();
+                        this.mView.ShowRefreshScreen(null, null);
                     }
+                }
+                else
+                {
+                    this.mView.ShowRefreshScreen(null, null);
                 }
             }
             catch (System.OperationCanceledException cancelledException)
             {
+                this.mView.ShowRefreshScreen(null, null);
                 Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
+                this.mView.ShowRefreshScreen(null, null);
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
+                this.mView.ShowRefreshScreen(null, null);
                 Utility.LoggingNonFatalError(unknownException);
             }
         }
@@ -210,8 +220,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                   if (response.Data != null && response.Data.Status.ToUpper() == Constants.REFRESH_MODE)
                     {
-                        //mView.ShowRefreshSummaryDashboard(true, response.Data.RefreshMessage, response.Data.RefreshBtnText);
-                        //LoadEmptySummaryDetails();
+                        this.mView.ShowRefreshScreen(response.Data.RefreshMessage, response.Data.RefreshBtnText);
                     }
                     else if (response.Data != null && !response.Data.isError && response.Data.data != null && response.Data.data.Count > 0)
                     {
@@ -307,21 +316,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     }
                     else
                     {
-                        //mView.ShowRefreshSummaryDashboard(true, null, null);
-                        //LoadEmptySummaryDetails();
+                        this.mView.ShowRefreshScreen(null, null);
                     }
+                }
+                else
+                {
+                    this.mView.ShowRefreshScreen(null, null);
                 }
             }
             catch (System.OperationCanceledException cancelledException)
             {
+                this.mView.ShowRefreshScreen(null, null);
                 Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
+                this.mView.ShowRefreshScreen(null, null);
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
+                this.mView.ShowRefreshScreen(null, null);
                 Utility.LoggingNonFatalError(unknownException);
             }
         }
@@ -465,29 +480,43 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void ReadNewFAQFromCache()
         {
-            List<NewFAQEntity> cachedDBList = new List<NewFAQEntity>();
-            List<NewFAQ> cachedList = new List<NewFAQ>();
-            NewFAQEntity wtManager = new NewFAQEntity();
-            cachedDBList = wtManager.GetAll();
-            for (int i = 0; i < cachedDBList.Count; i++)
+            try
             {
-                cachedList.Add(new NewFAQ()
+                if (NewFAQManager == null)
                 {
-                    ID = cachedDBList[i].ID,
-                    Image = cachedDBList[i].Image,
-                    BGStartColor = cachedDBList[i].BGStartColor,
-                    BGEndColor = cachedDBList[i].BGEndColor,
-                    BGDirection = cachedDBList[i].BGDirection,
-                    Title = cachedDBList[i].Title,
-                    Description = cachedDBList[i].Description,
-                    TopicBodyTitle = cachedDBList[i].TopicBodyTitle,
-                    TopicBodyContent = cachedDBList[i].TopicBodyContent,
-                    CTA = cachedDBList[i].CTA,
-                    Tags = cachedDBList[i].Tags,
-                    TargetItem = cachedDBList[i].TargetItem
-                });
+                    NewFAQManager = new NewFAQEntity();
+                }
+                currentNewFAQList.Clear();
+                List<NewFAQEntity> cachedDBList = new List<NewFAQEntity>();
+                cachedDBList = NewFAQManager.GetAll();
+                for (int i = 0; i < cachedDBList.Count; i++)
+                {
+                    currentNewFAQList.Add(new NewFAQ()
+                    {
+                        ID = cachedDBList[i].ID,
+                        Image = cachedDBList[i].Image,
+                        BGStartColor = cachedDBList[i].BGStartColor,
+                        BGEndColor = cachedDBList[i].BGEndColor,
+                        BGDirection = cachedDBList[i].BGDirection,
+                        Title = cachedDBList[i].Title,
+                        Description = cachedDBList[i].Description,
+                        TopicBodyTitle = cachedDBList[i].TopicBodyTitle,
+                        TopicBodyContent = cachedDBList[i].TopicBodyContent,
+                        CTA = cachedDBList[i].CTA,
+                        Tags = cachedDBList[i].Tags,
+                        TargetItem = cachedDBList[i].TargetItem
+                    });
+                }
+                this.mView.SetNewFAQResult(currentNewFAQList);
             }
-            this.mView.SetNewFAQResult(cachedList);
+            catch (Exception e)
+            {
+                if (currentMyServiceList.Count > 0)
+                {
+                    this.mView.SetNewFAQResult(currentNewFAQList);
+                }
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         private async Task GetMyServiceService()
@@ -614,9 +643,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
-                NewFAQParentEntity wtManager = new NewFAQParentEntity();
+                if (NewFAQParentManager == null)
+                {
+                    NewFAQParentManager = new NewFAQParentEntity();
+                }
                 List<NewFAQParentEntity> items = new List<NewFAQParentEntity>();
-                items = wtManager.GetAllItems();
+                items = NewFAQParentManager.GetAllItems();
                 if (items != null && items.Count() > 0)
                 {
                     NewFAQParentEntity entity = items[0];
@@ -632,7 +664,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             catch (Exception e)
             {
-                mView.OnSavedTimeStamp(null);
+                ReadNewFAQFromCache();
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -648,10 +680,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     HelpTimeStampResponseModel responseModel = getItemsService.GetHelpTimestampItem();
                     if (responseModel.Status.Equals("Success"))
                     {
-                        NewFAQParentEntity wtManager = new NewFAQParentEntity();
-                        wtManager.DeleteTable();
-                        wtManager.CreateTable();
-                        wtManager.InsertListOfItems(responseModel.Data);
+                        if (NewFAQParentManager == null)
+                        {
+                            NewFAQParentManager = new NewFAQParentEntity();
+                        }
+                        NewFAQParentManager.DeleteTable();
+                        NewFAQParentManager.CreateTable();
+                        NewFAQParentManager.InsertListOfItems(responseModel.Data);
                         mView.ShowFAQTimestamp(true);
                     }
                     else
@@ -661,7 +696,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
                 catch (Exception e)
                 {
-                    mView.ShowFAQTimestamp(false);
+                    ReadNewFAQFromCache();
                     Utility.LoggingNonFatalError(e);
                 }
             }).ContinueWith((Task previous) =>
@@ -680,10 +715,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     HelpResponseModel responseModel = getItemsService.GetHelpItems();
                     if (responseModel.Status.Equals("Success"))
                     {
-                        NewFAQEntity wtManager = new NewFAQEntity();
-                        wtManager.DeleteTable();
-                        wtManager.CreateTable();
-                        wtManager.InsertListOfItems(responseModel.Data);
+                        if (NewFAQManager == null)
+                        {
+                            NewFAQManager = new NewFAQEntity();
+                        }
+                        NewFAQManager.DeleteTable();
+                        NewFAQManager.CreateTable();
+                        NewFAQManager.InsertListOfItems(responseModel.Data);
                         ReadNewFAQFromCache();
                     }
                     else
@@ -710,9 +748,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
-                SSMRMeterReadingScreensParentEntity wtManager = new SSMRMeterReadingScreensParentEntity();
+                if (SSMRMeterReadingScreensParentManager == null)
+                {
+                    SSMRMeterReadingScreensParentManager = new SSMRMeterReadingScreensParentEntity();
+                }
                 List<SSMRMeterReadingScreensParentEntity> items = new List<SSMRMeterReadingScreensParentEntity>();
-                items = wtManager.GetAllItems();
+                items = SSMRMeterReadingScreensParentManager.GetAllItems();
                 if (items != null && items.Count > 0)
                 {
                     SSMRMeterReadingScreensParentEntity entity = items[0];
@@ -744,10 +785,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     SSMRMeterReadingTimeStampResponseModel responseModel = getItemsService.GetSSMRMeterReadingOnePhaseWalkthroughTimestampItem();
                     if (responseModel.Status.Equals("Success"))
                     {
-                        SSMRMeterReadingScreensParentEntity wtManager = new SSMRMeterReadingScreensParentEntity();
-                        wtManager.DeleteTable();
-                        wtManager.CreateTable();
-                        wtManager.InsertListOfItems(responseModel.Data);
+                        if (SSMRMeterReadingScreensParentManager == null)
+                        {
+                            SSMRMeterReadingScreensParentManager = new SSMRMeterReadingScreensParentEntity();
+                        }
+                        SSMRMeterReadingScreensParentManager.DeleteTable();
+                        SSMRMeterReadingScreensParentManager.CreateTable();
+                        SSMRMeterReadingScreensParentManager.InsertListOfItems(responseModel.Data);
                         this.mView.CheckSSMRMeterReadingTimeStamp();
                     }
                 }
@@ -771,24 +815,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     SSMRMeterReadingResponseModel responseModel = getItemsService.GetSSMRMeterReadingOnePhaseWalkthroughItems();
                     if (responseModel.Status.Equals("Success"))
                     {
-                        cts = new CancellationTokenSource();
-                        Task.Factory.StartNew(() =>
+                        if (SSMRMeterReadingScreensManager == null)
                         {
-                            try
-                            {
-                                SSMRMeterReadingScreensEntity wtManager = new SSMRMeterReadingScreensEntity();
-                                wtManager.DeleteTable();
-                                wtManager.CreateTable();
-
-                                wtManager.InsertListOfItems(responseModel.Data);
-                            }
-                            catch (Exception e)
-                            {
-                                Utility.LoggingNonFatalError(e);
-                            }
-                        }).ContinueWith((Task previous) =>
-                        {
-                        }, cts.Token);
+                            SSMRMeterReadingScreensManager = new SSMRMeterReadingScreensEntity();
+                        }
+                        SSMRMeterReadingScreensManager.DeleteTable();
+                        SSMRMeterReadingScreensManager.CreateTable();
+                        SSMRMeterReadingScreensManager.InsertListOfItems(responseModel.Data);
                     }
                 }
                 catch (Exception e)
@@ -804,9 +837,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
-                SSMRMeterReadingThreePhaseScreensParentEntity wtManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
+                if (SSMRMeterReadingThreePhaseScreensParentManager == null)
+                {
+                    SSMRMeterReadingThreePhaseScreensParentManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
+                }
                 List<SSMRMeterReadingThreePhaseScreensParentEntity> items = new List<SSMRMeterReadingThreePhaseScreensParentEntity>();
-                items = wtManager.GetAllItems();
+                items = SSMRMeterReadingThreePhaseScreensParentManager.GetAllItems();
                 if (items != null && items.Count > 0)
                 {
                     SSMRMeterReadingThreePhaseScreensParentEntity entity = items[0];
@@ -838,10 +874,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     SSMRMeterReadingTimeStampResponseModel responseModel = getItemsService.GetSSMRMeterReadingThreePhaseWalkthroughTimestampItem();
                     if (responseModel.Status.Equals("Success"))
                     {
-                        SSMRMeterReadingThreePhaseScreensParentEntity wtManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
-                        wtManager.DeleteTable();
-                        wtManager.CreateTable();
-                        wtManager.InsertListOfItems(responseModel.Data);
+                        if (SSMRMeterReadingThreePhaseScreensParentManager == null)
+                        {
+                            SSMRMeterReadingThreePhaseScreensParentManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
+                        }
+                        SSMRMeterReadingThreePhaseScreensParentManager.DeleteTable();
+                        SSMRMeterReadingThreePhaseScreensParentManager.CreateTable();
+                        SSMRMeterReadingThreePhaseScreensParentManager.InsertListOfItems(responseModel.Data);
                         this.mView.CheckSSMRMeterReadingThreePhaseTimeStamp();
                     }
                 }
@@ -865,24 +904,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     SSMRMeterReadingResponseModel responseModel = getItemsService.GetSSMRMeterReadingThreePhaseWalkthroughItems();
                     if (responseModel.Status.Equals("Success"))
                     {
-                        cts = new CancellationTokenSource();
-                        Task.Factory.StartNew(() =>
+                        if (SSMRMeterReadingThreePhaseScreensManager == null)
                         {
-                            try
-                            {
-                                SSMRMeterReadingThreePhaseScreensEntity wtManager = new SSMRMeterReadingThreePhaseScreensEntity();
-                                wtManager.DeleteTable();
-                                wtManager.CreateTable();
+                            SSMRMeterReadingThreePhaseScreensManager = new SSMRMeterReadingThreePhaseScreensEntity();
+                        }
+                        SSMRMeterReadingThreePhaseScreensManager.DeleteTable();
+                        SSMRMeterReadingThreePhaseScreensManager.CreateTable();
 
-                                wtManager.InsertListOfItems(responseModel.Data);
-                            }
-                            catch (Exception e)
-                            {
-                                Utility.LoggingNonFatalError(e);
-                            }
-                        }).ContinueWith((Task previous) =>
-                        {
-                        }, cts.Token);
+                        SSMRMeterReadingThreePhaseScreensManager.InsertListOfItems(responseModel.Data);
                     }
                 }
                 catch (Exception e)

@@ -19,22 +19,30 @@ namespace myTNB_Android.Src.Database.Model
 
 		public void CreateTable()
 		{
-			var db = DBHelper.GetSQLiteConnection();
-			List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("SSMRMeterReadingScreensOnePhaseParentEntity");
-			db.CreateTable<SSMRMeterReadingScreensParentEntity>();
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("SSMRMeterReadingScreensOnePhaseParentEntity");
+                db.CreateTable<SSMRMeterReadingScreensParentEntity>();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
 		}
 
 		public void InsertItem(SSMRMeterReadingScreensParentEntity item)
 		{
-			try
-			{
-				var db = DBHelper.GetSQLiteConnection();
-				int newRecord = db.InsertOrReplace(item);
-			}
-			catch (Exception e)
-			{
-				Utility.LoggingNonFatalError(e);
-			}
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.InsertOrReplace(item);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
 		}
 
 		public void InsertListOfItems(List<SSMRMeterReadingTimeStamp> itemList)
@@ -54,45 +62,42 @@ namespace myTNB_Android.Src.Database.Model
 		public List<SSMRMeterReadingScreensParentEntity> GetAllItems()
 		{
 			List<SSMRMeterReadingScreensParentEntity> itemList = new List<SSMRMeterReadingScreensParentEntity>();
-			try
-			{
-				var db = DBHelper.GetSQLiteConnection();
-				itemList = db.Query<SSMRMeterReadingScreensParentEntity>("select * from SSMRMeterReadingScreensOnePhaseParentEntity");
-			}
-			catch (Exception e)
-			{
-				Utility.LoggingNonFatalError(e);
-			}
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                itemList = db.Query<SSMRMeterReadingScreensParentEntity>("select * from SSMRMeterReadingScreensOnePhaseParentEntity");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
 			return itemList;
 		}
 
 		public void DeleteTable()
 		{
-			try
-			{
-				using (var db = new SQLiteConnection(Constants.DB_PATH))
-				{
-					db.DeleteAll<SSMRMeterReadingScreensParentEntity>();
-				}
-			}
-			catch (Exception e)
-			{
-				Utility.LoggingNonFatalError(e);
-			}
-		}
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.DeleteAll<SSMRMeterReadingScreensParentEntity>();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
 		public void UpdateItem(SSMRMeterReadingScreensParentEntity item)
 		{
-			try
-			{
-				var db = DBHelper.GetSQLiteConnection();
-				int newRecord = db.Update(item);
-			}
-			catch (Exception e)
-			{
-				Utility.LoggingNonFatalError(e);
-				Utility.LoggingNonFatalError(e);
-			}
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.Update(item);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
 		}
 	}
 }

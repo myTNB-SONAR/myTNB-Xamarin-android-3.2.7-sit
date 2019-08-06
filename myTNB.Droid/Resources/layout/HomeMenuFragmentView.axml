@@ -16,6 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@drawable/dashboard_home_bg"
+            android:id="@+id/topRootView"
             android:orientation="vertical">
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/accountContainer"
@@ -50,7 +51,7 @@
                     android:id="@+id/notificationHeaderIcon"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@@drawable/ic_header_notification_unread"
+                    android:src="@drawable/ic_header_notification_unread"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -59,60 +60,148 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:id="@+id/accountsActionsContainer">
+                android:orientation="vertical"
+                android:visibility="gone"
+                android:paddingBottom="10dp"
+                android:id="@+id/accountListRefreshContainer">
+                <ImageView
+                    android:layout_width="138dp"
+                    android:layout_height="138dp"
+                    android:layout_marginTop="64dp"
+                    android:src="@drawable/refresh_1"
+                    android:id="@+id/refreshImg"
+                    android:layout_gravity="center"/>
                 <TextView
-                    android:id="@+id/accountsHeaderTitle"
-                    android:layout_width="0dp"
+                    android:id="@+id/refreshMsg"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="14dp"
-                    android:layout_weight="1"
-                    android:text="My Accounts"
-                    android:textColor="@android:color/white"
-                    android:layout_gravity="left|center_vertical"
-                />
-                <ImageView
-                    android:layout_width="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:lineSpacingExtra="4dp"
+                    android:textSize="16dp"
+                    android:textColor="#8b8b8b"
+                    android:layout_gravity="center"/>
+                <Button
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/add_account_no_gradient"
-                    android:id="@+id/addAction"
-                    android:layout_gravity="right|center_vertical"/>
-                <SearchView
-                    android:id="@+id/searchEdit"
-                    android:layout_width="0dp"
-                    android:layout_height="24dp"
-                    android:visibility="gone"
-                    android:layout_weight="1"
-                    android:iconifiedByDefault="false"
-                    android:searchIcon="@null"
-                    android:layout_marginLeft="8dp"
-                    android:layout_gravity="right|center_vertical"
-                    android:queryHint="Search by account nickname or number"
-                    android:background="@drawable/search_edit_bg"
-                    android:theme="@style/AppSearchView"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/search_no_gradient"
-                    android:layout_gravity="right|center_vertical"
-                    android:layout_marginLeft="8dp"
-                    android:id="@+id/searchAction"/>
+                    android:layout_marginTop="18dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:id="@+id/btnRefresh"
+                    style="@style/Theme.RefreshButton" />
             </LinearLayout>
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/accountRecyclerViewContainer"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"/>
             <LinearLayout
-                android:id="@+id/indicatorContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:orientation="horizontal"
-                android:gravity="center">
+                android:orientation="vertical"
+                android:visibility="visible"
+                android:id="@+id/accountListViewContainer">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:id="@+id/accountsActionsContainer">
+                    <TextView
+                        android:id="@+id/accountsHeaderTitle"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:textSize="14dp"
+                        android:layout_weight="1"
+                        android:text="My Accounts"
+                        android:textColor="@android:color/white"
+                        android:layout_gravity="left|center_vertical"
+                    />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/add_account_no_gradient"
+                        android:id="@+id/addAction"
+                        android:layout_gravity="right|center_vertical"/>
+                    <SearchView
+                        android:id="@+id/searchEdit"
+                        android:layout_width="0dp"
+                        android:layout_height="24dp"
+                        android:visibility="gone"
+                        android:layout_weight="1"
+                        android:iconifiedByDefault="false"
+                        android:searchIcon="@null"
+                        android:layout_marginLeft="8dp"
+                        android:layout_gravity="right|center_vertical"
+                        android:queryHint="Search by account nickname or number"
+                        android:background="@drawable/search_edit_bg"
+                        android:theme="@style/AppSearchView"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/search_no_gradient"
+                        android:layout_gravity="right|center_vertical"
+                        android:layout_marginLeft="8dp"
+                        android:id="@+id/searchAction"/>
+                </LinearLayout>
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="18dp"
+                    app:cardElevation="5dp"
+                    app:cardCornerRadius="5dp"
+                    android:clickable="true"
+                    app:cardBackgroundColor="@color/white"
+                    android:id="@+id/accountCard">
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="16dp"
+                        android:paddingBottom="16dp"
+                        android:paddingLeft="12dp"
+                        android:paddingRight="12dp">
+                        <TextView
+                            android:id="@+id/txtAdd"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="40dp"
+                            android:layout_centerInParent="true"
+                            android:layout_alignParentEnd="true"
+                            android:text="Add an Electricity Account"
+                            android:textColor="@color/charcoalGrey"
+                            android:textSize="14dp"
+                            android:lineSpacingExtra="3dp"/>
+                        <ImageView
+                            android:id="@+id/imgAdd"
+                            android:layout_width="26dp"
+                            android:layout_height="26dp"
+                            android:src="@drawable/ic_display_add_account"
+                            android:layout_centerInParent="true"
+                            android:layout_alignParentStart="true" />
+                    </RelativeLayout>
+                </android.support.v7.widget.CardView>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="visible"
+                    android:id="@+id/accountListContainer">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/accountRecyclerViewContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"/>
+                    <LinearLayout
+                        android:id="@+id/indicatorContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:orientation="horizontal"
+                        android:gravity="center">
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -164,7 +253,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="6dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginBottom="10dp"
                 android:id="@+id/newPromotionContainer">
                 <TextView

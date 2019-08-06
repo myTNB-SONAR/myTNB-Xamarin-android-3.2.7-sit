@@ -32,6 +32,7 @@ using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Android.App;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.Base;
+using Android.Text;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -118,6 +119,32 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.newPromotionList)]
         RecyclerView newPromotionList;
 
+        [BindView(Resource.Id.accountListViewContainer)]
+        LinearLayout accountListViewContainer;
+
+        [BindView(Resource.Id.topRootView)]
+        LinearLayout topRootView;
+
+        [BindView(Resource.Id.accountListRefreshContainer)]
+        LinearLayout accountListRefreshContainer;
+
+        [BindView(Resource.Id.refreshMsg)]
+        TextView txtRefreshMsg;
+
+        [BindView(Resource.Id.btnRefresh)]
+        Button btnRefresh;
+
+        [BindView(Resource.Id.accountListContainer)]
+        LinearLayout accountListContainer;
+
+        [BindView(Resource.Id.txtAdd)]
+        TextView txtAdd;
+
+        [BindView(Resource.Id.accountCard)]
+        CardView accountCard;
+
+        
+
 
         AccountsRecyclerViewAdapter accountsAdapter;
 
@@ -130,6 +157,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private static List<MyService> currentMyServiceList = new List<MyService>();
 
         private static List<NewFAQ> currentNewFAQList = new List<NewFAQ>();
+
+        private static bool isBCRMDown = false;
 
         HomeMenuContract.IHomeMenuPresenter presenter;
         ISummaryFragmentToDashBoardActivtyListener mCallBack;
@@ -210,7 +239,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetupMyServiceView();
                 SetupNewFAQView();
                 SetupNewPromotionView();
-                TextViewUtils.SetMuseoSans500Typeface(myServiceTitle, newFAQTitle, newPromotionTitle);
+                TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg);
+                TextViewUtils.SetMuseoSans500Typeface(myServiceTitle, newFAQTitle, newPromotionTitle, btnRefresh, txtAdd);
                 List<CustomerBillingAccount> customerBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
                 List<CustomerBillingAccount> list = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
                 List<SMRAccount> smrAccountList = new List<SMRAccount>();
@@ -228,14 +258,38 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     smrAccountList[0].accountSelected = true; //Default Selection
                 }
 
-                UserSessions.SetSMRAccountList(smrAccountList);
-                if (MyTNBAccountManagement.GetInstance().IsNeedUpdatedBillingDetails())
+                if (list.Count > 0)
                 {
-                    this.presenter.LoadAccounts();
+                    accountListContainer.Visibility = ViewStates.Visible;
+                    accountCard.Visibility = ViewStates.Gone;
+                    addActionImage.Visibility = ViewStates.Visible;
                 }
                 else
                 {
-                    this.presenter.LoadLocalAccounts();
+                    myServiceTitle.SetTextColor(Color.White);
+                    addActionImage.Visibility = ViewStates.Gone;
+                    accountListContainer.Visibility = ViewStates.Gone;
+                    accountCard.Visibility = ViewStates.Visible;
+                }
+
+                UserSessions.SetSMRAccountList(smrAccountList);
+                DownTimeEntity bcrmDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                if (bcrmDownTime != null && bcrmDownTime.IsDown)
+                {
+                    isBCRMDown = true;
+                }
+                else
+                {
+                    isBCRMDown = false;
+                }
+
+                if (!isBCRMDown)
+                {
+                    OnStartLoadAccount();
+                }
+                else
+                {
+                    ShowRefreshScreen(bcrmDownTime.DowntimeMessage, null);
                 }
                 addActionImage.SetOnClickListener(null);
                 notificationHeaderIcon.SetOnClickListener(null);
@@ -264,6 +318,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public bool IsActive()
         {
             return IsAdded && IsVisible && !IsDetached && !IsRemoving;
+        }
+
+        private void OnLoadAccount()
+        {
+            this.presenter.LoadAccounts();
         }
 
         private void SetupMyServiceView()
@@ -942,6 +1001,106 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void ShowRefreshScreen(string contentMsg, string buttonMsg)
+        {
+            myServiceTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
+            topRootView.SetBackgroundResource(Resource.Drawable.dashboard_home_refresh_bg);
+            accountListRefreshContainer.Visibility = ViewStates.Visible;
+            accountListViewContainer.Visibility = ViewStates.Gone;
+            string refreshMsg = string.IsNullOrEmpty(contentMsg) ? "Uh oh, looks like this page is unplugged. Reload to stay plugged in!" : contentMsg;
+            string refreshBtnTxt = string.IsNullOrEmpty(buttonMsg) ? "Reload Now" : buttonMsg;
+            btnRefresh.Text = refreshBtnTxt;
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+            {
+                txtRefreshMsg.TextFormatted = Html.FromHtml(refreshMsg, FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                txtRefreshMsg.TextFormatted = Html.FromHtml(refreshMsg);
+            }
+            if (isBCRMDown)
+            {
+                btnRefresh.Visibility = ViewStates.Gone;
+            }
+            else
+            {
+                btnRefresh.Visibility = ViewStates.Visible;
+            }
+        }
+
+        private void OnStartLoadAccount()
+        {
+            topRootView.SetBackgroundResource(Resource.Drawable.dashboard_home_bg);
+            accountListRefreshContainer.Visibility = ViewStates.Gone;
+            accountListViewContainer.Visibility = ViewStates.Visible;
+            if (MyTNBAccountManagement.GetInstance().IsNeedUpdatedBillingDetails())
+            {
+                OnLoadAccount();
+            }
+            else
+            {
+                this.presenter.LoadLocalAccounts();
+            }
+        }
+
+        // On Press Refresh button action
+        [OnClick(Resource.Id.btnRefresh)]
+        internal void OnRefresh(object sender, EventArgs e)
+        {
+            OnStartLoadAccount();
+        }
+
+        [OnClick(Resource.Id.refreshMsg)]
+        internal void OnRefreshMsgClick(object sender, EventArgs e)
+        {
+            if (isBCRMDown)
+            {
+                string textMessage = txtRefreshMsg.Text;
+                if (textMessage != null && textMessage.Contains("http"))
+                {
+                    //Launch webview
+                    int startIndex = textMessage.LastIndexOf("=") + 2;
+                    int lastIndex = textMessage.LastIndexOf("\"");
+                    int lengthOfId = (lastIndex - startIndex);
+                    if (lengthOfId < textMessage.Length)
+                    {
+                        string url = textMessage.Substring(startIndex, lengthOfId);
+                        if (!string.IsNullOrEmpty(url))
+                        {
+                            Intent intent = new Intent(Intent.ActionView);
+                            intent.SetData(Android.Net.Uri.Parse(url));
+                            StartActivity(intent);
+                        }
+                    }
+                }
+                else if (textMessage != null && textMessage.Contains("faq"))
+                {
+                    //Lauch FAQ
+                    int startIndex = textMessage.LastIndexOf("=") + 1;
+                    int lastIndex = textMessage.LastIndexOf("}");
+                    int lengthOfId = (lastIndex - startIndex) + 1;
+                    if (lengthOfId < textMessage.Length)
+                    {
+                        string faqid = textMessage.Substring(startIndex, lengthOfId);
+                        if (!string.IsNullOrEmpty(faqid))
+                        {
+                            Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
+                            faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+                            Activity.StartActivity(faqIntent);
+                        }
+                    }
+                }
+            }
+        }
+
+        [OnClick(Resource.Id.accountCard)]
+        internal void OnAddAccountCardClick(object sender, EventArgs e)
+        {
+            Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
+            linkAccount.PutExtra("fromDashboard", true);
+            StartActivity(linkAccount);
         }
     }
 }

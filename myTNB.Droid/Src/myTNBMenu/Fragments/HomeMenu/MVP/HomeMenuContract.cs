@@ -40,6 +40,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void SetNewPromotionRecycleView();
 
             void SetNewPromotionResult(List<NewPromotion> list);
+
+            void ShowRefreshScreen(string contentMsg, string buttonMsg);
         }
 
         public interface IHomeMenuPresenter
