@@ -18,13 +18,12 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.Api
 
         public class MeterReading
         {
-            //private string MroID, RegisterNumber, MeterReadingResult;
             public string MroID { set; get; }
-
             public string RegisterNumber { set; get; }
-
             public string MeterReadingResult { set; get; }
+            public string Channel { set; get; }
+            public string MeterReadingDate { set; get; }
+            public string MeterReadingTime { set; get; }
         }
-
     }
 }
