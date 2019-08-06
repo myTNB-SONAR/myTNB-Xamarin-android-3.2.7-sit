@@ -273,24 +273,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
 
                 UserSessions.SetSMRAccountList(smrAccountList);
-                DownTimeEntity bcrmDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-                if (bcrmDownTime != null && bcrmDownTime.IsDown)
-                {
-                    isBCRMDown = true;
-                }
-                else
-                {
-                    isBCRMDown = false;
-                }
 
-                if (!isBCRMDown)
-                {
-                    OnStartLoadAccount();
-                }
-                else
-                {
-                    ShowRefreshScreen(bcrmDownTime.DowntimeMessage, null);
-                }
                 addActionImage.SetOnClickListener(null);
                 notificationHeaderIcon.SetOnClickListener(null);
                 addActionImage.Click += delegate
@@ -555,14 +538,40 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             base.OnResume();
 
-            var act = this.Activity as AppCompatActivity;
+            try
+            {
+                var act = this.Activity as AppCompatActivity;
 
-            var actionBar = act.SupportActionBar;
-            actionBar.Hide();
-            ShowBackButton(false);
+                var actionBar = act.SupportActionBar;
+                actionBar.Hide();
+                ShowBackButton(false);
 
-            this.presenter.InitiateService();
-            SetNotificationIndicator();
+                DownTimeEntity bcrmDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                if (bcrmDownTime != null && bcrmDownTime.IsDown)
+                {
+                    isBCRMDown = true;
+                }
+                else
+                {
+                    isBCRMDown = false;
+                }
+
+                if (!isBCRMDown)
+                {
+                    OnStartLoadAccount();
+                }
+                else
+                {
+                    ShowRefreshScreen(bcrmDownTime.DowntimeMessage, null);
+                }
+
+                this.presenter.InitiateService();
+                SetNotificationIndicator();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
