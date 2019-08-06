@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using myTNB.Model;
 using System.Linq;
+using ARKit;
+using CoreMedia;
 
 namespace myTNB
 {
@@ -700,10 +702,11 @@ namespace myTNB
 
                 AVCaptureVideoPreviewLayer videoPreviewLayer = new AVCaptureVideoPreviewLayer(_captureSession)
                 {
-                    Frame = new CGRect(0, 0, _viewCamera.Frame.Width, _viewCamera.Frame.Height),
+                    Frame = new CGRect(0, _viewCamera.Frame.Height - ViewHeight, _viewCamera.Frame.Width, ViewHeight),
                     VideoGravity = AVLayerVideoGravity.Resize,
                     ZPosition = -1
                 };
+
                 _viewCamera.Layer.AddSublayer(videoPreviewLayer);
                 _captureSession.StartRunning();
             }
@@ -764,7 +767,8 @@ namespace myTNB
                 };
             }
 
-            _imgViewMainPreview = new UIImageView(new CGRect(new CGPoint(0, 0), _viewMainPreviewParent.Frame.Size))
+            _imgViewMainPreview = new UIImageView(new CGRect(new CGPoint(0, _viewMainPreviewParent.Frame.Height - ViewHeight)
+                , new CGSize(_viewMainPreviewParent.Frame.Width, ViewHeight)))
             {
                 UserInteractionEnabled = true,
                 MultipleTouchEnabled = true,
@@ -832,10 +836,9 @@ namespace myTNB
                 CGPoint point = sender.TranslationInView(sender.View);
 
                 if (point.X + _imgViewMainPreview.Frame.X > 0 || Math.Abs(point.X + _imgViewMainPreview.Frame.X) > deltaX)
-                { return; }
+                { point.X = 0; }
                 if (point.Y + _imgViewMainPreview.Frame.Y > 0 || Math.Abs(point.Y + _imgViewMainPreview.Frame.Y) > deltaY)
-                { return; }
-
+                { point.Y = 0; }
                 sender.View.Transform = CGAffineTransform.Translate(sender.View.Transform, point.X, point.Y);
                 sender.SetTranslation(new CGPoint(0, 0), sender.View);
             }
