@@ -12,8 +12,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using myTNB.Model;
 using System.Linq;
-using ARKit;
-using CoreMedia;
 
 namespace myTNB
 {
@@ -67,7 +65,6 @@ namespace myTNB
             base.ViewDidLoad();
             _isMultiPhase = ReadingDictionary != null && ReadingDictionary.Count > 1;
             SetImageList();
-            ConfigureNavigationBar();
             SetDescription();
             SetPreview();
             SetCamera();
@@ -88,7 +85,10 @@ namespace myTNB
             base.ViewDidAppear(animated);
             if (PHPhotoLibrary.AuthorizationStatus != PHAuthorizationStatus.Authorized)
             {
-                PHPhotoLibrary.RequestAuthorization((status) => { });
+                PHPhotoLibrary.RequestAuthorization((status) =>
+                {
+                    if (status == PHAuthorizationStatus.Authorized) { UpdateViewGallery(); }
+                });
             }
             else
             {
@@ -96,7 +96,7 @@ namespace myTNB
             }
         }
 
-        private void ConfigureNavigationBar()
+        public override void ConfigureNavigationBar()
         {
             UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle(SSMRConstants.IMG_BackIcon)
                 , UIBarButtonItemStyle.Done, (sender, e) =>

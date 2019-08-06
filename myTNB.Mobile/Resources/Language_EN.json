@@ -26,7 +26,12 @@
         "submit": "Submit",
         "selectAccounts": "Select Accounts",
         "backToHome": "Back to Home",
-        "tryAgain": "Try Again"
+        "tryAgain": "Try Again",
+        "settings": "Settings",
+        "cancel": "Cancel",
+        "cameraPermissionTitle": "\"myTNB\" Would like to Access the Camera",
+        "galleryPermissionTitle": "\"myTNB\" Would like to Access Your Photos",
+        "photoPermissionDescription": "Enable myTNB to access your camera roll to upload photos and save ones you’ve taken with the app."
     },
     "Hint": {
         "mobileNumber": "Please include the country code of your phone number.",

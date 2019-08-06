@@ -1438,6 +1438,7 @@
     <Folder Include="Customs\Generic No Data Page\" />
     <Folder Include="Assets.xcassets\SSMR-NoData.imageset\" />
     <Folder Include="Model\GetAccountsSMREligibility\" />
+    <Folder Include="Customs\Custom View Controller\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2051,7 +2052,6 @@
     <Compile Include="Home\Feedback\Feedback Image\UIImageHelper.cs" />
     <Compile Include="Home\More\Language\LanguageSettings.cs" />
     <Compile Include="Model\UpdateNotification\UpdateNotificationModel.cs" />
-    <Compile Include="Customs\CustomUIViewController.cs" />
     <Compile Include="Model\Modify Notification\DeleteNotificationResponseModel.cs" />
     <Compile Include="Model\Modify Notification\ReadNotificationResponseModel.cs" />
     <Compile Include="Customs\Bill\CustomBillUIViewController.cs" />
@@ -2222,6 +2222,8 @@
       <DependentUpon>GenericNodataViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\GetAccountsSMREligibility\GetAccountsSMREligibilityResponseModel.cs" />
+    <Compile Include="Customs\Custom View Controller\CustomUIViewController.cs" />
+    <Compile Include="Customs\Custom View Controller\CustomViewControllerConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
