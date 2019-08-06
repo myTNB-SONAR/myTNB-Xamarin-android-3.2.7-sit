@@ -78,6 +78,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             return true;
         }
 
+        public override bool CameraPermissionRequired()
+        {
+            return true;
+        }
+
         public List<SMRMROValidateRegisterDetails> DummyData()
         {
             List<SMRMROValidateRegisterDetails> sMRMROValidateRegisterDetailsList = new List<SMRMROValidateRegisterDetails>();
