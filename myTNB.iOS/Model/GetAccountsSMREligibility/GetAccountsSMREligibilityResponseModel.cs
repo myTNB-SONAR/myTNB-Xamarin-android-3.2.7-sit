@@ -9,7 +9,12 @@ namespace myTNB.Model
 
     public class AccountsSMREligibilityDataModel : BaseModelV2
     {
-        public List<AccountsSMREligibilityModel> data { set; get; }
+        public AccountsSMREligibilitySerivceModel data { set; get; }
+    }
+
+    public class AccountsSMREligibilitySerivceModel
+    {
+        public List<AccountsSMREligibilityModel> accountEligibilities { set; get; }
     }
 
     public class AccountsSMREligibilityModel

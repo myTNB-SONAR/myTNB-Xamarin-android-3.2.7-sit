@@ -639,12 +639,13 @@ namespace myTNB
             {
                 _smrEligibleList = await GetAccountsSMREligibility();
                 if (_smrEligibleList != null && _smrEligibleList.d != null
-                    && _smrEligibleList.d.IsSuccess && _smrEligibleList.d.data != null)
+                    && _smrEligibleList.d.IsSuccess && _smrEligibleList.d.data != null
+                    && _smrEligibleList.d.data.accountEligibilities != null)
                 {
                     for (int i = _eligibleAccountList.Count - 1; i > -1; i--)
                     {
                         CustomerAccountRecordModel item = _eligibleAccountList[i];
-                        int index = _smrEligibleList.d.data.FindIndex(x => x.ContractAccount == item.accNum);
+                        int index = _smrEligibleList.d.data.accountEligibilities.FindIndex(x => x.ContractAccount == item.accNum);
                         if (index < 0)
                         {
                             _eligibleAccountList.RemoveAt(i);
