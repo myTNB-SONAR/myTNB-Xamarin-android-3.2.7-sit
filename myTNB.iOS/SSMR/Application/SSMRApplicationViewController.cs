@@ -620,6 +620,8 @@ namespace myTNB
                             _customEmailField.SetValue(_contactDetails.d.data.Email);
                             _customMobileField.SetValue(_contactDetails.d.data.Mobile);
                             ToggleCTA();
+                            _customEmailField.SetState();
+                            _customMobileField.SetState();
                         }
                         ActivityIndicator.Hide();
                     });
