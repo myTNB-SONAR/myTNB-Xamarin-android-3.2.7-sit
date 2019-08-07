@@ -16,6 +16,7 @@ using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.Adapter;
 using myTNB_Android.Src.SSMRTerminate.MVP;
 using myTNB_Android.Src.Utils;
@@ -65,6 +66,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         private List<SSMRMeterHistoryMenuModel> ssmrMeterHistoryMenuList = new List<SSMRMeterHistoryMenuModel>();
 
         public readonly static int SSMR_METER_HISTORY_ACTIVITY_CODE = 8796;
+        public readonly static int SSMR_SUBMIT_METER_ACTIVITY_CODE = 8797;
 
         public override int ResourceId()
 		{
@@ -303,6 +305,10 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         internal void OnSubmitMeter(object sender, EventArgs eventArgs)
         {
             // REMARK TODO for Chris from LinSiong: Submit Meter Goes Here;
+            Intent ssmr_submit_meter_activity = new Intent(this, typeof(SubmitMeterReadingActivity));
+            ssmr_submit_meter_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+            ssmr_submit_meter_activity.PutExtra(Constants.SMR_RESPONSE_KEY, JsonConvert.SerializeObject(smrResponse));
+            StartActivityForResult(ssmr_submit_meter_activity, SSMR_SUBMIT_METER_ACTIVITY_CODE);
         }
 
 

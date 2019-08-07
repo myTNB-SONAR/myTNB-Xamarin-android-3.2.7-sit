@@ -291,12 +291,20 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public void AddCapturedImage(Bitmap capturedImage)
         {
             int nextSelectedPosition = meteredCapturedDataList.FindIndex(meterCapturedData => { return !meterCapturedData.hasImage; });
-
             if (isSinglePhase)
             {
-                mPresenter.AddMeterImageAt(nextSelectedPosition, contractNumber, IMAGE_ID, capturedImage);
-                meteredCapturedDataList[nextSelectedPosition].hasImage = true;
-                ShowAdjustFragment(nextSelectedPosition, capturedImage);
+                if (nextSelectedPosition != -1)
+                {
+                    mPresenter.AddMeterImageAt(nextSelectedPosition, contractNumber, IMAGE_ID, capturedImage);
+                    meteredCapturedDataList[nextSelectedPosition].hasImage = true;
+                    ShowAdjustFragment(nextSelectedPosition, capturedImage);
+                }
+                else
+                {
+                    mPresenter.AddMeterImageAt(0, contractNumber, IMAGE_ID, capturedImage);
+                    meteredCapturedDataList[0].hasImage = true;
+                    ShowAdjustFragment(0, capturedImage);
+                }
             }
             else
             {
@@ -308,6 +316,15 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 UpdateCapturedBorder();
             }
             EnableSubmitButton();
+
+            if (nextSelectedPosition != -1)
+            {
+                
+            }
+            else
+            {
+                ShowAdjustFragment(meteredCapturedDataList.Count - 1, capturedImage);
+            }
         }
 
         public void DeleteCapturedImage()
