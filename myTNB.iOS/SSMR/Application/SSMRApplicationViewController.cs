@@ -159,7 +159,8 @@ namespace myTNB
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
             {
-                ForegroundColor = MyTNBColor.CharcoalGrey
+                ForegroundColor = MyTNBColor.CharcoalGrey,
+                Font = MyTNBFont.MuseoSans12_300
             }, new NSRange(0, htmlBody.Length));
             UITextView txtFieldInfo = new UITextView
             {
