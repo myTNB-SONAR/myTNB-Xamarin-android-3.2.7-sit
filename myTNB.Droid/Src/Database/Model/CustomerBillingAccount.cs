@@ -560,7 +560,7 @@ namespace myTNB_Android.Src.Database.Model
             var db = DBHelper.GetSQLiteConnection();
             //return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
             List<CustomerBillingAccount> eligibleSMRAccounts = new List<CustomerBillingAccount>();
-            eligibleSMRAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND isTaggedSMR = 0 AND isOwned = 1").ToList().OrderBy(x => x.AccDesc).ToList();
+            eligibleSMRAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND SmartMeterCode == '0' AND isTaggedSMR = 0 AND isOwned = 1").ToList().OrderBy(x => x.AccDesc).ToList();
             //db.Close();
             return eligibleSMRAccounts;
             //}
@@ -575,7 +575,7 @@ namespace myTNB_Android.Src.Database.Model
             var db = DBHelper.GetSQLiteConnection();
             //return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
             List<CustomerBillingAccount> eligibleSMRAccounts = new List<CustomerBillingAccount>();
-            eligibleSMRAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND isTaggedSMR = 1 AND isOwned = 1").ToList().OrderBy(x => x.AccDesc).ToList();
+            eligibleSMRAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 AND SmartMeterCode == '0' AND isTaggedSMR = 1 AND isOwned = 1").ToList().OrderBy(x => x.AccDesc).ToList();
             //db.Close();
             return eligibleSMRAccounts;
             //}
