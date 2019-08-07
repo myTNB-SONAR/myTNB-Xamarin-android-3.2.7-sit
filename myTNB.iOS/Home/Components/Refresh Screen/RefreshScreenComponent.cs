@@ -11,11 +11,12 @@ namespace myTNB.Home.Components
         private readonly UIView _parentView;
         UIView _viewContainer;
         UIImageView _iconView;
-        UILabel _lblDescription;
+        UITextView _txtDescription;
         public UIButton _btnRefresh;
         public Action OnButtonTap;
 
         string _descriptionMessage;
+        bool _isBCRMDown;
         string _buttonText;
         bool _isBtnHidden;
 
@@ -46,9 +47,7 @@ namespace myTNB.Home.Components
 
             NSMutableParagraphStyle msgParagraphStyle = new NSMutableParagraphStyle
             {
-                Alignment = UITextAlignment.Center,
-                MinimumLineHeight = lineTextHeight,
-                MaximumLineHeight = lineTextHeight
+                Alignment = UITextAlignment.Center
             };
 
             UIStringAttributes msgAttributes = new UIStringAttributes
@@ -59,13 +58,12 @@ namespace myTNB.Home.Components
                 ParagraphStyle = msgParagraphStyle
             };
 
-            var attributedText = new NSMutableAttributedString(descMsg);
-            attributedText.AddAttributes(msgAttributes, new NSRange(0, descMsg.Length));
-
-            _lblDescription = new UILabel()
+            UIStringAttributes linkAttributes = new UIStringAttributes
             {
-                AttributedText = attributedText,
-                Lines = 0
+                Font = MyTNBFont.MuseoSans16_300,
+                ForegroundColor = MyTNBColor.BrownGreyThree,
+                UnderlineStyle = NSUnderlineStyle.Single,
+                BackgroundColor = UIColor.Clear
             };
 
             nfloat descPadding = 32f;
@@ -73,12 +71,78 @@ namespace myTNB.Home.Components
             nfloat labelWidth = (float)(_viewContainer.Frame.Width - (descPadding * 2));
             nfloat buttonWidth = (float)(_viewContainer.Frame.Width - (buttonPadding * 2));
             nfloat buttonHeight = 48f;
-            CGSize cGSize = _lblDescription.SizeThatFits(new CGSize(labelWidth, 1000f));
-            _lblDescription.Frame = new CGRect(descPadding, _iconView.Frame.GetMaxY() + 16f, labelWidth, cGSize.Height);
+
+            _txtDescription = new UITextView(new CGRect(descPadding, _iconView.Frame.GetMaxY() + 16f, labelWidth, 90f))
+            {
+                BackgroundColor = UIColor.Clear,
+                Editable = false,
+                ScrollEnabled = false,
+                Selectable = false
+            };
+
+            NSError htmlError = null;
+            try
+            {
+                NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(descMsg, ref htmlError, MyTNBFont.FONTNAME_300, 12f);
+                if (htmlBody != null)
+                {
+                    NSMutableAttributedString mutableDowntime = new NSMutableAttributedString(htmlBody);
+                    if (mutableDowntime != null)
+                    {
+                        mutableDowntime.AddAttributes(msgAttributes, new NSRange(0, htmlBody.Length));
+                        _txtDescription.AttributedText = mutableDowntime;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error: " + e.Message);
+            }
+
+            _txtDescription.WeakLinkTextAttributes = linkAttributes.Dictionary;
+            if (_isBCRMDown)
+            {
+                _txtDescription.UserInteractionEnabled = true;
+                _txtDescription.AddGestureRecognizer(
+                    new UITapGestureRecognizer(() =>
+                    {
+                        string str = descMsg;
+                        if (!string.IsNullOrEmpty(str))
+                        {
+                            if (str.Contains("faqid"))
+                            {
+                                var startStr = str.Substring(str.IndexOf('{'));
+                                if (!string.IsNullOrEmpty(startStr))
+                                {
+                                    string faqId = startStr?.Split('"')[0];
+                                    if (!string.IsNullOrEmpty(faqId))
+                                    {
+                                        ViewHelper.GoToFAQScreenWithId(faqId);
+                                    }
+                                }
+                            }
+                            else if (str.Contains("http") || str.Contains("https"))
+                            {
+                                var startStr = str.Substring(str.IndexOf('"') + 1);
+                                if (!string.IsNullOrEmpty(startStr))
+                                {
+                                    string url = startStr?.Split('"')[0];
+                                    if (!string.IsNullOrEmpty(url))
+                                    {
+                                        ViewHelper.OpenBrowserWithUrl(url);
+                                    }
+                                }
+                            }
+                        }
+                    }));
+            }
+
+            CGSize cGSize = _txtDescription.SizeThatFits(new CGSize(labelWidth, 1000f));
+            _txtDescription.Frame = new CGRect(descPadding, _iconView.Frame.GetMaxY() + 16f, labelWidth, cGSize.Height);
 
             _btnRefresh = new UIButton(UIButtonType.Custom)
             {
-                Frame = new CGRect(buttonPadding, _lblDescription.Frame.GetMaxY() + buttonPadding, buttonWidth, buttonHeight),
+                Frame = new CGRect(buttonPadding, _txtDescription.Frame.GetMaxY() + buttonPadding, buttonWidth, buttonHeight),
                 Hidden = _isBtnHidden,
                 BackgroundColor = MyTNBColor.FreshGreen,
                 Font = MyTNBFont.MuseoSans16_500
@@ -95,7 +159,7 @@ namespace myTNB.Home.Components
             };
 
             _viewContainer.AddSubview(_iconView);
-            _viewContainer.AddSubview(_lblDescription);
+            _viewContainer.AddSubview(_txtDescription);
             _viewContainer.AddSubview(_btnRefresh);
             AdjustContainerHeight();
         }
@@ -108,6 +172,11 @@ namespace myTNB.Home.Components
         public void SetDescription(string desc)
         {
             _descriptionMessage = desc;
+        }
+
+        public void SetIsBCRMDown(bool flag)
+        {
+            _isBCRMDown = flag;
         }
 
         public void SetButtonText(string text)
@@ -123,7 +192,7 @@ namespace myTNB.Home.Components
         private void AdjustContainerHeight()
         {
             CGRect frame = _viewContainer.Frame;
-            frame.Height = _isBtnHidden ? _lblDescription.Frame.GetMaxY() + 16f : _btnRefresh.Frame.GetMaxY() + 16f;
+            frame.Height = _isBtnHidden ? _txtDescription.Frame.GetMaxY() + 16f : _btnRefresh.Frame.GetMaxY() + 16f;
             _viewContainer.Frame = frame;
         }
 

@@ -356,7 +356,8 @@ namespace myTNB
                         {
                             currentIndex = await GetAccountsSummary(accounts, currentIndex);
                         }
-                        if (currentIndex > -1 && currentIndex < _groupAccountList.Count)
+                        if (currentIndex > -1 &&
+                            currentIndex < _groupAccountList.Count)
                         {
                             var batchAccounts = GetAccountsForSMRStatusFlag(currentIndex);
                             var eligibleSSMRAccounts = _dashboardHomeHelper.FilterAccountNoForSSMR(batchAccounts, _groupAccountList[currentIndex]);
@@ -434,21 +435,19 @@ namespace myTNB
         /// <returns></returns>
         private async Task<int> GetAccountsSummary(List<string> accounts, int currentIndex)
         {
-            Debug.WriteLine("GetAccountsSummary API Call.....");
             var response = await ServiceCall.GetLinkedAccountsSummaryInfo(accounts);
 
-            if (response.didSucceed && response.AccountDues?.Count > 0)
+            if (response != null &&
+                response.didSucceed &&
+                response.AccountDues?.Count > 0)
             {
                 _homeViewController.ShowRefreshScreen(false, null);
                 UpdateDueForDisplayedAccounts(response.AccountDues, currentIndex);
             }
             else
             {
-
-                //FAIL scenarios here...
-                Debug.WriteLine("GetAccountsSummary FAIL.....");
-                _refreshScreenInfoModel.RefreshBtnText = response.RefreshBtnText;
-                _refreshScreenInfoModel.RefreshMessage = response.RefreshMessage;
+                _refreshScreenInfoModel.RefreshBtnText = response?.RefreshBtnText ?? string.Empty; //TO DO: fallback copy to be inserted here
+                _refreshScreenInfoModel.RefreshMessage = response?.RefreshMessage ?? string.Empty; //TO DO: fallback copy to be inserted here
                 _homeViewController.ShowRefreshScreen(true, _refreshScreenInfoModel);
             }
             return currentIndex;

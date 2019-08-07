@@ -14,7 +14,10 @@ namespace myTNB
 
         public void AddViewsToContainers(UIViewController accountsCardViewController)
         {
-            AddSubview(accountsCardViewController.View);
+            if (accountsCardViewController != null)
+            {
+                AddSubview(accountsCardViewController.View);
+            }
         }
 
         public void AddRefreshViewToContainer(RefreshScreenComponent refreshScreenComponent)
