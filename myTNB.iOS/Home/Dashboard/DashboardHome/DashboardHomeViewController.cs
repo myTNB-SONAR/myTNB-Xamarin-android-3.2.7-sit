@@ -445,6 +445,7 @@ namespace myTNB
                 _refreshScreenComponent.SetButtonText(model?.RefreshBtnText ?? string.Empty);
                 _refreshScreenComponent.SetDescription(model?.RefreshMessage ?? string.Empty);
                 _refreshScreenComponent.CreateComponent();
+                _refreshScreenComponent.OnButtonTap = RefreshViewForAccounts;
 
                 _homeTableView.BeginUpdates();
                 _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent);
@@ -452,6 +453,13 @@ namespace myTNB
                 _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
                 _homeTableView.EndUpdates();
             });
+        }
+
+        private void RefreshViewForAccounts()
+        {
+            _isRefreshScreenEnabled = false;
+            SetAccountsCardViewController();
+            ReloadAccountsTable();
         }
 
         public void DismissmissActiveKeyboard()
