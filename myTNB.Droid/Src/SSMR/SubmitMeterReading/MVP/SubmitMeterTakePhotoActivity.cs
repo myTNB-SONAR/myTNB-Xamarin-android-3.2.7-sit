@@ -89,6 +89,10 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 validatedMeterList = validationStateList.FindAll(validatedMeter => {return validatedMeter.validated == false;});
                 MeterCapturedData meteredCapturedData;
                 meteredCapturedDataList = new List<MeterCapturedData>();
+				if (validatedMeterList.Count == 0) //means all validated but should still able to take picture
+				{
+					validatedMeterList = validationStateList;
+				}
                 foreach (MeterValidation nonValidatedMeter in validatedMeterList)
                 {
                     meteredCapturedData = new MeterCapturedData();
