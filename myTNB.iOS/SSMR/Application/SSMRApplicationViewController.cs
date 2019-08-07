@@ -55,7 +55,11 @@ namespace myTNB
                 AddTerminateReason();
             }
             ToggleCTA();
-            if (!IsApplication) { OnGetTerminateReasons(); }
+            if (!IsApplication)
+            {
+                OnGetContactInfo();
+                OnGetTerminateReasons();
+            }
             if (IsApplication && _eligibleAccountList != null && _eligibleAccountList.Count > 0)
             {
                 OnGetAccountsSMREligibility();
