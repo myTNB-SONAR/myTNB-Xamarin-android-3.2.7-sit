@@ -56,7 +56,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                     accountList[i].accountSelected = false;
                 }
             }
-            UserSessions.SetSMRAccountList(accountList);
+            UserSessions.SetRealSMREligibilityAccountList(accountList);
             Intent returnIntent = new Intent();
             SetResult(Result.Canceled, returnIntent);
             Finish();
@@ -67,7 +67,12 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             base.OnCreate(savedInstanceState);
             // Create your application here
             accountList = new List<SMRAccount>();
-            foreach (SMRAccount currentSMRAccount in UserSessions.GetSMRAccountList())
+            List<SMRAccount> list = UserSessions.GetRealSMREligibilityAccountList();
+            if (list == null)
+            {
+                list = UserSessions.GetSMREligibilityAccountList();
+            }
+            foreach (SMRAccount currentSMRAccount in list)
             {
                 SMRAccount account = new SMRAccount();
                 account.accountName = currentSMRAccount.accountName;

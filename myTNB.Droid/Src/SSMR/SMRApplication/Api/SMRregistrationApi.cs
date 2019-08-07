@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Refit;
 
@@ -14,5 +15,9 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Api
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/SubmitSMRApplication")]
         Task<SMRregistrationSubmitResponse> SubmitSMRApplication([Body] BaseRequest request);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/GetAccountsSMREligibility")]
+        Task<GetAccountsSMREligibilityResponse> GetAccountsSMREligibility([Body] GetAccountSMREligibilityRequest request);
     }
 }

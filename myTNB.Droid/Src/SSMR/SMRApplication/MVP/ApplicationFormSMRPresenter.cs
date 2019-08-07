@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using Android.Text;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SSMR.SMRApplication.Api;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
+using Refit;
 using static myTNB_Android.Src.SSMR.SMRApplication.Api.CARegisteredContactInfoResponse;
 using static myTNB_Android.Src.SSMR.SMRApplication.Api.SMRregistrationSubmitResponse;
 
@@ -22,31 +26,175 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 
         public async void GetCARegisteredContactInfoAsync(SMRAccount smrAccount)
         {
-            SMRregistrationContactInfoRequest request = new SMRregistrationContactInfoRequest(smrAccount.accountNumber,true);
-            CARegisteredContactInfoResponse response = await api.GetRegisteredContactInfo(request);
-            if (response.Data.ErrorCode == "7200")
+            try
             {
-                smrAccount.email = response.Data.AccountDetailsData.Email;
-                smrAccount.mobileNumber = response.Data.AccountDetailsData.Mobile;
-            }
+                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+                SMRregistrationContactInfoRequest request = new SMRregistrationContactInfoRequest(smrAccount.accountNumber, true);
+                CARegisteredContactInfoResponse response = await api.GetRegisteredContactInfo(request);
+                if (response.Data.ErrorCode == "7200")
+                {
+                    smrAccount.email = response.Data.AccountDetailsData.Email;
+                    smrAccount.mobileNumber = response.Data.AccountDetailsData.Mobile;
+                }
 
-            mView.UpdateSMRInfo(smrAccount);
+                mView.UpdateSMRInfo(smrAccount);
+            }
+            catch (System.OperationCanceledException cancelledException)
+            {
+                mView.UpdateSMRInfo(smrAccount);
+                Utility.LoggingNonFatalError(cancelledException);
+            }
+            catch (ApiException apiException)
+            {
+                mView.UpdateSMRInfo(smrAccount);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception unknownException)
+            {
+                mView.UpdateSMRInfo(smrAccount);
+                Utility.LoggingNonFatalError(unknownException);
+            }
         }
 
         public async void SubmitSMRRegistration(SMRAccount smrAccount,string newPhone, string newEmail, string reason)
         {
-            SMRregistrationSubmitRequest request = new SMRregistrationSubmitRequest(smrAccount.accountNumber, smrAccount.mobileNumber, newPhone,
-                smrAccount.email, newEmail, SUBMIT_MODE.REGISTER, reason);
-            SMRregistrationSubmitResponse response = await api.SubmitSMRApplication(request);
-            string jsonResponseString = JsonConvert.SerializeObject(response);
-            if (response.Data.ErrorCode == "7200" && response.Data.AccountDetailsData != null)
+            try
             {
-                
-                mView.ShowSubmitSuccessResult(jsonResponseString);
+                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+                SMRregistrationSubmitRequest request = new SMRregistrationSubmitRequest(smrAccount.accountNumber, smrAccount.mobileNumber, newPhone,
+                    smrAccount.email, newEmail, SUBMIT_MODE.REGISTER, reason);
+                SMRregistrationSubmitResponse response = await api.SubmitSMRApplication(request);
+                string jsonResponseString = JsonConvert.SerializeObject(response);
+                if (response.Data.ErrorCode == "7200" && response.Data.AccountDetailsData != null)
+                {
+
+                    mView.ShowSubmitSuccessResult(jsonResponseString);
+                }
+                else
+                {
+                    mView.ShowSubmitFailedResult(jsonResponseString);
+                }
             }
-            else
+            catch (System.OperationCanceledException cancelledException)
             {
-                mView.ShowSubmitFailedResult(jsonResponseString);
+                this.mView.HideProgressDialog();
+                Utility.LoggingNonFatalError(cancelledException);
+            }
+            catch (ApiException apiException)
+            {
+                this.mView.HideProgressDialog();
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception unknownException)
+            {
+                this.mView.HideProgressDialog();
+                Utility.LoggingNonFatalError(unknownException);
+            }
+        }
+
+        public async void CheckSMRAccountEligibility()
+        {
+            this.mView.ShowProgressDialog();
+            List<SMRAccount> list = UserSessions.GetRealSMREligibilityAccountList();
+            if (list == null)
+            {
+                list = UserSessions.GetSMREligibilityAccountList();
+            }
+            if (list != null && list.Count > 0)
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    list[i].accountSelected = false;
+                }
+            }
+            try
+            {
+                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+                if (list != null && list.Count > 0)
+                {
+                    List<string> accountList = new List<string>();
+                    foreach(SMRAccount account in list)
+                    {
+                        accountList.Add(account.accountNumber);
+                    }
+
+                    List<SMRAccount> newList = new List<SMRAccount>();
+
+                    UserInterface currentUsrInf = new UserInterface()
+                    {
+                        eid = UserEntity.GetActive().Email,
+                        sspuid = UserEntity.GetActive().UserID,
+                        did = this.mView.GetDeviceId(),
+                        ft = FirebaseTokenEntity.GetLatest().FBToken,
+                        lang = Constants.DEFAULT_LANG.ToUpper(),
+                        sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                        sec_auth_k2 = "",
+                        ses_param1 = "",
+                        ses_param2 = ""
+                    };
+
+                    GetAccountsSMREligibilityResponse response = await this.api.GetAccountsSMREligibility(new GetAccountSMREligibilityRequest()
+                    {
+                        ContractAccounts = accountList,
+                        UserInterface = currentUsrInf
+                    });
+
+                    if (response != null && response.Response != null && response.Response.ErrorCode == "7200" && response.Response.SMREligibilityList.Count > 0)
+                    {
+                        foreach(var status in response.Response.SMREligibilityList)
+                        {
+                            if (status.SMREligibility == "true")
+                            {
+                                SMRAccount selectedAccount = list.Find(x => x.accountNumber == status.ContractAccount);
+                                selectedAccount.accountSelected = false;
+                                newList.Add(selectedAccount);
+                            }
+                        }
+                        if (newList.Count > 0)
+                        {
+                            this.mView.HideProgressDialog();
+                            UserSessions.SetRealSMREligibilityAccountList(newList);
+                        }
+                        else
+                        {
+                            this.mView.HideProgressDialog();
+                            UserSessions.SetRealSMREligibilityAccountList(new List<SMRAccount>());
+                        }
+                    }
+                    else if (response != null && response.Response != null && response.Response.ErrorCode == "7200" && response.Response.SMREligibilityList.Count == 0)
+                    {
+                        this.mView.HideProgressDialog();
+                        UserSessions.SetRealSMREligibilityAccountList(list);
+                    }
+                    else
+                    {
+                        this.mView.HideProgressDialog();
+                        UserSessions.SetRealSMREligibilityAccountList(list);
+                    }
+                }
+                else
+                {
+                    this.mView.HideProgressDialog();
+                    UserSessions.SetRealSMREligibilityAccountList(list);
+                }
+            }
+            catch (System.OperationCanceledException cancelledException)
+            {
+                this.mView.HideProgressDialog();
+                UserSessions.SetRealSMREligibilityAccountList(list);
+                Utility.LoggingNonFatalError(cancelledException);
+            }
+            catch (ApiException apiException)
+            {
+                this.mView.HideProgressDialog();
+                UserSessions.SetRealSMREligibilityAccountList(list);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception unknownException)
+            {
+                this.mView.HideProgressDialog();
+                UserSessions.SetRealSMREligibilityAccountList(list);
+                Utility.LoggingNonFatalError(unknownException);
             }
         }
 
@@ -55,7 +203,16 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 
             try
             {
-                if (!TextUtils.IsEmpty(mobile_no) && !TextUtils.IsEmpty(email))
+                List<SMRAccount> list = UserSessions.GetRealSMREligibilityAccountList();
+                if (list == null)
+                {
+                    list = UserSessions.GetSMREligibilityAccountList();
+                }
+                SMRAccount sMRAccount = list.Find(smrAccount =>
+                {
+                    return smrAccount.accountSelected;
+                });
+                if (!TextUtils.IsEmpty(mobile_no) && !TextUtils.IsEmpty(email) && sMRAccount != null)
                 {
                     if (!Utility.IsValidMobileNumber(mobile_no))
                     {

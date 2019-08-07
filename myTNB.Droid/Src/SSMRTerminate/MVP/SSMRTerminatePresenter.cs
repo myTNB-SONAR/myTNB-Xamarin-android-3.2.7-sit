@@ -9,6 +9,7 @@ using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SSMR.SMRApplication.Api;
+using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.SSMRTerminate.Api;
 using myTNB_Android.Src.Utils;
 
@@ -91,6 +92,13 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
         private async void GetCARegisteredContactInfoAsync(AccountData selectedAccount)
         {
+            SMRAccount selectedSMRAccount = new SMRAccount();
+            selectedSMRAccount.email = "";
+            selectedSMRAccount.mobileNumber = "";
+            if (UserSessions.GetSMRAccountList().Count > 0)
+            {
+                selectedSMRAccount = UserSessions.GetSMRAccountList().Find(x => x.accountNumber == selectedAccount.AccountNum);
+            }
             try
             {
                 ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
@@ -120,22 +128,22 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 }
                 else
                 {
-                    this.mView.UpdateSMRData("", "");
+                    this.mView.UpdateSMRData(selectedSMRAccount.email, selectedSMRAccount.mobileNumber);
                 }
             }
             catch (System.OperationCanceledException cancelledException)
             {
-                this.mView.UpdateSMRData("", "");
+                this.mView.UpdateSMRData(selectedSMRAccount.email, selectedSMRAccount.mobileNumber);
                 Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
-                this.mView.UpdateSMRData("", "");
+                this.mView.UpdateSMRData(selectedSMRAccount.email, selectedSMRAccount.mobileNumber);
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
-                this.mView.UpdateSMRData("", "");
+                this.mView.UpdateSMRData(selectedSMRAccount.email, selectedSMRAccount.mobileNumber);
                 Utility.LoggingNonFatalError(unknownException);
             }
 

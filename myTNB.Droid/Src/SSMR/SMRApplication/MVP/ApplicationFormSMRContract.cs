@@ -16,11 +16,15 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             void DisableRegisterButton();
             void ClearInvalidMobileError();
             void EnableRegisterButton();
+            void HideProgressDialog();
+            void ShowProgressDialog();
+            string GetDeviceId();
         }
 
         public interface IPresenter
         {
             void CheckRequiredFields(string mobile_no, string email);
+            void CheckSMRAccountEligibility();
         }
 
         public interface IApiNotification
