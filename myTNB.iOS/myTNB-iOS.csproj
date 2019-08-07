@@ -2227,6 +2227,8 @@
       <DependentUpon>DashboardV2ViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="DashboardV2\DashboardConstants.cs" />
+    <Compile Include="Constants.cs" />
+    <Compile Include="DashboardV2\DashboardV2BaseController.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
