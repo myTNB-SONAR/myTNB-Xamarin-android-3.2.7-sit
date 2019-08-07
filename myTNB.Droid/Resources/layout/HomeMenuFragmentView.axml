@@ -67,7 +67,7 @@
                 <ImageView
                     android:layout_width="138dp"
                     android:layout_height="138dp"
-                    android:layout_marginTop="64dp"
+                    android:layout_marginTop="70dp"
                     android:src="@drawable/refresh_1"
                     android:id="@+id/refreshImg"
                     android:layout_gravity="center"/>
