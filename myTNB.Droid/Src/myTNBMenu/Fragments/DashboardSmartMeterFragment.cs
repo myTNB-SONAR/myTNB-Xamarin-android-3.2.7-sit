@@ -2354,7 +2354,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             base.OnAttach(context);
             try
             {
-                activity = context as DashboardHomeActivity;
+                if (context is DashboardHomeActivity)
+                {
+                    activity = context as DashboardHomeActivity;
+                    // SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
+                    activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
+                }
             }
             catch (Java.Lang.ClassCastException e)
             {

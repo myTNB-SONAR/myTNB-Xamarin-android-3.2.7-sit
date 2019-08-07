@@ -32,6 +32,7 @@ using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Android.App;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.Base;
+using Android.Text;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -103,6 +104,48 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         ImageView addActionImage;
 
 
+        [BindView(Resource.Id.newPromotionTitle)]
+        TextView newPromotionTitle;
+
+        [BindView(Resource.Id.newPromotionShimmerView)]
+        LinearLayout newPromotionShimmerView;
+
+        [BindView(Resource.Id.newPromotionShimmerList)]
+        RecyclerView newPromotionShimmerList;
+
+        [BindView(Resource.Id.newPromotionView)]
+        LinearLayout newPromotionView;
+
+        [BindView(Resource.Id.newPromotionList)]
+        RecyclerView newPromotionList;
+
+        [BindView(Resource.Id.accountListViewContainer)]
+        LinearLayout accountListViewContainer;
+
+        [BindView(Resource.Id.topRootView)]
+        LinearLayout topRootView;
+
+        [BindView(Resource.Id.accountListRefreshContainer)]
+        LinearLayout accountListRefreshContainer;
+
+        [BindView(Resource.Id.refreshMsg)]
+        TextView txtRefreshMsg;
+
+        [BindView(Resource.Id.btnRefresh)]
+        Button btnRefresh;
+
+        [BindView(Resource.Id.accountListContainer)]
+        LinearLayout accountListContainer;
+
+        [BindView(Resource.Id.txtAdd)]
+        TextView txtAdd;
+
+        [BindView(Resource.Id.accountCard)]
+        CardView accountCard;
+
+        
+
+
         AccountsRecyclerViewAdapter accountsAdapter;
 
         private string mSavedTimeStamp = "0000000";
@@ -115,6 +158,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private static List<NewFAQ> currentNewFAQList = new List<NewFAQ>();
 
+        private static bool isBCRMDown = false;
+
         HomeMenuContract.IHomeMenuPresenter presenter;
         ISummaryFragmentToDashBoardActivtyListener mCallBack;
 
@@ -125,6 +170,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         NewFAQShimmerAdapter newFAQShimmerAdapter;
 
         NewFAQAdapter newFAQAdapter;
+
+        NewPromotionShimmerAdapter newPromotionShimmerAdapter;
+
+        NewPromotionAdapter newPromotionAdapter;
 
         private LoadingOverlay loadingOverlay;
 
@@ -189,7 +238,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetAccountActionHeader();
                 SetupMyServiceView();
                 SetupNewFAQView();
-                TextViewUtils.SetMuseoSans500Typeface(myServiceTitle, newFAQTitle);
+                SetupNewPromotionView();
+                TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg);
+                TextViewUtils.SetMuseoSans500Typeface(myServiceTitle, newFAQTitle, newPromotionTitle, btnRefresh, txtAdd);
                 List<CustomerBillingAccount> customerBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
                 List<CustomerBillingAccount> list = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
                 List<SMRAccount> smrAccountList = new List<SMRAccount>();
@@ -207,15 +258,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     smrAccountList[0].accountSelected = true; //Default Selection
                 }
 
-                UserSessions.SetSMRAccountList(smrAccountList);
-                if (MyTNBAccountManagement.GetInstance().IsNeedUpdatedBillingDetails())
+                if (list.Count > 0)
                 {
-                    this.presenter.LoadAccounts();
+                    accountListContainer.Visibility = ViewStates.Visible;
+                    accountCard.Visibility = ViewStates.Gone;
+                    addActionImage.Visibility = ViewStates.Visible;
                 }
                 else
                 {
-                    this.presenter.LoadLocalAccounts();
+                    myServiceTitle.SetTextColor(Color.White);
+                    addActionImage.Visibility = ViewStates.Gone;
+                    accountListContainer.Visibility = ViewStates.Gone;
+                    accountCard.Visibility = ViewStates.Visible;
                 }
+
+                UserSessions.SetSMRAccountList(smrAccountList);
+
                 addActionImage.SetOnClickListener(null);
                 notificationHeaderIcon.SetOnClickListener(null);
                 addActionImage.Click += delegate
@@ -245,17 +303,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             return IsAdded && IsVisible && !IsDetached && !IsRemoving;
         }
 
+        private void OnLoadAccount()
+        {
+            this.presenter.LoadAccounts();
+        }
+
         private void SetupMyServiceView()
         {
             GridLayoutManager layoutManager = new GridLayoutManager(this.Activity, 3);
             layoutManager.Orientation = RecyclerView.Vertical;
             myServiceListRecycleView.SetLayoutManager(layoutManager);
-            myServiceListRecycleView.AddItemDecoration(new MyServiceItemDecoration(3, 8, false, this.Activity));
+            myServiceListRecycleView.AddItemDecoration(new MyServiceItemDecoration(3, 3, false, this.Activity));
 
             GridLayoutManager layoutShimmerManager = new GridLayoutManager(this.Activity, 3);
             layoutShimmerManager.Orientation = RecyclerView.Vertical;
             myServiceShimmerList.SetLayoutManager(layoutShimmerManager);
-            myServiceShimmerList.AddItemDecoration(new MyServiceShimmerItemDecoration(3, 8, false, this.Activity));
+            myServiceShimmerList.AddItemDecoration(new MyServiceShimmerItemDecoration(3, 3, false, this.Activity));
         }
 
         private void SetupNewFAQView()
@@ -266,6 +329,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             LinearLayoutManager linearShimmerLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
             newFAQShimmerList.SetLayoutManager(linearShimmerLayoutManager);
 
+        }
+
+        private void SetupNewPromotionView()
+        {
+            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
+            newPromotionShimmerList.SetLayoutManager(linearLayoutManager);
+
+            LinearLayoutManager linearShimmerLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
+            newPromotionList.SetLayoutManager(linearShimmerLayoutManager);
         }
 
         public void SetMyServiceRecycleView()
@@ -376,6 +448,51 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
+        public void SetNewPromotionRecycleView()
+        {
+            SetupNewPromotionShimmerEffect();
+            this.presenter.InitiateNewPromotion();
+        }
+
+        public void SetNewPromotionResult(List<NewPromotion> list)
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    newPromotionShimmerAdapter = new NewPromotionShimmerAdapter(null, this.Activity);
+                    newPromotionShimmerList.SetAdapter(newPromotionShimmerAdapter);
+                    newPromotionShimmerView.Visibility = ViewStates.Gone;
+                    newPromotionView.Visibility = ViewStates.Visible;
+                    newPromotionAdapter = new NewPromotionAdapter(list, this.Activity);
+                    newPromotionList.SetAdapter(newPromotionAdapter);
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void SetupNewPromotionShimmerEffect()
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    newPromotionShimmerAdapter = new NewPromotionShimmerAdapter(this.presenter.LoadShimmerPromotionList(2), this.Activity);
+                    newPromotionShimmerList.SetAdapter(newPromotionShimmerAdapter);
+
+                    newPromotionShimmerView.Visibility = ViewStates.Visible;
+                    newPromotionView.Visibility = ViewStates.Gone;
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
 
         public void ShowSearchAction(bool isShow)
         {
@@ -421,14 +538,40 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             base.OnResume();
 
-            var act = this.Activity as AppCompatActivity;
+            try
+            {
+                var act = this.Activity as AppCompatActivity;
 
-            var actionBar = act.SupportActionBar;
-            actionBar.Hide();
-            ShowBackButton(false);
+                var actionBar = act.SupportActionBar;
+                actionBar.Hide();
+                ShowBackButton(false);
 
-            this.presenter.InitiateService();
-            SetNotificationIndicator();
+                DownTimeEntity bcrmDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                if (bcrmDownTime != null && bcrmDownTime.IsDown)
+                {
+                    isBCRMDown = true;
+                }
+                else
+                {
+                    isBCRMDown = false;
+                }
+
+                if (!isBCRMDown)
+                {
+                    OnStartLoadAccount();
+                }
+                else
+                {
+                    ShowRefreshScreen(bcrmDownTime.DowntimeMessage, null);
+                }
+
+                this.presenter.InitiateService();
+                SetNotificationIndicator();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -867,6 +1010,106 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void ShowRefreshScreen(string contentMsg, string buttonMsg)
+        {
+            myServiceTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
+            topRootView.SetBackgroundResource(Resource.Drawable.dashboard_home_refresh_bg);
+            accountListRefreshContainer.Visibility = ViewStates.Visible;
+            accountListViewContainer.Visibility = ViewStates.Gone;
+            string refreshMsg = string.IsNullOrEmpty(contentMsg) ? "Uh oh, looks like this page is unplugged. Reload to stay plugged in!" : contentMsg;
+            string refreshBtnTxt = string.IsNullOrEmpty(buttonMsg) ? "Reload Now" : buttonMsg;
+            btnRefresh.Text = refreshBtnTxt;
+            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+            {
+                txtRefreshMsg.TextFormatted = Html.FromHtml(refreshMsg, FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                txtRefreshMsg.TextFormatted = Html.FromHtml(refreshMsg);
+            }
+            if (isBCRMDown)
+            {
+                btnRefresh.Visibility = ViewStates.Gone;
+            }
+            else
+            {
+                btnRefresh.Visibility = ViewStates.Visible;
+            }
+        }
+
+        private void OnStartLoadAccount()
+        {
+            topRootView.SetBackgroundResource(Resource.Drawable.dashboard_home_bg);
+            accountListRefreshContainer.Visibility = ViewStates.Gone;
+            accountListViewContainer.Visibility = ViewStates.Visible;
+            if (MyTNBAccountManagement.GetInstance().IsNeedUpdatedBillingDetails())
+            {
+                OnLoadAccount();
+            }
+            else
+            {
+                this.presenter.LoadLocalAccounts();
+            }
+        }
+
+        // On Press Refresh button action
+        [OnClick(Resource.Id.btnRefresh)]
+        internal void OnRefresh(object sender, EventArgs e)
+        {
+            OnStartLoadAccount();
+        }
+
+        [OnClick(Resource.Id.refreshMsg)]
+        internal void OnRefreshMsgClick(object sender, EventArgs e)
+        {
+            if (isBCRMDown)
+            {
+                string textMessage = txtRefreshMsg.Text;
+                if (textMessage != null && textMessage.Contains("http"))
+                {
+                    //Launch webview
+                    int startIndex = textMessage.LastIndexOf("=") + 2;
+                    int lastIndex = textMessage.LastIndexOf("\"");
+                    int lengthOfId = (lastIndex - startIndex);
+                    if (lengthOfId < textMessage.Length)
+                    {
+                        string url = textMessage.Substring(startIndex, lengthOfId);
+                        if (!string.IsNullOrEmpty(url))
+                        {
+                            Intent intent = new Intent(Intent.ActionView);
+                            intent.SetData(Android.Net.Uri.Parse(url));
+                            StartActivity(intent);
+                        }
+                    }
+                }
+                else if (textMessage != null && textMessage.Contains("faq"))
+                {
+                    //Lauch FAQ
+                    int startIndex = textMessage.LastIndexOf("=") + 1;
+                    int lastIndex = textMessage.LastIndexOf("}");
+                    int lengthOfId = (lastIndex - startIndex) + 1;
+                    if (lengthOfId < textMessage.Length)
+                    {
+                        string faqid = textMessage.Substring(startIndex, lengthOfId);
+                        if (!string.IsNullOrEmpty(faqid))
+                        {
+                            Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
+                            faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+                            Activity.StartActivity(faqIntent);
+                        }
+                    }
+                }
+            }
+        }
+
+        [OnClick(Resource.Id.accountCard)]
+        internal void OnAddAccountCardClick(object sender, EventArgs e)
+        {
+            Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
+            linkAccount.PutExtra("fromDashboard", true);
+            StartActivity(linkAccount);
         }
     }
 }

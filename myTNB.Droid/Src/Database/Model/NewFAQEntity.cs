@@ -49,19 +49,24 @@ namespace myTNB_Android.Src.Database.Model
 
         public void CreateTable()
         {
-            var db = DBHelper.GetSQLiteConnection();
-            List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("NewFAQEntity");
-            db.CreateTable<NewFAQEntity>();
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("NewFAQEntity");
+                db.CreateTable<NewFAQEntity>();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void DeleteTable()
         {
             try
             {
-                using (var db = new SQLiteConnection(Constants.DB_PATH))
-                {
-                    db.DeleteAll<NewFAQEntity>();
-                }
+                var db = DBHelper.GetSQLiteConnection();
+                db.DeleteAll<NewFAQEntity>();
             }
             catch (Exception e)
             {
@@ -103,7 +108,7 @@ namespace myTNB_Android.Src.Database.Model
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                int newRecord = db.InsertOrReplace(item);
+                db.InsertOrReplace(item);
             }
             catch (Exception e)
             {

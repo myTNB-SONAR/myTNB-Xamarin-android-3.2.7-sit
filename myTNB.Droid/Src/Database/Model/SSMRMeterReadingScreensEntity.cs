@@ -25,20 +25,28 @@ namespace myTNB_Android.Src.Database.Model
 
         public void CreateTable()
 		{
-			var db = DBHelper.GetSQLiteConnection();
-			List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("SSMRMeterReadingScreensOnePhaseEntity");
-			db.CreateTable<SSMRMeterReadingScreensEntity>();
+            
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                List<SQLiteConnection.ColumnInfo> info = db.GetTableInfo("SSMRMeterReadingScreensOnePhaseEntity");
+                db.CreateTable<SSMRMeterReadingScreensEntity>();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
 		}
 
 		public void InsertItem(SSMRMeterReadingScreensEntity item)
 		{
-			try
-			{
-				var db = DBHelper.GetSQLiteConnection();
-				int newRecord = db.InsertOrReplace(item);
-			}
-			catch (Exception e)
-			{
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.InsertOrReplace(item);
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
 		}
@@ -62,13 +70,13 @@ namespace myTNB_Android.Src.Database.Model
 		public List<SSMRMeterReadingScreensEntity> GetAllItems()
 		{
 			List<SSMRMeterReadingScreensEntity> itemList = new List<SSMRMeterReadingScreensEntity>();
-			try
-			{
-				var db = DBHelper.GetSQLiteConnection();
-				itemList = db.Query<SSMRMeterReadingScreensEntity>("select * from SSMRMeterReadingScreensOnePhaseEntity");
-			}
-			catch (Exception e)
-			{
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                itemList = db.Query<SSMRMeterReadingScreensEntity>("select * from SSMRMeterReadingScreensOnePhaseEntity");
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
 			return itemList;
@@ -76,13 +84,13 @@ namespace myTNB_Android.Src.Database.Model
 
 		public void DeleteTable()
 		{
-			try
-			{
-				var db = DBHelper.GetSQLiteConnection();
-				db.DeleteAll<SSMRMeterReadingScreensEntity>();
-			}
-			catch (Exception e)
-			{
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                db.DeleteAll<SSMRMeterReadingScreensEntity>();
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
 		}

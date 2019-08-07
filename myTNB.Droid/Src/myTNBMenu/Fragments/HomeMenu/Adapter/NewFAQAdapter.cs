@@ -49,7 +49,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 				vh.faqTitle.TextFormatted = Html.FromHtml(model.Title);
 			}
 
-            int currentCount = position % 6;
+            int currentCount = position % 7;
 
 			switch (currentCount)
 			{
@@ -84,7 +84,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
             ViewGroup.LayoutParams currentCard = vh.faqCardView.LayoutParameters;
 
-            int cardWidth = (int)((this.mActivity.Resources.DisplayMetrics.WidthPixels / 2.85) - DPUtils.ConvertDPToPx(20f));
+            int cardWidth = (int)((this.mActivity.Resources.DisplayMetrics.WidthPixels / 2.85) - DPUtils.ConvertDPToPx(10f));
             if (DPUtils.ConvertPxToDP(cardWidth) < 96f)
             {
                 cardWidth = (int)DPUtils.ConvertDPToPx(96f);

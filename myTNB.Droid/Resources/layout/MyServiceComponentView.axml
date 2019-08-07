@@ -7,7 +7,7 @@
     app:cardCornerRadius="8dp"
     app:cardBackgroundColor="@color/white"
     app:cardUseCompatPadding="true"
-    app:cardElevation="4dp"
+    app:cardElevation="3dp"
     android:id="@+id/card_view_click">
   <LinearLayout 
       android:orientation="vertical"
