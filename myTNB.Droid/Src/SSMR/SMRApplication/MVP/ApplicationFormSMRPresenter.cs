@@ -139,9 +139,9 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                         UserInterface = currentUsrInf
                     });
 
-                    if (response != null && response.Response != null && response.Response.ErrorCode == "7200" && response.Response.SMREligibilityList.Count > 0)
+                    if (response != null && response.Response != null && response.Response.ErrorCode == "7200" && response.Response.Data.SMREligibilityList.Count > 0)
                     {
-                        foreach(var status in response.Response.SMREligibilityList)
+                        foreach(var status in response.Response.Data.SMREligibilityList)
                         {
                             if (status.SMREligibility == "true")
                             {

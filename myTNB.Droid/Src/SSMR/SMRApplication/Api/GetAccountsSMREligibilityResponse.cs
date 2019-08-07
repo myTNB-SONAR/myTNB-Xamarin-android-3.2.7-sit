@@ -15,7 +15,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Api
             public string Type { get; set; }
 
             [JsonProperty(PropertyName = "data")]
-            public List<SMREligibilityModel> SMREligibilityList { get; set; }
+            public SMREligibilityListModel Data { get; set; }
 
             [JsonProperty(PropertyName = "status")]
             public string Status { get; set; }
@@ -51,5 +51,14 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Api
             public string SMREligibility { get; set; }
 
         }
+
+        public class SMREligibilityListModel
+        {
+            [JsonProperty(PropertyName = "accountEligibilities")]
+            public List<SMREligibilityModel> SMREligibilityList { get; set; }
+
+        }
+
+        
     }
 }
