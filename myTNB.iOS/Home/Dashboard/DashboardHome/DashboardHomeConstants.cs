@@ -43,6 +43,7 @@ namespace myTNB
 
         //SiteCore
         public static string Sitecore_Timestamp = "SiteCorePromotionTimeStamp";
+        public static string Sitecore_Success = "SUCCESS";
 
         //Format
         public static string Format_Date = "yyyyMMdd";

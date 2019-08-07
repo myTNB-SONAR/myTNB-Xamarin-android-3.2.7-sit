@@ -260,7 +260,7 @@ namespace myTNB
         /// </summary>
         /// <returns>The value for null end date.</returns>
         /// <param name="promotions">Promotions.</param>
-        private List<PromotionsModelV2> SetValueForNullEndDate(List<PromotionsModelV2> promotions)
+        public static List<PromotionsModelV2> SetValueForNullEndDate(List<PromotionsModelV2> promotions)
         {
             List<PromotionsModelV2> promotionList = new List<PromotionsModelV2>();
             foreach (var promo in promotions)
