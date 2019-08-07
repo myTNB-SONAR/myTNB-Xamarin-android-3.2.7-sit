@@ -14,6 +14,7 @@ using myTNB.SQLite.SQLiteDataManager;
 using myTNB.Registration.CustomerAccounts;
 using UIKit;
 using myTNB.Home.Components;
+using Newtonsoft.Json;
 
 namespace myTNB
 {
@@ -29,6 +30,7 @@ namespace myTNB
         RefreshScreenComponent _refreshScreenComponent;
         public ServicesResponseModel _services;
         public List<HelpModel> _helpList;
+        private List<PromotionsModelV2> _promotions;
         private nfloat _previousScrollOffset;
         private nfloat _imageGradientHeight;
         internal Dictionary<string, Action> _servicesActionDictionary;
@@ -197,6 +199,7 @@ namespace myTNB
                     _services = new ServicesResponseModel();
                     _helpList = new List<HelpModel>();
                     OnGetServices();
+                    //UpdatePromotions();
                     OnUpdateNotification();
                     InvokeOnMainThread(() =>
                     {
@@ -215,7 +218,7 @@ namespace myTNB
                 }
                 else
                 {
-                    //Todo: handling?
+                    DisplayNoDataAlert();
                     Debug.WriteLine("No data connection");
                 }
             });
@@ -226,7 +229,7 @@ namespace myTNB
         // </summary>
         private void InitializeTableView()
         {
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent);
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent);
             _homeTableView.ReloadData();
         }
 
@@ -304,7 +307,7 @@ namespace myTNB
         public void UpdateAccountsTableViewCell()
         {
             _homeTableView.BeginUpdates();
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent);
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent);
             NSIndexPath indexPath = NSIndexPath.Create(0, 1);
             _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
             _homeTableView.EndUpdates();
@@ -312,7 +315,7 @@ namespace myTNB
 
         private void ReloadAccountsTable()
         {
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent);
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent);
             _homeTableView.ReloadData();
         }
 
@@ -373,16 +376,85 @@ namespace myTNB
                 {
                     //Todo: Handle fail scenario
                 }
-
                 if (needsUpdate)
                 {
                     HelpResponseModel helpItems = iService.GetHelpItems();
-                    if (helpItems != null && helpItems.Data != null && helpItems.Data.Count > 0)
+                    if (!string.IsNullOrEmpty(helpItems.Status) && helpItems.Status.ToUpper() == DashboardHomeConstants.Sitecore_Success)
                     {
                         HelpEntity wsManager = new HelpEntity();
                         wsManager.DeleteTable();
                         wsManager.CreateTable();
-                        wsManager.InsertListOfItems(helpItems.Data);
+                        if (helpItems != null && helpItems.Data != null && helpItems.Data.Count > 0)
+                        {
+                            wsManager.InsertListOfItems(helpItems.Data);
+                        }
+                    }
+                }
+            });
+        }
+
+        private void UpdatePromotions()
+        {
+            InvokeInBackground(async () =>
+            {
+                await OnGetPromotions();
+                PromotionsEntity entity = new PromotionsEntity();
+                _promotions = entity.GetAllItemsV2();
+                InvokeOnMainThread(() =>
+                {
+                    OnUpdateCell(DashboardHomeConstants.CellIndex_Promotion);
+                });
+            });
+        }
+
+        private Task OnGetPromotions()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS, DataManager.DataManager.SharedInstance.ImageSize
+                    , TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
+                bool isValidTimeStamp = false;
+                string promotionTS = iService.GetPromotionsTimestampItem();
+                PromotionsTimestampResponseModel promotionTimeStamp = JsonConvert.DeserializeObject<PromotionsTimestampResponseModel>(promotionTS);
+                if (promotionTimeStamp != null && promotionTimeStamp.Status.Equals("Success")
+                    && promotionTimeStamp.Data != null && promotionTimeStamp.Data[0] != null
+                    && !string.IsNullOrEmpty(promotionTimeStamp.Data[0].Timestamp)
+                    && !string.IsNullOrWhiteSpace(promotionTimeStamp.Data[0].Timestamp))
+                {
+                    var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                    string currentTS = sharedPreference.StringForKey(DashboardHomeConstants.Sitecore_Timestamp);
+                    if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
+                    {
+                        sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, DashboardHomeConstants.Sitecore_Timestamp);
+                        sharedPreference.Synchronize();
+                        isValidTimeStamp = true;
+                    }
+                    else
+                    {
+                        if (currentTS.Equals(promotionTimeStamp.Data[0].Timestamp))
+                        {
+                            isValidTimeStamp = false;
+                        }
+                        else
+                        {
+                            sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, DashboardHomeConstants.Sitecore_Timestamp);
+                            sharedPreference.Synchronize();
+                            isValidTimeStamp = true;
+                        }
+                    }
+                }
+                if (isValidTimeStamp)
+                {
+                    string promotionsItems = iService.GetPromotionsItem();
+                    //Debug.WriteLine("debug: promo items: " + promotionsItems);
+                    PromotionsV2ResponseModel promotionResponse = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(promotionsItems);
+                    if (promotionResponse != null && promotionResponse.Status.Equals("Success")
+                        && promotionResponse.Data != null && promotionResponse.Data.Count > 0)
+                    {
+                        PromotionsEntity wsManager = new PromotionsEntity();
+                        PromotionsEntity.DeleteTable();
+                        wsManager.CreateTable();
+                        wsManager.InsertListOfItemsV2(HomeTabBarController.SetValueForNullEndDate(promotionResponse.Data));
                     }
                 }
             });
@@ -421,7 +493,7 @@ namespace myTNB
         private void OnUpdateCell(int row)
         {
             _homeTableView.BeginUpdates();
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent);
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent);
             NSIndexPath indexPath = NSIndexPath.Create(0, row);
             _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
             _homeTableView.EndUpdates();
@@ -450,7 +522,6 @@ namespace myTNB
                 _isRefreshScreenEnabled = isFail;
                 if (_isRefreshScreenEnabled)
                 {
-                    Debug.WriteLine("_isRefreshScreenEnabled");
                     CGRect frame = ImageViewGradientImage.Frame;
                     frame.Y = _addtlYValue;
                     ImageViewGradientImage.Frame = frame;
@@ -468,7 +539,7 @@ namespace myTNB
                     _refreshScreenComponent.OnButtonTap = RefreshViewForAccounts;
 
                     _homeTableView.BeginUpdates();
-                    _homeTableView.Source = new DashboardHomeDataSource(this, null, _services, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent);
+                    _homeTableView.Source = new DashboardHomeDataSource(this, null, _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent);
                     NSIndexPath indexPath = NSIndexPath.Create(0, 0);
                     _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
                     _homeTableView.EndUpdates();

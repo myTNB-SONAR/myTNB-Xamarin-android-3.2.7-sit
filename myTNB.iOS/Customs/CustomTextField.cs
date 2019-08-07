@@ -96,7 +96,7 @@ namespace myTNB
             {
                 AttributedText = AttributedStringUtility.GetAttributedStringV2(Hint, AttributedStringUtility.AttributedStringType.Hint),
                 TextAlignment = UITextAlignment.Left,
-                Hidden = string.IsNullOrEmpty(Hint) || string.IsNullOrWhiteSpace(Hint)
+                Hidden = true
             };
 
             ViewContainer.AddSubviews(new UIView[] { LblTitle, TextField, _viewLine, LblError, LblHint });
@@ -217,6 +217,13 @@ namespace myTNB
             };
             TextField.EditingDidBegin += (sender, e) =>
             {
+                if (TextFieldType == Type.MobileNumber)
+                {
+                    if (TextField.Text.Length == 0)
+                    {
+                        TextField.Text += TNBGlobal.MobileNoPrefix;
+                    }
+                }
                 LblHint.Hidden = !LblError.Hidden || TextField.Text.Length == 0;
                 LblTitle.Hidden = TextField.Text.Length == 0;
                 if (TextFieldType == Type.MobileNumber && TextField.Text.Length == 0)

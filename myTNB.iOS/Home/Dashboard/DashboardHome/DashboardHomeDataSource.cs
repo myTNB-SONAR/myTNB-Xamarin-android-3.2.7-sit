@@ -18,10 +18,12 @@ namespace myTNB
         private ServicesResponseModel _services;
         private List<HelpModel> _helpList;
         private bool _isServicesShimmering, _isHelpShimmering, _showRefreshScreen;
+        private List<PromotionsModelV2> _promotions;
 
         public DashboardHomeDataSource(DashboardHomeViewController controller,
             AccountsCardContentViewController accountsCardContentViewController,
             ServicesResponseModel services,
+            List<PromotionsModelV2> promotions,
             List<HelpModel> helpList,
             bool isServicesShimmering,
             bool isHelpShimmering,
@@ -31,6 +33,7 @@ namespace myTNB
             _controller = controller;
             _accountsCardContentViewController = accountsCardContentViewController;
             _services = services;
+            _promotions = promotions;
             _helpList = helpList;
             _isServicesShimmering = isServicesShimmering;
             _isHelpShimmering = isHelpShimmering;
@@ -103,7 +106,7 @@ namespace myTNB
             {
                 PromotionTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Promotion) as PromotionTableViewCell;
                 cell._titleLabel.Text = _controller.GetI18NValue(DashboardHomeConstants.I18N_Promotions);
-                cell.AddCards();
+                cell.AddCards(_promotions);
                 return cell;
             }
             if (indexPath.Row == 3)

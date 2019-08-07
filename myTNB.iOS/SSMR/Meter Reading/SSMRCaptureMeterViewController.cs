@@ -26,7 +26,7 @@ namespace myTNB
         /// </summary>
         public Dictionary<string, bool> ReadingDictionary;
 
-        private UILabel _lblDescription;
+        private UITextView _txtViewDescription;
         private UIView _viewPreview, _viewCamera, _viewCapture;
         private UIView _viewPreviewOne, _viewPreviewTwo, _viewPreviewThree;
         private UIView _viewDelete, _viewCameraActions, _viewMainPreviewParent
@@ -35,6 +35,7 @@ namespace myTNB
         private CustomUISlider _zoomSlider;
         private UIButton _btnSubmit;
         private UIImage _capturedImage;
+        private UIBarButtonItem _btnInfo;
 
         private AVCaptureSession _captureSession;
         private AVCaptureDevice _captureDevice;
@@ -104,15 +105,21 @@ namespace myTNB
             {
                 NavigationController.PopViewController(true);
             });
-            UIBarButtonItem btnInfo = new UIBarButtonItem(UIImage.FromBundle(SSMRConstants.IMG_Info)
-                , UIBarButtonItemStyle.Done, (sender, e) =>
-            {
-                Debug.WriteLine("Info Tapped");
-                DisplayTooltip();
-            });
+            _btnInfo = new UIBarButtonItem(UIImage.FromBundle(SSMRConstants.IMG_Info)
+               , UIBarButtonItemStyle.Done, (sender, e) =>
+           {
+               Debug.WriteLine("Info Tapped");
+               DisplayTooltip();
+           });
             NavigationItem.LeftBarButtonItem = btnBack;
-            NavigationItem.RightBarButtonItem = btnInfo;
+            NavigationItem.RightBarButtonItem = _btnInfo;
             Title = GetI18NValue(SSMRConstants.I18N_NavTitleTakePhoto);
+            HideInfoIcon(false);
+        }
+
+        private void HideInfoIcon(bool hidden)
+        {
+            NavigationItem.RightBarButtonItem = hidden ? null : _btnInfo;
         }
 
         private void DisplayTooltip(bool isGallery = false, Action action = null)
@@ -178,31 +185,44 @@ namespace myTNB
             {
                 List<string> keys = ReadingDictionary.Keys.ToList();
                 for (int i = 0; i < keys.Count; i++)
-                {
-                    ReadingDictionary[keys[i]] = false;
-                }
+                { ReadingDictionary[keys[i]] = false; }
             }
         }
 
         private void SetDescription(string description = "")
         {
-            if (_lblDescription == null)
-            {
-                _lblDescription = new UILabel(new CGRect(16, 16, ViewWidth - 32, 38))
-                {
-                    TextAlignment = UITextAlignment.Left,
-                    Font = MyTNBFont.MuseoSans14_300,
-                    TextColor = MyTNBColor.CharcoalGrey,
-                    Lines = 0,
-                    LineBreakMode = UILineBreakMode.WordWrap
-                };
-                View.AddSubview(_lblDescription);
-            }
             if (string.IsNullOrEmpty(description) || string.IsNullOrWhiteSpace(description))
             {
                 description = _isMultiPhase ? _multiPhaseDescription : GetI18NValue(SSMRConstants.I18N_SingleTakePhotoDescription);
             }
-            _lblDescription.Text = description;
+            NSError htmlBodyError = null;
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(description, ref htmlBodyError, MyTNBFont.FONTNAME_300, 14f);
+            UIStringAttributes linkAttributes = new UIStringAttributes
+            {
+                ForegroundColor = MyTNBColor.WaterBlue,
+                Font = MyTNBFont.MuseoSans14_500,
+                UnderlineStyle = NSUnderlineStyle.None,
+                UnderlineColor = UIColor.Clear
+            };
+            NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
+            mutableHTMLBody.AddAttributes(new UIStringAttributes
+            {
+                ForegroundColor = MyTNBColor.CharcoalGrey,
+                Font = MyTNBFont.MuseoSans14_300
+            }, new NSRange(0, htmlBody.Length));
+            if (_txtViewDescription == null)
+            {
+                _txtViewDescription = new UITextView(new CGRect(16, 0, ViewWidth - 32, 42))
+                {
+                    Editable = false,
+                    ScrollEnabled = true,
+                    WeakLinkTextAttributes = linkAttributes.Dictionary,
+                    TextAlignment = UITextAlignment.Left,
+                    UserInteractionEnabled = false,
+                };
+                View.AddSubview(_txtViewDescription);
+            }
+            _txtViewDescription.AttributedText = mutableHTMLBody;
         }
 
         private nfloat GetPreviewXLoc(int count, nfloat refWidth)
@@ -295,13 +315,9 @@ namespace myTNB
                 UILabel currentLbl = view.ViewWithTag(98) as UILabel;
                 if (currentLbl == null) { currentLbl = new UILabel(); }
                 if (isSelected)
-                {
-                    view.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
-                }
+                { view.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor; }
                 else
-                {
-                    view.Layer.BorderColor = hasImg ? MyTNBColor.FreshGreen.CGColor : MyTNBColor.WhiteTwo.CGColor;
-                }
+                { view.Layer.BorderColor = hasImg ? MyTNBColor.FreshGreen.CGColor : MyTNBColor.WhiteTwo.CGColor; }
                 currentLbl.TextColor = isSelected ? MyTNBColor.WaterBlue : MyTNBColor.GreyishBrown;
             }
         }
@@ -319,9 +335,7 @@ namespace myTNB
                 {
                     SetPreviewColors(currentView, false, false);
                     if (data.Image != null)
-                    {
-                        SetPreviewColors(currentView, false, true);
-                    }
+                    { SetPreviewColors(currentView, false, true); }
                     if (isSameTag)
                     {
                         SetPreviewColors(currentView, true, data.Image != null);
@@ -335,6 +349,7 @@ namespace myTNB
                         }
                         SetDescription(GetI18NValue(data.Image == null ? _multiPhaseDescription : SSMRConstants.I18N_EditDescription));
                         Title = GetI18NValue(data.Image == null ? SSMRConstants.I18N_NavTitleTakePhoto : SSMRConstants.I18N_NavTitleAdjustPhoto);
+                        HideInfoIcon(data.Image != null);
                     }
 
                     if (isSameTag)
@@ -342,9 +357,7 @@ namespace myTNB
                         bool isPrevHasImg = IsPreviosPreviewHasImage(i, out int noImageIndex);
                         bool isCurHasImg = data.Image != null;
                         if (isPrevHasImg)
-                        {
-                            SetPreviewColors(currentView, true, isPrevHasImg);
-                        }
+                        { SetPreviewColors(currentView, true, isPrevHasImg); }
                         else
                         {
                             if (!isCurHasImg)
@@ -400,8 +413,8 @@ namespace myTNB
 
         private void SetCamera()
         {
-            _viewCamera = new UIView(new CGRect(0, _lblDescription.Frame.GetMaxY() + 16
-               , ViewWidth, ViewHeight - _lblDescription.Frame.GetMaxY() - 16 - _viewPreview.Frame.Height))
+            _viewCamera = new UIView(new CGRect(0, _txtViewDescription.Frame.GetMaxY() + 16
+               , ViewWidth, ViewHeight - _txtViewDescription.Frame.GetMaxY() - 16 - _viewPreview.Frame.Height))
             { ClipsToBounds = true };
             _viewDelete = GetDeleteSection(_viewCamera);
             _viewCameraActions = GetCameraActions(_viewCamera);
@@ -476,6 +489,7 @@ namespace myTNB
                 ToggleCTA();
                 SetDescription(_isMultiPhase ? _multiPhaseDescription : GetI18NValue(SSMRConstants.I18N_SingleTakePhotoDescription));
                 Title = GetI18NValue(SSMRConstants.I18N_NavTitleTakePhoto);
+                HideInfoIcon(false);
             }));
             view.AddSubview(imgDelete);
             return view;
@@ -495,6 +509,8 @@ namespace myTNB
             {
                 Debug.WriteLine("zoomSlider ValueChanged: " + ((UISlider)sender).Value);
                 nfloat zoomFactor = (nfloat)((UISlider)sender).Value;
+                if (zoomFactor > _zoomSlider.MaxValue) { zoomFactor = _zoomSlider.MaxValue; }
+                if (zoomFactor < _zoomSlider.MinValue) { zoomFactor = _zoomSlider.MinValue; }
                 _captureDevice.LockForConfiguration(out NSError nsError);
                 _captureDevice.VideoZoomFactor = zoomFactor;
                 _captureDevice.UnlockForConfiguration();
@@ -507,10 +523,7 @@ namespace myTNB
             _viewGallery.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 Debug.WriteLine("viewGallery tapped");
-                if (_isGalleryTooltipDisplayed)
-                {
-                    OnShowGallery();
-                }
+                if (_isGalleryTooltipDisplayed) { OnShowGallery(); }
                 else
                 {
                     _isGalleryTooltipDisplayed = true;
@@ -548,6 +561,7 @@ namespace myTNB
                     _capturedImage = selectedImg;
                     SetDescription(GetI18NValue(SSMRConstants.I18N_EditDescription));
                     Title = GetI18NValue(SSMRConstants.I18N_NavTitleAdjustPhoto);
+                    HideInfoIcon(true);
                 }
                 ToggleCTA();
             };
@@ -633,6 +647,7 @@ namespace myTNB
 
                         SetDescription(GetI18NValue(SSMRConstants.I18N_EditDescription));
                         Title = GetI18NValue(SSMRConstants.I18N_NavTitleAdjustPhoto);
+                        HideInfoIcon(true);
                     }
                     _currentTag = model.Tag;
                     break;
@@ -667,6 +682,7 @@ namespace myTNB
             }
             _viewLoading.Hidden = false;
             Title = GetI18NValue(SSMRConstants.I18N_NavTitleTakePhoto);
+            HideInfoIcon(false);
         }
 
         private void UpdateViewGallery()
@@ -761,6 +777,7 @@ namespace myTNB
                 AddMainPreview(capturedImage);
                 SetDescription(GetI18NValue(SSMRConstants.I18N_EditDescription));
                 Title = GetI18NValue(SSMRConstants.I18N_NavTitleAdjustPhoto);
+                HideInfoIcon(true);
             }
             ToggleCTA();
         }
