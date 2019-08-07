@@ -537,6 +537,10 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             try
             {
                 txtEmail.Text = email;
+                if (!mobile_no.Contains("+60"))
+                {
+                    mobile_no = "+60" + mobile_no;
+                }
                 txtMobileNo.Text = mobile_no;
                 oldEmail = email;
                 oldPhoneNumber = mobile_no;

@@ -112,23 +112,39 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             txtMobileNumber.AddTextChangedListener(new InputFilterFormField(txtMobileNumber, textInputMobile));
             txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, textInputEmail));
             txtMobileNumber.SetFilters(new Android.Text.IInputFilter[] { new InputFilterPhoneNumber() });
-            GetCARegisteredContactInfo();
-
+            OnInitiateSMREligibilityAccount();
         }
 
         public void GetCARegisteredContactInfo()
         {
-            SMRAccount sMRAccount = UserSessions.GetSMRAccountList().Find(smrAccount =>
+            List<SMRAccount> list = UserSessions.GetRealSMREligibilityAccountList();
+            if (list == null)
+            {
+                list = UserSessions.GetSMREligibilityAccountList();
+            }
+            SMRAccount sMRAccount = list.Find(smrAccount =>
             {
                 return smrAccount.accountSelected;
             });
-            selectAccountContainer.Text = sMRAccount.accountName;
-            applySMRAddress.Text = sMRAccount.accountAddress;
-            if (sMRAccount.email != txtEmail.Text || sMRAccount.mobileNumber != txtMobileNumber.Text)
+            if (sMRAccount != null)
             {
-                ShowProgressDialog();
-                mPresenter.GetCARegisteredContactInfoAsync(sMRAccount);
+                selectAccountContainer.Text = sMRAccount.accountName;
+                applySMRAddress.Visibility = ViewStates.Visible;
+                applySMRAddress.Text = sMRAccount.accountAddress;
+                if (sMRAccount.email != txtEmail.Text || sMRAccount.mobileNumber != txtMobileNumber.Text)
+                {
+                    ShowProgressDialog();
+                    mPresenter.GetCARegisteredContactInfoAsync(sMRAccount);
+                }
             }
+        }
+
+        private void OnInitiateSMREligibilityAccount()
+        {
+            selectAccountContainer.Text = "Select an account";
+            applySMRAddress.Visibility = ViewStates.Gone;
+            DisableRegisterButton();
+            this.mPresenter.CheckSMRAccountEligibility();
         }
 
         public override View OnCreateView(string name, Context context, IAttributeSet attrs)
@@ -145,9 +161,18 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         {
             selectAccountContainer.Text = account.accountName;
             txtEmail.Text = account.email;
-            txtMobileNumber.Text = "+60" + account.mobileNumber;
+            if (!account.mobileNumber.Contains("+60"))
+            {
+                account.mobileNumber = "+60" + account.mobileNumber;
+            }
+            txtMobileNumber.Text = account.mobileNumber;
             List<SMRAccount> updatedSMRAccountList = new List<SMRAccount>();
-            foreach (SMRAccount smrAccount in UserSessions.GetSMRAccountList())
+            List<SMRAccount> list = UserSessions.GetRealSMREligibilityAccountList();
+            if (list == null)
+            {
+                list = UserSessions.GetSMREligibilityAccountList();
+            }
+            foreach (SMRAccount smrAccount in list)
             {
                 if (smrAccount.accountNumber == account.accountNumber)
                 {
@@ -162,7 +187,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                     updatedSMRAccountList.Add(smrAccount);
                 }
             }
-            UserSessions.SetSMRAccountList(updatedSMRAccountList);
+            UserSessions.SetRealSMREligibilityAccountList(updatedSMRAccountList);
             HideProgressDialog();
         }
 
@@ -202,7 +227,12 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         [OnClick(Resource.Id.btnSubmitRegistration)]
         void SubmitRegistration(object sender, EventArgs eventArgs)
         {
-            SMRAccount sMRAccount = UserSessions.GetSMRAccountList().Find(smrAccount =>
+            List<SMRAccount> list = UserSessions.GetRealSMREligibilityAccountList();
+            if (list == null)
+            {
+                list = UserSessions.GetSMREligibilityAccountList();
+            }
+            SMRAccount sMRAccount = list.Find(smrAccount =>
             {
                 return smrAccount.accountSelected;
             });
@@ -267,5 +297,11 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             btnSubmitRegistration.Enabled = true;
             btnSubmitRegistration.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
         }
+
+        public string GetDeviceId()
+        {
+            return this.DeviceId();
+        }
     }
 }
+ 

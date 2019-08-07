@@ -254,6 +254,45 @@ namespace myTNB_Android.Src.Utils
             return selectAccountList;
         }
 
+        public static void SetSMREligibilityAccountList(List<SMRAccount> sMRAccounts)
+        {
+            ISharedPreferencesEditor editor = mPreferences.Edit();
+            string jsonAccountList = JsonConvert.SerializeObject(sMRAccounts);
+            editor.PutString("SMR_ELIGIBILITY_ACCOUNT_LIST", jsonAccountList);
+            editor.Apply();
+        }
+
+        public static List<SMRAccount> GetSMREligibilityAccountList()
+        {
+            string accountList = mPreferences.GetString("SMR_ELIGIBILITY_ACCOUNT_LIST", null);
+            List<SMRAccount> selectAccountList = new List<SMRAccount>();
+            if (accountList != null)
+            {
+                selectAccountList = JsonConvert.DeserializeObject<List<SMRAccount>>(accountList);
+            }
+            return selectAccountList;
+        }
+
+        public static void SetRealSMREligibilityAccountList(List<SMRAccount> sMRAccounts)
+        {
+            ISharedPreferencesEditor editor = mPreferences.Edit();
+            string jsonAccountList = JsonConvert.SerializeObject(sMRAccounts);
+            editor.PutString("SMR_REAL_ELIGIBILITY_ACCOUNT_LIST", jsonAccountList);
+            editor.Apply();
+        }
+
+        public static List<SMRAccount> GetRealSMREligibilityAccountList()
+        {
+            string accountList = mPreferences.GetString("SMR_REAL_ELIGIBILITY_ACCOUNT_LIST", null);
+            List<SMRAccount> selectAccountList = null;
+            if (accountList != null)
+            {
+                selectAccountList = new List<SMRAccount>();
+                selectAccountList = JsonConvert.DeserializeObject<List<SMRAccount>>(accountList);
+            }
+            return selectAccountList;
+        }
+
         public static void SetSharedPreference(ISharedPreferences preferences)
         {
             mPreferences = preferences;
@@ -262,6 +301,8 @@ namespace myTNB_Android.Src.Utils
         public static void RemoveSessionData()
         {
             SetSMRAccountList(new List<SMRAccount>());
+            SetSMREligibilityAccountList(new List<SMRAccount>());
+            SetRealSMREligibilityAccountList(new List<SMRAccount>());
         }
     }
 }

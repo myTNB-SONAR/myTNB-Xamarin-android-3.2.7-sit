@@ -42,6 +42,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void SetNewPromotionResult(List<NewPromotion> list);
 
             void ShowRefreshScreen(string contentMsg, string buttonMsg);
+
+            void UpdateCurrentSMRAccountList();
+
+            void UpdateEligibilitySMRAccountList();
         }
 
         public interface IHomeMenuPresenter
