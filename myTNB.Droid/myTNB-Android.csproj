@@ -1943,7 +1943,6 @@
     </AndroidResource>
     <Compile Include="Src\SSMR\SMRApplication\Api\GetAccountsSMREligibilityResponse.cs" />
     <Compile Include="Src\SSMR\SMRApplication\Api\GetAccountSMREligibilityRequest.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Api\IGetSMREligibilityApi.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

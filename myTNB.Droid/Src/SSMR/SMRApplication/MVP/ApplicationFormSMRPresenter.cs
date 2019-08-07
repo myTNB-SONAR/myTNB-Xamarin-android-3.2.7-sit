@@ -161,11 +161,6 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                             UserSessions.SetRealSMREligibilityAccountList(new List<SMRAccount>());
                         }
                     }
-                    else if (response != null && response.Response != null && response.Response.ErrorCode == "7200" && response.Response.SMREligibilityList.Count == 0)
-                    {
-                        this.mView.HideProgressDialog();
-                        UserSessions.SetRealSMREligibilityAccountList(list);
-                    }
                     else
                     {
                         this.mView.HideProgressDialog();
@@ -174,26 +169,47 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                 }
                 else
                 {
+                    UserSessions.SetRealSMREligibilityAccountList(new List<SMRAccount>());
                     this.mView.HideProgressDialog();
-                    UserSessions.SetRealSMREligibilityAccountList(list);
                 }
             }
             catch (System.OperationCanceledException cancelledException)
             {
                 this.mView.HideProgressDialog();
-                UserSessions.SetRealSMREligibilityAccountList(list);
+                if (list != null && list.Count > 0)
+                {
+                    UserSessions.SetRealSMREligibilityAccountList(list);
+                }
+                else
+                {
+                    UserSessions.SetRealSMREligibilityAccountList(new List<SMRAccount>());
+                }
                 Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
                 this.mView.HideProgressDialog();
-                UserSessions.SetRealSMREligibilityAccountList(list);
+                if (list != null && list.Count > 0)
+                {
+                    UserSessions.SetRealSMREligibilityAccountList(list);
+                }
+                else
+                {
+                    UserSessions.SetRealSMREligibilityAccountList(new List<SMRAccount>());
+                }
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
                 this.mView.HideProgressDialog();
-                UserSessions.SetRealSMREligibilityAccountList(list);
+                if (list != null && list.Count > 0)
+                {
+                    UserSessions.SetRealSMREligibilityAccountList(list);
+                }
+                else
+                {
+                    UserSessions.SetRealSMREligibilityAccountList(new List<SMRAccount>());
+                }
                 Utility.LoggingNonFatalError(unknownException);
             }
         }
