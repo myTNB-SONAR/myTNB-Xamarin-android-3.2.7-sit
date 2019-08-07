@@ -140,8 +140,8 @@
         "multiTakePhotoDescription": "Get ready, you'll have 10 seconds between each value being flashed.",
         "singularDone": "You're done with {0}!",
         "pluralDone": "You're done with {0} and {1}!",
-        "singularOnto": "On to {0} reading now.",
-        "pluralOnto": "On to {0} and {1} readings now."
+        "singularOnto": "On to <a href=\"\\\">{0}</a> reading now.",
+        "pluralOnto": "On to <a href=\"\\\">{0}</a> and <a href=\"\\\">{1}</a> readings now."
     },
     "SSMRCaptureMeter_selector": {
         "SMRPhotoPopUpDetails": [

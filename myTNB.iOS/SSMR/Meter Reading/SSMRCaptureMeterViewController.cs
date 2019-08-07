@@ -26,7 +26,7 @@ namespace myTNB
         /// </summary>
         public Dictionary<string, bool> ReadingDictionary;
 
-        private UILabel _lblDescription;
+        private UITextView _txtViewDescription;
         private UIView _viewPreview, _viewCamera, _viewCapture;
         private UIView _viewPreviewOne, _viewPreviewTwo, _viewPreviewThree;
         private UIView _viewDelete, _viewCameraActions, _viewMainPreviewParent
@@ -191,23 +191,38 @@ namespace myTNB
 
         private void SetDescription(string description = "")
         {
-            if (_lblDescription == null)
-            {
-                _lblDescription = new UILabel(new CGRect(16, 16, ViewWidth - 32, 38))
-                {
-                    TextAlignment = UITextAlignment.Left,
-                    Font = MyTNBFont.MuseoSans14_300,
-                    TextColor = MyTNBColor.CharcoalGrey,
-                    Lines = 0,
-                    LineBreakMode = UILineBreakMode.WordWrap
-                };
-                View.AddSubview(_lblDescription);
-            }
             if (string.IsNullOrEmpty(description) || string.IsNullOrWhiteSpace(description))
             {
                 description = _isMultiPhase ? _multiPhaseDescription : GetI18NValue(SSMRConstants.I18N_SingleTakePhotoDescription);
             }
-            _lblDescription.Text = description;
+            NSError htmlBodyError = null;
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(description, ref htmlBodyError, MyTNBFont.FONTNAME_300, 14f);
+            UIStringAttributes linkAttributes = new UIStringAttributes
+            {
+                ForegroundColor = MyTNBColor.WaterBlue,
+                Font = MyTNBFont.MuseoSans14_500,
+                UnderlineStyle = NSUnderlineStyle.None,
+                UnderlineColor = UIColor.Clear
+            };
+            NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
+            mutableHTMLBody.AddAttributes(new UIStringAttributes
+            {
+                ForegroundColor = MyTNBColor.CharcoalGrey,
+                Font = MyTNBFont.MuseoSans14_300
+            }, new NSRange(0, htmlBody.Length));
+            if (_txtViewDescription == null)
+            {
+                _txtViewDescription = new UITextView(new CGRect(16, 0, ViewWidth - 32, 42))
+                {
+                    Editable = false,
+                    ScrollEnabled = true,
+                    WeakLinkTextAttributes = linkAttributes.Dictionary,
+                    TextAlignment = UITextAlignment.Left,
+                    UserInteractionEnabled = false,
+                };
+                View.AddSubview(_txtViewDescription);
+            }
+            _txtViewDescription.AttributedText = mutableHTMLBody;
         }
 
         private nfloat GetPreviewXLoc(int count, nfloat refWidth)
@@ -398,8 +413,8 @@ namespace myTNB
 
         private void SetCamera()
         {
-            _viewCamera = new UIView(new CGRect(0, _lblDescription.Frame.GetMaxY() + 16
-               , ViewWidth, ViewHeight - _lblDescription.Frame.GetMaxY() - 16 - _viewPreview.Frame.Height))
+            _viewCamera = new UIView(new CGRect(0, _txtViewDescription.Frame.GetMaxY() + 16
+               , ViewWidth, ViewHeight - _txtViewDescription.Frame.GetMaxY() - 16 - _viewPreview.Frame.Height))
             { ClipsToBounds = true };
             _viewDelete = GetDeleteSection(_viewCamera);
             _viewCameraActions = GetCameraActions(_viewCamera);
