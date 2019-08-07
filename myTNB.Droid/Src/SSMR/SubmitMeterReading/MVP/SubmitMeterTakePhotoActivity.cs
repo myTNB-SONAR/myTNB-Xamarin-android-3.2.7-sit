@@ -7,6 +7,7 @@ using Android.Graphics;
 using Android.OS;
 using Android.Provider;
 using Android.Runtime;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -154,6 +155,18 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
         }
 
+        private void ShowOCRLoadingScreen()
+        {
+            FrameLayout cameraContainer = FindViewById<FrameLayout>(Resource.Id.photoContainer);
+            cameraContainer.Visibility = ViewStates.Gone;
+
+            RelativeLayout previewContainer = FindViewById<RelativeLayout>(Resource.Id.photoPreview);
+            previewContainer.Visibility = ViewStates.Gone;
+
+            LinearLayout ocrLoadingScreen = FindViewById<LinearLayout>(Resource.Id.ocrLoadingScreen);
+            ocrLoadingScreen.Visibility = ViewStates.Visible;
+        }
+
         private void ShowImagePreView(bool isShown)
         {
             FrameLayout cameraContainer = FindViewById<FrameLayout>(Resource.Id.photoContainer);
@@ -161,6 +174,22 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             RelativeLayout previewContainer = FindViewById<RelativeLayout>(Resource.Id.photoPreview);
             previewContainer.Visibility = isShown ? ViewStates.Visible : ViewStates.Gone;
+
+            if (isShown)
+            {
+                LinearLayout cropContainer = FindViewById<LinearLayout>(Resource.Id.cropAreaContainerPreview);
+                cropContainer.Alpha = 0.6f;
+                cropContainer.AddView(new CropAreaPreView(this));
+
+                SetToolBarTitle("Adjust Photo");
+                meterReadingTakePhotoTitle.Text = "You can delete and retake the photo or adjust it before submission.";
+            }
+            else
+            {
+                SetToolBarTitle("Take Photo");
+                meterReadingTakePhotoTitle.Text = "Take a clear photo of the reading value flashed on your meter.";
+            }
+            TextViewUtils.SetMuseoSans300Typeface(meterReadingTakePhotoTitle);
         }
 
         public class OnContainerClickListener : Java.Lang.Object, View.IOnClickListener
@@ -247,27 +276,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             base.OnStart();
         }
 
-        public void ShowAdjustFragment(int position,Bitmap myBitmap)
-        {
-            DisableMoreMenu();
-            FragmentTransaction transaction = FragmentManager.BeginTransaction();
-            SetToolBarTitle("Adjust Photo");
-            meterReadingTakePhotoTitle.Text = "You can delete and retake the photo or adjust it before submission.";
-            if (adjustPhotoFragment == null)
-            {
-                adjustPhotoFragment = SubmitMeterAdjustPhotoFragment.NewIntance();
-                adjustPhotoFragment.SetCapturedImage(myBitmap);
-                transaction.Replace(Resource.Id.photoContainer, adjustPhotoFragment);
-                transaction.AddToBackStack(null);
-                transaction.Commit();
-            }
-            else
-            {
-                adjustPhotoFragment.UpdateCapturedImage(myBitmap);
-            }
-            selectedCapturedImage = position;
-        }
-
         public void UpdateActivesBorders()
         {
             int position = 0;
@@ -309,6 +317,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     ShowImagePreView(true);
                 }
                 UpdateCapturedBorder();
+
+                //meterReadingTakePhotoTitle.Text = "You can delete and retake the photo or adjust it before submission.";
             }
             EnableSubmitButton();
         }
@@ -361,44 +371,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             return imageView;
         }
 
-        class OnCapturedImageClick : Java.Lang.Object, Android.Views.View.IOnClickListener
-        {
-            Bitmap imageBitmap;
-            SubmitMeterTakePhotoActivity activity;
-            int position;
-            public OnCapturedImageClick(SubmitMeterTakePhotoActivity activityValue, Bitmap imageBitmapValue, int positionValue)
-            {
-                imageBitmap = imageBitmapValue;
-                activity = activityValue;
-                position = positionValue;
-            }
-            public void OnClick(View v)
-            {
-                activity.ShowAdjustFragment(position,imageBitmap);
-            }
-        }
-
-        private void UpdateImageSelections()
-        {
-            LinearLayout container;
-            List<MeterImageModel> modelList = mPresenter.GetMeterImages();
-            selectedCapturedImage = mPresenter.GetMeterImages().FindIndex(model =>
-            {
-                return model.ImageData == null;
-            });
-
-            if (selectedCapturedImage == -1)
-            {
-                int totalSize = mPresenter.GetMeterImages().Count;
-                ShowAdjustFragment(totalSize - 1, mPresenter.GetMeterImages()[totalSize - 1].ImageData);
-            }
-            else
-            {
-                container = (LinearLayout)meterCapturedContainer.GetChildAt(selectedCapturedImage-1);
-                container.SetBackgroundDrawable(GetDrawable(Resource.Drawable.meter_capture_holder_selected));
-            }
-        }
-
         public void ShowGallery()
         {
             if (isGalleryFirstPress)
@@ -419,12 +391,13 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         {
             meterReadingTakePhotoTitle.Visibility = ViewStates.Gone;
             bottomLayout.Visibility = ViewStates.Gone;
-            FragmentTransaction transaction = FragmentManager.BeginTransaction();
-            SetToolBarTitle("Take Photo");
-            ocrLoadingFragment = OCRLoadingFragment.NewIntance();
-            transaction.Replace(Resource.Id.photoContainer, ocrLoadingFragment);
-            transaction.AddToBackStack(null);
-            transaction.Commit();
+            //FragmentTransaction transaction = FragmentManager.BeginTransaction();
+            //SetToolBarTitle("Take Photo");
+            //ocrLoadingFragment = OCRLoadingFragment.NewIntance();
+            //transaction.Replace(Resource.Id.photoContainer, ocrLoadingFragment);
+            //transaction.AddToBackStack(null);
+            //transaction.Commit();
+            ShowOCRLoadingScreen();
         }
 
         public void ShowMeterReadingPage(string resultOCRResponseList)
@@ -505,6 +478,52 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 btnSubmitPhotoToOCR.Background = GetDrawable(Resource.Drawable.silver_chalice_button_background);
             }
             TextViewUtils.SetMuseoSans500Typeface(btnSubmitPhotoToOCR);
+        }
+
+        public class CropAreaPreView : View
+        {
+            public Rect cropAreaRect;
+            public CropAreaPreView(Context context) : base(context)
+            {
+            }
+
+            public CropAreaPreView(Context context, IAttributeSet attrs) : base(context, attrs)
+            {
+            }
+
+            public CropAreaPreView(Context context, IAttributeSet attrs, int defStyleAttr) : base(context, attrs, defStyleAttr)
+            {
+            }
+
+            protected override void OnDraw(Canvas canvas)
+            {
+                base.OnDraw(canvas);
+
+                Paint rectPaint = new Paint(PaintFlags.AntiAlias);
+                rectPaint.Color = Color.Gray;
+                rectPaint.SetStyle(Paint.Style.Fill);
+                canvas.DrawPaint(rectPaint);
+
+                rectPaint.SetXfermode(new PorterDuffXfermode(PorterDuff.Mode.Clear));
+                int height = canvas.Height;
+                int width = canvas.Width;
+                int left = (int)(width - (width * .809));
+                int top = (int)(height - (height * .974));
+                int right = (int)(width - (width * .191));
+                int bottom = (int)(height - (height * .25));
+                cropAreaRect = new Rect(left, top, right, bottom);
+                canvas.DrawRect(cropAreaRect, rectPaint);
+
+                rectPaint.SetXfermode(null);
+                rectPaint.Color = Color.Blue;
+                rectPaint.SetStyle(Paint.Style.Stroke);
+                canvas.DrawRoundRect(left,top,right,bottom,4,4,rectPaint);
+            }
+
+            public Rect GetCropAreaRect()
+            {
+                return cropAreaRect;
+            }
         }
     }
 }

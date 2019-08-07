@@ -88,6 +88,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public float maximumZoomLevel;
         SeekBar seekBar;
         Rect zoomArea;
+        CropAreaView cropAreaView;
 
         public static SubmitMeterTakePhotoFragment NewInstance()
         {
@@ -175,6 +176,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             mTextureView = (AutoFitTextureView)view.FindViewById(Resource.Id.texture_view_autofit);
             ImageView captureImage = (ImageView)view.FindViewById(Resource.Id.imageTakePhoto);
             galleryPreview = (ImageView)view.FindViewById(Resource.Id.imageGallery);
+            galleryPreview.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.meter_capture_holder_inactive));
             seekBar = (SeekBar)view.FindViewById(Resource.Id.seekBar);
 
             captureImage.Click += delegate
@@ -187,10 +189,13 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 ((SubmitMeterTakePhotoActivity)Activity).ShowGallery();
             };
 
+            galleryPreview.SetImageBitmap(null);
+
             seekBar.SetOnSeekBarChangeListener(new OnSeekbarChangeListener(this));
             LinearLayout linearLayout = view.FindViewById<LinearLayout>(Resource.Id.cropAreaContainer);
-            linearLayout.Alpha = 0.3f;
-            linearLayout.AddView(new CropAreaView(this.Activity));
+            linearLayout.Alpha = 0.6f;
+            cropAreaView = new CropAreaView(this.Activity);
+            linearLayout.AddView(cropAreaView);
             try
             {
                 ((SubmitMeterTakePhotoActivity)Activity).EnableMoreMenu();
@@ -737,6 +742,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public class CropAreaView : View
         {
+            public Rect cropAreaRect;
             public CropAreaView(Context context) : base(context)
             {
             }
@@ -761,11 +767,22 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 rectPaint.SetXfermode(new PorterDuffXfermode(PorterDuff.Mode.Clear));
                 int height = canvas.Height;
                 int width = canvas.Width;
-                int left = (int)(width - (width * .75)); 
-                int top = (int)(height - (height * .90));
-                int right = (int)(width - (height * .25));
+                int left = (int)(width - (width * .809)); 
+                int top = (int)(height - (height * .974));
+                int right = (int)(width - (width * .191));
                 int bottom = (int)(height - (height * .25));
                 canvas.DrawRect(left, top, right, bottom, rectPaint);
+                cropAreaRect = new Rect(left,top,right,bottom);
+
+                rectPaint.SetXfermode(null);
+                rectPaint.Color = Color.Blue;
+                rectPaint.SetStyle(Paint.Style.Stroke);
+                canvas.DrawRoundRect(left, top, right, bottom, 4, 4, rectPaint);
+            }
+
+            public Rect GetCropAreaRect()
+            {
+                return cropAreaRect;
             }
         }
     }

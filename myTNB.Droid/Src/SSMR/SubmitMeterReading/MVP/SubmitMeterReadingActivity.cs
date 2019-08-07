@@ -78,6 +78,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             return true;
         }
 
+        public override bool CameraPermissionRequired()
+        {
+            return true;
+        }
+
         public List<SMRMROValidateRegisterDetails> DummyData()
         {
             List<SMRMROValidateRegisterDetails> sMRMROValidateRegisterDetailsList = new List<SMRMROValidateRegisterDetails>();
@@ -119,13 +124,13 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 Intent photoIntent = new Intent(this, typeof(SubmitMeterTakePhotoActivity));
                 photoIntent.PutExtra("REQUEST_PHOTOS",JsonConvert.SerializeObject(validationStateList));
                 photoIntent.PutExtra("IS_SINGLE_PHASE", validationStateList.Count == 1 ? true : false);
-                photoIntent.PutExtra("CONTRACT_NUMBER", selectedAccount.AccountNum);
+                photoIntent.PutExtra("CONTRACT_NUMBER", selectedAccount.AccountNum); //Mock
                 StartActivityForResult(photoIntent, SSMR_SUBMIT_METER_OCR_SUBMIT_CODE);
             };
 
             btnSubmitReading.Click += delegate
             {
-                string contractAccount = "220678784308";
+                string contractAccount = selectedAccount.AccountNum;
                 bool isOwnedAccount = true;
 
                 List<MeterReading> meterReadlingList = new List<MeterReading>();
@@ -248,32 +253,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         protected override void OnStart()
         {
             base.OnStart();
-            //else
-            //{
-            //    List<SMRMROValidateRegisterDetails> sMRMROValidateRegisterDetailsList = DummyData(); //This is coming from session
-            //    SMRValidateRegisterDetailList = DummyData(); //Mock
-            //    foreach (SMRMROValidateRegisterDetails validateRegisterDetails in sMRMROValidateRegisterDetailsList)
-            //    {
-            //        if (validateRegisterDetails.RegisterNumber == "001")
-            //        {
-            //            PopulateMeterReadingCard(METER_READING_TYPE.KWH, validateRegisterDetails);
-            //        }
-            //        else if (validateRegisterDetails.RegisterNumber == "002")
-            //        {
-            //            PopulateMeterReadingCard(METER_READING_TYPE.KVARH, validateRegisterDetails);
-            //        }
-            //        else if (validateRegisterDetails.RegisterNumber == "003")
-            //        {
-            //            PopulateMeterReadingCard(METER_READING_TYPE.KW, validateRegisterDetails);
-            //        }
-            //        else
-            //        {
-            //            PopulateMeterReadingCard(METER_READING_TYPE.KWH, validateRegisterDetails);
-            //        }
-            //    }
-            //}
-
-            //OnGenerateTooltipData();
         }
 
         private void SetUpMeterCards(List<SMRMROValidateRegisterDetails> sMRMROValidateRegisterDetailsResponse)
@@ -315,8 +294,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             //List<SMRMROValidateRegisterDetails> sMRMROValidateRegisterDetailsList = DummyData(); //This is coming from session
             //SMRValidateRegisterDetailList = DummyData(); //Mock
+            //SetUpMeterCards(SMRValidateRegisterDetailList);
             validationStateList = new List<MeterValidation>();
-
             Bundle intentExtras = Intent.Extras;
 
             if (intentExtras.ContainsKey(Constants.SELECTED_ACCOUNT))
