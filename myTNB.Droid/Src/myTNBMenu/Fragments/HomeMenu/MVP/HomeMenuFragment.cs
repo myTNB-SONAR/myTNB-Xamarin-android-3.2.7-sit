@@ -1071,6 +1071,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
+        public void UpdateEligibilitySMRAccountList()
+        {
+            List<CustomerBillingAccount> eligibleSMRBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
+            List<SMRAccount> eligibleSmrAccountList = new List<SMRAccount>();
+            if (eligibleSMRBillingAccounts.Count > 0)
+            {
+                foreach (CustomerBillingAccount billingAccount in eligibleSMRBillingAccounts)
+                {
+                    SMRAccount smrAccount = new SMRAccount();
+                    smrAccount.accountNumber = billingAccount.AccNum;
+                    smrAccount.accountName = billingAccount.AccDesc;
+                    smrAccount.accountAddress = billingAccount.AccountStAddress;
+                    smrAccount.accountSelected = false;
+                    eligibleSmrAccountList.Add(smrAccount);
+                }
+            }
+            UserSessions.SetSMREligibilityAccountList(eligibleSmrAccountList);
+            UserSessions.SetRealSMREligibilityAccountList(eligibleSmrAccountList);
+        }
+
         public void UpdateCurrentSMRAccountList()
         {
             List<CustomerBillingAccount> currentSMRBillingAccounts = CustomerBillingAccount.CurrentSMRAccountList();

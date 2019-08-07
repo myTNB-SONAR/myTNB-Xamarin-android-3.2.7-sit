@@ -183,6 +183,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         }
                         MyTNBAccountManagement.GetInstance().UpdateCustomerBillingDetails(billingDetails);
                         this.mView.UpdateCurrentSMRAccountList();
+                        this.mView.UpdateEligibilitySMRAccountList();
                         this.mView.UpdateAccountListCards(summaryDetails);
 
                     }
@@ -313,6 +314,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         }
                         MyTNBAccountManagement.GetInstance().UpdateCustomerBillingDetails(billingDetails);
                         this.mView.UpdateCurrentSMRAccountList();
+                        this.mView.UpdateEligibilitySMRAccountList();
                         this.mView.UpdateAccountListCards(summaryDetails);
 
                         List<CustomerBillingAccount> list = CustomerBillingAccount.List();
@@ -474,6 +476,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
                 MyTNBAccountManagement.GetInstance().UpdateCustomerBillingDetails(billingDetails);
                 this.mView.UpdateCurrentSMRAccountList();
+                this.mView.UpdateEligibilitySMRAccountList();
                 this.mView.UpdateAccountListCards(summaryList);
             }
             catch (Exception unknownException)
@@ -574,6 +577,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
                 MyTNBAccountManagement.GetInstance().UpdateCustomerBillingDetails(billingDetails);
                 this.mView.UpdateCurrentSMRAccountList();
+                this.mView.UpdateEligibilitySMRAccountList();
                 this.mView.UpdateAccountListCards(summaryList);
             }
             catch (Exception unknownException)
