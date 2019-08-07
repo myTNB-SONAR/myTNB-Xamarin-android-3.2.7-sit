@@ -130,7 +130,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             btnSubmitReading.Click += delegate
             {
-                string contractAccount = "220678784308";
+                string contractAccount = selectedAccount.AccountNum;
                 bool isOwnedAccount = true;
 
                 List<MeterReading> meterReadlingList = new List<MeterReading>();
@@ -553,6 +553,9 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             string currentAmountInString = currentValue0.Text + currentValue1.Text + currentValue2.Text + currentValue3.Text + currentValue4.Text +
                 currentValue5.Text + currentValue6.Text + currentValue7.Text + currentValue8.Text;
 
+            string currentTrueAmountInString = currentValue0.Text + currentValue1.Text + currentValue2.Text + currentValue3.Text + currentValue4.Text +
+                currentValue5.Text + currentValue6.Text + currentValue7.Text;
+
             currentValue7.Text = "";
             currentValue6.Text = "";
             currentValue5.Text = "";
@@ -611,15 +614,20 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             if (validateRegisterDetails.PrevMeterReading != "")
             {
-                previousReading = Int32.Parse(validateRegisterDetails.PrevMeterReading);
+                string prevTrueValueInString = validateRegisterDetails.PrevMeterReading.Substring(0, validateRegisterDetails.PrevMeterReading.Length - 1); 
+                previousReading = Int32.Parse(prevTrueValueInString);
             }
             if (currentAmountInString != "")
             {
-                currentReading = Int32.Parse(currentAmountInString);
+                currentReading = Int32.Parse(currentTrueAmountInString);
             }
 
             TextView inlineError = (TextView) meterCardContainer.FindViewById(Resource.Id.reading_error_validation_msg);
             TextView meterType = (TextView)meterCardContainer.FindViewById(Resource.Id.reading_meter_type);
+            validationStateList.Find(meter =>
+            {
+                return meter.meterId == RegisterNumber;
+            }).readingResult = currentTrueAmountInString;
             if (currentReading == 0)
             {
                 inlineError.Visibility = ViewStates.Gone;

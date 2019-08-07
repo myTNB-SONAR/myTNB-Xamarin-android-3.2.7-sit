@@ -19,7 +19,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
     [Activity(Label = "Take Photo", Theme = "@style/Theme.Dashboard")]
     public class SubmitMeterTakePhotoActivity : BaseToolbarAppCompatActivity, SubmitMeterTakePhotoContract.IView
     {
-        Button btnGetMeterReadingOCR;
         public SubmitMeterTakePhotoContract.IPresenter mPresenter;
         const string IMAGE_ID = "MYTNBAPP_SSMR_OCR_KWH_001";
         string contractNumber = "";
@@ -39,6 +38,9 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         [BindView(Resource.Id.meter_capture_container)]
         LinearLayout meterCapturePhotoContainer;
+
+        [BindView(Resource.Id.btnSubmitPhotoToOCR)]
+        Button btnSubmitPhotoToOCR;
 
         public static readonly int PickImageId = 1000;
 
@@ -86,13 +88,13 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             if (extras != null && extras.ContainsKey("REQUEST_PHOTOS"))
             {
                 List<MeterValidation> validationStateList = JsonConvert.DeserializeObject<List<MeterValidation>>(extras.GetString("REQUEST_PHOTOS"));
-                validatedMeterList = validationStateList.FindAll(validatedMeter => {return validatedMeter.validated == false;});
+                validatedMeterList = validationStateList.FindAll(validatedMeter => { return validatedMeter.validated == false; });
                 MeterCapturedData meteredCapturedData;
                 meteredCapturedDataList = new List<MeterCapturedData>();
-				if (validatedMeterList.Count == 0) //means all validated but should still able to take picture
-				{
-					validatedMeterList = validationStateList;
-				}
+                if (validatedMeterList.Count == 0) //means all validated but should still able to take picture
+                {
+                    validatedMeterList = validationStateList;
+                }
                 foreach (MeterValidation nonValidatedMeter in validatedMeterList)
                 {
                     meteredCapturedData = new MeterCapturedData();
@@ -116,12 +118,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 FragmentManager.BeginTransaction().Replace(Resource.Id.photoContainer, SubmitMeterTakePhotoFragment.NewInstance()).Commit();
             }
-
-            btnGetMeterReadingOCR = FindViewById<Button>(Resource.Id.btnSubmitPhotoToOCR);
-            btnGetMeterReadingOCR.Click += delegate
+            btnSubmitPhotoToOCR.Click += delegate
             {
                 mPresenter.GetMeterReadingOCRValue(contractNumber);
             };
+            EnableSubmitButton();
             mPresenter.InitializeModelList();
         }
 
@@ -284,6 +285,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             if (isSinglePhase)
             {
                 mPresenter.AddMeterImageAt(nextSelectedPosition, contractNumber, IMAGE_ID, capturedImage);
+                meteredCapturedDataList[nextSelectedPosition].hasImage = true;
                 ShowAdjustFragment(nextSelectedPosition, capturedImage);
             }
             else
@@ -295,6 +297,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 meteredCapturedDataList[nextSelectedPosition].hasImage = true;
                 UpdateCapturedBorder();
             }
+            EnableSubmitButton();
         }
 
         public void DeleteCapturedImage()
@@ -312,6 +315,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             mPresenter.AddMeterImageAt(nextSelectedPosition, contractNumber, IMAGE_ID, capturedImage);
             meteredCapturedDataList[nextSelectedPosition].hasImage = true;
             UpdateCapturedBorder();
+            EnableSubmitButton();
         }
 
         private void DeleteCapturedImageInContainer()
@@ -404,10 +408,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public void ShowMeterReadingPage(string resultOCRResponseList)
         {
-            //Intent intent = new Intent(this,typeof(SubmitMeterReadingActivity));
-            //intent.PutExtra("OCR_RESULTS", resultOCRResponseList);
-            //StartActivityForResult(intent,7200);
-
             Intent intent = new Intent();
             intent.PutExtra("OCR_RESULTS", resultOCRResponseList);
             SetResult(Result.Ok, intent);
@@ -468,6 +468,22 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public void DisableMoreMenu()
         {
             ssmrMenu.FindItem(Resource.Id.action_ssmr_meter_reading_more).SetVisible(false);
+        }
+
+        public void EnableSubmitButton()
+        {
+            int hasImage = meteredCapturedDataList.FindIndex(meterCapturedData => { return meterCapturedData.hasImage; });
+            if (hasImage != -1)
+            {
+                btnSubmitPhotoToOCR.Enabled = true;
+                btnSubmitPhotoToOCR.Background = GetDrawable(Resource.Drawable.green_button_background);
+            }
+            else
+            {
+                btnSubmitPhotoToOCR.Enabled = false;
+                btnSubmitPhotoToOCR.Background = GetDrawable(Resource.Drawable.silver_chalice_button_background);
+            }
+            TextViewUtils.SetMuseoSans500Typeface(btnSubmitPhotoToOCR);
         }
     }
 }
