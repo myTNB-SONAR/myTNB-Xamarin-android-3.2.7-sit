@@ -1,4 +1,5 @@
 ﻿using System;
+using myTNB.Home.Components;
 using UIKit;
 
 namespace myTNB
@@ -14,6 +15,14 @@ namespace myTNB
         public void AddViewsToContainers(UIViewController accountsCardViewController)
         {
             AddSubview(accountsCardViewController.View);
+        }
+
+        public void AddRefreshViewToContainer(RefreshScreenComponent refreshScreenComponent)
+        {
+            if (refreshScreenComponent != null)
+            {
+                AddSubview(refreshScreenComponent.GetView());
+            }
         }
     }
 }

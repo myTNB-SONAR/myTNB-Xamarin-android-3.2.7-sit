@@ -1092,6 +1092,10 @@
     <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Grey.imageset\Add-Account-Icon-Grey.png" />
     <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Grey.imageset\Add-Account-Icon-Grey%402x.png" />
     <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Grey.imageset\Add-Account-Icon-Grey%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Refresh-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Refresh-Icon.imageset\Refresh-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\Refresh-Icon.imageset\Refresh-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Refresh-Icon.imageset\Refresh-Icon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1442,6 +1446,8 @@
     <Folder Include="Customs\Generic No Data Page\" />
     <Folder Include="Assets.xcassets\SSMR-NoData.imageset\" />
     <Folder Include="Assets.xcassets\Add-Account-Icon-Grey.imageset\" />
+    <Folder Include="Home\Components\Refresh Screen\" />
+    <Folder Include="Assets.xcassets\Refresh-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2225,6 +2231,8 @@
     <Compile Include="Customs\Generic No Data Page\GenericNodataViewController.designer.cs">
       <DependentUpon>GenericNodataViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Home\Components\Refresh Screen\RefreshScreenComponent.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Accounts\RefreshScreenInfoModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

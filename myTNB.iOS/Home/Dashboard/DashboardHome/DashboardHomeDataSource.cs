@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CoreGraphics;
 using Foundation;
+using myTNB.Home.Components;
 using myTNB.Model;
 using myTNB.SitecoreCMS.Model;
 using UIKit;
@@ -13,16 +14,19 @@ namespace myTNB
         private DashboardHomeViewController _controller;
         private AccountsCardContentViewController _accountsCardContentViewController;
         private DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
+        private RefreshScreenComponent _refreshScreenComponent;
         private ServicesResponseModel _services;
         private List<HelpModel> _helpList;
-        private bool _isServicesShimmering, _isHelpShimmering;
+        private bool _isServicesShimmering, _isHelpShimmering, _showRefreshScreen;
 
         public DashboardHomeDataSource(DashboardHomeViewController controller,
             AccountsCardContentViewController accountsCardContentViewController,
             ServicesResponseModel services,
             List<HelpModel> helpList,
             bool isServicesShimmering,
-            bool isHelpShimmering)
+            bool isHelpShimmering,
+            bool showRefreshScreen,
+            RefreshScreenComponent refreshScreenComponent)
         {
             _controller = controller;
             _accountsCardContentViewController = accountsCardContentViewController;
@@ -30,6 +34,8 @@ namespace myTNB
             _helpList = helpList;
             _isServicesShimmering = isServicesShimmering;
             _isHelpShimmering = isHelpShimmering;
+            _showRefreshScreen = showRefreshScreen;
+            _refreshScreenComponent = refreshScreenComponent;
         }
 
         public override nint NumberOfSections(UITableView tableView)
@@ -51,7 +57,7 @@ namespace myTNB
         {
             if (indexPath.Row == 0)
             {
-                return _dashboardHomeHelper.GetHeightForAccountCards();
+                return _showRefreshScreen ? _refreshScreenComponent?.GetViewHeight() ?? _dashboardHomeHelper.GetDefaulthHeightForRefreshScreen() : _dashboardHomeHelper.GetHeightForAccountCards();
             }
             if (indexPath.Row == 1)
             {
@@ -73,7 +79,15 @@ namespace myTNB
             if (indexPath.Row == 0)
             {
                 AccountsTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Accounts) as AccountsTableViewCell;
-                cell.AddViewsToContainers(_accountsCardContentViewController);
+
+                if (_showRefreshScreen)
+                {
+                    cell.AddRefreshViewToContainer(_refreshScreenComponent);
+                }
+                else
+                {
+                    cell.AddViewsToContainers(_accountsCardContentViewController);
+                }
                 return cell;
             }
             if (indexPath.Row == 1)

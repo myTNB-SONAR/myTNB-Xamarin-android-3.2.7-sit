@@ -1,6 +1,7 @@
 using CoreGraphics;
 using Foundation;
 using myTNB.DataManager;
+using myTNB.Home.Components;
 using myTNB.Model;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,12 @@ namespace myTNB
         public AccountsCardContentViewController(IntPtr handle) : base(handle) { }
 
         public DashboardHomeViewController _homeViewController;
-        DashboardHomeHeader _dashboardHomeHeader;
         DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
         public List<List<DueAmountDataModel>> _groupAccountList;
         TextFieldHelper _textFieldHelper = new TextFieldHelper();
         private List<List<DueAmountDataModel>> _unfilteredAccountList = new List<List<DueAmountDataModel>>();
+        RefreshScreenInfoModel _refreshScreenInfoModel = new RefreshScreenInfoModel();
+        public bool _isRefreshScreenEnabled = false;
 
         nfloat padding = 8f;
         nfloat searchPadding = 16f;
@@ -40,11 +42,8 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"NotificationDidChange", NotificationDidChange);
-            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"OnReceiveNotificationFromDashboard", NotificationDidChange);
             _unfilteredAccountList = _dashboardHomeHelper.GetGroupAccountsList(DataManager.DataManager.SharedInstance.AccountRecordsList.d);
             SetParentView();
-            SetGreetingView();
             SetSearchView();
             SetCardScrollView();
             SetScrollViewSubViews();
@@ -61,18 +60,6 @@ namespace myTNB
             }
         }
 
-        #region Observer Methods
-        private void NotificationDidChange(NSNotification notification)
-        {
-            Debug.WriteLine("DEBUG >>> SUMMARY DASHBOARD NotificationDidChange");
-            if (_dashboardHomeHeader != null)
-            {
-                _dashboardHomeHeader.SetNotificationImage(PushNotificationHelper.GetNotificationImage());
-            }
-            PushNotificationHelper.UpdateApplicationBadge();
-        }
-        #endregion
-
         #region View Initialization Methods
         private void SetParentView()
         {
@@ -86,18 +73,6 @@ namespace myTNB
             View.AddSubview(_parentView);
         }
 
-        private void SetGreetingView()
-        {
-            _dashboardHomeHeader = new DashboardHomeHeader(_parentView);
-            _dashboardHomeHeader.SetGreetingText(_homeViewController.GetGreeting());
-            _dashboardHomeHeader.SetNameText(_dashboardHomeHelper.GetDisplayName());
-            _parentView.AddSubview(_dashboardHomeHeader.GetUI());
-            _dashboardHomeHeader.SetNotificationActionRecognizer(new UITapGestureRecognizer(() =>
-            {
-                OnNotificationAction();
-            }));
-        }
-
         private void SetAddAccountCard()
         {
             if (_groupAccountList.Count > 0)
@@ -106,18 +81,14 @@ namespace myTNB
             nfloat margin = 16f;
             UIView addAcctView = new UIView(new CGRect(margin, _searchView.Frame.GetMaxY() + margin, ViewWidth - (margin * 2), 60f))
             {
-                BackgroundColor = UIColor.White
+                BackgroundColor = UIColor.White,
+                UserInteractionEnabled = true
             };
             addAcctView.Layer.CornerRadius = 5f;
             UIImageView iconView = new UIImageView(new CGRect(12f, DeviceHelper.GetCenterYWithObjHeight(28f, addAcctView), 28f, 28f))
             {
-                Image = UIImage.FromBundle("Add-Account-Icon-Grey"),
-                UserInteractionEnabled = true
+                Image = UIImage.FromBundle("Add-Account-Icon-Grey")
             };
-            iconView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-            {
-                OnAddAccountAction();
-            }));
             UILabel labelText = new UILabel(new CGRect(iconView.Frame.GetMaxX() + 12f, DeviceHelper.GetCenterYWithObjHeight(20f, addAcctView), addAcctView.Frame.Width - (iconView.Frame.GetMaxX() + 24f), 20f))
             {
                 Font = MyTNBFont.MuseoSans14_500,
@@ -126,20 +97,16 @@ namespace myTNB
             };
             addAcctView.AddSubview(iconView);
             addAcctView.AddSubview(labelText);
-            View.AddSubview(addAcctView);
-        }
-
-        public void UpdateGreeting(string greeting)
-        {
-            if (_dashboardHomeHeader != null)
+            addAcctView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                _dashboardHomeHeader.SetGreetingText(greeting);
-            }
+                OnAddAccountAction();
+            }));
+            View.AddSubview(addAcctView);
         }
 
         private void SetSearchView()
         {
-            _searchView = new UIView(new CGRect(0, _dashboardHomeHeader.GetView().Frame.GetMaxY(), _parentView.Frame.Width, DashboardHomeConstants.SearchViewHeight))
+            _searchView = new UIView(new CGRect(0, 0, _parentView.Frame.Width, DashboardHomeConstants.SearchViewHeight))
             {
                 BackgroundColor = UIColor.Clear
             };
@@ -336,6 +303,11 @@ namespace myTNB
         public override void TouchesBegan(NSSet touches, UIEvent evt)
         {
             base.TouchesBegan(touches, evt);
+            DismissActiveKeyboard();
+        }
+
+        public void DismissActiveKeyboard()
+        {
             if (_isSearchMode)
             {
                 _textFieldSearch.ResignFirstResponder();
@@ -361,11 +333,6 @@ namespace myTNB
         {
             _isSearchMode = true;
             _textFieldSearch.BecomeFirstResponder();
-        }
-
-        private void OnNotificationAction()
-        {
-            _homeViewController.OnNotificationAction();
         }
         #endregion
 
@@ -467,15 +434,22 @@ namespace myTNB
         /// <returns></returns>
         private async Task<int> GetAccountsSummary(List<string> accounts, int currentIndex)
         {
+            Debug.WriteLine("GetAccountsSummary API Call.....");
             var response = await ServiceCall.GetLinkedAccountsSummaryInfo(accounts);
 
             if (response.didSucceed && response.AccountDues?.Count > 0)
             {
+                _homeViewController.ShowRefreshScreen(false, null);
                 UpdateDueForDisplayedAccounts(response.AccountDues, currentIndex);
             }
             else
             {
+
                 //FAIL scenarios here...
+                Debug.WriteLine("GetAccountsSummary FAIL.....");
+                _refreshScreenInfoModel.RefreshBtnText = response.RefreshBtnText;
+                _refreshScreenInfoModel.RefreshMessage = response.RefreshMessage;
+                _homeViewController.ShowRefreshScreen(true, _refreshScreenInfoModel);
             }
             return currentIndex;
         }

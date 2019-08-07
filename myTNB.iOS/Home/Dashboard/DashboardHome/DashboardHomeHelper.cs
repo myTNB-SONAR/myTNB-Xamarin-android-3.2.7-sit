@@ -188,7 +188,7 @@ namespace myTNB
         /// <returns>pageViewHeight</returns>
         public nfloat GetHeightForAccountCards()
         {
-            nfloat additionalHeight = DashboardHomeConstants.GreetingViewHeight + DashboardHomeConstants.SearchViewHeight + DashboardHomeConstants.PageControlHeight;
+            nfloat additionalHeight = DashboardHomeConstants.SearchViewHeight + DashboardHomeConstants.PageControlHeight;
             nfloat pageViewHeight = 80f + additionalHeight;
             var groupAccountsList = DataManager.DataManager.SharedInstance.AccountsGroupList;
             if (groupAccountsList.Count > 1)
@@ -282,6 +282,11 @@ namespace myTNB
                 }
                 return 0;
             }
+        }
+
+        public nfloat GetDefaulthHeightForRefreshScreen()
+        {
+            return 384f;
         }
 
         public static bool HasPromotion
