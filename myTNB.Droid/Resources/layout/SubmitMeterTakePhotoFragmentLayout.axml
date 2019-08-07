@@ -11,6 +11,11 @@
         android:id="@+id/texture_view_autofit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+    <LinearLayout 
+        android:id="@+id/cropAreaContainer"
+        android:layout_alignTop="@+id/texture_view_autofit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
     <LinearLayout
         android:layout_width="match_parent"  
         android:layout_height="wrap_content"

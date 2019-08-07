@@ -25,6 +25,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         int selectedCapturedImage = 0;
 
+
         private IMenu ssmrMenu;
 
         [BindView(Resource.Id.meterReadingTakePhotoTitle)]
@@ -41,6 +42,9 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         [BindView(Resource.Id.btnSubmitPhotoToOCR)]
         Button btnSubmitPhotoToOCR;
+
+        [BindView(Resource.Id.imageDeleteCapturedPhoto)]
+        ImageView imageDeleteCapturedPhoto;
 
         public static readonly int PickImageId = 1000;
 
@@ -102,6 +106,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     meteredCapturedDataList.Add(meteredCapturedData);
                 }
                 meteredCapturedDataList[0].isSelected = true; //For initial selection;
+                mPresenter.InitializeModelList(meteredCapturedDataList.Count);
                 CreateImageHolders();
             }
 
@@ -122,8 +127,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 mPresenter.GetMeterReadingOCRValue(contractNumber);
             };
+            imageDeleteCapturedPhoto.Click += delegate
+            {
+                DeleteCapturedImage();
+            };
             EnableSubmitButton();
-            mPresenter.InitializeModelList();
         }
 
         public void UpdateCapturedBorder()
@@ -181,6 +189,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     ImageView previewImage = mActivity.FindViewById<ImageView>(Resource.Id.adjust_photo_preview);
                     previewImage.SetImageBitmap(selectedImage);
                     mActivity.ShowImagePreView(true);
+                    mActivity.selectedCapturedImage = containerPosition - 1;
                 }
                 else
                 {
@@ -284,9 +293,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             if (isSinglePhase)
             {
-                mPresenter.AddMeterImageAt(nextSelectedPosition, contractNumber, IMAGE_ID, capturedImage);
-                meteredCapturedDataList[nextSelectedPosition].hasImage = true;
-                ShowAdjustFragment(nextSelectedPosition, capturedImage);
+                mPresenter.AddMeterImageAt(0, contractNumber, IMAGE_ID, capturedImage);
+                meteredCapturedDataList[0].hasImage = true;
+                ImageView previewImage = FindViewById<ImageView>(Resource.Id.adjust_photo_preview);
+                previewImage.SetImageBitmap(capturedImage);
+                ShowImagePreView(true);
             }
             else
             {
@@ -295,6 +306,14 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 container.AddView(CreateImageView(capturedImage));
                 mPresenter.AddMeterImageAt(nextSelectedPosition, contractNumber, IMAGE_ID, capturedImage);
                 meteredCapturedDataList[nextSelectedPosition].hasImage = true;
+
+                int allWithImages = meteredCapturedDataList.FindIndex(meterCapturedData => { return !meterCapturedData.hasImage; });
+                if (allWithImages == -1)
+                {
+                    ImageView previewImage = FindViewById<ImageView>(Resource.Id.adjust_photo_preview);
+                    previewImage.SetImageBitmap(capturedImage);
+                    ShowImagePreView(true);
+                }
                 UpdateCapturedBorder();
             }
             EnableSubmitButton();
@@ -302,8 +321,20 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public void DeleteCapturedImage()
         {
-            mPresenter.RemoveMeterImageAt(selectedCapturedImage);
-            DeleteCapturedImageInContainer();
+            if (isSinglePhase)
+            {
+                mPresenter.RemoveMeterImageAt(0);
+                meteredCapturedDataList[0].hasImage = false;
+            }
+            else
+            {
+                mPresenter.RemoveMeterImageAt(selectedCapturedImage);
+                meteredCapturedDataList[selectedCapturedImage].hasImage = false;
+                DeleteCapturedImageInContainer();
+                UpdateCapturedBorder();
+            }
+            ShowImagePreView(false);
+            EnableSubmitButton();
         }
 
         private void AddCapturedImageInContainer(Bitmap capturedImage)
@@ -323,10 +354,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             LinearLayout container = (LinearLayout)meterCapturedContainer.GetChildAt(selectedCapturedImage);
             container.SetBackgroundDrawable(GetDrawable(Resource.Drawable.meter_capture_holder_inactive));
             container.RemoveViewAt(0);
-            //UpdateImageSelections();
-            UpdateCapturedBorder();
-            adjustPhotoFragment = null;
-            OnBackPressed();
         }
 
         private ImageView CreateImageView(Bitmap bitmap)

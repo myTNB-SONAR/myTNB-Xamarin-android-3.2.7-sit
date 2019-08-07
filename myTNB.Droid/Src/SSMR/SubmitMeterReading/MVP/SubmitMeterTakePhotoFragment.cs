@@ -86,6 +86,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public ImageView galleryPreview;
         public CameraCharacteristics characteristics;
         public float maximumZoomLevel;
+        SeekBar seekBar;
+        Rect zoomArea;
 
         public static SubmitMeterTakePhotoFragment NewInstance()
         {
@@ -122,9 +124,38 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
             public void OnProgressChanged(SeekBar seekBar, int progress, bool fromUser)
             {
-                int mProgress = progress;
-                Rect rect = (Rect)mFragment.characteristics.Get(CameraCharacteristics.SensorInfoActiveArraySize);
+                if (mFragment.mPreviewRequestBuilder != null)
+                {
+                    int mProgress = progress;
+                    float maxzoom = (int)mFragment.characteristics.Get(CameraCharacteristics.ScalerAvailableMaxDigitalZoom) * 5;
+                    Rect rect = (Rect)mFragment.characteristics.Get(CameraCharacteristics.SensorInfoActiveArraySize);
 
+                    int minW = (int)(rect.Width() / maxzoom);
+                    int minH = (int)(rect.Height() / maxzoom);
+                    int difW = rect.Width() - minW;
+                    int difH = rect.Height() - minH;
+                    int cropW = difW / 100 * (int)mProgress;
+                    int cropH = difH / 100 * (int)mProgress;
+
+                    mFragment.zoomArea = new Rect(cropW, cropH, rect.Width() - cropW, rect.Height() - cropH);
+                    mFragment.mPreviewRequestBuilder.Set(CaptureRequest.ScalerCropRegion, mFragment.zoomArea);
+
+                    try
+                    {
+                        if (mFragment.mCaptureSession != null)
+                        {
+                            mFragment.mCaptureSession.SetRepeatingRequest(mFragment.mPreviewRequestBuilder.Build(), mFragment.mCaptureCallback, null);
+                        }
+                    }
+                    catch (CameraAccessException e)
+                    {
+                        e.PrintStackTrace();// printStackTrace();
+                    }
+                    catch (NullPointerException ex)
+                    {
+                        ex.PrintStackTrace();
+                    }
+                }
             }
 
             public void OnStartTrackingTouch(SeekBar seekBar)
@@ -144,7 +175,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             mTextureView = (AutoFitTextureView)view.FindViewById(Resource.Id.texture_view_autofit);
             ImageView captureImage = (ImageView)view.FindViewById(Resource.Id.imageTakePhoto);
             galleryPreview = (ImageView)view.FindViewById(Resource.Id.imageGallery);
-            SeekBar seekBar = (SeekBar)view.FindViewById(Resource.Id.seekBar);
+            seekBar = (SeekBar)view.FindViewById(Resource.Id.seekBar);
 
             captureImage.Click += delegate
             {
@@ -157,7 +188,9 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             };
 
             seekBar.SetOnSeekBarChangeListener(new OnSeekbarChangeListener(this));
-
+            LinearLayout linearLayout = view.FindViewById<LinearLayout>(Resource.Id.cropAreaContainer);
+            linearLayout.Alpha = 0.3f;
+            linearLayout.AddView(new CropAreaView(this.Activity));
             try
             {
                 ((SubmitMeterTakePhotoActivity)Activity).EnableMoreMenu();
@@ -308,7 +341,9 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 stillCaptureBuilder.AddTarget(mImageReader.Surface);
 
                 // Use the same AE and AF modes as the preview.
-                stillCaptureBuilder.Set(CaptureRequest.ControlAfMode, (int)ControlAFMode.ContinuousPicture);
+                //stillCaptureBuilder.Set(CaptureRequest.ControlAfMode, (int)ControlAFMode.ContinuousPicture);
+
+                stillCaptureBuilder.Set(CaptureRequest.ScalerCropRegion, zoomArea);
                 //SetAutoFlash(stillCaptureBuilder);
 
                 // Orientation
@@ -416,6 +451,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 {
                     var cameraId = manager.GetCameraIdList()[i];
                     characteristics = manager.GetCameraCharacteristics(cameraId);
+                    seekBar.Max = (int)characteristics.Get(CameraCharacteristics.ScalerAvailableMaxDigitalZoom) * 5;
 
                     // We don't use a front facing camera in this sample.
                     var facing = (Integer)characteristics.Get(CameraCharacteristics.LensFacing);
@@ -626,19 +662,20 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         // Lock the focus as the first step for a still image capture.
         private void LockFocus()
         {
-            try
+            if (mPreviewRequestBuilder != null)
             {
-                // This is how to tell the camera to lock focus.
-
-                mPreviewRequestBuilder.Set(CaptureRequest.ControlAfTrigger, (int)ControlAFTrigger.Start);
-                // Tell #mCaptureCallback to wait for the lock.
-                mState = STATE_WAITING_LOCK;
-                mCaptureSession.Capture(mPreviewRequestBuilder.Build(), mCaptureCallback,
-                        mBackgroundHandler);
-            }
-            catch (CameraAccessException e)
-            {
-                e.PrintStackTrace();
+                try
+                {
+                    mPreviewRequestBuilder.Set(CaptureRequest.ScalerCropRegion, zoomArea);
+                    // Tell #mCaptureCallback to wait for the lock.
+                    mState = STATE_WAITING_LOCK;
+                    mCaptureSession.Capture(mPreviewRequestBuilder.Build(), mCaptureCallback,
+                            mBackgroundHandler);
+                }
+                catch (CameraAccessException e)
+                {
+                    e.PrintStackTrace();
+                }
             }
         }
 
@@ -695,6 +732,40 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 //owner.CloseCamera();
                 //owner.StopBackgroundThread();
                 ((SubmitMeterTakePhotoActivity)owner.Activity).AddCapturedImage(myBitmap);
+            }
+        }
+
+        public class CropAreaView : View
+        {
+            public CropAreaView(Context context) : base(context)
+            {
+            }
+
+            public CropAreaView(Context context, IAttributeSet attrs) : base(context, attrs)
+            {
+            }
+
+            public CropAreaView(Context context, IAttributeSet attrs, int defStyleAttr) : base(context, attrs, defStyleAttr)
+            {
+            }
+
+            protected override void OnDraw(Canvas canvas)
+            {
+                base.OnDraw(canvas);
+
+                Paint rectPaint = new Paint(PaintFlags.AntiAlias);
+                rectPaint.Color = Color.Gray;
+                rectPaint.SetStyle(Paint.Style.Fill);
+                canvas.DrawPaint(rectPaint);
+
+                rectPaint.SetXfermode(new PorterDuffXfermode(PorterDuff.Mode.Clear));
+                int height = canvas.Height;
+                int width = canvas.Width;
+                int left = (int)(width - (width * .75)); 
+                int top = (int)(height - (height * .90));
+                int right = (int)(width - (height * .25));
+                int bottom = (int)(height - (height * .25));
+                canvas.DrawRect(left, top, right, bottom, rectPaint);
             }
         }
     }

@@ -78,6 +78,16 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
         }
 
+        public void InitializeModelList(int count)
+        {
+            MeterImageModel model;
+            for (int i = 0; i < count; i++)
+            {
+                model = new MeterImageModel();
+                meterImageList.Add(model);
+            }
+        }
+
         public void AddMeterImageAt(int imagePosition, string readingUnit, string imageId, Bitmap imageBitmap)
         {
             meterImageList[imagePosition].RequestReadingUnit = readingUnit;
