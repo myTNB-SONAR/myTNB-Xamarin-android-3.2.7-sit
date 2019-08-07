@@ -1,2 +1,2 @@
-SIT Build - 08/06
+SIT Build - 08/07
 - Pointing to SIT public DNS
