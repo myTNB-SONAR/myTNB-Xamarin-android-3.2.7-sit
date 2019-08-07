@@ -50,14 +50,14 @@ namespace myTNB.SSMR
             {
                 Image = displayImage
             };
-            UILabel lblTitle = new UILabel(new CGRect(16, imgBackground.Frame.GetMaxY() + 23, that.View.Frame.Width - 31, 19))
+            UILabel lblTitle = new UILabel(new CGRect(26, imgBackground.Frame.GetMaxY() + 23, that.View.Frame.Width - 52, 19))
             {
                 TextColor = MyTNBColor.PowerBlue,
                 TextAlignment = UITextAlignment.Center,
                 Font = MyTNBFont.MuseoSans16_500,
                 Text = SSMRDataObject.Title ?? string.Empty
             };
-            UILabel lblDescription = new UILabel(new CGRect(16, lblTitle.Frame.GetMaxY() + 16, that.View.Frame.Width - 32, 80))
+            UILabel lblDescription = new UILabel(new CGRect(26, lblTitle.Frame.GetMaxY() + 16, that.View.Frame.Width - 52, 80))
             {
                 TextColor = MyTNBColor.WarmGrey,
                 TextAlignment = UITextAlignment.Center,
