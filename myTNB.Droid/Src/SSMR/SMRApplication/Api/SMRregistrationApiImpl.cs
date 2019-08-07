@@ -29,5 +29,10 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Api
         {
             return api.SubmitSMRApplication(request);
         }
+
+        public Task<GetAccountsSMREligibilityResponse> GetAccountsSMREligibility([Body] GetAccountSMREligibilityRequest request)
+        {
+            return api.GetAccountsSMREligibility(request);
+        }
     }
 }

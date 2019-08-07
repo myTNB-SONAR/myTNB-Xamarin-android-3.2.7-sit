@@ -241,38 +241,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetupNewPromotionView();
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg);
                 TextViewUtils.SetMuseoSans500Typeface(myServiceTitle, newFAQTitle, newPromotionTitle, btnRefresh, txtAdd);
-                List<CustomerBillingAccount> customerBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
-                List<CustomerBillingAccount> list = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
-                List<SMRAccount> smrAccountList = new List<SMRAccount>();
-                if (customerBillingAccounts.Count > 0)
-                {
-                    foreach (CustomerBillingAccount billingAccount in customerBillingAccounts)
-                    {
-                        SMRAccount smrAccount = new SMRAccount();
-                        smrAccount.accountNumber = billingAccount.AccNum;
-                        smrAccount.accountName = billingAccount.AccDesc;
-                        smrAccount.accountAddress = billingAccount.AccountStAddress;
-                        smrAccount.accountSelected = false;
-                        smrAccountList.Add(smrAccount);
-                    }
-                    smrAccountList[0].accountSelected = true; //Default Selection
-                }
-
-                if (list.Count > 0)
-                {
-                    accountListContainer.Visibility = ViewStates.Visible;
-                    accountCard.Visibility = ViewStates.Gone;
-                    addActionImage.Visibility = ViewStates.Visible;
-                }
-                else
-                {
-                    myServiceTitle.SetTextColor(Color.White);
-                    addActionImage.Visibility = ViewStates.Gone;
-                    accountListContainer.Visibility = ViewStates.Gone;
-                    accountCard.Visibility = ViewStates.Visible;
-                }
-
-                UserSessions.SetSMRAccountList(smrAccountList);
 
                 addActionImage.SetOnClickListener(null);
                 notificationHeaderIcon.SetOnClickListener(null);
@@ -1041,17 +1009,105 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private void OnStartLoadAccount()
         {
+            List<CustomerBillingAccount> eligibleSMRBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
+            List<CustomerBillingAccount> currentSMRBillingAccounts = CustomerBillingAccount.CurrentSMRAccountList();
+            List<CustomerBillingAccount> list = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
+            List<SMRAccount> eligibleSmrAccountList = new List<SMRAccount>();
+            List<SMRAccount> currentSmrAccountList = new List<SMRAccount>();
+            if (eligibleSMRBillingAccounts.Count > 0)
+            {
+                foreach (CustomerBillingAccount billingAccount in eligibleSMRBillingAccounts)
+                {
+                    SMRAccount smrAccount = new SMRAccount();
+                    smrAccount.accountNumber = billingAccount.AccNum;
+                    smrAccount.accountName = billingAccount.AccDesc;
+                    smrAccount.accountAddress = billingAccount.AccountStAddress;
+                    smrAccount.accountSelected = false;
+                    eligibleSmrAccountList.Add(smrAccount);
+                }
+            }
+
+            if (currentSMRBillingAccounts.Count > 0)
+            {
+                foreach (CustomerBillingAccount billingAccount in currentSMRBillingAccounts)
+                {
+                    SMRAccount smrAccount = new SMRAccount();
+                    smrAccount.accountNumber = billingAccount.AccNum;
+                    smrAccount.accountName = billingAccount.AccDesc;
+                    smrAccount.accountAddress = billingAccount.AccountStAddress;
+                    smrAccount.accountSelected = false;
+                    currentSmrAccountList.Add(smrAccount);
+                }
+            }
+
+            if (list.Count > 0)
+            {
+                accountListContainer.Visibility = ViewStates.Visible;
+                accountCard.Visibility = ViewStates.Gone;
+                addActionImage.Visibility = ViewStates.Visible;
+            }
+            else
+            {
+                myServiceTitle.SetTextColor(Color.White);
+                addActionImage.Visibility = ViewStates.Gone;
+                accountListContainer.Visibility = ViewStates.Gone;
+                accountCard.Visibility = ViewStates.Visible;
+            }
+
+            UserSessions.SetSMRAccountList(currentSmrAccountList);
+            UserSessions.SetSMREligibilityAccountList(eligibleSmrAccountList);
+
             topRootView.SetBackgroundResource(Resource.Drawable.dashboard_home_bg);
             accountListRefreshContainer.Visibility = ViewStates.Gone;
             accountListViewContainer.Visibility = ViewStates.Visible;
             if (MyTNBAccountManagement.GetInstance().IsNeedUpdatedBillingDetails())
             {
+                UserSessions.SetRealSMREligibilityAccountList(eligibleSmrAccountList);
                 OnLoadAccount();
             }
             else
             {
                 this.presenter.LoadLocalAccounts();
             }
+        }
+
+        public void UpdateEligibilitySMRAccountList()
+        {
+            List<CustomerBillingAccount> eligibleSMRBillingAccounts = CustomerBillingAccount.EligibleSMRAccountList();
+            List<SMRAccount> eligibleSmrAccountList = new List<SMRAccount>();
+            if (eligibleSMRBillingAccounts.Count > 0)
+            {
+                foreach (CustomerBillingAccount billingAccount in eligibleSMRBillingAccounts)
+                {
+                    SMRAccount smrAccount = new SMRAccount();
+                    smrAccount.accountNumber = billingAccount.AccNum;
+                    smrAccount.accountName = billingAccount.AccDesc;
+                    smrAccount.accountAddress = billingAccount.AccountStAddress;
+                    smrAccount.accountSelected = false;
+                    eligibleSmrAccountList.Add(smrAccount);
+                }
+            }
+            UserSessions.SetSMREligibilityAccountList(eligibleSmrAccountList);
+            UserSessions.SetRealSMREligibilityAccountList(eligibleSmrAccountList);
+        }
+
+        public void UpdateCurrentSMRAccountList()
+        {
+            List<CustomerBillingAccount> currentSMRBillingAccounts = CustomerBillingAccount.CurrentSMRAccountList();
+            List<SMRAccount> currentSmrAccountList = new List<SMRAccount>();
+            if (currentSMRBillingAccounts.Count > 0)
+            {
+                foreach (CustomerBillingAccount billingAccount in currentSMRBillingAccounts)
+                {
+                    SMRAccount smrAccount = new SMRAccount();
+                    smrAccount.accountNumber = billingAccount.AccNum;
+                    smrAccount.accountName = billingAccount.AccDesc;
+                    smrAccount.accountAddress = billingAccount.AccountStAddress;
+                    smrAccount.accountSelected = false;
+                    currentSmrAccountList.Add(smrAccount);
+                }
+            }
+            UserSessions.SetSMRAccountList(currentSmrAccountList);
         }
 
         // On Press Refresh button action
