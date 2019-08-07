@@ -276,11 +276,12 @@ namespace myTNB
         {
             get
             {
-                if (HasPromotion)
+                return 50F + (UIApplication.SharedApplication.KeyWindow.Frame.Width * 0.64F * 0.98F);
+                /*if (HasPromotion)
                 {
                     return 50F + (UIApplication.SharedApplication.KeyWindow.Frame.Width * 0.64F * 0.98F);
                 }
-                return 0;
+                return 0;*/
             }
         }
 

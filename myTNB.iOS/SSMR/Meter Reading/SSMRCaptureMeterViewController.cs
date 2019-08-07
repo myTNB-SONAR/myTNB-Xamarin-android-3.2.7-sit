@@ -12,7 +12,6 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using myTNB.Model;
 using System.Linq;
-using ObjCRuntime;
 
 namespace myTNB
 {
@@ -36,6 +35,7 @@ namespace myTNB
         private CustomUISlider _zoomSlider;
         private UIButton _btnSubmit;
         private UIImage _capturedImage;
+        private UIBarButtonItem _btnInfo;
 
         private AVCaptureSession _captureSession;
         private AVCaptureDevice _captureDevice;
@@ -105,15 +105,21 @@ namespace myTNB
             {
                 NavigationController.PopViewController(true);
             });
-            UIBarButtonItem btnInfo = new UIBarButtonItem(UIImage.FromBundle(SSMRConstants.IMG_Info)
-                , UIBarButtonItemStyle.Done, (sender, e) =>
-            {
-                Debug.WriteLine("Info Tapped");
-                DisplayTooltip();
-            });
+            _btnInfo = new UIBarButtonItem(UIImage.FromBundle(SSMRConstants.IMG_Info)
+               , UIBarButtonItemStyle.Done, (sender, e) =>
+           {
+               Debug.WriteLine("Info Tapped");
+               DisplayTooltip();
+           });
             NavigationItem.LeftBarButtonItem = btnBack;
-            NavigationItem.RightBarButtonItem = btnInfo;
+            NavigationItem.RightBarButtonItem = _btnInfo;
             Title = GetI18NValue(SSMRConstants.I18N_NavTitleTakePhoto);
+            HideInfoIcon(false);
+        }
+
+        private void HideInfoIcon(bool hidden)
+        {
+            NavigationItem.RightBarButtonItem = hidden ? null : _btnInfo;
         }
 
         private void DisplayTooltip(bool isGallery = false, Action action = null)
@@ -179,9 +185,7 @@ namespace myTNB
             {
                 List<string> keys = ReadingDictionary.Keys.ToList();
                 for (int i = 0; i < keys.Count; i++)
-                {
-                    ReadingDictionary[keys[i]] = false;
-                }
+                { ReadingDictionary[keys[i]] = false; }
             }
         }
 
@@ -296,13 +300,9 @@ namespace myTNB
                 UILabel currentLbl = view.ViewWithTag(98) as UILabel;
                 if (currentLbl == null) { currentLbl = new UILabel(); }
                 if (isSelected)
-                {
-                    view.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
-                }
+                { view.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor; }
                 else
-                {
-                    view.Layer.BorderColor = hasImg ? MyTNBColor.FreshGreen.CGColor : MyTNBColor.WhiteTwo.CGColor;
-                }
+                { view.Layer.BorderColor = hasImg ? MyTNBColor.FreshGreen.CGColor : MyTNBColor.WhiteTwo.CGColor; }
                 currentLbl.TextColor = isSelected ? MyTNBColor.WaterBlue : MyTNBColor.GreyishBrown;
             }
         }
@@ -320,9 +320,7 @@ namespace myTNB
                 {
                     SetPreviewColors(currentView, false, false);
                     if (data.Image != null)
-                    {
-                        SetPreviewColors(currentView, false, true);
-                    }
+                    { SetPreviewColors(currentView, false, true); }
                     if (isSameTag)
                     {
                         SetPreviewColors(currentView, true, data.Image != null);
@@ -336,6 +334,7 @@ namespace myTNB
                         }
                         SetDescription(GetI18NValue(data.Image == null ? _multiPhaseDescription : SSMRConstants.I18N_EditDescription));
                         Title = GetI18NValue(data.Image == null ? SSMRConstants.I18N_NavTitleTakePhoto : SSMRConstants.I18N_NavTitleAdjustPhoto);
+                        HideInfoIcon(data.Image != null);
                     }
 
                     if (isSameTag)
@@ -343,9 +342,7 @@ namespace myTNB
                         bool isPrevHasImg = IsPreviosPreviewHasImage(i, out int noImageIndex);
                         bool isCurHasImg = data.Image != null;
                         if (isPrevHasImg)
-                        {
-                            SetPreviewColors(currentView, true, isPrevHasImg);
-                        }
+                        { SetPreviewColors(currentView, true, isPrevHasImg); }
                         else
                         {
                             if (!isCurHasImg)
@@ -477,6 +474,7 @@ namespace myTNB
                 ToggleCTA();
                 SetDescription(_isMultiPhase ? _multiPhaseDescription : GetI18NValue(SSMRConstants.I18N_SingleTakePhotoDescription));
                 Title = GetI18NValue(SSMRConstants.I18N_NavTitleTakePhoto);
+                HideInfoIcon(false);
             }));
             view.AddSubview(imgDelete);
             return view;
@@ -548,6 +546,7 @@ namespace myTNB
                     _capturedImage = selectedImg;
                     SetDescription(GetI18NValue(SSMRConstants.I18N_EditDescription));
                     Title = GetI18NValue(SSMRConstants.I18N_NavTitleAdjustPhoto);
+                    HideInfoIcon(true);
                 }
                 ToggleCTA();
             };
@@ -633,6 +632,7 @@ namespace myTNB
 
                         SetDescription(GetI18NValue(SSMRConstants.I18N_EditDescription));
                         Title = GetI18NValue(SSMRConstants.I18N_NavTitleAdjustPhoto);
+                        HideInfoIcon(true);
                     }
                     _currentTag = model.Tag;
                     break;
@@ -667,6 +667,7 @@ namespace myTNB
             }
             _viewLoading.Hidden = false;
             Title = GetI18NValue(SSMRConstants.I18N_NavTitleTakePhoto);
+            HideInfoIcon(false);
         }
 
         private void UpdateViewGallery()
@@ -761,6 +762,7 @@ namespace myTNB
                 AddMainPreview(capturedImage);
                 SetDescription(GetI18NValue(SSMRConstants.I18N_EditDescription));
                 Title = GetI18NValue(SSMRConstants.I18N_NavTitleAdjustPhoto);
+                HideInfoIcon(true);
             }
             ToggleCTA();
         }

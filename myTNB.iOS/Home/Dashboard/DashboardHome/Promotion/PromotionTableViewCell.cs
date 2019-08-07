@@ -48,7 +48,7 @@ namespace myTNB
             {
                 _scrollView.Subviews[i].RemoveFromSuperview();
             }
-
+            promotions = GetStaticPromotionList();
             if (promotions != null && promotions.Count > 0)
             {
                 AddContentData(promotions);
@@ -104,7 +104,7 @@ namespace myTNB
                 AddCardShadow(ref viewParent);
                 UIImageView imgView = new UIImageView(new CGRect(0, 0, viewParent.Frame.Width, cardHeight * 0.50F))
                 {
-                    //Image = UIImage.FromBundle(promotion.LandscapeImage)
+                    Image = UIImage.FromBundle(promotion.LandscapeImage)
                 };
 
                 UILabel lblTitle = new UILabel(new CGRect(16, imgView.Frame.GetMaxY() + 16, viewParent.Frame.Width - 32, 16))

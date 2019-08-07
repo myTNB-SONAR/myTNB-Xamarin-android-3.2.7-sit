@@ -124,7 +124,7 @@ namespace myTNB
                     _services = new ServicesResponseModel();
                     _helpList = new List<HelpModel>();
                     OnGetServices();
-                    UpdatePromotions();
+                    //UpdatePromotions();
                     OnUpdateNotification();
                     InvokeOnMainThread(() =>
                     {
