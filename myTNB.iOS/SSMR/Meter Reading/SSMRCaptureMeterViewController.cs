@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using myTNB.Model;
 using System.Linq;
+using ObjCRuntime;
 
 namespace myTNB
 {
@@ -495,6 +496,8 @@ namespace myTNB
             {
                 Debug.WriteLine("zoomSlider ValueChanged: " + ((UISlider)sender).Value);
                 nfloat zoomFactor = (nfloat)((UISlider)sender).Value;
+                if (zoomFactor > _zoomSlider.MaxValue) { zoomFactor = _zoomSlider.MaxValue; }
+                if (zoomFactor < _zoomSlider.MinValue) { zoomFactor = _zoomSlider.MinValue; }
                 _captureDevice.LockForConfiguration(out NSError nsError);
                 _captureDevice.VideoZoomFactor = zoomFactor;
                 _captureDevice.UnlockForConfiguration();
@@ -507,10 +510,7 @@ namespace myTNB
             _viewGallery.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 Debug.WriteLine("viewGallery tapped");
-                if (_isGalleryTooltipDisplayed)
-                {
-                    OnShowGallery();
-                }
+                if (_isGalleryTooltipDisplayed) { OnShowGallery(); }
                 else
                 {
                     _isGalleryTooltipDisplayed = true;
