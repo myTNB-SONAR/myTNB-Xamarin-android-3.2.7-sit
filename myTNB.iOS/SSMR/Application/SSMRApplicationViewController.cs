@@ -15,10 +15,7 @@ namespace myTNB
 {
     public partial class SSMRApplicationViewController : CustomUIViewController
     {
-        public SSMRApplicationViewController(IntPtr handle) : base(handle)
-        {
-        }
-
+        public SSMRApplicationViewController(IntPtr handle) : base(handle) { }
         public bool IsApplication;
 
         private UIButton _btnSubmit;
@@ -31,6 +28,7 @@ namespace myTNB
         private CustomTextField _customMobileField;
         private CustomTextField _customEmailField;
         protected List<CustomerAccountRecordModel> _eligibleAccountList;
+        protected AccountsSMREligibilityResponseModel _smrEligibleList;
         protected CustomerAccountRecordModel _selectedAccount;
         protected ContactDetailsResponseModel _contactDetails;
         protected SSMRApplicationStatusResponseModel _ssmrApplicationStatus;
@@ -57,13 +55,10 @@ namespace myTNB
                 AddTerminateReason();
             }
             ToggleCTA();
-            if (!IsApplication)
+            if (!IsApplication) { OnGetTerminateReasons(); }
+            if (IsApplication && _eligibleAccountList != null && _eligibleAccountList.Count > 0)
             {
-                OnGetTerminateReasons();
-            }
-            if (!IsApplication && _selectedAccount != null)
-            {
-                OnGetContactInfo();
+                OnGetAccountsSMREligibility();
             }
         }
 
@@ -617,9 +612,12 @@ namespace myTNB
                         if (_contactDetails != null && _contactDetails.d != null
                             && _contactDetails.d.IsSuccess && _contactDetails.d.data != null)
                         {
+                            _lblEditInfo.Hidden = true;
                             _customEmailField.SetValue(_contactDetails.d.data.Email);
                             _customMobileField.SetValue(_contactDetails.d.data.Mobile);
                             ToggleCTA();
+                            _customEmailField.SetState(true);
+                            _customMobileField.SetState(true);
                         }
                         ActivityIndicator.Hide();
                     });
@@ -630,6 +628,27 @@ namespace myTNB
                     ActivityIndicator.Hide();
                 }
 
+            });
+        }
+
+        private void OnGetAccountsSMREligibility()
+        {
+            InvokeOnMainThread(async () =>
+            {
+                _smrEligibleList = await GetAccountsSMREligibility();
+                if (_smrEligibleList != null && _smrEligibleList.d != null
+                    && _smrEligibleList.d.IsSuccess && _smrEligibleList.d.data != null
+                    && _smrEligibleList.d.data.accountEligibilities != null)
+                {
+                    for (int i = _smrEligibleList.d.data.accountEligibilities.Count - 1; i > -1; i--)
+                    {
+                        AccountsSMREligibilityModel item = _smrEligibleList.d.data.accountEligibilities[i];
+                        if (!item.IsEligible)
+                        {
+                            _eligibleAccountList.RemoveAt(i);
+                        }
+                    }
+                }
             });
         }
 
@@ -737,6 +756,19 @@ namespace myTNB
             };
             TerminationReasonsResponseModel response = serviceManager
                 .OnExecuteAPIV6<TerminationReasonsResponseModel>(SSMRConstants.Service_GetTerminationReasons, request);
+            return response;
+        }
+
+        private async Task<AccountsSMREligibilityResponseModel> GetAccountsSMREligibility()
+        {
+            ServiceManager serviceManager = new ServiceManager();
+            object request = new
+            {
+                serviceManager.usrInf,
+                contractAccounts = _eligibleAccountList.Select(x => x.accNum).ToList()
+            };
+            AccountsSMREligibilityResponseModel response = serviceManager
+                .OnExecuteAPIV6<AccountsSMREligibilityResponseModel>(SSMRConstants.Service_GetAccountsSMREligibility, request);
             return response;
         }
 

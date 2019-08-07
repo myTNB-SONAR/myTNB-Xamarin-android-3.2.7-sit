@@ -21,7 +21,6 @@ namespace myTNB
         public string RightIcon { set; get; }
         public string Value { set; get; }
         public bool IsSecureEntry { set; get; } = false;
-        public bool IsFieldValid { get { return _isFieldValid; } }
         public bool OnCreateValidation { set; get; }
         public Action TypingEndAction { set; get; }
         public Action TypingBeginAction { set; get; }
@@ -109,6 +108,22 @@ namespace myTNB
             SetEvents();
             if (OnCreateValidation) { ValidateField(); }
             return ViewContainer;
+        }
+
+        public bool IsFieldValid
+        {
+            get
+            {
+                ValidateField();
+                return _isFieldValid;
+            }
+        }
+
+        public void SetState(bool isValid)
+        {
+            LblError.Hidden = isValid;
+            _viewLine.BackgroundColor = isValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
+            TextField.TextColor = isValid ? TextColor : MyTNBColor.Tomato;
         }
 
         public void ValidateField()

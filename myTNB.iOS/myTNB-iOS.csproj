@@ -1448,6 +1448,8 @@
     <Folder Include="Assets.xcassets\Add-Account-Icon-Grey.imageset\" />
     <Folder Include="Home\Components\Refresh Screen\" />
     <Folder Include="Assets.xcassets\Refresh-Icon.imageset\" />
+    <Folder Include="Model\GetAccountsSMREligibility\" />
+    <Folder Include="Customs\Custom View Controller\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2061,7 +2063,6 @@
     <Compile Include="Home\Feedback\Feedback Image\UIImageHelper.cs" />
     <Compile Include="Home\More\Language\LanguageSettings.cs" />
     <Compile Include="Model\UpdateNotification\UpdateNotificationModel.cs" />
-    <Compile Include="Customs\CustomUIViewController.cs" />
     <Compile Include="Model\Modify Notification\DeleteNotificationResponseModel.cs" />
     <Compile Include="Model\Modify Notification\ReadNotificationResponseModel.cs" />
     <Compile Include="Customs\Bill\CustomBillUIViewController.cs" />
@@ -2233,6 +2234,9 @@
     </Compile>
     <Compile Include="Home\Components\Refresh Screen\RefreshScreenComponent.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\Accounts\RefreshScreenInfoModel.cs" />
+    <Compile Include="Model\GetAccountsSMREligibility\GetAccountsSMREligibilityResponseModel.cs" />
+    <Compile Include="Customs\Custom View Controller\CustomUIViewController.cs" />
+    <Compile Include="Customs\Custom View Controller\CustomViewControllerConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

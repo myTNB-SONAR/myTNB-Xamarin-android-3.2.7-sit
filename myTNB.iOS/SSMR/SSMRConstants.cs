@@ -16,6 +16,7 @@ namespace myTNB.SSMR
         public static string Service_GetTerminationReasons = "GetSMRTerminationReasons";
         public static string Service_GetCARegisteredContact = "GetCAContactDetails";
         public static string Service_GetMeterReadingOCRValue = "GetMeterReadingOCRValue";
+        public static string Service_GetAccountsSMREligibility = "GetAccountsSMREligibility";
         public static string Service_Register = "R";
         public static string Service_Terminate = "T";
         public static string Service_OthersID = "1007";

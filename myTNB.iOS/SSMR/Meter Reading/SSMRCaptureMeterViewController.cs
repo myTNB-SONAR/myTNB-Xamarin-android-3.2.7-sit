@@ -63,9 +63,9 @@ namespace myTNB
         {
             PageName = SSMRConstants.Pagename_SSMRCaptureMeter;
             base.ViewDidLoad();
+            EvaluateReadingList();
             _isMultiPhase = ReadingDictionary != null && ReadingDictionary.Count > 1;
             SetImageList();
-            ConfigureNavigationBar();
             SetDescription();
             SetPreview();
             SetCamera();
@@ -86,7 +86,10 @@ namespace myTNB
             base.ViewDidAppear(animated);
             if (PHPhotoLibrary.AuthorizationStatus != PHAuthorizationStatus.Authorized)
             {
-                PHPhotoLibrary.RequestAuthorization((status) => { });
+                PHPhotoLibrary.RequestAuthorization((status) =>
+                {
+                    if (status == PHAuthorizationStatus.Authorized) { UpdateViewGallery(); }
+                });
             }
             else
             {
@@ -94,7 +97,7 @@ namespace myTNB
             }
         }
 
-        private void ConfigureNavigationBar()
+        public override void ConfigureNavigationBar()
         {
             UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle(SSMRConstants.IMG_BackIcon)
                 , UIBarButtonItemStyle.Done, (sender, e) =>
@@ -164,6 +167,20 @@ namespace myTNB
                 string onto = ontoList.Count > 1 ? string.Format(GetI18NValue(SSMRConstants.I18N_PluralOnto), ontoList[0], ontoList[1])
                     : string.Format(GetI18NValue(SSMRConstants.I18N_SingularOnto), ontoList[0]);
                 _multiPhaseDescription = string.Format("{0} {1}", done, onto);
+            }
+        }
+
+        private void EvaluateReadingList()
+        {
+            bool hasSameValue = ReadingDictionary.Values.Distinct().Count() == 1;
+            bool firstValue = ReadingDictionary.Values.First();
+            if (firstValue && hasSameValue)
+            {
+                List<string> keys = ReadingDictionary.Keys.ToList();
+                for (int i = 0; i < keys.Count; i++)
+                {
+                    ReadingDictionary[keys[i]] = false;
+                }
             }
         }
 
@@ -700,10 +717,11 @@ namespace myTNB
 
                 AVCaptureVideoPreviewLayer videoPreviewLayer = new AVCaptureVideoPreviewLayer(_captureSession)
                 {
-                    Frame = new CGRect(0, 0, _viewCamera.Frame.Width, _viewCamera.Frame.Height),
+                    Frame = new CGRect(0, _viewCamera.Frame.Height - ViewHeight, _viewCamera.Frame.Width, ViewHeight),
                     VideoGravity = AVLayerVideoGravity.Resize,
                     ZPosition = -1
                 };
+
                 _viewCamera.Layer.AddSublayer(videoPreviewLayer);
                 _captureSession.StartRunning();
             }
@@ -764,7 +782,8 @@ namespace myTNB
                 };
             }
 
-            _imgViewMainPreview = new UIImageView(new CGRect(new CGPoint(0, 0), _viewMainPreviewParent.Frame.Size))
+            _imgViewMainPreview = new UIImageView(new CGRect(new CGPoint(0, _viewMainPreviewParent.Frame.Height - ViewHeight)
+                , new CGSize(_viewMainPreviewParent.Frame.Width, ViewHeight)))
             {
                 UserInteractionEnabled = true,
                 MultipleTouchEnabled = true,
@@ -832,10 +851,9 @@ namespace myTNB
                 CGPoint point = sender.TranslationInView(sender.View);
 
                 if (point.X + _imgViewMainPreview.Frame.X > 0 || Math.Abs(point.X + _imgViewMainPreview.Frame.X) > deltaX)
-                { return; }
+                { point.X = 0; }
                 if (point.Y + _imgViewMainPreview.Frame.Y > 0 || Math.Abs(point.Y + _imgViewMainPreview.Frame.Y) > deltaY)
-                { return; }
-
+                { point.Y = 0; }
                 sender.View.Transform = CGAffineTransform.Translate(sender.View.Transform, point.X, point.Y);
                 sender.SetTranslation(new CGPoint(0, 0), sender.View);
             }
