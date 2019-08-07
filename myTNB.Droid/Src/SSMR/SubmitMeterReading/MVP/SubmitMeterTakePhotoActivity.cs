@@ -267,8 +267,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public override void OnBackPressed()
         {
             base.OnBackPressed();
-            SetToolBarTitle("Take Photo");
-            meterReadingTakePhotoTitle.Text = "You're done with kW and kVARh! On to kWh reading now.";
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -330,15 +328,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 //meterReadingTakePhotoTitle.Text = "You can delete and retake the photo or adjust it before submission.";
             }
             EnableSubmitButton();
-
-            if (nextSelectedPosition != -1)
-            {
-
-            }
-            else
-            {
-                ShowAdjustFragment(meteredCapturedDataList.Count - 1, capturedImage);
-            }
         }
 
         public void DeleteCapturedImage()
