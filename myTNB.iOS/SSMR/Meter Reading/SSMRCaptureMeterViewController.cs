@@ -63,6 +63,7 @@ namespace myTNB
         {
             PageName = SSMRConstants.Pagename_SSMRCaptureMeter;
             base.ViewDidLoad();
+            EvaluateReadingList();
             _isMultiPhase = ReadingDictionary != null && ReadingDictionary.Count > 1;
             SetImageList();
             SetDescription();
@@ -166,6 +167,20 @@ namespace myTNB
                 string onto = ontoList.Count > 1 ? string.Format(GetI18NValue(SSMRConstants.I18N_PluralOnto), ontoList[0], ontoList[1])
                     : string.Format(GetI18NValue(SSMRConstants.I18N_SingularOnto), ontoList[0]);
                 _multiPhaseDescription = string.Format("{0} {1}", done, onto);
+            }
+        }
+
+        private void EvaluateReadingList()
+        {
+            bool hasSameValue = ReadingDictionary.Values.Distinct().Count() == 1;
+            bool firstValue = ReadingDictionary.Values.First();
+            if (firstValue && hasSameValue)
+            {
+                List<string> keys = ReadingDictionary.Keys.ToList();
+                for (int i = 0; i < keys.Count; i++)
+                {
+                    ReadingDictionary[keys[i]] = false;
+                }
             }
         }
 
