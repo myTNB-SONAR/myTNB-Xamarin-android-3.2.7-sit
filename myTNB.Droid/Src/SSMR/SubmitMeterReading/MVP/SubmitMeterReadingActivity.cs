@@ -130,7 +130,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             btnSubmitReading.Click += delegate
             {
-                string contractAccount = "220678784308";
+                string contractAccount = selectedAccount.AccountNum;
                 bool isOwnedAccount = true;
 
                 List<MeterReading> meterReadlingList = new List<MeterReading>();
@@ -339,14 +339,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 }
             }
 
-            btnSubmitReading.Enabled = true;
-            btnSubmitReading.Background = GetDrawable(Resource.Drawable.green_button_background);
-
             btnTakePhoto.Enabled = true;
             btnTakePhoto.Background = GetDrawable(Resource.Drawable.light_button_background);
             btnTakePhoto.SetTextAppearance(this, Resource.Style.LightButton);
 
-            TextViewUtils.SetMuseoSans500Typeface(btnTakePhoto, btnSubmitReading);
+            TextViewUtils.SetMuseoSans500Typeface(btnTakePhoto);
         }
 
         private string GetType(string registerNumber)
@@ -414,6 +411,17 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         private void UpdateCurrentValues(LinearLayout container, GetMeterReadingOCRResponseDetails sMRMROValidateRegisterDetails)
         {
             char[] amountInArray = (sMRMROValidateRegisterDetails.OCRValue + "0").ToCharArray();
+
+            //Clear current value first
+            ((TextView)container.FindViewById(currentMeterViews[7])).Text = "";
+            ((TextView)container.FindViewById(currentMeterViews[6])).Text = "";
+            ((TextView)container.FindViewById(currentMeterViews[5])).Text = "";
+            ((TextView)container.FindViewById(currentMeterViews[4])).Text = "";
+            ((TextView)container.FindViewById(currentMeterViews[3])).Text = "";
+            ((TextView)container.FindViewById(currentMeterViews[2])).Text = "";
+            ((TextView)container.FindViewById(currentMeterViews[1])).Text = "";
+            ((TextView)container.FindViewById(currentMeterViews[0])).Text = "";
+
             int resourceCounter = 0;
             for (int i = amountInArray.Length; i != 0; i--)
             {
@@ -545,6 +553,9 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             string currentAmountInString = currentValue0.Text + currentValue1.Text + currentValue2.Text + currentValue3.Text + currentValue4.Text +
                 currentValue5.Text + currentValue6.Text + currentValue7.Text + currentValue8.Text;
 
+            string currentTrueAmountInString = currentValue0.Text + currentValue1.Text + currentValue2.Text + currentValue3.Text + currentValue4.Text +
+                currentValue5.Text + currentValue6.Text + currentValue7.Text;
+
             currentValue7.Text = "";
             currentValue6.Text = "";
             currentValue5.Text = "";
@@ -603,15 +614,20 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             if (validateRegisterDetails.PrevMeterReading != "")
             {
-                previousReading = Int32.Parse(validateRegisterDetails.PrevMeterReading);
+                string prevTrueValueInString = validateRegisterDetails.PrevMeterReading.Substring(0, validateRegisterDetails.PrevMeterReading.Length - 1); 
+                previousReading = Int32.Parse(prevTrueValueInString);
             }
             if (currentAmountInString != "")
             {
-                currentReading = Int32.Parse(currentAmountInString);
+                currentReading = Int32.Parse(currentTrueAmountInString);
             }
 
             TextView inlineError = (TextView) meterCardContainer.FindViewById(Resource.Id.reading_error_validation_msg);
             TextView meterType = (TextView)meterCardContainer.FindViewById(Resource.Id.reading_meter_type);
+            validationStateList.Find(meter =>
+            {
+                return meter.meterId == RegisterNumber;
+            }).readingResult = currentTrueAmountInString;
             if (currentReading == 0)
             {
                 inlineError.Visibility = ViewStates.Gone;
@@ -643,7 +659,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     }).validated = true;
                 }
             }
-            //EnableSubmitButton(validationStateList.TrueForAll(meter => { return meter.validated == true; }));
+            EnableSubmitButton(validationStateList.TrueForAll(meter => { return meter.validated == true; }));
         }
 
         public void ShowMeterReadingOCRError(string errorMessage)
@@ -666,18 +682,18 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 btnSubmitReading.Enabled = true;
                 btnSubmitReading.Background = GetDrawable(Resource.Drawable.green_button_background);
 
-                btnTakePhoto.Enabled = false;
-                btnTakePhoto.Background = GetDrawable(Resource.Drawable.light_button_background_disabled);
-                btnTakePhoto.SetTextAppearance(this, Resource.Style.LightButtonDisabled);
+                //btnTakePhoto.Enabled = false;
+                //btnTakePhoto.Background = GetDrawable(Resource.Drawable.light_button_background_disabled);
+                //btnTakePhoto.SetTextAppearance(this, Resource.Style.LightButtonDisabled);
             }
             else
             {
                 btnSubmitReading.Enabled = false;
                 btnSubmitReading.Background = GetDrawable(Resource.Drawable.silver_chalice_button_background);
 
-                btnTakePhoto.Enabled = true;
-                btnTakePhoto.Background = GetDrawable(Resource.Drawable.light_button_background);
-                btnTakePhoto.SetTextAppearance(this, Resource.Style.LightButton);
+                //btnTakePhoto.Enabled = true;
+                //btnTakePhoto.Background = GetDrawable(Resource.Drawable.light_button_background);
+                //btnTakePhoto.SetTextAppearance(this, Resource.Style.LightButton);
             }
             TextViewUtils.SetMuseoSans500Typeface(btnTakePhoto, btnSubmitReading);
         }

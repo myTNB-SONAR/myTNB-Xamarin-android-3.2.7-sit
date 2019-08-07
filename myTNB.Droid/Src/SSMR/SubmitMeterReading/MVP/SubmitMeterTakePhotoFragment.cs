@@ -343,12 +343,15 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 // Reset the auto-focus trigger
                 mPreviewRequestBuilder.Set(CaptureRequest.ControlAfTrigger, (int)ControlAFTrigger.Cancel);
                 //SetAutoFlash(mPreviewRequestBuilder);
-                mCaptureSession.Capture(mPreviewRequestBuilder.Build(), mCaptureCallback,
+                if (mCaptureSession != null)
+                {
+                    mCaptureSession.Capture(mPreviewRequestBuilder.Build(), mCaptureCallback,
                         mBackgroundHandler);
-                // After this, the camera will go back to the normal state of preview.
-                mState = STATE_PREVIEW;
-                mCaptureSession.SetRepeatingRequest(mPreviewRequest, mCaptureCallback,
-                        mBackgroundHandler);
+                    // After this, the camera will go back to the normal state of preview.
+                    mState = STATE_PREVIEW;
+                    mCaptureSession.SetRepeatingRequest(mPreviewRequest, mCaptureCallback,
+                            mBackgroundHandler);
+                }
             }
             catch (CameraAccessException e)
             {
