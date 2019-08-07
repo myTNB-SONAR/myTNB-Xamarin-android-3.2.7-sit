@@ -67,11 +67,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             return true;
         }
 
-        public override bool CameraPermissionRequired()
-        {
-            return true;
-        }
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -243,8 +238,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             if (requestCode == PickImageId)
             {
                 Bitmap bitmap = MediaStore.Images.Media.GetBitmap(this.ContentResolver, data.Data);
-                AddCapturedImageInContainer(bitmap);
-                ShowAdjustFragment(selectedCapturedImage,bitmap);
+                AddCapturedImage(bitmap);
             }
         }
 
