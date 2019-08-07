@@ -15,6 +15,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public interface IPresenter
         {
             void InitializeModelList();
+            void InitializeModelList(int count);
             void GetMeterReadingOCRValue(string contractNumber);
             List<MeterImageModel> GetMeterImages();
             void AddMeterImage(string readingUnit, string imageId, Bitmap imageBitmap);

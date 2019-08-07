@@ -11,6 +11,11 @@
         android:id="@+id/texture_view_autofit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+    <LinearLayout 
+        android:id="@+id/cropAreaContainer"
+        android:layout_alignTop="@+id/texture_view_autofit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
     <LinearLayout
         android:layout_width="match_parent"  
         android:layout_height="wrap_content"
@@ -27,25 +32,26 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_margin="16dp"
-            android:weightSum="3">
+            android:weightSum="5">
             <ImageView
                 android:id="@+id/imageGallery"
-                android:layout_width="40dp"
+                android:layout_width="0dp"
                 android:layout_height="40dp"
+                android:layout_weight="1"
+                android:paddingRight="10dp"
                 android:src="@drawable/camera"
                 android:layout_gravity="left"
-                android:layout_weight="1"
             />
             <ImageView
                 android:id="@+id/imageTakePhoto"
-                android:layout_width="40dp"
+                android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:src="@drawable/capture_camera_button"
-                android:layout_weight="1"
+                android:layout_weight="3"
             />
             <LinearLayout
                 android:id="@+id/placeholder"
-                android:layout_width="40dp"
+                android:layout_width="0dp"
                 android:layout_height="40dp"
                 android:layout_weight="1"
             />
