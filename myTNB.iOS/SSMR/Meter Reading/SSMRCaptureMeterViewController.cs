@@ -405,7 +405,8 @@ namespace myTNB
             UIImageView imgView = new UIImageView(new CGRect(new CGPoint(0, 0), frame.Size))
             {
                 Hidden = true,
-                Tag = 99
+                Tag = 99,
+                ContentMode = UIViewContentMode.ScaleAspectFill
             };
             view.AddSubviews(new UIView[] { label, imgView });
             return view;
@@ -733,7 +734,8 @@ namespace myTNB
 
                 AVCaptureVideoPreviewLayer videoPreviewLayer = new AVCaptureVideoPreviewLayer(_captureSession)
                 {
-                    Frame = new CGRect(0, _viewCamera.Frame.Height - ViewHeight, _viewCamera.Frame.Width, ViewHeight),
+                    Frame = new CGRect(0, _viewCamera.Frame.Height - UIScreen.MainScreen.Bounds.Height
+                        , _viewCamera.Frame.Width, UIScreen.MainScreen.Bounds.Height),
                     VideoGravity = AVLayerVideoGravity.Resize,
                     ZPosition = -1
                 };
@@ -799,8 +801,8 @@ namespace myTNB
                 };
             }
 
-            _imgViewMainPreview = new UIImageView(new CGRect(new CGPoint(0, _viewMainPreviewParent.Frame.Height - ViewHeight)
-                , new CGSize(_viewMainPreviewParent.Frame.Width, ViewHeight)))
+            _imgViewMainPreview = new UIImageView(new CGRect(new CGPoint(0, _viewMainPreviewParent.Frame.Height - UIScreen.MainScreen.Bounds.Height)
+                , new CGSize(_viewMainPreviewParent.Frame.Width, UIScreen.MainScreen.Bounds.Height)))
             {
                 UserInteractionEnabled = true,
                 MultipleTouchEnabled = true,
