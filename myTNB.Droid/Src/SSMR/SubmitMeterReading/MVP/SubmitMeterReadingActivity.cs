@@ -385,6 +385,15 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         private void UpdateCurrentValues(LinearLayout container, GetMeterReadingOCRResponseDetails sMRMROValidateRegisterDetails)
         {
             char[] amountInArray = (sMRMROValidateRegisterDetails.OCRValue + "0").ToCharArray();
+            ((EditText)container.FindViewById(currentMeterViews[8])).Text = "";
+            ((EditText)container.FindViewById(currentMeterViews[7])).Text = "";
+            ((EditText)container.FindViewById(currentMeterViews[6])).Text = "";
+            ((EditText)container.FindViewById(currentMeterViews[5])).Text = "";
+            ((EditText)container.FindViewById(currentMeterViews[4])).Text = "";
+            ((EditText)container.FindViewById(currentMeterViews[3])).Text = "";
+            ((EditText)container.FindViewById(currentMeterViews[2])).Text = "";
+            ((EditText)container.FindViewById(currentMeterViews[1])).Text = "";
+            ((EditText)container.FindViewById(currentMeterViews[0])).Text = "";
             int resourceCounter = 0;
             for (int i = amountInArray.Length; i != 0; i--)
             {
