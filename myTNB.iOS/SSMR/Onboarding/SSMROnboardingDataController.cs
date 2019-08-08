@@ -68,7 +68,7 @@ namespace myTNB.SSMR
             };
 
             CGSize size = GetLabelSize(lblDescription, that.View.Frame.Width - 32, 80);
-            lblDescription.Frame = new CGRect(16, lblTitle.Frame.GetMaxY() + 16, that.View.Frame.Width - 32, size.Height);
+            lblDescription.Frame = new CGRect(26, lblTitle.Frame.GetMaxY() + 16, that.View.Frame.Width - 52, size.Height);
             that.View.AddSubviews(new UIView[] { imgBackground, lblTitle, lblDescription });
         }
     }

@@ -133,7 +133,7 @@ namespace myTNB
             };
 
             UITextView txtFieldInfo = GetInfo();
-            _btnSubmit = CustomUIButton.GetUIButton(new CGRect(16, txtFieldInfo.Frame.GetMaxY() + 16, View.Frame.Width - 32, 48)
+            _btnSubmit = CustomUIButton.GetUIButton(new CGRect(16, txtFieldInfo.Frame.GetMaxY() + 16, View.Frame.Width - 32, DeviceHelper.GetScaledHeight(48))
                 , GetCommonI18NValue(SSMRConstants.I18N_Submit));
             _btnSubmit.Enabled = true;
             _btnSubmit.BackgroundColor = MyTNBColor.FreshGreen;
