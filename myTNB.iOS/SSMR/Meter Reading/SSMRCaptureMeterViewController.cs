@@ -281,7 +281,7 @@ namespace myTNB
             nfloat btnYLoc = (_isMultiPhase ? _viewPreviewOne.Frame.GetMaxY() : 0) + 16.0F;
             _btnSubmit = new CustomUIButtonV2()
             {
-                Frame = new CGRect(16, btnYLoc, ViewWidth - 32, 48),
+                Frame = new CGRect(16, btnYLoc, ViewWidth - 32, DeviceHelper.GetScaledHeight(48)),
                 BackgroundColor = MyTNBColor.FreshGreen,
                 Tag = 1004
             };

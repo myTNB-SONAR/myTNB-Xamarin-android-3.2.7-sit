@@ -133,7 +133,7 @@ namespace myTNB.SSMR
             ResizeView(ref viewSkip, ref lblSkip, 50, 14);
             viewSkip.AddSubview(lblSkip);
 
-            _btnStart = CustomUIButton.GetUIButton(new CGRect(16, baseHeight - 64, that.View.Frame.Width - 32, 48)
+            _btnStart = CustomUIButton.GetUIButton(new CGRect(16, baseHeight - 64, that.View.Frame.Width - 32, DeviceHelper.GetScaledHeight(48))
                , GetI18NValue(SSMRConstants.I18N_StartApplication));
             _btnStart.Enabled = true;
             _btnStart.BackgroundColor = MyTNBColor.FreshGreen;
