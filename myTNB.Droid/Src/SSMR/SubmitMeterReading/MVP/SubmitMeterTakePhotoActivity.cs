@@ -38,9 +38,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         [BindView(Resource.Id.bottomLayout)]
         LinearLayout bottomLayout;
 
-        [BindView(Resource.Id.meter_capture_container)]
-        LinearLayout meterCapturePhotoContainer;
-
         [BindView(Resource.Id.btnSubmitPhotoToOCR)]
         Button btnSubmitPhotoToOCR;
 
@@ -110,11 +107,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             if (isSinglePhase)
             {
-                meterCapturePhotoContainer.Visibility = ViewStates.Gone;
+                meterCapturedContainer.Visibility = ViewStates.Gone;
             }
             else
             {
-                meterCapturePhotoContainer.Visibility = ViewStates.Visible;
+                meterCapturedContainer.Visibility = ViewStates.Visible;
             }
 
             if (savedInstanceState == null)
@@ -242,22 +239,24 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             container.RemoveAllViews();
             int holderText = 1;
             float scale = Resources.DisplayMetrics.Density;
-
+            int h = container.Height;
             foreach (MeterCapturedData meterCapturedData in meteredCapturedDataList)
             {
                 int size = (int)(52 * scale + 0.5f);
+                int itemMargin = (int)(16 * scale + 0.5f);
                 LinearLayout imageHolderContainer = new LinearLayout(this);
                 LinearLayout.LayoutParams containerParams = new LinearLayout.LayoutParams(size, size);
-                containerParams.SetMargins(10,0,10,0);
+                containerParams.SetMargins(itemMargin, 0, itemMargin, 0);
                 imageHolderContainer.LayoutParameters = containerParams;
+                imageHolderContainer.SetGravity(GravityFlags.Center);
                 imageHolderContainer.SetBackgroundDrawable(GetDrawable(Resource.Drawable.meter_capture_holder_inactive));
                 imageHolderContainer.SetOnClickListener(new OnContainerClickListener(this,holderText));
 
                 TextView imageHolderLabel = new TextView(this);
                 LinearLayout.LayoutParams imageHolderParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent, LinearLayout.LayoutParams.MatchParent);
                 imageHolderLabel.LayoutParameters = imageHolderParams;
-                imageHolderLabel.Gravity = GravityFlags.Center;
                 imageHolderLabel.Text = holderText++.ToString();
+                imageHolderLabel.Gravity = GravityFlags.Center;
                 imageHolderContainer.AddView(imageHolderLabel);
                 container.AddView(imageHolderContainer);
             }
