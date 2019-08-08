@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Android.Text;
+using Android.Util;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SSMR.SMRApplication.Api;
@@ -230,11 +231,23 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                 });
                 if (!TextUtils.IsEmpty(mobile_no) && !TextUtils.IsEmpty(email) && sMRAccount != null)
                 {
+                    bool isError = false;
+                    if (!Patterns.EmailAddress.Matcher(email).Matches())
+                    {
+                        this.mView.ShowInvalidEmailError();
+                        this.mView.DisableRegisterButton();
+                        isError = true;
+                    }
+                    else
+                    {
+                        this.mView.ClearEmailError();
+                    }
+
                     if (!Utility.IsValidMobileNumber(mobile_no))
                     {
                         this.mView.ShowInvalidMobileNoError();
                         this.mView.DisableRegisterButton();
-                        return;
+                        isError = true;
                     }
                     else
                     {
@@ -242,6 +255,12 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 
                     }
 
+                    if (isError)
+                    {
+                        return;
+                    }
+
+                    this.mView.ClearErrors();
                     this.mView.EnableRegisterButton();
                 }
                 else

@@ -38,25 +38,32 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
         {
             NewPromotionShimmerViewHolder vh = holder as NewPromotionShimmerViewHolder;
 
-            ViewGroup.LayoutParams currentCard = vh.cardView.LayoutParameters;
-
-            int cardWidth = (int)((this.mActivity.Resources.DisplayMetrics.WidthPixels / 1.35) - DPUtils.ConvertDPToPx(6f));
-            currentCard.Width = cardWidth;
-
-            var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
-            if (shimmerBuilder != null)
+            try
             {
-                vh.shimmerPromoImage.SetShimmer(shimmerBuilder?.Build());
-                vh.shimmerPromotitle.SetShimmer(shimmerBuilder?.Build());
-                vh.shimmertTxtMessage1.SetShimmer(shimmerBuilder?.Build());
-                vh.shimmertTxtMessage2.SetShimmer(shimmerBuilder?.Build());
-                vh.shimmertTxtMessage3.SetShimmer(shimmerBuilder?.Build());
+                ViewGroup.LayoutParams currentCard = vh.cardView.LayoutParameters;
+
+                int cardWidth = (int)((this.mActivity.Resources.DisplayMetrics.WidthPixels / 1.35) - DPUtils.ConvertDPToPx(6f));
+                currentCard.Width = cardWidth;
+                
+                var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+                if (shimmerBuilder != null)
+                {
+                    vh.shimmerPromoImage.SetShimmer(shimmerBuilder?.Build());
+                    vh.shimmerPromotitle.SetShimmer(shimmerBuilder?.Build());
+                    vh.shimmertTxtMessage1.SetShimmer(shimmerBuilder?.Build());
+                    vh.shimmertTxtMessage2.SetShimmer(shimmerBuilder?.Build());
+                    vh.shimmertTxtMessage3.SetShimmer(shimmerBuilder?.Build());
+                }
+                vh.shimmerPromoImage.StartShimmer();
+                vh.shimmerPromotitle.StartShimmer();
+                vh.shimmertTxtMessage1.StartShimmer();
+                vh.shimmertTxtMessage2.StartShimmer();
+                vh.shimmertTxtMessage3.StartShimmer();
             }
-            vh.shimmerPromoImage.StartShimmer();
-            vh.shimmerPromotitle.StartShimmer();
-            vh.shimmertTxtMessage1.StartShimmer();
-            vh.shimmertTxtMessage2.StartShimmer();
-            vh.shimmertTxtMessage3.StartShimmer();
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)

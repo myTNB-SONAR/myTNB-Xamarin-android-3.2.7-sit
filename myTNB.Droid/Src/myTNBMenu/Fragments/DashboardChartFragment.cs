@@ -766,7 +766,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             leftAxis.SpaceTop = 10f;
             leftAxis.SpaceBottom = 10f;
             leftAxis.AxisMinimum = lowestPossibleSpace;
-            leftAxis.AxisMaximum = maxVal;
+            leftAxis.AxisMaximum = maxVal + 2f;
 
             YAxis rightAxis = mChart.AxisRight;
             rightAxis.Enabled = false;
@@ -774,7 +774,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             rightAxis.SpaceTop = 10f;
             rightAxis.SpaceBottom = 10f;
             rightAxis.AxisMinimum = lowestPossibleSpace;
-            rightAxis.AxisMaximum = maxVal;
+            rightAxis.AxisMaximum = maxVal + 2f;
 
         }
         #endregion
@@ -787,14 +787,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             float lowestPossibleSpace = (5f / 100f) * -maxVal;
             Console.WriteLine("Space {0}", lowestPossibleSpace);
 
-            YAxis leftAxis = mChart.AxisLeft; ;
+            YAxis leftAxis = mChart.AxisLeft;
             leftAxis.Enabled = false;
             leftAxis.SetPosition(YAxisLabelPosition.OutsideChart);
             leftAxis.SetDrawGridLines(false);
             leftAxis.SpaceTop = 10f;
             leftAxis.SpaceBottom = 10f;
             leftAxis.AxisMinimum = lowestPossibleSpace;
-            leftAxis.AxisMaximum = maxVal;
+            leftAxis.AxisMaximum = maxVal + 2f;
 
             YAxis rightAxis = mChart.AxisRight;
             rightAxis.Enabled = false;
@@ -802,7 +802,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             rightAxis.SpaceTop = 10f;
             rightAxis.SpaceBottom = 10f;
             rightAxis.AxisMinimum = lowestPossibleSpace;
-            rightAxis.AxisMaximum = maxVal;
+            rightAxis.AxisMaximum = maxVal + 2f;
 
         }
         #endregion

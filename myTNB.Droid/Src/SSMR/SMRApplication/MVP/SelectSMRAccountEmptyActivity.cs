@@ -1,0 +1,61 @@
+﻿
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+using Android.App;
+using Android.Content;
+using Android.Content.PM;
+using Android.OS;
+using Android.Runtime;
+using Android.Support.V7.Widget;
+using Android.Views;
+using Android.Widget;
+using CheeseBind;
+using myTNB_Android.Src.AddAccount.Adapter;
+using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.MultipleAccountPayment.Adapter;
+using myTNB_Android.Src.MultipleAccountPayment.Model;
+using myTNB_Android.Src.SSMR.SMRApplication.Adapter;
+using myTNB_Android.Src.Utils;
+
+namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
+{
+    [Activity(Label = "Self Meter Reading"
+    , ScreenOrientation = ScreenOrientation.Portrait
+    , Theme = "@style/Theme.Dashboard")]
+    public class SelectSMRAccountEmptyActivity : BaseToolbarAppCompatActivity
+    {
+        [BindView(Resource.Id.smr_submitted_title)]
+        TextView SMRMainTitle;
+
+        public override int ResourceId()
+        {
+            return Resource.Layout.SelectSMRAccountEmptyLayout;
+        }
+
+        public override bool ShowCustomToolbarTitle()
+        {
+            return true;
+        }
+
+        protected override void OnCreate(Bundle savedInstanceState)
+        {
+            try
+            {
+                base.OnCreate(savedInstanceState);
+                // Create your application here
+                SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
+                SetStatusBarBackground(Resource.Drawable.bg_smr);
+                TextViewUtils.SetMuseoSans300Typeface(SMRMainTitle);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+    }
+}

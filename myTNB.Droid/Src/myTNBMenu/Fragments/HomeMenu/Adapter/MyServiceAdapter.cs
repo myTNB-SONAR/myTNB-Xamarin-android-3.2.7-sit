@@ -42,235 +42,249 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
 			MyService model = myServiceList[position];
 
-            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+            try
             {
-                if (model.serviceCategoryName.Contains("<br/>") || model.serviceCategoryName.Contains("\n"))
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                 {
-                    string newStringValue = "";
-                    if (model.serviceCategoryName.Contains("\n"))
+                    if (model.serviceCategoryName.Contains("<br/>") || model.serviceCategoryName.Contains("\n"))
                     {
-                        newStringValue = model.serviceCategoryName.Replace("\n", "<br/>");
-                    }
-                    else if (model.serviceCategoryName.Contains("\r\n"))
-                    {
-                        newStringValue = model.serviceCategoryName.Replace("\r\n", "<br/>");
+                        string newStringValue = "";
+                        if (model.serviceCategoryName.Contains("\n"))
+                        {
+                            newStringValue = model.serviceCategoryName.Replace("\n", "<br/>");
+                        }
+                        else if (model.serviceCategoryName.Contains("\r\n"))
+                        {
+                            newStringValue = model.serviceCategoryName.Replace("\r\n", "<br/>");
+                        }
+                        else
+                        {
+                            newStringValue = model.serviceCategoryName;
+                        }
+                        vh.serviceTitle.TextFormatted = Html.FromHtml(newStringValue, FromHtmlOptions.ModeLegacy);
                     }
                     else
                     {
-                        newStringValue = model.serviceCategoryName;
+                        string[] splittedString = model.serviceCategoryName.Trim().Split(" ");
+                        string newStringName = "";
+                        if (splittedString.Length > 4)
+                        {
+                            for (int i = 0; i < splittedString.Length; i++)
+                            {
+                                if (i == 2)
+                                {
+                                    newStringName += splittedString[i] + "<br/>";
+                                }
+                                else if (i == splittedString.Length - 1)
+                                {
+                                    newStringName += splittedString[i];
+                                }
+                                else
+                                {
+                                    newStringName += splittedString[i] + " ";
+                                }
+                            }
+                        }
+                        else if (splittedString.Length == 3 || splittedString.Length == 4)
+                        {
+                            for (int i = 0; i < splittedString.Length; i++)
+                            {
+                                if (i == 1)
+                                {
+                                    newStringName += splittedString[i] + "<br/>";
+                                }
+                                else if (i == splittedString.Length - 1)
+                                {
+                                    newStringName += splittedString[i];
+                                }
+                                else
+                                {
+                                    newStringName += splittedString[i] + " ";
+                                }
+                            }
+                        }
+                        else if (splittedString.Length == 2)
+                        {
+                            for (int i = 0; i < splittedString.Length; i++)
+                            {
+                                if (i == 0)
+                                {
+                                    newStringName += splittedString[i] + "<br/>";
+                                }
+                                else if (i == splittedString.Length - 1)
+                                {
+                                    newStringName += splittedString[i];
+                                }
+                                else
+                                {
+                                    newStringName += splittedString[i] + " ";
+                                }
+                            }
+                        }
+                        else
+                        {
+                            newStringName = model.serviceCategoryName;
+                        }
+
+                        vh.serviceTitle.TextFormatted = Html.FromHtml(newStringName, FromHtmlOptions.ModeLegacy);
                     }
-                    vh.serviceTitle.TextFormatted = Html.FromHtml(newStringValue, FromHtmlOptions.ModeLegacy);
                 }
                 else
                 {
-                    string[] splittedString = model.serviceCategoryName.Trim().Split(" ");
-                    string newStringName = "";
-                    if (splittedString.Length > 4)
+                    if (model.serviceCategoryName.Contains("<br/>") || model.serviceCategoryName.Contains("\n"))
                     {
-                        for (int i = 0; i < splittedString.Length; i++)
+                        string newStringValue = "";
+                        if (model.serviceCategoryName.Contains("\n"))
                         {
-                            if (i == 2)
-                            {
-                                newStringName += splittedString[i] + "<br/>";
-                            }
-                            else if (i == splittedString.Length - 1)
-                            {
-                                newStringName += splittedString[i];
-                            }
-                            else
-                            {
-                                newStringName += splittedString[i] + " ";
-                            }
+                            newStringValue = model.serviceCategoryName.Replace("\n", "<br/>");
                         }
-                    }
-                    else if (splittedString.Length == 3 || splittedString.Length == 4)
-                    {
-                        for (int i = 0; i < splittedString.Length; i++)
+                        else if (model.serviceCategoryName.Contains("\r\n"))
                         {
-                            if (i == 1)
-                            {
-                                newStringName += splittedString[i] + "<br/>";
-                            }
-                            else if (i == splittedString.Length - 1)
-                            {
-                                newStringName += splittedString[i];
-                            }
-                            else
-                            {
-                                newStringName += splittedString[i] + " ";
-                            }
+                            newStringValue = model.serviceCategoryName.Replace("\r\n", "<br/>");
                         }
-                    }
-                    else if (splittedString.Length == 2)
-                    {
-                        for (int i = 0; i < splittedString.Length; i++)
+                        else
                         {
-                            if (i == 0)
-                            {
-                                newStringName += splittedString[i] + "<br/>";
-                            }
-                            else if (i == splittedString.Length - 1)
-                            {
-                                newStringName += splittedString[i];
-                            }
-                            else
-                            {
-                                newStringName += splittedString[i] + " ";
-                            }
+                            newStringValue = model.serviceCategoryName;
                         }
+                        vh.serviceTitle.TextFormatted = Html.FromHtml(newStringValue);
                     }
                     else
                     {
-                        newStringName = model.serviceCategoryName;
-                    }
+                        string[] splittedString = model.serviceCategoryName.Trim().Split(" ");
+                        string newStringName = "";
+                        if (splittedString.Length > 4)
+                        {
+                            for (int i = 0; i < splittedString.Length; i++)
+                            {
+                                if (i == 2)
+                                {
+                                    newStringName += splittedString[i] + "<br/>";
+                                }
+                                else if (i == splittedString.Length - 1)
+                                {
+                                    newStringName += splittedString[i];
+                                }
+                                else
+                                {
+                                    newStringName += splittedString[i] + " ";
+                                }
+                            }
+                        }
+                        else if (splittedString.Length == 3 || splittedString.Length == 4)
+                        {
+                            for (int i = 0; i < splittedString.Length; i++)
+                            {
+                                if (i == 1)
+                                {
+                                    newStringName += splittedString[i] + "<br/>";
+                                }
+                                else if (i == splittedString.Length - 1)
+                                {
+                                    newStringName += splittedString[i];
+                                }
+                                else
+                                {
+                                    newStringName += splittedString[i] + " ";
+                                }
+                            }
+                        }
+                        else if (splittedString.Length == 3)
+                        {
+                            for (int i = 0; i < splittedString.Length; i++)
+                            {
+                                if (i == 1)
+                                {
+                                    newStringName += splittedString[i] + "<br/>";
+                                }
+                                else if (i == splittedString.Length - 1)
+                                {
+                                    newStringName += splittedString[i];
+                                }
+                                else
+                                {
+                                    newStringName += splittedString[i] + " ";
+                                }
+                            }
+                        }
+                        else if (splittedString.Length == 2)
+                        {
+                            for (int i = 0; i < splittedString.Length; i++)
+                            {
+                                if (i == 0)
+                                {
+                                    newStringName += splittedString[i] + "<br/>";
+                                }
+                                else if (i == splittedString.Length - 1)
+                                {
+                                    newStringName += splittedString[i];
+                                }
+                                else
+                                {
+                                    newStringName += splittedString[i] + " ";
+                                }
+                            }
+                        }
+                        else
+                        {
+                            newStringName = model.serviceCategoryName;
+                        }
 
-                    vh.serviceTitle.TextFormatted = Html.FromHtml(newStringName, FromHtmlOptions.ModeLegacy);
+                        vh.serviceTitle.TextFormatted = Html.FromHtml(newStringName);
+                    }
                 }
             }
-            else
+            catch (Exception e)
             {
-                if (model.serviceCategoryName.Contains("<br/>") || model.serviceCategoryName.Contains("\n"))
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
+                switch (model.ServiceCategoryId)
                 {
-                    string newStringValue = "";
-                    if (model.serviceCategoryName.Contains("\n"))
-                    {
-                        newStringValue = model.serviceCategoryName.Replace("\n", "<br/>");
-                    }
-                    else if (model.serviceCategoryName.Contains("\r\n"))
-                    {
-                        newStringValue = model.serviceCategoryName.Replace("\r\n", "<br/>");
-                    }
-                    else
-                    {
-                        newStringValue = model.serviceCategoryName;
-                    }
-                    vh.serviceTitle.TextFormatted = Html.FromHtml(newStringValue);
+                    case "1001":
+                        vh.serviceImg.SetImageResource(Resource.Drawable.submit_meter);
+                        break;
+                    case "1002":
+                        vh.serviceImg.SetImageResource(Resource.Drawable.check_status);
+                        break;
+                    case "1003":
+                        vh.serviceImg.SetImageResource(Resource.Drawable.feedback);
+                        break;
+                    case "1004":
+                        vh.serviceImg.SetImageResource(Resource.Drawable.set_appointments);
+                        break;
+                    case "1005":
+                        vh.serviceImg.SetImageResource(Resource.Drawable.apply_autopay);
+                        break;
+
                 }
-                else
+
+                ViewGroup.LayoutParams currentCard = vh.myServiceCardView.LayoutParameters;
+
+                int cardWidth = (this.mActivity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(9f);
+                float heightRatio = 84f / 88f;
+                int cardHeight = (int)(cardWidth * (heightRatio));
+                if (DPUtils.ConvertDPToPixel(cardWidth) > 99f && DPUtils.ConvertPxToDP(cardWidth) <= 111f)
                 {
-                    string[] splittedString = model.serviceCategoryName.Trim().Split(" ");
-                    string newStringName = "";
-                    if (splittedString.Length > 4)
-                    {
-                        for (int i = 0; i < splittedString.Length; i++)
-                        {
-                            if (i == 2)
-                            {
-                                newStringName += splittedString[i] + "<br/>";
-                            }
-                            else if (i == splittedString.Length - 1)
-                            {
-                                newStringName += splittedString[i];
-                            }
-                            else
-                            {
-                                newStringName += splittedString[i] + " ";
-                            }
-                        }
-                    }
-                    else if (splittedString.Length == 3 || splittedString.Length == 4)
-                    {
-                        for (int i = 0; i < splittedString.Length; i++)
-                        {
-                            if (i == 1)
-                            {
-                                newStringName += splittedString[i] + "<br/>";
-                            }
-                            else if (i == splittedString.Length - 1)
-                            {
-                                newStringName += splittedString[i];
-                            }
-                            else
-                            {
-                                newStringName += splittedString[i] + " ";
-                            }
-                        }
-                    }
-                    else if (splittedString.Length == 3)
-                    {
-                        for (int i = 0; i < splittedString.Length; i++)
-                        {
-                            if (i == 1)
-                            {
-                                newStringName += splittedString[i] + "<br/>";
-                            }
-                            else if (i == splittedString.Length - 1)
-                            {
-                                newStringName += splittedString[i];
-                            }
-                            else
-                            {
-                                newStringName += splittedString[i] + " ";
-                            }
-                        }
-                    }
-                    else if (splittedString.Length == 2)
-                    {
-                        for (int i = 0; i < splittedString.Length; i++)
-                        {
-                            if (i == 0)
-                            {
-                                newStringName += splittedString[i] + "<br/>";
-                            }
-                            else if (i == splittedString.Length - 1)
-                            {
-                                newStringName += splittedString[i];
-                            }
-                            else
-                            {
-                                newStringName += splittedString[i] + " ";
-                            }
-                        }
-                    }
-                    else
-                    {
-                        newStringName = model.serviceCategoryName;
-                    }
-
-                    vh.serviceTitle.TextFormatted = Html.FromHtml(newStringName);
+                    cardWidth = (this.mActivity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(7f);
+                    cardHeight = cardWidth;
                 }
-            }
+                else if (DPUtils.ConvertPxToDP(cardWidth) <= 99f)
+                {
+                    cardWidth = (this.mActivity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(6f);
+                    cardHeight = cardWidth;
+                }
 
-            switch(model.ServiceCategoryId)
+                currentCard.Height = cardHeight;
+                currentCard.Width = cardWidth;
+
+                TextViewUtils.SetMuseoSans500Typeface(vh.serviceTitle);
+            }
+            catch (Exception e)
             {
-                case "1001":
-                    vh.serviceImg.SetImageResource(Resource.Drawable.submit_meter);
-                    break;
-                case "1002":
-                    vh.serviceImg.SetImageResource(Resource.Drawable.check_status);
-                    break;
-                case "1003":
-                    vh.serviceImg.SetImageResource(Resource.Drawable.feedback);
-                    break;
-                case "1004":
-                    vh.serviceImg.SetImageResource(Resource.Drawable.set_appointments);
-                    break;
-                case "1005":
-                    vh.serviceImg.SetImageResource(Resource.Drawable.apply_autopay);
-                    break;
-
+                Utility.LoggingNonFatalError(e);
             }
-
-            ViewGroup.LayoutParams currentCard = vh.myServiceCardView.LayoutParameters;
-
-            int cardWidth = (this.mActivity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(9f);
-            float heightRatio = 84f / 88f;
-            int cardHeight = (int)(cardWidth * (heightRatio));
-            if (DPUtils.ConvertDPToPixel(cardWidth) > 99f && DPUtils.ConvertPxToDP(cardWidth) <= 111f)
-            {
-                cardWidth = (this.mActivity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(7f);
-                cardHeight = cardWidth;
-            }
-            else if (DPUtils.ConvertPxToDP(cardWidth) <= 99f)
-            {
-                cardWidth = (this.mActivity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(6f);
-                cardHeight = cardWidth;
-            }
-
-            currentCard.Height = cardHeight;
-            currentCard.Width = cardWidth;
-
-            TextViewUtils.SetMuseoSans500Typeface(vh.serviceTitle);
 
 
 		}

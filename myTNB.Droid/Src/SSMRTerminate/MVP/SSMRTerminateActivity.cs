@@ -91,6 +91,8 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
         bool isFetchTerminationListComplete = false;
 
+        bool checkForEditingInfo = false;
+
         private TerminationReasonModel selectedReason;
 
         private List<TerminationReasonModel> terminationList = new List<TerminationReasonModel>();
@@ -271,14 +273,11 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 newPhoneNumber = mobile_no;
                 this.mPresenter.CheckRequiredFields(mobile_no, email, isOtherReasonSelected, reason);
 
-                if (oldEmail == newEmail && oldPhoneNumber == newPhoneNumber)
-                {
-                    contactDetailConsent.Visibility = ViewStates.Gone;
-                }
-                else
+                if (checkForEditingInfo)
                 {
                     contactDetailConsent.Visibility = ViewStates.Visible;
                 }
+                checkForEditingInfo = true;
             }
             catch (Exception ex)
             {
@@ -536,7 +535,9 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         {
             try
             {
+                checkForEditingInfo = false;
                 txtEmail.Text = email;
+                checkForEditingInfo = false;
                 if (!mobile_no.Contains("+60"))
                 {
                     mobile_no = "+60" + mobile_no;
