@@ -21,6 +21,9 @@ namespace myTNB
         private UILabel _lblToastDetails;
         private bool _isAnimating;
 
+        private nfloat WidthBase = 320;
+        private nfloat HeightBase = 568;
+
         public CustomUIViewController(IntPtr handle) : base(handle)
         {
         }
@@ -272,6 +275,7 @@ namespace myTNB
         #endregion
 
         #region Utilities
+        #region I18N
         public string GetI18NValue(string key)
         {
             return I18NDictionary.ContainsKey(key) ? I18NDictionary[key] : string.Empty;
@@ -290,6 +294,17 @@ namespace myTNB
         {
             return DataManager.DataManager.SharedInstance.ErrorI18NDictionary.ContainsKey(key)
                 ? DataManager.DataManager.SharedInstance.ErrorI18NDictionary[key] : string.Empty;
+        }
+        #endregion
+        public nfloat GetScaledWidth(nfloat value)
+        {
+            nfloat percentage = value / WidthBase;
+            return UIScreen.MainScreen.Bounds.Width * percentage;
+        }
+        public nfloat GetScaledHeight(nfloat value)
+        {
+            nfloat percentage = value / HeightBase;
+            return UIScreen.MainScreen.Bounds.Height * percentage;
         }
         #endregion
     }

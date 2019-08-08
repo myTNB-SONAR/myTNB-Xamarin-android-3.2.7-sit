@@ -1,4 +1,5 @@
-﻿using UIKit;
+﻿using System;
+using UIKit;
 
 namespace myTNB
 {
@@ -250,6 +251,15 @@ namespace myTNB
             get
             {
                 return GetFont500(20f);
+            }
+        }
+
+        public static UIFont MuseoSans16_500V2
+        {
+            get
+            {
+                nfloat percentage = 16F / 568F;
+                return GetFont500((float)(UIScreen.MainScreen.Bounds.Height * percentage));
             }
         }
     }
