@@ -314,9 +314,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 }
             }
 
-            btnSubmitReading.Enabled = true;
-            btnSubmitReading.Background = GetDrawable(Resource.Drawable.green_button_background);
-
             btnTakePhoto.Enabled = true;
             btnTakePhoto.Background = GetDrawable(Resource.Drawable.light_button_background);
             btnTakePhoto.SetTextAppearance(this, Resource.Style.LightButton);
@@ -389,6 +386,15 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         private void UpdateCurrentValues(LinearLayout container, GetMeterReadingOCRResponseDetails sMRMROValidateRegisterDetails)
         {
             char[] amountInArray = (sMRMROValidateRegisterDetails.OCRValue + "0").ToCharArray();
+            ((EditText)container.FindViewById(currentMeterViews[8])).Text = "";
+            ((EditText)container.FindViewById(currentMeterViews[7])).Text = "";
+            ((EditText)container.FindViewById(currentMeterViews[6])).Text = "";
+            ((EditText)container.FindViewById(currentMeterViews[5])).Text = "";
+            ((EditText)container.FindViewById(currentMeterViews[4])).Text = "";
+            ((EditText)container.FindViewById(currentMeterViews[3])).Text = "";
+            ((EditText)container.FindViewById(currentMeterViews[2])).Text = "";
+            ((EditText)container.FindViewById(currentMeterViews[1])).Text = "";
+            ((EditText)container.FindViewById(currentMeterViews[0])).Text = "";
             int resourceCounter = 0;
             for (int i = amountInArray.Length; i != 0; i--)
             {
@@ -618,7 +624,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     }).validated = true;
                 }
             }
-            //EnableSubmitButton(validationStateList.TrueForAll(meter => { return meter.validated == true; }));
+            EnableSubmitButton(validationStateList.TrueForAll(meter => { return meter.validated == true; }));
         }
 
         public void ShowMeterReadingOCRError(string errorMessage)
@@ -640,19 +646,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 btnSubmitReading.Enabled = true;
                 btnSubmitReading.Background = GetDrawable(Resource.Drawable.green_button_background);
-
-                btnTakePhoto.Enabled = false;
-                btnTakePhoto.Background = GetDrawable(Resource.Drawable.light_button_background_disabled);
-                btnTakePhoto.SetTextAppearance(this, Resource.Style.LightButtonDisabled);
             }
             else
             {
                 btnSubmitReading.Enabled = false;
                 btnSubmitReading.Background = GetDrawable(Resource.Drawable.silver_chalice_button_background);
-
-                btnTakePhoto.Enabled = true;
-                btnTakePhoto.Background = GetDrawable(Resource.Drawable.light_button_background);
-                btnTakePhoto.SetTextAppearance(this, Resource.Style.LightButton);
             }
             TextViewUtils.SetMuseoSans500Typeface(btnTakePhoto, btnSubmitReading);
         }
