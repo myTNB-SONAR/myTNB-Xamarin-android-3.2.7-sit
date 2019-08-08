@@ -186,6 +186,11 @@ namespace myTNB
             return value;
         }
 
+        public bool SetEnable
+        {
+            set { TextField.Enabled = value; }
+        }
+
         private bool HasValue
         {
             get

@@ -348,6 +348,12 @@ namespace myTNB
             };
             UIView viewMobile = _customMobileField.GetUI();
 
+            if (IsApplication)
+            {
+                _customEmailField.SetEnable = false;
+                _customMobileField.SetEnable = false;
+            }
+
             _lblEditInfo = new UILabel(new CGRect(16, viewMobile.Frame.GetMaxY() + 12, _viewContactDetails.Frame.Width - 32, 32))
             {
                 TextColor = MyTNBColor.CharcoalGrey,
@@ -578,6 +584,8 @@ namespace myTNB
         {
             if (index > -1)
             {
+                _customEmailField.SetEnable = true;
+                _customMobileField.SetEnable = true;
                 _selectedAccountIndex = index;
                 _selectedAccount = SSMRAccounts.GetAccountByIndex(index);
                 _lblAccountName.Text = _selectedAccount.accountNickName;
