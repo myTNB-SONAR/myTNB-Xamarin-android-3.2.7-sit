@@ -40,37 +40,51 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
             NewPromotion model = promotionList[position];
 
-            vh.Title.Text = model.Title;
-
-            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+            try
             {
-                vh.Message.TextFormatted = Html.FromHtml(model.Description, FromHtmlOptions.ModeLegacy);
+                vh.Title.Text = model.Title;
+
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                {
+                    vh.Message.TextFormatted = Html.FromHtml(model.Description, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    vh.Message.TextFormatted = Html.FromHtml(model.Description);
+                }
             }
-            else
+            catch (Exception e)
             {
-                vh.Message.TextFormatted = Html.FromHtml(model.Description);
-            }
-
-            int currentCount = position % 2;
-
-            switch (currentCount)
-            {
-                case 0:
-                    vh.PromoImage.SetImageResource(Resource.Drawable.image_1);
-                    break;
-                case 1:
-                    vh.PromoImage.SetImageResource(Resource.Drawable.image_2);
-                    break;
-
+                Utility.LoggingNonFatalError(e);
             }
 
-            TextViewUtils.SetMuseoSans500Typeface(vh.Title);
-            TextViewUtils.SetMuseoSans300Typeface(vh.Message);
+            try
+            {
+                int currentCount = position % 2;
 
-            ViewGroup.LayoutParams currentCard = vh.cardView.LayoutParameters;
+                switch (currentCount)
+                {
+                    case 0:
+                        vh.PromoImage.SetImageResource(Resource.Drawable.image_1);
+                        break;
+                    case 1:
+                        vh.PromoImage.SetImageResource(Resource.Drawable.image_2);
+                        break;
 
-            int cardWidth = (int)((this.mActivity.Resources.DisplayMetrics.WidthPixels / 1.35) - DPUtils.ConvertDPToPx(6f));
-            currentCard.Width = cardWidth;
+                }
+
+                TextViewUtils.SetMuseoSans500Typeface(vh.Title);
+                TextViewUtils.SetMuseoSans300Typeface(vh.Message);
+
+                ViewGroup.LayoutParams currentCard = vh.cardView.LayoutParameters;
+
+                int cardWidth = (int)((this.mActivity.Resources.DisplayMetrics.WidthPixels / 1.35) - DPUtils.ConvertDPToPx(6f));
+                currentCard.Width = cardWidth;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
