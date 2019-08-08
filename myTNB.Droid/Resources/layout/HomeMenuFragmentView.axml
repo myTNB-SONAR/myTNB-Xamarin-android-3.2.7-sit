@@ -77,10 +77,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:lineSpacingExtra="4dp"
-                    android:textSize="16dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="32dp"
+                    android:lineSpacingExtra="3dp"
+                    android:textSize="14dp"
                     android:textColor="#8b8b8b"
                     android:layout_gravity="center"/>
                 <Button

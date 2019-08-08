@@ -1943,6 +1943,31 @@
     </AndroidResource>
     <Compile Include="Src\SSMR\SMRApplication\Api\GetAccountsSMREligibilityResponse.cs" />
     <Compile Include="Src\SSMR\SMRApplication\Api\GetAccountSMREligibilityRequest.cs" />
+    <AndroidResource Include="Resources\layout\SelectSMRAccountEmptyLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\no_eliglible_acc.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\no_eliglible_acc.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\no_eliglible_acc.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\no_eliglible_acc.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\no_eliglible_acc.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\SSMR\SMRApplication\MVP\SelectSMRAccountEmptyActivity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

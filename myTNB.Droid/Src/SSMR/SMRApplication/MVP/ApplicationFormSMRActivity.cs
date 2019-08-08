@@ -89,11 +89,6 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         {
             base.OnCreate(savedInstanceState);
             mPresenter = new ApplicationFormSMRPresenter(this);
-            selectAccountContainer.Click += delegate
-            {
-                Intent intent = new Intent(this, typeof(SelectSMRAccountActivity));
-                StartActivityForResult(intent,1);
-            };
 
             TextViewUtils.SetMuseoSans300Typeface(selectAccountContainer,applySMRAddress,txtTermsAndCondition,txtEmail,txtMobileNumber,txtEditingNote);
             TextViewUtils.SetMuseoSans500Typeface(applySMRForLabel, applySMRContactLabel);
@@ -113,6 +108,24 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, textInputEmail));
             txtMobileNumber.SetFilters(new Android.Text.IInputFilter[] { new InputFilterPhoneNumber() });
             OnInitiateSMREligibilityAccount();
+            selectAccountContainer.Click += delegate
+            {
+                List<SMRAccount> list = UserSessions.GetRealSMREligibilityAccountList();
+                if (list == null)
+                {
+                    list = UserSessions.GetSMREligibilityAccountList();
+                }
+                if (list != null && list.Count > 0)
+                {
+                    Intent intent = new Intent(this, typeof(SelectSMRAccountActivity));
+                    StartActivityForResult(intent, 1);
+                }
+                else
+                {
+                    Intent intent = new Intent(this, typeof(SelectSMRAccountEmptyActivity));
+                    StartActivity(intent);
+                }
+            };
         }
 
         public void GetCARegisteredContactInfo()
