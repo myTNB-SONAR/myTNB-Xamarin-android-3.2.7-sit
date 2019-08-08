@@ -45,6 +45,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private static SSMRMeterReadingThreePhaseScreensParentEntity SSMRMeterReadingThreePhaseScreensParentManager;
         private static SSMRMeterReadingThreePhaseScreensEntity SSMRMeterReadingThreePhaseScreensManager;
         private static bool isLoadSMROnly = false;
+        private static bool isFirstLaunch = true;
 
 
 
@@ -242,6 +243,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private void BatchLoadSummaryDetails(List<CustomerBillingAccount> customerBillingAccountList)
         {
             LoadSummaryDetails(batchAccountList.ToList()[0].ToList());
+            if (batchAccountList.ToList().Count == 1)
+            {
+                isFirstLaunch = false;
+            }
         }
 
         private void BatchLoadSummaryDetailsInLocal()
@@ -771,18 +776,34 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }, new CancellationTokenSource().Token);
         }
 
+        public void ResetIsFirstLaunchFlag()
+        {
+            isFirstLaunch = true;
+        }
+
         public void LoadBatchSummarDetailsByIndex(int batchIndex)
         {
-            if (!isLoadSMROnly)
+            if (isFirstLaunch)
             {
                 LoadSummaryDetailsInBatch(this.mView.GetAccountAdapter().GetAccountCardNumberListByPosition(batchIndex));
+                if (batchAccountList.ToList().Count == (batchIndex + 1))
+                {
+                    isFirstLaunch = false;
+                }
             }
             else
             {
-                OnLoadSummaryDetailsInLocal(this.mView.GetAccountAdapter().GetAccountCardNumberListByPosition(batchIndex));
-                if (batchAccountList.ToList().Count == (batchIndex + 1))
+                if (isLoadSMROnly)
                 {
-                    isLoadSMROnly = false;
+                    OnLoadSummaryDetailsInLocal(this.mView.GetAccountAdapter().GetAccountCardNumberListByPosition(batchIndex));
+                    if (batchAccountList.ToList().Count == (batchIndex + 1))
+                    {
+                        isLoadSMROnly = false;
+                    }
+                }
+                else
+                {
+                    LoadSummaryDetailsInBatch(this.mView.GetAccountAdapter().GetAccountCardNumberListByPosition(batchIndex));
                 }
             }
         }
