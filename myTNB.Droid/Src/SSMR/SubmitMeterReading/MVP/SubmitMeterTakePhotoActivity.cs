@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AFollestad.MaterialDialogs;
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
 using Android.Provider;
@@ -17,7 +18,7 @@ using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 {
-    [Activity(Label = "Take Photo", Theme = "@style/Theme.Dashboard")]
+    [Activity(Label = "Take Photo", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class SubmitMeterTakePhotoActivity : BaseToolbarAppCompatActivity, SubmitMeterTakePhotoContract.IView
     {
         public SubmitMeterTakePhotoContract.IPresenter mPresenter;
