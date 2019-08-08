@@ -313,9 +313,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 }
             }
 
-            btnSubmitReading.Enabled = true;
-            btnSubmitReading.Background = GetDrawable(Resource.Drawable.green_button_background);
-
             btnTakePhoto.Enabled = true;
             btnTakePhoto.Background = GetDrawable(Resource.Drawable.light_button_background);
             btnTakePhoto.SetTextAppearance(this, Resource.Style.LightButton);
@@ -617,7 +614,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     }).validated = true;
                 }
             }
-            //EnableSubmitButton(validationStateList.TrueForAll(meter => { return meter.validated == true; }));
+            EnableSubmitButton(validationStateList.TrueForAll(meter => { return meter.validated == true; }));
         }
 
         public void ShowMeterReadingOCRError(string errorMessage)
@@ -639,19 +636,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 btnSubmitReading.Enabled = true;
                 btnSubmitReading.Background = GetDrawable(Resource.Drawable.green_button_background);
-
-                btnTakePhoto.Enabled = false;
-                btnTakePhoto.Background = GetDrawable(Resource.Drawable.light_button_background_disabled);
-                btnTakePhoto.SetTextAppearance(this, Resource.Style.LightButtonDisabled);
             }
             else
             {
                 btnSubmitReading.Enabled = false;
                 btnSubmitReading.Background = GetDrawable(Resource.Drawable.silver_chalice_button_background);
-
-                btnTakePhoto.Enabled = true;
-                btnTakePhoto.Background = GetDrawable(Resource.Drawable.light_button_background);
-                btnTakePhoto.SetTextAppearance(this, Resource.Style.LightButton);
             }
             TextViewUtils.SetMuseoSans500Typeface(btnTakePhoto, btnSubmitReading);
         }
