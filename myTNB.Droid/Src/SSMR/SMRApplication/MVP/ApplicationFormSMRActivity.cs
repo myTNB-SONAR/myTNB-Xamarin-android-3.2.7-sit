@@ -14,6 +14,7 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 
@@ -89,15 +90,11 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         {
             base.OnCreate(savedInstanceState);
             mPresenter = new ApplicationFormSMRPresenter(this);
-            selectAccountContainer.Click += delegate
-            {
-                Intent intent = new Intent(this, typeof(SelectSMRAccountActivity));
-                StartActivityForResult(intent,1);
-            };
 
             TextViewUtils.SetMuseoSans300Typeface(selectAccountContainer,applySMRAddress,txtTermsAndCondition,txtEmail,txtMobileNumber,txtEditingNote);
             TextViewUtils.SetMuseoSans500Typeface(applySMRForLabel, applySMRContactLabel);
 
+            txtEmail.TextChanged += TextChange;
             txtMobileNumber.TextChanged += TextChange;
 
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
@@ -113,6 +110,24 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, textInputEmail));
             txtMobileNumber.SetFilters(new Android.Text.IInputFilter[] { new InputFilterPhoneNumber() });
             OnInitiateSMREligibilityAccount();
+            selectAccountContainer.Click += delegate
+            {
+                List<SMRAccount> list = UserSessions.GetRealSMREligibilityAccountList();
+                if (list == null)
+                {
+                    list = UserSessions.GetSMREligibilityAccountList();
+                }
+                if (list != null && list.Count > 0)
+                {
+                    Intent intent = new Intent(this, typeof(SelectSMRAccountActivity));
+                    StartActivityForResult(intent, 1);
+                }
+                else
+                {
+                    Intent intent = new Intent(this, typeof(SelectSMRAccountEmptyActivity));
+                    StartActivity(intent);
+                }
+            };
         }
 
         public void GetCARegisteredContactInfo()
@@ -143,6 +158,8 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         {
             selectAccountContainer.Text = "Select an account";
             applySMRAddress.Visibility = ViewStates.Gone;
+            txtEmail.Enabled = false;
+            txtMobileNumber.Enabled = false;
             DisableRegisterButton();
             this.mPresenter.CheckSMRAccountEligibility();
         }
@@ -159,8 +176,11 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 
         public void UpdateSMRInfo(SMRAccount account)
         {
+            checkForEditingInfo = false;
             selectAccountContainer.Text = account.accountName;
+            checkForEditingInfo = false;
             txtEmail.Text = account.email;
+            checkForEditingInfo = false;
             if (!account.mobileNumber.Contains("+60"))
             {
                 account.mobileNumber = "+60" + account.mobileNumber;
@@ -188,6 +208,8 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                 }
             }
             UserSessions.SetRealSMREligibilityAccountList(updatedSMRAccountList);
+            txtEmail.Enabled = true;
+            txtMobileNumber.Enabled = true;
             HideProgressDialog();
         }
 
@@ -301,6 +323,49 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         public string GetDeviceId()
         {
             return this.DeviceId();
+        }
+
+        [OnClick(Resource.Id.txtTermsAndCondition)]
+        void OnTermsConditions(object sender, EventArgs eventArgs)
+        {
+            StartActivity(typeof(TermsAndConditionActivity));
+        }
+
+        public void ShowInvalidEmailError()
+        {
+            try
+            {
+                this.textInputEmail.Error = GetString(Resource.String.login_validation_email_invalid_error);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ClearEmailError()
+        {
+            try
+            {
+                this.textInputEmail.Error = null;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ClearErrors()
+        {
+            try
+            {
+                ClearEmailError();
+                ClearInvalidMobileError();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

@@ -6,6 +6,7 @@ using Android.Widget;
 using Facebook.Shimmer;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.Utils;
+using System;
 using System.Collections.Generic;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
@@ -36,35 +37,50 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
         {
             MyServiceShimmerViewHolder vh = holder as MyServiceShimmerViewHolder;
 
-            TextViewUtils.SetMuseoSans500Typeface(vh.serviceTitle);
-
-            ViewGroup.LayoutParams currentCard = vh.myServiceCardView.LayoutParameters;
-
-            int cardWidth = (this.mActivity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(9f);
-            float heightRatio = 84f / 88f;
-            int cardHeight = (int)(cardWidth * (heightRatio));
-            if (DPUtils.ConvertDPToPixel(cardWidth) > 99f && DPUtils.ConvertPxToDP(cardWidth) <= 111f)
+            try
             {
-                cardWidth = (this.mActivity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(7f);
-                cardHeight = cardWidth;
+                TextViewUtils.SetMuseoSans500Typeface(vh.serviceTitle);
+
+                ViewGroup.LayoutParams currentCard = vh.myServiceCardView.LayoutParameters;
+
+                int cardWidth = (this.mActivity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(9f);
+                float heightRatio = 84f / 88f;
+                int cardHeight = (int)(cardWidth * (heightRatio));
+                if (DPUtils.ConvertDPToPixel(cardWidth) > 99f && DPUtils.ConvertPxToDP(cardWidth) <= 111f)
+                {
+                    cardWidth = (this.mActivity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(7f);
+                    cardHeight = cardWidth;
+                }
+                else if (DPUtils.ConvertPxToDP(cardWidth) <= 99f)
+                {
+                    cardWidth = (this.mActivity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(6f);
+                    cardHeight = cardWidth;
+                }
+
+                currentCard.Height = cardHeight;
+                currentCard.Width = cardWidth;
             }
-            else if (DPUtils.ConvertPxToDP(cardWidth) <= 99f)
+            catch (Exception e)
             {
-                cardWidth = (this.mActivity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(6f);
-                cardHeight = cardWidth;
+                Utility.LoggingNonFatalError(e);
             }
 
-            currentCard.Height = cardHeight;
-            currentCard.Width = cardWidth;
 
-            var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
-            if (shimmerBuilder != null)
+            try
             {
-                vh.myServiceShimmerImg.SetShimmer(shimmerBuilder?.Build());
-                vh.myServiceShimmerText.SetShimmer(shimmerBuilder?.Build());
+                var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+                if (shimmerBuilder != null)
+                {
+                    vh.myServiceShimmerImg.SetShimmer(shimmerBuilder?.Build());
+                    vh.myServiceShimmerText.SetShimmer(shimmerBuilder?.Build());
+                }
+                vh.myServiceShimmerImg.StartShimmer();
+                vh.myServiceShimmerText.StartShimmer();
             }
-            vh.myServiceShimmerImg.StartShimmer();
-            vh.myServiceShimmerText.StartShimmer();
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
