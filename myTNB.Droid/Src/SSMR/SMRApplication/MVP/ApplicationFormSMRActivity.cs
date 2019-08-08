@@ -14,6 +14,7 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 
@@ -156,6 +157,8 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         {
             selectAccountContainer.Text = "Select an account";
             applySMRAddress.Visibility = ViewStates.Gone;
+            txtEmail.Enabled = false;
+            txtMobileNumber.Enabled = false;
             DisableRegisterButton();
             this.mPresenter.CheckSMRAccountEligibility();
         }
@@ -201,6 +204,8 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                 }
             }
             UserSessions.SetRealSMREligibilityAccountList(updatedSMRAccountList);
+            txtEmail.Enabled = true;
+            txtMobileNumber.Enabled = true;
             HideProgressDialog();
         }
 
@@ -314,6 +319,12 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         public string GetDeviceId()
         {
             return this.DeviceId();
+        }
+
+        [OnClick(Resource.Id.txtTermsAndCondition)]
+        void OnTermsConditions(object sender, EventArgs eventArgs)
+        {
+            StartActivity(typeof(TermsAndConditionActivity));
         }
     }
 }
