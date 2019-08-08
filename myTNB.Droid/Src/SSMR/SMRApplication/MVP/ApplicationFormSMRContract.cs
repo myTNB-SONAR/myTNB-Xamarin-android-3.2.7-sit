@@ -19,6 +19,9 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             void HideProgressDialog();
             void ShowProgressDialog();
             string GetDeviceId();
+            void ShowInvalidEmailError();
+            void ClearEmailError();
+            void ClearErrors();
         }
 
         public interface IPresenter

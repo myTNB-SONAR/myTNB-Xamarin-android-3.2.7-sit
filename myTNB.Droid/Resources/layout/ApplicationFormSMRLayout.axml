@@ -99,7 +99,7 @@
                         android:drawablePadding="6dp"
                         android:drawableLeft="@drawable/placeholder_email"
                         android:maxLines="1"
-                        android:inputType="text" />
+                        android:inputType="textEmailAddress" />
                 </android.support.design.widget.TextInputLayout>
             
             <android.support.design.widget.TextInputLayout
