@@ -19,6 +19,7 @@ namespace myTNB.Model
         string _isDashboardCTADisabled = string.Empty;
         string _showReadingHistoryLink = string.Empty;
         string _isThreePhaseMeter = string.Empty;
+        string _isCurrentPeriodSubmitted = string.Empty;
 
         public string DashboardMessage { set; get; }
         public string DashboardCTAText { set; get; }
@@ -62,6 +63,17 @@ namespace myTNB.Model
                 return _isThreePhaseMeter.ToLower();
             }
         }
+        public string isCurrentPeriodSubmitted
+        {
+            set
+            {
+                _isCurrentPeriodSubmitted = ServiceCall.ValidateResponseItem(value);
+            }
+            get
+            {
+                return _isCurrentPeriodSubmitted.ToLower();
+            }
+        }
         [JsonIgnore]
         public bool IsDashboardCTADisabled
         {
@@ -100,6 +112,20 @@ namespace myTNB.Model
                 if (!string.IsNullOrEmpty(isThreePhaseMeter))
                 {
                     res = string.Compare(isThreePhaseMeter, "true") == 0;
+                }
+                return res;
+            }
+        }
+        [JsonIgnore]
+        public bool IsCurrentPeriodSubmitted
+        {
+            get
+            {
+                var res = false;
+
+                if (!string.IsNullOrEmpty(isCurrentPeriodSubmitted))
+                {
+                    res = string.Compare(isCurrentPeriodSubmitted, "true") == 0;
                 }
                 return res;
             }

@@ -49,6 +49,7 @@ namespace myTNB
         {
             PageName = SSMRConstants.Pagename_SSMRMeterRead;
             base.ViewDidLoad();
+            NavigationController.NavigationBarHidden = false;
 
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
@@ -66,7 +67,6 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            NavigationController.NavigationBarHidden = false;
         }
 
         public override void ViewDidAppear(bool animated)
@@ -81,7 +81,7 @@ namespace myTNB
             UIImage btnRightImg = UIImage.FromBundle(SSMRConstants.IMG_Info);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                DismissViewController(true, null);
+                ViewHelper.DismissControllersAndSelectTab(this, 0, true);
             });
             UIBarButtonItem btnRight = new UIBarButtonItem(btnRightImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {

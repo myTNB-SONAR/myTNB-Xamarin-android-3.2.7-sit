@@ -185,9 +185,9 @@ namespace myTNB
             {
                 ClipsToBounds = true
             };
-            var ctaChar = _meterReadingHistory?.DashboardCTAType.ToLower();
             _ssmrHeaderComponent = new SSMRReadingHistoryHeaderComponent(View);
-            _ssmrHeaderComponent.SetRefreshButtonHidden(ctaChar == DashboardHomeConstants.CTA_ShowSubmitReading, _meterReadingHistory?.DashboardCTAText);
+            _ssmrHeaderComponent.SetSubmitButtonHidden(_meterReadingHistory);
+            _ssmrHeaderComponent.SetImageIconText(_meterReadingHistory);
             _headerView.AddSubview(_ssmrHeaderComponent.GetUI());
             _ssmrHeaderComponent.SetTitle(_meterReadingHistory.HistoryViewTitle);
             _ssmrHeaderComponent.SetDescription(_meterReadingHistory.HistoryViewMessage);
@@ -256,12 +256,8 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
             SSMRReadMeterViewController viewController =
                 storyBoard.InstantiateViewController("SSMRReadMeterViewController") as SSMRReadMeterViewController;
-            if (viewController != null)
-            {
-                //var navController = new UINavigationController(viewController);
-                //NavigationController.PushViewController(navController, true);
-                NavigationController.PushViewController(viewController, true);
-            }
+            UINavigationController navController = new UINavigationController(viewController);
+            PresentViewController(navController, true, null);
         }
     }
 }
