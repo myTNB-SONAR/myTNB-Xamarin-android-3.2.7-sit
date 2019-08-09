@@ -10,11 +10,13 @@ namespace myTNB
         public UIView _accountHeaderView, _greetingView, _notificationView;
         UILabel _greetingLabel, _accountName;
         UIImageView _notificationIcon;
+        DashboardHomeViewController _controller;
         string _strGreeting, _strName;
 
-        public DashboardHomeHeader(UIView view)
+        public DashboardHomeHeader(UIView view, DashboardHomeViewController controller)
         {
             _parentView = view;
+            _controller = controller;
         }
 
         private void CreateComponent()
@@ -31,6 +33,13 @@ namespace myTNB
             {
                 BackgroundColor = UIColor.Clear
             };
+            _accountHeaderView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                if (_controller != null)
+                {
+                    _controller.DismissmissActiveKeyboard();
+                }
+            }));
 
             _greetingView = new UIView(new CGRect(0, 0, _accountHeaderView.Frame.Width, labelHeight * 2 + padding));
             _greetingView.BackgroundColor = UIColor.Clear;
@@ -50,13 +59,19 @@ namespace myTNB
                 LineBreakMode = UILineBreakMode.MiddleTruncation,
                 Text = _strName
             };
-            _notificationView = new UIView(new CGRect(parentWidth - (imageWidth + padding), padding + labelHeight / 2, imageWidth, imageHeight));
+            _notificationView = new UIView(new CGRect(parentWidth - (imageWidth + padding), padding + labelHeight / 2, imageWidth, imageHeight))
+            {
+                UserInteractionEnabled = true
+            };
             _notificationIcon = new UIImageView(new CGRect(0, 0, imageWidth, imageHeight))
             {
                 Image = UIImage.FromBundle("Notification")
             };
             _notificationView.AddSubview(_notificationIcon);
-            _greetingView.AddSubviews(new UIView { _greetingLabel, _accountName, _notificationView });
+
+            _greetingView.AddSubview(_greetingLabel);
+            _greetingView.AddSubview(_accountName);
+            _greetingView.AddSubview(_notificationView);
 
             _accountHeaderView.AddSubview(_greetingView);
         }
@@ -87,9 +102,9 @@ namespace myTNB
             _notificationIcon.Image = UIImage.FromBundle(image);
         }
 
-        public void AddNotificationAction(Action action)
+        public void SetNotificationActionRecognizer(UITapGestureRecognizer recognizer)
         {
-            _notificationView.AddGestureRecognizer(new UITapGestureRecognizer(action));
+            _notificationView.AddGestureRecognizer(recognizer);
         }
     }
 }

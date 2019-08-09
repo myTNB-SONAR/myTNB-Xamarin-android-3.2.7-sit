@@ -13,6 +13,7 @@ using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB.Registration.CustomerAccounts;
 using UIKit;
+using myTNB.Home.Components;
 using Newtonsoft.Json;
 
 namespace myTNB
@@ -25,13 +26,19 @@ namespace myTNB
 
         private UITableView _homeTableView;
         private AccountsCardContentViewController _accountsCardContentViewController;
+        DashboardHomeHeader _dashboardHomeHeader;
+        RefreshScreenComponent _refreshScreenComponent;
         public ServicesResponseModel _services;
         public List<HelpModel> _helpList;
+        private List<PromotionsModelV2> _promotions;
         private nfloat _previousScrollOffset;
         private nfloat _imageGradientHeight;
         internal Dictionary<string, Action> _servicesActionDictionary;
         private bool _servicesIsShimmering = true;
         private bool _helpIsShimmering = true;
+        private bool _isRefreshScreenEnabled = false;
+        private nfloat _addtlYValue = 0;
+        private bool _isBCRMAvailable = false;
 
         public override void ViewDidLoad()
         {
@@ -43,6 +50,9 @@ namespace myTNB
             PageName = DashboardHomeConstants.PageName;
             IsGradientImageRequired = true;
             base.ViewDidLoad();
+            _isBCRMAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
+            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"NotificationDidChange", NotificationDidChange);
+            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"OnReceiveNotificationFromDashboard", NotificationDidChange);
             NSNotificationCenter.DefaultCenter.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
             NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, OnEnterForeground);
             _imageGradientHeight = IsGradientImageRequired ? ImageViewGradientImage.Frame.Height : 0;
@@ -50,12 +60,38 @@ namespace myTNB
             _helpList = new List<HelpModel>();
             SetActionsDictionary();
             SetStatusBarNoOverlap();
+            SetValuesForRefreshState();
             AddTableView();
-            _dashboardHomeHelper.GroupAccountsList(DataManager.DataManager.SharedInstance.AccountRecordsList.d);
-            SetAccountsCardViewController();
-            InitializeTableView();
+            PrepareTableView();
+            SetGreetingView();
         }
 
+        private void PrepareTableView()
+        {
+            if (_isBCRMAvailable)
+            {
+                _dashboardHomeHelper.GroupAccountsList(DataManager.DataManager.SharedInstance.AccountRecordsList.d);
+                SetAccountsCardViewController();
+                InitializeTableView();
+            }
+            else
+            {
+                InitializeTableView();
+                ShowRefreshScreen(true, null);
+            }
+        }
+
+        private void SetGreetingView()
+        {
+            _dashboardHomeHeader = new DashboardHomeHeader(View, this);
+            _dashboardHomeHeader.SetGreetingText(GetGreeting());
+            _dashboardHomeHeader.SetNameText(_dashboardHomeHelper.GetDisplayName());
+            _homeTableView.TableHeaderView = _dashboardHomeHeader.GetUI();
+            _dashboardHomeHeader.SetNotificationActionRecognizer(new UITapGestureRecognizer(() =>
+            {
+                OnNotificationAction();
+            }));
+        }
         private void SetAccountsCardViewController()
         {
             if (_accountsCardContentViewController != null)
@@ -69,13 +105,33 @@ namespace myTNB
             _accountsCardContentViewController._homeViewController = this;
         }
 
+        private void SetValuesForRefreshState()
+        {
+            if (DeviceHelper.IsIphoneXUpResolution())
+            {
+                if (DeviceHelper.IsIphoneXOrXs())
+                {
+                    _addtlYValue = -165f;
+                }
+                else
+                {
+                    _addtlYValue = -195f;
+                }
+            }
+            else if (DeviceHelper.IsIphone6UpResolution())
+            {
+                _addtlYValue = -125f;
+            }
+            else
+            {
+                _addtlYValue = -80f;
+            }
+        }
+
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            if (_accountsCardContentViewController != null)
-            {
-                _accountsCardContentViewController.UpdateGreeting(GetGreeting());
-            }
+            UpdateGreeting(GetGreeting());
             if (DataManager.DataManager.SharedInstance.SummaryNeedsRefresh)
             {
                 SetAccountsCardViewController();
@@ -92,8 +148,16 @@ namespace myTNB
 
         public override void ViewDidDisappear(bool animated)
         {
-            DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = true;
+            DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = !_isRefreshScreenEnabled;
             base.ViewDidDisappear(animated);
+        }
+
+        public void UpdateGreeting(string greeting)
+        {
+            if (_dashboardHomeHeader != null)
+            {
+                _dashboardHomeHeader.SetGreetingText(greeting);
+            }
         }
 
         public override void SetStatusBarNoOverlap()
@@ -103,10 +167,22 @@ namespace myTNB
             _statusBarView.Hidden = true;
         }
 
+        #region Observer Methods
+        private void NotificationDidChange(NSNotification notification)
+        {
+            Debug.WriteLine("DEBUG >>> SUMMARY DASHBOARD NotificationDidChange");
+            if (_dashboardHomeHeader != null)
+            {
+                _dashboardHomeHeader.SetNotificationImage(PushNotificationHelper.GetNotificationImage());
+            }
+            PushNotificationHelper.UpdateApplicationBadge();
+        }
+
         private void LanguageDidChange(NSNotification notification)
         {
             Debug.WriteLine("DEBUG >>> SUMMARY DASHBOARD LanguageDidChange");
         }
+        #endregion
 
         private void OnEnterForeground(NSNotification notification)
         {
@@ -123,6 +199,7 @@ namespace myTNB
                     _services = new ServicesResponseModel();
                     _helpList = new List<HelpModel>();
                     OnGetServices();
+                    //UpdatePromotions();
                     OnUpdateNotification();
                     InvokeOnMainThread(() =>
                     {
@@ -141,7 +218,7 @@ namespace myTNB
                 }
                 else
                 {
-                    //Todo: handling?
+                    DisplayNoDataAlert();
                     Debug.WriteLine("No data connection");
                 }
             });
@@ -152,7 +229,7 @@ namespace myTNB
         // </summary>
         private void InitializeTableView()
         {
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _helpList, _servicesIsShimmering, _helpIsShimmering);
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent);
             _homeTableView.ReloadData();
         }
 
@@ -217,27 +294,19 @@ namespace myTNB
         internal void OnTableViewScroll(UIScrollView scrollView)
         {
             if (ImageViewGradientImage == null) { return; }
+            nfloat addtl = _isRefreshScreenEnabled ? _addtlYValue : 0;
             nfloat scrollDiff = scrollView.ContentOffset.Y - _previousScrollOffset;
             if (scrollDiff < 0 || (scrollDiff > (scrollView.ContentSize.Height - scrollView.Frame.Size.Height))) { return; }
             _previousScrollOffset = tableViewAccounts.ContentOffset.Y;
             CGRect frame = ImageViewGradientImage.Frame;
-            frame.Y = scrollDiff > 0 ? 0 - scrollDiff : frame.Y + scrollDiff;
+            frame.Y = scrollDiff > 0 ? 0 - scrollDiff + addtl : frame.Y + scrollDiff;
             ImageViewGradientImage.Frame = frame;
             _statusBarView.Hidden = !(scrollDiff > 0 && scrollDiff > _imageGradientHeight / 2);
         }
 
-        public void UpdateAccountsTableViewCell()
-        {
-            _homeTableView.BeginUpdates();
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _helpList, _servicesIsShimmering, _helpIsShimmering);
-            NSIndexPath indexPath = NSIndexPath.Create(0, 1);
-            _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
-            _homeTableView.EndUpdates();
-        }
-
         private void ReloadAccountsTable()
         {
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _helpList, _servicesIsShimmering, _helpIsShimmering);
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent);
             _homeTableView.ReloadData();
         }
 
@@ -298,16 +367,85 @@ namespace myTNB
                 {
                     //Todo: Handle fail scenario
                 }
-
                 if (needsUpdate)
                 {
                     HelpResponseModel helpItems = iService.GetHelpItems();
-                    if (helpItems != null && helpItems.Data != null && helpItems.Data.Count > 0)
+                    if (!string.IsNullOrEmpty(helpItems.Status) && helpItems.Status.ToUpper() == DashboardHomeConstants.Sitecore_Success)
                     {
                         HelpEntity wsManager = new HelpEntity();
                         wsManager.DeleteTable();
                         wsManager.CreateTable();
-                        wsManager.InsertListOfItems(helpItems.Data);
+                        if (helpItems != null && helpItems.Data != null && helpItems.Data.Count > 0)
+                        {
+                            wsManager.InsertListOfItems(helpItems.Data);
+                        }
+                    }
+                }
+            });
+        }
+
+        private void UpdatePromotions()
+        {
+            InvokeInBackground(async () =>
+            {
+                await OnGetPromotions();
+                PromotionsEntity entity = new PromotionsEntity();
+                _promotions = entity.GetAllItemsV2();
+                InvokeOnMainThread(() =>
+                {
+                    OnUpdateCell(DashboardHomeConstants.CellIndex_Promotion);
+                });
+            });
+        }
+
+        private Task OnGetPromotions()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS, DataManager.DataManager.SharedInstance.ImageSize
+                    , TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
+                bool isValidTimeStamp = false;
+                string promotionTS = iService.GetPromotionsTimestampItem();
+                PromotionsTimestampResponseModel promotionTimeStamp = JsonConvert.DeserializeObject<PromotionsTimestampResponseModel>(promotionTS);
+                if (promotionTimeStamp != null && promotionTimeStamp.Status.Equals("Success")
+                    && promotionTimeStamp.Data != null && promotionTimeStamp.Data[0] != null
+                    && !string.IsNullOrEmpty(promotionTimeStamp.Data[0].Timestamp)
+                    && !string.IsNullOrWhiteSpace(promotionTimeStamp.Data[0].Timestamp))
+                {
+                    var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                    string currentTS = sharedPreference.StringForKey(DashboardHomeConstants.Sitecore_Timestamp);
+                    if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
+                    {
+                        sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, DashboardHomeConstants.Sitecore_Timestamp);
+                        sharedPreference.Synchronize();
+                        isValidTimeStamp = true;
+                    }
+                    else
+                    {
+                        if (currentTS.Equals(promotionTimeStamp.Data[0].Timestamp))
+                        {
+                            isValidTimeStamp = false;
+                        }
+                        else
+                        {
+                            sharedPreference.SetString(promotionTimeStamp.Data[0].Timestamp, DashboardHomeConstants.Sitecore_Timestamp);
+                            sharedPreference.Synchronize();
+                            isValidTimeStamp = true;
+                        }
+                    }
+                }
+                if (isValidTimeStamp)
+                {
+                    string promotionsItems = iService.GetPromotionsItem();
+                    //Debug.WriteLine("debug: promo items: " + promotionsItems);
+                    PromotionsV2ResponseModel promotionResponse = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(promotionsItems);
+                    if (promotionResponse != null && promotionResponse.Status.Equals("Success")
+                        && promotionResponse.Data != null && promotionResponse.Data.Count > 0)
+                    {
+                        PromotionsEntity wsManager = new PromotionsEntity();
+                        PromotionsEntity.DeleteTable();
+                        wsManager.CreateTable();
+                        wsManager.InsertListOfItemsV2(HomeTabBarController.SetValueForNullEndDate(promotionResponse.Data));
                     }
                 }
             });
@@ -351,7 +489,7 @@ namespace myTNB
         private void OnUpdateCell(int row)
         {
             _homeTableView.BeginUpdates();
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _helpList, _servicesIsShimmering, _helpIsShimmering);
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent);
             NSIndexPath indexPath = NSIndexPath.Create(0, row);
             _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
             _homeTableView.EndUpdates();
@@ -363,6 +501,78 @@ namespace myTNB
             NSIndexPath indexPath = NSIndexPath.Create(0, DashboardHomeConstants.CellIndex_Services);
             _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
             _homeTableView.EndUpdates();
+        }
+
+        public void ShowRefreshScreen(bool isFail, RefreshScreenInfoModel model = null)
+        {
+            InvokeOnMainThread(() =>
+            {
+                if (_refreshScreenComponent != null)
+                {
+                    if (_refreshScreenComponent.GetView() != null)
+                    {
+                        _refreshScreenComponent.GetView().RemoveFromSuperview();
+                        _refreshScreenComponent = null;
+                    }
+                }
+                _isRefreshScreenEnabled = isFail;
+                if (_isRefreshScreenEnabled)
+                {
+                    CGRect frame = ImageViewGradientImage.Frame;
+                    frame.Y = _addtlYValue;
+                    ImageViewGradientImage.Frame = frame;
+
+                    var bcrm = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
+                    var bcrmMsg = bcrm?.DowntimeMessage ?? "Error_BCRMMessage".Translate();
+                    string desc = _isBCRMAvailable ? model?.RefreshMessage ?? string.Empty : bcrmMsg;
+
+                    _refreshScreenComponent = new RefreshScreenComponent(View);
+                    _refreshScreenComponent.SetIsBCRMDown(!_isBCRMAvailable);
+                    _refreshScreenComponent.SetRefreshButtonHidden(!_isBCRMAvailable);
+                    _refreshScreenComponent.SetButtonText(model?.RefreshBtnText ?? string.Empty);
+                    _refreshScreenComponent.SetDescription(desc);
+                    _refreshScreenComponent.CreateComponent();
+                    _refreshScreenComponent.OnButtonTap = RefreshViewForAccounts;
+
+                    _homeTableView.BeginUpdates();
+                    _homeTableView.Source = new DashboardHomeDataSource(this, null, _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent);
+                    NSIndexPath indexPath = NSIndexPath.Create(0, 0);
+                    _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
+                    _homeTableView.EndUpdates();
+
+                    if (_accountsCardContentViewController != null)
+                    {
+                        _accountsCardContentViewController.View.RemoveFromSuperview();
+                        _accountsCardContentViewController = null;
+                    }
+                }
+            });
+        }
+
+        private void RefreshViewForAccounts()
+        {
+            if (_refreshScreenComponent != null)
+            {
+                if (_refreshScreenComponent.GetView() != null)
+                {
+                    _refreshScreenComponent.GetView().RemoveFromSuperview();
+                    _refreshScreenComponent = null;
+                }
+            }
+            _isRefreshScreenEnabled = false;
+            CGRect frame = ImageViewGradientImage.Frame;
+            frame.Y = 0;
+            ImageViewGradientImage.Frame = frame;
+            SetAccountsCardViewController();
+            ReloadAccountsTable();
+        }
+
+        public void DismissmissActiveKeyboard()
+        {
+            if (_accountsCardContentViewController != null)
+            {
+                _accountsCardContentViewController.DismissActiveKeyboard();
+            }
         }
     }
 }

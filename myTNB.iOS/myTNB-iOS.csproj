@@ -1088,6 +1088,18 @@
     <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc%402x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Grey.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Grey.imageset\Add-Account-Icon-Grey.png" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Grey.imageset\Add-Account-Icon-Grey%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Grey.imageset\Add-Account-Icon-Grey%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Refresh-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Refresh-Icon.imageset\Refresh-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\Refresh-Icon.imageset\Refresh-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Refresh-Icon.imageset\Refresh-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Closed-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SMR-Closed-Icon.imageset\SMR-Closed-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Closed-Icon.imageset\SMR-Closed-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Closed-Icon.imageset\SMR-Closed-Icon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1438,6 +1450,12 @@
     <Folder Include="Customs\Generic No Data Page\" />
     <Folder Include="Assets.xcassets\SSMR-NoData.imageset\" />
     <Folder Include="DashboardV2\" />
+    <Folder Include="Assets.xcassets\Add-Account-Icon-Grey.imageset\" />
+    <Folder Include="Home\Components\Refresh Screen\" />
+    <Folder Include="Assets.xcassets\Refresh-Icon.imageset\" />
+    <Folder Include="Model\GetAccountsSMREligibility\" />
+    <Folder Include="Customs\Custom View Controller\" />
+    <Folder Include="Assets.xcassets\SMR-Closed-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2052,7 +2070,6 @@
     <Compile Include="Home\Feedback\Feedback Image\UIImageHelper.cs" />
     <Compile Include="Home\More\Language\LanguageSettings.cs" />
     <Compile Include="Model\UpdateNotification\UpdateNotificationModel.cs" />
-    <Compile Include="Customs\CustomUIViewController.cs" />
     <Compile Include="Model\Modify Notification\DeleteNotificationResponseModel.cs" />
     <Compile Include="Model\Modify Notification\ReadNotificationResponseModel.cs" />
     <Compile Include="Customs\Bill\CustomBillUIViewController.cs" />
@@ -2229,6 +2246,11 @@
     <Compile Include="DashboardV2\DashboardConstants.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DashboardV2\DashboardV2BaseController.cs" />
+    <Compile Include="Home\Components\Refresh Screen\RefreshScreenComponent.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Accounts\RefreshScreenInfoModel.cs" />
+    <Compile Include="Model\GetAccountsSMREligibility\GetAccountsSMREligibilityResponseModel.cs" />
+    <Compile Include="Customs\Custom View Controller\CustomUIViewController.cs" />
+    <Compile Include="Customs\Custom View Controller\CustomViewControllerConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

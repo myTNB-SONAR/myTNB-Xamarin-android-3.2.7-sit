@@ -16,6 +16,7 @@ namespace myTNB.SSMR
         public static string Service_GetTerminationReasons = "GetSMRTerminationReasons";
         public static string Service_GetCARegisteredContact = "GetCAContactDetails";
         public static string Service_GetMeterReadingOCRValue = "GetMeterReadingOCRValue";
+        public static string Service_GetAccountsSMREligibility = "GetAccountsSMREligibility";
         public static string Service_Register = "R";
         public static string Service_Terminate = "T";
         public static string Service_OthersID = "1007";
@@ -70,6 +71,7 @@ namespace myTNB.SSMR
         public static string IMG_Email = "Email";
         public static string IMG_SMRMediumIcon = "SMR-Medium-Icon";
         public static string IMG_SMROpenIcon = "SMR-Open-Icon";
+        public static string IMG_SMRClosedIcon = "SMR-Closed-Icon";
         public static string IMG_BackIcon = "Back-White";
         public static string IMG_PrimaryIcon = "SSMRPrimaryIcon";
         public static string IMG_Info = "IC-Info";

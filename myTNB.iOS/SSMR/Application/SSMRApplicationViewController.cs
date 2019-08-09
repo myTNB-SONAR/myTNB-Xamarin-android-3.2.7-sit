@@ -15,10 +15,7 @@ namespace myTNB
 {
     public partial class SSMRApplicationViewController : CustomUIViewController
     {
-        public SSMRApplicationViewController(IntPtr handle) : base(handle)
-        {
-        }
-
+        public SSMRApplicationViewController(IntPtr handle) : base(handle) { }
         public bool IsApplication;
 
         private UIButton _btnSubmit;
@@ -31,6 +28,7 @@ namespace myTNB
         private CustomTextField _customMobileField;
         private CustomTextField _customEmailField;
         protected List<CustomerAccountRecordModel> _eligibleAccountList;
+        protected AccountsSMREligibilityResponseModel _smrEligibleList;
         protected CustomerAccountRecordModel _selectedAccount;
         protected ContactDetailsResponseModel _contactDetails;
         protected SSMRApplicationStatusResponseModel _ssmrApplicationStatus;
@@ -59,11 +57,12 @@ namespace myTNB
             ToggleCTA();
             if (!IsApplication)
             {
+                OnGetContactInfo();
                 OnGetTerminateReasons();
             }
-            if (!IsApplication && _selectedAccount != null)
+            if (IsApplication && _eligibleAccountList != null && _eligibleAccountList.Count > 0)
             {
-                OnGetContactInfo();
+                OnGetAccountsSMREligibility();
             }
         }
 
@@ -134,7 +133,7 @@ namespace myTNB
             };
 
             UITextView txtFieldInfo = GetInfo();
-            _btnSubmit = CustomUIButton.GetUIButton(new CGRect(16, txtFieldInfo.Frame.GetMaxY() + 16, View.Frame.Width - 32, 48)
+            _btnSubmit = CustomUIButton.GetUIButton(new CGRect(16, txtFieldInfo.Frame.GetMaxY() + 16, View.Frame.Width - 32, DeviceHelper.GetScaledHeight(48))
                 , GetCommonI18NValue(SSMRConstants.I18N_Submit));
             _btnSubmit.Enabled = true;
             _btnSubmit.BackgroundColor = MyTNBColor.FreshGreen;
@@ -164,7 +163,8 @@ namespace myTNB
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
             {
-                ForegroundColor = MyTNBColor.CharcoalGrey
+                ForegroundColor = MyTNBColor.CharcoalGrey,
+                Font = MyTNBFont.MuseoSans12_300
             }, new NSRange(0, htmlBody.Length));
             UITextView txtFieldInfo = new UITextView
             {
@@ -347,6 +347,12 @@ namespace myTNB
                 OnCreateValidation = true
             };
             UIView viewMobile = _customMobileField.GetUI();
+
+            if (IsApplication)
+            {
+                _customEmailField.SetEnable = false;
+                _customMobileField.SetEnable = false;
+            }
 
             _lblEditInfo = new UILabel(new CGRect(16, viewMobile.Frame.GetMaxY() + 12, _viewContactDetails.Frame.Width - 32, 32))
             {
@@ -578,6 +584,8 @@ namespace myTNB
         {
             if (index > -1)
             {
+                _customEmailField.SetEnable = true;
+                _customMobileField.SetEnable = true;
                 _selectedAccountIndex = index;
                 _selectedAccount = SSMRAccounts.GetAccountByIndex(index);
                 _lblAccountName.Text = _selectedAccount.accountNickName;
@@ -617,9 +625,12 @@ namespace myTNB
                         if (_contactDetails != null && _contactDetails.d != null
                             && _contactDetails.d.IsSuccess && _contactDetails.d.data != null)
                         {
+                            _lblEditInfo.Hidden = true;
                             _customEmailField.SetValue(_contactDetails.d.data.Email);
                             _customMobileField.SetValue(_contactDetails.d.data.Mobile);
                             ToggleCTA();
+                            _customEmailField.SetState(true);
+                            _customMobileField.SetState(true);
                         }
                         ActivityIndicator.Hide();
                     });
@@ -630,6 +641,27 @@ namespace myTNB
                     ActivityIndicator.Hide();
                 }
 
+            });
+        }
+
+        private void OnGetAccountsSMREligibility()
+        {
+            InvokeOnMainThread(async () =>
+            {
+                _smrEligibleList = await GetAccountsSMREligibility();
+                if (_smrEligibleList != null && _smrEligibleList.d != null
+                    && _smrEligibleList.d.IsSuccess && _smrEligibleList.d.data != null
+                    && _smrEligibleList.d.data.accountEligibilities != null)
+                {
+                    for (int i = _smrEligibleList.d.data.accountEligibilities.Count - 1; i > -1; i--)
+                    {
+                        AccountsSMREligibilityModel item = _smrEligibleList.d.data.accountEligibilities[i];
+                        if (!item.IsEligible)
+                        {
+                            _eligibleAccountList.RemoveAt(i);
+                        }
+                    }
+                }
             });
         }
 
@@ -681,36 +713,45 @@ namespace myTNB
 
         private void OnSubmitSMRApplication()
         {
-            ActivityIndicator.Show();
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                if (NetworkUtility.isReachable)
-                {
-                    InvokeOnMainThread(async () =>
-                    {
-                        _ssmrApplicationStatus = await SubmitSMRApplication();
-                        if (_ssmrApplicationStatus != null && _ssmrApplicationStatus.d != null
-                             && _ssmrApplicationStatus.d.data != null)
-                        {
-                            UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
-                            GenericStatusPageViewController status = storyBoard.InstantiateViewController("GenericStatusPageViewController") as GenericStatusPageViewController;
-                            status.StatusDisplayType = IsApplication ? GenericStatusPageViewController.StatusType.SSMRApply
-                            : GenericStatusPageViewController.StatusType.SSMRDiscontinue;
-                            status.IsSuccess = _ssmrApplicationStatus.d.IsSuccess;
-                            status.StatusTitle = _ssmrApplicationStatus.d.DisplayTitle;
-                            status.StatusMessage = _ssmrApplicationStatus.d.DisplayMessage;
-                            status.ReferenceNumber = _ssmrApplicationStatus.d.data.ApplicationID;
-                            status.ReferenceDate = _ssmrApplicationStatus.d.data.AppliedOn;
-                            NavigationController.PushViewController(status, true);
-                        }
-                        ActivityIndicator.Hide();
-                    });
-                }
-                else
-                {
-                    DisplayNoDataAlert();
-                    ActivityIndicator.Hide();
-                }
+                InvokeOnMainThread(() =>
+               {
+                   if (NetworkUtility.isReachable)
+                   {
+                       ActivityIndicator.Show();
+                       SubmitSMRApplication().ContinueWith(task =>
+                       {
+                           InvokeOnMainThread(() =>
+                          {
+                              if (_ssmrApplicationStatus != null && _ssmrApplicationStatus.d != null
+                                   && _ssmrApplicationStatus.d.data != null)
+                              {
+                                  UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
+                                  GenericStatusPageViewController status = storyBoard.InstantiateViewController("GenericStatusPageViewController") as GenericStatusPageViewController;
+                                  status.StatusDisplayType = IsApplication ? GenericStatusPageViewController.StatusType.SSMRApply
+                                  : GenericStatusPageViewController.StatusType.SSMRDiscontinue;
+                                  status.IsSuccess = _ssmrApplicationStatus.d.IsSuccess;
+                                  status.StatusTitle = _ssmrApplicationStatus.d.DisplayTitle;
+                                  status.StatusMessage = _ssmrApplicationStatus.d.DisplayMessage;
+                                  status.ReferenceNumber = _ssmrApplicationStatus.d.data.ApplicationID;
+                                  status.ReferenceDate = _ssmrApplicationStatus.d.data.AppliedOn;
+                                  NavigationController.PushViewController(status, true);
+                              }
+                              else
+                              {
+                                  DisplayServiceError(_ssmrApplicationStatus.d.ErrorMessage);
+                              }
+                              ActivityIndicator.Hide();
+                          });
+                       });
+                   }
+                   else
+                   {
+                       DisplayNoDataAlert();
+                       ActivityIndicator.Hide();
+                   }
+               });
             });
         }
 
@@ -737,6 +778,19 @@ namespace myTNB
             };
             TerminationReasonsResponseModel response = serviceManager
                 .OnExecuteAPIV6<TerminationReasonsResponseModel>(SSMRConstants.Service_GetTerminationReasons, request);
+            return response;
+        }
+
+        private async Task<AccountsSMREligibilityResponseModel> GetAccountsSMREligibility()
+        {
+            ServiceManager serviceManager = new ServiceManager();
+            object request = new
+            {
+                serviceManager.usrInf,
+                contractAccounts = _eligibleAccountList.Select(x => x.accNum).ToList()
+            };
+            AccountsSMREligibilityResponseModel response = serviceManager
+                .OnExecuteAPIV6<AccountsSMREligibilityResponseModel>(SSMRConstants.Service_GetAccountsSMREligibility, request);
             return response;
         }
 
@@ -776,7 +830,7 @@ namespace myTNB
             return string.Empty;
         }
 
-        private async Task<SSMRApplicationStatusResponseModel> SubmitSMRApplication()
+        private Task SubmitSMRApplication()
         {
             ServiceManager serviceManager = new ServiceManager();
             object request = new
@@ -794,9 +848,11 @@ namespace myTNB
                 SMRMode = IsApplication ? SSMRConstants.Service_Register : SSMRConstants.Service_Terminate,
                 reason = GetReason(),
             };
-            SSMRApplicationStatusResponseModel response = serviceManager
-                .OnExecuteAPIV6<SSMRApplicationStatusResponseModel>(SSMRConstants.Service_SubmitSSMRApplication, request);
-            return response;
+            return Task.Factory.StartNew(() =>
+            {
+                _ssmrApplicationStatus = serviceManager
+                    .OnExecuteAPIV6<SSMRApplicationStatusResponseModel>(SSMRConstants.Service_SubmitSSMRApplication, request);
+            });
         }
     }
 }

@@ -21,7 +21,6 @@ namespace myTNB
         public string RightIcon { set; get; }
         public string Value { set; get; }
         public bool IsSecureEntry { set; get; } = false;
-        public bool IsFieldValid { get { return _isFieldValid; } }
         public bool OnCreateValidation { set; get; }
         public Action TypingEndAction { set; get; }
         public Action TypingBeginAction { set; get; }
@@ -97,7 +96,7 @@ namespace myTNB
             {
                 AttributedText = AttributedStringUtility.GetAttributedStringV2(Hint, AttributedStringUtility.AttributedStringType.Hint),
                 TextAlignment = UITextAlignment.Left,
-                Hidden = string.IsNullOrEmpty(Hint) || string.IsNullOrWhiteSpace(Hint)
+                Hidden = true
             };
 
             ViewContainer.AddSubviews(new UIView[] { LblTitle, TextField, _viewLine, LblError, LblHint });
@@ -109,6 +108,22 @@ namespace myTNB
             SetEvents();
             if (OnCreateValidation) { ValidateField(); }
             return ViewContainer;
+        }
+
+        public bool IsFieldValid
+        {
+            get
+            {
+                ValidateField();
+                return _isFieldValid;
+            }
+        }
+
+        public void SetState(bool isValid)
+        {
+            LblError.Hidden = isValid;
+            _viewLine.BackgroundColor = isValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
+            TextField.TextColor = isValid ? TextColor : MyTNBColor.Tomato;
         }
 
         public void ValidateField()
@@ -171,6 +186,11 @@ namespace myTNB
             return value;
         }
 
+        public bool SetEnable
+        {
+            set { TextField.Enabled = value; }
+        }
+
         private bool HasValue
         {
             get
@@ -202,6 +222,13 @@ namespace myTNB
             };
             TextField.EditingDidBegin += (sender, e) =>
             {
+                if (TextFieldType == Type.MobileNumber)
+                {
+                    if (TextField.Text.Length == 0)
+                    {
+                        TextField.Text += TNBGlobal.MobileNoPrefix;
+                    }
+                }
                 LblHint.Hidden = !LblError.Hidden || TextField.Text.Length == 0;
                 LblTitle.Hidden = TextField.Text.Length == 0;
                 if (TextFieldType == Type.MobileNumber && TextField.Text.Length == 0)

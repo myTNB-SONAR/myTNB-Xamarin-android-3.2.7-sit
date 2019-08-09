@@ -4,6 +4,7 @@ using System.Diagnostics;
 using CoreAnimation;
 using CoreGraphics;
 using Foundation;
+using myTNB.Customs;
 using UIKit;
 
 namespace myTNB
@@ -21,8 +22,11 @@ namespace myTNB
         private UILabel _lblToastDetails;
         private bool _isAnimating;
 
-        private nfloat WidthBase = 320;
-        private nfloat HeightBase = 568;
+        public enum PermissionMode
+        {
+            Camera,
+            Gallery
+        }
 
         public CustomUIViewController(IntPtr handle) : base(handle)
         {
@@ -32,6 +36,7 @@ namespace myTNB
         {
             base.ViewDidLoad();
             I18NDictionary = LanguageManager.Instance.GetValuesByPage(PageName);
+            ConfigureNavigationBar();
             if (IsGradientRequired)
             {
                 CreateBackgroundGradient();
@@ -41,7 +46,6 @@ namespace myTNB
                 CreateImageGradient();
             }
             SetFrames();
-            ConfigureNavigationBar();
         }
 
         public override void ViewWillAppear(bool animated)
@@ -132,6 +136,34 @@ namespace myTNB
         {
             AlertHandler.DisplayCustomAlert(title, message, ctaButtons, UITextAlignment.Left
                 , UITextAlignment.Left, true, 0.056F, false, image);
+        }
+
+        public void DisplayPermission(PermissionMode pMode)
+        {
+            string title = string.Empty;
+            string description = string.Empty;
+            if (pMode == PermissionMode.Camera)
+            {
+                title = GetCommonI18NValue(CustomViewControllerConstants.I18N_CameraPermissionTitle);
+                description = GetCommonI18NValue(CustomViewControllerConstants.I18N_PhotoPermissionDescription);
+            }
+            else if (pMode == PermissionMode.Gallery)
+            {
+                title = GetCommonI18NValue(CustomViewControllerConstants.I18N_GalleryPermissionTitle);
+                description = GetCommonI18NValue(CustomViewControllerConstants.I18N_PhotoPermissionDescription);
+            }
+
+            UIAlertController alert = UIAlertController.Create(title, description, UIAlertControllerStyle.Alert);
+            alert.AddAction(UIAlertAction.Create(GetCommonI18NValue(CustomViewControllerConstants.I18N_Cancel), UIAlertActionStyle.Cancel, null));
+            alert.AddAction(UIAlertAction.Create(GetCommonI18NValue(CustomViewControllerConstants.I18N_Settings), UIAlertActionStyle.Default, (sender) =>
+            {
+                NSUrl url = new NSUrl(UIApplication.OpenSettingsUrlString);
+                if (url != null && UIApplication.SharedApplication.CanOpenUrl(url))
+                {
+                    UIApplication.SharedApplication.OpenUrl(url);
+                }
+            }));
+            PresentViewController(alert, true, null);
         }
         #endregion
         #region Toast
@@ -268,14 +300,10 @@ namespace myTNB
             _statusBarView = new UIView(new CGRect(0, 0, View.Frame.Width, DeviceHelper.GetStatusBarHeight()));
             View.AddSubview(_statusBarView);
         }
-        public virtual void ConfigureNavigationBar()
-        {
-
-        }
+        public virtual void ConfigureNavigationBar() { }
         #endregion
 
         #region Utilities
-        #region I18N
         public string GetI18NValue(string key)
         {
             return I18NDictionary.ContainsKey(key) ? I18NDictionary[key] : string.Empty;
@@ -294,17 +322,6 @@ namespace myTNB
         {
             return DataManager.DataManager.SharedInstance.ErrorI18NDictionary.ContainsKey(key)
                 ? DataManager.DataManager.SharedInstance.ErrorI18NDictionary[key] : string.Empty;
-        }
-        #endregion
-        public nfloat GetScaledWidth(nfloat value)
-        {
-            nfloat percentage = value / WidthBase;
-            return UIScreen.MainScreen.Bounds.Width * percentage;
-        }
-        public nfloat GetScaledHeight(nfloat value)
-        {
-            nfloat percentage = value / HeightBase;
-            return UIScreen.MainScreen.Bounds.Height * percentage;
         }
         #endregion
     }

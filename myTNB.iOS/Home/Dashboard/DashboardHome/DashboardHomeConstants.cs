@@ -8,7 +8,6 @@ namespace myTNB
         public static int MaxAccountPerCard = 5;
         public static nfloat SearchViewHeight = 24f;
         public static nfloat PageControlHeight = 20f;
-        public static nfloat GreetingViewHeight = 80f;
 
         //Cell
         public static string Cell_Accounts = "accountsTableViewCell";
@@ -43,6 +42,7 @@ namespace myTNB
 
         //SiteCore
         public static string Sitecore_Timestamp = "SiteCorePromotionTimeStamp";
+        public static string Sitecore_Success = "SUCCESS";
 
         //Format
         public static string Format_Date = "yyyyMMdd";

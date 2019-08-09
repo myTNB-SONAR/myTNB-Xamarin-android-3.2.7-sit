@@ -215,17 +215,20 @@ namespace myTNB
                     int nextTag = (int)textField.Tag - 1;
                     if (nextTag > 0)
                     {
-                        if (textField.Tag == boxMaxCount)
+                        if (_meterReadingValue.Length < boxMaxCount)
                         {
-                            UpdateReadingValueText(textStr.Substring(1, 1));
+                            if (textField.Tag == boxMaxCount)
+                            {
+                                UpdateReadingValueText(textStr.Substring(1, 1));
+                            }
+                            textField.Text = textStr.Substring(1, 1);
+                            PopulateTextFields();
+                            textField.BecomeFirstResponder();
                         }
-                        textField.Text = textStr.Substring(1, 1);
-                        PopulateTextFields();
-                        //int len = _meterReadingValue.Length - 1;
-                        //int indx = (int)(len - (boxMaxCount - textField.Tag));
-                        //InsertCharInString(indx, textField.Text);
-                        //RepopulateTextFields();
-                        textField.BecomeFirstResponder();
+                        else
+                        {
+                            textField.Text = textStr.Substring(0, 1);
+                        }
                     }
                 }
                 else if (textField.Text.Length == 1)
@@ -241,7 +244,10 @@ namespace myTNB
                     ValidateTextField();
                     textField.BecomeFirstResponder();
                 }
-                UpdateMeterReadingValue();
+                if (_meterReadingValue.Length <= boxMaxCount)
+                {
+                    UpdateMeterReadingValue();
+                }
             };
             textField.EditingDidEnd += (sender, e) =>
             {
@@ -272,14 +278,6 @@ namespace myTNB
             if (index > -1 && index < _meterReadingValue.Length)
             {
                 _meterReadingValue = _meterReadingValue.Remove(index, 1);
-            }
-        }
-
-        private void InsertCharInString(int index, string str)
-        {
-            if (index > -1 && index < _meterReadingValue.Length)
-            {
-                _meterReadingValue = _meterReadingValue.Insert(index, str);
             }
         }
 

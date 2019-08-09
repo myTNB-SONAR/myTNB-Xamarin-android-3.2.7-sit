@@ -22,10 +22,24 @@ namespace myTNB
             SetSubviews();
         }
 
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+            NavigationController.SetNavigationBarHidden(true, animated);
+        }
+
+        public override void ViewDidDisappear(bool animated)
+        {
+            base.ViewDidDisappear(animated);
+            if (NavigationController != null)
+            {
+                NavigationController.SetNavigationBarHidden(false, animated);
+            }
+        }
+
         private void SetNavigationBar()
         {
             nfloat navHeight = NavigationController.NavigationBar.Frame.Height;
-            NavigationController.NavigationBarHidden = true;
             UIView viewBack = new UIView(new CGRect(16, DeviceHelper.GetStatusBarHeight() + ((navHeight - 24) / 2), 24, 24));
             viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
@@ -52,11 +66,6 @@ namespace myTNB
                 Text = NavTitle ?? string.Empty
             };
             View.AddSubviews(new UIView[] { viewBack, lblTitle });
-        }
-
-        public override void ViewDidDisappear(bool animated)
-        {
-            base.ViewDidDisappear(animated);
         }
 
         private void SetSubviews()
