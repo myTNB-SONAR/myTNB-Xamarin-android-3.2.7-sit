@@ -70,7 +70,7 @@ namespace myTNB.Home.Components
             nfloat buttonPadding = 16f;
             nfloat labelWidth = (float)(_viewContainer.Frame.Width - (descPadding * 2));
             nfloat buttonWidth = (float)(_viewContainer.Frame.Width - (buttonPadding * 2));
-            nfloat buttonHeight = 48f;
+            float buttonHeight = 48f;
 
             _txtDescription = new UITextView(new CGRect(descPadding, _iconView.Frame.GetMaxY() + 16f, labelWidth, 90f))
             {
@@ -142,7 +142,7 @@ namespace myTNB.Home.Components
 
             _btnRefresh = new UIButton(UIButtonType.Custom)
             {
-                Frame = new CGRect(buttonPadding, _txtDescription.Frame.GetMaxY() + buttonPadding, buttonWidth, buttonHeight),
+                Frame = new CGRect(buttonPadding, _txtDescription.Frame.GetMaxY() + buttonPadding, buttonWidth, DeviceHelper.GetScaledHeight(buttonHeight)),
                 Hidden = _isBtnHidden,
                 BackgroundColor = MyTNBColor.FreshGreen,
                 Font = MyTNBFont.MuseoSans16_500

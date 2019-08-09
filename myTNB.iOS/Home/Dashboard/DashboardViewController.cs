@@ -1506,7 +1506,7 @@ namespace myTNB.Dashboard
                 object request = new
                 {
                     contractAccount = account.accNum,
-                    isOwnedAccount = account.IsOwnedAccount,
+                    isOwnedAccount = account.isOwned,
                     serviceManager.usrInf
                 };
                 _smrActivityInfoResponse = serviceManager.OnExecuteAPIV6<SMRAccountActivityInfoResponseModel>("GetSMRAccountActivityInfo", request);

@@ -186,9 +186,12 @@ namespace myTNB
                 ClipsToBounds = true
             };
             _ssmrHeaderComponent = new SSMRReadingHistoryHeaderComponent(View);
+            _ssmrHeaderComponent.SetSubmitButtonHidden(_meterReadingHistory);
+            _ssmrHeaderComponent.SetImageIconText(_meterReadingHistory);
             _headerView.AddSubview(_ssmrHeaderComponent.GetUI());
             _ssmrHeaderComponent.SetTitle(_meterReadingHistory.HistoryViewTitle);
             _ssmrHeaderComponent.SetDescription(_meterReadingHistory.HistoryViewMessage);
+            _ssmrHeaderComponent.OnButtonTap = ShowSubmitMeterView;
             AdjustHeader();
         }
 
@@ -246,6 +249,15 @@ namespace myTNB
             var opac = _previousScrollOffset / _tableViewOffset;
             var absOpacity = Math.Abs((float)opac);
             AddViewWithOpacity(absOpacity);
+        }
+
+        private void ShowSubmitMeterView()
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+            SSMRReadMeterViewController viewController =
+                storyBoard.InstantiateViewController("SSMRReadMeterViewController") as SSMRReadMeterViewController;
+            UINavigationController navController = new UINavigationController(viewController);
+            PresentViewController(navController, true, null);
         }
     }
 }
