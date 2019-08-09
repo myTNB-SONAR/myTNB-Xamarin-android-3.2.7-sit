@@ -53,7 +53,7 @@ namespace myTNB
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
 
-            _previousMeterList = DataManager.DataManager.SharedInstance.SSMRPreviousMeterReadingList;
+            _previousMeterList = SSMRActivityInfoCache.Instance.GetPreviousMeterReadingList();
             _isThreePhase = _previousMeterList.Count > 1;
 
             SetNavigation();
