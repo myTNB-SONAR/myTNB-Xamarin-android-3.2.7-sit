@@ -108,7 +108,6 @@ namespace myTNB
             _btnInfo = new UIBarButtonItem(UIImage.FromBundle(SSMRConstants.IMG_Info)
                , UIBarButtonItemStyle.Done, (sender, e) =>
            {
-               Debug.WriteLine("Info Tapped");
                DisplayTooltip();
            });
             NavigationItem.LeftBarButtonItem = btnBack;

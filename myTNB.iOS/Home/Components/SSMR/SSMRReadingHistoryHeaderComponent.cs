@@ -12,6 +12,11 @@ namespace myTNB
         UIImageView _imageView;
         UILabel _labelTitle;
         UITextView _txtDesc;
+        UIButton _btnRefresh;
+        public Action OnButtonTap;
+
+        string _buttonText;
+        bool _isBtnHidden;
 
         nfloat _padding = 16f;
 
@@ -48,7 +53,24 @@ namespace myTNB
                 Editable = false,
                 BackgroundColor = UIColor.Clear
             };
+            _btnRefresh = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(_padding, _txtDesc.Frame.GetMaxY() + 17f, _parentView.Frame.Width - (_padding * 2), DeviceHelper.GetScaledHeight(48f)),
+                Hidden = _isBtnHidden,
+                BackgroundColor = MyTNBColor.FreshGreen,
+                Font = MyTNBFont.MuseoSans16_500
+            };
+            _btnRefresh.Layer.CornerRadius = 4;
+            _btnRefresh.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
+            _btnRefresh.Layer.BorderWidth = 1;
+            _btnRefresh.SetTitle(_buttonText, UIControlState.Normal);
+            _btnRefresh.SetTitleColor(UIColor.White, UIControlState.Normal);
+            _btnRefresh.TouchUpInside += (sender, e) =>
+            {
+                OnButtonTap?.Invoke();
+            };
             _containerView.AddSubviews(new UIView { _imageView, _labelTitle, _txtDesc });
+            _containerView.AddSubview(_btnRefresh);
         }
 
         public UIView GetUI()
@@ -60,6 +82,12 @@ namespace myTNB
         public UIView GetView()
         {
             return _containerView;
+        }
+
+        public void SetRefreshButtonHidden(bool flag, string btnText)
+        {
+            _isBtnHidden = !flag;
+            _buttonText = btnText ?? string.Empty;
         }
 
         public void SetTitle(string text)
@@ -84,8 +112,14 @@ namespace myTNB
 
         private void AdjustViewFrames()
         {
+            if (!_isBtnHidden)
+            {
+                CGRect frame = _btnRefresh.Frame;
+                frame.Y = _txtDesc.Frame.GetMaxY() + 17f;
+                _btnRefresh.Frame = frame;
+            }
             CGRect containerFrame = _containerView.Frame;
-            containerFrame.Height = _txtDesc.Frame.GetMaxY() + _padding;
+            containerFrame.Height = _isBtnHidden ? _txtDesc.Frame.GetMaxY() + _padding : _btnRefresh.Frame.GetMaxY() + _padding;
             _containerView.Frame = containerFrame;
         }
     }
