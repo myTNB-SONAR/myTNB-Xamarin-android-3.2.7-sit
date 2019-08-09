@@ -18,9 +18,13 @@ namespace myTNB
         internal UIImageView ImageViewGradientImage;
         internal UIView _statusBarView;
         internal nfloat ViewWidth, ViewHeight;
+
         private UIView _viewToast, _viewToastOverlay;
         private UILabel _lblToastDetails;
         private bool _isAnimating;
+
+        private nfloat WidthBase = 320;
+        private nfloat HeightBase = 568;
 
         public enum PermissionMode
         {
@@ -304,24 +308,39 @@ namespace myTNB
         #endregion
 
         #region Utilities
+        #region I18N
         public string GetI18NValue(string key)
         {
-            return I18NDictionary.ContainsKey(key) ? I18NDictionary[key] : string.Empty;
+            return I18NDictionary != null && I18NDictionary.ContainsKey(key) ? I18NDictionary[key] : string.Empty;
         }
         public string GetCommonI18NValue(string key)
         {
-            return DataManager.DataManager.SharedInstance.CommonI18NDictionary.ContainsKey(key)
+            return DataManager.DataManager.SharedInstance.CommonI18NDictionary != null
+                && DataManager.DataManager.SharedInstance.CommonI18NDictionary.ContainsKey(key)
                 ? DataManager.DataManager.SharedInstance.CommonI18NDictionary[key] : string.Empty;
         }
         public string GetHintI18NValue(string key)
         {
-            return DataManager.DataManager.SharedInstance.HintI18NDictionary.ContainsKey(key)
+            return DataManager.DataManager.SharedInstance.HintI18NDictionary != null
+                && DataManager.DataManager.SharedInstance.HintI18NDictionary.ContainsKey(key)
                 ? DataManager.DataManager.SharedInstance.HintI18NDictionary[key] : string.Empty;
         }
         public string GetErrorI18NValue(string key)
         {
-            return DataManager.DataManager.SharedInstance.ErrorI18NDictionary.ContainsKey(key)
+            return DataManager.DataManager.SharedInstance.ErrorI18NDictionary != null
+                && DataManager.DataManager.SharedInstance.ErrorI18NDictionary.ContainsKey(key)
                 ? DataManager.DataManager.SharedInstance.ErrorI18NDictionary[key] : string.Empty;
+        }
+        #endregion
+        public nfloat GetScaledWidth(nfloat value)
+        {
+            nfloat percentage = value / WidthBase;
+            return UIScreen.MainScreen.Bounds.Width * percentage;
+        }
+        public nfloat GetScaledHeight(nfloat value)
+        {
+            nfloat percentage = value / HeightBase;
+            return UIScreen.MainScreen.Bounds.Height * percentage;
         }
         #endregion
     }
