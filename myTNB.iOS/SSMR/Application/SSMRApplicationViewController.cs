@@ -713,36 +713,45 @@ namespace myTNB
 
         private void OnSubmitSMRApplication()
         {
-            ActivityIndicator.Show();
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                if (NetworkUtility.isReachable)
-                {
-                    InvokeOnMainThread(async () =>
-                    {
-                        _ssmrApplicationStatus = await SubmitSMRApplication();
-                        if (_ssmrApplicationStatus != null && _ssmrApplicationStatus.d != null
-                             && _ssmrApplicationStatus.d.data != null)
-                        {
-                            UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
-                            GenericStatusPageViewController status = storyBoard.InstantiateViewController("GenericStatusPageViewController") as GenericStatusPageViewController;
-                            status.StatusDisplayType = IsApplication ? GenericStatusPageViewController.StatusType.SSMRApply
-                            : GenericStatusPageViewController.StatusType.SSMRDiscontinue;
-                            status.IsSuccess = _ssmrApplicationStatus.d.IsSuccess;
-                            status.StatusTitle = _ssmrApplicationStatus.d.DisplayTitle;
-                            status.StatusMessage = _ssmrApplicationStatus.d.DisplayMessage;
-                            status.ReferenceNumber = _ssmrApplicationStatus.d.data.ApplicationID;
-                            status.ReferenceDate = _ssmrApplicationStatus.d.data.AppliedOn;
-                            NavigationController.PushViewController(status, true);
-                        }
-                        ActivityIndicator.Hide();
-                    });
-                }
-                else
-                {
-                    DisplayNoDataAlert();
-                    ActivityIndicator.Hide();
-                }
+                InvokeOnMainThread(() =>
+               {
+                   if (NetworkUtility.isReachable)
+                   {
+                       ActivityIndicator.Show();
+                       SubmitSMRApplication().ContinueWith(task =>
+                       {
+                           InvokeOnMainThread(() =>
+                          {
+                              if (_ssmrApplicationStatus != null && _ssmrApplicationStatus.d != null
+                                   && _ssmrApplicationStatus.d.data != null)
+                              {
+                                  UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
+                                  GenericStatusPageViewController status = storyBoard.InstantiateViewController("GenericStatusPageViewController") as GenericStatusPageViewController;
+                                  status.StatusDisplayType = IsApplication ? GenericStatusPageViewController.StatusType.SSMRApply
+                                  : GenericStatusPageViewController.StatusType.SSMRDiscontinue;
+                                  status.IsSuccess = _ssmrApplicationStatus.d.IsSuccess;
+                                  status.StatusTitle = _ssmrApplicationStatus.d.DisplayTitle;
+                                  status.StatusMessage = _ssmrApplicationStatus.d.DisplayMessage;
+                                  status.ReferenceNumber = _ssmrApplicationStatus.d.data.ApplicationID;
+                                  status.ReferenceDate = _ssmrApplicationStatus.d.data.AppliedOn;
+                                  NavigationController.PushViewController(status, true);
+                              }
+                              else
+                              {
+                                  DisplayServiceError(_ssmrApplicationStatus.d.ErrorMessage);
+                              }
+                              ActivityIndicator.Hide();
+                          });
+                       });
+                   }
+                   else
+                   {
+                       DisplayNoDataAlert();
+                       ActivityIndicator.Hide();
+                   }
+               });
             });
         }
 
@@ -821,7 +830,7 @@ namespace myTNB
             return string.Empty;
         }
 
-        private async Task<SSMRApplicationStatusResponseModel> SubmitSMRApplication()
+        private Task SubmitSMRApplication()
         {
             ServiceManager serviceManager = new ServiceManager();
             object request = new
@@ -839,9 +848,11 @@ namespace myTNB
                 SMRMode = IsApplication ? SSMRConstants.Service_Register : SSMRConstants.Service_Terminate,
                 reason = GetReason(),
             };
-            SSMRApplicationStatusResponseModel response = serviceManager
-                .OnExecuteAPIV6<SSMRApplicationStatusResponseModel>(SSMRConstants.Service_SubmitSSMRApplication, request);
-            return response;
+            return Task.Factory.StartNew(() =>
+            {
+                _ssmrApplicationStatus = serviceManager
+                    .OnExecuteAPIV6<SSMRApplicationStatusResponseModel>(SSMRConstants.Service_SubmitSSMRApplication, request);
+            });
         }
     }
 }

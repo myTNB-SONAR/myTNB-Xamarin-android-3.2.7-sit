@@ -28,7 +28,7 @@ namespace myTNB
         UIPageControl _pageControl;
         UIScrollView _meterReadScrollView;
         UIImageView _tickView;
-        UILabel _descriptionLabel;
+        UILabel _descriptionLabel, _dontShowLabel;
         nfloat _padding = 16f;
         CGRect scrollViewFrame;
         int _currentPageIndex;
@@ -53,7 +53,7 @@ namespace myTNB
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
 
-            _previousMeterList = DataManager.DataManager.SharedInstance.SSMRPreviousMeterReadingList;
+            _previousMeterList = SSMRActivityInfoCache.Instance.GetPreviousMeterReadingList();
             _isThreePhase = _previousMeterList.Count > 1;
 
             SetNavigation();
@@ -85,7 +85,7 @@ namespace myTNB
             });
             UIBarButtonItem btnRight = new UIBarButtonItem(btnRightImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                PrepareToolTipView();
+                PrepareToolTipView(true);
             });
             NavigationItem.LeftBarButtonItem = btnBack;
             NavigationItem.RightBarButtonItem = btnRight;
@@ -194,7 +194,7 @@ namespace myTNB
             }
         }
 
-        private void PrepareToolTipView()
+        private void PrepareToolTipView(bool isDontShowHidden = false)
         {
             UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
             nfloat padding = 18f;
@@ -204,8 +204,7 @@ namespace myTNB
             {
                 _toolTipParentView = new UIView(new CGRect(0, 0, ViewWidth, height))
                 {
-                    BackgroundColor = MyTNBColor.Black60,
-                    Hidden = false
+                    BackgroundColor = MyTNBColor.Black60
                 };
                 currentWindow.AddSubview(_toolTipParentView);
 
@@ -219,10 +218,9 @@ namespace myTNB
                 SetToolTipScrollView();
                 SetScrollViewSubViews();
             }
-            else
-            {
-                _toolTipParentView.Hidden = false;
-            }
+            _toolTipParentView.Hidden = false;
+            _tickView.Frame = new CGRect(_tickView.Frame.Location, new CGSize(20, isDontShowHidden ? 0 : 20));
+            _dontShowLabel.Frame = new CGRect(_dontShowLabel.Frame.Location, new CGSize(120, isDontShowHidden ? 0 : 14));
         }
 
         private void MakeToolTipVisible(bool isVisible)
@@ -381,20 +379,20 @@ namespace myTNB
             }));
             _toolTipFooterView.AddSubview(_tickView);
 
-            UILabel dontShowLabel = new UILabel(new CGRect(_tickView.Frame.GetMaxX() + 8f, _pageControl.Frame.GetMaxY() + 34f, 120f, 14f))
+            _dontShowLabel = new UILabel(new CGRect(_tickView.Frame.GetMaxX() + 8f, _pageControl.Frame.GetMaxY() + 34f, 120f, 14f))
             {
                 Font = MyTNBFont.MuseoSans12_500,
                 TextColor = MyTNBColor.BrownGreyTwo,
                 Text = GetI18NValue(SSMRConstants.I18N_DontShowAgain),
                 UserInteractionEnabled = true
             };
-            dontShowLabel.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            _dontShowLabel.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 DontShowAction();
             }));
-            _toolTipFooterView.AddSubview(dontShowLabel);
+            _toolTipFooterView.AddSubview(_dontShowLabel);
 
-            UIView line = new UIView(new CGRect(0, dontShowLabel.Frame.GetMaxY() + 21f, _toolTipFooterView.Frame.Width, 1f))
+            UIView line = new UIView(new CGRect(0, _dontShowLabel.Frame.GetMaxY() + 21f, _toolTipFooterView.Frame.Width, 1f))
             {
                 BackgroundColor = MyTNBColor.VeryLightPink
             };
