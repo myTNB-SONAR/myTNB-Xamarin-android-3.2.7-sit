@@ -10,6 +10,7 @@ namespace myTNB
         public static SSMRActivityInfoCache Instance { get { return lazy.Value; } }
 
         private SMRAccountActivityInfoResponseModel SSMRActivityInfoResponse = new SMRAccountActivityInfoResponseModel();
+        private List<SMRMROValidateRegisterDetailsInfoModel> SSMRPreviousMeterReadingList;
         private List<PopupModel> PopupDetailList = new List<PopupModel>();
         private Dictionary<string, List<PopupSelectorModel>> SMRPhotoPopUpDetails;
         private List<PopupSelectorModel> SMRPhotoPopUpList;
@@ -21,6 +22,7 @@ namespace myTNB
         {
             SSMRActivityInfoResponse = data;
             PopupDetailList = data.d.data.SMRPhotoPopUpDetails;
+            SSMRPreviousMeterReadingList = data.d.data.SMRMROValidateRegisterDetails;
         }
 
         public PopupModel GetPopupDetailsByType(string type)
@@ -57,6 +59,37 @@ namespace myTNB
                 }
             }
             return null;
+        }
+
+        public List<SMRMROValidateRegisterDetailsInfoModel> GetPreviousMeterReadingList()
+        {
+            List<SMRMROValidateRegisterDetailsInfoModel> list = new List<SMRMROValidateRegisterDetailsInfoModel>();
+            if (SSMRPreviousMeterReadingList != null && SSMRPreviousMeterReadingList.Count > 0)
+            {
+                for (int i = 0; i < SSMRPreviousMeterReadingList.Count; i++)
+                {
+                    SMRMROValidateRegisterDetailsInfoModel item = SSMRPreviousMeterReadingList[i];
+                    if (item == null) { continue; }
+                    list.Add(GetRegisterDetailCopy(item));
+                }
+            }
+            return list;
+        }
+
+        private SMRMROValidateRegisterDetailsInfoModel GetRegisterDetailCopy(SMRMROValidateRegisterDetailsInfoModel item)
+        {
+            return new SMRMROValidateRegisterDetailsInfoModel
+            {
+                RegisterNumber = item.RegisterNumber,
+                MroID = item.MroID,
+                PrevMrDate = item.PrevMrDate,
+                SchMrDate = item.SchMrDate,
+                PrevMeterReading = item.PrevMeterReading,
+                IsValidManualReading = item.IsValidManualReading,
+                CurrentReading = item.CurrentReading,
+                IsErrorFromOCR = item.IsErrorFromOCR,
+                ErrorMessage = item.ErrorMessage,
+            };
         }
 
         private void SetPopupSelectorValues()
