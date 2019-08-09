@@ -27,7 +27,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             GetMeterReadingOCRResponse response;
             mView.ShowOCRLoading();
             List<Task<GetMeterReadingOCRResponse>> ocrSubmitTasks = new List<Task<GetMeterReadingOCRResponse>>();
-            foreach (MeterImageModel meterImageModel in meterImageList)
+            List<MeterImageModel> modelWithMeterImages = meterImageList.FindAll(meter=> { return meter.ImageData != null; });
+            foreach (MeterImageModel meterImageModel in modelWithMeterImages)
             {
                 if (meterImageModel.ImageData != null)
                 {
@@ -72,6 +73,16 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         {
             MeterImageModel model;
             for (int i=0; i < 3; i++)
+            {
+                model = new MeterImageModel();
+                meterImageList.Add(model);
+            }
+        }
+
+        public void InitializeModelList(int count)
+        {
+            MeterImageModel model;
+            for (int i = 0; i < count; i++)
             {
                 model = new MeterImageModel();
                 meterImageList.Add(model);
