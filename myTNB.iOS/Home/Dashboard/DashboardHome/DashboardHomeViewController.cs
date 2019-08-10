@@ -474,9 +474,11 @@ namespace myTNB
                 ShowViewController(vc, null);
                 */
 
+                ///*
                 UIStoryboard storyBoard = UIStoryboard.FromName("DashboardV2", null);
                 DashboardV2ViewController vc = storyBoard.InstantiateViewController("DashboardV2") as DashboardV2ViewController;
                 NavigationController.PushViewController(vc, true);
+                //*/
             }
         }
 

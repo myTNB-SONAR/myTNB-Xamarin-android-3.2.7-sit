@@ -40,7 +40,6 @@ namespace myTNB
         {
             base.ViewDidLoad();
             I18NDictionary = LanguageManager.Instance.GetValuesByPage(PageName);
-            ConfigureNavigationBar();
             if (IsGradientRequired)
             {
                 CreateBackgroundGradient();
@@ -50,6 +49,7 @@ namespace myTNB
                 CreateImageGradient();
             }
             SetFrames();
+            ConfigureNavigationBar();
         }
 
         public override void ViewWillAppear(bool animated)

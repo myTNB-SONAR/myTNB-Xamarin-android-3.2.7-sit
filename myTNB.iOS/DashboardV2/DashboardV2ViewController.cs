@@ -16,6 +16,7 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+            //ConfigureNavigationBar();
         }
     }
 }

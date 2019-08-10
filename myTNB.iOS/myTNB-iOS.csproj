@@ -239,6 +239,9 @@
     <Reference Include="Xamarin.Facebook.Shimmer.iOS">
       <HintPath>..\packages\Xamarin.Facebook.Shimmer.1.0.0\lib\xamarinios10\Xamarin.Facebook.Shimmer.iOS.dll</HintPath>
     </Reference>
+    <Reference Include="DeepCloner">
+      <HintPath>..\packages\DeepCloner.0.10.2\lib\netstandard1.3\DeepCloner.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
@@ -2251,6 +2254,7 @@
     <Compile Include="Model\GetAccountsSMREligibility\GetAccountsSMREligibilityResponseModel.cs" />
     <Compile Include="Customs\Custom View Controller\CustomUIViewController.cs" />
     <Compile Include="Customs\Custom View Controller\CustomViewControllerConstants.cs" />
+    <Compile Include="Session Cache\AccountManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
