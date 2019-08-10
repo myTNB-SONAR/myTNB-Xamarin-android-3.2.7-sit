@@ -5,6 +5,9 @@ namespace myTNB
 {
     public class CustomUIButtonV2 : UIButton
     {
+        private string PageName = string.Empty;
+        private string EventName = string.Empty;
+
         public CustomUIButtonV2(bool isWhiteBG = false)
         {
             SetDefaultUIButton(isWhiteBG);
@@ -23,6 +26,12 @@ namespace myTNB
                 BackgroundColor = UIColor.White;
                 SetTitleColor(MyTNBColor.WaterBlue, UIControlState.Normal);
             }
+        }
+
+        public override void AddGestureRecognizer(UIGestureRecognizer gestureRecognizer)
+        {
+            base.AddGestureRecognizer(gestureRecognizer);
+            //Todo: Add Firebase Call
         }
     }
 }

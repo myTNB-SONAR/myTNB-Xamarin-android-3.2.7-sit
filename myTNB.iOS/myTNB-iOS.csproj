@@ -2255,6 +2255,7 @@
     <Compile Include="Customs\Custom View Controller\CustomUIViewController.cs" />
     <Compile Include="Customs\Custom View Controller\CustomViewControllerConstants.cs" />
     <Compile Include="Session Cache\AccountManager.cs" />
+    <Compile Include="Customs\CustomUIView.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
