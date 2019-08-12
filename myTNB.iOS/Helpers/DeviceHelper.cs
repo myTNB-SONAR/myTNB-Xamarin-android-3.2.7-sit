@@ -36,6 +36,11 @@ namespace myTNB
             return size;
         }
 
+        public static string GetImageSize()
+        {
+            return GetImageSize(0);
+        }
+
         /// <summary>
         /// Checks if device is iPhone X and higher resolution
         /// </summary>
@@ -70,6 +75,15 @@ namespace myTNB
         public static bool IsIphone6UpResolution()
         {
             return UIScreen.MainScreen.NativeBounds.Height >= 1334;
+        }
+
+        /// <summary>
+        /// Checks if device is iPhone 6, 7 or 8
+        /// </summary>
+        /// <returns></returns>
+        public static bool IsIphone678()
+        {
+            return UIScreen.MainScreen.NativeBounds.Height == 1334;
         }
 
         /// <summary>

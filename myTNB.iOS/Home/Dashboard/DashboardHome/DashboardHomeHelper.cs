@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using myTNB.Model;
+using myTNB.SitecoreCMS.Model;
+using myTNB.SQLite.SQLiteDataManager;
 using UIKit;
 
 namespace myTNB
@@ -66,6 +69,7 @@ namespace myTNB
                         IsReAccount = sortedAccounts[i].IsREAccount,
                         IsNormalAccount = sortedAccounts[i].IsNormalMeter,
                         IsSSMR = sortedAccounts[i].IsSSMR,
+                        IsOwnedAccount = sortedAccounts[i].IsOwnedAccount,
                         amountDue = acctCached != null ? acctCached.amountDue : 0.00,
                         billDueDate = acctCached != null ? acctCached.billDueDate : string.Empty
                     };
@@ -84,6 +88,7 @@ namespace myTNB
                         IsReAccount = sortedAccounts[i].IsREAccount,
                         IsNormalAccount = sortedAccounts[i].IsNormalMeter,
                         IsSSMR = sortedAccounts[i].IsSSMR,
+                        IsOwnedAccount = sortedAccounts[i].IsOwnedAccount,
                         amountDue = acctCached != null ? acctCached.amountDue : 0.00,
                         billDueDate = acctCached != null ? acctCached.billDueDate : string.Empty
                     };
@@ -101,13 +106,90 @@ namespace myTNB
         }
 
         /// <summary>
+        /// Returns the account model using account number
+        /// </summary>
+        /// <param name="accountNo"></param>
+        /// <returns></returns>
+        public DueAmountDataModel GetModelWithAccountNumber(string accountNo)
+        {
+            DueAmountDataModel model = new DueAmountDataModel();
+            if (!string.IsNullOrEmpty(accountNo))
+            {
+                var groupAccountList = DataManager.DataManager.SharedInstance.AccountsGroupList;
+                foreach (var accountList in groupAccountList)
+                {
+                    foreach (var account in accountList)
+                    {
+                        if (account.accNum == accountNo)
+                        {
+                            model = account;
+                            break;
+                        }
+                    }
+                }
+            }
+            return model;
+        }
+
+        /// <summary>
+        /// Returns if the account is SSMR or not
+        /// </summary>
+        /// <param name="customerModel"></param>
+        /// <returns></returns>
+        public bool IsSSMR(CustomerAccountRecordModel customerModel)
+        {
+            bool res = false;
+            if (customerModel != null)
+            {
+                if (customerModel.IsNormalMeter)
+                {
+                    var model = GetModelWithAccountNumber(customerModel.accNum);
+                    if (model != null)
+                    {
+                        res = model.IsSSMR && model.IsOwnedAccount;
+                    }
+                }
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// Returns the list of account numbers that is SSMR
+        /// </summary>
+        /// <param name="acctList"></param>
+        /// <param name="groupedAcctList"></param>
+        /// <returns></returns>
+        public List<string> FilterAccountNoForSSMR(List<string> acctList, List<DueAmountDataModel> groupedAcctList)
+        {
+            List<string> accounts = new List<string>();
+
+            if (acctList.Count <= 0 || groupedAcctList.Count <= 0)
+                return accounts;
+
+            foreach (var acct in groupedAcctList)
+            {
+                foreach (string accNo in acctList)
+                {
+                    if (acct.accNum == accNo)
+                    {
+                        if (acct.IsNormalAccount && acct.IsOwnedAccount)
+                        {
+                            accounts.Add(accNo);
+                        }
+                    }
+                }
+            }
+            return accounts;
+        }
+
+        /// <summary>
         /// Returns the height for Account Cards + other views height to be displayed
         /// </summary>
         /// <returns>pageViewHeight</returns>
         public nfloat GetHeightForAccountCards()
         {
-            nfloat additionalHeight = DashboardHomeConstants.GreetingViewHeight + DashboardHomeConstants.SearchViewHeight + DashboardHomeConstants.PageControlHeight;
-            nfloat pageViewHeight = 0f + additionalHeight;
+            nfloat additionalHeight = DashboardHomeConstants.SearchViewHeight + DashboardHomeConstants.PageControlHeight;
+            nfloat pageViewHeight = 80f + additionalHeight;
             var groupAccountsList = DataManager.DataManager.SharedInstance.AccountsGroupList;
             if (groupAccountsList.Count > 1)
             {
@@ -188,6 +270,34 @@ namespace myTNB
             }
             tableViewCellHeight += cardHeight;
             return tableViewCellHeight;
+        }
+
+        public nfloat GetHeightForPromotions
+        {
+            get
+            {
+                return 50F + (UIApplication.SharedApplication.KeyWindow.Frame.Width * 0.64F * 0.98F);
+                /*if (HasPromotion)
+                {
+                    return 50F + (UIApplication.SharedApplication.KeyWindow.Frame.Width * 0.64F * 0.98F);
+                }
+                return 0;*/
+            }
+        }
+
+        public nfloat GetDefaulthHeightForRefreshScreen()
+        {
+            return 384f;
+        }
+
+        public static bool HasPromotion
+        {
+            get
+            {
+                PromotionsEntity entity = new PromotionsEntity();
+                List<PromotionsModelV2> promotions = entity.GetAllItemsV2();
+                return promotions != null && promotions.Count > 0;
+            }
         }
     }
 }

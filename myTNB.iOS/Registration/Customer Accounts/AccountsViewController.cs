@@ -532,19 +532,6 @@ namespace myTNB.Registration.CustomerAccounts
 
                 if (accountList != null)
                 {
-                    object usrInf = new
-                    {
-                        eid = DataManager.DataManager.SharedInstance.User.Email,
-                        sspuid = DataManager.DataManager.SharedInstance.User.UserID,
-                        did = DataManager.DataManager.SharedInstance.UDID,
-                        ft = DataManager.DataManager.SharedInstance.FCMToken,
-                        lang = TNBGlobal.DEFAULT_LANGUAGE,
-                        sec_auth_k1 = TNBGlobal.API_KEY_ID,
-                        sec_auth_k2 = string.Empty,
-                        ses_param1 = string.Empty,
-                        ses_param2 = string.Empty
-                    };
-
                     List<object> billAccs = new List<object>();
                     foreach (var item in accountList)
                     {
@@ -563,7 +550,7 @@ namespace myTNB.Registration.CustomerAccounts
                     object requestParams = new
                     {
                         billAccounts = billAccs,
-                        usrInf
+                        serviceManager.usrInf
                     };
                     _addMultipleSupplyAccountsResponseModel = serviceManager.OnExecuteAPIV6<CustomerAccountResponseModel>("AddAccounts", requestParams);
                 }

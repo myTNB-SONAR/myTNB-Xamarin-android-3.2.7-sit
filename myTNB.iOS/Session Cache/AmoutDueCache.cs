@@ -64,6 +64,20 @@ namespace myTNB
             }
         }
 
+        public static void UpdateIsSSMR(string accountNumber, string isTaggedSMR)
+        {
+            if (IsAccountExist(accountNumber) && !string.IsNullOrEmpty(isTaggedSMR) && !string.IsNullOrWhiteSpace(isTaggedSMR))
+            {
+                DueAmountDataModel dueAmount = AmountDueDictionary[accountNumber];
+                if (dueAmount != null)
+                {
+                    var flag = string.Compare(isTaggedSMR.ToLower(), "true") == 0;
+                    dueAmount.IsSSMR = flag;
+                    AmountDueDictionary[accountNumber] = dueAmount;
+                }
+            }
+        }
+
         public static void Reset()
         {
             if (AmountDueDictionary != null)

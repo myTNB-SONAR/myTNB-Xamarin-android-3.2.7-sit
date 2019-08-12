@@ -66,6 +66,10 @@ namespace myTNB
             NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, (float)UIScreen.MainScreen.Bounds.Height, false);
             maintenanceView = gradientViewComponent.GetUI();
+            DataManager.DataManager.SharedInstance.CommonI18NDictionary = LanguageManager.Instance.GetCommonValuePairs();
+            DataManager.DataManager.SharedInstance.HintI18NDictionary = LanguageManager.Instance.GetHintValuePairs();
+            DataManager.DataManager.SharedInstance.ErrorI18NDictionary = LanguageManager.Instance.GetErrorValuePairs();
+            DataManager.DataManager.SharedInstance.ImageSize = DeviceHelper.GetImageSize();
         }
 
         void HandleAppWillEnterForeground(NSNotification notification)
@@ -365,6 +369,147 @@ namespace myTNB
             }
         }
 
+        private Task LoadSSMRWalkthrough()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS
+                    , DataManager.DataManager.SharedInstance.ImageSize, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
+                ApplySSMRTimeStampResponseModel timeStamp = iService.GetApplySSMRWalkthroughTimestampItem();
+
+                bool needsUpdate = true;
+                if (timeStamp != null && timeStamp.Data != null && timeStamp.Data.Count > 0 && timeStamp.Data[0] != null
+                    && !string.IsNullOrEmpty(timeStamp.Data[0].Timestamp))
+                {
+                    NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                    string currentTS = sharedPreference.StringForKey("SiteCoreApplySSMRWalkthroughTimeStamp");
+                    if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
+                    {
+                        sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreApplySSMRWalkthroughTimeStamp");
+                        sharedPreference.Synchronize();
+                    }
+                    else
+                    {
+                        if (currentTS.Equals(timeStamp.Data[0].Timestamp))
+                        {
+                            needsUpdate = false;
+                        }
+                        else
+                        {
+                            sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreApplySSMRWalkthroughTimeStamp");
+                            sharedPreference.Synchronize();
+                        }
+                    }
+                }
+
+                if (needsUpdate)
+                {
+                    ApplySSMRResponseModel applySSMrWalkthroughItems = iService.GetApplySSMRWalkthroughItems();
+                    if (applySSMrWalkthroughItems != null && applySSMrWalkthroughItems.Data != null && applySSMrWalkthroughItems.Data.Count > 0)
+                    {
+                        ApplySSMRWalkthroughEntity wsManager = new ApplySSMRWalkthroughEntity();
+                        wsManager.DeleteTable();
+                        wsManager.CreateTable();
+                        wsManager.InsertListOfItems(applySSMrWalkthroughItems.Data);
+                    }
+                }
+            });
+        }
+
+        private Task LoadMeterReadSSMRWalkthrough()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS
+                    , DataManager.DataManager.SharedInstance.ImageSize, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
+                MeterReadSSMRTimeStampResponseModel timeStamp = iService.GetMeterReadSSMRWalkthroughTimestampItem();
+
+                bool needsUpdate = true;
+                if (timeStamp != null && timeStamp.Data != null && timeStamp.Data.Count > 0 && timeStamp.Data[0] != null
+                    && !string.IsNullOrEmpty(timeStamp.Data[0].Timestamp))
+                {
+                    NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                    string currentTS = sharedPreference.StringForKey("SiteCoreMeterReadSSMRWalkthroughTimeStamp");
+                    if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
+                    {
+                        sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreMeterReadSSMRWalkthroughTimeStamp");
+                        sharedPreference.Synchronize();
+                    }
+                    else
+                    {
+                        if (currentTS.Equals(timeStamp.Data[0].Timestamp))
+                        {
+                            needsUpdate = false;
+                        }
+                        else
+                        {
+                            sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreMeterReadSSMRWalkthroughTimeStamp");
+                            sharedPreference.Synchronize();
+                        }
+                    }
+                }
+
+                if (needsUpdate)
+                {
+                    MeterReadSSMRResponseModel meterReadSSMrWalkthroughItems = iService.GetMeterReadSSMRWalkthroughItems();
+                    if (meterReadSSMrWalkthroughItems != null && meterReadSSMrWalkthroughItems.Data != null && meterReadSSMrWalkthroughItems.Data.Count > 0)
+                    {
+                        MeterReadSSMRWalkthroughEntity wsManager = new MeterReadSSMRWalkthroughEntity();
+                        wsManager.DeleteTable();
+                        wsManager.CreateTable();
+                        wsManager.InsertListOfItems(meterReadSSMrWalkthroughItems.Data);
+                    }
+                }
+            });
+        }
+
+        private Task LoadMeterReadSSMRWalkthroughV2()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS
+                    , DataManager.DataManager.SharedInstance.ImageSize, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
+                MeterReadSSMRTimeStampResponseModel timeStamp = iService.GetMeterReadSSMRWalkthroughTimestampItemV2();
+
+                bool needsUpdate = true;
+                if (timeStamp != null && timeStamp.Data != null && timeStamp.Data.Count > 0 && timeStamp.Data[0] != null
+                    && !string.IsNullOrEmpty(timeStamp.Data[0].Timestamp))
+                {
+                    NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                    string currentTS = sharedPreference.StringForKey("SiteCoreMeterReadSSMRWalkthroughTimeStampV2");
+                    if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
+                    {
+                        sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreMeterReadSSMRWalkthroughTimeStampV2");
+                        sharedPreference.Synchronize();
+                    }
+                    else
+                    {
+                        if (currentTS.Equals(timeStamp.Data[0].Timestamp))
+                        {
+                            needsUpdate = false;
+                        }
+                        else
+                        {
+                            sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreMeterReadSSMRWalkthroughTimeStampV2");
+                            sharedPreference.Synchronize();
+                        }
+                    }
+                }
+
+                if (needsUpdate)
+                {
+                    MeterReadSSMRResponseModel meterReadSSMrWalkthroughItems = iService.GetMeterReadSSMRWalkthroughItemsV2();
+                    if (meterReadSSMrWalkthroughItems != null && meterReadSSMrWalkthroughItems.Data != null && meterReadSSMrWalkthroughItems.Data.Count > 0)
+                    {
+                        MeterReadSSMRWalkthroughEntityV2 wsManager = new MeterReadSSMRWalkthroughEntityV2();
+                        wsManager.DeleteTable();
+                        wsManager.CreateTable();
+                        wsManager.InsertListOfItems(meterReadSSMrWalkthroughItems.Data);
+                    }
+                }
+            });
+        }
+
         private void OpenUpdateLink()
         {
             int index = DataManager.DataManager.SharedInstance.WebLinks?.FindIndex(x => x.Code.ToLower().Equals("ios")) ?? -1;
@@ -394,8 +539,9 @@ namespace myTNB
         internal void ShowOnboarding()
         {
             UIStoryboard onboardingStoryboard = UIStoryboard.FromName("Onboarding", null);
-            UIViewController onboardingVC = (UIViewController)onboardingStoryboard.InstantiateViewController("OnboardingRootViewController");
+            GenericPageRootViewController onboardingVC = onboardingStoryboard.InstantiateViewController("GenericPageRootViewController") as GenericPageRootViewController;
             onboardingVC.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
+            onboardingVC.PageType = GenericPageViewEnum.Type.Onboarding;
             PresentViewController(onboardingVC, true, null);
         }
 
@@ -419,8 +565,20 @@ namespace myTNB
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var isWalkthroughDone = sharedPreference.BoolForKey("isWalkthroughDone");
             GetUserEntity();
+            if (SSMRAccounts.IsHideOnboarding)
+            {
+                ApplySSMRWalkthroughEntity wsManager = new ApplySSMRWalkthroughEntity();
+                wsManager.DeleteTable();
+            }
+            else
+            {
+                await LoadSSMRWalkthrough();
+            }
+            await LoadMeterReadSSMRWalkthrough();
+            await LoadMeterReadSSMRWalkthroughV2();
             if (isWalkthroughDone)
             {
+                await ClearWalkthroughCache();
                 var isLogin = sharedPreference.BoolForKey(TNBGlobal.PreferenceKeys.LoginState);
                 if (isLogin && DataManager.DataManager.SharedInstance.UserEntity != null && DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
                 {
@@ -466,6 +624,15 @@ namespace myTNB
             DataManager.DataManager.SharedInstance.CreateBillingAccountsTable();
             DataManager.DataManager.SharedInstance.CreateBillHistoryTable();
             DataManager.DataManager.SharedInstance.CreatePaymentHistoryTable();
+        }
+
+        private Task ClearWalkthroughCache()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                WalkthroughScreensEntity wsManager = new WalkthroughScreensEntity();
+                wsManager.DeleteTable();
+            });
         }
 
         internal Task GetWalkthroughScreens()

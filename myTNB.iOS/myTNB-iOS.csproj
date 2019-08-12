@@ -340,7 +340,6 @@
     <ImageAsset Include="Assets.xcassets\Scan.imageset\scan%402x.png" />
     <ImageAsset Include="Assets.xcassets\Scan.imageset\scan%403x.png" />
     <ImageAsset Include="Assets.xcassets\Circle-With-Check-Green.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Circle-With-Check-Green.imageset\Circle-With-Check-Green.png" />
     <ImageAsset Include="Assets.xcassets\Arrow-Left.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Arrow-Right.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Logo-Title.imageset\Contents.json" />
@@ -544,7 +543,6 @@
     <ImageAsset Include="Assets.xcassets\IC-Field-Text.imageset\icFieldText%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Field-Text.imageset\icFieldText%403x.png" />
     <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\Red-Cross.png" />
     <ImageAsset Include="Assets.xcassets\Loading-Circle.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Loading-Circle.imageset\loadingCircle.png" />
     <ImageAsset Include="Assets.xcassets\Loading-Circle.imageset\loadingCircle%402x.png" />
@@ -982,28 +980,126 @@
     <ImageAsset Include="Assets.xcassets\Help-Background-4.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\faqColor1.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\faqColor1%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\faqColor1%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-1.imageset\faqColor2.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-1.imageset\faqColor2%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-1.imageset\faqColor2%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-2.imageset\faqColor3.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-2.imageset\faqColor3%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-2.imageset\faqColor3%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-3.imageset\faqColor4.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-3.imageset\faqColor4%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-3.imageset\faqColor4%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-4.imageset\faqColor5.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-4.imageset\faqColor5%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-4.imageset\faqColor5%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\faqColor6.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\faqColor6%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\faqColor6%403x.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SMR-Icon.imageset\SMR-Icon.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-Icon.imageset\SMR-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-Icon.imageset\SMR-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_3.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Circle-With-Check-Green.imageset\icDisplaySuccessful.png" />
+    <ImageAsset Include="Assets.xcassets\Circle-With-Check-Green.imageset\icDisplaySuccessful%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Circle-With-Check-Green.imageset\icDisplaySuccessful%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\icDisplayUnsuccessful.png" />
+    <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\icDisplayUnsuccessful%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\icDisplayUnsuccessful%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\SMR-Medium-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\SMR-Medium-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\SMR-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMRPrimaryIcon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SSMRPrimaryIcon.imageset\SSMRPrimaryIcon.png" />
+    <ImageAsset Include="Assets.xcassets\SSMRPrimaryIcon.imageset\SSMRPrimaryIcon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMRPrimaryIcon.imageset\SSMRPrimaryIcon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\oval.png" />
+    <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\oval%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\oval%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\onboardingBg1-1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\onboardingBg1%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\onboardingBg1%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\onboardingBg2.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\onboardingBg2%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\onboardingBg2%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_3.imageset\onboardingBg3-1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_3.imageset\onboardingBg3%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_3.imageset\onboardingBg3%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-SMR-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Accounts-SMR-Icon.imageset\Accounts-SMR-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-SMR-Icon.imageset\Accounts-SMR-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Accounts-SMR-Icon.imageset\Accounts-SMR-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Info.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Info.imageset\infoWhiteFull.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Info.imageset\infoWhiteFull%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Info.imageset\infoWhiteFull%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-History-BG.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SMR-Open-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SMR-Open-Icon.imageset\SMR-Open-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Open-Icon.imageset\SMR-Open-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Open-Icon.imageset\SMR-Open-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-History-BG.imageset\SMR-History-BG-1.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-History-BG.imageset\SMR-History-BG%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-History-BG.imageset\SMR-History-BG%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Delete-White.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Delete-White.imageset\IC-Action-Delete-White.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Delete-White.imageset\IC-Action-Delete-White%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Delete-White.imageset\IC-Action-Delete-White%403x.png" />
+    <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\ocrReading.png" />
+    <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\ocrReading%402x.png" />
+    <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\ocrReading%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\threePhase.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\threePhase%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\threePhase%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-6.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\faqColor1-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\faqColor1%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\faqColor1%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-1.imageset\faqColor2-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-1.imageset\faqColor2%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-1.imageset\faqColor2%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-2.imageset\faqColor3-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-2.imageset\faqColor3%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-2.imageset\faqColor3%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-3.imageset\faqColor4-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-3.imageset\faqColor4%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-3.imageset\faqColor4%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-4.imageset\faqColor5-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-4.imageset\faqColor5%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-4.imageset\faqColor5%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\faqColor6-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\faqColor6%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\faqColor6%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-6.imageset\faqColor1Copy.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-6.imageset\faqColor1Copy%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Help-Background-6.imageset\faqColor1Copy%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG1.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG1.imageset\SMR-ToolTip-BG1.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG1.imageset\SMR-ToolTip-BG1%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG1.imageset\SMR-ToolTip-BG1%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG2.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG2.imageset\SMR-ToolTip-BG2.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG2.imageset\SMR-ToolTip-BG2%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG2.imageset\SMR-ToolTip-BG2%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG3.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG3.imageset\SMR-ToolTip-BG3.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG3.imageset\SMR-ToolTip-BG3%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG3.imageset\SMR-ToolTip-BG3%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Stub-Promotion-1.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Stub-Promotion-2.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Stub-Promotion-1.imageset\image1.png" />
+    <ImageAsset Include="Assets.xcassets\Stub-Promotion-1.imageset\image1%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Stub-Promotion-1.imageset\image1%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Stub-Promotion-2.imageset\image2.png" />
+    <ImageAsset Include="Assets.xcassets\Stub-Promotion-2.imageset\image2%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Stub-Promotion-2.imageset\image2%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Grey.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Grey.imageset\Add-Account-Icon-Grey.png" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Grey.imageset\Add-Account-Icon-Grey%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Grey.imageset\Add-Account-Icon-Grey%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Refresh-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Refresh-Icon.imageset\Refresh-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\Refresh-Icon.imageset\Refresh-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Refresh-Icon.imageset\Refresh-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Closed-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SMR-Closed-Icon.imageset\SMR-Closed-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Closed-Icon.imageset\SMR-Closed-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Closed-Icon.imageset\SMR-Closed-Icon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1273,11 +1369,13 @@
     <Folder Include="Assets.xcassets\Services-CheckStatus.imageset\" />
     <Folder Include="Assets.xcassets\Services-SetAppointments.imageset\" />
     <Folder Include="Assets.xcassets\Services-ApplyAutoPay.imageset\" />
-    <Folder Include="Customs\DashboardHome\" />
     <Folder Include="Home\Dashboard\DashboardHome\Accounts\" />
     <Folder Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\" />
     <Folder Include="Customs\Generic Line\" />
     <Folder Include="Customs\Generic Tableview Selector\" />
+    <Folder Include="Customs\Generic Page View\" />
+    <Folder Include="SSMR\" />
+    <Folder Include="SSMR\Onboarding\" />
     <Folder Include="Assets.xcassets\Tab-Home-Selected.imageset\" />
     <Folder Include="Assets.xcassets\Tab-Home.imageset\" />
     <Folder Include="Assets.xcassets\Tab-Bill-Selected.imageset\" />
@@ -1301,13 +1399,62 @@
     <Folder Include="Assets.xcassets\Help-Background-4.imageset\" />
     <Folder Include="Assets.xcassets\Help-Background-5.imageset\" />
     <Folder Include="Assets.xcassets\Help-Background-0.imageset\" />
-    <Folder Include="Model\Services\" />
+    <Folder Include="Model\GetServices\" />
     <Folder Include="Assets.xcassets\SMR-Icon.imageset\" />
     <Folder Include="Sitecore CMS\Model\Help\" />
     <Folder Include="Sitecore CMS\Model\Promotions\" />
     <Folder Include="Sitecore CMS\Model\Walkthrough\" />
     <Folder Include="Sitecore CMS\Model\FAQ\" />
     <Folder Include="Sitecore CMS\Model\TnC\" />
+    <Folder Include="Assets.xcassets\SSMR_Background_1.imageset\" />
+    <Folder Include="Assets.xcassets\SSMR_Background_2.imageset\" />
+    <Folder Include="Assets.xcassets\SSMR_Background_3.imageset\" />
+    <Folder Include="Assets.xcassets\SSMR_Main_1.imageset\" />
+    <Folder Include="Assets.xcassets\SSMR_Main_2.imageset\" />
+    <Folder Include="Assets.xcassets\SSMR_Main_3.imageset\" />
+    <Folder Include="SSMR\Application\" />
+    <Folder Include="Customs\Generic Status Page\" />
+    <Folder Include="SSMR\Meter Reading\" />
+    <Folder Include="Assets.xcassets\SMR-Medium-Icon.imageset\" />
+    <Folder Include="SSMR\Reading History\" />
+    <Folder Include="Home\Components\SSMR\" />
+    <Folder Include="Assets.xcassets\SSMRPrimaryIcon.imageset\" />
+    <Folder Include="Assets.xcassets\SMR-Closed-BG.imageset\" />
+    <Folder Include="Assets.xcassets\SMR-Open-Submitted-BG.imageset\" />
+    <Folder Include="Model\SSMR\" />
+    <Folder Include="Sitecore CMS\Model\Apply SSMR Walkthrough\" />
+    <Folder Include="Assets.xcassets\Camera-Thumb.imageset\" />
+    <Folder Include="Model\GetCARegisteredContactInfo\" />
+    <Folder Include="Model\SSMRApplicationStatus\" />
+    <Folder Include="Home\Components\Dashboard Home\" />
+    <Folder Include="Assets.xcassets\Accounts-SMR-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Info.imageset\" />
+    <Folder Include="Model\GetSMRTerminationReasons\" />
+    <Folder Include="Assets.xcassets\kWh-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\SMR-History-BG.imageset\" />
+    <Folder Include="Assets.xcassets\SMR-Open-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Delete-White.imageset\" />
+    <Folder Include="Assets.xcassets\OCR-Reading.imageset\" />
+    <Folder Include="Model\GetMeterReadingOCRValue\" />
+    <Folder Include="Assets.xcassets\SSMR-MultiPhase.imageset\" />
+    <Folder Include="Assets.xcassets\SSMR-SinglePhase.imageset\" />
+    <Folder Include="Sitecore CMS\Model\Meter Read SSMR Walkthrough\" />
+    <Folder Include="Assets.xcassets\ToolTip-BG.imageset\" />
+    <Folder Include="Assets.xcassets\Help-Background-6.imageset\" />
+    <Folder Include="Home\Dashboard\DashboardHome\Promotion\" />
+    <Folder Include="Assets.xcassets\SMR-ToolTip-BG1.imageset\" />
+    <Folder Include="Assets.xcassets\SMR-ToolTip-BG2.imageset\" />
+    <Folder Include="Assets.xcassets\SMR-ToolTip-BG3.imageset\" />
+    <Folder Include="Assets.xcassets\Stub-Promotion-1.imageset\" />
+    <Folder Include="Assets.xcassets\Stub-Promotion-2.imageset\" />
+    <Folder Include="Customs\Generic No Data Page\" />
+    <Folder Include="Assets.xcassets\SSMR-NoData.imageset\" />
+    <Folder Include="Assets.xcassets\Add-Account-Icon-Grey.imageset\" />
+    <Folder Include="Home\Components\Refresh Screen\" />
+    <Folder Include="Assets.xcassets\Refresh-Icon.imageset\" />
+    <Folder Include="Model\GetAccountsSMREligibility\" />
+    <Folder Include="Customs\Custom View Controller\" />
+    <Folder Include="Assets.xcassets\SMR-Closed-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1342,6 +1489,8 @@
     <InterfaceDefinition Include="Home\More\FAQ\FAQ.storyboard" />
     <InterfaceDefinition Include="Home\Promotions\Promotion Details\PromotionDetails.storyboard" />
     <InterfaceDefinition Include="Customs\Generic Tableview Selector\GenericSelector.storyboard" />
+    <InterfaceDefinition Include="SSMR\SSMR.storyboard" />
+    <InterfaceDefinition Include="Customs\Generic No Data Page\GenericNoData.storyboard" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -1393,14 +1542,6 @@
     <Compile Include="Data Manager\DataManager.cs" />
     <Compile Include="Model\UserModel.cs" />
     <Compile Include="Onboarding\OnboardingModelController.cs" />
-    <Compile Include="Onboarding\OnboardingDataViewController.cs" />
-    <Compile Include="Onboarding\OnboardingDataViewController.designer.cs">
-      <DependentUpon>OnboardingDataViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Onboarding\OnboardingRootViewController.cs" />
-    <Compile Include="Onboarding\OnboardingRootViewController.designer.cs">
-      <DependentUpon>OnboardingRootViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Model\OnboardingModel.cs" />
     <Compile Include="Helpers\NetworkUtility.cs" />
     <Compile Include="Login\Forgot Password\ForgotPasswordViewController.cs" />
@@ -1920,10 +2061,6 @@
     <Compile Include="Home\Feedback\Feedback Entry\BillRelatedFeedbackComponent.cs" />
     <Compile Include="Home\Feedback\Feedback Entry\StreetLampFeedbackComponent.cs" />
     <Compile Include="Helpers\AttributedStringUtility.cs" />
-    <Compile Include="Home\Feedback\Feedback Entry\FeedbackEntryStatus.cs" />
-    <Compile Include="Home\Feedback\Feedback Entry\FeedbackEntryStatus.designer.cs">
-      <DependentUpon>FeedbackEntryStatus.cs</DependentUpon>
-    </Compile>
     <Compile Include="Home\Feedback\Feedback Location and State\LocationManager.cs" />
     <Compile Include="Home\Feedback\Feedback Location and State\LocationUpdateEventArgs.cs" />
     <Compile Include="Home\Feedback\Feedback Image\ImageDataModel.cs" />
@@ -1931,7 +2068,6 @@
     <Compile Include="Home\Feedback\Feedback Image\UIImageHelper.cs" />
     <Compile Include="Home\More\Language\LanguageSettings.cs" />
     <Compile Include="Model\UpdateNotification\UpdateNotificationModel.cs" />
-    <Compile Include="Customs\CustomUIViewController.cs" />
     <Compile Include="Model\Modify Notification\DeleteNotificationResponseModel.cs" />
     <Compile Include="Model\Modify Notification\ReadNotificationResponseModel.cs" />
     <Compile Include="Customs\Bill\CustomBillUIViewController.cs" />
@@ -1973,6 +2109,22 @@
     <Compile Include="Customs\Generic Tableview Selector\GenericSelectorViewController.cs" />
     <Compile Include="Customs\Generic Tableview Selector\GenericSelectorViewController.designer.cs" />
     <Compile Include="SQLite\SQLite Data Manager\DueEntity.cs" />
+    <Compile Include="Onboarding\OnboardingController.cs" />
+    <Compile Include="Customs\Generic Page View\BasePageViewRootController.cs" />
+    <Compile Include="Customs\Generic Page View\GenericPageRootViewController.cs" />
+    <Compile Include="Customs\Generic Page View\GenericPageRootViewController.designer.cs">
+      <DependentUpon>GenericPageRootViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Customs\Generic Page View\BaseDataViewController.cs" />
+    <Compile Include="Onboarding\OnboardingDataController.cs" />
+    <Compile Include="Customs\Generic Page View\GenericPageDataViewController.cs" />
+    <Compile Include="Customs\Generic Page View\GenericPageDataViewController.designer.cs">
+      <DependentUpon>GenericPageDataViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Customs\Generic Page View\GenericPageViewEnum.cs" />
+    <Compile Include="SSMR\Onboarding\SSMROnboardingController.cs" />
+    <Compile Include="SSMR\Onboarding\SSMROnboardingDataController.cs" />
+    <Compile Include="SSMR\Onboarding\SSMROnboardingModelController.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeViewController.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeViewController.designer.cs">
       <DependentUpon>DashboardHomeViewController.cs</DependentUpon>
@@ -1984,8 +2136,6 @@
     </Compile>
     <Compile Include="Home\Dashboard\DashboardHome\Services\ServicesTableViewCell.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeConstants.cs" />
-    <Compile Include="Customs\DashboardHome\DashboardHomeHeader.cs" />
-    <Compile Include="Customs\DashboardHome\DashboardHomeAccountCard.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsTableViewCell.cs" />
     <Compile Include="Rewards\RewardsViewController.cs" />
     <Compile Include="Rewards\RewardsViewController.designer.cs">
@@ -1998,7 +2148,7 @@
     <Compile Include="Tab Bar\TabbarConstants.cs" />
     <Compile Include="Customs\CustomShimmerView.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeHelper.cs" />
-    <Compile Include="Model\Services\ServicesResponseModel.cs" />
+    <Compile Include="Model\GetServices\ServicesResponseModel.cs" />
     <Compile Include="Model\Base Model\BaseModelV2.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\Services\ServicesConstants.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeActions.cs" />
@@ -2024,6 +2174,74 @@
     <Compile Include="Sitecore CMS\Model\TnC\TermsAndConditionResponseModel.cs" />
     <Compile Include="Sitecore CMS\Model\TnC\TimestampModel.cs" />
     <Compile Include="Sitecore CMS\Model\TnC\TimestampResponseModel.cs" />
+    <Compile Include="SSMR\SSMRConstants.cs" />
+    <Compile Include="SSMR\Onboarding\SSMROnboardingModel.cs" />
+    <Compile Include="SSMR\Application\SSMRApplicationViewController.cs" />
+    <Compile Include="SSMR\Application\SSMRApplicationViewController.designer.cs">
+      <DependentUpon>SSMRApplicationViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Customs\CustomTextField.cs" />
+    <Compile Include="Customs\Generic Status Page\GenericStatusPageViewController.cs" />
+    <Compile Include="Customs\Generic Status Page\GenericStatusPageViewController.designer.cs">
+      <DependentUpon>GenericStatusPageViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Customs\Generic Status Page\StatusPageConstants.cs" />
+    <Compile Include="Customs\Generic Status Page\StatusPageActions.cs" />
+    <Compile Include="Customs\CustomUIButtonV2.cs" />
+    <Compile Include="SSMR\Meter Reading\SSMRCaptureMeterViewController.cs" />
+    <Compile Include="SSMR\Meter Reading\SSMRCaptureMeterViewController.designer.cs">
+      <DependentUpon>SSMRCaptureMeterViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SSMR\Reading History\SSMRReadingHistoryViewController.cs" />
+    <Compile Include="SSMR\Reading History\SSMRReadingHistoryViewController.designer.cs">
+      <DependentUpon>SSMRReadingHistoryViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="SSMR\Reading History\SSMRReadingHistoryDataSource.cs" />
+    <Compile Include="SSMR\Reading History\SSMRReadingHistoryCell.cs" />
+    <Compile Include="Home\Components\SSMR\SSMRComponent.cs" />
+    <Compile Include="Home\Components\SSMR\SSMRReadingHistoryHeaderComponent.cs" />
+    <Compile Include="Model\SSMR\SMRAccountActivityInfoResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\Apply SSMR Walkthrough\ApplySSMRWalkthroughModel.cs" />
+    <Compile Include="Sitecore CMS\Service\ApplySSMRWalkthroughService.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\ApplySSMRWalkthroughEntity.cs" />
+    <Compile Include="Session Cache\SSMRAccounts.cs" />
+    <Compile Include="Model\GetCARegisteredContactInfo\CARegisteredContactInfoResponseModel.cs" />
+    <Compile Include="Model\SSMRApplicationStatus\SSMRApplicationStatus.cs" />
+    <Compile Include="SSMR\SSMRHelper.cs" />
+    <Compile Include="Home\Components\Dashboard Home\DashboardHomeAccountCard.cs" />
+    <Compile Include="Home\Components\Dashboard Home\DashboardHomeHeader.cs" />
+    <Compile Include="Model\SSMR\SMRAccountStatusResponseModel.cs" />
+    <Compile Include="Customs\CustomUISlider.cs" />
+    <Compile Include="SSMR\Meter Reading\CapturePhotoDelegate.cs" />
+    <Compile Include="SSMR\Meter Reading\ImagePickerDelegate.cs" />
+    <Compile Include="Model\GetSMRTerminationReasons\TerminationReasonsResponseModel.cs" />
+    <Compile Include="Home\Components\SSMR\SSMRMeterCardComponent.cs" />
+    <Compile Include="SSMR\Meter Reading\SSMRReadMeterViewController.cs" />
+    <Compile Include="SSMR\Meter Reading\SSMRReadMeterViewController.designer.cs">
+      <DependentUpon>SSMRReadMeterViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Components\SSMR\SSMRMeterFooterComponent.cs" />
+    <Compile Include="Home\Components\SSMR\SSMRDropDownComponent.cs" />
+    <Compile Include="Model\GetMeterReadingOCRValue\GetOCRResponseModel.cs" />
+    <Compile Include="Session Cache\OCRReadingCache.cs" />
+    <Compile Include="Session Cache\SSMRActivityInfoCache.cs" />
+    <Compile Include="Sitecore CMS\Model\Meter Read SSMR Walkthrough\MeterReadSSMRWalkthroughModel.cs" />
+    <Compile Include="Sitecore CMS\Service\MeterReadSSMRWalkthroughService.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\MeterReadSSMRWalkthroughEntity.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Promotion\PromotionTableViewCell.cs" />
+    <Compile Include="Model\SSMR\SMRSubmitMeterReadingResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Service\MeterReadSSMRWalkthroughServiceV2.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\MeterReadSSMRWalkthroughEntityV2.cs" />
+    <Compile Include="SSMR\Meter Reading\SSMRMeterReadWalkthroughModel.cs" />
+    <Compile Include="Customs\Generic No Data Page\GenericNodataViewController.cs" />
+    <Compile Include="Customs\Generic No Data Page\GenericNodataViewController.designer.cs">
+      <DependentUpon>GenericNodataViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Components\Refresh Screen\RefreshScreenComponent.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Accounts\RefreshScreenInfoModel.cs" />
+    <Compile Include="Model\GetAccountsSMREligibility\GetAccountsSMREligibilityResponseModel.cs" />
+    <Compile Include="Customs\Custom View Controller\CustomUIViewController.cs" />
+    <Compile Include="Customs\Custom View Controller\CustomViewControllerConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

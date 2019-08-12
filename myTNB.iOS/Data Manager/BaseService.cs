@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using RestSharp;
 
 namespace myTNB
@@ -54,6 +55,8 @@ namespace myTNB
         /// <param name="version">Version of API to be used.</param>
         public RestResponse ExecuteWebservice(string suffix, object requestParams, APIVersion version, APIEnvironment env)
         {
+            //SIT Test
+            //env = APIEnvironment.SIT;
             string domain = GetDomain(env);
             string url = domain + GetURLEndpoint(version) + suffix;
 

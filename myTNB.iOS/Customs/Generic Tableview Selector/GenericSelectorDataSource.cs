@@ -32,6 +32,8 @@ namespace myTNB
             cell.TextLabel.Text = _controller.Items[indexPath.Row];
             cell.TextLabel.TextColor = MyTNBColor.TunaGrey();
             cell.TextLabel.Font = MyTNBFont.MuseoSans16;
+            cell.TextLabel.Lines = 0;
+            cell.TextLabel.LineBreakMode = UILineBreakMode.WordWrap;
             if (_controller.SelectedIndex > -1 && indexPath.Row == _controller.SelectedIndex)
             {
                 cell.Accessory = UITableViewCellAccessory.None;
@@ -65,7 +67,14 @@ namespace myTNB
             if (_controller?.OnSelect != null)
             {
                 _controller?.OnSelect(indexPath.Row);
-                _controller?.DismissViewController(true, null);
+                if (_controller.IsRootPage && _controller.NavigationController != null)
+                {
+                    _controller.NavigationController.PopViewController(true);
+                }
+                else
+                {
+                    _controller?.DismissViewController(true, null);
+                }
             }
         }
     }

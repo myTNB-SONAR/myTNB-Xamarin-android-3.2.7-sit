@@ -26,7 +26,24 @@ namespace myTNB.Home.Dashboard.DashboardHome
 
         private void On_1001_Action()
         {
-
+            if (SSMRAccounts.IsHideOnboarding)
+            {
+                UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+                SSMRApplicationViewController viewController =
+                    storyBoard.InstantiateViewController("SSMRApplicationViewController") as SSMRApplicationViewController;
+                viewController.IsApplication = true;
+                UINavigationController navController = new UINavigationController(viewController);
+                _controller.PresentViewController(navController, true, null);
+            }
+            else
+            {
+                UIStoryboard onboardingStoryboard = UIStoryboard.FromName("Onboarding", null);
+                GenericPageRootViewController onboardingVC =
+                    onboardingStoryboard.InstantiateViewController("GenericPageRootViewController") as GenericPageRootViewController;
+                onboardingVC.PageType = GenericPageViewEnum.Type.SSMR;
+                var navController = new UINavigationController(onboardingVC);
+                _controller.PresentViewController(navController, true, null);
+            }
         }
 
         private void On_1002_Action()

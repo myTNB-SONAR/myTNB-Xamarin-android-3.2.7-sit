@@ -113,12 +113,12 @@ namespace myTNB
         /// Sets the keyboard.
         /// </summary>
         /// <param name="textField">Text field.</param>
-        public void SetKeyboard(UITextField textField)
+        public void SetKeyboard(UITextField textField, UIReturnKeyType returnKeyType = UIReturnKeyType.Done)
         {
             textField.AutocorrectionType = UITextAutocorrectionType.No;
             textField.AutocapitalizationType = UITextAutocapitalizationType.None;
             textField.SpellCheckingType = UITextSpellCheckingType.No;
-            textField.ReturnKeyType = UIReturnKeyType.Done;
+            textField.ReturnKeyType = returnKeyType;
         }
 
         /// <summary>

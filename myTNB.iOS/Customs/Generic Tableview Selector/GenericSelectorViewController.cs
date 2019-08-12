@@ -9,6 +9,7 @@ namespace myTNB
         public Action<int> OnSelect;
         public List<string> Items;
         public int SelectedIndex = -1;
+        public bool IsRootPage;
 
         public GenericSelectorViewController(IntPtr handle) : base(handle)
         {
@@ -31,13 +32,20 @@ namespace myTNB
             // Release any cached data, images, etc that aren't in use.
         }
 
-        void SetNavigationBar()
+        private void SetNavigationBar()
         {
             NavigationItem.HidesBackButton = true;
             UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle("Back-White")
                 , UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                this.DismissViewController(true, null);
+                if (IsRootPage && NavigationController != null)
+                {
+                    NavigationController.PopViewController(true);
+                }
+                else
+                {
+                    DismissViewController(true, null);
+                }
             });
             NavigationItem.LeftBarButtonItem = btnBack;
         }

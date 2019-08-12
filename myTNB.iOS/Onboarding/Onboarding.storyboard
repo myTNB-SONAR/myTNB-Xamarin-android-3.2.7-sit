@@ -26,7 +26,7 @@
         <!--Onboarding Root View Controller-->
         <scene sceneID="1557">
             <objects>
-                <viewController storyboardIdentifier="OnboardingRootViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1558" customClass="OnboardingRootViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GenericPageRootViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1558" customClass="GenericPageRootViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="1555"/>
                         <viewControllerLayoutGuide type="bottom" id="1556"/>
@@ -44,7 +44,7 @@
         <!--Onboarding Data View Controller-->
         <scene sceneID="1564">
             <objects>
-                <viewController storyboardIdentifier="OnboardingDataViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1565" customClass="OnboardingDataViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="GenericPageDataViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1565" customClass="GenericPageDataViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="1562"/>
                         <viewControllerLayoutGuide type="bottom" id="1563"/>

@@ -19,13 +19,36 @@
             }
         ]
     },
+    "Common": {
+        "account": "Account",
+        "emailAddress": "Email Address",
+        "mobileNumber": "Mobile Number",
+        "submit": "Submit",
+        "selectAccounts": "Select Accounts",
+        "backToHome": "Back to Home",
+        "tryAgain": "Try Again",
+        "settings": "Settings",
+        "cancel": "Cancel",
+        "cameraPermissionTitle": "\"myTNB\" Would like to Access the Camera",
+        "galleryPermissionTitle": "\"myTNB\" Would like to Access Your Photos",
+        "photoPermissionDescription": "Enable myTNB to access your camera roll to upload photos and save ones you’ve taken with the app."
+    },
+    "Hint": {
+        "mobileNumber": "Please include the country code of your phone number.",
+        "mobileNumberSample": "Example: +6012 345 6789"
+    },
+    "Error": {
+        "invalid_email": "Invalid email address",
+        "invalid_mobileNumber": "Invalid mobile number"
+    },
     "DashboardHome": {
         "greeting_afternoon": "Good Afternoon,",
         "greeting_evening": "Good Evening,",
         "greeting_morning": "Good Morning,",
         "myAccounts": "My Accounts",
         "myServices": "My Services",
-        "needHelp": "Need Help?"
+        "needHelp": "Need Help?",
+        "promotions": "Promotions"
     },
     "Tabbar": {
         "home": "Home",
@@ -33,5 +56,119 @@
         "promotion": "What's New",
         "rewards": "Rewards",
         "profile": "Profile"
+    },
+    "SSMROnboarding": {
+        "skip": "Skip",
+        "dontShow": "Don’t show me again",
+        "onboardingTitle1": "What is Self Meter Reading?",
+        "onboardingTitle2": "Why should I apply?",
+        "onboardingTitle3": "Am I eligible?",
+        "onboardingDescription1": "Self Meter Reading (SMR) is a service where you can easily read and submit your own meter readings. We will send you a reminder when it's time to submit.",
+        "onboardingDescription2": "You get estimated bills when TNB meter readers can’t get access to your meter. With SMR, you will always get bills with accurate readings.",
+        "onboardingDescription3": "We'll show you the accounts which are eligible for this service. Simply click Start Application and get started.",
+        "startApplication": "Start"
+    },
+    "SSMRApplication": {
+        "navTitle": "Self Meter Reading",
+        "applyingFor": "I am subscribing for:",
+        "terminateFor": "I am unsubscribing my service for:",
+        "contactDetails": "My contact details:",
+        "terminateTitle": "We’re sorry to see you go! Can you tell us why you want to unsubscribe this service?",
+        "tncUnsubscribe": "By submitting, you are agreeing to the <a href=\"\\\">TNB’s Terms of Use</a>, <a href=\"\\\">Privacy policy</a>, <a href=\"\\\">Anti-Spam Policy</a> and <a href=\"\\\">Personal Data Protection Policy</a>.",
+        "tncSubscribe": "By submitting, you are agreeing to the <a href=\"\\\">Self Meter Reading Terms and Conditions</a>, <a href=\"\\\">TNB’s Terms of Use</a>, <a href=\"\\\">Privacy policy</a>, <a href=\"\\\">Anti-Spam Policy</a> and <a href=\"\\\">Personal Data Protection Policy</a>.",
+        "editContactInfo": "By editing, you will update your myTNB profile and electricity account contact details.",
+        "selectReason": "Select Reason",
+        "stateReason": "Please state your reason",
+        "selectAnAccount": "Select an account",
+        "noEligibleAccount": "Looks like your accounts aren’t eligible for the Self Meter Reading subscription."
+    },
+    "Status": {
+        "feedbackSuccessTitle": "Feedback Successful",
+        "feedbackFailTitle": "Feedback Unsuccessful",
+        "feedbackSuccessMessage": "Thank you for your feedback.",
+        "feedbackFailMessage": "Your feedback didn't go through.",
+        "feedbackReferenceTitle": "Feedback ID",
+        "feedbackDateTitle": "Feedback Date & Time",
+
+        "ssmrApplySuccessTitle": "Application Submitted",
+        "ssmrApplyFailTitle": "Please Try Again",
+        "ssmrApplySuccessMessage": "We have received your request for this Self Meter Reading service. For your reference you may keep the application number below.",
+        "ssmrApplyFailMessage": "It looks like we can't process your application at the moment.",
+        "ssmrApplyReferenceTitle": "Application reference number",
+        "ssmrApplyDateTitle": "Applied on",
+
+        "ssmrDiscontinueSuccessTitle": "Application Submitted",
+        "ssmrDiscontinueFailTitle": "Please Try Again",
+        "ssmrDiscontinueSuccessMessage": "We have received your request to unsubscribe from this service. For your reference you may keep the application number below.",
+        "ssmrDiscontinueFailMessage": "It looks like we can't process your application at the moment.",
+        "ssmrDiscontinueReferenceTitle": "Application reference number",
+        "ssmrDiscontinueDateTitle": "Applied on",
+
+        "ssmrReadingSuccessTitle": "Reading Submitted",
+        "ssmrReadingFailTitle": "Please Try Again",
+        "ssmrReadingSuccessMessage": "Thank you for your meter reading submission. We will notify you when your meter reading has been validated.",
+        "ssmrReadingFailMessage": "It looks like we can’t validate your meter reading at the moment.",
+
+        "backToFeedback": "Back to Feedback",
+        "ssmrTrackApplication": "Track Application",
+        "ssmrBackToUsage": "Back to My Usage",
+        "ssmrTrackUsage": "Track Application Usage",
+        "ssmrViewReadHistory": "View Reading History"
+    },
+    "SSMRReadingHistory": {
+        "navTitle": "Self Meter Reading",
+        "headerTitle": "My Meter Reading History"
+    },
+    "SSMRSubmitMeterReading": {
+        "navTitle": "Submit Meter Reading",
+        "dontShow": "Don’t show me again",
+        "tooltipTitle1": "Alright, what do I need to read?",
+        "tooltipTitle2": "But wait, how do I read my meter?",
+        "tooltipTitle3": "How do I enter these values?",
+        "tooltipDescription1": "You'll need to read 3 reading values (kWh, kVARh, kW). Your meter will automatically flash one after the other.",
+        "tooltipDescription2": "You can enter each reading manually or just snap/upload a photo, and we’ll do the reading for you.",
+        "tooltipDescription3": "Enter the numbers according to its unit in the input. You’ll see your previous month's reading as a reference.",
+        "headerDescription": "Please enter your meter reading for each respective units.",
+        "imReady": "I'm Ready!"
+    },
+    "SSMRCaptureMeter": {
+        "ocrReading": "Please wait for a moment while we read your photos…",
+        "navTitleTakePhoto": "Take Photo",
+        "navTitleAdjustPhoto": "Adjust Photo",
+        "singleTakePhotoDescription": "Take a clear photo of the reading value flashed on your meter.",
+        "editDescription": "You can delete and retake the photo or adjust it before submission.",
+        "multiTakePhotoDescription": "Get ready, you'll have 10 seconds between each value being flashed.",
+        "singularDone": "You're done with {0}!",
+        "pluralDone": "You're done with {0} and {1}!",
+        "singularOnto": "On to <a href=\"\\\">{0}</a> reading now.",
+        "pluralOnto": "On to <a href=\"\\\">{0}</a> and <a href=\"\\\">{1}</a> readings now."
+    },
+    "SSMRCaptureMeter_selector": {
+        "SMRPhotoPopUpDetails": [
+            {
+                "Title": "Uploading from your album?",
+                "Description": "Be sure to upload a <strong>clear, straight-facing photo of the entire meter box</strong> with no shadows, reflections or flashes and the image can’t be skewed. Any of these may cause the value to be unreadable.",
+                "CTA": "Got it!",
+                "Type": "Single_UploadPhoto"
+            },
+            {
+                "Title": "How do I take these photos?",
+                "Description": "You'll need to submit 3 different meter reading values (kWh, kVARh, kW). <br><br>Capture the <strong>entire meter box with your camera directly facing it.</strong> Be sure to take full, clear photos with no shadows, reflections or flashes and the images can’t be skewed. Any of these may cause the values to be unreadable.",
+                "CTA": "Got it!",
+                "Type": "Multi_TakePhoto"
+            },
+            {
+                "Title": "How do I take these photos?",
+                "Description": "Capture the <strong>entire meter box with your camera directly facing it.</strong> Be sure to take a full, clear photo with no shadows, reflections or flashes and the image can’t be skewed. Any of these may cause the value to be unreadable.",
+                "CTA": "Got it!",
+                "Type": "Single_TakePhoto"
+            },
+            {
+                "Title": "Uploading from your album?",
+                "Description": "You'll need to submit 3 different meter reading values (kWh, kVARh, kW).<br><br>Be sure to upload <strong>clear, straight-facing photos of the entire meter box</strong> with no shadows, reflections or flashes and the images can’t be skewed. Any of these may cause the values to be unreadable.",
+                "CTA": "Got it!",
+                "Type": "Multi_UploadPhoto"
+            }
+        ]
     }
 }

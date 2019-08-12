@@ -28,29 +28,8 @@
                     public const string Title = "Title";
                 }
 
-                public struct EnergyTips
-                {
-                    public const string Category = "Category";
-                }
-
                 public struct FullRTEPages
                 {
-                    public const string PublishedDate = "PublishedDate";
-                }
-
-                public struct Locations
-                {
-                    public const string PaymentTypes = "PaymentTypes";
-                    public const string Longitude = "Longitude";
-                    public const string Latitude = "Latitude";
-                }
-
-                public struct Promotions
-                {
-                    public const string CampaignPeriod = "CampaignPeriod";
-                    public const string Prizes = "Prizes";
-                    public const string HowToWin = "HowToWin";
-                    public const string FooterNote = "FooterNote";
                     public const string PublishedDate = "PublishedDate";
                 }
 
@@ -97,6 +76,20 @@
                     public const string Tags = "Tags";
                     public const string TargetItem = "Target-item";
                 }
+
+                public struct ApplySSMRWalkthrough
+                {
+                    public const string Title = "Title";
+                    public const string Description = "Description";
+                    public const string Image = "Image";
+                }
+
+                public struct MeterReadSSMRWalkthrough
+                {
+                    public const string Title = "Title";
+                    public const string Description = "Description";
+                    public const string Image = "Image";
+                }
             }
 
             public struct ItemID
@@ -121,6 +114,9 @@
                 public const string WalkthroughScreens = "/sitecore/content/myTNBapp/Contents/Walkthrough Screens";
                 public const string FullRTEPages = "/sitecore/content/myTNBapp/Contents/Full RTE Pages/Terms Condition";
                 public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help";
+                public const string ApplySSMRWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR Apply";
+                public const string MeterReadSSMRWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead OnePhase";
+                public const string MeterReadSSMRWalkthroughV2 = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead ThreePhase";
             }
         }
     }

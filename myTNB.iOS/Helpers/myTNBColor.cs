@@ -28,6 +28,15 @@ using UIKit;  namespace myTNB {
         readonly static UIColor _greyishBrown = new UIColor(red: 0.26f, green: 0.25f, blue: 0.25f, alpha: 1.0f);
         readonly static UIColor _charcoalGrey = new UIColor(red: 0.29f, green: 0.29f, blue: 0.29f, alpha: 1.0f);
         readonly static UIColor _veryLightPinkTwo = new UIColor(red: 0.89f, green: 0.89f, blue: 0.89f, alpha: 1.0f);
+        readonly static UIColor _brownGrey = new UIColor(red: 0.59f, green: 0.59f, blue: 0.59f, alpha: 1.0f);
+        readonly static UIColor _warmGrey = new UIColor(red: 0.45f, green: 0.44f, blue: 0.44f, alpha: 1.0f);
+        readonly static UIColor _greyishBrownTwo = new UIColor(red: 0.33f, green: 0.33f, blue: 0.33f, alpha: 1.0f);
+        readonly static UIColor _veryLightPinkThree = new UIColor(red: 0.89f, green: 0.89f, blue: 0.89f, alpha: 1.0f);
+        readonly static UIColor _veryLightPinkFour = new UIColor(red: 0.95f, green: 0.95f, blue: 0.95f, alpha: 1.0f);
+        readonly static UIColor _black60 = new UIColor(red: 0.00f, green: 0.00f, blue: 0.00f, alpha: 0.6f);
+        readonly static UIColor _veryLightPink = new UIColor(red: 0.89f, green: 0.89f, blue: 0.89f, alpha: 1.0f);
+        readonly static UIColor _brownGreyTwo = new UIColor(red: 0.59f, green: 0.59f, blue: 0.59f, alpha: 1.0f);
+        readonly static UIColor _brownGreyThree = new UIColor(red: 0.55f, green: 0.55f, blue: 0.55f, alpha: 1.0f);
 
         /// <summary>         /// A color with RGBA of (0.47, 0.19, 0.83, 1).         /// </summary>         public static UIColor GradientPurpleDarkElement
         {
@@ -249,6 +258,78 @@ using UIKit;  namespace myTNB {
             get
             {
                 return _veryLightPinkTwo;
+            }
+        }
+
+        public static UIColor BrownGrey
+        {
+            get
+            {
+                return _brownGrey;
+            }
+        }
+
+        public static UIColor WarmGrey
+        {
+            get
+            {
+                return _warmGrey;
+            }
+        }
+
+        public static UIColor GreyishBrownTwo
+        {
+            get
+            {
+                return _greyishBrownTwo;
+            }
+        }
+
+        public static UIColor VeryLightPinkThree
+        {
+            get
+            {
+                return _veryLightPinkThree;
+            }
+        }
+
+        public static UIColor VeryLightPinkFour
+        {
+            get
+            {
+                return _veryLightPinkFour;
+            }
+        }
+
+        public static UIColor Black60
+        {
+            get
+            {
+                return _black60;
+            }
+        }
+
+        public static UIColor VeryLightPink
+        {
+            get
+            {
+                return _veryLightPink;
+            }
+        }
+
+        public static UIColor BrownGreyTwo
+        {
+            get
+            {
+                return _brownGreyTwo;
+            }
+        }
+
+        public static UIColor BrownGreyThree
+        {
+            get
+            {
+                return _brownGreyThree;
             }
         }
     } }

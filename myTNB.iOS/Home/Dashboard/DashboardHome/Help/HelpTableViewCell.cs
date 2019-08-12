@@ -17,7 +17,7 @@ namespace myTNB
         public UILabel _titleLabel;
         public HelpTableViewCell(IntPtr handle) : base(handle)
         {
-            cardWidth = cellWidth * 0.30F;
+            cardWidth = (cellWidth - 32)/3;
             cardHeight = cardWidth;
             _titleLabel = new UILabel(new CGRect(16f, 16f, cellWidth - 32, 20f))
             {
@@ -86,7 +86,7 @@ namespace myTNB
                 shimmeringView.SetValues();
 
                 _scrollView.Add(viewParent);
-                xLoc += cardWidth + 12.0F;
+                xLoc += cardWidth + 8.0F;
             }
             _scrollView.ContentSize = new CGSize(xLoc, cardHeight);
         }
@@ -119,27 +119,22 @@ namespace myTNB
                 };
                 helpCardView.AddSubviews(new UIView[] { imgView, lblHelp });
                 _scrollView.Add(helpCardView);
-                xLoc += cardWidth + 12.0F;
+                xLoc += cardWidth + 8.0F;
             }
-            _scrollView.ContentSize = new CGSize(xLoc, 40);
+            _scrollView.ContentSize = new CGSize(xLoc, cardHeight);
         }
 
         private int GetBackgroundImage(int index)
         {
-            _imgIndex = (index / 6) % 1 == 0 ? _imgIndex + 1 : 0;
-            _imgIndex = _imgIndex > 5 || _imgIndex < 0 ? 0 : _imgIndex;
+            _imgIndex = (index / 7) % 1 == 0 ? _imgIndex + 1 : 0;
+            _imgIndex = _imgIndex > 6 || _imgIndex < 0 ? 0 : _imgIndex;
             return _imgIndex;
         }
 
         private void AddCardShadow(ref UIView view)
         {
             view.Layer.CornerRadius = 4.0F;
-            view.Layer.MasksToBounds = true;
-            view.Layer.ShadowColor = MyTNBColor.SilverChalice.CGColor;
-            view.Layer.ShadowOpacity = 1;
-            view.Layer.ShadowOffset = new CGSize(0, 0);
-            view.Layer.ShadowRadius = 4.0F;
-            view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
+            view.ClipsToBounds = true;
         }
     }
 }

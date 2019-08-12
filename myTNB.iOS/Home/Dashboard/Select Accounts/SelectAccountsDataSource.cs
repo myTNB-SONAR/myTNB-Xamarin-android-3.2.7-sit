@@ -12,6 +12,7 @@ namespace myTNB.Dashboard.SelectAccounts
     {
         List<CustomerAccountRecordModel> _accountList = new List<CustomerAccountRecordModel>();
         SelectAccountTableViewController _controller;
+        DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
         public SelectAccountsDataSource(SelectAccountTableViewController controller)
         {
             _controller = controller;

@@ -33,7 +33,9 @@ namespace myTNB
 
         private string JSONLang = string.Empty;
         private const string SELECTOR = "_selector";
-        private const string COMMON = "common";
+        private const string COMMON = "Common";
+        private const string Hint = "Hint";
+        private const string Error = "Error";
         private const string LANGUAGE_RESOURCE_PATH = "myTNB.Mobile.Resources.Language_{0}.json";
 
         /// <summary>
@@ -76,6 +78,16 @@ namespace myTNB
         {
             return GetValuesByPage(COMMON);
         }
+
+        public Dictionary<string, string> GetHintValuePairs()
+        {
+            return GetValuesByPage(Hint);
+        }
+
+        public Dictionary<string, string> GetErrorValuePairs()
+        {
+            return GetValuesByPage(Error);
+        }
         /// <summary>
         /// Gets the key-value pair of texts of a page.
         /// Asvisable to call on intialisation of the page.
@@ -95,6 +107,17 @@ namespace myTNB
         {
             pageName += SELECTOR;
             return GetValues<Dictionary<string, List<SelectorModel>>>(pageName);
+        }
+
+        /// <summary>
+        /// Gets the selector of a page.
+        /// </summary>
+        /// <param name="pageName">Name of the page, iOS and Android should be the same</param>
+        /// <returns>Key-List Value of selectors used by the page</returns>
+        public Dictionary<string, List<PopupSelectorModel>> GetPopupSelectorsByPage(string pageName)
+        {
+            pageName += SELECTOR;
+            return GetValues<Dictionary<string, List<PopupSelectorModel>>>(pageName);
         }
 
         private T GetValues<T>(string pageName) where T : new()

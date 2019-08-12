@@ -24,6 +24,12 @@ namespace myTNB.DataManager
         public int AccountsAddedCount = 0;
         public bool SummaryNeedsRefresh = false;
         public int AccountRecordIndex = -1;
+        public bool AccountIsSSMR = false;
+
+        //SSMR
+        public MeterReadingHistoryModel MeterReadingHistory = new MeterReadingHistoryModel();
+        public List<MeterReadingHistoryItemModel> ReadingHistoryList = new List<MeterReadingHistoryItemModel>();
+        public List<MoreOptionsItemModel> MoreOptionsList = new List<MoreOptionsItemModel>();
 
         //Dashboard Home
         public List<HelpModel> HelpList = new List<HelpModel>();
@@ -125,6 +131,14 @@ namespace myTNB.DataManager
         public InstallationDetailDataModel InstallationDetails = new InstallationDetailDataModel();
         public bool AccountIsActive = false;
 
+        //Language
+        public Dictionary<string, string> CommonI18NDictionary;
+        public Dictionary<string, string> HintI18NDictionary;
+        public Dictionary<string, string> ErrorI18NDictionary;
+
+        //ImageSize
+        public string ImageSize = string.Empty;
+
         public static DataManager SharedInstance
         {
             get
@@ -164,6 +178,10 @@ namespace myTNB.DataManager
             AccountsGroupList = new List<List<DueAmountDataModel>>();
             AccountNumber = string.Empty;
             AccountsAddedCount = 0;
+
+            MeterReadingHistory = new MeterReadingHistoryModel();
+            ReadingHistoryList = new List<MeterReadingHistoryItemModel>();
+            MoreOptionsList = new List<MoreOptionsItemModel>();
 
             HelpList = new List<HelpModel>();
             ServicesList = new List<ServiceItemModel>();
@@ -223,6 +241,9 @@ namespace myTNB.DataManager
 
             //ResetAmountDues
             AmountDueCache.Reset();
+
+            //Reset SSMR Onboarding
+            SSMRAccounts.IsHideOnboarding = false;
         }
 
         /// <summary>
@@ -577,6 +598,14 @@ namespace myTNB.DataManager
             if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(newName))
             {
                 AmountDueCache.UpdateNickname(key, newName);
+            }
+        }
+
+        public void UpdateDueIsSSMR(string key, string flag)
+        {
+            if (!string.IsNullOrEmpty(key) && !string.IsNullOrEmpty(flag))
+            {
+                AmountDueCache.UpdateIsSSMR(key, flag);
             }
         }
 

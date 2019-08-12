@@ -1,6 +1,7 @@
 using CoreGraphics;
 using Foundation;
 using myTNB.DataManager;
+using myTNB.Home.Components;
 using myTNB.Model;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,12 @@ namespace myTNB
         public AccountsCardContentViewController(IntPtr handle) : base(handle) { }
 
         public DashboardHomeViewController _homeViewController;
-        DashboardHomeHeader _dashboardHomeHeader;
         DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
         public List<List<DueAmountDataModel>> _groupAccountList;
         TextFieldHelper _textFieldHelper = new TextFieldHelper();
         private List<List<DueAmountDataModel>> _unfilteredAccountList = new List<List<DueAmountDataModel>>();
+        RefreshScreenInfoModel _refreshScreenInfoModel = new RefreshScreenInfoModel();
+        public bool _isRefreshScreenEnabled = false;
 
         nfloat padding = 8f;
         nfloat searchPadding = 16f;
@@ -40,15 +42,13 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"NotificationDidChange", NotificationDidChange);
-            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"OnReceiveNotificationFromDashboard", NotificationDidChange);
             _unfilteredAccountList = _dashboardHomeHelper.GetGroupAccountsList(DataManager.DataManager.SharedInstance.AccountRecordsList.d);
             SetParentView();
-            SetGreetingView();
             SetSearchView();
             SetCardScrollView();
             SetScrollViewSubViews();
             LoadAccountsWithDues();
+            SetAddAccountCard();
         }
 
         public override void ViewWillAppear(bool animated)
@@ -59,18 +59,6 @@ namespace myTNB
                 DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = false;
             }
         }
-
-        #region Observer Methods
-        private void NotificationDidChange(NSNotification notification)
-        {
-            Debug.WriteLine("DEBUG >>> SUMMARY DASHBOARD NotificationDidChange");
-            if (_dashboardHomeHeader != null)
-            {
-                _dashboardHomeHeader.SetNotificationImage(PushNotificationHelper.GetNotificationImage());
-            }
-            PushNotificationHelper.UpdateApplicationBadge();
-        }
-        #endregion
 
         #region View Initialization Methods
         private void SetParentView()
@@ -85,25 +73,40 @@ namespace myTNB
             View.AddSubview(_parentView);
         }
 
-        private void SetGreetingView()
+        private void SetAddAccountCard()
         {
-            _dashboardHomeHeader = new DashboardHomeHeader(_parentView);
-            _dashboardHomeHeader.SetGreetingText(_homeViewController.GetGreeting());
-            _dashboardHomeHeader.SetNameText(_dashboardHomeHelper.GetDisplayName());
-            _parentView.AddSubview(_dashboardHomeHeader.GetUI());
-        }
+            if (_groupAccountList.Count > 0)
+                return;
 
-        public void UpdateGreeting(string greeting)
-        {
-            if (_dashboardHomeHeader != null)
+            nfloat margin = 16f;
+            UIView addAcctView = new UIView(new CGRect(margin, _searchView.Frame.GetMaxY() + margin, ViewWidth - (margin * 2), 60f))
             {
-                _dashboardHomeHeader.SetGreetingText(greeting);
-            }
+                BackgroundColor = UIColor.White,
+                UserInteractionEnabled = true
+            };
+            addAcctView.Layer.CornerRadius = 5f;
+            UIImageView iconView = new UIImageView(new CGRect(12f, DeviceHelper.GetCenterYWithObjHeight(28f, addAcctView), 28f, 28f))
+            {
+                Image = UIImage.FromBundle("Add-Account-Icon-Grey")
+            };
+            UILabel labelText = new UILabel(new CGRect(iconView.Frame.GetMaxX() + 12f, DeviceHelper.GetCenterYWithObjHeight(20f, addAcctView), addAcctView.Frame.Width - (iconView.Frame.GetMaxX() + 24f), 20f))
+            {
+                Font = MyTNBFont.MuseoSans14_500,
+                TextColor = MyTNBColor.GreyishBrownTwo,
+                Text = "Add an Electricity Account"
+            };
+            addAcctView.AddSubview(iconView);
+            addAcctView.AddSubview(labelText);
+            addAcctView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                OnAddAccountAction();
+            }));
+            View.AddSubview(addAcctView);
         }
 
         private void SetSearchView()
         {
-            _searchView = new UIView(new CGRect(0, _dashboardHomeHeader.GetView().Frame.GetMaxY(), _parentView.Frame.Width, DashboardHomeConstants.SearchViewHeight))
+            _searchView = new UIView(new CGRect(0, 0, _parentView.Frame.Width, DashboardHomeConstants.SearchViewHeight))
             {
                 BackgroundColor = UIColor.Clear
             };
@@ -119,20 +122,40 @@ namespace myTNB
             _searchIcon = new UIImageView(new CGRect(sideIconXValue, 0, imageWidth, imageHeight))
             {
                 Image = UIImage.FromBundle("Search-Icon"),
+                UserInteractionEnabled = true,
                 Hidden = NoPaginationNeeded()
             };
-
+            _searchIcon.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                if (!NoPaginationNeeded())
+                {
+                    OnSearchAction();
+                }
+            }));
             _addAccountIcon = new UIImageView(new CGRect(NoPaginationNeeded() ? sideIconXValue : sideIconXValue - imageWidth - 8f, 0, imageWidth, imageHeight))
             {
-                Image = UIImage.FromBundle("Add-Account-Icon")
+                Image = UIImage.FromBundle("Add-Account-Icon"),
+                UserInteractionEnabled = true,
+                Hidden = _groupAccountList.Count <= 0
             };
-
+            _addAccountIcon.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                OnAddAccountAction();
+            }));
             var spacing = searchPadding + imageWidth + 8f;
             _textFieldView = new UIView(new CGRect(spacing, 0, _searchView.Frame.Width - spacing - searchPadding, 24f))
             {
-                BackgroundColor = UIColor.White
+                BackgroundColor = UIColor.White,
+                UserInteractionEnabled = true
             };
             _textFieldView.Layer.CornerRadius = 12f;
+            _textFieldView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                if (!NoPaginationNeeded())
+                {
+                    OnTypeSearchAction();
+                }
+            }));
             _textFieldSearch = new UITextField(new CGRect(12f, 0, _textFieldView.Frame.Width - 24f - imageWidth / 2, 24f))
             {
                 AttributedPlaceholder = new NSAttributedString(
@@ -151,11 +174,15 @@ namespace myTNB
             _textFieldView.AddSubview(_textFieldSearch);
             if (NoPaginationNeeded())
             {
-                _searchView.AddSubviews(new UIView { _headerTitle, _addAccountIcon });
+                _searchView.AddSubview(_headerTitle);
+                _searchView.AddSubview(_addAccountIcon);
             }
             else
             {
-                _searchView.AddSubviews(new UIView { _headerTitle, _textFieldView, _addAccountIcon, _searchIcon });
+                _searchView.AddSubview(_headerTitle);
+                _searchView.AddSubview(_textFieldView);
+                _searchView.AddSubview(_addAccountIcon);
+                _searchView.AddSubview(_searchIcon);
                 SetTextFieldEvents(_textFieldSearch);
             }
             _parentView.AddSubview(_searchView);
@@ -276,38 +303,16 @@ namespace myTNB
         public override void TouchesBegan(NSSet touches, UIEvent evt)
         {
             base.TouchesBegan(touches, evt);
-            var touch = touches.AnyObject as UITouch;
+            DismissActiveKeyboard();
+        }
 
-            if (_searchIcon.Frame.Contains(touch.LocationInView(_searchView)) && !_searchIcon.Hidden && _searchIcon.Superview != null)
+        public void DismissActiveKeyboard()
+        {
+            if (_isSearchMode)
             {
-                if (!NoPaginationNeeded())
-                {
-                    OnSearchAction();
-                }
-            }
-            else if (_addAccountIcon.Frame.Contains(touch.LocationInView(_searchView)))
-            {
-                OnAddAccountAction();
-            }
-            else if (_textFieldView.Frame.Contains(touch.LocationInView(_searchView)) && !_textFieldView.Hidden && _textFieldView.Superview != null)
-            {
-                if (!NoPaginationNeeded())
-                {
-                    OnTypeSearchAction();
-                }
-            }
-            else if (_dashboardHomeHeader._notificationView.Frame.Contains(touch.LocationInView(_dashboardHomeHeader.GetView())))
-            {
-                OnNotificationAction();
-            }
-            else
-            {
-                if (_isSearchMode)
-                {
-                    _textFieldSearch.ResignFirstResponder();
-                    _isSearchMode = false;
-                    SetViewForActiveSearch(_isSearchMode);
-                }
+                _textFieldSearch.ResignFirstResponder();
+                _isSearchMode = false;
+                SetViewForActiveSearch(_isSearchMode);
             }
         }
         #endregion
@@ -329,11 +334,6 @@ namespace myTNB
             _isSearchMode = true;
             _textFieldSearch.BecomeFirstResponder();
         }
-
-        private void OnNotificationAction()
-        {
-            _homeViewController.OnNotificationAction();
-        }
         #endregion
 
         /// <summary>
@@ -348,19 +348,26 @@ namespace myTNB
                     if (NetworkUtility.isReachable)
                     {
                         bool shouldReload = false;
+
                         var accounts = GetAccountsToUpdate(ref shouldReload, _currentPageIndex);
 
+                        int currentIndex = _currentPageIndex;
                         if (accounts?.Count > 0)
                         {
-                            int currentIndex = await GetAccountsSummary(accounts, _currentPageIndex);
-                            _isUpdating = false;
-                            UpdateCardsWithTag(currentIndex);
+                            currentIndex = await GetAccountsSummary(accounts, currentIndex);
                         }
-                        else if (shouldReload)
+                        if (currentIndex > -1 &&
+                            currentIndex < _groupAccountList.Count)
                         {
-                            _isUpdating = false;
-                            UpdateCardsWithTag(_currentPageIndex);
+                            var batchAccounts = GetAccountsForSMRStatusFlag(currentIndex);
+                            var eligibleSSMRAccounts = _dashboardHomeHelper.FilterAccountNoForSSMR(batchAccounts, _groupAccountList[currentIndex]);
+                            if (eligibleSSMRAccounts?.Count > 0)
+                            {
+                                currentIndex = await GetAccountsSMRStatus(eligibleSSMRAccounts, currentIndex);
+                            }
                         }
+                        _isUpdating = false;
+                        UpdateCardsWithTag(currentIndex);
                     }
                     else
                     {
@@ -395,13 +402,73 @@ namespace myTNB
             }
         }
 
+        private void UpdateIsSSMRForDisplayedAccounts(List<SMRAccountStatusModel> statusDetails, int currentIndex)
+        {
+            if (_groupAccountList.Count <= 0)
+                return;
+
+            if (currentIndex > -1 && currentIndex < _groupAccountList.Count)
+            {
+                var groupAccountList = _groupAccountList[currentIndex];
+
+                foreach (var status in statusDetails)
+                {
+                    foreach (var account in groupAccountList)
+                    {
+                        if (account.accNum == status.ContractAccount)
+                        {
+                            var item = account;
+                            item.UpdateIsSSMRValue(status);
+                            DataManager.DataManager.SharedInstance.UpdateDueIsSSMR(account.accNum, status.IsTaggedSMR);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Calls the GetLinkedAccountsSummaryInfo API
+        /// </summary>
+        /// <param name="accounts"></param>
+        /// <param name="currentIndex"></param>
+        /// <returns></returns>
         private async Task<int> GetAccountsSummary(List<string> accounts, int currentIndex)
         {
             var response = await ServiceCall.GetLinkedAccountsSummaryInfo(accounts);
 
-            if (response.didSucceed && response.AccountDues?.Count > 0)
+            if (response != null &&
+                response.didSucceed &&
+                response.AccountDues?.Count > 0)
             {
+                _homeViewController.ShowRefreshScreen(false, null);
                 UpdateDueForDisplayedAccounts(response.AccountDues, currentIndex);
+            }
+            else
+            {
+                _refreshScreenInfoModel.RefreshBtnText = response?.RefreshBtnText ?? string.Empty; //TO DO: fallback copy to be inserted here
+                _refreshScreenInfoModel.RefreshMessage = response?.RefreshMessage ?? string.Empty; //TO DO: fallback copy to be inserted here
+                _homeViewController.ShowRefreshScreen(true, _refreshScreenInfoModel);
+            }
+            return currentIndex;
+        }
+
+        /// <summary>
+        /// Calls the GetAccountsSMRStatus API
+        /// </summary>
+        /// <param name="accounts"></param>
+        /// <param name="currentIndex"></param>
+        /// <returns></returns>
+        private async Task<int> GetAccountsSMRStatus(List<string> accounts, int currentIndex)
+        {
+            var response = await ServiceCall.GetAccountsSMRStatus(accounts);
+
+            if (response != null &&
+                response.d != null &&
+                response.d.IsSuccess &&
+                response.d.data.Count > 0)
+            {
+                UpdateIsSSMRForDisplayedAccounts(response.d.data, currentIndex);
             }
             else
             {
@@ -497,6 +564,20 @@ namespace myTNB
             return acctsToGetLatestDues;
         }
 
+        private List<string> GetAccountsForSMRStatusFlag(int currentIndex)
+        {
+            var accts = new List<string>();
+            if (_groupAccountList.Count <= 0)
+                return accts;
+
+            var groupAccountList = _groupAccountList[currentIndex];
+            foreach (var acct in groupAccountList)
+            {
+                accts.Add(acct.accNum);
+            }
+            return accts;
+        }
+
         /// <summary>
         /// Removes the deleted accounts.
         /// </summary>
@@ -558,10 +639,10 @@ namespace myTNB
 
         private CGRect AdjustFrame(CGRect f, nfloat x, nfloat y, nfloat w, nfloat h)
         {
-            f.X = f.X + x;
-            f.Y = f.Y + y;
-            f.Width = f.Width + w;
-            f.Height = f.Height + h;
+            f.X += x;
+            f.Y += y;
+            f.Width += w;
+            f.Height += h;
 
             return f;
         }
@@ -667,30 +748,32 @@ namespace myTNB
 
         private void AddAccountsCardInContainerView(UIView containerView, int pageIndex, bool isUpdating)
         {
-            var groupAccountList = _groupAccountList[pageIndex];
-            for (int i = 0; i < groupAccountList.Count; i++)
+            if (pageIndex > -1 && pageIndex < _groupAccountList.Count)
             {
-                DashboardHomeAccountCard _homeAccountCard = new DashboardHomeAccountCard(this, containerView, 68f * i);
-                string iconName = "Accounts-Smart-Meter-Icon";
-                if (groupAccountList[i].IsReAccount)
+                var groupAccountList = _groupAccountList[pageIndex];
+                for (int i = 0; i < groupAccountList.Count; i++)
                 {
-                    iconName = "Accounts-RE-Icon";
+                    DashboardHomeAccountCard _homeAccountCard = new DashboardHomeAccountCard(this, containerView, 68f * i);
+                    string iconName = "Accounts-Smart-Meter-Icon";
+                    if (groupAccountList[i].IsReAccount)
+                    {
+                        iconName = "Accounts-RE-Icon";
+                    }
+                    else if (groupAccountList[i].IsNormalAccount && groupAccountList[i].IsSSMR && groupAccountList[i].IsOwnedAccount)
+                    {
+                        iconName = "Accounts-SMR-Icon";
+                    }
+                    else if (groupAccountList[i].IsNormalAccount)
+                    {
+                        iconName = "Accounts-Normal-Icon";
+                    }
+                    _homeAccountCard.SetAccountIcon(iconName);
+                    _homeAccountCard.SetNickname(groupAccountList[i].accNickName);
+                    _homeAccountCard.SetAccountNo(groupAccountList[i].accNum);
+                    _homeAccountCard.IsUpdating = isUpdating;
+                    _homeAccountCard.SetModel(groupAccountList[i]);
+                    containerView.AddSubview(_homeAccountCard.GetUI());
                 }
-                else if (groupAccountList[i].IsNormalAccount && !groupAccountList[i].IsSSMR)
-                {
-                    iconName = "Accounts-Normal-Icon";
-                }
-                else if (groupAccountList[i].IsNormalAccount && groupAccountList[i].IsSSMR)
-                {
-                    iconName = "SMR-Icon";
-                }
-                _homeAccountCard.SetAccountIcon(iconName);
-                _homeAccountCard.SetNickname(groupAccountList[i].accNickName);
-                _homeAccountCard.SetAccountNo(groupAccountList[i].accNum);
-                _homeAccountCard.IsUpdating = isUpdating;
-                _homeAccountCard.SetModel(groupAccountList[i]);
-                containerView.AddSubview(_homeAccountCard.GetUI());
-
             }
         }
 

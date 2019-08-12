@@ -10,6 +10,7 @@ using myTNB.Model;
 using System.Drawing;
 using System.Threading.Tasks;
 using myTNB.Home.Bill.Receipt;
+using ITFont = iTextSharp.text.Font;
 
 namespace myTNB
 {
@@ -281,10 +282,10 @@ namespace myTNB
             var blueColour = new iTextSharp.text.Color(28.0f / 255.0f, 121.0f / 255.0f, 202.0f / 255.0f, 1.0f);
             var tunaGreyColour = new iTextSharp.text.Color(73.0f / 255.0f, 73.0f / 255.0f, 74.0f / 255.0f, 1.0f);
             var silverChaliceColour = new iTextSharp.text.Color(0.65f, 0.65f, 0.65f, 1.0f);
-            Font titleFont = new Font(FontFactory.GetFont(MyTNBFont.FONTNAME_500, 30f, blueColour));
-            Font detailsFont = new Font(FontFactory.GetFont(MyTNBFont.FONTNAME_500, 24f, tunaGreyColour));
-            Font labelFont = new Font(FontFactory.GetFont(MyTNBFont.FONTNAME_500, 18f, silverChaliceColour));
-            Font totalAmounFont = new Font(FontFactory.GetFont(MyTNBFont.FONTNAME_500, 48f, tunaGreyColour));
+            ITFont titleFont = new ITFont(FontFactory.GetFont(MyTNBFont.FONTNAME_500, 30f, blueColour));
+            ITFont detailsFont = new ITFont(FontFactory.GetFont(MyTNBFont.FONTNAME_500, 24f, tunaGreyColour));
+            ITFont labelFont = new ITFont(FontFactory.GetFont(MyTNBFont.FONTNAME_500, 18f, silverChaliceColour));
+            ITFont totalAmounFont = new ITFont(FontFactory.GetFont(MyTNBFont.FONTNAME_500, 48f, tunaGreyColour));
 
             string filepath = Environment.CurrentDirectory;
             var headerImage = iTextSharp.text.Image.GetInstance(filepath + "/tnbReceiptLogoHeader.jpg");

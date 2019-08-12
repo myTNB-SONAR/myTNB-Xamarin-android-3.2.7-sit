@@ -2,9 +2,7 @@
 using UIKit;
 using myTNB.Dashboard.DashboardComponents;
 using CoreGraphics;
-using System.Threading.Tasks;
 using myTNB.Home.More.MyAccount;
-using myTNB.DataManager;
 using myTNB.Registration.CustomerAccounts;
 
 namespace myTNB
@@ -30,11 +28,6 @@ namespace myTNB
         {
             base.ViewWillAppear(animated);
             ActivityIndicator.Show();
-            if (DataManager.DataManager.SharedInstance.IsAccountDeleted)
-            {
-                Task[] taskList = new Task[] { ServiceCall.GetAccounts() };
-                Task.WaitAll(taskList);
-            }
             myAccountTableView.Source = new MyAccountDataSource(this);
             myAccountTableView.ReloadData();
             SetFooterView();

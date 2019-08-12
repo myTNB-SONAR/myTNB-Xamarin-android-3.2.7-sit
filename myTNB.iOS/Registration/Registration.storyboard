@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="997">
-    <device id="retina4_7" orientation="portrait">
-        <adaptation id="fullscreen"/>
-    </device>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="997">
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -18,7 +14,7 @@
                         <viewControllerLayoutGuide type="bottom" id="197"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="200">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -37,7 +33,7 @@
                         <viewControllerLayoutGuide type="bottom" id="215"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="218">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -56,7 +52,7 @@
                         <viewControllerLayoutGuide type="bottom" id="236"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="239">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -73,7 +69,7 @@
             <objects>
                 <navigationController id="997" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="999">
-                        <rect key="frame" x="0.0" y="20" width="375" height="50"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -89,7 +85,7 @@
             <objects>
                 <navigationController id="4001" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="4003">
-                        <rect key="frame" x="0.0" y="20" width="375" height="50"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -105,7 +101,7 @@
             <objects>
                 <navigationController id="4214" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="4216">
-                        <rect key="frame" x="0.0" y="20" width="375" height="50"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -121,7 +117,7 @@
             <objects>
                 <navigationController id="51948" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="51950">
-                        <rect key="frame" x="0.0" y="20" width="375" height="50"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -141,7 +137,7 @@
                         <viewControllerLayoutGuide type="bottom" id="52218"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="52221">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -156,7 +152,7 @@
             <objects>
                 <navigationController id="52952" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="52954">
-                        <rect key="frame" x="0.0" y="20" width="375" height="50"/>
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -176,7 +172,7 @@
                         <viewControllerLayoutGuide type="bottom" id="53143"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="53146">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -186,8 +182,6 @@
             </objects>
             <point key="canvasLocation" x="1615" y="749"/>
         </scene>
-        <!--Select Account Type-->
-        <!--Navigation Controller-->
         <!--Title-->
         <scene sceneID="56329">
             <objects>
@@ -197,11 +191,12 @@
                         <viewControllerLayoutGuide type="bottom" id="56328"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="56331">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="56392" fixedFrame="YES">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="56392">
                                 <rect key="frame" x="18" y="36" width="339" height="535"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <inset key="separatorInset" minX="14" minY="0.0" maxX="14" maxY="0.0"/>
                                 <prototypes>
@@ -212,11 +207,11 @@
                                             <rect key="frame" x="0.0" y="0.0" width="339" height="114.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <view contentMode="scaleToFill" id="58472" translatesAutoresizingMaskIntoConstraints="NO">
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="58472">
                                                     <rect key="frame" x="16" y="0.0" width="307" height="1"/>
-                                                    <color key="backgroundColor" colorSpace="calibratedRGB" red="0.8901960784313725" green="0.8901960784313725" blue="0.8901960784313725" alpha="1"/>
+                                                    <color key="backgroundColor" red="0.8901960784313725" green="0.8901960784313725" blue="0.8901960784313725" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
-                                                        <constraint id="59234" firstAttribute="height" constant="1"/>
+                                                        <constraint firstAttribute="height" constant="1" id="59234"/>
                                                     </constraints>
                                                 </view>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="56420">
@@ -258,11 +253,11 @@
                                                 <constraint firstAttribute="bottom" secondItem="56423" secondAttribute="bottom" constant="8.5" id="56432"/>
                                                 <constraint firstAttribute="trailing" secondItem="56423" secondAttribute="trailing" constant="9" id="56433"/>
                                                 <constraint firstItem="56423" firstAttribute="leading" secondItem="56394" secondAttribute="leading" constant="16" id="56435"/>
+                                                <constraint firstAttribute="trailing" secondItem="58472" secondAttribute="trailing" constant="16" id="59235"/>
+                                                <constraint firstItem="58472" firstAttribute="leading" secondItem="56394" secondAttribute="leading" constant="16" id="59236"/>
+                                                <constraint firstAttribute="trailing" secondItem="58472" secondAttribute="trailing" constant="16" id="59530"/>
+                                                <constraint firstItem="56420" firstAttribute="top" secondItem="58472" secondAttribute="bottom" constant="8" id="60070"/>
                                                 <constraint firstItem="56423" firstAttribute="top" secondItem="56421" secondAttribute="bottom" constant="5" id="sdV-q2-A3J"/>
-                                                <constraint id="59235" firstAttribute="trailing" secondItem="58472" secondAttribute="trailing" constant="16"/>
-                                                <constraint id="59236" firstItem="58472" firstAttribute="leading" secondItem="56394" secondAttribute="leading" constant="16"/>
-                                                <constraint id="59530" firstAttribute="trailing" secondItem="58472" secondAttribute="trailing" constant="16"/>
-                                                <constraint id="60070" firstItem="56420" firstAttribute="top" secondItem="58472" secondAttribute="bottom" constant="8"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                         <connections>
@@ -273,10 +268,9 @@
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </tableView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="57064">
-                                <rect key="frame" x="18" y="595" width="339" height="48"/>
+                                <rect key="frame" x="22" y="664" width="370" height="48"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="u7F-eo-kxO"/>
                                 </constraints>
