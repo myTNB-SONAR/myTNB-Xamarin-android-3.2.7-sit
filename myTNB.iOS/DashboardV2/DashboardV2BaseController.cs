@@ -1,24 +1,31 @@
 ﻿using System;
 using CoreGraphics;
+using myTNB.Components;
 using UIKit;
 
 namespace myTNB.DashboardV2
 {
     public class DashboardV2BaseController : CustomUIViewController
     {
-        public DashboardV2BaseController(IntPtr handle) : base(handle)
-        {
-        }
+        public DashboardV2BaseController(IntPtr handle) : base(handle) { }
 
-        internal UILabel NavTitle;
+        internal UIScrollView _scrollViewContent;
+        internal CustomUIView _accountSelector, _viewSeparator, _viewStatus
+            , _viewChart, _viewToggle, _viewTips;
+        internal UILabel _lblAddress;
 
         public override void ViewDidLoad()
         {
             IsGradientRequired = true;
             IsFullGradient = true;
+            IsReversedGradient = true;
             base.ViewDidLoad();
+            Title = "Usage";
             if (TabBarController != null && TabBarController.TabBar != null)
             { TabBarController.TabBar.Layer.ZPosition = -1; }
+            AddCustomNavBar();
+            AddScrollView();
+            AddSubviews();
         }
 
         public override void ViewWillAppear(bool animated)
@@ -39,28 +46,82 @@ namespace myTNB.DashboardV2
             { TabBarController.TabBar.Layer.ZPosition = 0; }
         }
 
-        public override void ConfigureNavigationBar()
+        private void AddScrollView()
         {
-            NavigationController.SetNavigationBarHidden(true, true);
-            nfloat yLoc = GetScaledHeight(28);
-            UIView viewBack = new UIView(new CGRect(GetScaledWidth(16), yLoc, GetScaledWidth(24), GetScaledHeight(24)));
-            viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-            { NavigationController.PopViewController(true); }));
-
-            UIImageView imgBack = new UIImageView(new CGRect(new CGPoint(0, 0), viewBack.Frame.Size))
+            nfloat height = UIScreen.MainScreen.Bounds.Height - _customNavBar.Frame.GetMaxY();
+            _scrollViewContent = new UIScrollView(new CGRect(0, _customNavBar.Frame.GetMaxY(), ViewWidth, height))
             {
-                Image = UIImage.FromBundle(Constants.IMG_Back)
+                BackgroundColor = UIColor.Clear
             };
-            viewBack.AddSubview(imgBack);
+            View.AddSubview(_scrollViewContent);
 
-            NavTitle = new UILabel(new CGRect(viewBack.Frame.GetMaxX(), yLoc, ViewWidth - (viewBack.Frame.GetMaxX() * 2), GetScaledHeight(24)))
+            _accountSelector = new CustomUIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(24)));// { BackgroundColor = UIColor.Blue };
+            _lblAddress = new UILabel(new CGRect(BaseMargin, 0, BaseMarginedWidth, 0))
             {
+                //BackgroundColor = UIColor.Red,
+                LineBreakMode = UILineBreakMode.WordWrap,
+                Lines = 0,
                 TextAlignment = UITextAlignment.Center,
-                Font = MyTNBFont.MuseoSans16_500V2,
                 TextColor = UIColor.White,
-                Text = "Usage"
+                Font = MyTNBFont.MuseoSans10_300V2
             };
-            View.AddSubviews(new UIView[] { viewBack, NavTitle });
+            _viewSeparator = new CustomUIView(new CGRect(BaseMargin, 0, BaseMarginedWidth, GetScaledHeight(1)))
+            { BackgroundColor = UIColor.FromWhiteAlpha(1, 0.30F) };
+            _viewStatus = new CustomUIView(new CGRect(0, 0, ViewWidth, 0));
+            _viewChart = new CustomUIView(new CGRect(0, 0, ViewWidth, 0));
+            _viewToggle = new CustomUIView(new CGRect(0, 0, ViewWidth, 0)) { BackgroundColor = UIColor.Green };
+            _viewTips = new CustomUIView(new CGRect(0, 0, ViewWidth, 0)) { BackgroundColor = UIColor.Cyan };
+
+            _scrollViewContent.AddSubviews(new UIView[] { _accountSelector
+                , _lblAddress, _viewSeparator, _viewStatus, _viewChart, _viewTips });
+        }
+
+        private void SetContentView()
+        {
+            _lblAddress.Frame = new CGRect(new CGPoint(BaseMargin, GetYLocationFromFrame(_accountSelector.Frame, 8F)), _lblAddress.Frame.Size);
+            _viewSeparator.Frame = new CGRect(new CGPoint(BaseMargin, GetYLocationFromFrame(_lblAddress.Frame, 16F)), _viewSeparator.Frame.Size);
+            _viewStatus.Frame = new CGRect(new CGPoint(BaseMargin, GetYLocationFromFrame(_viewSeparator.Frame, 16F)), _viewStatus.Frame.Size);
+            _viewChart.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewStatus.Frame, 16F)), _viewChart.Frame.Size);
+            _viewToggle.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, 16F)), _viewToggle.Frame.Size);
+            _viewTips.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewToggle.Frame, 24F)), _viewTips.Frame.Size);
+
+            _scrollViewContent.ContentSize = new CGSize(ViewWidth, _viewTips.Frame.GetMaxY());
+        }
+
+        private void AddSubviews()
+        {
+            AddAccountSelector();
+            SetAddress();
+            SetChartView();
+            SetContentView();
+        }
+
+        private void AddAccountSelector()
+        {
+            AccountSelector accountSelector = new AccountSelector();
+            CustomUIView viewAccountSelector = accountSelector.GetUI();
+            accountSelector.SetAction(null);
+            accountSelector.Title = AccountManager.Instance.Nickname;
+            _accountSelector.AddSubview(viewAccountSelector);
+        }
+
+        private void SetAddress()
+        {
+            _lblAddress.Text = AccountManager.Instance.Address.ToUpper();
+            CGSize lblSize = GetLabelSize(_lblAddress, GetScaledHeight(42));
+            CGRect lblFrame = _lblAddress.Frame;
+            lblFrame.Height = lblSize.Height;
+            _lblAddress.Frame = lblFrame;
+        }
+
+        private void SetChartView()
+        {
+            ChartView chartView = new ChartView();
+            CustomUIView chart = chartView.GetUI();
+            _viewChart.AddSubview(chart);
+            CGRect chartFrame = _viewChart.Frame;
+            chartFrame.Size = new CGSize(ViewWidth, chart.Frame.Height);
+            _viewChart.Frame = chartFrame;
         }
     }
 }

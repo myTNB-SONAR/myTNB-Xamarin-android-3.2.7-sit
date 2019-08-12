@@ -1103,6 +1103,10 @@
     <ImageAsset Include="Assets.xcassets\SMR-Closed-Icon.imageset\SMR-Closed-Icon.png" />
     <ImageAsset Include="Assets.xcassets\SMR-Closed-Icon.imageset\SMR-Closed-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\SMR-Closed-Icon.imageset\SMR-Closed-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Header-Dropdown.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Header-Dropdown.imageset\icHeaderDropdown12Px.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Header-Dropdown.imageset\icHeaderDropdown12Px%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Header-Dropdown.imageset\icHeaderDropdown12Px%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1459,6 +1463,8 @@
     <Folder Include="Model\GetAccountsSMREligibility\" />
     <Folder Include="Customs\Custom View Controller\" />
     <Folder Include="Assets.xcassets\SMR-Closed-Icon.imageset\" />
+    <Folder Include="Components\" />
+    <Folder Include="Assets.xcassets\IC-Header-Dropdown.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2256,6 +2262,10 @@
     <Compile Include="Customs\Custom View Controller\CustomViewControllerConstants.cs" />
     <Compile Include="Session Cache\AccountManager.cs" />
     <Compile Include="Customs\CustomUIView.cs" />
+    <Compile Include="Components\AccountSelector.cs" />
+    <Compile Include="Helpers\ScaleUtility.cs" />
+    <Compile Include="Components\ChartView.cs" />
+    <Compile Include="Components\AccountStatus.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

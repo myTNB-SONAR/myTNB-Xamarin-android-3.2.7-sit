@@ -1,4 +1,9 @@
-﻿using CoreGraphics;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using CoreGraphics;
+using Firebase.Analytics;
+using Foundation;
 using UIKit;
 
 namespace myTNB
@@ -7,6 +12,8 @@ namespace myTNB
     {
         private string PageName = string.Empty;
         private string EventName = string.Empty;
+
+        public CustomUIView() { }
 
         public CustomUIView(CGRect frame)
         {
@@ -22,8 +29,12 @@ namespace myTNB
 
         public override void AddGestureRecognizer(UIGestureRecognizer gestureRecognizer)
         {
+            gestureRecognizer.AddTarget(new Action(() =>
+            {
+                //Handle Firebase Log Event
+                Debug.WriteLine("Tapped");
+            }));
             base.AddGestureRecognizer(gestureRecognizer);
-            //Todo: Add Firebase Call
         }
     }
 }

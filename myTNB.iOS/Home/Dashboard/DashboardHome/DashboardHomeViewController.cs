@@ -462,8 +462,7 @@ namespace myTNB
         public void OnAccountCardSelected(DueAmountDataModel model)
         {
             var index = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindIndex(x => x.accNum == model.accNum) ?? -1;
-
-            if (index >= 0)
+            if (index > -1)
             {
                 var selected = DataManager.DataManager.SharedInstance.AccountRecordsList.d[index];
                 DataManager.DataManager.SharedInstance.SelectAccount(selected.accNum);
@@ -475,6 +474,7 @@ namespace myTNB
                 */
 
                 ///*
+                AccountManager.Instance.CurrentAccountIndex = index;
                 UIStoryboard storyBoard = UIStoryboard.FromName("DashboardV2", null);
                 DashboardV2ViewController vc = storyBoard.InstantiateViewController("DashboardV2") as DashboardV2ViewController;
                 NavigationController.PushViewController(vc, true);

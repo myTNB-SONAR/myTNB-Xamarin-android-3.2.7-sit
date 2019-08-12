@@ -16,15 +16,13 @@ namespace myTNB
         internal bool IsGradientRequired, IsFullGradient, IsReversedGradient;
         internal bool IsGradientImageRequired;
         internal UIImageView ImageViewGradientImage;
-        internal UIView _statusBarView;
-        internal nfloat ViewWidth, ViewHeight;
+        internal UIView _statusBarView, _customNavBar;
+        internal nfloat ViewWidth, ViewHeight, BaseMargin, BaseMarginedWidth;
+        internal UILabel LblNavTitle;
 
         private UIView _viewToast, _viewToastOverlay;
         private UILabel _lblToastDetails;
         private bool _isAnimating;
-
-        private nfloat WidthBase = 320;
-        private nfloat HeightBase = 568;
 
         public enum PermissionMode
         {
@@ -79,6 +77,11 @@ namespace myTNB
             return CustomUILabel.GetLabelSize(label, width, height);
         }
 
+        public CGSize GetLabelSize(UILabel label, nfloat height)
+        {
+            return CustomUILabel.GetLabelSize(label, label.Frame.Width, height);
+        }
+
         public UIButton GetUIButton(CGRect frame, string key)
         {
             return CustomUIButton.GetUIButton(frame, key);
@@ -106,6 +109,8 @@ namespace myTNB
                 ViewHeight -= 20;
             }
             ViewHeight -= DeviceHelper.GetStatusBarHeight();
+            BaseMargin = GetScaledWidth(16);
+            BaseMarginedWidth = ViewWidth - (BaseMargin * 2);
         }
         #endregion
         #region Alerts
@@ -305,6 +310,34 @@ namespace myTNB
             View.AddSubview(_statusBarView);
         }
         public virtual void ConfigureNavigationBar() { }
+        public virtual void AddCustomNavBar(Action backAction = null)
+        {
+            NavigationController.SetNavigationBarHidden(true, true);
+            UIView viewBack = new UIView(new CGRect(GetScaledWidth(16), 0, GetScaledWidth(24), GetScaledHeight(24)));
+            viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                if (backAction != null) { backAction.Invoke(); }
+                else { if (NavigationController != null) { NavigationController.PopViewController(true); } }
+            }));
+
+            UIImageView imgBack = new UIImageView(new CGRect(new CGPoint(0, 0), viewBack.Frame.Size))
+            {
+                Image = UIImage.FromBundle(Constants.IMG_Back)
+            };
+            viewBack.AddSubview(imgBack);
+
+            LblNavTitle = new UILabel(new CGRect(viewBack.Frame.GetMaxX(), 0, ViewWidth - (viewBack.Frame.GetMaxX() * 2), GetScaledHeight(24)))
+            {
+                TextAlignment = UITextAlignment.Center,
+                Font = MyTNBFont.MuseoSans16_500V2,
+                TextColor = UIColor.White,
+                Text = Title
+            };
+
+            _customNavBar = new UIView(new CGRect(0, GetScaledHeight(28), ViewWidth, GetScaledHeight(24)));
+            _customNavBar.AddSubviews(new UIView[] { viewBack, LblNavTitle });
+            View.AddSubview(_customNavBar);
+        }
         #endregion
 
         #region Utilities
@@ -334,13 +367,25 @@ namespace myTNB
         #endregion
         public nfloat GetScaledWidth(nfloat value)
         {
-            nfloat percentage = value / WidthBase;
-            return UIScreen.MainScreen.Bounds.Width * percentage;
+            return ScaleUtility.GetScaledWidth(value);
         }
         public nfloat GetScaledHeight(nfloat value)
         {
-            nfloat percentage = value / HeightBase;
-            return UIScreen.MainScreen.Bounds.Height * percentage;
+            return ScaleUtility.GetScaledHeight(value);
+        }
+        public void GetYLocationFromFrame(CGRect frame, ref nfloat yValue)
+        {
+            ScaleUtility.GetYLocationFromFrame(frame, ref yValue);
+        }
+        public void GetYLocationFromFrame(CGRect frame, nfloat yValue, out nfloat scaledValue)
+        {
+            ScaleUtility.GetYLocationFromFrame(frame, ref yValue);
+            scaledValue = yValue;
+        }
+        public nfloat GetYLocationFromFrame(CGRect frame, nfloat yValue)
+        {
+            ScaleUtility.GetYLocationFromFrame(frame, ref yValue);
+            return yValue;
         }
         #endregion
     }

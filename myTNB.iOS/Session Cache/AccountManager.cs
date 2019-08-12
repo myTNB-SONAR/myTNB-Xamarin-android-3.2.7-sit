@@ -50,6 +50,16 @@ namespace myTNB
 
         public int CurrentAccountIndex { set; get; } = 0;
 
+        public string Nickname
+        {
+            get { return CurrentAccount.accountNickName ?? string.Empty; }
+        }
+
+        public string Address
+        {
+            get { return CurrentAccount.accountStAddress ?? string.Empty; }
+        }
+
         public CustomerAccountRecordModel CurrentAccount
         {
             get { return GetAccountByIndex(CurrentAccountIndex); }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using UIKit;
 
 namespace myTNB
@@ -30,8 +31,12 @@ namespace myTNB
 
         public override void AddGestureRecognizer(UIGestureRecognizer gestureRecognizer)
         {
+            gestureRecognizer.AddTarget(new Action(() =>
+            {
+                //Handle Firebase Log Event
+                Debug.WriteLine("Tapped");
+            }));
             base.AddGestureRecognizer(gestureRecognizer);
-            //Todo: Add Firebase Call
         }
     }
 }
