@@ -1,10 +1,16 @@
 ﻿using System;
+using System.Diagnostics;
+using Firebase.Analytics;
 using UIKit;
 
 namespace myTNB
 {
     public class CustomUIButtonV2 : UIButton
     {
+        public string PageName { set; private get; }
+        public string EventName { set; private get; }
+        private string EventFormat = "{0} - {1}";
+
         public CustomUIButtonV2(bool isWhiteBG = false)
         {
             SetDefaultUIButton(isWhiteBG);
@@ -23,6 +29,17 @@ namespace myTNB
                 BackgroundColor = UIColor.White;
                 SetTitleColor(MyTNBColor.WaterBlue, UIControlState.Normal);
             }
+        }
+
+        public override void AddGestureRecognizer(UIGestureRecognizer gestureRecognizer)
+        {
+            gestureRecognizer.AddTarget(new Action(() =>
+            {
+                //Handle Firebase Log Event
+                Debug.WriteLine("Tapped");
+                Analytics.LogEvent(string.Format(EventFormat, PageName, EventName), null);
+            }));
+            base.AddGestureRecognizer(gestureRecognizer);
         }
     }
 }

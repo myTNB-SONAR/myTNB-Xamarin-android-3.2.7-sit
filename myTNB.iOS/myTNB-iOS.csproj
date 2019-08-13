@@ -2247,6 +2247,9 @@
     <Compile Include="Model\GetAccountsSMREligibility\GetAccountsSMREligibilityResponseModel.cs" />
     <Compile Include="Customs\Custom View Controller\CustomUIViewController.cs" />
     <Compile Include="Customs\Custom View Controller\CustomViewControllerConstants.cs" />
+    <Compile Include="Helpers\TNBFont.cs" />
+    <Compile Include="Customs\CustomUIView.cs" />
+    <Compile Include="Helpers\ScaleUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
