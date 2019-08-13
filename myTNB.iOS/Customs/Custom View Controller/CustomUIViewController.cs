@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using CoreAnimation;
 using CoreGraphics;
+using Firebase.Analytics;
 using Foundation;
 using myTNB.Customs;
 using UIKit;
@@ -16,10 +17,13 @@ namespace myTNB
         internal bool IsGradientRequired, IsFullGradient, IsReversedGradient;
         internal bool IsGradientImageRequired;
         internal UIImageView ImageViewGradientImage;
-        internal UIView _statusBarView;
-        internal nfloat ViewWidth, ViewHeight;
+        internal UIView _statusBarView, _customNavBar;
+        internal nfloat ViewWidth, ViewHeight, BaseMargin, BaseMarginedWidth;
+        internal UILabel LblNavTitle;
+
         private UIView _viewToast, _viewToastOverlay;
         private UILabel _lblToastDetails;
+
         private bool _isAnimating;
 
         public enum PermissionMode
@@ -36,7 +40,6 @@ namespace myTNB
         {
             base.ViewDidLoad();
             I18NDictionary = LanguageManager.Instance.GetValuesByPage(PageName);
-            ConfigureNavigationBar();
             if (IsGradientRequired)
             {
                 CreateBackgroundGradient();
@@ -46,11 +49,13 @@ namespace myTNB
                 CreateImageGradient();
             }
             SetFrames();
+            ConfigureNavigationBar();
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            Analytics.SetScreenNameAndClass(PageName, string.Format("{0}ViewController", PageName));
         }
 
         public override void ViewDidAppear(bool animated)
@@ -102,6 +107,8 @@ namespace myTNB
                 ViewHeight -= 20;
             }
             ViewHeight -= DeviceHelper.GetStatusBarHeight();
+            BaseMargin = GetScaledWidth(16);
+            BaseMarginedWidth = ViewWidth - (BaseMargin * 2);
         }
         #endregion
         #region Alerts
@@ -301,27 +308,83 @@ namespace myTNB
             View.AddSubview(_statusBarView);
         }
         public virtual void ConfigureNavigationBar() { }
+        public virtual void AddCustomNavBar(Action backAction = null)
+        {
+            if (NavigationController != null) { NavigationController.SetNavigationBarHidden(true, true); }
+            UIView viewBack = new UIView(new CGRect(GetScaledWidth(16), 0, GetScaledWidth(24), GetScaledHeight(24)));
+            viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                if (backAction != null) { backAction.Invoke(); }
+                else { if (NavigationController != null) { NavigationController.PopViewController(true); } }
+            }));
+
+            UIImageView imgBack = new UIImageView(new CGRect(new CGPoint(0, 0), viewBack.Frame.Size))
+            {
+                Image = UIImage.FromBundle(CustomViewControllerConstants.IMG_Back)
+            };
+            viewBack.AddSubview(imgBack);
+
+            LblNavTitle = new UILabel(new CGRect(viewBack.Frame.GetMaxX(), 0, ViewWidth - (viewBack.Frame.GetMaxX() * 2), GetScaledHeight(24)))
+            {
+                TextAlignment = UITextAlignment.Center,
+                Font = TNBFont.MuseoSans_16_500,
+                TextColor = UIColor.White,
+                Text = Title
+            };
+
+            _customNavBar = new UIView(new CGRect(0, GetScaledHeight(28), ViewWidth, GetScaledHeight(24)));
+            _customNavBar.AddSubviews(new UIView[] { viewBack, LblNavTitle });
+            View.AddSubview(_customNavBar);
+        }
         #endregion
 
-        #region Utilities
+        #region I18N Utilities
         public string GetI18NValue(string key)
         {
-            return I18NDictionary.ContainsKey(key) ? I18NDictionary[key] : string.Empty;
+            return I18NDictionary != null && I18NDictionary.ContainsKey(key) ? I18NDictionary[key] : string.Empty;
         }
         public string GetCommonI18NValue(string key)
         {
-            return DataManager.DataManager.SharedInstance.CommonI18NDictionary.ContainsKey(key)
+            return DataManager.DataManager.SharedInstance.CommonI18NDictionary != null
+                && DataManager.DataManager.SharedInstance.CommonI18NDictionary.ContainsKey(key)
                 ? DataManager.DataManager.SharedInstance.CommonI18NDictionary[key] : string.Empty;
         }
         public string GetHintI18NValue(string key)
         {
-            return DataManager.DataManager.SharedInstance.HintI18NDictionary.ContainsKey(key)
+            return DataManager.DataManager.SharedInstance.HintI18NDictionary != null
+                && DataManager.DataManager.SharedInstance.HintI18NDictionary.ContainsKey(key)
                 ? DataManager.DataManager.SharedInstance.HintI18NDictionary[key] : string.Empty;
         }
         public string GetErrorI18NValue(string key)
         {
-            return DataManager.DataManager.SharedInstance.ErrorI18NDictionary.ContainsKey(key)
+            return DataManager.DataManager.SharedInstance.ErrorI18NDictionary != null
+                && DataManager.DataManager.SharedInstance.ErrorI18NDictionary.ContainsKey(key)
                 ? DataManager.DataManager.SharedInstance.ErrorI18NDictionary[key] : string.Empty;
+        }
+        #endregion
+
+        #region Scale Utility
+        public nfloat GetScaledWidth(nfloat value)
+        {
+            return ScaleUtility.GetScaledWidth(value);
+        }
+        public nfloat GetScaledHeight(nfloat value)
+        {
+            return ScaleUtility.GetScaledHeight(value);
+        }
+        public void GetYLocationFromFrame(CGRect frame, ref nfloat yValue)
+        {
+            ScaleUtility.GetYLocationFromFrame(frame, ref yValue);
+        }
+        public void GetYLocationFromFrame(CGRect frame, nfloat yValue, out nfloat scaledValue)
+        {
+            ScaleUtility.GetYLocationFromFrame(frame, ref yValue);
+            scaledValue = yValue;
+        }
+        public nfloat GetYLocationFromFrame(CGRect frame, nfloat yValue)
+        {
+            ScaleUtility.GetYLocationFromFrame(frame, ref yValue);
+            return yValue;
         }
         #endregion
     }
