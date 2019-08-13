@@ -31,7 +31,8 @@
         "cancel": "Cancel",
         "cameraPermissionTitle": "\"myTNB\" Would like to Access the Camera",
         "galleryPermissionTitle": "\"myTNB\" Would like to Access Your Photos",
-        "photoPermissionDescription": "Enable myTNB to access your camera roll to upload photos and save ones you’ve taken with the app."
+        "photoPermissionDescription": "Enable myTNB to access your camera roll to upload photos and save ones you’ve taken with the app.",
+        "delete": "Delete"
     },
     "Hint": {
         "mobileNumber": "Please include the country code of your phone number.",
@@ -134,14 +135,14 @@
     "SSMRCaptureMeter": {
         "ocrReading": "Please wait for a moment while we read your photos…",
         "navTitleTakePhoto": "Take Photo",
-        "navTitleAdjustPhoto": "Adjust Photo",
-        "singleTakePhotoDescription": "Take a clear photo of the reading value flashed on your meter.",
-        "editDescription": "You can delete and retake the photo or adjust it before submission.",
-        "multiTakePhotoDescription": "Get ready, you'll have 10 seconds between each value being flashed.",
+        "singleTakePhotoDescription": "Take a photo of the reading value you see on your meter.",
+        "editDescription": "You can select a photo to delete and retake or adjust it before submission.",
+        "multiTakePhotoDescription": "There will be {0} different units. Take a photo of the 1st unit you see.",
+        "multiTakeNextPhotoDescription": "Great! Now take a photo of the next unit you see.",
         "singularDone": "You're done with {0}!",
         "pluralDone": "You're done with {0} and {1}!",
-        "singularOnto": "On to <a href=\"\\\">{0}</a> reading now.",
-        "pluralOnto": "On to <a href=\"\\\">{0}</a> and <a href=\"\\\">{1}</a> readings now."
+        "singularOnto": "On to the final unit {0} now.",
+        "pluralOnto": "On to the next units {0} and {1}."
     },
     "SSMRCaptureMeter_selector": {
         "SMRPhotoPopUpDetails": [

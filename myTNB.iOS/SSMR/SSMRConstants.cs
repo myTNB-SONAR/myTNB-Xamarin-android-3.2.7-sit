@@ -46,6 +46,7 @@ namespace myTNB.SSMR
         public static string I18N_MobileNumber = "mobileNumber";
         public static string I18N_Email = "emailAddress";
         public static string I18N_SelectAccounts = "selectAccounts";
+        public static string I18N_Delete = "delete";
 
         //Application
         public static string I18N_ApplyingFor = "applyingFor";
@@ -77,7 +78,6 @@ namespace myTNB.SSMR
         public static string IMG_Info = "IC-Info";
         public static string IMG_OCRReading = "OCR-Reading";
         public static string IMG_CameraThumb = "Camera-Thumb";
-        public static string IMG_Delete = "Notification-Delete";
         public static string IMG_MultiPhase = "SSMR-MultiPhase";
         public static string IMG_SinglePhase = "SSMR-SinglePhase";
         public static string IMG_BGToolTip1 = "SMR-ToolTip-BG1";
@@ -102,10 +102,10 @@ namespace myTNB.SSMR
         //Capture Meter
         public static string I18N_OCRReading = "ocrReading";
         public static string I18N_NavTitleTakePhoto = "navTitleTakePhoto";
-        public static string I18N_NavTitleAdjustPhoto = "navTitleAdjustPhoto";
         public static string I18N_SingleTakePhotoDescription = "singleTakePhotoDescription";
         public static string I18N_EditDescription = "editDescription";
         public static string I18N_MultiTakePhotoDescription = "multiTakePhotoDescription";
+        public static string I18N_MultiTakeNextPhotoDescription = "multiTakeNextPhotoDescription";
         public static string I18N_SingularDone = "singularDone";
         public static string I18N_PluralDone = "pluralDone";
         public static string I18N_SingularOnto = "singularOnto";
@@ -130,5 +130,9 @@ namespace myTNB.SSMR
 
         //Notification IDs
         public static NSString Notification_SelectSSMRAccount = (NSString)"SelectSSMRAccount";
+
+        //Event Names
+        public static string EVENT_SubmitToOCR = "Submit Images to OCR";
+        public static string EVENT_DeleteImage = "Delete Image";
     }
 }
