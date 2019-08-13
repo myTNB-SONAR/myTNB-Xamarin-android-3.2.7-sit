@@ -34,18 +34,18 @@ namespace myTNB
             nfloat padding = 16f;
             nfloat margin = 16f;
 
-            _accountCardView = new UIView(new CGRect(0, _yLocation + margin, parentWidth, 60f))
+            _accountCardView = new UIView(new CGRect(0, _yLocation + margin, parentWidth, DeviceHelper.GetScaledHeight(60f)))
             {
                 BackgroundColor = UIColor.White
             };
             AddCardShadow(ref _accountCardView);
 
-            _accountIcon = new UIImageView(new CGRect(12f, DeviceHelper.GetCenterYWithObjHeight(28f, _accountCardView), 28f, 28f))
+            _accountIcon = new UIImageView(new CGRect(12f, DeviceHelper.GetCenterYWithObjHeight(DeviceHelper.GetScaledHeight(28f), _accountCardView), DeviceHelper.GetScaledHeight(28f), DeviceHelper.GetScaledHeight(28f)))
             {
                 Image = UIImage.FromBundle(_strAccountIcon ?? string.Empty)
             };
 
-            _accountNickname = new UILabel(new CGRect(_accountIcon.Frame.GetMaxX() + 12f, 12f, 150f, 20f))
+            _accountNickname = new UILabel(new CGRect(_accountIcon.Frame.GetMaxX() + 12f, DeviceHelper.GetCenterYWithObjHeight(40f, _accountCardView), 150f, 20f))
             {
                 Font = MyTNBFont.MuseoSans14_500,
                 TextColor = MyTNBColor.GreyishBrown,
@@ -59,7 +59,7 @@ namespace myTNB
                 Text = _strAccountNo ?? string.Empty
             };
 
-            _amountDue = new UILabel(new CGRect(parentWidth - 100f - 12f, 12f, 100f, 20f))
+            _amountDue = new UILabel(new CGRect(parentWidth - 100f - 12f, DeviceHelper.GetCenterYWithObjHeight(40f, _accountCardView), 100f, 20f))
             {
                 Font = MyTNBFont.MuseoSans14_500,
                 TextColor = MyTNBColor.GreyishBrown,
@@ -102,8 +102,8 @@ namespace myTNB
             _accountIcon.Image = IsUpdating ? null : UIImage.FromBundle(_strAccountIcon ?? string.Empty);
 
             _accountNickname.BackgroundColor = IsUpdating ? MyTNBColor.PowderBlue : UIColor.Clear;
-            _accountNickname.Frame = IsUpdating ? new CGRect(_accountNickname.Frame.X, 16, _accountNickname.Frame.Width, 14)
-                : new CGRect(_accountNickname.Frame.X, 12, _accountNickname.Frame.Width, 20);
+            _accountNickname.Frame = IsUpdating ? new CGRect(_accountNickname.Frame.X, DeviceHelper.GetCenterYWithObjHeight(28f, _accountCardView), _accountNickname.Frame.Width, 14)
+                : new CGRect(_accountNickname.Frame.X, DeviceHelper.GetCenterYWithObjHeight(40f, _accountCardView), _accountNickname.Frame.Width, 20);
             _accountNickname.Text = IsUpdating ? string.Empty : _strNickname ?? string.Empty;
 
             _accountNo.BackgroundColor = IsUpdating ? MyTNBColor.PowderBlue : UIColor.Clear;
@@ -157,7 +157,7 @@ namespace myTNB
                 _amountDue.Text = string.Empty;
                 _dueDate.Text = string.Empty;
                 _amountDue.BackgroundColor = MyTNBColor.PowderBlue;
-                _amountDue.Frame = new CGRect(_amountDue.Frame.X, 16, _amountDue.Frame.Width, 14);
+                _amountDue.Frame = new CGRect(_amountDue.Frame.X, DeviceHelper.GetCenterYWithObjHeight(28f, _accountCardView), _amountDue.Frame.Width, 14);
                 _dueDate.BackgroundColor = MyTNBColor.PowderBlue;
                 _dueDate.Frame = new CGRect(_dueDate.Frame.X, _amountDue.Frame.GetMaxY() + 6, _dueDate.Frame.Width, 8);
 
@@ -165,29 +165,30 @@ namespace myTNB
             else
             {
                 _amountDue.BackgroundColor = UIColor.Clear;
-                _amountDue.Frame = new CGRect(_amountDue.Frame.X, 12, _amountDue.Frame.Width, 20);
+                _amountDue.Frame = new CGRect(_amountDue.Frame.X, DeviceHelper.GetCenterYWithObjHeight(40f, _accountCardView), _amountDue.Frame.Width, 20);
                 _dueDate.BackgroundColor = UIColor.Clear;
                 _dueDate.Frame = new CGRect(_dueDate.Frame.X, _amountDue.Frame.GetMaxY(), _dueDate.Frame.Width, 20);
 
                 if (model != null)
                 {
                     var amount = !model.IsReAccount ? model.amountDue : ChartHelper.UpdateValueForRE(model.amountDue);
-                    _amountDue.AttributedText = TextHelper.CreateValuePairString(amount.ToString("N2", CultureInfo.InvariantCulture)
+                    var absAmount = Math.Abs(amount);
+                    _amountDue.AttributedText = TextHelper.CreateValuePairString(absAmount.ToString("N2", CultureInfo.InvariantCulture)
                         , TNBGlobal.UNIT_CURRENCY + " ", true, MyTNBFont.MuseoSans14_500
                         , MyTNBColor.TunaGrey(), MyTNBFont.MuseoSans14_500, MyTNBColor.TunaGrey());
                     var dateString = amount > 0 ? model.billDueDate : string.Empty;
                     if (string.IsNullOrEmpty(dateString) || dateString.ToUpper().Equals("N/A"))
                     {
-                        _dueDate.Text = "Dashboard_AllCleared".Translate();
+                        _dueDate.Text = amount < 0 ? _contentViewController.GetI18NValue(DashboardHomeConstants.I18N_PaidExtra) : _contentViewController.GetI18NValue(DashboardHomeConstants.I18N_AllCleared);
                         _dueDate.TextColor = MyTNBColor.CharcoalGrey;
-                        _amountDue.TextColor = MyTNBColor.Grey;
+                        _amountDue.TextColor = amount < 0 ? MyTNBColor.AlgaeGreen : MyTNBColor.Grey;
                     }
                     else
                     {
                         _dueDate.TextColor = MyTNBColor.CharcoalGrey;
                         _amountDue.TextColor = MyTNBColor.GreyishBrown;
 
-                        string datePrefix = model.IsReAccount ? "Dashboard_GetBy".Translate() : "Dashboard_PayBy".Translate();
+                        string datePrefix = model.IsReAccount ? _contentViewController.GetI18NValue(DashboardHomeConstants.I18N_GetBy) : _contentViewController.GetI18NValue(DashboardHomeConstants.I18N_PayBy);
                         if (model.IsReAccount && model.IncrementREDueDateByDays > 0)
                         {
                             try

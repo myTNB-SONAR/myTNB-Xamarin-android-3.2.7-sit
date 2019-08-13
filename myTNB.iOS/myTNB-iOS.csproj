@@ -1100,6 +1100,10 @@
     <ImageAsset Include="Assets.xcassets\SMR-Closed-Icon.imageset\SMR-Closed-Icon.png" />
     <ImageAsset Include="Assets.xcassets\SMR-Closed-Icon.imageset\SMR-Closed-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\SMR-Closed-Icon.imageset\SMR-Closed-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Cancel-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Search-Cancel-Icon.imageset\Search-Cancel-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Cancel-Icon.imageset\Search-Cancel-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Cancel-Icon.imageset\Search-Cancel-Icon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1455,6 +1459,7 @@
     <Folder Include="Model\GetAccountsSMREligibility\" />
     <Folder Include="Customs\Custom View Controller\" />
     <Folder Include="Assets.xcassets\SMR-Closed-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Search-Cancel-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

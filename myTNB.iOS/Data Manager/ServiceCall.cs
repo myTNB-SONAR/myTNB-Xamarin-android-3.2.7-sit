@@ -65,19 +65,7 @@ namespace myTNB.DataManager
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
-                object usrInf = new
-                {
-                    eid = DataManager.SharedInstance.User.Email,
-                    sspuid = DataManager.SharedInstance.User.UserID,
-                    did = DataManager.SharedInstance.UDID,
-                    ft = DataManager.SharedInstance.FCMToken,
-                    lang = TNBGlobal.DEFAULT_LANGUAGE,
-                    sec_auth_k1 = TNBGlobal.API_KEY_ID,
-                    sec_auth_k2 = string.Empty,
-                    ses_param1 = string.Empty,
-                    ses_param2 = string.Empty
-                };
-                object request = new { usrInf };
+                object request = new { serviceManager.usrInf };
                 DataManager.SharedInstance.CustomerAccounts = serviceManager.OnExecuteAPIV6<CustomerAccountResponseModel>("GetAccounts", request);
             });
         }

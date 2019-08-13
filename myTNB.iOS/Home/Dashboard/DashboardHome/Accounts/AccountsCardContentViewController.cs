@@ -1,11 +1,9 @@
 using CoreGraphics;
 using Foundation;
 using myTNB.DataManager;
-using myTNB.Home.Components;
 using myTNB.Model;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using UIKit;
 
@@ -34,13 +32,14 @@ namespace myTNB
         int _currentPageIndex;
         UIView _parentView, _searchView, _textFieldView;
         UILabel _headerTitle;
-        UIImageView _searchIcon, _addAccountIcon;
+        UIImageView _searchIcon, _addAccountIcon, _cancelSearchIcon;
         UITextField _textFieldSearch;
         bool _isSearchMode = false;
         bool _isUpdating = true;
 
         public override void ViewDidLoad()
         {
+            PageName = DashboardHomeConstants.PageName;
             base.ViewDidLoad();
             _unfilteredAccountList = _dashboardHomeHelper.GetGroupAccountsList(DataManager.DataManager.SharedInstance.AccountRecordsList.d);
             SetParentView();
@@ -87,13 +86,13 @@ namespace myTNB
             addAcctView.Layer.CornerRadius = 5f;
             UIImageView iconView = new UIImageView(new CGRect(12f, DeviceHelper.GetCenterYWithObjHeight(28f, addAcctView), 28f, 28f))
             {
-                Image = UIImage.FromBundle("Add-Account-Icon-Grey")
+                Image = UIImage.FromBundle(DashboardHomeConstants.Img_AddIconGrey)
             };
             UILabel labelText = new UILabel(new CGRect(iconView.Frame.GetMaxX() + 12f, DeviceHelper.GetCenterYWithObjHeight(20f, addAcctView), addAcctView.Frame.Width - (iconView.Frame.GetMaxX() + 24f), 20f))
             {
                 Font = MyTNBFont.MuseoSans14_500,
                 TextColor = MyTNBColor.GreyishBrownTwo,
-                Text = "Add an Electricity Account"
+                Text = GetI18NValue(DashboardHomeConstants.I18N_AddElectricityAcct)
             };
             addAcctView.AddSubview(iconView);
             addAcctView.AddSubview(labelText);
@@ -115,26 +114,33 @@ namespace myTNB
             {
                 Font = MyTNBFont.MuseoSans14_500,
                 TextColor = UIColor.White,
-                Text = "Dashboard_MyAccounts".Translate()
+                Text = GetI18NValue(DashboardHomeConstants.I18N_MyAccts)
             };
 
             var sideIconXValue = _searchView.Frame.Width - imageWidth - searchPadding;
             _searchIcon = new UIImageView(new CGRect(sideIconXValue, 0, imageWidth, imageHeight))
             {
-                Image = UIImage.FromBundle("Search-Icon"),
+                Image = UIImage.FromBundle(DashboardHomeConstants.Img_SearchIcon),
                 UserInteractionEnabled = true,
                 Hidden = NoPaginationNeeded()
             };
+            _cancelSearchIcon = new UIImageView(new CGRect(sideIconXValue, DeviceHelper.GetCenterYWithObjHeight(16f, _searchView), 16f, 16f))
+            {
+                Image = UIImage.FromBundle(DashboardHomeConstants.Img_SearchCancelIcon),
+                UserInteractionEnabled = true,
+                Hidden = true
+            };
+            _cancelSearchIcon.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                OnCancelSearchAction();
+            }));
             _searchIcon.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                if (!NoPaginationNeeded())
-                {
-                    OnSearchAction();
-                }
+                OnSearchAction();
             }));
             _addAccountIcon = new UIImageView(new CGRect(NoPaginationNeeded() ? sideIconXValue : sideIconXValue - imageWidth - 8f, 0, imageWidth, imageHeight))
             {
-                Image = UIImage.FromBundle("Add-Account-Icon"),
+                Image = UIImage.FromBundle(DashboardHomeConstants.Img_AddIcon),
                 UserInteractionEnabled = true,
                 Hidden = _groupAccountList.Count <= 0
             };
@@ -159,7 +165,7 @@ namespace myTNB
             _textFieldSearch = new UITextField(new CGRect(12f, 0, _textFieldView.Frame.Width - 24f - imageWidth / 2, 24f))
             {
                 AttributedPlaceholder = new NSAttributedString(
-                    "Dashboard_SearchPlacehoder".Translate()
+                    GetI18NValue(DashboardHomeConstants.I18N_SearchPlaceholder)
                     , font: MyTNBFont.MuseoSans12_500
                     , foregroundColor: MyTNBColor.WhiteTwo
                     , strokeWidth: 0
@@ -183,6 +189,7 @@ namespace myTNB
                 _searchView.AddSubview(_textFieldView);
                 _searchView.AddSubview(_addAccountIcon);
                 _searchView.AddSubview(_searchIcon);
+                _searchView.AddSubview(_cancelSearchIcon);
                 SetTextFieldEvents(_textFieldSearch);
             }
             _parentView.AddSubview(_searchView);
@@ -251,6 +258,8 @@ namespace myTNB
             var sideIconXValue = NoPaginationNeeded() ? _searchView.Frame.Width - imageWidth - searchPadding : _searchIcon.Frame.GetMinX() - imageWidth - 8f;
             frame.X = isSearchMode ? searchPadding : sideIconXValue;
             _addAccountIcon.Frame = frame;
+            _searchIcon.Hidden = isSearchMode;
+            _cancelSearchIcon.Hidden = !isSearchMode;
         }
 
         private void SetTextFieldEvents(UITextField textField)
@@ -325,7 +334,13 @@ namespace myTNB
 
         private void OnSearchAction()
         {
-            _isSearchMode = !_isSearchMode;
+            _isSearchMode = true;
+            SetViewForActiveSearch(_isSearchMode);
+        }
+
+        private void OnCancelSearchAction()
+        {
+            _isSearchMode = false;
             SetViewForActiveSearch(_isSearchMode);
         }
 
@@ -446,8 +461,8 @@ namespace myTNB
             }
             else
             {
-                _refreshScreenInfoModel.RefreshBtnText = response?.RefreshBtnText ?? string.Empty; //TO DO: fallback copy to be inserted here
-                _refreshScreenInfoModel.RefreshMessage = response?.RefreshMessage ?? string.Empty; //TO DO: fallback copy to be inserted here
+                _refreshScreenInfoModel.RefreshBtnText = response?.RefreshBtnText ?? DashboardHomeConstants.I18N_RefreshBtnTxt;
+                _refreshScreenInfoModel.RefreshMessage = response?.RefreshMessage ?? DashboardHomeConstants.I18N_RefreshMsg;
                 _homeViewController.ShowRefreshScreen(true, _refreshScreenInfoModel);
             }
             return currentIndex;
@@ -753,19 +768,19 @@ namespace myTNB
                 var groupAccountList = _groupAccountList[pageIndex];
                 for (int i = 0; i < groupAccountList.Count; i++)
                 {
-                    DashboardHomeAccountCard _homeAccountCard = new DashboardHomeAccountCard(this, containerView, 68f * i);
-                    string iconName = "Accounts-Smart-Meter-Icon";
+                    DashboardHomeAccountCard _homeAccountCard = new DashboardHomeAccountCard(this, containerView, (DeviceHelper.GetScaledHeight(60f) + 8f) * i);
+                    string iconName = DashboardHomeConstants.Img_SMIcon;
                     if (groupAccountList[i].IsReAccount)
                     {
-                        iconName = "Accounts-RE-Icon";
+                        iconName = DashboardHomeConstants.Img_REIcon;
                     }
                     else if (groupAccountList[i].IsNormalAccount && groupAccountList[i].IsSSMR && groupAccountList[i].IsOwnedAccount)
                     {
-                        iconName = "Accounts-SMR-Icon";
+                        iconName = DashboardHomeConstants.Img_SMRIcon;
                     }
                     else if (groupAccountList[i].IsNormalAccount)
                     {
-                        iconName = "Accounts-Normal-Icon";
+                        iconName = DashboardHomeConstants.Img_NormalIcon;
                     }
                     _homeAccountCard.SetAccountIcon(iconName);
                     _homeAccountCard.SetNickname(groupAccountList[i].accNickName);

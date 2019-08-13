@@ -23,9 +23,26 @@ namespace myTNB
         public static string I18N_MyAccounts = "myAccounts";
         public static string I18N_MyServices = "myServices";
         public static string I18N_Promotions = "promotions";
+        public static string I18N_AddElectricityAcct = "addElectricityAcct";
+        public static string I18N_MyAccts = "myAccounts";
+        public static string I18N_SearchPlaceholder = "searchPlaceholder";
+        public static string I18N_RefreshMsg = "refreshMessage";
+        public static string I18N_RefreshBtnTxt = "refreshBtnText";
+        public static string I18N_GetBy = "getBy";
+        public static string I18N_PayBy = "payBy";
+        public static string I18N_PaidExtra = "paidExtra";
+        public static string I18N_AllCleared = "allCleared";
 
         //Image
         public static string Img_Notification = "Notification";
+        public static string Img_AddIconGrey = "Add-Account-Icon-Grey";
+        public static string Img_SearchIcon = "Search-Icon";
+        public static string Img_SearchCancelIcon = "Search-Cancel-Icon";
+        public static string Img_AddIcon = "Add-Account-Icon";
+        public static string Img_SMIcon = "Accounts-Smart-Meter-Icon";
+        public static string Img_REIcon = "Accounts-RE-Icon";
+        public static string Img_SMRIcon = "Accounts-SMR-Icon";
+        public static string Img_NormalIcon = "Accounts-Normal-Icon";
 
         //PageName
         public static string PageName = "DashboardHome";
