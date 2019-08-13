@@ -8,5 +8,8 @@
         public static string I18N_PhotoPermissionDescription = "photoPermissionDescription";
         public static string I18N_Cancel = "cancel";
         public static string I18N_Settings = "settings";
+
+        //Image
+        public static string IMG_Back = "Back-White";
     }
 }
