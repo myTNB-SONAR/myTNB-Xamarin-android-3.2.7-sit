@@ -193,12 +193,12 @@ namespace myTNB
             var groupAccountsList = DataManager.DataManager.SharedInstance.AccountsGroupList;
             if (groupAccountsList.Count > 1)
             {
-                pageViewHeight = 5 * 68 + 20f + additionalHeight;
+                pageViewHeight = 5 * (ScaleUtility.GetScaledHeight(60f) + ScaleUtility.GetScaledHeight(8f)) + 20f + additionalHeight;
             }
             else if (groupAccountsList.Count == 1)
             {
                 var accountsList = groupAccountsList[0];
-                pageViewHeight = accountsList.Count * 68 + 20f + additionalHeight;
+                pageViewHeight = accountsList.Count * (ScaleUtility.GetScaledHeight(60f) + ScaleUtility.GetScaledHeight(8f)) + 20f + additionalHeight;
             }
             return pageViewHeight;
         }
@@ -213,12 +213,12 @@ namespace myTNB
             var groupAccountsList = DataManager.DataManager.SharedInstance.AccountsGroupList;
             if (groupAccountsList.Count > 1)
             {
-                tableViewCellHeight = 5 * 68 + 20f;
+                tableViewCellHeight = 5 * (ScaleUtility.GetScaledHeight(60f) + ScaleUtility.GetScaledHeight(8f)) + 20f;
             }
             else if (groupAccountsList.Count == 1)
             {
                 var accountsList = groupAccountsList[0];
-                tableViewCellHeight = accountsList.Count * 68 + 20f;
+                tableViewCellHeight = accountsList.Count * (ScaleUtility.GetScaledHeight(60f) + ScaleUtility.GetScaledHeight(8f)) + 20f;
             }
             return tableViewCellHeight;
         }

@@ -386,6 +386,26 @@ namespace myTNB
             ScaleUtility.GetYLocationFromFrame(frame, ref yValue);
             return yValue;
         }
+        public nfloat GetYLocationToCenterObject(nfloat height, UIView view = null)
+        {
+            return ScaleUtility.GetYLocationToCenterObject(height, view);
+        }
+        public nfloat GetXLocationToCenterObject(nfloat width, UIView view = null)
+        {
+            return ScaleUtility.GetXLocationToCenterObject(width, view);
+        }
+        public nfloat BaseMarginWidth8
+        {
+            get { return ScaleUtility.BaseMarginWidth8; }
+        }
+        public nfloat BaseMarginWidth12
+        {
+            get { return ScaleUtility.BaseMarginWidth12; }
+        }
+        public nfloat BaseMarginWidth16
+        {
+            get { return ScaleUtility.BaseMarginWidth16; }
+        }
         #endregion
     }
 }

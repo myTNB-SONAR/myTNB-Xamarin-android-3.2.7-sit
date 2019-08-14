@@ -521,7 +521,7 @@ namespace myTNB
                     var bcrmMsg = bcrm?.DowntimeMessage ?? "Error_BCRMMessage".Translate();
                     string desc = _isBCRMAvailable ? model?.RefreshMessage ?? string.Empty : bcrmMsg;
 
-                    _refreshScreenComponent = new RefreshScreenComponent(View);
+                    _refreshScreenComponent = new RefreshScreenComponent(this, View);
                     _refreshScreenComponent.SetIsBCRMDown(!_isBCRMAvailable);
                     _refreshScreenComponent.SetRefreshButtonHidden(!_isBCRMAvailable);
                     _refreshScreenComponent.SetButtonText(model?.RefreshBtnText ?? string.Empty);
