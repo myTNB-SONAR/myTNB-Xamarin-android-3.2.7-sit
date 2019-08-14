@@ -17,13 +17,14 @@ namespace myTNB
         public UILabel _titleLabel;
         public ServicesTableViewCell(IntPtr handle) : base(handle)
         {
-            _titleLabel = new UILabel(new CGRect(16f, 0, cellWidth - 32, 20f))
+            _titleLabel = new UILabel(new CGRect(ScaleUtility.BaseMarginWidth16, 0, cellWidth - 32, 20f))
             {
                 Font = MyTNBFont.MuseoSans14_500,
                 TextColor = MyTNBColor.PowerBlue
             };
             AddSubview(_titleLabel);
-            _view = new UIView(new CGRect(16, _titleLabel.Frame.GetMaxY() + 8f, cellWidth - 32, 60.0F))
+            _view = new UIView(new CGRect(ScaleUtility.BaseMarginWidth16, _titleLabel.Frame.GetMaxY() + 8f
+                , cellWidth - (ScaleUtility.BaseMarginWidth16 * 2), 60.0F))
             {
                 BackgroundColor = UIColor.Clear
             };
@@ -105,9 +106,9 @@ namespace myTNB
 
         private UIView GetCard(ServiceItemModel serviceItem, int index, Action action = null)
         {
-            nfloat cardWidth = (_view.Frame.Width - 12) / 3;
+            nfloat cardWidth = (_view.Frame.Width - ScaleUtility.GetScaledWidth(12)) / 3;
             nfloat cardHeight = cardWidth * 0.9545F;
-            nfloat margin = 6;
+            nfloat margin = ScaleUtility.GetScaledWidth(6);
             nfloat yLoc = (cardHeight + margin);
             yLoc *= GetFactor(index);
             if (rowFactor == GetFactor(index))
@@ -123,15 +124,15 @@ namespace myTNB
             UIView view = new UIView(new CGRect(xLoc, yLoc, cardWidth, cardHeight)) { BackgroundColor = UIColor.White };
             AddCardShadow(ref view);
 
-            nfloat imgSize = cardWidth * 0.34F;
-            nfloat imgYLoc = cardHeight * 0.11F;
+            nfloat imgSize = ScaleUtility.GetScaledWidth(28);
+            nfloat imgYLoc = ScaleUtility.GetScaledHeight(12);
             UIImageView imgView = new UIImageView(new CGRect((view.Frame.Width - imgSize) / 2, imgYLoc, imgSize, imgSize))
             {
                 Image = UIImage.FromBundle(GetImage(serviceItem.ServiceId))
             };
 
             nfloat xLblLoc = 16.0F;
-            nfloat ylblLoc = cardHeight * 0.60F;
+            nfloat ylblLoc = imgView.Frame.GetMaxY() + ScaleUtility.GetScaledHeight(8);
             UILabel lblTitle = new UILabel(new CGRect(xLblLoc, ylblLoc, cardWidth - (xLblLoc * 2), cardHeight * 0.3F))
             {
                 TextAlignment = UITextAlignment.Center,
@@ -147,9 +148,9 @@ namespace myTNB
 
         private UIView GetShimmerCards(int index)
         {
-            nfloat cardWidth = (_view.Frame.Width - 12) / 3;
+            nfloat cardWidth = (_view.Frame.Width - ScaleUtility.GetScaledWidth(12)) / 3;
             nfloat cardHeight = cardWidth * 0.9545F;
-            nfloat margin = 6;
+            nfloat margin = ScaleUtility.GetScaledWidth(6);
             nfloat yLoc = (cardHeight + margin);
             yLoc *= GetFactor(index);
             if (rowFactor == GetFactor(index))

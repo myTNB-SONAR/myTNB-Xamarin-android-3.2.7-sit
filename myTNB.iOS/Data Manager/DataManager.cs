@@ -244,7 +244,7 @@ namespace myTNB.DataManager
 
             //Reset SSMR Onboarding
             SSMRAccounts.IsHideOnboarding = false;
-            SSMRActivityInfoCache.Instance.IsPhotoToolTipDisplayed = false;
+            SSMRActivityInfoCache.IsPhotoToolTipDisplayed = false;
         }
 
         /// <summary>

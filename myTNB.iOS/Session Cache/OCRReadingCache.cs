@@ -9,9 +9,9 @@ namespace myTNB
         private static readonly Lazy<OCRReadingCache> lazy = new Lazy<OCRReadingCache>(() => new OCRReadingCache());
         public static OCRReadingCache Instance { get { return lazy.Value; } }
 
-        private List<OCRReadingModel> OCRReadingList = new List<OCRReadingModel>();
+        private static List<OCRReadingModel> OCRReadingList = new List<OCRReadingModel>();
 
-        public void AddOCRReading(GetOCRReadingResponseModel response)
+        public static void AddOCRReading(GetOCRReadingResponseModel response)
         {
             if (OCRReadingList == null)
             {
@@ -33,12 +33,12 @@ namespace myTNB
             }
         }
 
-        public void ClearReadings()
+        public static void ClearReadings()
         {
             OCRReadingList.Clear();
         }
 
-        public List<OCRReadingModel> GetOCRReadings()
+        public static List<OCRReadingModel> GetOCRReadings()
         {
             if (OCRReadingList != null)
             {
