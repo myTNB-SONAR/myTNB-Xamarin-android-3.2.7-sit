@@ -193,7 +193,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             base.OnCreate(savedInstanceState);
             presenter = new HomeMenuPresenter(this);
-            //MyTNBAccountManagement.GetInstance().SetMasterCustomerBillingAccountList();
         }
 
         public override void OnAttach(Context context)
@@ -501,31 +500,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        class SearchViewOnFocusChange : Java.Lang.Object, View.IOnFocusChangeListener
-        {
-            HomeMenuFragment mOwnerFragment;
-            public SearchViewOnFocusChange(HomeMenuFragment ownerFragment)
-            {
-                mOwnerFragment = ownerFragment;
-            }
-            public void OnFocusChange(View v, bool hasFocus)
-            {
-                if (hasFocus)
-                {
-                    mOwnerFragment.searchEditText.SetBackgroundResource(Resource.Drawable.search_edit_bg);
-                }
-            }
-        }
-
-        class CloseClickListener : Java.Lang.Object, Android.Widget.SearchView.IOnCloseListener
-        {
-            public bool OnClose()
-            {
-                //throw new NotImplementedException();
-                return false;
-            }
-        }
-
         private void SetAccountActionHeader()
         {
             LinearLayout.LayoutParams param = (LinearLayout.LayoutParams)accountsActionsContainer.LayoutParameters;
@@ -534,14 +508,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             TextViewUtils.SetMuseoSans500Typeface(accountHeaderTitle, accountGreeting, accountGreetingName);
             searchEditText.SetOnQueryTextListener(new AccountsSearchOnQueryTextListener(this,accountsAdapter));
-            searchEditText.SetOnQueryTextFocusChangeListener(new SearchViewOnFocusChange(this));
             int closeViewId = searchEditText.Context.Resources.GetIdentifier("android:id/search_close_btn", null, null);
             ImageView closeImageView = searchEditText.FindViewById<ImageView>(closeViewId);
             closeImageView.SetPadding(0, 0, 0, 0);
-
-
-            searchEditText.SetOnCloseListener(new CloseClickListener());
-            searchActionContainer.Click += (s, e) =>
+            searchActionIcon.Click += (s, e) =>
             {
                 ShowSearchAction(true);
             };
@@ -915,7 +885,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 if (mCallBack != null)
                 {
                     mCallBack.NavigateToDashBoardFragment();
-                    //ShowBackArrowIndicator()
                 }
             }
         }
@@ -960,7 +929,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 if(searchEditText.Visibility == ViewStates.Visible)
                 {
                     searchEditText.ClearFocus();
-                    ShowSearchAction(false);
                     OnUpdateAccountListChanged(true);
                 }
             }
@@ -1101,12 +1069,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 accountListContainer.Visibility = ViewStates.Visible;
                 accountCard.Visibility = ViewStates.Gone;
-                addActionImage.Visibility = ViewStates.Visible;
+                addActionContainer.Visibility = ViewStates.Visible;
             }
             else
             {
                 myServiceTitle.SetTextColor(Color.White);
-                addActionImage.Visibility = ViewStates.Gone;
+                addActionContainer.Visibility = ViewStates.Gone;
                 accountListContainer.Visibility = ViewStates.Gone;
                 accountCard.Visibility = ViewStates.Visible;
             }

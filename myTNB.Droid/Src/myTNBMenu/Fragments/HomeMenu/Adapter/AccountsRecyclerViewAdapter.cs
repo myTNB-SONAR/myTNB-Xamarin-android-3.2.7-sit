@@ -105,7 +105,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                         int accountType = Int32.Parse(summaryDashBoardDetails.AccType);
                         cardModel.AccountNumber = summaryDashBoardDetails.AccNumber;
                         cardModel.AccountName = summaryDashBoardDetails.AccName;
-                        cardModel.IsNegativeAmount = AccountModelFormatter.IsNegativeAmount(summaryDashBoardDetails.AmountDue);
+                        cardModel.IsNegativeAmount = (accountType == 2) ? false : AccountModelFormatter.IsNegativeAmount(summaryDashBoardDetails.AmountDue);
                         cardModel.IsZeroAmount = AccountModelFormatter.IsAmountCleared(summaryDashBoardDetails.AmountDue);
                         cardModel.BillDueAmount = AccountModelFormatter.GetFormatAmount(summaryDashBoardDetails.AmountDue);
                         cardModel.BillDueNote = AccountModelFormatter.GetBillDueNote(accountType,
@@ -138,13 +138,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 cardModel.AccountNumber = summaryDashBoardDetails.AccNumber;
                 if (summaryDashBoardDetails.AmountDue != null)
                 {
+                    cardModel.AccountType = accountType;
                     cardModel.AccountName = summaryDashBoardDetails.AccName;
-                    cardModel.IsNegativeAmount = AccountModelFormatter.IsNegativeAmount(summaryDashBoardDetails.AmountDue);
+                    cardModel.IsNegativeAmount = (accountType == 2) ? false : AccountModelFormatter.IsNegativeAmount(summaryDashBoardDetails.AmountDue);
                     cardModel.IsZeroAmount = AccountModelFormatter.IsAmountCleared(summaryDashBoardDetails.AmountDue);
                     cardModel.BillDueAmount = AccountModelFormatter.GetFormatAmount(summaryDashBoardDetails.AmountDue);
                     cardModel.BillDueNote = AccountModelFormatter.GetBillDueNote(accountType,
                         summaryDashBoardDetails.AmountDue, summaryDashBoardDetails.BillDueDate, summaryDashBoardDetails.IsTaggedSMR);
-                    cardModel.AccountType = accountType;
                     cardModel.IsTaggedSMR = summaryDashBoardDetails.IsTaggedSMR;
                     if (summaryDashBoardDetails.SmartMeterCode == "0")
                     {
@@ -171,7 +171,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 model = new AccountCardModel();
                 model.AccountName = summaryDashBoardDetails.AccName;
                 model.AccountNumber = summaryDashBoardDetails.AccNumber;
-                model.IsNegativeAmount = AccountModelFormatter.IsNegativeAmount(summaryDashBoardDetails.AmountDue);
+                model.IsNegativeAmount = (accountType == 2) ? false : AccountModelFormatter.IsNegativeAmount(summaryDashBoardDetails.AmountDue);
                 model.IsZeroAmount = AccountModelFormatter.IsAmountCleared(summaryDashBoardDetails.AmountDue);
                 model.BillDueAmount = summaryDashBoardDetails.AmountDue;
                 model.BillDueNote = summaryDashBoardDetails.BillDueDate;
