@@ -106,7 +106,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 							{
                                 this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
                                 this.mView.ShowAccountName();
-                                this.mView.ShowChart(selectedHistoryData, selectedAccount);
+                                this.mView.ShowChart(selectedHistoryData, selectedAccount, null);
 							}
 							else
 							{
@@ -562,8 +562,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 								this.mView.HideProgressDialog();
 							}
                             this.mView.ShowAccountName();
-                            this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
-                            this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, usageHistoryResponse, AccountData.Copy(accountSelected, true));
+                            this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
+                            this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, usageHistoryResponse, AccountData.Copy(accountSelected, true), amountDueResponse);
 							usageHistoryResponse = null;
 						}
 						else if (usageHistoryResponse != null && usageHistoryResponse.Data.Status.Equals("success") && !usageHistoryResponse.Data.IsError)
@@ -584,15 +584,15 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 								if (smDataError)
 								{
 									smDataError = false;
-									this.mView.ShowChartWithError(usageHistoryResponse.Data.UsageHistoryData, AccountData.Copy(accountSelected, true), smErrorCode, smErrorMessage);
+									this.mView.ShowChartWithError(usageHistoryResponse.Data.UsageHistoryData, AccountData.Copy(accountSelected, true), smErrorCode, smErrorMessage, amountDueResponse);
 								}
 								else
 								{
-									this.mView.ShowChart(usageHistoryResponse.Data.UsageHistoryData, AccountData.Copy(accountSelected, true));
+                                    this.mView.ShowChart(usageHistoryResponse.Data.UsageHistoryData, AccountData.Copy(accountSelected, true), amountDueResponse);
 								}
 								usageHistoryResponse = null;
                                 this.mView.ShowAccountName();
-                                this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
+                                this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
                             }
 							else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
 							{
@@ -609,8 +609,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 								this.mView.HideProgressDialog();
 							}
                             this.mView.ShowAccountName();
-                            this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
-                            this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true));
+                            this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
+                            this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true), amountDueResponse);
 							this.mView.SetAccountName(accountSelected.AccDesc);
 							usageHistoryResponse = null;
 						}
@@ -622,8 +622,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 							this.mView.HideProgressDialog();
 						}
                         this.mView.ShowAccountName();
-                        this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
-                        this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true));
+                        this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
+                        this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true), amountDueResponse);
 						usageHistoryResponse = null;
 						Utility.LoggingNonFatalError(e);
 					}
@@ -634,8 +634,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 							this.mView.HideProgressDialog();
 						}
                         this.mView.ShowAccountName();
-                        this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
-                        this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true));
+                        this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
+                        this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true), amountDueResponse);
 						usageHistoryResponse = null;
 						Utility.LoggingNonFatalError(apiException);
 					}
@@ -646,8 +646,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 							this.mView.HideProgressDialog();
 						}
                         this.mView.ShowAccountName();
-                        this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
-                        this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true));
+                        this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
+                        this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, null, AccountData.Copy(accountSelected, true), amountDueResponse);
 						usageHistoryResponse = null;
 						Utility.LoggingNonFatalError(e);
 					}
@@ -659,7 +659,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 						this.mView.HideProgressDialog();
 					}
                     this.mView.ShowAccountName();
-                    this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
+                    this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
                     this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, null, null, AccountData.Copy(accountSelected, true));
 				}
 			}
@@ -670,7 +670,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 					this.mView.HideProgressDialog();
 				}
                 this.mView.ShowAccountName();
-                this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
+                this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
                 this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, null, null, AccountData.Copy(accountSelected, true));
 				Utility.LoggingNonFatalError(e);
 			}
@@ -682,7 +682,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 					this.mView.HideProgressDialog();
 				}
                 this.mView.ShowAccountName();
-                this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
+                this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
                 this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, null, null, AccountData.Copy(accountSelected, true));
 				Utility.LoggingNonFatalError(apiException);
 			}
@@ -694,7 +694,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 					this.mView.HideProgressDialog();
 				}
                 this.mView.ShowAccountName();
-                this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
+                this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
                 this.mView.ShowOwnerDashboardNoInternetConnection(accountSelected.AccDesc, true, null, null, AccountData.Copy(accountSelected, true));
 				Utility.LoggingNonFatalError(e);
 			}

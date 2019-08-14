@@ -255,6 +255,17 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             ShowBackButton(true);
         }
 
+        public void ShowOwnerDashboardNoInternetConnection(string accountName, UsageHistoryResponse response, AccountData selectedAccount, AccountDueAmountResponse amountDueResponse)
+        {
+            txtAccountName.Text = accountName;
+            currentFragment = new DashboardChartFragment();
+            FragmentManager.BeginTransaction()
+                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(true, response, selectedAccount, amountDueResponse),
+                                    typeof(DashboardChartFragment).Name)
+                           .CommitAllowingStateLoss();
+            ShowBackButton(true);
+        }
+
 
         public void ShowOwnerBillsNoInternetConnection(AccountData selectedAccount)
         {
@@ -268,25 +279,25 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         }
 
-        public void ShowChart(UsageHistoryData data, AccountData selectedAccount)
+        public void ShowChart(UsageHistoryData data, AccountData selectedAccount, AccountDueAmountResponse amountDueResponse)
         {
             this.SelectedAccountData = selectedAccount;
             txtAccountName.Text = SelectedAccountData.AccountName;
             currentFragment = new DashboardChartFragment();
             FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(data, SelectedAccountData),
+                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(data, SelectedAccountData, amountDueResponse),
                                     typeof(DashboardChartFragment).Name)
                            .CommitAllowingStateLoss();
             ShowBackButton(true);
         }
 
-        public void ShowChartWithError(UsageHistoryData data, AccountData selectedAccount, string errorCode, string errorMessage)
+        public void ShowChartWithError(UsageHistoryData data, AccountData selectedAccount, string errorCode, string errorMessage, AccountDueAmountResponse amountDueResponse)
         {
             this.SelectedAccountData = selectedAccount;
             txtAccountName.Text = SelectedAccountData.AccountName;
             currentFragment = new DashboardChartFragment();
             FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(data, SelectedAccountData, errorCode, errorMessage),
+                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(data, SelectedAccountData, errorCode, errorMessage, amountDueResponse),
                          typeof(DashboardChartFragment).Name)
                            .CommitAllowingStateLoss();
             ShowBackButton(true);

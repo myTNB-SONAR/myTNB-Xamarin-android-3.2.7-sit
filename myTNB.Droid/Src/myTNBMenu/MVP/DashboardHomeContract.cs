@@ -20,14 +20,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			/// </summary>
 			/// <param name="data">UsageHistoryData</param>
 			/// <param name="selectedAccount">AccountData</param>
-			void ShowChart(UsageHistoryData data, AccountData selectedAccount);
+			void ShowChart(UsageHistoryData data, AccountData selectedAccount, AccountDueAmountResponse amountDueResponse);
 
 			/// <summary>
 			/// Show the bar charts with error msg
 			/// </summary>
 			/// <param name="data">UsageHistoryData</param>
 			/// <param name="selectedAccount">AccountData</param>
-			void ShowChartWithError(UsageHistoryData data, AccountData selectedAccount, String errorCode, String errorMsg);
+			void ShowChartWithError(UsageHistoryData data, AccountData selectedAccount, String errorCode, String errorMsg, AccountDueAmountResponse amountDueResponse);
 
 			/// <summary>
 			/// Show the bar charts
@@ -106,11 +106,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 			void ShowOwnerDashboardNoInternetConnection(string accountName, bool amountDueFailed, string contentText, string btnText, AccountData selectedAccount);
 
-			/// <summary>
-			/// Set toolbar title
-			/// </summary>
-			/// <param name="stringResourceId">integer</param>
-			void SetToolbarTitle(int stringResourceId);
+
+            void ShowOwnerDashboardNoInternetConnection(string accountName, UsageHistoryResponse response, AccountData selectedAccount, AccountDueAmountResponse amountDueResponse);
+
+            /// <summary>
+            /// Set toolbar title
+            /// </summary>
+            /// <param name="stringResourceId">integer</param>
+            void SetToolbarTitle(int stringResourceId);
 
 			/// <summary>
 			/// Enable dropdown

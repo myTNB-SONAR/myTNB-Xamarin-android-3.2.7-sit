@@ -194,6 +194,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private SMRActivityInfoResponse smrResponse;
 
+        private AccountDueAmountResponse amountDueResponse;
+
         public override int ResourceId()
         {
             return Resource.Layout.DashboardChartView;
@@ -235,6 +237,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             if (extras.ContainsKey(Constants.AMOUNT_DUE_FAILED_KEY))
             {
                 amountDueFailed = extras.GetBoolean(Constants.AMOUNT_DUE_FAILED_KEY);
+            }
+
+            if (extras.ContainsKey(Constants.AMOUNT_DUE_RESPONSE_KEY))
+            {
+                amountDueResponse = JsonConvert.DeserializeObject<AccountDueAmountResponse>(extras.GetString(Constants.AMOUNT_DUE_RESPONSE_KEY));
+            }
+            else
+            {
+                amountDueResponse = null;
             }
 
             errorMSG = "";
@@ -281,6 +292,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             return chartFragment;
         }
 
+        internal static DashboardChartFragment NewInstance(UsageHistoryData usageHistoryData, AccountData accountData, string error, string errorMessage, AccountDueAmountResponse amountDueResponse)
+        {
+            DashboardChartFragment chartFragment = new DashboardChartFragment();
+            Bundle bundle = new Bundle();
+            string data = JsonConvert.SerializeObject(usageHistoryData);
+            bundle.PutString(Constants.SELECTED_ACCOUNT_USAGE, data);
+            bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+            bundle.PutString(Constants.SELECTED_ERROR, error);
+            bundle.PutString(Constants.SELECTED_ERROR_MSG, errorMessage);
+            if (amountDueResponse != null)
+            {
+                bundle.PutString(Constants.AMOUNT_DUE_RESPONSE_KEY, JsonConvert.SerializeObject(amountDueResponse));
+            }
+            chartFragment.Arguments = bundle;
+            return chartFragment;
+        }
+
         internal static DashboardChartFragment NewInstance(bool hasNoInternet, UsageHistoryResponse response, AccountData accountData)
         {
             DashboardChartFragment chartFragment = new DashboardChartFragment();
@@ -311,6 +339,60 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             if (accountData != null)
             {
                 bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+            }
+            chartFragment.Arguments = bundle;
+            return chartFragment;
+        }
+
+        internal static DashboardChartFragment NewInstance(UsageHistoryData usageHistoryData, AccountData accountData, AccountDueAmountResponse amountDueResponse)
+        {
+            DashboardChartFragment chartFragment = new DashboardChartFragment();
+            Bundle bundle = new Bundle();
+            string data = JsonConvert.SerializeObject(usageHistoryData);
+            bundle.PutString(Constants.SELECTED_ACCOUNT_USAGE, data);
+            bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+            if (amountDueResponse != null)
+            {
+                bundle.PutString(Constants.AMOUNT_DUE_RESPONSE_KEY, JsonConvert.SerializeObject(amountDueResponse));
+            }
+            chartFragment.Arguments = bundle;
+            return chartFragment;
+        }
+
+        internal static DashboardChartFragment NewInstance(bool hasNoInternet, UsageHistoryResponse response, AccountData accountData, AccountDueAmountResponse amountDueResponse)
+        {
+            DashboardChartFragment chartFragment = new DashboardChartFragment();
+            Bundle bundle = new Bundle();
+
+            bundle.PutBoolean(Constants.NO_INTERNET_CONNECTION, hasNoInternet);
+            if (response != null && response.Data != null)
+            {
+                if (string.IsNullOrEmpty(response.Data.RefreshMessage))
+                {
+                    bundle.PutString(Constants.REFRESH_MSG, "The graph must be tired. Tap the button below to help it out.");
+                }
+                else
+                {
+                    bundle.PutString(Constants.REFRESH_MSG, response.Data.RefreshMessage);
+                }
+
+                if (!string.IsNullOrEmpty(response.Data.RefreshBtnText))
+                {
+                    bundle.PutString(Constants.REFRESH_BTN_MSG, response.Data.RefreshBtnText);
+                }
+            }
+            else
+            {
+                bundle.PutString(Constants.REFRESH_MSG, "The graph must be tired. Tap the button below to help it out.");
+                bundle.PutString(Constants.REFRESH_BTN_MSG, "Refresh Now");
+            }
+            if (accountData != null)
+            {
+                bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+            }
+            if (amountDueResponse != null)
+            {
+                bundle.PutString(Constants.AMOUNT_DUE_RESPONSE_KEY, JsonConvert.SerializeObject(amountDueResponse));
             }
             chartFragment.Arguments = bundle;
             return chartFragment;
@@ -448,7 +530,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         if (!amountDueFailed)
                         {
                             this.userActionsListener.GetAccountStatus(selectedAccount.AccountNum);
-                            this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
+                            if (amountDueResponse != null)
+                            {
+                                ShowAmountDue(amountDueResponse.Data.Data);
+                            }
+                            else
+                            {
+                                this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
+                            }
                         }
                     }
 
@@ -1354,21 +1443,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 Utility.LoggingNonFatalError(e);
             }
             return val;
-        }
-        private IMenu menu;
-        public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)
-        {
-            inflater.Inflate(Resource.Menu.DashboardToolbarMenu, menu);
-            this.menu = menu;
-            if (UserNotificationEntity.HasNotifications())
-            {
-                menu.FindItem(Resource.Id.action_notification).SetIcon(ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_header_notification_unread));
-            }
-            else
-            {
-                menu.FindItem(Resource.Id.action_notification).SetIcon(ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_header_notification));
-            }
-            base.OnCreateOptionsMenu(menu, inflater);
         }
 
         public override void OnResume()
