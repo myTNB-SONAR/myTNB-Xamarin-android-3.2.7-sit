@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using CoreGraphics;
 using myTNB.SitecoreCMS.Model;
 using UIKit;
@@ -17,9 +16,9 @@ namespace myTNB
         public UILabel _titleLabel;
         public HelpTableViewCell(IntPtr handle) : base(handle)
         {
-            cardWidth = (cellWidth - 32)/3;
+            cardWidth = ScaleUtility.GetScaledWidth(92);
             cardHeight = cardWidth;
-            _titleLabel = new UILabel(new CGRect(16f, 16f, cellWidth - 32, 20f))
+            _titleLabel = new UILabel(new CGRect(ScaleUtility.BaseMarginWidth16, 16f, cellWidth - 32, 20f))
             {
                 Font = MyTNBFont.MuseoSans14_500,
                 TextColor = MyTNBColor.PowerBlue
@@ -68,7 +67,7 @@ namespace myTNB
 
         private void AddShimmer()
         {
-            nfloat xLoc = 16f;
+            nfloat xLoc = ScaleUtility.BaseMarginWidth16;
             for (int i = 0; i < 3; i++)
             {
                 CustomShimmerView shimmeringView = new CustomShimmerView();
@@ -86,14 +85,14 @@ namespace myTNB
                 shimmeringView.SetValues();
 
                 _scrollView.Add(viewParent);
-                xLoc += cardWidth + 8.0F;
+                xLoc += cardWidth + ScaleUtility.BaseMarginWidth8;
             }
             _scrollView.ContentSize = new CGSize(xLoc, cardHeight);
         }
 
         private void AddContentData(List<HelpModel> helpList)
         {
-            nfloat xLoc = 16f;
+            nfloat xLoc = ScaleUtility.BaseMarginWidth16;
             _imgIndex = -1;
             for (int i = 0; i < helpList.Count; i++)
             {
@@ -119,7 +118,7 @@ namespace myTNB
                 };
                 helpCardView.AddSubviews(new UIView[] { imgView, lblHelp });
                 _scrollView.Add(helpCardView);
-                xLoc += cardWidth + 8.0F;
+                xLoc += cardWidth + ScaleUtility.BaseMarginWidth8;
             }
             _scrollView.ContentSize = new CGSize(xLoc, cardHeight);
         }
