@@ -48,7 +48,6 @@ namespace myTNB.Home.Dashboard.DashboardHome
 
         private void On_1002_Action()
         {
-
         }
 
         private void On_1003_Action()
