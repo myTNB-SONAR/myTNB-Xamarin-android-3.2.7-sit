@@ -239,6 +239,9 @@
     <Reference Include="Xamarin.Facebook.Shimmer.iOS">
       <HintPath>..\packages\Xamarin.Facebook.Shimmer.1.0.0\lib\xamarinios10\Xamarin.Facebook.Shimmer.iOS.dll</HintPath>
     </Reference>
+    <Reference Include="DeepCloner">
+      <HintPath>..\packages\DeepCloner.0.10.2\lib\netstandard1.3\DeepCloner.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
@@ -1036,12 +1039,6 @@
     <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\ocrReading%403x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\threePhase.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\threePhase%402x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\threePhase%403x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%402x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%403x.png" />
     <ImageAsset Include="Assets.xcassets\Help-Background-6.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\faqColor1-1.png" />
     <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\faqColor1%402x-1.png" />
@@ -1100,6 +1097,12 @@
     <ImageAsset Include="Assets.xcassets\SMR-Closed-Icon.imageset\SMR-Closed-Icon.png" />
     <ImageAsset Include="Assets.xcassets\SMR-Closed-Icon.imageset\SMR-Closed-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\SMR-Closed-Icon.imageset\SMR-Closed-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\singlePhase.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\singlePhase%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\singlePhase%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase-1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%403x-1.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />

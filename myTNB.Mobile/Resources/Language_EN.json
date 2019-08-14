@@ -31,7 +31,8 @@
         "cancel": "Cancel",
         "cameraPermissionTitle": "\"myTNB\" Would like to Access the Camera",
         "galleryPermissionTitle": "\"myTNB\" Would like to Access Your Photos",
-        "photoPermissionDescription": "Enable myTNB to access your camera roll to upload photos and save ones you’ve taken with the app."
+        "photoPermissionDescription": "Enable myTNB to access your camera roll to upload photos and save ones you’ve taken with the app.",
+        "delete": "Delete"
     },
     "Hint": {
         "mobileNumber": "Please include the country code of your phone number.",
@@ -92,21 +93,21 @@
 
         "ssmrApplySuccessTitle": "Application Submitted",
         "ssmrApplyFailTitle": "Please Try Again",
-        "ssmrApplySuccessMessage": "We have received your request for this Self Meter Reading service. For your reference you may keep the application number below.",
+        "ssmrApplySuccessMessage": "We have received your request to enable the Self Meter Reading service. You’ll receive a notification when your request is successful!",
         "ssmrApplyFailMessage": "It looks like we can't process your application at the moment.",
-        "ssmrApplyReferenceTitle": "Application reference number",
+        "ssmrApplyReferenceTitle": "Service Request number",
         "ssmrApplyDateTitle": "Applied on",
 
         "ssmrDiscontinueSuccessTitle": "Application Submitted",
         "ssmrDiscontinueFailTitle": "Please Try Again",
-        "ssmrDiscontinueSuccessMessage": "We have received your request to unsubscribe from this service. For your reference you may keep the application number below.",
+        "ssmrDiscontinueSuccessMessage": "We have received your request to disable this service. For your reference you may keep the service request number below.",
         "ssmrDiscontinueFailMessage": "It looks like we can't process your application at the moment.",
-        "ssmrDiscontinueReferenceTitle": "Application reference number",
+        "ssmrDiscontinueReferenceTitle": "Service Request number",
         "ssmrDiscontinueDateTitle": "Applied on",
 
         "ssmrReadingSuccessTitle": "Reading Submitted",
         "ssmrReadingFailTitle": "Please Try Again",
-        "ssmrReadingSuccessMessage": "Thank you for your meter reading submission. We will notify you when your meter reading has been validated.",
+        "ssmrReadingSuccessMessage": "Thank you for your meter reading submission. We’ll notify you when your bill is ready.",
         "ssmrReadingFailMessage": "It looks like we can’t validate your meter reading at the moment.",
 
         "backToFeedback": "Back to Feedback",
@@ -134,40 +135,53 @@
     "SSMRCaptureMeter": {
         "ocrReading": "Please wait for a moment while we read your photos…",
         "navTitleTakePhoto": "Take Photo",
-        "navTitleAdjustPhoto": "Adjust Photo",
-        "singleTakePhotoDescription": "Take a clear photo of the reading value flashed on your meter.",
-        "editDescription": "You can delete and retake the photo or adjust it before submission.",
-        "multiTakePhotoDescription": "Get ready, you'll have 10 seconds between each value being flashed.",
+        "singleTakePhotoDescription": "Take a photo of the reading value you see on your meter.",
+        "editDescription": "You can select a photo to delete and retake or adjust it before submission.",
+        "multiTakePhotoDescription": "There will be {0} different units. Take a photo of the 1st unit you see.",
+        "multiTakeNextPhotoDescription": "Great! Now take a photo of the next unit you see.",
         "singularDone": "You're done with {0}!",
         "pluralDone": "You're done with {0} and {1}!",
-        "singularOnto": "On to <a href=\"\\\">{0}</a> reading now.",
-        "pluralOnto": "On to <a href=\"\\\">{0}</a> and <a href=\"\\\">{1}</a> readings now."
+        "singularOnto": "On to the final unit {0} now.",
+        "pluralOnto": "On to the next units {0} and {1}."
     },
+
     "SSMRCaptureMeter_selector": {
         "SMRPhotoPopUpDetails": [
             {
                 "Title": "Uploading from your album?",
-                "Description": "Be sure to upload a <strong>clear, straight-facing photo of the entire meter box</strong> with no shadows, reflections or flashes and the image can’t be skewed. Any of these may cause the value to be unreadable.",
+                "Description": "Be sure to upload <strong>a straight-facing photo containing the value</strong>. You don’t need a photo of the whole meter. Ensure the numbers are clear and there is no glare, shadow or distortion.",
                 "CTA": "Got it!",
                 "Type": "Single_UploadPhoto"
             },
             {
                 "Title": "How do I take these photos?",
-                "Description": "You'll need to submit 3 different meter reading values (kWh, kVARh, kW). <br><br>Capture the <strong>entire meter box with your camera directly facing it.</strong> Be sure to take full, clear photos with no shadows, reflections or flashes and the images can’t be skewed. Any of these may cause the values to be unreadable.",
+                "Description": "You'll need to submit {0} different meter reading values <strong>({1})</strong>.<br><br>Stand close to your meter. You don’t need a photo of the whole meter. Just capture <strong>the box containing the values with your camera directly facing it</strong>. Ensure the numbers are clear and there is no glare, shadow or distortion.",
                 "CTA": "Got it!",
                 "Type": "Multi_TakePhoto"
             },
             {
-                "Title": "How do I take these photos?",
-                "Description": "Capture the <strong>entire meter box with your camera directly facing it.</strong> Be sure to take a full, clear photo with no shadows, reflections or flashes and the image can’t be skewed. Any of these may cause the value to be unreadable.",
+                "Title": "How do I take this photo?",
+                "Description": "Stand close to your meter. You don’t need a photo of the whole meter. Just capture <strong>the box containing the value with your camera directly facing it</strong>. Ensure the numbers are clear and there is no glare, shadow or distortion. ",
                 "CTA": "Got it!",
                 "Type": "Single_TakePhoto"
             },
             {
                 "Title": "Uploading from your album?",
-                "Description": "You'll need to submit 3 different meter reading values (kWh, kVARh, kW).<br><br>Be sure to upload <strong>clear, straight-facing photos of the entire meter box</strong> with no shadows, reflections or flashes and the images can’t be skewed. Any of these may cause the values to be unreadable.",
+                "Description": "You'll need to submit {0} different meter reading values <strong>({1})</strong>.<br><br>Be sure to upload <strong>straight-facing photos containing the values</strong>. You don’t need a photo of the whole meter. Ensure the numbers are clear and there is no glare, shadow or distortion.",
                 "CTA": "Got it!",
                 "Type": "Multi_UploadPhoto"
+            },
+            {
+                "Title": "How do I take these photos?",
+                "Description": "Stand close to your meter. You don’t need a photo of the whole meter. Just capture <strong>the box containing the values with your camera directly facing it</strong>. Ensure the numbers are clear and there is no glare, shadow or distortion.",
+                "CTA": "Got it!",
+                "Type": "Multi_TakePhoto_One_Missing"
+            },
+            {
+                "Title": "Uploading from your album?",
+                "Description": "Be sure to upload <strong>straight-facing photos containing the values</strong>. You don’t need a photo of the whole meter. Ensure the numbers are clear and there is no glare, shadow or distortion.",
+                "CTA": "Got it!",
+                "Type": "Multi_UploadPhoto_One_Missing"
             }
         ]
     }

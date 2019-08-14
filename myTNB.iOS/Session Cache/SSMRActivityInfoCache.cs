@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Force.DeepCloner;
+using Foundation;
 using myTNB.Model;
 
 namespace myTNB
@@ -17,6 +19,7 @@ namespace myTNB
 
         private readonly string SelectorKey = SSMR.SSMRConstants.Pagename_SSMRCaptureMeter;
         private readonly string PopupKey = SSMR.SSMRConstants.Popup_SMRPhotoPopUpDetails;
+        private readonly string TakePhotoToolTipKey = "TakePhotoKey";
 
         public void SetData(SMRAccountActivityInfoResponseModel data)
         {
@@ -70,26 +73,27 @@ namespace myTNB
                 {
                     SMRMROValidateRegisterDetailsInfoModel item = SSMRPreviousMeterReadingList[i];
                     if (item == null) { continue; }
-                    list.Add(GetRegisterDetailCopy(item));
+                    list.Add(item.DeepClone());
                 }
             }
             return list;
         }
 
-        private SMRMROValidateRegisterDetailsInfoModel GetRegisterDetailCopy(SMRMROValidateRegisterDetailsInfoModel item)
+        public bool IsPhotoToolTipDisplayed
         {
-            return new SMRMROValidateRegisterDetailsInfoModel
+            set
             {
-                RegisterNumber = item.RegisterNumber,
-                MroID = item.MroID,
-                PrevMrDate = item.PrevMrDate,
-                SchMrDate = item.SchMrDate,
-                PrevMeterReading = item.PrevMeterReading,
-                IsValidManualReading = item.IsValidManualReading,
-                CurrentReading = item.CurrentReading,
-                IsErrorFromOCR = item.IsErrorFromOCR,
-                ErrorMessage = item.ErrorMessage,
-            };
+                bool isDisplayed = value;
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                sharedPreference.SetBool(isDisplayed, TakePhotoToolTipKey);
+                sharedPreference.Synchronize();
+            }
+            get
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                bool isDisplayed = sharedPreference.BoolForKey(TakePhotoToolTipKey);
+                return isDisplayed;
+            }
         }
 
         private void SetPopupSelectorValues()
