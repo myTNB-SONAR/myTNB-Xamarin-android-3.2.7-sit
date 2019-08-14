@@ -23,13 +23,14 @@ namespace myTNB
         List<MeterReadSSMRModel> _toolTipList;
         public List<SSMRMeterReadWalkthroughModel> pageData;
 
-        UIView _toolTipParentView, _toolTipContainerView, _toolTipFooterView;
+        UIView _toolTipParentView, _toolTipContainerView, _toolTipFooterView, _takePhotoView, _takePhotoBtnView;
         UIScrollView _toolTipScrollView;
         UIPageControl _pageControl;
         UIScrollView _meterReadScrollView;
         UIImageView _tickView;
         UILabel _descriptionLabel, _dontShowLabel;
         nfloat _padding = 16f;
+        nfloat takePhotoViewRatio = 136.0f / 320.0f;
         CGRect scrollViewFrame;
         int _currentPageIndex;
         bool _isThreePhase = false;
@@ -61,12 +62,14 @@ namespace myTNB
             SetWalkthroughData();
             AddFooterView();
             Initialization();
+            PrepareTakePhotoHeaderView();
             PrepareMeterReadingCard();
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            NavigationController.NavigationBarHidden = false;
         }
 
         public override void ViewDidAppear(bool animated)
@@ -154,17 +157,6 @@ namespace myTNB
             };
             View.AddSubview(_meterReadScrollView);
 
-            _descriptionLabel = new UILabel(new CGRect(_padding, _padding, _meterReadScrollView.Frame.Width - (_padding * 2), 48f))
-            {
-                BackgroundColor = UIColor.Clear,
-                Font = MyTNBFont.MuseoSans16_500,
-                TextColor = MyTNBColor.WaterBlue,
-                Lines = 0,
-                TextAlignment = UITextAlignment.Left,
-                Text = GetI18NValue(SSMRConstants.I18N_HeaderDesc),
-                Tag = 1
-            };
-            _meterReadScrollView.AddSubview(_descriptionLabel);
             scrollViewFrame = _meterReadScrollView.Frame;
 
             if (_isThreePhase)
@@ -192,6 +184,50 @@ namespace myTNB
                     pageData.Add(item);
                 }
             }
+        }
+
+        private void PrepareTakePhotoHeaderView()
+        {
+            nfloat takePhotoViewHeight = View.Frame.Width * takePhotoViewRatio;
+            nfloat descLabelWidth = _meterReadScrollView.Frame.Width - (_padding * 2);
+            _takePhotoView = new UIView(new CGRect(0, 0, View.Frame.Width, takePhotoViewHeight))
+            {
+                BackgroundColor = UIColor.White
+            };
+
+            _descriptionLabel = new UILabel(new CGRect(_padding, _padding, descLabelWidth, 44f))
+            {
+                BackgroundColor = UIColor.Clear,
+                Font = MyTNBFont.MuseoSans14_300,
+                TextColor = MyTNBColor.CharcoalGrey,
+                Lines = 0,
+                TextAlignment = UITextAlignment.Left,
+                Text = GetI18NValue(SSMRConstants.I18N_HeaderDesc),
+                Tag = 1
+            };
+
+            CGSize cGSize = _descriptionLabel.SizeThatFits(new CGSize(descLabelWidth, 1000f));
+            CGRect frame = _descriptionLabel.Frame;
+            frame.Height = cGSize.Height;
+            _descriptionLabel.Frame = frame;
+            _takePhotoView.AddSubview(_descriptionLabel);
+
+            nfloat btnViewWidth = _meterReadScrollView.Frame.Width - (_padding * 2);
+            _takePhotoBtnView = new UIView(new CGRect(_padding, _descriptionLabel.Frame.GetMaxY() + 12f, btnViewWidth, GetScaledHeight(48f)))
+            {
+                BackgroundColor = UIColor.White
+            };
+            _takePhotoBtnView.Layer.CornerRadius = 4f;
+            _takePhotoBtnView.Layer.BorderColor = MyTNBColor.AlgaeGreen.CGColor;
+            _takePhotoBtnView.Layer.BorderWidth = 1f;
+            _takePhotoView.AddSubview(_takePhotoBtnView);
+
+            CGRect viewFrame = _takePhotoView.Frame;
+            viewFrame.Height = _takePhotoBtnView.Frame.GetMaxY() + _padding;
+            _takePhotoView.Frame = viewFrame;
+
+            AddHeaderhadow(ref _takePhotoView);
+            _meterReadScrollView.AddSubview(_takePhotoView);
         }
 
         private void PrepareToolTipView(bool isDontShowHidden = false)
@@ -474,7 +510,7 @@ namespace myTNB
         {
             if (_previousMeterList != null)
             {
-                nfloat yPos = _descriptionLabel.Frame.GetMaxY() + _padding;
+                nfloat yPos = _takePhotoView.Frame.GetMaxY() + _padding;
                 foreach (var previousMeter in _previousMeterList)
                 {
                     SSMRMeterCardComponent sSMRMeterCardComponent = new SSMRMeterCardComponent(this, _meterReadScrollView, yPos);
@@ -779,6 +815,16 @@ namespace myTNB
             SSMRReadingHistoryViewController viewController =
                 storyBoard.InstantiateViewController("SSMRReadingHistoryViewController") as SSMRReadingHistoryViewController;
             return viewController;
+        }
+
+        private void AddHeaderhadow(ref UIView view)
+        {
+            view.Layer.MasksToBounds = false;
+            view.Layer.ShadowColor = MyTNBColor.BrownGrey10.CGColor;
+            view.Layer.ShadowOpacity = 0.5f;
+            view.Layer.ShadowOffset = new CGSize(0, 1);
+            view.Layer.ShadowRadius = 0;
+            view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
         }
 
         private class ToolTipScrollViewDelegate : UIScrollViewDelegate
