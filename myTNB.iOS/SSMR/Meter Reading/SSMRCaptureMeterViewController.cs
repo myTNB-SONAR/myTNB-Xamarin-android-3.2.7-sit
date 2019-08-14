@@ -185,6 +185,7 @@ namespace myTNB
             }
         }
 
+        #region Description
         private void SetDescription(string description = "")
         {
             if (string.IsNullOrEmpty(description) || string.IsNullOrWhiteSpace(description))
@@ -283,6 +284,7 @@ namespace myTNB
                 nsDescription.AddAttributes(msgAttributesOnto, new NSRange(index, ontoArr[whileCount].Length - (whileCount == 1 ? 1 : 0)));
             }
         }
+        #endregion
 
         private nfloat GetPreviewXLoc(int count)
         {
@@ -411,7 +413,13 @@ namespace myTNB
             }
             PreviewAction(_currentTag);
             ToggleCTA();
-            SetDescription(_isMultiPhase ? _multiPhaseDescription : GetI18NValue(SSMRConstants.I18N_SingleTakePhotoDescription));
+            int hasImgIndex = _imageModelList.FindIndex(x => x.Image != null);
+            if (hasImgIndex < 0)
+            {
+                string mDescription = hasImgIndex < 0 ? _multiPhaseDescription : GetI18NValue(SSMRConstants.I18N_MultiTakeNextPhotoDescription);
+                SetDescription(_isMultiPhase ? mDescription : GetI18NValue(SSMRConstants.I18N_SingleTakePhotoDescription));
+            }
+
         }
 
         private bool IsPreviosPreviewHasImage(int index, out int noImageIndex)
@@ -468,7 +476,6 @@ namespace myTNB
                         {
                             AddMainPreview(data.Image);
                         }
-                        SetDescription(GetI18NValue(data.Image == null ? _multiPhaseDescription : SSMRConstants.I18N_EditDescription));
                     }
 
                     if (isSameTag)
@@ -487,6 +494,10 @@ namespace myTNB
                                 SetPreviewColors(pView, true, false);
                             }
                         }
+
+                        int index = _imageModelList.FindIndex(x=>x.NeedsPhoto);
+                        string mDescription = index > -1 ? GetI18NValue(SSMRConstants.I18N_MultiTakeNextPhotoDescription) : _multiPhaseDescription;
+                        SetDescription(data.Image == null ? mDescription : GetI18NValue(SSMRConstants.I18N_EditDescription));
                     }
                 }
             }
@@ -677,6 +688,7 @@ namespace myTNB
                         AddMainPreview(image);
                         SetPreviewColors(parent, true, true);
                         _currentTag = model.Tag;
+                        SetDescription(GetI18NValue(SSMRConstants.I18N_EditDescription));
                         break;
                     }
 
@@ -711,6 +723,9 @@ namespace myTNB
                             }
                         }
                     }
+
+                    SetDescription(_isMultiPhase ? GetI18NValue(SSMRConstants.I18N_MultiTakeNextPhotoDescription)
+                        : GetI18NValue(SSMRConstants.I18N_EditDescription));
 
                     if (i + 1 == count)
                     {
