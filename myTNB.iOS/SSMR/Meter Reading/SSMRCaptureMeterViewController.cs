@@ -74,17 +74,12 @@ namespace myTNB
             SetPreview();
             SetCamera();
             ToggleCTA();
-            if (!SSMRActivityInfoCache.Instance.IsPhotoToolTipDisplayed)
-            {
-                DisplayTooltip();
-                SSMRActivityInfoCache.Instance.IsPhotoToolTipDisplayed = true;
-            }
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            OCRReadingCache.Instance.ClearReadings();
+            OCRReadingCache.ClearReadings();
             if (_viewLoading != null) { _viewLoading.Hidden = true; }
             SetupLiveCameraStream();
         }
@@ -102,6 +97,11 @@ namespace myTNB
             else
             {
                 UpdateViewGallery();
+            }
+            if (!SSMRActivityInfoCache.IsPhotoToolTipDisplayed)
+            {
+                DisplayTooltip();
+                SSMRActivityInfoCache.IsPhotoToolTipDisplayed = true;
             }
         }
 
@@ -137,13 +137,12 @@ namespace myTNB
                 type = _isMultiPhase ? ontoCount > 1 ? SSMRConstants.Tooltips_MultiPhaseTakePhoto
                     : SSMRConstants.Tooltips_MultiPhaseOneMissingTakePhoto : SSMRConstants.Tooltips_SinglePhaseTakePhoto;
             }
-            PopupModel popupData = SSMRActivityInfoCache.Instance.GetPopupDetailsByType(type);
+            PopupModel popupData = SSMRActivityInfoCache.GetPopupDetailsByType(type);
             if (popupData != null)
             {
                 string description = popupData.Description;
                 if (_isMultiPhase)
                 {
-
                     string missingReading = string.Empty;
                     for (int i = 0; i < ontoCount; i++)
                     {
@@ -1073,7 +1072,7 @@ namespace myTNB
                 };
                 GetOCRReadingResponseModel response = serviceManager
                     .OnExecuteAPIV6<GetOCRReadingResponseModel>(SSMRConstants.Service_GetMeterReadingOCRValue, request);
-                OCRReadingCache.Instance.AddOCRReading(response);
+                OCRReadingCache.AddOCRReading(response);
                 return response;
             });
         }

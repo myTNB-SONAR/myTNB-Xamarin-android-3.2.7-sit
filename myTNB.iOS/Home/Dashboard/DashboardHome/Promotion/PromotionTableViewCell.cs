@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using CoreGraphics;
-using Foundation;
 using myTNB.SitecoreCMS.Model;
 using UIKit;
 
@@ -19,7 +18,7 @@ namespace myTNB
         {
             cardWidth = cellWidth * 0.64F;
             cardHeight = cardWidth * 0.98F;
-            _titleLabel = new UILabel(new CGRect(16f, 16f, cellWidth - 32, 20f))
+            _titleLabel = new UILabel(new CGRect(ScaleUtility.BaseMarginWidth16, 16f, cellWidth - 32, 20f))
             {
                 Font = MyTNBFont.MuseoSans14_500,
                 TextColor = MyTNBColor.PowerBlue
@@ -61,7 +60,7 @@ namespace myTNB
 
         private void AddShimmer()
         {
-            nfloat xLoc = 16f;
+            nfloat xLoc = ScaleUtility.BaseMarginWidth16;
             for (int i = 0; i < 3; i++)
             {
                 CustomShimmerView shimmeringView = new CustomShimmerView();
@@ -89,14 +88,14 @@ namespace myTNB
                 shimmeringView.SetValues();
 
                 _scrollView.Add(viewParent);
-                xLoc += cardWidth + 8.0F;
+                xLoc += cardWidth + ScaleUtility.BaseMarginWidth8;
             }
             _scrollView.ContentSize = new CGSize(xLoc, cardHeight);
         }
 
         private void AddContentData(List<PromotionsModelV2> promotions)
         {
-            nfloat xLoc = 16f;
+            nfloat xLoc = ScaleUtility.BaseMarginWidth16;
             for (int i = 0; i < promotions.Count; i++)
             {
                 PromotionsModelV2 promotion = promotions[i];
@@ -127,7 +126,7 @@ namespace myTNB
 
                 viewParent.AddSubviews(new UIView[] { imgView, lblTitle, lblDescription });
                 _scrollView.Add(viewParent);
-                xLoc += cardWidth + 8.0F;
+                xLoc += cardWidth + ScaleUtility.BaseMarginWidth8;
             }
             _scrollView.ContentSize = new CGSize(xLoc, cardHeight);
         }

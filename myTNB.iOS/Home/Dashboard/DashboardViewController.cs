@@ -224,7 +224,7 @@ namespace myTNB.Dashboard
                         DataManager.DataManager.SharedInstance.MeterReadingHistory = _smrActivityInfoResponse.d.data;
                         DataManager.DataManager.SharedInstance.ReadingHistoryList = _smrActivityInfoResponse.d.data.MeterReadingHistory;
                         DataManager.DataManager.SharedInstance.MoreOptionsList = _smrActivityInfoResponse.d.data.MoreOptions;
-                        SSMRActivityInfoCache.Instance.SetData(_smrActivityInfoResponse);
+                        SSMRActivityInfoCache.SetData(_smrActivityInfoResponse);
                     }
                     else
                     {

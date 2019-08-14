@@ -55,7 +55,7 @@ namespace myTNB
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
 
-            _previousMeterList = SSMRActivityInfoCache.Instance.GetPreviousMeterReadingList();
+            _previousMeterList = SSMRActivityInfoCache.GetPreviousMeterReadingList();
             _isThreePhase = _previousMeterList.Count > 1;
 
             SetNavigation();
@@ -637,7 +637,7 @@ namespace myTNB
         /// </summary>
         public void OCRReadingDone()
         {
-            UpdateReadings(OCRReadingCache.Instance.GetOCRReadings());
+            UpdateReadings(OCRReadingCache.GetOCRReadings());
         }
 
         private void UpdateReadings(List<OCRReadingModel> ocrReadings)
