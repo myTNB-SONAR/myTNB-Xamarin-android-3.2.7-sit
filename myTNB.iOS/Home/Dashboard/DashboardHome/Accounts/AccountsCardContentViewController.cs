@@ -421,7 +421,7 @@ namespace myTNB
                         int currentIndex = _currentPageIndex;
                         if (accounts?.Count > 0)
                         {
-                            currentIndex = await GetAccountsSummary(accounts, currentIndex);
+                            currentIndex = await GetAccountsBillSummary(accounts, currentIndex);
                         }
                         if (currentIndex > -1 &&
                             currentIndex < _groupAccountList.Count)
@@ -434,7 +434,10 @@ namespace myTNB
                             }
                         }
                         _isUpdating = false;
-                        UpdateCardsWithTag(currentIndex);
+                        if (!_homeViewController._isRefreshScreenEnabled)
+                        {
+                            UpdateCardsWithTag(currentIndex);
+                        }
                     }
                     else
                     {
@@ -495,26 +498,28 @@ namespace myTNB
         }
 
         /// <summary>
-        /// Calls the GetLinkedAccountsSummaryInfo API
+        /// Calls the GetAccountsBillSummary API
         /// </summary>
         /// <param name="accounts"></param>
         /// <param name="currentIndex"></param>
         /// <returns></returns>
-        private async Task<int> GetAccountsSummary(List<string> accounts, int currentIndex)
+        private async Task<int> GetAccountsBillSummary(List<string> accounts, int currentIndex)
         {
-            var response = await ServiceCall.GetLinkedAccountsSummaryInfo(accounts);
+            var response = await ServiceCall.GetAccountsBillSummary(accounts);
 
             if (response != null &&
-                response.didSucceed &&
-                response.AccountDues?.Count > 0)
+                response.d != null &&
+                response.d.IsSuccess &&
+                response.d.data != null &&
+                response.d.data?.Count > 0)
             {
                 _homeViewController.ShowRefreshScreen(false, null);
-                UpdateDueForDisplayedAccounts(response.AccountDues, currentIndex);
+                UpdateDueForDisplayedAccounts(response.d.data, currentIndex);
             }
             else
             {
-                _refreshScreenInfoModel.RefreshBtnText = response?.RefreshBtnText ?? GetI18NValue(DashboardHomeConstants.I18N_RefreshBtnTxt);
-                _refreshScreenInfoModel.RefreshMessage = response?.RefreshMessage ?? GetI18NValue(DashboardHomeConstants.I18N_RefreshMsg);
+                _refreshScreenInfoModel.RefreshBtnText = response?.d?.RefreshBtnText ?? GetI18NValue(DashboardHomeConstants.I18N_RefreshBtnTxt);
+                _refreshScreenInfoModel.RefreshMessage = response?.d?.RefreshMessage ?? GetI18NValue(DashboardHomeConstants.I18N_RefreshMsg);
                 _homeViewController.ShowRefreshScreen(true, _refreshScreenInfoModel);
             }
             return currentIndex;
@@ -533,6 +538,7 @@ namespace myTNB
             if (response != null &&
                 response.d != null &&
                 response.d.IsSuccess &&
+                response.d.data != null &&
                 response.d.data.Count > 0)
             {
                 UpdateIsSSMRForDisplayedAccounts(response.d.data, currentIndex);
