@@ -42,5 +42,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             get; set;
         }
+
+        public bool IsNegativeAmount
+        {
+            get; set;
+        }
+
+        public bool IsZeroAmount
+        {
+            get; set;
+        }
     }
 }

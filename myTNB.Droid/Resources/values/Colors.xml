@@ -93,4 +93,6 @@
     <color name="bar_color">#555be3</color>
     
     <color name="ssmr_header_background">#f9f8f8</color>
+    
+    <color name="all_cleared_amount">#8b8b8b</color>
 </resources>

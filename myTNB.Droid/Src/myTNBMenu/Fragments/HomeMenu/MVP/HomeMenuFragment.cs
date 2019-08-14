@@ -143,8 +143,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.accountCard)]
         CardView accountCard;
 
-        
+        [BindView(Resource.Id.addActionLabel)]
+        TextView addActionLabel;
 
+        [BindView(Resource.Id.searchActionLabel)]
+        TextView searchActionLabel; 
+
+        [BindView(Resource.Id.addActionContainer)]
+        LinearLayout addActionContainer;
+
+        [BindView(Resource.Id.searchActionContainer)]
+        LinearLayout searchActionContainer;
 
         AccountsRecyclerViewAdapter accountsAdapter;
 
@@ -240,11 +249,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetupNewFAQView();
                 SetupNewPromotionView();
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg);
-                TextViewUtils.SetMuseoSans500Typeface(myServiceTitle, newFAQTitle, newPromotionTitle, btnRefresh, txtAdd);
+                TextViewUtils.SetMuseoSans500Typeface(myServiceTitle, newFAQTitle, newPromotionTitle, btnRefresh, txtAdd, addActionLabel, searchActionLabel);
 
-                addActionImage.SetOnClickListener(null);
+                addActionContainer.SetOnClickListener(null);
                 notificationHeaderIcon.SetOnClickListener(null);
-                addActionImage.Click += delegate
+                addActionContainer.Click += delegate
                 {
                     Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
                     linkAccount.PutExtra("fromDashboard", true);
@@ -469,14 +478,40 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 accountHeaderTitle.Visibility = ViewStates.Gone;
                 searchEditText.Visibility = ViewStates.Visible;
                 searchEditText.SetMaxWidth(Integer.MaxValue);
-                searchActionIcon.Visibility = ViewStates.Gone;
+                searchActionContainer.Visibility = ViewStates.Gone;
+                searchEditText.OnActionViewExpanded();
                 searchEditText.RequestFocus();
             }
             else
             {
                 accountHeaderTitle.Visibility = ViewStates.Visible;
                 searchEditText.Visibility = ViewStates.Gone;
-                searchActionIcon.Visibility = ViewStates.Visible;
+                searchActionContainer.Visibility = ViewStates.Visible;
+            }
+        }
+
+        class SearchViewOnFocusChange : Java.Lang.Object, View.IOnFocusChangeListener
+        {
+            HomeMenuFragment mOwnerFragment;
+            public SearchViewOnFocusChange(HomeMenuFragment ownerFragment)
+            {
+                mOwnerFragment = ownerFragment;
+            }
+            public void OnFocusChange(View v, bool hasFocus)
+            {
+                if (hasFocus)
+                {
+                    mOwnerFragment.searchEditText.SetBackgroundResource(Resource.Drawable.search_edit_bg);
+                }
+            }
+        }
+
+        class CloseClickListener : Java.Lang.Object, Android.Widget.SearchView.IOnCloseListener
+        {
+            public bool OnClose()
+            {
+                //throw new NotImplementedException();
+                return false;
             }
         }
 
@@ -484,7 +519,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             TextViewUtils.SetMuseoSans500Typeface(accountHeaderTitle, accountGreeting, accountGreetingName);
             searchEditText.SetOnQueryTextListener(new AccountsSearchOnQueryTextListener(this,accountsAdapter));
-            searchActionIcon.Click += (s, e) =>
+            searchEditText.SetOnQueryTextFocusChangeListener(new SearchViewOnFocusChange(this));
+            int closeViewId = searchEditText.Context.Resources.GetIdentifier("android:id/search_close_btn", null, null);
+            ImageView closeImageView = searchEditText.FindViewById<ImageView>(closeViewId);
+            closeImageView.SetPadding(0, 0, 0, 0);
+            searchEditText.SetOnCloseListener(new CloseClickListener());
+            searchActionContainer.Click += (s, e) =>
             {
                 ShowSearchAction(true);
             };
@@ -513,7 +553,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 var actionBar = act.SupportActionBar;
                 actionBar.Hide();
                 ShowBackButton(false);
-
+                ShowSearchAction(false);
                 DownTimeEntity bcrmDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 if (bcrmDownTime != null && bcrmDownTime.IsDown)
                 {
@@ -778,12 +818,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             if (accountList.Count <= 5)
             {
-                searchActionIcon.Visibility = ViewStates.Gone;
+                searchActionContainer.Visibility = ViewStates.Gone;
                 searchEditText.Visibility = ViewStates.Gone;
             }
             else
             {
-                searchActionIcon.Visibility = ViewStates.Visible;
+                searchActionContainer.Visibility = ViewStates.Visible;
             }
         }
 
@@ -1167,6 +1207,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
             linkAccount.PutExtra("fromDashboard", true);
             StartActivity(linkAccount);
+        }
+
+        public void UpdateSearchViewBackground(string searchText)
+        {
+            if (searchText != "")
+            {
+                searchEditText.SetBackgroundResource(Resource.Drawable.rectangle_rounded_corner_bg);
+            }
+            else
+            {
+                searchEditText.SetBackgroundResource(Resource.Drawable.search_edit_bg);
+            }
+            
         }
     }
 }

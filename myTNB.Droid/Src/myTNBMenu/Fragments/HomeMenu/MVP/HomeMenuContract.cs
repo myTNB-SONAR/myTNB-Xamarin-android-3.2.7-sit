@@ -46,6 +46,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void UpdateCurrentSMRAccountList();
 
             void UpdateEligibilitySMRAccountList();
+
+            void UpdateSearchViewBackground(string searchText);
         }
 
         public interface IHomeMenuPresenter
