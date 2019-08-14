@@ -461,17 +461,25 @@ namespace myTNB
 
         public void OnAccountCardSelected(DueAmountDataModel model)
         {
-            var index = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindIndex(x => x.accNum == model.accNum) ?? -1;
+            //var index = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindIndex(x => x.accNum == model.accNum) ?? -1;
 
-            if (index >= 0)
+            //if (index >= 0)
+            //{
+            //    var selected = DataManager.DataManager.SharedInstance.AccountRecordsList.d[index];
+            //    DataManager.DataManager.SharedInstance.SelectAccount(selected.accNum);
+            //    DataManager.DataManager.SharedInstance.IsSameAccount = false;
+            //    UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+            //    var vc = storyBoard.InstantiateViewController("DashboardViewController") as DashboardViewController;
+            //    vc.ShouldShowBackButton = true;
+            //    ShowViewController(vc, null);
+            //}
+
+            UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+            var viewController = storyBoard.InstantiateViewController("UsageViewController") as UsageViewController;
+            if (viewController != null)
             {
-                var selected = DataManager.DataManager.SharedInstance.AccountRecordsList.d[index];
-                DataManager.DataManager.SharedInstance.SelectAccount(selected.accNum);
-                DataManager.DataManager.SharedInstance.IsSameAccount = false;
-                UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
-                var vc = storyBoard.InstantiateViewController("DashboardViewController") as DashboardViewController;
-                vc.ShouldShowBackButton = true;
-                ShowViewController(vc, null);
+                var navController = new UINavigationController(viewController);
+                PresentViewController(navController, true, null);
             }
         }
 
