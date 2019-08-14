@@ -1149,5 +1149,10 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     break;
             }
         }
+
+        public string GetDeviceId()
+        {
+            return this.DeviceId();
+        }
     }
 }

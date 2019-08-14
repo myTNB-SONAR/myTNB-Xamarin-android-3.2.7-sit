@@ -80,6 +80,8 @@ namespace myTNB_Android.Src.AddAccount.MVP
             /// </summary>
             /// <param name="message"></param>
             void ShowBCRMDownException(String msg);
+
+            string GetDeviceId();
         }
 
         public interface IUserActionsListener : IBasePresenter

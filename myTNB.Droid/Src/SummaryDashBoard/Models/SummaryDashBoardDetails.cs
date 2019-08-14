@@ -24,6 +24,9 @@ namespace myTNB_Android.Src.SummaryDashBoard.Models
         [JsonProperty("IncrementREDueDateByDays")]
         public string IncrementREDueDateByDays { get; set; }
 
+        [JsonProperty("IsError")]
+        public bool IsError { get; set; }
+
         public string AccType { get; set; }
 
         public string AccName { get; set; }

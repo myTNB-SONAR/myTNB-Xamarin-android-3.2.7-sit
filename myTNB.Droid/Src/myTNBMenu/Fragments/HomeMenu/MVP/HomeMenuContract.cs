@@ -81,8 +81,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             List<NewPromotion> LoadShimmerPromotionList(int count);
 
             Task InitiateNewPromotion();
-
-            void ResetIsFirstLaunchFlag();
         }
 
         public interface IHomeMenuService
