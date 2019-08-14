@@ -17,7 +17,7 @@
       android:id="@+id/rootView">
     <ImageView
         android:id="@+id/promotion_img"
-        android:layout_height="96dp"
+        android:layout_height="106dp"
         android:layout_width="match_parent"
         android:scaleType="fitXY"
         android:src="@drawable/image_1"/>
