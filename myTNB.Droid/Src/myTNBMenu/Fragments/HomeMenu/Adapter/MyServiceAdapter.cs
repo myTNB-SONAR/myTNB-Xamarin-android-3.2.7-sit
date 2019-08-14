@@ -261,9 +261,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 }
 
                 ViewGroup.LayoutParams currentCard = vh.myServiceCardView.LayoutParameters;
+                ViewGroup.LayoutParams currentImg = vh.serviceImg.LayoutParameters;
 
                 int cardWidth = (this.mActivity.Resources.DisplayMetrics.WidthPixels / 3) - (int)DPUtils.ConvertDPToPx(9f);
-                float heightRatio = 84f / 88f;
+                float heightRatio = 88f / 92f;
                 int cardHeight = (int)(cardWidth * (heightRatio));
                 if (DPUtils.ConvertDPToPixel(cardWidth) > 99f && DPUtils.ConvertPxToDP(cardWidth) <= 111f)
                 {
@@ -278,6 +279,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
                 currentCard.Height = cardHeight;
                 currentCard.Width = cardWidth;
+
+                float imgHeightRatio = 24f / 92f;
+                int imgHeight = (int)(cardWidth * (imgHeightRatio));
+                if (DPUtils.ConvertPxToDP(imgHeight) < 28f)
+                {
+                    imgHeight = (int)DPUtils.ConvertDPToPx(28f);
+                }
+                currentImg.Height = imgHeight;
+                currentImg.Width = imgHeight;
 
                 TextViewUtils.SetMuseoSans500Typeface(vh.serviceTitle);
             }
