@@ -65,8 +65,8 @@
                 android:paddingBottom="10dp"
                 android:id="@+id/accountListRefreshContainer">
                 <ImageView
-                    android:layout_width="138dp"
-                    android:layout_height="138dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="70dp"
                     android:src="@drawable/refresh_1"
                     android:id="@+id/refreshImg"
@@ -77,8 +77,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginRight="32dp"
                     android:lineSpacingExtra="3dp"
                     android:textSize="14dp"
                     android:textColor="#8b8b8b"
@@ -87,8 +85,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="18dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
                     android:id="@+id/btnRefresh"
                     style="@style/Theme.RefreshButton" />
             </LinearLayout>

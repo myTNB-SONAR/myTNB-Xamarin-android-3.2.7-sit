@@ -158,6 +158,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.accountsActionsContainer)]
         LinearLayout accountsActionsContainer;
 
+        [BindView(Resource.Id.refreshImg)]
+        ImageView refreshImg;
+
+        [BindView(Resource.Id.refreshMsg)]
+        TextView refreshMsg;
+
+
         AccountsRecyclerViewAdapter accountsAdapter;
 
         private string mSavedTimeStamp = "0000000";
@@ -270,11 +277,34 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 this.presenter.GetSmartMeterReadingWalkthroughtTimeStamp();
 
                 this.presenter.GetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
+
+                SetRefreshLayoutParams();
             }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void SetRefreshLayoutParams()
+        {
+            LinearLayout.LayoutParams refreshImgParams = refreshImg.LayoutParameters as LinearLayout.LayoutParams;
+            LinearLayout.LayoutParams refreshMsgParams = refreshMsg.LayoutParameters as LinearLayout.LayoutParams;
+            LinearLayout.LayoutParams btnRefreshParams = btnRefresh.LayoutParameters as LinearLayout.LayoutParams;
+
+            refreshImgParams.Width = GetDeviceHorizontalScaleInPixel(0.431f);
+            refreshImgParams.Height = GetDeviceHorizontalScaleInPixel(0.431f);
+            refreshImg.RequestLayout();
+
+            refreshMsgParams.Width = GetDeviceHorizontalScaleInPixel(0.80f);
+            refreshMsgParams.RightMargin = GetDeviceHorizontalScaleInPixel(0.10f);
+            refreshMsgParams.LeftMargin = GetDeviceHorizontalScaleInPixel(0.10f);
+            refreshMsg.RequestLayout();
+
+            btnRefreshParams.Width = GetDeviceHorizontalScaleInPixel(0.90f);
+            btnRefreshParams.RightMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+            btnRefreshParams.LeftMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+            btnRefresh.RequestLayout();
         }
 
         public bool IsActive()
