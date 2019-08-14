@@ -26,6 +26,8 @@ namespace myTNB.SSMR
         public static string Tooltips_MultiPhaseTakePhoto = "Multi_TakePhoto";
         public static string Tooltips_SinglePhaseGallery = "Single_UploadPhoto";
         public static string Tooltips_SinglePhaseTakePhoto = "Single_TakePhoto";
+        public static string Tooltips_MultiPhaseOneMissingGallery = "Multi_UploadPhoto_One_Missing";
+        public static string Tooltips_MultiPhaseOneMissingTakePhoto = "Multi_TakePhoto_One_Missing";
 
         //Onboarding
         //i18n

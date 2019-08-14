@@ -122,19 +122,33 @@ namespace myTNB
         {
             string type;
             string image = _isMultiPhase ? SSMRConstants.IMG_MultiPhase : SSMRConstants.IMG_SinglePhase;
+            int ontoCount = _ontoList.Count;
             if (isGallery)
             {
-                type = _isMultiPhase ? SSMRConstants.Tooltips_MultiPhaseGallery : SSMRConstants.Tooltips_SinglePhaseGallery;
+                type = _isMultiPhase ? ontoCount > 1 ? SSMRConstants.Tooltips_MultiPhaseGallery
+                    : SSMRConstants.Tooltips_MultiPhaseOneMissingGallery : SSMRConstants.Tooltips_SinglePhaseGallery;
             }
             else
             {
-                type = _isMultiPhase ? SSMRConstants.Tooltips_MultiPhaseTakePhoto : SSMRConstants.Tooltips_SinglePhaseTakePhoto;
+                type = _isMultiPhase ? ontoCount > 1 ? SSMRConstants.Tooltips_MultiPhaseTakePhoto
+                    : SSMRConstants.Tooltips_MultiPhaseOneMissingTakePhoto : SSMRConstants.Tooltips_SinglePhaseTakePhoto;
             }
             PopupModel popupData = SSMRActivityInfoCache.Instance.GetPopupDetailsByType(type);
             if (popupData != null)
             {
-                DisplayCustomAlert(popupData.Title, popupData.Description
-                    , new Dictionary<string, Action> { { popupData.CTA, action } }, UIImage.FromBundle(image));
+                string description = popupData.Description;
+                if (_isMultiPhase)
+                {
+
+                    string missingReading = string.Empty;
+                    for (int i = 0; i < ontoCount; i++)
+                    {
+                        missingReading += _ontoList[i];
+                        if (i != ontoCount - 1) { missingReading += ","; }
+                    }
+                    description = ontoCount > 1 ? string.Format(description, ontoCount, missingReading) : string.Format(description, missingReading);
+                }
+                DisplayCustomAlert(popupData.Title, description, new Dictionary<string, Action> { { popupData.CTA, action } }, UIImage.FromBundle(image));
             }
             else
             {
@@ -419,7 +433,6 @@ namespace myTNB
                 string mDescription = hasImgIndex < 0 ? _multiPhaseDescription : GetI18NValue(SSMRConstants.I18N_MultiTakeNextPhotoDescription);
                 SetDescription(_isMultiPhase ? mDescription : GetI18NValue(SSMRConstants.I18N_SingleTakePhotoDescription));
             }
-
         }
 
         private bool IsPreviosPreviewHasImage(int index, out int noImageIndex)
@@ -495,7 +508,7 @@ namespace myTNB
                             }
                         }
 
-                        int index = _imageModelList.FindIndex(x=>x.NeedsPhoto);
+                        int index = _imageModelList.FindIndex(x => x.NeedsPhoto);
                         string mDescription = index > -1 ? GetI18NValue(SSMRConstants.I18N_MultiTakeNextPhotoDescription) : _multiPhaseDescription;
                         SetDescription(data.Image == null ? mDescription : GetI18NValue(SSMRConstants.I18N_EditDescription));
                     }

@@ -144,31 +144,44 @@
         "singularOnto": "On to the final unit {0} now.",
         "pluralOnto": "On to the next units {0} and {1}."
     },
+
     "SSMRCaptureMeter_selector": {
         "SMRPhotoPopUpDetails": [
             {
                 "Title": "Uploading from your album?",
-                "Description": "Be sure to upload a <strong>clear, straight-facing photo of the entire meter box</strong> with no shadows, reflections or flashes and the image can’t be skewed. Any of these may cause the value to be unreadable.",
+                "Description": "Be sure to upload <strong>a straight-facing photo containing the value</strong>. You don’t need a photo of the whole meter. Ensure the numbers are clear and there is no glare, shadow or distortion.",
                 "CTA": "Got it!",
                 "Type": "Single_UploadPhoto"
             },
             {
                 "Title": "How do I take these photos?",
-                "Description": "You'll need to submit 3 different meter reading values (kWh, kVARh, kW). <br><br>Capture the <strong>entire meter box with your camera directly facing it.</strong> Be sure to take full, clear photos with no shadows, reflections or flashes and the images can’t be skewed. Any of these may cause the values to be unreadable.",
+                "Description": "You'll need to submit {0} different meter reading values <strong>({1})</strong>.<br><br>Stand close to your meter. You don’t need a photo of the whole meter. Just capture <strong>the box containing the values with your camera directly facing it</strong>. Ensure the numbers are clear and there is no glare, shadow or distortion.",
                 "CTA": "Got it!",
                 "Type": "Multi_TakePhoto"
             },
             {
-                "Title": "How do I take these photos?",
-                "Description": "Capture the <strong>entire meter box with your camera directly facing it.</strong> Be sure to take a full, clear photo with no shadows, reflections or flashes and the image can’t be skewed. Any of these may cause the value to be unreadable.",
+                "Title": "How do I take this photo?",
+                "Description": "Stand close to your meter. You don’t need a photo of the whole meter. Just capture <strong>the box containing the value with your camera directly facing it</strong>. Ensure the numbers are clear and there is no glare, shadow or distortion. ",
                 "CTA": "Got it!",
                 "Type": "Single_TakePhoto"
             },
             {
                 "Title": "Uploading from your album?",
-                "Description": "You'll need to submit 3 different meter reading values (kWh, kVARh, kW).<br><br>Be sure to upload <strong>clear, straight-facing photos of the entire meter box</strong> with no shadows, reflections or flashes and the images can’t be skewed. Any of these may cause the values to be unreadable.",
+                "Description": "You'll need to submit {0} different meter reading values <strong>({1})</strong>.<br><br>Be sure to upload <strong>straight-facing photos containing the values</strong>. You don’t need a photo of the whole meter. Ensure the numbers are clear and there is no glare, shadow or distortion.",
                 "CTA": "Got it!",
                 "Type": "Multi_UploadPhoto"
+            },
+            {
+                "Title": "How do I take these photos?",
+                "Description": "You'll need to submit 1 meter reading value <strong>({0})</strong>.<br><br>Stand close to your meter. You don’t need a photo of the whole meter. Just capture <strong>the box containing the values with your camera directly facing it</strong>. Ensure the numbers are clear and there is no glare, shadow or distortion.",
+                "CTA": "Got it!",
+                "Type": "Multi_TakePhoto_One_Missing"
+            },
+            {
+                "Title": "Uploading from your album?",
+                "Description": "You'll need to submit 1 meter reading value <strong>({0})</strong>.<br><br>Be sure to upload <strong>straight-facing photos containing the values</strong>. You don’t need a photo of the whole meter. Ensure the numbers are clear and there is no glare, shadow or distortion.",
+                "CTA": "Got it!",
+                "Type": "Multi_UploadPhoto_One_Missing"
             }
         ]
     }
