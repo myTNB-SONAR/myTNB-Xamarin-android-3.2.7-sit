@@ -1120,7 +1120,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             if (MyTNBAccountManagement.GetInstance().IsNeedUpdatedBillingDetails())
             {
                 UserSessions.SetRealSMREligibilityAccountList(eligibleSmrAccountList);
-                this.presenter.ResetIsFirstLaunchFlag();
                 OnLoadAccount();
             }
             else

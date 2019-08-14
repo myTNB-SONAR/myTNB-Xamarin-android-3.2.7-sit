@@ -351,81 +351,107 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
             public override void OnPageStarted(WebView view, string url, Android.Graphics.Bitmap favicon)
             {
-                if (ConnectionUtils.HasInternetConnection(mActivity))
+                try
                 {
-                    base.OnPageStarted(view, url, favicon);
-                    progressBar.Visibility = ViewStates.Visible;
+                    if (ConnectionUtils.HasInternetConnection(mActivity))
+                    {
+                        base.OnPageStarted(view, url, favicon);
+                        progressBar.Visibility = ViewStates.Visible;
+                    }
+                    else
+                    {
+                        ShowErrorMessage(url);
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    ShowErrorMessage(url);
+                    Utility.LoggingNonFatalError(e);
                 }
+
             }
 
             public override void OnPageFinished(WebView view, string url)
             {
+                try
+                {
+                    if (url.ToLower().Contains("statusreceipt.aspx") && url.ToLower().Contains("approved") || url.ToLower().Contains("paystatusreceipt"))
+                    {
 
-                if (url.ToLower().Contains("statusreceipt.aspx") && url.ToLower().Contains("approved") || url.ToLower().Contains("paystatusreceipt"))
-                {
+                        ((PaymentActivity)mActivity).SetPaymentReceiptFlag(true, summaryDashBoardRequest);
+                        //((PaymentActivity)mActivity).SetToolBarTitle("Success");
+                        ((PaymentActivity)mActivity).HideToolBar();
+                        progressBar.Visibility = ViewStates.Gone;
+                    }
+                    else if (url.ToLower().Contains("statusreceipt.aspx") || url.ToLower().Contains("paystatusreceipt") && url.ToLower().Contains("failed"))
+                    {
+                        progressBar.Visibility = ViewStates.Gone;
+                        ((PaymentActivity)mActivity).SetPaymentReceiptFlag(false, null);
+                        //((PaymentActivity)mActivity).SetToolBarTitle("Unsuccessful");
+                        ((PaymentActivity)mActivity).HideToolBar();
 
-                    ((PaymentActivity)mActivity).SetPaymentReceiptFlag(true, summaryDashBoardRequest);
-                    //((PaymentActivity)mActivity).SetToolBarTitle("Success");
-                    ((PaymentActivity)mActivity).HideToolBar();
-                    progressBar.Visibility = ViewStates.Gone;
+                    }
+                    else if (url.ToLower().Contains("mytnbapp://payment/"))
+                    {
+                        progressBar.Visibility = ViewStates.Gone;
+                        Intent DashboardIntent = new Intent(mActivity, typeof(DashboardHomeActivity));
+                        DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                        mActivity.StartActivity(DashboardIntent);
+                    }
+                    else
+                    {
+                        progressBar.Visibility = ViewStates.Gone;
+                    }
                 }
-                else if (url.ToLower().Contains("statusreceipt.aspx") || url.ToLower().Contains("paystatusreceipt") && url.ToLower().Contains("failed"))
+                catch (Exception e)
                 {
-                    progressBar.Visibility = ViewStates.Gone;
-                    ((PaymentActivity)mActivity).SetPaymentReceiptFlag(false, null);
-                    //((PaymentActivity)mActivity).SetToolBarTitle("Unsuccessful");
-                    ((PaymentActivity)mActivity).HideToolBar();
-
-                }
-                else if (url.ToLower().Contains("mytnbapp://payment/"))
-                {
-                    progressBar.Visibility = ViewStates.Gone;
-                    Intent DashboardIntent = new Intent(mActivity, typeof(DashboardHomeActivity));
-                    DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                    mActivity.StartActivity(DashboardIntent);
-                }
-                else
-                {
-                    progressBar.Visibility = ViewStates.Gone;
+                    Utility.LoggingNonFatalError(e);
                 }
 
             }
 
+            public override bool OnRenderProcessGone(WebView view, RenderProcessGoneDetail detail)
+            {
+                return true;
+            }
+
             public override void OnReceivedError(WebView view, ClientError errorCode, string description, string failingUrl)
             {
-                String message = "Please check your internet connection.";
-                if (ConnectionUtils.HasInternetConnection(mActivity))
+                try
                 {
-                    switch (errorCode)
+                    String message = "Please check your internet connection.";
+                    if (ConnectionUtils.HasInternetConnection(mActivity))
                     {
-                        case ClientError.FileNotFound:
-                            message = "File Not Found."; break;
-                        case ClientError.Authentication:
-                            message = "Authetication Error."; break;
-                        case ClientError.FailedSslHandshake:
-                            message = "SSL Handshake Failed."; break;
-                        case ClientError.Unknown:
-                            message = "Unkown Error."; break;
+                        switch (errorCode)
+                        {
+                            case ClientError.FileNotFound:
+                                message = "File Not Found."; break;
+                            case ClientError.Authentication:
+                                message = "Authetication Error."; break;
+                            case ClientError.FailedSslHandshake:
+                                message = "SSL Handshake Failed."; break;
+                            case ClientError.Unknown:
+                                message = "Unkown Error."; break;
+                        }
+                        ShowErrorMessage(failingUrl);
                     }
-                    ShowErrorMessage(failingUrl);
-                }
-                else
-                {
-                    ShowErrorMessage(failingUrl);
-                }
+                    else
+                    {
+                        ShowErrorMessage(failingUrl);
+                    }
 
-                //Toast.makeText(PaymentWebViewActivity.this,message,Toast.LENGTH_LONG).show();
-                if (!ConnectionUtils.HasInternetConnection(mActivity))
-                {
-                    mWebView.StopLoading();
+                    //Toast.makeText(PaymentWebViewActivity.this,message,Toast.LENGTH_LONG).show();
+                    if (!ConnectionUtils.HasInternetConnection(mActivity))
+                    {
+                        mWebView.StopLoading();
+                    }
+                    else
+                    {
+                        mWebView.LoadUrl("");
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    mWebView.LoadUrl("");
+                    Utility.LoggingNonFatalError(e);
                 }
             }
 

@@ -4,6 +4,7 @@ using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AddAccount.Requests;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Api;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
@@ -268,10 +269,22 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
 
                 UserEntity user = UserEntity.GetActive();
+                FirebaseTokenEntity token = FirebaseTokenEntity.GetLatest();
 
                 summaryDashBoardRequest.AccNum = account;
-                summaryDashBoardRequest.SspUserId = user.UserID;
-                summaryDashBoardRequest.ApiKeyId = Constants.APP_CONFIG.API_KEY_ID;
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = user.Email,
+                    sspuid = user.UserID,
+                    did = this.mView.GetDeviceId(),
+                    ft = token.FBToken,
+                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+                summaryDashBoardRequest.usrInf = currentUsrInf;
 
                 CallSummaryAPI(summaryDashBoardRequest);
             }

@@ -888,7 +888,6 @@
     <Compile Include="Src\Database\DBHelper.cs" />
     <Compile Include="Src\Database\Model\AccountTypeEntity.cs" />
     <Compile Include="Src\MyTNBApplication.cs" />
-    <Compile Include="Src\myTNBMenu\Activity\DashboardActivity.cs" />
     <Compile Include="Src\myTNBMenu\Api\IUsageHistoryApi.cs" />
     <Compile Include="Src\myTNBMenu\Charts\Formatter\ChartsDayFormatter.cs" />
     <Compile Include="Src\myTNBMenu\Charts\Formatter\ChartsMonthFormatter.cs" />
@@ -900,8 +899,6 @@
     <Compile Include="Src\myTNBMenu\Models\ChartType.cs" />
     <Compile Include="Src\myTNBMenu\Models\UsageHistoryData.cs" />
     <Compile Include="Src\myTNBMenu\Models\UsageHistoryResponse.cs" />
-    <Compile Include="Src\myTNBMenu\MVP\DashboardContract.cs" />
-    <Compile Include="Src\myTNBMenu\MVP\DashboardPresenter.cs" />
     <Compile Include="Src\Database\Model\UserEntity.cs" />
     <Compile Include="Src\ForgetPassword\Requests\ForgetPasswordVerificationCodeRequest.cs" />
     <Compile Include="Src\ResetPassword\Activity\ResetPasswordActivity.cs" />
@@ -954,14 +951,9 @@
     <Compile Include="Src\SummaryDashBoard\Models\SummaryDashBoardDetails.cs" />
     <Compile Include="Src\SummaryDashBoard\Models\SummaryDashBoardResponse.cs" />
     <Compile Include="Src\SummaryDashBoard\Models\SummaryDashBordRequest.cs" />
-    <Compile Include="Src\SummaryDashBoard\MVP\SummaryDashboardContract.cs" />
-    <Compile Include="Src\SummaryDashBoard\MVP\SummaryDashboardPresenter.cs" />
-    <Compile Include="Src\SummaryDashBoard\SummaryDashBoardAdapter.cs" />
-    <Compile Include="Src\SummaryDashBoard\SummaryDashBoardFragment.cs" />
     <Compile Include="Src\SummaryDashBoard\SummaryDashboardModel.cs" />
     <Compile Include="Src\SummaryDashBoard\SummaryListener\ISummaryFragmentToDashBoardActivtyListener.cs" />
     <Compile Include="Src\SummaryDashBoard\SummaryListener\ISummaryListener.cs" />
-    <Compile Include="Src\SummaryDashBoard\SummaryNormalAdapter.cs" />
     <Compile Include="Src\TermsAndConditions\Activity\TermsAndConditionActivity.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\DashboardChartContract.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\DashboardChartPresenter.cs" />
@@ -2014,9 +2006,6 @@
     <AndroidResource Include="Resources\layout\WalkThroughView.axml" />
     <AndroidResource Include="Resources\values\LinkAccountStyle.axml" />
     <AndroidResource Include="Resources\values\LaunchStyle.axml" />
-    <AndroidResource Include="Resources\layout\DashboardView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\values\ForgetPasswordStyle.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -2299,10 +2288,6 @@
     <AndroidResource Include="Resources\layout\RateUsQuestionItemView.axml" />
     <AndroidResource Include="Resources\layout\rating_activity_view.axml" />
     <AndroidResource Include="Resources\layout\SubmitRatingView.axml" />
-    <AndroidResource Include="Resources\layout\SummaryDashboardAdapter.axml" />
-    <AndroidResource Include="Resources\layout\SummaryDashBoardFooter.axml" />
-    <AndroidResource Include="Resources\layout\SummaryDashBoardHeader.axml" />
-    <AndroidResource Include="Resources\layout\SummaryDashBoardLayout.axml" />
     <AndroidResource Include="Resources\layout\UsageHistoryItem.axml" />
     <AndroidResource Include="Resources\layout\ViewBillReceiptNewDesign.axml" />
     <AndroidResource Include="Resources\layout\ViewBillReceiptAccountDetails.axml" />
@@ -4857,16 +4842,7 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_rm.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\illustration_Afternoon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\illustration_Evening.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\img_bcrm_down.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\illustration_Morning.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\img_bcrm_down_summary.png" />
@@ -4930,15 +4906,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_rm.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\illustration_Afternoon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\illustration_Evening.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\illustration_Morning.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\img_bcrm_down.png" />
@@ -5007,15 +4974,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\ic_rm.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\illustration_Afternoon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\illustration_Evening.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\illustration_Morning.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\img_bcrm_down_summary.png" />
   </ItemGroup>
   <ItemGroup>
@@ -5082,15 +5040,6 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_rm.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\illustration_Afternoon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\illustration_Evening.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\illustration_Morning.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\img_bcrm_down.png" />
   </ItemGroup>
   <ItemGroup>
@@ -5155,15 +5104,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_rm.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\illustration_Afternoon.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\illustration_Evening.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\illustration_Morning.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\img_bcrm_down.png" />

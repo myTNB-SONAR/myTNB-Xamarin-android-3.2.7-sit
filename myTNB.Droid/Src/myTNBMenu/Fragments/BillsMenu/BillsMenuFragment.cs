@@ -180,6 +180,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
         private MaterialDialog mMandatoryPaymentCardDialog;
         bool failedFetch = false;
 
+        bool preShow = false;
+
         private string txtRefreshContent = "";
         private string txtBtnContent = "";
 
@@ -192,6 +194,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
             BillsMenuFragment billsMenuFragment = new BillsMenuFragment();
             Bundle args = new Bundle();
             args.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+            billsMenuFragment.Arguments = args;
+            return billsMenuFragment;
+        }
+
+        internal static BillsMenuFragment NewInstance(AccountData selectedAccount, string preShow)
+        {
+            BillsMenuFragment billsMenuFragment = new BillsMenuFragment();
+            Bundle args = new Bundle();
+            args.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+            args.PutBoolean(preShow, true);
             billsMenuFragment.Arguments = args;
             return billsMenuFragment;
         }
@@ -215,6 +227,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
             args.PutBoolean(Constants.REFRESH_MODE, true);
             args.PutString(Constants.REFRESH_MSG, contextTxt);
             args.PutString(Constants.REFRESH_BTN_MSG, btnTxt);
+            args.PutBoolean("PRE_SHOW", true);
             billsMenuFragment.Arguments = args;
             return billsMenuFragment;
         }
@@ -236,6 +249,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
             }
 
             failedFetch = false;
+
+            if (args.ContainsKey("PRE_SHOW"))
+            {
+                preShow = true;
+            }
+            else
+            {
+                preShow = false;
+            }
 
             if (args.ContainsKey(Constants.REFRESH_MODE))
             {
@@ -281,8 +303,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
         [OnClick(Resource.Id.btnRefresh)]
         internal void OnRefresh(object sender, EventArgs e)
         {
-            CustomerBillingAccount customerAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
-            this.userActionsListener.OnSelectAccount(customerAccount);
+            try
+            {
+                ((DashboardHomeActivity)Activity).BillMenuRecalled();
+            }
+            catch (System.Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         public void ShowDashboardChart(UsageHistoryResponse response, AccountData accountData)
@@ -389,8 +417,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
 
                 SetBillDetails(selectedAccount);
 
-                this.userActionsListener.Start();
-
+                if (!preShow)
+                {
+                    this.userActionsListener.Start();
+                }
+                
                 if(failedFetch)
                 {
                     ShowRefreshView(null, null);
@@ -641,6 +672,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
 
         public void SetBillDetails(AccountData selectedAccount)
         {
+            allBillLayout.Visibility = ViewStates.Visible;
+            refreshLayout.Visibility = ViewStates.Gone;
             if (selectedAccount != null)
             {
                 txtAccountName.Text = (!string.IsNullOrEmpty(selectedAccount?.AccountName)) ? selectedAccount?.AccountName : "";
