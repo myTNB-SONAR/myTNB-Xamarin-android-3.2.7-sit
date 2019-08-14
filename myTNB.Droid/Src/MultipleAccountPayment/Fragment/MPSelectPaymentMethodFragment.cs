@@ -934,8 +934,17 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
         private string DeviceId(Android.App.Activity mActivity)
         {
-            var androidID = Android.Provider.Settings.Secure.GetString(mActivity.ContentResolver, Android.Provider.Settings.Secure.AndroidId);
-            var deviceUuid = DeviceIdUtils.GenerateDeviceIdentifier(mActivity, androidID);
+            var deviceUuid = "";
+            try
+            {
+                var androidID = Android.Provider.Settings.Secure.GetString(mActivity.ContentResolver, Android.Provider.Settings.Secure.AndroidId);
+                deviceUuid = DeviceIdUtils.GenerateDeviceIdentifier(mActivity, androidID);
+                return deviceUuid.ToString();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
             return deviceUuid.ToString();
         }
     }

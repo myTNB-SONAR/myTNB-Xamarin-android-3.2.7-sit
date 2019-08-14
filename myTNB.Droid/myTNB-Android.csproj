@@ -2000,9 +2000,6 @@
     <AndroidResource Include="Resources\layout\WalkThroughView.axml" />
     <AndroidResource Include="Resources\values\LinkAccountStyle.axml" />
     <AndroidResource Include="Resources\values\LaunchStyle.axml" />
-    <AndroidResource Include="Resources\layout\DashboardView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\values\ForgetPasswordStyle.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
