@@ -194,5 +194,13 @@
                 "Type": "Multi_UploadPhoto_One_Missing"
             }
         ]
+    },
+
+    "SelectElectricityAccounts": {
+        "navTitle": "Select Electricity Account",
+        "accountsMissing": "Why are some of my accounts not here?",
+        "accountMissingTitle": "Why are some of my accounts not here?",
+        "accountMissingDescription": "We took the liberty to only show you electricity accounts that are eligble for the Self Meter Reading service. <a target=\"FAQ\" href=\"www.google.com\">Click here</a> to learn more about its eligibility.",
+        "accountMissingCTA": "Got It!"
     }
 }
