@@ -1255,14 +1255,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 if (CustomerBillingAccount.HasSelected())
                 {
                     selected = CustomerBillingAccount.GetSelected();
-                    NavigateBllMenu(selected, false, null);
+                    PreNavigateBllMenu(selected);
                     this.mView.SetAccountName(selected.AccDesc);
                 }
                 else
                 {
                     CustomerBillingAccount.SetSelected(accountList[0].AccNum);
                     selected = accountList[0];
-                    NavigateBllMenu(selected, false, null);
+                    PreNavigateBllMenu(selected);
                     this.mView.SetAccountName(accountList[0].AccDesc);
                 }
                 if (selected.AccountCategoryId.Equals("2"))
