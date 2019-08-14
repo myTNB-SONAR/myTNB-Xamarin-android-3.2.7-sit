@@ -49,7 +49,17 @@
         "myAccounts": "My Accounts",
         "myServices": "My Services",
         "needHelp": "Need Help?",
-        "promotions": "Promotions"
+        "promotions": "Promotions",
+        "addElectricityAcct": "Add an Electricity Account",
+        "searchPlaceholder": "Search by account nickname or number",
+        "refreshMessage": "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!",
+        "refreshBtnText": "Refresh Now",
+        "paidExtra": "paid extra",
+        "allCleared": "all cleared",
+        "getBy": "get by",
+        "payBy": "pay by",
+        "add": "Add",
+        "search": "Search"
     },
     "Tabbar": {
         "home": "Home",

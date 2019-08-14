@@ -23,11 +23,10 @@ namespace myTNB
         {
             nfloat parentHeight = _parentView.Frame.Height;
             nfloat parentWidth = _parentView.Frame.Width;
-            nfloat padding = 16f;
-            nfloat headerHeight = 80f;
+            nfloat padding = ScaleUtility.BaseMarginWidth16;
+            nfloat headerHeight = ScaleUtility.GetScaledWidth(80f);
             nfloat labelHeight = 24f;
-            nfloat imageWidth = 24f;
-            nfloat imageHeight = 24f;
+            nfloat imageWidth = ScaleUtility.GetScaledWidth(24f);
 
             _accountHeaderView = new UIView(new CGRect(0, 0, parentWidth, headerHeight))
             {
@@ -59,11 +58,11 @@ namespace myTNB
                 LineBreakMode = UILineBreakMode.MiddleTruncation,
                 Text = _strName
             };
-            _notificationView = new UIView(new CGRect(parentWidth - (imageWidth + padding), padding + labelHeight / 2, imageWidth, imageHeight))
+            _notificationView = new UIView(new CGRect(parentWidth - (imageWidth + padding), padding + labelHeight / 2, imageWidth, imageWidth))
             {
                 UserInteractionEnabled = true
             };
-            _notificationIcon = new UIImageView(new CGRect(0, 0, imageWidth, imageHeight))
+            _notificationIcon = new UIImageView(new CGRect(0, 0, imageWidth, imageWidth))
             {
                 Image = UIImage.FromBundle("Notification")
             };
