@@ -20,14 +20,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
         INotificationApi api = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
 #endif
         private string deviceId = null;
-        private DashboardContract.IUserActionsListener listener = null;
         private DashboardHomeContract.IUserActionsListener homeListener = null;
-
-        public UserNotificationAPI(string deviceId, DashboardContract.IUserActionsListener listener)
-        {
-            this.deviceId = deviceId;
-            this.listener = listener;
-        }
 
         public UserNotificationAPI(string deviceId, DashboardHomeContract.IUserActionsListener listener)
         {
@@ -151,10 +144,6 @@ namespace myTNB_Android.Src.myTNBMenu.Async
         {
             base.OnPostExecute(result);
 
-            if (listener != null)
-            {
-                listener.OnNotificationCount();
-            }
             if (homeListener != null)
             {
                 homeListener.OnNotificationCount();

@@ -21,14 +21,8 @@ namespace myTNB_Android.Src.myTNBMenu.Async
         private string savedPromoTimeStamp = "0000000";
         CancellationTokenSource cts = null;
 
-        private DashboardContract.IView mView = null;
 
         private DashboardHomeContract.IView mHomeView = null;
-
-        public SiteCorePromotioAPI(DashboardContract.IView mView)
-        {
-            this.mView = mView;
-        }
 
         public SiteCorePromotioAPI(DashboardHomeContract.IView mView)
         {
@@ -153,10 +147,6 @@ namespace myTNB_Android.Src.myTNBMenu.Async
         {
             base.OnPostExecute(result);
 
-            if (mView != null)
-            {
-                mView.ShowPromotion(true);
-            }
             if (mHomeView != null)
             {
                 mHomeView.ShowPromotion(true);

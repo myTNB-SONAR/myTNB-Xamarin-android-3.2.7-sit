@@ -10,6 +10,7 @@ using Android.Views.InputMethods;
 using Android.Widget;
 using Java.Text;
 using myTNB_Android.Src.AddCard.Activity;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Adapter;
@@ -905,10 +906,22 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                     }
                 }
 
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = UserEntity.GetActive().Email,
+                    sspuid = UserEntity.GetActive().UserID,
+                    did = DeviceId(this.Activity),
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+
                 summaryDashBoardRequest = new SummaryDashBordRequest();
                 summaryDashBoardRequest.AccNum = accounts;
-                summaryDashBoardRequest.SspUserId = UserEntity.GetActive().UserID;
-                summaryDashBoardRequest.ApiKeyId = Constants.APP_CONFIG.API_KEY_ID;
+                summaryDashBoardRequest.usrInf = currentUsrInf;
 
             }
             catch (Exception e)
@@ -917,6 +930,13 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
             }
 
             //SummaryDashBoardApiCall.GetSummaryDetails(summaryDashBoardRequest);
+        }
+
+        private string DeviceId(Android.App.Activity mActivity)
+        {
+            var androidID = Android.Provider.Settings.Secure.GetString(mActivity.ContentResolver, Android.Provider.Settings.Secure.AndroidId);
+            var deviceUuid = DeviceIdUtils.GenerateDeviceIdentifier(mActivity, androidID);
+            return deviceUuid.ToString();
         }
     }
 }
