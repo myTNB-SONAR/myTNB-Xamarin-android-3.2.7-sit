@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="96dp"
     android:layout_height="96dp"
-    android:layout_marginRight="12dp"
+    android:layout_marginRight="8dp"
     app:cardCornerRadius="8dp"
     app:cardBackgroundColor="@color/shimmer_color"
     app:cardElevation="0dp"

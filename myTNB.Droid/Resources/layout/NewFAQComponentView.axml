@@ -6,7 +6,7 @@
     android:layout_height="96dp"
     app:cardCornerRadius="8dp"
     app:cardBackgroundColor="@android:color/transparent"
-    android:layout_marginRight="12dp"             
+    android:layout_marginRight="8dp"             
     app:cardElevation="0dp"
     app:cardMaxElevation="0dp"
     android:id="@+id/card_view_click">
