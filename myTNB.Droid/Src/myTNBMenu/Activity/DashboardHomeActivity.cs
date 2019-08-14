@@ -260,7 +260,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             ShowBackButton(false);
             this.SelectedAccountData = selectedAccount;
-            txtAccountName.Text = SelectedAccountData.AccountName;
+            txtAccountName.Text = SelectedAccountData.AccountNickName;
             currentFragment = new BillsMenuFragment();
             FragmentManager.BeginTransaction()
                 .Replace(Resource.Id.content_layout, BillsMenuFragment.NewInstance(selectedAccount, true))
@@ -339,10 +339,21 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             ShowBackButton(false);
             this.SelectedAccountData = selectedAccount;
-            txtAccountName.Text = SelectedAccountData.AccountName;
+            txtAccountName.Text = SelectedAccountData.AccountNickName;
             currentFragment = new BillsMenuFragment();
             FragmentManager.BeginTransaction()
                 .Replace(Resource.Id.content_layout, BillsMenuFragment.NewInstance(selectedAccount))
+                .CommitAllowingStateLoss();
+        }
+
+        public void PreShowBillMenu(AccountData selectedAccount)
+        {
+            ShowBackButton(false);
+            this.SelectedAccountData = selectedAccount;
+            txtAccountName.Text = SelectedAccountData.AccountNickName;
+            currentFragment = new BillsMenuFragment();
+            FragmentManager.BeginTransaction()
+                .Replace(Resource.Id.content_layout, BillsMenuFragment.NewInstance(selectedAccount, "PRE_SHOW"))
                 .CommitAllowingStateLoss();
         }
 
@@ -351,7 +362,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             ShowBackButton(false);
             currentFragment = new BillsMenuFragment();
             this.SelectedAccountData = selectedAccount;
-            txtAccountName.Text = SelectedAccountData.AccountName;
+            txtAccountName.Text = SelectedAccountData.AccountNickName;
             FragmentManager.BeginTransaction()
                 .Replace(Resource.Id.content_layout, BillsMenuFragment.NewInstance(contextTxt, btnTxt, selectedAccount))
                 .CommitAllowingStateLoss();
@@ -777,6 +788,18 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 Drawable drawable = Resources.GetDrawable(Resource.Drawable.gradient_background);
                 Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
                 Window.SetBackgroundDrawable(drawable);
+            }
+        }
+
+        public void BillMenuRecalled()
+        {
+            try
+            {
+                this.mPresenter.BillMenuStartRefresh();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
