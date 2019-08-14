@@ -104,7 +104,8 @@ namespace myTNB.Dashboard.SelectAccounts
                 {
                     _controller.DisplayCustomAlert(_controller.GetI18NValue(SelectAccountConstants.I18N_AccountsMissingTitle)
                         , _controller.GetI18NValue(SelectAccountConstants.I18N_AccountsMissingDescription)
-                        , new Dictionary<string, Action> { { _controller.GetI18NValue(SelectAccountConstants.I18N_AccountsMissingCTA), null } });
+                        , new Dictionary<string, Action> { { _controller.GetI18NValue(SelectAccountConstants.I18N_AccountsMissingCTA), null } }
+                        , false);
                 }));
                 cell.AddSubview(view);
             }
