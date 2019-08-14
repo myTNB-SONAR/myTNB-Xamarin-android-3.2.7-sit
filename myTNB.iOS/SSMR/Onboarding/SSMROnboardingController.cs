@@ -9,11 +9,12 @@ namespace myTNB.SSMR
     {
         public SSMROnboardingController(UIViewController controller) : base(controller) { }
         private UIView _viewBottomContainer;
-        private UIButton _btnStart;
+        private CustomUIButtonV2 _btnStart;
         public override void OnViewDidLoad()
         {
             PageName = SSMRConstants.Pagename_SSMRWalkthrough;
             base.OnViewDidLoad();
+            SSMRAccounts.IsHideOnboarding = true;
             SSMRModelController = new SSMROnboardingModelController();
             SSMRModelController.UpdateWidgets = OnUpdateMainWidgets;
             UIPageControl.UIPageControlAppearance appearance = UIPageControl.Appearance;
@@ -43,9 +44,9 @@ namespace myTNB.SSMR
 
                             // Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
                             CGRect pageViewRect = that.View.Bounds;
-                            pageViewRect.Height -= DeviceHelper.IsIphoneXUpResolution() ? 80 : 60;
-                            if (UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad)
-                                pageViewRect = new CGRect(pageViewRect.X + 20, pageViewRect.Y + 20, pageViewRect.Width - 40, pageViewRect.Height - 40);
+                            pageViewRect.Height = ScaleUtility.GetScaledHeight(488);//-= DeviceHelper.IsIphoneXUpResolution() ? 80 : 60;
+                           // if (UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad)
+                             //   pageViewRect = new CGRect(pageViewRect.X + 20, pageViewRect.Y + 20, pageViewRect.Width - 40, pageViewRect.Height - 40);
                             PageViewController.View.Frame = pageViewRect;
                             PageViewController.DidMoveToParentViewController(that);
 
@@ -99,55 +100,41 @@ namespace myTNB.SSMR
             {
                 baseHeight -= 20;
             }
-            _viewBottomContainer = new UIView(new CGRect(26, baseHeight - 38, that.View.Frame.Width - 52, 20));
-            UIView viewDontShow = new UIView(new CGRect(0, 0, _viewBottomContainer.Frame.Width / 2, 20));
-            UIImageView imgViewCheckBox = new UIImageView(new CGRect(0, 0, 20, 20))
-            {
-                Image = UIImage.FromBundle(SSMRAccounts.IsHideOnboarding
-                    ? SSMRConstants.IMG_Mark : SSMRConstants.IMG_Unmark)
-            };
-            viewDontShow.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-            {
-                SSMRAccounts.IsHideOnboarding = !SSMRAccounts.IsHideOnboarding;
-                imgViewCheckBox.Image = UIImage.FromBundle(SSMRAccounts.IsHideOnboarding
-                    ? SSMRConstants.IMG_Mark : SSMRConstants.IMG_Unmark);
-            }));
-            UILabel lblDontShow = new UILabel(new CGRect(30, 3, 24, 14))
-            {
-                TextColor = MyTNBColor.BrownGrey,
-                Font = MyTNBFont.MuseoSans12_500,
-                TextAlignment = UITextAlignment.Left,
-                Text = GetI18NValue(SSMRConstants.I18N_DontShow)
-            };
-            viewDontShow.AddSubviews(new UIView[] { imgViewCheckBox, lblDontShow });
-            ResizeView(ref viewDontShow, ref lblDontShow, that.View.Frame.Width / 2, 20, true);
+            _viewBottomContainer = new UIView(new CGRect(ScaleUtility.GetScaledWidth(24), baseHeight - ScaleUtility.GetScaledHeight(35)
+                , that.View.Frame.Width - ScaleUtility.GetScaledWidth(48), ScaleUtility.GetScaledHeight(14)));
 
-            UIView viewSkip = new UIView(new CGRect(0, 3, 50, 14));
-            UILabel lblSkip = new UILabel(new CGRect(0, 0, 24, 14))
+            UIView viewSkip = new UIView(new CGRect(_viewBottomContainer.Frame.Width - ScaleUtility.GetScaledWidth(50)
+                , 0, ScaleUtility.GetScaledWidth(50), ScaleUtility.GetScaledHeight(14)));
+            UILabel lblSkip = new UILabel(new CGRect(0, 0, ScaleUtility.GetScaledWidth(50), ScaleUtility.GetScaledHeight(14)))
             {
                 TextColor = MyTNBColor.BrownGrey,
-                Font = MyTNBFont.MuseoSans12_500,
+                Font = TNBFont.MuseoSans_12_500,
                 TextAlignment = UITextAlignment.Right,
                 Text = GetI18NValue(SSMRConstants.I18N_Skip)
             };
-            ResizeView(ref viewSkip, ref lblSkip, 50, 14);
             viewSkip.AddSubview(lblSkip);
 
-            _btnStart = CustomUIButton.GetUIButton(new CGRect(16, baseHeight - 64, that.View.Frame.Width - 32, DeviceHelper.GetScaledHeight(48))
-               , GetI18NValue(SSMRConstants.I18N_StartApplication));
-            _btnStart.Enabled = true;
-            _btnStart.BackgroundColor = MyTNBColor.FreshGreen;
-            _btnStart.Hidden = true;
-            _btnStart.TouchUpInside += (sender, e) =>
+            _btnStart = new CustomUIButtonV2()
+            {
+                Frame = new CGRect(ScaleUtility.GetScaledWidth(16), baseHeight - ScaleUtility.GetScaledHeight(64)
+                    , that.View.Frame.Width - ScaleUtility.GetScaledWidth(32), ScaleUtility.GetScaledHeight(48)),
+                Enabled = true,
+                BackgroundColor = MyTNBColor.FreshGreen,
+                Hidden = true,
+                Font = TNBFont.MuseoSans_16_500
+            };
+            _btnStart.SetTitle(GetI18NValue(SSMRConstants.I18N_StartApplication), UIControlState.Normal);
+
+            _btnStart.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 DisplaySSMRApplicationForm();
-            };
+            }));
             viewSkip.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 DisplaySSMRApplicationForm();
             }));
 
-            _viewBottomContainer.AddSubviews(new UIView[] { viewDontShow, viewSkip });
+            _viewBottomContainer.AddSubviews(new UIView[] { viewSkip });
             that.View.AddSubviews(new UIView[] { _viewBottomContainer, _btnStart });
         }
 
@@ -156,14 +143,6 @@ namespace myTNB.SSMR
             int dataCount = SSMRModelController.pageData.Count;
             _viewBottomContainer.Hidden = index == dataCount - 1;
             _btnStart.Hidden = index != dataCount - 1;
-        }
-
-        private void ResizeView(ref UIView view, ref UILabel lbl, nfloat maxWidth, nfloat maxHeight, bool isOriginalX = false)
-        {
-            CGSize size = GetLabelSize(lbl, maxWidth, maxHeight);
-            lbl.Frame = new CGRect(lbl.Frame.X, lbl.Frame.Y, size.Width, size.Height);
-            view.Frame = new CGRect(isOriginalX ? view.Frame.X : _viewBottomContainer.Frame.Width - size.Width
-                , view.Frame.Y, size.Width + lbl.Frame.X, size.Height);
         }
 
         private async void DisplaySSMRApplicationForm()

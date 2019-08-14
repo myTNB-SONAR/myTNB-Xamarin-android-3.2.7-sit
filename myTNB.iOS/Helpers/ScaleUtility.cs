@@ -27,6 +27,12 @@ namespace myTNB
             yValue = maxY + GetScaledHeight(yValue);
         }
 
+        public static nfloat GetYLocationFromFrame(CGRect frame, nfloat yValue)
+        {
+            nfloat maxY = frame.GetMaxY();
+            return maxY + GetScaledHeight(yValue);
+        }
+
         public static nfloat GetYLocationFromFrame(this nfloat yValue, CGRect frame)
         {
             nfloat maxY = frame.GetMaxY();
@@ -42,6 +48,13 @@ namespace myTNB
         public static nfloat BaseMarginWidth16
         {
             get { return GetScaledWidth(16F); }
+        }
+
+        public static void GetValuesFromAspectRatio(ref nfloat width, ref nfloat height)
+        {
+            nfloat aspectRatio = width / height;
+            width = GetScaledWidth(width);
+            height = width * aspectRatio;
         }
     }
 }

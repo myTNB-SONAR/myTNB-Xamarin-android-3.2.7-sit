@@ -565,12 +565,7 @@ namespace myTNB
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var isWalkthroughDone = sharedPreference.BoolForKey("isWalkthroughDone");
             GetUserEntity();
-            if (SSMRAccounts.IsHideOnboarding)
-            {
-                ApplySSMRWalkthroughEntity wsManager = new ApplySSMRWalkthroughEntity();
-                wsManager.DeleteTable();
-            }
-            else
+            if (!SSMRAccounts.IsHideOnboarding)
             {
                 await LoadSSMRWalkthrough();
             }
