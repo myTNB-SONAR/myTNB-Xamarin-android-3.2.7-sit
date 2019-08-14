@@ -74,7 +74,11 @@ namespace myTNB
             SetPreview();
             SetCamera();
             ToggleCTA();
-            DisplayTooltip();
+            if (!SSMRActivityInfoCache.Instance.IsPhotoToolTipDisplayed)
+            {
+                DisplayTooltip();
+                SSMRActivityInfoCache.Instance.IsPhotoToolTipDisplayed = true;
+            }
         }
 
         public override void ViewWillAppear(bool animated)
@@ -146,7 +150,7 @@ namespace myTNB
                         missingReading += _ontoList[i];
                         if (i != ontoCount - 1) { missingReading += ","; }
                     }
-                    description = ontoCount > 1 ? string.Format(description, ontoCount, missingReading) : string.Format(description, missingReading);
+                    description = ontoCount > 1 ? string.Format(description, ontoCount, missingReading) : description;
                 }
                 DisplayCustomAlert(popupData.Title, description, new Dictionary<string, Action> { { popupData.CTA, action } }, UIImage.FromBundle(image));
             }
