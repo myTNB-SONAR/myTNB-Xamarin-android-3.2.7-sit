@@ -267,35 +267,26 @@ namespace myTNB.DataManager
         }
 
         /// <summary>
-        /// Gets the linked accounts summary info.
+        /// Gets the linked CAs due amounts and due dates
         /// </summary>
-        /// <returns>The linked accounts summary info.</returns>
-        /// <param name="accountsList">Accounts list.</param>
-        public static async Task<AmountDueStatusResponseModel> GetLinkedAccountsSummaryInfo(List<string> accountsList)
+        /// <param name="accountsList"></param>
+        /// <returns></returns>
+        public static async Task<AmountDueStatusResponseModel> GetAccountsBillSummary(List<string> accountsList)
         {
             AmountDueStatusResponseModel response = null;
             ServiceManager serviceManager = new ServiceManager();
 
-            var userId = string.Empty;
-
-            if (DataManager.SharedInstance.UserEntity?.Count > 0)
-            {
-                userId = DataManager.SharedInstance.UserEntity[0].userID;
-            }
-
             object requestParameter = new
             {
-                apiKeyID = TNBGlobal.API_KEY_ID,
-                SSPUserId = userId,
-                accounts = accountsList ?? new List<string>()
+                accounts = accountsList ?? new List<string>(),
+                serviceManager.usrInf
             };
             response = await Task.Run(() =>
             {
-                return serviceManager.OnExecuteAPIV2<AmountDueStatusResponseModel>("GetLinkedAccountsSummaryInfo", requestParameter);
+                return serviceManager.OnExecuteAPIV6<AmountDueStatusResponseModel>("GetAccountsBillSummary", requestParameter);
             });
 
             return response;
-
         }
 
         /// <summary>
@@ -373,23 +364,10 @@ namespace myTNB.DataManager
             SMRAccountStatusResponseModel response = null;
             ServiceManager serviceManager = new ServiceManager();
 
-            object usrInf = new
-            {
-                eid = DataManager.SharedInstance.User.Email,
-                sspuid = DataManager.SharedInstance.User.UserID,
-                did = DataManager.SharedInstance.UDID,
-                ft = DataManager.SharedInstance.FCMToken,
-                lang = TNBGlobal.DEFAULT_LANGUAGE,
-                sec_auth_k1 = TNBGlobal.API_KEY_ID,
-                sec_auth_k2 = string.Empty,
-                ses_param1 = string.Empty,
-                ses_param2 = string.Empty
-            };
-
             object requestParameter = new
             {
                 contractAccounts = accountsList ?? new List<string>(),
-                usrInf
+                serviceManager.usrInf
             };
             response = await Task.Run(() =>
             {

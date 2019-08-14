@@ -2260,6 +2260,7 @@
     <Compile Include="Helpers\TNBFont.cs" />
     <Compile Include="Customs\CustomUIView.cs" />
     <Compile Include="Helpers\ScaleUtility.cs" />
+    <Compile Include="Model\Base Model\BaseModelRefresh.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
