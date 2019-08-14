@@ -48,16 +48,6 @@ namespace myTNB.Home.Dashboard.DashboardHome
 
         private void On_1002_Action()
         {
-            UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
-            SSMRCaptureMeterViewController viewController =
-                storyBoard.InstantiateViewController("SSMRCaptureMeterViewController") as SSMRCaptureMeterViewController;
-            viewController.ReadingDictionary = new Dictionary<string, bool> {
-                {"kwh", false },
-                {"kvarh",false },
-                {"kw",false }
-            };
-            var navController = new UINavigationController(viewController);
-            _controller.PresentViewController(navController, true, null);
         }
 
         private void On_1003_Action()
