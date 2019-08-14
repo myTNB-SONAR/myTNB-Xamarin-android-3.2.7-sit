@@ -20,7 +20,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
         int accountsCardContainer = 0;
         int MAX_ACCOUNT_PER_CARD = 5;
         Filter accountsFilter;
-        static HomeMenuContract.IHomeMenuView viewListener;
+        static HomeMenuFragment viewListener;
 
         List<List<AccountCardModel>> cardList = new List<List<AccountCardModel>>();
         List<AccountCardModel> accountModelList = new List<AccountCardModel>();
@@ -29,7 +29,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
         public AccountsRecyclerViewAdapter(HomeMenuContract.IHomeMenuView listener)
         {
-            viewListener = listener;
+            viewListener = listener as HomeMenuFragment;
 
             //BitmapFactory.Options dimensions = new BitmapFactory.Options();
             //dimensions.inJustDecodeBounds = true;
@@ -213,7 +213,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             foreach (AccountCardModel cardModel in accountCardModel)
             {
                 float scale = parentGroup.Context.Resources.DisplayMetrics.Density;
-                int width = (int)((deviceWidth - 32) * scale + 0.5f);
+                int width = viewListener.GetDeviceHorizontalScaleInPixel(0.9f);
                 LinearLayout.LayoutParams layoutParams;
                 if (cardList.Count > 1)
                 {
@@ -222,14 +222,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                     layoutParams.BottomMargin = (int)(10 * scale + 0.5f);
                     if (position == 0)
                     {
-                        layoutParams.LeftMargin = (int)(16 * scale + 0.5f);
-                        layoutParams.RightMargin = (int)(8* scale + 0.5f);
+                        layoutParams.LeftMargin = viewListener.GetDeviceHorizontalScaleInPixel(0.05f);
+                        layoutParams.RightMargin = viewListener.GetDeviceHorizontalScaleInPixel(0.025f);
                         viewHolder.linearLayout.LayoutParameters = layoutParams;
                     }
                     else
                     {
-                        layoutParams.RightMargin = (int)(8 * scale + 0.5f);
-                        layoutParams.RightMargin = (int)(8 * scale + 0.5f);
+                        layoutParams.RightMargin = viewListener.GetDeviceHorizontalScaleInPixel(0.025f);
+                        layoutParams.RightMargin = viewListener.GetDeviceHorizontalScaleInPixel(0.025f);
                         viewHolder.linearLayout.LayoutParameters = layoutParams;
                     }
                 }
@@ -237,8 +237,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 {
                     layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent,
                     LinearLayout.LayoutParams.WrapContent);
-                    layoutParams.LeftMargin = (int)(16 * scale + 0.5f);
-                    layoutParams.RightMargin = (int)(16 * scale + 0.5f);
+                    layoutParams.LeftMargin = viewListener.GetDeviceHorizontalScaleInPixel(0.05f);
+                    layoutParams.RightMargin = viewListener.GetDeviceHorizontalScaleInPixel(0.05f);
                     viewHolder.linearLayout.LayoutParameters = layoutParams;
                 }
 

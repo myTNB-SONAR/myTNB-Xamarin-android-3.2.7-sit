@@ -8,13 +8,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Helper
     {
         const string DATE_ORIGINAL_FORMAT = "dd/MM/yyyy";
         const string DATE_RESULT_FORMAT = "dd MMM";
-        static DecimalFormat decimalFormatter = new DecimalFormat("###,###,###,###,##0.00");
         private AccountModelFormatter()
         {
         }
 
         public static string GetFormatAmount(string amountDue)
         {
+            DecimalFormat decimalFormatter = new DecimalFormat("###,###,###,###,##0.00");
             string formattedValue = "";
             if (amountDue != null && amountDue != "")
             {
@@ -22,7 +22,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Helper
                 {
                     formattedValue = amountDue.Replace("-", "");
                 }
-                formattedValue = "RM " + decimalFormatter.Format(formattedValue);
+                else
+                {
+                    formattedValue = amountDue;
+                }
+                formattedValue = "RM " + decimalFormatter.Format(float.Parse(formattedValue));
             }
             return formattedValue;
         }
