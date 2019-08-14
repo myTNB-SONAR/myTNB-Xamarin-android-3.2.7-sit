@@ -39,9 +39,31 @@ namespace myTNB
             return refFrame.Height * (percentage / 100);
         }
 
+        public static nfloat BaseMarginWidth8
+        {
+            get { return GetScaledWidth(8F); }
+        }
+
+        public static nfloat BaseMarginWidth12
+        {
+            get { return GetScaledWidth(12F); }
+        }
+
         public static nfloat BaseMarginWidth16
         {
             get { return GetScaledWidth(16F); }
+        }
+
+        public static nfloat GetYLocationToCenterObject(nfloat objHeight, UIView parentView = null)
+        {
+            nfloat height = (parentView != null) ? parentView.Frame.Height : UIScreen.MainScreen.Bounds.Height;
+            return height / 2 - (objHeight / 2);
+        }
+
+        public static nfloat GetXLocationToCenterObject(nfloat objWidth, UIView parentView = null)
+        {
+            nfloat width = (parentView != null) ? parentView.Frame.Width : UIScreen.MainScreen.Bounds.Width;
+            return width / 2 - (objWidth / 2);
         }
     }
 }

@@ -56,7 +56,9 @@
         "paidExtra": "paid extra",
         "allCleared": "all cleared",
         "getBy": "get by",
-        "payBy": "pay by"
+        "payBy": "pay by",
+        "add": "Add",
+        "search": "Search"
     },
     "Tabbar": {
         "home": "Home",

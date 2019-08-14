@@ -22,16 +22,24 @@ namespace myTNB
         public bool _isRefreshScreenEnabled = false;
 
         nfloat padding = 8f;
-        nfloat searchPadding = 16f;
-        nfloat labelHeight = 24f;
-        nfloat imageWidth = 24f;
-        nfloat imageHeight = 24f;
+
+        nfloat iconWidth = ScaleUtility.GetScaledWidth(16f);
+        nfloat searchViewWidth = ScaleUtility.GetScaledWidth(82f);
+        nfloat searchViewHeight = ScaleUtility.GetScaledHeight(24f);
+        nfloat addAcctWidth = ScaleUtility.GetScaledWidth(66f);
+        nfloat addAcctHeight = ScaleUtility.GetScaledHeight(24f);
+        nfloat addAcctLabelWidth = ScaleUtility.GetScaledWidth(22f);
+        nfloat addAcctLabelHeight = ScaleUtility.GetScaledHeight(16f);
+        nfloat searchLblWidth = ScaleUtility.GetScaledWidth(38f);
+        nfloat searchLblHeight = ScaleUtility.GetScaledHeight(16f);
+        nfloat textViewHeight = ScaleUtility.GetScaledHeight(24f);
+        nfloat searchViewXPos, searchLblXPos;
 
         UIPageControl _pageControl;
         UIScrollView _accountsCardScrollView;
         int _currentPageIndex;
-        UIView _parentView, _searchView, _textFieldView;
-        UILabel _headerTitle;
+        UIView _parentView, _searchView, _textFieldView, _addContainerView, _searchContainerView;
+        UILabel _headerTitle, _addAcctLabel, _searchLabel;
         UIImageView _searchIcon, _addAccountIcon, _cancelSearchIcon;
         UITextField _textFieldSearch;
         bool _isSearchMode = false;
@@ -105,26 +113,114 @@ namespace myTNB
 
         private void SetSearchView()
         {
-            _searchView = new UIView(new CGRect(0, 0, _parentView.Frame.Width, DashboardHomeConstants.SearchViewHeight))
+            _searchView = new UIView(new CGRect(0, 0, _parentView.Frame.Width, GetScaledHeight(DashboardHomeConstants.SearchViewHeight)))
             {
                 BackgroundColor = UIColor.Clear
             };
 
-            _headerTitle = new UILabel(new CGRect(searchPadding, 0, 186f, labelHeight))
+            _headerTitle = new UILabel(new CGRect(BaseMarginWidth16, 0, GetScaledWidth(84f), GetScaledHeight(20f)))
             {
                 Font = MyTNBFont.MuseoSans14_500,
                 TextColor = UIColor.White,
-                Text = GetI18NValue(DashboardHomeConstants.I18N_MyAccts)
+                Text = GetI18NValue(DashboardHomeConstants.I18N_MyAccts),
+                BackgroundColor = UIColor.Clear
             };
 
-            var sideIconXValue = _searchView.Frame.Width - imageWidth - searchPadding;
-            _searchIcon = new UIImageView(new CGRect(sideIconXValue, 0, imageWidth, imageHeight))
+            searchViewXPos = _searchView.Frame.Width - searchViewWidth - BaseMarginWidth16;
+
+            _addContainerView = new UIView(new CGRect(NoPaginationNeeded() ? searchViewXPos : searchViewXPos - addAcctWidth - BaseMarginWidth8, 0, addAcctWidth, addAcctHeight))
             {
-                Image = UIImage.FromBundle(DashboardHomeConstants.Img_SearchIcon),
+                BackgroundColor = UIColor.White,
+                UserInteractionEnabled = true,
+                Hidden = _groupAccountList.Count <= 0
+            };
+            _addContainerView.Layer.CornerRadius = GetScaledHeight(12f);
+            _addContainerView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                OnAddAccountAction();
+            }));
+
+            _addAccountIcon = new UIImageView(new CGRect(BaseMarginWidth12, GetYLocationToCenterObject(iconWidth, _addContainerView), iconWidth, iconWidth))
+            {
+                Image = UIImage.FromBundle(DashboardHomeConstants.Img_AddAcctIconBlue),
+            };
+            _addContainerView.AddSubview(_addAccountIcon);
+
+            nfloat addAcctLblXPos = _addContainerView.Frame.Width - addAcctLabelWidth - BaseMarginWidth12;
+            _addAcctLabel = new UILabel(new CGRect(addAcctLblXPos, GetYLocationToCenterObject(addAcctLabelHeight, _addContainerView), addAcctLabelWidth, addAcctLabelHeight))
+            {
+                Font = MyTNBFont.MuseoSans12_500,
+                TextColor = MyTNBColor.WaterBlue,
+                Text = GetI18NValue(DashboardHomeConstants.I18N_Add),
+                TextAlignment = UITextAlignment.Center,
+                BackgroundColor = UIColor.Clear
+            };
+            _addContainerView.AddSubview(_addAcctLabel);
+
+            _searchContainerView = new UIView(new CGRect(searchViewXPos, 0, searchViewWidth, searchViewHeight))
+            {
+                BackgroundColor = UIColor.White,
                 UserInteractionEnabled = true,
                 Hidden = NoPaginationNeeded()
             };
-            _cancelSearchIcon = new UIImageView(new CGRect(sideIconXValue, DeviceHelper.GetCenterYWithObjHeight(16f, _searchView), 16f, 16f))
+            _searchContainerView.Layer.CornerRadius = GetScaledHeight(12f);
+            _searchContainerView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                OnSearchAction();
+            }));
+            _searchIcon = new UIImageView(new CGRect(BaseMarginWidth12, GetYLocationToCenterObject(iconWidth, _searchContainerView), iconWidth, iconWidth))
+            {
+                Image = UIImage.FromBundle(DashboardHomeConstants.Img_SearchIconBlue)
+            };
+            _searchContainerView.AddSubview(_searchIcon);
+
+            searchLblXPos = _searchContainerView.Frame.Width - searchLblWidth - BaseMarginWidth12;
+            _searchLabel = new UILabel(new CGRect(searchLblXPos, GetYLocationToCenterObject(searchLblHeight, _searchContainerView), searchLblWidth, searchLblHeight))
+            {
+                Font = MyTNBFont.MuseoSans12_500,
+                TextColor = MyTNBColor.WaterBlue,
+                Text = GetI18NValue(DashboardHomeConstants.I18N_Search),
+                TextAlignment = UITextAlignment.Center,
+                BackgroundColor = UIColor.Clear
+            };
+            _searchContainerView.AddSubview(_searchLabel);
+
+            nfloat textViewXPos = BaseMarginWidth16 + addAcctWidth + BaseMarginWidth8;
+            nfloat textViewWidth = _searchView.Frame.Width - textViewXPos - BaseMarginWidth16;
+            _textFieldView = new UIView(new CGRect(textViewXPos, 0, textViewWidth, textViewHeight))
+            {
+                BackgroundColor = UIColor.White,
+                UserInteractionEnabled = true
+            };
+            _textFieldView.Layer.CornerRadius = GetScaledHeight(12f);
+            _textFieldView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                if (!NoPaginationNeeded())
+                {
+                    OnTypeSearchAction();
+                }
+            }));
+            nfloat textFieldWidth = textViewWidth - BaseMarginWidth12 - iconWidth - BaseMarginWidth8;
+            _textFieldSearch = new UITextField(new CGRect(BaseMarginWidth12, 0, textFieldWidth, textViewHeight))
+            {
+                AttributedPlaceholder = new NSAttributedString(
+                    GetI18NValue(DashboardHomeConstants.I18N_SearchPlaceholder)
+                    , font: MyTNBFont.MuseoSans12_500
+                    , foregroundColor: MyTNBColor.VeryLightPinkTwo
+                    , strokeWidth: 0
+                ),
+                TextColor = MyTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans14_500,
+                BackgroundColor = UIColor.Clear
+            };
+            _textFieldHelper.SetKeyboard(_textFieldSearch);
+            _textFieldSearch.ReturnKeyType = UIReturnKeyType.Search;
+            _textFieldView.Hidden = true;
+
+            _textFieldView.AddSubview(_textFieldSearch);
+
+            nfloat cancelIconXPos = textViewWidth - iconWidth - BaseMarginWidth8;
+            _cancelSearchIcon = new UIImageView(new CGRect(cancelIconXPos, GetYLocationToCenterObject(iconWidth, _textFieldView), iconWidth, iconWidth))
             {
                 Image = UIImage.FromBundle(DashboardHomeConstants.Img_SearchCancelIcon),
                 UserInteractionEnabled = true,
@@ -134,62 +230,19 @@ namespace myTNB
             {
                 OnCancelSearchAction();
             }));
-            _searchIcon.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-            {
-                OnSearchAction();
-            }));
-            _addAccountIcon = new UIImageView(new CGRect(NoPaginationNeeded() ? sideIconXValue : sideIconXValue - imageWidth - 8f, 0, imageWidth, imageHeight))
-            {
-                Image = UIImage.FromBundle(DashboardHomeConstants.Img_AddIcon),
-                UserInteractionEnabled = true,
-                Hidden = _groupAccountList.Count <= 0
-            };
-            _addAccountIcon.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-            {
-                OnAddAccountAction();
-            }));
-            var spacing = searchPadding + imageWidth + 8f;
-            _textFieldView = new UIView(new CGRect(spacing, 0, _searchView.Frame.Width - spacing - searchPadding, 24f))
-            {
-                BackgroundColor = UIColor.White,
-                UserInteractionEnabled = true
-            };
-            _textFieldView.Layer.CornerRadius = 12f;
-            _textFieldView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-            {
-                if (!NoPaginationNeeded())
-                {
-                    OnTypeSearchAction();
-                }
-            }));
-            _textFieldSearch = new UITextField(new CGRect(12f, 0, _textFieldView.Frame.Width - 24f - imageWidth / 2, 24f))
-            {
-                AttributedPlaceholder = new NSAttributedString(
-                    GetI18NValue(DashboardHomeConstants.I18N_SearchPlaceholder)
-                    , font: MyTNBFont.MuseoSans12_500
-                    , foregroundColor: MyTNBColor.WhiteTwo
-                    , strokeWidth: 0
-                ),
-                TextColor = MyTNBColor.TunaGrey(),
-                Font = MyTNBFont.MuseoSans14_500
-            };
-            _textFieldHelper.SetKeyboard(_textFieldSearch);
-            _textFieldSearch.ReturnKeyType = UIReturnKeyType.Search;
-            _textFieldView.Hidden = true;
 
-            _textFieldView.AddSubview(_textFieldSearch);
             if (NoPaginationNeeded())
             {
                 _searchView.AddSubview(_headerTitle);
-                _searchView.AddSubview(_addAccountIcon);
+                _searchView.AddSubview(_addContainerView);
             }
             else
             {
                 _searchView.AddSubview(_headerTitle);
                 _searchView.AddSubview(_textFieldView);
-                _searchView.AddSubview(_addAccountIcon);
-                _searchView.AddSubview(_searchIcon);
-                _searchView.AddSubview(_cancelSearchIcon);
+                _searchView.AddSubview(_addContainerView);
+                _searchView.AddSubview(_searchContainerView);
+                _textFieldView.AddSubview(_cancelSearchIcon);
                 SetTextFieldEvents(_textFieldSearch);
             }
             _parentView.AddSubview(_searchView);
@@ -254,11 +307,10 @@ namespace myTNB
             }
             _headerTitle.Hidden = isSearchMode;
             _textFieldView.Hidden = !isSearchMode;
-            CGRect frame = _addAccountIcon.Frame;
-            var sideIconXValue = NoPaginationNeeded() ? _searchView.Frame.Width - imageWidth - searchPadding : _searchIcon.Frame.GetMinX() - imageWidth - 8f;
-            frame.X = isSearchMode ? searchPadding : sideIconXValue;
-            _addAccountIcon.Frame = frame;
-            _searchIcon.Hidden = isSearchMode;
+            CGRect frame = _addContainerView.Frame;
+            frame.X = isSearchMode ? BaseMarginWidth16 : searchViewXPos - addAcctWidth - BaseMarginWidth8;
+            _addContainerView.Frame = frame;
+            _searchContainerView.Hidden = isSearchMode;
             _cancelSearchIcon.Hidden = !isSearchMode;
         }
 

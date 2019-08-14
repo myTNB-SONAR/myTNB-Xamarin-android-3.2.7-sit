@@ -967,10 +967,6 @@
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\Search-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Add-Account-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Add-Account-Icon.imageset\Add-Account-Icon.png" />
-    <ImageAsset Include="Assets.xcassets\Add-Account-Icon.imageset\Add-Account-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Add-Account-Icon.imageset\Add-Account-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Search-Icon.imageset\Search-Icon.png" />
     <ImageAsset Include="Assets.xcassets\Search-Icon.imageset\Search-Icon2x.png" />
     <ImageAsset Include="Assets.xcassets\Search-Icon.imageset\Search-Icon3x.png" />
@@ -1104,6 +1100,14 @@
     <ImageAsset Include="Assets.xcassets\Search-Cancel-Icon.imageset\Search-Cancel-Icon.png" />
     <ImageAsset Include="Assets.xcassets\Search-Cancel-Icon.imageset\Search-Cancel-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Search-Cancel-Icon.imageset\Search-Cancel-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Icon-Blue.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Search-Icon-Blue.imageset\Search-Icon-Blue.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Icon-Blue.imageset\Search-Icon-Blue%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Icon-Blue.imageset\Search-Icon-Blue%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\Add-Icon-Blue.png" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\Add-Icon-Blue%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\Add-Icon-Blue%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1396,7 +1400,6 @@
     <Folder Include="Assets.xcassets\Accounts-Normal-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Search-Icon.imageset\" />
-    <Folder Include="Assets.xcassets\Add-Account-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Help-Background-1.imageset\" />
     <Folder Include="Assets.xcassets\Help-Background-2.imageset\" />
     <Folder Include="Assets.xcassets\Help-Background-3.imageset\" />
@@ -1460,6 +1463,10 @@
     <Folder Include="Customs\Custom View Controller\" />
     <Folder Include="Assets.xcassets\SMR-Closed-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Search-Cancel-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Add-Icon-Blue.imageset\" />
+    <Folder Include="Assets.xcassets\Search-Icon-Blue.imageset\" />
+    <Folder Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\" />
+    <Folder Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
