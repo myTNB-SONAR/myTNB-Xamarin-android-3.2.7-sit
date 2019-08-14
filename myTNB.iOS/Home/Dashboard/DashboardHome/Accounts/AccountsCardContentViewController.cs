@@ -21,7 +21,7 @@ namespace myTNB
         RefreshScreenInfoModel _refreshScreenInfoModel = new RefreshScreenInfoModel();
         public bool _isRefreshScreenEnabled = false;
 
-        nfloat padding = 8f;
+        nfloat padding = ScaleUtility.GetScaledWidth(8f);
 
         nfloat iconWidth = ScaleUtility.GetScaledWidth(16f);
         nfloat searchViewWidth = ScaleUtility.GetScaledWidth(82f);
@@ -513,8 +513,8 @@ namespace myTNB
             }
             else
             {
-                _refreshScreenInfoModel.RefreshBtnText = response?.RefreshBtnText ?? DashboardHomeConstants.I18N_RefreshBtnTxt;
-                _refreshScreenInfoModel.RefreshMessage = response?.RefreshMessage ?? DashboardHomeConstants.I18N_RefreshMsg;
+                _refreshScreenInfoModel.RefreshBtnText = response?.RefreshBtnText ?? GetI18NValue(DashboardHomeConstants.I18N_RefreshBtnTxt);
+                _refreshScreenInfoModel.RefreshMessage = response?.RefreshMessage ?? GetI18NValue(DashboardHomeConstants.I18N_RefreshMsg);
                 _homeViewController.ShowRefreshScreen(true, _refreshScreenInfoModel);
             }
             return currentIndex;
@@ -820,7 +820,7 @@ namespace myTNB
                 var groupAccountList = _groupAccountList[pageIndex];
                 for (int i = 0; i < groupAccountList.Count; i++)
                 {
-                    DashboardHomeAccountCard _homeAccountCard = new DashboardHomeAccountCard(this, containerView, (DeviceHelper.GetScaledHeight(60f) + 8f) * i);
+                    DashboardHomeAccountCard _homeAccountCard = new DashboardHomeAccountCard(this, containerView, (ScaleUtility.GetScaledHeight(60f) + ScaleUtility.GetScaledHeight(8f)) * i);
                     string iconName = DashboardHomeConstants.Img_SMIcon;
                     if (groupAccountList[i].IsReAccount)
                     {

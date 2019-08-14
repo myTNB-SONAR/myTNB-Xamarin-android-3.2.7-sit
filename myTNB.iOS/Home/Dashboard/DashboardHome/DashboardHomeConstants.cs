@@ -45,6 +45,7 @@ namespace myTNB
         public static string Img_REIcon = "Accounts-RE-Icon";
         public static string Img_SMRIcon = "Accounts-SMR-Icon";
         public static string Img_NormalIcon = "Accounts-Normal-Icon";
+        public static string Img_RefreshIcon = "Refresh-Icon";
 
         //PageName
         public static string PageName = "DashboardHome";

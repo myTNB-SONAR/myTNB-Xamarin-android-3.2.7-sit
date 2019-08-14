@@ -20,6 +20,9 @@ namespace myTNB
 
         public bool IsUpdating { set; get; }
 
+        nfloat labelHeight = 20f;
+        nfloat cardHeight = 60f;
+
         public DashboardHomeAccountCard(AccountsCardContentViewController controller, UIView parentView, nfloat yLocation)
         {
             _contentViewController = controller;
@@ -31,42 +34,45 @@ namespace myTNB
         {
             nfloat parentHeight = _parentView.Frame.Height;
             nfloat parentWidth = _parentView.Frame.Width;
-            nfloat padding = 16f;
-            nfloat margin = 16f;
+            nfloat padding = ScaleUtility.BaseMarginWidth16;
+            nfloat margin = ScaleUtility.BaseMarginWidth12;
+            nfloat iconWidth = ScaleUtility.GetScaledHeight(28f);
+            nfloat nickNameWidth = ScaleUtility.GetScaledWidth(150f);
+            nfloat labelWidth = ScaleUtility.GetScaledWidth(100f);
 
-            _accountCardView = new UIView(new CGRect(0, _yLocation + margin, parentWidth, DeviceHelper.GetScaledHeight(60f)))
+            _accountCardView = new UIView(new CGRect(0, _yLocation + padding, parentWidth, ScaleUtility.GetScaledHeight(cardHeight)))
             {
                 BackgroundColor = UIColor.White
             };
             AddCardShadow(ref _accountCardView);
 
-            _accountIcon = new UIImageView(new CGRect(12f, DeviceHelper.GetCenterYWithObjHeight(DeviceHelper.GetScaledHeight(28f), _accountCardView), DeviceHelper.GetScaledHeight(28f), DeviceHelper.GetScaledHeight(28f)))
+            _accountIcon = new UIImageView(new CGRect(margin, ScaleUtility.GetYLocationToCenterObject(iconWidth, _accountCardView), iconWidth, iconWidth))
             {
                 Image = UIImage.FromBundle(_strAccountIcon ?? string.Empty)
             };
 
-            _accountNickname = new UILabel(new CGRect(_accountIcon.Frame.GetMaxX() + 12f, DeviceHelper.GetCenterYWithObjHeight(40f, _accountCardView), 150f, 20f))
+            _accountNickname = new UILabel(new CGRect(_accountIcon.Frame.GetMaxX() + margin, ScaleUtility.GetYLocationToCenterObject(labelHeight * 2, _accountCardView), nickNameWidth, labelHeight))
             {
                 Font = MyTNBFont.MuseoSans14_500,
                 TextColor = MyTNBColor.GreyishBrown,
                 Text = _strNickname ?? string.Empty
             };
 
-            _accountNo = new UILabel(new CGRect(_accountIcon.Frame.GetMaxX() + 12f, _accountNickname.Frame.GetMaxY(), 110f, 20f))
+            _accountNo = new UILabel(new CGRect(_accountIcon.Frame.GetMaxX() + margin, _accountNickname.Frame.GetMaxY(), labelWidth, labelHeight))
             {
                 Font = MyTNBFont.MuseoSans12_300,
                 TextColor = MyTNBColor.CharcoalGrey,
                 Text = _strAccountNo ?? string.Empty
             };
 
-            _amountDue = new UILabel(new CGRect(parentWidth - 100f - 12f, DeviceHelper.GetCenterYWithObjHeight(40f, _accountCardView), 100f, 20f))
+            _amountDue = new UILabel(new CGRect(parentWidth - labelWidth - margin, ScaleUtility.GetYLocationToCenterObject(labelHeight * 2, _accountCardView), labelWidth, labelHeight))
             {
                 Font = MyTNBFont.MuseoSans14_500,
                 TextColor = MyTNBColor.GreyishBrown,
                 TextAlignment = UITextAlignment.Right
             };
 
-            _dueDate = new UILabel(new CGRect(parentWidth - 100f - 12f, _amountDue.Frame.GetMaxY(), 100f, 20f))
+            _dueDate = new UILabel(new CGRect(parentWidth - labelWidth - margin, _amountDue.Frame.GetMaxY(), labelWidth, labelHeight))
             {
                 Font = MyTNBFont.MuseoSans12_300,
                 TextColor = MyTNBColor.CharcoalGrey,
@@ -102,14 +108,16 @@ namespace myTNB
             _accountIcon.Image = IsUpdating ? null : UIImage.FromBundle(_strAccountIcon ?? string.Empty);
 
             _accountNickname.BackgroundColor = IsUpdating ? MyTNBColor.PowderBlue : UIColor.Clear;
-            _accountNickname.Frame = IsUpdating ? new CGRect(_accountNickname.Frame.X, DeviceHelper.GetCenterYWithObjHeight(28f, _accountCardView), _accountNickname.Frame.Width, 14)
-                : new CGRect(_accountNickname.Frame.X, DeviceHelper.GetCenterYWithObjHeight(40f, _accountCardView), _accountNickname.Frame.Width, 20);
+            _accountNickname.Frame = IsUpdating ? new CGRect(_accountNickname.Frame.X, ScaleUtility.GetYLocationToCenterObject(ScaleUtility.GetScaledHeight(28f), _accountCardView), _accountNo.Frame.Width, ScaleUtility.GetScaledHeight(14f))
+                : new CGRect(_accountNickname.Frame.X, ScaleUtility.GetYLocationToCenterObject(labelHeight * 2, _accountCardView), _accountNickname.Frame.Width, labelHeight);
             _accountNickname.Text = IsUpdating ? string.Empty : _strNickname ?? string.Empty;
+            _accountNickname.Layer.CornerRadius = IsUpdating ? 10f : 0f;
 
             _accountNo.BackgroundColor = IsUpdating ? MyTNBColor.PowderBlue : UIColor.Clear;
-            _accountNo.Frame = IsUpdating ? new CGRect(_accountNo.Frame.X, _accountNickname.Frame.GetMaxY() + 6, _accountNo.Frame.Width, 8)
-                : new CGRect(_accountNo.Frame.X, _accountNickname.Frame.GetMaxY(), _accountNo.Frame.Width, 20);
+            _accountNo.Frame = IsUpdating ? new CGRect(_accountNo.Frame.X, _accountNickname.Frame.GetMaxY() + ScaleUtility.GetScaledHeight(6f), _accountNo.Frame.Width - ScaleUtility.BaseMarginWidth16, ScaleUtility.GetScaledHeight(8f))
+                : new CGRect(_accountNo.Frame.X, _accountNickname.Frame.GetMaxY(), _accountNo.Frame.Width, labelHeight);
             _accountNo.Text = IsUpdating ? string.Empty : _strAccountNo ?? string.Empty;
+            _accountNo.Layer.CornerRadius = IsUpdating ? 10f : 0f;
 
             AdjustLabels(model);
         }
@@ -157,18 +165,20 @@ namespace myTNB
                 _amountDue.Text = string.Empty;
                 _dueDate.Text = string.Empty;
                 _amountDue.BackgroundColor = MyTNBColor.PowderBlue;
-                _amountDue.Frame = new CGRect(_amountDue.Frame.X, DeviceHelper.GetCenterYWithObjHeight(28f, _accountCardView), _amountDue.Frame.Width, 14);
+                _amountDue.Frame = new CGRect(_amountDue.Frame.X, ScaleUtility.GetYLocationToCenterObject(ScaleUtility.GetScaledHeight(28f), _accountCardView), _dueDate.Frame.Width, ScaleUtility.GetScaledHeight(14f));
+                _amountDue.Layer.CornerRadius = 10f;
                 _dueDate.BackgroundColor = MyTNBColor.PowderBlue;
-                _dueDate.Frame = new CGRect(_dueDate.Frame.X, _amountDue.Frame.GetMaxY() + 6, _dueDate.Frame.Width, 8);
-
+                _dueDate.Frame = new CGRect(_dueDate.Frame.X + ScaleUtility.BaseMarginWidth16, _amountDue.Frame.GetMaxY() + ScaleUtility.GetScaledHeight(6f), _dueDate.Frame.Width - ScaleUtility.BaseMarginWidth16, ScaleUtility.GetScaledHeight(8f));
+                _dueDate.Layer.CornerRadius = 10f;
             }
             else
             {
                 _amountDue.BackgroundColor = UIColor.Clear;
-                _amountDue.Frame = new CGRect(_amountDue.Frame.X, DeviceHelper.GetCenterYWithObjHeight(40f, _accountCardView), _amountDue.Frame.Width, 20);
+                _amountDue.Frame = new CGRect(_amountDue.Frame.X, ScaleUtility.GetYLocationToCenterObject(labelHeight * 2, _accountCardView), _amountDue.Frame.Width, labelHeight);
+                _amountDue.Layer.CornerRadius = 0f;
                 _dueDate.BackgroundColor = UIColor.Clear;
-                _dueDate.Frame = new CGRect(_dueDate.Frame.X, _amountDue.Frame.GetMaxY(), _dueDate.Frame.Width, 20);
-
+                _dueDate.Frame = new CGRect(_dueDate.Frame.X, _amountDue.Frame.GetMaxY(), _dueDate.Frame.Width, labelHeight);
+                _dueDate.Layer.CornerRadius = 0f;
                 if (model != null)
                 {
                     var amount = !model.IsReAccount ? model.amountDue : ChartHelper.UpdateValueForRE(model.amountDue);

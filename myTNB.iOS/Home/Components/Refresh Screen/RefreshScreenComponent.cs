@@ -9,6 +9,7 @@ namespace myTNB.Home.Components
     public class RefreshScreenComponent
     {
         private readonly UIView _parentView;
+        DashboardHomeViewController _dashboardHomeViewController;
         UIView _viewContainer;
         UIImageView _iconView;
         UITextView _txtDescription;
@@ -20,8 +21,9 @@ namespace myTNB.Home.Components
         string _buttonText;
         bool _isBtnHidden;
 
-        public RefreshScreenComponent(UIView parentView)
+        public RefreshScreenComponent(DashboardHomeViewController dashboardHomeViewController, UIView parentView)
         {
+            _dashboardHomeViewController = dashboardHomeViewController;
             _parentView = parentView;
         }
 
@@ -36,14 +38,14 @@ namespace myTNB.Home.Components
                 BackgroundColor = UIColor.Clear
             };
 
-            float iconWidth = DeviceHelper.GetScaledWidth(138f);
-            _iconView = new UIImageView(new CGRect(DeviceHelper.GetCenterXWithObjWidth(iconWidth, _viewContainer), iconYPos, iconWidth, DeviceHelper.GetScaledHeight(138.0f)))
+            nfloat iconWidth = ScaleUtility.GetScaledWidth(138f);
+            _iconView = new UIImageView(new CGRect(ScaleUtility.GetXLocationToCenterObject(iconWidth, _viewContainer), iconYPos, iconWidth, iconWidth))
             {
-                Image = UIImage.FromBundle("Refresh-Icon")
+                Image = UIImage.FromBundle(DashboardHomeConstants.Img_RefreshIcon)
             };
 
-            var descMsg = _descriptionMessage ?? string.Empty;
-            var btnText = _buttonText ?? "Error_RefreshBtnTitle".Translate();
+            var descMsg = _descriptionMessage ?? _dashboardHomeViewController.GetI18NValue(DashboardHomeConstants.I18N_RefreshMsg);
+            var btnText = _buttonText ?? _dashboardHomeViewController.GetI18NValue(DashboardHomeConstants.I18N_RefreshBtnTxt);
 
             NSMutableParagraphStyle msgParagraphStyle = new NSMutableParagraphStyle
             {
@@ -66,13 +68,13 @@ namespace myTNB.Home.Components
                 BackgroundColor = UIColor.Clear
             };
 
-            nfloat descPadding = 32f;
-            nfloat buttonPadding = 16f;
+            nfloat descPadding = ScaleUtility.GetScaledWidth(32f);
+            nfloat buttonPadding = ScaleUtility.GetScaledWidth(16f);
             nfloat labelWidth = (float)(_viewContainer.Frame.Width - (descPadding * 2));
             nfloat buttonWidth = (float)(_viewContainer.Frame.Width - (buttonPadding * 2));
-            float buttonHeight = 48f;
+            nfloat buttonHeight = ScaleUtility.GetScaledHeight(48f);
 
-            _txtDescription = new UITextView(new CGRect(descPadding, _iconView.Frame.GetMaxY() + 16f, labelWidth, 90f))
+            _txtDescription = new UITextView(new CGRect(descPadding, _iconView.Frame.GetMaxY() + ScaleUtility.BaseMarginWidth16, labelWidth, 90f))
             {
                 BackgroundColor = UIColor.Clear,
                 Editable = false,
@@ -138,11 +140,11 @@ namespace myTNB.Home.Components
             }
 
             CGSize cGSize = _txtDescription.SizeThatFits(new CGSize(labelWidth, 1000f));
-            _txtDescription.Frame = new CGRect(descPadding, _iconView.Frame.GetMaxY() + 16f, labelWidth, cGSize.Height);
+            _txtDescription.Frame = new CGRect(descPadding, _iconView.Frame.GetMaxY() + ScaleUtility.BaseMarginWidth16, labelWidth, cGSize.Height);
 
             _btnRefresh = new UIButton(UIButtonType.Custom)
             {
-                Frame = new CGRect(buttonPadding, _txtDescription.Frame.GetMaxY() + buttonPadding, buttonWidth, DeviceHelper.GetScaledHeight(buttonHeight)),
+                Frame = new CGRect(buttonPadding, _txtDescription.Frame.GetMaxY() + buttonPadding, buttonWidth, buttonHeight),
                 Hidden = _isBtnHidden,
                 BackgroundColor = MyTNBColor.FreshGreen,
                 Font = MyTNBFont.MuseoSans16_500
@@ -192,7 +194,7 @@ namespace myTNB.Home.Components
         private void AdjustContainerHeight()
         {
             CGRect frame = _viewContainer.Frame;
-            frame.Height = _isBtnHidden ? _txtDescription.Frame.GetMaxY() + 16f : _btnRefresh.Frame.GetMaxY() + 16f;
+            frame.Height = _isBtnHidden ? _txtDescription.Frame.GetMaxY() + ScaleUtility.BaseMarginWidth16 : _btnRefresh.Frame.GetMaxY() + ScaleUtility.BaseMarginWidth16;
             _viewContainer.Frame = frame;
         }
 
