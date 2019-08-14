@@ -132,30 +132,62 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 										LoadSMUsageHistory(customerBillingAccount);
 								}
 							}
-						}
+                            if (customerBillingAccount != null)
+                            {
+                                List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
+                                bool enableDropDown = accountList.Count > 0 ? true : false;
+
+                                if (customerBillingAccount.AccountCategoryId.Equals("2"))
+                                {
+                                    this.mView.ShowREAccount(enableDropDown);
+                                }
+                                else
+                                {
+                                    this.mView.EnableDropDown(enableDropDown);
+                                }
+                                this.mView.SetAccountName(customerBillingAccount.AccDesc);
+                            }
+                        }
 						else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
 						{
                             this.mView.ShowAccountName();
 							this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
 							this.mView.ShowBillMenu(selectedAccount);
 
-						}
+                            if (customerBillingAccount != null)
+                            {
+                                List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
+                                bool enableDropDown = accountList.Count > 0 ? true : false;
 
-						if (customerBillingAccount != null)
-						{
-							List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
-							bool enableDropDown = accountList.Count > 0 ? true : false;
+                                if (customerBillingAccount.AccountCategoryId.Equals("2"))
+                                {
+                                    this.mView.ShowREAccount(enableDropDown);
+                                }
+                                else
+                                {
+                                    this.mView.EnableDropDown(enableDropDown);
+                                }
+                                this.mView.SetAccountName(customerBillingAccount.AccDesc);
+                            }
+                        }
+                        else
+                        {
+                            if (customerBillingAccount != null)
+                            {
+                                List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
+                                bool enableDropDown = accountList.Count > 0 ? true : false;
 
-							if (customerBillingAccount.AccountCategoryId.Equals("2"))
-							{
-								this.mView.ShowREAccount(enableDropDown);
-							}
-							else
-							{
-								this.mView.EnableDropDown(enableDropDown);
-							}
-							this.mView.SetAccountName(customerBillingAccount.AccDesc);
-						}
+                                if (customerBillingAccount.AccountCategoryId.Equals("2"))
+                                {
+                                    this.mView.ShowREAccount(enableDropDown);
+                                }
+                                else
+                                {
+                                    this.mView.EnableDropDown(enableDropDown);
+                                }
+                                this.mView.SetAccountName(customerBillingAccount.AccDesc);
+                            }
+                        }
 
 					}
 					// NO INTERNET RESPONSE
@@ -349,16 +381,16 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 						if (CustomerBillingAccount.HasSelected())
 						{
 							selected = CustomerBillingAccount.GetSelected();
-							LoadBills(selected);
-							this.mView.SetAccountName(selected.AccDesc);
-						}
+                            PreNavigateBllMenu(selected);
+                            this.mView.SetAccountName(selected.AccDesc);
+                        }
 						else
 						{
 							CustomerBillingAccount.SetSelected(accountList[0].AccNum);
-							selected = CustomerBillingAccount.GetSelected();
-							LoadBills(accountList[0]);
-							this.mView.SetAccountName(accountList[0].AccDesc);
-						}
+							selected = accountList[0];
+                            PreNavigateBllMenu(selected);
+                            this.mView.SetAccountName(accountList[0].AccDesc);
+                        }
                         if (selected.AccountCategoryId.Equals("2"))
 						{
 							this.mView.ShowREAccount(true);
@@ -367,8 +399,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 						{
 							this.mView.EnableDropDown(true);
 						}
+                        LoadBills(selected);
 
-					}
+                    }
 					else
 					{
                         this.mView.DisableBillMenu();
@@ -875,7 +908,25 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			this.mView.ShowNotificationCount(UserNotificationEntity.Count());
 		}
 
-		private void NavigateBllMenu(CustomerBillingAccount selectedAccount, bool hasError, AccountDetailsResponse response)
+        private void PreNavigateBllMenu(CustomerBillingAccount selectedAccount)
+        {
+            try
+            {
+                AccountData accountData = AccountData.Copy(selectedAccount, true);
+                this.mView.SetAccountName(selectedAccount.AccDesc);
+                this.mView.PreShowBillMenu(accountData);
+                this.mView.ShowAccountName();
+                this.mView.ShowHideActionBar(true);
+                this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
+                currentBottomNavigationMenu = Resource.Id.menu_bill;
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void NavigateBllMenu(CustomerBillingAccount selectedAccount, bool hasError, AccountDetailsResponse response)
 		{
 			try
 			{
@@ -1191,6 +1242,44 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         public int CheckCurrentDashboardMenu()
         {
             return currentBottomNavigationMenu;
+        }
+
+        public void BillMenuStartRefresh()
+        {
+            ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+
+            List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
+            if (accountList.Count > 0)
+            {
+                CustomerBillingAccount selected;
+                if (CustomerBillingAccount.HasSelected())
+                {
+                    selected = CustomerBillingAccount.GetSelected();
+                    PreNavigateBllMenu(selected);
+                    this.mView.SetAccountName(selected.AccDesc);
+                }
+                else
+                {
+                    CustomerBillingAccount.SetSelected(accountList[0].AccNum);
+                    selected = accountList[0];
+                    PreNavigateBllMenu(selected);
+                    this.mView.SetAccountName(accountList[0].AccDesc);
+                }
+                if (selected.AccountCategoryId.Equals("2"))
+                {
+                    this.mView.ShowREAccount(true);
+                }
+                else
+                {
+                    this.mView.EnableDropDown(true);
+                }
+                LoadBills(selected);
+
+            }
+            else
+            {
+                this.mView.DisableBillMenu();
+            }
         }
 
     }

@@ -210,6 +210,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             void ShowToBeAddedToast();
 
+            void PreShowBillMenu(AccountData selectedAccount);
+
         }
 
 		public interface IUserActionsListener : IBasePresenter
@@ -269,6 +271,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             int CheckCurrentDashboardMenu();
 
+            void BillMenuStartRefresh();
         }
 	}
 }
