@@ -200,7 +200,7 @@
         "navTitle": "Select Electricity Account",
         "accountsMissing": "Why are some of my accounts not here?",
         "accountMissingTitle": "Why are some of my accounts not here?",
-        "accountMissingDescription": "We took the liberty to only show you electricity accounts that are eligble for the Self Meter Reading service. <a href=\"inAppBrowser=www.google.com\">Click here</a> to learn more about its eligibility.",
+        "accountMissingDescription": "We took the liberty to only show you electricity accounts that are eligble for the Self Meter Reading service. <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.tnb.com.my/residential/billing/self-meter-reading/how-to-read-your-energy-meter\">Click Here</a> to learn more about its eligibility.",
         "accountMissingCTA": "Got It!"
     }
 }
