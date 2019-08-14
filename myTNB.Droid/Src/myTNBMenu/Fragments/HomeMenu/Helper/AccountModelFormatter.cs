@@ -15,12 +15,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Helper
 
         public static string GetFormatAmount(string amountDue)
         {
-            string formattedValue = amountDue;
-            if (amountDue.Contains("-"))
+            string formattedValue = "";
+            if (amountDue != null && amountDue != "")
             {
-                formattedValue = amountDue.Replace("-", "");
+                if (amountDue.Contains("-"))
+                {
+                    formattedValue = amountDue.Replace("-", "");
+                }
+                formattedValue = "RM " + decimalFormatter.Format(formattedValue);
             }
-            return "RM " + decimalFormatter.Format(formattedValue);
+            return formattedValue;
         }
 
         public static string GetBillDueNote(int accountType, string amountDue, string dueDate, bool isTaggedSMR)

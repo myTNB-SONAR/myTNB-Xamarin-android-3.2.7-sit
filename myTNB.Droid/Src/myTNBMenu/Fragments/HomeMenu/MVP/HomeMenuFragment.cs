@@ -155,6 +155,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.searchActionContainer)]
         LinearLayout searchActionContainer;
 
+        [BindView(Resource.Id.accountsActionsContainer)]
+        LinearLayout accountsActionsContainer;
+
         AccountsRecyclerViewAdapter accountsAdapter;
 
         private string mSavedTimeStamp = "0000000";
@@ -481,6 +484,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 searchActionContainer.Visibility = ViewStates.Gone;
                 searchEditText.OnActionViewExpanded();
                 searchEditText.RequestFocus();
+                if (searchEditText.Query != "")
+                {
+                    searchEditText.SetBackgroundResource(Resource.Drawable.rectangle_rounded_corner_bg);
+                }
+                else
+                {
+                    searchEditText.SetBackgroundResource(Resource.Drawable.search_edit_bg);
+                }
             }
             else
             {
@@ -517,12 +528,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private void SetAccountActionHeader()
         {
+            LinearLayout.LayoutParams param = (LinearLayout.LayoutParams)accountsActionsContainer.LayoutParameters;
+            param.LeftMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+            param.RightMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+
             TextViewUtils.SetMuseoSans500Typeface(accountHeaderTitle, accountGreeting, accountGreetingName);
             searchEditText.SetOnQueryTextListener(new AccountsSearchOnQueryTextListener(this,accountsAdapter));
             searchEditText.SetOnQueryTextFocusChangeListener(new SearchViewOnFocusChange(this));
             int closeViewId = searchEditText.Context.Resources.GetIdentifier("android:id/search_close_btn", null, null);
             ImageView closeImageView = searchEditText.FindViewById<ImageView>(closeViewId);
             closeImageView.SetPadding(0, 0, 0, 0);
+
+
             searchEditText.SetOnCloseListener(new CloseClickListener());
             searchActionContainer.Click += (s, e) =>
             {
