@@ -304,7 +304,7 @@ namespace myTNB
         {
             nfloat height = GetScaledHeight(48);
             CGSize size = new CGSize(BaseMarginedWidth, height);
-            CGPoint point = new CGPoint(BaseMargin, isPrimary ? ViewHeight - height : ViewHeight - ((height * 2) + GetScaledHeight(16)));
+            CGPoint point = new CGPoint(BaseMargin, isPrimary ? ViewHeight - height : ViewHeight - ((height * 2) + GetScaledHeight(6)));
             btn = new CustomUIButtonV2(isWhiteBG)
             {
                 Frame = new CGRect(point, size)
