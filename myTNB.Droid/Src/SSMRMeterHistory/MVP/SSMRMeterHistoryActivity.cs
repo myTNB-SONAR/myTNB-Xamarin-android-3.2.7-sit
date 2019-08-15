@@ -149,7 +149,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     }
                 }
 
- 
+
             }
             catch (Exception e)
 			{
@@ -171,12 +171,12 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             base.OnActivityResult(requestCode, resultCode, data);
         }
 
-        public override bool OnCreateOptionsMenu(IMenu menu)
-        {
-            MenuInflater.Inflate(Resource.Menu.SSMRMeterReadingMenu, menu);
-            ssmrMenu = menu;
-            return base.OnCreateOptionsMenu(menu);
-        }
+        // public override bool OnCreateOptionsMenu(IMenu menu)
+        // {
+        //     MenuInflater.Inflate(Resource.Menu.SSMRMeterReadingMenu, menu);
+        //     ssmrMenu = menu;
+        //     return base.OnCreateOptionsMenu(menu);
+        // }
 
 
         public override bool OnOptionsItemSelected(IMenuItem item)
