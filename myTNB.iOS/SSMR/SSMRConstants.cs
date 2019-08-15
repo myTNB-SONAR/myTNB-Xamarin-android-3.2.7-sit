@@ -122,6 +122,8 @@ namespace myTNB.SSMR
         public static string I18N_ToolTipDesc1 = "tooltipDescription1";
         public static string I18N_ToolTipDesc2 = "tooltipDescription2";
         public static string I18N_ToolTipDesc3 = "tooltipDescription3";
+        public static string I18N_ToolTipDesc4 = "tooltipDescription4";
+        public static string I18N_ToolTipDesc5 = "tooltipDescription5";
         public static string I18N_ImReady = "imReady";
 
         //Patterns

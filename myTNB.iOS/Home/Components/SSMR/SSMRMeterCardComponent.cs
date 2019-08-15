@@ -69,6 +69,7 @@ namespace myTNB
             {
                 BackgroundColor = UIColor.Clear
             };
+            _viewBoxContainer.Layer.CornerRadius = 4f;
             for (int i = 0; i < boxMaxCount; i++)
             {
                 _viewBoxContainer.AddSubview(CreateViewBox(_viewBoxContainer, i));
@@ -182,7 +183,8 @@ namespace myTNB
             UIView viewBox = new UIView(new CGRect(xPos, 0, width, height))
             {
                 BackgroundColor = MyTNBColor.VeryLightPinkFour,
-                Tag = boxMaxCount - index
+                Tag = boxMaxCount - index,
+                ClipsToBounds = false
             };
             UITextField txtFieldDigit = new UITextField(new CGRect(0, 0, width, height))
             {
@@ -408,52 +410,39 @@ namespace myTNB
 
         private void ValidateTextField()
         {
-            int len = _meterReadingValue.Length;
-            if (len > 0)
+            if (!string.IsNullOrEmpty(_meterReadingValue) && !string.IsNullOrWhiteSpace(_meterReadingValue))
             {
-                if (double.TryParse(_meterReadingValue, out double currentValue))
-                {
-                    string currentReadingValue = currentValue.ToString("0.00", CultureInfo.InvariantCulture);
-                    _controller.SetCurrentReadingValue(_model, currentReadingValue);
-                }
+                double.TryParse(_meterReadingValue, out double currentValue);
+                _controller.SetCurrentReadingValue(_model, currentValue.ToString());
             }
+            else
+            {
+                _controller.SetCurrentReadingValue(_model, string.Empty);
+            }
+
+            _controller.SetIsValidManualReadingFlags(_model, false);
         }
 
-        public void UpdateUI(bool isError, string message, double currentReading)
+        public void UpdateUI(bool isError, string message, string currentReading)
         {
             if (isError)
             {
                 _errorLabel.Hidden = false;
                 _errorLabel.Text = message ?? string.Empty;
-                CGRect iconFrame = _iconView.Frame;
-                iconFrame.Y = _errorLabel.Frame.GetMaxY() + 8f;
-                _iconView.Frame = iconFrame;
                 _iconView.BackgroundColor = MyTNBColor.Tomato;
-
-                CGRect containerFrame = _containerView.Frame;
-                containerFrame.Height = _iconView.Frame.GetMaxY() + 8f;
-                _containerView.Frame = containerFrame;
             }
             else
             {
                 _errorLabel.Hidden = true;
                 _errorLabel.Text = string.Empty;
-                CGRect iconFrame = _iconView.Frame;
-                iconFrame.Y = _iconYposOriginal;
-                _iconView.Frame = iconFrame;
                 _iconView.BackgroundColor = MyTNBColor.FreshGreen;
-
-                CGRect containerFrame = _containerView.Frame;
-                containerFrame.Height = _containerHeightOriginal;
-                _containerView.Frame = containerFrame;
             }
             AddCardShadow(ref _containerView);
             UpdateTextFieldTextColor(isError);
             _controller.SetIsValidManualReadingFlags(_model, isError);
             if (!isError)
             {
-                string currentReadingValue = currentReading.ToString("0.00", CultureInfo.InvariantCulture);
-                _controller.SetCurrentReadingValue(_model, currentReadingValue);
+                _controller.SetCurrentReadingValue(_model, currentReading);
             }
         }
 
@@ -510,38 +499,60 @@ namespace myTNB
         {
             if (!string.IsNullOrEmpty(readingStr) && !string.IsNullOrWhiteSpace(readingStr))
             {
-                string readingString = string.Empty;
-                string[] readingList = readingStr.Split(".");
-                if (readingList.Length > 1)
+                if (readingStr.Length > 0)
                 {
-                    readingString = readingList[0] + readingList[1];
-                }
-                else
-                {
-                    readingString = readingList[0] + "0";
-                }
-
-                var readingValueLength = readingString.Length - 1;
-                for (int i = 0; i < readingString.Length; i++)
-                {
-                    UIView[] subViews = _viewBoxContainer.Subviews;
-                    foreach (UIView view in subViews)
+                    var readingValueLength = readingStr.Length - 1;
+                    for (int i = 0; i < readingStr.Length; i++)
                     {
-                        if (view.Tag == (i + 1))
+                        UIView[] subViews = _viewBoxContainer.Subviews;
+                        foreach (UIView view in subViews)
                         {
-                            UIView[] subSubViews = view.Subviews;
-                            if (subSubViews.Length > 0)
+                            if (view.Tag == (i + 1))
                             {
-                                UITextField txtField = subSubViews[0] as UITextField;
-                                txtField.Enabled = true;
-                                txtField.Text = readingString.Substring(readingValueLength - i, 1);
+                                UIView[] subSubViews = view.Subviews;
+                                if (subSubViews.Length > 0)
+                                {
+                                    UITextField txtField = subSubViews[0] as UITextField;
+                                    txtField.Enabled = true;
+                                    txtField.Text = readingStr.Substring(readingValueLength - i, 1);
+                                }
+                                break;
                             }
-                            break;
                         }
                     }
                 }
-                _meterReadingValue = readingString;
+                _meterReadingValue = readingStr;
                 ValidateTextField();
+            }
+        }
+
+        public void UpdateMeterReadingValueFromSubmission(string readingStr)
+        {
+            if (!string.IsNullOrEmpty(readingStr) && !string.IsNullOrWhiteSpace(readingStr))
+            {
+                if (readingStr.Length > 0)
+                {
+                    var readingValueLength = readingStr.Length - 1;
+                    for (int i = 0; i < readingStr.Length; i++)
+                    {
+                        UIView[] subViews = _viewBoxContainer.Subviews;
+                        foreach (UIView view in subViews)
+                        {
+                            if (view.Tag == (i + 1))
+                            {
+                                UIView[] subSubViews = view.Subviews;
+                                if (subSubViews.Length > 0)
+                                {
+                                    UITextField txtField = subSubViews[0] as UITextField;
+                                    txtField.Enabled = true;
+                                    txtField.Text = readingStr.Substring(readingValueLength - i, 1);
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+                _meterReadingValue = readingStr;
             }
         }
 
@@ -550,7 +561,7 @@ namespace myTNB
             view.Layer.CornerRadius = 5f;
             view.Layer.MasksToBounds = false;
             view.Layer.ShadowColor = MyTNBColor.BabyBlue60.CGColor;
-            view.Layer.ShadowOpacity = 0.32f;
+            view.Layer.ShadowOpacity = 1f;
             view.Layer.ShadowOffset = new CGSize(0, 8);
             view.Layer.ShadowRadius = 8;
             view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
