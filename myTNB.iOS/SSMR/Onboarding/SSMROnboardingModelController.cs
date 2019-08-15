@@ -34,14 +34,6 @@ namespace myTNB.SSMR
                 Description = GetI18NValue(SSMRConstants.I18N_Description2),
             };
             pageData.Add(item2);
-
-            var item3 = new SSMROnboardingModel
-            {
-                Image = SSMRConstants.IMG_BGOnboarding3,
-                Title = GetI18NValue(SSMRConstants.I18N_Title3),
-                Description = GetI18NValue(SSMRConstants.I18N_Description3),
-            };
-            pageData.Add(item3);
         }
 
         public Task SetPageData()

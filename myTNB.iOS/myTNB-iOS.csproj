@@ -981,7 +981,6 @@
     <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_3.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Circle-With-Check-Green.imageset\icDisplaySuccessful.png" />
     <ImageAsset Include="Assets.xcassets\Circle-With-Check-Green.imageset\icDisplaySuccessful%402x.png" />
     <ImageAsset Include="Assets.xcassets\Circle-With-Check-Green.imageset\icDisplaySuccessful%403x.png" />
@@ -1000,15 +999,6 @@
     <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\oval.png" />
     <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\oval%402x.png" />
     <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\oval%403x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\onboardingBg1-1.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\onboardingBg1%402x-1.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\onboardingBg1%403x-1.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\onboardingBg2.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\onboardingBg2%402x-1.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\onboardingBg2%403x-1.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_3.imageset\onboardingBg3-1.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_3.imageset\onboardingBg3%402x-1.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_3.imageset\onboardingBg3%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\Accounts-SMR-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Accounts-SMR-Icon.imageset\Accounts-SMR-Icon.png" />
     <ImageAsset Include="Assets.xcassets\Accounts-SMR-Icon.imageset\Accounts-SMR-Icon%402x.png" />
@@ -1115,6 +1105,12 @@
     <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\smrOnboarding1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\smrOnboarding1%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\smrOnboarding1%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />

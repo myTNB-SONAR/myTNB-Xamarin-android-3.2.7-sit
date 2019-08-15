@@ -28,6 +28,8 @@ namespace myTNB.Home.Dashboard.DashboardHome
         {
             if (SSMRAccounts.IsHideOnboarding)
             {
+                SSMRAccounts.SetEligibleAccounts();
+
                 UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
                 SSMRApplicationViewController viewController =
                     storyBoard.InstantiateViewController("SSMRApplicationViewController") as SSMRApplicationViewController;

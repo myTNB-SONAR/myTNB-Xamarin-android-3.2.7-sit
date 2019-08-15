@@ -10,6 +10,8 @@ namespace myTNB
         private static readonly Lazy<SSMRAccounts> lazy = new Lazy<SSMRAccounts>(() => new SSMRAccounts());
         public static SSMRAccounts Instance { get { return lazy.Value; } }
         private static List<CustomerAccountRecordModel> EligibleAccountList = new List<CustomerAccountRecordModel>();
+        private static List<CustomerAccountRecordModel> SSMRAccountList = new List<CustomerAccountRecordModel>();
+        private static List<CustomerAccountRecordModel> SSMRCombinedList = new List<CustomerAccountRecordModel>();
 
         public static void SetEligibleAccounts()
         {
@@ -18,7 +20,26 @@ namespace myTNB
             {
                 EligibleAccountList = DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindAll
                     (x => x.IsOwnedAccount && !x.IsSSMR && !x.IsREAccount && x.IsNormalMeter);
+                SSMRAccountList = DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindAll
+                    (x => x.IsOwnedAccount && x.IsSSMR && !x.IsREAccount && x.IsNormalMeter);
+                if (SSMRAccountList != null)
+                {
+                    SSMRCombinedList.AddRange(SSMRAccountList);
+                }
+                if (EligibleAccountList != null)
+                {
+                    SSMRCombinedList.AddRange(EligibleAccountList);
+                }
             }
+        }
+
+        public static CustomerAccountRecordModel GetFirstSSMRAccount()
+        {
+            if (SSMRAccountList != null && SSMRAccountList.Count > 0 && SSMRAccountList[0] != null)
+            {
+                return SSMRAccountList[0];
+            }
+            return null;
         }
 
         public static CustomerAccountRecordModel GetFirstAccount()

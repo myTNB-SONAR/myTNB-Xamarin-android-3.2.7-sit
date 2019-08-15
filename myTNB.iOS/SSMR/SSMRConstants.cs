@@ -32,13 +32,10 @@ namespace myTNB.SSMR
         //Onboarding
         //i18n
         public static string I18N_Skip = "skip";
-        public static string I18N_DontShow = "dontShow";
         public static string I18N_Title1 = "onboardingTitle1";
         public static string I18N_Title2 = "onboardingTitle2";
-        public static string I18N_Title3 = "onboardingTitle3";
         public static string I18N_Description1 = "onboardingDescription1";
         public static string I18N_Description2 = "onboardingDescription2";
-        public static string I18N_Description3 = "onboardingDescription3";
         public static string I18N_StartApplication = "startApplication";
 
         //Common
