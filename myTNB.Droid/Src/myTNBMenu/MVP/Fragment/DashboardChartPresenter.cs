@@ -255,10 +255,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         private async void LoadingBillsHistory(AccountData selectedAccount)
         {
-            if (this.mView.IsActive())
-            {
-                this.mView.ShowAmountProgress();
-            }
+            this.mView.ShowProgress();
             cts = new CancellationTokenSource();
 #if DEBUG || STUB
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new System.Uri(Constants.SERVER_URL.END_POINT) };
@@ -278,10 +275,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
                 var billsHistoryResponseV5 = billsHistoryResponseApi;
 
-                if (this.mView.IsActive())
-                {
-                    this.mView.HideAmountProgress();
-                }
+                this.mView.HideProgress();
 
                 if (billsHistoryResponseV5 != null && billsHistoryResponseV5.Data != null)
                 {
@@ -311,32 +305,20 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             }
             catch (System.OperationCanceledException e)
             {
-                Log.Debug("BillPayment Presenter", "Cancelled Exception");
-                if (this.mView.IsActive())
-                {
-                    this.mView.HideAmountProgress();
-                    this.mView.ShowLoadBillRetryOptions();
-                }
+                this.mView.HideProgress();
+                this.mView.ShowLoadBillRetryOptions();
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
-                Log.Debug("BillPayment Presenter", "Stack " + apiException.StackTrace);
-                if (this.mView.IsActive())
-                {
-                    this.mView.HideAmountProgress();
-                    this.mView.ShowLoadBillRetryOptions();
-                }
+                this.mView.HideProgress();
+                this.mView.ShowLoadBillRetryOptions();
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
-                Log.Debug("BillPayment Presenter", "Stack " + e.StackTrace);
-                if (this.mView.IsActive())
-                {
-                    this.mView.HideAmountProgress();
-                    this.mView.ShowLoadBillRetryOptions();
-                }
+                this.mView.HideProgress();
+                this.mView.ShowLoadBillRetryOptions();
                 Utility.LoggingNonFatalError(e);
             }
         }

@@ -1425,4 +1425,6 @@ Please try again later.]]>
   <string name="meter_kwh">kWh</string>
   <string name="meter_kVARh">kVARh</string>
   <string name="meter_kW">kW</string>
+
+  <string name="dashboard_need_pay">I need to pay</string>
 </resources>

@@ -78,7 +78,7 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
 
         public override MPPointF GetOffsetForDrawingAtPoint(float posX, float posY)
         {
-            return new MPPointF(-(Width / 2), -Height);
+            return new MPPointF(-(Width / 2), (int) -(Height * 1.25));
         }
     }
 }

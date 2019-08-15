@@ -180,6 +180,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
             string GetDeviceId();
 
+            void ShowProgress();
+
+            void HideProgress();
+
         }
 
         public interface IUserActionsListener : IBasePresenter
