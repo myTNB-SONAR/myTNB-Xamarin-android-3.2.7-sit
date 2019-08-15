@@ -60,6 +60,20 @@ namespace myTNB
             return null;
         }
 
+        public static CustomerAccountRecordModel GetAccountbyAccountNumber(string accNo)
+        {
+            if (string.IsNullOrEmpty(accNo) || string.IsNullOrWhiteSpace(accNo)) { return null; }
+            if (SSMRCombinedList != null && SSMRCombinedList.Count > 0)
+            {
+                int index = SSMRCombinedList.FindIndex(x => x.accNum == accNo);
+                if (index > -1)
+                {
+                    return SSMRCombinedList[index];
+                }
+            }
+            return null;
+        }
+
         public static bool HasSSMREligibleAccount
         {
             get

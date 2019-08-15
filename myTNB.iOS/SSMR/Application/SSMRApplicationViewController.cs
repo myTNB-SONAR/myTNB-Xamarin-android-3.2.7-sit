@@ -17,6 +17,7 @@ namespace myTNB
     {
         public SSMRApplicationViewController(IntPtr handle) : base(handle) { }
         public bool IsApplication;
+        public string AccountNumber { set; private get; } = string.Empty;
 
         private UIButton _btnSubmit;
         private UIView _viewBottomContainer, _viewContactDetails, _viewTerminate
@@ -517,7 +518,7 @@ namespace myTNB
 
         private void GetEligibleAccounts()
         {
-            _eligibleAccountList = SSMRAccounts.GetAccounts();
+            //_eligibleAccountList = SSMRAccounts.GetAccounts();
             _selectedAccount = IsApplication ? SSMRAccounts.GetFirstAccount() : DataManager.DataManager.SharedInstance.SelectedAccount;
         }
 

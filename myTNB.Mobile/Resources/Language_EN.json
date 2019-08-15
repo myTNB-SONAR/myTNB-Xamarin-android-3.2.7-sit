@@ -78,8 +78,8 @@
     },
     "SSMRApplication": {
         "navTitle": "Self Meter Reading",
-        "applyingFor": "I am subscribing for:",
-        "terminateFor": "I am unsubscribing my service for:",
+        "applyingFor": "I am enabling for:",
+        "terminateFor": "I am disabling for:",
         "contactDetails": "My contact details:",
         "terminateTitle": "We’re sorry to see you go! Can you tell us why you want to unsubscribe this service?",
         "tncUnsubscribe": "By submitting, you are agreeing to the <a href=\"\\\">TNB’s Terms of Use</a>, <a href=\"\\\">Privacy policy</a>, <a href=\"\\\">Anti-Spam Policy</a> and <a href=\"\\\">Personal Data Protection Policy</a>.",
