@@ -373,7 +373,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Activity.RunOnUiThread(() =>
                 {
-                    newFAQShimmerAdapter = new NewFAQShimmerAdapter(this.presenter.LoadShimmerFAQList(3), this.Activity);
+                    newFAQShimmerAdapter = new NewFAQShimmerAdapter(this.presenter.LoadShimmerFAQList(4), this.Activity);
                     newFAQShimmerList.SetAdapter(newFAQShimmerAdapter);
 
                     newFAQShimmerView.Visibility = ViewStates.Visible;
