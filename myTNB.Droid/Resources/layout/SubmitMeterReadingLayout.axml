@@ -28,14 +28,6 @@
         android:background="@color/white"
         android:paddingTop="8dp">
         <Button
-            android:id="@+id/btnTakePhoto"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:text="Take Photo Instead"
-            android:textAllCaps="false"
-            android:textSize="16dp"
-            style="@style/LightButton" />
-        <Button
             android:id="@+id/btnSubmitReading"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
@@ -60,18 +52,44 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
-                <TextView
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/meterReadingTitle"
-                    android:text="Please enter your meter reading for each respective units."
-                    android:textSize="16dp"
-                    android:textColor="#1c79ca"
-                    android:paddingTop="16dp"
-                    android:paddingBottom="8dp"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:layout_marginBottom="4dp"/>
+                    android:background="@color/white"
+                    android:padding="16dp"
+                    android:layout_marginBottom="8dp"
+                    android:orientation="vertical" >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/meterReadingTitle"
+                        android:text="Take or upload photos, or manually enter your meter reading for each respective unit."
+                        android:textSize="14dp"
+                        android:gravity="left"
+                        android:layout_marginBottom="12dp"
+                        android:textColor="#49494a"/>
+                    <Button
+                        android:id="@+id/btnTakePhoto"
+                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:paddingTop="12dp"
+                        android:text="Take Or Upload Photo"
+                        android:drawablePadding="6dp"
+                        android:drawableLeft="@drawable/ic_action_camera_green"
+                        android:textAllCaps="false"
+                        android:textSize="16dp"
+                        style="@style/LightButton"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/readMeterValidationError"
+                        android:text="We can’t read your photos. Please try again."
+                        android:textSize="12dp"
+                        android:gravity="left"
+                        android:layout_marginTop="16dp"
+                        android:textColor="#e44b21"/>
+                </LinearLayout>
+                
                 <include android:id="@+id/kwhCard"
                          android:visibility="gone"
                 layout="@layout/SubmitMeterReadingCardLayout"/>
