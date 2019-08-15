@@ -10,9 +10,10 @@ namespace myTNB
 
         private static nfloat WidthBase = 320;
         private static nfloat HeightBase = 568;
+        private static nfloat ScreenHeight = UIScreen.MainScreen.Bounds.Height;
         private static nfloat ARBase = HeightBase / WidthBase;
         private static nfloat ARDevice = UIScreen.MainScreen.Bounds.Height / UIScreen.MainScreen.Bounds.Width;
-        private static nfloat ARDelta = ARDevice / ARBase;
+        private static nfloat ARDelta = DeviceHelper.IsNotched ? ARDevice / ARBase : ScreenHeight / HeightBase;
 
         readonly static UIFont _m300_9 = UIFont.FromName(FONTNAME_300, 9F * ARDelta);
         readonly static UIFont _m300_10 = UIFont.FromName(FONTNAME_300, 10F * ARDelta);
