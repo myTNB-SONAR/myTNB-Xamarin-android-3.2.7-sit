@@ -27,8 +27,8 @@ namespace myTNB
         UIScrollView _toolTipScrollView;
         UIPageControl _pageControl;
         UIScrollView _meterReadScrollView;
-        UIImageView _tickView;
-        UILabel _descriptionLabel, _dontShowLabel;
+        UIImageView _tickView, _cameraIconView;
+        UILabel _descriptionLabel, _dontShowLabel, _takePhotoLabel;
         nfloat _padding = 16f;
         nfloat takePhotoViewRatio = 136.0f / 320.0f;
         CGRect scrollViewFrame;
@@ -220,11 +220,60 @@ namespace myTNB
             _takePhotoBtnView.Layer.CornerRadius = 4f;
             _takePhotoBtnView.Layer.BorderColor = MyTNBColor.AlgaeGreen.CGColor;
             _takePhotoBtnView.Layer.BorderWidth = 1f;
+
+            _takePhotoBtnView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                OnTapTakePhoto();
+            }));
+
             _takePhotoView.AddSubview(_takePhotoBtnView);
 
             CGRect viewFrame = _takePhotoView.Frame;
             viewFrame.Height = _takePhotoBtnView.Frame.GetMaxY() + _padding;
             _takePhotoView.Frame = viewFrame;
+
+            UIView containerView = new UIView(new CGRect(0, 0, 250f, _takePhotoBtnView.Frame.Height))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+            _takePhotoBtnView.AddSubview(containerView);
+
+            nfloat width = GetScaledWidth(20.6f);
+            nfloat height = GetScaledHeight(16f);
+            _cameraIconView = new UIImageView(new CGRect(0, 0, width, height))
+            {
+                Image = UIImage.FromBundle("Camera-Icon-Green")
+            };
+            containerView.AddSubview(_cameraIconView);
+
+            nfloat takePhotoLabelWidth = GetScaledWidth(166f);
+            _takePhotoLabel = new UILabel(new CGRect(_cameraIconView.Frame.GetMaxX() + GetScaledWidth(12f), 0, takePhotoLabelWidth, 44f))
+            {
+                BackgroundColor = UIColor.Clear,
+                Font = MyTNBFont.MuseoSans16_500,
+                TextColor = MyTNBColor.AlgaeGreen,
+                Lines = 0,
+                TextAlignment = UITextAlignment.Left,
+                Text = "Take Or Upload Photo"
+            };
+            containerView.AddSubview(_takePhotoLabel);
+
+            CGSize cGSizeLbl = _takePhotoLabel.SizeThatFits(new CGSize(takePhotoLabelWidth, 1000f));
+            CGRect frameLbl = _takePhotoLabel.Frame;
+            frameLbl.Width = cGSizeLbl.Width;
+            frameLbl.Height = cGSizeLbl.Height;
+            frameLbl.Y = GetYLocationToCenterObject(frameLbl.Height, _takePhotoBtnView);
+            _takePhotoLabel.Frame = frameLbl;
+
+            CGRect cameraIconFrame = _cameraIconView.Frame;
+            cameraIconFrame.Y = GetYLocationToCenterObject(cameraIconFrame.Height, _takePhotoBtnView);
+            _cameraIconView.Frame = cameraIconFrame;
+
+            CGRect containerViewFrame = containerView.Frame;
+            containerViewFrame.Width = _takePhotoLabel.Frame.GetMaxX();
+            containerViewFrame.Y = GetYLocationToCenterObject(containerViewFrame.Height, _takePhotoBtnView);
+            containerViewFrame.X = GetXLocationToCenterObject(containerViewFrame.Width, _takePhotoBtnView);
+            containerView.Frame = containerViewFrame;
 
             AddHeaderhadow(ref _takePhotoView);
             _meterReadScrollView.AddSubview(_takePhotoView);
@@ -584,17 +633,12 @@ namespace myTNB
                 }
             }
             _sSMRMeterFooterComponent.SetSubmitButtonEnabled(res);
-            //_sSMRMeterFooterComponent.SetTakePhotoButtonEnabled(!res);
         }
 
         private void AddFooterView()
         {
             _sSMRMeterFooterComponent = new SSMRMeterFooterComponent(View, ViewHeight);
             View.AddSubview(_sSMRMeterFooterComponent.GetUI());
-            _sSMRMeterFooterComponent._takePhotoBtn.TouchUpInside += (sender, e) =>
-            {
-                OnTapTakePhoto();
-            };
             _sSMRMeterFooterComponent._submitBtn.TouchUpInside += (sender, e) =>
             {
                 OnTapSubmitReading();
