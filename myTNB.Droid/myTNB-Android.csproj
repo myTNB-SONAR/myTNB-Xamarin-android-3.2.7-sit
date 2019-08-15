@@ -1966,6 +1966,11 @@
     <AndroidResource Include="Resources\drawable-xhdpi\search_cancel.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\search_cancel.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\search_cancel.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_camera_green.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_camera_green.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_camera_green.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_camera_green.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_camera_green.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

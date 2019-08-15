@@ -1420,7 +1420,7 @@ Please try again later.]]>
 
   <!--Smart Meter Reading-->
   <string name="meter_reading_title">Submit Meter Reading</string>
-  <string name="meter_reading_message">Take or upload photos, or manually enter your meter reading for each respective unit.</string> 
+  <string name="ssmr_submit_meter_reading_message"><![CDATA[<strong><font color="#49494a">Take or upload photos</font></strong><font color="#49494a">, or </font><strong><font color="#49494a">manually enter</font></strong><font color="#49494a"> your meter reading for each respective unit.</font>]]></string>
   <string name="meter_kwh">kWh</string>
   <string name="meter_kVARh">kVARh</string>
   <string name="meter_kW">kW</string>

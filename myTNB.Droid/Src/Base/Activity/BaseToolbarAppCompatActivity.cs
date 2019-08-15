@@ -2,6 +2,7 @@
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -194,6 +195,18 @@ namespace myTNB_Android.Src.Base.Activity
         {
             int scaledInPixel = (int)((float)basePixel * percentageValue);
             return scaledInPixel;
+        }
+
+        public ISpanned GetFormattedText(string stringValue)
+        {
+            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+            {
+                return Html.FromHtml(stringValue, FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                return Html.FromHtml(stringValue);
+            }
         }
     }
 }

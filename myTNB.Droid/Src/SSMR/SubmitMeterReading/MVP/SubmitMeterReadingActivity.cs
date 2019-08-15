@@ -45,7 +45,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         private int MAX_DIGIT = 8;
         private List<MeterValidation> validationStateList;
 
-        [BindView(Resource.Id.btnSubmitReading)]
+
+		[BindView(Resource.Id.meterReadingTitle)]
+		TextView meterReadingTitle;
+
+		[BindView(Resource.Id.btnSubmitReading)]
         Button btnSubmitReading;
 
         [BindView(Resource.Id.btnTakePhoto)]
@@ -116,8 +120,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         private void InitializePage()
         {
-            TextView meterReadingTitle = FindViewById(Resource.Id.meterReadingTitle) as TextView;
-            meterReadingTitle.Text = GetString(Resource.String.meter_reading_message);
+			meterReadingTitle.TextFormatted = GetFormattedText(GetString(Resource.String.ssmr_submit_meter_reading_message));
             TextViewUtils.SetMuseoSans500Typeface(meterReadingTitle);
 
             btnTakePhoto.Click += delegate
@@ -300,39 +303,21 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             //Mock Data - End
             Bundle intentExtras = Intent.Extras;
 
-            //if (intentExtras.ContainsKey(Constants.SELECTED_ACCOUNT))
-            //{
-            //    selectedAccount = JsonConvert.DeserializeObject<AccountData>(intentExtras.GetString(Constants.SELECTED_ACCOUNT));
-            //}
+			//if (intentExtras.ContainsKey(Constants.SELECTED_ACCOUNT))
+			//{
+			//    selectedAccount = JsonConvert.DeserializeObject<AccountData>(intentExtras.GetString(Constants.SELECTED_ACCOUNT));
+			//}
 
-            //if (intentExtras.ContainsKey(Constants.SMR_RESPONSE_KEY))
-            //{
-            //    ssmrActivityInfoResponse = JsonConvert.DeserializeObject<SMRActivityInfoResponse>(intentExtras.GetString(Constants.SMR_RESPONSE_KEY));
-            //    if (ssmrActivityInfoResponse.Response != null && ssmrActivityInfoResponse.Response.Data != null)
-            //    {
-            //        SMRValidateRegisterDetailList = ssmrActivityInfoResponse.Response.Data.SMRMROValidateRegisterDetails;
-            //        SetUpMeterCards(SMRValidateRegisterDetailList);
-            //    }
-            //}
-
-            btnTakePhoto.Enabled = true;
-            btnTakePhoto.Background = GetDrawable(Resource.Drawable.light_button_background);
-            btnTakePhoto.SetTextAppearance(this, Resource.Style.LightButton);
-
-            TextViewUtils.SetMuseoSans500Typeface(btnTakePhoto, btnSubmitReading);
-            SetTakeUploadPhotoLayoutParams();
-        }
-
-        public void SetTakeUploadPhotoLayoutParams()
-        {
-            LinearLayout.LayoutParams btnTakePhotoParams = btnTakePhoto.LayoutParameters as LinearLayout.LayoutParams;
-            int btnTakePhotoWidth = GetDeviceHorizontalScaleInPixel(0.90f);
-            int btnImageLeftPadding = GetDeviceHorizontalScaleInPixel(0.156f);
-
-            btnTakePhotoParams.Width = btnTakePhotoWidth;
-            btnTakePhotoParams.MarginStart = GetDeviceHorizontalScaleInPixel(0.05f);
-            btnTakePhoto.SetPadding(btnImageLeftPadding,0,0,0);
-            btnTakePhoto.RequestLayout();
+			//if (intentExtras.ContainsKey(Constants.SMR_RESPONSE_KEY))
+			//{
+			//    ssmrActivityInfoResponse = JsonConvert.DeserializeObject<SMRActivityInfoResponse>(intentExtras.GetString(Constants.SMR_RESPONSE_KEY));
+			//    if (ssmrActivityInfoResponse.Response != null && ssmrActivityInfoResponse.Response.Data != null)
+			//    {
+			//        SMRValidateRegisterDetailList = ssmrActivityInfoResponse.Response.Data.SMRMROValidateRegisterDetails;
+			//        SetUpMeterCards(SMRValidateRegisterDetailList);
+			//    }
+			//}
+			TextViewUtils.SetMuseoSans500Typeface(btnTakePhoto, btnSubmitReading);
         }
 
         private string GetType(string registerNumber)

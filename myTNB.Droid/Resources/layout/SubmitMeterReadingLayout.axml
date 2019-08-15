@@ -72,13 +72,13 @@
                         android:id="@+id/btnTakePhoto"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
-                        android:paddingTop="12dp"
                         android:text="Take Or Upload Photo"
-                        android:drawablePadding="6dp"
+                        android:paddingLeft="70dp"
+                        android:paddingRight="43dp"
                         android:drawableLeft="@drawable/ic_action_camera_green"
                         android:textAllCaps="false"
                         android:textSize="16dp"
-                        style="@style/LightButton"/>
+                        style="@style/LightButtonWithIcon"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
