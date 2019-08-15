@@ -33,10 +33,11 @@ namespace myTNB
         protected ContactDetailsResponseModel _contactDetails;
         protected SSMRApplicationStatusResponseModel _ssmrApplicationStatus;
         protected TerminationReasonsResponseModel _ssmrTerminationReasons;
-        private int _selectedAccountIndex = -1;
         private int _selectedTerminateReasonIndex = 0;
-        private UILabel _lblAccountName, _lblAddress, _lblEditInfo, _lblTerminateReason, _lblReason;
+        private UILabel _lblAddress, _lblEditInfo, _lblTerminateReason, _lblReason;
         private UITextView _txtViewReason;
+
+        private bool _isAllowEdit;
 
         public override void ViewDidLoad()
         {
@@ -45,8 +46,6 @@ namespace myTNB
             base.ViewDidLoad();
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
-            NSNotificationCenter.DefaultCenter.AddObserver(SSMRConstants.Notification_SelectSSMRAccount, OnSelectSSMRAccount);
-            ConfigureNavigationBar();
             AddTnCSection();
             GetEligibleAccounts();
             AddDetailsSection();
@@ -55,15 +54,7 @@ namespace myTNB
                 AddTerminateReason();
             }
             ToggleCTA();
-            if (!IsApplication)
-            {
-                OnGetContactInfo();
-                OnGetTerminateReasons();
-            }
-            if (IsApplication && _eligibleAccountList != null && _eligibleAccountList.Count > 0)
-            {
-                OnGetAccountsSMREligibility();
-            }
+            OnGetInfo();
         }
 
         public override void ViewWillAppear(bool animated)
@@ -75,13 +66,12 @@ namespace myTNB
             }
         }
 
-        private void OnSelectSSMRAccount(NSNotification notification)
+        public override void ViewDidAppear(bool animated)
         {
-            Debug.WriteLine("DEBUG >>> SSMRApplicationViewController OnSelectSSMRAccount");
-            OnGetContactInfo();
+            base.ViewDidAppear(animated);
         }
 
-        private void ConfigureNavigationBar()
+        public override void ConfigureNavigationBar()
         {
             UIImage backImg = UIImage.FromBundle(SSMRConstants.IMG_BackIcon);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
@@ -320,7 +310,6 @@ namespace myTNB
             _lblEditInfo.Frame = new CGRect(_lblEditInfo.Frame.X, _lblEditInfo.Frame.Y, _lblEditInfo.Frame.Width, newLblEditInfoSize.Height);
 
             _viewContactDetails.AddSubviews(new UIView[] { viewEmail, viewMobile, _lblEditInfo });
-
             _scrollContainer.AddSubviews(new UIView[] { _viewApplyForTitle, _viewMainDetails, _viewContactDetailsTitle, _viewContactDetails });
             _scrollContainer.ContentSize = new CGSize(ViewWidth, _viewContactDetails.Frame.GetMaxY());
             View.AddSubview(_scrollContainer);
@@ -484,18 +473,19 @@ namespace myTNB
             newFrame.Height = shouldDisplay ? _viewOthersContainer.Frame.GetMaxY() : _viewLineTerminate.Frame.GetMaxY() + GetScaledHeight(22);
             _viewTerminateContainer.Frame = newFrame;
             _scrollContainer.ContentSize = new CGSize(ViewWidth, _viewTerminateContainer.Frame.GetMaxY());
+            ToggleCTA();
         }
 
         private void ToggleCTA()
         {
-            bool isValid = _selectedAccount != null && !string.IsNullOrEmpty(_selectedAccount.accountNickName);
-            if (isValid && _customEmailField != null && _customMobileField != null)
+            bool isValid = !_isAllowEdit;//_selectedAccount != null && !string.IsNullOrEmpty(_selectedAccount.accountNickName);
+            if (_isAllowEdit && isValid && _customEmailField != null && _customMobileField != null)
             {
                 isValid = _customEmailField.IsFieldValid && _customMobileField.IsFieldValid;
-                if (!IsApplication && _viewOthersContainer != null && !_viewOthersContainer.Hidden)
-                {
-                    isValid = isValid && (_txtViewReason.Text != GetI18NValue(SSMRConstants.I18N_StateReason));
-                }
+            }
+            if (!IsApplication && _viewOthersContainer != null && !_viewOthersContainer.Hidden)
+            {
+                isValid = isValid && (_txtViewReason.Text != GetI18NValue(SSMRConstants.I18N_StateReason));
             }
             _btnSubmit.Enabled = isValid;
             _btnSubmit.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
@@ -541,34 +531,74 @@ namespace myTNB
             }
         }
 
-        private void OnGetContactInfo()
+        private void UpdateView()
         {
-            ActivityIndicator.Show();
+            nfloat yLoc = _viewContactDetails.Hidden ? _viewMainDetails.Frame.GetMaxY() : _viewContactDetails.Frame.GetMaxY();
+            CGRect terminateFrame = _viewTerminateTitle.Frame;
+            terminateFrame.Y = yLoc;
+            _viewTerminateTitle.Frame = terminateFrame;
+            CGRect reasonFrame = _viewTerminateContainer.Frame;
+            reasonFrame.Y = _viewTerminateTitle.Frame.GetMaxY();
+            _viewTerminateContainer.Frame = reasonFrame;
+            _scrollContainer.ContentSize = new CGSize(ViewWidth, _viewTerminateContainer.Frame.GetMaxY());
+        }
+
+        private void OnGetInfo()
+        {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                if (NetworkUtility.isReachable)
-                {
-                    InvokeOnMainThread(async () =>
-                    {
-                        _contactDetails = await GetContactInfo();
-                        if (_contactDetails != null && _contactDetails.d != null
-                            && _contactDetails.d.IsSuccess && _contactDetails.d.data != null)
-                        {
-                            _lblEditInfo.Hidden = true;
-                            _customEmailField.SetValue(_contactDetails.d.data.Email);
-                            _customMobileField.SetValue(_contactDetails.d.data.Mobile);
-                            ToggleCTA();
-                            _customEmailField.SetState(true);
-                            _customMobileField.SetState(true);
-                        }
-                        ActivityIndicator.Hide();
-                    });
-                }
-                else
-                {
-                    DisplayNoDataAlert();
-                    ActivityIndicator.Hide();
-                }
+                InvokeOnMainThread(async () =>
+               {
+                   if (NetworkUtility.isReachable)
+                   {
+                       ActivityIndicator.Show();
+                       await GetContactInfo();
+                       if (_contactDetails != null && _contactDetails.d != null
+                        && _contactDetails.d.IsSuccess && _contactDetails.d.data != null)
+                       {
+                           _isAllowEdit = _contactDetails.d.data.isAllowEdit;
+                           if (_isAllowEdit)
+                           {
+                               _lblEditInfo.Hidden = true;
+                               _customEmailField.SetValue(_contactDetails.d.data.Email);
+                               _customMobileField.SetValue(_contactDetails.d.data.Mobile);
+                               ToggleCTA();
+                               _customEmailField.SetState(true);
+                               _customMobileField.SetState(true);
+                           }
+                           _viewContactDetailsTitle.Hidden = !_isAllowEdit;
+                           _viewContactDetails.Hidden = !_isAllowEdit;
+                           if (!IsApplication) { UpdateView(); }
+                       }
+                       if (!IsApplication)
+                       {
+                           await GetSMRTerminationReasons();
+                           if (IsValidTerminateReason())
+                           {
+                               _lblTerminateReason.Text = _ssmrTerminationReasons.d.data.reasons[0].ReasonName;
+                               _viewTerminate.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                               {
+                                   UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
+                                   GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
+                                       .InstantiateViewController("GenericSelectorViewController");
+                                   viewController.Title = GetI18NValue(SSMRConstants.I18N_SelectReason);
+                                   viewController.Items = _ssmrTerminationReasons.d.data.reasons.Select(x => x.ReasonName).ToList();
+                                   viewController.OnSelect = OnSelectTerminateReason;
+                                   viewController.SelectedIndex = _selectedTerminateReasonIndex;
+                                   viewController.IsRootPage = true;
+                                   NavigationController.PushViewController(viewController, true);
+                               }));
+                               SetTextViewDisplay(_ssmrTerminationReasons.d.data.reasons[0].ReasonId == SSMRConstants.Service_OthersID);
+                           }
+                       }
+                       ActivityIndicator.Hide();
+                   }
+                   else
+                   {
+                       DisplayNoDataAlert();
+                       ActivityIndicator.Hide();
+                   }
+               });
             });
         }
 
@@ -598,45 +628,6 @@ namespace myTNB
             return _ssmrTerminationReasons != null && _ssmrTerminationReasons.d != null
                 && _ssmrTerminationReasons.d.IsSuccess && _ssmrTerminationReasons.d.data != null
                 && _ssmrTerminationReasons.d.data.reasons != null && _ssmrTerminationReasons.d.data.reasons.Count > 0;
-        }
-
-        private void OnGetTerminateReasons()
-        {
-            ActivityIndicator.Show();
-            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
-            {
-                if (NetworkUtility.isReachable)
-                {
-                    InvokeOnMainThread(async () =>
-                    {
-                        _ssmrTerminationReasons = await GetSMRTerminationReasons();
-                        if (IsValidTerminateReason())
-                        {
-                            _lblTerminateReason.Text = _ssmrTerminationReasons.d.data.reasons[0].ReasonName;
-                            _viewTerminate.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-                            {
-                                UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
-                                GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
-                                    .InstantiateViewController("GenericSelectorViewController");
-                                viewController.Title = GetI18NValue(SSMRConstants.I18N_SelectReason);
-                                viewController.Items = _ssmrTerminationReasons.d.data.reasons.Select(x => x.ReasonName).ToList();
-                                viewController.OnSelect = OnSelectTerminateReason;
-                                viewController.SelectedIndex = _selectedTerminateReasonIndex;
-                                viewController.IsRootPage = true;
-                                NavigationController.PushViewController(viewController, true);
-                            }));
-                            SetTextViewDisplay(_ssmrTerminationReasons.d.data.reasons[0].ReasonId == SSMRConstants.Service_OthersID);
-                        }
-                        ActivityIndicator.Hide();
-                    });
-                }
-                else
-                {
-                    DisplayNoDataAlert();
-                    ActivityIndicator.Hide();
-                }
-
-            });
         }
 
         private void OnSubmitSMRApplication()
@@ -683,30 +674,39 @@ namespace myTNB
             });
         }
 
-        private async Task<ContactDetailsResponseModel> GetContactInfo()
+        private async Task GetContactInfo()
         {
-            ServiceManager serviceManager = new ServiceManager();
-            object request = new
+            await Task.Factory.StartNew(() =>
             {
-                serviceManager.usrInf,
-                contractAccount = _selectedAccount.accNum,
-                isOwnedAccount = _selectedAccount.IsOwnedAccount
-            };
-            ContactDetailsResponseModel response = serviceManager
-                .OnExecuteAPIV6<ContactDetailsResponseModel>(SSMRConstants.Service_GetCARegisteredContact, request);
-            return response;
+                ServiceManager serviceManager = new ServiceManager();
+                string ICNumber = DataManager.DataManager.SharedInstance.UserEntity != null
+                    && DataManager.DataManager.SharedInstance.UserEntity.Count > 0
+                    && DataManager.DataManager.SharedInstance.UserEntity[0] != null
+                    && DataManager.DataManager.SharedInstance.UserEntity[0].identificationNo != null
+                    ? DataManager.DataManager.SharedInstance.UserEntity[0].identificationNo ?? string.Empty : string.Empty;
+                object request = new
+                {
+                    serviceManager.usrInf,
+                    contractAccount = _selectedAccount.accNum,
+                    isOwnedAccount = _selectedAccount.IsOwnedAccount,
+                    ICNumber
+                };
+                _contactDetails = serviceManager.OnExecuteAPIV6<ContactDetailsResponseModel>(SSMRConstants.Service_GetCARegisteredContact, request);
+            });
         }
 
-        private async Task<TerminationReasonsResponseModel> GetSMRTerminationReasons()
+        private async Task GetSMRTerminationReasons()
         {
-            ServiceManager serviceManager = new ServiceManager();
-            object request = new
+            await Task.Factory.StartNew(() =>
             {
-                serviceManager.usrInf
-            };
-            TerminationReasonsResponseModel response = serviceManager
-                .OnExecuteAPIV6<TerminationReasonsResponseModel>(SSMRConstants.Service_GetTerminationReasons, request);
-            return response;
+                ServiceManager serviceManager = new ServiceManager();
+                object request = new
+                {
+                    serviceManager.usrInf
+                };
+                _ssmrTerminationReasons = serviceManager
+                    .OnExecuteAPIV6<TerminationReasonsResponseModel>(SSMRConstants.Service_GetTerminationReasons, request);
+            });
         }
 
         private async Task<AccountsSMREligibilityResponseModel> GetAccountsSMREligibility()
