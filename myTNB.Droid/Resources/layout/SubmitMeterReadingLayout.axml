@@ -79,15 +79,6 @@
                         android:textAllCaps="false"
                         android:textSize="16dp"
                         style="@style/LightButtonWithIcon"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/readMeterValidationError"
-                        android:text="We can’t read your photos. Please try again."
-                        android:textSize="12dp"
-                        android:gravity="left"
-                        android:layout_marginTop="16dp"
-                        android:textColor="#e44b21"/>
                 </LinearLayout>
                 
                 <include android:id="@+id/kwhCard"
@@ -104,12 +95,25 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:layout_marginRight="16dp"
+                    android:layout_marginLeft="16dp"
                     android:visibility="gone"
-                    android:gravity="right"
+                    android:gravity="left"
                     android:id="@+id/meterReadingError"
                     android:text="We can’t read your photos. Please try again."
                     android:textColor="#e44b21"
                     android:textSize="10dp"/>
+                
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/meterReadingNote"
+                    android:text=""
+                    android:textSize="12dp"
+                    android:gravity="left"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="36dp"/>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>

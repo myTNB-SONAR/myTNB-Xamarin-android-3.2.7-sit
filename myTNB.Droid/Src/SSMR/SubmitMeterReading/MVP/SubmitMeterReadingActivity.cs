@@ -49,6 +49,9 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 		[BindView(Resource.Id.meterReadingTitle)]
 		TextView meterReadingTitle;
 
+		[BindView(Resource.Id.meterReadingNote)]
+		TextView meterReadingNote;
+
 		[BindView(Resource.Id.btnSubmitReading)]
         Button btnSubmitReading;
 
@@ -121,7 +124,10 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         private void InitializePage()
         {
 			meterReadingTitle.TextFormatted = GetFormattedText(GetString(Resource.String.ssmr_submit_meter_reading_message));
-            TextViewUtils.SetMuseoSans500Typeface(meterReadingTitle);
+			meterReadingNote.TextFormatted = GetFormattedText(GetString(Resource.String.ssmr_submit_meter_reading_note));
+
+			TextViewUtils.SetMuseoSans300Typeface(meterReadingTitle,meterReadingNote);
+            TextViewUtils.SetMuseoSans500Typeface(meterReadingError, btnTakePhoto, btnSubmitReading);
 
             btnTakePhoto.Click += delegate
             {
@@ -317,7 +323,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 			//        SetUpMeterCards(SMRValidateRegisterDetailList);
 			//    }
 			//}
-			TextViewUtils.SetMuseoSans500Typeface(btnTakePhoto, btnSubmitReading);
         }
 
         private string GetType(string registerNumber)
@@ -418,17 +423,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         }
 
-        public void SetMeterCardLayoutParams(LinearLayout meterCardLayout)
-		{
-			LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)meterCardLayout.LayoutParameters;
-            int cardWidth = GetDeviceHorizontalScaleInPixel(.90f);
-            int cardMargin = GetDeviceHorizontalScaleInPixel(.05f);
-            layoutParams.Width = cardWidth;
-            layoutParams.MarginStart = cardMargin;
-            layoutParams.MarginEnd = cardMargin;
-            meterCardLayout.RequestLayout();
-        }
-
         public void PopulateMeterReadingCard(METER_READING_TYPE type, SMRMROValidateRegisterDetails sMRMROValidateRegisterDetails)
         {
             LinearLayout linearLayoutContainer;
@@ -440,7 +434,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     linearLayoutContainer.Visibility = ViewStates.Visible;
                     meterType = (TextView)linearLayoutContainer.FindViewById(Resource.Id.reading_meter_type);
                     meterType.Text = "kWh";
-					SetMeterCardLayoutParams(linearLayoutContainer);
 					PopulatePreviousValues(linearLayoutContainer, sMRMROValidateRegisterDetails);
                     break;
                 case METER_READING_TYPE.KVARH:
@@ -448,7 +441,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     linearLayoutContainer.Visibility = ViewStates.Visible;
                     meterType = (TextView)linearLayoutContainer.FindViewById(Resource.Id.reading_meter_type);
                     meterType.Text = "kVARh";
-					SetMeterCardLayoutParams(linearLayoutContainer);
 					PopulatePreviousValues(linearLayoutContainer, sMRMROValidateRegisterDetails);
                     break;
                 default:
@@ -456,7 +448,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     linearLayoutContainer.Visibility = ViewStates.Visible;
                     meterType = (TextView)linearLayoutContainer.FindViewById(Resource.Id.reading_meter_type);
                     meterType.Text = "kW";
-					SetMeterCardLayoutParams(linearLayoutContainer);
 					PopulatePreviousValues(linearLayoutContainer, sMRMROValidateRegisterDetails);
                     break;
             }
