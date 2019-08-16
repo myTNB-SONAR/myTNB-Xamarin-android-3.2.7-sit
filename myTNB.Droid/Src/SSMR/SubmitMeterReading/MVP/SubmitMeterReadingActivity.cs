@@ -102,21 +102,21 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             sMRMROValidateRegisterDetails.PrevMeterReading = "1234567";
             sMRMROValidateRegisterDetailsList.Add(sMRMROValidateRegisterDetails);
 
-            sMRMROValidateRegisterDetails = new SMRMROValidateRegisterDetails();
-            sMRMROValidateRegisterDetails.RegisterNumber = "002";
-            sMRMROValidateRegisterDetails.MroID = "0000002432432";
-            sMRMROValidateRegisterDetails.PrevMrDate = "2-8-2019";
-            sMRMROValidateRegisterDetails.SchMrDate = "2-8-2019";
-            sMRMROValidateRegisterDetails.PrevMeterReading = "1234567";
-            sMRMROValidateRegisterDetailsList.Add(sMRMROValidateRegisterDetails);
+            //sMRMROValidateRegisterDetails = new SMRMROValidateRegisterDetails();
+            //sMRMROValidateRegisterDetails.RegisterNumber = "002";
+            //sMRMROValidateRegisterDetails.MroID = "0000002432432";
+            //sMRMROValidateRegisterDetails.PrevMrDate = "2-8-2019";
+            //sMRMROValidateRegisterDetails.SchMrDate = "2-8-2019";
+            //sMRMROValidateRegisterDetails.PrevMeterReading = "1234567";
+            //sMRMROValidateRegisterDetailsList.Add(sMRMROValidateRegisterDetails);
 
-            sMRMROValidateRegisterDetails = new SMRMROValidateRegisterDetails();
-            sMRMROValidateRegisterDetails.RegisterNumber = "003";
-            sMRMROValidateRegisterDetails.MroID = "0000002432432";
-            sMRMROValidateRegisterDetails.PrevMrDate = "2-8-2019";
-            sMRMROValidateRegisterDetails.SchMrDate = "2-8-2019";
-            sMRMROValidateRegisterDetails.PrevMeterReading = "1234567";
-            sMRMROValidateRegisterDetailsList.Add(sMRMROValidateRegisterDetails);
+            //sMRMROValidateRegisterDetails = new SMRMROValidateRegisterDetails();
+            //sMRMROValidateRegisterDetails.RegisterNumber = "003";
+            //sMRMROValidateRegisterDetails.MroID = "0000002432432";
+            //sMRMROValidateRegisterDetails.PrevMrDate = "2-8-2019";
+            //sMRMROValidateRegisterDetails.SchMrDate = "2-8-2019";
+            //sMRMROValidateRegisterDetails.PrevMeterReading = "1234567";
+            //sMRMROValidateRegisterDetailsList.Add(sMRMROValidateRegisterDetails);
 
             return sMRMROValidateRegisterDetailsList;
         }

@@ -1425,4 +1425,8 @@ Please try again later.]]>
   <string name="meter_kwh">kWh</string>
   <string name="meter_kVARh">kVARh</string>
   <string name="meter_kW">kW</string>
+    
+  <!--Smart Meter Take Photo-->
+  <string name="ssmr_single_take_photo_note">Take a photo of the reading value you see on your meter.</string>
+  <string name="ssmr_single_adjust_photo_note">You can select a photo to delete and retake or adjust it before submission.</string> 
 </resources>

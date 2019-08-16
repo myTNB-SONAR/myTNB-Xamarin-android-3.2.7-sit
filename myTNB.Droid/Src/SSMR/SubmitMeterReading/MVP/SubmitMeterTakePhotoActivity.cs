@@ -30,8 +30,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         private IMenu ssmrMenu;
 
-        [BindView(Resource.Id.meterReadingTakePhotoTitle)]
-        TextView meterReadingTakePhotoTitle;
+        //[BindView(Resource.Id.meterReadingTakePhotoTitle)]
+        //TextView meterReadingTakePhotoTitle;
 
         [BindView(Resource.Id.meter_capture_container)]
         LinearLayout meterCapturedContainer;
@@ -42,8 +42,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         [BindView(Resource.Id.btnSubmitPhotoToOCR)]
         Button btnSubmitPhotoToOCR;
 
-        [BindView(Resource.Id.imageDeleteCapturedPhoto)]
-        ImageView imageDeleteCapturedPhoto;
+        [BindView(Resource.Id.btnDeletePhoto)]
+        Button btnDeletePhoto;
+
+        //[BindView(Resource.Id.imageDeleteCapturedPhoto)]
+        //ImageView imageDeleteCapturedPhoto;
 
         public static readonly int PickImageId = 1000;
 
@@ -124,6 +127,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 mPresenter.GetMeterReadingOCRValue(contractNumber);
             };
 
+            btnDeletePhoto.Click += delegate
+            {
+                DeleteCapturedImage();
+            };
+
             isTakePhotFirstEnter = true;
 
             if (isTakePhotFirstEnter)
@@ -131,10 +139,10 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 ShowTakePhotoTooltip();
             }
 
-            imageDeleteCapturedPhoto.Click += delegate
-            {
-                DeleteCapturedImage();
-            };
+            //imageDeleteCapturedPhoto.Click += delegate
+            //{
+            //    DeleteCapturedImage();
+            //};
             EnableSubmitButton();
         }
 
@@ -186,18 +194,23 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             if (isShown)
             {
                 LinearLayout cropContainer = FindViewById<LinearLayout>(Resource.Id.cropAreaContainerPreview);
-                cropContainer.Alpha = 0.6f;
+                cropContainer.Alpha = 0.8f;
                 cropContainer.AddView(new CropAreaPreView(this));
 
-                SetToolBarTitle("Adjust Photo");
-                meterReadingTakePhotoTitle.Text = "You can delete and retake the photo or adjust it before submission.";
+                TextView adjustPhotoNote = FindViewById<TextView>(Resource.Id.adjust_photo_note);
+                adjustPhotoNote.Text = GetString(Resource.String.ssmr_single_adjust_photo_note);
+                TextViewUtils.SetMuseoSans300Typeface(adjustPhotoNote);
+                adjustPhotoNote.BringToFront();
+
+                btnDeletePhoto.Visibility = ViewStates.Visible;
             }
             else
             {
                 SetToolBarTitle("Take Photo");
-                meterReadingTakePhotoTitle.Text = "Take a clear photo of the reading value flashed on your meter.";
+                btnDeletePhoto.Visibility = ViewStates.Gone;
+                //meterReadingTakePhotoTitle.Text = "Take a clear photo of the reading value flashed on your meter.";
             }
-            TextViewUtils.SetMuseoSans300Typeface(meterReadingTakePhotoTitle);
+            //TextViewUtils.SetMuseoSans300Typeface(meterReadingTakePhotoTitle);
         }
 
         public class OnContainerClickListener : Java.Lang.Object, View.IOnClickListener
@@ -396,7 +409,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public void ShowOCRLoading()
         {
-            meterReadingTakePhotoTitle.Visibility = ViewStates.Gone;
+            //meterReadingTakePhotoTitle.Visibility = ViewStates.Gone;
             bottomLayout.Visibility = ViewStates.Gone;
             //FragmentTransaction transaction = FragmentManager.BeginTransaction();
             //SetToolBarTitle("Take Photo");
@@ -485,7 +498,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 btnSubmitPhotoToOCR.Enabled = false;
                 btnSubmitPhotoToOCR.Background = GetDrawable(Resource.Drawable.silver_chalice_button_background);
             }
-            TextViewUtils.SetMuseoSans500Typeface(btnSubmitPhotoToOCR);
+            TextViewUtils.SetMuseoSans500Typeface(btnDeletePhoto,btnSubmitPhotoToOCR);
         }
 
         public class CropAreaPreView : View
@@ -508,7 +521,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 base.OnDraw(canvas);
 
                 Paint rectPaint = new Paint(PaintFlags.AntiAlias);
-                rectPaint.Color = Color.Gray;
+                rectPaint.Color = Color.ParseColor("#49494a");
                 rectPaint.SetStyle(Paint.Style.Fill);
                 canvas.DrawPaint(rectPaint);
 
@@ -516,16 +529,17 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 int height = canvas.Height;
                 int width = canvas.Width;
                 int left = (int)(width - (width * .809));
-                int top = (int)(height - (height * .974));
+                int top = (int)(height - (height * .70));
                 int right = (int)(width - (width * .191));
                 int bottom = (int)(height - (height * .25));
-                cropAreaRect = new Rect(left, top, right, bottom);
+                cropAreaRect = new Rect(0, top, width, bottom);
                 canvas.DrawRect(cropAreaRect, rectPaint);
 
                 rectPaint.SetXfermode(null);
-                rectPaint.Color = Color.Blue;
+                rectPaint.Color = Color.White;
                 rectPaint.SetStyle(Paint.Style.Stroke);
-                canvas.DrawRoundRect(left,top,right,bottom,4,4,rectPaint);
+                rectPaint.StrokeWidth = 10;
+                canvas.DrawRoundRect(-10,top,width+10,bottom,0,0,rectPaint);
             }
 
             public Rect GetCropAreaRect()
