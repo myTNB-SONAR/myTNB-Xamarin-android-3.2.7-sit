@@ -39,6 +39,8 @@ using UIKit;  namespace myTNB {
         readonly static UIColor _brownGreyThree = new UIColor(red: 0.55f, green: 0.55f, blue: 0.55f, alpha: 1.0f);
         readonly static UIColor _algaeGreen = new UIColor(red: 0.13f, green: 0.74f, blue: 0.30f, alpha: 1.0f);
         readonly static UIColor _butterScotch = new UIColor(red: 0.996f, green: 0.8f, blue: 0.22f, alpha: 1.0f);
+        readonly static UIColor _babyBlue60 = new UIColor(red: 0.61f, green: 0.82f, blue: 1.00f, alpha: 0.6f);
+        readonly static UIColor _brownGrey10 = new UIColor(red: 0.65f, green: 0.65f, blue: 0.65f, alpha: 0.1f);
         readonly static UIColor _iceBlue = new UIColor(red: 0.89f, green: 0.95f, blue: 1f, alpha: 1.0f);
 
         /// <summary>         /// A color with RGBA of (0.47, 0.19, 0.83, 1).         /// </summary>         public static UIColor GradientPurpleDarkElement
@@ -347,6 +349,16 @@ using UIKit;  namespace myTNB {
         public static UIColor ButterScotch
         {
             get { return _butterScotch; }
+        }
+
+        public static UIColor BabyBlue60
+        {
+            get { return _babyBlue60; }
+        }
+
+        public static UIColor BrownGrey10
+        {
+            get { return _brownGrey10; }
         }
 
         public static UIColor IceBlue

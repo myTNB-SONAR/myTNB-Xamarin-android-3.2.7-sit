@@ -53,6 +53,18 @@ namespace myTNB
         }
 
         /// <summary>
+        /// Sets the frame's width
+        /// </summary>
+        /// <param name="adjView"></param>
+        /// <param name="adjWidth"></param>
+        public static void AdjustFrameSetWidth(UIView adjView, nfloat adjWidth)
+        {
+            var temp = adjView.Frame;
+            temp.Width = adjWidth;
+            adjView.Frame = temp;
+        }
+
+        /// <summary>
         /// Adjusts the height of the frame.
         /// </summary>
         /// <param name="adjView">Adj view.</param>
