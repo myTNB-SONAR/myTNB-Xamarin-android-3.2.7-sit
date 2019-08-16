@@ -145,6 +145,12 @@ namespace myTNB
                 , UITextAlignment.Left, true, 0.056F, false, image);
         }
 
+        public void DisplayCustomAlert(string title, string message, Dictionary<string, Action> ctaButtons, bool isDefaultURLAction)
+        {
+            AlertHandler.DisplayCustomAlert(title, message, ctaButtons, UITextAlignment.Left
+                , UITextAlignment.Left, true, 0.056F, isDefaultURLAction);
+        }
+
         public void DisplayPermission(PermissionMode pMode)
         {
             string title = string.Empty;
@@ -393,6 +399,10 @@ namespace myTNB
         public nfloat GetXLocationToCenterObject(nfloat width, UIView view = null)
         {
             return ScaleUtility.GetXLocationToCenterObject(width, view);
+        }
+        public void GetValuesFromAspectRatio(ref nfloat width, ref nfloat height)
+        {
+            ScaleUtility.GetValuesFromAspectRatio(ref width, ref height);
         }
         public nfloat BaseMarginWidth8
         {

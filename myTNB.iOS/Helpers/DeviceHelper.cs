@@ -220,5 +220,13 @@ namespace myTNB
         {
             return UIApplication.SharedApplication.StatusBarFrame.Size.Height;
         }
+
+        public static bool IsNotched
+        {
+            get
+            {
+                return UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Bottom > 0;
+            }
+        }
     }
 }

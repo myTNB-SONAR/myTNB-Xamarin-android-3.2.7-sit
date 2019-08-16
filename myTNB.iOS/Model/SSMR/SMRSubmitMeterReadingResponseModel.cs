@@ -11,6 +11,13 @@ namespace myTNB.Model
     public class SMRSubmitMeterReadingDataModel : BaseModelV2
     {
         public MeterReadingResponseModel data { set; get; }
+        public bool IsBusinessFail
+        {
+            get
+            {
+                return ErrorCode == "7100";
+            }
+        }
     }
 
     public class MeterReadingResponseModel
@@ -24,6 +31,7 @@ namespace myTNB.Model
         public string MessageID { set; get; }
         public string Message { set; get; }
         public string RegisterNumber { set; get; }
+        public bool IsSuccess { set; get; }
         [JsonIgnore]
         public RegisterNumberEnum RegisterNumberType
         {

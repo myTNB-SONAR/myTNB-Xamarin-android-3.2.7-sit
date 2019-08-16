@@ -1111,6 +1111,14 @@
     <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Camera-Icon-Green.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Camera-Icon-Green.imageset\Camera-Icon-Green.png" />
+    <ImageAsset Include="Assets.xcassets\Camera-Icon-Green.imageset\Camera-Icon-Green%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Camera-Icon-Green.imageset\Camera-Icon-Green%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1472,6 +1480,8 @@
     <Folder Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\" />
     <Folder Include="Home\Dashboard\Usage\" />
     <Folder Include="Home\Components\Usage View\" />
+    <Folder Include="Assets.xcassets\IC-Info-Blue.imageset\" />
+    <Folder Include="Assets.xcassets\Camera-Icon-Green.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2262,6 +2272,7 @@
     <Compile Include="Helpers\TNBFont.cs" />
     <Compile Include="Customs\CustomUIView.cs" />
     <Compile Include="Helpers\ScaleUtility.cs" />
+    <Compile Include="Home\Dashboard\Select Accounts\SelectAccountConstants.cs" />
     <Compile Include="Model\Base Model\BaseModelRefresh.cs" />
     <Compile Include="Home\Dashboard\Usage\UsageViewController.cs" />
     <Compile Include="Home\Dashboard\Usage\UsageViewController.designer.cs">
