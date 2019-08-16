@@ -2106,6 +2106,11 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\Utils\EnergyTipsUtils.cs" />
+    <AndroidResource Include="Resources\layout\EnergySavingTipsCardLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\myTNBMenu\Adapter\EnergySavingTipsAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

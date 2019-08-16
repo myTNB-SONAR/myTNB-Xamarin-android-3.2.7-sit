@@ -8,6 +8,7 @@ using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Support.V7.App;
+using Android.Support.V7.Widget;
 using Android.Text;
 using Android.Text.Method;
 using Android.Views;
@@ -22,12 +23,14 @@ using MikePhil.Charting.Data;
 using MikePhil.Charting.Formatter;
 using MikePhil.Charting.Highlight;
 using MikePhil.Charting.Interfaces.Datasets;
+using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.FAQ.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.myTNBMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.Charts.Formatter;
 using myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView;
 using myTNB_Android.Src.myTNBMenu.Listener;
@@ -141,6 +144,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.graphToggleSelection)]
         LinearLayout graphToggleSelection;
 
+        [BindView(Resource.Id.energyTipsView)]
+        LinearLayout energyTipsView;
+
+        [BindView(Resource.Id.energyTipsList)]
+        RecyclerView energyTipsList;
+
+        EnergySavingTipsAdapter energyTipsAdapter;
+
         private DashboardChartContract.IUserActionsListener userActionsListener;
         private DashboardChartPresenter mPresenter;
 
@@ -171,6 +182,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private SMRActivityInfoResponse smrResponse;
 
         private AccountDueAmountResponse amountDueResponse;
+
+        static bool requireScroll;
 
         public override int ResourceId()
         {
@@ -436,6 +449,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     dashboardAccountName.Visibility = ViewStates.Gone;
                 }
 
+                if (!hasNoInternet)
+                {
+                    requireScroll = true;
+                    energyTipsView.Visibility = ViewStates.Visible;
+                    LinearLayoutManager linearEnergyTipLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
+                    energyTipsList.SetLayoutManager(linearEnergyTipLayoutManager);
+
+                    LinearSnapHelper snapHelper = new LinearSnapHelper();
+                    snapHelper.AttachToRecyclerView(energyTipsList);
+
+                    OnGetEnergyTipsItems();
+
+                    scrollView = view.FindViewById<SMDashboardScrollView>(Resource.Id.scroll_view);
+                    scrollView.SmoothScrollingEnabled = true;
+                    scrollView.setOnScrollViewListener(this);
+                }
+                else
+                {
+                    requireScroll = false;
+                    energyTipsView.Visibility = ViewStates.Gone;
+                }
+
                 if (amountDueFailed)
                 {
                     // txtWhyThisAmt.Visibility = ViewStates.Gone;
@@ -467,6 +502,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     if (selectedAccount.AccountCategoryId.Equals("2"))
                     {
                         btnPay.Visibility = ViewStates.Gone;
+                        energyTipsView.Visibility = ViewStates.Gone;
                         btnViewBill.Text = GetString(Resource.String.dashboard_chart_view_payment_advice);
                         // txtUsageHistory.Visibility = ViewStates.Gone;
                         txtTotalPayableTitle.Text = GetString(Resource.String.title_payment_advice_amount);
@@ -2027,9 +2063,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             public override void OnStateChanged(View bottomSheet, int newState)
             {
-                if (newState == BottomSheetBehavior.StateHidden)
+                if (!requireScroll)
                 {
-                    bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                    if (newState == BottomSheetBehavior.StateHidden)
+                    {
+                        bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                    }
                 }
             }
         }
@@ -2088,6 +2127,57 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 Utility.LoggingNonFatalError(ne);
             }
 
+        }
+
+        private void OnGetEnergyTipsItems()
+        {
+            List<EnergySavingTipsModel> energyList = new List<EnergySavingTipsModel>();
+            List<EnergySavingTipsModel> localList = EnergyTipsUtils.GetAllItems();
+            if (localList.Count > 0)
+            {
+                var random = new System.Random();
+                List<int> listNumbers = new List<int>();
+                int number;
+                for (int i = 0; i < 3; i++)
+                {
+                    do
+                    {
+                        number = random.Next(1, localList.Count);
+                    } while (listNumbers.Contains(number));
+                    listNumbers.Add(number);
+                }
+
+
+                for (int j = 0; j < listNumbers.Count; j++)
+                {
+                    energyList.Add(localList[listNumbers[j]]);
+                }
+
+                energyTipsAdapter = new EnergySavingTipsAdapter(energyList, this.Activity);
+                energyTipsList.SetAdapter(energyTipsAdapter);
+            }
+        }
+
+        private void ScrollUpDownScrollView(int UpDown)
+        {
+            if (Activity != null)
+            {
+                Activity.RunOnUiThread(() => {
+                    ScrollViewTowards(UpDown);
+                });
+            }
+        }
+
+        private void ScrollViewTowards(int UpDown)
+        {
+            if (UpDown == 0)
+            {
+                scrollView.FullScroll(FocusSearchDirection.Down);
+            }
+            else if (UpDown == 1)
+            {
+                scrollView.FullScroll(FocusSearchDirection.Up);
+            }
         }
 
     }

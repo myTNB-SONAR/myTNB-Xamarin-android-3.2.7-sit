@@ -83,24 +83,15 @@ namespace myTNB_Android.Src.Utils
 
         private static async Task OnProcessEnergyTips()
         {
-            List<EnergySavingTipsModel> localList = new List<EnergySavingTipsModel>();
             foreach(EnergySavingTipsModel item in energyTipsList)
             {
                 if (item.isUpdateNeeded)
                 {
                     EnergySavingTipsModel processItem = new EnergySavingTipsModel();
-                    processItem = item;
-                    processItem.ImageBitmap = await GetPhoto(processItem.Image);
-                    processItem.isUpdateNeeded = false;
-                    localList.Add(processItem);
-                }
-                else
-                {
-                    localList.Add(item);
+                    item.ImageBitmap = await GetPhoto(item.Image);
+                    item.isUpdateNeeded = false;
                 }
             }
-            energyTipsList.Clear();
-            energyTipsList.AddRange(localList);
         }
 
         private static async Task<Bitmap> GetPhoto(string imageUrl)
@@ -120,6 +111,11 @@ namespace myTNB_Android.Src.Utils
             }
 
             return imageBitmap;
+        }
+
+        public static List<EnergySavingTipsModel> GetAllItems()
+        {
+            return energyTipsList;
         }
 
     }
