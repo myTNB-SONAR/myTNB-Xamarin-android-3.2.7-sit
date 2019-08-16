@@ -29,7 +29,8 @@ namespace myTNB
         UIScrollView _meterReadScrollView;
         UIImageView _cameraIconView;
         UILabel _descriptionLabel, _takePhotoLabel, _errorLabel, _noteLabel;
-        nfloat _padding = 16f;
+        nfloat _paddingX = ScaleUtility.GetScaledWidth(16f);
+        nfloat _paddingY = ScaleUtility.GetScaledHeight(16f);
         nfloat takePhotoViewRatio = 136.0f / 320.0f;
         nfloat lastCardYPos;
         CGRect scrollViewFrame;
@@ -236,9 +237,9 @@ namespace myTNB
             {
                 ViewHelper.AdjustFrameSetY(_noteLabel, 0);
             }
-            ViewHelper.AdjustFrameSetHeight(_noteView, _noteLabel.Frame.GetMaxY() + GetScaledHeight(16f));
+            ViewHelper.AdjustFrameSetHeight(_noteView, _noteLabel.Frame.GetMaxY() + _paddingY);
 
-            _meterReadScrollView.ContentSize = new CGSize(ViewWidth, _noteView.Frame.GetMaxY() + _padding);
+            _meterReadScrollView.ContentSize = new CGSize(ViewWidth, _noteView.Frame.GetMaxY() + _paddingY);
             scrollViewFrame = _meterReadScrollView.Frame;
 
             if (isError)
@@ -251,14 +252,14 @@ namespace myTNB
         private void PrepareTakePhotoHeaderView()
         {
             nfloat takePhotoViewHeight = View.Frame.Width * takePhotoViewRatio;
-            nfloat descLabelWidth = _meterReadScrollView.Frame.Width - (_padding * 2);
+            nfloat descLabelWidth = _meterReadScrollView.Frame.Width - (_paddingX * 2);
             _takePhotoView = new UIView(new CGRect(0, 0, View.Frame.Width, takePhotoViewHeight))
             {
                 BackgroundColor = UIColor.White,
                 Tag = 1
             };
 
-            _descriptionLabel = new UILabel(new CGRect(_padding, _padding, descLabelWidth, 44f))
+            _descriptionLabel = new UILabel(new CGRect(_paddingX, _paddingY, descLabelWidth, 44f))
             {
                 BackgroundColor = UIColor.Clear,
                 Font = MyTNBFont.MuseoSans14_300,
@@ -273,8 +274,8 @@ namespace myTNB
             ViewHelper.AdjustFrameSetHeight(_descriptionLabel, cGSize.Height);
             _takePhotoView.AddSubview(_descriptionLabel);
 
-            nfloat btnViewWidth = _meterReadScrollView.Frame.Width - (_padding * 2);
-            _takePhotoBtnView = new UIView(new CGRect(_padding, _descriptionLabel.Frame.GetMaxY() + 12f, btnViewWidth, GetScaledHeight(48f)))
+            nfloat btnViewWidth = _meterReadScrollView.Frame.Width - (_paddingX * 2);
+            _takePhotoBtnView = new UIView(new CGRect(_paddingX, _descriptionLabel.Frame.GetMaxY() + GetScaledHeight(12f), btnViewWidth, GetScaledHeight(48f)))
             {
                 BackgroundColor = UIColor.White
             };
@@ -289,7 +290,7 @@ namespace myTNB
 
             _takePhotoView.AddSubview(_takePhotoBtnView);
 
-            ViewHelper.AdjustFrameSetHeight(_takePhotoView, _takePhotoBtnView.Frame.GetMaxY() + _padding);
+            ViewHelper.AdjustFrameSetHeight(_takePhotoView, _takePhotoBtnView.Frame.GetMaxY() + _paddingY);
 
             UIView containerView = new UIView(new CGRect(0, 0, 250f, _takePhotoBtnView.Frame.Height))
             {
@@ -336,7 +337,7 @@ namespace myTNB
         private void PrepareToolTipView()
         {
             UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
-            nfloat padding = 18f;
+            nfloat widthMargin = GetScaledWidth(18f);
             nfloat width = currentWindow.Frame.Width;
             nfloat height = currentWindow.Frame.Height;
             if (_toolTipParentView == null)
@@ -347,7 +348,7 @@ namespace myTNB
                 };
                 currentWindow.AddSubview(_toolTipParentView);
 
-                _toolTipContainerView = new UIView(new CGRect(padding, 104f, width - (padding * 2), 500f))
+                _toolTipContainerView = new UIView(new CGRect(widthMargin, 104f, width - (widthMargin * 2), 500f))
                 {
                     BackgroundColor = UIColor.White,
                     ClipsToBounds = true
@@ -386,7 +387,7 @@ namespace myTNB
 
         private void SetScrollViewSubViews()
         {
-            nfloat padding = 16f;
+            nfloat widthMargin = GetScaledWidth(16f);
             nfloat width = _toolTipScrollView.Frame.Width;
             nfloat newHeight = 0f;
             for (int i = 0; i < pageData.Count; i++)
@@ -434,7 +435,7 @@ namespace myTNB
                 };
                 viewContainer.AddSubview(imageView);
 
-                UILabel title = new UILabel(new CGRect(padding, imageView.Frame.GetMaxY() + 24f, viewContainer.Frame.Width - (padding * 2), 0))
+                UILabel title = new UILabel(new CGRect(widthMargin, imageView.Frame.GetMaxY() + GetScaledHeight(24f), viewContainer.Frame.Width - (widthMargin * 2), 0))
                 {
                     Font = MyTNBFont.MuseoSans14_500,
                     TextColor = MyTNBColor.CharcoalGrey,
@@ -444,12 +445,12 @@ namespace myTNB
                     Text = pageData[i]?.Title ?? string.Empty
                 };
 
-                CGSize titleNewSize = title.SizeThatFits(new CGSize(viewContainer.Frame.Width - (padding * 2), 1000f));
+                CGSize titleNewSize = title.SizeThatFits(new CGSize(viewContainer.Frame.Width - (widthMargin * 2), 1000f));
                 ViewHelper.AdjustFrameSetHeight(title, titleNewSize.Height);
 
                 viewContainer.AddSubview(title);
 
-                UILabel description = new UILabel(new CGRect(padding, title.Frame.GetMaxY() + 12f, viewContainer.Frame.Width - (padding * 2), 0))
+                UILabel description = new UILabel(new CGRect(widthMargin, title.Frame.GetMaxY() + GetScaledHeight(12f), viewContainer.Frame.Width - (widthMargin * 2), 0))
                 {
                     Font = MyTNBFont.MuseoSans14_300,
                     TextColor = MyTNBColor.CharcoalGrey,
@@ -459,14 +460,14 @@ namespace myTNB
                     Text = pageData[i]?.Description ?? string.Empty
                 };
 
-                CGSize descNewSize = description.SizeThatFits(new CGSize(viewContainer.Frame.Width - (padding * 2), 1000f));
+                CGSize descNewSize = description.SizeThatFits(new CGSize(viewContainer.Frame.Width - (widthMargin * 2), 1000f));
                 ViewHelper.AdjustFrameSetHeight(description, descNewSize.Height);
 
                 viewContainer.AddSubview(description);
 
                 ViewHelper.AdjustFrameSetX(viewContainer, i * width);
                 ViewHelper.AdjustFrameSetWidth(viewContainer, width);
-                ViewHelper.AdjustFrameSetHeight(viewContainer, description.Frame.GetMaxY() + 32f);
+                ViewHelper.AdjustFrameSetHeight(viewContainer, description.Frame.GetMaxY() + GetScaledHeight(32f));
 
                 _toolTipScrollView.AddSubview(viewContainer);
                 if (newHeight < viewContainer.Frame.GetMaxY())
@@ -501,13 +502,13 @@ namespace myTNB
                 }
             }
 
-            UIView line = new UIView(new CGRect(0, _pageControl.Frame.GetMaxY() + 16f, _toolTipFooterView.Frame.Width, 1f))
+            UIView line = new UIView(new CGRect(0, _pageControl.Frame.GetMaxY() + GetScaledHeight(16f), _toolTipFooterView.Frame.Width, GetScaledHeight(1f)))
             {
                 BackgroundColor = MyTNBColor.VeryLightPink
             };
             _toolTipFooterView.AddSubview(line);
 
-            UILabel proceedLabel = new UILabel(new CGRect(0, line.Frame.GetMaxY() + 16f, _toolTipFooterView.Frame.Width, 24f))
+            UILabel proceedLabel = new UILabel(new CGRect(0, line.Frame.GetMaxY() + GetScaledHeight(16f), _toolTipFooterView.Frame.Width, GetScaledHeight(24f)))
             {
                 Font = MyTNBFont.MuseoSans16_500,
                 TextColor = MyTNBColor.WaterBlue,
@@ -521,7 +522,7 @@ namespace myTNB
             }));
             _toolTipFooterView.AddSubview(proceedLabel);
 
-            ViewHelper.AdjustFrameSetHeight(_toolTipFooterView, proceedLabel.Frame.GetMaxY() + 16f);
+            ViewHelper.AdjustFrameSetHeight(_toolTipFooterView, proceedLabel.Frame.GetMaxY() + GetScaledHeight(16f));
 
             _toolTipContainerView.AddSubview(_toolTipFooterView);
 
@@ -566,7 +567,7 @@ namespace myTNB
             {
                 bool hasOCRError = false;
                 string errorMessage = string.Empty;
-                nfloat yPos = _takePhotoView.Frame.GetMaxY() + _padding;
+                nfloat yPos = _takePhotoView.Frame.GetMaxY() + _paddingY;
                 foreach (var previousMeter in _previousMeterList)
                 {
                     SSMRMeterCardComponent sSMRMeterCardComponent = new SSMRMeterCardComponent(this, _meterReadScrollView, yPos);
@@ -596,7 +597,7 @@ namespace myTNB
                     {
                         sSMRMeterCardComponent.UpdateUI(!previousMeter.IsValidManualReading, previousMeter.ErrorMessage, previousMeter.CurrentReading);
                     }
-                    yPos = sSMRMeterCardComponent.GetView().Frame.GetMaxY() + _padding;
+                    yPos = sSMRMeterCardComponent.GetView().Frame.GetMaxY() + _paddingY;
                     _meterReadScrollView.ContentSize = new CGSize(ViewWidth, yPos);
                     scrollViewFrame = _meterReadScrollView.Frame;
                 }
@@ -922,7 +923,7 @@ namespace myTNB
             view.Layer.MasksToBounds = false;
             view.Layer.ShadowColor = MyTNBColor.BrownGrey10.CGColor;
             view.Layer.ShadowOpacity = 0.5f;
-            view.Layer.ShadowOffset = new CGSize(0, 1);
+            view.Layer.ShadowOffset = new CGSize(0, 5);
             view.Layer.ShadowRadius = 5;
             view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
         }

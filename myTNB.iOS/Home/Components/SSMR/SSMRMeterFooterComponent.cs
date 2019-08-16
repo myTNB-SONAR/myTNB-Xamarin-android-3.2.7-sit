@@ -67,8 +67,8 @@ namespace myTNB
         {
             view.Layer.MasksToBounds = false;
             view.Layer.ShadowColor = MyTNBColor.SilverChalice.CGColor;
-            view.Layer.ShadowOpacity = 0.5f;
-            view.Layer.ShadowOffset = new CGSize(0, 1);
+            view.Layer.ShadowOpacity = 0.3f;
+            view.Layer.ShadowOffset = new CGSize(0, -8);
             view.Layer.ShadowRadius = 5;
             view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
         }

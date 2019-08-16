@@ -20,7 +20,8 @@ namespace myTNB
         nfloat prevReadingContainerRatio = 20.0f / 256.0f;
         float imgHeight = 20.0f;
         float imgWidth = 52.0f;
-        nfloat padding = 16f;
+        nfloat _paddingX = ScaleUtility.GetScaledWidth(16f);
+        nfloat _paddingY = ScaleUtility.GetScaledHeight(16f);
         int boxMaxCount = 8;
         nfloat _yLocation;
         nfloat _iconYposOriginal;
@@ -38,17 +39,17 @@ namespace myTNB
         private void CreateComponent()
         {
             _containerHeightOriginal = _parentView.Frame.Width * containerRatio;
-            _containerView = new UIView(new CGRect(padding, _yLocation, _parentView.Frame.Width - (padding * 2), _containerHeightOriginal))
+            _containerView = new UIView(new CGRect(_paddingX, _yLocation, _parentView.Frame.Width - (_paddingX * 2), _containerHeightOriginal))
             {
                 BackgroundColor = UIColor.White
             };
-            _containerView.Layer.CornerRadius = 5.0f;
+            _containerView.Layer.CornerRadius = ScaleUtility.GetScaledHeight(5f);
 
             nfloat viewBoxContainerHeight = _containerView.Frame.Width * viewBoxContainerRatio;
-            nfloat viewBoxContainerWidth = _containerView.Frame.Width - (padding * 2);
+            nfloat viewBoxContainerWidth = _containerView.Frame.Width - (_paddingX * 2);
             nfloat prevReadingContainerHeight = _containerView.Frame.Width * prevReadingContainerRatio;
 
-            _prevReadingLabel = new UILabel(new CGRect(padding, padding, viewBoxContainerWidth, 16f))
+            _prevReadingLabel = new UILabel(new CGRect(_paddingX, _paddingY, viewBoxContainerWidth, ScaleUtility.GetScaledHeight(16f)))
             {
                 BackgroundColor = UIColor.Clear,
                 Font = MyTNBFont.MuseoSans12_300,
@@ -58,18 +59,18 @@ namespace myTNB
             };
             _containerView.AddSubview(_prevReadingLabel);
 
-            _prevReadingView = new UIView(new CGRect(padding, _prevReadingLabel.Frame.GetMaxY() + 4f, viewBoxContainerWidth, prevReadingContainerHeight))
+            _prevReadingView = new UIView(new CGRect(_paddingX, _prevReadingLabel.Frame.GetMaxY() + ScaleUtility.GetScaledHeight(4f), viewBoxContainerWidth, prevReadingContainerHeight))
             {
                 BackgroundColor = UIColor.Clear
             };
 
             _containerView.AddSubview(_prevReadingView);
 
-            _viewBoxContainer = new UIView(new CGRect(padding, _prevReadingView.Frame.GetMaxY() + 8f, viewBoxContainerWidth, viewBoxContainerHeight))
+            _viewBoxContainer = new UIView(new CGRect(_paddingX, _prevReadingView.Frame.GetMaxY() + ScaleUtility.GetScaledHeight(8f), viewBoxContainerWidth, viewBoxContainerHeight))
             {
                 BackgroundColor = UIColor.Clear
             };
-            _viewBoxContainer.Layer.CornerRadius = 4f;
+            _viewBoxContainer.Layer.CornerRadius = ScaleUtility.GetScaledHeight(4f);
             for (int i = 0; i < boxMaxCount; i++)
             {
                 _viewBoxContainer.AddSubview(CreateViewBox(_viewBoxContainer, i));
@@ -80,7 +81,7 @@ namespace myTNB
             }));
             _containerView.AddSubview(_viewBoxContainer);
 
-            _errorLabel = new UILabel(new CGRect(padding, _viewBoxContainer.Frame.GetMaxY() + 4f, viewBoxContainerWidth, 14f))
+            _errorLabel = new UILabel(new CGRect(_paddingX, _viewBoxContainer.Frame.GetMaxY() + ScaleUtility.GetScaledHeight(4f), viewBoxContainerWidth, ScaleUtility.GetScaledHeight(14f)))
             {
                 BackgroundColor = UIColor.Clear,
                 Font = MyTNBFont.MuseoSans10_500,
@@ -93,11 +94,11 @@ namespace myTNB
             nfloat iconHeight = DeviceHelper.GetScaledHeight(imgHeight);
             nfloat iconWidth = DeviceHelper.GetScaledWidth(imgWidth);
             _iconYposOriginal = _viewBoxContainer.Frame.GetMaxY() + (_containerHeightOriginal - _viewBoxContainer.Frame.GetMaxY()) / 2 - (iconHeight / 2);
-            _iconView = new UIView(new CGRect(_containerView.Frame.Width - padding - iconWidth, _iconYposOriginal, iconWidth, iconHeight))
+            _iconView = new UIView(new CGRect(_containerView.Frame.Width - _paddingX - iconWidth, _iconYposOriginal, iconWidth, iconHeight))
             {
                 BackgroundColor = MyTNBColor.WaterBlue
             };
-            _iconView.Layer.CornerRadius = 5f;
+            _iconView.Layer.CornerRadius = ScaleUtility.GetScaledHeight(5f);
 
             _iconLabel = new UILabel(new CGRect(0, 0, _iconView.Frame.Width, _iconView.Frame.Height))
             {
@@ -430,12 +431,14 @@ namespace myTNB
                 _errorLabel.Hidden = false;
                 _errorLabel.Text = message ?? string.Empty;
                 _iconView.BackgroundColor = MyTNBColor.Tomato;
+                ViewHelper.AdjustFrameSetY(_iconView, _errorLabel.Frame.GetMaxY() + ScaleUtility.GetScaledHeight(8f));
             }
             else
             {
                 _errorLabel.Hidden = true;
                 _errorLabel.Text = string.Empty;
                 _iconView.BackgroundColor = MyTNBColor.FreshGreen;
+                ViewHelper.AdjustFrameSetY(_iconView, _iconYposOriginal);
             }
             AddCardShadow(ref _containerView);
             UpdateTextFieldTextColor(isError);
@@ -466,9 +469,7 @@ namespace myTNB
 
             _errorLabel.Hidden = true;
             _errorLabel.Text = string.Empty;
-            CGRect iconFrame = _iconView.Frame;
-            iconFrame.Y = _iconYposOriginal;
-            _iconView.Frame = iconFrame;
+            ViewHelper.AdjustFrameSetY(_iconView, _iconYposOriginal);
             _iconView.BackgroundColor = MyTNBColor.WaterBlue;
 
             CGRect containerFrame = _containerView.Frame;
