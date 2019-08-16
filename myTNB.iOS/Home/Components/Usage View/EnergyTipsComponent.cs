@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using CoreGraphics;
+using myTNB.SitecoreCMS.Model;
 using UIKit;
 
 namespace myTNB
@@ -8,19 +10,20 @@ namespace myTNB
     {
         UIView _parentView, _containerView;
         UIScrollView _scrollView;
-        UILabel _title, _desc;
-        UIImageView _iconView;
+
+        List<TipsModel> _tipsList;
 
         nfloat scrollViewRatio = 100.0f / 288.0f;
-
         nfloat margin = ScaleUtility.GetScaledWidth(8f);
+        nfloat paddingX = ScaleUtility.GetScaledWidth(16f);
+        nfloat paddingY = ScaleUtility.GetScaledHeight(16f);
         nfloat containerHeight = ScaleUtility.GetScaledHeight(110f);
         int currentPageIndex;
-        int dummyArrayCount = 3;
 
-        public EnergyTipsComponent(UIView parentView)
+        public EnergyTipsComponent(UIView parentView, List<TipsModel> tipsList)
         {
             _parentView = parentView;
+            _tipsList = tipsList;
         }
 
         private void CreateComponent()
@@ -54,22 +57,71 @@ namespace myTNB
         private void SetScrollViewSubViews()
         {
             nfloat width = _scrollView.Frame.Width;
-            for (int i = 0; i < dummyArrayCount; i++)
+            for (int i = 0; i < _tipsList.Count; i++)
             {
+                UILabel title, desc;
+                UIImageView bgView, iconView;
+
                 UIView viewContainer = new UIView(_scrollView.Bounds);
                 viewContainer.BackgroundColor = UIColor.White;
 
-                CGRect frame = viewContainer.Frame;
-                frame.X = (i * width) + margin;
-                frame.Height = frame.Height;
-                frame.Y = (_scrollView.Frame.Height - frame.Height) / 2;
-                frame.Width = width - (margin * 1);
-                viewContainer.Frame = frame;
+                ViewHelper.AdjustFrameSetX(viewContainer, (i * width) + margin);
+                ViewHelper.AdjustFrameSetY(viewContainer, (_scrollView.Frame.Height - viewContainer.Frame.Height) / 2);
+                ViewHelper.AdjustFrameSetWidth(viewContainer, width - (margin * 1));
+
                 viewContainer.Layer.CornerRadius = ScaleUtility.GetScaledHeight(4f);
                 AddCardShadow(ref viewContainer);
+
+                nfloat viewWidth = viewContainer.Frame.Width;
+                nfloat viewHeight = viewContainer.Frame.Height;
+
+                bgView = new UIImageView(new CGRect(0, 0, viewWidth, viewHeight))
+                {
+                    Image = UIImage.FromBundle("Saving-Tips-Bg")
+                };
+                viewContainer.AddSubview(bgView);
+
+                title = new UILabel(new CGRect(paddingX, ScaleUtility.GetScaledHeight(12f), viewWidth - (paddingX * 2), ScaleUtility.GetScaledHeight(16f)))
+                {
+                    Font = TNBFont.MuseoSans_12_500,
+                    TextColor = MyTNBColor.GreyishBrown,
+                    TextAlignment = UITextAlignment.Left,
+                    Text = _tipsList[i].Title ?? string.Empty
+                };
+                viewContainer.AddSubview(title);
+
+                nfloat descViewPosX = ScaleUtility.GetScaledWidth(12f);
+                nfloat descViewPosY = title.Frame.GetMaxY() + ScaleUtility.GetScaledHeight(8f);
+                nfloat descViewHeight = viewHeight - descViewPosY - paddingY;
+                UIView descView = new UIView(new CGRect(descViewPosX, descViewPosY, viewWidth - (descViewPosX + paddingY), descViewHeight))
+                {
+                    BackgroundColor = UIColor.Clear,
+                };
+                viewContainer.AddSubview(descView);
+
+                nfloat iconWidth = ScaleUtility.GetScaledWidth(36f);
+                iconView = new UIImageView(new CGRect(0, ScaleUtility.GetYLocationToCenterObject(iconWidth, descView), iconWidth, iconWidth))
+                {
+                    Image = UIImage.FromBundle("Fridge-Icon")
+                };
+                descView.AddSubview(iconView);
+
+                nfloat descPosX = iconView.Frame.GetMaxX() + ScaleUtility.GetScaledWidth(8f);
+                nfloat descWidth = descView.Frame.Width - descPosX - paddingX;
+                desc = new UILabel(new CGRect(descPosX, 0, descWidth, descView.Frame.Height))
+                {
+                    BackgroundColor = UIColor.Clear,
+                    Font = TNBFont.MuseoSans_12_300,
+                    TextColor = MyTNBColor.GreyishBrown,
+                    Lines = 0,
+                    TextAlignment = UITextAlignment.Left,
+                    Text = _tipsList[i].Description
+                };
+                descView.AddSubview(desc);
+
                 _scrollView.AddSubview(viewContainer);
             }
-            _scrollView.ContentSize = new CGSize(_scrollView.Frame.Width * dummyArrayCount, _scrollView.Frame.Height);
+            _scrollView.ContentSize = new CGSize(_scrollView.Frame.Width * _tipsList.Count, _scrollView.Frame.Height);
         }
 
         public UIView GetUI()

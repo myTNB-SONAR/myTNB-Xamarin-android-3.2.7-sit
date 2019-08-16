@@ -1,6 +1,9 @@
 using CoreGraphics;
 using Foundation;
+using myTNB.SitecoreCMS.Model;
+using myTNB.SQLite.SQLiteDataManager;
 using System;
+using System.Collections.Generic;
 using UIKit;
 
 namespace myTNB
@@ -39,7 +42,7 @@ namespace myTNB
 
             UILabel lblTitle = new UILabel(new CGRect(58, 0, _navbarContainer.Frame.Width - 116, titleBarHeight))
             {
-                Font = MyTNBFont.MuseoSans16_500,
+                Font = TNBFont.MuseoSans_16_500,
                 Text = "Usage"
             };
 
@@ -64,13 +67,17 @@ namespace myTNB
 
         private void SetEnergyTipsComponent()
         {
+            List<TipsModel> tipsList;
+            EnergyTipsEntity wsManager = new EnergyTipsEntity();
+            tipsList = wsManager.GetAllItems();
+
             _energyTipsContainer = new UIView(new CGRect(0, 100f, View.Frame.Width, 150f))
             {
                 BackgroundColor = UIColor.Clear
             };
             View.AddSubview(_energyTipsContainer);
 
-            EnergyTipsComponent energyTipsComponent = new EnergyTipsComponent(_energyTipsContainer);
+            EnergyTipsComponent energyTipsComponent = new EnergyTipsComponent(_energyTipsContainer, tipsList);
             _energyTipsContainer.AddSubview(energyTipsComponent.GetUI());
         }
     }
