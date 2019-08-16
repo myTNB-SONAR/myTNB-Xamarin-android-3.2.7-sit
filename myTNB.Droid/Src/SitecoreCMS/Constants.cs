@@ -109,6 +109,13 @@
                     public const string Description = "Description";
                     public const string Image = "Image";
                 }
+
+                public struct EnergySavingTips
+                {
+                    public const string Title = "Title";
+                    public const string Description = "Description";
+                    public const string Image = "Image";
+                }
             }
 
             public struct ItemID
@@ -135,6 +142,8 @@
 
                 public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help";
                 public const string ApplySSMRWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR Apply";
+
+                public const string EnergySavingTips = "/sitecore/content/myTNBapp/Contents/Energy Saving Tips";
 
                 public const string SSMRMeterReadingOnePhaseWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead OnePhase";
                 public const string SSMRMeterReadingThreePhaseWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead ThreePhase";
