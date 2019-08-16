@@ -1461,7 +1461,6 @@
     <Compile Include="Src\SSMRTerminate\MVP\SSMRTerminateContract.cs" />
     <Compile Include="Src\SSMRTerminate\MVP\SSMRTerminatePresenter.cs" />
     <Compile Include="Src\SSMR\SMRApplication\Adapter\SelectAccountAdapter.cs" />
-    <Compile Include="Src\SSMR\SubmitMeterReading\SubmitMeterReadingHelper.cs" />
     <AndroidResource Include="Resources\layout\SubmitMeterReadingLayout.axml" />
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterReadingActivity.cs" />
     <AndroidResource Include="Resources\layout\SubmitMeterReadingCardLayout.axml" />
@@ -1971,6 +1970,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\ic_action_camera_green.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_camera_green.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_camera_green.png" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\MeterValidationData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

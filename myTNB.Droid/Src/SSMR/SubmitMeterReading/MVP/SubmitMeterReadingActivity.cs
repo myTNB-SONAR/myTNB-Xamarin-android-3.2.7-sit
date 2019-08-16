@@ -453,14 +453,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
         }
 
-        public class OnCardClickListener : Java.Lang.Object, View.IOnClickListener
-        {
-            public void OnClick(View v)
-            {
-                //throw new NotImplementedException();
-            }
-        }
-
         private string GetRegisterNumber(string data)
         {
             string resultString = "";
@@ -606,25 +598,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
             else
             {
-                if (currentReading < previousReading)
+                meterType.SetBackgroundDrawable(GetDrawable(Resource.Drawable.meter_reading_label_background_ready));
+                validationStateList.Find(meter =>
                 {
-                    inlineError.Text = "This value is less than your previous reading.";
-                    inlineError.Visibility = ViewStates.Visible;
-                    meterType.SetBackgroundDrawable(GetDrawable(Resource.Drawable.meter_reading_label_background_error));
-                    validationStateList.Find(meter =>
-                    {
-                        return meter.meterId == RegisterNumber;
-                    }).validated = false;
-                }
-                else
-                {
-                    inlineError.Visibility = ViewStates.Gone;
-                    meterType.SetBackgroundDrawable(GetDrawable(Resource.Drawable.meter_reading_label_background_ready));
-                    validationStateList.Find(meter =>
-                    {
-                        return meter.meterId == RegisterNumber;
-                    }).validated = true;
-                }
+                    return meter.meterId == RegisterNumber;
+                }).validated = true;
             }
             EnableSubmitButton(validationStateList.TrueForAll(meter => { return meter.validated == true; }));
         }
@@ -783,6 +761,45 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowMeterCardValidationError(List<MeterValidationData> validationDataList)
+        {
+            if (validationDataList.Count > 0)
+            {
+                foreach(MeterValidationData validationData in validationDataList)
+                {
+                    LinearLayout linearLayoutContainer;
+                    TextView inlineValidationMessage;
+                    string type = validationData.registerNumber;
+                    if (type == "001")
+                    {
+                        linearLayoutContainer = FindViewById(Resource.Id.kwhCard) as LinearLayout;
+                        inlineValidationMessage = linearLayoutContainer.FindViewById<TextView>(Resource.Id.reading_error_validation_msg);
+                    }
+                    else if (type == "002")
+                    {
+                        linearLayoutContainer = FindViewById(Resource.Id.kVARhCard) as LinearLayout;
+                        inlineValidationMessage = linearLayoutContainer.FindViewById<TextView>(Resource.Id.reading_error_validation_msg);
+                    }
+                    else //(type == "003")
+                    {
+                        linearLayoutContainer = FindViewById(Resource.Id.kwCard) as LinearLayout;
+                        inlineValidationMessage = linearLayoutContainer.FindViewById<TextView>(Resource.Id.reading_error_validation_msg);
+                    }
+
+                    if (validationData.isSuccess)
+                    {
+                        inlineValidationMessage.Visibility = ViewStates.Gone;
+                    }
+                    else
+                    {
+                        inlineValidationMessage.Text = validationData.message;
+                        inlineValidationMessage.Visibility = ViewStates.Visible;
+                        TextViewUtils.SetMuseoSans500Typeface(inlineValidationMessage);
+                    }
+                }
             }
         }
     }
