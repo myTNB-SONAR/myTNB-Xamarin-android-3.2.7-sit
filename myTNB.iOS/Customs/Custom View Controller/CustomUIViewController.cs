@@ -400,6 +400,10 @@ namespace myTNB
         {
             return ScaleUtility.GetXLocationToCenterObject(width, view);
         }
+        public void GetValuesFromAspectRatio(ref nfloat width, ref nfloat height)
+        {
+            ScaleUtility.GetValuesFromAspectRatio(ref width, ref height);
+        }
         public nfloat BaseMarginWidth8
         {
             get { return ScaleUtility.BaseMarginWidth8; }

@@ -1115,6 +1115,10 @@
     <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Camera-Icon-Green.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Camera-Icon-Green.imageset\Camera-Icon-Green.png" />
+    <ImageAsset Include="Assets.xcassets\Camera-Icon-Green.imageset\Camera-Icon-Green%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Camera-Icon-Green.imageset\Camera-Icon-Green%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1475,6 +1479,7 @@
     <Folder Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\" />
     <Folder Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\" />
     <Folder Include="Assets.xcassets\IC-Info-Blue.imageset\" />
+    <Folder Include="Assets.xcassets\Camera-Icon-Green.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
