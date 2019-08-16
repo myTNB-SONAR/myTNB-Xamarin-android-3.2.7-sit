@@ -255,5 +255,42 @@ namespace myTNB.SitecoreCMS.Services
             }
             return respModel;
         }
+
+        public EnergyTipsResponseModel GetEnergyTipsItem()
+        {
+            EnergyTipsResponseModel respModel = new EnergyTipsResponseModel();
+            try
+            {
+                EnergyTipsService service = new EnergyTipsService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<EnergyTipsResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetEnergyTipsItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public EnergyTipsTimeStampResponseModel GetEnergyTipsTimestampItem()
+        {
+            EnergyTipsTimeStampResponseModel respModel = new EnergyTipsTimeStampResponseModel();
+            try
+            {
+                EnergyTipsService service = new EnergyTipsService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<EnergyTipsTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetEnergyTipsTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
     }
 }

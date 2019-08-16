@@ -1482,6 +1482,7 @@
     <Folder Include="Home\Components\Usage View\" />
     <Folder Include="Assets.xcassets\IC-Info-Blue.imageset\" />
     <Folder Include="Assets.xcassets\Camera-Icon-Green.imageset\" />
+    <Folder Include="Sitecore CMS\Model\Energy Tips\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2279,6 +2280,9 @@
       <DependentUpon>UsageViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Home\Components\Usage View\EnergyTipsComponent.cs" />
+    <Compile Include="Sitecore CMS\Model\Energy Tips\EnergyTipsModel.cs" />
+    <Compile Include="Sitecore CMS\Service\EnergyTipsService.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\EnergyTipsEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

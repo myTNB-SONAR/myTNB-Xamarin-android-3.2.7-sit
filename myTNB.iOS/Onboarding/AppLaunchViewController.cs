@@ -510,6 +510,53 @@ namespace myTNB
             });
         }
 
+        private Task LoadEnergyTips()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS
+                    , DataManager.DataManager.SharedInstance.ImageSize, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
+                EnergyTipsTimeStampResponseModel timeStamp = iService.GetEnergyTipsTimestampItem();
+
+                bool needsUpdate = true;
+                if (timeStamp != null && timeStamp.Data != null && timeStamp.Data.Count > 0 && timeStamp.Data[0] != null
+                    && !string.IsNullOrEmpty(timeStamp.Data[0].Timestamp))
+                {
+                    NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                    string currentTS = sharedPreference.StringForKey("SiteCoreEnergyTipsTimeStamp");
+                    if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
+                    {
+                        sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreEnergyTipsTimeStamp");
+                        sharedPreference.Synchronize();
+                    }
+                    else
+                    {
+                        if (currentTS.Equals(timeStamp.Data[0].Timestamp))
+                        {
+                            needsUpdate = false;
+                        }
+                        else
+                        {
+                            sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreEnergyTipsTimeStamp");
+                            sharedPreference.Synchronize();
+                        }
+                    }
+                }
+
+                if (needsUpdate)
+                {
+                    EnergyTipsResponseModel energyTipsItems = iService.GetEnergyTipsItem();
+                    if (energyTipsItems != null && energyTipsItems.Data != null && energyTipsItems.Data.Count > 0)
+                    {
+                        EnergyTipsEntity wsManager = new EnergyTipsEntity();
+                        wsManager.DeleteTable();
+                        wsManager.CreateTable();
+                        wsManager.InsertListOfItems(energyTipsItems.Data);
+                    }
+                }
+            });
+        }
+
         private void OpenUpdateLink()
         {
             int index = DataManager.DataManager.SharedInstance.WebLinks?.FindIndex(x => x.Code.ToLower().Equals("ios")) ?? -1;
@@ -569,8 +616,6 @@ namespace myTNB
             {
                 await LoadSSMRWalkthrough();
             }
-            await LoadMeterReadSSMRWalkthrough();
-            await LoadMeterReadSSMRWalkthroughV2();
             if (isWalkthroughDone)
             {
                 await ClearWalkthroughCache();
@@ -608,6 +653,13 @@ namespace myTNB
                     });
                 });
             }
+
+            InvokeInBackground(async () =>
+            {
+                await LoadMeterReadSSMRWalkthrough();
+                await LoadMeterReadSSMRWalkthroughV2();
+                await LoadEnergyTips();
+            });
         }
 
         /// <summary>

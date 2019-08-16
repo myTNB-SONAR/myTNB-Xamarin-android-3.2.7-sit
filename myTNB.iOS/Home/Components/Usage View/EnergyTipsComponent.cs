@@ -65,7 +65,7 @@ namespace myTNB
                 frame.Y = (_scrollView.Frame.Height - frame.Height) / 2;
                 frame.Width = width - (margin * 1);
                 viewContainer.Frame = frame;
-                viewContainer.Layer.CornerRadius = 4f;
+                viewContainer.Layer.CornerRadius = ScaleUtility.GetScaledHeight(4f);
                 AddCardShadow(ref viewContainer);
                 _scrollView.AddSubview(viewContainer);
             }
@@ -97,9 +97,9 @@ namespace myTNB
         {
             view.Layer.CornerRadius = 5f;
             view.Layer.MasksToBounds = false;
-            view.Layer.ShadowColor = MyTNBColor.BabyBlue.CGColor;
-            view.Layer.ShadowOpacity = 1;
-            view.Layer.ShadowOffset = new CGSize(0, 0);
+            view.Layer.ShadowColor = MyTNBColor.BabyBlue60.CGColor;
+            view.Layer.ShadowOpacity = .32f;
+            view.Layer.ShadowOffset = new CGSize(0, 8);
             view.Layer.ShadowRadius = 8;
             view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
         }
