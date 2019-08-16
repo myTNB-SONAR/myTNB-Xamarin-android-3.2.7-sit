@@ -72,6 +72,24 @@
 					    android:orientation="vertical"
 					    android:visibility="visible"
                         android:background="@drawable/dashboard_chart_bg">
+                        <TextView
+                            android:textAppearance="?android:attr/textAppearanceMedium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="3dp"
+                            android:id="@+id/dashboard_txt_account_name"
+                            android:drawablePadding="3dp"
+                            android:textSize="18dp"
+                            android:gravity="center"
+                            android:layout_gravity="center"
+                            android:textColor="@color/white"
+                            android:maxLines="1"
+                            android:maxEms="20"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:layout_marginBottom="12dp"
+                            android:text="Account Name"
+                            android:ellipsize="end" />
 					    <TextView
 						    android:layout_height="wrap_content"
 						    android:layout_width="match_parent"
@@ -105,44 +123,98 @@
 						    android:textColor="@color/sunGlow"
 						    android:text="@string/dashboard_chartview_range_example"
 						    android:id="@+id/txtRange" />
-					    <com.github.mikephil.charting.charts.BarChart
-						    android:id="@+id/bar_chart"
-						    android:layout_width="match_parent"
-						    android:layout_height="190dp"
-						    android:visibility="visible" />
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+					        <com.github.mikephil.charting.charts.BarChart
+						        android:id="@+id/bar_chart"
+						        android:layout_width="match_parent"
+						        android:layout_height="190dp"
+                                android:layout_marginLeft="4dp"
+                                android:layout_marginRight="4dp"
+						        android:visibility="visible" />
+                            <RelativeLayout
+                                android:layout_width="65dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentBottom="true"  
+                                android:id="@+id/rmKwhSelectDropdown"
+                                android:visibility="gone"
+                                android:layout_marginLeft="16dp">
+                                <LinearLayout
+					                android:layout_width="match_parent"
+					                android:layout_height="wrap_content"
+					                android:orientation="vertical"
+                                    android:background="@drawable/custom_round_white_background"
+                                    android:padding="4dp"
+					                android:visibility="visible">
+                                    <TextView
+                                        android:id="@+id/kwhLabel"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/new_grey"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"
+                                        android:textSize="13dp"
+                                        android:text="kWh"/>
+                                    <View
+						            android:layout_height="1dp"
+						            android:layout_width="match_parent"
+                                    android:layout_marginTop="4dp"
+                                    android:layout_marginBottom="4dp"
+						            android:background="@color/platinumGrey"
+						            android:visibility="visible"/>
+                                    <TextView
+                                        android:id="@+id/rmLabel"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:gravity="center"
+                                        android:textColor="@color/powerBlue"
+                                        android:textSize="13dp"
+                                        android:text="RM"/>
+                                </LinearLayout>
+                            </RelativeLayout>
+                        </RelativeLayout>
                         <LinearLayout
 					        android:layout_width="match_parent"
 					        android:layout_height="match_parent"
 					        android:orientation="horizontal"
-                            android:layout_marginTop="16dp"
+                            android:layout_marginTop="12dp"
                             android:layout_marginLeft="16dp"
-                            android:layout_marginRight="16dp"
-					        android:visibility="visible">
+                            android:id="@+id/graphToggleSelection"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentLeft="true">
                             <LinearLayout
-                                android:id="@+id/addActionContainer"
+                                android:id="@+id/rmKwhSelection"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/rectangle_rounded_button_bg"
                                 android:paddingLeft="13dp"
                                 android:paddingRight="13dp"
-                                android:orientation="horizontal">
-                                <TextView
-                                    android:id="@+id/addActionLabel"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textColor="#1c79ca"
-                                    android:textSize="12dp"
-                                    android:layout_gravity="right|center_vertical"
-                                    android:layout_marginRight="6dp"
-                                    android:text="RM"/>
-                                <TextView 
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textColor="#1c79ca"
-                                    android:textSize="8dp"
-                                    android:layout_gravity="center"
-                                    android:text=" ▼"/>
+                                android:orientation="horizontal"
+                                android:clickable="true">
+                                    <TextView
+                                        android:id="@+id/rmKwhLabel"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/powerBlue"
+                                        android:textSize="13dp"
+                                        android:layout_gravity="right|center_vertical"
+                                        android:layout_marginRight="6dp"
+                                        android:text="RM  "/>
+                                    <ImageView
+                                        android:layout_width="8dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center"
+                                        android:src="@drawable/rectangle"
+                                        android:id="@+id/dashboard_dropdown"/>
                             </LinearLayout>
+                        </LinearLayout>
+                        <LinearLayout
+					        android:layout_width="match_parent"
+					        android:layout_height="60dp"
+					        android:orientation="vertical">
                         </LinearLayout>
 				    </LinearLayout>
 			    </FrameLayout>
@@ -214,7 +286,7 @@
                     android:layout_alignParentStart="true"
                     android:layout_below="@+id/txtTotalPayableTitle"
                     android:textSize="15dp"
-                    android:layout_marginTop="1dp"
+                    android:layout_marginTop="2dp"
                     android:textColor="@color/charcoalGrey"
                     android:text="by 24 Sep 2019" />
             </RelativeLayout>

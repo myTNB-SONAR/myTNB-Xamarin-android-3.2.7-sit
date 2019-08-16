@@ -2,6 +2,7 @@
 using Android.App;
 using Android.Content;
 using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.Design.Widget;
@@ -65,7 +66,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         AccountData selectedAccount;
 
-        ChartType ChartType = ChartType.Month;
+        ChartType ChartType = ChartType.RM;
 
         bool hasNoInternet;
 
@@ -118,6 +119,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         [BindView(Resource.Id.bottom_sheet)]
         LinearLayout bottomSheet;
+
+        [BindView(Resource.Id.rmKwhSelection)]
+        LinearLayout rmKwhSelection;
+
+        [BindView(Resource.Id.rmKwhSelectDropdown)]
+        RelativeLayout rmKwhSelectDropdown;
+
+        [BindView(Resource.Id.rmKwhLabel)]
+        TextView rmKwhLabel;
+
+        [BindView(Resource.Id.kwhLabel)]
+        TextView kwhLabel;
+
+        [BindView(Resource.Id.rmLabel)]
+        TextView rmLabel;
+
+        [BindView(Resource.Id.dashboard_txt_account_name)]
+        TextView dashboardAccountName;
+
+        [BindView(Resource.Id.graphToggleSelection)]
+        LinearLayout graphToggleSelection;
 
         private DashboardChartContract.IUserActionsListener userActionsListener;
         private DashboardChartPresenter mPresenter;
@@ -392,12 +414,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 TextViewUtils.SetMuseoSans300Typeface(txtAddress, txtTotalPayable, txtDueDate);
                 TextViewUtils.SetMuseoSans300Typeface(txtNewRefreshMessage);
-                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnNewRefresh);
+                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnNewRefresh, rmKwhLabel, kwhLabel, rmLabel, dashboardAccountName);
 
                 bottomSheetBehavior = BottomSheetBehavior.From(bottomSheet);
                 bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
                 bottomSheetBehavior.SetBottomSheetCallback(new DashboardBottomSheetCallBack());
                 // bottomSheet.SetOnClickListener(null);
+
+                ((DashboardHomeActivity)Activity).HideAccountName();
+                if (!hasNoInternet && !amountDueFailed)
+                {
+                    dashboardAccountName.Visibility = ViewStates.Visible;
+                    dashboardAccountName.Text = selectedAccount.AccountNickName;
+                    Drawable dropdown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_spinner_dropdown);
+                    Drawable transparentDropDown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_action_dropdown);
+                    transparentDropDown.Alpha = 0;
+                    dashboardAccountName.SetCompoundDrawablesWithIntrinsicBounds(transparentDropDown, null, dropdown, null);
+                }
+                else
+                {
+                    dashboardAccountName.Visibility = ViewStates.Gone;
+                }
 
                 if (amountDueFailed)
                 {
@@ -433,11 +470,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         btnViewBill.Text = GetString(Resource.String.dashboard_chart_view_payment_advice);
                         // txtUsageHistory.Visibility = ViewStates.Gone;
                         txtTotalPayableTitle.Text = GetString(Resource.String.title_payment_advice_amount);
+                        graphToggleSelection.Visibility = ViewStates.Gone;
                     }
                     else
                     {
                         btnPay.Visibility = ViewStates.Visible;
                         btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
+                        graphToggleSelection.Visibility = ViewStates.Visible;
                     }
 
 
@@ -551,6 +590,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     ShowUnableToFecthSmartMeterData(errorMSG);
                 }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        [OnClick(Resource.Id.dashboard_txt_account_name)]
+        void OnSelectSupplyAccount(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                ((DashboardHomeActivity)Activity).OnSelectAccount();
             }
             catch (System.Exception e)
             {
@@ -685,7 +737,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
 
 
-            if (ChartType == ChartType.Month)
+            if (ChartType == ChartType.RM)
             {
 
                 if (!hasNoInternet)
@@ -702,7 +754,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 // SETUP MARKER VIEW
 
-                SetUpMarkerMonthView();
+                SetUpMarkerRMView();
 
                 // ADD DATA
 
@@ -715,28 +767,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 if (!hasNoInternet)
                 {
-                    txtRange.Text = selectedHistoryData.ByDay[currentParentIndex].Range;
+                    txtRange.Text = selectedHistoryData.ByMonth.Range;
                 }
                 // SETUP XAXIS
 
-                SetUpXAxisDay();
+                SetUpXAxiskWh();
 
                 // SETUP YAXIS
 
-                SetUpYAxisDay();
+                SetUpYAxisKwh();
 
                 // SETUP MARKER VIEW
 
-                SetUpMarkerDayView();
+                SetUpMarkerKWhView();
 
                 // ADD DATA
-                SetDayData(currentParentIndex, 7);
+                SetKWhData(selectedHistoryData.ByMonth.Months.Count);
             }
 
             int graphTopPadding = 20;
             if (selectedAccount.AccountCategoryId.Equals("2"))
             {
-                graphTopPadding = 35;
+                graphTopPadding = 30;
             }
             mChart.SetExtraOffsets(0, graphTopPadding, 0, 0);
         }
@@ -763,14 +815,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #endregion
 
         #region SETUP AXIS DAY
-        internal void SetUpXAxisDay()
+        internal void SetUpXAxiskWh()
         {
-            XLabelsFormatter = new ChartsDayFormatter()
-            {
-                DayData = selectedHistoryData.ByDay,
-                Chart = mChart,
-                ParentIndex = currentParentIndex
-            };
+            XLabelsFormatter = new ChartsKWhFormatter(selectedHistoryData.ByMonth, mChart);
 
             XAxis xAxis = mChart.XAxis;
             xAxis.Position = XAxisPosition.Bottom;
@@ -781,7 +828,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             xAxis.SetDrawGridLines(false);
 
             xAxis.Granularity = 1f; // only intervals of 1 day
-            xAxis.LabelCount = 7;
+            xAxis.LabelCount = selectedHistoryData.ByMonth.Months.Count;
             xAxis.ValueFormatter = XLabelsFormatter;
 
 
@@ -793,9 +840,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             IAxisValueFormatter custom = new MyAxisValueFormatter();
 
-            float maxVal = GetMaxMonthValues();
+            float maxVal = GetMaxRMValues();
             float lowestPossibleSpace = (5f / 100f) * -maxVal;
-            Console.WriteLine("Space {0}", lowestPossibleSpace);
 
             YAxis leftAxis = mChart.AxisLeft;
             leftAxis.Enabled = false;
@@ -818,12 +864,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #endregion
 
         #region SETUP Y AXIS BOTH DAY
-        internal void SetUpYAxisDay()
+        internal void SetUpYAxisKwh()
         {
             IAxisValueFormatter custom = new MyAxisValueFormatter();
-            float maxVal = GetMaxDaysValues();
+            float maxVal = GetMaxKWhValues();
             float lowestPossibleSpace = (5f / 100f) * -maxVal;
-            Console.WriteLine("Space {0}", lowestPossibleSpace);
 
             YAxis leftAxis = mChart.AxisLeft;
             leftAxis.Enabled = false;
@@ -846,13 +891,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #endregion
 
         #region SETUP MARKERVIEW MONTH / HIGHLIGHT TEXT
-        internal void SetUpMarkerMonthView()
+        internal void SetUpMarkerRMView()
         {
 
             SelectedMarkerView markerView = new SelectedMarkerView(Activity)
             {
                 UsageHistoryData = selectedHistoryData,
-                ChartType = ChartType.Month,
+                ChartType = ChartType.RM,
                 AccountType = selectedAccount.AccountCategoryId
 
             };
@@ -862,14 +907,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #endregion
 
         #region SETUP MARKERVIEW DAY/ HIGHLIGHT TEXT
-        internal void SetUpMarkerDayView()
+        internal void SetUpMarkerKWhView()
         {
 
             SelectedMarkerView markerView = new SelectedMarkerView(Activity)
             {
                 UsageHistoryData = selectedHistoryData,
-                ChartType = ChartType.Day,
-                CurrentParentIndex = currentParentIndex
+                ChartType = ChartType.kWh,
+                AccountType = selectedAccount.AccountCategoryId
 
             };
             markerView.ChartView = mChart;
@@ -913,6 +958,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
 
                 set1.HighLightColor = Color.Argb(255, 255, 255, 255);
+                set1.HighLightAlpha = 255;
 
                 int[] color = { Color.Argb(100, 255, 255, 255) };
                 set1.SetColors(color);
@@ -940,12 +986,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #endregion
 
         #region SETUP DAY DATA
-        internal void SetDayData(int parentIndex, int barLength)
+        internal void SetKWhData(int barLength)
         {
             List<BarEntry> yVals1 = new List<BarEntry>();
             for (int i = 0; i < barLength; i++)
             {
-                float val = (float)selectedHistoryData.ByDay[parentIndex].Days[i].Amount;
+                float val = (float)selectedHistoryData.ByMonth.Months[i].Usage;
                 if (float.IsPositiveInfinity(val))
                 {
                     val = float.PositiveInfinity;
@@ -975,6 +1021,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
 
                 set1.HighLightColor = Color.Argb(255, 255, 255, 255);
+                set1.HighLightAlpha = 255;
 
                 int[] color = { Color.Argb(100, 255, 255, 255) };
                 set1.SetColors(color);
@@ -999,18 +1046,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         }
         #endregion
 
-        public void ShowByDay()
+        public void ShowByKwh()
         {
-            ChartType = ChartType.Day;
+            ChartType = ChartType.kWh;
+
+            mChart.Visibility = ViewStates.Visible;
+
             mChart.Clear();
             SetUp();
         }
 
-        public void ShowByMonth()
+        public void ShowByRM()
         {
-            ChartType = ChartType.Month;
+            ChartType = ChartType.RM;
 
-            // mNoDataLayout.Visibility = ViewStates.Gone;
             mChart.Visibility = ViewStates.Visible;
 
             mChart.Clear();
@@ -1026,7 +1075,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     activity = context as DashboardHomeActivity;
                     // SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
-                    activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.fluid_background));
+                    activity.SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                    activity.SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 }
             }
             catch (ClassCastException e)
@@ -1115,6 +1165,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             this.userActionsListener.OnPay();
         }
 
+        [OnClick(Resource.Id.rmKwhSelection)]
+        internal void OnRMKwhToogleSelection(object sender, EventArgs e)
+        {
+            if (rmKwhSelectDropdown.Visibility == ViewStates.Gone)
+            {
+                rmKwhSelectDropdown.Visibility = ViewStates.Visible;
+            }
+            else
+            {
+                rmKwhSelectDropdown.Visibility = ViewStates.Gone;
+            }
+        }
+
         /*[OnClick(Resource.Id.btnLearnMore)]
         internal void OnLearnMore(object sender, EventArgs e)
         {
@@ -1152,58 +1215,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public bool IsByDay()
-        {
-            return ChartType == ChartType.Day;
-        }
-
-        public int GetCurrentParentIndex()
-        {
-            return currentParentIndex;
-        }
-
-        public void SetCurrentParentIndex(int newIndex)
-        {
-            this.currentParentIndex = newIndex;
-            mChart.Clear();
-            SetUp();
-
-
-        }
-
-        public int GetMaxParentIndex()
-        {
-            return selectedHistoryData.ByDay.Count;
-        }
-
-        public void EnableLeftArrow(bool show)
-        {
-            if (show)
-            {
-                // btnLeft.Enabled = true;
-                // btnLeft.Visibility = ViewStates.Visible;
-            }
-            else
-            {
-                // btnLeft.Enabled = false;
-                // btnLeft.Visibility = ViewStates.Gone;
-            }
-        }
-
-        public void EnableRightArrow(bool show)
-        {
-            if (show)
-            {
-                // btnRight.Enabled = true;
-                // btnRight.Visibility = ViewStates.Visible;
-            }
-            else
-            {
-                // btnRight.Enabled = false;
-                // btnRight.Visibility = ViewStates.Gone;
             }
         }
 
@@ -1249,19 +1260,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     this.userActionsListener.OnTapRefresh();
                 }
             }
-        }
-
-        public void ShowNotAvailableDayData()
-        {
-            // mNoDataLayout.Visibility = ViewStates.Visible;
-            mChart.Visibility = ViewStates.Gone;
-            refreshLayout.Visibility = ViewStates.Gone;
-            allGraphLayout.Visibility = ViewStates.Visible;
-        }
-
-        public bool IsByDayEmpty()
-        {
-            return selectedHistoryData.ByDay.Count == 0;
         }
 
         public void ShowNoInternet()
@@ -1353,20 +1351,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         }
 
-        internal float GetMaxDaysValues()
+        internal float GetMaxRMValues()
         {
             float val = 0;
             try
             {
 
-                foreach (UsageHistoryData.ByDayData ByDay in selectedHistoryData.ByDay)
+                foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
                 {
-                    foreach (UsageHistoryData.ByDayData.DayData dayData in ByDay.Days)
+                    if (System.Math.Abs(MonthData.Amount) > val)
                     {
-                        if (System.Math.Abs(dayData.Amount) > val)
-                        {
-                            val = System.Math.Abs((float)dayData.Amount);
-                        }
+                        val = System.Math.Abs((float)MonthData.Amount);
                     }
                 }
                 if (val == 0)
@@ -1381,7 +1376,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             return val;
         }
 
-        internal float GetMaxMonthValues()
+        internal float GetMaxKWhValues()
         {
             float val = 0;
             try
@@ -1389,9 +1384,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
                 {
-                    if (System.Math.Abs(MonthData.Amount) > val)
+                    if (System.Math.Abs(MonthData.Usage) > val)
                     {
-                        val = System.Math.Abs((float)MonthData.Amount);
+                        val = System.Math.Abs((float)MonthData.Usage);
                     }
                 }
                 if (val == 0)
@@ -2038,5 +2033,62 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
             }
         }
+
+        [OnClick(Resource.Id.kwhLabel)]
+        internal void OnUserClickKwh(object sender, EventArgs e)
+        {
+            try
+            {
+                rmKwhSelectDropdown.Visibility = ViewStates.Gone;
+                rmKwhLabel.Text = "kWh";
+                kwhLabel.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
+                rmLabel.SetTextColor(Resources.GetColor(Resource.Color.new_grey));
+                ShowByKwh();
+
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
+
+        }
+
+        [OnClick(Resource.Id.rmLabel)]
+        internal void OnUserClickRM(object sender, EventArgs e)
+        {
+            try
+            {
+                rmKwhSelectDropdown.Visibility = ViewStates.Gone;
+                rmKwhLabel.Text = "RM  ";
+                rmLabel.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
+                kwhLabel.SetTextColor(Resources.GetColor(Resource.Color.new_grey));
+                ShowByRM();
+
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
+
+        }
+
+        [OnClick(Resource.Id.rootView)]
+        internal void OnUserClickRootView(object sender, EventArgs e)
+        {
+            try
+            {
+                if (rmKwhSelectDropdown.Visibility == ViewStates.Visible)
+                {
+                    rmKwhSelectDropdown.Visibility = ViewStates.Gone;
+                }
+
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
+
+        }
+
     }
 }

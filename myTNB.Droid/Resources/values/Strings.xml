@@ -442,6 +442,7 @@ You acknowledge that you have been provided with and have read and understood th
 
   <!-- Dashboard ChartView -->
   <string name="dashboard_chartview_activity_title">Usage</string>
+  <string name="dashboard_chartview_re_activity_title">Earnings</string>
   <string name="dashboard_chartview_hour">Hour</string>
   <string name="dashboard_chartview_day">Day</string>
   <string name="dashboard_chartview_month">Month</string>

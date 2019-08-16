@@ -27,101 +27,13 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             this.mView.SetPresenter(this);
         }
 
-        public void OnArrowBackClick()
-        {
-            try
-            {
-                if (this.mView.GetCurrentParentIndex() == (this.mView.GetMaxParentIndex() - 1))
-                {
-                    this.mView.EnableLeftArrow(false);
-                }
-                else
-                {
-
-                    int newIndex = (this.mView.GetCurrentParentIndex() + 1) % this.mView.GetMaxParentIndex();
-                    this.mView.SetCurrentParentIndex(newIndex);
-                    if (this.mView.GetCurrentParentIndex() == (this.mView.GetMaxParentIndex() - 1))
-                    {
-                        this.mView.EnableLeftArrow(false);
-                    }
-                    else
-                    {
-                        this.mView.EnableLeftArrow(true);
-                    }
-                }
-
-                if (this.mView.GetCurrentParentIndex() == 0)
-                {
-                    this.mView.EnableRightArrow(false);
-                }
-                else
-                {
-                    this.mView.EnableRightArrow(true);
-                }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void OnArrowForwardClick()
-        {
-            try
-            {
-                if (this.mView.GetCurrentParentIndex() == 0)
-                {
-                    this.mView.EnableRightArrow(false);
-                }
-                else
-                {
-
-                    int newIndex = this.mView.GetCurrentParentIndex() - 1;
-                    this.mView.SetCurrentParentIndex(newIndex);
-
-                    if (this.mView.GetCurrentParentIndex() == 0)
-                    {
-                        this.mView.EnableRightArrow(false);
-                    }
-                    else
-                    {
-                        this.mView.EnableRightArrow(true);
-                    }
-                }
-
-                if (this.mView.GetCurrentParentIndex() == (this.mView.GetMaxParentIndex() - 1))
-                {
-                    this.mView.EnableLeftArrow(false);
-                }
-                else
-                {
-                    this.mView.EnableLeftArrow(true);
-                }
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void OnByDay()
+        public void OnByKwh()
         {
             try
             {
                 if (!this.mView.HasNoInternet())
                 {
-                    this.mView.SetCurrentParentIndex(0);
-                    if (!this.mView.IsByDayEmpty())
-                    {
-                        this.mView.EnableLeftArrow(true);
-                        this.mView.EnableRightArrow(false);
-                        this.mView.ShowByDay();
-                    }
-                    else
-                    {
-                        this.mView.EnableLeftArrow(false);
-                        this.mView.ShowNotAvailableDayData();
-                    }
+                    this.mView.ShowByKwh();
                 }
             }
             catch (Exception e)
@@ -131,15 +43,13 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         }
 
-        public void OnByMonth()
+        public void OnByRM()
         {
             try
             {
                 if (!this.mView.HasNoInternet())
                 {
-                    this.mView.EnableLeftArrow(false);
-                    this.mView.EnableRightArrow(false);
-                    this.mView.ShowByMonth();
+                    this.mView.ShowByRM();
                 }
             }
             catch (Exception e)
@@ -333,17 +243,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 if (this.mView.HasNoInternet() || bcrmEntity.IsDown)
                 {
-                    this.mView.EnableLeftArrow(false);
-                    this.mView.EnableRightArrow(false);
                     this.mView.ShowNoInternet();
-
-
                 }
                 else
                 {
-
-                    OnByMonth();
-
+                    OnByRM();
                 }
             }
             catch (Exception e)

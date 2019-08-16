@@ -13,14 +13,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         public interface IView : IBaseView<IUserActionsListener>
         {
             /// <summary>
-            /// Show by day chart
+            /// Show by kWh chart
             /// </summary>
-            void ShowByDay();
+            void ShowByKwh();
 
             /// <summary>
-            /// Show by month chart
+            /// Show by RM chart
             /// </summary>
-            void ShowByMonth();
+            void ShowByRM();
 
             /// <summary>
             /// Show ViewBill
@@ -31,11 +31,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// Show Payment
             /// </summary>
             void ShowPayment();
-
-            /// <summary>
-            /// Show not available data when day tab is clicked
-            /// </summary>
-            void ShowNotAvailableDayData();
 
             /// <summary>
             /// Show no internet
@@ -56,49 +51,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// </summary>
             /// <returns>bool</returns>
             bool HasNoInternet();
-
-            /// <summary>
-            /// Returns current chart is by day
-            /// </summary>
-            /// <returns>bool</returns>
-            bool IsByDay();
-
-            /// <summary>
-            /// Returns day is empty
-            /// </summary>
-            /// <returns>bool</returns>
-            bool IsByDayEmpty();
-
-            /// <summary>
-            /// Used for chart pagination in day
-            /// Returns the current index of the array
-            /// </summary>
-            /// <returns>integer</returns>
-            int GetCurrentParentIndex();
-
-            /// <summary>
-            /// Returns max day count
-            /// </summary>
-            /// <returns></returns>
-            int GetMaxParentIndex();
-
-            /// <summary>
-            /// Sets the chart pagination in day
-            /// </summary>
-            /// <param name="newIndex">integer</param>
-            void SetCurrentParentIndex(int newIndex);
-
-            /// <summary>
-            /// Enable left pagination button
-            /// </summary>
-            /// <param name="show">bool</param>
-            void EnableLeftArrow(bool show);
-
-            /// <summary>
-            /// Enable right pagination button
-            /// </summary>
-            /// <param name="show"></param>
-            void EnableRightArrow(bool show);
 
             /// <summary>
             /// Show tab refresh
@@ -189,14 +141,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         public interface IUserActionsListener : IBasePresenter
         {
             /// <summary>
-            /// Action by day
+            /// Action by Kwh
             /// </summary>
-            void OnByDay();
+            void OnByKwh();
 
             /// <summary>
-            /// Action by month
+            /// Action by RM
             /// </summary>
-            void OnByMonth();
+            void OnByRM();
 
             /// <summary>
             /// Action to navigate to view bill
@@ -207,16 +159,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// Action to navigate to pay
             /// </summary>
             void OnPay();
-
-            /// <summary>
-            /// Action left pagination
-            /// </summary>
-            void OnArrowBackClick();
-
-            /// <summary>
-            /// Action right pagination
-            /// </summary>
-            void OnArrowForwardClick();
 
             /// <summary>
             /// Action on Tap refresh

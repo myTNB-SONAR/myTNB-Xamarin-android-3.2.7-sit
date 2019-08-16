@@ -4,6 +4,8 @@
     {
         Day = 0,
         Month = 1,
-        Hour = 2
+        Hour = 2,
+        RM = 3,
+        kWh = 4
     }
 }
