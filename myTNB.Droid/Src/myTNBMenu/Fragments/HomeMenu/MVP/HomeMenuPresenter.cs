@@ -44,6 +44,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private static SSMRMeterReadingScreensEntity SSMRMeterReadingScreensManager;
         private static SSMRMeterReadingThreePhaseScreensParentEntity SSMRMeterReadingThreePhaseScreensParentManager;
         private static SSMRMeterReadingThreePhaseScreensEntity SSMRMeterReadingThreePhaseScreensManager;
+        private static EnergySavingTipsParentEntity EnergySavingTipsParentManager;
+        private static EnergySavingTipsEntity EnergySavingTipsManager;
         private static List<string> loadedSummaryList;
 
 
@@ -945,6 +947,139 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         SSMRMeterReadingThreePhaseScreensManager.CreateTable();
 
                         SSMRMeterReadingThreePhaseScreensManager.InsertListOfItems(responseModel.Data);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }).ContinueWith((Task previous) =>
+            {
+            }, new CancellationTokenSource().Token);
+        }
+
+        public void GetEnergySavingTipsTimeStamp()
+        {
+            try
+            {
+                if (EnergySavingTipsParentManager == null)
+                {
+                    EnergySavingTipsParentManager = new EnergySavingTipsParentEntity();
+                }
+                List<EnergySavingTipsParentEntity> items = new List<EnergySavingTipsParentEntity>();
+                items = EnergySavingTipsParentManager.GetAllItems();
+                if (items != null && items.Count > 0)
+                {
+                    EnergySavingTipsParentEntity entity = items[0];
+                    if (entity != null && entity.Timestamp != null)
+                    {
+                        this.mView.OnSavedEnergySavingTipsTimeStamp(entity?.Timestamp);
+                    }
+                }
+                else
+                {
+                    this.mView.OnSavedEnergySavingTipsTimeStamp(null);
+                }
+            }
+            catch (Exception e)
+            {
+                this.mView.OnSavedEnergySavingTipsTimeStamp(null);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public Task OnGetEnergySavingTipsTimeStamp()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    string density = DPUtils.GetDeviceDensity(Application.Context);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    EnergySavingTipsTimeStampResponseModel responseModel = getItemsService.GetEnergySavingTipsTimestampItem();
+                    if (responseModel.Status.Equals("Success"))
+                    {
+                        if (EnergySavingTipsParentManager == null)
+                        {
+                            EnergySavingTipsParentManager = new EnergySavingTipsParentEntity();
+                        }
+                        EnergySavingTipsParentManager.DeleteTable();
+                        EnergySavingTipsParentManager.CreateTable();
+                        EnergySavingTipsParentManager.InsertListOfItems(responseModel.Data);
+                        this.mView.CheckEnergySavingTipsTimeStamp();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }).ContinueWith((Task previous) =>
+            {
+            }, new CancellationTokenSource().Token);
+        }
+
+        public Task OnGetEnergySavingTips()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    string density = DPUtils.GetDeviceDensity(Application.Context);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    EnergySavingTipsResponseModel responseModel = getItemsService.GetEnergySavingTipsItem();
+                    if (responseModel.Status.Equals("Success"))
+                    {
+                        if (EnergySavingTipsManager == null)
+                        {
+                            EnergySavingTipsManager = new EnergySavingTipsEntity();
+                        }
+                        EnergySavingTipsManager.DeleteTable();
+                        EnergySavingTipsManager.CreateTable();
+                        EnergySavingTipsManager.InsertListOfItems(responseModel.Data);
+                        OnSetEnergySavingTipsToCache();
+                    }
+                    else
+                    {
+                        OnSetEnergySavingTipsToCache();
+                    }
+                }
+                catch (Exception e)
+                {
+                    OnSetEnergySavingTipsToCache();
+                    Utility.LoggingNonFatalError(e);
+                }
+            }).ContinueWith((Task previous) =>
+            {
+            }, new CancellationTokenSource().Token);
+        }
+
+        public Task OnSetEnergySavingTipsToCache()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    if (EnergySavingTipsManager == null)
+                    {
+                        EnergySavingTipsManager = new EnergySavingTipsEntity();
+                    }
+                    List<EnergySavingTipsEntity> energyList = EnergySavingTipsManager.GetAllItems();
+                    if (energyList.Count > 0)
+                    {
+                        List<EnergySavingTipsModel> savedList = new List<EnergySavingTipsModel>();
+                        foreach (EnergySavingTipsEntity item in energyList)
+                        {
+
+                            savedList.Add(new EnergySavingTipsModel()
+                            {
+                                Title = item.Title,
+                                Description = item.Description,
+                                Image = item.Image,
+                                isUpdateNeeded = true,
+                                ImageBitmap = null
+                            }); 
+                        }
+                        EnergyTipsUtils.OnSetEnergyTipsList(savedList);
                     }
                 }
                 catch (Exception e)

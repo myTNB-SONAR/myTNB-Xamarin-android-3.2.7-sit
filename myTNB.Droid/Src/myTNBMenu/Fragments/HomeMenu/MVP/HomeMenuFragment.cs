@@ -154,6 +154,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private string savedSSMRMeterReadingThreePhaseTimeStamp = "0000000";
 
+        private string savedEnergySavingTipsTimeStamp = "0000000";
+
         private static List<MyService> currentMyServiceList = new List<MyService>();
 
         private static List<NewFAQ> currentNewFAQList = new List<NewFAQ>();
@@ -259,6 +261,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 this.presenter.GetSmartMeterReadingWalkthroughtTimeStamp();
 
                 this.presenter.GetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
+
+                this.presenter.GetEnergySavingTipsTimeStamp();
             }
             catch (System.Exception e)
             {
@@ -1166,6 +1170,53 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
             linkAccount.PutExtra("fromDashboard", true);
             StartActivity(linkAccount);
+        }
+
+        public void OnSavedEnergySavingTipsTimeStamp(string mSavedTimeStamp)
+        {
+            if (mSavedTimeStamp != null)
+            {
+                this.savedEnergySavingTipsTimeStamp = mSavedTimeStamp;
+            }
+            this.presenter.OnGetEnergySavingTipsTimeStamp();
+        }
+
+        public void CheckEnergySavingTipsTimeStamp()
+        {
+            try
+            {
+                EnergySavingTipsParentEntity wtManager = new EnergySavingTipsParentEntity();
+                List<EnergySavingTipsParentEntity> items = wtManager.GetAllItems();
+                if (items != null)
+                {
+                    EnergySavingTipsParentEntity entity = items[0];
+                    if (entity != null)
+                    {
+                        if (!entity.Timestamp.Equals(savedEnergySavingTipsTimeStamp))
+                        {
+                            this.presenter.OnGetEnergySavingTips();
+                        }
+                        else
+                        {
+                            this.presenter.OnSetEnergySavingTipsToCache();
+                        }
+
+                    }
+                    else
+                    {
+                        this.presenter.OnSetEnergySavingTipsToCache();
+                    }
+                }
+                else
+                {
+                    this.presenter.OnSetEnergySavingTipsToCache();
+                }
+            }
+            catch (System.Exception e)
+            {
+                // Read from cache
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }
