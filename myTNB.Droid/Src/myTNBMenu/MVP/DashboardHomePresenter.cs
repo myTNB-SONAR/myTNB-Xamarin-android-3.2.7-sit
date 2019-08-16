@@ -318,7 +318,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 						else
 						{
 							CustomerBillingAccount selected = CustomerBillingAccount.GetSelected();
-                            this.mView.ShowAccountName();
+                            this.mView.HideAccountName();
                             this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
                             if (selected != null && !string.IsNullOrEmpty(selected.AccNum))
 							{

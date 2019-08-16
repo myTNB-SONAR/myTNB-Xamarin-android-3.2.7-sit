@@ -215,6 +215,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             void PreShowBillMenu(AccountData selectedAccount);
 
+            void SetInnerDashboardToolbarBackground();
+
+            void UnsetToolbarBackground();
+
         }
 
 		public interface IUserActionsListener : IBasePresenter

@@ -156,12 +156,13 @@
                                         android:layout_gravity="center"
                                         android:gravity="center"
                                         android:textSize="13dp"
+                                        android:layout_marginTop="2dp"
                                         android:text="kWh"/>
                                     <View
 						            android:layout_height="1dp"
 						            android:layout_width="match_parent"
-                                    android:layout_marginTop="4dp"
-                                    android:layout_marginBottom="4dp"
+                                    android:layout_marginTop="6dp"
+                                    android:layout_marginBottom="6dp"
 						            android:background="@color/platinumGrey"
 						            android:visibility="visible"/>
                                     <TextView
@@ -172,6 +173,7 @@
                                         android:gravity="center"
                                         android:textColor="@color/powerBlue"
                                         android:textSize="13dp"
+                                        android:layout_marginBottom="2dp"
                                         android:text="RM"/>
                                 </LinearLayout>
                             </RelativeLayout>
@@ -180,7 +182,7 @@
 					        android:layout_width="match_parent"
 					        android:layout_height="match_parent"
 					        android:orientation="horizontal"
-                            android:layout_marginTop="12dp"
+                            android:layout_marginTop="13dp"
                             android:layout_marginLeft="16dp"
                             android:id="@+id/graphToggleSelection"
                             android:layout_alignParentBottom="true"

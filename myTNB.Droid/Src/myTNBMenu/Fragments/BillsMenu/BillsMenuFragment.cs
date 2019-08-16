@@ -286,6 +286,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                 {
                     var activity = context as DashboardHomeActivity;
                     activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
+                    activity.UnsetToolbarBackground();
                 }
             }
             catch (ClassCastException e)

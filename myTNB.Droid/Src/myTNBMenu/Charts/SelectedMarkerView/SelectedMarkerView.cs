@@ -87,7 +87,7 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
                         Vibrator vibrator = (Vibrator)currentContext.GetSystemService(Context.VibratorService);
                         if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
                         {
-                            vibrator.Vibrate(VibrationEffect.CreateOneShot(100, 6));
+                            vibrator.Vibrate(VibrationEffect.CreateOneShot(200, 12));
 
                         }
                         else

@@ -2061,6 +2061,10 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\SitecoreCMS\Model\EnergySavingTipsModel.cs" />
+    <Compile Include="Src\Database\Model\EnergySavingTipsEntity.cs" />
+    <Compile Include="Src\Database\Model\EnergySavingTipsParentEntity.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\EnergySavingTipsService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

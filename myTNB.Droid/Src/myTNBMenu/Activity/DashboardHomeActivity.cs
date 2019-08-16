@@ -802,6 +802,16 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
+        public void SetInnerDashboardToolbarBackground()
+        {
+            SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+        }
+
+        public void UnsetToolbarBackground()
+        {
+            RemoveToolbarBackground();
+        }
+
         public void BillMenuRecalled()
         {
             try
