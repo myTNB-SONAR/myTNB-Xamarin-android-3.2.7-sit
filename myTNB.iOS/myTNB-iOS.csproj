@@ -1111,6 +1111,10 @@
     <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2.png" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-Reading-History-Banner.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SSMR-Reading-History-Banner.imageset\group6.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-Reading-History-Banner.imageset\group6%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-Reading-History-Banner.imageset\group6%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1471,6 +1475,7 @@
     <Folder Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\" />
     <Folder Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\" />
     <Folder Include="Assets.xcassets\IC-Info-Blue.imageset\" />
+    <Folder Include="Assets.xcassets\SSMR-Reading-History-Banner.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
