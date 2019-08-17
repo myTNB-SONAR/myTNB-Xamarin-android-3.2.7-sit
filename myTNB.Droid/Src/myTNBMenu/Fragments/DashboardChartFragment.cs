@@ -438,10 +438,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     dashboardAccountName.Visibility = ViewStates.Visible;
                     dashboardAccountName.Text = selectedAccount.AccountNickName;
-                    Drawable dropdown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_spinner_dropdown);
-                    Drawable transparentDropDown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_action_dropdown);
-                    transparentDropDown.Alpha = 0;
-                    dashboardAccountName.SetCompoundDrawablesWithIntrinsicBounds(transparentDropDown, null, dropdown, null);
+                    List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
+                    bool enableDropDown = accountList.Count > 0 ? true : false;
+                    if (enableDropDown)
+                    {
+                        Drawable dropdown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_spinner_dropdown);
+                        Drawable transparentDropDown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_action_dropdown);
+                        transparentDropDown.Alpha = 0;
+                        dashboardAccountName.SetCompoundDrawablesWithIntrinsicBounds(transparentDropDown, null, dropdown, null);
+                    }
+                    else
+                    {
+                        dashboardAccountName.SetCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                    }
                 }
                 else
                 {

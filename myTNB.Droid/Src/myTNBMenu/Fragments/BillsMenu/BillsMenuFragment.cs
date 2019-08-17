@@ -238,6 +238,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
             base.OnCreate(savedInstanceState);
 
             Bundle args = Arguments;
+
             if (args.ContainsKey(Constants.SELECTED_ACCOUNT))
             {
                 selectedAccount = JsonConvert.DeserializeObject<AccountData>(args.GetString(Constants.SELECTED_ACCOUNT));
@@ -275,6 +276,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
 
             mPresenter = new BillsPaymentFragmentPresenter(this, selectedAccount);
 
+
+
         }
 
         public override void OnAttach(Context context)
@@ -287,6 +290,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                     var activity = context as DashboardHomeActivity;
                     activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
                     activity.UnsetToolbarBackground();
+                    activity.ShowAccountName();
+                    activity.ShowHideActionBar(true);
                 }
             }
             catch (ClassCastException e)
