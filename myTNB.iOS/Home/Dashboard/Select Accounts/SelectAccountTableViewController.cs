@@ -21,9 +21,11 @@ namespace myTNB
             PageName = SelectAccountConstants.PageName;
             base.ViewDidLoad();
             AddBackButton();
+            nfloat navBarHeigt = NavigationController == null ? 0 : NavigationController.NavigationBar.Frame.Height;
             accountRecordsTableView.Frame = new CGRect(0, 0, View.Frame.Width
                 , View.Frame.Height - UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Bottom
-                - UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Top);
+                - UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Top
+                - navBarHeigt);
             accountRecordsTableView.Source = new SelectAccountsDataSource(this);
             accountRecordsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             if (IsFromSSMR) { AddMissingAccountFooter(); }

@@ -38,10 +38,7 @@ namespace myTNB
             PageName = "SSMRReadingHistory";
             base.ViewDidLoad();
             SetNavigation();
-
             SSMRAccounts.SetFilteredEligibleAccounts();
-            //_meterReadingHistory = DataManager.DataManager.SharedInstance.MeterReadingHistory;
-            //_readingHistoryList = DataManager.DataManager.SharedInstance.ReadingHistoryList;
             PrepareHeaderView();
             PrepareFooterView();
             AddTableView();
@@ -228,7 +225,9 @@ namespace myTNB
             {
                 Frame = new CGRect(BaseMargin, BaseMargin, BaseMarginedWidth, GetScaledHeight(48)),
                 BackgroundColor = UIColor.White,
-                Font = TNBFont.MuseoSans_16_500
+                Font = TNBFont.MuseoSans_16_500,
+                PageName = PageName,
+                EventName = SSMRConstants.EVENT_DisableSelfMeterReading
             };
             _btnDisable.SetTitle(GetI18NValue(SSMRConstants.I18N_DisableSSMRCTA), UIControlState.Normal);
             _btnDisable.Layer.BorderColor = MyTNBColor.Tomato.CGColor;
@@ -281,8 +280,6 @@ namespace myTNB
             {
                 _currentIndex = index;
                 _currAcc = SSMRAccounts.GetAccountByIndex(index);
-                //CustomerAccountRecordModel account = SSMRAccounts.GetAccountByIndex(index);
-                //_ssmrHeaderComponent.AccountName = account?.accountNickName ?? string.Empty;
                 _isFromSelection = true;
             }
         }
