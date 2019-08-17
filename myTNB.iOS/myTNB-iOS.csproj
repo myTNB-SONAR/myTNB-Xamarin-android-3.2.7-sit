@@ -1519,6 +1519,7 @@
     <Folder Include="Assets.xcassets\RmKwh-Dropdown-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Stub-Usage-Bg.imageset\" />
     <Folder Include="Assets.xcassets\Info-Black-Icon.imageset\" />
+    <Folder Include="Model\Usage\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2326,6 +2327,8 @@
     <Compile Include="Home\Dashboard\Usage\RMkWhEnum.cs" />
     <Compile Include="Home\Components\Usage View\DisconnectionComponent.cs" />
     <Compile Include="Home\Components\Usage View\TariffLegendComponent.cs" />
+    <Compile Include="Model\Usage\AccountUsageModel.cs" />
+    <Compile Include="Session Cache\AccountUsageCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

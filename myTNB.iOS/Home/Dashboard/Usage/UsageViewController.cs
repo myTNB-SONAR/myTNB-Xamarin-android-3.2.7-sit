@@ -2,11 +2,14 @@ using CoreGraphics;
 using Foundation;
 using myTNB.Home.Components.UsageView;
 using myTNB.Home.Dashboard.Usage;
+using myTNB.Model;
+using myTNB.Model.Usage;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using UIKit;
 
 namespace myTNB
@@ -37,6 +40,7 @@ namespace myTNB
             };
             View.AddSubview(bgImageView);
             NavigationController.NavigationBarHidden = true;
+            CallGetAccountUsageAPI();
         }
 
         public override void ViewWillAppear(bool animated)
@@ -45,11 +49,11 @@ namespace myTNB
             SetNavigation();
             SetDisconnectionComponent();
             SetTariffSelectionComponent();
-            SetTariffLegendComponent();
             SetEnergyTipsComponent();
             SetFooterView();
         }
-        #region NAVIGATION BAR Mehods
+
+        #region NAVIGATION BAR Methods
         private void SetNavigation()
         {
             _navbarContainer = new UIView(new CGRect(0, 0, ViewWidth, DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height))
@@ -102,14 +106,29 @@ namespace myTNB
         private void SetTariffLegendComponent()
         {
             nfloat yPos = _tariffSelectionContainer.Frame.GetMaxY() + GetScaledHeight(30f);
-            _tariffLegendContainer = new UIView(new CGRect(0, yPos, ViewWidth, GetScaledHeight(400f)))
+            List<LegendItemModel> tariffList = new List<LegendItemModel>(AccountUsageCache.GetTariffLegendList());
+            nfloat height = 0;
+            if (tariffList != null && tariffList.Count > 0)
             {
-                BackgroundColor = UIColor.Clear
+                height = tariffList.Count * GetScaledHeight(25f);
+            }
+            _tariffLegendContainer = new UIView(new CGRect(0, yPos, ViewWidth, height))
+            {
+                BackgroundColor = UIColor.Clear,
+                Hidden = true
             };
             View.AddSubview(_tariffLegendContainer);
 
-            TariffLegendComponent tariffLegendComponent = new TariffLegendComponent(View);
+            TariffLegendComponent tariffLegendComponent = new TariffLegendComponent(View, tariffList);
             _tariffLegendContainer.AddSubview(tariffLegendComponent.GetUI());
+        }
+        private void ShowHideTariffLegends(bool isVisible)
+        {
+            List<LegendItemModel> tariffList = new List<LegendItemModel>(AccountUsageCache.GetTariffLegendList());
+            if (tariffList != null && tariffList.Count > 0)
+            {
+                _tariffLegendContainer.Hidden = !isVisible;
+            }
         }
         #endregion
         #region RM/KWH & TARIFF Methods
@@ -134,9 +153,7 @@ namespace myTNB
             {
                 _tariffIsVisible = !_tariffIsVisible;
                 _tariffSelectionComponent.UpdateTariffButton(_tariffIsVisible);
-
-                //TO DO: Add Action here when Tariff is shown/hidden....
-
+                ShowHideTariffLegends(_tariffIsVisible);
             }));
 
             CreateRMKwhDropdown();
@@ -299,6 +316,52 @@ namespace myTNB
             view.Layer.ShadowRadius = 8;
             view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
         }
+        #endregion
+        #region API Calls
+        private void CallGetAccountUsageAPI()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        ActivityIndicator.Show();
+                        AccountUsageCache.ClearTariffLegendList();
+
+                        AccountUsageResponseModel accountUsageResponse = await GetAccountUsage(DataManager.DataManager.SharedInstance.SelectedAccount);
+                        AccountUsageCache.AddTariffLegendList(accountUsageResponse);
+
+                        SetTariffLegendComponent();
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                    ActivityIndicator.Hide();
+                });
+            });
+        }
+
+        private async Task<AccountUsageResponseModel> GetAccountUsage(CustomerAccountRecordModel account)
+        {
+            AccountUsageResponseModel accountUsageResponse = null;
+            ServiceManager serviceManager = new ServiceManager();
+            object requestParameter = new
+            {
+                contractAccount = account.accNum,
+                isOwner = account.isOwned,
+                serviceManager.usrInf
+            };
+
+            accountUsageResponse = await Task.Run(() =>
+            {
+                return serviceManager.OnExecuteAPIV6<AccountUsageResponseModel>("GetAccountUsage", requestParameter);
+            });
+
+            return accountUsageResponse;
+        }
+
         #endregion
     }
 }

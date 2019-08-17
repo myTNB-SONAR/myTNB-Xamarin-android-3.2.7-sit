@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using CoreGraphics;
+using myTNB.Model.Usage;
 using UIKit;
 
 namespace myTNB.Home.Components.UsageView
@@ -7,12 +9,13 @@ namespace myTNB.Home.Components.UsageView
     public class TariffLegendComponent : BaseComponent
     {
         UIView _parentView, _containerView;
-        int dummyArrayCount = 5;
+        List<LegendItemModel> _tariffLegendList = new List<LegendItemModel>();
         nfloat _totalHeight;
 
-        public TariffLegendComponent(UIView parentView)
+        public TariffLegendComponent(UIView parentView, List<LegendItemModel> tariffLegendList)
         {
             _parentView = parentView;
+            _tariffLegendList = tariffLegendList;
         }
 
         private void CreateComponent()
@@ -23,7 +26,7 @@ namespace myTNB.Home.Components.UsageView
             {
                 BackgroundColor = UIColor.Clear
             };
-            for (int i = 0; i < dummyArrayCount; i++)
+            for (int i = 0; i < _tariffLegendList.Count; i++)
             {
                 _containerView.AddSubview(LegendItemView(i));
             }
@@ -40,7 +43,7 @@ namespace myTNB.Home.Components.UsageView
         {
             nfloat viewHeight = GetScaledHeight(14f) + GetScaledHeight(11f);
             nfloat viewXPos = GetScaledWidth(24f);
-            nfloat viewYPos = (viewHeight * index);
+            nfloat viewYPos = viewHeight * index;
             nfloat viewWidth = _parentView.Frame.Width;
 
             UIView view = new UIView(new CGRect(viewXPos, viewYPos, viewWidth, viewHeight))
@@ -52,7 +55,7 @@ namespace myTNB.Home.Components.UsageView
             nfloat coulourViewHeight = GetScaledWidth(14f);
             UIView colourView = new UIView(new CGRect(0, 0, coulourViewWidth, coulourViewHeight))
             {
-                BackgroundColor = UIColor.White
+                BackgroundColor = _tariffLegendList[index].Colour
             };
             colourView.Layer.CornerRadius = GetScaledHeight(7f);
             view.AddSubview(colourView);
@@ -74,7 +77,7 @@ namespace myTNB.Home.Components.UsageView
                 Font = TNBFont.MuseoSans_10_300,
                 TextColor = UIColor.White,
                 TextAlignment = UITextAlignment.Left,
-                Text = "0 - 100 kWh"
+                Text = _tariffLegendList[index].BlockRange
             };
             labelView.AddSubview(rangeLabel);
 
@@ -84,7 +87,7 @@ namespace myTNB.Home.Components.UsageView
                 Font = TNBFont.MuseoSans_10_300,
                 TextColor = UIColor.White,
                 TextAlignment = UITextAlignment.Right,
-                Text = "RM 0.218 / kWh"
+                Text = _tariffLegendList[index].BlockPrice
             };
             labelView.AddSubview(priceLabel);
             _totalHeight = view.Frame.GetMaxY();
