@@ -2111,6 +2111,7 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\myTNBMenu\Adapter\EnergySavingTipsAdapter.cs" />
+    <Compile Include="Src\myTNBMenu\Listener\NMREDashboardScrollView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -78,7 +78,7 @@ namespace myTNB_Android.Src.myTNBMenu.Adapter
 
 				ViewGroup.LayoutParams currentCard = vh.cardView.LayoutParameters;
 
-				int cardWidth = (int)((this.mActivity.Resources.DisplayMetrics.WidthPixels / 1.10) - DPUtils.ConvertDPToPx(6f));
+				int cardWidth = (int)((this.mActivity.Resources.DisplayMetrics.WidthPixels / 1.06) - DPUtils.ConvertDPToPx(6f));
                 if (DPUtils.ConvertPxToDP(cardWidth) < 288f)
                 {
                     cardWidth = (int) DPUtils.ConvertDPToPx(288f);

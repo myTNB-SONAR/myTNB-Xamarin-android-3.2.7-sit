@@ -11,6 +11,7 @@ using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Android.Text;
 using Android.Text.Method;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -48,12 +49,12 @@ using System;
 using System.Collections.Generic;
 using static MikePhil.Charting.Components.XAxis;
 using static MikePhil.Charting.Components.YAxis;
-using static myTNB_Android.Src.myTNBMenu.Listener.SMDashboardScrollView;
+using static myTNB_Android.Src.myTNBMenu.Listener.NMREDashboardScrollView;
 using static myTNB_Android.Src.myTNBMenu.Models.GetInstallationDetailsResponse;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
-    public class DashboardChartFragment : BaseFragment, DashboardChartContract.IView, SMDashboardScrollViewListener
+    public class DashboardChartFragment : BaseFragment, DashboardChartContract.IView, NMREDashboardScrollViewListener
     {
 
         [BindView(Resource.Id.totalPayableLayout)]
@@ -116,9 +117,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private static BottomSheetBehavior bottomSheetBehavior;
 
-        private SMDashboardScrollView scrollView;
-
-        private SMChartHScrollView chartHScrollView;
+        private NMREDashboardScrollView scrollView;
 
         [BindView(Resource.Id.bottom_sheet)]
         LinearLayout bottomSheet;
@@ -451,7 +450,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 if (!hasNoInternet)
                 {
-                    requireScroll = true;
                     energyTipsView.Visibility = ViewStates.Visible;
                     LinearLayoutManager linearEnergyTipLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
                     energyTipsList.SetLayoutManager(linearEnergyTipLayoutManager);
@@ -460,16 +458,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     snapHelper.AttachToRecyclerView(energyTipsList);
 
                     OnGetEnergyTipsItems();
-
-                    scrollView = view.FindViewById<SMDashboardScrollView>(Resource.Id.scroll_view);
-                    scrollView.SmoothScrollingEnabled = true;
-                    scrollView.setOnScrollViewListener(this);
                 }
                 else
                 {
-                    requireScroll = false;
                     energyTipsView.Visibility = ViewStates.Gone;
                 }
+
+                scrollView = view.FindViewById<NMREDashboardScrollView>(Resource.Id.scroll_view);
+                scrollView.SmoothScrollingEnabled = true;
+                scrollView.setOnScrollViewListener(this);
+                int childHeight = view.FindViewById<LinearLayout>(Resource.Id.scroll_view_content).Height;
+                requireScroll = scrollView.Height < (childHeight + scrollView.PaddingTop + scrollView.PaddingBottom);
 
                 if (amountDueFailed)
                 {
@@ -2039,18 +2038,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             return this.DeviceId();
         }
 
-        void SMDashboardScrollViewListener.OnScrollChanged(SMDashboardScrollView v, int l, int t, int oldl, int oldt)
+        void NMREDashboardScrollViewListener.OnScrollChanged(NMREDashboardScrollView v, int l, int t, int oldl, int oldt)
         {
             View view = (View)scrollView.GetChildAt(scrollView.ChildCount - 1);
             int scrollPosition = t - oldt;
             // if diff is zero, then the bottom has been reached
             if (scrollPosition > 0)
             {
+                requireScroll = true;
                 bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
             }
             else if (scrollPosition < 0)
             {
                 bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+            }
+
+            if (t == 0)
+            {
+                requireScroll = false;
             }
         }
 
@@ -2158,7 +2163,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
-        private void ScrollUpDownScrollView(int UpDown)
+        /*private void ScrollUpDownScrollView(int UpDown)
         {
             if (Activity != null)
             {
@@ -2178,7 +2183,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 scrollView.FullScroll(FocusSearchDirection.Up);
             }
-        }
+        }*/
 
     }
 }
