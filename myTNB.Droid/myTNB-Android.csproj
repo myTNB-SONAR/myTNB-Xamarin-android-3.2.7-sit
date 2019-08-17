@@ -1972,6 +1972,15 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_camera_green.png" />
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\MeterValidationData.cs" />
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\PhotoContainerBox.cs" />
+    <AndroidResource Include="Resources\layout\CustomDialogWithImageHeader.axml" />
+    <Compile Include="Src\SSMR\Util\MyTNBAppToolTip.cs" />
+    <Compile Include="Src\SSMR\Util\MyTNBAppToolTipBuilder.cs" />
+    <Compile Include="Src\Base\MyTNBAppToolTipData.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\multiple_phase.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\multi_phase.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\multi_phase.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\multi_phase.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\multi_phase.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

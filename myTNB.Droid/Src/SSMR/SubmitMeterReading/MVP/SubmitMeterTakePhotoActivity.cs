@@ -12,7 +12,10 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.SSMR.SMRApplication.MVP;
+using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 
@@ -28,6 +31,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         private static bool isGalleryFirstPress = true;
         private static bool isTakePhotFirstEnter = true;
         private bool isSinglePhase = false;
+        private bool isFromSingleCapture = false;
         List<MeterValidation> validatedMeterList;
         List<MeterValidation> validationStateList;
         List<MeterCapturedData> meteredCapturedDataList;
@@ -243,10 +247,21 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public void AddCapturedImage(Bitmap capturedImage)
         {
-            PhotoContainerBox photoContainerBox = photoContainerBoxes.Find(box => { return box.mIsActive; });
-            photoContainerBox.SetPhotoImage(capturedImage);
-            UpdateAllPhotoBoxes();
-            SetPhotoBoxClickable();
+            if (!isSinglePhase)
+            {
+                PhotoContainerBox photoContainerBox = photoContainerBoxes.Find(box => { return box.mIsActive; });
+                photoContainerBox.SetPhotoImage(capturedImage);
+                UpdateAllPhotoBoxes();
+                SetPhotoBoxClickable();
+            }
+            else
+            {
+                ImageView previewImage = FindViewById<ImageView>(Resource.Id.adjust_photo_preview);
+                previewImage.SetImageBitmap(capturedImage);
+                ShowImagePreView(true);
+                isFromSingleCapture = true;
+            }
+
             UpdateTakePhotoNote();
             EnableSubmitButton();
         }
@@ -285,6 +300,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             PhotoContainerBox photoContainerBox = photoContainerBoxes.Find(box => { return (!box.mIsActive && !box.mHasPhoto); });
             if (photoContainerBox != null)
             {
+                ShowImagePreView(false);
                 photoContainerBox.SetActive(true);
             }
             else
@@ -298,28 +314,38 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public void DeleteCapturedImage()
         {
-            selectedPhotoBox.DeletePhotoImage();
-            ShowImagePreView(false);
-
-            for (int i = 0; i < photoContainerBoxes.Count; i++)
+            if (!isSinglePhase)
             {
-                PhotoContainerBox photoBox = photoContainerBoxes[i];
-                if (!photoBox.mHasPhoto)
+                selectedPhotoBox.DeletePhotoImage();
+                ShowImagePreView(false);
+
+                for (int i = 0; i < photoContainerBoxes.Count; i++)
                 {
-                    photoBox.SetActive(false);
+                    PhotoContainerBox photoBox = photoContainerBoxes[i];
+                    if (!photoBox.mHasPhoto)
+                    {
+                        photoBox.SetActive(false);
+                    }
                 }
+
+                SetPhotoBoxClickable();
+
+                PhotoContainerBox photoContainerBox = photoContainerBoxes.Find(box => { return (!box.mIsActive && !box.mHasPhoto); });
+                if (photoContainerBox != null)
+                {
+                    photoContainerBox.SetActive(true);
+                }
+
+                SetPhotoBoxClickable();
+                UpdateTakePhotoFormattedNote();
             }
-
-            SetPhotoBoxClickable();
-
-            PhotoContainerBox photoContainerBox = photoContainerBoxes.Find(box => { return (!box.mIsActive && !box.mHasPhoto); });
-            if (photoContainerBox != null)
+            else
             {
-                photoContainerBox.SetActive(true);
+                ShowImagePreView(false);
+                isFromSingleCapture = false;
+                UpdateTakePhotoNote();
             }
 
-            SetPhotoBoxClickable();
-            UpdateTakePhotoNote();
             EnableSubmitButton();
         }
 
@@ -357,16 +383,20 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         private void ShowTakePhotoTooltip()
         {
-            MaterialDialog myDiaLog = SMRPopUpUtils.OnBuildSMRPhotoTooltip(true, isSinglePhase, this);
-            LinearLayout btnFirst = myDiaLog.FindViewById<LinearLayout>(Resource.Id.btnFirst);
-
-            btnFirst.Click += delegate
+            List<string> needMeterCaptureList = new List<string>();
+            for (int i=0; i < validatedMeterList.Count; i++)
             {
-                isTakePhotFirstEnter = false;
-                myDiaLog.Dismiss();
-            };
-
-            myDiaLog.Show();
+                needMeterCaptureList.Add(GetMeterNameFromCode(validatedMeterList[i].meterId));
+            }
+            SMRPhotoPopUpDetailsModel tooltipData = MyTNBAppToolTipData.GetTakePhotoToolTipData(isSinglePhase, validatedMeterList.Count.ToString(),
+                String.Join(",", needMeterCaptureList.ToArray()));
+            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                .SetHeaderImage(isSinglePhase ? Resource.Drawable.single_phase : Resource.Drawable.multiple_phase)
+                .SetTitle(tooltipData.Title)
+                .SetMessage(tooltipData.Description)
+                .SetCTALabel(tooltipData.CTA)
+                .Build()
+                .Show();
         }
 
         private void ShowUploadPhotoTooltip()
@@ -395,37 +425,56 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public void EnableSubmitButton()
         {
-            int hasImage = photoContainerBoxes.FindIndex(box => { return box.mHasPhoto; });
-            if (hasImage != -1)
+            if (!isSinglePhase)
             {
-                btnSubmitPhotoToOCR.Enabled = true;
-                btnSubmitPhotoToOCR.Background = GetDrawable(Resource.Drawable.green_button_background);
+                int hasImage = photoContainerBoxes.FindIndex(box => { return box.mHasPhoto; });
+                if (hasImage != -1)
+                {
+                    btnSubmitPhotoToOCR.Enabled = true;
+                    btnSubmitPhotoToOCR.Background = GetDrawable(Resource.Drawable.green_button_background);
+                }
+                else
+                {
+                    btnSubmitPhotoToOCR.Enabled = false;
+                    btnSubmitPhotoToOCR.Background = GetDrawable(Resource.Drawable.silver_chalice_button_background);
+                }
             }
             else
             {
-                btnSubmitPhotoToOCR.Enabled = false;
-                btnSubmitPhotoToOCR.Background = GetDrawable(Resource.Drawable.silver_chalice_button_background);
+                if (isFromSingleCapture)
+                {
+                    btnSubmitPhotoToOCR.Enabled = true;
+                    btnSubmitPhotoToOCR.Background = GetDrawable(Resource.Drawable.green_button_background);
+                }
+                else
+                {
+                    btnSubmitPhotoToOCR.Enabled = false;
+                    btnSubmitPhotoToOCR.Background = GetDrawable(Resource.Drawable.silver_chalice_button_background);
+                }
+                
             }
         }
 
         public void UpdateTakePhotoNote()
         {
-
-            List<PhotoContainerBox> photoBoxes = photoContainerBoxes.FindAll(box => { return !box.mHasPhoto; });
-
-            if (photoBoxes.Count == photoContainerBoxes.Count)
+            if (!isSinglePhase)
             {
-                takePhotoFragment.UpdateTakePhotoNote("There will be 3 different units. Take a photo of the 1st unit you see.");
-            }
-            else
-            {
-                takePhotoFragment.UpdateTakePhotoNote("Great! Now take a photo of the next unit you see.");
+                List<PhotoContainerBox> photoBoxes = photoContainerBoxes.FindAll(box => { return !box.mHasPhoto; });
+
+                if (photoBoxes.Count == photoContainerBoxes.Count)
+                {
+                    takePhotoFragment.UpdateTakePhotoNote(String.Format("There will be {0} different units. Take a photo of the 1st unit you see.", photoBoxes.Count.ToString()));
+                }
+                else
+                {
+                    takePhotoFragment.UpdateTakePhotoNote("Great! Now take a photo of the next unit you see.");
+                }
             }
         }
 
         private string GetMeterNameFromCode(string code)
         {
-            string meterName = "";
+            string meterName;
             switch (code)
             {
                 case "001":
@@ -463,20 +512,27 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 }
             }
 
-            string finalString = "";
-            if (doneUnitList.Count == 2)
+            string finalString;
+            if (validationStateList.Count == 3)
             {
-                finalString = doneMeter + "<font color='#20bd4c'>" + GetMeterNameFromCode(doneUnitList[0])
-                    + "</font> and <font color='#20bd4c'>" + GetMeterNameFromCode(doneUnitList[1]) + "</font> "
-                    + onTo + finalUnit + "<font color='#fecd39'>" + GetMeterNameFromCode(notDoneUnitList[0]) + "</font>"+ " now.";
+                if (doneUnitList.Count == 2)
+                {
+                    finalString = doneMeter + "<font color='#20bd4c'>" + GetMeterNameFromCode(doneUnitList[0])
+                        + "</font> and <font color='#20bd4c'>" + GetMeterNameFromCode(doneUnitList[1]) + "</font> "
+                        + onTo + finalUnit + "<font color='#fecd39'>" + GetMeterNameFromCode(notDoneUnitList[0]) + "</font>" + " now.";
+                }
+                else
+                {
+                    finalString = doneMeter + "<font color='#20bd4c'>" + GetMeterNameFromCode(doneUnitList[0]) + "</font>"
+                        + onTo + twoMoreUnits + "<font color='#fecd39'>" + GetMeterNameFromCode(notDoneUnitList[0]) + "</font> and <font color='#fecd39'>"
+                        + GetMeterNameFromCode(notDoneUnitList[1]) + "</font> now.";
+                }
             }
             else
             {
-                finalString = doneMeter + "<font color='#20bd4c'>" + GetMeterNameFromCode(doneUnitList[0]) + "</font>"
-                    + onTo + twoMoreUnits + "<font color='#fecd39'>" + GetMeterNameFromCode(notDoneUnitList[0]) + "</font> and <font color='#fecd39'>"
-                    + GetMeterNameFromCode(notDoneUnitList[1]) + "</font> now.";
+                finalString = doneMeter + "<font color='#20bd4c'>" + GetMeterNameFromCode(doneUnitList[0]) + "</font> "
+                        + onTo + finalUnit + "<font color='#fecd39'>" + GetMeterNameFromCode(notDoneUnitList[0]) + "</font>" + " now.";
             }
-
 
             takePhotoFragment.UpdateTakePhotoFormattedNote(GetFormattedText(finalString));
         }
