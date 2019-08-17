@@ -1119,6 +1119,34 @@
     <ImageAsset Include="Assets.xcassets\Camera-Icon-Green.imageset\Camera-Icon-Green.png" />
     <ImageAsset Include="Assets.xcassets\Camera-Icon-Green.imageset\Camera-Icon-Green%402x.png" />
     <ImageAsset Include="Assets.xcassets\Camera-Icon-Green.imageset\Camera-Icon-Green%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Saving-Tips-Bg.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Fridge-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Saving-Tips-Bg.imageset\Saving-Tips-Bg.png" />
+    <ImageAsset Include="Assets.xcassets\Saving-Tips-Bg.imageset\Saving-Tips-Bg%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Saving-Tips-Bg.imageset\Saving-Tips-Bg%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Fridge-Icon.imageset\Fridge-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\Fridge-Icon.imageset\Fridge-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Fridge-Icon.imageset\Fridge-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Open-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Open-Icon.imageset\Tariff-Eye-Open-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Open-Icon.imageset\Tariff-Eye-Open-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Open-Icon.imageset\Tariff-Eye-Open-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Close-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Close-Icon.imageset\Tariff-Eye-Close-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Close-Icon.imageset\Tariff-Eye-Close-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Close-Icon.imageset\Tariff-Eye-Close-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\RmKwh-Dropdown-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\RmKwh-Dropdown-Icon.imageset\RmKwh-Dropdown-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\RmKwh-Dropdown-Icon.imageset\RmKwh-Dropdown-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\RmKwh-Dropdown-Icon.imageset\RmKwh-Dropdown-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Stub-Usage-Bg.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Stub-Usage-Bg.imageset\Stub-Usage-Bg.png" />
+    <ImageAsset Include="Assets.xcassets\Stub-Usage-Bg.imageset\Stub-Usage-Bg%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Stub-Usage-Bg.imageset\Stub-Usage-Bg%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1483,6 +1511,14 @@
     <Folder Include="Assets.xcassets\IC-Info-Blue.imageset\" />
     <Folder Include="Assets.xcassets\Camera-Icon-Green.imageset\" />
     <Folder Include="Sitecore CMS\Model\Energy Tips\" />
+    <Folder Include="Assets.xcassets\Saving-Tips-Bg.imageset\" />
+    <Folder Include="Assets.xcassets\Fridge-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Tariff.imageset\" />
+    <Folder Include="Assets.xcassets\Tariff-Eye-Open-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Tariff-Eye-Close-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\RmKwh-Dropdown-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Stub-Usage-Bg.imageset\" />
+    <Folder Include="Assets.xcassets\Info-Black-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2283,6 +2319,13 @@
     <Compile Include="Sitecore CMS\Model\Energy Tips\EnergyTipsModel.cs" />
     <Compile Include="Sitecore CMS\Service\EnergyTipsService.cs" />
     <Compile Include="SQLite\SQLite Data Manager\EnergyTipsEntity.cs" />
+    <Compile Include="Home\Components\Usage View\UsageFooterViewComponent.cs" />
+    <Compile Include="Home\Components\BaseComponent.cs" />
+    <Compile Include="Home\Components\Usage View\TariffSelectionComponent.cs" />
+    <Compile Include="Home\Dashboard\Usage\UsageHelper.cs" />
+    <Compile Include="Home\Dashboard\Usage\RMkWhEnum.cs" />
+    <Compile Include="Home\Components\Usage View\DisconnectionComponent.cs" />
+    <Compile Include="Home\Components\Usage View\TariffLegendComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

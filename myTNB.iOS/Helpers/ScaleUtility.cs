@@ -74,6 +74,11 @@ namespace myTNB
             get { return GetScaledWidth(16F); }
         }
 
+        public static nfloat BaseMarginHeight16
+        {
+            get { return GetScaledHeight(16F); }
+        }
+
         public static void GetValuesFromAspectRatio(ref nfloat width, ref nfloat height)
         {
             nfloat aspectRatio = width / height;

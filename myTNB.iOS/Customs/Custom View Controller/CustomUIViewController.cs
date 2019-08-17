@@ -416,6 +416,10 @@ namespace myTNB
         {
             get { return ScaleUtility.BaseMarginWidth16; }
         }
+        public nfloat BaseMarginHeight16
+        {
+            get { return ScaleUtility.BaseMarginHeight16; }
+        }
         #endregion
     }
 }

@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using CoreGraphics;
+using Foundation;
 using myTNB.SitecoreCMS.Model;
 using UIKit;
 
-namespace myTNB
+namespace myTNB.Home.Components.UsageView
 {
     public class EnergyTipsComponent
     {
@@ -17,7 +19,7 @@ namespace myTNB
         nfloat margin = ScaleUtility.GetScaledWidth(8f);
         nfloat paddingX = ScaleUtility.GetScaledWidth(16f);
         nfloat paddingY = ScaleUtility.GetScaledHeight(16f);
-        nfloat containerHeight = ScaleUtility.GetScaledHeight(110f);
+        nfloat containerHeight = ScaleUtility.GetScaledHeight(100f);
         int currentPageIndex;
 
         public EnergyTipsComponent(UIView parentView, List<TipsModel> tipsList)
@@ -99,10 +101,27 @@ namespace myTNB
                 };
                 viewContainer.AddSubview(descView);
 
+                UIImage displayImage;
+                if (string.IsNullOrEmpty(_tipsList[i].Image) || string.IsNullOrWhiteSpace(_tipsList[i].Image))
+                {
+                    displayImage = UIImage.FromBundle(string.Empty);
+                }
+                else
+                {
+                    try
+                    {
+                        displayImage = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(_tipsList[i].Image)));
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine("Image load Error: " + e.Message);
+                        displayImage = UIImage.FromBundle(string.Empty);
+                    }
+                }
                 nfloat iconWidth = ScaleUtility.GetScaledWidth(36f);
                 iconView = new UIImageView(new CGRect(0, ScaleUtility.GetYLocationToCenterObject(iconWidth, descView), iconWidth, iconWidth))
                 {
-                    Image = UIImage.FromBundle("Fridge-Icon")
+                    Image = displayImage
                 };
                 descView.AddSubview(iconView);
 
