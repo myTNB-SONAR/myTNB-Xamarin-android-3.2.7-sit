@@ -257,6 +257,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             else
             {
                 ImageView previewImage = FindViewById<ImageView>(Resource.Id.adjust_photo_preview);
+                previewImage.SetScaleType(ImageView.ScaleType.CenterCrop);
                 previewImage.SetImageBitmap(capturedImage);
                 ShowImagePreView(true);
                 isFromSingleCapture = true;
@@ -284,6 +285,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     photoBox.Click += delegate {
                         ShowImagePreView(true);
                         ImageView previewImage = FindViewById<ImageView>(Resource.Id.adjust_photo_preview);
+                        previewImage.SetScaleType(ImageView.ScaleType.CenterCrop);
                         previewImage.SetImageBitmap(photoBox.photoBitmap);
                         selectedPhotoBox = photoBox;
                     };
@@ -307,6 +309,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 ShowImagePreView(true);
                 ImageView previewImage = FindViewById<ImageView>(Resource.Id.adjust_photo_preview);
+                previewImage.SetScaleType(ImageView.ScaleType.CenterCrop);
                 previewImage.SetImageBitmap(photoContainerBoxes[0].photoBitmap);
                 selectedPhotoBox = photoContainerBoxes[0];
             }
@@ -379,8 +382,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             Finish();
         }
 
-        
-
         private void ShowTakePhotoTooltip()
         {
             List<string> needMeterCaptureList = new List<string>();
@@ -388,8 +389,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 needMeterCaptureList.Add(GetMeterNameFromCode(validatedMeterList[i].meterId));
             }
-            SMRPhotoPopUpDetailsModel tooltipData = MyTNBAppToolTipData.GetTakePhotoToolTipData(isSinglePhase, validatedMeterList.Count.ToString(),
-                String.Join(",", needMeterCaptureList.ToArray()));
+            string remainingMeter = needMeterCaptureList.Count > 1 ? String.Join(",", needMeterCaptureList.ToArray()) : needMeterCaptureList[0];
+            SMRPhotoPopUpDetailsModel tooltipData = MyTNBAppToolTipData.GetTakePhotoToolTipData(isSinglePhase,
+                validatedMeterList.Count == 1,
+                validatedMeterList.Count.ToString(),
+                remainingMeter);
             MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
                 .SetHeaderImage(isSinglePhase ? Resource.Drawable.single_phase : Resource.Drawable.multiple_phase)
                 .SetTitle(tooltipData.Title)
@@ -401,16 +405,24 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         private void ShowUploadPhotoTooltip()
         {
-            MaterialDialog myDiaLog = SMRPopUpUtils.OnBuildSMRPhotoTooltip(false, isSinglePhase, this);
-            LinearLayout btnFirst = myDiaLog.FindViewById<LinearLayout>(Resource.Id.btnFirst);
-
-            btnFirst.Click += delegate
+            List<string> needMeterCaptureList = new List<string>();
+            for (int i = 0; i < validatedMeterList.Count; i++)
             {
-                ShowGallery();
-                myDiaLog.Dismiss();
-            };
-
-            myDiaLog.Show();
+                needMeterCaptureList.Add(GetMeterNameFromCode(validatedMeterList[i].meterId));
+            }
+            string remainingMeter = needMeterCaptureList.Count > 1 ? String.Join(",", needMeterCaptureList.ToArray()) : needMeterCaptureList[0];
+            SMRPhotoPopUpDetailsModel tooltipData = MyTNBAppToolTipData.GetUploadPhotoToolTipData(isSinglePhase,
+                validatedMeterList.Count == 1,
+                validatedMeterList.Count.ToString(),
+                remainingMeter);
+            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
+                .SetHeaderImage(isSinglePhase ? Resource.Drawable.single_phase : Resource.Drawable.multiple_phase)
+                .SetTitle(tooltipData.Title)
+                .SetMessage(tooltipData.Description)
+                .SetCTALabel(tooltipData.CTA)
+                .SetCTAaction(() => { ShowGallery(); })
+                .Build()
+                .Show();
         }
 
         public void EnableMoreMenu()

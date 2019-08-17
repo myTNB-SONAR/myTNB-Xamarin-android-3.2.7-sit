@@ -21,6 +21,7 @@ namespace myTNB_Android.Src.SSMR.Util
         private string title;
         private string message;
         private string ctaLabel;
+        private Action ctaAction;
         private MaterialDialog dialog;
 
         private MyTNBAppToolTipBuilder()
@@ -72,6 +73,12 @@ namespace myTNB_Android.Src.SSMR.Util
             return this;
         }
 
+        public MyTNBAppToolTipBuilder SetCTAaction(Action ctaFunc)
+        {
+            this.ctaAction = ctaFunc;
+            return this;
+        }
+
         public MyTNBAppToolTipBuilder Build()
         {
             if (this.toolTipType == ToolTipType.IMAGE_HEADER)
@@ -84,6 +91,10 @@ namespace myTNB_Android.Src.SSMR.Util
                 tooltipCTA.Click += delegate
                 {
                     this.dialog.Dismiss();
+                    if (this.ctaAction != null)
+                    {
+                        this.ctaAction();
+                    }
                 };
 
                 tooltipTitle.Text = this.title;
