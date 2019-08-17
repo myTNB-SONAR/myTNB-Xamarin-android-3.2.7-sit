@@ -18,6 +18,7 @@ using Java.IO;
 using Orientation = Android.Content.Res.Orientation;
 using Android.Content;
 using myTNB_Android.Src.Utils;
+using Android.Text;
 
 namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 {
@@ -729,6 +730,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public void UpdateTakePhotoNote(string takePhotoNote)
         {
             takePhotoNoteView.Text = takePhotoNote;
+        }
+
+        public void UpdateTakePhotoFormattedNote(ISpanned takePhotoFormattedNote)
+        {
+            takePhotoNoteView.TextFormatted = takePhotoFormattedNote;
         }
 
         public class UpdateImageView : Java.Lang.Object, IRunnable

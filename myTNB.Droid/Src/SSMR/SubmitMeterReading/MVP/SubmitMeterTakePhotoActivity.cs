@@ -29,6 +29,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         private static bool isTakePhotFirstEnter = true;
         private bool isSinglePhase = false;
         List<MeterValidation> validatedMeterList;
+        List<MeterValidation> validationStateList;
         List<MeterCapturedData> meteredCapturedDataList;
         List<PhotoContainerBox> photoContainerBoxes;
         PhotoContainerBox selectedPhotoBox;
@@ -78,7 +79,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             if (extras != null && extras.ContainsKey("REQUEST_PHOTOS"))
             {
-                List<MeterValidation> validationStateList = JsonConvert.DeserializeObject<List<MeterValidation>>(extras.GetString("REQUEST_PHOTOS"));
+                validationStateList = JsonConvert.DeserializeObject<List<MeterValidation>>(extras.GetString("REQUEST_PHOTOS"));
                 validatedMeterList = validationStateList.FindAll(validatedMeter => { return validatedMeter.validated == false; });
                 MeterCapturedData meteredCapturedData;
                 meteredCapturedDataList = new List<MeterCapturedData>();
@@ -171,7 +172,14 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         protected override void OnStart()
         {
             base.OnStart();
-            UpdateTakePhotoNote();
+            if (validatedMeterList.Count > 0 && validatedMeterList.Count != validationStateList.Count)
+            {
+                UpdateTakePhotoFormattedNote();
+            }
+            else
+            {
+                UpdateTakePhotoNote();
+            }
         }
 
         private void ShowOCRLoadingScreen()
@@ -413,7 +421,64 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 takePhotoFragment.UpdateTakePhotoNote("Great! Now take a photo of the next unit you see.");
             }
-            
+        }
+
+        private string GetMeterNameFromCode(string code)
+        {
+            string meterName = "";
+            switch (code)
+            {
+                case "001":
+                    meterName = "kW";
+                    break;
+                case "002":
+                    meterName = "kVARh";
+                    break;
+                default:
+                    meterName = "kWh";
+                    break;
+            }
+            return meterName;
+        }
+
+        public void UpdateTakePhotoFormattedNote()
+        {
+            string doneMeter = "You're done with ";
+            string onTo = "! On to the ";
+            string twoMoreUnits = "next two units ";
+            string finalUnit = "final unit ";
+
+            List<string> doneUnitList = new List<string>();
+            List<string> notDoneUnitList = new List<string>();
+
+            for (int i=0; i < validationStateList.Count; i++)
+            {
+                if (validationStateList[i].validated)
+                {
+                    doneUnitList.Add(validationStateList[i].meterId);
+                }
+                else
+                {
+                    notDoneUnitList.Add(validationStateList[i].meterId);
+                }
+            }
+
+            string finalString = "";
+            if (doneUnitList.Count == 2)
+            {
+                finalString = doneMeter + "<font color='#20bd4c'>" + GetMeterNameFromCode(doneUnitList[0])
+                    + "</font> and <font color='#20bd4c'>" + GetMeterNameFromCode(doneUnitList[1]) + "</font> "
+                    + onTo + finalUnit + "<font color='#fecd39'>" + GetMeterNameFromCode(notDoneUnitList[0]) + "</font>"+ " now.";
+            }
+            else
+            {
+                finalString = doneMeter + "<font color='#20bd4c'>" + GetMeterNameFromCode(doneUnitList[0]) + "</font>"
+                    + onTo + twoMoreUnits + "<font color='#fecd39'>" + GetMeterNameFromCode(notDoneUnitList[0]) + "</font> and <font color='#fecd39'>"
+                    + GetMeterNameFromCode(notDoneUnitList[1]) + "</font> now.";
+            }
+
+
+            takePhotoFragment.UpdateTakePhotoFormattedNote(GetFormattedText(finalString));
         }
 
         public class CropAreaPreView : View
