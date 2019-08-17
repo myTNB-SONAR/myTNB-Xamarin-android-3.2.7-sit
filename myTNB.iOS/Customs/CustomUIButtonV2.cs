@@ -20,9 +20,9 @@ namespace myTNB
         {
             Layer.CornerRadius = 5.0F;
             Layer.BorderColor = UIColor.White.CGColor;
-            Layer.BorderWidth = 1.0F;
+            Layer.BorderWidth = ScaleUtility.GetScaledWidth(1);
 #pragma warning disable XI0003 // Notifies you when using a deprecated, obsolete or unavailable Apple API
-            Font = MyTNBFont.MuseoSans16_500;
+            Font = TNBFont.MuseoSans_16_500;
 #pragma warning restore XI0003 // Notifies you when using a deprecated, obsolete or unavailable Apple API
             if (isWhiteBG)
             {

@@ -19,7 +19,7 @@ namespace myTNB
         string _buttonText;
         bool _isBtnHidden;
 
-        private nfloat _padding = ScaleUtility.BaseMarginWidth16;// 16f;
+        private nfloat _padding = ScaleUtility.BaseMarginWidth16;
         private nfloat _navBarHeight;
         private nfloat _bgImgHeight;
         private nfloat _imgWidth = ScaleUtility.GetScaledWidth(24);
@@ -41,7 +41,8 @@ namespace myTNB
                 BackgroundColor = UIColor.White
             };
 
-            _labelTitle = new UILabel(new CGRect(_padding, 0, baseWidth, ScaleUtility.GetScaledHeight(24)))
+            _labelTitle = new UILabel(new CGRect(_padding, ScaleUtility.GetScaledHeight(24)
+                , baseWidth, ScaleUtility.GetScaledHeight(24)))
             {
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,

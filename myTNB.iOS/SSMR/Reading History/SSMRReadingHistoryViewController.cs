@@ -42,6 +42,7 @@ namespace myTNB
             PrepareHeaderView();
             PrepareFooterView();
             AddTableView();
+            View.BackgroundColor = MyTNBColor.LightGrayBG;
         }
 
         public override void ViewWillAppear(bool animated)
@@ -101,7 +102,7 @@ namespace myTNB
             _ssmrHeaderComponent.ActionTitle = string.Empty;
             _ssmrHeaderComponent.SetDescription(GetI18NValue(SSMRConstants.I18N_EnableSSMRDescription));
             _ssmrHeaderComponent.SetSubmitButtonHidden(null, true, GetI18NValue(SSMRConstants.I18N_EnableSSMRCTA));
-            _ssmrHeaderComponent.OnButtonTap = DisplayApplciationForm;
+            _ssmrHeaderComponent.OnButtonTap = OnEnableSSMR;
             AdjustHeader();
 
             _readingHistoryTableView.TableFooterView = null;
@@ -235,6 +236,7 @@ namespace myTNB
             _btnDisable.SetTitleColor(MyTNBColor.Tomato, UIControlState.Normal);
             _btnDisable.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
+                OnDisableSSMR();
             }));
             viewButton.AddSubview(_btnDisable);
             _footerView.AddSubview(viewButton);
@@ -363,13 +365,23 @@ namespace myTNB
             PresentViewController(navController, true, null);
         }
 
-        private void DisplayApplciationForm()
+        private void OnEnableSSMR()
+        {
+            DisplayApplciationForm(true);
+        }
+
+        private void OnDisableSSMR()
+        {
+            DisplayApplciationForm(false);
+        }
+
+        private void DisplayApplciationForm(bool isEnable)
         {
             UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
             SSMRApplicationViewController viewController =
                 storyBoard.InstantiateViewController("SSMRApplicationViewController") as SSMRApplicationViewController;
-            viewController.IsApplication = true;
-            viewController.AccountNumber = _currAcc.accNum;
+            viewController.IsApplication = isEnable;
+            viewController.SelectedAccount = _currAcc;
             UINavigationController navController = new UINavigationController(viewController);
             PresentViewController(navController, true, null);
         }
@@ -404,9 +416,7 @@ namespace myTNB
                     {
                         DataManager.DataManager.SharedInstance.MeterReadingHistory = _smrActivityInfoResponse.d.data;
                         DataManager.DataManager.SharedInstance.ReadingHistoryList = _smrActivityInfoResponse.d.data.MeterReadingHistory;
-                        //DataManager.DataManager.SharedInstance.MoreOptionsList = _smrActivityInfoResponse.d.data.MoreOptions;
                         SSMRActivityInfoCache.SetData(_smrActivityInfoResponse);
-
 
                         _meterReadingHistory = DataManager.DataManager.SharedInstance.MeterReadingHistory;
                         _readingHistoryList = DataManager.DataManager.SharedInstance.ReadingHistoryList;
@@ -417,7 +427,6 @@ namespace myTNB
                     {
                         DataManager.DataManager.SharedInstance.MeterReadingHistory = new MeterReadingHistoryModel();
                         DataManager.DataManager.SharedInstance.ReadingHistoryList = new List<MeterReadingHistoryItemModel>();
-                        //DataManager.DataManager.SharedInstance.MoreOptionsList = new List<MoreOptionsItemModel>();
                         DataManager.DataManager.SharedInstance.AccountIsSSMR = false;
                     }
                 });

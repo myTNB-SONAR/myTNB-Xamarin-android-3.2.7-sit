@@ -5,7 +5,6 @@ using myTNB.Registration;
 using myTNB.SSMR;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Threading.Tasks;
@@ -17,7 +16,7 @@ namespace myTNB
     {
         public SSMRApplicationViewController(IntPtr handle) : base(handle) { }
         public bool IsApplication;
-        public string AccountNumber { set; private get; } = string.Empty;
+        public CustomerAccountRecordModel SelectedAccount;
 
         private UIButton _btnSubmit;
         private UIView _viewBottomContainer, _viewContactDetails, _viewTerminate
@@ -30,7 +29,6 @@ namespace myTNB
         private CustomTextField _customEmailField;
         protected List<CustomerAccountRecordModel> _eligibleAccountList;
         protected AccountsSMREligibilityResponseModel _smrEligibleList;
-        protected CustomerAccountRecordModel _selectedAccount;
         protected ContactDetailsResponseModel _contactDetails;
         protected SSMRApplicationStatusResponseModel _ssmrApplicationStatus;
         protected TerminationReasonsResponseModel _ssmrTerminationReasons;
@@ -48,7 +46,6 @@ namespace myTNB
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
             AddTnCSection();
-            GetEligibleAccounts();
             AddDetailsSection();
             if (!IsApplication)
             {
@@ -200,7 +197,7 @@ namespace myTNB
             {
                 BackgroundColor = MyTNBColor.SectionGrey
             };
-
+            #region Main Details
             _viewApplyForTitle = new UIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(48)))
             {
                 BackgroundColor = MyTNBColor.SectionGrey
@@ -223,7 +220,7 @@ namespace myTNB
                 TextColor = MyTNBColor.CharcoalGrey,
                 Font = TNBFont.MuseoSans_14_500,
                 TextAlignment = UITextAlignment.Left,
-                Text = DataManager.DataManager.SharedInstance.SelectedAccount.accountNickName ?? TNBGlobal.EMPTY_ADDRESS
+                Text = SelectedAccount.accountNickName ?? TNBGlobal.EMPTY_ADDRESS
             };
             _viewAccountContainer.AddSubview(lblAccountName);
             _viewAccountContainer.Frame = new CGRect(0, 0, ViewWidth, lblAccountName.Frame.GetMaxY() + GetScaledHeight(8));
@@ -236,13 +233,15 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_300,
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.WordWrap,
-                Text = _selectedAccount != null && !string.IsNullOrEmpty(_selectedAccount.accountStAddress)
-                   ? _selectedAccount.accountStAddress : TNBGlobal.EMPTY_ADDRESS
+                Text = SelectedAccount != null && !string.IsNullOrEmpty(SelectedAccount.accountStAddress)
+                   ? SelectedAccount.accountStAddress : TNBGlobal.EMPTY_ADDRESS
             };
 
             _viewMainDetails.AddSubviews(new UIView[] { _viewAccountContainer, _lblAddress });
             _viewMainDetails.Frame = new CGRect(0, _viewApplyForTitle.Frame.GetMaxY(), ViewWidth, _lblAddress.Frame.GetMaxY() + GetScaledHeight(16));
+            #endregion
 
+            #region Contact Details
             _viewContactDetailsTitle = new UIView(new CGRect(0, _viewMainDetails.Frame.GetMaxY(), ViewWidth, GetScaledHeight(48)))
             {
                 BackgroundColor = MyTNBColor.SectionGrey
@@ -309,8 +308,9 @@ namespace myTNB
 
             CGSize newLblEditInfoSize = GetLabelSize(_lblEditInfo, _lblEditInfo.Frame.Width, GetScaledHeight(300));
             _lblEditInfo.Frame = new CGRect(_lblEditInfo.Frame.X, _lblEditInfo.Frame.Y, _lblEditInfo.Frame.Width, newLblEditInfoSize.Height);
-
             _viewContactDetails.AddSubviews(new UIView[] { viewEmail, viewMobile, _lblEditInfo });
+            #endregion
+
             _scrollContainer.AddSubviews(new UIView[] { _viewApplyForTitle, _viewMainDetails, _viewContactDetailsTitle, _viewContactDetails });
             _scrollContainer.ContentSize = new CGSize(ViewWidth, _viewContactDetails.Frame.GetMaxY());
             View.AddSubview(_scrollContainer);
@@ -479,7 +479,7 @@ namespace myTNB
 
         private void ToggleCTA()
         {
-            bool isValid = !_isAllowEdit;//_selectedAccount != null && !string.IsNullOrEmpty(_selectedAccount.accountNickName);
+            bool isValid = !_isAllowEdit;
             if (_isAllowEdit && isValid && _customEmailField != null && _customMobileField != null)
             {
                 isValid = _customEmailField.IsFieldValid && _customMobileField.IsFieldValid;
@@ -514,12 +514,6 @@ namespace myTNB
                     _scrollContainer.ContentSize = new CGSize(ViewWidth, _viewContactDetails.Frame.GetMaxY());
                 }
             }
-        }
-
-        private void GetEligibleAccounts()
-        {
-            //_eligibleAccountList = SSMRAccounts.GetAccounts();
-            _selectedAccount = IsApplication ? SSMRAccounts.GetFirstAccount() : DataManager.DataManager.SharedInstance.SelectedAccount;
         }
 
         private void OnSelectTerminateReason(int index)
@@ -603,27 +597,6 @@ namespace myTNB
             });
         }
 
-        private void OnGetAccountsSMREligibility()
-        {
-            InvokeOnMainThread(async () =>
-            {
-                _smrEligibleList = await GetAccountsSMREligibility();
-                if (_smrEligibleList != null && _smrEligibleList.d != null
-                    && _smrEligibleList.d.IsSuccess && _smrEligibleList.d.data != null
-                    && _smrEligibleList.d.data.accountEligibilities != null)
-                {
-                    for (int i = _smrEligibleList.d.data.accountEligibilities.Count - 1; i > -1; i--)
-                    {
-                        AccountsSMREligibilityModel item = _smrEligibleList.d.data.accountEligibilities[i];
-                        if (!item.IsEligible)
-                        {
-                            _eligibleAccountList.RemoveAt(i);
-                        }
-                    }
-                }
-            });
-        }
-
         private bool IsValidTerminateReason()
         {
             return _ssmrTerminationReasons != null && _ssmrTerminationReasons.d != null
@@ -688,8 +661,8 @@ namespace myTNB
                 object request = new
                 {
                     serviceManager.usrInf,
-                    contractAccount = _selectedAccount.accNum,
-                    isOwnedAccount = _selectedAccount.IsOwnedAccount,
+                    contractAccount = SelectedAccount.accNum,
+                    isOwnedAccount = SelectedAccount.IsOwnedAccount,
                     ICNumber
                 };
                 _contactDetails = serviceManager.OnExecuteAPIV6<ContactDetailsResponseModel>(SSMRConstants.Service_GetCARegisteredContact, request);
@@ -708,19 +681,6 @@ namespace myTNB
                 _ssmrTerminationReasons = serviceManager
                     .OnExecuteAPIV6<TerminationReasonsResponseModel>(SSMRConstants.Service_GetTerminationReasons, request);
             });
-        }
-
-        private async Task<AccountsSMREligibilityResponseModel> GetAccountsSMREligibility()
-        {
-            ServiceManager serviceManager = new ServiceManager();
-            object request = new
-            {
-                serviceManager.usrInf,
-                contractAccounts = _eligibleAccountList.Select(x => x.accNum).ToList()
-            };
-            AccountsSMREligibilityResponseModel response = serviceManager
-                .OnExecuteAPIV6<AccountsSMREligibilityResponseModel>(SSMRConstants.Service_GetAccountsSMREligibility, request);
-            return response;
         }
 
         private string GetNewValue(bool isMobilePhone = true)
@@ -765,7 +725,7 @@ namespace myTNB
             object request = new
             {
                 serviceManager.usrInf,
-                contractAccount = _selectedAccount.accNum,
+                contractAccount = SelectedAccount.accNum,
                 oldPhone = _contactDetails != null && _contactDetails.d != null
                     && _contactDetails.d.IsSuccess && _contactDetails.d.data != null
                         ? _contactDetails.d.data.Mobile : string.Empty,
