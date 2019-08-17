@@ -233,6 +233,8 @@ namespace myTNB_Android.Src.Utils
 
         internal static readonly string AMOUNT_DUE_RESPONSE_KEY = ".amountDueResponse";
 
+        internal static readonly string SELECTED_ACCOUNT_USAGE_RESPONSE = ".selectedAccountUsageResponse";
+
         public enum GREETING
         {
             MORNING,

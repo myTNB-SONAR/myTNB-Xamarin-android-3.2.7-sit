@@ -124,8 +124,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
             void HideSSMRDashboardView();
 
-            void InitiateSSMRStatus();
-
             void ShowDisconnectionRetrySnakebar();
 
             void ShowSMRRetrySnakebar();
@@ -180,14 +178,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// Action to navigate to learn more
             /// </summary>
             void OnLearnMore();
-
-            /// <summary>
-            /// Action to get Account Status
-            /// </summary>
-            /// <param name="accountNum">string</param>
-            void GetAccountStatus(string accountNum);
-
-            void GetSSMRAccountStatus(string accountNum);
 
         }
     }

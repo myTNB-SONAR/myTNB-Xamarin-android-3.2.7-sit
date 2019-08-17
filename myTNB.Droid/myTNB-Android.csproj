@@ -2112,6 +2112,11 @@
     </AndroidResource>
     <Compile Include="Src\myTNBMenu\Adapter\EnergySavingTipsAdapter.cs" />
     <Compile Include="Src\myTNBMenu\Listener\NMREDashboardScrollView.cs" />
+    <AndroidResource Include="Resources\layout\SelectSupplyAccountItemLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Utils\InnerDashboardAPICahceUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

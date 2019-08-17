@@ -2448,5 +2448,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 SetAccountStatusVisibility(ViewStates.Gone);
             }
         }
+
+        public string GetDeviceId()
+        {
+            return this.DeviceId();
+        }
     }
 }

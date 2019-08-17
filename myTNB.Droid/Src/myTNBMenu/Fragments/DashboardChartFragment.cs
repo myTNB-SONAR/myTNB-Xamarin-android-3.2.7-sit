@@ -54,7 +54,7 @@ using static myTNB_Android.Src.myTNBMenu.Models.GetInstallationDetailsResponse;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
-    public class DashboardChartFragment : BaseFragment, DashboardChartContract.IView, NMREDashboardScrollViewListener
+    public class DashboardChartFragment : BaseFragment, DashboardChartContract.IView, NMREDashboardScrollViewListener, ViewTreeObserver.IOnGlobalLayoutListener
     {
 
         [BindView(Resource.Id.totalPayableLayout)]
@@ -148,6 +148,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         [BindView(Resource.Id.energyTipsList)]
         RecyclerView energyTipsList;
+
+        [BindView(Resource.Id.ssmrHistoryContainer)]
+        LinearLayout ssmrHistoryContainer;
+
+        [BindView(Resource.Id.ssmrAccountStatusText)]
+        TextView ssmrAccountStatusText;
+
+        [BindView(Resource.Id.btnTxtSsmrViewHistory)]
+        TextView btnTxtSsmrViewHistory;
+
+        [BindView(Resource.Id.btnReadingHistory)]
+        Button btnReadingHistory;
 
         EnergySavingTipsAdapter energyTipsAdapter;
 
@@ -245,9 +257,59 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     selectedHistoryData = JsonConvert.DeserializeObject<UsageHistoryData>(extras.GetString(Constants.SELECTED_ACCOUNT_USAGE));
                 }
 
+                if (extras.ContainsKey(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE))
+                {
+                    var usageHistoryDataResponse = JsonConvert.DeserializeObject<UsageHistoryResponse>(extras.GetString(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE));
+                    selectedHistoryData = usageHistoryDataResponse.Data.UsageHistoryData;
+                }
+
                 if (extras.ContainsKey(Constants.SELECTED_ERROR_MSG))
                 {
                     errorMSG = extras.GetString(Constants.SELECTED_ERROR_MSG);
+                }
+            }
+            else
+            {
+                if (extras.ContainsKey(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE))
+                {
+                    var usageHistoryDataResponse = JsonConvert.DeserializeObject<UsageHistoryResponse>(extras.GetString(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE));
+                    try
+                    {
+                        if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshMessage != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshMessage))
+                        {
+                            txtRefreshMsg = usageHistoryDataResponse.Data.RefreshMessage;
+                        }
+                        else
+                        {
+                            txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
+                        }
+                    }
+                    catch (System.Exception e)
+                    {
+                        txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
+                        Utility.LoggingNonFatalError(e);
+                    }
+                    try
+                    {
+                        if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshBtnText != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshBtnText))
+                        {
+                            txtBtnRefreshTitle = usageHistoryDataResponse.Data.RefreshBtnText;
+                        }
+                        else
+                        {
+                            txtBtnRefreshTitle = "Reload Now";
+                        }
+                    }
+                    catch (System.Exception e)
+                    {
+                        txtBtnRefreshTitle = "Reload Now";
+                        Utility.LoggingNonFatalError(e);
+                    }
+                }
+                else
+                {
+                    txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
+                    txtBtnRefreshTitle = "Reload Now";
                 }
             }
 
@@ -263,6 +325,36 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             string data = JsonConvert.SerializeObject(usageHistoryData);
             bundle.PutString(Constants.SELECTED_ACCOUNT_USAGE, data);
             bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+            chartFragment.Arguments = bundle;
+            return chartFragment;
+        }
+
+        internal static DashboardChartFragment NewInstance(bool isAmountDueDown, bool isGraphDown, UsageHistoryResponse response, AccountData selectedAccount, AccountDueAmountResponse amountDueResponse)
+        {
+            DashboardChartFragment chartFragment = new DashboardChartFragment();
+            Bundle bundle = new Bundle();
+            string data = JsonConvert.SerializeObject(response);
+            bundle.PutString(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE, data);
+            bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+            bundle.PutString(Constants.AMOUNT_DUE_RESPONSE_KEY, JsonConvert.SerializeObject(amountDueResponse));
+            bundle.PutBoolean(Constants.AMOUNT_DUE_FAILED_KEY, isAmountDueDown);
+            bundle.PutBoolean(Constants.NO_INTERNET_CONNECTION, isGraphDown);
+            chartFragment.Arguments = bundle;
+            return chartFragment;
+        }
+
+        internal static DashboardChartFragment NewInstance(bool isAmountDueDown, bool isGraphDown, UsageHistoryResponse response, AccountData selectedAccount, AccountDueAmountResponse amountDueResponse, string error, string errorMessage)
+        {
+            DashboardChartFragment chartFragment = new DashboardChartFragment();
+            Bundle bundle = new Bundle();
+            string data = JsonConvert.SerializeObject(response);
+            bundle.PutString(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE, data);
+            bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+            bundle.PutString(Constants.AMOUNT_DUE_RESPONSE_KEY, JsonConvert.SerializeObject(amountDueResponse));
+            bundle.PutBoolean(Constants.AMOUNT_DUE_FAILED_KEY, isAmountDueDown);
+            bundle.PutBoolean(Constants.NO_INTERNET_CONNECTION, isGraphDown);
+            bundle.PutString(Constants.SELECTED_ERROR, error);
+            bundle.PutString(Constants.SELECTED_ERROR_MSG, errorMessage);
             chartFragment.Arguments = bundle;
             return chartFragment;
         }
@@ -425,8 +517,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
 
                 TextViewUtils.SetMuseoSans300Typeface(txtAddress, txtTotalPayable, txtDueDate);
-                TextViewUtils.SetMuseoSans300Typeface(txtNewRefreshMessage);
-                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnNewRefresh, rmKwhLabel, kwhLabel, rmLabel, dashboardAccountName);
+                TextViewUtils.SetMuseoSans300Typeface(txtNewRefreshMessage, ssmrAccountStatusText);
+                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnNewRefresh, rmKwhLabel, kwhLabel, rmLabel, dashboardAccountName, btnTxtSsmrViewHistory, btnReadingHistory);
 
                 bottomSheetBehavior = BottomSheetBehavior.From(bottomSheet);
                 bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
@@ -434,7 +526,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 // bottomSheet.SetOnClickListener(null);
 
                 ((DashboardHomeActivity)Activity).HideAccountName();
-                if (!hasNoInternet && !amountDueFailed)
+                if (!hasNoInternet)
                 {
                     dashboardAccountName.Visibility = ViewStates.Visible;
                     dashboardAccountName.Text = selectedAccount.AccountNickName;
@@ -473,29 +565,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     energyTipsView.Visibility = ViewStates.Gone;
                 }
 
-                scrollView = view.FindViewById<NMREDashboardScrollView>(Resource.Id.scroll_view);
-                scrollView.SmoothScrollingEnabled = true;
-                scrollView.setOnScrollViewListener(this);
-                int childHeight = view.FindViewById<LinearLayout>(Resource.Id.scroll_view_content).Height;
-                requireScroll = scrollView.Height < (childHeight + scrollView.PaddingTop + scrollView.PaddingBottom);
-
                 if (amountDueFailed)
                 {
-                    // txtWhyThisAmt.Visibility = ViewStates.Gone;
-                    ShowNoInternetWithWord(txtRefreshMsg, txtBtnRefreshTitle);
+                    txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                    txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                    DisablePayButton();
+                    btnViewBill.Enabled = false;
+                    btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                    btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
                 }
-                else
-                {
-                    btnNewRefresh.Text = txtBtnRefreshTitle;
-                    if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
-                    {
-                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg, FromHtmlOptions.ModeLegacy);
-                    }
-                    else
-                    {
-                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg);
-                    }
-                }
+
+                scrollView = view.FindViewById<NMREDashboardScrollView>(Resource.Id.scroll_view);
+                ViewTreeObserver observer = scrollView.ViewTreeObserver;
+                observer.AddOnGlobalLayoutListener(this);
+
+                requireScroll = false;
 
                 this.userActionsListener?.Start();
 
@@ -503,7 +587,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
                 DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
 
-                // txtWhyThisAmt.Visibility = ViewStates.Gone;
+                smrResponse = InnerDashboardAPICahceUtil.OnGetSMRActivityInfoResponse();
+                if (smrResponse != null)
+                {
+                    ShowSSMRDashboardView(smrResponse);
+                }
+                else
+                {
+                    HideSSMRDashboardView();
+                }
 
                 if (selectedAccount != null)
                 {
@@ -532,16 +624,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         btnViewBill.Enabled = false;
                         btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
                         btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
-                        txtRange.Visibility = ViewStates.Gone;
+                        HideSSMRDashboardView();
+                        energyTipsView.Visibility = ViewStates.Gone;
                         if (bcrmEntity.IsDown)
                         {
                             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
                             {
-                                txtAddress.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage, FromHtmlOptions.ModeLegacy);
+                                txtNewRefreshMessage.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage, FromHtmlOptions.ModeLegacy);
                             }
                             else
                             {
-                                txtAddress.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage);
+                                txtNewRefreshMessage.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage);
                             }
 
                             Snackbar downtimeSnackBar = Snackbar.Make(rootView,
@@ -571,19 +664,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         if (!amountDueFailed)
                         {
-                            this.userActionsListener.GetAccountStatus(selectedAccount.AccountNum);
                             if (amountDueResponse != null)
                             {
                                 ShowAmountDue(amountDueResponse.Data.Data);
                             }
-                            else
-                            {
-                                this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
-                            }
                         }
+
                     }
 
-                    txtAddress.Click += delegate
+                    txtNewRefreshMessage.Click += delegate
                     {
                         if (bcrmEntity.IsDown)
                         {
@@ -708,7 +797,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }*/
 
-        /*[OnClick(Resource.Id.btnTxtSsmrViewHistory)]
+        [OnClick(Resource.Id.btnTxtSsmrViewHistory)]
         void OnSsmrViewHistory(object sender, EventArgs eventArgs)
         {
             try
@@ -719,9 +808,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 Utility.LoggingNonFatalError(e);
             }
-        }*/
+        }
 
-        /*[OnClick(Resource.Id.btnReadingHistory)]
+        [OnClick(Resource.Id.btnReadingHistory)]
         void OnBtnSsmrViewHistory(object sender, EventArgs eventArgs)
         {
             try
@@ -739,7 +828,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 Utility.LoggingNonFatalError(e);
             }
-        }*/
+        }
 
         private void StartSSMRMeterHistoryPage()
         {
@@ -1312,26 +1401,37 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 DownTimeEntity bcrmEnrity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                refreshLayout.Visibility = ViewStates.Visible;
+                allGraphLayout.Visibility = ViewStates.Gone;
                 if (bcrmEnrity != null && bcrmEnrity.IsDown)
                 {
-                    allGraphLayout.Visibility = ViewStates.Visible;
-                    // mNoDataLayout.Visibility = ViewStates.Gone;
-                    mChart.Visibility = ViewStates.Gone;
-                    // mDownTimeLayout.Visibility = ViewStates.Visible;
-                    txtAddress.Text = bcrmEnrity.DowntimeMessage;
-                    txtAddress.Visibility = ViewStates.Visible;
-                    refreshLayout.Visibility = ViewStates.Gone;
+                    HideSSMRDashboardView();
+                    energyTipsView.Visibility = ViewStates.Gone;
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                    {
+                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(bcrmEnrity.DowntimeMessage, FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(bcrmEnrity.DowntimeMessage);
+                    }
+                    btnNewRefresh.Visibility = ViewStates.Gone;
                 }
                 else
                 {
-                    // mNoDataLayout.Visibility = ViewStates.Gone;
-                    mChart.Visibility = ViewStates.Gone;
-                    // mDownTimeLayout.Visibility = ViewStates.Gone;
-                    refreshLayout.Visibility = ViewStates.Visible;
-                    allGraphLayout.Visibility = ViewStates.Gone;
-                    if (!hasAmtDue)
+                    btnNewRefresh.Visibility = ViewStates.Visible;
+                    btnNewRefresh.Text = txtBtnRefreshTitle;
+                    if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                     {
-                        txtTotalPayableCurrency.Visibility = ViewStates.Gone;
+                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg, FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg);
+                    }
+
+                    if (amountDueFailed)
+                    {
                         txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
                         txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
                         DisablePayButton();
@@ -1353,7 +1453,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 hasAmtDue = false;
                 btnNewRefresh.Text = string.IsNullOrEmpty(buttonTxt) ? txtBtnRefreshTitle : buttonTxt;
-                txtTotalPayableCurrency.Visibility = ViewStates.Gone;
                 if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                 {
                     txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(GetString(Resource.String.text_new_refresh_content), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
@@ -1575,7 +1674,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     if (selectedAccount != null)
                     {
-                        hasAmtDue = true;
+                        amountDueFailed = false;
                         DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
                         DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
                         if (!pgCCEntity.IsDown || !pgFPXEntity.IsDown)
@@ -1788,7 +1887,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
 
                     mDisconnectionSnackbar.Dismiss();
-                    this.userActionsListener.GetAccountStatus(selectedAccount.AccountNum);
                 }
                 );
                 mDisconnectionSnackbar.Show();
@@ -1815,7 +1913,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
 
                     mSMRSnackbar.Dismiss();
-                    InitiateSSMRStatus();
                 }
                 );
                 mSMRSnackbar.Show();
@@ -1929,27 +2026,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 SetAccountStatusVisibility(ViewStates.Gone);
                 if (response != null && response.Response != null && response.Response.Data != null)
                 {
-                    smrResponse = response;
                     SMRPopUpUtils.OnSetSMRActivityInfoResponse(response);
                     Activity.RunOnUiThread(() =>
                     {
-                        // SsmrHistoryContainer.Visibility = ViewStates.Visible;
+                        ssmrHistoryContainer.Visibility = ViewStates.Visible;
 
                         if (response.Response.Data.DashboardCTAType.ToUpper() == Constants.SMR_SUBMIT_METER_KEY)
                         {
-                            // txtTotalPayableTitle.Text = GetString(Resource.String.ssmr_need_pay);
                             isSubmitMeter = true;
                             if (response.Response.Data.showReadingHistoryLink == "true")
                             {
-                                // btnTxtSsmrViewHistory.Visibility = ViewStates.Visible;
+                                btnTxtSsmrViewHistory.Visibility = ViewStates.Visible;
                                 if (!string.IsNullOrEmpty(response.Response.Data.ReadingHistoryLinkText))
                                 {
-                                    // btnTxtSsmrViewHistory.Text = response.Response.Data.ReadingHistoryLinkText;
+                                    btnTxtSsmrViewHistory.Text = response.Response.Data.ReadingHistoryLinkText;
                                 }
                             }
                             else
                             {
-                                // btnTxtSsmrViewHistory.Visibility = ViewStates.Gone;
+                                btnTxtSsmrViewHistory.Visibility = ViewStates.Gone;
                             }
                         }
                         else
@@ -1962,40 +2057,40 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
                             {
-                                // SsmrAccountStatusText.TextFormatted = Html.FromHtml(response.Response.Data.DashboardMessage, FromHtmlOptions.ModeLegacy);
+                                ssmrAccountStatusText.TextFormatted = Html.FromHtml(response.Response.Data.DashboardMessage, FromHtmlOptions.ModeLegacy);
                             }
                             else
                             {
-                                // SsmrAccountStatusText.TextFormatted = Html.FromHtml(response.Response.Data.DashboardMessage);
+                                ssmrAccountStatusText.TextFormatted = Html.FromHtml(response.Response.Data.DashboardMessage);
                             }
                         }
 
                         if (response.Response.Data.isDashboardCTADisabled == "true")
                         {
-                            // btnReadingHistory.Enabled = false;
-                            // btnReadingHistory.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-                            // btnReadingHistory.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+                            btnReadingHistory.Enabled = false;
+                            btnReadingHistory.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                            btnReadingHistory.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
                         }
                         else
                         {
-                            // btnReadingHistory.Enabled = true;
-                            // btnReadingHistory.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
-                            // btnReadingHistory.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
+                            btnReadingHistory.Enabled = true;
+                            btnReadingHistory.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
+                            btnReadingHistory.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
                         }
 
                         if (!string.IsNullOrEmpty(response.Response.Data.DashboardCTAText))
                         {
-                            // btnReadingHistory.Text = response.Response.Data.DashboardCTAText;
+                            btnReadingHistory.Text = response.Response.Data.DashboardCTAText;
                         }
                         else
                         {
                             if (response.Response.Data.DashboardCTAType.ToUpper() == Constants.SMR_SUBMIT_METER_KEY)
                             {
-                                // btnReadingHistory.Text = this.Activity.GetString(Resource.String.ssmr_submit_meter);
+                                btnReadingHistory.Text = this.Activity.GetString(Resource.String.ssmr_submit_meter);
                             }
                             else
                             {
-                                // btnReadingHistory.Text = this.Activity.GetString(Resource.String.ssmr_view_meter);
+                                btnReadingHistory.Text = this.Activity.GetString(Resource.String.ssmr_view_meter);
                             }
                         }
                     });
@@ -2022,24 +2117,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void HideSSMRDashboardView()
         {
-            // SsmrHistoryContainer.Visibility = ViewStates.Gone;
-        }
-
-        public void InitiateSSMRStatus()
-        {
-            SetAccountStatusVisibility(ViewStates.Gone);
-            CustomerBillingAccount cbAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
-            if (selectedAccount.IsOwner && !selectedAccount.AccountCategoryId.Equals("2") && string.IsNullOrEmpty(errorMSG) && cbAccount.IsTaggedSMR)
-            {
-                this.userActionsListener.GetSSMRAccountStatus(selectedAccount.AccountNum);
-            }
-            else
-            {
-                if (IsActive())
-                {
-                    HideAmountProgress();
-                }
-            }
+            ssmrHistoryContainer.Visibility = ViewStates.Gone;
         }
 
         public string GetDeviceId()
@@ -2169,6 +2247,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 energyTipsAdapter = new EnergySavingTipsAdapter(energyList, this.Activity);
                 energyTipsList.SetAdapter(energyTipsAdapter);
+            }
+        }
+
+        void ViewTreeObserver.IOnGlobalLayoutListener.OnGlobalLayout()
+        {
+            try
+            {
+                int viewHeight = scrollView.MeasuredHeight;
+                int contentHeight = scrollView.GetChildAt(0).Height;
+                if (viewHeight - contentHeight < 0)
+                {
+                    scrollView.SmoothScrollingEnabled = true;
+                    scrollView.setOnScrollViewListener(this);
+                }
+                else
+                {
+                    scrollView.SmoothScrollingEnabled = false;
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 

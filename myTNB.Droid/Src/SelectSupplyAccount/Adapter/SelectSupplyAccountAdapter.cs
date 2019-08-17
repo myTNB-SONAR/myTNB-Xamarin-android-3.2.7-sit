@@ -35,7 +35,7 @@ namespace myTNB_Android.Src.Dashboard.Adapter
             AccountListViewHolder vh = null;
             if (convertView == null)
             {
-                convertView = LayoutInflater.From(context).Inflate(Resource.Layout.SelectSupplyAccountRow, parent, false);
+                convertView = LayoutInflater.From(context).Inflate(Resource.Layout.SelectSupplyAccountItemLayout, parent, false);
                 vh = new AccountListViewHolder(convertView);
                 convertView.Tag = vh;
             }
