@@ -131,6 +131,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 ShowTakePhotoTooltip();
             }
             EnableSubmitButton();
+            TextViewUtils.SetMuseoSans500Typeface(btnDeletePhoto, btnSubmitPhotoToOCR);
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -239,6 +240,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             UpdateAllPhotoBoxes();
             SetPhotoBoxClickable();
             UpdateTakePhotoNote();
+            EnableSubmitButton();
         }
 
         public void SetPhotoBoxClickable()
@@ -310,6 +312,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             SetPhotoBoxClickable();
             UpdateTakePhotoNote();
+            EnableSubmitButton();
         }
 
         public void ShowGallery()
@@ -384,7 +387,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public void EnableSubmitButton()
         {
-            int hasImage = meteredCapturedDataList.FindIndex(meterCapturedData => { return meterCapturedData.hasImage; });
+            int hasImage = photoContainerBoxes.FindIndex(box => { return box.mHasPhoto; });
             if (hasImage != -1)
             {
                 btnSubmitPhotoToOCR.Enabled = true;
@@ -395,7 +398,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 btnSubmitPhotoToOCR.Enabled = false;
                 btnSubmitPhotoToOCR.Background = GetDrawable(Resource.Drawable.silver_chalice_button_background);
             }
-            TextViewUtils.SetMuseoSans500Typeface(btnDeletePhoto,btnSubmitPhotoToOCR);
         }
 
         public void UpdateTakePhotoNote()
