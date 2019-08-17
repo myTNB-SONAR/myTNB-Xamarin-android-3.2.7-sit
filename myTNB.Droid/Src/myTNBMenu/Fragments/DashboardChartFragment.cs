@@ -163,6 +163,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         EnergySavingTipsAdapter energyTipsAdapter;
 
+        [BindView(Resource.Id.energyDisconnectionButton)]
+        LinearLayout energyDisconnectionButton;
+
+        [BindView(Resource.Id.txtEnergyDisconnection)]
+        TextView txtEnergyDisconnection;
+
+        [BindView(Resource.Id.reContainer)]
+        LinearLayout reContainer;
+
+        [BindView(Resource.Id.reTotalPayableTitle)]
+        TextView reTotalPayableTitle;
+
+        [BindView(Resource.Id.reTotalPayable)]
+        TextView reTotalPayable;
+
+        [BindView(Resource.Id.reTotalPayableCurrency)]
+        TextView reTotalPayableCurrency;
+
+        [BindView(Resource.Id.reDueDate)]
+        TextView reDueDate;
+
+        [BindView(Resource.Id.btnReView)]
+        Button btnReView;
+
         private DashboardChartContract.IUserActionsListener userActionsListener;
         private DashboardChartPresenter mPresenter;
 
@@ -175,7 +199,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private bool isSubmitMeter = false;
 
-        private bool isSMRReady = false;
+        private static bool isREAccount = false;
 
         DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00");
         SimpleDateFormat dateParser = new SimpleDateFormat("dd/MM/yyyy");
@@ -193,6 +217,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private SMRActivityInfoResponse smrResponse;
 
         private AccountDueAmountResponse amountDueResponse;
+
+        private GetInstallationDetailsResponse accountStatusResponse;
 
         static bool requireScroll;
 
@@ -518,7 +544,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 TextViewUtils.SetMuseoSans300Typeface(txtAddress, txtTotalPayable, txtDueDate);
                 TextViewUtils.SetMuseoSans300Typeface(txtNewRefreshMessage, ssmrAccountStatusText);
-                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnNewRefresh, rmKwhLabel, kwhLabel, rmLabel, dashboardAccountName, btnTxtSsmrViewHistory, btnReadingHistory);
+                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnNewRefresh, rmKwhLabel, kwhLabel, rmLabel, dashboardAccountName, btnTxtSsmrViewHistory, btnReadingHistory, txtEnergyDisconnection);
+                TextViewUtils.SetMuseoSans300Typeface(reTotalPayable, reTotalPayableCurrency, reDueDate);
+                TextViewUtils.SetMuseoSans500Typeface(reTotalPayableTitle, btnReView);
+
 
                 bottomSheetBehavior = BottomSheetBehavior.From(bottomSheet);
                 bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
@@ -554,6 +583,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     energyTipsView.Visibility = ViewStates.Visible;
                     LinearLayoutManager linearEnergyTipLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
                     energyTipsList.SetLayoutManager(linearEnergyTipLayoutManager);
+                    energyTipsList.NestedScrollingEnabled = true;
 
                     LinearSnapHelper snapHelper = new LinearSnapHelper();
                     snapHelper.AttachToRecyclerView(energyTipsList);
@@ -567,12 +597,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 if (amountDueFailed)
                 {
-                    txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
-                    txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                    txtDueDate.Text = "- -";
+                    reDueDate.Text = "- -";
+                    txtTotalPayable.Text = "- -";
+                    reTotalPayable.Text = "- -";
                     DisablePayButton();
                     btnViewBill.Enabled = false;
+                    btnReView.Enabled = false;
                     btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                    btnReView.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
                     btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+                    btnReView.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
                 }
 
                 scrollView = view.FindViewById<NMREDashboardScrollView>(Resource.Id.scroll_view);
@@ -597,10 +632,34 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     HideSSMRDashboardView();
                 }
 
+                accountStatusResponse = InnerDashboardAPICahceUtil.OnGetAccountStatusResponse();
+                if (accountStatusResponse != null)
+                {
+                    ShowAccountStatus(accountStatusResponse.Data.Data);
+                }
+                else
+                {
+                    energyDisconnectionButton.Visibility = ViewStates.Gone;
+                }
+
+                smrResponse = InnerDashboardAPICahceUtil.OnGetSMRActivityInfoResponse();
+                if (smrResponse != null)
+                {
+                    ShowSSMRDashboardView(smrResponse);
+                }
+                else
+                {
+                    HideSSMRDashboardView();
+                }
+
                 if (selectedAccount != null)
                 {
                     if (selectedAccount.AccountCategoryId.Equals("2"))
                     {
+                        bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
+                        isREAccount = true;
+                        reContainer.Visibility = ViewStates.Visible;
+                        ssmrHistoryContainer.Visibility = ViewStates.Gone;
                         btnPay.Visibility = ViewStates.Gone;
                         energyTipsView.Visibility = ViewStates.Gone;
                         btnViewBill.Text = GetString(Resource.String.dashboard_chart_view_payment_advice);
@@ -610,6 +669,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                     else
                     {
+                        isREAccount = false;
+                        reContainer.Visibility = ViewStates.Gone;
                         btnPay.Visibility = ViewStates.Visible;
                         btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
                         graphToggleSelection.Visibility = ViewStates.Visible;
@@ -618,12 +679,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                     if (bcrmEntity != null && bcrmEntity.IsDown)
                     {
+                        txtDueDate.Text = "- -";
+                        reDueDate.Text = "- -";
+                        txtTotalPayable.Text = "- -";
+                        reTotalPayable.Text = "- -";
                         DisablePayButton();
-                        txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
-                        txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
                         btnViewBill.Enabled = false;
+                        btnReView.Enabled = false;
                         btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                        btnReView.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
                         btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+                        btnReView.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+
                         HideSSMRDashboardView();
                         energyTipsView.Visibility = ViewStates.Gone;
                         if (bcrmEntity.IsDown)
@@ -919,11 +986,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
 
             int graphTopPadding = 20;
+            int graphBottomPadding = 10;
             if (selectedAccount.AccountCategoryId.Equals("2"))
             {
                 graphTopPadding = 30;
             }
-            mChart.SetExtraOffsets(0, graphTopPadding, 0, 0);
+            mChart.SetExtraOffsets(0, graphTopPadding, 0, graphBottomPadding);
         }
         #region SETUP AXIS MONTH
         internal void SetUpXAxis()
@@ -1237,12 +1305,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public void ShowViewBill(BillHistoryV5 selectedBill)
         {
             btnViewBill.Clickable = false;
+            btnReView.Clickable = false;
             btnViewBill.Enabled = false;
+            btnReView.Enabled = false;
             Handler h = new Handler();
             Action myAction = () =>
             {
                 btnViewBill.Clickable = true;
+                btnReView.Clickable = true;
                 btnViewBill.Enabled = true;
+                btnReView.Enabled = true;
             };
             h.PostDelayed(myAction, 3000);
 
@@ -1275,6 +1347,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         [OnClick(Resource.Id.btnViewBill)]
         internal void OnViewBill(object sender, EventArgs e)
+        {
+            this.userActionsListener.OnViewBill(selectedAccount);
+        }
+
+        [OnClick(Resource.Id.btnReView)]
+        internal void OnREViewBill(object sender, EventArgs e)
         {
             this.userActionsListener.OnViewBill(selectedAccount);
         }
@@ -1400,7 +1478,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             try
             {
                 DownTimeEntity bcrmEnrity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-                txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
                 refreshLayout.Visibility = ViewStates.Visible;
                 allGraphLayout.Visibility = ViewStates.Gone;
                 if (bcrmEnrity != null && bcrmEnrity.IsDown)
@@ -1432,12 +1509,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                     if (amountDueFailed)
                     {
-                        txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
-                        txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                        txtDueDate.Text = "- -";
+                        reDueDate.Text = "- -";
+                        txtTotalPayable.Text = "- -";
+                        reTotalPayable.Text = "- -";
                         DisablePayButton();
                         btnViewBill.Enabled = false;
+                        btnReView.Enabled = false;
                         btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                        btnReView.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
                         btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+                        btnReView.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
                     }
                 }
             }
@@ -1466,12 +1548,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 // mDownTimeLayout.Visibility = ViewStates.Gone;
                 refreshLayout.Visibility = ViewStates.Visible;
                 allGraphLayout.Visibility = ViewStates.Gone;
-                txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
-                txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+
+                txtDueDate.Text = "- -";
+                reDueDate.Text = "- -";
+                txtTotalPayable.Text = "- -";
+                reTotalPayable.Text = "- -";
                 DisablePayButton();
                 btnViewBill.Enabled = false;
+                btnReView.Enabled = false;
                 btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                btnReView.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
                 btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+                btnReView.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
             }
             catch (System.Exception e)
             {
@@ -1707,6 +1795,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 calAmt = System.Math.Abs(selectedAccount.AmtCustBal);
                             }
                             txtTotalPayable.Text = decimalFormat.Format(calAmt);
+                            reTotalPayable.Text = decimalFormat.Format(calAmt);
 
                             int incrementDays = int.Parse(accountDueAmount.IncrementREDueDateByDays == null ? "0" : accountDueAmount.IncrementREDueDateByDays);
                             Constants.RE_ACCOUNT_DATE_INCREMENT_DAYS = incrementDays;
@@ -1717,10 +1806,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             if (calAmt == 0.00)
                             {
                                 txtDueDate.Text = "- -";
+                                reDueDate.Text = "- -";
                             }
                             else
                             {
-                                txtDueDate.Text = GetString(Resource.String.dashboard_chartview_by_date_wildcard, dateFormatter.Format(newDate));
+                                txtDueDate.Text = "I will get by " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(newDate));
+                                reDueDate.Text = "I will get by " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(newDate));
                             }
                         }
                         else
@@ -1755,8 +1846,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else
                 {
-                    txtTotalPayable.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
-                    txtDueDate.Text = GetString(Resource.String.dashboard_chartview_due_date_not_available);
+                    txtDueDate.Text = "- -";
+                    reDueDate.Text = "- -";
+                    txtTotalPayable.Text = "- -";
+                    reTotalPayable.Text = "- -";
                     // txtWhyThisAmt.Visibility = ViewStates.Gone;
                 }
             }
@@ -1973,49 +2066,31 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             tooltipGenerator.Show();
         }
 
-        private void SetAccountStatusVisibility(ViewStates viewStates)
-        {
-            if (viewStates == ViewStates.Visible)
-            {
-                isSMRReady = false;
-            }
-            else
-            {
-                isSMRReady = true;
-            }
-            // addressDivider.Visibility = viewStates;
-            // accountDisconnectionContainer.Visibility = viewStates;
-            // txtAccountStatus.Visibility = viewStates;
-            // txtWhatAccountStatus.Visibility = viewStates;
-        }
-
         public void ShowAccountStatus(AccountStatusData accountStatusData)
         {
             if (accountStatusData.DisconnectionStatus != "Available")
             {
-                SetAccountStatusVisibility(ViewStates.Visible);
-                HideSSMRDashboardView();
-                string accountStatusMessage = accountStatusData?.AccountStatusMessage ?? Activity.GetString(Resource.String.chart_electricity_status_message);
-                string whatDoesThisMeanLabel = accountStatusData?.AccountStatusModalTitle ?? Activity.GetString(Resource.String.tooltip_what_does_this_link);
-                string whatDoesThisToolTipMessage = accountStatusData?.AccountStatusModalMessage ?? Activity.GetString(Resource.String.tooltip_what_does_this_message);
-                string whatDoesThisToolTipBtnLabel = accountStatusData?.AccountStatusModalBtnText ?? Activity.GetString(Resource.String.tooltip_btnLabel);
+                energyDisconnectionButton.Visibility = ViewStates.Visible;
+                string accountStatusMessage = accountStatusData?.AccountStatusMessage ?? "Your electricity is currently disconnected.";
+                string whatDoesThisMeanLabel = accountStatusData?.AccountStatusModalTitle ?? "What does this mean?";
+                string whatDoesThisToolTipMessage = accountStatusData?.AccountStatusModalMessage ?? "<strong>What does this mean?</strong><br/><br/>Your electricity has been disconnected and is unavailable. This was not caused by a power outage.<br/><br/>If you’ve made a payment, please give us some time for this to be reflected.";
+                string whatDoesThisToolTipBtnLabel = accountStatusData?.AccountStatusModalBtnText ?? "Got It!";
                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
                 {
-                    // txtAccountStatus.TextFormatted = Html.FromHtml(accountStatusMessage, FromHtmlOptions.ModeLegacy);
+                    txtEnergyDisconnection.TextFormatted = Html.FromHtml(accountStatusMessage, FromHtmlOptions.ModeLegacy);
                 }
                 else
                 {
-                    // txtAccountStatus.TextFormatted = Html.FromHtml(accountStatusMessage);
+                    txtEnergyDisconnection.TextFormatted = Html.FromHtml(accountStatusMessage);
                 }
-                // txtWhatAccountStatus.Text = whatDoesThisMeanLabel;
-                /*txtWhatAccountStatus.Click += delegate
+                txtEnergyDisconnection.Click += delegate
                 {
                     OnWhatIsThisAccountStatusTap(whatDoesThisToolTipMessage, whatDoesThisToolTipBtnLabel);
-                };*/
+                };
             }
             else
             {
-                SetAccountStatusVisibility(ViewStates.Gone);
+                energyDisconnectionButton.Visibility = ViewStates.Gone;
             }
         }
 
@@ -2023,7 +2098,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
-                SetAccountStatusVisibility(ViewStates.Gone);
                 if (response != null && response.Response != null && response.Response.Data != null)
                 {
                     SMRPopUpUtils.OnSetSMRActivityInfoResponse(response);
@@ -2049,7 +2123,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         else
                         {
-                            // txtTotalPayableTitle.Text = GetString(Resource.String.total_amount_due_bill);
                             isSubmitMeter = false;
                         }
 
@@ -2130,19 +2203,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             View view = (View)scrollView.GetChildAt(scrollView.ChildCount - 1);
             int scrollPosition = t - oldt;
             // if diff is zero, then the bottom has been reached
-            if (scrollPosition > 0)
+            if (!isREAccount)
             {
-                requireScroll = true;
-                bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
-            }
-            else if (scrollPosition < 0)
-            {
-                bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
-            }
+                if (scrollPosition > 0)
+                {
+                    requireScroll = true;
+                    bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
+                }
+                else if (scrollPosition < 0)
+                {
+                    bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                }
 
-            if (t == 0)
-            {
-                requireScroll = false;
+                if (t == 0)
+                {
+                    requireScroll = false;
+                }
             }
         }
 
@@ -2155,7 +2231,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             public override void OnStateChanged(View bottomSheet, int newState)
             {
-                if (!requireScroll)
+                if (!requireScroll || !isREAccount)
                 {
                     if (newState == BottomSheetBehavior.StateHidden)
                     {
@@ -2203,22 +2279,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         }
 
-        [OnClick(Resource.Id.rootView)]
-        internal void OnUserClickRootView(object sender, EventArgs e)
+        public void CheckRMKwhSelectDropDown()
         {
-            try
+            if (rmKwhSelectDropdown.Visibility == ViewStates.Visible)
             {
-                if (rmKwhSelectDropdown.Visibility == ViewStates.Visible)
-                {
-                    rmKwhSelectDropdown.Visibility = ViewStates.Gone;
-                }
-
+                rmKwhSelectDropdown.Visibility = ViewStates.Gone;
             }
-            catch (System.Exception ne)
-            {
-                Utility.LoggingNonFatalError(ne);
-            }
-
         }
 
         private void OnGetEnergyTipsItems()
@@ -2263,7 +2329,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else
                 {
-                    scrollView.SmoothScrollingEnabled = false;
+                    
                 }
             }
             catch (System.Exception e)
@@ -2272,27 +2338,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
-        /*private void ScrollUpDownScrollView(int UpDown)
+        public TextView GetkwhLabel()
         {
-            if (Activity != null)
-            {
-                Activity.RunOnUiThread(() => {
-                    ScrollViewTowards(UpDown);
-                });
-            }
+            return kwhLabel;
         }
 
-        private void ScrollViewTowards(int UpDown)
+        public TextView GetRmLabel()
         {
-            if (UpDown == 0)
-            {
-                scrollView.FullScroll(FocusSearchDirection.Down);
-            }
-            else if (UpDown == 1)
-            {
-                scrollView.FullScroll(FocusSearchDirection.Up);
-            }
-        }*/
+            return rmLabel;
+        }
 
     }
 }

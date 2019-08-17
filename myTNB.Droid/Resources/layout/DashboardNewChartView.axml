@@ -124,6 +124,35 @@
 						    android:layout_marginRight="16dp"
 						    android:background="#4cffffff"
 						    android:visibility="visible"/>
+                        <LinearLayout
+                            android:id="@+id/energyDisconnectionButton"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rectangle_yellow_button_bg"
+                            android:paddingLeft="6dp"
+                            android:paddingRight="6dp"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:orientation="horizontal"
+                            android:visibility="gone"
+                            android:clickable="true">
+                            <ImageView
+                                android:layout_width="16dp"
+                                android:layout_height="16dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/info_black"
+                                android:layout_marginRight="8dp"
+                                android:id="@+id/energyDisconnectionImg"/>
+                                <TextView
+                                    android:id="@+id/txtEnergyDisconnection"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textColor="@color/charcoalGrey"
+                                    android:textSize="13dp"
+                                    android:layout_gravity="right|center_vertical"
+                                    android:text="Your electricity is currently disconnected."/>
+                        </LinearLayout>
 					    <TextView
 						    android:layout_height="wrap_content"
 						    android:layout_width="wrap_content"
@@ -226,6 +255,114 @@
                         </LinearLayout>
                         </LinearLayout>
                         <LinearLayout
+                        android:id="@+id/reContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="24dp"
+                        android:layout_marginLeft="11dp"
+						android:layout_marginRight="11dp"
+                        android:layout_marginBottom="16dp"
+                        android:visibility="gone">
+                        <android.support.v7.widget.CardView
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            segmentedgroup:cardCornerRadius="4dp"
+                            segmentedgroup:cardBackgroundColor="@color/white"
+                            segmentedgroup:cardUseCompatPadding="true"
+                            segmentedgroup:cardElevation="4dp"
+                            android:id="@+id/re_account_status_card">
+                            <LinearLayout 
+                                android:id="@+id/re_account_status"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <LinearLayout
+                                    android:id="@+id/re_account_message"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_marginTop="16dp"
+                                    android:layout_marginLeft="16dp"
+                                    android:layout_marginRight="16dp"
+                                    android:layout_marginBottom="8dp">
+                                <ImageView
+                                    android:id="@+id/re_img"
+                                    android:src="@drawable/ic_display_r_eleaf"
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
+                                    android:layout_marginTop="3dp"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginRight="12dp"
+                                    android:scaleType="fitCenter" />
+                                <RelativeLayout
+                                    android:id="@+id/rePayableLayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/white"
+                                    android:visibility="visible">
+                                    <TextView
+                                        android:id="@+id/reTotalPayableTitle"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_alignParentTop="true"
+                                        android:text="My earnings"
+                                        android:textColor="@color/charcoalGrey"
+                                        android:textSize="13dp" />
+                                    <TextView
+                                        android:id="@+id/reTotalPayable"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_alignParentTop="true"
+                                        android:layout_marginTop="4dp"
+                                        android:layout_marginRight="1dp"
+                                        android:text="0.00"
+                                        android:textColor="@color/charcoalGrey"
+                                        android:textSize="23dp" />
+                                    <TextView
+                                        android:id="@+id/reTotalPayableCurrency"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignBaseline="@+id/reTotalPayable"
+                                        android:layout_alignBottom="@+id/reTotalPayable"
+                                        android:layout_toLeftOf="@+id/reTotalPayable"
+                                        android:layout_toStartOf="@+id/reTotalPayable"
+                                        android:text="RM"
+                                        android:layout_marginRight="7dp"
+                                        android:textColor="@color/charcoalGrey"
+                                        android:textSize="11dp" />
+                                    <TextView
+                                        android:id="@+id/reDueDate"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_below="@+id/reTotalPayableTitle"
+                                        android:textSize="13dp"
+                                        android:layout_marginTop="2dp"
+                                        android:textColor="@color/new_grey"
+                                        android:text="I will get by 22 Aug" />
+                                </RelativeLayout>
+                                </LinearLayout>
+                                <Button
+                                    android:id="@+id/btnReView"
+                                    style="@style/Theme.ViewBill"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_marginLeft="16dp"
+                                    android:layout_marginRight="16dp"
+                                    android:layout_marginBottom="16dp"
+                                    android:layout_weight="1"
+                                    android:text="View Payment Advice"
+                                    android:textAllCaps="false" />
+                            </LinearLayout>
+                        </android.support.v7.widget.CardView>
+                    </LinearLayout>
+                        <LinearLayout
                         android:id="@+id/ssmrHistoryContainer"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -233,7 +370,7 @@
                         android:layout_marginLeft="11dp"
 						android:layout_marginRight="11dp"
                         android:layout_marginBottom="16dp"
-                        android:visibility="visible">
+                        android:visibility="gone">
                         <android.support.v7.widget.CardView
                             android:orientation="vertical"
                             android:layout_width="match_parent"

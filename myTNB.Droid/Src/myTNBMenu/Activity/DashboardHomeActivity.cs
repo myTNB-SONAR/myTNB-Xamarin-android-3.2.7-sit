@@ -789,7 +789,32 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     }
                 }
             }
+            else if (ev.Action == MotionEventActions.Down
+                && this.userActionsListener?.CheckCurrentDashboardMenu() == Resource.Id.menu_dashboard
+                && currentFragment.GetType() == typeof(DashboardChartFragment))
+            {
+                DashboardChartFragment fragment = (DashboardChartFragment)FragmentManager.FindFragmentById(Resource.Id.content_layout);
+                TextView kwhLabel = fragment.GetkwhLabel();
+                TextView rmLabel = fragment.GetRmLabel();
+                int x = (int)ev.RawX;
+                int y = (int)ev.RawY;
+                if (!IsViewInBounds(kwhLabel, x, y) && !IsViewInBounds(rmLabel, x, y))
+                {
+                    fragment.CheckRMKwhSelectDropDown();
+                }
+            }
             return base.DispatchTouchEvent(ev);
+        }
+
+        private bool IsViewInBounds(View view, int x, int y)
+        {
+            Rect outRect = new Rect();
+            int[] location = new int[2];
+
+            view.GetDrawingRect(outRect);
+            view.GetLocationOnScreen(location);
+            outRect.Offset(location[0], location[1]);
+            return outRect.Contains(x, y);
         }
 
         public void SetStatusBarBackground()
