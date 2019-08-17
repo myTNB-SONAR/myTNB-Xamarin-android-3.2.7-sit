@@ -60,6 +60,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         OCRLoadingFragment ocrLoadingFragment;
         List<MeterValidation> validatedMeterList;
         List<MeterCapturedData> meteredCapturedDataList;
+        List<PhotoContainerBox> photoContainerBoxes;
+        PhotoContainerBox selectedPhotoBox;
 
         public override int ResourceId()
         {
@@ -106,7 +108,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 }
                 meteredCapturedDataList[0].isSelected = true; //For initial selection;
                 mPresenter.InitializeModelList(meteredCapturedDataList.Count);
-                CreateImageHolders();
+                //CreateImageHolders();
+                CreatePhotoBoxContainer();
             }
 
             if (isSinglePhase)
@@ -247,6 +250,24 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
         }
 
+        public void CreatePhotoBoxContainer()
+        {
+            LinearLayout container = meterCapturedContainer;
+            photoContainerBoxes = new List<PhotoContainerBox>();
+            container.RemoveAllViews();
+            int meterCardLength = meteredCapturedDataList.Count;
+
+            for (int i=1; i <= meterCardLength; i++)
+            {
+                PhotoContainerBox photoContainerBox = new PhotoContainerBox(this, i);
+                photoContainerBox.UpdateBackground();
+                container.AddView(photoContainerBox);
+                photoContainerBoxes.Add(photoContainerBox);
+            }
+
+            UpdateAllPhotoBoxes();
+        }
+
         public void CreateImageHolders()
         {
             LinearLayout container = meterCapturedContainer;
@@ -312,53 +333,122 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public void AddCapturedImage(Bitmap capturedImage)
         {
-            int nextSelectedPosition = meteredCapturedDataList.FindIndex(meterCapturedData => { return !meterCapturedData.hasImage; });
-            if (isSinglePhase)
+            //int nextSelectedPosition = meteredCapturedDataList.FindIndex(meterCapturedData => { return !meterCapturedData.hasImage; });
+            //if (isSinglePhase)
+            //{
+            //    mPresenter.AddMeterImageAt(0, contractNumber, IMAGE_ID, capturedImage);
+            //    meteredCapturedDataList[0].hasImage = true;
+            //    ImageView previewImage = FindViewById<ImageView>(Resource.Id.adjust_photo_preview);
+            //    previewImage.SetImageBitmap(capturedImage);
+            //    ShowImagePreView(true);
+            //}
+            //else
+            //{
+            //    LinearLayout container = (LinearLayout)meterCapturedContainer.GetChildAt(nextSelectedPosition);
+            //    container.RemoveAllViews();
+            //    container.AddView(CreateImageView(capturedImage));
+            //    mPresenter.AddMeterImageAt(nextSelectedPosition, contractNumber, IMAGE_ID, capturedImage);
+            //    meteredCapturedDataList[nextSelectedPosition].hasImage = true;
+
+            //    int allWithImages = meteredCapturedDataList.FindIndex(meterCapturedData => { return !meterCapturedData.hasImage; });
+            //    if (allWithImages == -1)
+            //    {
+            //        ImageView previewImage = FindViewById<ImageView>(Resource.Id.adjust_photo_preview);
+            //        previewImage.SetImageBitmap(capturedImage);
+            //        ShowImagePreView(true);
+            //    }
+            //    UpdateCapturedBorder();
+
+            //    //meterReadingTakePhotoTitle.Text = "You can delete and retake the photo or adjust it before submission.";
+            //}
+            //EnableSubmitButton();
+
+            PhotoContainerBox photoContainerBox = photoContainerBoxes.Find(box => { return box.mIsActive; });
+            photoContainerBox.SetPhotoImage(capturedImage);
+            UpdateAllPhotoBoxes();
+        }
+
+        public void SetPhotoBoxClickable()
+        {
+            for (int i = 0; i < photoContainerBoxes.Count; i++)
             {
-                mPresenter.AddMeterImageAt(0, contractNumber, IMAGE_ID, capturedImage);
-                meteredCapturedDataList[0].hasImage = true;
-                ImageView previewImage = FindViewById<ImageView>(Resource.Id.adjust_photo_preview);
-                previewImage.SetImageBitmap(capturedImage);
-                ShowImagePreView(true);
+                PhotoContainerBox photoBox = photoContainerBoxes[i];
+                photoBox.UpdateBackground();
+                photoBox.Click += null;
+                if (photoBox.mIsActive)
+                {
+                    photoBox.Click += delegate {
+                        ShowImagePreView(false);
+                    };
+                }
+                if (photoBox.mHasPhoto)
+                {
+                    photoBox.Click += delegate {
+                        ShowImagePreView(true);
+                        ImageView previewImage = FindViewById<ImageView>(Resource.Id.adjust_photo_preview);
+                        previewImage.SetImageBitmap(photoBox.photoBitmap);
+                        selectedPhotoBox = photoBox;
+                    };
+                }
+            }
+        }
+
+        public void UpdateAllPhotoBoxes()
+        {
+            PhotoContainerBox photoContainerBox = photoContainerBoxes.Find(box => { return (!box.mIsActive && !box.mHasPhoto); });
+            if (photoContainerBox != null)
+            {
+                photoContainerBox.SetActive(true);
             }
             else
             {
-                LinearLayout container = (LinearLayout)meterCapturedContainer.GetChildAt(nextSelectedPosition);
-                container.RemoveAllViews();
-                container.AddView(CreateImageView(capturedImage));
-                mPresenter.AddMeterImageAt(nextSelectedPosition, contractNumber, IMAGE_ID, capturedImage);
-                meteredCapturedDataList[nextSelectedPosition].hasImage = true;
-
-                int allWithImages = meteredCapturedDataList.FindIndex(meterCapturedData => { return !meterCapturedData.hasImage; });
-                if (allWithImages == -1)
-                {
-                    ImageView previewImage = FindViewById<ImageView>(Resource.Id.adjust_photo_preview);
-                    previewImage.SetImageBitmap(capturedImage);
-                    ShowImagePreView(true);
-                }
-                UpdateCapturedBorder();
-
-                //meterReadingTakePhotoTitle.Text = "You can delete and retake the photo or adjust it before submission.";
+                ShowImagePreView(true);
+                ImageView previewImage = FindViewById<ImageView>(Resource.Id.adjust_photo_preview);
+                previewImage.SetImageBitmap(photoContainerBoxes[0].photoBitmap);
+                selectedPhotoBox = photoContainerBoxes[0];
             }
-            EnableSubmitButton();
+
+            SetPhotoBoxClickable();
         }
 
         public void DeleteCapturedImage()
         {
-            if (isSinglePhase)
-            {
-                mPresenter.RemoveMeterImageAt(0);
-                meteredCapturedDataList[0].hasImage = false;
-            }
-            else
-            {
-                mPresenter.RemoveMeterImageAt(selectedCapturedImage);
-                meteredCapturedDataList[selectedCapturedImage].hasImage = false;
-                DeleteCapturedImageInContainer();
-                UpdateCapturedBorder();
-            }
+            //if (isSinglePhase)
+            //{
+            //    mPresenter.RemoveMeterImageAt(0);
+            //    meteredCapturedDataList[0].hasImage = false;
+            //}
+            //else
+            //{
+            //    mPresenter.RemoveMeterImageAt(selectedCapturedImage);
+            //    meteredCapturedDataList[selectedCapturedImage].hasImage = false;
+            //    DeleteCapturedImageInContainer();
+            //    UpdateCapturedBorder();
+            //}
+            selectedPhotoBox.DeletePhotoImage();
             ShowImagePreView(false);
-            EnableSubmitButton();
+
+            for (int i = 0; i < photoContainerBoxes.Count; i++)
+            {
+                PhotoContainerBox photoBox = photoContainerBoxes[i];
+                if (!photoBox.mHasPhoto)
+                {
+                    photoBox.SetActive(false);
+                }
+            }
+
+            SetPhotoBoxClickable();
+
+            PhotoContainerBox photoContainerBox = photoContainerBoxes.Find(box => { return (!box.mIsActive && !box.mHasPhoto); });
+            if (photoContainerBox != null)
+            {
+                photoContainerBox.SetActive(true);
+            }
+
+            SetPhotoBoxClickable();
+
+            //UpdateAllPhotoBoxes();
+            //EnableSubmitButton();
         }
 
         private void AddCapturedImageInContainer(Bitmap capturedImage)
