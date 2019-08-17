@@ -5,7 +5,6 @@ using Android.Util;
 using Android.Views;
 using Android.App;
 using Android.Widget;
-using Android.Support.V4.Content;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.Listener;
 using Java.Util.Concurrent;
 using Android.Hardware.Camera2;
@@ -13,9 +12,6 @@ using Android.Graphics;
 using Java.Lang;
 using System.Collections.Generic;
 using Android.Media;
-using Android;
-using Android.Content.PM;
-using Android.Support.V13.App;
 using Android.Hardware.Camera2.Params;
 using Java.Util;
 using Java.IO;
@@ -89,6 +85,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         SeekBar seekBar;
         Rect zoomArea;
         CropAreaView cropAreaView;
+        TextView takePhotoNoteView;
 
         public static SubmitMeterTakePhotoFragment NewInstance()
         {
@@ -197,12 +194,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             cropAreaView = new CropAreaView(this.Activity);
             linearLayout.AddView(cropAreaView);
 
+            takePhotoNoteView = view.FindViewById<TextView>(Resource.Id.take_photo_note);
+            takePhotoNoteView.Text = GetString(Resource.String.ssmr_single_take_photo_note);
+            takePhotoNoteView.BringToFront();
 
-            TextView takePhotoNote = view.FindViewById<TextView>(Resource.Id.take_photo_note);
-            takePhotoNote.Text = GetString(Resource.String.ssmr_single_take_photo_note);
-            takePhotoNote.BringToFront();
-
-            TextViewUtils.SetMuseoSans300Typeface(takePhotoNote);
+            TextViewUtils.SetMuseoSans300Typeface(takePhotoNoteView);
 
             try
             {
@@ -728,6 +724,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public void UpdateImage(Bitmap myBitmap)
         {
             galleryPreview.SetImageBitmap(myBitmap);
+        }
+
+        public void UpdateTakePhotoNote(string takePhotoNote)
+        {
+            takePhotoNoteView.Text = takePhotoNote;
         }
 
         public class UpdateImageView : Java.Lang.Object, IRunnable
