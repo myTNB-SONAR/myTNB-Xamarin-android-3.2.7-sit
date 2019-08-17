@@ -25,6 +25,7 @@
         "mobileNumber": "Mobile Number",
         "submit": "Submit",
         "selectAccounts": "Select Accounts",
+        "selectAccount": "Select Account",
         "backToHome": "Back to Home",
         "tryAgain": "Try Again",
         "settings": "Settings",
@@ -125,7 +126,21 @@
     },
     "SSMRReadingHistory": {
         "navTitle": "Self Meter Reading",
-        "headerTitle": "My Meter Reading History"
+        "headerTitle": "My Meter Reading History",
+        "subTitle": "I want to read my own meter for:",
+        "disableSSMRCTA": "Disable Self Meter Reading",
+        "enableSSMRCTA": "Enable Self Meter Reading",
+        "enableSSMRDescription": "This electricity account is not enabled for self meter reading yet, tap below to start!"
+    },
+    "SSMRReadingHistory_selector": {
+        "SMREligibiltyPopUpDetails": [
+            {
+                "Title": "Why are some of my accounts not here?",
+                "Description": "We took the liberty to only show you electricity accounts that are eligble for the Self Meter Reading service. <a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">Click here</a> to learn more about its eligibility.",
+                "CTA": "Got It!",
+                "Type": "Not_SMR_CA"
+            }
+        ]
     },
     "SSMRSubmitMeterReading": {
         "navTitle": "Submit Meter Reading",

@@ -28,21 +28,28 @@ namespace myTNB.Home.Dashboard.DashboardHome
         {
             if (SSMRAccounts.IsHideOnboarding)
             {
-                SSMRAccounts.SetEligibleAccounts();
-
-                UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
-                SSMRApplicationViewController viewController =
-                    storyBoard.InstantiateViewController("SSMRApplicationViewController") as SSMRApplicationViewController;
-                viewController.IsApplication = true;
-                UINavigationController navController = new UINavigationController(viewController);
-                _controller.PresentViewController(navController, true, null);
-
-                // TO DO: currently commented out as the logic to call GetSMRAccountActivityInfo API is yet to be created
-                //UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
-                //SSMRReadingHistoryViewController viewController =
-                //    storyBoard.InstantiateViewController("SSMRReadingHistoryViewController") as SSMRReadingHistoryViewController;
-                //UINavigationController navController = new UINavigationController(viewController);
-                //_controller.PresentViewController(navController, true, null);
+                NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+                {
+                    _controller.InvokeOnMainThread(() =>
+                    {
+                        if (NetworkUtility.isReachable)
+                        {
+                            UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+                            SSMRReadingHistoryViewController viewController =
+                                storyBoard.InstantiateViewController("SSMRReadingHistoryViewController") as SSMRReadingHistoryViewController;
+                            if (viewController != null)
+                            {
+                                viewController.IsFromHome = true;
+                                UINavigationController navController = new UINavigationController(viewController);
+                                _controller.PresentViewController(navController, true, null);
+                            }
+                        }
+                        else
+                        {
+                            _controller.DisplayNoDataAlert();
+                        }
+                    });
+                });
             }
             else
             {
@@ -55,9 +62,7 @@ namespace myTNB.Home.Dashboard.DashboardHome
             }
         }
 
-        private void On_1002_Action()
-        {
-        }
+        private void On_1002_Action() { }
 
         private void On_1003_Action()
         {
@@ -72,14 +77,8 @@ namespace myTNB.Home.Dashboard.DashboardHome
             }
         }
 
-        private void On_1004_Action()
-        {
+        private void On_1004_Action() { }
 
-        }
-
-        private void On_1005_Action()
-        {
-
-        }
+        private void On_1005_Action() { }
     }
 }

@@ -17,6 +17,7 @@ namespace myTNB.SSMR
         public static string Service_GetCARegisteredContact = "GetCAContactDetails";
         public static string Service_GetMeterReadingOCRValue = "GetMeterReadingOCRValue";
         public static string Service_GetAccountsSMREligibility = "GetAccountsSMREligibility";
+        public static string Service_GetSMRAccountActivityInfo = "GetSMRAccountActivityInfo";
         public static string Service_Register = "R";
         public static string Service_Terminate = "T";
         public static string Service_OthersID = "1007";
@@ -98,6 +99,10 @@ namespace myTNB.SSMR
         //Reading History
         public static string I18N_SectionTitle = "headerTitle";
         public static string STR_EstimatedReading = "estimated";
+        public static string I18N_SubTitle = "subTitle";
+        public static string I18N_DisableSSMRCTA = "disableSSMRCTA";
+        public static string I18N_EnableSSMRCTA = "enableSSMRCTA";
+        public static string I18N_EnableSSMRDescription= "enableSSMRDescription";
 
         //Capture Meter
         public static string I18N_OCRReading = "ocrReading";

@@ -2273,6 +2273,7 @@
     <Compile Include="Helpers\ScaleUtility.cs" />
     <Compile Include="Home\Dashboard\Select Accounts\SelectAccountConstants.cs" />
     <Compile Include="Model\Base Model\BaseModelRefresh.cs" />
+    <Compile Include="Helpers\LanguageUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

@@ -36,7 +36,7 @@ namespace myTNB
 
         public override nint NumberOfSections(UITableView tableView)
         {
-            return 1;
+            return _readingHistoryList == null ? 0 : 1;
         }
 
         public override nint RowsInSection(UITableView tableview, nint section)
@@ -46,24 +46,24 @@ namespace myTNB
 
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
         {
-            return 67f;
+            return ScaleUtility.GetScaledHeight(68f);
         }
 
         public override nfloat GetHeightForHeader(UITableView tableView, nint section)
         {
-            return 48.0f;
+            return ScaleUtility.GetScaledHeight(48.0f);
         }
 
         public override UIView GetViewForHeader(UITableView tableView, nint section)
         {
-            nfloat padding = 13f;
-            UIView sectionView = new UIView(new CGRect(0, 0, tableView.Bounds.Width, 48.0f));
+            nfloat padding = ScaleUtility.GetScaledWidth(16);
+            UIView sectionView = new UIView(new CGRect(0, 0, tableView.Bounds.Width, ScaleUtility.GetScaledHeight(48.0f)));
             sectionView.BackgroundColor = MyTNBColor.LightGrayBG;
             UILabel lblTitle = new UILabel
             {
                 Frame = new CGRect(padding, 0, sectionView.Frame.Width, sectionView.Frame.Height),
                 Text = GetI18NValue(SSMRConstants.I18N_SectionTitle),
-                Font = MyTNBFont.MuseoSans16_500,
+                Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue
             };
 

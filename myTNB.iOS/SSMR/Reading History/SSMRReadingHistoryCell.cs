@@ -1,6 +1,5 @@
 ﻿using System;
 using CoreGraphics;
-using myTNB.Model;
 using UIKit;
 
 namespace myTNB
@@ -8,8 +7,8 @@ namespace myTNB
     public class SSMRReadingHistoryCell : UITableViewCell
     {
         private nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
-        nfloat cellHeight = 67;
-        nfloat padding = 16f;
+        nfloat cellHeight = ScaleUtility.GetScaledHeight(68);
+        nfloat padding = ScaleUtility.GetScaledWidth(16);
         UIView _containerView;
         public UILabel _dateLabel, _descLabel, _kwhLabel, _monthYearLabel;
         public SSMRReadingHistoryCell(IntPtr handle) : base(handle)
@@ -18,29 +17,33 @@ namespace myTNB
             {
                 BackgroundColor = UIColor.White
             };
-            UIView line = new UIView(new CGRect(0, cellHeight - 1f, cellWidth, 1))
+            UIView line = new UIView(new CGRect(0, cellHeight - ScaleUtility.GetScaledHeight(1)
+                , cellWidth, ScaleUtility.GetScaledHeight(1)))
             {
                 BackgroundColor = MyTNBColor.VeryLightPinkThree
             };
-            _dateLabel = new UILabel(new CGRect(padding, padding, cellWidth / 2, 16f))
+            _dateLabel = new UILabel(new CGRect(padding, padding, cellWidth / 2, ScaleUtility.GetScaledHeight(16)))
             {
-                Font = MyTNBFont.MuseoSans12_500,
+                Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.CharcoalGrey
             };
-            _descLabel = new UILabel(new CGRect(padding, _dateLabel.Frame.GetMaxY() + 4f, cellWidth / 2, 14f))
+            _descLabel = new UILabel(new CGRect(padding, _dateLabel.Frame.GetMaxY() + ScaleUtility.GetScaledHeight(4)
+                , cellWidth / 2, ScaleUtility.GetScaledHeight(14)))
             {
-                Font = MyTNBFont.MuseoSans10_300,
+                Font = TNBFont.MuseoSans_12_300,
                 TextColor = MyTNBColor.Grey
             };
-            _kwhLabel = new UILabel(new CGRect(cellWidth - (cellWidth / 2) - padding, padding, cellWidth / 2, 16f))
+            _kwhLabel = new UILabel(new CGRect(cellWidth - (cellWidth / 2) - padding
+                , padding, cellWidth / 2, ScaleUtility.GetScaledHeight(16)))
             {
-                Font = MyTNBFont.MuseoSans12_500,
+                Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.CharcoalGrey,
                 TextAlignment = UITextAlignment.Right
             };
-            _monthYearLabel = new UILabel(new CGRect(cellWidth - (cellWidth / 2) - padding, _kwhLabel.Frame.GetMaxY() + 4f, cellWidth / 2, 14f))
+            _monthYearLabel = new UILabel(new CGRect(cellWidth - (cellWidth / 2) - padding
+                , _kwhLabel.Frame.GetMaxY() + ScaleUtility.GetScaledHeight(4), cellWidth / 2, ScaleUtility.GetScaledHeight(14)))
             {
-                Font = MyTNBFont.MuseoSans10_300,
+                Font = TNBFont.MuseoSans_12_300,
                 TextColor = MyTNBColor.Grey,
                 TextAlignment = UITextAlignment.Right
             };

@@ -5,47 +5,120 @@ using myTNB.SSMR;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using UIKit;
 
 namespace myTNB
 {
     public partial class SSMRReadingHistoryViewController : CustomUIViewController
     {
-        SSMRReadingHistoryHeaderComponent _ssmrHeaderComponent;
-        SSMRDropDownComponent _sSMRDropDownComponent;
-        UITableView _readingHistoryTableView;
-        UIView _headerView, _navbarView, _viewRightBtn;
-        MeterReadingHistoryModel _meterReadingHistory;
-        List<MeterReadingHistoryItemModel> _readingHistoryList;
-        List<MoreOptionsItemModel> _moreOptionsList;
-        CAGradientLayer _gradientLayer;
+        private SSMRReadingHistoryHeaderComponent _ssmrHeaderComponent;
+        private UITableView _readingHistoryTableView;
+        private UIView _headerView, _footerView, _navbarView;
+        private CustomUIButtonV2 _btnDisable;
+        private MeterReadingHistoryModel _meterReadingHistory;
+        private List<MeterReadingHistoryItemModel> _readingHistoryList;
+        private CAGradientLayer _gradientLayer;
+        private AccountsSMREligibilityResponseModel _eligibilityAccount;
+        private SMRAccountActivityInfoResponseModel _smrActivityInfoResponse;
+        private CustomerAccountRecordModel _currAcc;
+        private nfloat _headerHeight, _maxHeaderHeight, _navBarHeight, _previousScrollOffset;
+        private nfloat _minHeaderHeight = 0.1f;
+        private nfloat _tableViewOffset = 64f;
+        private nfloat titleBarHeight = 24f;
+        private int _currentIndex = -1;
 
-        nfloat _headerHeight;
-        nfloat _maxHeaderHeight;
-        nfloat _minHeaderHeight = 0.1f;
-        nfloat _tableViewOffset = 64f;
-        nfloat _previousScrollOffset;
-        nfloat titleBarHeight = 24f;
+        private bool _hasSSMRAccount, _isFromSelection;
 
+        public bool IsFromHome;
         public SSMRReadingHistoryViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
         {
             PageName = "SSMRReadingHistory";
             base.ViewDidLoad();
-            _meterReadingHistory = DataManager.DataManager.SharedInstance.MeterReadingHistory;
-            _readingHistoryList = DataManager.DataManager.SharedInstance.ReadingHistoryList;
-            _moreOptionsList = DataManager.DataManager.SharedInstance.MoreOptionsList;
             SetNavigation();
+
+            SSMRAccounts.SetFilteredEligibleAccounts();
+            //_meterReadingHistory = DataManager.DataManager.SharedInstance.MeterReadingHistory;
+            //_readingHistoryList = DataManager.DataManager.SharedInstance.ReadingHistoryList;
             PrepareHeaderView();
+            PrepareFooterView();
             AddTableView();
         }
 
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+            SetNoSSMR();
+            _hasSSMRAccount = SSMRAccounts.HasSSMRAccount;
+            if (IsFromHome && _hasSSMRAccount)
+            {
+                string accName = string.Empty;
+                if (_isFromSelection)
+                {
+                    accName = _currAcc?.accountNickName ?? string.Empty;
+                }
+                else
+                {
+                    _currAcc = SSMRAccounts.GetFirstSSMRAccount();
+                    accName = _currAcc?.accountNickName ?? string.Empty;
+                    _currentIndex = 0;
+                }
+
+                _ssmrHeaderComponent.AccountName = accName;
+                if (_currAcc.IsSSMR)
+                {
+                    InvokeOnMainThread(async () =>
+                    {
+                        ActivityIndicator.Show();
+                        await LoadSMRAccountActivityInfo(_currAcc);
+                        ActivityIndicator.Hide();
+                    });
+                }
+                else
+                {
+                    SetEnableSSMR();
+                }
+            }
+            else
+            {
+                _currentIndex = -1;
+            }
+        }
+
+        private void SetNoSSMR()
+        {
+            if (_ssmrHeaderComponent != null)
+            {
+                _ssmrHeaderComponent.SetNoSSMRHeader();
+                AdjustHeader();
+            }
+            _readingHistoryTableView.TableFooterView = null;
+            _readingHistoryTableView.Source = new SSMRReadingHistoryDataSource(OnTableViewScrolled, _readingHistoryList);
+            _readingHistoryTableView.ReloadData();
+        }
+
+        private void SetEnableSSMR()
+        {
+            _ssmrHeaderComponent.ActionTitle = string.Empty;
+            _ssmrHeaderComponent.SetDescription(GetI18NValue(SSMRConstants.I18N_EnableSSMRDescription));
+            _ssmrHeaderComponent.SetSubmitButtonHidden(null, true, GetI18NValue(SSMRConstants.I18N_EnableSSMRCTA));
+            _ssmrHeaderComponent.OnButtonTap = DisplayApplciationForm;
+            AdjustHeader();
+
+            _readingHistoryTableView.TableFooterView = null;
+            _readingHistoryTableView.Source = new SSMRReadingHistoryDataSource(OnTableViewScrolled, null);
+            _readingHistoryTableView.ReloadData();
+        }
+
+        #region Navigation
         private void SetNavigation()
         {
             if (NavigationController != null && NavigationController.NavigationBar != null)
             {
                 NavigationController.NavigationBar.Hidden = true;
+                _navBarHeight = NavigationController.NavigationBar.Frame.Height;
             }
 
             int yLocation = 26;
@@ -54,14 +127,14 @@ namespace myTNB
                 yLocation = 50;
             }
 
-            _navbarView = new UIView(new CGRect(0, 0, ViewWidth, DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height))
+            _navbarView = new UIView(new CGRect(0, 0, ViewWidth, DeviceHelper.GetStatusBarHeight() + _navBarHeight))
             {
                 BackgroundColor = UIColor.Clear
             };
 
-            UIImageView bgImageView = new UIImageView(new CGRect(0, 0, ViewWidth, 190f))
+            UIImageView bgImageView = new UIImageView(new CGRect(0, 0, ViewWidth, ViewWidth * 0.70F))
             {
-                Image = UIImage.FromBundle("SMR-History-BG")
+                Image = UIImage.FromBundle(SSMRConstants.IMG_ReadingHistoryBanner)
             };
 
             View.AddSubview(bgImageView);
@@ -86,22 +159,14 @@ namespace myTNB
             lblTitle.TextColor = UIColor.White;
             viewTitleBar.AddSubview(lblTitle);
 
-            _viewRightBtn = new UIView(new CGRect(_navbarView.Frame.Width - 40, 0, 24, titleBarHeight));
             UIImageView imgViewRightBtn = new UIImageView(new CGRect(0, 0, 24, titleBarHeight))
             {
                 Image = UIImage.FromBundle(SSMRConstants.IMG_PrimaryIcon)
             };
-            _viewRightBtn.AddSubview(imgViewRightBtn);
-            viewTitleBar.AddSubview(_viewRightBtn);
 
             viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 DismissViewController(true, null);
-            }));
-
-            _viewRightBtn.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-            {
-                ShowDropDownComponent();
             }));
 
             _navbarView.AddSubview(viewTitleBar);
@@ -121,47 +186,6 @@ namespace myTNB
             View.AddSubview(_navbarView);
         }
 
-        private void SetRightButtonVisible(bool flag)
-        {
-            _viewRightBtn.Hidden = flag;
-        }
-
-        private void ShowDropDownComponent()
-        {
-            SetRightButtonVisible(true);
-            _sSMRDropDownComponent = new SSMRDropDownComponent(this, View);
-            View.AddSubview(_sSMRDropDownComponent.GetUI());
-            _sSMRDropDownComponent.CreateMoreOptions(_moreOptionsList);
-            _sSMRDropDownComponent.SetRightButtonRecognizer(new UITapGestureRecognizer(() =>
-            {
-                DismissDropDownComponent();
-            }));
-        }
-
-        private void DismissDropDownComponent()
-        {
-            SetRightButtonVisible(false);
-            if (_sSMRDropDownComponent != null)
-            {
-                _sSMRDropDownComponent.GetView().RemoveFromSuperview();
-            }
-        }
-
-        public void OnMoreOptionSelected(MoreOptionsItemModel model)
-        {
-            Debug.WriteLine("model.MenuName: " + model.MenuName);
-            //Tap events for more options..
-            if (model.MenuId == SSMRConstants.More_Unsubscribe)
-            {
-                UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
-                SSMRApplicationViewController viewController =
-                    storyBoard.InstantiateViewController("SSMRApplicationViewController") as SSMRApplicationViewController;
-                viewController.IsApplication = false;
-                UINavigationController navController = new UINavigationController(viewController);
-                PresentViewController(navController, true, null);
-            }
-        }
-
         private void AddViewWithOpacity(float opacity)
         {
             var startColor = MyTNBColor.GradientPurpleDarkElement;
@@ -178,6 +202,7 @@ namespace myTNB
             _navbarView.Layer.ReplaceSublayer(_gradientLayer, gradientLayer);
             _gradientLayer = gradientLayer;
         }
+        #endregion
 
         private void PrepareHeaderView()
         {
@@ -185,19 +210,86 @@ namespace myTNB
             {
                 ClipsToBounds = true
             };
-            _ssmrHeaderComponent = new SSMRReadingHistoryHeaderComponent(View);
-            _ssmrHeaderComponent.SetSubmitButtonHidden(_meterReadingHistory);
-            _ssmrHeaderComponent.SetImageIconText(_meterReadingHistory);
+            _ssmrHeaderComponent = new SSMRReadingHistoryHeaderComponent(View, _navBarHeight);
             _headerView.AddSubview(_ssmrHeaderComponent.GetUI());
-            _ssmrHeaderComponent.SetTitle(_meterReadingHistory.HistoryViewTitle);
-            _ssmrHeaderComponent.SetDescription(_meterReadingHistory.HistoryViewMessage);
+            _ssmrHeaderComponent.SetTitle(GetI18NValue(SSMRConstants.I18N_SubTitle));
+            _ssmrHeaderComponent.ActionTitle = _meterReadingHistory?.HistoryViewTitle ?? string.Empty;
+            _ssmrHeaderComponent.SetDescription(_meterReadingHistory?.HistoryViewMessage ?? string.Empty);
             _ssmrHeaderComponent.OnButtonTap = ShowSubmitMeterView;
+            _ssmrHeaderComponent.DropdownAction = OnTapDropDown;
             AdjustHeader();
+        }
+
+        private void PrepareFooterView()
+        {
+            _footerView = new UIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(104))) { BackgroundColor = MyTNBColor.LightGrayBG };
+            UIView viewButton = new UIView(new CGRect(0, GetScaledHeight(24), ViewWidth, GetScaledHeight(80))) { BackgroundColor = UIColor.White };
+            _btnDisable = new CustomUIButtonV2
+            {
+                Frame = new CGRect(BaseMargin, BaseMargin, BaseMarginedWidth, GetScaledHeight(48)),
+                BackgroundColor = UIColor.White,
+                Font = TNBFont.MuseoSans_16_500
+            };
+            _btnDisable.SetTitle(GetI18NValue(SSMRConstants.I18N_DisableSSMRCTA), UIControlState.Normal);
+            _btnDisable.Layer.BorderColor = MyTNBColor.Tomato.CGColor;
+            _btnDisable.Layer.BorderWidth = GetScaledWidth(1);
+            _btnDisable.SetTitleColor(MyTNBColor.Tomato, UIControlState.Normal);
+            _btnDisable.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+            }));
+            viewButton.AddSubview(_btnDisable);
+            _footerView.AddSubview(viewButton);
+        }
+
+        private void OnTapDropDown()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        ActivityIndicator.Show();
+                        await GetEligibility();
+                        if (_eligibilityAccount != null && _eligibilityAccount.d != null
+                            && _eligibilityAccount.d.didSucceed && _eligibilityAccount.d.data != null
+                            && _eligibilityAccount.d.data.accountEligibilities != null)
+                        {
+                            SSMRAccounts.SetEligibleAccounts(_eligibilityAccount.d.data.accountEligibilities);
+                            UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+                            SelectAccountTableViewController viewController = storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
+                            viewController.IsFromSSMR = true;
+                            viewController.CurrentSelectedIndex = _currentIndex;
+                            viewController.OnSelect = OnSelectAccount;
+                            UINavigationController navController = new UINavigationController(viewController);
+                            PresentViewController(navController, true, null);
+                        }
+                        ActivityIndicator.Hide();
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
+        private void OnSelectAccount(int index)
+        {
+            Debug.WriteLine("INDEX: " + index);
+            if (index > -1)
+            {
+                _currentIndex = index;
+                _currAcc = SSMRAccounts.GetAccountByIndex(index);
+                //CustomerAccountRecordModel account = SSMRAccounts.GetAccountByIndex(index);
+                //_ssmrHeaderComponent.AccountName = account?.accountNickName ?? string.Empty;
+                _isFromSelection = true;
+            }
         }
 
         private void AdjustHeader()
         {
-            _headerView.Frame = new CGRect(0, 0, _ssmrHeaderComponent.GetView().Frame.Width, _ssmrHeaderComponent.GetView().Frame.Height);
+            _headerView.Frame = new CGRect(0, 0, _ssmrHeaderComponent.GetView().Frame.Width, _ssmrHeaderComponent.GetView().Frame.GetMaxY());
             _headerHeight = _headerView.Frame.Height;
             _maxHeaderHeight = _headerView.Frame.Height;
         }
@@ -209,12 +301,26 @@ namespace myTNB
             _readingHistoryTableView.Source = new SSMRReadingHistoryDataSource(OnTableViewScrolled, _readingHistoryList);
             _readingHistoryTableView.BackgroundColor = UIColor.Clear;
             _readingHistoryTableView.RowHeight = UITableView.AutomaticDimension;
-            _readingHistoryTableView.EstimatedRowHeight = 67f;
+            _readingHistoryTableView.EstimatedRowHeight = GetScaledHeight(68);
             _readingHistoryTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             _readingHistoryTableView.Bounces = false;
             _readingHistoryTableView.SectionFooterHeight = 0;
             _readingHistoryTableView.TableHeaderView = _headerView;
+            _readingHistoryTableView.TableFooterView = _footerView;
             View.AddSubview(_readingHistoryTableView);
+        }
+
+        private void UpdateTable()
+        {
+            _ssmrHeaderComponent.SetSubmitButtonHidden(_meterReadingHistory);
+            _ssmrHeaderComponent.ActionTitle = _meterReadingHistory?.HistoryViewTitle ?? string.Empty;
+            _ssmrHeaderComponent.SetDescription(_meterReadingHistory?.HistoryViewMessage ?? string.Empty);
+            _ssmrHeaderComponent.OnButtonTap = ShowSubmitMeterView;
+            AdjustHeader();
+
+            _readingHistoryTableView.TableFooterView = _footerView;
+            _readingHistoryTableView.Source = new SSMRReadingHistoryDataSource(OnTableViewScrolled, _readingHistoryList);
+            _readingHistoryTableView.ReloadData();
         }
 
         public void OnTableViewScrolled(object sender, EventArgs e)
@@ -259,5 +365,82 @@ namespace myTNB
             UINavigationController navController = new UINavigationController(viewController);
             PresentViewController(navController, true, null);
         }
+
+        private void DisplayApplciationForm()
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+            SSMRApplicationViewController viewController =
+                storyBoard.InstantiateViewController("SSMRApplicationViewController") as SSMRApplicationViewController;
+            viewController.IsApplication = true;
+            viewController.AccountNumber = _currAcc.accNum;
+            UINavigationController navController = new UINavigationController(viewController);
+            PresentViewController(navController, true, null);
+        }
+
+        #region Services
+        private async Task GetEligibility()
+        {
+            await Task.Factory.StartNew(() =>
+            {
+                ServiceManager serviceManager = new ServiceManager();
+                object request = new
+                {
+                    serviceManager.usrInf,
+                    contractAccounts = SSMRAccounts.GetFilteredAccountNumberList()
+                };
+                _eligibilityAccount = serviceManager.OnExecuteAPIV6<AccountsSMREligibilityResponseModel>(SSMRConstants.Service_GetAccountsSMREligibility, request);
+            });
+        }
+
+
+        private async Task LoadSMRAccountActivityInfo(CustomerAccountRecordModel account)
+        {
+            ActivityIndicator.Show();
+            await GetSMRAccountActivityInfo(account).ContinueWith(task =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (_smrActivityInfoResponse != null &&
+                        _smrActivityInfoResponse.d != null &&
+                        _smrActivityInfoResponse.d.data != null &&
+                        _smrActivityInfoResponse.d.IsSuccess)
+                    {
+                        DataManager.DataManager.SharedInstance.MeterReadingHistory = _smrActivityInfoResponse.d.data;
+                        DataManager.DataManager.SharedInstance.ReadingHistoryList = _smrActivityInfoResponse.d.data.MeterReadingHistory;
+                        //DataManager.DataManager.SharedInstance.MoreOptionsList = _smrActivityInfoResponse.d.data.MoreOptions;
+                        SSMRActivityInfoCache.SetData(_smrActivityInfoResponse);
+
+
+                        _meterReadingHistory = DataManager.DataManager.SharedInstance.MeterReadingHistory;
+                        _readingHistoryList = DataManager.DataManager.SharedInstance.ReadingHistoryList;
+
+                        UpdateTable();
+                    }
+                    else
+                    {
+                        DataManager.DataManager.SharedInstance.MeterReadingHistory = new MeterReadingHistoryModel();
+                        DataManager.DataManager.SharedInstance.ReadingHistoryList = new List<MeterReadingHistoryItemModel>();
+                        //DataManager.DataManager.SharedInstance.MoreOptionsList = new List<MoreOptionsItemModel>();
+                        DataManager.DataManager.SharedInstance.AccountIsSSMR = false;
+                    }
+                });
+            });
+        }
+
+        private Task GetSMRAccountActivityInfo(CustomerAccountRecordModel account)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                ServiceManager serviceManager = new ServiceManager();
+                object request = new
+                {
+                    contractAccount = account.accNum,
+                    isOwnedAccount = account.isOwned,
+                    serviceManager.usrInf
+                };
+                _smrActivityInfoResponse = serviceManager.OnExecuteAPIV6<SMRAccountActivityInfoResponseModel>(SSMRConstants.Service_GetSMRAccountActivityInfo, request);
+            });
+        }
+        #endregion
     }
 }
