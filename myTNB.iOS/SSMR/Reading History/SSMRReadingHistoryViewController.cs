@@ -28,7 +28,7 @@ namespace myTNB
         private nfloat titleBarHeight = 24f;
         private int _currentIndex = -1;
 
-        private bool _hasSSMRAccount, _isFromSelection;
+        private bool _isFromSelection;
 
         public bool IsFromHome;
         public SSMRReadingHistoryViewController(IntPtr handle) : base(handle) { }
@@ -49,39 +49,52 @@ namespace myTNB
         {
             base.ViewWillAppear(animated);
             SetNoSSMR();
-            _hasSSMRAccount = SSMRAccounts.HasSSMRAccount;
-            if (IsFromHome && _hasSSMRAccount)
+            string accName;
+            if (_isFromSelection)
             {
-                string accName = string.Empty;
-                if (_isFromSelection)
-                {
-                    accName = _currAcc?.accountNickName ?? string.Empty;
-                }
-                else
-                {
-                    _currAcc = SSMRAccounts.GetFirstSSMRAccount();
-                    accName = _currAcc?.accountNickName ?? string.Empty;
-                    _currentIndex = 0;
-                }
-
+                accName = _currAcc?.accountNickName ?? string.Empty;
                 _ssmrHeaderComponent.AccountName = accName;
-                if (_currAcc.IsSSMR)
-                {
-                    InvokeOnMainThread(async () =>
-                    {
-                        ActivityIndicator.Show();
-                        await LoadSMRAccountActivityInfo(_currAcc);
-                        ActivityIndicator.Hide();
-                    });
-                }
-                else
-                {
-                    SetEnableSSMR();
-                }
+                EvaluateEntry();
             }
             else
             {
-                _currentIndex = -1;
+                if (IsFromHome)
+                {
+                    if (SSMRAccounts.HasSSMRAccount)
+                    {
+                        _currentIndex = 0;
+                        _currAcc = SSMRAccounts.GetFirstSSMRAccount();
+                        accName = _currAcc?.accountNickName ?? string.Empty;
+                        _ssmrHeaderComponent.AccountName = accName;
+                        EvaluateEntry();
+                    }
+                    else
+                    {
+                        _currentIndex = -1;
+                    }
+                }
+                else
+                {
+                    _ssmrHeaderComponent.AccountName = DataManager.DataManager.SharedInstance.SelectedAccount.accountNickName;
+                    UpdateTable();
+                }
+            }
+        }
+
+        private void EvaluateEntry()
+        {
+            if (_currAcc.IsSSMR)
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    ActivityIndicator.Show();
+                    await LoadSMRAccountActivityInfo(_currAcc);
+                    ActivityIndicator.Hide();
+                });
+            }
+            else
+            {
+                SetEnableSSMR();
             }
         }
 
@@ -311,6 +324,9 @@ namespace myTNB
 
         private void UpdateTable()
         {
+            _meterReadingHistory = DataManager.DataManager.SharedInstance.MeterReadingHistory;
+            _readingHistoryList = DataManager.DataManager.SharedInstance.ReadingHistoryList;
+
             _ssmrHeaderComponent.SetSubmitButtonHidden(_meterReadingHistory);
             _ssmrHeaderComponent.ActionTitle = _meterReadingHistory?.HistoryViewTitle ?? string.Empty;
             _ssmrHeaderComponent.SetDescription(_meterReadingHistory?.HistoryViewMessage ?? string.Empty);
@@ -417,10 +433,6 @@ namespace myTNB
                         DataManager.DataManager.SharedInstance.MeterReadingHistory = _smrActivityInfoResponse.d.data;
                         DataManager.DataManager.SharedInstance.ReadingHistoryList = _smrActivityInfoResponse.d.data.MeterReadingHistory;
                         SSMRActivityInfoCache.SetData(_smrActivityInfoResponse);
-
-                        _meterReadingHistory = DataManager.DataManager.SharedInstance.MeterReadingHistory;
-                        _readingHistoryList = DataManager.DataManager.SharedInstance.ReadingHistoryList;
-
                         UpdateTable();
                     }
                     else
