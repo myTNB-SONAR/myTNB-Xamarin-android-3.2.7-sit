@@ -990,6 +990,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             if (selectedAccount.AccountCategoryId.Equals("2"))
             {
                 graphTopPadding = 30;
+                mChart.LayoutParameters.Height = (int) DPUtils.ConvertDPToPx(240f);
             }
             mChart.SetExtraOffsets(0, graphTopPadding, 0, graphBottomPadding);
         }
