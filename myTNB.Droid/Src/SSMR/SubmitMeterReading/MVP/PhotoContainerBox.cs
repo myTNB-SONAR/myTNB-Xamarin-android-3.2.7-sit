@@ -13,6 +13,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public bool mIsActive;
         public bool mHasPhoto;
         public bool mIsSelected;
+        public string mMeterId;
         TextView boxIndicatorView;
         ImageView photoImageView;
         public Bitmap photoBitmap;
@@ -51,6 +52,22 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public void SetActive(bool isActive)
         {
             mIsActive = isActive;
+        }
+
+        public void SetMeterId(string meterId)
+        {
+            switch (meterId)
+            {
+                case "001":
+                    mMeterId = "kwh";
+                    break;
+                case "002":
+                    mMeterId = "kw";
+                    break;
+                default:
+                    mMeterId = "kvarh";
+                    break;
+            }
         }
 
         public void UpdateBackground()

@@ -26,12 +26,15 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
     {
         public SubmitMeterTakePhotoContract.IPresenter mPresenter;
         string contractNumber = "";
+        const string IMAGE_ID = "MYTNBAPP_SSMR_OCR_";
         private IMenu ssmrMenu;
         public static readonly int PickImageId = 1000;
         private static bool isGalleryFirstPress = true;
         private static bool isTakePhotFirstEnter = true;
         private bool isSinglePhase = false;
         private bool isFromSingleCapture = false;
+        private string singlePhaseMeterId = "";
+        private Bitmap singlePhaseImageData = null;
         List<MeterValidation> validatedMeterList;
         List<MeterValidation> validationStateList;
         List<MeterCapturedData> meteredCapturedDataList;
@@ -103,6 +106,10 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 {
                     CreatePhotoBoxContainer();
                 }
+                else
+                {
+                    singlePhaseMeterId = GetMeterNameFromCode(validationStateList[0].meterId);
+                }
             }
 
             if (isSinglePhase)
@@ -121,6 +128,28 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
             btnSubmitPhotoToOCR.Click += delegate
             {
+                List<MeterImageModel> meterImageDataList = new List<MeterImageModel>();
+                MeterImageModel meterImageModel;
+                if (isSinglePhase)
+                {
+                    meterImageModel = new MeterImageModel();
+                    meterImageModel.RequestReadingUnit = singlePhaseMeterId;
+                    meterImageModel.ImageId = IMAGE_ID + singlePhaseMeterId;
+                    meterImageModel.ImageData = singlePhaseImageData;
+                    meterImageDataList.Add(meterImageModel);
+                }
+                else
+                {
+                    foreach (PhotoContainerBox containerBox in photoContainerBoxes)
+                    {
+                        meterImageModel = new MeterImageModel();
+                        meterImageModel.RequestReadingUnit = containerBox.mMeterId;
+                        meterImageModel.ImageId = IMAGE_ID + containerBox.mMeterId;
+                        meterImageModel.ImageData = containerBox.photoBitmap;
+                        meterImageDataList.Add(meterImageModel);
+                    }
+                }
+                mPresenter.SetMeterImageList(meterImageDataList);
                 mPresenter.GetMeterReadingOCRValue(contractNumber);
             };
 
@@ -171,6 +200,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 Bitmap bitmap = MediaStore.Images.Media.GetBitmap(this.ContentResolver, data.Data);
                 AddCapturedImage(bitmap);
                 takePhotoFragment.UpdateImage(bitmap);
+                singlePhaseImageData = bitmap;
             }
         }
 
@@ -234,9 +264,10 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             container.RemoveAllViews();
             int meterCardLength = meteredCapturedDataList.Count;
 
-            for (int i=1; i <= meterCardLength; i++)
+            for (int i=0; i < meterCardLength; i++)
             {
-                PhotoContainerBox photoContainerBox = new PhotoContainerBox(this, i);
+                PhotoContainerBox photoContainerBox = new PhotoContainerBox(this, i+1);
+                photoContainerBox.SetMeterId(meteredCapturedDataList[i].meterId);
                 photoContainerBox.UpdateBackground();
                 container.AddView(photoContainerBox);
                 photoContainerBoxes.Add(photoContainerBox);
@@ -262,6 +293,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 previewImage.SetImageBitmap(capturedImage);
                 ShowImagePreView(true);
                 isFromSingleCapture = true;
+                singlePhaseImageData = capturedImage;
             }
 
             UpdateTakePhotoNote();
