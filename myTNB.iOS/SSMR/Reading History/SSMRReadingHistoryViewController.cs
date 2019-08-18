@@ -4,7 +4,6 @@ using myTNB.Model;
 using myTNB.SSMR;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using UIKit;
 
@@ -49,6 +48,7 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            NavigationController.SetNavigationBarHidden(true, true);
             SetNoSSMR();
             string accName;
             if (_isFromSelection)
@@ -80,6 +80,12 @@ namespace myTNB
                     UpdateTable();
                 }
             }
+        }
+
+        public override void ViewWillDisappear(bool animated)
+        {
+            base.ViewWillDisappear(animated);
+            NavigationController.SetNavigationBarHidden(false, true);
         }
 
         private void EvaluateEntry()
@@ -178,7 +184,14 @@ namespace myTNB
 
             viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                DismissViewController(true, null);
+                if (IsFromHome)
+                {
+                    ViewHelper.DismissControllersAndSelectTab(this, 0, true);
+                }
+                else
+                {
+                    DismissViewController(true, null);
+                }
             }));
 
             _navbarView.AddSubview(viewTitleBar);
@@ -344,8 +357,8 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
             SSMRReadMeterViewController viewController =
                 storyBoard.InstantiateViewController("SSMRReadMeterViewController") as SSMRReadMeterViewController;
-            UINavigationController navController = new UINavigationController(viewController);
-            PresentViewController(navController, true, null);
+            viewController.IsRoot = true;
+            NavigationController.PushViewController(viewController, true);
         }
 
         private void OnTapDropDown()
@@ -368,10 +381,10 @@ namespace myTNB
                                 UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                                 SelectAccountTableViewController viewController = storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
                                 viewController.IsFromSSMR = true;
+                                viewController.IsRoot = true;
                                 viewController.CurrentSelectedIndex = _currentIndex;
                                 viewController.OnSelect = OnSelectAccount;
-                                UINavigationController navController = new UINavigationController(viewController);
-                                PresentViewController(navController, true, null);
+                                NavigationController.PushViewController(viewController,true);
                             }
                             else
                             {
@@ -428,8 +441,7 @@ namespace myTNB
                             viewController.IsApplication = isEnable;
                             viewController.SelectedAccount = _currAcc;
                             viewController.ContactDetails = _contactDetails;
-                            UINavigationController navController = new UINavigationController(viewController);
-                            PresentViewController(navController, true, null);
+                            NavigationController.PushViewController(viewController, true);
                         }
                         else
                         {

@@ -101,7 +101,7 @@ namespace myTNB.Dashboard.SelectAccounts
                 {
                     _controller?.OnSelect(indexPath.Row);
                 }
-                _controller.DismissViewController(true, null);
+                _controller.NavigationController.PopViewController(true);
                 return;
             }
             if (indexPath.Row < _accountList.Count)

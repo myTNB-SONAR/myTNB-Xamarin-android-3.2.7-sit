@@ -7,7 +7,6 @@ using myTNB.SSMR;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Threading.Tasks;
 using UIKit;
 
@@ -16,6 +15,7 @@ namespace myTNB
     public partial class SSMRReadMeterViewController : CustomUIViewController
     {
         public SSMRReadMeterViewController(IntPtr handle) : base(handle) { }
+        public bool IsRoot;
 
         SSMRMeterFooterComponent _sSMRMeterFooterComponent;
         SMRSubmitMeterReadingResponseModel _submitMeterResponse = new SMRSubmitMeterReadingResponseModel();
@@ -87,7 +87,15 @@ namespace myTNB
             UIImage btnRightImg = UIImage.FromBundle(SSMRConstants.IMG_Info);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                ViewHelper.DismissControllersAndSelectTab(this, 0, true);
+                if (IsRoot && NavigationController != null)
+                {
+                    NavigationController.PopViewController(true);
+                }
+                else
+                {
+                    DismissViewController(true, null);
+                    //ViewHelper.DismissControllersAndSelectTab(this, 0, true);
+                }
             });
             UIBarButtonItem btnRight = new UIBarButtonItem(btnRightImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {

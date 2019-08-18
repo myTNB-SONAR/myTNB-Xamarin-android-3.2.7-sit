@@ -74,7 +74,14 @@ namespace myTNB
             UIImage backImg = UIImage.FromBundle(SSMRConstants.IMG_BackIcon);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                ViewHelper.DismissControllersAndSelectTab(this, 0, true);
+                if (NavigationController != null)
+                {
+                    NavigationController.PopViewController(true);
+                }
+                else
+                {
+                    DismissViewController(true, null);
+                }
             });
             NavigationItem.LeftBarButtonItem = btnBack;
             Title = GetI18NValue(SSMRConstants.I18N_NavTitle);
