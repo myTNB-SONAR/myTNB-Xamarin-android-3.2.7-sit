@@ -9,7 +9,9 @@ namespace myTNB.SSMR
         public static string Pagename_SSMRWalkthrough = "SSMROnboarding";
         public static string Pagename_SSMRCaptureMeter = "SSMRCaptureMeter";
         public static string Pagename_SSMRMeterRead = "SSMRSubmitMeterReading";
+        public static string Pagename_SSMRReadingHistory = "SSMRReadingHistory";
         public static string Popup_SMRPhotoPopUpDetails = "SMRPhotoPopUpDetails";
+        public static string Popup_SMREligibiltyPopUpDetails = "SMREligibiltyPopUpDetails";
 
         //Service name
         public static string Service_SubmitSSMRApplication = "SubmitSMRApplication";
@@ -64,7 +66,6 @@ namespace myTNB.SSMR
         //Image
         public static string IMG_BGOnboarding1 = "SSMR_Background_1";
         public static string IMG_BGOnboarding2 = "SSMR_Background_2";
-        public static string IMG_BGOnboarding3 = "SSMR_Background_3";
         public static string IMG_Mark = "Payment-Checkbox-Active";
         public static string IMG_Unmark = "Payment-Checkbox-Inactive";
         public static string IMG_Dropdow = "IC-Action-Dropdown";
@@ -102,7 +103,7 @@ namespace myTNB.SSMR
         public static string I18N_SubTitle = "subTitle";
         public static string I18N_DisableSSMRCTA = "disableSSMRCTA";
         public static string I18N_EnableSSMRCTA = "enableSSMRCTA";
-        public static string I18N_EnableSSMRDescription= "enableSSMRDescription";
+        public static string I18N_EnableSSMRDescription = "enableSSMRDescription";
 
         //Capture Meter
         public static string I18N_OCRReading = "ocrReading";

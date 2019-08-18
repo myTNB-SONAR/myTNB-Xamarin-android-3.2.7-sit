@@ -10,6 +10,7 @@ namespace myTNB.Model
     public class AccountsSMREligibilityDataModel : BaseModelV2
     {
         public AccountsSMREligibilitySerivceModel data { set; get; }
+        public List<PopupModel> SMREligibiltyPopUpDetails { set; get; }
     }
 
     public class AccountsSMREligibilitySerivceModel

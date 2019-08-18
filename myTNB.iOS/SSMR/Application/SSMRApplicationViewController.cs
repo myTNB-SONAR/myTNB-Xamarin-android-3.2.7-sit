@@ -17,8 +17,9 @@ namespace myTNB
         public SSMRApplicationViewController(IntPtr handle) : base(handle) { }
         public bool IsApplication;
         public CustomerAccountRecordModel SelectedAccount;
+        public ContactDetailsResponseModel ContactDetails;
 
-        private UIButton _btnSubmit;
+        private CustomUIButtonV2 _btnSubmit;
         private UIView _viewBottomContainer, _viewContactDetails, _viewTerminate
             , _viewTerminateTitle, _viewTerminateContainer, _viewOthersContainer
             , _viewLineTerminate, _viewLineReason, _viewMainDetails, _viewApplyForTitle
@@ -29,7 +30,6 @@ namespace myTNB
         private CustomTextField _customEmailField;
         protected List<CustomerAccountRecordModel> _eligibleAccountList;
         protected AccountsSMREligibilityResponseModel _smrEligibleList;
-        protected ContactDetailsResponseModel _contactDetails;
         protected SSMRApplicationStatusResponseModel _ssmrApplicationStatus;
         protected TerminationReasonsResponseModel _ssmrTerminationReasons;
         private int _selectedTerminateReasonIndex = 0;
@@ -124,7 +124,6 @@ namespace myTNB
             _btnSubmit = new CustomUIButtonV2()
             {
                 Frame = new CGRect(BaseMargin, GetYLocationFromFrame(txtFieldInfo.Frame, 16), BaseMarginedWidth, GetScaledHeight(48)),
-                Font = TNBFont.MuseoSans_16_500,
                 Enabled = true,
                 BackgroundColor = MyTNBColor.FreshGreen
             };
@@ -385,7 +384,8 @@ namespace myTNB
                 AutocapitalizationType = UITextAutocapitalizationType.None,
                 SpellCheckingType = UITextSpellCheckingType.No,
                 ReturnKeyType = UIReturnKeyType.Default,
-                Text = GetI18NValue(SSMRConstants.I18N_StateReason)
+                Text = GetI18NValue(SSMRConstants.I18N_StateReason),
+                ContentInset = new UIEdgeInsets(0, -5, 0, -5)
             };
             SetTextViewActions();
 
@@ -540,6 +540,20 @@ namespace myTNB
 
         private void OnGetInfo()
         {
+            _isAllowEdit = ContactDetails.d.data.isAllowEdit;
+            if (_isAllowEdit)
+            {
+                _lblEditInfo.Hidden = true;
+                _customEmailField.SetValue(ContactDetails.d.data.Email);
+                _customMobileField.SetValue(ContactDetails.d.data.Mobile);
+                ToggleCTA();
+                _customEmailField.SetState(true);
+                _customMobileField.SetState(true);
+            }
+            _viewContactDetailsTitle.Hidden = !_isAllowEdit;
+            _viewContactDetails.Hidden = !_isAllowEdit;
+            if (!IsApplication) { UpdateView(); }
+
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
                 InvokeOnMainThread(async () =>
@@ -547,24 +561,6 @@ namespace myTNB
                    if (NetworkUtility.isReachable)
                    {
                        ActivityIndicator.Show();
-                       await GetContactInfo();
-                       if (_contactDetails != null && _contactDetails.d != null
-                        && _contactDetails.d.IsSuccess && _contactDetails.d.data != null)
-                       {
-                           _isAllowEdit = _contactDetails.d.data.isAllowEdit;
-                           if (_isAllowEdit)
-                           {
-                               _lblEditInfo.Hidden = true;
-                               _customEmailField.SetValue(_contactDetails.d.data.Email);
-                               _customMobileField.SetValue(_contactDetails.d.data.Mobile);
-                               ToggleCTA();
-                               _customEmailField.SetState(true);
-                               _customMobileField.SetState(true);
-                           }
-                           _viewContactDetailsTitle.Hidden = !_isAllowEdit;
-                           _viewContactDetails.Hidden = !_isAllowEdit;
-                           if (!IsApplication) { UpdateView(); }
-                       }
                        if (!IsApplication)
                        {
                            await GetSMRTerminationReasons();
@@ -623,7 +619,7 @@ namespace myTNB
                                   UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
                                   GenericStatusPageViewController status = storyBoard.InstantiateViewController("GenericStatusPageViewController") as GenericStatusPageViewController;
                                   status.StatusDisplayType = IsApplication ? GenericStatusPageViewController.StatusType.SSMRApply
-                                  : GenericStatusPageViewController.StatusType.SSMRDiscontinue;
+                                    : GenericStatusPageViewController.StatusType.SSMRDiscontinue;
                                   status.IsSuccess = _ssmrApplicationStatus.d.IsSuccess;
                                   status.StatusTitle = _ssmrApplicationStatus.d.DisplayTitle;
                                   status.StatusMessage = _ssmrApplicationStatus.d.DisplayMessage;
@@ -648,27 +644,6 @@ namespace myTNB
             });
         }
 
-        private async Task GetContactInfo()
-        {
-            await Task.Factory.StartNew(() =>
-            {
-                ServiceManager serviceManager = new ServiceManager();
-                string ICNumber = DataManager.DataManager.SharedInstance.UserEntity != null
-                    && DataManager.DataManager.SharedInstance.UserEntity.Count > 0
-                    && DataManager.DataManager.SharedInstance.UserEntity[0] != null
-                    && DataManager.DataManager.SharedInstance.UserEntity[0].identificationNo != null
-                    ? DataManager.DataManager.SharedInstance.UserEntity[0].identificationNo ?? string.Empty : string.Empty;
-                object request = new
-                {
-                    serviceManager.usrInf,
-                    contractAccount = SelectedAccount.accNum,
-                    isOwnedAccount = SelectedAccount.IsOwnedAccount,
-                    ICNumber
-                };
-                _contactDetails = serviceManager.OnExecuteAPIV6<ContactDetailsResponseModel>(SSMRConstants.Service_GetCARegisteredContact, request);
-            });
-        }
-
         private async Task GetSMRTerminationReasons()
         {
             await Task.Factory.StartNew(() =>
@@ -686,16 +661,16 @@ namespace myTNB
         private string GetNewValue(bool isMobilePhone = true)
         {
             string oldValue = string.Empty;
-            if (_contactDetails != null && _contactDetails.d != null
-                    && _contactDetails.d.IsSuccess && _contactDetails.d.data != null)
+            if (ContactDetails != null && ContactDetails.d != null
+                    && ContactDetails.d.IsSuccess && ContactDetails.d.data != null)
             {
                 if (isMobilePhone)
                 {
-                    oldValue = _contactDetails.d.data.Mobile != null ? _contactDetails.d.data.Mobile : string.Empty;
+                    oldValue = ContactDetails.d.data.Mobile != null ? ContactDetails.d.data.Mobile : string.Empty;
                 }
                 else
                 {
-                    oldValue = _contactDetails.d.data.Email != null ? _contactDetails.d.data.Email : string.Empty;
+                    oldValue = ContactDetails.d.data.Email != null ? ContactDetails.d.data.Email : string.Empty;
                 }
             }
             string newValue = isMobilePhone ? _customMobileField.GetNonFormattedValue() : _customEmailField.GetNonFormattedValue();
@@ -726,13 +701,13 @@ namespace myTNB
             {
                 serviceManager.usrInf,
                 contractAccount = SelectedAccount.accNum,
-                oldPhone = _contactDetails != null && _contactDetails.d != null
-                    && _contactDetails.d.IsSuccess && _contactDetails.d.data != null
-                        ? _contactDetails.d.data.Mobile : string.Empty,
+                oldPhone = ContactDetails != null && ContactDetails.d != null
+                    && ContactDetails.d.IsSuccess && ContactDetails.d.data != null
+                        ? ContactDetails.d.data.Mobile : string.Empty,
                 newPhone = GetNewValue(),
-                oldEmail = _contactDetails != null && _contactDetails.d != null
-                    && _contactDetails.d.IsSuccess && _contactDetails.d.data != null
-                        ? _contactDetails.d.data.Email : string.Empty,
+                oldEmail = ContactDetails != null && ContactDetails.d != null
+                    && ContactDetails.d.IsSuccess && ContactDetails.d.data != null
+                        ? ContactDetails.d.data.Email : string.Empty,
                 newEmail = GetNewValue(false),
                 SMRMode = IsApplication ? SSMRConstants.Service_Register : SSMRConstants.Service_Terminate,
                 reason = GetReason(),

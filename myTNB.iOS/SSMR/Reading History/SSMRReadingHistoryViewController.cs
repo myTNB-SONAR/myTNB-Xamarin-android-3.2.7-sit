@@ -22,6 +22,7 @@ namespace myTNB
         private AccountsSMREligibilityResponseModel _eligibilityAccount;
         private SMRAccountActivityInfoResponseModel _smrActivityInfoResponse;
         private CustomerAccountRecordModel _currAcc;
+        private ContactDetailsResponseModel _contactDetails;
         private nfloat _headerHeight, _maxHeaderHeight, _navBarHeight, _previousScrollOffset;
         private nfloat _minHeaderHeight = 0.1f;
         private nfloat _tableViewOffset = 64f;
@@ -35,7 +36,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
-            PageName = "SSMRReadingHistory";
+            PageName = SSMRConstants.Pagename_SSMRReadingHistory;
             base.ViewDidLoad();
             SetNavigation();
             SSMRAccounts.SetFilteredEligibleAccounts();
@@ -239,7 +240,6 @@ namespace myTNB
             {
                 Frame = new CGRect(BaseMargin, BaseMargin, BaseMarginedWidth, GetScaledHeight(48)),
                 BackgroundColor = UIColor.White,
-                Font = TNBFont.MuseoSans_16_500,
                 PageName = PageName,
                 EventName = SSMRConstants.EVENT_DisableSelfMeterReading
             };
@@ -269,7 +269,7 @@ namespace myTNB
                             && _eligibilityAccount.d.didSucceed && _eligibilityAccount.d.data != null
                             && _eligibilityAccount.d.data.accountEligibilities != null)
                         {
-                            SSMRAccounts.SetEligibleAccounts(_eligibilityAccount.d.data.accountEligibilities);
+                            SSMRAccounts.SetData(_eligibilityAccount.d);
                             UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                             SelectAccountTableViewController viewController = storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
                             viewController.IsFromSSMR = true;
@@ -393,16 +393,62 @@ namespace myTNB
 
         private void DisplayApplciationForm(bool isEnable)
         {
-            UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
-            SSMRApplicationViewController viewController =
-                storyBoard.InstantiateViewController("SSMRApplicationViewController") as SSMRApplicationViewController;
-            viewController.IsApplication = isEnable;
-            viewController.SelectedAccount = _currAcc;
-            UINavigationController navController = new UINavigationController(viewController);
-            PresentViewController(navController, true, null);
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        ActivityIndicator.Show();
+                        await GetContactInfo();
+                        if (_contactDetails != null && _contactDetails.d != null
+                        && _contactDetails.d.IsSuccess && _contactDetails.d.data != null)
+                        {
+                            UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+                            SSMRApplicationViewController viewController =
+                                storyBoard.InstantiateViewController("SSMRApplicationViewController") as SSMRApplicationViewController;
+                            viewController.IsApplication = isEnable;
+                            viewController.SelectedAccount = _currAcc;
+                            viewController.ContactDetails = _contactDetails;
+                            UINavigationController navController = new UINavigationController(viewController);
+                            PresentViewController(navController, true, null);
+                        }
+                        else
+                        {
+                            DisplayServiceError(_contactDetails.d.ErrorMessage);
+                        }
+                        ActivityIndicator.Hide();
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
         }
 
         #region Services
+        private async Task GetContactInfo()
+        {
+            await Task.Factory.StartNew(() =>
+            {
+                ServiceManager serviceManager = new ServiceManager();
+                string ICNumber = DataManager.DataManager.SharedInstance.UserEntity != null
+                    && DataManager.DataManager.SharedInstance.UserEntity.Count > 0
+                    && DataManager.DataManager.SharedInstance.UserEntity[0] != null
+                    && DataManager.DataManager.SharedInstance.UserEntity[0].identificationNo != null
+                    ? DataManager.DataManager.SharedInstance.UserEntity[0].identificationNo ?? string.Empty : string.Empty;
+                object request = new
+                {
+                    serviceManager.usrInf,
+                    contractAccount = _currAcc.accNum,
+                    isOwnedAccount = _currAcc.IsOwnedAccount,
+                    ICNumber
+                };
+                _contactDetails = serviceManager.OnExecuteAPIV6<ContactDetailsResponseModel>(SSMRConstants.Service_GetCARegisteredContact, request);
+            });
+        }
+
         private async Task GetEligibility()
         {
             await Task.Factory.StartNew(() =>

@@ -107,8 +107,7 @@ namespace myTNB
             {
                 Frame = new CGRect(_padding, _txtDesc.Frame.GetMaxY() + ScaleUtility.GetScaledHeight(16)
                     , _parentView.Frame.Width - (_padding * 2), ScaleUtility.GetScaledHeight(48)),
-                BackgroundColor = MyTNBColor.FreshGreen,
-                Font = TNBFont.MuseoSans_16_500
+                BackgroundColor = MyTNBColor.FreshGreen
             };
             _btnSubmit.SetTitleColor(UIColor.White, UIControlState.Normal);
             _btnSubmit.AddGestureRecognizer(new UITapGestureRecognizer(() =>

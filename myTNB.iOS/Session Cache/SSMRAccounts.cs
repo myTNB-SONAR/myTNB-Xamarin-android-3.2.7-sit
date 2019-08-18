@@ -15,6 +15,11 @@ namespace myTNB
         private static List<CustomerAccountRecordModel> SSMRAccountList = new List<CustomerAccountRecordModel>();
         private static List<CustomerAccountRecordModel> SSMRCombinedList = new List<CustomerAccountRecordModel>();
         private static List<CustomerAccountRecordModel> EligibleAccountList = new List<CustomerAccountRecordModel>();
+        private static List<PopupModel> PopupDetailsList = new List<PopupModel>();
+        private static Dictionary<string, List<PopupSelectorModel>> SMREligibilityPopUpDetails;
+        private static List<PopupSelectorModel> SMREligibilityPopUpList;
+        private static readonly string PopupKey = SSMR.SSMRConstants.Popup_SMREligibiltyPopUpDetails;
+        private static readonly string SelectorKey = SSMR.SSMRConstants.Pagename_SSMRReadingHistory;
 
         public static void SetFilteredEligibleAccounts()
         {
@@ -64,8 +69,9 @@ namespace myTNB
             return null;
         }
 
-        public static void SetEligibleAccounts(List<AccountsSMREligibilityModel> accounts)
+        public static void SetData(AccountsSMREligibilityDataModel response)
         {
+            var accounts = response.data.accountEligibilities;
             if (accounts == null || SSMRCombinedList == null) { return; }
             EligibleAccountList.Clear();
             for (int i = 0; i < accounts.Count; i++)
@@ -81,6 +87,10 @@ namespace myTNB
                     }
                 }
                 DataManager.DataManager.SharedInstance.UpdateDueIsSSMR(accounts[i].ContractAccount, accounts[i].IsSMRTagged);
+            }
+            if (response.SMREligibiltyPopUpDetails != null)
+            {
+                PopupDetailsList = response.SMREligibiltyPopUpDetails;
             }
         }
 
@@ -181,6 +191,68 @@ namespace myTNB
                 NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
                 return sharedPreference.BoolForKey("ReadMeterWalkthroughV2");
             }
+        }
+
+        private static void SetPopupSelectorValues()
+        {
+            if (SMREligibilityPopUpDetails == null || SMREligibilityPopUpDetails.Count == 0
+                || SMREligibilityPopUpList == null || SMREligibilityPopUpList.Count == 0)
+            {
+                SMREligibilityPopUpDetails = LanguageManager.Instance.GetPopupSelectorsByPage(SelectorKey);
+                if (SMREligibilityPopUpDetails.ContainsKey(PopupKey))
+                {
+                    SMREligibilityPopUpList = SMREligibilityPopUpDetails[PopupKey];
+                }
+            }
+        }
+
+        private static PopupSelectorModel GetFallbackPopupValue(string type)
+        {
+            if (SMREligibilityPopUpList != null || SMREligibilityPopUpList.Count > 0)
+            {
+                PopupSelectorModel item = SMREligibilityPopUpList.Find(x => x.Type == type);
+                if (item != null)
+                {
+                    return item;
+                }
+            }
+            return new PopupSelectorModel();
+        }
+
+        public static PopupModel GetPopupDetailsByType(string type)
+        {
+            SetPopupSelectorValues();
+            PopupSelectorModel fallback = GetFallbackPopupValue(type);
+            if (PopupDetailsList != null && !string.IsNullOrEmpty(type) && !string.IsNullOrWhiteSpace(type))
+            {
+                int index = PopupDetailsList.FindIndex(x => x.Type.ToLower() == type.ToLower());
+                if (index > -1)
+                {
+                    PopupModel popupDetails = PopupDetailsList[index];
+                    return new PopupModel
+                    {
+                        Title = popupDetails != null && !string.IsNullOrEmpty(popupDetails.Title)
+                            ? popupDetails.Title : fallback.Title,
+                        Description = popupDetails != null && !string.IsNullOrEmpty(popupDetails.Description)
+                            ? popupDetails.Description : fallback.Description,
+                        CTA = popupDetails != null && !string.IsNullOrEmpty(popupDetails.CTA)
+                            ? popupDetails.CTA : fallback.CTA,
+                        Type = popupDetails != null && !string.IsNullOrEmpty(popupDetails.Type)
+                            ? popupDetails.Type : fallback.Type
+                    };
+                }
+                else
+                {
+                    return new PopupModel
+                    {
+                        Title = fallback.Title,
+                        Description = fallback.Description,
+                        CTA = fallback.CTA,
+                        Type = fallback.Type
+                    };
+                }
+            }
+            return null;
         }
     }
 }

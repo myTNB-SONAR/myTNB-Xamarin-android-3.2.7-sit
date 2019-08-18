@@ -1068,9 +1068,6 @@
     <ImageAsset Include="Assets.xcassets\Stub-Promotion-2.imageset\image2%402x.png" />
     <ImageAsset Include="Assets.xcassets\Stub-Promotion-2.imageset\image2%403x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc%402x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc%403x.png" />
     <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Grey.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Grey.imageset\Add-Account-Icon-Grey.png" />
     <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Grey.imageset\Add-Account-Icon-Grey%402x.png" />
@@ -1119,6 +1116,9 @@
     <ImageAsset Include="Assets.xcassets\Camera-Icon-Green.imageset\Camera-Icon-Green.png" />
     <ImageAsset Include="Assets.xcassets\Camera-Icon-Green.imageset\Camera-Icon-Green%402x.png" />
     <ImageAsset Include="Assets.xcassets\Camera-Icon-Green.imageset\Camera-Icon-Green%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc-1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc%403x-1.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />

@@ -71,6 +71,7 @@ namespace myTNB.Dashboard.SelectAccounts
                     }
                 }
             }
+            cell.SelectionStyle = UITableViewCellSelectionStyle.None;
             return cell;
         }
 

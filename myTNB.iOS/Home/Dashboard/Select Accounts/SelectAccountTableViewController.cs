@@ -82,9 +82,9 @@ namespace myTNB
             view.AddSubview(viewInfo);
             view.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                DisplayCustomAlert(GetI18NValue(SelectAccountConstants.I18N_AccountsMissingTitle)
-                    , GetI18NValue(SelectAccountConstants.I18N_AccountsMissingDescription)
-                    , new Dictionary<string, Action> { { GetI18NValue(SelectAccountConstants.I18N_AccountsMissingCTA), null } }
+                Model.PopupModel popUpContent = SSMRAccounts.GetPopupDetailsByType(SelectAccountConstants.Popup_NoSSMRCA);
+                DisplayCustomAlert(popUpContent.Title, popUpContent.Description
+                    , new Dictionary<string, Action> { { popUpContent.CTA, null } }
                     , false);
             }));
             accountRecordsTableView.TableFooterView = view;
