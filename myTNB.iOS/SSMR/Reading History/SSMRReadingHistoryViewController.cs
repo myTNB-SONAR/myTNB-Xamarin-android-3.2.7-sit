@@ -255,42 +255,8 @@ namespace myTNB
             _footerView.AddSubview(viewButton);
         }
 
-        private void OnTapDropDown()
-        {
-            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
-            {
-                InvokeOnMainThread(async () =>
-                {
-                    if (NetworkUtility.isReachable)
-                    {
-                        ActivityIndicator.Show();
-                        await GetEligibility();
-                        if (_eligibilityAccount != null && _eligibilityAccount.d != null
-                            && _eligibilityAccount.d.didSucceed && _eligibilityAccount.d.data != null
-                            && _eligibilityAccount.d.data.accountEligibilities != null)
-                        {
-                            SSMRAccounts.SetData(_eligibilityAccount.d);
-                            UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
-                            SelectAccountTableViewController viewController = storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
-                            viewController.IsFromSSMR = true;
-                            viewController.CurrentSelectedIndex = _currentIndex;
-                            viewController.OnSelect = OnSelectAccount;
-                            UINavigationController navController = new UINavigationController(viewController);
-                            PresentViewController(navController, true, null);
-                        }
-                        ActivityIndicator.Hide();
-                    }
-                    else
-                    {
-                        DisplayNoDataAlert();
-                    }
-                });
-            });
-        }
-
         private void OnSelectAccount(int index)
         {
-            Debug.WriteLine("INDEX: " + index);
             if (index > -1)
             {
                 _currentIndex = index;
@@ -338,6 +304,7 @@ namespace myTNB
             _readingHistoryTableView.ReloadData();
         }
 
+        #region Events
         public void OnTableViewScrolled(object sender, EventArgs e)
         {
             var scrollDiff = _readingHistoryTableView.ContentOffset.Y - _previousScrollOffset;
@@ -381,6 +348,57 @@ namespace myTNB
             PresentViewController(navController, true, null);
         }
 
+        private void OnTapDropDown()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        ActivityIndicator.Show();
+                        await GetEligibility();
+                        if (_eligibilityAccount != null && _eligibilityAccount.d != null
+                            && _eligibilityAccount.d.didSucceed && _eligibilityAccount.d.data != null
+                            && _eligibilityAccount.d.data.accountEligibilities != null)
+                        {
+                            SSMRAccounts.SetData(_eligibilityAccount.d);
+                            if (SSMRAccounts.GetEligibleAccountList().Count > 0)
+                            {
+                                UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+                                SelectAccountTableViewController viewController = storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
+                                viewController.IsFromSSMR = true;
+                                viewController.CurrentSelectedIndex = _currentIndex;
+                                viewController.OnSelect = OnSelectAccount;
+                                UINavigationController navController = new UINavigationController(viewController);
+                                PresentViewController(navController, true, null);
+                            }
+                            else
+                            {
+                                UIStoryboard storyBoard = UIStoryboard.FromName("GenericNoData", null);
+                                GenericNodataViewController viewController = (GenericNodataViewController)storyBoard
+                                    .InstantiateViewController("GenericNoData");
+                                viewController.NavTitle = GetI18NValue(SSMRConstants.I18N_SelectAccountNavTitle);
+                                viewController.IsRootPage = true;
+                                viewController.Image = SSMRConstants.IMG_NoData;
+                                viewController.Message = GetI18NValue(SSMRConstants.I18N_NoEligibleAccount);
+                                NavigationController.PushViewController(viewController, true);
+                            }
+                        }
+                        else
+                        {
+                            DisplayServiceError(_eligibilityAccount?.d?.ErrorMessage);
+                        }
+                        ActivityIndicator.Hide();
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
         private void OnEnableSSMR()
         {
             DisplayApplciationForm(true);
@@ -415,7 +433,7 @@ namespace myTNB
                         }
                         else
                         {
-                            DisplayServiceError(_contactDetails.d.ErrorMessage);
+                            DisplayServiceError(_contactDetails?.d?.ErrorMessage);
                         }
                         ActivityIndicator.Hide();
                     }
@@ -426,7 +444,7 @@ namespace myTNB
                 });
             });
         }
-
+        #endregion
         #region Services
         private async Task GetContactInfo()
         {

@@ -88,8 +88,7 @@
         "editContactInfo": "By editing, you will update your myTNB profile and electricity account contact details.",
         "selectReason": "Select Reason",
         "stateReason": "Please state your reason",
-        "selectAnAccount": "Select an account",
-        "noEligibleAccount": "Looks like your accounts aren’t eligible for the Self Meter Reading subscription."
+        "selectAnAccount": "Select an account"
     },
     "Status": {
         "feedbackSuccessTitle": "Feedback Successful",
@@ -130,7 +129,9 @@
         "subTitle": "I want to read my own meter for:",
         "disableSSMRCTA": "Disable Self Meter Reading",
         "enableSSMRCTA": "Enable Self Meter Reading",
-        "enableSSMRDescription": "This electricity account is not enabled for self meter reading yet, tap below to start!"
+        "enableSSMRDescription": "This electricity account is not enabled for self meter reading yet, tap below to start!",
+        "noEligibleAccount": "Looks like your accounts aren’t eligible to enable Self Meter Reading service",
+        "selectAccountNavTitle": "Select Electricity Account"
     },
     "SSMRReadingHistory_selector": {
         "SMREligibiltyPopUpDetails": [

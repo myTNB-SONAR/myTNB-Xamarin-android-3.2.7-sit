@@ -104,6 +104,7 @@ namespace myTNB.SSMR
         public static string I18N_DisableSSMRCTA = "disableSSMRCTA";
         public static string I18N_EnableSSMRCTA = "enableSSMRCTA";
         public static string I18N_EnableSSMRDescription = "enableSSMRDescription";
+        public static string I18N_SelectAccountNavTitle = "selectAccountNavTitle";
 
         //Capture Meter
         public static string I18N_OCRReading = "ocrReading";
