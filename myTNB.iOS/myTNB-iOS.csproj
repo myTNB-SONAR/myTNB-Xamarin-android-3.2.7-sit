@@ -2335,14 +2335,13 @@
       <DependentUpon>..\Home\Dashboard\Usage\UsageViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Usage\UsageBaseViewController.cs" />
-    <Compile Include="Usage\DashboardConstants.cs" />
+    <Compile Include="Usage\UsageConstants.cs" />
     <Compile Include="Components\Usage View\DisconnectionComponent.cs" />
     <Compile Include="Components\Usage View\EnergyTipsComponent.cs" />
     <Compile Include="Components\Usage View\TariffLegendComponent.cs" />
     <Compile Include="Components\Usage View\TariffSelectionComponent.cs" />
     <Compile Include="Components\Usage View\UsageFooterViewComponent.cs" />
     <Compile Include="Components\Usage View\AccountSelector.cs" />
-    <Compile Include="Components\Usage View\AccountStatus.cs" />
     <Compile Include="Components\Usage View\ChartView.cs" />
     <Compile Include="Components\BaseComponent.cs" />
   </ItemGroup>

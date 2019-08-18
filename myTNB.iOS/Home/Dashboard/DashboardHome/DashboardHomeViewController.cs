@@ -461,30 +461,18 @@ namespace myTNB
 
         public void OnAccountCardSelected(DueAmountDataModel model)
         {
-            //UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
-            //var viewController = storyBoard.InstantiateViewController("UsageViewController") as UsageViewController;
-            //if (viewController != null)
-            //{
-            //    var navController = new UINavigationController(viewController);
-            //    PresentViewController(navController, true, null);
-            //}
             var index = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindIndex(x => x.accNum == model.accNum) ?? -1;
             if (index > -1)
             {
                 var selected = DataManager.DataManager.SharedInstance.AccountRecordsList.d[index];
                 DataManager.DataManager.SharedInstance.SelectAccount(selected.accNum);
                 DataManager.DataManager.SharedInstance.IsSameAccount = false;
-                /*UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
-                var vc = storyBoard.InstantiateViewController("DashboardViewController") as DashboardViewController;
-                vc.ShouldShowBackButton = true;
-                ShowViewController(vc, null);
-                */
 
-                ///*
                 AccountManager.Instance.CurrentAccountIndex = index;
-                UIStoryboard storyBoard = UIStoryboard.FromName("DashboardV2", null);
-                DashboardV2ViewController vc = storyBoard.InstantiateViewController("DashboardV2") as DashboardV2ViewController;
-                NavigationController.PushViewController(vc, true);
+                UIStoryboard storyBoard = UIStoryboard.FromName("Usage", null);
+                var viewController = storyBoard.InstantiateViewController("UsageViewController") as UsageViewController;
+                var navController = new UINavigationController(viewController);
+                PresentViewController(navController, true, null);
             }
         }
 

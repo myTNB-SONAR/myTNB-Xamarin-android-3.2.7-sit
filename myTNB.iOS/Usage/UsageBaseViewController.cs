@@ -17,7 +17,7 @@ namespace myTNB
 
         internal UIScrollView _scrollViewContent;
         internal CustomUIView _navbarContainer, _accountSelector, _viewSeparator, _viewStatus
-            , _viewChart, _viewToggle, _viewTips, _viewFooter, _rmKwhDropDownView;
+            , _viewChart, _viewLegend, _viewToggle, _viewTips, _viewFooter, _rmKwhDropDownView;
         internal UILabel _lblAddress, _RMLabel, _kWhLabel;
 
         internal bool _rmkWhFlag, _tariffIsVisible = false;
@@ -31,6 +31,7 @@ namespace myTNB
             SetNavigation();
             AddScrollView();
             AddSubviews();
+            SetFooterView();
         }
 
         public override void ViewWillAppear(bool animated)
@@ -70,7 +71,7 @@ namespace myTNB
             UIView viewBack = new UIView(new CGRect(18, 0, imageWidth, imageWidth));
             UIImageView imgViewBack = new UIImageView(new CGRect(0, 0, imageWidth, imageWidth))
             {
-                Image = UIImage.FromBundle("Back-White")
+                Image = UIImage.FromBundle(UsageConstants.IMG_Back)
             };
             viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
@@ -119,11 +120,12 @@ namespace myTNB
             { BackgroundColor = UIColor.FromWhiteAlpha(1, 0.30F) };
             _viewStatus = new CustomUIView(new CGRect(0, 0, ViewWidth, 0));
             _viewChart = new CustomUIView(new CGRect(0, 0, ViewWidth, 0));
+            _viewLegend = new CustomUIView(new CGRect(0, 0, ViewWidth, 0));
             _viewToggle = new CustomUIView(new CGRect(0, 0, ViewWidth, 0));
             _viewTips = new CustomUIView(new CGRect(0, 0, ViewWidth, 0));
 
             _scrollViewContent.AddSubviews(new UIView[] { _accountSelector
-                , _lblAddress, _viewSeparator, _viewStatus, _viewChart, _viewToggle, _viewTips });
+                , _lblAddress, _viewSeparator, _viewStatus, _viewChart, _viewLegend, _viewToggle, _viewTips });
         }
 
         private void SetContentView()
@@ -132,8 +134,9 @@ namespace myTNB
             _viewSeparator.Frame = new CGRect(new CGPoint(BaseMargin, GetYLocationFromFrame(_lblAddress.Frame, 16F)), _viewSeparator.Frame.Size);
             _viewStatus.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewSeparator.Frame, (_viewStatus.Frame.Height > 0) ? 16F : 0F)), _viewStatus.Frame.Size);
             _viewChart.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewStatus.Frame, 16F)), _viewChart.Frame.Size);
-            _viewToggle.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, 16F)), _viewToggle.Frame.Size);
-            _viewTips.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewToggle.Frame, 124F)), _viewTips.Frame.Size);
+            _viewLegend.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, !_viewLegend.Hidden ? 16F : 0F)), _viewLegend.Frame.Size);
+            _viewToggle.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewLegend.Frame, 16F)), _viewToggle.Frame.Size);
+            _viewTips.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewToggle.Frame, 24F)), _viewTips.Frame.Size);
 
             _scrollViewContent.ContentSize = new CGSize(ViewWidth, _viewTips.Frame.GetMaxY());
         }
@@ -142,7 +145,6 @@ namespace myTNB
         {
             AddAccountSelector();
             SetAddress();
-            SetFooterView();
             SetChartView();
             SetTariffSelectionComponent();
             SetEnergyTipsComponent();
@@ -185,6 +187,33 @@ namespace myTNB
             chartFrame.Size = new CGSize(ViewWidth, chart.Frame.Height);
             _viewChart.Frame = chartFrame;
         }
+        #region TARIFF LEGEND Methods
+        public void SetTariffLegendComponent()
+        {
+            List<LegendItemModel> tariffList = new List<LegendItemModel>(AccountUsageCache.GetTariffLegendList());
+            if (tariffList != null && tariffList.Count > 0)
+            {
+                ViewHelper.AdjustFrameSetHeight(_viewLegend, 0);
+                _viewLegend.BackgroundColor = UIColor.Clear;
+                _viewLegend.Hidden = true;
+
+                TariffLegendComponent tariffLegendComponent = new TariffLegendComponent(View, tariffList);
+                _viewLegend.AddSubview(tariffLegendComponent.GetUI());
+                SetContentView();
+            }
+        }
+        private void ShowHideTariffLegends(bool isVisible)
+        {
+            List<LegendItemModel> tariffList = new List<LegendItemModel>(AccountUsageCache.GetTariffLegendList());
+            if (tariffList != null && tariffList.Count > 0)
+            {
+                _viewLegend.Hidden = !isVisible;
+                nfloat height = isVisible ? tariffList.Count * GetScaledHeight(25f) : 0;
+                ViewHelper.AdjustFrameSetHeight(_viewLegend, height);
+                SetContentView();
+            }
+        }
+        #endregion
         #region RM/KWH & TARIFF Methods
         private void SetTariffSelectionComponent()
         {
@@ -203,7 +232,7 @@ namespace myTNB
             {
                 _tariffIsVisible = !_tariffIsVisible;
                 _tariffSelectionComponent.UpdateTariffButton(_tariffIsVisible);
-                //ShowHideTariffLegends(_tariffIsVisible);
+                ShowHideTariffLegends(_tariffIsVisible);
             }));
 
             CreateRMKwhDropdown();

@@ -1,6 +1,6 @@
-﻿namespace myTNB.DashboardV2
+﻿namespace myTNB
 {
-    public static class DashboardConstants
+    public static class UsageConstants
     {
         //Image
         public static string IMG_Back = "Back-White";
