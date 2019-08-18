@@ -35,7 +35,6 @@ namespace myTNB
         private int _selectedTerminateReasonIndex = 0;
         private UILabel _lblAddress, _lblEditInfo, _lblTerminateReason, _lblReason;
         private UITextView _txtViewReason;
-
         private bool _isAllowEdit;
 
         public override void ViewDidLoad()
@@ -474,6 +473,12 @@ namespace myTNB
                 _lblReason.Hidden = _txtViewReason.Text.Length == GetI18NValue(SSMRConstants.I18N_StateReason).Length;
                 ToggleCTA();
                 return true;
+            };
+
+            _txtViewReason.ShouldChangeText += (txtView, range, replacementString) =>
+            {
+                var newLength = _txtViewReason.Text.Length + replacementString.Length - range.Length;
+                return newLength <= SSMRConstants.Max_ReasonCharacterCount;
             };
         }
         private void SetTextViewDisplay(bool shouldDisplay)

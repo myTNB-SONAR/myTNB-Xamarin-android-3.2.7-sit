@@ -145,5 +145,7 @@ namespace myTNB.SSMR
         public static string EVENT_DeleteImage = "Delete Image";
         public static string EVENT_DisableSelfMeterReading = "Disable Self Meter Reading";
         public static string EVENT_Refresh = "Refresh";
+
+        public static int Max_ReasonCharacterCount = 550;
     }
 }
