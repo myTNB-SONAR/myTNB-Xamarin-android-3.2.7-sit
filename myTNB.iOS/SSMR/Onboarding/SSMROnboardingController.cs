@@ -156,8 +156,7 @@ namespace myTNB.SSMR
                         if (viewController != null)
                         {
                             viewController.IsFromHome = true;
-                            UINavigationController navController = new UINavigationController(viewController);
-                            that.PresentViewController(navController, true, null);
+                            that.NavigationController.PushViewController(viewController, true);
                         }
                     }
                     else
