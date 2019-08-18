@@ -34,6 +34,13 @@ namespace myTNB.Home.Dashboard.DashboardHome
                 viewController.IsApplication = true;
                 UINavigationController navController = new UINavigationController(viewController);
                 _controller.PresentViewController(navController, true, null);
+
+                // TO DO: currently commented out as the logic to call GetSMRAccountActivityInfo API is yet to be created
+                //UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+                //SSMRReadingHistoryViewController viewController =
+                //    storyBoard.InstantiateViewController("SSMRReadingHistoryViewController") as SSMRReadingHistoryViewController;
+                //UINavigationController navController = new UINavigationController(viewController);
+                //_controller.PresentViewController(navController, true, null);
             }
             else
             {
@@ -48,7 +55,6 @@ namespace myTNB.Home.Dashboard.DashboardHome
 
         private void On_1002_Action()
         {
-
         }
 
         private void On_1003_Action()

@@ -46,29 +46,35 @@ namespace myTNB.SSMR
                     displayImage = UIImage.FromBundle(SSMRDataObject.Image);
                 }             }
 
-            UIImageView imgBackground = new UIImageView(new CGRect(0, 0, that.View.Frame.Width, that.View.Frame.Height * 0.60F))
+            nfloat width = 320;
+            nfloat height = 325;
+            ScaleUtility.GetValuesFromAspectRatio(ref width, ref height);
+
+            UIImageView imgBackground = new UIImageView(new CGRect(0, 0, width, height))
             {
                 Image = displayImage
             };
-            UILabel lblTitle = new UILabel(new CGRect(26, imgBackground.Frame.GetMaxY() + 23, that.View.Frame.Width - 52, 19))
+            UILabel lblTitle = new UILabel(new CGRect(ScaleUtility.GetScaledWidth(16), ScaleUtility.GetYLocationFromFrame(imgBackground.Frame, 23)
+                , that.View.Frame.Width - ScaleUtility.GetScaledWidth(32), ScaleUtility.GetScaledHeight(19)))
             {
                 TextColor = MyTNBColor.PowerBlue,
                 TextAlignment = UITextAlignment.Center,
-                Font = MyTNBFont.MuseoSans16_500,
+                Font = TNBFont.MuseoSans_16_500,
                 Text = SSMRDataObject.Title ?? string.Empty
             };
-            UILabel lblDescription = new UILabel(new CGRect(26, lblTitle.Frame.GetMaxY() + 16, that.View.Frame.Width - 52, 80))
+            UILabel lblDescription = new UILabel(new CGRect(ScaleUtility.GetScaledWidth(16), ScaleUtility.GetYLocationFromFrame(lblTitle.Frame, 16)
+                , that.View.Frame.Width - ScaleUtility.GetScaledWidth(32), ScaleUtility.GetScaledHeight(80)))
             {
                 TextColor = MyTNBColor.WarmGrey,
                 TextAlignment = UITextAlignment.Center,
-                Font = MyTNBFont.MuseoSans12_300,
+                Font = TNBFont.MuseoSans_12_300,
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.WordWrap,
                 Text = SSMRDataObject.Description ?? string.Empty
             };
 
-            CGSize size = GetLabelSize(lblDescription, that.View.Frame.Width - 32, 80);
-            lblDescription.Frame = new CGRect(26, lblTitle.Frame.GetMaxY() + 16, that.View.Frame.Width - 52, size.Height);
+            CGSize size = GetLabelSize(lblDescription, that.View.Frame.Width - ScaleUtility.GetScaledWidth(32), ScaleUtility.GetScaledHeight(80));
+            lblDescription.Frame = new CGRect(lblDescription.Frame.X, lblDescription.Frame.Y, lblDescription.Frame.Width, size.Height);
             that.View.AddSubviews(new UIView[] { imgBackground, lblTitle, lblDescription });
         }
     }

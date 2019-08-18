@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Diagnostics;
+using Firebase.Analytics;
 using UIKit;
 
 namespace myTNB
 {
     public class CustomUIButtonV2 : UIButton
     {
-        private string PageName = string.Empty;
-        private string EventName = string.Empty;
+        public string PageName { set; private get; }
+        public string EventName { set; private get; }
+        private string EventFormat = "{0} - {1}";
 
         public CustomUIButtonV2(bool isWhiteBG = false)
         {
@@ -35,6 +37,7 @@ namespace myTNB
             {
                 //Handle Firebase Log Event
                 Debug.WriteLine("Tapped");
+                Analytics.LogEvent(string.Format(EventFormat, PageName, EventName), null);
             }));
             base.AddGestureRecognizer(gestureRecognizer);
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Force.DeepCloner;
+using Foundation;
 using myTNB.Model;
 
 namespace myTNB
@@ -10,23 +11,24 @@ namespace myTNB
         private static readonly Lazy<SSMRActivityInfoCache> lazy = new Lazy<SSMRActivityInfoCache>(() => new SSMRActivityInfoCache());
         public static SSMRActivityInfoCache Instance { get { return lazy.Value; } }
 
-        private SMRAccountActivityInfoResponseModel SSMRActivityInfoResponse = new SMRAccountActivityInfoResponseModel();
-        private List<SMRMROValidateRegisterDetailsInfoModel> SSMRPreviousMeterReadingList;
-        private List<PopupModel> PopupDetailList = new List<PopupModel>();
-        private Dictionary<string, List<PopupSelectorModel>> SMRPhotoPopUpDetails;
-        private List<PopupSelectorModel> SMRPhotoPopUpList;
+        private static SMRAccountActivityInfoResponseModel SSMRActivityInfoResponse = new SMRAccountActivityInfoResponseModel();
+        private static List<SMRMROValidateRegisterDetailsInfoModel> SSMRPreviousMeterReadingList;
+        private static List<PopupModel> PopupDetailList = new List<PopupModel>();
+        private static Dictionary<string, List<PopupSelectorModel>> SMRPhotoPopUpDetails;
+        private static List<PopupSelectorModel> SMRPhotoPopUpList;
 
-        private readonly string SelectorKey = SSMR.SSMRConstants.Pagename_SSMRCaptureMeter;
-        private readonly string PopupKey = SSMR.SSMRConstants.Popup_SMRPhotoPopUpDetails;
+        private static readonly string SelectorKey = SSMR.SSMRConstants.Pagename_SSMRCaptureMeter;
+        private static readonly string PopupKey = SSMR.SSMRConstants.Popup_SMRPhotoPopUpDetails;
+        private static readonly string TakePhotoToolTipKey = "TakePhotoKey";
 
-        public void SetData(SMRAccountActivityInfoResponseModel data)
+        public static void SetData(SMRAccountActivityInfoResponseModel data)
         {
             SSMRActivityInfoResponse = data;
             PopupDetailList = data.d.data.SMRPhotoPopUpDetails;
             SSMRPreviousMeterReadingList = data.d.data.SMRMROValidateRegisterDetails;
         }
 
-        public PopupModel GetPopupDetailsByType(string type)
+        public static PopupModel GetPopupDetailsByType(string type)
         {
             SetPopupSelectorValues();
             PopupSelectorModel fallback = GetFallbackPopupValue(type);
@@ -62,17 +64,37 @@ namespace myTNB
             return null;
         }
 
-        public List<SMRMROValidateRegisterDetailsInfoModel> GetPreviousMeterReadingList()
+        public static List<SMRMROValidateRegisterDetailsInfoModel> GetPreviousMeterReadingList()
         {
             List<SMRMROValidateRegisterDetailsInfoModel> list = new List<SMRMROValidateRegisterDetailsInfoModel>();
             if (SSMRPreviousMeterReadingList != null && SSMRPreviousMeterReadingList.Count > 0)
             {
-                list = SSMRPreviousMeterReadingList.DeepClone();
+                for (int i = 0; i < SSMRPreviousMeterReadingList.Count; i++)
+                {
+                    SMRMROValidateRegisterDetailsInfoModel item = SSMRPreviousMeterReadingList[i];
+                    if (item == null) { continue; }
+                    list.Add(item.DeepClone());
+                }
             }
             return list;
         }
 
-        private void SetPopupSelectorValues()
+        public static bool IsPhotoToolTipDisplayed
+        {
+            set
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                sharedPreference.SetBool(value, TakePhotoToolTipKey);
+                sharedPreference.Synchronize();
+            }
+            get
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                return sharedPreference.BoolForKey(TakePhotoToolTipKey);
+            }
+        }
+
+        private static void SetPopupSelectorValues()
         {
             if (SMRPhotoPopUpDetails == null || SMRPhotoPopUpDetails.Count == 0
                 || SMRPhotoPopUpList == null || SMRPhotoPopUpList.Count == 0)
@@ -85,7 +107,7 @@ namespace myTNB
             }
         }
 
-        private PopupSelectorModel GetFallbackPopupValue(string type)
+        private static PopupSelectorModel GetFallbackPopupValue(string type)
         {
             if (SMRPhotoPopUpList != null || SMRPhotoPopUpList.Count > 0)
             {

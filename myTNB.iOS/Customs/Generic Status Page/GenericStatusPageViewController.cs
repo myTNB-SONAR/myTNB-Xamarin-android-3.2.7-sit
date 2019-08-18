@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using CoreAnimation;
 using CoreGraphics;
-using Foundation;
 using UIKit;
 using myTNB.Customs.GenericStatusPage;
 
@@ -128,61 +125,62 @@ namespace myTNB
 
         private void SetStatusCard()
         {
-            UIView viewCard = new UIView(new CGRect(16, DeviceHelper.GetStatusBarHeight() + 16, ViewWidth - 32, ViewHeight / 2))
+            UIView viewCard = new UIView(new CGRect(BaseMargin, DeviceHelper.GetStatusBarHeight() + GetScaledHeight(16), BaseMarginedWidth, ViewHeight / 2))
             {
                 BackgroundColor = UIColor.White
             };
             viewCard.Layer.CornerRadius = 2.0F;
-            nfloat imgWidth = viewCard.Frame.Width * 0.2222F;
+            nfloat imgWidth = GetScaledWidth(64);
             nfloat imgXLoc = (viewCard.Frame.Width - imgWidth) / 2;
-            UIImageView imgStatus = new UIImageView(new CGRect(imgXLoc, 16, imgWidth, imgWidth))
+            UIImageView imgStatus = new UIImageView(new CGRect(imgXLoc, GetScaledHeight(16), imgWidth, imgWidth))
             {
                 Image = UIImage.FromBundle(IsSuccess ? StatusPageConstants.IMG_Success : StatusPageConstants.IMG_Fail)
             };
-            UILabel lblTitle = new UILabel(new CGRect(16, imgStatus.Frame.GetMaxY(), viewCard.Frame.Width - 32, 24))
+            UILabel lblTitle = new UILabel(new CGRect(GetScaledWidth(16), imgStatus.Frame.GetMaxY(), viewCard.Frame.Width - GetScaledWidth(32), GetScaledHeight(24)))
             {
                 TextAlignment = UITextAlignment.Center,
                 TextColor = MyTNBColor.WaterBlue,
-                Font = MyTNBFont.MuseoSans16_500,
+                Font = TNBFont.MuseoSans_16_500,
                 Text = string.IsNullOrEmpty(StatusTitle) ? GetText(IsSuccess ? StatusPageConstants.Success : StatusPageConstants.Fail) : StatusTitle
             };
-            ResizeLabel(ref lblTitle, 24.0F);
-            UILabel lblMessage = new UILabel(new CGRect(16, lblTitle.Frame.GetMaxY() + 4, viewCard.Frame.Width - 32, 24))
+            ResizeLabel(ref lblTitle, GetScaledHeight(24));
+            UILabel lblMessage = new UILabel(new CGRect(GetScaledWidth(16), GetYLocationFromFrame(lblTitle.Frame, 4), viewCard.Frame.Width - GetScaledWidth(32), GetScaledHeight(24)))
             {
                 TextAlignment = UITextAlignment.Center,
                 TextColor = MyTNBColor.CharcoalGrey,
                 LineBreakMode = UILineBreakMode.WordWrap,
                 Lines = 0,
-                Font = MyTNBFont.MuseoSans12_300,
+                Font = TNBFont.MuseoSans_12_300,
                 Text = string.IsNullOrEmpty(StatusMessage) ? GetText(IsSuccess ? StatusPageConstants.SuccessMessage : StatusPageConstants.FailMessage) : StatusMessage
             };
-            ResizeLabel(ref lblMessage, 16.0F);
+            ResizeLabel(ref lblMessage, GetScaledHeight(16));
 
             viewCard.AddSubviews(new UIView[] { imgStatus, lblTitle, lblMessage });
             nfloat viewCardHeight = lblMessage.Frame.GetMaxY() + 16.0F;
             if (IsSuccess && StatusDisplayType != StatusType.SSMRReading)
             {
-                UIView viewLine = GenericLine.GetLine(new CGRect(16, lblMessage.Frame.GetMaxY() + 16, viewCard.Frame.Width - 32, 1));
-                UILabel lblRef = new UILabel(new CGRect(16, viewLine.Frame.GetMaxY() + 16, viewCard.Frame.Width * 0.60F, 14))
+                UIView viewLine = GenericLine.GetLine(new CGRect(GetScaledWidth(16), GetYLocationFromFrame(lblMessage.Frame, 16), viewCard.Frame.Width - GetScaledWidth(32), GetScaledHeight(1)));
+                UILabel lblRef = new UILabel(new CGRect(GetScaledWidth(16), GetYLocationFromFrame(viewLine.Frame, 16), viewCard.Frame.Width * 0.60F, GetScaledHeight(14)))
                 {
                     TextAlignment = UITextAlignment.Left,
                     TextColor = MyTNBColor.SilverChalice,
-                    Font = MyTNBFont.MuseoSans10_300,
+                    Font = TNBFont.MuseoSans_10_300,
                     Text = GetText(StatusPageConstants.ReferenceTitle).ToUpper()
                 };
-                UILabel lblDate = new UILabel(new CGRect(viewCard.Frame.Width - (viewCard.Frame.Width * 0.40F) - 16
-                    , viewLine.Frame.GetMaxY() + 16, viewCard.Frame.Width * 0.40F, 14))
+                UILabel lblDate = new UILabel(new CGRect(viewCard.Frame.Width - (viewCard.Frame.Width * 0.40F) - GetScaledWidth(16)
+                    , GetYLocationFromFrame(viewLine.Frame, 16), viewCard.Frame.Width * 0.40F, GetScaledHeight(14)))
                 {
                     TextAlignment = UITextAlignment.Right,
                     TextColor = MyTNBColor.SilverChalice,
-                    Font = MyTNBFont.MuseoSans10_300,
+                    Font = TNBFont.MuseoSans_10_300,
                     Text = GetText(StatusPageConstants.DateTitle).ToUpper()
                 };
-                UILabel lblRefVal = new UILabel(new CGRect(16, lblRef.Frame.GetMaxY() + 1, viewCard.Frame.Width * 0.60F, 18))
+                UILabel lblRefVal = new UILabel(new CGRect(GetScaledWidth(16), GetYLocationFromFrame(lblRef.Frame, 1)
+                    , viewCard.Frame.Width * 0.60F, GetScaledHeight(18)))
                 {
                     TextAlignment = UITextAlignment.Left,
                     TextColor = MyTNBColor.CharcoalGrey,
-                    Font = MyTNBFont.MuseoSans14_300,
+                    Font = TNBFont.MuseoSans_14_300,
                     Text = ReferenceNumber.ToUpper() ?? TNBGlobal.EMPTY_DATE
                 };
                 string refDate = ReferenceDate ?? TNBGlobal.EMPTY_DATE;
@@ -190,12 +188,12 @@ namespace myTNB
                 {
                     refDate = GetDate();
                 }
-                UILabel lblDateVal = new UILabel(new CGRect(viewCard.Frame.Width - (viewCard.Frame.Width * 0.40F) - 16
-                    , lblDate.Frame.GetMaxY() + 1, viewCard.Frame.Width * 0.40F, 18))
+                UILabel lblDateVal = new UILabel(new CGRect(viewCard.Frame.Width - (viewCard.Frame.Width * 0.40F) - GetScaledWidth(16)
+                    , GetYLocationFromFrame(lblDate.Frame, 1), viewCard.Frame.Width * 0.40F, GetScaledHeight(18)))
                 {
                     TextAlignment = UITextAlignment.Right,
                     TextColor = MyTNBColor.CharcoalGrey,
-                    Font = MyTNBFont.MuseoSans14_300,
+                    Font = TNBFont.MuseoSans_14_300,
                     Text = refDate
                 };
                 viewCard.AddSubviews(new UIView[] { viewLine, lblRef, lblDate, lblRefVal, lblDateVal });
@@ -253,8 +251,8 @@ namespace myTNB
 
         private void AddCTA()
         {
-            UIButton btnPrimary = new UIButton();
-            UIButton btnSecondary = new UIButton();
+            CustomUIButtonV2 btnPrimary = new CustomUIButtonV2();
+            CustomUIButtonV2 btnSecondary = new CustomUIButtonV2();
             if (StatusDisplayType == StatusType.Feedback)
             {
                 GetCTA(ref btnPrimary, GetI18NValue(StatusPageConstants.I18N_BackToFeedback), true, _actions.BackToFeedback);
@@ -299,24 +297,24 @@ namespace myTNB
 
                 }
             }
-
             View.AddSubviews(new UIView[] { btnPrimary, btnSecondary });
         }
 
-        private void GetCTA(ref UIButton btn, string title, bool isPrimary, Action ctaAction, bool isWhiteBG = false)
+        private void GetCTA(ref CustomUIButtonV2 btn, string title, bool isPrimary, Action ctaAction, bool isWhiteBG = false)
         {
-            nfloat height = DeviceHelper.GetScaledHeight(48);
-            CGSize size = new CGSize(ViewWidth - 32, height);
-            CGPoint point = new CGPoint(16, isPrimary ? ViewHeight - height : ViewHeight - ((height * 2) + 16));
+            nfloat height = GetScaledHeight(48);
+            CGSize size = new CGSize(BaseMarginedWidth, height);
+            CGPoint point = new CGPoint(BaseMargin, isPrimary ? ViewHeight - height : ViewHeight - ((height * 2) + GetScaledHeight(6)));
             btn = new CustomUIButtonV2(isWhiteBG)
             {
                 Frame = new CGRect(point, size)
             };
             btn.SetTitle(title, UIControlState.Normal);
-            btn.TouchUpInside += (sender, e) =>
+            btn.Font = TNBFont.MuseoSans_16_500;
+            btn.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 if (ctaAction != null) { ctaAction.Invoke(); }
-            };
+            }));
         }
     }
 }

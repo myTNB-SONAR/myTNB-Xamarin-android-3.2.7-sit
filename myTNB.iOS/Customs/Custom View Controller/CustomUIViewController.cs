@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using CoreAnimation;
 using CoreGraphics;
+using Firebase.Analytics;
 using Foundation;
 using myTNB.Customs;
 using UIKit;
@@ -22,6 +23,7 @@ namespace myTNB
 
         private UIView _viewToast, _viewToastOverlay;
         private UILabel _lblToastDetails;
+
         private bool _isAnimating;
 
         public enum PermissionMode
@@ -53,6 +55,7 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            Analytics.SetScreenNameAndClass(PageName, string.Format("{0}ViewController", PageName));
         }
 
         public override void ViewDidAppear(bool animated)
@@ -145,6 +148,12 @@ namespace myTNB
         {
             AlertHandler.DisplayCustomAlert(title, message, ctaButtons, UITextAlignment.Left
                 , UITextAlignment.Left, true, 0.056F, false, image);
+        }
+
+        public void DisplayCustomAlert(string title, string message, Dictionary<string, Action> ctaButtons, bool isDefaultURLAction)
+        {
+            AlertHandler.DisplayCustomAlert(title, message, ctaButtons, UITextAlignment.Left
+                , UITextAlignment.Left, true, 0.056F, isDefaultURLAction);
         }
 
         public void DisplayPermission(PermissionMode pMode)
@@ -312,7 +321,7 @@ namespace myTNB
         public virtual void ConfigureNavigationBar() { }
         public virtual void AddCustomNavBar(Action backAction = null)
         {
-            NavigationController.SetNavigationBarHidden(true, true);
+            if (NavigationController != null) { NavigationController.SetNavigationBarHidden(true, true); }
             UIView viewBack = new UIView(new CGRect(GetScaledWidth(16), 0, GetScaledWidth(24), GetScaledHeight(24)));
             viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
@@ -322,14 +331,14 @@ namespace myTNB
 
             UIImageView imgBack = new UIImageView(new CGRect(new CGPoint(0, 0), viewBack.Frame.Size))
             {
-                Image = UIImage.FromBundle(Constants.IMG_Back)
+                Image = UIImage.FromBundle(CustomViewControllerConstants.IMG_Back)
             };
             viewBack.AddSubview(imgBack);
 
             LblNavTitle = new UILabel(new CGRect(viewBack.Frame.GetMaxX(), 0, ViewWidth - (viewBack.Frame.GetMaxX() * 2), GetScaledHeight(24)))
             {
                 TextAlignment = UITextAlignment.Center,
-                Font = MyTNBFont.MuseoSans16_500V2,
+                Font = TNBFont.MuseoSans_16_500,
                 TextColor = UIColor.White,
                 Text = Title
             };
@@ -365,6 +374,7 @@ namespace myTNB
                 ? DataManager.DataManager.SharedInstance.ErrorI18NDictionary[key] : string.Empty;
         }
         #endregion
+        #region Scale Utility
         public nfloat GetScaledWidth(nfloat value)
         {
             return ScaleUtility.GetScaledWidth(value);
@@ -387,6 +397,31 @@ namespace myTNB
             ScaleUtility.GetYLocationFromFrame(frame, ref yValue);
             return yValue;
         }
+        public nfloat GetYLocationToCenterObject(nfloat height, UIView view = null)
+        {
+            return ScaleUtility.GetYLocationToCenterObject(height, view);
+        }
+        public nfloat GetXLocationToCenterObject(nfloat width, UIView view = null)
+        {
+            return ScaleUtility.GetXLocationToCenterObject(width, view);
+        }
+        public void GetValuesFromAspectRatio(ref nfloat width, ref nfloat height)
+        {
+            ScaleUtility.GetValuesFromAspectRatio(ref width, ref height);
+        }
+        public nfloat BaseMarginWidth8
+        {
+            get { return ScaleUtility.BaseMarginWidth8; }
+        }
+        public nfloat BaseMarginWidth12
+        {
+            get { return ScaleUtility.BaseMarginWidth12; }
+        }
+        public nfloat BaseMarginWidth16
+        {
+            get { return ScaleUtility.BaseMarginWidth16; }
+        }
+        #endregion
         #endregion
     }
 }

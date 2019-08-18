@@ -734,7 +734,7 @@ namespace myTNB
                                   status.IsSuccess = _ssmrApplicationStatus.d.IsSuccess;
                                   status.StatusTitle = _ssmrApplicationStatus.d.DisplayTitle;
                                   status.StatusMessage = _ssmrApplicationStatus.d.DisplayMessage;
-                                  status.ReferenceNumber = _ssmrApplicationStatus.d.data.ApplicationID;
+                                  status.ReferenceNumber = _ssmrApplicationStatus.d.data.ServiceReqNo;
                                   status.ReferenceDate = _ssmrApplicationStatus.d.data.AppliedOn;
                                   NavigationController.PushViewController(status, true);
                               }

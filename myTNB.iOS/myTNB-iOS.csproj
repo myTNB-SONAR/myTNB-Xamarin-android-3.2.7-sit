@@ -970,10 +970,6 @@
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\Search-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Add-Account-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Add-Account-Icon.imageset\Add-Account-Icon.png" />
-    <ImageAsset Include="Assets.xcassets\Add-Account-Icon.imageset\Add-Account-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Add-Account-Icon.imageset\Add-Account-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Search-Icon.imageset\Search-Icon.png" />
     <ImageAsset Include="Assets.xcassets\Search-Icon.imageset\Search-Icon2x.png" />
     <ImageAsset Include="Assets.xcassets\Search-Icon.imageset\Search-Icon3x.png" />
@@ -1039,12 +1035,6 @@
     <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\ocrReading%403x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\threePhase.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\threePhase%402x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\threePhase%403x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%402x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%403x.png" />
     <ImageAsset Include="Assets.xcassets\Help-Background-6.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\faqColor1-1.png" />
     <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\faqColor1%402x-1.png" />
@@ -1107,6 +1097,32 @@
     <ImageAsset Include="Assets.xcassets\IC-Header-Dropdown.imageset\icHeaderDropdown12Px.png" />
     <ImageAsset Include="Assets.xcassets\IC-Header-Dropdown.imageset\icHeaderDropdown12Px%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Header-Dropdown.imageset\icHeaderDropdown12Px%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Cancel-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Search-Cancel-Icon.imageset\Search-Cancel-Icon.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Cancel-Icon.imageset\Search-Cancel-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Cancel-Icon.imageset\Search-Cancel-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Icon-Blue.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Search-Icon-Blue.imageset\Search-Icon-Blue.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Icon-Blue.imageset\Search-Icon-Blue%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Icon-Blue.imageset\Search-Icon-Blue%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\Add-Icon-Blue.png" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\Add-Icon-Blue%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\Add-Icon-Blue%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\singlePhase.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\singlePhase%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\singlePhase%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase-1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Camera-Icon-Green.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Camera-Icon-Green.imageset\Camera-Icon-Green.png" />
+    <ImageAsset Include="Assets.xcassets\Camera-Icon-Green.imageset\Camera-Icon-Green%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Camera-Icon-Green.imageset\Camera-Icon-Green%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1399,7 +1415,6 @@
     <Folder Include="Assets.xcassets\Accounts-Normal-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Search-Icon.imageset\" />
-    <Folder Include="Assets.xcassets\Add-Account-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Help-Background-1.imageset\" />
     <Folder Include="Assets.xcassets\Help-Background-2.imageset\" />
     <Folder Include="Assets.xcassets\Help-Background-3.imageset\" />
@@ -1465,6 +1480,13 @@
     <Folder Include="Assets.xcassets\SMR-Closed-Icon.imageset\" />
     <Folder Include="Components\" />
     <Folder Include="Assets.xcassets\IC-Header-Dropdown.imageset\" />
+    <Folder Include="Assets.xcassets\Search-Cancel-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Add-Icon-Blue.imageset\" />
+    <Folder Include="Assets.xcassets\Search-Icon-Blue.imageset\" />
+    <Folder Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\" />
+    <Folder Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Info-Blue.imageset\" />
+    <Folder Include="Assets.xcassets\Camera-Icon-Green.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2266,6 +2288,9 @@
     <Compile Include="Helpers\ScaleUtility.cs" />
     <Compile Include="Components\ChartView.cs" />
     <Compile Include="Components\AccountStatus.cs" />
+    <Compile Include="Helpers\TNBFont.cs" />
+    <Compile Include="Home\Dashboard\Select Accounts\SelectAccountConstants.cs" />
+    <Compile Include="Model\Base Model\BaseModelRefresh.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

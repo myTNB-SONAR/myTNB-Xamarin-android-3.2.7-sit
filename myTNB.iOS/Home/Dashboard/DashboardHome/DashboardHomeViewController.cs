@@ -36,7 +36,7 @@ namespace myTNB
         internal Dictionary<string, Action> _servicesActionDictionary;
         private bool _servicesIsShimmering = true;
         private bool _helpIsShimmering = true;
-        private bool _isRefreshScreenEnabled = false;
+        public bool _isRefreshScreenEnabled = false;
         private nfloat _addtlYValue = 0;
         private bool _isBCRMAvailable = false;
 
@@ -528,7 +528,7 @@ namespace myTNB
                     var bcrmMsg = bcrm?.DowntimeMessage ?? "Error_BCRMMessage".Translate();
                     string desc = _isBCRMAvailable ? model?.RefreshMessage ?? string.Empty : bcrmMsg;
 
-                    _refreshScreenComponent = new RefreshScreenComponent(View);
+                    _refreshScreenComponent = new RefreshScreenComponent(this, View);
                     _refreshScreenComponent.SetIsBCRMDown(!_isBCRMAvailable);
                     _refreshScreenComponent.SetRefreshButtonHidden(!_isBCRMAvailable);
                     _refreshScreenComponent.SetButtonText(model?.RefreshBtnText ?? string.Empty);

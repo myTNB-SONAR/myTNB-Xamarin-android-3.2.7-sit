@@ -8,6 +8,8 @@ namespace myTNB
 {
     public static class AlertHandler
     {
+        private static List<string> RedirectTypeList = new List<string> { "faqid=", "inAppBrowser=", "externalBrowser=" };
+
         /// <summary>
         /// Displays the no data alert.
         /// </summary>
@@ -194,16 +196,63 @@ namespace myTNB
             {
                 Action<NSUrl> action = new Action<NSUrl>((url) =>
                 {
-                    string absURL = url?.AbsoluteString;
-                    string key = !string.IsNullOrEmpty(absURL) && absURL.Contains("faqid=") ? absURL?.Split("faqid=")[1] : string.Empty;
-                    key = key.Replace("%7B", "{").Replace("%7D", "}");
-                    ViewHelper.GoToFAQScreenWithId(key);
-                    viewParent.RemoveFromSuperview();
+                    RedirectAlert(url, viewParent);
                 });
                 txtViewDetails.Delegate = new TextViewDelegate(action);
             }
             UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
             currentWindow.AddSubview(viewParent);
+        }
+
+        private static void RedirectAlert(NSUrl url, UIView viewParent)
+        {
+            string absURL = url?.AbsoluteString;
+            if (!string.IsNullOrEmpty(absURL))
+            {
+                int whileCount = 0;
+                bool isContained = false;
+                while (!isContained && whileCount < RedirectTypeList.Count)
+                {
+                    isContained = absURL.Contains(RedirectTypeList[whileCount]);
+                    if (isContained) { break; }
+                    whileCount++;
+                }
+
+                if (isContained)
+                {
+                    if (RedirectTypeList[whileCount] == RedirectTypeList[0])
+                    {
+                        string key = absURL.Split(RedirectTypeList[0])[1];
+                        key = key.Replace("%7B", "{").Replace("%7D", "}");
+                        ViewHelper.GoToFAQScreenWithId(key);
+                        viewParent.RemoveFromSuperview();
+                    }
+                    else if (RedirectTypeList[whileCount] == RedirectTypeList[1])
+                    {
+                        string urlString = absURL.Split(RedirectTypeList[1])[1];
+                        var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                        var topVc = AppDelegate.GetTopViewController(baseRootVc);
+                        if (topVc != null)
+                        {
+                            UIStoryboard storyBoard = UIStoryboard.FromName("Browser", null);
+                            BrowserViewController viewController =
+                                storyBoard.InstantiateViewController("BrowserViewController") as BrowserViewController;
+                            if (viewController != null)
+                            {
+                                viewController.URL = urlString;
+                                viewController.IsDelegateNeeded = false;
+                                var navController = new UINavigationController(viewController);
+                                topVc.PresentViewController(navController, true, null);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        string urlString = absURL.Split(RedirectTypeList[2])[1];
+                        UIApplication.SharedApplication.OpenUrl(new NSUrl(string.Format(urlString)));
+                    }
+                }
+            }
         }
     }
 }

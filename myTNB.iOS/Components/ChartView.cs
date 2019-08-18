@@ -41,8 +41,8 @@ namespace myTNB.Components
 
         private void CreateSegment()
         {
-            CustomUIView segmentContainer = new CustomUIView(new CGRect(0, ScaleUtility.GetHeightValue(_mainView.Frame, 23)
-                , _width, ScaleUtility.GetHeightValue(_mainView.Frame, 77)));
+            CustomUIView segmentContainer = new CustomUIView(new CGRect(0, ScaleUtility.GetPercentHeightValue(_mainView.Frame, 23)
+                , _width, ScaleUtility.GetPercentHeightValue(_mainView.Frame, 77)));
             //{ BackgroundColor = UIColor.Brown };
 
             nfloat height = segmentContainer.Frame.Height;
