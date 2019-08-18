@@ -49,6 +49,8 @@ namespace myTNB.SSMR
         public static string I18N_Email = "emailAddress";
         public static string I18N_SelectAccounts = "selectAccounts";
         public static string I18N_Delete = "delete";
+        public static string I18N_RefreshNow = "refreshNow";
+        public static string I18N_RefreshDescription = "refreshDescription";
 
         //Application
         public static string I18N_ApplyingFor = "applyingFor";
@@ -144,5 +146,6 @@ namespace myTNB.SSMR
         public static string EVENT_SubmitToOCR = "Submit Images to OCR";
         public static string EVENT_DeleteImage = "Delete Image";
         public static string EVENT_DisableSelfMeterReading = "Disable Self Meter Reading";
+        public static string EVENT_Refresh = "Refresh";
     }
 }

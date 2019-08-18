@@ -33,7 +33,9 @@
         "cameraPermissionTitle": "\"myTNB\" Would like to Access the Camera",
         "galleryPermissionTitle": "\"myTNB\" Would like to Access Your Photos",
         "photoPermissionDescription": "Enable myTNB to access your camera roll to upload photos and save ones you’ve taken with the app.",
-        "delete": "Delete"
+        "delete": "Delete",
+        "refreshDescription": "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!",
+        "refreshNow": "Refresh Now"
     },
     "Hint": {
         "mobileNumber": "Please include the country code of your phone number.",
