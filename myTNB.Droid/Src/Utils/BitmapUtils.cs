@@ -104,5 +104,23 @@ namespace myTNB_Android.Src.Utils
             return Bitmap.CreateBitmap(bitmap, 0, 0, bitmap.Width, bitmap.Height, matrix, true);
         }
 
+        public static Bitmap RoundCornerImage(Bitmap raw, float round, int r, int g, int b)
+        {
+            int width = raw.Width;
+            int height = raw.Height;
+            Bitmap result = Bitmap.CreateBitmap(width, height, Bitmap.Config.Argb8888);
+            Canvas canvas = new Canvas(result);
+            canvas.DrawARGB(255, r, g, b);
+            Paint paint = new Paint();
+            paint.AntiAlias = true;
+            paint.Color = Color.ParseColor("#000000");
+            Rect rect = new Rect(0, 0, width, height);
+            RectF rectF = new RectF(rect);
+            canvas.DrawRoundRect(rectF, round, round, paint);
+            paint.SetXfermode(new PorterDuffXfermode(PorterDuff.Mode.SrcIn));
+            canvas.DrawBitmap(raw, rect, rect, paint);
+            return result;
+        }
+
     }
 }

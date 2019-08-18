@@ -173,6 +173,16 @@
                                 android:layout_marginLeft="4dp"
                                 android:layout_marginRight="4dp"
 						        android:visibility="visible" />
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/tariffBlockLegendRecyclerView"
+                                android:visibility="gone"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="13dp"
+                                android:layout_marginLeft="12dp"
+                                android:layout_marginRight="12dp"
+                                android:layout_below="@+id/bar_chart"
+                                android:scrollIndicators="none" />
                             <RelativeLayout
                                 android:layout_width="65dp"
                                 android:layout_height="wrap_content"
@@ -223,17 +233,22 @@
 					        android:orientation="horizontal"
                             android:layout_marginTop="13dp"
                             android:layout_marginLeft="16dp"
+                            android:layout_marginRight="16dp"
                             android:layout_marginBottom="24dp"
                             android:id="@+id/graphToggleSelection"
                             android:layout_alignParentBottom="true"
                             android:layout_alignParentLeft="true">
-                            <LinearLayout
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent">
+                                <LinearLayout
                                 android:id="@+id/rmKwhSelection"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:background="@drawable/rectangle_rounded_button_bg"
                                 android:paddingLeft="13dp"
                                 android:paddingRight="13dp"
+                                android:layout_alignParentLeft="true"
                                 android:orientation="horizontal"
                                 android:clickable="true">
                                     <TextView
@@ -252,6 +267,33 @@
                                         android:src="@drawable/rectangle"
                                         android:id="@+id/dashboard_dropdown"/>
                             </LinearLayout>
+                            <LinearLayout
+                                android:id="@+id/tarifToggle"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/rectangle_rounded_button_bg"
+                                android:paddingLeft="13dp"
+                                android:paddingRight="13dp"
+                                android:orientation="horizontal"
+                                android:layout_alignParentRight="true"
+                                android:clickable="true">
+                                    <ImageView
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        android:layout_marginRight="6dp"
+                                        android:layout_gravity="center"
+                                        android:src="@drawable/eye"
+                                        android:id="@+id/imgTarifToggle"/>
+                                    <TextView
+                                        android:id="@+id/txtTarifToggle"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/powerBlue"
+                                        android:textSize="13dp"
+                                        android:layout_gravity="center"
+                                        android:text="Show Tariff"/>
+                            </LinearLayout>
+                            </RelativeLayout>
                         </LinearLayout>
                         </LinearLayout>
                         <LinearLayout

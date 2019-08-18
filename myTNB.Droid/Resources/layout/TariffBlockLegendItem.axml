@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center_vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp">
+        <TextView
+            android:id="@+id/tariffBlockName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp"
+            android:layout_centerInParent="true"
+            android:text="0 - 100 kWh"
+            android:textColor="@color/white"
+            android:textSize="11dp"
+            android:lineSpacingExtra="2dp"/>
+        <ImageView
+            android:id="@+id/imgTariff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginLeft="12dp"
+            android:src="@drawable/tariff_legend_icon_default"
+            android:layout_centerVertical="true"
+            android:visibility="visible" />
+        <TextView
+            android:id="@+id/tariffBlockUnit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="12dp"
+            android:gravity="center_vertical|right"
+            android:text="RM 0.334 / kWh"
+            android:textColor="@color/white"
+            android:textSize="11dp"
+            android:lineSpacingExtra="2dp"/>
+    </RelativeLayout>
+</LinearLayout>

@@ -2161,6 +2161,20 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\myTNBMenu\ChartRenderer\StackedBarCharRenderer.cs" />
+    <AndroidResource Include="Resources\drawable\tariff_legend_icon_default.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\dashboard_chart_extended_bg.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\TariffBlockLegendItem.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\myTNBMenu\Adapter\TariffBlockLegendAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -2537,6 +2551,7 @@
     <Folder Include="Src\SSMR\Util\" />
     <Folder Include="Src\SSMR\SSMRBase\" />
     <Folder Include="Src\SSMR\SSMRBase\MVP\" />
+    <Folder Include="Src\myTNBMenu\ChartRenderer\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
