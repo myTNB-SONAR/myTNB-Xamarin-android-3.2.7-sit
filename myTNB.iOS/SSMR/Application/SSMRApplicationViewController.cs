@@ -107,6 +107,8 @@ namespace myTNB
                 nfloat currentViewHeight = viewFrame.Height - r.Height;
                 _scrollContainer.Frame = new CGRect(_scrollContainer.Frame.X, _scrollContainer.Frame.Y
                     , _scrollContainer.Frame.Width, currentViewHeight);
+                CGPoint bottomOffest = new CGPoint(0, _scrollContainer.ContentSize.Height - _scrollContainer.Bounds.Size.Height + _scrollContainer.ContentInset.Bottom);
+                _scrollContainer.SetContentOffset(bottomOffest, true);
             }
             else
             {
