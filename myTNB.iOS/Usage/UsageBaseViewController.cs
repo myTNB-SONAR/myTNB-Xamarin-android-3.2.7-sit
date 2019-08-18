@@ -22,6 +22,9 @@ namespace myTNB
 
         internal bool _rmkWhFlag, _tariffIsVisible = false;
         internal RMkWhEnum _rMkWhEnum;
+        internal nfloat _lastContentOffset;
+
+        internal CGRect _origViewFrame;
 
         public override void ViewDidLoad()
         {
@@ -102,8 +105,10 @@ namespace myTNB
             }
             _scrollViewContent = new UIScrollView(new CGRect(0, GetYLocationFromFrame(_navbarContainer.Frame, 8F), ViewWidth, height))
             {
-                BackgroundColor = UIColor.Clear
+                BackgroundColor = UIColor.Clear,
+                Bounces = false
             };
+            _scrollViewContent.Scrolled += OnScroll;
             View.AddSubview(_scrollViewContent);
 
             _accountSelector = new CustomUIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(24)));// { BackgroundColor = UIColor.Blue };
@@ -138,7 +143,18 @@ namespace myTNB
             _viewToggle.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewLegend.Frame, 16F)), _viewToggle.Frame.Size);
             _viewTips.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewToggle.Frame, 24F)), _viewTips.Frame.Size);
 
-            _scrollViewContent.ContentSize = new CGSize(ViewWidth, _viewTips.Frame.GetMaxY());
+            _scrollViewContent.ContentSize = new CGSize(ViewWidth, GetAdditionalHeight(_viewTips.Frame.GetMaxY()));
+        }
+
+        private nfloat GetAdditionalHeight(nfloat maxYPos)
+        {
+            nfloat height = maxYPos + GetScaledHeight(16F);
+            nfloat totalHeight = maxYPos + _navbarContainer.Frame.GetMaxY();
+            if (totalHeight < View.Frame.Height)
+            {
+                height += View.Frame.Height - totalHeight;
+            }
+            return height;
         }
 
         private void AddSubviews()
@@ -187,6 +203,7 @@ namespace myTNB
             chartFrame.Size = new CGSize(ViewWidth, chart.Frame.Height);
             _viewChart.Frame = chartFrame;
         }
+
         #region TARIFF LEGEND Methods
         public void SetTariffLegendComponent()
         {
@@ -400,10 +417,49 @@ namespace myTNB
             {
                 BackgroundColor = UIColor.White
             };
+            _origViewFrame = _viewFooter.Frame;
             AddFooterShadow(ref _viewFooter);
             View.AddSubview(_viewFooter);
             UsageFooterViewComponent footerViewComponent = new UsageFooterViewComponent(View, footerHeight);
             _viewFooter.AddSubview(footerViewComponent.GetUI());
+        }
+
+        private void OnScroll(object sender, EventArgs e)
+        {
+            UIScrollView scrollView = sender as UIScrollView;
+            if (scrollView != null)
+            {
+                if (_lastContentOffset < 0 || _lastContentOffset < scrollView.ContentOffset.Y)
+                {
+                    AnimateFooterToHideAndShow(true);
+                }
+                else if (_lastContentOffset > scrollView.ContentOffset.Y)
+                {
+                    AnimateFooterToHideAndShow(false);
+                }
+                _lastContentOffset = scrollView.ContentOffset.Y;
+            }
+        }
+
+        private void AnimateFooterToHideAndShow(bool isHidden)
+        {
+            UIView.Animate(0.3, 0, UIViewAnimationOptions.ShowHideTransitionViews
+                , () =>
+                {
+                    if (isHidden)
+                    {
+                        var temp = _origViewFrame;
+                        temp.Y = _scrollViewContent.Frame.GetMaxY();
+
+                        _viewFooter.Frame = temp;
+                    }
+                    else
+                    {
+                        _viewFooter.Frame = _origViewFrame;
+                    }
+                }
+                , () => { }
+            );
         }
 
         private void AddFooterShadow(ref CustomUIView view)
