@@ -75,6 +75,7 @@ namespace myTNB
                 }
                 else
                 {
+                    _currAcc = DataManager.DataManager.SharedInstance.SelectedAccount;
                     _ssmrHeaderComponent.AccountName = DataManager.DataManager.SharedInstance.SelectedAccount.accountNickName;
                     UpdateTable();
                 }
@@ -472,8 +473,8 @@ namespace myTNB
                 object request = new
                 {
                     serviceManager.usrInf,
-                    contractAccount = _currAcc.accNum,
-                    isOwnedAccount = _currAcc.IsOwnedAccount,
+                    contractAccount = _currAcc?.accNum ?? string.Empty,
+                    isOwnedAccount = _currAcc?.IsOwnedAccount,
                     ICNumber
                 };
                 _contactDetails = serviceManager.OnExecuteAPIV6<ContactDetailsResponseModel>(SSMRConstants.Service_GetCARegisteredContact, request);
@@ -531,6 +532,10 @@ namespace myTNB
                 _smrActivityInfoResponse = serviceManager.OnExecuteAPIV6<SMRAccountActivityInfoResponseModel>(SSMRConstants.Service_GetSMRAccountActivityInfo, request);
             });
         }
+        #endregion
+
+        #region Refresh
+
         #endregion
     }
 }
