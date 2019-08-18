@@ -174,6 +174,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             mTextureView = (AutoFitTextureView)view.FindViewById(Resource.Id.texture_view_autofit);
             ImageView captureImage = (ImageView)view.FindViewById(Resource.Id.imageTakePhoto);
             galleryPreview = (ImageView)view.FindViewById(Resource.Id.imageGallery);
+            galleryPreview.SetScaleType(ImageView.ScaleType.CenterCrop);
             galleryPreview.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.meter_capture_holder_inactive));
             seekBar = (SeekBar)view.FindViewById(Resource.Id.seekBar);
 

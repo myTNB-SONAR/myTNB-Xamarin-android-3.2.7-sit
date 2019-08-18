@@ -170,6 +170,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 Bitmap bitmap = MediaStore.Images.Media.GetBitmap(this.ContentResolver, data.Data);
                 AddCapturedImage(bitmap);
+                takePhotoFragment.UpdateImage(bitmap);
             }
         }
 
