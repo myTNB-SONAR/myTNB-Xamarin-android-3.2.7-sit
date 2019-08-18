@@ -93,6 +93,10 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 if (validatedMeterList.Count == 0) //means all validated but should still able to take picture
                 {
                     validatedMeterList = validationStateList;
+                    foreach (MeterValidation meterValidation in validationStateList)
+                    {
+                        meterValidation.validated = false;
+                    }
                 }
                 foreach (MeterValidation nonValidatedMeter in validatedMeterList)
                 {
@@ -207,7 +211,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         protected override void OnStart()
         {
             base.OnStart();
-            if (validatedMeterList.Count > 0 && validatedMeterList.Count != validationStateList.Count)
+            if (validatedMeterList.Count > 0 && validatedMeterList.Count < validationStateList.Count)
             {
                 UpdateTakePhotoFormattedNote();
             }
@@ -373,7 +377,15 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 }
 
                 SetPhotoBoxClickable();
-                UpdateTakePhotoFormattedNote();
+                if(validatedMeterList.Count == validationStateList.Count)
+                {
+                    UpdateTakePhotoNote();
+                }
+                else
+                {
+                    UpdateTakePhotoFormattedNote();
+                }
+                
             }
             else
             {
@@ -523,13 +535,13 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             switch (code)
             {
                 case "001":
-                    meterName = "kW";
+                    meterName = "kWh";
                     break;
                 case "002":
-                    meterName = "kVARh";
+                    meterName = "kW";
                     break;
                 default:
-                    meterName = "kWh";
+                    meterName = "kVARh";
                     break;
             }
             return meterName;

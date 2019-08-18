@@ -37,7 +37,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         KWH,KVARH,KW
     }
 
-    [Activity(Label = "@string/meter_reading_title", MainLauncher = true, ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
+    [Activity(Label = "@string/meter_reading_title", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class SubmitMeterReadingActivity : BaseToolbarAppCompatActivity, SubmitMeterReadingContract.IView
     {
         private METER_READING_TYPE meterType;
@@ -835,6 +835,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                         inlineValidationMessage.Visibility = ViewStates.Visible;
                         TextViewUtils.SetMuseoSans500Typeface(inlineValidationMessage);
                     }
+
+                    validationStateList.Find(meter =>
+                    {
+                        return meter.meterId == validationData.registerNumber;
+                    }).validated = false;
                 }
             }
         }
