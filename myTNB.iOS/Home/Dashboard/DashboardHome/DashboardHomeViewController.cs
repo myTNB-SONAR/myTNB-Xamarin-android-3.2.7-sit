@@ -137,7 +137,7 @@ namespace myTNB
                 SetAccountsCardViewController();
                 ReloadAccountsTable();
             }
-            SSMRAccounts.SetEligibleAccounts();
+            //SSMRAccounts.SetEligibleAccounts();
             OnLoadHomeData();
         }
 

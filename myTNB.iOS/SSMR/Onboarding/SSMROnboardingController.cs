@@ -44,10 +44,7 @@ namespace myTNB.SSMR
 
                             // Set the page view controller's bounds using an inset rect so that self's view is visible around the edges of the pages.
                             CGRect pageViewRect = that.View.Bounds;
-                            pageViewRect.Height = ScaleUtility.GetScaledHeight(488);//-= DeviceHelper.IsIphoneXUpResolution() ? 80 : 60;
-                           // if (UIDevice.CurrentDevice.UserInterfaceIdiom == UIUserInterfaceIdiom.Pad)
-                             //   pageViewRect = new CGRect(pageViewRect.X + 20, pageViewRect.Y + 20, pageViewRect.Width - 40, pageViewRect.Height - 40);
-                            PageViewController.View.Frame = pageViewRect;
+                            pageViewRect.Height = ScaleUtility.GetScaledHeight(488); PageViewController.View.Frame = pageViewRect;
                             PageViewController.DidMoveToParentViewController(that);
 
                             // Add the page view controller's gesture recognizers to the book view controller's view so that the gestures are started more easily.
@@ -145,13 +142,29 @@ namespace myTNB.SSMR
             _btnStart.Hidden = index != dataCount - 1;
         }
 
-        private async void DisplaySSMRApplicationForm()
+        private void DisplaySSMRApplicationForm()
         {
-            UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
-            SSMRApplicationViewController viewController =
-                storyBoard.InstantiateViewController("SSMRApplicationViewController") as SSMRApplicationViewController;
-            viewController.IsApplication = true;
-            that.NavigationController.PushViewController(viewController, true);
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                that.InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+                        SSMRReadingHistoryViewController viewController =
+                            storyBoard.InstantiateViewController("SSMRReadingHistoryViewController") as SSMRReadingHistoryViewController;
+                        if (viewController != null)
+                        {
+                            viewController.IsFromHome = true;
+                            that.NavigationController.PushViewController(viewController, true);
+                        }
+                    }
+                    else
+                    {
+                        AlertHandler.DisplayNoDataAlert(that, null);
+                    }
+                });
+            });
         }
     }
 }

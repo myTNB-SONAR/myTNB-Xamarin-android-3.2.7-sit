@@ -11,23 +11,89 @@ namespace myTNB
         private static readonly Lazy<SSMRActivityInfoCache> lazy = new Lazy<SSMRActivityInfoCache>(() => new SSMRActivityInfoCache());
         public static SSMRActivityInfoCache Instance { get { return lazy.Value; } }
 
-        private static SMRAccountActivityInfoResponseModel SSMRActivityInfoResponse = new SMRAccountActivityInfoResponseModel();
-        private static List<SMRMROValidateRegisterDetailsInfoModel> SSMRPreviousMeterReadingList;
         private static List<PopupModel> PopupDetailList = new List<PopupModel>();
         private static Dictionary<string, List<PopupSelectorModel>> SMRPhotoPopUpDetails;
         private static List<PopupSelectorModel> SMRPhotoPopUpList;
+
+        //Dashboard Cache
+        private static MeterReadingHistoryModel DB_MeterReadingHistory = new MeterReadingHistoryModel();
+        private static List<MeterReadingHistoryItemModel> DB_ReadingHistoryList = new List<MeterReadingHistoryItemModel>();
+        private static List<SMRMROValidateRegisterDetailsInfoModel> DB_SSMRPreviousMeterReadingList = new List<SMRMROValidateRegisterDetailsInfoModel>();
+
+        //Reading History Cache
+        private static MeterReadingHistoryModel RH_MeterReadingHistory = new MeterReadingHistoryModel();
+        private static List<MeterReadingHistoryItemModel> RH_ReadingHistoryList = new List<MeterReadingHistoryItemModel>();
+        private static List<SMRMROValidateRegisterDetailsInfoModel> RH_SSMRPreviousMeterReadingList = new List<SMRMROValidateRegisterDetailsInfoModel>();
 
         private static readonly string SelectorKey = SSMR.SSMRConstants.Pagename_SSMRCaptureMeter;
         private static readonly string PopupKey = SSMR.SSMRConstants.Popup_SMRPhotoPopUpDetails;
         private static readonly string TakePhotoToolTipKey = "TakePhotoKey";
 
-        public static void SetData(SMRAccountActivityInfoResponseModel data)
+        public static void SetDashboardCache(SMRAccountActivityInfoResponseModel data)
         {
-            SSMRActivityInfoResponse = data;
-            PopupDetailList = data.d.data.SMRPhotoPopUpDetails;
-            SSMRPreviousMeterReadingList = data.d.data.SMRMROValidateRegisterDetails;
+            DB_MeterReadingHistory = data.d.data.DeepClone();
+            DB_ReadingHistoryList = data.d.data.MeterReadingHistory.DeepClone();
+            DB_SSMRPreviousMeterReadingList = data.d.data.SMRMROValidateRegisterDetails.DeepClone();
+            PopupDetailList = data.d.data.SMRPhotoPopUpDetails.DeepClone();
         }
 
+        public static void SetReadingHistoryCache(SMRAccountActivityInfoResponseModel data)
+        {
+            RH_MeterReadingHistory = data.d.data.DeepClone();
+            RH_ReadingHistoryList = data.d.data.MeterReadingHistory.DeepClone();
+            RH_SSMRPreviousMeterReadingList = data.d.data.SMRMROValidateRegisterDetails.DeepClone();
+            PopupDetailList = data.d.data.SMRPhotoPopUpDetails.DeepClone();
+        }
+
+        public static MeterReadingHistoryModel DashboardMeterReadingHistory
+        {
+            get
+            {
+                return DB_MeterReadingHistory != null ? DB_MeterReadingHistory : new MeterReadingHistoryModel();
+            }
+        }
+
+        public static MeterReadingHistoryModel ViewMeterReadingHistory
+        {
+            get
+            {
+                return RH_MeterReadingHistory != null ? RH_MeterReadingHistory : new MeterReadingHistoryModel();
+            }
+        }
+
+        public static List<MeterReadingHistoryItemModel> DashboardReadingHistoryList
+        {
+            get
+            {
+                return DB_ReadingHistoryList != null ? DB_ReadingHistoryList : new List<MeterReadingHistoryItemModel>();
+            }
+        }
+
+        public static List<MeterReadingHistoryItemModel> ViewReadingHistoryList
+        {
+            get
+            {
+                return RH_ReadingHistoryList != null ? RH_ReadingHistoryList : new List<MeterReadingHistoryItemModel>();
+            }
+        }
+
+        public static List<SMRMROValidateRegisterDetailsInfoModel> DashboardPreviousReading
+        {
+            get
+            {
+                return DB_SSMRPreviousMeterReadingList != null ? DB_SSMRPreviousMeterReadingList : new List<SMRMROValidateRegisterDetailsInfoModel>();
+            }
+        }
+
+        public static List<SMRMROValidateRegisterDetailsInfoModel> ViewPreviousReading
+        {
+            get
+            {
+                return RH_SSMRPreviousMeterReadingList != null ? RH_SSMRPreviousMeterReadingList : new List<SMRMROValidateRegisterDetailsInfoModel>();
+            }
+        }
+
+        #region Popup
         public static PopupModel GetPopupDetailsByType(string type)
         {
             SetPopupSelectorValues();
@@ -64,36 +130,6 @@ namespace myTNB
             return null;
         }
 
-        public static List<SMRMROValidateRegisterDetailsInfoModel> GetPreviousMeterReadingList()
-        {
-            List<SMRMROValidateRegisterDetailsInfoModel> list = new List<SMRMROValidateRegisterDetailsInfoModel>();
-            if (SSMRPreviousMeterReadingList != null && SSMRPreviousMeterReadingList.Count > 0)
-            {
-                for (int i = 0; i < SSMRPreviousMeterReadingList.Count; i++)
-                {
-                    SMRMROValidateRegisterDetailsInfoModel item = SSMRPreviousMeterReadingList[i];
-                    if (item == null) { continue; }
-                    list.Add(item.DeepClone());
-                }
-            }
-            return list;
-        }
-
-        public static bool IsPhotoToolTipDisplayed
-        {
-            set
-            {
-                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
-                sharedPreference.SetBool(value, TakePhotoToolTipKey);
-                sharedPreference.Synchronize();
-            }
-            get
-            {
-                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
-                return sharedPreference.BoolForKey(TakePhotoToolTipKey);
-            }
-        }
-
         private static void SetPopupSelectorValues()
         {
             if (SMRPhotoPopUpDetails == null || SMRPhotoPopUpDetails.Count == 0
@@ -119,5 +155,21 @@ namespace myTNB
             }
             return new PopupSelectorModel();
         }
+
+        public static bool IsPhotoToolTipDisplayed
+        {
+            set
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                sharedPreference.SetBool(value, TakePhotoToolTipKey);
+                sharedPreference.Synchronize();
+            }
+            get
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                return sharedPreference.BoolForKey(TakePhotoToolTipKey);
+            }
+        }
+        #endregion
     }
 }

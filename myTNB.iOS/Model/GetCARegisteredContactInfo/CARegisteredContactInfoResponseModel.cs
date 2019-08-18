@@ -14,5 +14,6 @@
     {
         public string Email { set; get; }
         public string Mobile { set; get; }
+        public bool isAllowEdit { set; get; }
     }
 }
