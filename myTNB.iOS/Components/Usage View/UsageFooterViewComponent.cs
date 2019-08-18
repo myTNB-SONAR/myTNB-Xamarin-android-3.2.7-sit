@@ -2,7 +2,7 @@
 using CoreGraphics;
 using UIKit;
 
-namespace myTNB.Home.Components.UsageView
+namespace myTNB
 {
     public class UsageFooterViewComponent : BaseComponent
     {

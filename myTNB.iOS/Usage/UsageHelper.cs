@@ -1,4 +1,4 @@
-﻿namespace myTNB.Home.Dashboard.Usage
+﻿namespace myTNB
 {
     public static class UsageHelper
     {

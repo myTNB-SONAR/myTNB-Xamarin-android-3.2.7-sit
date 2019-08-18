@@ -14,5 +14,8 @@ namespace myTNB
     [Register ("GenericNodataViewController")]
     partial class GenericNodataViewController
     {
+        void ReleaseDesignerOutlets ()
+        {
+        }
     }
 }

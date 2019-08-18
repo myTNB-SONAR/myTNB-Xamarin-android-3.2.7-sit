@@ -14,5 +14,8 @@ namespace myTNB
     [Register ("UsageViewController")]
     partial class UsageViewController
     {
+        void ReleaseDesignerOutlets ()
+        {
+        }
     }
 }

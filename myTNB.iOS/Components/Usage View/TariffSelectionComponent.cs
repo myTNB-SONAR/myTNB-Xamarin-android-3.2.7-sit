@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
 using CoreGraphics;
-using myTNB.Home.Dashboard.Usage;
 using UIKit;
 
-namespace myTNB.Home.Components.UsageView
+namespace myTNB
 {
     public class TariffSelectionComponent : BaseComponent
     {

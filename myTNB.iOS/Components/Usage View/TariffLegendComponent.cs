@@ -4,7 +4,7 @@ using CoreGraphics;
 using myTNB.Model.Usage;
 using UIKit;
 
-namespace myTNB.Home.Components.UsageView
+namespace myTNB
 {
     public class TariffLegendComponent : BaseComponent
     {

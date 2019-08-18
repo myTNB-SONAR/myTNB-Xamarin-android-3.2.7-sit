@@ -1093,6 +1093,10 @@
     <ImageAsset Include="Assets.xcassets\SMR-Closed-Icon.imageset\SMR-Closed-Icon.png" />
     <ImageAsset Include="Assets.xcassets\SMR-Closed-Icon.imageset\SMR-Closed-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\SMR-Closed-Icon.imageset\SMR-Closed-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Header-Dropdown.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Header-Dropdown.imageset\icHeaderDropdown12Px.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Header-Dropdown.imageset\icHeaderDropdown12Px%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Header-Dropdown.imageset\icHeaderDropdown12Px%403x.png" />
     <ImageAsset Include="Assets.xcassets\Search-Cancel-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Search-Cancel-Icon.imageset\Search-Cancel-Icon.png" />
     <ImageAsset Include="Assets.xcassets\Search-Cancel-Icon.imageset\Search-Cancel-Icon%402x.png" />
@@ -1501,13 +1505,13 @@
     <Folder Include="Model\GetAccountsSMREligibility\" />
     <Folder Include="Customs\Custom View Controller\" />
     <Folder Include="Assets.xcassets\SMR-Closed-Icon.imageset\" />
+    <Folder Include="Components\" />
+    <Folder Include="Assets.xcassets\IC-Header-Dropdown.imageset\" />
     <Folder Include="Assets.xcassets\Search-Cancel-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Add-Icon-Blue.imageset\" />
     <Folder Include="Assets.xcassets\Search-Icon-Blue.imageset\" />
     <Folder Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\" />
     <Folder Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\" />
-    <Folder Include="Home\Dashboard\Usage\" />
-    <Folder Include="Home\Components\Usage View\" />
     <Folder Include="Assets.xcassets\IC-Info-Blue.imageset\" />
     <Folder Include="Assets.xcassets\Camera-Icon-Green.imageset\" />
     <Folder Include="Sitecore CMS\Model\Energy Tips\" />
@@ -1520,6 +1524,8 @@
     <Folder Include="Assets.xcassets\Stub-Usage-Bg.imageset\" />
     <Folder Include="Assets.xcassets\Info-Black-Icon.imageset\" />
     <Folder Include="Model\Usage\" />
+    <Folder Include="Usage\" />
+    <Folder Include="Components\Usage View\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1556,6 +1562,7 @@
     <InterfaceDefinition Include="Customs\Generic Tableview Selector\GenericSelector.storyboard" />
     <InterfaceDefinition Include="SSMR\SSMR.storyboard" />
     <InterfaceDefinition Include="Customs\Generic No Data Page\GenericNoData.storyboard" />
+    <InterfaceDefinition Include="Usage\Usage.storyboard" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -2302,35 +2309,42 @@
     <Compile Include="Customs\Generic No Data Page\GenericNodataViewController.designer.cs">
       <DependentUpon>GenericNodataViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Constants.cs" />
     <Compile Include="Home\Components\Refresh Screen\RefreshScreenComponent.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\Accounts\RefreshScreenInfoModel.cs" />
     <Compile Include="Model\GetAccountsSMREligibility\GetAccountsSMREligibilityResponseModel.cs" />
     <Compile Include="Customs\Custom View Controller\CustomUIViewController.cs" />
     <Compile Include="Customs\Custom View Controller\CustomViewControllerConstants.cs" />
-    <Compile Include="Helpers\TNBFont.cs" />
+    <Compile Include="Session Cache\AccountManager.cs" />
     <Compile Include="Customs\CustomUIView.cs" />
     <Compile Include="Helpers\ScaleUtility.cs" />
+    <Compile Include="Helpers\TNBFont.cs" />
     <Compile Include="Home\Dashboard\Select Accounts\SelectAccountConstants.cs" />
     <Compile Include="Model\Base Model\BaseModelRefresh.cs" />
-    <Compile Include="Home\Dashboard\Usage\UsageViewController.cs" />
-    <Compile Include="Home\Dashboard\Usage\UsageViewController.designer.cs">
-      <DependentUpon>UsageViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Components\Usage View\EnergyTipsComponent.cs" />
     <Compile Include="Sitecore CMS\Model\Energy Tips\EnergyTipsModel.cs" />
     <Compile Include="Sitecore CMS\Service\EnergyTipsService.cs" />
     <Compile Include="SQLite\SQLite Data Manager\EnergyTipsEntity.cs" />
-    <Compile Include="Home\Components\Usage View\UsageFooterViewComponent.cs" />
-    <Compile Include="Home\Components\BaseComponent.cs" />
-    <Compile Include="Home\Components\Usage View\TariffSelectionComponent.cs" />
-    <Compile Include="Home\Dashboard\Usage\UsageHelper.cs" />
-    <Compile Include="Home\Dashboard\Usage\RMkWhEnum.cs" />
-    <Compile Include="Home\Components\Usage View\DisconnectionComponent.cs" />
-    <Compile Include="Home\Components\Usage View\TariffLegendComponent.cs" />
     <Compile Include="Model\Usage\AccountUsageModel.cs" />
     <Compile Include="Session Cache\AccountUsageCache.cs" />
     <Compile Include="Model\Usage\AccountStatusModel.cs" />
     <Compile Include="Session Cache\AccountStatusCache.cs" />
+    <Compile Include="Usage\RMkWhEnum.cs" />
+    <Compile Include="Usage\UsageHelper.cs" />
+    <Compile Include="Usage\UsageViewController.cs" />
+    <Compile Include="Usage\UsageViewController.designer.cs">
+      <DependentUpon>..\Home\Dashboard\Usage\UsageViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Usage\UsageBaseViewController.cs" />
+    <Compile Include="Usage\DashboardConstants.cs" />
+    <Compile Include="Components\Usage View\DisconnectionComponent.cs" />
+    <Compile Include="Components\Usage View\EnergyTipsComponent.cs" />
+    <Compile Include="Components\Usage View\TariffLegendComponent.cs" />
+    <Compile Include="Components\Usage View\TariffSelectionComponent.cs" />
+    <Compile Include="Components\Usage View\UsageFooterViewComponent.cs" />
+    <Compile Include="Components\Usage View\AccountSelector.cs" />
+    <Compile Include="Components\Usage View\AccountStatus.cs" />
+    <Compile Include="Components\Usage View\ChartView.cs" />
+    <Compile Include="Components\BaseComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

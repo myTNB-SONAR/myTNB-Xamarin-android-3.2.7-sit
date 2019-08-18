@@ -80,6 +80,11 @@ namespace myTNB
             return CustomUILabel.GetLabelSize(label, width, height);
         }
 
+        public CGSize GetLabelSize(UILabel label, nfloat height)
+        {
+            return CustomUILabel.GetLabelSize(label, label.Frame.Width, height);
+        }
+
         public UIButton GetUIButton(CGRect frame, string key)
         {
             return CustomUIButton.GetUIButton(frame, key);
@@ -344,7 +349,8 @@ namespace myTNB
         }
         #endregion
 
-        #region I18N Utilities
+        #region Utilities
+        #region I18N
         public string GetI18NValue(string key)
         {
             return I18NDictionary != null && I18NDictionary.ContainsKey(key) ? I18NDictionary[key] : string.Empty;
@@ -368,7 +374,6 @@ namespace myTNB
                 ? DataManager.DataManager.SharedInstance.ErrorI18NDictionary[key] : string.Empty;
         }
         #endregion
-
         #region Scale Utility
         public nfloat GetScaledWidth(nfloat value)
         {
@@ -420,6 +425,7 @@ namespace myTNB
         {
             get { return ScaleUtility.BaseMarginHeight16; }
         }
+        #endregion
         #endregion
     }
 }

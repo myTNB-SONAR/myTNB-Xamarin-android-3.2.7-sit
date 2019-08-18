@@ -750,6 +750,7 @@ namespace myTNB
         {
             UserAccountsEntity uaManager = new UserAccountsEntity();
             DataManager.DataManager.SharedInstance.AccountRecordsList = uaManager.GetCustomerAccountRecordList();
+            AccountManager.Instance.SetAccounts(uaManager.GetCustomerAccountRecordList());
             if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
                        && DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null
                        && DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0)

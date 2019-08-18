@@ -97,5 +97,10 @@ namespace myTNB
             nfloat width = (parentView != null) ? parentView.Frame.Width : UIScreen.MainScreen.Bounds.Width;
             return width / 2 - (objWidth / 2);
         }
+
+        public static nfloat GetPercentHeightValue(CGRect frame, nfloat percentage)
+        {
+            return frame.Height * (percentage / 100);
+        }
     }
 }

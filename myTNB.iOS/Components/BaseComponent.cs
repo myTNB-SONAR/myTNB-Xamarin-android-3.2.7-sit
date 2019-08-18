@@ -2,7 +2,7 @@
 using CoreGraphics;
 using UIKit;
 
-namespace myTNB.Home.Components
+namespace myTNB
 {
     public class BaseComponent
     {
@@ -61,6 +61,10 @@ namespace myTNB.Home.Components
         public void GetValuesFromAspectRatio(ref nfloat width, ref nfloat height)
         {
             ScaleUtility.GetValuesFromAspectRatio(ref width, ref height);
+        }
+        public static nfloat GetPercentHeightValue(CGRect frame, nfloat percentage)
+        {
+            return ScaleUtility.GetPercentHeightValue(frame, percentage);
         }
         public nfloat BaseMarginWidth8
         {

@@ -6,7 +6,7 @@ using Foundation;
 using myTNB.SitecoreCMS.Model;
 using UIKit;
 
-namespace myTNB.Home.Components.UsageView
+namespace myTNB
 {
     public class EnergyTipsComponent
     {
