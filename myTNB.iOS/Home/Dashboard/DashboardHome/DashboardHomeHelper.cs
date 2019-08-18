@@ -188,17 +188,17 @@ namespace myTNB
         /// <returns>pageViewHeight</returns>
         public nfloat GetHeightForAccountCards()
         {
-            nfloat additionalHeight = DashboardHomeConstants.SearchViewHeight + DashboardHomeConstants.PageControlHeight;
+            nfloat additionalHeight = DashboardHomeConstants.SearchViewHeight + DashboardHomeConstants.PageControlHeight + ScaleUtility.GetScaledHeight(32f);
             nfloat pageViewHeight = 80f + additionalHeight;
             var groupAccountsList = DataManager.DataManager.SharedInstance.AccountsGroupList;
             if (groupAccountsList.Count > 1)
             {
-                pageViewHeight = 5 * (ScaleUtility.GetScaledHeight(60f) + ScaleUtility.GetScaledHeight(8f)) + 20f + additionalHeight;
+                pageViewHeight = 5 * (ScaleUtility.GetScaledHeight(60f) + ScaleUtility.GetScaledHeight(8f)) + additionalHeight + ScaleUtility.GetScaledHeight(10f);
             }
             else if (groupAccountsList.Count == 1)
             {
                 var accountsList = groupAccountsList[0];
-                pageViewHeight = accountsList.Count * (ScaleUtility.GetScaledHeight(60f) + ScaleUtility.GetScaledHeight(8f)) + 20f + additionalHeight;
+                pageViewHeight = accountsList.Count * (ScaleUtility.GetScaledHeight(60f) + ScaleUtility.GetScaledHeight(8f)) + additionalHeight;
             }
             return pageViewHeight;
         }
@@ -213,12 +213,12 @@ namespace myTNB
             var groupAccountsList = DataManager.DataManager.SharedInstance.AccountsGroupList;
             if (groupAccountsList.Count > 1)
             {
-                tableViewCellHeight = 5 * (ScaleUtility.GetScaledHeight(60f) + ScaleUtility.GetScaledHeight(8f)) + 20f;
+                tableViewCellHeight = 5 * (ScaleUtility.GetScaledHeight(60f) + ScaleUtility.GetScaledHeight(8f));
             }
             else if (groupAccountsList.Count == 1)
             {
                 var accountsList = groupAccountsList[0];
-                tableViewCellHeight = accountsList.Count * (ScaleUtility.GetScaledHeight(60f) + ScaleUtility.GetScaledHeight(8f)) + 20f;
+                tableViewCellHeight = accountsList.Count * (ScaleUtility.GetScaledHeight(60f) + ScaleUtility.GetScaledHeight(8f));
             }
             return tableViewCellHeight;
         }
@@ -276,7 +276,7 @@ namespace myTNB
         {
             get
             {
-                return 50F + (UIApplication.SharedApplication.KeyWindow.Frame.Width * 0.64F * 0.98F);
+                return 58F + (UIApplication.SharedApplication.KeyWindow.Frame.Width * 0.64F * 0.98F);
                 /*if (HasPromotion)
                 {
                     return 50F + (UIApplication.SharedApplication.KeyWindow.Frame.Width * 0.64F * 0.98F);
