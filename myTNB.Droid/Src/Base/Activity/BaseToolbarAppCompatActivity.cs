@@ -2,6 +2,7 @@
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -175,6 +176,36 @@ namespace myTNB_Android.Src.Base.Activity
                     GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
+            }
+        }
+
+        public int GetDeviceHorizontalScaleInPixel(float percentageValue)
+        {
+            var deviceWidth = Resources.DisplayMetrics.WidthPixels;
+            return GetScaleInPixel(deviceWidth, percentageValue);
+        }
+
+        public int GetDeviceVerticalScaleInPixel(float percentageValue)
+        {
+            var deviceHeight = Resources.DisplayMetrics.HeightPixels;
+            return GetScaleInPixel(deviceHeight, percentageValue);
+        }
+
+        public int GetScaleInPixel(int basePixel, float percentageValue)
+        {
+            int scaledInPixel = (int)((float)basePixel * percentageValue);
+            return scaledInPixel;
+        }
+
+        public ISpanned GetFormattedText(string stringValue)
+        {
+            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+            {
+                return Html.FromHtml(stringValue, FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                return Html.FromHtml(stringValue);
             }
         }
     }

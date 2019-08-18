@@ -20,6 +20,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             void OnRequestSuccessful(SMRSubmitResponseData response);
             void OnRequestFailed(SMRSubmitResponseData response);
+            void ShowMeterCardValidationError(List<MeterValidationData> validationDataList);
 
             void OnUpdateThreePhaseTooltipData(List<SSMRMeterReadingModel> list);
 

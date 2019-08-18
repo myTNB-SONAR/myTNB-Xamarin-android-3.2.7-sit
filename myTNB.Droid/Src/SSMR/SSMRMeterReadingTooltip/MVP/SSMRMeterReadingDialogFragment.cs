@@ -23,7 +23,7 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP
 		private ViewPager pager;
 		private SSMRMeterReadingPagerAdapter adapter;
 		private LinearLayout indicator;
-        private CheckBox dontShowAgainCheckbox;
+        //private CheckBox dontShowAgainCheckbox;
         private LinearLayout txtBtnFirst;
         private bool isSinglePhase = false;
         private List<SSMRMeterReadingModel> SSMRMeterReadingModelList = new List<SSMRMeterReadingModel>();
@@ -55,7 +55,7 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP
 			{
                 pager = rootView.FindViewById<ViewPager>(Resource.Id.onBoardingSMRViewPager);
                 indicator = rootView.FindViewById<LinearLayout>(Resource.Id.indicatorContainer);
-                dontShowAgainCheckbox = rootView.FindViewById<CheckBox>(Resource.Id.dontShowAgainCheckbox);
+                //dontShowAgainCheckbox = rootView.FindViewById<CheckBox>(Resource.Id.dontShowAgainCheckbox);
                 txtBtnFirst = rootView.FindViewById<LinearLayout>(Resource.Id.txtBtnFirst);
 
                 if (SSMRMeterReadingModelList.Count == 0)
@@ -114,14 +114,14 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP
 
                 txtBtnFirst.Click += GotIt_Click;
 
-                if (isSinglePhase)
-                {
-                    dontShowAgainCheckbox.Checked = MyTNBAccountManagement.GetInstance().GetSMRMeterReadingOnePhaseOnboardingShown();
-                }
-                else
-                {
-                    dontShowAgainCheckbox.Checked = MyTNBAccountManagement.GetInstance().GetSMRMeterReadingThreePhaseOnboardingShown();
-                }
+                //if (isSinglePhase)
+                //{
+                //    dontShowAgainCheckbox.Checked = MyTNBAccountManagement.GetInstance().GetSMRMeterReadingOnePhaseOnboardingShown();
+                //}
+                //else
+                //{
+                //    dontShowAgainCheckbox.Checked = MyTNBAccountManagement.GetInstance().GetSMRMeterReadingThreePhaseOnboardingShown();
+                //}
 
 
             }
@@ -134,14 +134,14 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP
 
         private void GotIt_Click(object sender, EventArgs e)
         {
-            if (isSinglePhase)
-            {
-                MyTNBAccountManagement.GetInstance().UpdateIsSMRMeterReadingOnePhaseOnboardingShown(dontShowAgainCheckbox.Checked);
-            }
-            else
-            {
-                MyTNBAccountManagement.GetInstance().UpdateIsSMRMeterReadingThreePhaseOnboardingShown(dontShowAgainCheckbox.Checked);
-            }
+            //if (isSinglePhase)
+            //{
+            //    MyTNBAccountManagement.GetInstance().UpdateIsSMRMeterReadingOnePhaseOnboardingShown(dontShowAgainCheckbox.Checked);
+            //}
+            //else
+            //{
+            //    MyTNBAccountManagement.GetInstance().UpdateIsSMRMeterReadingThreePhaseOnboardingShown(dontShowAgainCheckbox.Checked);
+            //}
             this.Dismiss();
         }
 

@@ -25,39 +25,13 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:layout_marginTop="26dp"/>
-        </LinearLayout>
-        <LinearLayout
-        android:id="@+id/applicationIndicator"
-        android:layout_width="match_parent"
-        android:layout_height="76dp"
-        android:paddingLeft="18dp"
-        android:paddingRight="18dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:background="@color/white">
-        <CheckBox
-            android:id="@+id/dontShowAgainCheckbox"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:button="@drawable/checkbox_selector"
-            android:checked="false"
-            android:layout_weight=".1"
-            android:text=" "/>
-        <TextView
-            android:id="@+id/dontShowMeAgainLabel"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="Don't show me again"
-            android:layout_weight=".8"
-            android:textColor="#979797"
-            android:textSize="12dp"/>
         </LinearLayout> 
         <LinearLayout
           android:orientation="vertical"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:clickable="true"
-          android:layout_marginTop="-8dp"
+          android:layout_marginTop="16dp"
           android:id="@+id/txtBtnFirst">
              <View
                 android:layout_height="1dp"
