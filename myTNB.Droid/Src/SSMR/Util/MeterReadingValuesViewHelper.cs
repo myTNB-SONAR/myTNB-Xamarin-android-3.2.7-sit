@@ -17,6 +17,10 @@ namespace myTNB_Android.Src.SSMR.Util
         private SubmitMeterReadingActivity mView;
         private int meterCard;
         string meterValue;
+        EditText[] editTextArray = new EditText[8];
+
+
+
         public MeterReadingValuesViewHelper(SubmitMeterReadingActivity view, int meterCardValue)
         {
             mView = view;
@@ -27,6 +31,15 @@ namespace myTNB_Android.Src.SSMR.Util
         {
             editTextList = editTextListVal;
             currentPosition = editTextList.Count-1;
+
+            editTextArray[0] = editTextListVal[7];
+            editTextArray[1] = editTextListVal[6];
+            editTextArray[2] = editTextListVal[5];
+            editTextArray[3] = editTextListVal[4];
+            editTextArray[4] = editTextListVal[3];
+            editTextArray[5] = editTextListVal[2];
+            editTextArray[6] = editTextListVal[1];
+            editTextArray[7] = editTextListVal[0];
         }
 
         public void SetEvent()
@@ -249,34 +262,34 @@ namespace myTNB_Android.Src.SSMR.Util
 
 
 
-                    string value = mHelper.meterValue;
-                    string t = "";
-                    if (mHelper.editTextList[mPosition - 1].Text == "")
-                    {
-                        mHelper.editTextList[mPosition].Text = s.CharAt(1).ToString();
-                        mHelper.editTextList[mPosition - 1].Text = s.CharAt(0).ToString();
-                    }
-                    else
-                    {
-                        
-                       List<EditText> et = mHelper.editTextList.GetRange(0,mPosition-1);
-                        foreach (EditText editText in et)
-                        {
-                            t = t + editText.Text;
-                        }
-                       
+                    //string value = mHelper.meterValue;
+                    //string t = "";
+                    //if (mHelper.editTextList[mPosition - 1].Text == "")
+                    //{
+                    //    mHelper.editTextList[mPosition].Text = s.CharAt(1).ToString();
+                    //    mHelper.editTextList[mPosition - 1].Text = s.CharAt(0).ToString();
+                    //}
+                    //else
+                    //{
 
-                    }
-                    string result = t;
+                    //   List<EditText> et = mHelper.editTextList.GetRange(0,mPosition-1);
+                    //    foreach (EditText editText in et)
+                    //    {
+                    //        t = t + editText.Text;
+                    //    }
 
-                    mHelper.meterValue = mHelper.editTextList[0].Text
-                        + mHelper.editTextList[1].Text
-                        + mHelper.editTextList[2].Text
-                        + mHelper.editTextList[3].Text
-                        + mHelper.editTextList[4].Text
-                        + mHelper.editTextList[5].Text
-                        + mHelper.editTextList[6].Text
-                        + mHelper.editTextList[7].Text;
+
+                    //}
+                    //string result = t;
+
+                    //mHelper.meterValue = mHelper.editTextList[0].Text
+                    //    + mHelper.editTextList[1].Text
+                    //    + mHelper.editTextList[2].Text
+                    //    + mHelper.editTextList[3].Text
+                    //    + mHelper.editTextList[4].Text
+                    //    + mHelper.editTextList[5].Text
+                    //    + mHelper.editTextList[6].Text
+                    //    + mHelper.editTextList[7].Text;
                 }
             }
         }

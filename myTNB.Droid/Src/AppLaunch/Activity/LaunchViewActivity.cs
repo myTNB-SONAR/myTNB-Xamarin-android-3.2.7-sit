@@ -38,7 +38,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 {
     [Activity(Label = "@string/app_name"
         , NoHistory = true
-        //, MainLauncher = true
+        , MainLauncher = true
               , Icon = "@drawable/ic_launcher"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.Launch")]
