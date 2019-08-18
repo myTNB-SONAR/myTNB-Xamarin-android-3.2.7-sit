@@ -84,10 +84,10 @@
                 <include android:id="@+id/kwhCard"
                          android:visibility="gone"
                 layout="@layout/SubmitMeterReadingCardLayout"/>
-                <include android:id="@+id/kVARhCard"
+                <include android:id="@+id/kwCard"
                          android:visibility="gone"
                 layout="@layout/SubmitMeterReadingCardLayout"/>
-                <include android:id="@+id/kwCard"
+                <include android:id="@+id/kVARhCard"
                          android:visibility="gone"
                 layout="@layout/SubmitMeterReadingCardLayout"/>
                 <TextView

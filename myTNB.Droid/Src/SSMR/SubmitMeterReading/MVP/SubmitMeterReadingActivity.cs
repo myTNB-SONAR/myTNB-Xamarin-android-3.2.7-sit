@@ -37,7 +37,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         KWH,KVARH,KW
     }
 
-    [Activity(Label = "@string/meter_reading_title", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
+    [Activity(Label = "@string/meter_reading_title", MainLauncher = true, ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class SubmitMeterReadingActivity : BaseToolbarAppCompatActivity, SubmitMeterReadingContract.IView
     {
         private METER_READING_TYPE meterType;
@@ -331,28 +331,29 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             isFirstLaunch = true;
 
             validationStateList = new List<MeterValidation>();
-            ////Mock Data - Start
-            //SMRValidateRegisterDetailList = DummyData();
-            //SetUpMeterCards(SMRValidateRegisterDetailList);
-            //selectedAccount = new AccountData();
-            //selectedAccount.AccountNum = "1010101010";
-            ////Mock Data - End
-            Bundle intentExtras = Intent.Extras;
+            //Mock Data - Start
+            SMRValidateRegisterDetailList = DummyData();
+            SetUpMeterCards(SMRValidateRegisterDetailList);
+            selectedAccount = new AccountData();
+            selectedAccount.AccountNum = "1010101010";
+            //Mock Data - End
+            //Bundle intentExtras = Intent.Extras;
 
-            if (intentExtras.ContainsKey(Constants.SELECTED_ACCOUNT))
-            {
-                selectedAccount = JsonConvert.DeserializeObject<AccountData>(intentExtras.GetString(Constants.SELECTED_ACCOUNT));
-            }
+            //if (intentExtras.ContainsKey(Constants.SELECTED_ACCOUNT))
+            //{
+            //    selectedAccount = JsonConvert.DeserializeObject<AccountData>(intentExtras.GetString(Constants.SELECTED_ACCOUNT));
+            //}
 
-            if (intentExtras.ContainsKey(Constants.SMR_RESPONSE_KEY))
-            {
-                ssmrActivityInfoResponse = JsonConvert.DeserializeObject<SMRActivityInfoResponse>(intentExtras.GetString(Constants.SMR_RESPONSE_KEY));
-                if (ssmrActivityInfoResponse.Response != null && ssmrActivityInfoResponse.Response.Data != null)
-                {
-                    SMRValidateRegisterDetailList = ssmrActivityInfoResponse.Response.Data.SMRMROValidateRegisterDetails;
-                    SetUpMeterCards(SMRValidateRegisterDetailList);
-                }
-            }
+            //if (intentExtras.ContainsKey(Constants.SMR_RESPONSE_KEY))
+            //{
+            //    ssmrActivityInfoResponse = JsonConvert.DeserializeObject<SMRActivityInfoResponse>(intentExtras.GetString(Constants.SMR_RESPONSE_KEY));
+            //    if (ssmrActivityInfoResponse.Response != null && ssmrActivityInfoResponse.Response.Data != null)
+            //    {
+            //        SMRValidateRegisterDetailList = ssmrActivityInfoResponse.Response.Data.SMRMROValidateRegisterDetails;
+            //        SetUpMeterCards(SMRValidateRegisterDetailList);
+            //    }
+            //}
+            OnGenerateTooltipData();
         }
 
         private string GetType(string registerNumber)
