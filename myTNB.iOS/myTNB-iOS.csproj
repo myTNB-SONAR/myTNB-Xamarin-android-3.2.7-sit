@@ -1007,10 +1007,6 @@
     <ImageAsset Include="Assets.xcassets\IC-Info.imageset\infoWhiteFull.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info.imageset\infoWhiteFull%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info.imageset\infoWhiteFull%403x.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-History-BG.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SMR-History-BG.imageset\SMR-History-BG-1.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-History-BG.imageset\SMR-History-BG%402x-1.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-History-BG.imageset\SMR-History-BG%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Delete-White.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Delete-White.imageset\IC-Action-Delete-White.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Delete-White.imageset\IC-Action-Delete-White%402x.png" />
