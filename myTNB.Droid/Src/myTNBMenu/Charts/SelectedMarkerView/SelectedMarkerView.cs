@@ -56,24 +56,24 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
                     if (AccountType.Equals("2"))
                     {
                         titlekWhMarker.Visibility = ViewStates.Visible;
-                        float val = (float)UsageHistoryData.ByMonth.Months[index].Amount;
-                        float valKwh = (float)UsageHistoryData.ByMonth.Months[index].Usage;
-                        titleMarker.Text = "RM " + decimalFormat.Format(Math.Abs(val));
-                        titlekWhMarker.Text = kwhFormat.Format(Math.Abs(valKwh)) + " kWh";
+                        float val = (float)UsageHistoryData.ByMonth.Months[index].AmountTotal;
+                        float valKwh = (float)UsageHistoryData.ByMonth.Months[index].UsageTotal;
+                        titleMarker.Text = UsageHistoryData.ByMonth.Months[index].Currency + " " + decimalFormat.Format(Math.Abs(val));
+                        titlekWhMarker.Text = kwhFormat.Format(Math.Abs(valKwh)) + " " + UsageHistoryData.ByMonth.Months[index].UsageUnit;
                     }
                     else
                     {
                         titlekWhMarker.Visibility = ViewStates.Gone;
-                        float val = (float)UsageHistoryData.ByMonth.Months[index].Amount;
-                        titleMarker.Text = "RM " + decimalFormat.Format(val);
+                        float val = (float)UsageHistoryData.ByMonth.Months[index].AmountTotal;
+                        titleMarker.Text = UsageHistoryData.ByMonth.Months[index].Currency + " " + decimalFormat.Format(val);
                     }
 
                 }
                 else if (ChartType == ChartType.kWh)
                 {
                     titlekWhMarker.Visibility = ViewStates.Gone;
-                    float valKwh = (float)UsageHistoryData.ByMonth.Months[index].Usage;
-                    titleMarker.Text = kwhFormat.Format(Math.Abs(valKwh)) + " kWh";
+                    float valKwh = (float)UsageHistoryData.ByMonth.Months[index].UsageTotal;
+                    titleMarker.Text = kwhFormat.Format(Math.Abs(valKwh)) + " " + UsageHistoryData.ByMonth.Months[index].UsageUnit;
                 }
                 if (CurrentParentIndex == -1)
                 {

@@ -115,7 +115,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                             CustomerBillingAccount.Update(selectedAccount.AccNum, true);
                                         }
                                         usageHistoryResponse = JsonConvert.DeserializeObject<UsageHistoryResponse>(storedEntity.JsonResponse);
-                                        if ((usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.Status.ToUpper() == Constants.REFRESH_MODE) || !(usageHistoryResponse != null && usageHistoryResponse.Data.Status.Equals("success") && !usageHistoryResponse.Data.IsError))
+                                        if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode != "7200")
+                                        {
+                                            usageHistoryResponse = null;
+                                        }
+                                        else if (!IsCheckHaveByMonthData(usageHistoryResponse.Data.UsageHistoryData))
                                         {
                                             usageHistoryResponse = null;
                                         }
@@ -569,7 +573,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 }, cts.Token);
 
 
-                if (installDetailsResponse.Data.ErrorCode == "7200")
+                if (installDetailsResponse != null && installDetailsResponse.Data != null && installDetailsResponse.Data.ErrorCode == "7200")
                 {
                     if (installDetailsResponse.Data.Data.DisconnectionStatus == "Available")
                     {
@@ -688,7 +692,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 }, cts.Token);
 
 
-                if (SMRAccountActivityInfoResponse.Response.ErrorCode == "7200")
+                if (SMRAccountActivityInfoResponse != null && SMRAccountActivityInfoResponse.Response != null && SMRAccountActivityInfoResponse.Response.ErrorCode == "7200")
                 {
                     InnerDashboardAPICahceUtil.OnSetSMRActivityInfoResponse(SMRAccountActivityInfoResponse);
                     SMRPopUpUtils.OnSetSMRActivityInfoResponse(SMRAccountActivityInfoResponse);
@@ -787,15 +791,30 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 				var api = RestService.For<IUsageHistoryApi>(Constants.SERVER_URL.END_POINT);
 #endif
 
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = UserEntity.GetActive().Email,
+                    sspuid = UserEntity.GetActive().UserID,
+                    did = this.mView.GetDeviceId(),
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+
                 if (usageHistoryResponse == null)
                 {
-                    usageHistoryResponse = await api.DoQuery(new Requests.UsageHistoryRequest(Constants.APP_CONFIG.API_KEY_ID)
+                    usageHistoryResponse = await api.DoQuery(new Requests.UsageHistoryRequest()
                     {
-                        AccountNum = accountSelected.AccNum
+                        AccountNumber = accountSelected.AccNum,
+                        isOwner = accountSelected.isOwned ? "true" : "false",
+                        userInterface = currentUsrInf
                     }, cts.Token);
                 }
 
-                if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.Status.ToUpper() == Constants.REFRESH_MODE)
+                if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode != "7200")
                 {
                     if (this.mView.IsActive())
                     {
@@ -813,18 +832,21 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     this.mView.ShowNMREChart(isAmountDueFailed, true, usageHistoryResponse, AccountData.Copy(accountSelected, true), dueResponse);
                     usageHistoryResponse = null;
                 }
-                else if (usageHistoryResponse != null && usageHistoryResponse.Data.Status.Equals("success") && !usageHistoryResponse.Data.IsError)
+                else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7200")
                 {
                     if (this.mView.IsActive())
                     {
                         this.mView.HideProgressDialog();
                     }
 
-                    UsageHistoryEntity smUsageModel = new UsageHistoryEntity();
-                    smUsageModel.Timestamp = DateTime.Now.ToLocalTime();
-                    smUsageModel.JsonResponse = JsonConvert.SerializeObject(usageHistoryResponse);
-                    smUsageModel.AccountNo = accountSelected.AccNum;
-                    UsageHistoryEntity.InsertItem(smUsageModel);
+                    if (IsCheckHaveByMonthData(usageHistoryResponse.Data.UsageHistoryData))
+                    {
+                        UsageHistoryEntity smUsageModel = new UsageHistoryEntity();
+                        smUsageModel.Timestamp = DateTime.Now.ToLocalTime();
+                        smUsageModel.JsonResponse = JsonConvert.SerializeObject(usageHistoryResponse);
+                        smUsageModel.AccountNo = accountSelected.AccNum;
+                        UsageHistoryEntity.InsertItem(smUsageModel);
+                    }
 
                     if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
                     {
@@ -1379,10 +1401,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 											CustomerBillingAccount.Update(selected.AccNum, true);
 										}
 										usageHistoryResponse = JsonConvert.DeserializeObject<UsageHistoryResponse>(storedEntity.JsonResponse);
-										if ((usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.Status.ToUpper() == Constants.REFRESH_MODE) || !(usageHistoryResponse != null && usageHistoryResponse.Data.Status.Equals("success") && !usageHistoryResponse.Data.IsError))
+										if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode != "7200")
 										{
 											usageHistoryResponse = null;
 										}
+                                        else if (!IsCheckHaveByMonthData(usageHistoryResponse.Data.UsageHistoryData))
+                                        {
+                                            usageHistoryResponse = null;
+                                        }
 										LoadUsageHistory(selected);
 									}
 									else
@@ -1519,6 +1545,32 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 }
             }
             return false;
+        }
+
+        private bool IsCheckHaveByMonthData(UsageHistoryData data)
+        {
+            bool isHaveData = true;
+
+            if (data == null || (data != null && data.ByMonth == null) || (data != null && data.ByMonth != null && data.ByMonth.Months.Count == 0))
+            {
+                isHaveData = false;
+            }
+            else
+            {
+                foreach (UsageHistoryData.ByMonthData.MonthData monthData in data.ByMonth.Months)
+                {
+                    if ((string.IsNullOrEmpty(monthData.UsageTotal.ToString()) && string.IsNullOrEmpty(monthData.AmountTotal.ToString())) || (Math.Abs(monthData.UsageTotal) < 0.001 && Math.Abs(monthData.AmountTotal) < 0.001))
+                    {
+                        isHaveData = false;
+                    }
+                    else
+                    {
+                        isHaveData = true;
+                    }
+                }
+            }
+
+            return isHaveData;
         }
 
     }

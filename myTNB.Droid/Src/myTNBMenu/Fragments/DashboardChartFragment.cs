@@ -552,7 +552,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 bottomSheetBehavior = BottomSheetBehavior.From(bottomSheet);
                 bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
                 bottomSheetBehavior.SetBottomSheetCallback(new DashboardBottomSheetCallBack());
-                // bottomSheet.SetOnClickListener(null);
 
                 ((DashboardHomeActivity)Activity).HideAccountName();
                 if (!hasNoInternet)
@@ -985,11 +984,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 SetKWhData(selectedHistoryData.ByMonth.Months.Count);
             }
 
-            int graphTopPadding = 20;
+            int graphTopPadding = 30;
             int graphBottomPadding = 10;
             if (selectedAccount.AccountCategoryId.Equals("2"))
             {
-                graphTopPadding = 30;
+                graphTopPadding = 40;
                 mChart.LayoutParameters.Height = (int) DPUtils.ConvertDPToPx(240f);
             }
             mChart.SetExtraOffsets(0, graphTopPadding, 0, graphBottomPadding);
@@ -1130,7 +1129,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             List<BarEntry> yVals1 = new List<BarEntry>();
             for (int i = 0; i < barLength; i++)
             {
-                float val = (float)selectedHistoryData.ByMonth.Months[i].Amount;
+                float val = (float)selectedHistoryData.ByMonth.Months[i].AmountTotal;
                 if (float.IsPositiveInfinity(val))
                 {
                     val = float.PositiveInfinity;
@@ -1193,7 +1192,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             List<BarEntry> yVals1 = new List<BarEntry>();
             for (int i = 0; i < barLength; i++)
             {
-                float val = (float)selectedHistoryData.ByMonth.Months[i].Usage;
+                float val = (float)selectedHistoryData.ByMonth.Months[i].UsageTotal;
                 if (float.IsPositiveInfinity(val))
                 {
                     val = float.PositiveInfinity;
@@ -1591,9 +1590,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
                 {
-                    if (System.Math.Abs(MonthData.Amount) > val)
+                    if (System.Math.Abs(MonthData.AmountTotal) > val)
                     {
-                        val = System.Math.Abs((float)MonthData.Amount);
+                        val = System.Math.Abs((float)MonthData.AmountTotal);
                     }
                 }
                 if (val == 0)
@@ -1616,9 +1615,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
                 {
-                    if (System.Math.Abs(MonthData.Usage) > val)
+                    if (System.Math.Abs(MonthData.UsageTotal) > val)
                     {
-                        val = System.Math.Abs((float)MonthData.Usage);
+                        val = System.Math.Abs((float)MonthData.UsageTotal);
                     }
                 }
                 if (val == 0)
@@ -2232,7 +2231,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             public override void OnStateChanged(View bottomSheet, int newState)
             {
-                if (!requireScroll || !isREAccount)
+                if (isREAccount)
+                {
+                    bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
+                }
+                else if (!requireScroll)
                 {
                     if (newState == BottomSheetBehavior.StateHidden)
                     {
@@ -2325,12 +2328,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 int contentHeight = scrollView.GetChildAt(0).Height;
                 if (viewHeight - contentHeight < 0)
                 {
+                    scrollView.SetScrollingEnabled(true);
                     scrollView.SmoothScrollingEnabled = true;
                     scrollView.setOnScrollViewListener(this);
                 }
                 else
                 {
-                    
+                    scrollView.SetScrollingEnabled(false);
                 }
             }
             catch (System.Exception e)

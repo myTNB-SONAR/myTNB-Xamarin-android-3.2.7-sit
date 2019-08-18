@@ -1,12 +1,15 @@
 ﻿using Android.Content;
 using Android.Support.V4.Widget;
 using Android.Util;
+using Android.Views;
 
 namespace myTNB_Android.Src.myTNBMenu.Listener
 {
     public class NMREDashboardScrollView : NestedScrollView
     {
         public NMREDashboardScrollViewListener scrollViewListener = null;
+
+        private bool scrollable = true;
 
         public NMREDashboardScrollView(Context context) : base(context)
         {
@@ -43,6 +46,21 @@ namespace myTNB_Android.Src.myTNBMenu.Listener
             {
                 scrollViewListener.OnScrollChanged(this, l, t, oldl, oldt);
             }
+        }
+
+        public override bool OnTouchEvent(MotionEvent ev)
+        {
+            return scrollable && base.OnTouchEvent(ev);
+        }
+
+        public override bool OnInterceptTouchEvent(MotionEvent ev)
+        {
+            return scrollable && base.OnInterceptTouchEvent(ev);
+        }
+
+        public void SetScrollingEnabled(bool enabled)
+        {
+            scrollable = enabled;
         }
 
     }

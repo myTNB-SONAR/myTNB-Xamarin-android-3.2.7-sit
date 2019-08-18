@@ -78,13 +78,29 @@ namespace myTNB_Android.Src.myTNBMenu.Adapter
 
 				ViewGroup.LayoutParams currentCard = vh.cardView.LayoutParameters;
 
-				int cardWidth = (int)((this.mActivity.Resources.DisplayMetrics.WidthPixels / 1.06) - DPUtils.ConvertDPToPx(6f));
+				int cardWidth = (int)((this.mActivity.Resources.DisplayMetrics.WidthPixels / 1.07) - DPUtils.ConvertDPToPx(6f));
                 if (DPUtils.ConvertPxToDP(cardWidth) < 288f)
                 {
                     cardWidth = (int) DPUtils.ConvertDPToPx(288f);
                 }
 				currentCard.Width = cardWidth;
-			}
+
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(currentCard.Width,
+                currentCard.Height);
+                if (position == 0)
+                {
+                    layoutParams.LeftMargin = (int)DPUtils.ConvertDPToPx(10f);
+                }
+                if ((position + 1) == energyList.Count)
+                {
+                    layoutParams.RightMargin = (int)DPUtils.ConvertDPToPx(12f);
+                }
+                else
+                {
+                    layoutParams.RightMargin = (int)DPUtils.ConvertDPToPx(4f);
+                }
+                vh.cardView.LayoutParameters = layoutParams;
+            }
 			catch (Exception e)
 			{
 				Utility.LoggingNonFatalError(e);

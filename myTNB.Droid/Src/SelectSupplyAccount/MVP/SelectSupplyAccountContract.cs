@@ -77,11 +77,6 @@ namespace myTNB_Android.Src.SelectSupplyAccount.MVP
 
         public interface IUserActionsListener : IBasePresenter
         {
-            /// <summary>
-            /// Action to select account
-            /// </summary>
-            /// <param name="selectedCustomerBilling">CustomerBillingAccount</param>
-            void OnSelectAccount(CustomerBillingAccount selectedCustomerBilling);
 
         }
     }
