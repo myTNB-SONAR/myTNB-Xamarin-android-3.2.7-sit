@@ -22,6 +22,7 @@ using MikePhil.Charting.Formatter;
 using MikePhil.Charting.Highlight;
 using MikePhil.Charting.Interfaces.Datasets;
 using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.FAQ.Activity;
@@ -1857,6 +1858,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     smrResponse = response;
                     SMRPopUpUtils.OnSetSMRActivityInfoResponse(response);
+                    MyTNBAppToolTipData.SetSMRActivityInfo(response.Response);
                     Activity.RunOnUiThread(() =>
                     {
                         SsmrHistoryContainer.Visibility = ViewStates.Visible;

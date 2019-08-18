@@ -96,5 +96,10 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             meterImageList[imagePosition].ImageSize = imageBitmap.ByteCount.ToString();
             meterImageList[imagePosition].ImageData = imageBitmap;
         }
+
+        public void SetMeterImageList(List<MeterImageModel> meterImageDataList)
+        {
+            meterImageList = meterImageDataList;
+        }
     }
 }
