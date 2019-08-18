@@ -614,7 +614,10 @@ namespace myTNB
             GetUserEntity();
             if (!SSMRAccounts.IsHideOnboarding)
             {
-                await LoadSSMRWalkthrough();
+                InvokeInBackground(async () =>
+                {
+                    await LoadSSMRWalkthrough();
+                });
             }
             if (isWalkthroughDone)
             {

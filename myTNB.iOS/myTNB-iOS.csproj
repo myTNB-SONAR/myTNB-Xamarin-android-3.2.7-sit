@@ -2329,6 +2329,8 @@
     <Compile Include="Home\Components\Usage View\TariffLegendComponent.cs" />
     <Compile Include="Model\Usage\AccountUsageModel.cs" />
     <Compile Include="Session Cache\AccountUsageCache.cs" />
+    <Compile Include="Model\Usage\AccountStatusModel.cs" />
+    <Compile Include="Session Cache\AccountStatusCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

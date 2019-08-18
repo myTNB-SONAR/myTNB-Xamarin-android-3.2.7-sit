@@ -1,5 +1,6 @@
 ﻿using System;
 using CoreGraphics;
+using myTNB.Model.Usage;
 using UIKit;
 
 namespace myTNB.Home.Components.UsageView
@@ -7,10 +8,12 @@ namespace myTNB.Home.Components.UsageView
     public class DisconnectionComponent : BaseComponent
     {
         UIView _parentView, _containerView;
+        AccountStatusDataModel _accountStatusData = new AccountStatusDataModel();
 
-        public DisconnectionComponent(UIView parentView)
+        public DisconnectionComponent(UIView parentView, AccountStatusDataModel accountStatusData)
         {
             _parentView = parentView;
+            _accountStatusData = accountStatusData;
         }
 
         private void CreateComponent()
@@ -41,7 +44,7 @@ namespace myTNB.Home.Components.UsageView
             {
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.GreyishBrown,
-                Text = "Your electricity is currently disconnected."
+                Text = _accountStatusData.AccountStatusMessage ?? string.Empty // TO DO: assign fallback text 
             };
             _containerView.AddSubview(label);
         }
@@ -50,6 +53,11 @@ namespace myTNB.Home.Components.UsageView
         {
             CreateComponent();
             return _containerView;
+        }
+
+        public void SetGestureRecognizer(UITapGestureRecognizer recognizer)
+        {
+            _containerView.AddGestureRecognizer(recognizer);
         }
     }
 }

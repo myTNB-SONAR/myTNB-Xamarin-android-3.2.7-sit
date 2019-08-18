@@ -1,6 +1,4 @@
-﻿using myTNB.Home.Components.UsageView;
-
-namespace myTNB.Home.Dashboard.Usage
+﻿namespace myTNB.Home.Dashboard.Usage
 {
     public static class UsageHelper
     {

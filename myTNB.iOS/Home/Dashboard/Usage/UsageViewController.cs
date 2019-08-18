@@ -40,17 +40,17 @@ namespace myTNB
             };
             View.AddSubview(bgImageView);
             NavigationController.NavigationBarHidden = true;
-            CallGetAccountUsageAPI();
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
             SetNavigation();
-            SetDisconnectionComponent();
             SetTariffSelectionComponent();
             SetEnergyTipsComponent();
             SetFooterView();
+            CallGetAccountStatusAPI();
+            CallGetAccountUsageAPI();
         }
 
         #region NAVIGATION BAR Methods
@@ -91,15 +91,26 @@ namespace myTNB
         #region DISCONNECTION Methods
         private void SetDisconnectionComponent()
         {
-            nfloat yPos = GetScaledHeight(90f);
-            _disconnectionContainer = new UIView(new CGRect(0, yPos, ViewWidth, GetScaledHeight(24f)))
+            AccountStatusDataModel accountStatusData = AccountStatusCache.GetAccountStatusData();
+            if (accountStatusData != null &&
+                accountStatusData.DisconnectionStatus.ToLower() != "available")
             {
-                BackgroundColor = UIColor.Clear
-            };
-            View.AddSubview(_disconnectionContainer);
+                nfloat yPos = GetScaledHeight(90f);
+                _disconnectionContainer = new UIView(new CGRect(0, yPos, ViewWidth, GetScaledHeight(24f)))
+                {
+                    BackgroundColor = UIColor.Clear
+                };
+                View.AddSubview(_disconnectionContainer);
 
-            DisconnectionComponent disconnectionComponent = new DisconnectionComponent(View);
-            _disconnectionContainer.AddSubview(disconnectionComponent.GetUI());
+                DisconnectionComponent disconnectionComponent = new DisconnectionComponent(View, accountStatusData);
+                _disconnectionContainer.AddSubview(disconnectionComponent.GetUI());
+                disconnectionComponent.SetGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    var acctStatusTooltipBtnTitle = !string.IsNullOrWhiteSpace(accountStatusData.AccountStatusModalBtnText) ? accountStatusData.AccountStatusModalBtnText : "Common_GotIt".Translate();
+                    var acctStatusTooltipMsg = !string.IsNullOrWhiteSpace(accountStatusData.AccountStatusModalMessage) ? accountStatusData.AccountStatusModalMessage : "Dashboard_AccountStatusMessage".Translate();
+                    DisplayCustomAlert(string.Empty, acctStatusTooltipMsg, acctStatusTooltipBtnTitle, null);
+                }));
+            }
         }
         #endregion
         #region TARIFF LEGEND Methods
@@ -134,7 +145,7 @@ namespace myTNB
         #region RM/KWH & TARIFF Methods
         private void SetTariffSelectionComponent()
         {
-            nfloat yPos = _disconnectionContainer.Frame.GetMaxY() + 40f;
+            nfloat yPos = GetScaledHeight(80f);
             _tariffSelectionContainer = new UIView(new CGRect(0, yPos, ViewWidth, GetScaledHeight(24f)))
             {
                 BackgroundColor = UIColor.Clear
@@ -273,18 +284,22 @@ namespace myTNB
             EnergyTipsEntity wsManager = new EnergyTipsEntity();
             tipsList = wsManager.GetAllItems();
 
-            nfloat footerRatio = 136.0f / 320.0f;
-            nfloat footerHeight = ViewWidth * footerRatio;
-            nfloat footerYPos = View.Frame.Height - footerHeight;
-
-            _energyTipsContainer = new UIView(new CGRect(0, footerYPos - GetScaledHeight(140f), ViewWidth, GetScaledHeight(100f)))
+            if (tipsList != null &&
+                tipsList.Count > 0)
             {
-                BackgroundColor = UIColor.Clear
-            };
-            View.AddSubview(_energyTipsContainer);
+                nfloat footerRatio = 136.0f / 320.0f;
+                nfloat footerHeight = ViewWidth * footerRatio;
+                nfloat footerYPos = View.Frame.Height - footerHeight;
 
-            EnergyTipsComponent energyTipsComponent = new EnergyTipsComponent(_energyTipsContainer, tipsList);
-            _energyTipsContainer.AddSubview(energyTipsComponent.GetUI());
+                _energyTipsContainer = new UIView(new CGRect(0, footerYPos - GetScaledHeight(140f), ViewWidth, GetScaledHeight(100f)))
+                {
+                    BackgroundColor = UIColor.Clear
+                };
+                View.AddSubview(_energyTipsContainer);
+
+                EnergyTipsComponent energyTipsComponent = new EnergyTipsComponent(_energyTipsContainer, tipsList);
+                _energyTipsContainer.AddSubview(energyTipsComponent.GetUI());
+            }
         }
         #endregion
         #region FOOTER Methods
@@ -343,6 +358,31 @@ namespace myTNB
             });
         }
 
+        private void CallGetAccountStatusAPI()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        ActivityIndicator.Show();
+                        AccountStatusCache.ClearAccountStatusData();
+
+                        AccountStatusResponseModel accountStatusResponse = await GetAccountStatus(DataManager.DataManager.SharedInstance.SelectedAccount);
+                        AccountStatusCache.AddAccountStatusData(accountStatusResponse);
+
+                        SetDisconnectionComponent();
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                    ActivityIndicator.Hide();
+                });
+            });
+        }
+
         private async Task<AccountUsageResponseModel> GetAccountUsage(CustomerAccountRecordModel account)
         {
             AccountUsageResponseModel accountUsageResponse = null;
@@ -362,6 +402,24 @@ namespace myTNB
             return accountUsageResponse;
         }
 
+        private async Task<AccountStatusResponseModel> GetAccountStatus(CustomerAccountRecordModel account)
+        {
+            AccountStatusResponseModel accountStatusResponse = null;
+            ServiceManager serviceManager = new ServiceManager();
+            object requestParameter = new
+            {
+                contractAccount = account.accNum,
+                isOwner = account.isOwned,
+                serviceManager.usrInf
+            };
+
+            accountStatusResponse = await Task.Run(() =>
+            {
+                return serviceManager.OnExecuteAPIV6<AccountStatusResponseModel>("GetAccountStatus", requestParameter);
+            });
+
+            return accountStatusResponse;
+        }
         #endregion
     }
 }
