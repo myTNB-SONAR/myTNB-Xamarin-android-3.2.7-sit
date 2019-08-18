@@ -4,6 +4,7 @@ using myTNB.DataManager;
 using myTNB.Model;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using UIKit;
 
@@ -28,12 +29,12 @@ namespace myTNB
         nfloat searchViewHeight = ScaleUtility.GetScaledHeight(24f);
         nfloat addAcctWidth = ScaleUtility.GetScaledWidth(66f);
         nfloat addAcctHeight = ScaleUtility.GetScaledHeight(24f);
-        nfloat addAcctLabelWidth = ScaleUtility.GetScaledWidth(22f);
+        nfloat addAcctLabelWidth = ScaleUtility.GetScaledWidth(23f);
         nfloat addAcctLabelHeight = ScaleUtility.GetScaledHeight(16f);
         nfloat searchLblWidth = ScaleUtility.GetScaledWidth(38f);
         nfloat searchLblHeight = ScaleUtility.GetScaledHeight(16f);
         nfloat textViewHeight = ScaleUtility.GetScaledHeight(24f);
-        nfloat searchViewXPos, searchLblXPos;
+        nfloat addViewXPos, searchViewXPos, searchLblXPos;
 
         UIPageControl _pageControl;
         UIScrollView _accountsCardScrollView;
@@ -71,7 +72,7 @@ namespace myTNB
         private void SetParentView()
         {
             _parentView = new UIView(new CGRect(0,
-                0, View.Frame.Width,
+                GetScaledHeight(16f), View.Frame.Width,
                 _dashboardHomeHelper.GetHeightForAccountCards()))
             {
                 BackgroundColor = UIColor.Clear,
@@ -85,20 +86,19 @@ namespace myTNB
             if (_groupAccountList.Count > 0)
                 return;
 
-            nfloat margin = 16f;
-            UIView addAcctView = new UIView(new CGRect(margin, _searchView.Frame.GetMaxY() + margin, ViewWidth - (margin * 2), 60f))
+            UIView addAcctView = new UIView(new CGRect(BaseMarginWidth16, _searchView.Frame.GetMaxY() + GetScaledHeight(16f), ViewWidth - (BaseMarginWidth16 * 2), GetScaledHeight(60f)))
             {
                 BackgroundColor = UIColor.White,
                 UserInteractionEnabled = true
             };
-            addAcctView.Layer.CornerRadius = 5f;
-            UIImageView iconView = new UIImageView(new CGRect(12f, DeviceHelper.GetCenterYWithObjHeight(28f, addAcctView), 28f, 28f))
+            addAcctView.Layer.CornerRadius = GetScaledHeight(5f);
+            UIImageView iconView = new UIImageView(new CGRect(BaseMarginWidth12, GetYLocationToCenterObject(GetScaledHeight(28f), addAcctView), GetScaledWidth(28f), GetScaledHeight(28f)))
             {
                 Image = UIImage.FromBundle(DashboardHomeConstants.Img_AddIconGrey)
             };
-            UILabel labelText = new UILabel(new CGRect(iconView.Frame.GetMaxX() + 12f, DeviceHelper.GetCenterYWithObjHeight(20f, addAcctView), addAcctView.Frame.Width - (iconView.Frame.GetMaxX() + 24f), 20f))
+            UILabel labelText = new UILabel(new CGRect(iconView.Frame.GetMaxX() + BaseMarginWidth12, GetYLocationToCenterObject(GetScaledHeight(20f), addAcctView), addAcctView.Frame.Width - (iconView.Frame.GetMaxX() + GetScaledWidth(24f)), GetScaledHeight(20f)))
             {
-                Font = MyTNBFont.MuseoSans14_500,
+                Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.GreyishBrownTwo,
                 Text = GetI18NValue(DashboardHomeConstants.I18N_AddElectricityAcct)
             };
@@ -113,22 +113,23 @@ namespace myTNB
 
         private void SetSearchView()
         {
-            _searchView = new UIView(new CGRect(0, 0, _parentView.Frame.Width, GetScaledHeight(DashboardHomeConstants.SearchViewHeight)))
+            _searchView = new UIView(new CGRect(0, 0, _parentView.Frame.Width, DashboardHomeConstants.SearchViewHeight))
             {
                 BackgroundColor = UIColor.Clear
             };
 
-            _headerTitle = new UILabel(new CGRect(BaseMarginWidth16, 0, GetScaledWidth(84f), GetScaledHeight(20f)))
+            _headerTitle = new UILabel(new CGRect(BaseMarginWidth16, 0, GetScaledWidth(84f), GetScaledHeight(24f)))
             {
-                Font = MyTNBFont.MuseoSans14_500,
+                Font = TNBFont.MuseoSans_14_500,
                 TextColor = UIColor.White,
                 Text = GetI18NValue(DashboardHomeConstants.I18N_MyAccts),
                 BackgroundColor = UIColor.Clear
             };
 
             searchViewXPos = _searchView.Frame.Width - searchViewWidth - BaseMarginWidth16;
+            addViewXPos = _searchView.Frame.Width - addAcctWidth - BaseMarginWidth16;
 
-            _addContainerView = new UIView(new CGRect(NoPaginationNeeded() ? searchViewXPos : searchViewXPos - addAcctWidth - BaseMarginWidth8, 0, addAcctWidth, addAcctHeight))
+            _addContainerView = new UIView(new CGRect(NoPaginationNeeded() ? addViewXPos : searchViewXPos - addAcctWidth - BaseMarginWidth8, 0, addAcctWidth, addAcctHeight))
             {
                 BackgroundColor = UIColor.White,
                 UserInteractionEnabled = true,
@@ -149,7 +150,7 @@ namespace myTNB
             nfloat addAcctLblXPos = _addContainerView.Frame.Width - addAcctLabelWidth - BaseMarginWidth12;
             _addAcctLabel = new UILabel(new CGRect(addAcctLblXPos, GetYLocationToCenterObject(addAcctLabelHeight, _addContainerView), addAcctLabelWidth, addAcctLabelHeight))
             {
-                Font = MyTNBFont.MuseoSans12_500,
+                Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.WaterBlue,
                 Text = GetI18NValue(DashboardHomeConstants.I18N_Add),
                 TextAlignment = UITextAlignment.Center,
@@ -177,7 +178,7 @@ namespace myTNB
             searchLblXPos = _searchContainerView.Frame.Width - searchLblWidth - BaseMarginWidth12;
             _searchLabel = new UILabel(new CGRect(searchLblXPos, GetYLocationToCenterObject(searchLblHeight, _searchContainerView), searchLblWidth, searchLblHeight))
             {
-                Font = MyTNBFont.MuseoSans12_500,
+                Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.WaterBlue,
                 Text = GetI18NValue(DashboardHomeConstants.I18N_Search),
                 TextAlignment = UITextAlignment.Center,
@@ -205,12 +206,12 @@ namespace myTNB
             {
                 AttributedPlaceholder = new NSAttributedString(
                     GetI18NValue(DashboardHomeConstants.I18N_SearchPlaceholder)
-                    , font: MyTNBFont.MuseoSans12_500
+                    , font: TNBFont.MuseoSans_12_500
                     , foregroundColor: MyTNBColor.VeryLightPinkTwo
                     , strokeWidth: 0
                 ),
                 TextColor = MyTNBColor.TunaGrey(),
-                Font = MyTNBFont.MuseoSans14_500,
+                Font = TNBFont.MuseoSans_14_500,
                 BackgroundColor = UIColor.Clear
             };
             _textFieldHelper.SetKeyboard(_textFieldSearch);
@@ -261,7 +262,7 @@ namespace myTNB
             {
                 _accountsCardScrollView.RemoveFromSuperview();
             }
-            _accountsCardScrollView = new UIScrollView(new CGRect(0, _searchView.Frame.GetMaxY(), _parentView.Frame.Width, _dashboardHomeHelper.GetHeightForAccountCardsOnly()))
+            _accountsCardScrollView = new UIScrollView(new CGRect(0, _searchView.Frame.GetMaxY() + GetScaledHeight(16f), _parentView.Frame.Width, _dashboardHomeHelper.GetHeightForAccountCardsOnly()))
             {
                 Delegate = new AccountsScrollViewDelegate(this),
                 PagingEnabled = true,
@@ -282,7 +283,7 @@ namespace myTNB
             {
                 _pageControl.RemoveFromSuperview();
             }
-            _pageControl = new UIPageControl(new CGRect(8, _accountsCardScrollView.Frame.GetMaxY(), _parentView.Frame.Width - 16f, DashboardHomeConstants.PageControlHeight))
+            _pageControl = new UIPageControl(new CGRect(BaseMarginWidth8, _accountsCardScrollView.Frame.GetMaxY(), _parentView.Frame.Width - BaseMarginWidth16, DashboardHomeConstants.PageControlHeight))
             {
                 BackgroundColor = UIColor.Clear,
                 TintColor = MyTNBColor.WaterBlue,
@@ -329,6 +330,7 @@ namespace myTNB
 
         private void SearchFromAccountList(string searchString)
         {
+            Debug.WriteLine("searchString: " + searchString);
             var accountsList = DataManager.DataManager.SharedInstance.AccountRecordsList.d;
             var searchResults = accountsList.FindAll(x => x.accountNickName.ToLower().Contains(searchString.ToLower()) || x.accNum.Contains(searchString));
             ResetAccountCardsView(searchResults);
@@ -394,6 +396,8 @@ namespace myTNB
         {
             _isSearchMode = false;
             SetViewForActiveSearch(_isSearchMode);
+            _textFieldSearch.Text = string.Empty;
+            SearchFromAccountList(string.Empty);
         }
 
         private void OnTypeSearchAction()
