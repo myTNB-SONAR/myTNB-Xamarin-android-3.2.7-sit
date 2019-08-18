@@ -27,7 +27,6 @@ namespace myTNB
         private nfloat _tableViewOffset = 64f;
         private nfloat titleBarHeight = 24f;
         private int _currentIndex = -1;
-
         private bool _isFromSelection;
 
         public bool IsFromHome;
@@ -303,8 +302,10 @@ namespace myTNB
 
         private void UpdateTable()
         {
-            _meterReadingHistory = DataManager.DataManager.SharedInstance.MeterReadingHistory;
-            _readingHistoryList = DataManager.DataManager.SharedInstance.ReadingHistoryList;
+            _meterReadingHistory = IsFromHome || _isFromSelection
+                ? SSMRActivityInfoCache.ViewMeterReadingHistory : SSMRActivityInfoCache.DashboardMeterReadingHistory;
+            _readingHistoryList = IsFromHome || _isFromSelection
+                ? SSMRActivityInfoCache.ViewReadingHistoryList : SSMRActivityInfoCache.DashboardReadingHistoryList;
 
             _ssmrHeaderComponent.SetSubmitButtonHidden(_meterReadingHistory);
             _ssmrHeaderComponent.ActionTitle = _meterReadingHistory?.HistoryViewTitle ?? string.Empty;
@@ -384,7 +385,7 @@ namespace myTNB
                                 viewController.IsRoot = true;
                                 viewController.CurrentSelectedIndex = _currentIndex;
                                 viewController.OnSelect = OnSelectAccount;
-                                NavigationController.PushViewController(viewController,true);
+                                NavigationController.PushViewController(viewController, true);
                             }
                             else
                             {
@@ -493,7 +494,6 @@ namespace myTNB
             });
         }
 
-
         private async Task LoadSMRAccountActivityInfo(CustomerAccountRecordModel account)
         {
             ActivityIndicator.Show();
@@ -506,16 +506,12 @@ namespace myTNB
                         _smrActivityInfoResponse.d.data != null &&
                         _smrActivityInfoResponse.d.IsSuccess)
                     {
-                        DataManager.DataManager.SharedInstance.MeterReadingHistory = _smrActivityInfoResponse.d.data;
-                        DataManager.DataManager.SharedInstance.ReadingHistoryList = _smrActivityInfoResponse.d.data.MeterReadingHistory;
-                        SSMRActivityInfoCache.SetData(_smrActivityInfoResponse);
+                        SSMRActivityInfoCache.SetReadingHistoryCache(_smrActivityInfoResponse);
                         UpdateTable();
                     }
                     else
                     {
-                        DataManager.DataManager.SharedInstance.MeterReadingHistory = new MeterReadingHistoryModel();
-                        DataManager.DataManager.SharedInstance.ReadingHistoryList = new List<MeterReadingHistoryItemModel>();
-                        DataManager.DataManager.SharedInstance.AccountIsSSMR = false;
+                        //Todo: Refresh State
                     }
                 });
             });

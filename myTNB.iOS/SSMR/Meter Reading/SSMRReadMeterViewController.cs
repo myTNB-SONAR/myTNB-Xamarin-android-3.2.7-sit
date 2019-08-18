@@ -16,6 +16,7 @@ namespace myTNB
     {
         public SSMRReadMeterViewController(IntPtr handle) : base(handle) { }
         public bool IsRoot;
+        public bool IsFromDashboard;
 
         SSMRMeterFooterComponent _sSMRMeterFooterComponent;
         SMRSubmitMeterReadingResponseModel _submitMeterResponse = new SMRSubmitMeterReadingResponseModel();
@@ -57,7 +58,8 @@ namespace myTNB
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
 
-            _previousMeterList = SSMRActivityInfoCache.GetPreviousMeterReadingList();
+            _previousMeterList = IsFromDashboard ? SSMRActivityInfoCache.DashboardPreviousReading
+                : SSMRActivityInfoCache.ViewPreviousReading;
             _isThreePhase = _previousMeterList.Count > 1;
 
             SetNavigation();
