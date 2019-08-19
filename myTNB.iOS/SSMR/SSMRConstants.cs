@@ -86,6 +86,7 @@ namespace myTNB.SSMR
         public static string IMG_BGToolTip3 = "SMR-ToolTip-BG3";
         public static string IMG_NoData = "SSMR-NoData";
         public static string IMG_ReadingHistoryBanner = "SSMR-Reading-History-Banner";
+        public static string IMG_Refresh = "SSMR-Refresh";
 
         //Error
         public static string I18N_InvalidEmail = "invalid_email";

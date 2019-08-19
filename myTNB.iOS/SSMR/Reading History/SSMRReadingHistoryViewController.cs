@@ -545,7 +545,7 @@ namespace myTNB
         #region Refresh
         private void DisplayRefresh()
         {
-            _bgImageView.Image = UIImage.FromBundle("");
+            _bgImageView.Image = UIImage.FromBundle(SSMRConstants.IMG_Refresh);
             if (_viewRefreshContainer != null) { _viewRefreshContainer.RemoveFromSuperview(); }
             _viewRefreshContainer = new UIView(new CGRect(BaseMargin, GetYLocationFromFrame(_bgImageView.Frame, 16)
                 , BaseMarginedWidth, GetScaledHeight(112)))

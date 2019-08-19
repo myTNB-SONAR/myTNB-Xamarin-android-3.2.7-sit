@@ -1107,6 +1107,9 @@
     <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-Refresh.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SSMR-Refresh.imageset\bgApplicationStatus%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-Refresh.imageset\bgApplicationStatus%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1469,6 +1472,7 @@
     <Folder Include="Assets.xcassets\IC-Info-Blue.imageset\" />
     <Folder Include="Assets.xcassets\SSMR-Reading-History-Banner.imageset\" />
     <Folder Include="Assets.xcassets\Camera-Icon-Green.imageset\" />
+    <Folder Include="Assets.xcassets\SSMR-Refresh.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
