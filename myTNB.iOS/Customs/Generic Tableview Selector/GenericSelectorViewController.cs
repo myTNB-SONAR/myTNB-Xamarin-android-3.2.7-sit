@@ -23,7 +23,7 @@ namespace myTNB
             genericTableView.Source = new GenericSelectorDataSource(this);
             genericTableView.ReloadData();
             genericTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
-            genericTableView.RowHeight = 56F;
+            genericTableView.RowHeight = ScaleUtility.GetScaledHeight(57);
         }
 
         public override void DidReceiveMemoryWarning()
