@@ -47,9 +47,18 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 
         [BindView(Resource.Id.btnSubmitMeter)]
         Button btnSubmitMeter;
-
+        
         [BindView(Resource.Id.smr_history_recyclerview)]
         RecyclerView mSMRRecyclerView;
+
+        [BindView(Resource.Id.smr_message_title)]
+        TextView SMRMessageTitle;
+
+        [BindView(Resource.Id.txtSelectedAccountTitle)]
+        TextView SMRAccountTitle;
+
+        [BindView(Resource.Id.selector_smr_account)]
+        TextView SMRAccountSelected;
 
         private IMenu ssmrMenu;
 
@@ -88,8 +97,8 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
                 SetStatusBarBackground(Resource.Drawable.bg_smr);
 
-                TextViewUtils.SetMuseoSans500Typeface(SMRMainTitle, SMRListHeader, btnSubmitMeter);
-                TextViewUtils.SetMuseoSans300Typeface(SMRMainContent);
+                TextViewUtils.SetMuseoSans500Typeface(SMRMainTitle, SMRListHeader, SMRMessageTitle, btnSubmitMeter);
+                TextViewUtils.SetMuseoSans300Typeface(SMRMainContent, SMRAccountTitle, SMRAccountSelected);
 
                 mSMRRecyclerView.SetLayoutManager(new LinearLayoutManager(this));
 
