@@ -33,7 +33,7 @@ namespace myTNB
             AddBackgroundImage();
             SetNavigation();
             AddScrollView();
-            AddSubviews();
+            //AddSubviews();
             SetFooterView();
         }
 
@@ -157,7 +157,7 @@ namespace myTNB
             return height;
         }
 
-        private void AddSubviews()
+        internal void AddSubviews()
         {
             AddAccountSelector();
             SetAddress();
@@ -193,11 +193,15 @@ namespace myTNB
             lblFrame.Height = lblSize.Height;
             _lblAddress.Frame = lblFrame;
         }
-
+        CustomUIView chart;
         private void SetChartView()
         {
             ChartView chartView = new ChartView();
-            CustomUIView chart = chartView.GetUI();
+            if (chart != null)
+            {
+                chart.RemoveFromSuperview();
+            }
+            chart = chartView.GetUI();
             _viewChart.AddSubview(chart);
             CGRect chartFrame = _viewChart.Frame;
             chartFrame.Size = new CGSize(ViewWidth, chart.Frame.Height);
