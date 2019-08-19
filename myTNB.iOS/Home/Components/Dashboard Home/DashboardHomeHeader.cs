@@ -24,8 +24,8 @@ namespace myTNB
             nfloat parentHeight = _parentView.Frame.Height;
             nfloat parentWidth = _parentView.Frame.Width;
             nfloat padding = ScaleUtility.BaseMarginWidth16;
-            nfloat headerHeight = ScaleUtility.GetScaledWidth(80f);
-            nfloat labelHeight = 24f;
+            nfloat headerHeight = ScaleUtility.GetScaledHeight(68f);
+            nfloat labelHeight = ScaleUtility.GetScaledHeight(24f);
             nfloat imageWidth = ScaleUtility.GetScaledWidth(24f);
 
             _accountHeaderView = new UIView(new CGRect(0, 0, parentWidth, headerHeight))
@@ -40,12 +40,12 @@ namespace myTNB
                 }
             }));
 
-            _greetingView = new UIView(new CGRect(0, 0, _accountHeaderView.Frame.Width, labelHeight * 2 + padding));
+            _greetingView = new UIView(new CGRect(0, 0, _accountHeaderView.Frame.Width, labelHeight * 2 + ScaleUtility.GetScaledHeight(20f)));
             _greetingView.BackgroundColor = UIColor.Clear;
 
-            _greetingLabel = new UILabel(new CGRect(padding, padding, _greetingView.Frame.Width * 0.60F, labelHeight))
+            _greetingLabel = new UILabel(new CGRect(padding, ScaleUtility.GetScaledHeight(20f), _greetingView.Frame.Width * 0.60F, labelHeight))
             {
-                Font = MyTNBFont.MuseoSans16_500,
+                Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.SunGlow,
                 Text = _strGreeting
             };
@@ -53,7 +53,7 @@ namespace myTNB
             _accountName = new UILabel(new CGRect(padding, _greetingLabel.Frame.GetMaxY(), _greetingView.Frame.Width - (imageWidth + (padding * 3))
                 , labelHeight))
             {
-                Font = MyTNBFont.MuseoSans16_500,
+                Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.SunGlow,
                 LineBreakMode = UILineBreakMode.MiddleTruncation,
                 Text = _strName

@@ -20,8 +20,8 @@ namespace myTNB
 
         public bool IsUpdating { set; get; }
 
-        nfloat labelHeight = 20f;
-        nfloat cardHeight = 60f;
+        nfloat labelHeight = ScaleUtility.GetScaledHeight(20f);
+        nfloat cardHeight = ScaleUtility.GetScaledHeight(60f);
 
         public DashboardHomeAccountCard(AccountsCardContentViewController controller, UIView parentView, nfloat yLocation)
         {
@@ -40,7 +40,7 @@ namespace myTNB
             nfloat nickNameWidth = ScaleUtility.GetScaledWidth(150f);
             nfloat labelWidth = ScaleUtility.GetScaledWidth(100f);
 
-            _accountCardView = new UIView(new CGRect(0, _yLocation + padding, parentWidth, ScaleUtility.GetScaledHeight(cardHeight)))
+            _accountCardView = new UIView(new CGRect(0, _yLocation, parentWidth, cardHeight))
             {
                 BackgroundColor = UIColor.White
             };
@@ -53,28 +53,28 @@ namespace myTNB
 
             _accountNickname = new UILabel(new CGRect(_accountIcon.Frame.GetMaxX() + margin, ScaleUtility.GetYLocationToCenterObject(labelHeight * 2, _accountCardView), nickNameWidth, labelHeight))
             {
-                Font = MyTNBFont.MuseoSans14_500,
+                Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.GreyishBrown,
                 Text = _strNickname ?? string.Empty
             };
 
             _accountNo = new UILabel(new CGRect(_accountIcon.Frame.GetMaxX() + margin, _accountNickname.Frame.GetMaxY(), labelWidth, labelHeight))
             {
-                Font = MyTNBFont.MuseoSans12_300,
+                Font = TNBFont.MuseoSans_12_300,
                 TextColor = MyTNBColor.CharcoalGrey,
                 Text = _strAccountNo ?? string.Empty
             };
 
             _amountDue = new UILabel(new CGRect(parentWidth - labelWidth - margin, ScaleUtility.GetYLocationToCenterObject(labelHeight * 2, _accountCardView), labelWidth, labelHeight))
             {
-                Font = MyTNBFont.MuseoSans14_500,
+                Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.GreyishBrown,
                 TextAlignment = UITextAlignment.Right
             };
 
             _dueDate = new UILabel(new CGRect(parentWidth - labelWidth - margin, _amountDue.Frame.GetMaxY(), labelWidth, labelHeight))
             {
-                Font = MyTNBFont.MuseoSans12_300,
+                Font = TNBFont.MuseoSans_12_300,
                 TextColor = MyTNBColor.CharcoalGrey,
                 TextAlignment = UITextAlignment.Right
             };
@@ -111,13 +111,13 @@ namespace myTNB
             _accountNickname.Frame = IsUpdating ? new CGRect(_accountNickname.Frame.X, ScaleUtility.GetYLocationToCenterObject(ScaleUtility.GetScaledHeight(28f), _accountCardView), _accountNo.Frame.Width, ScaleUtility.GetScaledHeight(14f))
                 : new CGRect(_accountNickname.Frame.X, ScaleUtility.GetYLocationToCenterObject(labelHeight * 2, _accountCardView), _accountNickname.Frame.Width, labelHeight);
             _accountNickname.Text = IsUpdating ? string.Empty : _strNickname ?? string.Empty;
-            _accountNickname.Layer.CornerRadius = IsUpdating ? 10f : 0f;
+            _accountNickname.Layer.CornerRadius = IsUpdating ? ScaleUtility.GetScaledHeight(10f) : 0f;
 
             _accountNo.BackgroundColor = IsUpdating ? MyTNBColor.PowderBlue : UIColor.Clear;
             _accountNo.Frame = IsUpdating ? new CGRect(_accountNo.Frame.X, _accountNickname.Frame.GetMaxY() + ScaleUtility.GetScaledHeight(6f), _accountNo.Frame.Width - ScaleUtility.BaseMarginWidth16, ScaleUtility.GetScaledHeight(8f))
                 : new CGRect(_accountNo.Frame.X, _accountNickname.Frame.GetMaxY(), _accountNo.Frame.Width, labelHeight);
             _accountNo.Text = IsUpdating ? string.Empty : _strAccountNo ?? string.Empty;
-            _accountNo.Layer.CornerRadius = IsUpdating ? 10f : 0f;
+            _accountNo.Layer.CornerRadius = IsUpdating ? ScaleUtility.GetScaledHeight(10f) : 0f;
 
             AdjustLabels(model);
         }
@@ -166,10 +166,10 @@ namespace myTNB
                 _dueDate.Text = string.Empty;
                 _amountDue.BackgroundColor = MyTNBColor.PowderBlue;
                 _amountDue.Frame = new CGRect(_amountDue.Frame.X, ScaleUtility.GetYLocationToCenterObject(ScaleUtility.GetScaledHeight(28f), _accountCardView), _dueDate.Frame.Width, ScaleUtility.GetScaledHeight(14f));
-                _amountDue.Layer.CornerRadius = 10f;
+                _amountDue.Layer.CornerRadius = ScaleUtility.GetScaledHeight(10f);
                 _dueDate.BackgroundColor = MyTNBColor.PowderBlue;
                 _dueDate.Frame = new CGRect(_dueDate.Frame.X + ScaleUtility.BaseMarginWidth16, _amountDue.Frame.GetMaxY() + ScaleUtility.GetScaledHeight(6f), _dueDate.Frame.Width - ScaleUtility.BaseMarginWidth16, ScaleUtility.GetScaledHeight(8f));
-                _dueDate.Layer.CornerRadius = 10f;
+                _dueDate.Layer.CornerRadius = ScaleUtility.GetScaledHeight(10f);
             }
             else
             {
@@ -184,8 +184,8 @@ namespace myTNB
                     var amount = !model.IsReAccount ? model.amountDue : ChartHelper.UpdateValueForRE(model.amountDue);
                     var absAmount = Math.Abs(amount);
                     _amountDue.AttributedText = TextHelper.CreateValuePairString(absAmount.ToString("N2", CultureInfo.InvariantCulture)
-                        , TNBGlobal.UNIT_CURRENCY + " ", true, MyTNBFont.MuseoSans14_500
-                        , MyTNBColor.TunaGrey(), MyTNBFont.MuseoSans14_500, MyTNBColor.TunaGrey());
+                        , TNBGlobal.UNIT_CURRENCY + " ", true, TNBFont.MuseoSans_14_500
+                        , MyTNBColor.TunaGrey(), TNBFont.MuseoSans_14_500, MyTNBColor.TunaGrey());
                     var dateString = amount > 0 ? model.billDueDate : string.Empty;
                     if (string.IsNullOrEmpty(dateString) || dateString.ToUpper().Equals("N/A"))
                     {
@@ -215,8 +215,8 @@ namespace myTNB
                         }
                         string formattedDate = DateHelper.GetFormattedDate(dateString, "dd MMM");
                         _dueDate.AttributedText = TextHelper.CreateValuePairString(formattedDate
-                        , datePrefix + " ", true, MyTNBFont.MuseoSans12_300
-                        , MyTNBColor.CharcoalGrey, MyTNBFont.MuseoSans12_300, MyTNBColor.CharcoalGrey);
+                        , datePrefix + " ", true, TNBFont.MuseoSans_12_300
+                        , MyTNBColor.CharcoalGrey, TNBFont.MuseoSans_12_300, MyTNBColor.CharcoalGrey);
                     }
                 }
             }

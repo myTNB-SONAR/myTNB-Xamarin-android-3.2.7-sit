@@ -20,7 +20,7 @@ namespace myTNB
             cardHeight = cardWidth * 0.98F;
             _titleLabel = new UILabel(new CGRect(ScaleUtility.BaseMarginWidth16, 16f, cellWidth - 32, 20f))
             {
-                Font = MyTNBFont.MuseoSans14_500,
+                Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.PowerBlue
             };
             AddSubview(_titleLabel);
@@ -28,7 +28,7 @@ namespace myTNB
             {
                 BackgroundColor = UIColor.Clear
             };
-            _scrollView = new UIScrollView(new CGRect(0, 0, view.Frame.Width, cardHeight + 16))
+            _scrollView = new UIScrollView(new CGRect(0, 0, view.Frame.Width, cardHeight + ScaleUtility.GetScaledHeight(16f)))
             {
                 ScrollEnabled = true,
                 ShowsHorizontalScrollIndicator = false
@@ -110,7 +110,7 @@ namespace myTNB
                 {
                     TextAlignment = UITextAlignment.Left,
                     TextColor = MyTNBColor.WaterBlue,
-                    Font = MyTNBFont.MuseoSans12_500,
+                    Font = TNBFont.MuseoSans_12_500,
                     Text = promotion.Title
                 };
 
@@ -118,7 +118,7 @@ namespace myTNB
                 {
                     TextAlignment = UITextAlignment.Left,
                     TextColor = MyTNBColor.GreyishBrown,
-                    Font = MyTNBFont.MuseoSans12_300,
+                    Font = TNBFont.MuseoSans_12_300,
                     Lines = 0,
                     LineBreakMode = UILineBreakMode.WordWrap,
                     Text = promotion.Text
@@ -135,9 +135,9 @@ namespace myTNB
         {
             view.Layer.CornerRadius = 5.0F;
             view.Layer.MasksToBounds = false;
-            view.Layer.ShadowColor = MyTNBColor.BabyBlue.CGColor;
+            view.Layer.ShadowColor = MyTNBColor.BabyBlue60.CGColor;
             view.Layer.ShadowOpacity = 0.5F;
-            view.Layer.ShadowOffset = new CGSize(0, 0);
+            view.Layer.ShadowOffset = new CGSize(-4, 8);
             view.Layer.ShadowRadius = 4;
             view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
         }

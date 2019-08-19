@@ -51,15 +51,25 @@ namespace myTNB
             _txtFieldHelper = new TextFieldHelper();
         }
 
+        private nfloat GetScaledWidth(nfloat w)
+        {
+            return ScaleUtility.GetScaledWidth(w);
+        }
+
+        private nfloat GetScaledHeight(nfloat h)
+        {
+            return ScaleUtility.GetScaledHeight(h);
+        }
+
         private void CreateUI()
         {
-            CGSize containerSize = new CGSize(_parentView.Frame.Width - 32, 51);
+            CGSize containerSize = new CGSize(_parentView.Frame.Width - GetScaledWidth(32), GetScaledHeight(51));
             ViewContainer = new UIView(new CGRect(_location, containerSize))
             {
                 BackgroundColor = UIColor.Clear
             };
 
-            LblTitle = new UILabel(new CGRect(0, 0, ViewContainer.Frame.Width, 12))
+            LblTitle = new UILabel(new CGRect(0, 0, ViewContainer.Frame.Width, GetScaledHeight(12)))
             {
                 AttributedText = AttributedStringUtility.GetAttributedStringV2(Title, AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
@@ -68,7 +78,7 @@ namespace myTNB
 
             TextField = new UITextField
             {
-                Frame = new CGRect(0, 12, ViewContainer.Frame.Width - 30, 24),
+                Frame = new CGRect(0, GetScaledHeight(12), ViewContainer.Frame.Width - GetScaledWidth(30), GetScaledHeight(24)),
                 AttributedPlaceholder = AttributedStringUtility.GetAttributedStringV2(Title, AttributedStringUtility.AttributedStringType.Value),
                 TextColor = TextColor,
                 SecureTextEntry = IsSecureEntry,
@@ -83,16 +93,16 @@ namespace myTNB
                 _txtFieldHelper.CreateDoneButton(TextField);
             }
 
-            _viewLine = GenericLine.GetLine(new CGRect(0, 36, ViewContainer.Frame.Width, 1));
+            _viewLine = GenericLine.GetLine(new CGRect(0, GetScaledHeight(36), ViewContainer.Frame.Width, GetScaledHeight(1)));
 
-            LblError = new UILabel(new CGRect(0, 37, ViewContainer.Frame.Width, 14))
+            LblError = new UILabel(new CGRect(0, GetScaledHeight(37), ViewContainer.Frame.Width, GetScaledHeight(14)))
             {
                 AttributedText = AttributedStringUtility.GetAttributedStringV2(Error, AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true,
             };
 
-            LblHint = new UILabel(new CGRect(0, 37, ViewContainer.Frame.Width, 14))
+            LblHint = new UILabel(new CGRect(0, GetScaledHeight(37), ViewContainer.Frame.Width, GetScaledHeight(14)))
             {
                 AttributedText = AttributedStringUtility.GetAttributedStringV2(Hint, AttributedStringUtility.AttributedStringType.Hint),
                 TextAlignment = UITextAlignment.Left,

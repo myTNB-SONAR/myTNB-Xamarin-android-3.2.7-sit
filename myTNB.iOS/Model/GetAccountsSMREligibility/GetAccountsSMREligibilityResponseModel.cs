@@ -10,6 +10,7 @@ namespace myTNB.Model
     public class AccountsSMREligibilityDataModel : BaseModelV2
     {
         public AccountsSMREligibilitySerivceModel data { set; get; }
+        public List<PopupModel> SMREligibiltyPopUpDetails { set; get; }
     }
 
     public class AccountsSMREligibilitySerivceModel
@@ -21,11 +22,19 @@ namespace myTNB.Model
     {
         public string ContractAccount { set; get; }
         public string SMREligibility { set; get; }
+        public string IsSMRTagged { set; get; }
         public bool IsEligible
         {
             get
             {
                 return !string.IsNullOrEmpty(SMREligibility) && SMREligibility.ToUpper() == "TRUE";
+            }
+        }
+        public bool IsSSMR
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(IsSMRTagged) && IsSMRTagged.ToUpper() == "TRUE";
             }
         }
     }

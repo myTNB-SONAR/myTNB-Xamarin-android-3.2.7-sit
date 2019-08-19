@@ -9,7 +9,9 @@ namespace myTNB.SSMR
         public static string Pagename_SSMRWalkthrough = "SSMROnboarding";
         public static string Pagename_SSMRCaptureMeter = "SSMRCaptureMeter";
         public static string Pagename_SSMRMeterRead = "SSMRSubmitMeterReading";
+        public static string Pagename_SSMRReadingHistory = "SSMRReadingHistory";
         public static string Popup_SMRPhotoPopUpDetails = "SMRPhotoPopUpDetails";
+        public static string Popup_SMREligibiltyPopUpDetails = "SMREligibiltyPopUpDetails";
 
         //Service name
         public static string Service_SubmitSSMRApplication = "SubmitSMRApplication";
@@ -17,6 +19,7 @@ namespace myTNB.SSMR
         public static string Service_GetCARegisteredContact = "GetCAContactDetails";
         public static string Service_GetMeterReadingOCRValue = "GetMeterReadingOCRValue";
         public static string Service_GetAccountsSMREligibility = "GetAccountsSMREligibility";
+        public static string Service_GetSMRAccountActivityInfo = "GetSMRAccountActivityInfo";
         public static string Service_Register = "R";
         public static string Service_Terminate = "T";
         public static string Service_OthersID = "1007";
@@ -32,13 +35,10 @@ namespace myTNB.SSMR
         //Onboarding
         //i18n
         public static string I18N_Skip = "skip";
-        public static string I18N_DontShow = "dontShow";
         public static string I18N_Title1 = "onboardingTitle1";
         public static string I18N_Title2 = "onboardingTitle2";
-        public static string I18N_Title3 = "onboardingTitle3";
         public static string I18N_Description1 = "onboardingDescription1";
         public static string I18N_Description2 = "onboardingDescription2";
-        public static string I18N_Description3 = "onboardingDescription3";
         public static string I18N_StartApplication = "startApplication";
 
         //Common
@@ -66,7 +66,6 @@ namespace myTNB.SSMR
         //Image
         public static string IMG_BGOnboarding1 = "SSMR_Background_1";
         public static string IMG_BGOnboarding2 = "SSMR_Background_2";
-        public static string IMG_BGOnboarding3 = "SSMR_Background_3";
         public static string IMG_Mark = "Payment-Checkbox-Active";
         public static string IMG_Unmark = "Payment-Checkbox-Inactive";
         public static string IMG_Dropdow = "IC-Action-Dropdown";
@@ -86,6 +85,7 @@ namespace myTNB.SSMR
         public static string IMG_BGToolTip2 = "SMR-ToolTip-BG2";
         public static string IMG_BGToolTip3 = "SMR-ToolTip-BG3";
         public static string IMG_NoData = "SSMR-NoData";
+        public static string IMG_ReadingHistoryBanner = "SSMR-Reading-History-Banner";
 
         //Error
         public static string I18N_InvalidEmail = "invalid_email";
@@ -100,6 +100,11 @@ namespace myTNB.SSMR
         //Reading History
         public static string I18N_SectionTitle = "headerTitle";
         public static string STR_EstimatedReading = "estimated";
+        public static string I18N_SubTitle = "subTitle";
+        public static string I18N_DisableSSMRCTA = "disableSSMRCTA";
+        public static string I18N_EnableSSMRCTA = "enableSSMRCTA";
+        public static string I18N_EnableSSMRDescription = "enableSSMRDescription";
+        public static string I18N_SelectAccountNavTitle = "selectAccountNavTitle";
 
         //Capture Meter
         public static string I18N_OCRReading = "ocrReading";
@@ -138,5 +143,6 @@ namespace myTNB.SSMR
         //Event Names
         public static string EVENT_SubmitToOCR = "Submit Images to OCR";
         public static string EVENT_DeleteImage = "Delete Image";
+        public static string EVENT_DisableSelfMeterReading = "Disable Self Meter Reading";
     }
 }

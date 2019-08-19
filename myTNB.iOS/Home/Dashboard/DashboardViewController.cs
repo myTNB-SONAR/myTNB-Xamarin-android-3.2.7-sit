@@ -221,16 +221,10 @@ namespace myTNB.Dashboard
                         _smrActivityInfoResponse.d.data != null &&
                         _smrActivityInfoResponse.d.IsSuccess)
                     {
-                        DataManager.DataManager.SharedInstance.MeterReadingHistory = _smrActivityInfoResponse.d.data;
-                        DataManager.DataManager.SharedInstance.ReadingHistoryList = _smrActivityInfoResponse.d.data.MeterReadingHistory;
-                        DataManager.DataManager.SharedInstance.MoreOptionsList = _smrActivityInfoResponse.d.data.MoreOptions;
-                        SSMRActivityInfoCache.SetData(_smrActivityInfoResponse);
+                        SSMRActivityInfoCache.SetDashboardCache(_smrActivityInfoResponse);
                     }
                     else
                     {
-                        DataManager.DataManager.SharedInstance.MeterReadingHistory = new MeterReadingHistoryModel();
-                        DataManager.DataManager.SharedInstance.ReadingHistoryList = new List<MeterReadingHistoryItemModel>();
-                        DataManager.DataManager.SharedInstance.MoreOptionsList = new List<MoreOptionsItemModel>();
                         DataManager.DataManager.SharedInstance.AccountIsSSMR = false;
                     }
                 });
@@ -741,7 +735,7 @@ namespace myTNB.Dashboard
 
         private void SetSSMREvent()
         {
-            var smrAcountInfo = DataManager.DataManager.SharedInstance.MeterReadingHistory;
+            MeterReadingHistoryModel smrAcountInfo = SSMRActivityInfoCache.DashboardMeterReadingHistory;
             if (_dashboardMainComponent._sSMRComponent != null)
             {
                 if (smrAcountInfo != null)
@@ -790,6 +784,7 @@ namespace myTNB.Dashboard
                 storyBoard.InstantiateViewController("SSMRReadMeterViewController") as SSMRReadMeterViewController;
             if (viewController != null)
             {
+                viewController.IsFromDashboard = true;
                 var navController = new UINavigationController(viewController);
                 PresentViewController(navController, true, null);
             }

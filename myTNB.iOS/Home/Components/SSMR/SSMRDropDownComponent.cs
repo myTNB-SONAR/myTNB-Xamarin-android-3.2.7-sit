@@ -85,7 +85,7 @@ namespace myTNB
                 UIView rowView = CreateListRow(option);
                 rowView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
-                    _controller.OnMoreOptionSelected(option);
+                    //_controller.OnMoreOptionSelected(option);
                 }));
                 _dropDownContainer.AddSubview(rowView);
             }
