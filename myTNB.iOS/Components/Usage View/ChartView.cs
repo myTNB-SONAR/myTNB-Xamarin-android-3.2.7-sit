@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using CoreGraphics;
-using Force.DeepCloner;
 using myTNB.Model.Usage;
 using UIKit;
 
@@ -48,8 +46,6 @@ namespace myTNB
         {
             _segmentContainer = new CustomUIView(new CGRect(0, GetYLocationFromFrame(_lblDateRange.Frame, 16)
                , _width, GetScaledHeight(157)));
-            //_segmentContainer.Layer.BorderWidth = 1;
-            //_segmentContainer.Layer.BorderColor = UIColor.Red.CGColor;
 
             nfloat height = _segmentContainer.Frame.Height;
             nfloat width = GetScaledWidth(12);
@@ -57,7 +53,7 @@ namespace myTNB
             nfloat baseMargin = GetScaledWidth(34);
             nfloat xLoc = baseMargin;
             nfloat lblHeight = GetScaledHeight(14);
-            nfloat maxBarHeight = GetScaledHeight(108);// height * 0.688F;
+            nfloat maxBarHeight = GetScaledHeight(108);
             nfloat amountBarMargin = GetScaledHeight(4);
 
             List<MonthItemModel> usageData = AccountUsageCache.ByMonthUsage;
@@ -70,7 +66,6 @@ namespace myTNB
                 int index = i;
                 MonthItemModel item = usageData[index];
                 CustomUIView segment = new CustomUIView(new CGRect(xLoc, 0, width, height)) { Tag = index };
-                // { BackgroundColor = UIColor.FromWhiteAlpha(1, 0.5F) };
                 _segmentContainer.AddSubview(segment);
                 xLoc += width + barMargin;
 
@@ -80,7 +75,7 @@ namespace myTNB
 
                 CustomUIView viewBar = new CustomUIView(new CGRect(0, yLoc, width, barHeight))
                 {
-                    BackgroundColor = UIColor.Clear,// i < usageData.Count - 1 ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
+                    BackgroundColor = UIColor.Clear,
                     Tag = 1001,
                     ClipsToBounds = true
                 };
@@ -90,7 +85,7 @@ namespace myTNB
                 {
                     BackgroundColor = index < usageData.Count - 1 ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
                     Tag = 2001,
-                    Hidden = !false
+                    Hidden = false
                 };
                 viewBar.AddSubview(viewCover);
 
@@ -128,7 +123,6 @@ namespace myTNB
             }
 
             _mainView.AddSubview(_segmentContainer);
-            //_mainView.SendSubviewToBack(_segmentContainer);
         }
 
         private double GetMaxValue(RMkWhEnum view, List<string> value)
@@ -162,7 +156,7 @@ namespace myTNB
             UIView viewTariffContainer = new UIView(new CGRect(0, 0, viewBar.Frame.Width, viewBar.Frame.Height))
             {
                 Tag = 2002,
-                Hidden = !true
+                Hidden = true
             };
             for (int i = 0; i < tariff.Count; i++)
             {
@@ -232,6 +226,33 @@ namespace myTNB
         {
             CreatUI();
             return _mainView;
+        }
+
+        public void ToggleTariffView(bool isTariffView)
+        {
+            for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
+            {
+                CustomUIView segmentView = _segmentContainer.Subviews[i] as CustomUIView;
+                CustomUIView bar = segmentView.ViewWithTag(1001) as CustomUIView;
+                UIView viewCover = bar.ViewWithTag(2001);
+                viewCover.Hidden = isTariffView;
+                UIView viewTariff = bar.ViewWithTag(2002);
+                viewTariff.Hidden = !isTariffView;
+            }
+        }
+
+        public void ToggleRMKWHValues(RMkWhEnum state)
+        {
+            List<MonthItemModel> usageData = AccountUsageCache.ByMonthUsage;
+            for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
+            {
+                CustomUIView segmentView = _segmentContainer.Subviews[i] as CustomUIView;
+                UILabel value = segmentView.ViewWithTag(1002) as UILabel;
+                value.Text = state == RMkWhEnum.RM ? string.Format("{0} {1}", usageData[i].Currency, usageData[i].AmountTotal)
+                    : string.Format("{0} {1}", usageData[i].UsageTotal, usageData[i].UsageUnit);
+                nfloat lblAmountWidth = value.GetLabelWidth(GetScaledWidth(200));
+                value.Frame = new CGRect((GetScaledWidth(12) - lblAmountWidth) / 2, value.Frame.Y, lblAmountWidth, value.Frame.Height);
+            }
         }
     }
 }
