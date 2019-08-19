@@ -1,16 +1,22 @@
 ﻿using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Java.Text;
+using MikePhil.Charting.Buffer;
+using MikePhil.Charting.Charts;
 using MikePhil.Charting.Components;
 using MikePhil.Charting.Data;
 using MikePhil.Charting.Highlight;
+using MikePhil.Charting.Interfaces.Datasets;
 using MikePhil.Charting.Util;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
 {
@@ -25,6 +31,7 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
         public ChartType ChartType { get; set; }
         public string AccountType { get; set; }
         public int CurrentParentIndex = -1;
+        
         public Context currentContext;
         public SelectedMarkerView(Context context) : base(context, Resource.Layout.NewMarkerView)
         {
@@ -75,28 +82,6 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
                     float valKwh = (float)UsageHistoryData.ByMonth.Months[index].UsageTotal;
                     titleMarker.Text = kwhFormat.Format(Math.Abs(valKwh)) + " " + UsageHistoryData.ByMonth.Months[index].UsageUnit;
                 }
-                if (CurrentParentIndex == -1)
-                {
-                    CurrentParentIndex = index;
-                }
-                else
-                {
-                    if (index != CurrentParentIndex)
-                    {
-                        CurrentParentIndex = index;
-                        Vibrator vibrator = (Vibrator)currentContext.GetSystemService(Context.VibratorService);
-                        if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
-                        {
-                            vibrator.Vibrate(VibrationEffect.CreateOneShot(200, 12));
-
-                        }
-                        else
-                        {
-                            vibrator.Vibrate(200);
-
-                        }
-                    }
-                }
             }
             else
             {
@@ -110,6 +95,8 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
 
         public override MPPointF GetOffsetForDrawingAtPoint(float posX, float posY)
         {
+            Log.Debug("Hightlight Position X", posX.ToString());
+            Log.Debug("Hightlight Position Y", posY.ToString());
             return new MPPointF(-(Width / 2), (int) -(Height * 1.25));
         }
     }

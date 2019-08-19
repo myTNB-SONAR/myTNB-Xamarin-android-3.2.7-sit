@@ -2175,6 +2175,18 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\myTNBMenu\Adapter\TariffBlockLegendAdapter.cs" />
+    <AndroidResource Include="Resources\anim\item_animation_fall_down.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\anim\layout_animation_fall_down.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\CustomDashboardGradientAccountSelector.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -2552,6 +2564,7 @@
     <Folder Include="Src\SSMR\SSMRBase\" />
     <Folder Include="Src\SSMR\SSMRBase\MVP\" />
     <Folder Include="Src\myTNBMenu\ChartRenderer\" />
+    <Folder Include="Resources\anim\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

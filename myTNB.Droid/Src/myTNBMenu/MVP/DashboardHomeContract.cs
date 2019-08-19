@@ -219,9 +219,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             void UnsetToolbarBackground();
 
-            void ShowNMREChart(bool isAmountDueDown, bool isGraphDown, UsageHistoryResponse response, AccountData selectedAccount, AccountDueAmountResponse amountDueResponse);
+            void ShowNMREChart(bool isAmountDueDown, bool isGraphDown, bool isBillingAvailable, UsageHistoryResponse response, AccountData selectedAccount, AccountDueAmountResponse amountDueResponse);
 
-            void ShowNMREChartWithError(bool isAmountDueDown, bool isGraphDown, UsageHistoryResponse response, AccountData selectedAccount, AccountDueAmountResponse amountDueResponse, string errorCode, string errorMsg);
+            void ShowNMREChartWithError(bool isAmountDueDown, bool isGraphDown, bool isBillingAvailable, UsageHistoryResponse response, AccountData selectedAccount, AccountDueAmountResponse amountDueResponse, string errorCode, string errorMsg);
 
         }
 

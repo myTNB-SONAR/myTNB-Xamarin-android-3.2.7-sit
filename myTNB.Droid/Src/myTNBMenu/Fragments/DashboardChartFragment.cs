@@ -13,6 +13,7 @@ using Android.Text;
 using Android.Text.Method;
 using Android.Util;
 using Android.Views;
+using Android.Views.Animations;
 using Android.Widget;
 using CheeseBind;
 using Java.Lang;
@@ -24,6 +25,8 @@ using MikePhil.Charting.Data;
 using MikePhil.Charting.Formatter;
 using MikePhil.Charting.Highlight;
 using MikePhil.Charting.Interfaces.Datasets;
+using MikePhil.Charting.Listener;
+using MikePhil.Charting.Util;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base.Fragments;
@@ -55,7 +58,7 @@ using static myTNB_Android.Src.myTNBMenu.Models.GetInstallationDetailsResponse;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
-    public class DashboardChartFragment : BaseFragment, DashboardChartContract.IView, NMREDashboardScrollViewListener, ViewTreeObserver.IOnGlobalLayoutListener
+    public class DashboardChartFragment : BaseFragment, DashboardChartContract.IView, NMREDashboardScrollViewListener, ViewTreeObserver.IOnGlobalLayoutListener, MikePhil.Charting.Listener.IOnChartValueSelectedListenerSupport
     {
 
         [BindView(Resource.Id.totalPayableLayout)]
@@ -200,8 +203,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.tariffBlockLegendRecyclerView)]
         RecyclerView tariffBlockLegendRecyclerView;
 
-        [BindView(Resource.Id.subMainView)]
-        LinearLayout subMainView;
+        [BindView(Resource.Id.scroll_view_content)]
+        LinearLayout scrollViewContent;
+
+        [BindView(Resource.Id.noPayableLayout)]
+        RelativeLayout noPayableLayout;
+
+        [BindView(Resource.Id.txtNoPayableTitle)]
+        TextView txtNoPayableTitle;
+
+        [BindView(Resource.Id.txtNoPayable)]
+        TextView txtNoPayable;
+
+        [BindView(Resource.Id.txtNoPayableCurrency)]
+        TextView txtNoPayableCurrency;
 
         TariffBlockLegendAdapter tariffBlockLegendAdapter;
 
@@ -240,7 +255,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         bool isToggleTariff = false;
 
+        bool isBillingAvailable = true;
+
+        public StackedBarChartRenderer renderer;
+
         static bool requireScroll;
+
+        private int CurrentParentIndex = -1;
 
         public override int ResourceId()
         {
@@ -292,6 +313,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             else
             {
                 amountDueResponse = null;
+            }
+
+            if (extras.ContainsKey(Constants.IS_BILLING_AVAILABLE_KEY))
+            {
+                isBillingAvailable = extras.GetBoolean(Constants.IS_BILLING_AVAILABLE_KEY);
             }
 
             errorMSG = "";
@@ -375,7 +401,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             return chartFragment;
         }
 
-        internal static DashboardChartFragment NewInstance(bool isAmountDueDown, bool isGraphDown, UsageHistoryResponse response, AccountData selectedAccount, AccountDueAmountResponse amountDueResponse)
+        internal static DashboardChartFragment NewInstance(bool isAmountDueDown, bool isGraphDown, bool isBillingAvailable, UsageHistoryResponse response, AccountData selectedAccount, AccountDueAmountResponse amountDueResponse)
         {
             DashboardChartFragment chartFragment = new DashboardChartFragment();
             Bundle bundle = new Bundle();
@@ -384,12 +410,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
             bundle.PutString(Constants.AMOUNT_DUE_RESPONSE_KEY, JsonConvert.SerializeObject(amountDueResponse));
             bundle.PutBoolean(Constants.AMOUNT_DUE_FAILED_KEY, isAmountDueDown);
+            bundle.PutBoolean(Constants.IS_BILLING_AVAILABLE_KEY, isBillingAvailable);
             bundle.PutBoolean(Constants.NO_INTERNET_CONNECTION, isGraphDown);
             chartFragment.Arguments = bundle;
             return chartFragment;
         }
 
-        internal static DashboardChartFragment NewInstance(bool isAmountDueDown, bool isGraphDown, UsageHistoryResponse response, AccountData selectedAccount, AccountDueAmountResponse amountDueResponse, string error, string errorMessage)
+        internal static DashboardChartFragment NewInstance(bool isAmountDueDown, bool isGraphDown, bool isBillingAvailable, UsageHistoryResponse response, AccountData selectedAccount, AccountDueAmountResponse amountDueResponse, string error, string errorMessage)
         {
             DashboardChartFragment chartFragment = new DashboardChartFragment();
             Bundle bundle = new Bundle();
@@ -399,6 +426,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             bundle.PutString(Constants.AMOUNT_DUE_RESPONSE_KEY, JsonConvert.SerializeObject(amountDueResponse));
             bundle.PutBoolean(Constants.AMOUNT_DUE_FAILED_KEY, isAmountDueDown);
             bundle.PutBoolean(Constants.NO_INTERNET_CONNECTION, isGraphDown);
+            bundle.PutBoolean(Constants.IS_BILLING_AVAILABLE_KEY, isBillingAvailable);
             bundle.PutString(Constants.SELECTED_ERROR, error);
             bundle.PutString(Constants.SELECTED_ERROR_MSG, errorMessage);
             chartFragment.Arguments = bundle;
@@ -565,8 +593,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextViewUtils.SetMuseoSans300Typeface(txtAddress, txtTotalPayable, txtDueDate);
                 TextViewUtils.SetMuseoSans300Typeface(txtNewRefreshMessage, ssmrAccountStatusText);
                 TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnNewRefresh, rmKwhLabel, kwhLabel, rmLabel, dashboardAccountName, btnTxtSsmrViewHistory, btnReadingHistory, txtEnergyDisconnection);
-                TextViewUtils.SetMuseoSans300Typeface(reTotalPayable, reTotalPayableCurrency, reDueDate);
-                TextViewUtils.SetMuseoSans500Typeface(reTotalPayableTitle, btnReView, txtTarifToggle);
+                TextViewUtils.SetMuseoSans300Typeface(reTotalPayable, reTotalPayableCurrency, reDueDate, txtNoPayable);
+                TextViewUtils.SetMuseoSans500Typeface(reTotalPayableTitle, btnReView, txtTarifToggle, txtNoPayableTitle, txtNoPayableCurrency);
 
 
                 bottomSheetBehavior = BottomSheetBehavior.From(bottomSheet);
@@ -618,6 +646,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 else
                 {
                     energyTipsView.Visibility = ViewStates.Gone;
+                }
+
+                if (!isBillingAvailable)
+                {
+                    btnViewBill.Enabled = false;
+                    btnReView.Enabled = false;
+                    btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                    btnReView.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                    btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+                    btnReView.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
                 }
 
                 if (amountDueFailed)
@@ -947,7 +985,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             if (isToggleTariff)
             {
-                StackedBarChartRenderer renderer = new StackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
+                renderer = new StackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
                 {
                     selectedHistoryData = selectedHistoryData,
                     currentContext = Activity
@@ -990,14 +1028,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 SetUpYAxis();
 
-                // SETUP MARKER VIEW
-
-                SetUpMarkerRMView();
-
                 // ADD DATA
 
                 SetData(selectedHistoryData.ByMonth.Months.Count);
 
+
+                // SETUP MARKER VIEW
+
+                SetUpMarkerRMView();
 
             }
             else
@@ -1015,12 +1053,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 SetUpYAxisKwh();
 
+                // ADD DATA
+                SetKWhData(selectedHistoryData.ByMonth.Months.Count);
+
                 // SETUP MARKER VIEW
 
                 SetUpMarkerKWhView();
-
-                // ADD DATA
-                SetKWhData(selectedHistoryData.ByMonth.Months.Count);
             }
 
             int graphTopPadding = 30;
@@ -1031,6 +1069,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 mChart.LayoutParameters.Height = (int) DPUtils.ConvertDPToPx(240f);
             }
             mChart.SetExtraOffsets(0, graphTopPadding, 0, graphBottomPadding);
+
+            mChart.SetOnChartValueSelectedListener(this);
         }
         #region SETUP AXIS MONTH
         internal void SetUpXAxis()
@@ -1133,13 +1173,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #region SETUP MARKERVIEW MONTH / HIGHLIGHT TEXT
         internal void SetUpMarkerRMView()
         {
-
             SelectedMarkerView markerView = new SelectedMarkerView(Activity)
             {
                 UsageHistoryData = selectedHistoryData,
                 ChartType = ChartType.RM,
                 AccountType = selectedAccount.AccountCategoryId
-
             };
             markerView.ChartView = mChart;
             mChart.Marker = markerView;
@@ -1149,13 +1187,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #region SETUP MARKERVIEW DAY/ HIGHLIGHT TEXT
         internal void SetUpMarkerKWhView()
         {
-
             SelectedMarkerView markerView = new SelectedMarkerView(Activity)
             {
                 UsageHistoryData = selectedHistoryData,
                 ChartType = ChartType.kWh,
                 AccountType = selectedAccount.AccountCategoryId
-
             };
             markerView.ChartView = mChart;
             mChart.Marker = markerView;
@@ -1167,6 +1203,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             if (isToggleTariff)
             {
+                int stackIndex = 0;
                 List<BarEntry> yVals1 = new List<BarEntry>();
                 for (int i = 0; i < barLength; i++)
                 {
@@ -1180,7 +1217,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         valList[j] = System.Math.Abs(val);
                     }
-
+                    if (i == barLength - 1)
+                    {
+                        stackIndex = valList.Length - 1;
+                    }
                     yVals1.Add(new BarEntry(i, valList));
                 }
 
@@ -1206,7 +1246,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     int[] colorSet = new int[selectedHistoryData.TariffBlocksLegend.Count];
                     for (int k = 0; k < selectedHistoryData.TariffBlocksLegend.Count; k++)
                     {
-                        colorSet[k] = Color.Argb(100, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData);
+                        colorSet[k] = Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData);
                     }
 
                     set1.SetColors(colorSet);
@@ -1218,7 +1258,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                     data.BarWidth = 0.25f;
 
-                    data.HighlightEnabled = false;
+                    set1.HighLightAlpha = 0;
+
+                    data.HighlightEnabled = true;
                     data.SetValueTextSize(10f);
                     data.SetDrawValues(false);
 
@@ -1226,7 +1268,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
 
                 // HIGHLIGHT RIGHT MOST ITEM
-                Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
+                Highlight rightMostBar = new Highlight(barLength - 1, 0, stackIndex);
                 mChart.HighlightValues(new Highlight[] { rightMostBar });
             }
             else
@@ -1297,6 +1339,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             if (isToggleTariff)
             {
+                int stackIndex = 0;
                 List<BarEntry> yVals1 = new List<BarEntry>();
                 for (int i = 0; i < barLength; i++)
                 {
@@ -1310,7 +1353,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         valList[j] = System.Math.Abs(val);
                     }
-
+                    if (i == barLength - 1)
+                    {
+                        stackIndex = valList.Length - 1;
+                    }
                     yVals1.Add(new BarEntry(i, valList));
                 }
 
@@ -1336,7 +1382,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     int[] colorSet = new int[selectedHistoryData.TariffBlocksLegend.Count];
                     for (int k = 0; k < selectedHistoryData.TariffBlocksLegend.Count; k++)
                     {
-                        colorSet[k] = Color.Argb(100, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData);
+                        colorSet[k] = Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData);
                     }
 
                     set1.SetColors(colorSet);
@@ -1348,7 +1394,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                     data.BarWidth = 0.25f;
 
-                    data.HighlightEnabled = false;
+                    set1.HighLightAlpha = 0;
+
+                    data.HighlightEnabled = true;
                     data.SetValueTextSize(10f);
                     data.SetDrawValues(false);
 
@@ -1356,11 +1404,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
 
                 // HIGHLIGHT RIGHT MOST ITEM
-                Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
+                Highlight rightMostBar = new Highlight(barLength - 1, 0, stackIndex);
                 mChart.HighlightValues(new Highlight[] { rightMostBar });
             }
             else
             {
+
                 List<BarEntry> yVals1 = new List<BarEntry>();
                 for (int i = 0; i < barLength; i++)
                 {
@@ -1570,7 +1619,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 txtTarifToggle.Text = "Show Tariff";
                 isToggleTariff = false;
                 tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
-                subMainView.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
             }
             else
             {
@@ -1578,9 +1627,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 txtTarifToggle.Text = "Hide Tariff";
                 isToggleTariff = true;
                 tariffBlockLegendRecyclerView.Visibility = ViewStates.Visible;
-                tariffBlockLegendAdapter = new TariffBlockLegendAdapter(selectedHistoryData.TariffBlocksLegend, this.Activity);
-                tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
-                subMainView.SetBackgroundResource(Resource.Drawable.dashboard_chart_extended_bg);
+                if (tariffBlockLegendAdapter == null)
+                {
+                    tariffBlockLegendAdapter = new TariffBlockLegendAdapter(selectedHistoryData.TariffBlocksLegend, this.Activity);
+                    tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
+                }
+                Context context = tariffBlockLegendRecyclerView.Context;
+                LayoutAnimationController controller =
+                        AnimationUtils.LoadLayoutAnimation(context, Resource.Animation.layout_animation_fall_down);
+
+                tariffBlockLegendRecyclerView.LayoutAnimation = controller;
+                tariffBlockLegendRecyclerView.GetAdapter().NotifyDataSetChanged();
+                tariffBlockLegendRecyclerView.ScheduleLayoutAnimation();
+                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_extended_bg);
             }
 
             mChart.Clear();
@@ -2043,8 +2102,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             Calendar c = Calendar.Instance;
                             c.Time = d;
                             c.Add(CalendarField.Date, incrementDays);
+                            SimpleDateFormat df = new SimpleDateFormat("dd MMM");
                             Date newDate = c.Time;
-                            if (calAmt == 0.00)
+                            string dateString = df.Format(newDate);
+                            if (System.Math.Abs(calAmt) < 0.0001)
                             {
                                 txtDueDate.Text = "- -";
                                 reDueDate.Text = "- -";
@@ -2052,7 +2113,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             else
                             {
                                 txtDueDate.Text = "I will get by " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(newDate));
-                                reDueDate.Text = "I will get by " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(newDate));
+                                reDueDate.Text = "I will get by " + dateString;
                             }
                         }
                         else
@@ -2072,10 +2133,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             double calAmt = selectedAccount.AmtCustBal;
                             if (calAmt <= 0.00)
                             {
+                                totalPayableLayout.Visibility = ViewStates.Gone;
+                                noPayableLayout.Visibility = ViewStates.Visible;
+                                if (System.Math.Abs(calAmt) < 0.0001)
+                                {
+                                    txtNoPayableTitle.Text = "I’ve cleared all bills";
+                                    txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                    txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                }
+                                else
+                                {
+                                    txtNoPayableTitle.Text = "I’ve paid extra";
+                                    txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
+                                    txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
+                                }
+                                txtNoPayable.Text = decimalFormat.Format(System.Math.Abs(accountDueAmount.AmountDue));
                                 txtDueDate.Text = "- -";
                             }
                             else
                             {
+                                totalPayableLayout.Visibility = ViewStates.Visible;
+                                noPayableLayout.Visibility = ViewStates.Gone;
                                 txtDueDate.Text = "by "+ GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(d));
                             }
                         }
@@ -2594,5 +2672,53 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             return rmLabel;
         }
 
+        public LinearLayout GetRmKwhSelection()
+        {
+            return rmKwhSelection;
+        }
+
+        void IOnChartValueSelectedListenerSupport.OnNothingSelected()
+        {
+            CurrentParentIndex = -1;
+        }
+
+        void IOnChartValueSelectedListenerSupport.OnValueSelected(Entry e, Highlight h)
+        {
+            if (isToggleTariff && h != null)
+            {
+                int stackedIndex = 0;
+                if (selectedHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList.Count > 0)
+                {
+                    stackedIndex = selectedHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList.Count - 1;
+                }
+
+                Highlight stackedHigh = new Highlight((int)e.GetX(), 0, stackedIndex);
+                mChart.HighlightValue(stackedHigh, false);
+            }
+
+            if (e != null)
+            {
+                int index = (int)e.GetX();
+                if (index != CurrentParentIndex)
+                {
+                    CurrentParentIndex = index;
+                    Vibrator vibrator = (Vibrator)this.Activity.GetSystemService(Context.VibratorService);
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
+                    {
+                        vibrator.Vibrate(VibrationEffect.CreateOneShot(200, 12));
+
+                    }
+                    else
+                    {
+                        vibrator.Vibrate(200);
+
+                    }
+                }
+            }
+            else
+            {
+                CurrentParentIndex = -1;
+            }
+        }
     }
 }

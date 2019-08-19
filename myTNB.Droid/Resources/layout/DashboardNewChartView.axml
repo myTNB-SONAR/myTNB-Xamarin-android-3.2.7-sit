@@ -12,26 +12,31 @@
         android:id="@+id/subMainView"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:background="@drawable/dashboard_chart_bg">
-        <TextView
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="wrap_content"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:padding="3dp"
-            android:id="@+id/dashboard_txt_account_name"
-            android:drawablePadding="3dp"
-            android:textSize="18dp"
-            android:gravity="center"
-            android:layout_gravity="center"
-            android:textColor="@color/white"
-            android:maxLines="1"
-            android:maxEms="20"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginBottom="12dp"
-            android:text="Account Name"
-            android:ellipsize="end" />
+            android:orientation="vertical"
+            android:background="@drawable/customdashboardgradientaccountselector">
+            <TextView
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="3dp"
+                android:id="@+id/dashboard_txt_account_name"
+                android:drawablePadding="3dp"
+                android:textSize="18dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:textColor="@color/white"
+                android:maxLines="1"
+                android:maxEms="20"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="12dp"
+                android:text="Account Name"
+                android:ellipsize="end" />
+        </LinearLayout>
         <myTNB_Android.Src.myTNBMenu.Listener.NMREDashboardScrollView
 		    android:id="@+id/scroll_view"
 		    android:layout_width="match_parent"
@@ -43,7 +48,8 @@
 			    android:orientation="vertical"
 			    android:layout_width="match_parent"
 			    android:layout_height="match_parent"
-			    android:id="@+id/scroll_view_content">
+			    android:id="@+id/scroll_view_content"
+                android:background="@drawable/dashboard_chart_bg">
 			    <FrameLayout
 				    android:layout_width="match_parent"
 				    android:layout_height="wrap_content">
@@ -182,6 +188,7 @@
                                 android:layout_marginLeft="12dp"
                                 android:layout_marginRight="12dp"
                                 android:layout_below="@+id/bar_chart"
+                                android:layoutAnimation="@anim/layout_animation_fall_down"
                                 android:scrollIndicators="none" />
                             <RelativeLayout
                                 android:layout_width="65dp"
@@ -234,7 +241,7 @@
                             android:layout_marginTop="13dp"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
-                            android:layout_marginBottom="24dp"
+                            android:layout_marginBottom="20dp"
                             android:id="@+id/graphToggleSelection"
                             android:layout_alignParentBottom="true"
                             android:layout_alignParentLeft="true">
@@ -411,7 +418,7 @@
                         android:orientation="vertical"
                         android:layout_marginLeft="11dp"
 						android:layout_marginRight="11dp"
-                        android:layout_marginBottom="16dp"
+                        android:layout_marginBottom="8dp"
                         android:visibility="gone">
                         <android.support.v7.widget.CardView
                             android:orientation="vertical"
@@ -520,6 +527,51 @@
             android:background="@color/white"
             android:paddingLeft="17dp"
             android:paddingRight="17dp">
+            <RelativeLayout
+                android:id="@+id/noPayableLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@color/white"
+                android:minHeight="25px"
+                android:minWidth="25px"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:visibility="gone">
+                <TextView
+                    android:id="@+id/txtNoPayableTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginTop="7dp"
+                    android:text="@string/dashboard_need_pay"
+                    android:textColor="@color/charcoalGrey"
+                    android:textSize="15dp" />
+                <TextView
+                    android:id="@+id/txtNoPayable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:text="0.00"
+                    android:textColor="@color/tunaGrey"
+                    android:textSize="25dp" />
+                <TextView
+                    android:id="@+id/txtNoPayableCurrency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/txtNoPayable"
+                    android:layout_alignBottom="@+id/txtNoPayable"
+                    android:layout_toLeftOf="@+id/txtNoPayable"
+                    android:layout_toStartOf="@+id/txtNoPayable"
+                    android:text="RM"
+                    android:layout_marginRight="7dp"
+                    android:textColor="@color/tunaGrey"
+                    android:textSize="13dp" />
+            </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/totalPayableLayout"
                 android:layout_width="match_parent"

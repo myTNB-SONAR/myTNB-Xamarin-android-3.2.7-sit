@@ -12,6 +12,8 @@ using Android.OS;
 using Android.Content;
 using MikePhil.Charting.Buffer;
 using System.Linq;
+using Android.Util;
+using MikePhil.Charting.Data;
 
 namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 {
@@ -22,9 +24,13 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
         public Context currentContext { get; set; }
 
-        private int currentSelectedIndex = -1;
+        public float[] bufferItems { get; set; }
 
-        private float mRadius = 60f;
+        private float mRadius = 50f;
+
+        private int selectedIndex = -1;
+
+        private float currentSelectedDrawX = -1f;
 
         public StackedBarChartRenderer(BarChart chart, ChartAnimator animator, ViewPortHandler viewPortHandler) : base(chart, animator, viewPortHandler)
         {
@@ -41,53 +47,33 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
         }
 
-        public override void DrawExtras(Canvas p0)
+        public override void DrawExtras(Canvas canvas)
         {
-            base.DrawExtras(p0);
-            int lastIndex = (selectedHistoryData != null && selectedHistoryData.ByMonth != null && selectedHistoryData.ByMonth.Months != null)
-                ? selectedHistoryData.ByMonth.Months.Count : -1;
+            base.DrawExtras(canvas);
             Highlight[] highlighted = barChart.GetHighlighted();
-            if (highlighted == null)
+            
+            if (highlighted != null && highlighted.Length > 0)
             {
-                currentSelectedIndex = -1;
-                return;
-            }
-
-            if (lastIndex == -1)
-            {
-                currentSelectedIndex = -1;
-                return;
-            }
-
-            foreach (Highlight selectedData in highlighted)
-            {
-
-                int selectedIndex = (int)selectedData.GetX();
-                /*if (currentSelectedIndex != selectedIndex)
+                foreach (Highlight selectedData in highlighted)
                 {
-                    currentSelectedIndex = selectedIndex;
-                    Vibrator vibrator = (Vibrator)currentContext.GetSystemService(Context.VibratorService);
-                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
-                    {
-                        vibrator.Vibrate(VibrationEffect.CreateOneShot(250, 12));
-
-                    }
-                    else
-                    {
-                        vibrator.Vibrate(250);
-
-                    }
+                    selectedIndex = (int) selectedData.GetX();
                 }
-
-                if (selectedIndex == (lastIndex - 1))
-                {
-                    break;
-                }
-                int nextIndex = selectedIndex + 1;*/
-                //Path fillPathBuffer = MGenerateFilledPathBuffer;
-
-                // generateFilledPath(p0, selectedIndex, nextIndex, fillPathBuffer);
             }
+            else
+            {
+                selectedIndex = -1;
+            }
+            if (barChart.Data != null && barChart.Data is BarData)
+            {
+                BarData barData = barChart.Data as BarData;
+
+                if (barData.DataSetCount > 0)
+                {
+                    IBarDataSet dataset = barData.GetDataSetByIndex(0) as IBarDataSet;
+                    DrawDataSet(canvas, dataset, 0);
+                }
+            }
+
         }
 
         protected override void DrawDataSet(Canvas canvas, IBarDataSet dataSet, int index)
@@ -109,7 +95,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
             buffer.Feed(dataSet);
 
-            float[] bufferItems = new float[buffer.Buffer.Count];
+            bufferItems = new float[buffer.Buffer.Count];
             buffer.Buffer.CopyTo(bufferItems, 0);
             trans.PointValuesToPixel(bufferItems);
 
@@ -131,11 +117,41 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                     int size = dataSet.StackSize;
                     MRenderPaint.Color = new Color(dataSet.GetColor(j / 4));
 
+                    Highlight[] highlighted = barChart.GetHighlighted();
+                    if (highlighted != null && highlighted.Length > 0)
+                    {
+                        foreach (Highlight selectedData in highlighted)
+                        {
+                            currentSelectedDrawX = selectedData.DrawX;
+                        }
+                    }
+                    else
+                    {
+                        currentSelectedDrawX = -1f;
+                    }
+
                     if (j == 0)
                     {
                         isFirstTime = false;
                         currentItem = bufferItems[j];
                         int nextIndex = j + 4;
+                        if (Math.Abs(currentSelectedDrawX - -1f) < 0.0001)
+                        {
+                            MRenderPaint.Color = new Color(dataSet.GetColor(j / 4));
+                        }
+                        else
+                        {
+                            float diffX = currentSelectedDrawX - currentItem;
+                            if (diffX >= 19.000f && diffX < 22.000f)
+                            {
+                                MRenderPaint.Alpha = 255;
+                            }
+                            else
+                            {
+                                MRenderPaint.Color = new Color(dataSet.GetColor(j / 4));
+                            }
+                        }
+                        Log.Debug("current HightLight Alpha", MRenderPaint.Alpha.ToString());
                         if (nextIndex >= buffer.Size())
                         {
                             if (mRadius > 0)
@@ -170,7 +186,25 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                     }
                     else if (!isFirstTime)
                     {
+                        currentItem = bufferItems[j];
                         int nextIndex = j + 4;
+                        if (Math.Abs(currentSelectedDrawX - -1f) < 0.0001)
+                        {
+                            MRenderPaint.Color = new Color(dataSet.GetColor(j / 4));
+                        }
+                        else
+                        {
+                            float diffX = currentSelectedDrawX - currentItem;
+                            if (diffX >= 19.000f && diffX < 22.000f)
+                            {
+                                MRenderPaint.Alpha = 255;
+                            }
+                            else
+                            {
+                                MRenderPaint.Color = new Color(dataSet.GetColor(j / 4));
+                            }
+                        }
+                        Log.Debug("current HightLight Alpha", MRenderPaint.Alpha.ToString());
                         if (nextIndex >= buffer.Size())
                         {
 
@@ -199,7 +233,6 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                         }
                         else
                         {
-                            currentItem = bufferItems[j];
                             if (count == 0)
                             {
                                 if (Math.Abs(currentItem - bufferItems[nextIndex]) < 0.001)

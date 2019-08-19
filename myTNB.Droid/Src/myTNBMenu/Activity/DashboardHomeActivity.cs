@@ -796,9 +796,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 DashboardChartFragment fragment = (DashboardChartFragment)FragmentManager.FindFragmentById(Resource.Id.content_layout);
                 TextView kwhLabel = fragment.GetkwhLabel();
                 TextView rmLabel = fragment.GetRmLabel();
+                LinearLayout rmKwhSelection = fragment.GetRmKwhSelection();
                 int x = (int)ev.RawX;
                 int y = (int)ev.RawY;
-                if (!IsViewInBounds(kwhLabel, x, y) && !IsViewInBounds(rmLabel, x, y))
+                if (!IsViewInBounds(kwhLabel, x, y) && !IsViewInBounds(rmLabel, x, y) && !IsViewInBounds(rmKwhSelection, x, y))
                 {
                     fragment.CheckRMKwhSelectDropDown();
                 }
@@ -854,25 +855,25 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             this.userActionsListener.SelectSupplyAccount();
         }
 
-        public void ShowNMREChart(bool isAmountDueDown, bool isGraphDown, UsageHistoryResponse response, AccountData selectedAccount, AccountDueAmountResponse amountDueResponse)
+        public void ShowNMREChart(bool isAmountDueDown, bool isGraphDown, bool isBillingAvailable, UsageHistoryResponse response, AccountData selectedAccount, AccountDueAmountResponse amountDueResponse)
         {
             this.SelectedAccountData = selectedAccount;
             txtAccountName.Text = SelectedAccountData.AccountNickName;
             currentFragment = new DashboardChartFragment();
             FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(isAmountDueDown, isGraphDown, response, selectedAccount, amountDueResponse),
+                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(isAmountDueDown, isGraphDown, isBillingAvailable, response, selectedAccount, amountDueResponse),
                                     typeof(DashboardChartFragment).Name)
                            .CommitAllowingStateLoss();
             ShowBackButton(true);
         }
 
-        public void ShowNMREChartWithError(bool isAmountDueDown, bool isGraphDown, UsageHistoryResponse response, AccountData selectedAccount, AccountDueAmountResponse amountDueResponse, string errorCode, string errorMessage)
+        public void ShowNMREChartWithError(bool isAmountDueDown, bool isGraphDown, bool isBillingAvailable, UsageHistoryResponse response, AccountData selectedAccount, AccountDueAmountResponse amountDueResponse, string errorCode, string errorMessage)
         {
             this.SelectedAccountData = selectedAccount;
             txtAccountName.Text = SelectedAccountData.AccountNickName;
             currentFragment = new DashboardChartFragment();
             FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(isAmountDueDown, isGraphDown, response, selectedAccount, amountDueResponse, errorCode, errorMessage),
+                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(isAmountDueDown, isGraphDown, isBillingAvailable, response, selectedAccount, amountDueResponse, errorCode, errorMessage),
                          typeof(DashboardChartFragment).Name)
                            .CommitAllowingStateLoss();
             ShowBackButton(true);
