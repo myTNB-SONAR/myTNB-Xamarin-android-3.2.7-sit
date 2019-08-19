@@ -7,6 +7,7 @@ using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.Design.Widget;
+using Android.Support.V4.Widget;
 using Android.Support.V7.Widget;
 using Android.Text;
 using Android.Util;
@@ -16,6 +17,7 @@ using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.Adapter;
 using myTNB_Android.Src.SSMRTerminate.MVP;
@@ -31,7 +33,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 	[Activity(Label = "@string/ssmr_meter_history_activity_title"
 		  , ScreenOrientation = ScreenOrientation.Portrait
 		  , Theme = "@style/Theme.SSMRMeterHistoryStyle")]
-	public class SSMRMeterHistoryActivity : BaseToolbarAppCompatActivity
+	public class SSMRMeterHistoryActivity : BaseToolbarAppCompatActivity, SSMRMeterHistoryContract.IView
 	{
         [BindView(Resource.Id.smr_submitted_img)]
         ImageView SMRMainImg;
@@ -60,6 +62,9 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [BindView(Resource.Id.selector_smr_account)]
         TextView SMRAccountSelected;
 
+        [BindView(Resource.Id.layout_content_nestedscroll)]
+        NestedScrollView ContentNestedScrollView;
+
         private IMenu ssmrMenu;
 
         private SMRActivityInfoResponse smrResponse;
@@ -76,6 +81,8 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 
         public readonly static int SSMR_METER_HISTORY_ACTIVITY_CODE = 8796;
         public readonly static int SSMR_SUBMIT_METER_ACTIVITY_CODE = 8797;
+
+        private SSMRMeterHistoryContract.IPresenter mPresenter;
 
         public override int ResourceId()
 		{
@@ -99,66 +106,72 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 
                 TextViewUtils.SetMuseoSans500Typeface(SMRMainTitle, SMRListHeader, SMRMessageTitle, btnSubmitMeter);
                 TextViewUtils.SetMuseoSans300Typeface(SMRMainContent, SMRAccountTitle, SMRAccountSelected);
-
+                mPresenter = new SSMRMeterHistoryPresenter(this);
                 mSMRRecyclerView.SetLayoutManager(new LinearLayoutManager(this));
 
                 Bundle extras = Intent.Extras;
-
+                //If has selected account - means coming from inner dashboard
                 if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
                 {
                     selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
-                }
+                    SMRAccountSelected.Text = selectedAccount.AccountNickName;
 
-                if (extras.ContainsKey(Constants.SMR_RESPONSE_KEY))
+                    if (extras.ContainsKey(Constants.SMR_RESPONSE_KEY))
+                    {
+                        smrResponse = JsonConvert.DeserializeObject<SMRActivityInfoResponse>(extras.GetString(Constants.SMR_RESPONSE_KEY));
+                        SSMRMeterHistoryAdapter adapter = new SSMRMeterHistoryAdapter(smrResponse.Response.Data.MeterReadingHistory);
+                        mSMRRecyclerView.SetAdapter(adapter);
+
+                        if (smrResponse.Response.Data.DashboardCTAType == Constants.SMR_SUBMIT_METER_KEY)
+                        {
+                            SMRMainImg.SetImageResource(Resource.Drawable.smr_open);
+                            btnSubmitMeter.Visibility = ViewStates.Visible;
+                        }
+                        else
+                        {
+                            btnSubmitMeter.Visibility = ViewStates.Gone;
+                            if (smrResponse.Response.Data.isCurrentPeriodSubmitted != null && smrResponse.Response.Data.isCurrentPeriodSubmitted == "true")
+                            {
+                                SMRMainImg.SetImageResource(Resource.Drawable.smr_submitted);
+                            }
+                            else
+                            {
+                                SMRMainImg.SetImageResource(Resource.Drawable.smr_closed);
+                            }
+                        }
+
+                        if (!string.IsNullOrEmpty(smrResponse.Response.Data.HistoryViewTitle))
+                        {
+                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                            {
+                                SMRMainTitle.TextFormatted = Html.FromHtml(smrResponse.Response.Data.HistoryViewTitle, FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                SMRMainTitle.TextFormatted = Html.FromHtml(smrResponse.Response.Data.HistoryViewTitle);
+                            }
+                        }
+
+                        if (!string.IsNullOrEmpty(smrResponse.Response.Data.HistoryViewMessage))
+                        {
+                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                            {
+                                SMRMainContent.TextFormatted = Html.FromHtml(smrResponse.Response.Data.HistoryViewMessage, FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                SMRMainContent.TextFormatted = Html.FromHtml(smrResponse.Response.Data.HistoryViewMessage);
+                            }
+                        }
+
+                        ContentNestedScrollView.Parent.RequestChildFocus(ContentNestedScrollView, ContentNestedScrollView);
+                    }
+                }
+                //Else from HomeScreen
+                else
                 {
-                    smrResponse = JsonConvert.DeserializeObject<SMRActivityInfoResponse>(extras.GetString(Constants.SMR_RESPONSE_KEY));
-                    SSMRMeterHistoryAdapter adapter = new SSMRMeterHistoryAdapter(smrResponse.Response.Data.MeterReadingHistory);
-                    mSMRRecyclerView.SetAdapter(adapter);
 
-                    if (smrResponse.Response.Data.DashboardCTAType == Constants.SMR_SUBMIT_METER_KEY)
-                    {
-                        SMRMainImg.SetImageResource(Resource.Drawable.smr_open);
-                        btnSubmitMeter.Visibility = ViewStates.Visible;
-                    }
-                    else
-                    {
-                        btnSubmitMeter.Visibility = ViewStates.Gone;
-                        if (smrResponse.Response.Data.isCurrentPeriodSubmitted != null && smrResponse.Response.Data.isCurrentPeriodSubmitted == "true")
-                        {
-                            SMRMainImg.SetImageResource(Resource.Drawable.smr_submitted);
-                        }
-                        else
-                        {
-                            SMRMainImg.SetImageResource(Resource.Drawable.smr_closed);
-                        }
-                    }
-
-                    if(!string.IsNullOrEmpty(smrResponse.Response.Data.HistoryViewTitle))
-                    {
-                        if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-                        {
-                            SMRMainTitle.TextFormatted = Html.FromHtml(smrResponse.Response.Data.HistoryViewTitle, FromHtmlOptions.ModeLegacy);
-                        }
-                        else
-                        {
-                            SMRMainTitle.TextFormatted = Html.FromHtml(smrResponse.Response.Data.HistoryViewTitle);
-                        }
-                    }
-
-                    if (!string.IsNullOrEmpty(smrResponse.Response.Data.HistoryViewMessage))
-                    {
-                        if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-                        {
-                            SMRMainContent.TextFormatted = Html.FromHtml(smrResponse.Response.Data.HistoryViewMessage, FromHtmlOptions.ModeLegacy);
-                        }
-                        else
-                        {
-                            SMRMainContent.TextFormatted = Html.FromHtml(smrResponse.Response.Data.HistoryViewMessage);
-                        }
-                    }
                 }
-
-
             }
             catch (Exception e)
 			{
@@ -337,5 +350,30 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 					break;
 			}
 		}
+
+        [OnClick(Resource.Id.selectAccountContainer)]
+        void OnSelectAccount(object sender, EventArgs eventArgs)
+        {
+            mPresenter.CheckSMRAccountEligibility();
+        }
+
+        public void ShowSMREligibleAccountList()
+        {
+            List<SMRAccount> list = UserSessions.GetRealSMREligibilityAccountList();
+            if (list == null)
+            {
+                list = UserSessions.GetSMREligibilityAccountList();
+            }
+            if (list != null && list.Count > 0)
+            {
+                Intent intent = new Intent(this, typeof(SelectSMRAccountActivity));
+                StartActivityForResult(intent, 1);
+            }
+            else
+            {
+                Intent intent = new Intent(this, typeof(SelectSMRAccountEmptyActivity));
+                StartActivity(intent);
+            }
+        }
     }
 }

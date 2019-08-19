@@ -1,14 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
+    android:paddingLeft="16dp"
+    android:paddingTop="18dp"
+    android:paddingBottom="18dp"
+    android:paddingRight="16dp"
     android:gravity="center_vertical">
-    <RelativeLayout
+        <ImageView
+            android:id="@+id/accountIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginRight="11dp"
+            android:src="@drawable/ic_display_releaf"
+            android:visibility="visible" />
+        <TextView
+            android:id="@+id/txtSupplyAccountName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxEms="12"
+            android:maxLines="1"
+            android:text="Supply Account Nickname"
+            android:textColor="@color/tunaGrey"
+            android:textSize="16dp" />
+        <ImageView
+            android:id="@+id/imageActionIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_action_tick"
+            android:layout_gravity="right"/>
+    <!--<RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/imageLeaf"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginStart="6dp"
+            android:layout_toEndOf="@+id/txtSupplyAccountName"
+            android:src="@drawable/ic_display_releaf"
+            android:layout_centerVertical="true"
+            android:visibility="visible" />
         <TextView
             android:id="@+id/txtSupplyAccountName"
             android:layout_width="wrap_content"
@@ -24,15 +60,6 @@
             android:textColor="@color/tunaGrey"
             android:textSize="16sp" />
         <ImageView
-            android:id="@+id/imageLeaf"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginStart="6dp"
-            android:layout_toEndOf="@+id/txtSupplyAccountName"
-            android:src="@drawable/ic_display_releaf"
-            android:layout_centerVertical="true"
-            android:visibility="invisible" />
-        <ImageView
             android:id="@+id/imageActionIcon"
             android:layout_width="24dp"
             android:layout_height="24dp"
@@ -40,5 +67,5 @@
             android:src="@drawable/ic_action_tick"
             android:layout_centerVertical="true"
             android:layout_alignParentEnd="true" />
-    </RelativeLayout>
+    </RelativeLayout>-->
 </LinearLayout>

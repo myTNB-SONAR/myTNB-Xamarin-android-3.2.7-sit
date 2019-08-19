@@ -1986,6 +1986,16 @@
     <AndroidResource Include="Resources\drawable-xhdpi\meter_history_header_bg.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\meter_history_header_bg.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\meter_history_header_bg.png" />
+    <Compile Include="Src\SSMRMeterHistory\MVP\SSMRMeterHistoryPresenter.cs" />
+    <Compile Include="Src\SSMRMeterHistory\MVP\SSMRMeterHistoryContract.cs" />
+    <Compile Include="Src\SSMRMeterHistory\Api\GetAccountListSMREligibilityRequest.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\smr_why_accounts_info.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\smr_why_accounts_info.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\smr_why_accounts_info.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\smr_why_accounts_info.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\smr_why_accounts_info.png" />
+    <AndroidResource Include="Resources\drawable\rectangle_rounded_corner_light_blue_bg.xml" />
+    <AndroidResource Include="Resources\layout\CustomToolTipWithHeaderLayout.axml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -2362,6 +2372,7 @@
     <Folder Include="Src\SSMR\Util\" />
     <Folder Include="Src\SSMR\SSMRBase\" />
     <Folder Include="Src\SSMR\SSMRBase\MVP\" />
+    <Folder Include="Src\SSMRMeterHistory\Api\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

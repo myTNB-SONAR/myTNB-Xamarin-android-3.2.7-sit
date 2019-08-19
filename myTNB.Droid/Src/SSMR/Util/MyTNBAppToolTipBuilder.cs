@@ -13,7 +13,8 @@ namespace myTNB_Android.Src.SSMR.Util
     {
         public enum ToolTipType
         {
-            IMAGE_HEADER
+            IMAGE_HEADER,
+            NORMAL_WITH_HEADER
         }
 
         private ToolTipType toolTipType;
@@ -29,11 +30,20 @@ namespace myTNB_Android.Src.SSMR.Util
 
         }
 
-        public static MyTNBAppToolTipBuilder Create(Context context, ToolTipType toolTipType)
+        public static MyTNBAppToolTipBuilder Create(Context context, ToolTipType mToolTipType)
         {
             MyTNBAppToolTipBuilder tooltipBuilder = new MyTNBAppToolTipBuilder();
+            tooltipBuilder.toolTipType = mToolTipType;
+            int layoutResource = 0;
+            if (mToolTipType == ToolTipType.IMAGE_HEADER)
+            {
+                layoutResource = Resource.Layout.CustomDialogWithImageHeader;
+            }else if (mToolTipType == ToolTipType.NORMAL_WITH_HEADER)
+            {
+                layoutResource = Resource.Layout.CustomToolTipWithHeaderLayout;
+            }
             tooltipBuilder.dialog = new MaterialDialog.Builder(context)
-                .CustomView(Resource.Layout.CustomDialogWithImageHeader, false)
+                .CustomView(layoutResource, false)
                 .Cancelable(false)
                 .CanceledOnTouchOutside(false)
                 .Build();
@@ -107,6 +117,35 @@ namespace myTNB_Android.Src.SSMR.Util
                     tooltipMessage.TextFormatted = Html.FromHtml(this.message);
                 }
                 tooltipImageHeader.SetImageResource(this.imageResource);
+                tooltipCTA.Text = this.ctaLabel;
+
+                TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
+                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipCTA);
+            }
+            else if(this.toolTipType == ToolTipType.NORMAL_WITH_HEADER)
+            {
+                TextView tooltipTitle = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipTitle);
+                TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipMessage);
+                TextView tooltipCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipCTA);
+
+                tooltipCTA.Click += delegate
+                {
+                    this.dialog.Dismiss();
+                    if (this.ctaAction != null)
+                    {
+                        this.ctaAction();
+                    }
+                };
+
+                tooltipTitle.Text = this.title;
+                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    tooltipMessage.TextFormatted = Html.FromHtml(this.message, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    tooltipMessage.TextFormatted = Html.FromHtml(this.message);
+                }
                 tooltipCTA.Text = this.ctaLabel;
 
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);

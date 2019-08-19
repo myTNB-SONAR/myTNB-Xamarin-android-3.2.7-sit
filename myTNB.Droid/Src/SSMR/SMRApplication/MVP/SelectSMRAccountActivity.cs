@@ -19,6 +19,7 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MultipleAccountPayment.Adapter;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.SSMR.SMRApplication.Adapter;
+using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
@@ -30,6 +31,9 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
     {
         [BindView(Resource.Id.account_list_view)]
         ListView accountSMRList;
+
+        [BindView(Resource.Id.whyAccountsNotHere)]
+        TextView whyAccountsNotHere;
 
         List<SMRAccount> accountList = new List<SMRAccount>();
         private SelectAccountAdapter selectAccountAdapter;
@@ -66,21 +70,21 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         {
             base.OnCreate(savedInstanceState);
             // Create your application here
+            TextViewUtils.SetMuseoSans500Typeface(whyAccountsNotHere);
             accountList = new List<SMRAccount>();
             List<SMRAccount> list = UserSessions.GetRealSMREligibilityAccountList();
+            List<CustomerBillingAccount> eligibleAccountList = CustomerBillingAccount.GetEligibleAndSMRAccountList();
             if (list == null)
             {
                 list = UserSessions.GetSMREligibilityAccountList();
             }
-            foreach (SMRAccount currentSMRAccount in list)
+            foreach (CustomerBillingAccount custBillingAccount in eligibleAccountList)
             {
                 SMRAccount account = new SMRAccount();
-                account.accountName = currentSMRAccount.accountName;
-                account.accountNumber = currentSMRAccount.accountNumber;
-                account.accountSelected = currentSMRAccount.accountSelected;
-                account.accountAddress = currentSMRAccount.accountAddress;
-                account.email = currentSMRAccount.email;
-                account.mobileNumber = currentSMRAccount.mobileNumber;
+                account.accountName = custBillingAccount.AccDesc;
+                account.accountNumber = custBillingAccount.AccNum;
+                account.accountSelected = custBillingAccount.IsSelected;
+                account.isTaggedSMR = custBillingAccount.IsTaggedSMR;
                 accountList.Add(account);
             }
 
@@ -109,6 +113,16 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             //Finish();
 
             UpdateSelectedAccount(e.Position);
+        }
+
+        [OnClick(Resource.Id.smrWhyTheseAccountsInfo)]
+        internal void OnWhyTheseAccountsTap(object sender, EventArgs eventArgs)
+        {
+            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                .SetTitle(GetString(Resource.String.ssmr_reading_history_tooltip_title))
+                .SetMessage(GetString(Resource.String.ssmr_readint_history_tooltip_message))
+                .SetCTALabel("Got It!")
+                .Build().Show();
         }
     }
 }

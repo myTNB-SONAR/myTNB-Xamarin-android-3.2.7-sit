@@ -43,6 +43,15 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Adapter
                 vh.imageActionIcon.Visibility = ViewStates.Gone;
             }
 
+            if (item.isTaggedSMR)
+            {
+                vh.accountIcon.SetImageResource(Resource.Drawable.smr_48_x_48);
+            }
+            else
+            {
+                vh.accountIcon.SetImageResource(Resource.Drawable.ic_display_normal_meter);
+            }
+
             return convertView;
         }
 
@@ -53,6 +62,9 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Adapter
 
             [BindView(Resource.Id.imageActionIcon)]
             public ImageView imageActionIcon;
+
+            [BindView(Resource.Id.accountIcon)]
+            public ImageView accountIcon;
 
             public AccountTypeViewHolder(View itemView) : base(itemView)
             {

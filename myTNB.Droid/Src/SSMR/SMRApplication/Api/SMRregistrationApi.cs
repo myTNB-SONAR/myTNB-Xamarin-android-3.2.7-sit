@@ -18,6 +18,6 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Api
 
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v6/mytnbappws.asmx/GetAccountsSMREligibility")]
-        Task<GetAccountsSMREligibilityResponse> GetAccountsSMREligibility([Body] GetAccountSMREligibilityRequest request);
+        Task<GetAccountsSMREligibilityResponse> GetAccountsSMREligibility([Body] BaseRequest request);
     }
 }
