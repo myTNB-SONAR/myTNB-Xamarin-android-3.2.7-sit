@@ -1981,6 +1981,11 @@
     <AndroidResource Include="Resources\drawable-xhdpi\multi_phase.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\multi_phase.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\multi_phase.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\meter_history_header_bg.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\meter_history_header_bg.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\meter_history_header_bg.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\meter_history_header_bg.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\meter_history_header_bg.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

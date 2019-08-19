@@ -74,7 +74,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 
         public void OnPageSelected(int position)
         {
-            for (int i=0; i<3; i++)
+            for (int i=0; i<2; i++)
             {
                 ImageView selectedDot = (ImageView)indicatorContainer.GetChildAt(i);
                 if (position == i)
@@ -87,7 +87,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                 }
             }
 
-            if (position == 2)
+            if (position == 1)
             {
                 ShowSubmitButton(true);
             }
@@ -153,9 +153,9 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             }
             else
             {
-                dontShowAgainCheckbox.Visibility = ViewStates.Visible;
+                dontShowAgainCheckbox.Visibility = ViewStates.Gone;
                 skipOnboarding.Visibility = ViewStates.Visible;
-                dontShowMeAgainLabel.Visibility = ViewStates.Visible;
+                dontShowMeAgainLabel.Visibility = ViewStates.Gone;
                 btnStartApplication.Visibility = ViewStates.Gone;
             }
         }
@@ -163,7 +163,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         private void UpdateAccountListIndicator()
         {
             indicatorContainer.Visibility = ViewStates.Visible;
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 2; i++)
             {
                 ImageView image = new ImageView(this);
                 image.Id = i;

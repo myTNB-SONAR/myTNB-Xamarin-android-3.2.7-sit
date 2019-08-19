@@ -42,6 +42,7 @@
           android:layout_height="wrap_content"
           android:button="@drawable/checkbox_selector"
           android:checked="false"
+          android:visibility="gone"
           android:layout_weight=".1"
           android:text=" "/>
       <TextView
@@ -51,13 +52,15 @@
           android:text="Don't show me again"
           android:layout_weight=".8"
           android:textColor="#979797"
+          android:visibility="gone"
           android:textSize="12dp"/>
       <TextView
           android:id="@+id/skipOnboarding"
           android:layout_width="0dp"
           android:layout_height="wrap_content"
           android:text="Skip"
-          android:layout_weight=".1"
+          android:gravity="right"
+          android:layout_weight="1"
           android:textColor="#979797"
           android:textSize="12dp"/>
         <Button
