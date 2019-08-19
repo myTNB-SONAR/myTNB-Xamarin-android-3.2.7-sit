@@ -323,31 +323,13 @@ namespace myTNB
         #region Events
         public void OnTableViewScrolled(object sender, EventArgs e)
         {
-            var scrollDiff = _readingHistoryTableView.ContentOffset.Y - _previousScrollOffset;
-            var isScrollingDown = scrollDiff > 0;
-            var isScrollingUp = scrollDiff < 0;
+            UIScrollView scrollView = sender as UIScrollView;
+            CGRect frame = _bgImageView.Frame;
+            if ((nfloat)Math.Abs(frame.Y) == frame.Height) { return; }
 
-            var newHeight = _headerHeight;
-
-            if (_readingHistoryTableView.ContentOffset.Y == 0)
-            {
-                newHeight = _maxHeaderHeight;
-            }
-            else if (isScrollingDown)
-            {
-                newHeight = (float)Math.Max(_minHeaderHeight, _headerHeight - Math.Abs(scrollDiff));
-            }
-            else if (isScrollingUp)
-            {
-                newHeight = (float)Math.Min(_maxHeaderHeight, _headerHeight + Math.Abs(scrollDiff));
-            }
-
-            if (newHeight != _headerHeight)
-            {
-                _headerHeight = newHeight;
-                ViewHelper.AdjustFrameSetHeight(_headerView, _headerHeight);
-                _readingHistoryTableView.TableHeaderView = _headerView;
-            }
+            nfloat newYLoc = 0 - scrollView.ContentOffset.Y;
+            frame.Y = newYLoc;
+            _bgImageView.Frame = frame;
 
             _previousScrollOffset = _readingHistoryTableView.ContentOffset.Y;
             var opac = _previousScrollOffset / _tableViewOffset;
