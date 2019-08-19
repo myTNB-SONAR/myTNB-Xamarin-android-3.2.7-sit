@@ -38,5 +38,15 @@ namespace myTNB
             }
             return new AccountStatusDataModel();
         }
+
+        public static bool AccountStatusIsAvailable()
+        {
+            bool res = true;
+            if (accountStatusData != null)
+            {
+                res = accountStatusData.DisconnectionStatus?.ToLower() == "available";
+            }
+            return res;
+        }
     }
 }

@@ -15,6 +15,7 @@ using myTNB.Registration.CustomerAccounts;
 using UIKit;
 using myTNB.Home.Components;
 using Newtonsoft.Json;
+using myTNB.Model.Usage;
 
 namespace myTNB
 {
@@ -28,6 +29,8 @@ namespace myTNB
         private AccountsCardContentViewController _accountsCardContentViewController;
         DashboardHomeHeader _dashboardHomeHeader;
         RefreshScreenComponent _refreshScreenComponent;
+        UINavigationController _usageViewNavController;
+        UIStoryboard _usageStoryBoard;
         public ServicesResponseModel _services;
         public List<HelpModel> _helpList;
         private List<PromotionsModelV2> _promotions;
@@ -64,6 +67,12 @@ namespace myTNB
             AddTableView();
             PrepareTableView();
             SetGreetingView();
+            PrepareUsageStoryBoard();
+        }
+
+        private void PrepareUsageStoryBoard()
+        {
+            _usageStoryBoard = UIStoryboard.FromName("Usage", null);
         }
 
         private void PrepareTableView()
@@ -459,6 +468,17 @@ namespace myTNB
             return response;
         }
 
+        private void NavigateToUsageView()
+        {
+            if (_usageStoryBoard != null)
+            {
+                var viewController = _usageStoryBoard.InstantiateViewController("UsageViewController") as UsageViewController;
+                var navController = new UINavigationController(viewController);
+                PresentViewController(navController, true, null);
+            }
+            ActivityIndicator.Hide();
+        }
+
         public void OnAccountCardSelected(DueAmountDataModel model)
         {
             var index = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindIndex(x => x.accNum == model.accNum) ?? -1;
@@ -467,13 +487,76 @@ namespace myTNB
                 var selected = DataManager.DataManager.SharedInstance.AccountRecordsList.d[index];
                 DataManager.DataManager.SharedInstance.SelectAccount(selected.accNum);
                 DataManager.DataManager.SharedInstance.IsSameAccount = false;
-
                 AccountManager.Instance.CurrentAccountIndex = index;
-                UIStoryboard storyBoard = UIStoryboard.FromName("Usage", null);
-                var viewController = storyBoard.InstantiateViewController("UsageViewController") as UsageViewController;
-                var navController = new UINavigationController(viewController);
-                PresentViewController(navController, true, null);
+                DataManager.DataManager.SharedInstance.AccountIsSSMR = _dashboardHomeHelper.IsSSMR(DataManager.DataManager.SharedInstance.SelectedAccount);
+                CallGetAccountStatusAPI();
             }
+        }
+
+        private void CallGetAccountStatusAPI()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        ActivityIndicator.Show();
+                        AccountStatusCache.ClearAccountStatusData();
+
+                        AccountStatusResponseModel accountStatusResponse = await UsageServiceCall.GetAccountStatus(DataManager.DataManager.SharedInstance.SelectedAccount);
+                        AccountStatusCache.AddAccountStatusData(accountStatusResponse);
+
+                        if (AccountStatusCache.AccountStatusIsAvailable())
+                        {
+                            if (DataManager.DataManager.SharedInstance.AccountIsSSMR)
+                            {
+                                GetSMRAccountActivityInfo();
+                            }
+                            else
+                            {
+                                NavigateToUsageView();
+                            }
+                        }
+                        else
+                        {
+                            NavigateToUsageView();
+                        }
+                    }
+                    else
+                    {
+                        ActivityIndicator.Hide();
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
+        private void GetSMRAccountActivityInfo()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        SMRAccountActivityInfoResponseModel ssmrInfoResponse = await UsageServiceCall.GetSMRAccountActivityInfo(DataManager.DataManager.SharedInstance.SelectedAccount);
+                        if (ssmrInfoResponse != null &&
+                            ssmrInfoResponse.d != null &&
+                            ssmrInfoResponse.d.data != null &&
+                            ssmrInfoResponse.d.IsSuccess)
+                        {
+                            SSMRActivityInfoCache.SetDashboardCache(ssmrInfoResponse);
+                        }
+                        NavigateToUsageView();
+                    }
+                    else
+                    {
+                        ActivityIndicator.Hide();
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
         }
 
         private void SetActionsDictionary()

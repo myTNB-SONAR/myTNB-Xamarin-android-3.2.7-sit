@@ -2346,6 +2346,7 @@
     <Compile Include="Components\Usage View\ChartView.cs" />
     <Compile Include="Components\BaseComponent.cs" />
     <Compile Include="Helpers\LanguageUtility.cs" />
+    <Compile Include="Usage\UsageServiceCall.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

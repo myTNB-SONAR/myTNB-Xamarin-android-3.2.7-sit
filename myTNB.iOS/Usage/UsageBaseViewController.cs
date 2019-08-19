@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using CoreGraphics;
+using myTNB.Model;
 using myTNB.Model.Usage;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
@@ -17,7 +18,7 @@ namespace myTNB
 
         internal UIScrollView _scrollViewContent;
         internal CustomUIView _navbarContainer, _accountSelector, _viewSeparator, _viewStatus
-            , _viewChart, _viewLegend, _viewToggle, _viewTips, _viewFooter, _rmKwhDropDownView;
+            , _viewChart, _viewLegend, _viewToggle, _viewSSMR, _viewTips, _viewFooter, _rmKwhDropDownView;
         internal UILabel _lblAddress, _RMLabel, _kWhLabel;
 
         internal bool _rmkWhFlag, _tariffIsVisible = false;
@@ -123,25 +124,53 @@ namespace myTNB
             };
             _viewSeparator = new CustomUIView(new CGRect(BaseMargin, 0, BaseMarginedWidth, GetScaledHeight(1)))
             { BackgroundColor = UIColor.FromWhiteAlpha(1, 0.30F) };
-            _viewStatus = new CustomUIView(new CGRect(0, 0, ViewWidth, 0));
+            _viewStatus = new CustomUIView(new CGRect(0, 0, ViewWidth, 0))
+            {
+                Hidden = true
+            };
             _viewChart = new CustomUIView(new CGRect(0, 0, ViewWidth, 0));
-            _viewLegend = new CustomUIView(new CGRect(0, 0, ViewWidth, 0));
+            _viewLegend = new CustomUIView(new CGRect(0, 0, ViewWidth, 0))
+            {
+                Hidden = true
+            };
             _viewToggle = new CustomUIView(new CGRect(0, 0, ViewWidth, 0));
+            _viewSSMR = new CustomUIView(new CGRect(0, 0, ViewWidth, 0))
+            {
+                Hidden = true
+            };
             _viewTips = new CustomUIView(new CGRect(0, 0, ViewWidth, 0));
 
             _scrollViewContent.AddSubviews(new UIView[] { _accountSelector
-                , _lblAddress, _viewSeparator, _viewStatus, _viewChart, _viewLegend, _viewToggle, _viewTips });
+                , _lblAddress, _viewSeparator, _viewStatus, _viewChart, _viewLegend, _viewToggle, _viewSSMR, _viewTips });
         }
 
         private void SetContentView()
         {
             _lblAddress.Frame = new CGRect(new CGPoint(BaseMargin, GetYLocationFromFrame(_accountSelector.Frame, 8F)), _lblAddress.Frame.Size);
             _viewSeparator.Frame = new CGRect(new CGPoint(BaseMargin, GetYLocationFromFrame(_lblAddress.Frame, 16F)), _viewSeparator.Frame.Size);
-            _viewStatus.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewSeparator.Frame, (_viewStatus.Frame.Height > 0) ? 16F : 0F)), _viewStatus.Frame.Size);
-            _viewChart.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewStatus.Frame, 16F)), _viewChart.Frame.Size);
+
+            if (!AccountStatusCache.AccountStatusIsAvailable())
+            {
+                _viewStatus.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewSeparator.Frame, 16F)), _viewStatus.Frame.Size);
+                _viewChart.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewStatus.Frame, 16F)), _viewChart.Frame.Size);
+            }
+            else
+            {
+                _viewChart.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewSeparator.Frame, 16F)), _viewChart.Frame.Size);
+            }
+
             _viewLegend.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, !_viewLegend.Hidden ? 16F : 0F)), _viewLegend.Frame.Size);
             _viewToggle.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewLegend.Frame, 16F)), _viewToggle.Frame.Size);
-            _viewTips.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewToggle.Frame, 24F)), _viewTips.Frame.Size);
+
+            if (DataManager.DataManager.SharedInstance.AccountIsSSMR)
+            {
+                _viewSSMR.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewToggle.Frame, 16F)), _viewSSMR.Frame.Size);
+                _viewTips.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewSSMR.Frame, 16F)), _viewTips.Frame.Size);
+            }
+            else
+            {
+                _viewTips.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewToggle.Frame, 24F)), _viewTips.Frame.Size);
+            }
 
             _scrollViewContent.ContentSize = new CGSize(ViewWidth, GetAdditionalHeight(_viewTips.Frame.GetMaxY()));
         }
@@ -163,6 +192,7 @@ namespace myTNB
             SetAddress();
             SetChartView();
             SetTariffSelectionComponent();
+            SetSSMRComponent();
             SetEnergyTipsComponent();
             SetContentView();
         }
@@ -203,6 +233,55 @@ namespace myTNB
             chartFrame.Size = new CGSize(ViewWidth, chart.Frame.Height);
             _viewChart.Frame = chartFrame;
         }
+
+        #region SSMR Methods
+        private void SetSSMRComponent()
+        {
+            if (DataManager.DataManager.SharedInstance.AccountIsSSMR)
+            {
+                MeterReadingHistoryModel smrAcountInfo = SSMRActivityInfoCache.DashboardMeterReadingHistory;
+                if (smrAcountInfo != null)
+                {
+                    SSMRComponent sMRComponent = new SSMRComponent(_viewSSMR);
+                    _viewSSMR.AddSubview(sMRComponent.GetUI());
+                    sMRComponent.SetDescription(smrAcountInfo.DashboardMessage);
+                    sMRComponent.SetButtonText(smrAcountInfo.DashboardCTAText);
+                    sMRComponent.SetSRMButtonEnable(smrAcountInfo.IsDashboardCTADisabled);
+                    sMRComponent.ShowHistoryLink(smrAcountInfo.ShowReadingHistoryLink, smrAcountInfo.ReadingHistoryLinkText);
+                    sMRComponent._labelViewHistory.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                    {
+                        //ShowSMRReadingHistoryView();
+                    }));
+                    sMRComponent._smrButton.TouchUpInside += (sender, e) =>
+                    {
+                        var ctaChar = smrAcountInfo.DashboardCTAType.ToLower();
+                        if (ctaChar == DashboardHomeConstants.CTA_ShowReadingHistory)
+                        {
+                            //ShowSMRReadingHistoryView();
+                        }
+                        else if (ctaChar == DashboardHomeConstants.CTA_ShowSubmitReading)
+                        {
+                            //ShowSubmitMeterView();
+                        }
+                    };
+                    ViewHelper.AdjustFrameSetHeight(_viewSSMR, sMRComponent.GetContainerHeight());
+                    _viewSSMR.BackgroundColor = UIColor.Clear;
+                    _viewSSMR.Hidden = false;
+                    AddSSMRViewShadow(ref _viewSSMR);
+                    SetContentView();
+                }
+            }
+        }
+        private void AddSSMRViewShadow(ref CustomUIView view)
+        {
+            view.Layer.MasksToBounds = false;
+            view.Layer.ShadowColor = MyTNBColor.BabyBlue60.CGColor;
+            view.Layer.ShadowOpacity = .32f;
+            view.Layer.ShadowOffset = new CGSize(0, 8);
+            view.Layer.ShadowRadius = 8;
+            view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
+        }
+        #endregion
 
         #region TARIFF LEGEND Methods
         public void SetTariffLegendComponent()
@@ -385,11 +464,11 @@ namespace myTNB
         public void SetDisconnectionComponent()
         {
             AccountStatusDataModel accountStatusData = AccountStatusCache.GetAccountStatusData();
-            if (accountStatusData != null &&
-                accountStatusData.DisconnectionStatus.ToLower() != "available")
+            if (!AccountStatusCache.AccountStatusIsAvailable())
             {
                 ViewHelper.AdjustFrameSetHeight(_viewStatus, GetScaledHeight(24f));
                 _viewStatus.BackgroundColor = UIColor.Clear;
+                _viewStatus.Hidden = false;
 
                 DisconnectionComponent disconnectionComponent = new DisconnectionComponent(_scrollViewContent, accountStatusData);
                 _viewStatus.AddSubview(disconnectionComponent.GetUI());
@@ -399,8 +478,12 @@ namespace myTNB
                     var acctStatusTooltipMsg = !string.IsNullOrWhiteSpace(accountStatusData.AccountStatusModalMessage) ? accountStatusData.AccountStatusModalMessage : "Dashboard_AccountStatusMessage".Translate();
                     DisplayCustomAlert(string.Empty, acctStatusTooltipMsg, acctStatusTooltipBtnTitle, null);
                 }));
-                SetContentView();
             }
+            else
+            {
+                _viewStatus.Hidden = true;
+            }
+            SetContentView();
         }
         #endregion
         #region FOOTER Methods
