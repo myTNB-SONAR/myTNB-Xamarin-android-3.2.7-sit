@@ -46,7 +46,7 @@ namespace myTNB
                 fgroundColor = MyTNBColor.Tomato;
             }
             string txt = type == AttributedStringType.Title ? str.ToUpper() : str;
-            UIFont font = type == AttributedStringType.Value ? MyTNBFont.MuseoSans16_300 : MyTNBFont.MuseoSans11_300;
+            UIFont font = type == AttributedStringType.Value ? TNBFont.MuseoSans_16_300 : TNBFont.MuseoSans_10_300;
             return new NSAttributedString(txt
                 , font: font
                 , foregroundColor: fgroundColor

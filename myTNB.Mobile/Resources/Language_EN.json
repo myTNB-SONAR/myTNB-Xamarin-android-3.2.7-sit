@@ -25,6 +25,7 @@
         "mobileNumber": "Mobile Number",
         "submit": "Submit",
         "selectAccounts": "Select Accounts",
+        "selectAccount": "Select Account",
         "backToHome": "Back to Home",
         "tryAgain": "Try Again",
         "settings": "Settings",
@@ -63,26 +64,23 @@
     },
     "Tabbar": {
         "home": "Home",
-        "bill": "My Bills",
+        "bill": "Bills",
         "promotion": "What's New",
         "rewards": "Rewards",
         "profile": "Profile"
     },
     "SSMROnboarding": {
         "skip": "Skip",
-        "dontShow": "Don’t show me again",
         "onboardingTitle1": "What is Self Meter Reading?",
-        "onboardingTitle2": "Why should I apply?",
-        "onboardingTitle3": "Am I eligible?",
-        "onboardingDescription1": "Self Meter Reading (SMR) is a service where you can easily read and submit your own meter readings. We will send you a reminder when it's time to submit.",
-        "onboardingDescription2": "You get estimated bills when TNB meter readers can’t get access to your meter. With SMR, you will always get bills with accurate readings.",
-        "onboardingDescription3": "We'll show you the accounts which are eligible for this service. Simply click Start Application and get started.",
-        "startApplication": "Start"
+        "onboardingTitle2": "Why should I enable this service?",
+        "onboardingDescription1": "Self Meter Reading is a service you can enable to easily read and submit your own meter readings. We will send you a reminder when it's time to submit.",
+        "onboardingDescription2": "You get estimated bills when TNB meter readers can’t get access to your meter. With this service, you will always get bills with accurate readings.",
+        "startApplication": "Get Started!"
     },
     "SSMRApplication": {
         "navTitle": "Self Meter Reading",
-        "applyingFor": "I am subscribing for:",
-        "terminateFor": "I am unsubscribing my service for:",
+        "applyingFor": "I am enabling for:",
+        "terminateFor": "I am disabling for:",
         "contactDetails": "My contact details:",
         "terminateTitle": "We’re sorry to see you go! Can you tell us why you want to unsubscribe this service?",
         "tncUnsubscribe": "By submitting, you are agreeing to the <a href=\"\\\">TNB’s Terms of Use</a>, <a href=\"\\\">Privacy policy</a>, <a href=\"\\\">Anti-Spam Policy</a> and <a href=\"\\\">Personal Data Protection Policy</a>.",
@@ -90,8 +88,7 @@
         "editContactInfo": "By editing, you will update your myTNB profile and electricity account contact details.",
         "selectReason": "Select Reason",
         "stateReason": "Please state your reason",
-        "selectAnAccount": "Select an account",
-        "noEligibleAccount": "Looks like your accounts aren’t eligible for the Self Meter Reading subscription."
+        "selectAnAccount": "Select an account"
     },
     "Status": {
         "feedbackSuccessTitle": "Feedback Successful",
@@ -128,7 +125,23 @@
     },
     "SSMRReadingHistory": {
         "navTitle": "Self Meter Reading",
-        "headerTitle": "My Meter Reading History"
+        "headerTitle": "My Meter Reading History",
+        "subTitle": "I want to read my own meter for:",
+        "disableSSMRCTA": "Disable Self Meter Reading",
+        "enableSSMRCTA": "Enable Self Meter Reading",
+        "enableSSMRDescription": "This electricity account is not enabled for self meter reading yet, tap below to start!",
+        "noEligibleAccount": "Looks like your accounts aren’t eligible to enable Self Meter Reading service",
+        "selectAccountNavTitle": "Select Electricity Account"
+    },
+    "SSMRReadingHistory_selector": {
+        "SMREligibiltyPopUpDetails": [
+            {
+                "Title": "Why are some of my accounts not here?",
+                "Description": "We took the liberty to only show you electricity accounts that are eligble for the Self Meter Reading service. <a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">Click here</a> to learn more about its eligibility.",
+                "CTA": "Got It!",
+                "Type": "Not_SMR_CA"
+            }
+        ]
     },
     "SSMRSubmitMeterReading": {
         "navTitle": "Submit Meter Reading",
@@ -200,9 +213,6 @@
 
     "SelectElectricityAccounts": {
         "navTitle": "Select Electricity Account",
-        "accountsMissing": "Why are some of my accounts not here?",
-        "accountMissingTitle": "Why are some of my accounts not here?",
-        "accountMissingDescription": "We took the liberty to only show you electricity accounts that are eligble for the Self Meter Reading service. <a style=\"text-decoration:none\" href =\"inAppBrowser=https://www.tnb.com.my/residential/billing/self-meter-reading/how-to-read-your-energy-meter\">Click Here</a> to learn more about its eligibility.",
-        "accountMissingCTA": "Got It!"
+        "accountsMissing": "Why are some of my accounts not here?"
     }
 }

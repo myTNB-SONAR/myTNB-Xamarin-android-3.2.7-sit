@@ -74,17 +74,18 @@ namespace myTNB
             {
                 Image = UIImage.FromBundle(Image ?? string.Empty)
             };
-            UILabel lblMessage = new UILabel(new CGRect(32, imgView.Frame.GetMaxY() + 24, ViewWidth - 64, 40))
+            UILabel lblMessage = new UILabel(new CGRect(GetScaledWidth(32), GetYLocationFromFrame(imgView.Frame, 24)
+                , ViewWidth - GetScaledWidth(64), GetScaledHeight(40)))
             {
                 TextAlignment = UITextAlignment.Center,
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.WordWrap,
-                Font = MyTNBFont.MuseoSans14_300,
+                Font = TNBFont.MuseoSans_14_300,
                 TextColor = MyTNBColor.Grey,
                 Text = Message ?? string.Empty
             };
-            CGSize size = GetLabelSize(lblMessage, ViewWidth - 64, ViewHeight / 2);
-            lblMessage.Frame = new CGRect(32, imgView.Frame.GetMaxY() + 24, ViewWidth - 64, size.Height);
+            CGSize size = GetLabelSize(lblMessage, ViewWidth - GetScaledWidth(64), ViewHeight / 2);
+            lblMessage.Frame = new CGRect(lblMessage.Frame.X, lblMessage.Frame.Y, lblMessage.Frame.Width, size.Height);
             View.AddSubviews(new UIView[] { imgView, lblMessage });
             View.SendSubviewToBack(imgView);
         }

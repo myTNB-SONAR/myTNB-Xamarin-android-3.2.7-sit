@@ -310,7 +310,6 @@ namespace myTNB
                 Frame = new CGRect(point, size)
             };
             btn.SetTitle(title, UIControlState.Normal);
-            btn.Font = TNBFont.MuseoSans_16_500;
             btn.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 if (ctaAction != null) { ctaAction.Invoke(); }

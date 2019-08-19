@@ -54,7 +54,7 @@ namespace myTNB.Home.Components
 
             UIStringAttributes msgAttributes = new UIStringAttributes
             {
-                Font = MyTNBFont.MuseoSans16_300,
+                Font = TNBFont.MuseoSans_16_300,
                 ForegroundColor = MyTNBColor.BrownGreyThree,
                 BackgroundColor = UIColor.Clear,
                 ParagraphStyle = msgParagraphStyle
@@ -62,7 +62,7 @@ namespace myTNB.Home.Components
 
             UIStringAttributes linkAttributes = new UIStringAttributes
             {
-                Font = MyTNBFont.MuseoSans16_300,
+                Font = TNBFont.MuseoSans_16_300,
                 ForegroundColor = MyTNBColor.BrownGreyThree,
                 UnderlineStyle = NSUnderlineStyle.Single,
                 BackgroundColor = UIColor.Clear
@@ -147,7 +147,7 @@ namespace myTNB.Home.Components
                 Frame = new CGRect(buttonPadding, _txtDescription.Frame.GetMaxY() + buttonPadding, buttonWidth, buttonHeight),
                 Hidden = _isBtnHidden,
                 BackgroundColor = MyTNBColor.FreshGreen,
-                Font = MyTNBFont.MuseoSans16_500
+                Font = TNBFont.MuseoSans_16_500
             };
 
             _btnRefresh.Layer.CornerRadius = 4;
