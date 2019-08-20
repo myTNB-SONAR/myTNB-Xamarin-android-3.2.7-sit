@@ -9,14 +9,12 @@ namespace myTNB
 {
     public class REChartView : BaseChartView
     {
-        public REChartView()
-        {
-        }
+        public REChartView() { }
 
         protected override void CreatUI()
         {
             _width = UIScreen.MainScreen.Bounds.Width;
-            _baseMargin = GetScaledWidth(16);
+            _baseMargin = GetWidthByScreenSize(16);
             _baseMarginedWidth = _width - (_baseMargin * 2);
             _mainView = new CustomUIView(new CGRect(0, 0, _width, GetScaledHeight(203)));
 
@@ -42,9 +40,9 @@ namespace myTNB
                , _width, GetScaledHeight(171)));
 
             nfloat height = _segmentContainer.Frame.Height;
-            nfloat width = GetScaledWidth(12);
-            nfloat barMargin = GetScaledWidth(36);
-            nfloat baseMargin = GetScaledWidth(34);
+            nfloat width = GetWidthByScreenSize(12);
+            nfloat barMargin = GetWidthByScreenSize(36);
+            nfloat baseMargin = GetWidthByScreenSize(34);
             nfloat xLoc = baseMargin;
             nfloat lblHeight = GetScaledHeight(14);
             nfloat maxBarHeight = GetScaledHeight(108);
@@ -84,7 +82,7 @@ namespace myTNB
                 viewBar.AddSubview(viewCover);
                 nfloat usageYLoc = yLoc - amountBarMargin - lblHeight;
                 UILabel lblUsage = new UILabel(new CGRect(0, viewBar.Frame.GetMinY() - amountBarMargin - lblHeight
-                    , GetScaledWidth(100), lblHeight))
+                    , GetWidthByScreenSize(100), lblHeight))
                 {
                     TextAlignment = UITextAlignment.Center,
                     Font = TNBFont.MuseoSans_10_300,
@@ -93,25 +91,25 @@ namespace myTNB
                     Hidden = index < usageData.Count - 1,
                     Tag = 1002
                 };
-                nfloat lblUsageWidth = lblUsage.GetLabelWidth(GetScaledWidth(100));
+                nfloat lblUsageWidth = lblUsage.GetLabelWidth(GetWidthByScreenSize(100));
                 lblUsage.Frame = new CGRect((width - lblUsageWidth) / 2, lblUsage.Frame.Y, lblUsageWidth, lblUsage.Frame.Height);
 
                 nfloat amtYLoc = usageYLoc - lblHeight;
                 UILabel lblAmount = new UILabel(new CGRect(0, lblUsage.Frame.GetMinY() - lblHeight
-                   , GetScaledWidth(100), lblHeight))
+                   , GetWidthByScreenSize(100), lblHeight))
                 {
                     TextAlignment = UITextAlignment.Center,
                     Font = TNBFont.MuseoSans_10_500,
                     TextColor = index < usageData.Count - 1 ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
-                    Text = string.Format(Format_Value, item.Currency, item.AmountTotal),
+                    Text = item.AmountTotal.FormatAmountString(item.Currency),
                     Hidden = index < usageData.Count - 1,
                     Tag = 1003
                 };
-                nfloat lblAmountWidth = lblAmount.GetLabelWidth(GetScaledWidth(100));
+                nfloat lblAmountWidth = lblAmount.GetLabelWidth(GetWidthByScreenSize(100));
                 lblAmount.Frame = new CGRect((width - lblAmountWidth) / 2, lblAmount.Frame.Y, lblAmountWidth, lblAmount.Frame.Height);
 
                 UILabel lblDate = new UILabel(new CGRect(0, segment.Frame.Height - lblHeight
-                    , GetScaledWidth(30), lblHeight))
+                    , GetWidthByScreenSize(30), lblHeight))
                 {
                     TextAlignment = UITextAlignment.Center,
                     Font = TNBFont.MuseoSans_10_300,
@@ -119,7 +117,7 @@ namespace myTNB
                     Text = string.IsNullOrEmpty(item.Year) ? item.Month : string.Format(Format_Value, item.Month, item.Year),
                     Tag = 1004
                 };
-                nfloat lblDateWidth = lblDate.GetLabelWidth(GetScaledWidth(30));
+                nfloat lblDateWidth = lblDate.GetLabelWidth(GetWidthByScreenSize(30));
                 lblDate.Frame = new CGRect((width - lblDateWidth) / 2, lblDate.Frame.Y, lblDateWidth, lblDate.Frame.Height);
 
                 segment.AddSubviews(new UIView[] { lblUsage, lblAmount, viewBar, lblDate });

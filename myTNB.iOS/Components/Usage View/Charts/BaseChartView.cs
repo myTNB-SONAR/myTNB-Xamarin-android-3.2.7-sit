@@ -56,7 +56,8 @@ namespace myTNB
         }
 
         protected virtual void AddTariffBlocks(CustomUIView viewBar, List<TariffItemModel> tariff
-            , double baseValue, bool isSelected, CGSize size){ }
+            , double baseValue, bool isSelected, CGSize size)
+        { }
 
         protected virtual UIColor GetTariffBlockColor(string blockID, bool isSelected)
         {
@@ -70,5 +71,15 @@ namespace myTNB
         }
 
         protected virtual void OnSegmentTap(int index) { }
+
+        protected nfloat GetWidthByScreenSize(nfloat value)
+        {
+            return ScaleUtility.GetWidthByScreenSize(value);
+        }
+
+        protected nfloat GetHeightByScreenSize(nfloat value)
+        {
+            return ScaleUtility.GetHeightByScreenSize(value);
+        }
     }
 }

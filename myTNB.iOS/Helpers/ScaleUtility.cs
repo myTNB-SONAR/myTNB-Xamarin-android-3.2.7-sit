@@ -16,7 +16,12 @@ namespace myTNB
         public static nfloat GetScaledWidth(nfloat value)
         {
             if (IsNotched) { return value * ARDelta; }
+            nfloat percentage = value / WidthBase;
+            return UIScreen.MainScreen.Bounds.Width * percentage;
+        }
 
+        public static nfloat GetWidthByScreenSize(nfloat value)
+        {
             nfloat percentage = value / WidthBase;
             return UIScreen.MainScreen.Bounds.Width * percentage;
         }
@@ -24,6 +29,12 @@ namespace myTNB
         public static nfloat GetScaledHeight(nfloat value)
         {
             if (IsNotched) { return value * ARDelta; }
+            nfloat percentage = value / HeightBase;
+            return UIScreen.MainScreen.Bounds.Height * percentage;
+        }
+
+        public static nfloat GetHeightByScreenSize(nfloat value)
+        {
             nfloat percentage = value / HeightBase;
             return UIScreen.MainScreen.Bounds.Height * percentage;
         }
