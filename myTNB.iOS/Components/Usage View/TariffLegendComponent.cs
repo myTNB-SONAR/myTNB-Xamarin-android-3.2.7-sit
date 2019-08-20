@@ -8,7 +8,8 @@ namespace myTNB
 {
     public class TariffLegendComponent : BaseComponent
     {
-        UIView _parentView, _containerView;
+        CustomUIView _containerView;
+        UIView _parentView;
         List<LegendItemModel> _tariffLegendList = new List<LegendItemModel>();
         nfloat _totalHeight;
 
@@ -22,7 +23,7 @@ namespace myTNB
         {
             nfloat width = _parentView.Frame.Width;
             nfloat height = _parentView.Frame.Height;
-            _containerView = new UIView(new CGRect(0, 0, width, height))
+            _containerView = new CustomUIView(new CGRect(0, 0, width, height))
             {
                 BackgroundColor = UIColor.Clear
             };
@@ -33,7 +34,7 @@ namespace myTNB
             AdjustContainerHeight();
         }
 
-        public UIView GetUI()
+        public CustomUIView GetUI()
         {
             CreateComponent();
             return _containerView;

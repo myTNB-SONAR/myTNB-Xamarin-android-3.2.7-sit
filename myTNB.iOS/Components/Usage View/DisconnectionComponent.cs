@@ -7,7 +7,8 @@ namespace myTNB
 {
     public class DisconnectionComponent : BaseComponent
     {
-        UIView _parentView, _containerView;
+        CustomUIView _containerView;
+        UIView _parentView;
         AccountStatusDataModel _accountStatusData = new AccountStatusDataModel();
 
         public DisconnectionComponent(UIView parentView, AccountStatusDataModel accountStatusData)
@@ -20,7 +21,7 @@ namespace myTNB
         {
             nfloat width = _parentView.Frame.Width - (BaseMarginHeight16 * 2);
             nfloat height = GetScaledHeight(24f);
-            _containerView = new UIView(new CGRect(BaseMarginHeight16, 0, width, height))
+            _containerView = new CustomUIView(new CGRect(BaseMarginHeight16, 0, width, height))
             {
                 BackgroundColor = MyTNBColor.ButterScotch
             };
@@ -49,7 +50,7 @@ namespace myTNB
             _containerView.AddSubview(label);
         }
 
-        public UIView GetUI()
+        public CustomUIView GetUI()
         {
             CreateComponent();
             return _containerView;

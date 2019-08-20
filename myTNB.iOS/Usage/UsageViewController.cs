@@ -14,13 +14,16 @@ namespace myTNB
         {
             PageName = "UsageView";
             base.ViewDidLoad();
-            CallGetAccountUsageAPI();
-            CallGetAccountDueAmountAPI();
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            if (!DataManager.DataManager.SharedInstance.IsSameAccount)
+            {
+                CallGetAccountUsageAPI();
+                CallGetAccountDueAmountAPI();
+            }
         }
 
         public void OnCurrentBillViewDone()
@@ -60,6 +63,7 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
+                        DataManager.DataManager.SharedInstance.IsSameAccount = true;
                         UIStoryboard storyBoard = UIStoryboard.FromName("ViewBill", null);
                         ViewBillViewController viewController =
                             storyBoard.InstantiateViewController("ViewBillViewController") as ViewBillViewController;
@@ -85,6 +89,7 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
+                        DataManager.DataManager.SharedInstance.IsSameAccount = true;
                         UIStoryboard storyBoard = UIStoryboard.FromName("Payment", null);
                         SelectBillsViewController selectBillsVC =
                             storyBoard.InstantiateViewController("SelectBillsViewController") as SelectBillsViewController;
@@ -102,6 +107,10 @@ namespace myTNB
                 });
             });
         }
+        internal override void OnSelectAccount(int index)
+        {
+            CallGetAccountStatusAPI();
+        }
         #endregion
         #region API Calls
         private void CallGetAccountUsageAPI()
@@ -112,19 +121,25 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        ActivityIndicator.Show();
-                        AccountUsageCache.ClearTariffLegendList();
-                        AccountUsageResponseModel accountUsageResponse = await UsageServiceCall.GetAccountUsage(DataManager.DataManager.SharedInstance.SelectedAccount);
-                        AccountUsageCache.AddTariffLegendList(accountUsageResponse);
-                        AccountUsageCache.SetData(DataManager.DataManager.SharedInstance.SelectedAccount.accNum, accountUsageResponse);
-                        AddSubviews();
+                        if (AccountUsageCache.IsRefreshNeeded(DataManager.DataManager.SharedInstance.SelectedAccount.accNum))
+                        {
+                            AccountUsageCache.ClearTariffLegendList();
+                            AccountUsageResponseModel accountUsageResponse = await UsageServiceCall.GetAccountUsage(DataManager.DataManager.SharedInstance.SelectedAccount);
+                            AccountUsageCache.AddTariffLegendList(accountUsageResponse);
+                            AccountUsageCache.SetData(DataManager.DataManager.SharedInstance.SelectedAccount.accNum, accountUsageResponse);
+                        }
+                        else
+                        {
+                            AccountUsageCache.ClearTariffLegendList();
+                            AccountUsageCache.GetCachedData(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                        }
                         SetTariffLegendComponent();
+                        SetChartView(false);
                     }
                     else
                     {
                         DisplayNoDataAlert();
                     }
-                    ActivityIndicator.Hide();
                 });
             });
         }
@@ -178,6 +193,66 @@ namespace myTNB
                     }
                     else
                     {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+        public void CallGetAccountStatusAPI()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        ActivityIndicator.Show();
+                        AccountStatusCache.ClearAccountStatusData();
+
+                        AccountStatusResponseModel accountStatusResponse = await UsageServiceCall.GetAccountStatus(DataManager.DataManager.SharedInstance.SelectedAccount);
+                        AccountStatusCache.AddAccountStatusData(accountStatusResponse);
+                        SetDisconnectionComponent();
+
+                        if (AccountStatusCache.AccountStatusIsAvailable())
+                        {
+                            if (accountIsSSMR)
+                            {
+                                GetSMRAccountActivityInfo();
+                            }
+                        }
+                        ActivityIndicator.Hide();
+                    }
+                    else
+                    {
+                        ActivityIndicator.Hide();
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+        private void GetSMRAccountActivityInfo()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        ActivityIndicator.Show();
+                        SMRAccountActivityInfoResponseModel ssmrInfoResponse = await UsageServiceCall.GetSMRAccountActivityInfo(DataManager.DataManager.SharedInstance.SelectedAccount);
+                        if (ssmrInfoResponse != null &&
+                            ssmrInfoResponse.d != null &&
+                            ssmrInfoResponse.d.data != null &&
+                            ssmrInfoResponse.d.IsSuccess)
+                        {
+                            SSMRActivityInfoCache.SetDashboardCache(ssmrInfoResponse);
+                        }
+                        SetSSMRComponent();
+                        ActivityIndicator.Hide();
+                    }
+                    else
+                    {
+                        ActivityIndicator.Hide();
                         DisplayNoDataAlert();
                     }
                 });

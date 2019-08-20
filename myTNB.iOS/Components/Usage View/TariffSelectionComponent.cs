@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using CoreGraphics;
 using UIKit;
 
@@ -7,7 +6,8 @@ namespace myTNB
 {
     public class TariffSelectionComponent : BaseComponent
     {
-        UIView _parentView, _containerView, _rmKwhSelectionView, _tariffSelectionView, _monthDayView;
+        CustomUIView _containerView;
+        UIView _parentView, _rmKwhSelectionView, _tariffSelectionView, _monthDayView;
         UIImageView _tariffIcon, _rmKwhIcon, _monthDayIcon;
         UILabel _rmKwhLabel, _tariffLabel, _monthDayLabel;
         nfloat containerHeight = ScaleUtility.GetScaledHeight(24f);
@@ -20,7 +20,7 @@ namespace myTNB
         private void CreateComponent()
         {
             nfloat width = _parentView.Frame.Width;
-            _containerView = new UIView(new CGRect(0, 0, width, containerHeight))
+            _containerView = new CustomUIView(new CGRect(0, 0, width, containerHeight))
             {
                 BackgroundColor = UIColor.Clear
             };
@@ -100,7 +100,7 @@ namespace myTNB
             _tariffSelectionView.AddSubview(_tariffLabel);
         }
 
-        public UIView GetUI()
+        public CustomUIView GetUI()
         {
             CreateComponent();
             return _containerView;

@@ -10,7 +10,8 @@ namespace myTNB
 {
     public class EnergyTipsComponent
     {
-        UIView _parentView, _containerView;
+        CustomUIView _containerView;
+        UIView _parentView;
         UIScrollView _scrollView;
 
         List<TipsModel> _tipsList;
@@ -30,7 +31,7 @@ namespace myTNB
 
         private void CreateComponent()
         {
-            _containerView = new UIView(new CGRect(0, 0, _parentView.Frame.Width, containerHeight))
+            _containerView = new CustomUIView(new CGRect(0, 0, _parentView.Frame.Width, containerHeight))
             {
                 BackgroundColor = UIColor.Clear
             };
@@ -143,7 +144,7 @@ namespace myTNB
             _scrollView.ContentSize = new CGSize(_scrollView.Frame.Width * _tipsList.Count, _scrollView.Frame.Height);
         }
 
-        public UIView GetUI()
+        public CustomUIView GetUI()
         {
             CreateComponent();
             return _containerView;

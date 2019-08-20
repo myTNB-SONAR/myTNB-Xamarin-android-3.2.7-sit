@@ -9,7 +9,8 @@ namespace myTNB
     public class SSMRComponent : BaseComponent
     {
         private readonly UIView _parentView;
-        UIView _containerView, _iconLabelView;
+        CustomUIView _containerView;
+        UIView _iconLabelView;
         UIImageView _iconView;
         public UILabel _labelViewHistory;
         UILabel _description;
@@ -29,7 +30,7 @@ namespace myTNB
             nfloat buttonHeight = GetScaledHeight(40f);
             nfloat width = _parentView.Frame.Width;
 
-            _containerView = new UIView(new CGRect(BaseMarginWidth16, 0, width - (BaseMarginWidth16 * 2), GetScaledHeight(116f)))
+            _containerView = new CustomUIView(new CGRect(BaseMarginWidth16, 0, width - (BaseMarginWidth16 * 2), GetScaledHeight(116f)))
             {
                 BackgroundColor = UIColor.White
             };
@@ -82,7 +83,7 @@ namespace myTNB
             _containerView.AddSubview(_smrButton);
         }
 
-        public UIView GetUI()
+        public CustomUIView GetUI()
         {
             CreateComponent();
             return _containerView;
