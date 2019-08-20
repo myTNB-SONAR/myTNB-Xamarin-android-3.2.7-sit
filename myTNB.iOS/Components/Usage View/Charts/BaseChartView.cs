@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using myTNB.Model.Usage;
 using UIKit;
 
@@ -29,7 +30,29 @@ namespace myTNB
 
         protected virtual void CreateSegment() { }
 
-        protected virtual double GetMaxValue(RMkWhEnum view, List<string> value) { return 0; }
+        protected virtual double GetMaxValue(RMkWhEnum view, List<string> value)
+        {
+            double maxValue = 0;
+            switch (view)
+            {
+                case RMkWhEnum.kWh:
+                    {
+                        maxValue = value.Max(x => Math.Abs(TextHelper.ParseStringToDouble(x)));
+                        break;
+                    }
+                case RMkWhEnum.RM:
+                    {
+                        maxValue = value.Max(x => Math.Abs(TextHelper.ParseStringToDouble(x)));
+                        break;
+                    }
+                default:
+                    {
+                        maxValue = 0;
+                        break;
+                    }
+            }
+            return maxValue;
+        }
 
         protected virtual void AddTariffBlocks(CustomUIView viewBar, List<TariffItemModel> tariff, double baseValue, bool isSelected) { }
 

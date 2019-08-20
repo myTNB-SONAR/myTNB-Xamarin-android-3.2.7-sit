@@ -204,7 +204,15 @@ namespace myTNB
 
         private void SetChartView()
         {
-            _chartView = new NormalChartView();
+            if (DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount)
+            {
+                _chartView = new REChartView();
+            }
+            else
+            {
+                _chartView = new NormalChartView();
+            }
+
             if (_chart != null)
             {
                 _chart.RemoveFromSuperview();
