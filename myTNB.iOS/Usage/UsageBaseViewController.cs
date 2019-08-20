@@ -290,7 +290,6 @@ namespace myTNB
             view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
         }
         #endregion
-
         #region TARIFF LEGEND Methods
         public void SetTariffLegendComponent()
         {
@@ -523,11 +522,16 @@ namespace myTNB
             };
         }
 
-        internal void UpdateFooterUI()
+        internal void UpdateFooterUI(bool isUpdating)
         {
-            DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
-            _footerViewComponent.SetAmount(dueData.amountDue);
-            _footerViewComponent.SetDate(dueData.billDueDate);
+            _footerViewComponent.UpdateUI(isUpdating);
+            if (!isUpdating)
+            {
+                _footerViewComponent.UpdateUI(isUpdating);
+                DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                _footerViewComponent.SetAmount(dueData.amountDue);
+                _footerViewComponent.SetDate(dueData.billDueDate);
+            }
         }
 
         internal virtual void OnCurrentBillButtonTap() { }

@@ -92,7 +92,6 @@ namespace myTNB
                     {
                         ActivityIndicator.Show();
                         AccountUsageCache.ClearTariffLegendList();
-
                         AccountUsageResponseModel accountUsageResponse = await UsageServiceCall.GetAccountUsage(DataManager.DataManager.SharedInstance.SelectedAccount);
                         AccountUsageCache.AddTariffLegendList(accountUsageResponse);
                         AccountUsageCache.SetData(accountUsageResponse);
@@ -115,22 +114,32 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        ActivityIndicator.Show();
-                        DueAmountResponseModel dueAmountResponse = await UsageServiceCall.GetAccountDueAmount(DataManager.DataManager.SharedInstance.SelectedAccount);
+                        UpdateFooterUI(true);
+                        var account = DataManager.DataManager.SharedInstance.SelectedAccount;
+                        DueAmountResponseModel dueAmountResponse = await UsageServiceCall.GetAccountDueAmount(account);
                         if (dueAmountResponse != null &&
                             dueAmountResponse.d != null &&
                             dueAmountResponse.d.didSucceed &&
                             dueAmountResponse.d.data != null)
                         {
-                            AmountDueCache.SaveDues(dueAmountResponse.d.data);
-                            UpdateFooterUI();
+                            var model = dueAmountResponse.d.data;
+                            var item = new DueAmountDataModel
+                            {
+                                accNum = account.accNum,
+                                accNickName = account.accountNickName,
+                                IsReAccount = account.IsREAccount,
+                                amountDue = model.amountDue,
+                                billDueDate = model.billDueDate,
+                                IncrementREDueDateByDays = model.IncrementREDueDateByDays
+                            };
+                            AmountDueCache.SaveDues(item);
+                            UpdateFooterUI(false);
                         }
                     }
                     else
                     {
                         DisplayNoDataAlert();
                     }
-                    ActivityIndicator.Hide();
                 });
             });
         }
