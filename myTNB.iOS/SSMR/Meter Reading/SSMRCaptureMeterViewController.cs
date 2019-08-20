@@ -21,9 +21,6 @@ namespace myTNB
         {
         }
 
-        /// <summary>
-        /// Key as kWh, KVarh or KW and Value as isValid based on textbox validation
-        /// </summary>
         public Dictionary<string, bool> ReadingDictionary;
 
         private UILabel _lblDescription;
@@ -378,7 +375,6 @@ namespace myTNB
 
             _btnSubmit = new CustomUIButtonV2()
             {
-                // Frame = new CGRect(16, GetYLocationFromFrame(_btnDelete.Frame, 16), ViewWidth - 32, GetScaledHeight(48)),
                 Frame = new CGRect(16, btnYLoc, ViewWidth - 32, GetScaledHeight(48)),
                 BackgroundColor = MyTNBColor.FreshGreen,
                 Tag = 1005,
@@ -763,14 +759,17 @@ namespace myTNB
             if (_viewLoading == null)
             {
                 _viewLoading = new UIView(new CGRect(0, 0, ViewWidth, ViewHeight)) { BackgroundColor = UIColor.White, Hidden = true };
-                UIImageView imgLoading = new UIImageView(new CGRect((ViewWidth - 156) / 2, ViewHeight * 0.16F, 156, 146))
-                { Image = UIImage.FromBundle(SSMRConstants.IMG_OCRReading) };
+                nfloat imgHeigth = UIScreen.MainScreen.Bounds.Height * 0.255F;
+                nfloat imgWidth = imgHeigth * 0.768F;
+                UIImageView imgLoading = new UIImageView(new CGRect((ViewWidth - imgWidth) / 2, GetScaledHeight(90), imgWidth, imgHeigth))
+                { Image = UIImage.FromBundle(SSMRConstants.IMG_OCRReading), ContentMode = UIViewContentMode.ScaleAspectFill };
 
-                UILabel lblDescription = new UILabel(new CGRect(20, imgLoading.Frame.GetMaxY() + 24, ViewWidth - 40, 48))
+                UILabel lblDescription = new UILabel(new CGRect(GetScaledWidth(20)
+                    , GetYLocationFromFrame(imgLoading.Frame, 24), ViewWidth - GetScaledWidth(40), GetScaledHeight(48)))
                 {
                     TextAlignment = UITextAlignment.Center,
-                    Font = MyTNBFont.MuseoSans16_300,
-                    TextColor = MyTNBColor.Grey,
+                    Font = TNBFont.MuseoSans_16_300,
+                    TextColor = MyTNBColor.BrownGreyThree,
                     Lines = 0,
                     LineBreakMode = UILineBreakMode.WordWrap,
                     Text = GetI18NValue(SSMRConstants.I18N_OCRReading)
@@ -783,6 +782,7 @@ namespace myTNB
                 View.AddSubview(_viewLoading);
             }
             _viewLoading.Hidden = false;
+            NavigationItem.RightBarButtonItem = null;
         }
 
         private void UpdateViewGallery()
@@ -1051,7 +1051,11 @@ namespace myTNB
                 }
                 InvokeOnMainThread(() =>
                 {
-                    if (_viewLoading != null) { _viewLoading.Hidden = true; }
+                    if (_viewLoading != null)
+                    {
+                        _viewLoading.Hidden = true;
+                        NavigationItem.RightBarButtonItem = _btnInfo;
+                    }
                     if (NavigationController != null)
                     {
                         NavigationController.PopViewController(true);
