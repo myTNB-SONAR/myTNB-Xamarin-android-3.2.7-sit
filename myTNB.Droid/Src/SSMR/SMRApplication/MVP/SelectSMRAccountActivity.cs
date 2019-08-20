@@ -14,6 +14,7 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.AddAccount.Adapter;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MultipleAccountPayment.Adapter;
@@ -21,6 +22,7 @@ using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.SSMR.SMRApplication.Adapter;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 {
@@ -62,30 +64,19 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             }
             UserSessions.SetRealSMREligibilityAccountList(accountList);
             Intent returnIntent = new Intent();
-            SetResult(Result.Canceled, returnIntent);
+            returnIntent.PutExtra("SELECTED_ACCOUNT_NUMBER", accountList.Find(x => { return x.accountSelected; }).accountNumber);
+            SetResult(Result.Ok, returnIntent);
             Finish();
         }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            // Create your application here
             TextViewUtils.SetMuseoSans500Typeface(whyAccountsNotHere);
-            accountList = new List<SMRAccount>();
-            List<SMRAccount> list = UserSessions.GetRealSMREligibilityAccountList();
-            List<CustomerBillingAccount> eligibleAccountList = CustomerBillingAccount.GetEligibleAndSMRAccountList();
-            if (list == null)
+            Bundle extras = Intent.Extras;
+            if (extras.ContainsKey("SMR_ELIGIBLE_ACCOUNT_LIST"))
             {
-                list = UserSessions.GetSMREligibilityAccountList();
-            }
-            foreach (CustomerBillingAccount custBillingAccount in eligibleAccountList)
-            {
-                SMRAccount account = new SMRAccount();
-                account.accountName = custBillingAccount.AccDesc;
-                account.accountNumber = custBillingAccount.AccNum;
-                account.accountSelected = custBillingAccount.IsSelected;
-                account.isTaggedSMR = custBillingAccount.IsTaggedSMR;
-                accountList.Add(account);
+                accountList = JsonConvert.DeserializeObject<List<SMRAccount>>(extras.GetString("SMR_ELIGIBLE_ACCOUNT_LIST"));
             }
 
             selectAccountAdapter = new SelectAccountAdapter(this, accountList);
@@ -105,23 +96,32 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 
         internal void OnItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            //SMRAccount smrAccount = selectAccountAdapter.GetItemObject(e.Position);
-            //smrAccount.accountSelected = true;
-            //Intent link_activity = new Intent(this, typeof(AddAccountActivity));
-            //link_activity.PutExtra("selectedAccountType", JsonConvert.SerializeObject(selectedAccountType));
-            //SetResult(Result.Ok, link_activity);
-            //Finish();
-
-            UpdateSelectedAccount(e.Position);
+            for (int i = 0; i < accountList.Count; i++)
+            {
+                if (i == e.Position)
+                {
+                    accountList[i].accountSelected = true;
+                }
+                else
+                {
+                    accountList[i].accountSelected = false;
+                }
+            }
+            Intent returnIntent = new Intent();
+            returnIntent.PutExtra("SELECTED_ACCOUNT_NUMBER", accountList.Find(x => { return x.accountSelected; }).accountNumber);
+            SetResult(Result.Ok, returnIntent);
+            Finish();
         }
 
         [OnClick(Resource.Id.smrWhyTheseAccountsInfo)]
         internal void OnWhyTheseAccountsTap(object sender, EventArgs eventArgs)
         {
+            MyTNBAppToolTipData.SMREligibiltyPopUpDetailData tooltipData = MyTNBAppToolTipData.GetInstance().GetSMREligibiltyPopUpDetails();
+
             MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                .SetTitle(GetString(Resource.String.ssmr_reading_history_tooltip_title))
-                .SetMessage(GetString(Resource.String.ssmr_readint_history_tooltip_message))
-                .SetCTALabel("Got It!")
+                .SetTitle(tooltipData.title)
+                .SetMessage(tooltipData.description)
+                .SetCTALabel(tooltipData.cta)
                 .Build().Show();
         }
     }

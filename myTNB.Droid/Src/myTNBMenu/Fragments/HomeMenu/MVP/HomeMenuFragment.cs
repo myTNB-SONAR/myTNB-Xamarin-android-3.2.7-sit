@@ -33,6 +33,7 @@ using Android.App;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.Base;
 using Android.Text;
+using myTNB_Android.Src.SSMRMeterHistory.MVP;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -147,7 +148,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         TextView addActionLabel;
 
         [BindView(Resource.Id.searchActionLabel)]
-        TextView searchActionLabel; 
+        TextView searchActionLabel;
 
         [BindView(Resource.Id.addActionContainer)]
         LinearLayout addActionContainer;
@@ -673,7 +674,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         Intent applySMRIntent;
                         if (MyTNBAccountManagement.GetInstance().IsSMROnboardingShown())
                         {
-                            applySMRIntent = new Intent(this.Activity, typeof(ApplicationFormSMRActivity));
+                            applySMRIntent = new Intent(this.Activity, typeof(SSMRMeterHistoryActivity));
                         }
                         else
                         {
@@ -1233,7 +1234,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 searchEditText.SetBackgroundResource(Resource.Drawable.search_edit_bg);
             }
-            
+
         }
     }
 }

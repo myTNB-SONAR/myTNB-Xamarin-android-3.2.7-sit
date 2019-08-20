@@ -1996,6 +1996,9 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\smr_why_accounts_info.png" />
     <AndroidResource Include="Resources\drawable\rectangle_rounded_corner_light_blue_bg.xml" />
     <AndroidResource Include="Resources\layout\CustomToolTipWithHeaderLayout.axml" />
+    <Compile Include="Src\Base\SMRAccountActivityInfo.cs" />
+    <Compile Include="Src\Base\MVP\IExceptionView.cs" />
+    <AndroidResource Include="Resources\drawable\red_light_button_background.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

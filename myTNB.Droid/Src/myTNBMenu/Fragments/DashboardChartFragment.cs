@@ -1857,6 +1857,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (response != null && response.Response != null && response.Response.Data != null)
                 {
                     smrResponse = response;
+                    MyTNBAccountManagement.GetInstance().SetAccountActivityInfo(new SMRAccountActivityInfo(selectedAccount.AccountNum, smrResponse));
                     SMRPopUpUtils.OnSetSMRActivityInfoResponse(response);
                     MyTNBAppToolTipData.SetSMRActivityInfo(response.Response);
                     Activity.RunOnUiThread(() =>

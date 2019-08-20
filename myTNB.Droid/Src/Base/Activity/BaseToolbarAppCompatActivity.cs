@@ -2,10 +2,12 @@
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
+using Android.Support.Design.Widget;
 using Android.Text;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Runtime;
@@ -16,10 +18,12 @@ namespace myTNB_Android.Src.Base.Activity
     /// <summary>
     /// The class that abstracts the implementation of the resourceId , handling of permissions and the toolbar customizations.
     /// </summary>
-    public abstract class BaseToolbarAppCompatActivity : BaseAppCompatActivity
+    public abstract class BaseToolbarAppCompatActivity : BaseAppCompatActivity, IExceptionView
     {
         [BindView(Resource.Id.toolbar)]
         protected Toolbar toolbar;
+
+        protected Snackbar mErrorMessageSnackBar;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -207,6 +211,24 @@ namespace myTNB_Android.Src.Base.Activity
             {
                 return Html.FromHtml(stringValue);
             }
+        }
+
+        public void ShowGenericSnackbarException()
+        {
+            //if (mErrorMessageSnackBar != null && mErrorMessageSnackBar.IsShown)
+            //{
+            //    mErrorMessageSnackBar.Dismiss();
+            //}
+
+            //mErrorMessageSnackBar = Snackbar.Make(rootView, "Something went wrong! Please try again later", Snackbar.LengthIndefinite)
+            //.SetAction("Close", delegate { mErrorMessageSnackBar.Dismiss(); }
+            //);
+            //View v = mErrorMessageSnackBar.View;
+            //TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            //tv.SetMaxLines(5);
+            //Button btn = (Button)v.FindViewById<Button>(Resource.Id.snackbar_action);
+            //btn.SetTextColor(Android.Graphics.Color.Yellow);
+            //mErrorMessageSnackBar.Show();
         }
     }
 }

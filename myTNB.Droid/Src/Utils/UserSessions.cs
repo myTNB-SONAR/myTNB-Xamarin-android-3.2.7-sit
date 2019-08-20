@@ -3,6 +3,7 @@ using Android.Content;
 using Java.Lang;
 using Java.Text;
 using Java.Util;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using Newtonsoft.Json;
@@ -303,6 +304,25 @@ namespace myTNB_Android.Src.Utils
             SetSMRAccountList(new List<SMRAccount>());
             SetSMREligibilityAccountList(new List<SMRAccount>());
             SetRealSMREligibilityAccountList(new List<SMRAccount>());
+        }
+
+        public static void SetAccountActivityInfoList(List<SMRAccountActivityInfo> smrAccountActivityList)
+        {
+            ISharedPreferencesEditor editor = mPreferences.Edit();
+            string jsonAccountList = JsonConvert.SerializeObject(smrAccountActivityList);
+            editor.PutString("SMR_ACCOUNT_ACTIVITY_INFO_LIST", jsonAccountList);
+            editor.Apply();
+        }
+
+        public static List<SMRAccountActivityInfo> GetAccountActivityInfoList()
+        {
+            string accountInfoListString = mPreferences.GetString("SMR_ACCOUNT_ACTIVITY_INFO_LIST", null);
+            List<SMRAccountActivityInfo> selectAccountList = new List<SMRAccountActivityInfo>();
+            if (accountInfoListString != null)
+            {
+                selectAccountList = JsonConvert.DeserializeObject<List<SMRAccountActivityInfo>>(accountInfoListString);
+            }
+            return selectAccountList;
         }
     }
 }

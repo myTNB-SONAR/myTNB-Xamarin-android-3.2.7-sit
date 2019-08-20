@@ -18,6 +18,8 @@ using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SSMR.SMRApplication.Adapter;
+using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
+using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 
@@ -32,14 +34,8 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         [BindView(Resource.Id.indicatorContainer)]
         LinearLayout indicatorContainer;
 
-        [BindView(Resource.Id.dontShowAgainCheckbox)]
-        CheckBox dontShowAgainCheckbox;
-
         [BindView(Resource.Id.skipOnboarding)]
         TextView skipOnboarding;
-
-        [BindView(Resource.Id.dontShowMeAgainLabel)]
-        TextView dontShowMeAgainLabel;
 
         [BindView(Resource.Id.btnStartApplication)]
         Button btnStartApplication;
@@ -121,24 +117,17 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 
             btnStartApplication.Click += delegate
             {
-                if (dontShowAgainCheckbox.Checked)
-                {
-                    MyTNBAccountManagement.GetInstance().UpdateIsSMROnboardingShown();
-                }
-                presenter.GetCARegisteredContactInfo();
+                MyTNBAccountManagement.GetInstance().UpdateIsSMROnboardingShown();
+                StartSMRApplication();
             };
 
             skipOnboarding.Click += delegate
             {
-                //onBoardViewPager.SetCurrentItem(3,true);
-                if (dontShowAgainCheckbox.Checked)
-                {
-                    MyTNBAccountManagement.GetInstance().UpdateIsSMROnboardingShown();
-                }
+                MyTNBAccountManagement.GetInstance().UpdateIsSMROnboardingShown();
                 StartSMRApplication();
             };
 
-            TextViewUtils.SetMuseoSans500Typeface(dontShowMeAgainLabel, skipOnboarding, btnStartApplication);
+            TextViewUtils.SetMuseoSans500Typeface(skipOnboarding, btnStartApplication);
             toolbar.BringToFront();
         }
 
@@ -146,16 +135,12 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         {
             if (isShow)
             {
-                dontShowAgainCheckbox.Visibility = ViewStates.Gone;
                 skipOnboarding.Visibility = ViewStates.Gone;
-                dontShowMeAgainLabel.Visibility = ViewStates.Gone;
                 btnStartApplication.Visibility = ViewStates.Visible;
             }
             else
             {
-                dontShowAgainCheckbox.Visibility = ViewStates.Gone;
                 skipOnboarding.Visibility = ViewStates.Visible;
-                dontShowMeAgainLabel.Visibility = ViewStates.Gone;
                 btnStartApplication.Visibility = ViewStates.Gone;
             }
         }
@@ -190,7 +175,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 
         public void StartSMRApplication()
         {
-            Intent intent = new Intent(this, typeof(ApplicationFormSMRActivity));
+            Intent intent = new Intent(this, typeof(SSMRMeterHistoryActivity));
             StartActivity(intent);
             Finish();
         }

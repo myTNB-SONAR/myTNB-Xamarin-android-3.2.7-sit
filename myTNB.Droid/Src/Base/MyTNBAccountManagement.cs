@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SummaryDashBoard.Models;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.Base
 {
@@ -127,6 +128,46 @@ namespace myTNB_Android.Src.Base
         public bool GetSMRMeterReadingThreePhaseOnboardingShown()
         {
             return CustomerBillingAccount.GetIsSMRMeterReadingThreePhaseOnBoardShown();
+        }
+
+        public void SetAccountActivityInfo(SMRAccountActivityInfo smrAccountActivityInfo)
+        {
+            List<SMRAccountActivityInfo> accountActivityInfoList = new List<SMRAccountActivityInfo>();
+            if (UserSessions.GetAccountActivityInfoList().Count > 0)
+            {
+                accountActivityInfoList = UserSessions.GetAccountActivityInfoList();
+                int itemIndex = accountActivityInfoList.FindIndex(x => x.GetAccountNumber() == smrAccountActivityInfo.GetAccountNumber());
+                if (itemIndex != -1)
+                {
+                    accountActivityInfoList[itemIndex] = smrAccountActivityInfo;
+                }
+                else
+                {
+                    accountActivityInfoList.Add(smrAccountActivityInfo);
+                }
+            }
+            else
+            {
+                accountActivityInfoList.Add(smrAccountActivityInfo);
+                UserSessions.SetAccountActivityInfoList(accountActivityInfoList);
+            }
+        }
+
+        public SMRAccountActivityInfo GetAccountActivityInfoByAccountNumber(string accountNumber)
+        {
+            SMRAccountActivityInfo accountActivityInfo = null;
+
+            List<SMRAccountActivityInfo> accountActivityInfoList = new List<SMRAccountActivityInfo>();
+            if (UserSessions.GetAccountActivityInfoList().Count > 0)
+            {
+                accountActivityInfoList = UserSessions.GetAccountActivityInfoList();
+                int itemIndex = accountActivityInfoList.FindIndex(x => x.GetAccountNumber() == accountNumber);
+                if (itemIndex != -1)
+                {
+                    accountActivityInfo = accountActivityInfoList[itemIndex];
+                }
+            }
+            return accountActivityInfo;
         }
     }
 }

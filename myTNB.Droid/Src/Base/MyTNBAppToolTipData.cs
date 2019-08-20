@@ -2,16 +2,36 @@
 using System.Collections.Generic;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using static myTNB_Android.Src.myTNBMenu.Models.SMRActivityInfoResponse;
+using static myTNB_Android.Src.SSMR.SMRApplication.Api.GetAccountsSMREligibilityResponse;
 
 namespace myTNB_Android.Src.Base
 {
     public class MyTNBAppToolTipData
     {
+        
         static SMRActivityInfo sMRActivityInfo;
+        private List<SMREligibiltyPopUpDetails> mSMREligibilityPopupDetailList = new List<SMREligibiltyPopUpDetails>();
+        private static MyTNBAppToolTipData Instance;
+
+        private MyTNBAppToolTipData(){}
+
+        public static MyTNBAppToolTipData GetInstance()
+        {
+            if (Instance == null)
+            {
+                Instance = new MyTNBAppToolTipData();
+            }
+            return Instance;
+        }
 
         public static void SetSMRActivityInfo(SMRActivityInfo smrActivityInfo)
         {
             sMRActivityInfo = smrActivityInfo;
+        }
+
+        public void SetSMREligibiltyPopUpDetailList(List<SMREligibiltyPopUpDetails> smrEligibilityPopupDetailList)
+        {
+            mSMREligibilityPopupDetailList = smrEligibilityPopupDetailList;
         }
 
 
@@ -115,5 +135,35 @@ namespace myTNB_Android.Src.Base
             }
             return item;
         }
+
+        public SMREligibiltyPopUpDetailData GetSMREligibiltyPopUpDetails()
+        {
+            SMREligibiltyPopUpDetailData eligibiltyPopUpDetails = new SMREligibiltyPopUpDetailData();
+            if (mSMREligibilityPopupDetailList.Count > 0)
+            {
+                SMREligibiltyPopUpDetails details = mSMREligibilityPopupDetailList.Find(x => {
+                    return x.Type == "Not_SMR_CA";
+                });
+                eligibiltyPopUpDetails.title = details.Title;
+                eligibiltyPopUpDetails.description = details.Description;
+                eligibiltyPopUpDetails.cta = details.CTA;
+            }
+            else
+            {
+                eligibiltyPopUpDetails.title = "Why are some of my accounts not here?";
+                eligibiltyPopUpDetails.description = "We took the liberty to only show you electricity accounts that are eligble for the Self Meter Reading service. <a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">Click here</a> to learn more about its eligibility.";
+                eligibiltyPopUpDetails.cta = "Got It!";
+            }
+            return eligibiltyPopUpDetails;
+        }
+
+
+        public class SMREligibiltyPopUpDetailData
+        {
+            public string title { set; get; }
+            public string description { set; get; }
+            public string cta { set; get; }
+        }
+
     }
 }

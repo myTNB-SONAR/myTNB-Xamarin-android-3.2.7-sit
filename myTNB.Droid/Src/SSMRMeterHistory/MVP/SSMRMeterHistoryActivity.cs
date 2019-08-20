@@ -48,8 +48,14 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         TextView SMRListHeader;
 
         [BindView(Resource.Id.btnSubmitMeter)]
-        Button btnSubmitMeter;
-        
+        Button btnSubmitMeter; 
+
+        [BindView(Resource.Id.btnEnableSubmitMeter)]
+        Button btnEnableSubmitMeter; 
+
+        [BindView(Resource.Id.btnDisableSubmitMeter)]
+        Button btnDisableSubmitMeter;
+
         [BindView(Resource.Id.smr_history_recyclerview)]
         RecyclerView mSMRRecyclerView;
 
@@ -61,15 +67,30 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 
         [BindView(Resource.Id.selector_smr_account)]
         TextView SMRAccountSelected;
+        
+        [BindView(Resource.Id.smrActionContainer)]
+        LinearLayout SMRActionContainer; 
+
+        [BindView(Resource.Id.nonSMRActionContainer)]
+        LinearLayout NonSMRActionContainer; 
+
+        [BindView(Resource.Id.readingHistoryList)]
+        LinearLayout ReadingHistoryListContainer;
+
+        [BindView(Resource.Id.disableSMRBtnContainer)]
+        LinearLayout DisableSMRBtnContainer; 
+
+        [BindView(Resource.Id.non_smr_note_content)]
+        TextView NonSMRNoteContent; 
 
         [BindView(Resource.Id.layout_content_nestedscroll)]
-        NestedScrollView ContentNestedScrollView;
-
-        private IMenu ssmrMenu;
+        NestedScrollView NestedScrollViewContent;
 
         private SMRActivityInfoResponse smrResponse;
 
         private AccountData selectedAccount;
+        private SMRAccount selectedEligibleAccount;
+        private string selectedAccountNickName;
 
         private MaterialDialog SSMRMenuDialog;
 
@@ -81,8 +102,11 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 
         public readonly static int SSMR_METER_HISTORY_ACTIVITY_CODE = 8796;
         public readonly static int SSMR_SUBMIT_METER_ACTIVITY_CODE = 8797;
+        public readonly static int SSMR_SELECT_ACCOUNT_ACTIVITY_CODE = 8798;
 
         private SSMRMeterHistoryContract.IPresenter mPresenter;
+        private string selectedAccountNumber;
+        private List<SMRAccount> smrAccountList = new List<SMRAccount>();
 
         public override int ResourceId()
 		{
@@ -97,80 +121,48 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
-
-			// Create your application here
 			try
 			{
                 SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
                 SetStatusBarBackground(Resource.Drawable.bg_smr);
 
-                TextViewUtils.SetMuseoSans500Typeface(SMRMainTitle, SMRListHeader, SMRMessageTitle, btnSubmitMeter);
-                TextViewUtils.SetMuseoSans300Typeface(SMRMainContent, SMRAccountTitle, SMRAccountSelected);
+                TextViewUtils.SetMuseoSans500Typeface(SMRMainTitle, SMRListHeader, SMRMessageTitle, btnSubmitMeter, btnEnableSubmitMeter, btnDisableSubmitMeter);
+                TextViewUtils.SetMuseoSans300Typeface(SMRMainContent, SMRAccountTitle, SMRAccountSelected, NonSMRNoteContent);
+
                 mPresenter = new SSMRMeterHistoryPresenter(this);
                 mSMRRecyclerView.SetLayoutManager(new LinearLayoutManager(this));
-
+                smrAccountList = this.mPresenter.GetEligibleSMRAccountList();
                 Bundle extras = Intent.Extras;
                 //If has selected account - means coming from inner dashboard
-                if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                if (extras != null)
                 {
-                    selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
-                    SMRAccountSelected.Text = selectedAccount.AccountNickName;
-
-                    if (extras.ContainsKey(Constants.SMR_RESPONSE_KEY))
+                    if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
                     {
-                        smrResponse = JsonConvert.DeserializeObject<SMRActivityInfoResponse>(extras.GetString(Constants.SMR_RESPONSE_KEY));
-                        SSMRMeterHistoryAdapter adapter = new SSMRMeterHistoryAdapter(smrResponse.Response.Data.MeterReadingHistory);
-                        mSMRRecyclerView.SetAdapter(adapter);
+                        selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                        selectedAccountNickName = selectedAccount.AccountNickName;
 
-                        if (smrResponse.Response.Data.DashboardCTAType == Constants.SMR_SUBMIT_METER_KEY)
+                        if (extras.ContainsKey(Constants.SMR_RESPONSE_KEY))
                         {
-                            SMRMainImg.SetImageResource(Resource.Drawable.smr_open);
-                            btnSubmitMeter.Visibility = ViewStates.Visible;
+                            smrResponse = JsonConvert.DeserializeObject<SMRActivityInfoResponse>(extras.GetString(Constants.SMR_RESPONSE_KEY));
+                            UpdateUIForSMR(smrResponse);
                         }
-                        else
-                        {
-                            btnSubmitMeter.Visibility = ViewStates.Gone;
-                            if (smrResponse.Response.Data.isCurrentPeriodSubmitted != null && smrResponse.Response.Data.isCurrentPeriodSubmitted == "true")
-                            {
-                                SMRMainImg.SetImageResource(Resource.Drawable.smr_submitted);
-                            }
-                            else
-                            {
-                                SMRMainImg.SetImageResource(Resource.Drawable.smr_closed);
-                            }
-                        }
-
-                        if (!string.IsNullOrEmpty(smrResponse.Response.Data.HistoryViewTitle))
-                        {
-                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-                            {
-                                SMRMainTitle.TextFormatted = Html.FromHtml(smrResponse.Response.Data.HistoryViewTitle, FromHtmlOptions.ModeLegacy);
-                            }
-                            else
-                            {
-                                SMRMainTitle.TextFormatted = Html.FromHtml(smrResponse.Response.Data.HistoryViewTitle);
-                            }
-                        }
-
-                        if (!string.IsNullOrEmpty(smrResponse.Response.Data.HistoryViewMessage))
-                        {
-                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-                            {
-                                SMRMainContent.TextFormatted = Html.FromHtml(smrResponse.Response.Data.HistoryViewMessage, FromHtmlOptions.ModeLegacy);
-                            }
-                            else
-                            {
-                                SMRMainContent.TextFormatted = Html.FromHtml(smrResponse.Response.Data.HistoryViewMessage);
-                            }
-                        }
-
-                        ContentNestedScrollView.Parent.RequestChildFocus(ContentNestedScrollView, ContentNestedScrollView);
                     }
                 }
                 //Else from HomeScreen
                 else
                 {
-
+                    SMRAccount smrSelectedAccount = smrAccountList.Find(account => {
+                        return account.isTaggedSMR;
+                    });
+                    if (smrSelectedAccount != null)
+                    {
+                        selectedAccountNickName = smrSelectedAccount.accountName;
+                        this.mPresenter.GetSSMRAccountStatus(smrSelectedAccount.accountNumber);
+                    }
+                    else
+                    {
+                        ShowNonSMRVisible(true,false);
+                    }
                 }
             }
             catch (Exception e)
@@ -178,6 +170,70 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 				Utility.LoggingNonFatalError(e);
 			}
 		}
+
+        private void ShowNonSMRVisible(bool isNonSMRAccount, bool hasNoSMREligibleAccount)
+        {
+            //Non-SMR visibility
+            NonSMRActionContainer.Visibility = isNonSMRAccount ? ViewStates.Visible : ViewStates.Gone;
+            //SMR UI visiblility
+            SMRActionContainer.Visibility = isNonSMRAccount ? ViewStates.Gone : ViewStates.Visible;
+            ReadingHistoryListContainer.Visibility = isNonSMRAccount ? ViewStates.Gone : ViewStates.Visible;
+            DisableSMRBtnContainer.Visibility = isNonSMRAccount ? ViewStates.Gone : ViewStates.Visible;
+
+            //Checking for no tagged SMR
+            NonSMRActionContainer.Visibility = hasNoSMREligibleAccount ? ViewStates.Visible : ViewStates.Gone;
+        }
+
+        private void UpdateUIForNonSMR()
+        {
+            SMRAccountSelected.Text = selectedAccountNickName;
+            ShowNonSMRVisible(true,true);
+        }
+
+        protected override void OnStart()
+        {
+            base.OnStart();
+            NestedScrollViewContent.Parent.RequestChildFocus(NestedScrollViewContent, NestedScrollViewContent);
+        }
+
+        public void UpdateUIForSMR(SMRActivityInfoResponse activityInfoResponse)
+        {
+            SMRAccountSelected.Text = selectedAccountNickName;
+            ShowNonSMRVisible(false,false);
+
+            SSMRMeterHistoryAdapter adapter = new SSMRMeterHistoryAdapter(activityInfoResponse.Response.Data.MeterReadingHistory);
+            mSMRRecyclerView.SetAdapter(adapter);
+
+            if (activityInfoResponse.Response.Data.DashboardCTAType == Constants.SMR_SUBMIT_METER_KEY && activityInfoResponse.Response.Data.isCurrentPeriodSubmitted == "false"
+                && activityInfoResponse.Response.Data.isDashboardCTADisabled == "false")
+            {
+                btnSubmitMeter.Visibility = ViewStates.Visible;
+            }
+            else
+            {
+                btnSubmitMeter.Visibility = ViewStates.Gone;
+            }
+
+            if (!string.IsNullOrEmpty(activityInfoResponse.Response.Data.HistoryViewTitle))
+            {
+                SMRMainTitle.TextFormatted = GetFormattedText(activityInfoResponse.Response.Data.HistoryViewTitle);
+                SMRMainTitle.Visibility = ViewStates.Visible;
+            }
+            else
+            {
+                SMRMainTitle.Visibility = ViewStates.Gone;
+            }
+
+            if (!string.IsNullOrEmpty(activityInfoResponse.Response.Data.HistoryViewMessage))
+            {
+                SMRMainContent.TextFormatted = GetFormattedText(activityInfoResponse.Response.Data.HistoryViewMessage);
+                SMRMainContent.Visibility = ViewStates.Visible;
+            }
+            else
+            {
+                SMRMainContent.Visibility = ViewStates.Gone;
+            }
+        }
 
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -190,23 +246,34 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     Finish();
                 }
             }
+            if (requestCode == SSMR_SELECT_ACCOUNT_ACTIVITY_CODE)
+            {
+                if (resultCode == Result.Ok)
+                {
+                    selectedAccountNumber = data.GetStringExtra("SELECTED_ACCOUNT_NUMBER");
+                    selectedEligibleAccount = smrAccountList.Find(account =>
+                    {
+                        return account.accountNumber == selectedAccountNumber;
+                    });
+                    selectedAccountNickName = selectedEligibleAccount.accountName;
+                    if (selectedEligibleAccount.isTaggedSMR)
+                    {
+                        this.mPresenter.GetSSMRAccountStatus(selectedAccountNumber);
+                    }
+                    else
+                    {
+                        UpdateUIForNonSMR();
+                    }
+                }
+            }
             base.OnActivityResult(requestCode, resultCode, data);
         }
-
-        // public override bool OnCreateOptionsMenu(IMenu menu)
-        // {
-        //     MenuInflater.Inflate(Resource.Menu.SSMRMeterReadingMenu, menu);
-        //     ssmrMenu = menu;
-        //     return base.OnCreateOptionsMenu(menu);
-        // }
-
 
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
             switch (item.ItemId)
             {
                 case Resource.Id.action_ssmr_more:
-                    // ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(false);
                     OnClickSMRMenuMore();
                     break;
             }
@@ -245,7 +312,6 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 
                 btnSMRMenuClose.Click += delegate
                 {
-                    // ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
                     SSMRMenuDialog.Dismiss();
                 };
 
@@ -282,7 +348,6 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 {
                     SSMRMenuDialog.Dismiss();
                 }
-                // ssmrMenu.FindItem(Resource.Id.action_ssmr_more).SetVisible(true);
             }
             catch (System.Exception e)
             {
@@ -326,7 +391,6 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [OnClick(Resource.Id.btnSubmitMeter)]
         internal void OnSubmitMeter(object sender, EventArgs eventArgs)
         {
-            // REMARK TODO for Chris from LinSiong: Submit Meter Goes Here;
             Intent ssmr_submit_meter_activity = new Intent(this, typeof(SubmitMeterReadingActivity));
             ssmr_submit_meter_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
             ssmr_submit_meter_activity.PutExtra(Constants.SMR_RESPONSE_KEY, JsonConvert.SerializeObject(smrResponse));
@@ -354,26 +418,22 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [OnClick(Resource.Id.selectAccountContainer)]
         void OnSelectAccount(object sender, EventArgs eventArgs)
         {
-            mPresenter.CheckSMRAccountEligibility();
+            this.mPresenter.CheckSMRAccountEligibility(smrAccountList);
         }
 
-        public void ShowSMREligibleAccountList()
+        [OnClick(Resource.Id.btnDisableSubmitMeter)]
+        void OnDisableSubmitMeter(object sender, EventArgs eventArgs)
         {
-            List<SMRAccount> list = UserSessions.GetRealSMREligibilityAccountList();
-            if (list == null)
-            {
-                list = UserSessions.GetSMREligibilityAccountList();
-            }
-            if (list != null && list.Count > 0)
-            {
-                Intent intent = new Intent(this, typeof(SelectSMRAccountActivity));
-                StartActivityForResult(intent, 1);
-            }
-            else
-            {
-                Intent intent = new Intent(this, typeof(SelectSMRAccountEmptyActivity));
-                StartActivity(intent);
-            }
+            Intent intent = new Intent(this, typeof(SSMRTerminateActivity));
+            StartActivity(intent);
         }
+
+        public void ShowSMREligibleAccountList(List<SMRAccount> smrEligibleAccountList)
+        {
+            Intent intent = new Intent(this, typeof(SelectSMRAccountActivity));
+            intent.PutExtra("SMR_ELIGIBLE_ACCOUNT_LIST", JsonConvert.SerializeObject(smrEligibleAccountList));
+            StartActivityForResult(intent, SSMR_SELECT_ACCOUNT_ACTIVITY_CODE);
+        }
+
     }
 }
