@@ -10,7 +10,7 @@ namespace myTNB
     {
         public string PageName { set; private get; } = string.Empty;
         public string EventName { set; private get; } = string.Empty;
-        private string EventFormat = "{0} - {1}";
+        private string EventFormat = "{0}-{1}";
 
         public CustomUIView() { }
 

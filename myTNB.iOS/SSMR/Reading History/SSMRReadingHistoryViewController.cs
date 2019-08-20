@@ -23,8 +23,7 @@ namespace myTNB
         private SMRAccountActivityInfoResponseModel _smrActivityInfoResponse;
         private CustomerAccountRecordModel _currAcc;
         private ContactDetailsResponseModel _contactDetails;
-        private nfloat _headerHeight, _maxHeaderHeight, _navBarHeight, _previousScrollOffset;
-        private nfloat _minHeaderHeight = 0.1f;
+        private nfloat  _navBarHeight, _previousScrollOffset;
         private nfloat _tableViewOffset = 64f;
         private nfloat titleBarHeight = 24f;
         private int _currentIndex = -1;
@@ -283,8 +282,6 @@ namespace myTNB
         private void AdjustHeader()
         {
             _headerView.Frame = new CGRect(0, 0, _ssmrHeaderComponent.GetView().Frame.Width, _ssmrHeaderComponent.GetView().Frame.GetMaxY());
-            _headerHeight = _headerView.Frame.Height;
-            _maxHeaderHeight = _headerView.Frame.Height;
         }
 
         private void AddTableView()

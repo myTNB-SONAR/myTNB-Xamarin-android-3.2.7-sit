@@ -351,24 +351,26 @@ namespace myTNB
             nfloat widthMargin = GetScaledWidth(18f);
             nfloat width = currentWindow.Frame.Width;
             nfloat height = currentWindow.Frame.Height;
-            if (_toolTipParentView == null)
+            if (_toolTipParentView != null)
             {
-                _toolTipParentView = new UIView(new CGRect(0, 0, ViewWidth, height))
-                {
-                    BackgroundColor = MyTNBColor.Black60
-                };
-                currentWindow.AddSubview(_toolTipParentView);
-
-                _toolTipContainerView = new UIView(new CGRect(widthMargin, 104f, width - (widthMargin * 2), 500f))
-                {
-                    BackgroundColor = UIColor.White,
-                    ClipsToBounds = true
-                };
-                _toolTipContainerView.Layer.CornerRadius = 5f;
-                _toolTipParentView.AddSubview(_toolTipContainerView);
-                SetToolTipScrollView();
-                SetScrollViewSubViews();
+                _toolTipParentView.RemoveFromSuperview();
             }
+            _toolTipParentView = new UIView(new CGRect(0, 0, ViewWidth, height))
+            {
+                BackgroundColor = MyTNBColor.Black60
+            };
+            currentWindow.AddSubview(_toolTipParentView);
+
+            _toolTipContainerView = new UIView(new CGRect(widthMargin, 104f, width - (widthMargin * 2), 500f))
+            {
+                BackgroundColor = UIColor.White,
+                ClipsToBounds = true
+            };
+            _toolTipContainerView.Layer.CornerRadius = 5f;
+            _toolTipParentView.AddSubview(_toolTipContainerView);
+            SetToolTipScrollView();
+            SetScrollViewSubViews();
+
             _toolTipParentView.Hidden = false;
         }
 
@@ -460,7 +462,22 @@ namespace myTNB
                 ViewHelper.AdjustFrameSetHeight(title, titleNewSize.Height);
 
                 viewContainer.AddSubview(title);
+                string desc = pageData[i]?.Description ?? string.Empty;
+                if (!string.IsNullOrEmpty(desc) && !string.IsNullOrWhiteSpace(desc) && desc.Contains("{0}"))
+                {
+                    int count = _previousMeterList.Count;
+                    string missingReading = string.Empty;
+                    for (int j = 0; j < count; j++)
+                    {
+                        missingReading += _previousMeterList[j].RegisterNumberType;
+                        if (j != count - 1)
+                        {
+                            missingReading += ", ";
+                        }
+                    }
+                    desc = string.Format(desc, count, missingReading);
 
+                }
                 UILabel description = new UILabel(new CGRect(widthMargin, title.Frame.GetMaxY() + GetScaledHeight(12f), viewContainer.Frame.Width - (widthMargin * 2), 0))
                 {
                     Font = MyTNBFont.MuseoSans14_300,
@@ -468,7 +485,7 @@ namespace myTNB
                     TextAlignment = UITextAlignment.Left,
                     Lines = 0,
                     LineBreakMode = UILineBreakMode.TailTruncation,
-                    Text = pageData[i]?.Description ?? string.Empty
+                    Text = desc
                 };
 
                 CGSize descNewSize = description.SizeThatFits(new CGSize(viewContainer.Frame.Width - (widthMargin * 2), 1000f));

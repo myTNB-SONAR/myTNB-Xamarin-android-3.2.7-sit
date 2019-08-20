@@ -142,9 +142,9 @@ namespace myTNB.SSMR
         public static NSString Notification_SelectSSMRAccount = (NSString)"SelectSSMRAccount";
 
         //Event Names
-        public static string EVENT_SubmitToOCR = "Submit Images to OCR";
-        public static string EVENT_DeleteImage = "Delete Image";
-        public static string EVENT_DisableSelfMeterReading = "Disable Self Meter Reading";
+        public static string EVENT_SubmitToOCR = "SubmitImagesToOCR";
+        public static string EVENT_DeleteImage = "DeleteImage";
+        public static string EVENT_DisableSelfMeterReading = "DisableSelfMeterReading";
         public static string EVENT_Refresh = "Refresh";
 
         public static int Max_ReasonCharacterCount = 550;
