@@ -16,13 +16,13 @@ namespace myTNB
         public UsageFooterViewComponent(UIView view, nfloat viewHeight)
         {
             _parentView = view;
-            _width = _parentView.Frame.Width;
+            _width = _parentView.Frame.Width - (BaseMarginHeight16 * 2);
             _viewHeight = viewHeight;
         }
 
         private void CreateComponent()
         {
-            _containerView = new UIView(new CGRect(0, 0, _width, _viewHeight))
+            _containerView = new UIView(new CGRect(BaseMarginHeight16, 0, _width, _viewHeight))
             {
                 BackgroundColor = UIColor.White
             };

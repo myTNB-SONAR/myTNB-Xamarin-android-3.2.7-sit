@@ -136,7 +136,14 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        UpdateFooterUI(true);
+                        if (!isREAccount)
+                        {
+                            UpdateFooterUI(true);
+                        }
+                        else
+                        {
+                            UpdateREAmountViewUI(true);
+                        }
                         var account = DataManager.DataManager.SharedInstance.SelectedAccount;
                         DueAmountResponseModel dueAmountResponse = await UsageServiceCall.GetAccountDueAmount(account);
                         if (dueAmountResponse != null &&
@@ -155,7 +162,18 @@ namespace myTNB
                                 IncrementREDueDateByDays = model.IncrementREDueDateByDays
                             };
                             AmountDueCache.SaveDues(item);
-                            UpdateFooterUI(false);
+                            if (!isREAccount)
+                            {
+                                UpdateFooterUI(false);
+                            }
+                            else
+                            {
+                                UpdateREAmountViewUI(false);
+                            }
+                        }
+                        else
+                        {
+                            //TO DO: Add Fail Handling here...
                         }
                     }
                     else
