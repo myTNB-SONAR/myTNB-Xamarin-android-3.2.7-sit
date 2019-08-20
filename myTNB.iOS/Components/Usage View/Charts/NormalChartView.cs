@@ -7,15 +7,11 @@ using UIKit;
 
 namespace myTNB
 {
-    public class ChartView : BaseChartView
+    public class NormalChartView : BaseChartView
     {
-        public ChartView() { }
-        private CustomUIView _mainView, _segmentContainer;
-        private nfloat _width, _baseMargin, _baseMarginedWidth;
-        private UILabel _lblDateRange;
-        readonly string Format_Value = "{0} {1}";
+        public NormalChartView() { }
 
-        private void CreatUI()
+        protected override void CreatUI()
         {
             _width = UIScreen.MainScreen.Bounds.Width;
             _baseMargin = GetScaledWidth(16);
@@ -38,7 +34,7 @@ namespace myTNB
             CreateSegment();
         }
 
-        private void CreateSegment()
+        protected override void CreateSegment()
         {
             _segmentContainer = new CustomUIView(new CGRect(0, GetYLocationFromFrame(_lblDateRange.Frame, 16)
                , _width, GetScaledHeight(157)));
@@ -121,7 +117,7 @@ namespace myTNB
             _mainView.AddSubview(_segmentContainer);
         }
 
-        private double GetMaxValue(RMkWhEnum view, List<string> value)
+        protected override double GetMaxValue(RMkWhEnum view, List<string> value)
         {
             double maxValue = 0;
             switch (view)
@@ -145,7 +141,7 @@ namespace myTNB
             return maxValue;
         }
 
-        private void AddTariffBlocks(CustomUIView viewBar, List<TariffItemModel> tariff, double baseValue, bool isSelected)
+        protected override void AddTariffBlocks(CustomUIView viewBar, List<TariffItemModel> tariff, double baseValue, bool isSelected)
         {
             nfloat baseHeigt = viewBar.Frame.Height;
             nfloat barMaxY = viewBar.Frame.Height;
@@ -171,18 +167,7 @@ namespace myTNB
             viewBar.AddSubview(viewTariffContainer);
         }
 
-        private UIColor GetTariffBlockColor(string blockID, bool isSelected)
-        {
-            List<LegendItemModel> legend = AccountUsageCache.GetTariffLegendList();
-            LegendItemModel item = legend.Find(x => x.BlockId == blockID);
-            if (item != null)
-            {
-                return new UIColor((nfloat)item.RGB.R / 255F, (nfloat)item.RGB.G / 255F, (nfloat)item.RGB.B / 255F, isSelected ? 1F : 0.5F);
-            }
-            return UIColor.White;
-        }
-
-        private void OnSegmentTap(int index)
+        protected override void OnSegmentTap(int index)
         {
             UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Heavy);
             selectionFeedback.Prepare();
@@ -195,7 +180,7 @@ namespace myTNB
                 UIView viewCover = bar.ViewWithTag(2001);
                 viewCover.BackgroundColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F);
                 UIView viewTariff = bar.ViewWithTag(2002);
-                if (!viewTariff.Hidden)
+                if (viewTariff != null && !viewTariff.Hidden)
                 {
                     for (int j = 0; j < viewTariff.Subviews.Count(); j++)
                     {
@@ -218,13 +203,7 @@ namespace myTNB
             }
         }
 
-        public CustomUIView GetUI()
-        {
-            CreatUI();
-            return _mainView;
-        }
-
-        public void ToggleTariffView(bool isTariffView)
+        public override void ToggleTariffView(bool isTariffView)
         {
             for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
             {
@@ -233,11 +212,11 @@ namespace myTNB
                 UIView viewCover = bar.ViewWithTag(2001);
                 viewCover.Hidden = isTariffView;
                 UIView viewTariff = bar.ViewWithTag(2002);
-                viewTariff.Hidden = !isTariffView;
+                if (viewTariff != null) { viewTariff.Hidden = !isTariffView; }
             }
         }
 
-        public void ToggleRMKWHValues(RMkWhEnum state)
+        public override void ToggleRMKWHValues(RMkWhEnum state)
         {
             List<MonthItemModel> usageData = AccountUsageCache.ByMonthUsage;
             for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
