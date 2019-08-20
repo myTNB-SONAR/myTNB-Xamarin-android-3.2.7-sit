@@ -27,6 +27,35 @@ namespace myTNB
             return _mainView;
         }
 
+        public virtual CustomUIView GetShimmerUI()
+        {
+            nfloat baseWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
+            CustomShimmerView shimmeringView = new CustomShimmerView();
+            CustomUIView parentView = new CustomUIView(new CGRect(BaseMarginWidth16, 0
+                , baseWidth - (BaseMarginWidth16 * 2), GetHeightByScreenSize(189)))
+            { BackgroundColor = UIColor.Clear };
+            UIView viewShimmerParent = new UIView(new CGRect(new CGPoint(0, 0), parentView.Frame.Size)) { BackgroundColor = UIColor.Clear };
+            UIView viewShimmerContent = new UIView(new CGRect(new CGPoint(0, 0), parentView.Frame.Size)) { BackgroundColor = UIColor.Clear };
+            parentView.AddSubviews(new UIView[] { viewShimmerParent, viewShimmerContent });
+
+            UIView viewShDate = new UIView(new CGRect(GetWidthByScreenSize(82), 0
+                , parentView.Frame.Width - GetWidthByScreenSize(164), GetHeightByScreenSize(14)))
+            {
+                BackgroundColor = new UIColor(red: 0.75f, green: 0.85f, blue: 0.95f, alpha: 0.25f)
+            };
+            UIView viewShChart = new UIView(new CGRect(0, GetYLocationFromFrameScreenSize(viewShDate.Frame, 24)
+                , parentView.Frame.Width, GetHeightByScreenSize(1151)))
+            { BackgroundColor = new UIColor(red: 0.75f, green: 0.85f, blue: 0.95f, alpha: 0.25f) };
+
+            viewShimmerContent.AddSubviews(new UIView[] { viewShDate, viewShChart });
+            viewShimmerParent.AddSubview(shimmeringView);
+            shimmeringView.ContentView = viewShimmerContent;
+            shimmeringView.Shimmering = true;
+            shimmeringView.SetValues();
+
+            return parentView;
+        }
+
         protected virtual void CreatUI() { }
 
         protected virtual void CreateSegment() { }
