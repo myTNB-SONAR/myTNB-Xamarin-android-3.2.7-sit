@@ -1012,9 +1012,6 @@
     <ImageAsset Include="Assets.xcassets\IC-Action-Delete-White.imageset\IC-Action-Delete-White%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Delete-White.imageset\IC-Action-Delete-White%403x.png" />
     <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\ocrReading.png" />
-    <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\ocrReading%402x.png" />
-    <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\ocrReading%403x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Help-Background-6.imageset\Contents.json" />
@@ -1145,6 +1142,8 @@
     <ImageAsset Include="Assets.xcassets\Usage-Bg-Long.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Usage-Bg-Long.imageset\Usage-Bg-Long%402x.png" />
     <ImageAsset Include="Assets.xcassets\Usage-Bg-Long.imageset\Usage-Bg-Long%403x.png" />
+    <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\ocrReading%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\ocrReading%403x-1.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />

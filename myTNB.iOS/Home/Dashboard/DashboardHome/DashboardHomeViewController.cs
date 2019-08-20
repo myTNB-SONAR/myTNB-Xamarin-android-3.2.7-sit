@@ -545,7 +545,8 @@ namespace myTNB
                             ssmrInfoResponse.d.data != null &&
                             ssmrInfoResponse.d.IsSuccess)
                         {
-                            SSMRActivityInfoCache.SetDashboardCache(ssmrInfoResponse);
+                            SSMRActivityInfoCache.SetDashboardCache(ssmrInfoResponse, DataManager.DataManager.SharedInstance.SelectedAccount);
+                            SSMRActivityInfoCache.SetReadingHistoryCache(ssmrInfoResponse, DataManager.DataManager.SharedInstance.SelectedAccount);
                         }
                         NavigateToUsageView();
                     }

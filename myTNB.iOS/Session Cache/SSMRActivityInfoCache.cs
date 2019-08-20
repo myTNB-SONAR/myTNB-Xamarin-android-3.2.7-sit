@@ -29,21 +29,29 @@ namespace myTNB
         private static readonly string PopupKey = SSMR.SSMRConstants.Popup_SMRPhotoPopUpDetails;
         private static readonly string TakePhotoToolTipKey = "TakePhotoKey";
 
-        public static void SetDashboardCache(SMRAccountActivityInfoResponseModel data)
+        public static void SetDashboardCache(SMRAccountActivityInfoResponseModel data, CustomerAccountRecordModel account)
         {
             DB_MeterReadingHistory = data.d.data.DeepClone();
             DB_ReadingHistoryList = data.d.data.MeterReadingHistory.DeepClone();
             DB_SSMRPreviousMeterReadingList = data.d.data.SMRMROValidateRegisterDetails.DeepClone();
+            DashboardAccount = account;
             PopupDetailList = data.d.data.SMRPhotoPopUpDetails.DeepClone();
         }
 
-        public static void SetReadingHistoryCache(SMRAccountActivityInfoResponseModel data)
+        public static void SetReadingHistoryCache(SMRAccountActivityInfoResponseModel data, CustomerAccountRecordModel account)
         {
             RH_MeterReadingHistory = data.d.data.DeepClone();
             RH_ReadingHistoryList = data.d.data.MeterReadingHistory.DeepClone();
             RH_SSMRPreviousMeterReadingList = data.d.data.SMRMROValidateRegisterDetails.DeepClone();
+            ViewHistoryAccount = account;
             PopupDetailList = data.d.data.SMRPhotoPopUpDetails.DeepClone();
         }
+
+        public static CustomerAccountRecordModel SubmittedAccount { set; get; }
+
+        public static CustomerAccountRecordModel DashboardAccount { get; private set; } = new CustomerAccountRecordModel();
+
+        public static CustomerAccountRecordModel ViewHistoryAccount { get; private set; } = new CustomerAccountRecordModel();
 
         public static MeterReadingHistoryModel DashboardMeterReadingHistory
         {

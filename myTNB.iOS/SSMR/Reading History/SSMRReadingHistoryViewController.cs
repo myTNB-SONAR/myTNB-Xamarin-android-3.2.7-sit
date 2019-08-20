@@ -23,19 +23,20 @@ namespace myTNB
         private SMRAccountActivityInfoResponseModel _smrActivityInfoResponse;
         private CustomerAccountRecordModel _currAcc;
         private ContactDetailsResponseModel _contactDetails;
-        private nfloat _headerHeight, _maxHeaderHeight, _navBarHeight, _previousScrollOffset;
-        private nfloat _minHeaderHeight = 0.1f;
+        private nfloat  _navBarHeight, _previousScrollOffset;
         private nfloat _tableViewOffset = 64f;
         private nfloat titleBarHeight = 24f;
         private int _currentIndex = -1;
         private bool _isFromSelection;
 
         public bool IsFromHome;
+        public bool FromStatusPage;
         public SSMRReadingHistoryViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
         {
             PageName = SSMRConstants.Pagename_SSMRReadingHistory;
+            NavigationController.NavigationBarHidden = false;
             base.ViewDidLoad();
             SetNavigation();
             SSMRAccounts.SetFilteredEligibleAccounts();
@@ -53,6 +54,12 @@ namespace myTNB
             string accName;
             if (_isFromSelection)
             {
+                accName = _currAcc?.accountNickName ?? string.Empty;
+                _ssmrHeaderComponent.AccountName = accName;
+                EvaluateEntry();
+            }else if (FromStatusPage)
+            {
+                _currAcc = SSMRActivityInfoCache.SubmittedAccount;
                 accName = _currAcc?.accountNickName ?? string.Empty;
                 _ssmrHeaderComponent.AccountName = accName;
                 EvaluateEntry();
@@ -282,8 +289,6 @@ namespace myTNB
         private void AdjustHeader()
         {
             _headerView.Frame = new CGRect(0, 0, _ssmrHeaderComponent.GetView().Frame.Width, _ssmrHeaderComponent.GetView().Frame.GetMaxY());
-            _headerHeight = _headerView.Frame.Height;
-            _maxHeaderHeight = _headerView.Frame.Height;
         }
 
         private void AddTableView()
@@ -304,9 +309,9 @@ namespace myTNB
 
         private void UpdateTable()
         {
-            _meterReadingHistory = IsFromHome || _isFromSelection
+            _meterReadingHistory = IsFromHome || _isFromSelection || FromStatusPage
                 ? SSMRActivityInfoCache.ViewMeterReadingHistory : SSMRActivityInfoCache.DashboardMeterReadingHistory;
-            _readingHistoryList = IsFromHome || _isFromSelection
+            _readingHistoryList = IsFromHome || _isFromSelection || FromStatusPage
                 ? SSMRActivityInfoCache.ViewReadingHistoryList : SSMRActivityInfoCache.DashboardReadingHistoryList;
 
             _ssmrHeaderComponent.SetSubmitButtonHidden(_meterReadingHistory);
@@ -495,7 +500,7 @@ namespace myTNB
                         {
                             _viewRefreshContainer.RemoveFromSuperview();
                         }
-                        SSMRActivityInfoCache.SetReadingHistoryCache(_smrActivityInfoResponse);
+                        SSMRActivityInfoCache.SetReadingHistoryCache(_smrActivityInfoResponse, _currAcc);
                         UpdateTable();
                         _readingHistoryTableView.Hidden = false;
                     }

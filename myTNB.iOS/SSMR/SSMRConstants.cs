@@ -48,7 +48,6 @@ namespace myTNB.SSMR
         public static string I18N_MobileNumber = "mobileNumber";
         public static string I18N_Email = "emailAddress";
         public static string I18N_SelectAccounts = "selectAccounts";
-        public static string I18N_Delete = "delete";
         public static string I18N_RefreshNow = "refreshNow";
         public static string I18N_RefreshDescription = "refreshDescription";
 
@@ -118,6 +117,7 @@ namespace myTNB.SSMR
         public static string I18N_PluralDone = "pluralDone";
         public static string I18N_SingularOnto = "singularOnto";
         public static string I18N_PluralOnto = "pluralOnto";
+        public static string I18N_DeletePhoto = "deletePhoto";
 
         //Meter Read
         public static string I18N_HeaderDesc = "headerDescription";
@@ -131,6 +131,7 @@ namespace myTNB.SSMR
         public static string I18N_ToolTipDesc4 = "tooltipDescription4";
         public static string I18N_ToolTipDesc5 = "tooltipDescription5";
         public static string I18N_ImReady = "imReady";
+        public static string I18N_Note = "note";
 
         //Patterns
         public static string Pattern_ImageName = "MYTNBAPP_SSMR_OCR_{0}_{1}";
@@ -142,9 +143,9 @@ namespace myTNB.SSMR
         public static NSString Notification_SelectSSMRAccount = (NSString)"SelectSSMRAccount";
 
         //Event Names
-        public static string EVENT_SubmitToOCR = "Submit Images to OCR";
-        public static string EVENT_DeleteImage = "Delete Image";
-        public static string EVENT_DisableSelfMeterReading = "Disable Self Meter Reading";
+        public static string EVENT_SubmitToOCR = "SubmitImagesToOCR";
+        public static string EVENT_DeleteImage = "DeleteImage";
+        public static string EVENT_DisableSelfMeterReading = "DisableSelfMeterReading";
         public static string EVENT_Refresh = "Refresh";
 
         public static int Max_ReasonCharacterCount = 550;

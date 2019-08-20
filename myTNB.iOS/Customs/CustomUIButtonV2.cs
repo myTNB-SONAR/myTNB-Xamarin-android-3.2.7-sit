@@ -9,7 +9,7 @@ namespace myTNB
     {
         public string PageName { set; private get; }
         public string EventName { set; private get; }
-        private string EventFormat = "{0} - {1}";
+        private string EventFormat = "{0}-{1}";
 
         public CustomUIButtonV2(bool isWhiteBG = false)
         {

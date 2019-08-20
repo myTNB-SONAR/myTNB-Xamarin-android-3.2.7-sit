@@ -178,7 +178,7 @@ namespace myTNB
                     UIView viewCover = bar.ViewWithTag(2001);
                     if (viewCover != null) { viewCover.BackgroundColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F); }
                     UIView viewTariff = bar.ViewWithTag(2002);
-                    if (viewTariff != null && !viewTariff.Hidden)
+                    if (viewTariff != null)
                     {
                         for (int j = 0; j < viewTariff.Subviews.Count(); j++)
                         {
