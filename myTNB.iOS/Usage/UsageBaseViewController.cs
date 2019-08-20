@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using CoreGraphics;
+using myTNB.Model;
 using myTNB.Model.Usage;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
@@ -14,16 +15,19 @@ namespace myTNB
         public UsageBaseViewController(IntPtr handle) : base(handle) { }
 
         TariffSelectionComponent _tariffSelectionComponent;
+        UsageFooterViewComponent _footerViewComponent;
+        REAmountComponent _rEAmountComponent;
 
         internal UIScrollView _scrollViewContent;
         internal CustomUIView _navbarContainer, _accountSelectorContainer, _viewSeparator, _viewStatus
-            , _viewChart, _viewLegend, _viewToggle, _viewTips, _viewFooter, _rmKwhDropDownView
+            , _viewChart, _viewRE, _viewLegend, _viewToggle, _viewSSMR, _viewTips, _viewFooter, _rmKwhDropDownView
             , _chart;
         internal UILabel _lblAddress, _RMLabel, _kWhLabel;
 
         internal bool _rmkWhFlag, _tariffIsVisible = false;
         internal RMkWhEnum _rMkWhEnum;
         internal nfloat _lastContentOffset;
+        internal bool isBcrmAvailable, isNormalChart, isREAccount, accountIsSSMR;
 
         internal CGRect _origViewFrame;
 
@@ -35,11 +39,19 @@ namespace myTNB
         {
             base.ViewDidLoad();
             NavigationController.NavigationBarHidden = true;
+            InitializeValues();
             AddBackgroundImage();
             SetNavigation();
             AddScrollView();
             //AddSubviews();
-            SetFooterView();
+            if (!isREAccount)
+            {
+                SetFooterView();
+            }
+            else
+            {
+                SetREAmountView();
+            }
         }
 
         public override void ViewWillAppear(bool animated)
@@ -55,6 +67,14 @@ namespace myTNB
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
+        }
+
+        private void InitializeValues()
+        {
+            isREAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
+            isNormalChart = DataManager.DataManager.SharedInstance.SelectedAccount.IsNormalMeter || isREAccount;
+            isBcrmAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
+            accountIsSSMR = DataManager.DataManager.SharedInstance.AccountIsSSMR;
         }
 
         private void SetNavigation()
@@ -128,27 +148,65 @@ namespace myTNB
             };
             _viewSeparator = new CustomUIView(new CGRect(BaseMargin, 0, BaseMarginedWidth, GetScaledHeight(1)))
             { BackgroundColor = UIColor.FromWhiteAlpha(1, 0.30F) };
-            _viewStatus = new CustomUIView(new CGRect(0, 0, ViewWidth, 0));
+            _viewStatus = new CustomUIView(new CGRect(0, 0, ViewWidth, 0))
+            {
+                Hidden = true
+            };
             _viewChart = new CustomUIView(new CGRect(0, 0, ViewWidth, 0));
-            _viewLegend = new CustomUIView(new CGRect(0, 0, ViewWidth, 0));
+            _viewRE = new CustomUIView(new CGRect(0, 0, ViewWidth, 0))
+            {
+                Hidden = true
+            };
+            _viewLegend = new CustomUIView(new CGRect(0, 0, ViewWidth, 0))
+            {
+                Hidden = true
+            };
             _viewToggle = new CustomUIView(new CGRect(0, 0, ViewWidth, 0));
+            _viewSSMR = new CustomUIView(new CGRect(0, 0, ViewWidth, 0))
+            {
+                Hidden = true
+            };
             _viewTips = new CustomUIView(new CGRect(0, 0, ViewWidth, 0));
 
             _scrollViewContent.AddSubviews(new UIView[] { _accountSelectorContainer
-                , _lblAddress, _viewSeparator, _viewStatus, _viewChart, _viewLegend, _viewToggle, _viewTips });
+                , _lblAddress, _viewSeparator, _viewStatus, _viewChart, _viewRE, _viewLegend, _viewToggle, _viewSSMR, _viewTips });
         }
 
         private void SetContentView()
         {
             _lblAddress.Frame = new CGRect(new CGPoint(BaseMargin, GetYLocationFromFrame(_accountSelectorContainer.Frame, 8F)), _lblAddress.Frame.Size);
             _viewSeparator.Frame = new CGRect(new CGPoint(BaseMargin, GetYLocationFromFrame(_lblAddress.Frame, 16F)), _viewSeparator.Frame.Size);
-            _viewStatus.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewSeparator.Frame, (_viewStatus.Frame.Height > 0) ? 16F : 0F)), _viewStatus.Frame.Size);
-            _viewChart.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewStatus.Frame, 16F)), _viewChart.Frame.Size);
-            _viewLegend.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, !_viewLegend.Hidden ? 16F : 0F)), _viewLegend.Frame.Size);
-            _viewToggle.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewLegend.Frame, 16F)), _viewToggle.Frame.Size);
-            _viewTips.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewToggle.Frame, 24F)), _viewTips.Frame.Size);
 
-            _scrollViewContent.ContentSize = new CGSize(ViewWidth, GetAdditionalHeight(_viewTips.Frame.GetMaxY()));
+            if (!AccountStatusCache.AccountStatusIsAvailable())
+            {
+                _viewStatus.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewSeparator.Frame, 16F)), _viewStatus.Frame.Size);
+                _viewChart.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewStatus.Frame, 16F)), _viewChart.Frame.Size);
+            }
+            else
+            {
+                _viewChart.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewSeparator.Frame, 16F)), _viewChart.Frame.Size);
+            }
+
+            if (isREAccount)
+            {
+                _viewRE.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, 24F)), _viewRE.Frame.Size);
+            }
+            else
+            {
+                _viewLegend.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, !_viewLegend.Hidden ? 16F : 0F)), _viewLegend.Frame.Size);
+                _viewToggle.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewLegend.Frame, 16F)), _viewToggle.Frame.Size);
+
+                if (accountIsSSMR)
+                {
+                    _viewSSMR.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewToggle.Frame, 16F)), _viewSSMR.Frame.Size);
+                    _viewTips.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewSSMR.Frame, 16F)), _viewTips.Frame.Size);
+                }
+                else
+                {
+                    _viewTips.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewToggle.Frame, 24F)), _viewTips.Frame.Size);
+                }
+            }
+            _scrollViewContent.ContentSize = new CGSize(ViewWidth, GetAdditionalHeight(isREAccount ? _viewRE.Frame.GetMaxY() : _viewTips.Frame.GetMaxY()));
         }
 
         private nfloat GetAdditionalHeight(nfloat maxYPos)
@@ -166,8 +224,10 @@ namespace myTNB
         {
             AddAccountSelector();
             SetAddress();
+            SetDisconnectionComponent();
             SetChartView();
             SetTariffSelectionComponent();
+            SetSSMRComponent();
             SetEnergyTipsComponent();
             SetContentView();
         }
@@ -224,6 +284,59 @@ namespace myTNB
             _viewChart.Frame = chartFrame;
         }
 
+        #region SSMR Methods
+        private void SetSSMRComponent()
+        {
+            if (!isREAccount && accountIsSSMR)
+            {
+                MeterReadingHistoryModel smrAcountInfo = SSMRActivityInfoCache.DashboardMeterReadingHistory;
+                if (smrAcountInfo != null)
+                {
+                    SSMRComponent sMRComponent = new SSMRComponent(_viewSSMR);
+                    _viewSSMR.AddSubview(sMRComponent.GetUI());
+                    sMRComponent.SetDescription(smrAcountInfo.DashboardMessage);
+                    sMRComponent.SetButtonText(smrAcountInfo.DashboardCTAText);
+                    sMRComponent.SetSRMButtonEnable(smrAcountInfo.IsDashboardCTADisabled);
+                    sMRComponent.ShowHistoryLink(smrAcountInfo.ShowReadingHistoryLink, smrAcountInfo.ReadingHistoryLinkText);
+                    sMRComponent._labelViewHistory.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                    {
+                        OnReadHistoryTap();
+                    }));
+                    sMRComponent._smrButton.TouchUpInside += (sender, e) =>
+                    {
+                        var ctaChar = smrAcountInfo.DashboardCTAType.ToLower();
+                        if (ctaChar == DashboardHomeConstants.CTA_ShowReadingHistory)
+                        {
+                            OnReadHistoryTap();
+                        }
+                        else if (ctaChar == DashboardHomeConstants.CTA_ShowSubmitReading)
+                        {
+                            OnSubmitMeterTap();
+                        }
+                    };
+                    ViewHelper.AdjustFrameSetHeight(_viewSSMR, sMRComponent.GetContainerHeight());
+                    _viewSSMR.BackgroundColor = UIColor.Clear;
+                    _viewSSMR.Hidden = false;
+                    AddSSMRViewShadow(ref _viewSSMR);
+                    SetContentView();
+                }
+            }
+        }
+
+        internal virtual void OnReadHistoryTap() { }
+
+        internal virtual void OnSubmitMeterTap() { }
+
+        private void AddSSMRViewShadow(ref CustomUIView view)
+        {
+            view.Layer.MasksToBounds = false;
+            view.Layer.ShadowColor = MyTNBColor.BabyBlue60.CGColor;
+            view.Layer.ShadowOpacity = .32f;
+            view.Layer.ShadowOffset = new CGSize(0, 8);
+            view.Layer.ShadowRadius = 8;
+            view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
+        }
+        #endregion
         #region TARIFF LEGEND Methods
         public void SetTariffLegendComponent()
         {
@@ -254,26 +367,29 @@ namespace myTNB
         #region RM/KWH & TARIFF Methods
         private void SetTariffSelectionComponent()
         {
-            ViewHelper.AdjustFrameSetHeight(_viewToggle, GetScaledHeight(24f));
-            _viewStatus.BackgroundColor = UIColor.Clear;
-
-            _tariffSelectionComponent = new TariffSelectionComponent(View);
-            _viewToggle.AddSubview(_tariffSelectionComponent.GetUI());
-            _rMkWhEnum = RMkWhEnum.RM;
-            _tariffSelectionComponent.SetRMkWhLabel(_rMkWhEnum);
-            _tariffSelectionComponent.SetGestureRecognizerFoRMKwH(new UITapGestureRecognizer(() =>
+            if (!isREAccount)
             {
-                ShowHideRMKwHDropDown();
-            }));
-            _tariffSelectionComponent.SetGestureRecognizerForTariff(new UITapGestureRecognizer(() =>
-            {
-                _tariffIsVisible = !_tariffIsVisible;
-                _tariffSelectionComponent.UpdateTariffButton(_tariffIsVisible);
-                ShowHideTariffLegends(_tariffIsVisible);
-                _chartView.ToggleTariffView(_tariffIsVisible);
-            }));
+                ViewHelper.AdjustFrameSetHeight(_viewToggle, GetScaledHeight(24f));
+                _viewStatus.BackgroundColor = UIColor.Clear;
 
-            CreateRMKwhDropdown();
+                _tariffSelectionComponent = new TariffSelectionComponent(View);
+                _viewToggle.AddSubview(_tariffSelectionComponent.GetUI());
+                _rMkWhEnum = RMkWhEnum.RM;
+                _tariffSelectionComponent.SetRMkWhLabel(_rMkWhEnum);
+                _tariffSelectionComponent.SetGestureRecognizerFoRMKwH(new UITapGestureRecognizer(() =>
+                {
+                    ShowHideRMKwHDropDown();
+                }));
+                _tariffSelectionComponent.SetGestureRecognizerForTariff(new UITapGestureRecognizer(() =>
+                {
+                    _tariffIsVisible = !_tariffIsVisible;
+                    _tariffSelectionComponent.UpdateTariffButton(_tariffIsVisible);
+                    ShowHideTariffLegends(_tariffIsVisible);
+                    _chartView.ToggleTariffView(_tariffIsVisible);
+                }));
+
+                CreateRMKwhDropdown();
+            }
         }
 
         private void CreateRMKwhDropdown()
@@ -385,18 +501,21 @@ namespace myTNB
         #region ENERGY TIPS Methods
         private void SetEnergyTipsComponent()
         {
-            List<TipsModel> tipsList;
-            EnergyTipsEntity wsManager = new EnergyTipsEntity();
-            tipsList = wsManager.GetAllItems();
-
-            if (tipsList != null &&
-                tipsList.Count > 0)
+            if (!isREAccount)
             {
-                ViewHelper.AdjustFrameSetHeight(_viewTips, GetScaledHeight(100f));
-                _viewTips.BackgroundColor = UIColor.Clear;
+                List<TipsModel> tipsList;
+                EnergyTipsEntity wsManager = new EnergyTipsEntity();
+                tipsList = wsManager.GetAllItems();
 
-                EnergyTipsComponent energyTipsComponent = new EnergyTipsComponent(_viewTips, tipsList);
-                _viewTips.AddSubview(energyTipsComponent.GetUI());
+                if (tipsList != null &&
+                    tipsList.Count > 0)
+                {
+                    ViewHelper.AdjustFrameSetHeight(_viewTips, GetScaledHeight(100f));
+                    _viewTips.BackgroundColor = UIColor.Clear;
+
+                    EnergyTipsComponent energyTipsComponent = new EnergyTipsComponent(_viewTips, tipsList);
+                    _viewTips.AddSubview(energyTipsComponent.GetUI());
+                }
             }
         }
         #endregion
@@ -404,11 +523,11 @@ namespace myTNB
         public void SetDisconnectionComponent()
         {
             AccountStatusDataModel accountStatusData = AccountStatusCache.GetAccountStatusData();
-            if (accountStatusData != null &&
-                accountStatusData.DisconnectionStatus.ToLower() != "available")
+            if (!AccountStatusCache.AccountStatusIsAvailable())
             {
                 ViewHelper.AdjustFrameSetHeight(_viewStatus, GetScaledHeight(24f));
                 _viewStatus.BackgroundColor = UIColor.Clear;
+                _viewStatus.Hidden = false;
 
                 DisconnectionComponent disconnectionComponent = new DisconnectionComponent(_scrollViewContent, accountStatusData);
                 _viewStatus.AddSubview(disconnectionComponent.GetUI());
@@ -418,12 +537,46 @@ namespace myTNB
                     var acctStatusTooltipMsg = !string.IsNullOrWhiteSpace(accountStatusData.AccountStatusModalMessage) ? accountStatusData.AccountStatusModalMessage : "Dashboard_AccountStatusMessage".Translate();
                     DisplayCustomAlert(string.Empty, acctStatusTooltipMsg, acctStatusTooltipBtnTitle, null);
                 }));
-                SetContentView();
+            }
+            else
+            {
+                _viewStatus.Hidden = true;
+            }
+            SetContentView();
+        }
+        #endregion
+        #region RE Methods
+        internal void SetREAmountView()
+        {
+            _viewRE.Hidden = !isREAccount;
+            if (isREAccount)
+            {
+                ViewHelper.AdjustFrameSetHeight(_viewRE, GetScaledHeight(118f));
+                _viewRE.BackgroundColor = UIColor.Clear;
+
+                _rEAmountComponent = new REAmountComponent(_viewRE);
+                _viewRE.AddSubview(_rEAmountComponent.GetUI());
+                _rEAmountComponent._btnViewPaymentAdvice.TouchUpInside += (sender, e) =>
+                {
+                    OnCurrentBillButtonTap();
+                };
+            }
+        }
+
+        internal void UpdateREAmountViewUI(bool isUpdating)
+        {
+            _rEAmountComponent.UpdateUI(isUpdating);
+            if (!isUpdating)
+            {
+                _rEAmountComponent.UpdateUI(isUpdating);
+                DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                _rEAmountComponent.SetAmount(dueData.amountDue);
+                _rEAmountComponent.SetDate(dueData.billDueDate);
             }
         }
         #endregion
         #region FOOTER Methods
-        private void SetFooterView()
+        internal void SetFooterView()
         {
             nfloat footerRatio = 136.0f / 320.0f;
             nfloat footerHeight = ViewWidth * footerRatio;
@@ -439,9 +592,34 @@ namespace myTNB
             _origViewFrame = _viewFooter.Frame;
             AddFooterShadow(ref _viewFooter);
             View.AddSubview(_viewFooter);
-            UsageFooterViewComponent footerViewComponent = new UsageFooterViewComponent(View, footerHeight);
-            _viewFooter.AddSubview(footerViewComponent.GetUI());
+            _footerViewComponent = new UsageFooterViewComponent(View, footerHeight);
+            _viewFooter.AddSubview(_footerViewComponent.GetUI());
+            _footerViewComponent._btnViewBill.TouchUpInside += (sender, e) =>
+            {
+                OnCurrentBillButtonTap();
+            };
+            _footerViewComponent._btnPay.TouchUpInside += (sender, e) =>
+            {
+                DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                OnPayButtonTap(dueData.amountDue);
+            };
         }
+
+        internal void UpdateFooterUI(bool isUpdating)
+        {
+            _footerViewComponent.UpdateUI(isUpdating);
+            if (!isUpdating)
+            {
+                _footerViewComponent.UpdateUI(isUpdating);
+                DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                _footerViewComponent.SetAmount(dueData.amountDue);
+                _footerViewComponent.SetDate(dueData.billDueDate);
+            }
+        }
+
+        internal virtual void OnCurrentBillButtonTap() { }
+
+        internal virtual void OnPayButtonTap(double amountDue) { }
 
         private void OnScroll(object sender, EventArgs e)
         {
@@ -462,7 +640,9 @@ namespace myTNB
 
         private void AnimateFooterToHideAndShow(bool isHidden)
         {
-            UIView.Animate(0.3, 0, UIViewAnimationOptions.ShowHideTransitionViews
+            if (_viewFooter != null)
+            {
+                UIView.Animate(0.3, 0, UIViewAnimationOptions.ShowHideTransitionViews
                 , () =>
                 {
                     if (isHidden)
@@ -479,6 +659,7 @@ namespace myTNB
                 }
                 , () => { }
             );
+            }
         }
 
         private void AddFooterShadow(ref CustomUIView view)

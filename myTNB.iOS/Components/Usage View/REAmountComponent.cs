@@ -1,0 +1,179 @@
+﻿using System;
+using System.Globalization;
+using CoreGraphics;
+using UIKit;
+
+namespace myTNB
+{
+    public class REAmountComponent : BaseComponent
+    {
+        UIView _parentView, _containerView, _shimmerParent, _shimmerContent, _viewIcon, _viewTitle, _viewDate, _viewAmount;
+        UIImageView _iconView;
+        public UIButton _btnViewPaymentAdvice;
+        UILabel _lblTitle, _lblDate, _lblAmount;
+        nfloat _viewWidth;
+        nfloat _viewHeight;
+
+        public REAmountComponent(UIView parentView)
+        {
+            _parentView = parentView;
+            _viewWidth = _parentView.Frame.Width - (BaseMarginWidth16 * 2);
+            _viewHeight = _parentView.Frame.Height;
+        }
+
+        private void CreateComponent()
+        {
+            _containerView = new UIView(new CGRect(BaseMarginWidth16, 0, _viewWidth, _viewHeight))
+            {
+                BackgroundColor = UIColor.White
+            };
+            _containerView.Layer.CornerRadius = GetScaledHeight(4f);
+            AddContainerShadow(ref _containerView);
+            _shimmerParent = new UIView(new CGRect(0, 0, _viewWidth, GetScaledHeight(62f)))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+            _shimmerContent = new UIView(new CGRect(0, 0, _viewWidth, GetScaledHeight(62f)))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+            _containerView.AddSubviews(new UIView[] { _shimmerParent, _shimmerContent });
+            CustomShimmerView shimmeringView = new CustomShimmerView();
+            _shimmerParent.AddSubview(shimmeringView);
+            shimmeringView.ContentView = _shimmerContent;
+            shimmeringView.Shimmering = true;
+            shimmeringView.SetValues();
+
+            CreatePaymentLabels();
+            CreatePaymentButtons();
+            UpdateUI(true);
+        }
+
+        public UIView GetUI()
+        {
+            CreateComponent();
+            return _containerView;
+        }
+
+        private void CreatePaymentLabels()
+        {
+            _iconView = new UIImageView(new CGRect(BaseMarginWidth16, GetScaledHeight(18f), GetScaledWidth(28f), GetScaledHeight(28f)))
+            {
+                Image = UIImage.FromBundle("Accounts-RE-Icon")
+            };
+            _containerView.AddSubview(_iconView);
+
+            _viewIcon = new UIView(new CGRect(BaseMarginWidth16, GetScaledHeight(18f), GetScaledWidth(28f), GetScaledHeight(28f)))
+            {
+                BackgroundColor = MyTNBColor.PaleGreyThree
+            };
+            _viewIcon.Layer.CornerRadius = GetScaledHeight(14f);
+
+            nfloat labelWidth = (_viewWidth / 2) - BaseMarginWidth16;
+            _lblTitle = new UILabel(new CGRect(_iconView.Frame.GetMaxX() + GetScaledWidth(12F), BaseMarginWidth16, labelWidth, GetScaledHeight(16f)))
+            {
+                Font = TNBFont.MuseoSans_12_500,
+                TextColor = MyTNBColor.GreyishBrown,
+                TextAlignment = UITextAlignment.Left,
+                Text = "My Earnings",
+                Hidden = false
+            };
+            _containerView.AddSubview(_lblTitle);
+
+            _viewTitle = new UIView(new CGRect(_iconView.Frame.GetMaxX() + GetScaledWidth(12F), BaseMarginWidth16, labelWidth * 0.8F, _lblTitle.Frame.Height * 0.8F))
+            {
+                BackgroundColor = MyTNBColor.PaleGreyThree
+            };
+            _viewTitle.Layer.CornerRadius = GetScaledHeight(4f);
+
+            _lblDate = new UILabel(new CGRect(_iconView.Frame.GetMaxX() + GetScaledWidth(12F), _lblTitle.Frame.GetMaxY(), labelWidth, GetScaledHeight(16f)))
+            {
+                Font = TNBFont.MuseoSans_12_300,
+                TextColor = MyTNBColor.WarmGrey,
+                TextAlignment = UITextAlignment.Left,
+                Hidden = false
+            };
+            _containerView.AddSubview(_lblDate);
+
+            _viewDate = new UIView(new CGRect(_iconView.Frame.GetMaxX() + GetScaledWidth(12F), _lblTitle.Frame.GetMaxY(), labelWidth * 0.7F, _lblDate.Frame.Height * 0.8F))
+            {
+                BackgroundColor = MyTNBColor.PaleGreyThree
+            };
+            _viewDate.Layer.CornerRadius = GetScaledHeight(4f);
+
+            _lblAmount = new UILabel(new CGRect(_viewWidth / 2, GetScaledHeight(22f), labelWidth, GetScaledHeight(20f)))
+            {
+                Font = TNBFont.MuseoSans_16_300,
+                TextColor = MyTNBColor.GreyishBrown,
+                TextAlignment = UITextAlignment.Right
+            };
+            _containerView.AddSubview(_lblAmount);
+
+            _viewAmount = new UIView(new CGRect(_viewWidth / 2 + labelWidth * 0.2F, GetScaledHeight(22f), labelWidth * 0.8F, _lblAmount.Frame.Height * 0.8F))
+            {
+                BackgroundColor = MyTNBColor.PaleGreyThree
+            };
+            _viewAmount.Layer.CornerRadius = GetScaledHeight(4f);
+
+            _shimmerContent.AddSubviews(new UIView[] { _viewIcon, _viewTitle, _viewDate, _viewAmount });
+        }
+
+        private void CreatePaymentButtons()
+        {
+            nfloat yPos = GetScaledHeight(62f);
+            _btnViewPaymentAdvice = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(BaseMarginWidth16, yPos, _viewWidth - (BaseMarginHeight16 * 2), GetScaledHeight(40f))
+            };
+            _btnViewPaymentAdvice.Layer.CornerRadius = GetScaledHeight(4f);
+            _btnViewPaymentAdvice.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
+            _btnViewPaymentAdvice.Layer.BorderWidth = GetScaledHeight(1f);
+            _btnViewPaymentAdvice.SetTitle("View Payment Advice", UIControlState.Normal);
+            _btnViewPaymentAdvice.Font = TNBFont.MuseoSans_16_500;
+            _btnViewPaymentAdvice.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
+            _containerView.AddSubview(_btnViewPaymentAdvice);
+        }
+
+        private void AddContainerShadow(ref UIView view)
+        {
+            view.Layer.MasksToBounds = false;
+            view.Layer.ShadowColor = MyTNBColor.BabyBlue35.CGColor;
+            view.Layer.ShadowOpacity = .5f;
+            view.Layer.ShadowOffset = new CGSize(0, 8);
+            view.Layer.ShadowRadius = 8;
+            view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
+        }
+
+        public void SetAmount(double amount)
+        {
+            _lblAmount.AttributedText = TextHelper.CreateValuePairString(Math.Abs(amount).ToString("N2", CultureInfo.InvariantCulture)
+                        , TNBGlobal.UNIT_CURRENCY + " ", true, TNBFont.MuseoSans_16_300
+                        , MyTNBColor.GreyishBrown, TNBFont.MuseoSans_10_300, MyTNBColor.GreyishBrown);
+        }
+
+        public void SetDate(string date)
+        {
+            if (!string.IsNullOrEmpty(date) && !string.IsNullOrWhiteSpace(date))
+            {
+                string formattedDate = DateHelper.GetFormattedDate(date, "dd MMM");
+
+                _lblDate.AttributedText = TextHelper.CreateValuePairString(formattedDate
+                        , "I will get by" + " ", true, TNBFont.MuseoSans_12_300
+                        , MyTNBColor.WarmGrey, TNBFont.MuseoSans_12_300, MyTNBColor.WarmGrey);
+            }
+        }
+
+        public void UpdateUI(bool isUpdating)
+        {
+            _iconView.Hidden = isUpdating;
+            _lblTitle.Hidden = isUpdating;
+            _lblDate.Hidden = isUpdating;
+            _lblAmount.Hidden = isUpdating;
+            _shimmerParent.Hidden = !isUpdating;
+
+            _btnViewPaymentAdvice.Enabled = !isUpdating;
+            _btnViewPaymentAdvice.Layer.BorderColor = isUpdating ? MyTNBColor.SilverChalice.CGColor : MyTNBColor.FreshGreen.CGColor;
+            _btnViewPaymentAdvice.SetTitleColor(isUpdating ? MyTNBColor.SilverChalice : MyTNBColor.FreshGreen, UIControlState.Normal);
+        }
+    }
+}

@@ -1,12 +1,7 @@
-using CoreGraphics;
 using myTNB.Model;
 using myTNB.Model.Usage;
-using myTNB.SitecoreCMS.Model;
-using myTNB.SQLite.SQLiteDataManager;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using UIKit;
 
 namespace myTNB
@@ -19,14 +14,95 @@ namespace myTNB
         {
             PageName = "UsageView";
             base.ViewDidLoad();
+            CallGetAccountUsageAPI();
+            CallGetAccountDueAmountAPI();
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            CallGetAccountStatusAPI();
-            CallGetAccountUsageAPI();
         }
+
+        public void OnCurrentBillViewDone()
+        {
+            Debug.WriteLine("OnCurrentBillViewDone()");
+        }
+
+        #region OVERRIDDEN Methods
+        internal override void OnReadHistoryTap()
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+            SSMRReadingHistoryViewController viewController =
+                storyBoard.InstantiateViewController("SSMRReadingHistoryViewController") as SSMRReadingHistoryViewController;
+            if (viewController != null)
+            {
+                var navController = new UINavigationController(viewController);
+                PresentViewController(navController, true, null);
+            }
+        }
+        internal override void OnSubmitMeterTap()
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+            SSMRReadMeterViewController viewController =
+                storyBoard.InstantiateViewController("SSMRReadMeterViewController") as SSMRReadMeterViewController;
+            if (viewController != null)
+            {
+                viewController.IsFromDashboard = true;
+                var navController = new UINavigationController(viewController);
+                PresentViewController(navController, true, null);
+            }
+        }
+        internal override void OnCurrentBillButtonTap()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        UIStoryboard storyBoard = UIStoryboard.FromName("ViewBill", null);
+                        ViewBillViewController viewController =
+                            storyBoard.InstantiateViewController("ViewBillViewController") as ViewBillViewController;
+                        if (viewController != null)
+                        {
+                            viewController.OnDone = OnCurrentBillViewDone;
+                            var navController = new UINavigationController(viewController);
+                            PresentViewController(navController, true, null);
+                        }
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+        internal override void OnPayButtonTap(double amountDue)
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        UIStoryboard storyBoard = UIStoryboard.FromName("Payment", null);
+                        SelectBillsViewController selectBillsVC =
+                            storyBoard.InstantiateViewController("SelectBillsViewController") as SelectBillsViewController;
+                        if (selectBillsVC != null)
+                        {
+                            selectBillsVC.SelectedAccountDueAmount = amountDue;
+                            var navController = new UINavigationController(selectBillsVC);
+                            PresentViewController(navController, true, null);
+                        }
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+        #endregion
         #region API Calls
         private void CallGetAccountUsageAPI()
         {
@@ -38,8 +114,7 @@ namespace myTNB
                     {
                         ActivityIndicator.Show();
                         AccountUsageCache.ClearTariffLegendList();
-
-                        AccountUsageResponseModel accountUsageResponse = await GetAccountUsage(DataManager.DataManager.SharedInstance.SelectedAccount);
+                        AccountUsageResponseModel accountUsageResponse = await UsageServiceCall.GetAccountUsage(DataManager.DataManager.SharedInstance.SelectedAccount);
                         AccountUsageCache.AddTariffLegendList(accountUsageResponse);
                         AccountUsageCache.SetData(DataManager.DataManager.SharedInstance.SelectedAccount.accNum, accountUsageResponse);
                         AddSubviews();
@@ -53,8 +128,7 @@ namespace myTNB
                 });
             });
         }
-
-        private void CallGetAccountStatusAPI()
+        private void CallGetAccountDueAmountAPI()
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -62,59 +136,52 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        ActivityIndicator.Show();
-                        AccountStatusCache.ClearAccountStatusData();
-
-                        AccountStatusResponseModel accountStatusResponse = await GetAccountStatus(DataManager.DataManager.SharedInstance.SelectedAccount);
-                        AccountStatusCache.AddAccountStatusData(accountStatusResponse);
-
-                        SetDisconnectionComponent();
+                        if (!isREAccount)
+                        {
+                            UpdateFooterUI(true);
+                        }
+                        else
+                        {
+                            UpdateREAmountViewUI(true);
+                        }
+                        var account = DataManager.DataManager.SharedInstance.SelectedAccount;
+                        DueAmountResponseModel dueAmountResponse = await UsageServiceCall.GetAccountDueAmount(account);
+                        if (dueAmountResponse != null &&
+                            dueAmountResponse.d != null &&
+                            dueAmountResponse.d.didSucceed &&
+                            dueAmountResponse.d.data != null)
+                        {
+                            var model = dueAmountResponse.d.data;
+                            var item = new DueAmountDataModel
+                            {
+                                accNum = account.accNum,
+                                accNickName = account.accountNickName,
+                                IsReAccount = account.IsREAccount,
+                                amountDue = model.amountDue,
+                                billDueDate = model.billDueDate,
+                                IncrementREDueDateByDays = model.IncrementREDueDateByDays
+                            };
+                            AmountDueCache.SaveDues(item);
+                            if (!isREAccount)
+                            {
+                                UpdateFooterUI(false);
+                            }
+                            else
+                            {
+                                UpdateREAmountViewUI(false);
+                            }
+                        }
+                        else
+                        {
+                            //TO DO: Add Fail Handling here...
+                        }
                     }
                     else
                     {
                         DisplayNoDataAlert();
                     }
-                    ActivityIndicator.Hide();
                 });
             });
-        }
-
-        private async Task<AccountUsageResponseModel> GetAccountUsage(CustomerAccountRecordModel account)
-        {
-            AccountUsageResponseModel accountUsageResponse = null;
-            ServiceManager serviceManager = new ServiceManager();
-            object requestParameter = new
-            {
-                contractAccount = account.accNum,
-                isOwner = account.isOwned,
-                serviceManager.usrInf
-            };
-
-            accountUsageResponse = await Task.Run(() =>
-            {
-                return serviceManager.OnExecuteAPIV6<AccountUsageResponseModel>("GetAccountUsage", requestParameter);
-            });
-
-            return accountUsageResponse;
-        }
-
-        private async Task<AccountStatusResponseModel> GetAccountStatus(CustomerAccountRecordModel account)
-        {
-            AccountStatusResponseModel accountStatusResponse = null;
-            ServiceManager serviceManager = new ServiceManager();
-            object requestParameter = new
-            {
-                contractAccount = account.accNum,
-                isOwner = account.isOwned,
-                serviceManager.usrInf
-            };
-
-            accountStatusResponse = await Task.Run(() =>
-            {
-                return serviceManager.OnExecuteAPIV6<AccountStatusResponseModel>("GetAccountStatus", requestParameter);
-            });
-
-            return accountStatusResponse;
         }
         #endregion
     }

@@ -1243,7 +1243,7 @@ namespace myTNB.Dashboard
             }
             if (_dashboardMainComponent._sSMRComponent != null)
             {
-                _dashboardMainComponent._sSMRComponent.SetFrameByPrecedingView((float)_dashboardMainComponent._addressComponent.GetView().Frame.GetMaxY());
+                //_dashboardMainComponent._sSMRComponent.SetFrameByPrecedingView((float)_dashboardMainComponent._addressComponent.GetView().Frame.GetMaxY());
             }
             _dashboardMainComponent._lblEstimatedReading.Hidden = (isMonthView) ? !IsEstimatedReading(chartData) : true;
             _dashboardMainComponent._usageHistoryComponent.SetDateRange(dateRange);

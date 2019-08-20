@@ -6,59 +6,60 @@ using UIKit;
 
 namespace myTNB
 {
-    public class SSMRComponent
+    public class SSMRComponent : BaseComponent
     {
         private readonly UIView _parentView;
-        UIView _containerView;
+        UIView _containerView, _iconLabelView;
         UIImageView _iconView;
         public UILabel _labelViewHistory;
         UILabel _description;
         public UIButton _smrButton;
-        nfloat _yLocation = 0f;
         nfloat _descWidth = 0f;
-        nfloat _padding = 16f;
 
-        public SSMRComponent(UIView parentView, nfloat yLocation)
+        public SSMRComponent(UIView parentView)
         {
             _parentView = parentView;
-            _yLocation = yLocation;
         }
 
         private void CreateComponent()
         {
-            nfloat iconPadding = 12f;
-            nfloat imageWidth = 32f;
-            nfloat imageHeight = 32f;
-            nfloat buttonHeight = 40f;
-            nfloat yPadding = 18f;
+            nfloat iconPadding = GetScaledWidth(12f);
+            nfloat imageWidth = GetScaledWidth(32f);
+            nfloat imageHeight = GetScaledHeight(32f);
+            nfloat buttonHeight = GetScaledHeight(40f);
             nfloat width = _parentView.Frame.Width;
 
-            _containerView = new UIView(new CGRect(_padding, _yLocation + yPadding, width - (_padding * 2), 116f))
+            _containerView = new UIView(new CGRect(BaseMarginWidth16, 0, width - (BaseMarginWidth16 * 2), GetScaledHeight(116f)))
             {
                 BackgroundColor = UIColor.White
             };
-            _containerView.Layer.CornerRadius = 4.0f;
+            _containerView.Layer.CornerRadius = GetScaledHeight(4.0f);
 
-            _iconView = new UIImageView(new CGRect(iconPadding, _padding, imageWidth, imageHeight))
+            _iconView = new UIImageView(new CGRect(BaseMarginWidth16, GetScaledHeight(8f), imageWidth, imageHeight))
             {
                 Image = UIImage.FromBundle(SSMRConstants.IMG_SMRMediumIcon)
             };
-            _descWidth = _containerView.Frame.Width - (_iconView.Frame.GetMaxX() + (iconPadding * 2));
-            _description = new UILabel(new CGRect(_iconView.Frame.GetMaxX() + iconPadding, _padding, _descWidth, 48))
+            _iconLabelView = new UIView(new CGRect(0, BaseMarginHeight16, _containerView.Frame.Width, GetScaledHeight(48f)))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+            _containerView.AddSubview(_iconLabelView);
+            _descWidth = _iconLabelView.Frame.Width - (_iconView.Frame.GetMaxX() + BaseMarginWidth16 + iconPadding);
+            _description = new UILabel(new CGRect(_iconView.Frame.GetMaxX() + iconPadding, 0, _descWidth, GetScaledHeight(48)))
             {
                 BackgroundColor = UIColor.Clear,
                 TextAlignment = UITextAlignment.Left,
-                Font = MyTNBFont.MuseoSans12_300,
+                Font = TNBFont.MuseoSans_12_300,
                 TextColor = MyTNBColor.GreyishBrown,
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.TailTruncation
             };
-            _labelViewHistory = new UILabel(new CGRect(_iconView.Frame.GetMaxX() + iconPadding, _description.Frame.GetMaxY() + 8f, _descWidth, 20f))
+            _labelViewHistory = new UILabel(new CGRect(_iconView.Frame.GetMaxX() + iconPadding, _description.Frame.GetMaxY(), _descWidth, GetScaledHeight(20f)))
             {
                 UserInteractionEnabled = true,
                 BackgroundColor = UIColor.Clear,
                 TextAlignment = UITextAlignment.Left,
-                Font = MyTNBFont.MuseoSans12_500,
+                Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.WaterBlue,
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.TailTruncation,
@@ -66,17 +67,18 @@ namespace myTNB
             };
             _smrButton = new UIButton(UIButtonType.Custom)
             {
-                Frame = new CGRect(_padding, _description.Frame.GetMaxY() + _padding, _containerView.Frame.Width - (_padding * 2), buttonHeight)
+                Frame = new CGRect(BaseMarginWidth16, _description.Frame.GetMaxY() + BaseMarginHeight16, _containerView.Frame.Width - (BaseMarginWidth16 * 2), buttonHeight)
             };
             _smrButton.Layer.CornerRadius = 4;
             _smrButton.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             _smrButton.Layer.BorderWidth = 1;
-            _smrButton.Font = MyTNBFont.MuseoSans16_500;
+            _smrButton.Font = TNBFont.MuseoSans_16_500;
             _smrButton.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
             _smrButton.Enabled = true;
 
-            _containerView.AddSubviews(new UIView { _iconView, _description });
-            _containerView.AddSubview(_labelViewHistory);
+            _iconLabelView.AddSubviews(new UIView { _iconView, _description });
+            _iconLabelView.AddSubview(_labelViewHistory);
+            _containerView.AddSubview(_iconLabelView);
             _containerView.AddSubview(_smrButton);
         }
 
@@ -95,30 +97,17 @@ namespace myTNB
         {
             _description.Text = text;
             CGSize descNewSize = _description.SizeThatFits(new CGSize(_descWidth, 1000f));
-            CGRect frame = _description.Frame;
-            frame.Height = descNewSize.Height;
-            _description.Frame = frame;
+            ViewHelper.AdjustFrameSetHeight(_description, descNewSize.Height);
 
             AdjustViewFrames();
         }
 
         private void AdjustViewFrames(bool linkIsVisible = false)
         {
-            CGRect btnFrame = _smrButton.Frame;
-            btnFrame.Y = linkIsVisible ? _labelViewHistory.Frame.GetMaxY() + _padding : _description.Frame.GetMaxY() + _padding;
-            _smrButton.Frame = btnFrame;
-
-            CGRect containerFrame = _containerView.Frame;
-            containerFrame.Height = _smrButton.Frame.GetMaxY() + _padding;
-            _containerView.Frame = containerFrame;
-        }
-
-        public void SetFrameByPrecedingView(float yLocation)
-        {
-            nfloat addtl = DeviceHelper.IsIphone678() ? 0 : 8f;
-            var newFrame = _containerView.Frame;
-            newFrame.Y = yLocation + 10f + addtl;
-            _containerView.Frame = newFrame;
+            ViewHelper.AdjustFrameSetHeight(_iconLabelView, linkIsVisible ? _labelViewHistory.Frame.GetMaxY() : _description.Frame.GetMaxY());
+            ViewHelper.AdjustFrameSetY(_smrButton, _iconLabelView.Frame.GetMaxY() + BaseMarginHeight16);
+            ViewHelper.AdjustFrameSetHeight(_containerView, _smrButton.Frame.GetMaxY() + BaseMarginHeight16);
+            ViewHelper.AdjustFrameSetY(_iconView, GetYLocationToCenterObject(_iconView.Frame.Height, _iconLabelView));
         }
 
         public void SetSRMButtonEnable(bool isDisabled)
@@ -140,12 +129,21 @@ namespace myTNB
             {
                 _labelViewHistory.Text = text;
                 CGSize labelNewSize = _labelViewHistory.SizeThatFits(new CGSize(_descWidth, 1000f));
-                CGRect frame = _labelViewHistory.Frame;
-                frame.Y = _description.Frame.GetMaxY() + 8f;
-                frame.Height = labelNewSize.Height;
-                _labelViewHistory.Frame = frame;
+
+                ViewHelper.AdjustFrameSetY(_labelViewHistory, _description.Frame.GetMaxY());
+                ViewHelper.AdjustFrameSetHeight(_labelViewHistory, labelNewSize.Height);
             }
             AdjustViewFrames(showLink);
+        }
+
+        public nfloat GetContainerHeight()
+        {
+            nfloat height = 0;
+            if (_containerView != null)
+            {
+                height = _containerView.Frame.Height;
+            }
+            return height;
         }
     }
 }

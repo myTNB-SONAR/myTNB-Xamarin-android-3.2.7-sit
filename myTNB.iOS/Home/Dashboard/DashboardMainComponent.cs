@@ -235,8 +235,8 @@ namespace myTNB.Dashboard.DashboardComponents
             //Add SSMR
             if (DataManager.DataManager.SharedInstance.AccountIsActive && DataManager.DataManager.SharedInstance.AccountIsSSMR)
             {
-                _sSMRComponent = new SSMRComponent(_dashboardScrollView, _addressComponent.GetView().Frame.GetMaxY());
-                _dashboardScrollView.AddSubview(_sSMRComponent.GetUI());
+                //_sSMRComponent = new SSMRComponent(_dashboardScrollView, _addressComponent.GetView().Frame.GetMaxY());
+                //_dashboardScrollView.AddSubview(_sSMRComponent.GetUI());
             }
 
             CGSize contentSize = _dashboardScrollView.ContentSize;
