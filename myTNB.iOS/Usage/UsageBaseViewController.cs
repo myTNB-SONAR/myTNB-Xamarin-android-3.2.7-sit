@@ -17,7 +17,9 @@ namespace myTNB
 
         internal UIScrollView _scrollViewContent;
         internal CustomUIView _navbarContainer, _accountSelector, _viewSeparator, _viewStatus
-            , _viewChart, _viewLegend, _viewToggle, _viewTips, _viewFooter, _rmKwhDropDownView;
+            , _viewChart, _viewLegend, _viewToggle, _viewTips, _viewFooter, _rmKwhDropDownView
+            , _chart;
+        internal ChartView _chartView;
         internal UILabel _lblAddress, _RMLabel, _kWhLabel;
 
         internal bool _rmkWhFlag, _tariffIsVisible = false;
@@ -33,7 +35,7 @@ namespace myTNB
             AddBackgroundImage();
             SetNavigation();
             AddScrollView();
-            AddSubviews();
+            //AddSubviews();
             SetFooterView();
         }
 
@@ -157,7 +159,7 @@ namespace myTNB
             return height;
         }
 
-        private void AddSubviews()
+        internal void AddSubviews()
         {
             AddAccountSelector();
             SetAddress();
@@ -196,11 +198,15 @@ namespace myTNB
 
         private void SetChartView()
         {
-            ChartView chartView = new ChartView();
-            CustomUIView chart = chartView.GetUI();
-            _viewChart.AddSubview(chart);
+            _chartView = new ChartView();
+            if (_chart != null)
+            {
+                _chart.RemoveFromSuperview();
+            }
+            _chart = _chartView.GetUI();
+            _viewChart.AddSubview(_chart);
             CGRect chartFrame = _viewChart.Frame;
-            chartFrame.Size = new CGSize(ViewWidth, chart.Frame.Height);
+            chartFrame.Size = new CGSize(ViewWidth, _chart.Frame.Height);
             _viewChart.Frame = chartFrame;
         }
 
@@ -213,7 +219,6 @@ namespace myTNB
                 ViewHelper.AdjustFrameSetHeight(_viewLegend, 0);
                 _viewLegend.BackgroundColor = UIColor.Clear;
                 _viewLegend.Hidden = true;
-
                 TariffLegendComponent tariffLegendComponent = new TariffLegendComponent(View, tariffList);
                 _viewLegend.AddSubview(tariffLegendComponent.GetUI());
                 SetContentView();
@@ -225,6 +230,7 @@ namespace myTNB
             if (tariffList != null && tariffList.Count > 0)
             {
                 _viewLegend.Hidden = !isVisible;
+                
                 nfloat height = isVisible ? tariffList.Count * GetScaledHeight(25f) : 0;
                 ViewHelper.AdjustFrameSetHeight(_viewLegend, height);
                 SetContentView();
@@ -250,6 +256,7 @@ namespace myTNB
                 _tariffIsVisible = !_tariffIsVisible;
                 _tariffSelectionComponent.UpdateTariffButton(_tariffIsVisible);
                 ShowHideTariffLegends(_tariffIsVisible);
+                _chartView.ToggleTariffView(_tariffIsVisible);
             }));
 
             CreateRMKwhDropdown();
@@ -290,9 +297,8 @@ namespace myTNB
                 ShowHideRMKwHDropDown();
                 _tariffSelectionComponent.SetRMkWhLabel(_rMkWhEnum);
                 UpdateRMkWhSelectionColour(_rMkWhEnum);
-
                 //TO DO: Add Action here when KWH is selected....
-
+                _chartView.ToggleRMKWHValues(_rMkWhEnum);
             }));
             _rmKwhDropDownView.AddSubview(kWhView);
 
@@ -320,9 +326,8 @@ namespace myTNB
                 ShowHideRMKwHDropDown();
                 _tariffSelectionComponent.SetRMkWhLabel(_rMkWhEnum);
                 UpdateRMkWhSelectionColour(_rMkWhEnum);
-
                 //TO DO: Add Action here when RM is selected....
-
+                _chartView.ToggleRMKWHValues(_rMkWhEnum);
             }));
             _rmKwhDropDownView.AddSubview(rMView);
 

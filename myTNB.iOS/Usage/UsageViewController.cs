@@ -41,7 +41,8 @@ namespace myTNB
 
                         AccountUsageResponseModel accountUsageResponse = await GetAccountUsage(DataManager.DataManager.SharedInstance.SelectedAccount);
                         AccountUsageCache.AddTariffLegendList(accountUsageResponse);
-
+                        AccountUsageCache.SetData(accountUsageResponse);
+                        AddSubviews();
                         SetTariffLegendComponent();
                     }
                     else
