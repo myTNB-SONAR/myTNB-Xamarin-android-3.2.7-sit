@@ -70,8 +70,8 @@ namespace myTNB
             EvaluateReadingList();
             _isMultiPhase = ReadingDictionary != null && ReadingDictionary.Count > 1;
             SetImageList();
-            SetDescription();
             SetPreview();
+            SetDescription();
             SetCamera();
             ToggleCTA();
         }
@@ -230,7 +230,9 @@ namespace myTNB
             if (_isMultiPhase) { EvaluateDescription(ref nsDescription); }
             if (_lblDescription == null)
             {
-                _lblDescription = new UILabel(new CGRect(BaseMargin, GetScaledHeight(32), BaseMarginedWidth, GetScaledHeight(38)))
+                nfloat baseHeight = (ViewHeight - _viewPreview.Frame.Height) * 0.28F;
+                _lblDescription = new UILabel(new CGRect(BaseMargin
+                    , (baseHeight - GetScaledHeight(38)) / 2, BaseMarginedWidth, GetScaledHeight(38)))
                 {
                     TextAlignment = UITextAlignment.Center,
                     BackgroundColor = UIColor.Clear,
@@ -368,7 +370,7 @@ namespace myTNB
                 EventName = SSMRConstants.EVENT_DeleteImage,
                 Hidden = true
             };
-            _btnDelete.SetTitle(GetCommonI18NValue(SSMRConstants.I18N_Delete), UIControlState.Normal);
+            _btnDelete.SetTitle(GetI18NValue(SSMRConstants.I18N_DeletePhoto), UIControlState.Normal);
             _btnDelete.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
             _btnDelete.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             _btnDelete.Layer.BorderWidth = GetScaledWidth(1);

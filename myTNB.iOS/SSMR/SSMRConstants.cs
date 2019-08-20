@@ -48,7 +48,6 @@ namespace myTNB.SSMR
         public static string I18N_MobileNumber = "mobileNumber";
         public static string I18N_Email = "emailAddress";
         public static string I18N_SelectAccounts = "selectAccounts";
-        public static string I18N_Delete = "delete";
         public static string I18N_RefreshNow = "refreshNow";
         public static string I18N_RefreshDescription = "refreshDescription";
 
@@ -118,6 +117,7 @@ namespace myTNB.SSMR
         public static string I18N_PluralDone = "pluralDone";
         public static string I18N_SingularOnto = "singularOnto";
         public static string I18N_PluralOnto = "pluralOnto";
+        public static string I18N_DeletePhoto = "deletePhoto";
 
         //Meter Read
         public static string I18N_HeaderDesc = "headerDescription";

@@ -36,6 +36,7 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             PageName = SSMRConstants.Pagename_SSMRReadingHistory;
+            NavigationController.NavigationBarHidden = false;
             base.ViewDidLoad();
             SetNavigation();
             SSMRAccounts.SetFilteredEligibleAccounts();

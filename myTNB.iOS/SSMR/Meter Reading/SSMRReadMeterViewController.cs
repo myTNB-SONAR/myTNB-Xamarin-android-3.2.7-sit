@@ -52,8 +52,9 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             PageName = SSMRConstants.Pagename_SSMRMeterRead;
-            base.ViewDidLoad();
             NavigationController.NavigationBarHidden = false;
+
+            base.ViewDidLoad();
 
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);

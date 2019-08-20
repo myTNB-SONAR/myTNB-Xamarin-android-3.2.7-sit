@@ -169,7 +169,8 @@
         "singularDone": "You're done with {0}!",
         "pluralDone": "You're done with {0} and {1}!",
         "singularOnto": "On to the final unit {0} now.",
-        "pluralOnto": "On to the next units {0} and {1}."
+        "pluralOnto": "On to the next units {0} and {1}.",
+        "deletePhoto": "Delete Photo"
     },
 
     "SSMRCaptureMeter_selector": {
