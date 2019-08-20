@@ -59,7 +59,12 @@ namespace myTNB
             {
                 int index = i;
                 MonthItemModel item = usageData[index];
-                CustomUIView segment = new CustomUIView(new CGRect(xLoc, 0, segmentWidth, height)) { Tag = index };
+                CustomUIView segment = new CustomUIView(new CGRect(xLoc, 0, segmentWidth, height))
+                {
+                    Tag = index,
+                    PageName = "Inner Dashboard",
+                    EventName = "On Tap Normal Bar"
+                };
                 _segmentContainer.AddSubview(segment);
                 xLoc += segmentWidth + segmentMargin;
 
@@ -129,9 +134,10 @@ namespace myTNB
             _mainView.AddSubview(_segmentContainer);
         }
 
-        protected override void AddTariffBlocks(CustomUIView viewBar, List<TariffItemModel> tariff
+        protected override void AddTariffBlocks(CustomUIView viewBar, List<TariffItemModel> tariffList
             , double baseValue, bool isSelected, CGSize size)
         {
+            if (viewBar == null || tariffList == null || tariffList.Count == 0) { return; }
             nfloat baseHeigt = size.Height;
             nfloat barMaxY = size.Height;
             UIView viewTariffContainer = new UIView(new CGRect(0, 0, size.Width, size.Height))
@@ -139,9 +145,9 @@ namespace myTNB
                 Tag = 2002,
                 Hidden = true
             };
-            for (int i = 0; i < tariff.Count; i++)
+            for (int i = 0; i < tariffList.Count; i++)
             {
-                TariffItemModel item = tariff[i];
+                TariffItemModel item = tariffList[i];
                 double.TryParse(item.Usage, out double val);
                 nfloat percentage = (nfloat)(val / baseValue);
                 nfloat blockHeight = baseHeigt * percentage;
@@ -164,31 +170,38 @@ namespace myTNB
             for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
             {
                 CustomUIView segmentView = _segmentContainer.Subviews[i] as CustomUIView;
+                if (segmentView == null) { continue; }
                 bool isSelected = segmentView.Tag == index;
                 CustomUIView bar = segmentView.ViewWithTag(1001) as CustomUIView;
-                UIView viewCover = bar.ViewWithTag(2001);
-                viewCover.BackgroundColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F);
-                UIView viewTariff = bar.ViewWithTag(2002);
-                if (viewTariff != null && !viewTariff.Hidden)
+                if (bar != null)
                 {
-                    for (int j = 0; j < viewTariff.Subviews.Count(); j++)
+                    UIView viewCover = bar.ViewWithTag(2001);
+                    if (viewCover != null) { viewCover.BackgroundColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F); }
+                    UIView viewTariff = bar.ViewWithTag(2002);
+                    if (viewTariff != null && !viewTariff.Hidden)
                     {
-                        UIView tBlock = viewTariff.Subviews[j];
-                        UIColor tColor = tBlock.BackgroundColor;
-                        nint componentCount = tColor.CGColor.NumberOfComponents;
-                        if (componentCount == 4)
+                        for (int j = 0; j < viewTariff.Subviews.Count(); j++)
                         {
-                            nfloat[] components = tColor.CGColor.Components;
-                            nfloat alpha = isSelected ? 1F : 0.5F;
-                            tBlock.BackgroundColor = new UIColor(components[0], components[1], components[2], alpha);
+                            UIView tBlock = viewTariff.Subviews[j];
+                            UIColor tColor = tBlock.BackgroundColor;
+                            nint componentCount = tColor.CGColor.NumberOfComponents;
+                            if (componentCount == 4)
+                            {
+                                nfloat[] components = tColor.CGColor.Components;
+                                nfloat alpha = isSelected ? 1F : 0.5F;
+                                tBlock.BackgroundColor = new UIColor(components[0], components[1], components[2], alpha);
+                            }
                         }
                     }
                 }
                 UILabel value = segmentView.ViewWithTag(1002) as UILabel;
-                value.TextColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F);
-                value.Hidden = !isSelected;
+                if (value != null)
+                {
+                    value.TextColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F);
+                    value.Hidden = !isSelected;
+                }
                 UILabel date = segmentView.ViewWithTag(1003) as UILabel;
-                date.TextColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F);
+                if (date != null) { date.TextColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F); }
             }
         }
 
@@ -197,9 +210,11 @@ namespace myTNB
             for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
             {
                 CustomUIView segmentView = _segmentContainer.Subviews[i] as CustomUIView;
+                if (segmentView == null) { continue; }
                 CustomUIView bar = segmentView.ViewWithTag(1001) as CustomUIView;
+                if (bar == null) { continue; }
                 UIView viewCover = bar.ViewWithTag(2001);
-                viewCover.Hidden = isTariffView;
+                if (viewCover != null) { viewCover.Hidden = isTariffView; }
                 UIView viewTariff = bar.ViewWithTag(2002);
                 if (viewTariff != null) { viewTariff.Hidden = !isTariffView; }
             }
@@ -211,7 +226,9 @@ namespace myTNB
             for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
             {
                 CustomUIView segmentView = _segmentContainer.Subviews[i] as CustomUIView;
+                if (segmentView == null) { continue; }
                 UILabel value = segmentView.ViewWithTag(1002) as UILabel;
+                if (value == null) { continue; }
                 value.Text = state == RMkWhEnum.RM ? usageData[i].AmountTotal.FormatAmountString(usageData[i].Currency)
                     : string.Format(Format_Value, usageData[i].UsageTotal, usageData[i].UsageUnit);
                 nfloat lblAmountWidth = value.GetLabelWidth(GetWidthByScreenSize(200));

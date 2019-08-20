@@ -59,7 +59,12 @@ namespace myTNB
             {
                 int index = i;
                 MonthItemModel item = usageData[index];
-                CustomUIView segment = new CustomUIView(new CGRect(xLoc, 0, segmentWidth, height)) { Tag = index };
+                CustomUIView segment = new CustomUIView(new CGRect(xLoc, 0, segmentWidth, height))
+                {
+                    Tag = index,
+                    PageName = "Inner Dashboard",
+                    EventName = "On Tap RE Bar"
+                };
                 _segmentContainer.AddSubview(segment);
                 xLoc += segmentWidth + segmentMargin;
 
@@ -150,23 +155,27 @@ namespace myTNB
             for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
             {
                 CustomUIView segmentView = _segmentContainer.Subviews[i] as CustomUIView;
+                if (segmentView == null) { continue; }
                 bool isSelected = segmentView.Tag == index;
                 CustomUIView bar = segmentView.ViewWithTag(1001) as CustomUIView;
-                UIView viewCover = bar.ViewWithTag(2001);
-                viewCover.BackgroundColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F);
-                UIView viewTariff = bar.ViewWithTag(2002);
-                if (viewTariff != null && !viewTariff.Hidden)
+                if (bar != null)
                 {
-                    for (int j = 0; j < viewTariff.Subviews.Count(); j++)
+                    UIView viewCover = bar.ViewWithTag(2001);
+                    if (viewCover != null) { viewCover.BackgroundColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F); }
+                    UIView viewTariff = bar.ViewWithTag(2002);
+                    if (viewTariff != null && !viewTariff.Hidden)
                     {
-                        UIView tBlock = viewTariff.Subviews[j];
-                        UIColor tColor = tBlock.BackgroundColor;
-                        nint componentCount = tColor.CGColor.NumberOfComponents;
-                        if (componentCount == 4)
+                        for (int j = 0; j < viewTariff.Subviews.Count(); j++)
                         {
-                            nfloat[] components = tColor.CGColor.Components;
-                            nfloat alpha = isSelected ? 1F : 0.5F;
-                            tBlock.BackgroundColor = new UIColor(components[0], components[1], components[2], alpha);
+                            UIView tBlock = viewTariff.Subviews[j];
+                            UIColor tColor = tBlock.BackgroundColor;
+                            nint componentCount = tColor.CGColor.NumberOfComponents;
+                            if (componentCount == 4)
+                            {
+                                nfloat[] components = tColor.CGColor.Components;
+                                nfloat alpha = isSelected ? 1F : 0.5F;
+                                tBlock.BackgroundColor = new UIColor(components[0], components[1], components[2], alpha);
+                            }
                         }
                     }
                 }
