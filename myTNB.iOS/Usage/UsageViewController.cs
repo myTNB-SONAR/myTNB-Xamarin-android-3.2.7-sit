@@ -28,8 +28,30 @@ namespace myTNB
             Debug.WriteLine("OnCurrentBillViewDone()");
         }
 
-
         #region OVERRIDDEN Methods
+        internal override void OnReadHistoryTap()
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+            SSMRReadingHistoryViewController viewController =
+                storyBoard.InstantiateViewController("SSMRReadingHistoryViewController") as SSMRReadingHistoryViewController;
+            if (viewController != null)
+            {
+                var navController = new UINavigationController(viewController);
+                PresentViewController(navController, true, null);
+            }
+        }
+        internal override void OnSubmitMeterTap()
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+            SSMRReadMeterViewController viewController =
+                storyBoard.InstantiateViewController("SSMRReadMeterViewController") as SSMRReadMeterViewController;
+            if (viewController != null)
+            {
+                viewController.IsFromDashboard = true;
+                var navController = new UINavigationController(viewController);
+                PresentViewController(navController, true, null);
+            }
+        }
         internal override void OnCurrentBillButtonTap()
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
