@@ -41,12 +41,14 @@ namespace myTNB
 
             nfloat height = _segmentContainer.Frame.Height;
             nfloat width = GetWidthByScreenSize(12);
-            nfloat barMargin = GetWidthByScreenSize(36);
-            nfloat baseMargin = GetWidthByScreenSize(34);
+            nfloat segmentMargin = GetWidthByScreenSize(18);
+            nfloat baseMargin = GetWidthByScreenSize(25);
             nfloat xLoc = baseMargin;
             nfloat lblHeight = GetHeightByScreenSize(14);
             nfloat maxBarHeight = GetHeightByScreenSize(108);
             nfloat amountBarMargin = GetHeightByScreenSize(4);
+            nfloat segmentWidth = GetWidthByScreenSize(30);
+            nfloat barMargin = GetWidthByScreenSize(9);
 
             List<MonthItemModel> usageData = AccountUsageCache.ByMonthUsage;
             List<string> valueList = usageData.Select(x => x.UsageTotal).ToList();
@@ -57,15 +59,20 @@ namespace myTNB
             {
                 int index = i;
                 MonthItemModel item = usageData[index];
-                CustomUIView segment = new CustomUIView(new CGRect(xLoc, 0, width, height)) { Tag = index };
+                CustomUIView segment = new CustomUIView(new CGRect(xLoc, 0, segmentWidth, height))
+                {
+                    Tag = index,
+                    PageName = "Inner Dashboard",
+                    EventName = "On Tap RE Bar"
+                };
                 _segmentContainer.AddSubview(segment);
-                xLoc += width + barMargin;
+                xLoc += segmentWidth + segmentMargin;
 
                 double.TryParse(item.UsageTotal, out double value);
                 nfloat barHeight = (nfloat)(divisor * value);
                 nfloat yLoc = (lblHeight * 2) + amountBarMargin + (maxBarHeight - barHeight);
 
-                CustomUIView viewBar = new CustomUIView(new CGRect(0, segment.Frame.Height - lblHeight - GetHeightByScreenSize(17), width, 0))
+                CustomUIView viewBar = new CustomUIView(new CGRect(barMargin, segment.Frame.Height - lblHeight - GetHeightByScreenSize(17), width, 0))
                 {
                     BackgroundColor = UIColor.Clear,
                     Tag = 1001,
@@ -92,7 +99,7 @@ namespace myTNB
                     Tag = 1002
                 };
                 nfloat lblUsageWidth = lblUsage.GetLabelWidth(GetWidthByScreenSize(100));
-                lblUsage.Frame = new CGRect((width - lblUsageWidth) / 2, lblUsage.Frame.Y, lblUsageWidth, lblUsage.Frame.Height);
+                lblUsage.Frame = new CGRect((segmentWidth - lblUsageWidth) / 2, lblUsage.Frame.Y, lblUsageWidth, lblUsage.Frame.Height);
 
                 nfloat amtYLoc = usageYLoc - lblHeight;
                 UILabel lblAmount = new UILabel(new CGRect(0, lblUsage.Frame.GetMinY() - lblHeight
@@ -106,7 +113,7 @@ namespace myTNB
                     Tag = 1003
                 };
                 nfloat lblAmountWidth = lblAmount.GetLabelWidth(GetWidthByScreenSize(100));
-                lblAmount.Frame = new CGRect((width - lblAmountWidth) / 2, lblAmount.Frame.Y, lblAmountWidth, lblAmount.Frame.Height);
+                lblAmount.Frame = new CGRect((segmentWidth - lblAmountWidth) / 2, lblAmount.Frame.Y, lblAmountWidth, lblAmount.Frame.Height);
 
                 UILabel lblDate = new UILabel(new CGRect(0, segment.Frame.Height - lblHeight
                     , GetWidthByScreenSize(30), lblHeight))
@@ -118,7 +125,7 @@ namespace myTNB
                     Tag = 1004
                 };
                 nfloat lblDateWidth = lblDate.GetLabelWidth(GetWidthByScreenSize(30));
-                lblDate.Frame = new CGRect((width - lblDateWidth) / 2, lblDate.Frame.Y, lblDateWidth, lblDate.Frame.Height);
+                lblDate.Frame = new CGRect((segmentWidth - lblDateWidth) / 2, lblDate.Frame.Y, lblDateWidth, lblDate.Frame.Height);
 
                 segment.AddSubviews(new UIView[] { lblUsage, lblAmount, viewBar, lblDate });
 
@@ -130,7 +137,7 @@ namespace myTNB
                 UIView.Animate(1, 0.3, UIViewAnimationOptions.CurveEaseOut
                    , () =>
                    {
-                       viewBar.Frame = new CGRect(0, yLoc, width, barHeight);
+                       viewBar.Frame = new CGRect(viewBar.Frame.X, yLoc, viewBar.Frame.Width, barHeight);
                        lblAmount.Frame = new CGRect(lblAmount.Frame.X, amtYLoc, lblAmount.Frame.Width, lblAmount.Frame.Height);
                        lblUsage.Frame = new CGRect(lblUsage.Frame.X, usageYLoc, lblUsage.Frame.Width, lblUsage.Frame.Height);
                    }
@@ -148,23 +155,27 @@ namespace myTNB
             for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
             {
                 CustomUIView segmentView = _segmentContainer.Subviews[i] as CustomUIView;
+                if (segmentView == null) { continue; }
                 bool isSelected = segmentView.Tag == index;
                 CustomUIView bar = segmentView.ViewWithTag(1001) as CustomUIView;
-                UIView viewCover = bar.ViewWithTag(2001);
-                viewCover.BackgroundColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F);
-                UIView viewTariff = bar.ViewWithTag(2002);
-                if (viewTariff != null && !viewTariff.Hidden)
+                if (bar != null)
                 {
-                    for (int j = 0; j < viewTariff.Subviews.Count(); j++)
+                    UIView viewCover = bar.ViewWithTag(2001);
+                    if (viewCover != null) { viewCover.BackgroundColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F); }
+                    UIView viewTariff = bar.ViewWithTag(2002);
+                    if (viewTariff != null && !viewTariff.Hidden)
                     {
-                        UIView tBlock = viewTariff.Subviews[j];
-                        UIColor tColor = tBlock.BackgroundColor;
-                        nint componentCount = tColor.CGColor.NumberOfComponents;
-                        if (componentCount == 4)
+                        for (int j = 0; j < viewTariff.Subviews.Count(); j++)
                         {
-                            nfloat[] components = tColor.CGColor.Components;
-                            nfloat alpha = isSelected ? 1F : 0.5F;
-                            tBlock.BackgroundColor = new UIColor(components[0], components[1], components[2], alpha);
+                            UIView tBlock = viewTariff.Subviews[j];
+                            UIColor tColor = tBlock.BackgroundColor;
+                            nint componentCount = tColor.CGColor.NumberOfComponents;
+                            if (componentCount == 4)
+                            {
+                                nfloat[] components = tColor.CGColor.Components;
+                                nfloat alpha = isSelected ? 1F : 0.5F;
+                                tBlock.BackgroundColor = new UIColor(components[0], components[1], components[2], alpha);
+                            }
                         }
                     }
                 }

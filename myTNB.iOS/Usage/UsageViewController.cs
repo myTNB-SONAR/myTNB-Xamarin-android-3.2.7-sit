@@ -116,7 +116,7 @@ namespace myTNB
                         AccountUsageCache.ClearTariffLegendList();
                         AccountUsageResponseModel accountUsageResponse = await UsageServiceCall.GetAccountUsage(DataManager.DataManager.SharedInstance.SelectedAccount);
                         AccountUsageCache.AddTariffLegendList(accountUsageResponse);
-                        AccountUsageCache.SetData(accountUsageResponse);
+                        AccountUsageCache.SetData(DataManager.DataManager.SharedInstance.SelectedAccount.accNum, accountUsageResponse);
                         AddSubviews();
                         SetTariffLegendComponent();
                     }

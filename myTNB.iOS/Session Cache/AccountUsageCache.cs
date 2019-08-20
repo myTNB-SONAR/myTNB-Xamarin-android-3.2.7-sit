@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Force.DeepCloner;
+using Foundation;
 using myTNB.Model.Usage;
+using Newtonsoft.Json;
 
 namespace myTNB
 {
@@ -42,7 +44,7 @@ namespace myTNB
             return new List<LegendItemModel>();
         }
 
-        public static void SetData(AccountUsageResponseModel response)
+        public static void SetData(string accountNumber, AccountUsageResponseModel response)
         {
             if (response != null && response.d != null
                 && response.d.IsSuccess && response.d.data != null)
@@ -51,6 +53,8 @@ namespace myTNB
                 TariffLegendList = data.TariffBlocksLegend;
                 ByMonthDateRange = data.ByMonth.Range;
                 ByMonthUsage = data.ByMonth.Months;
+
+                SaveToCache(accountNumber, data);
             }
         }
 
@@ -79,6 +83,78 @@ namespace myTNB
             }
             get { return _byMonthUsage != null ? _byMonthUsage : new List<MonthItemModel>(); }
         }
+        #endregion
+
+        #region User Defaults
+        private static readonly string AccountDataPrefix = "AccountUsageDataCache_{0}";
+        private static readonly string TimeStampPrefix = "AccountUsageTimeStampCache_{0}";
+        private static readonly string DateFormat = "yyyy-MM-dd";
+        #region Normal and RE
+        public static void SaveToCache(string accountNumber, AccountUsageDataModel data)
+        {
+            string jsonData = JsonConvert.SerializeObject(data);
+            if (!string.IsNullOrEmpty(accountNumber) && !string.IsNullOrWhiteSpace(accountNumber)
+                && !string.IsNullOrEmpty(jsonData) && !string.IsNullOrWhiteSpace(jsonData))
+            {
+                string accKey = string.Format(AccountDataPrefix, accountNumber);
+                NSUserDefaults userDefaults = NSUserDefaults.StandardUserDefaults;
+                userDefaults.SetString(jsonData, accKey);
+                userDefaults.Synchronize();
+
+                string tsKey = string.Format(TimeStampPrefix, accountNumber);
+                string dateTime = DateTime.Now.ToString(DateFormat);
+                userDefaults.SetString(dateTime, tsKey);
+                userDefaults.Synchronize();
+            }
+        }
+
+        public static AccountUsageDataModel GetCachedData(string accountNumber)
+        {
+            if (!string.IsNullOrEmpty(accountNumber) && !string.IsNullOrWhiteSpace(accountNumber))
+            {
+                string key = string.Format(AccountDataPrefix, accountNumber);
+                NSUserDefaults userDefaults = NSUserDefaults.StandardUserDefaults;
+                string jsonData = userDefaults.StringForKey(key);
+                if (!string.IsNullOrEmpty(jsonData) && !string.IsNullOrWhiteSpace(jsonData))
+                {
+                    AccountUsageDataModel data = JsonConvert.DeserializeObject<AccountUsageDataModel>(jsonData);
+                    if (data != null)
+                    {
+                        TariffLegendList = data.TariffBlocksLegend;
+                        ByMonthDateRange = data.ByMonth.Range;
+                        ByMonthUsage = data.ByMonth.Months;
+                        return data;
+                    }
+                }
+            }
+            return new AccountUsageDataModel();
+        }
+
+        public static bool IsRefreshNeeded(string accountNumber)
+        {
+            if (!string.IsNullOrEmpty(accountNumber) && !string.IsNullOrWhiteSpace(accountNumber))
+            {
+                string key = string.Format(TimeStampPrefix, accountNumber);
+                NSUserDefaults userDefaults = NSUserDefaults.StandardUserDefaults;
+                string timeStamp = userDefaults.StringForKey(key);
+                if (!string.IsNullOrEmpty(timeStamp) && !string.IsNullOrWhiteSpace(timeStamp))
+                {
+                    bool newDay = IsNewDay(timeStamp);
+                    AccountUsageDataModel cachedData = GetCachedData(accountNumber);
+                    return newDay && cachedData.ByMonth != null;
+                }
+            }
+
+            return true;
+        }
+
+        private static bool IsNewDay(string date)
+        {
+            DateTime currentDate = DateTime.Now;
+            DateTime cachedDate = DateTime.Parse(date);
+            return cachedDate.Date.AddDays(1) == currentDate.Date;
+        }
+        #endregion
         #endregion
     }
 }
