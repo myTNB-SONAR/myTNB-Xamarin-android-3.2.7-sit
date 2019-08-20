@@ -38,7 +38,6 @@ namespace myTNB
         CGRect scrollViewFrame;
         int _currentPageIndex;
         bool _isThreePhase = false;
-        bool _toolTipFlag = false;
 
         public class MeterReadingRequest
         {
@@ -838,7 +837,9 @@ namespace myTNB
                     if (NetworkUtility.isReachable)
                     {
                         ActivityIndicator.Show();
-                        await CallSubmitSMRMeterReading(DataManager.DataManager.SharedInstance.SelectedAccount, meterReadingRequestList);
+                        await CallSubmitSMRMeterReading(IsFromDashboard
+                            ? SSMRActivityInfoCache.DashboardAccount : SSMRActivityInfoCache.ViewHistoryAccount
+                            , meterReadingRequestList);
                     }
                     else
                     {
@@ -887,6 +888,7 @@ namespace myTNB
                     {
                         if (_submitMeterResponse.d.IsSuccess)
                         {
+                            SSMRActivityInfoCache.SubmittedAccount = account;
                             UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
                             GenericStatusPageViewController status = storyBoard.InstantiateViewController("GenericStatusPageViewController") as GenericStatusPageViewController;
                             status.NextViewController = GetSMRReadingHistoryView();
@@ -947,6 +949,7 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
             SSMRReadingHistoryViewController viewController =
                 storyBoard.InstantiateViewController("SSMRReadingHistoryViewController") as SSMRReadingHistoryViewController;
+            viewController.FromStatusPage = true;
             return viewController;
         }
 
