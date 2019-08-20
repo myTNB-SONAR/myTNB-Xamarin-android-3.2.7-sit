@@ -35,7 +35,6 @@ namespace myTNB
         private int _selectedTerminateReasonIndex = 0;
         private UILabel _lblAddress, _lblEditInfo, _lblTerminateReason, _lblReason;
         private UITextView _txtViewReason;
-
         private bool _isAllowEdit;
 
         public override void ViewDidLoad()
@@ -107,6 +106,8 @@ namespace myTNB
                 nfloat currentViewHeight = viewFrame.Height - r.Height;
                 _scrollContainer.Frame = new CGRect(_scrollContainer.Frame.X, _scrollContainer.Frame.Y
                     , _scrollContainer.Frame.Width, currentViewHeight);
+                CGPoint bottomOffest = new CGPoint(0, _scrollContainer.ContentSize.Height - _scrollContainer.Bounds.Size.Height + _scrollContainer.ContentInset.Bottom);
+                _scrollContainer.SetContentOffset(bottomOffest, true);
             }
             else
             {
@@ -472,6 +473,12 @@ namespace myTNB
                 _lblReason.Hidden = _txtViewReason.Text.Length == GetI18NValue(SSMRConstants.I18N_StateReason).Length;
                 ToggleCTA();
                 return true;
+            };
+
+            _txtViewReason.ShouldChangeText += (txtView, range, replacementString) =>
+            {
+                var newLength = _txtViewReason.Text.Length + replacementString.Length - range.Length;
+                return newLength <= SSMRConstants.Max_ReasonCharacterCount;
             };
         }
         private void SetTextViewDisplay(bool shouldDisplay)

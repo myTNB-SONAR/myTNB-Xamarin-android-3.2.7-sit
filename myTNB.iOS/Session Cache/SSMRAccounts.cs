@@ -88,9 +88,9 @@ namespace myTNB
                 }
                 DataManager.DataManager.SharedInstance.UpdateDueIsSSMR(accounts[i].ContractAccount, accounts[i].IsSMRTagged);
             }
-            if (response.SMREligibiltyPopUpDetails != null)
+            if (response.data.SMREligibiltyPopUpDetails != null)
             {
-                PopupDetailsList = response.SMREligibiltyPopUpDetails;
+                PopupDetailsList = response.data.SMREligibiltyPopUpDetails;
             }
         }
 
