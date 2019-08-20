@@ -30,15 +30,16 @@ namespace myTNB
         {
             UITableViewCell cell = tableView.DequeueReusableCell("genericViewCell", indexPath);
             cell.TextLabel.Text = _controller.Items[indexPath.Row];
-            cell.TextLabel.TextColor = MyTNBColor.TunaGrey();
-            cell.TextLabel.Font = MyTNBFont.MuseoSans16;
+            cell.TextLabel.TextColor = MyTNBColor.CharcoalGrey;
+            cell.TextLabel.Font = TNBFont.MuseoSans_16_300;
             cell.TextLabel.Lines = 0;
             cell.TextLabel.LineBreakMode = UILineBreakMode.WordWrap;
+            nfloat accWidth = ScaleUtility.GetScaledWidth(24);
             if (_controller.SelectedIndex > -1 && indexPath.Row == _controller.SelectedIndex)
             {
                 cell.Accessory = UITableViewCellAccessory.None;
-                cell.AccessoryView = new UIView(new CGRect(0, 0, 24, 24));
-                UIImageView imgViewTick = new UIImageView(new CGRect(0, 0, 24, 24))
+                cell.AccessoryView = new UIView(new CGRect(0, 0, accWidth, accWidth));
+                UIImageView imgViewTick = new UIImageView(new CGRect(0, 0, accWidth, accWidth))
                 {
                     Image = UIImage.FromBundle("Table-Tick")
                 };
@@ -54,7 +55,8 @@ namespace myTNB
                     }
                 }
             }
-            UIView viewLine = new UIView(new CGRect(0, cell.Frame.Height - 1, tableView.Frame.Width, 1))
+            UIView viewLine = new UIView(new CGRect(0, cell.Frame.Height - ScaleUtility.GetScaledHeight(1)
+                , tableView.Frame.Width, ScaleUtility.GetScaledHeight(1)))
             {
                 BackgroundColor = MyTNBColor.PlatinumGrey
             };
