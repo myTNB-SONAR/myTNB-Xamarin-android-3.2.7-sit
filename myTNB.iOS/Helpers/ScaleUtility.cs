@@ -58,6 +58,12 @@ namespace myTNB
             return maxY + GetScaledHeight(yValue);
         }
 
+        public static nfloat GetYLocationFromFrameScreenSize(CGRect frame, nfloat yValue)
+        {
+            nfloat maxY = frame.GetMaxY();
+            return maxY + GetHeightByScreenSize(yValue);
+        }
+
         public static nfloat GetYLocationFromFrame(this nfloat yValue, CGRect frame)
         {
             nfloat maxY = frame.GetMaxY();

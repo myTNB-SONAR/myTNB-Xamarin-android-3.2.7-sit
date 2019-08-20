@@ -16,9 +16,9 @@ namespace myTNB
             _width = UIScreen.MainScreen.Bounds.Width;
             _baseMargin = GetWidthByScreenSize(16);
             _baseMarginedWidth = _width - (_baseMargin * 2);
-            _mainView = new CustomUIView(new CGRect(0, 0, _width, GetScaledHeight(203)));
+            _mainView = new CustomUIView(new CGRect(0, 0, _width, GetHeightByScreenSize(203)));
 
-            _lblDateRange = new UILabel(new CGRect(_baseMargin, 0, _baseMarginedWidth, GetScaledHeight(16)))
+            _lblDateRange = new UILabel(new CGRect(_baseMargin, 0, _baseMarginedWidth, GetHeightByScreenSize(16)))
             {
                 TextAlignment = UITextAlignment.Center,
                 TextColor = MyTNBColor.ButterScotch,
@@ -26,8 +26,8 @@ namespace myTNB
                 Text = AccountUsageCache.ByMonthDateRange
             };
 
-            CustomUIView viewLine = new CustomUIView(new CGRect(_baseMargin, GetYLocationFromFrame(_lblDateRange.Frame, 164)
-                , _baseMarginedWidth, GetScaledHeight(1)))
+            CustomUIView viewLine = new CustomUIView(new CGRect(_baseMargin, GetYLocationFromFrameScreenSize(_lblDateRange.Frame, 164)
+                , _baseMarginedWidth, GetHeightByScreenSize(1)))
             { BackgroundColor = UIColor.FromWhiteAlpha(1, 0.30F) };
 
             _mainView.AddSubviews(new UIView[] { _lblDateRange, viewLine });
@@ -36,17 +36,17 @@ namespace myTNB
 
         protected override void CreateSegment()
         {
-            _segmentContainer = new CustomUIView(new CGRect(0, GetYLocationFromFrame(_lblDateRange.Frame, 16)
-               , _width, GetScaledHeight(171)));
+            _segmentContainer = new CustomUIView(new CGRect(0, GetYLocationFromFrameScreenSize(_lblDateRange.Frame, 16)
+               , _width, GetHeightByScreenSize(171)));
 
             nfloat height = _segmentContainer.Frame.Height;
             nfloat width = GetWidthByScreenSize(12);
             nfloat barMargin = GetWidthByScreenSize(36);
             nfloat baseMargin = GetWidthByScreenSize(34);
             nfloat xLoc = baseMargin;
-            nfloat lblHeight = GetScaledHeight(14);
-            nfloat maxBarHeight = GetScaledHeight(108);
-            nfloat amountBarMargin = GetScaledHeight(4);
+            nfloat lblHeight = GetHeightByScreenSize(14);
+            nfloat maxBarHeight = GetHeightByScreenSize(108);
+            nfloat amountBarMargin = GetHeightByScreenSize(4);
 
             List<MonthItemModel> usageData = AccountUsageCache.ByMonthUsage;
             List<string> valueList = usageData.Select(x => x.UsageTotal).ToList();
@@ -65,7 +65,7 @@ namespace myTNB
                 nfloat barHeight = (nfloat)(divisor * value);
                 nfloat yLoc = (lblHeight * 2) + amountBarMargin + (maxBarHeight - barHeight);
 
-                CustomUIView viewBar = new CustomUIView(new CGRect(0, segment.Frame.Height - lblHeight - GetScaledHeight(17), width, 0))
+                CustomUIView viewBar = new CustomUIView(new CGRect(0, segment.Frame.Height - lblHeight - GetHeightByScreenSize(17), width, 0))
                 {
                     BackgroundColor = UIColor.Clear,
                     Tag = 1001,

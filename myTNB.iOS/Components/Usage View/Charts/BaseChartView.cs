@@ -81,5 +81,10 @@ namespace myTNB
         {
             return ScaleUtility.GetHeightByScreenSize(value);
         }
+
+        protected nfloat GetYLocationFromFrameScreenSize(CGRect frame, nfloat yValue)
+        {
+            return ScaleUtility.GetYLocationFromFrameScreenSize(frame, yValue);
+        }
     }
 }
