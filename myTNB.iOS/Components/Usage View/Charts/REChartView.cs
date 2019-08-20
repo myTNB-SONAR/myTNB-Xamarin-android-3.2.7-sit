@@ -62,8 +62,8 @@ namespace myTNB
                 CustomUIView segment = new CustomUIView(new CGRect(xLoc, 0, segmentWidth, height))
                 {
                     Tag = index,
-                    PageName = "Inner Dashboard",
-                    EventName = "On Tap RE Bar"
+                    PageName = "InnerDashboard",
+                    EventName = "OnTapREBar"
                 };
                 _segmentContainer.AddSubview(segment);
                 xLoc += segmentWidth + segmentMargin;
