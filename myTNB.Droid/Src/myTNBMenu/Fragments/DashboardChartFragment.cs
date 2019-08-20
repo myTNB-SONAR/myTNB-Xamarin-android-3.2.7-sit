@@ -16,6 +16,7 @@ using Android.Views;
 using Android.Views.Animations;
 using Android.Widget;
 using CheeseBind;
+using Facebook.Shimmer;
 using Java.Lang;
 using Java.Text;
 using Java.Util;
@@ -76,8 +77,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         ChartType ChartType = ChartType.RM;
 
-        bool hasNoInternet;
-
         [BindView(Resource.Id.bar_chart)]
         BarChart mChart;
 
@@ -112,6 +111,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         [BindView(Resource.Id.layout_api_refresh)]
         LinearLayout refreshLayout;
+
+        [BindView(Resource.Id.refresh_image)]
+        ImageView refresh_image;
 
         [BindView(Resource.Id.btnRefresh)]
         Button btnNewRefresh;
@@ -218,6 +220,60 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.txtNoPayableCurrency)]
         TextView txtNoPayableCurrency;
 
+        [BindView(Resource.Id.shimmrtAddressView)]
+        LinearLayout shimmrtAddressView;
+
+        [BindView(Resource.Id.shimmrtTxtAddress1)]
+        ShimmerFrameLayout shimmrtTxtAddress1;
+
+        [BindView(Resource.Id.shimmrtTxtAddress2)]
+        ShimmerFrameLayout shimmrtTxtAddress2;
+
+        [BindView(Resource.Id.shimmrtRangeView)]
+        LinearLayout shimmrtRangeView;
+
+        [BindView(Resource.Id.shimmrtTxtRange)]
+        ShimmerFrameLayout shimmrtTxtRange;
+
+        [BindView(Resource.Id.shimmrtGraphView)]
+        LinearLayout shimmrtGraphView;
+
+        [BindView(Resource.Id.shimmrtGraph)]
+        ShimmerFrameLayout shimmrtGraph;
+
+        [BindView(Resource.Id.shimmerPayableLayout)]
+        RelativeLayout shimmerPayableLayout;
+
+        [BindView(Resource.Id.shimmrtTotalPayableTitle)]
+        ShimmerFrameLayout shimmrtTotalPayableTitle;
+
+        [BindView(Resource.Id.shimmrtTotalPayable)]
+        ShimmerFrameLayout shimmrtTotalPayable;
+
+        [BindView(Resource.Id.shimmrtDueDate)]
+        ShimmerFrameLayout shimmrtDueDate;
+
+        [BindView(Resource.Id.shimmerREPayableLayout)]
+        RelativeLayout shimmerREPayableLayout;
+
+        [BindView(Resource.Id.shimmrtRETotalPayableTitle)]
+        ShimmerFrameLayout shimmrtRETotalPayableTitle;
+
+        [BindView(Resource.Id.shimmrtRETotalPayable)]
+        ShimmerFrameLayout shimmrtRETotalPayable;
+
+        [BindView(Resource.Id.shimmrtREDueDate)]
+        ShimmerFrameLayout shimmrtREDueDate;
+
+        [BindView(Resource.Id.rePayableLayout)]
+        RelativeLayout rePayableLayout;
+
+        [BindView(Resource.Id.shimmerREImg)]
+        ShimmerFrameLayout shimmerREImg;
+
+        [BindView(Resource.Id.re_img)]
+        ImageView re_img;
+
         TariffBlockLegendAdapter tariffBlockLegendAdapter;
 
         private DashboardChartContract.IUserActionsListener userActionsListener;
@@ -225,10 +281,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private string txtRefreshMsg = "";
         private string txtBtnRefreshTitle = "";
-
-        private bool hasAmtDue = false;
-
-        private bool amountDueFailed = false;
 
         private bool isSubmitMeter = false;
 
@@ -255,7 +307,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         bool isToggleTariff = false;
 
-        bool isBillingAvailable = true;
+        static bool isBCRMDown = false;
+
+        static bool isPaymentDown = false;
+
+        static bool isUsageLoadedNeeded = true;
 
         public StackedBarChartRenderer renderer;
 
@@ -273,27 +329,50 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             base.OnCreate(savedInstanceState);
             Bundle extras = Arguments;
 
-
-            if (extras.ContainsKey(Constants.NO_INTERNET_CONNECTION))
+            if (extras.ContainsKey(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE))
             {
-                hasNoInternet = extras.GetBoolean(Constants.NO_INTERNET_CONNECTION);
-            }
-
-            if (extras.ContainsKey(Constants.REFRESH_MSG) && !string.IsNullOrEmpty(extras.GetString(Constants.REFRESH_MSG)))
-            {
-                txtRefreshMsg = extras.GetString(Constants.REFRESH_MSG);
+                isUsageLoadedNeeded = false; 
+                var usageHistoryDataResponse = JsonConvert.DeserializeObject<UsageHistoryResponse>(extras.GetString(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE));
+                selectedHistoryData = usageHistoryDataResponse.Data.UsageHistoryData;
+                try
+                {
+                    if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshMessage != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshMessage))
+                    {
+                        txtRefreshMsg = usageHistoryDataResponse.Data.RefreshMessage;
+                    }
+                    else
+                    {
+                        txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
+                    }
+                }
+                catch (System.Exception e)
+                {
+                    txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
+                    Utility.LoggingNonFatalError(e);
+                }
+                try
+                {
+                    if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshBtnText != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshBtnText))
+                    {
+                        txtBtnRefreshTitle = usageHistoryDataResponse.Data.RefreshBtnText;
+                    }
+                    else
+                    {
+                        txtBtnRefreshTitle = "Reload Now";
+                    }
+                }
+                catch (System.Exception e)
+                {
+                    txtBtnRefreshTitle = "Reload Now";
+                    Utility.LoggingNonFatalError(e);
+                }
             }
             else
             {
-                txtRefreshMsg = Activity.GetString(Resource.String.text_new_refresh_content);
-            }
-            if (extras.ContainsKey(Constants.REFRESH_BTN_MSG) && !string.IsNullOrEmpty(extras.GetString(Constants.REFRESH_BTN_MSG)))
-            {
-                txtBtnRefreshTitle = extras.GetString(Constants.REFRESH_BTN_MSG);
-            }
-            else
-            {
-                txtBtnRefreshTitle = Activity.GetString(Resource.String.text_new_refresh);
+                isUsageLoadedNeeded = true;
+                selectedHistoryData = null;
+                txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
+                txtBtnRefreshTitle = "Reload Now";
             }
 
             if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
@@ -301,281 +380,42 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
             }
 
-            if (extras.ContainsKey(Constants.AMOUNT_DUE_FAILED_KEY))
-            {
-                amountDueFailed = extras.GetBoolean(Constants.AMOUNT_DUE_FAILED_KEY);
-            }
-
-            if (extras.ContainsKey(Constants.AMOUNT_DUE_RESPONSE_KEY))
-            {
-                amountDueResponse = JsonConvert.DeserializeObject<AccountDueAmountResponse>(extras.GetString(Constants.AMOUNT_DUE_RESPONSE_KEY));
-            }
-            else
-            {
-                amountDueResponse = null;
-            }
-
-            if (extras.ContainsKey(Constants.IS_BILLING_AVAILABLE_KEY))
-            {
-                isBillingAvailable = extras.GetBoolean(Constants.IS_BILLING_AVAILABLE_KEY);
-            }
-
             errorMSG = "";
 
-            if (!hasNoInternet)
+            if (extras.ContainsKey(Constants.SELECTED_ERROR_MSG))
             {
-                if (extras.ContainsKey(Constants.SELECTED_ACCOUNT_USAGE))
-                {
-                    selectedHistoryData = JsonConvert.DeserializeObject<UsageHistoryData>(extras.GetString(Constants.SELECTED_ACCOUNT_USAGE));
-                }
-
-                if (extras.ContainsKey(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE))
-                {
-                    var usageHistoryDataResponse = JsonConvert.DeserializeObject<UsageHistoryResponse>(extras.GetString(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE));
-                    selectedHistoryData = usageHistoryDataResponse.Data.UsageHistoryData;
-                }
-
-                if (extras.ContainsKey(Constants.SELECTED_ERROR_MSG))
-                {
-                    errorMSG = extras.GetString(Constants.SELECTED_ERROR_MSG);
-                }
-            }
-            else
-            {
-                if (extras.ContainsKey(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE))
-                {
-                    var usageHistoryDataResponse = JsonConvert.DeserializeObject<UsageHistoryResponse>(extras.GetString(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE));
-                    try
-                    {
-                        if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshMessage != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshMessage))
-                        {
-                            txtRefreshMsg = usageHistoryDataResponse.Data.RefreshMessage;
-                        }
-                        else
-                        {
-                            txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
-                        }
-                    }
-                    catch (System.Exception e)
-                    {
-                        txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
-                        Utility.LoggingNonFatalError(e);
-                    }
-                    try
-                    {
-                        if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshBtnText != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshBtnText))
-                        {
-                            txtBtnRefreshTitle = usageHistoryDataResponse.Data.RefreshBtnText;
-                        }
-                        else
-                        {
-                            txtBtnRefreshTitle = "Reload Now";
-                        }
-                    }
-                    catch (System.Exception e)
-                    {
-                        txtBtnRefreshTitle = "Reload Now";
-                        Utility.LoggingNonFatalError(e);
-                    }
-                }
-                else
-                {
-                    txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
-                    txtBtnRefreshTitle = "Reload Now";
-                }
+                errorMSG = extras.GetString(Constants.SELECTED_ERROR_MSG);
             }
 
 
             SetHasOptionsMenu(true);
             this.mPresenter = new DashboardChartPresenter(this);
+
+            ((DashboardHomeActivity)Activity).HideBottomNavigationBar();
         }
 
-        internal static DashboardChartFragment NewInstance(UsageHistoryData usageHistoryData, AccountData accountData)
+        internal static DashboardChartFragment NewInstance(UsageHistoryResponse usageHistoryResponse, AccountData accountData, string error, string errorMessage)
         {
             DashboardChartFragment chartFragment = new DashboardChartFragment();
             Bundle bundle = new Bundle();
-            string data = JsonConvert.SerializeObject(usageHistoryData);
-            bundle.PutString(Constants.SELECTED_ACCOUNT_USAGE, data);
-            bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
-            chartFragment.Arguments = bundle;
-            return chartFragment;
-        }
-
-        internal static DashboardChartFragment NewInstance(bool isAmountDueDown, bool isGraphDown, bool isBillingAvailable, UsageHistoryResponse response, AccountData selectedAccount, AccountDueAmountResponse amountDueResponse)
-        {
-            DashboardChartFragment chartFragment = new DashboardChartFragment();
-            Bundle bundle = new Bundle();
-            string data = JsonConvert.SerializeObject(response);
-            bundle.PutString(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE, data);
-            bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-            bundle.PutString(Constants.AMOUNT_DUE_RESPONSE_KEY, JsonConvert.SerializeObject(amountDueResponse));
-            bundle.PutBoolean(Constants.AMOUNT_DUE_FAILED_KEY, isAmountDueDown);
-            bundle.PutBoolean(Constants.IS_BILLING_AVAILABLE_KEY, isBillingAvailable);
-            bundle.PutBoolean(Constants.NO_INTERNET_CONNECTION, isGraphDown);
-            chartFragment.Arguments = bundle;
-            return chartFragment;
-        }
-
-        internal static DashboardChartFragment NewInstance(bool isAmountDueDown, bool isGraphDown, bool isBillingAvailable, UsageHistoryResponse response, AccountData selectedAccount, AccountDueAmountResponse amountDueResponse, string error, string errorMessage)
-        {
-            DashboardChartFragment chartFragment = new DashboardChartFragment();
-            Bundle bundle = new Bundle();
-            string data = JsonConvert.SerializeObject(response);
-            bundle.PutString(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE, data);
-            bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-            bundle.PutString(Constants.AMOUNT_DUE_RESPONSE_KEY, JsonConvert.SerializeObject(amountDueResponse));
-            bundle.PutBoolean(Constants.AMOUNT_DUE_FAILED_KEY, isAmountDueDown);
-            bundle.PutBoolean(Constants.NO_INTERNET_CONNECTION, isGraphDown);
-            bundle.PutBoolean(Constants.IS_BILLING_AVAILABLE_KEY, isBillingAvailable);
-            bundle.PutString(Constants.SELECTED_ERROR, error);
-            bundle.PutString(Constants.SELECTED_ERROR_MSG, errorMessage);
-            chartFragment.Arguments = bundle;
-            return chartFragment;
-        }
-
-        internal static DashboardChartFragment NewInstance(UsageHistoryData usageHistoryData, AccountData accountData, string error, string errorMessage)
-        {
-            DashboardChartFragment chartFragment = new DashboardChartFragment();
-            Bundle bundle = new Bundle();
-            string data = JsonConvert.SerializeObject(usageHistoryData);
-            bundle.PutString(Constants.SELECTED_ACCOUNT_USAGE, data);
-            bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
-            bundle.PutString(Constants.SELECTED_ERROR, error);
-            bundle.PutString(Constants.SELECTED_ERROR_MSG, errorMessage);
-            chartFragment.Arguments = bundle;
-            return chartFragment;
-        }
-
-        internal static DashboardChartFragment NewInstance(UsageHistoryData usageHistoryData, AccountData accountData, string error, string errorMessage, AccountDueAmountResponse amountDueResponse)
-        {
-            DashboardChartFragment chartFragment = new DashboardChartFragment();
-            Bundle bundle = new Bundle();
-            string data = JsonConvert.SerializeObject(usageHistoryData);
-            bundle.PutString(Constants.SELECTED_ACCOUNT_USAGE, data);
-            bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
-            bundle.PutString(Constants.SELECTED_ERROR, error);
-            bundle.PutString(Constants.SELECTED_ERROR_MSG, errorMessage);
-            if (amountDueResponse != null)
+            if (usageHistoryResponse != null)
             {
-                bundle.PutString(Constants.AMOUNT_DUE_RESPONSE_KEY, JsonConvert.SerializeObject(amountDueResponse));
-            }
-            chartFragment.Arguments = bundle;
-            return chartFragment;
-        }
-
-        internal static DashboardChartFragment NewInstance(bool hasNoInternet, UsageHistoryResponse response, AccountData accountData)
-        {
-            DashboardChartFragment chartFragment = new DashboardChartFragment();
-            Bundle bundle = new Bundle();
-
-            bundle.PutBoolean(Constants.NO_INTERNET_CONNECTION, hasNoInternet);
-            if (response != null && response.Data != null)
-            {
-                if (string.IsNullOrEmpty(response.Data.RefreshMessage))
-                {
-                    bundle.PutString(Constants.REFRESH_MSG, "The graph must be tired. Tap the button below to help it out.");
-                }
-                else
-                {
-                    bundle.PutString(Constants.REFRESH_MSG, response.Data.RefreshMessage);
-                }
-
-                if (!string.IsNullOrEmpty(response.Data.RefreshBtnText))
-                {
-                    bundle.PutString(Constants.REFRESH_BTN_MSG, response.Data.RefreshBtnText);
-                }
-            }
-            else
-            {
-                bundle.PutString(Constants.REFRESH_MSG, "The graph must be tired. Tap the button below to help it out.");
-                bundle.PutString(Constants.REFRESH_BTN_MSG, "Refresh Now");
+                bundle.PutString(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE, JsonConvert.SerializeObject(usageHistoryResponse));
             }
             if (accountData != null)
             {
                 bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
             }
-            chartFragment.Arguments = bundle;
-            return chartFragment;
-        }
-
-        internal static DashboardChartFragment NewInstance(UsageHistoryData usageHistoryData, AccountData accountData, AccountDueAmountResponse amountDueResponse)
-        {
-            DashboardChartFragment chartFragment = new DashboardChartFragment();
-            Bundle bundle = new Bundle();
-            string data = JsonConvert.SerializeObject(usageHistoryData);
-            bundle.PutString(Constants.SELECTED_ACCOUNT_USAGE, data);
-            bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
-            if (amountDueResponse != null)
+            if (!string.IsNullOrEmpty(error))
             {
-                bundle.PutString(Constants.AMOUNT_DUE_RESPONSE_KEY, JsonConvert.SerializeObject(amountDueResponse));
-            }
-            chartFragment.Arguments = bundle;
-            return chartFragment;
-        }
-
-        internal static DashboardChartFragment NewInstance(bool hasNoInternet, UsageHistoryResponse response, AccountData accountData, AccountDueAmountResponse amountDueResponse)
-        {
-            DashboardChartFragment chartFragment = new DashboardChartFragment();
-            Bundle bundle = new Bundle();
-
-            bundle.PutBoolean(Constants.NO_INTERNET_CONNECTION, hasNoInternet);
-            if (response != null && response.Data != null)
-            {
-                if (string.IsNullOrEmpty(response.Data.RefreshMessage))
-                {
-                    bundle.PutString(Constants.REFRESH_MSG, "The graph must be tired. Tap the button below to help it out.");
-                }
-                else
-                {
-                    bundle.PutString(Constants.REFRESH_MSG, response.Data.RefreshMessage);
-                }
-
-                if (!string.IsNullOrEmpty(response.Data.RefreshBtnText))
-                {
-                    bundle.PutString(Constants.REFRESH_BTN_MSG, response.Data.RefreshBtnText);
-                }
-            }
-            else
-            {
-                bundle.PutString(Constants.REFRESH_MSG, "The graph must be tired. Tap the button below to help it out.");
-                bundle.PutString(Constants.REFRESH_BTN_MSG, "Refresh Now");
-            }
-            if (accountData != null)
-            {
-                bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
-            }
-            if (amountDueResponse != null)
-            {
-                bundle.PutString(Constants.AMOUNT_DUE_RESPONSE_KEY, JsonConvert.SerializeObject(amountDueResponse));
-            }
-            chartFragment.Arguments = bundle;
-            return chartFragment;
-        }
-
-        internal static DashboardChartFragment NewInstance(bool hasNoInternet, bool amountDueFailed, string contentTxt, string btnTxt, AccountData accountData)
-        {
-            DashboardChartFragment chartFragment = new DashboardChartFragment();
-            Bundle bundle = new Bundle();
-
-            bundle.PutBoolean(Constants.AMOUNT_DUE_FAILED_KEY, amountDueFailed);
-            bundle.PutBoolean(Constants.NO_INTERNET_CONNECTION, hasNoInternet);
-            if (string.IsNullOrEmpty(contentTxt))
-            {
-                bundle.PutString(Constants.REFRESH_MSG, "This page must be tired. Tap the button below to help it out.");
-            }
-            else
-            {
-                bundle.PutString(Constants.REFRESH_MSG, contentTxt);
+                bundle.PutString(Constants.SELECTED_ERROR, error);
             }
 
-            if (!string.IsNullOrEmpty(btnTxt))
+            if (!string.IsNullOrEmpty(errorMessage))
             {
-                bundle.PutString(Constants.REFRESH_BTN_MSG, btnTxt);
+                bundle.PutString(Constants.SELECTED_ERROR_MSG, errorMessage);
             }
-            if (accountData != null)
-            {
-                bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
-            }
+
             chartFragment.Arguments = bundle;
             return chartFragment;
         }
@@ -585,10 +425,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             base.OnViewCreated(view, savedInstanceState);
             try
             {
-                if (!hasNoInternet)
-                {
-                    txtTotalPayable.Text = decimalFormat.Format(selectedAccount.AmtCustBal);
-                }
+                bottomSheetBehavior = BottomSheetBehavior.From(bottomSheet);
+                bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                bottomSheetBehavior.SetBottomSheetCallback(new DashboardBottomSheetCallBack());
+
+                scrollView = view.FindViewById<NMREDashboardScrollView>(Resource.Id.scroll_view);
+                ViewTreeObserver observer = scrollView.ViewTreeObserver;
+                observer.AddOnGlobalLayoutListener(this);
+
+                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+
+                requireScroll = false;
 
                 TextViewUtils.SetMuseoSans300Typeface(txtAddress, txtTotalPayable, txtDueDate);
                 TextViewUtils.SetMuseoSans300Typeface(txtNewRefreshMessage, ssmrAccountStatusText);
@@ -596,127 +443,43 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextViewUtils.SetMuseoSans300Typeface(reTotalPayable, reTotalPayableCurrency, reDueDate, txtNoPayable);
                 TextViewUtils.SetMuseoSans500Typeface(reTotalPayableTitle, btnReView, txtTarifToggle, txtNoPayableTitle, txtNoPayableCurrency);
 
-
-                bottomSheetBehavior = BottomSheetBehavior.From(bottomSheet);
-                bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
-                bottomSheetBehavior.SetBottomSheetCallback(new DashboardBottomSheetCallBack());
-
-                ((DashboardHomeActivity)Activity).HideAccountName();
-                if (!hasNoInternet)
-                {
-                    dashboardAccountName.Visibility = ViewStates.Visible;
-                    dashboardAccountName.Text = selectedAccount.AccountNickName;
-                    List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
-                    bool enableDropDown = accountList.Count > 0 ? true : false;
-                    if (enableDropDown)
-                    {
-                        Drawable dropdown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_spinner_dropdown);
-                        Drawable transparentDropDown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_action_dropdown);
-                        transparentDropDown.Alpha = 0;
-                        dashboardAccountName.SetCompoundDrawablesWithIntrinsicBounds(transparentDropDown, null, dropdown, null);
-                    }
-                    else
-                    {
-                        dashboardAccountName.SetCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
-                    }
-                }
-                else
-                {
-                    dashboardAccountName.Visibility = ViewStates.Gone;
-                }
-
-                tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
-                LinearLayoutManager linearTariffBlockLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Vertical, false);
-                tariffBlockLegendRecyclerView.SetLayoutManager(linearTariffBlockLayoutManager);
-
-                if (!hasNoInternet)
-                {
-                    energyTipsView.Visibility = ViewStates.Visible;
-                    LinearLayoutManager linearEnergyTipLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
-                    energyTipsList.SetLayoutManager(linearEnergyTipLayoutManager);
-                    energyTipsList.NestedScrollingEnabled = true;
-
-                    LinearSnapHelper snapHelper = new LinearSnapHelper();
-                    snapHelper.AttachToRecyclerView(energyTipsList);
-
-                    OnGetEnergyTipsItems();
-
-
-                }
-                else
-                {
-                    energyTipsView.Visibility = ViewStates.Gone;
-                }
-
-                if (!isBillingAvailable)
-                {
-                    btnViewBill.Enabled = false;
-                    btnReView.Enabled = false;
-                    btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-                    btnReView.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-                    btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
-                    btnReView.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
-                }
-
-                if (amountDueFailed)
-                {
-                    txtDueDate.Text = "- -";
-                    reDueDate.Text = "- -";
-                    txtTotalPayable.Text = "- -";
-                    reTotalPayable.Text = "- -";
-                    DisablePayButton();
-                    btnViewBill.Enabled = false;
-                    btnReView.Enabled = false;
-                    btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-                    btnReView.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-                    btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
-                    btnReView.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
-                }
-
-                scrollView = view.FindViewById<NMREDashboardScrollView>(Resource.Id.scroll_view);
-                ViewTreeObserver observer = scrollView.ViewTreeObserver;
-                observer.AddOnGlobalLayoutListener(this);
-
-                requireScroll = false;
-
-                this.userActionsListener?.Start();
-
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
                 DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
 
-                smrResponse = InnerDashboardAPICahceUtil.OnGetSMRActivityInfoResponse();
-                if (smrResponse != null)
+                if (bcrmEntity != null && bcrmEntity.IsDown)
                 {
-                    ShowSSMRDashboardView(smrResponse);
+                    isBCRMDown = true;
                 }
                 else
                 {
-                    HideSSMRDashboardView();
-                }
+                    isBCRMDown = false;
 
-                accountStatusResponse = InnerDashboardAPICahceUtil.OnGetAccountStatusResponse();
-                if (accountStatusResponse != null)
-                {
-                    ShowAccountStatus(accountStatusResponse.Data.Data);
-                }
-                else
-                {
-                    energyDisconnectionButton.Visibility = ViewStates.Gone;
-                }
+                    if (pgCCEntity.IsDown && pgFPXEntity.IsDown)
+                    {
+                        isPaymentDown = true;
 
-                smrResponse = InnerDashboardAPICahceUtil.OnGetSMRActivityInfoResponse();
-                if (smrResponse != null)
-                {
-                    ShowSSMRDashboardView(smrResponse);
-                }
-                else
-                {
-                    HideSSMRDashboardView();
+                        DisablePayButton();
+                        Snackbar downtimeSnackBar = Snackbar.Make(rootView,
+                                bcrmEntity.DowntimeTextMessage,
+                                Snackbar.LengthLong);
+                        View v = downtimeSnackBar.View;
+                        TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                        tv.SetMaxLines(5);
+                        if (!selectedAccount.AccountCategoryId.Equals("2"))
+                        {
+                            downtimeSnackBar.Show();
+                        }
+                    }
+                    else
+                    {
+                        isPaymentDown = false;
+                    }
                 }
 
                 if (selectedAccount != null)
                 {
+                    txtAddress.Text = selectedAccount.AddStreet;
                     if (selectedAccount.AccountCategoryId.Equals("2"))
                     {
                         bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
@@ -737,122 +500,157 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         btnPay.Visibility = ViewStates.Visible;
                         btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
                         graphToggleSelection.Visibility = ViewStates.Visible;
+                        energyTipsView.Visibility = ViewStates.Visible;
                     }
+                }
 
+                if (isBCRMDown)
+                {
+                    ShowAmountDueNotAvailable();
 
-                    if (bcrmEntity != null && bcrmEntity.IsDown)
+                    HideSSMRDashboardView();
+                    energyTipsView.Visibility = ViewStates.Gone;
+                    dashboardAccountName.Visibility = ViewStates.Gone;
+
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
                     {
-                        txtDueDate.Text = "- -";
-                        reDueDate.Text = "- -";
-                        txtTotalPayable.Text = "- -";
-                        reTotalPayable.Text = "- -";
-                        DisablePayButton();
-                        btnViewBill.Enabled = false;
-                        btnReView.Enabled = false;
-                        btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-                        btnReView.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-                        btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
-                        btnReView.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
-
-                        HideSSMRDashboardView();
-                        energyTipsView.Visibility = ViewStates.Gone;
-                        if (bcrmEntity.IsDown)
-                        {
-                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-                            {
-                                txtNewRefreshMessage.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage, FromHtmlOptions.ModeLegacy);
-                            }
-                            else
-                            {
-                                txtNewRefreshMessage.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage);
-                            }
-
-                            Snackbar downtimeSnackBar = Snackbar.Make(rootView,
-                                bcrmEntity.DowntimeTextMessage,
-                                Snackbar.LengthLong);
-                            View v = downtimeSnackBar.View;
-                            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                            tv.SetMaxLines(5);
-                            downtimeSnackBar.Show();
-                        }
+                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage, FromHtmlOptions.ModeLegacy);
                     }
                     else
                     {
-                        if (pgCCEntity.IsDown && pgFPXEntity.IsDown)
-                        {
-                            DisablePayButton();
-                            Snackbar downtimeSnackBar = Snackbar.Make(rootView,
-                                    bcrmEntity.DowntimeTextMessage,
-                                    Snackbar.LengthLong);
-                            View v = downtimeSnackBar.View;
-                            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                            tv.SetMaxLines(5);
-                            if (!selectedAccount.AccountCategoryId.Equals("2"))
-                            {
-                                downtimeSnackBar.Show();
-                            }
-                        }
-                        if (!amountDueFailed)
-                        {
-                            if (amountDueResponse != null)
-                            {
-                                ShowAmountDue(amountDueResponse.Data.Data);
-                            }
-                        }
-
+                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(bcrmEntity.DowntimeMessage);
                     }
 
-                    txtNewRefreshMessage.Click += delegate
+                    this.userActionsListener?.Start();
+
+                    Snackbar downtimeSnackBar = Snackbar.Make(rootView,
+                        bcrmEntity.DowntimeTextMessage,
+                        Snackbar.LengthLong);
+                    View v = downtimeSnackBar.View;
+                    TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                    tv.SetMaxLines(5);
+                    downtimeSnackBar.Show();
+
+
+                }
+                else
+                {
+                    ((DashboardHomeActivity)Activity).HideAccountName();
+                    dashboardAccountName.Visibility = ViewStates.Visible;
+                    dashboardAccountName.Text = selectedAccount.AccountNickName;
+                    List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
+                    bool enableDropDown = accountList.Count > 0 ? true : false;
+                    if (enableDropDown)
                     {
-                        if (bcrmEntity.IsDown)
+                        Drawable dropdown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_spinner_dropdown);
+                        Drawable transparentDropDown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_action_dropdown);
+                        transparentDropDown.Alpha = 0;
+                        dashboardAccountName.SetCompoundDrawablesWithIntrinsicBounds(transparentDropDown, null, dropdown, null);
+                    }
+                    else
+                    {
+                        dashboardAccountName.SetCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                    }
+
+                    tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
+                    LinearLayoutManager linearTariffBlockLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Vertical, false);
+                    tariffBlockLegendRecyclerView.SetLayoutManager(linearTariffBlockLayoutManager);
+
+                    LinearLayoutManager linearEnergyTipLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
+                    energyTipsList.SetLayoutManager(linearEnergyTipLayoutManager);
+                    energyTipsList.NestedScrollingEnabled = true;
+
+                    LinearSnapHelper snapHelper = new LinearSnapHelper();
+                    snapHelper.AttachToRecyclerView(energyTipsList);
+
+                    DisablePayButton();
+                    DisableViewBillButton();
+
+                    energyDisconnectionButton.Visibility = ViewStates.Gone;
+
+                    HideSSMRDashboardView();
+
+                    if (isUsageLoadedNeeded)
+                    {
+                        rmKwhSelection.Enabled = false;
+                        tarifToggle.Enabled = false;
+                        txtRange.Visibility = ViewStates.Gone;
+                        StartRangeShimmer();
+                        mChart.Visibility = ViewStates.Gone;
+                        StartGraphShimmer();
+                    }
+                    else
+                    {
+                        rmKwhSelection.Enabled = true;
+                        tarifToggle.Enabled = true;
+                    }
+
+                    re_img.Visibility = ViewStates.Gone;
+                    rePayableLayout.Visibility = ViewStates.Gone;
+                    totalPayableLayout.Visibility = ViewStates.Gone;
+                    noPayableLayout.Visibility = ViewStates.Gone;
+
+                    StartAmountDueShimmer();
+
+                    energyDisconnectionButton.Visibility = ViewStates.Gone;
+
+                    OnGetEnergyTipsItems();
+
+
+                    this.userActionsListener?.Start();
+
+                    if (!string.IsNullOrEmpty(errorMSG))
+                    {
+                        ShowUnableToFecthSmartMeterData(errorMSG);
+                    }
+                }
+
+                txtNewRefreshMessage.Click += delegate
+                {
+                    if (isBCRMDown)
+                    {
+                        string textMessage = bcrmEntity.DowntimeMessage;
+                        if (textMessage != null && textMessage.Contains("http"))
                         {
-                            string textMessage = bcrmEntity.DowntimeMessage;
-                            if (textMessage != null && textMessage.Contains("http"))
+                            //Launch webview
+                            int startIndex = textMessage.LastIndexOf("=") + 2;
+                            int lastIndex = textMessage.LastIndexOf("\"");
+                            int lengthOfId = (lastIndex - startIndex);
+                            if (lengthOfId < textMessage.Length)
                             {
-                                //Launch webview
-                                int startIndex = textMessage.LastIndexOf("=") + 2;
-                                int lastIndex = textMessage.LastIndexOf("\"");
-                                int lengthOfId = (lastIndex - startIndex);
-                                if (lengthOfId < textMessage.Length)
+                                string url = textMessage.Substring(startIndex, lengthOfId);
+                                if (!string.IsNullOrEmpty(url))
                                 {
-                                    string url = textMessage.Substring(startIndex, lengthOfId);
-                                    if (!string.IsNullOrEmpty(url))
-                                    {
-                                        Intent intent = new Intent(Intent.ActionView);
-                                        intent.SetData(Android.Net.Uri.Parse(url));
-                                        StartActivity(intent);
-                                    }
+                                    Intent intent = new Intent(Intent.ActionView);
+                                    intent.SetData(Android.Net.Uri.Parse(url));
+                                    StartActivity(intent);
                                 }
                             }
-                            else if (textMessage != null && textMessage.Contains("faq"))
+                        }
+                        else if (textMessage != null && textMessage.Contains("faq"))
+                        {
+                            //Lauch FAQ
+                            int startIndex = textMessage.LastIndexOf("=") + 1;
+                            int lastIndex = textMessage.LastIndexOf("}");
+                            int lengthOfId = (lastIndex - startIndex) + 1;
+                            if (lengthOfId < textMessage.Length)
                             {
-                                //Lauch FAQ
-                                int startIndex = textMessage.LastIndexOf("=") + 1;
-                                int lastIndex = textMessage.LastIndexOf("}");
-                                int lengthOfId = (lastIndex - startIndex) + 1;
-                                if (lengthOfId < textMessage.Length)
+                                string faqid = textMessage.Substring(startIndex, lengthOfId);
+                                if (!string.IsNullOrEmpty(faqid))
                                 {
-                                    string faqid = textMessage.Substring(startIndex, lengthOfId);
-                                    if (!string.IsNullOrEmpty(faqid))
+                                    Intent faqIntent = GetIntentObject(typeof(FAQListActivity));
+                                    if (faqIntent != null && IsAdded)
                                     {
-                                        Intent faqIntent = GetIntentObject(typeof(FAQListActivity));
-                                        if (faqIntent != null && IsAdded)
-                                        {
-                                            faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
-                                            Activity.StartActivity(faqIntent);
-                                        }
+                                        faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+                                        Activity.StartActivity(faqIntent);
                                     }
                                 }
                             }
                         }
+                    }
 
-                    };
-                }
+                };
 
-                if (!string.IsNullOrEmpty(errorMSG))
-                {
-                    ShowUnableToFecthSmartMeterData(errorMSG);
-                }
             }
             catch (System.Exception e)
             {
@@ -978,9 +776,37 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         internal void SetUp()
         {
-            if (hasNoInternet)
+            StopAddressShimmer();
+            StopRangeShimmer();
+            StopGraphShimmer();
+
+            txtAddress.Visibility = ViewStates.Visible;
+
+            txtRange.Visibility = ViewStates.Visible;
+
+            mChart.Visibility = ViewStates.Visible;
+
+            bool isTariffAvailable = true;
+            for (int i = 0; i < selectedHistoryData.ByMonth.Months.Count; i++)
             {
-                return;
+                if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                {
+                    isTariffAvailable = true;
+                }
+                else
+                {
+                    isTariffAvailable = false;
+                }
+            }
+
+            if (isTariffAvailable)
+            {
+                tarifToggle.Enabled = true;
+            }
+            else
+            {
+                tarifToggle.Enabled = false;
+                isToggleTariff = false;
             }
 
             if (isToggleTariff)
@@ -1007,19 +833,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             mChart.Legend.Enabled = false;
             mChart.AnimateY(1000);
 
-            if (!hasNoInternet)
-            {
-                txtAddress.Text = selectedAccount.AddStreet;
-            }
-
+            txtAddress.Text = selectedAccount.AddStreet;
 
             if (ChartType == ChartType.RM)
             {
 
-                if (!hasNoInternet)
-                {
-                    txtRange.Text = selectedHistoryData.ByMonth.Range;
-                }
+                txtRange.Text = selectedHistoryData.ByMonth.Range;
+
                 // SETUP XAXIS
 
                 SetUpXAxis();
@@ -1041,10 +861,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             else
             {
 
-                if (!hasNoInternet)
-                {
-                    txtRange.Text = selectedHistoryData.ByMonth.Range;
-                }
+                txtRange.Text = selectedHistoryData.ByMonth.Range;
                 // SETUP XAXIS
 
                 SetUpXAxiskWh();
@@ -1207,21 +1024,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 List<BarEntry> yVals1 = new List<BarEntry>();
                 for (int i = 0; i < barLength; i++)
                 {
-                    float[] valList = new float[selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count];
-                    for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                    if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
                     {
-                        float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
-                        if (float.IsPositiveInfinity(val))
+                        float[] valList = new float[selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count];
+                        for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
                         {
-                            val = float.PositiveInfinity;
+                            float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
+                            if (float.IsPositiveInfinity(val))
+                            {
+                                val = float.PositiveInfinity;
+                            }
+                            valList[j] = System.Math.Abs(val);
                         }
-                        valList[j] = System.Math.Abs(val);
+                        if (i == barLength - 1)
+                        {
+                            stackIndex = valList.Length - 1;
+                        }
+                        yVals1.Add(new BarEntry(i, valList));
                     }
-                    if (i == barLength - 1)
+                    else
                     {
-                        stackIndex = valList.Length - 1;
+                        yVals1.Add(new BarEntry(i, 0));
                     }
-                    yVals1.Add(new BarEntry(i, valList));
                 }
 
                 BarDataSet set1;
@@ -1243,13 +1067,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     set1 = new BarDataSet(yVals1, "");
                     set1.SetDrawIcons(false);
 
-                    int[] colorSet = new int[selectedHistoryData.TariffBlocksLegend.Count];
-                    for (int k = 0; k < selectedHistoryData.TariffBlocksLegend.Count; k++)
+                    if (selectedHistoryData.TariffBlocksLegend != null && selectedHistoryData.TariffBlocksLegend.Count > 0)
                     {
-                        colorSet[k] = Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData);
+                        int[] colorSet = new int[selectedHistoryData.TariffBlocksLegend.Count];
+                        for (int k = 0; k < selectedHistoryData.TariffBlocksLegend.Count; k++)
+                        {
+                            colorSet[k] = Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData);
+                        }
+
+                        set1.SetColors(colorSet);
+                    }
+                    else
+                    {
+                        int[] color = { Color.Argb(50, 255, 255, 255) };
+                        set1.SetColors(color);
                     }
 
-                    set1.SetColors(colorSet);
                     List<IBarDataSet> dataSets = new List<IBarDataSet>();
                     dataSets.Add(set1);
 
@@ -1343,21 +1176,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 List<BarEntry> yVals1 = new List<BarEntry>();
                 for (int i = 0; i < barLength; i++)
                 {
-                    float[] valList = new float[selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count];
-                    for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                    if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
                     {
-                        float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
-                        if (float.IsPositiveInfinity(val))
+                        float[] valList = new float[selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count];
+                        for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
                         {
-                            val = float.PositiveInfinity;
+                            float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
+                            if (float.IsPositiveInfinity(val))
+                            {
+                                val = float.PositiveInfinity;
+                            }
+                            valList[j] = System.Math.Abs(val);
                         }
-                        valList[j] = System.Math.Abs(val);
+                        if (i == barLength - 1)
+                        {
+                            stackIndex = valList.Length - 1;
+                        }
+                        yVals1.Add(new BarEntry(i, valList));
                     }
-                    if (i == barLength - 1)
+                    else
                     {
-                        stackIndex = valList.Length - 1;
+                        yVals1.Add(new BarEntry(i, 0));
                     }
-                    yVals1.Add(new BarEntry(i, valList));
                 }
 
                 BarDataSet set1;
@@ -1379,13 +1219,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     set1 = new BarDataSet(yVals1, "");
                     set1.SetDrawIcons(false);
 
-                    int[] colorSet = new int[selectedHistoryData.TariffBlocksLegend.Count];
-                    for (int k = 0; k < selectedHistoryData.TariffBlocksLegend.Count; k++)
+                    if (selectedHistoryData.TariffBlocksLegend != null && selectedHistoryData.TariffBlocksLegend.Count > 0)
                     {
-                        colorSet[k] = Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData);
+                        int[] colorSet = new int[selectedHistoryData.TariffBlocksLegend.Count];
+                        for (int k = 0; k < selectedHistoryData.TariffBlocksLegend.Count; k++)
+                        {
+                            colorSet[k] = Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData);
+                        }
+
+                        set1.SetColors(colorSet);
+                    }
+                    else
+                    {
+                        int[] color = { Color.Argb(50, 255, 255, 255) };
+                        set1.SetColors(color);
                     }
 
-                    set1.SetColors(colorSet);
                     List<IBarDataSet> dataSets = new List<IBarDataSet>();
                     dataSets.Add(set1);
 
@@ -1474,6 +1323,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             mChart.Visibility = ViewStates.Visible;
 
+            rmKwhSelection.Enabled = true;
+            tarifToggle.Enabled = true;
+
             mChart.Clear();
             SetUp();
         }
@@ -1483,6 +1335,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             ChartType = ChartType.RM;
 
             mChart.Visibility = ViewStates.Visible;
+
+            rmKwhSelection.Enabled = true;
+            tarifToggle.Enabled = true;
 
             mChart.Clear();
             SetUp();
@@ -1581,14 +1436,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [OnClick(Resource.Id.btnRefresh)]
         internal void OnRefresh(object sender, EventArgs e)
         {
-            if (hasNoInternet)
-            {
-                this.userActionsListener.OnTapRefresh();
-            }
-            else
-            {
-                this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
-            }
+            this.userActionsListener.OnTapRefresh();
         }
 
         [OnClick(Resource.Id.btnPay)]
@@ -1730,53 +1578,63 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
-        public void ShowNoInternet()
+        public void ShowNoInternet(string contentTxt, string buttonTxt)
         {
             try
             {
-                DownTimeEntity bcrmEnrity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
+                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.bg_smr);
+                scrollViewContent.SetBackgroundResource(Resource.Drawable.dasbord_chart_refresh_bg);
+
+
                 refreshLayout.Visibility = ViewStates.Visible;
                 allGraphLayout.Visibility = ViewStates.Gone;
-                if (bcrmEnrity != null && bcrmEnrity.IsDown)
+                if (isBCRMDown)
                 {
-                    HideSSMRDashboardView();
-                    energyTipsView.Visibility = ViewStates.Gone;
-                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
-                    {
-                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(bcrmEnrity.DowntimeMessage, FromHtmlOptions.ModeLegacy);
-                    }
-                    else
-                    {
-                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(bcrmEnrity.DowntimeMessage);
-                    }
+                    refresh_image.SetImageResource(Resource.Drawable.maintenance_new);
+                    SetMaintenanceLayoutParams();
                     btnNewRefresh.Visibility = ViewStates.Gone;
+
                 }
                 else
                 {
+                    refresh_image.SetImageResource(Resource.Drawable.refresh_1);
+                    SetRefreshLayoutParams();
+                    StopAddressShimmer();
+                    StopRangeShimmer();
+                    StopGraphShimmer();
                     btnNewRefresh.Visibility = ViewStates.Visible;
-                    btnNewRefresh.Text = txtBtnRefreshTitle;
+                    energyTipsView.Visibility = ViewStates.Gone;
+                    if (string.IsNullOrEmpty(buttonTxt))
+                    {
+                        btnNewRefresh.Text = txtBtnRefreshTitle;
+                    }
+                    else
+                    {
+                        btnNewRefresh.Text = buttonTxt;
+                    }
+
                     if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                     {
-                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg, FromHtmlOptions.ModeLegacy);
+                        if (string.IsNullOrEmpty(contentTxt))
+                        {
+                            txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg, FromHtmlOptions.ModeLegacy);
+                        }
+                        else
+                        {
+                            txtNewRefreshMessage.TextFormatted = Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                        }
                     }
                     else
                     {
-                        txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg);
-                    }
-
-                    if (amountDueFailed)
-                    {
-                        txtDueDate.Text = "- -";
-                        reDueDate.Text = "- -";
-                        txtTotalPayable.Text = "- -";
-                        reTotalPayable.Text = "- -";
-                        DisablePayButton();
-                        btnViewBill.Enabled = false;
-                        btnReView.Enabled = false;
-                        btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-                        btnReView.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-                        btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
-                        btnReView.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+                        if (string.IsNullOrEmpty(contentTxt))
+                        {
+                            txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg);
+                        }
+                        else
+                        {
+                            txtNewRefreshMessage.TextFormatted = Html.FromHtml(contentTxt);
+                        }
                     }
                 }
             }
@@ -1786,47 +1644,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
-        public void ShowNoInternetWithWord(string contentTxt, string buttonTxt)
+        public void ShowAmountDueNotAvailable()
         {
-            try
-            {
-                hasAmtDue = false;
-                btnNewRefresh.Text = string.IsNullOrEmpty(buttonTxt) ? txtBtnRefreshTitle : buttonTxt;
-                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
-                {
-                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(GetString(Resource.String.text_new_refresh_content), FromHtmlOptions.ModeLegacy) : Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
-                }
-                else
-                {
-                    txtNewRefreshMessage.TextFormatted = string.IsNullOrEmpty(contentTxt) ? Html.FromHtml(GetString(Resource.String.text_new_refresh_content)) : Html.FromHtml(contentTxt);
-                }
-                // mNoDataLayout.Visibility = ViewStates.Gone;
-                mChart.Visibility = ViewStates.Gone;
-                // mDownTimeLayout.Visibility = ViewStates.Gone;
-                refreshLayout.Visibility = ViewStates.Visible;
-                allGraphLayout.Visibility = ViewStates.Gone;
-
-                txtDueDate.Text = "- -";
-                reDueDate.Text = "- -";
-                txtTotalPayable.Text = "- -";
-                reTotalPayable.Text = "- -";
-                DisablePayButton();
-                btnViewBill.Enabled = false;
-                btnReView.Enabled = false;
-                btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-                btnReView.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
-                btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
-                btnReView.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public bool HasNoInternet()
-        {
-            return hasNoInternet;
+            txtDueDate.Text = "- -";
+            reDueDate.Text = "- -";
+            txtTotalPayable.Text = "- -";
+            reTotalPayable.Text = "- -";
+            DisablePayButton();
+            DisableViewBillButton();
         }
 
         public void ShowTapRefresh()
@@ -2013,35 +1838,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
-        public void ShowAmountProgress()
-        {
-            try
-            {
-                // progressBar.Visibility = ViewStates.Visible;
-                // totalPayableLayout.Visibility = ViewStates.Gone;
-
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public void HideAmountProgress()
-        {
-            try
-            {
-                // progressBar.Visibility = ViewStates.Gone;
-                // totalPayableLayout.Visibility = ViewStates.Visible;
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-
-
         public void ShowAmountDue(AccountDueAmount accountDueAmount)
         {
             try
@@ -2058,66 +1854,85 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     Utility.LoggingNonFatalError(e);
                 }
 
-                if (d != null)
+                Activity.RunOnUiThread(() =>
                 {
-                    if (selectedAccount != null)
+                    StopAmountDueShimmer();
+                    if (d != null)
                     {
-                        amountDueFailed = false;
-                        DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
-                        DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
-                        if (!pgCCEntity.IsDown || !pgFPXEntity.IsDown)
+                        if (selectedAccount != null)
                         {
-                            EnablePayButton();
-                        }
-                        btnViewBill.Enabled = true;
-                        txtTotalPayableCurrency.Visibility = ViewStates.Visible;
-                        btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
-                        btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
-                        if (!hasNoInternet)
-                        {
-                            allGraphLayout.Visibility = ViewStates.Visible;
-                            refreshLayout.Visibility = ViewStates.Gone;
-                            // mNoDataLayout.Visibility = ViewStates.Gone;
-                            mChart.Visibility = ViewStates.Visible;
-                            // mDownTimeLayout.Visibility = ViewStates.Gone;
-                        }
-                        if (selectedAccount.AccountCategoryId.Equals("2"))
-                        {
-                            // txtWhyThisAmt.Visibility = ViewStates.Gone;
-                            selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
-                            double calAmt = selectedAccount.AmtCustBal * -1;
-                            if (calAmt <= 0)
+                            if (isPaymentDown)
                             {
-                                calAmt = 0.00;
+                                DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                                DisablePayButton();
+                                Snackbar downtimeSnackBar = Snackbar.Make(rootView,
+                                        bcrmEntity.DowntimeTextMessage,
+                                        Snackbar.LengthLong);
+                                View v = downtimeSnackBar.View;
+                                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                                tv.SetMaxLines(5);
+                                if (!selectedAccount.AccountCategoryId.Equals("2"))
+                                {
+                                    downtimeSnackBar.Show();
+                                }
                             }
                             else
                             {
-                                calAmt = System.Math.Abs(selectedAccount.AmtCustBal);
+                                EnablePayButton();
                             }
-                            txtTotalPayable.Text = decimalFormat.Format(calAmt);
-                            reTotalPayable.Text = decimalFormat.Format(calAmt);
 
-                            int incrementDays = int.Parse(accountDueAmount.IncrementREDueDateByDays == null ? "0" : accountDueAmount.IncrementREDueDateByDays);
-                            Constants.RE_ACCOUNT_DATE_INCREMENT_DAYS = incrementDays;
-                            Calendar c = Calendar.Instance;
-                            c.Time = d;
-                            c.Add(CalendarField.Date, incrementDays);
-                            SimpleDateFormat df = new SimpleDateFormat("dd MMM");
-                            Date newDate = c.Time;
-                            string dateString = df.Format(newDate);
-                            if (System.Math.Abs(calAmt) < 0.0001)
+                            if (this.userActionsListener.IsBillingAvailable())
                             {
-                                txtDueDate.Text = "- -";
-                                reDueDate.Text = "- -";
+                                EnableViewBillButton();
                             }
                             else
                             {
-                                txtDueDate.Text = "I will get by " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(newDate));
-                                reDueDate.Text = "I will get by " + dateString;
+                                DisableViewBillButton();
                             }
-                        }
-                        else
-                        {
+
+                            txtTotalPayableCurrency.Visibility = ViewStates.Visible;
+                            btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
+                            btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
+
+                            if (selectedAccount.AccountCategoryId.Equals("2"))
+                            {
+                                re_img.Visibility = ViewStates.Visible;
+                                rePayableLayout.Visibility = ViewStates.Visible;
+                                // txtWhyThisAmt.Visibility = ViewStates.Gone;
+                                selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
+                                double calAmt = selectedAccount.AmtCustBal * -1;
+                                if (calAmt <= 0)
+                                {
+                                    calAmt = 0.00;
+                                }
+                                else
+                                {
+                                    calAmt = System.Math.Abs(selectedAccount.AmtCustBal);
+                                }
+                                txtTotalPayable.Text = decimalFormat.Format(calAmt);
+                                reTotalPayable.Text = decimalFormat.Format(calAmt);
+
+                                int incrementDays = int.Parse(accountDueAmount.IncrementREDueDateByDays == null ? "0" : accountDueAmount.IncrementREDueDateByDays);
+                                Constants.RE_ACCOUNT_DATE_INCREMENT_DAYS = incrementDays;
+                                Calendar c = Calendar.Instance;
+                                c.Time = d;
+                                c.Add(CalendarField.Date, incrementDays);
+                                SimpleDateFormat df = new SimpleDateFormat("dd MMM");
+                                Date newDate = c.Time;
+                                string dateString = df.Format(newDate);
+                                if (System.Math.Abs(calAmt) < 0.0001)
+                                {
+                                    txtDueDate.Text = "- -";
+                                    reDueDate.Text = "- -";
+                                }
+                                else
+                                {
+                                    txtDueDate.Text = "I will get by " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(newDate));
+                                    reDueDate.Text = "I will get by " + dateString;
+                                }
+                            }
+                            else
+                            {
 #if STUB
                             if(accountDueAmount.OpenChargesTotal == 0)
                             {
@@ -2128,130 +1943,50 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 txtWhyThisAmt.Visibility = ViewStates.Visible;
                             }
 #endif
-                            txtTotalPayable.Text = decimalFormat.Format(accountDueAmount.AmountDue);
-                            selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
-                            double calAmt = selectedAccount.AmtCustBal;
-                            if (calAmt <= 0.00)
-                            {
-                                totalPayableLayout.Visibility = ViewStates.Gone;
-                                noPayableLayout.Visibility = ViewStates.Visible;
-                                if (System.Math.Abs(calAmt) < 0.0001)
+                                txtTotalPayable.Text = decimalFormat.Format(accountDueAmount.AmountDue);
+                                selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
+                                double calAmt = selectedAccount.AmtCustBal;
+                                if (calAmt <= 0.00)
                                 {
-                                    txtNoPayableTitle.Text = "I’ve cleared all bills";
-                                    txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
-                                    txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                    totalPayableLayout.Visibility = ViewStates.Gone;
+                                    noPayableLayout.Visibility = ViewStates.Visible;
+                                    if (System.Math.Abs(calAmt) < 0.0001)
+                                    {
+                                        txtNoPayableTitle.Text = "I’ve cleared all bills";
+                                        txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                        txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                    }
+                                    else
+                                    {
+                                        txtNoPayableTitle.Text = "I’ve paid extra";
+                                        txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
+                                        txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
+                                    }
+                                    txtNoPayable.Text = decimalFormat.Format(System.Math.Abs(accountDueAmount.AmountDue));
+                                    txtDueDate.Text = "- -";
                                 }
                                 else
                                 {
-                                    txtNoPayableTitle.Text = "I’ve paid extra";
-                                    txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
-                                    txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
+                                    totalPayableLayout.Visibility = ViewStates.Visible;
+                                    noPayableLayout.Visibility = ViewStates.Gone;
+                                    txtDueDate.Text = "by " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(d));
                                 }
-                                txtNoPayable.Text = decimalFormat.Format(System.Math.Abs(accountDueAmount.AmountDue));
-                                txtDueDate.Text = "- -";
                             }
-                            else
-                            {
-                                totalPayableLayout.Visibility = ViewStates.Visible;
-                                noPayableLayout.Visibility = ViewStates.Gone;
-                                txtDueDate.Text = "by "+ GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(d));
-                            }
+                        }
+                        else
+                        {
+                            // txtWhyThisAmt.Visibility = ViewStates.Gone;
                         }
                     }
                     else
                     {
+                        txtDueDate.Text = "- -";
+                        reDueDate.Text = "- -";
+                        txtTotalPayable.Text = "- -";
+                        reTotalPayable.Text = "- -";
                         // txtWhyThisAmt.Visibility = ViewStates.Gone;
                     }
-                }
-                else
-                {
-                    txtDueDate.Text = "- -";
-                    reDueDate.Text = "- -";
-                    txtTotalPayable.Text = "- -";
-                    reTotalPayable.Text = "- -";
-                    // txtWhyThisAmt.Visibility = ViewStates.Gone;
-                }
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        private Snackbar mCancelledExceptionSnackBar;
-        public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
-        {
-            try
-            {
-                if (mCancelledExceptionSnackBar != null && mCancelledExceptionSnackBar.IsShown)
-                {
-                    mCancelledExceptionSnackBar.Dismiss();
-                }
-
-                mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.dashboard_chart_cancelled_exception_btn_retry), delegate
-                {
-
-                    mCancelledExceptionSnackBar.Dismiss();
-                    this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
-                }
-                );
-                mCancelledExceptionSnackBar.Show();
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-
-        }
-
-        private Snackbar mApiExcecptionSnackBar;
-        public void ShowRetryOptionsApiException(ApiException apiException)
-        {
-            try
-            {
-                if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
-                {
-                    mApiExcecptionSnackBar.Dismiss();
-                }
-
-                mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_api_exception_error), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.dashboard_chart_api_exception_btn_retry), delegate
-                {
-
-                    mApiExcecptionSnackBar.Dismiss();
-                    this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
-                }
-                );
-                mApiExcecptionSnackBar.Show();
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-
-        }
-        private Snackbar mUknownExceptionSnackBar;
-        public void ShowRetryOptionsUnknownException(System.Exception exception)
-        {
-            try
-            {
-                if (mUknownExceptionSnackBar != null && mUknownExceptionSnackBar.IsShown)
-                {
-                    mUknownExceptionSnackBar.Dismiss();
-
-                }
-
-                mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_unknown_exception_error), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.dashboard_chart_unknown_exception_btn_retry), delegate
-                {
-
-                    mUknownExceptionSnackBar.Dismiss();
-                    this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
-
-                }
-                );
-                mUknownExceptionSnackBar.Show();
+                });
             }
             catch (System.Exception e)
             {
@@ -2349,27 +2084,52 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         }
 
-        public void ShowLearnMore(Weblink weblink)
+        public void EnableViewBillButton()
         {
-            //try {
-            //if (weblink.OpenWith.Equals("APP"))
-            //{
-            //        Intent smartMeterINtent = GetIntentObject(typeof(SmartMeterLearnMoreActivity));
-            //    //Intent smartMeterINtent = new Intent(this.Activity , typeof(SmartMeterLearnMoreActivity));
-            //    smartMeterINtent.PutExtra(Constants.SMART_METER_LINK, JsonConvert.SerializeObject(weblink));
-            //    StartActivity(smartMeterINtent);
-            //}
-            //else
-            //{
-            //    var uri = Android.Net.Uri.Parse(weblink.Url);
-            //    var intent = new Intent(Intent.ActionView, uri);
-            //    StartActivity(intent);
-            //}
-            //}
-            //catch (System.Exception e)
-            //{
-            //    Utility.LoggingNonFatalError(e);
-            //}
+            Activity.RunOnUiThread(() =>
+            {
+                btnViewBill.Enabled = true;
+                btnReView.Enabled = true;
+                btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
+                btnReView.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
+                btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
+                btnReView.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
+            });
+        }
+
+        public void DisableViewBillButton()
+        {
+            Activity.RunOnUiThread(() =>
+            {
+                btnViewBill.Enabled = false;
+                btnReView.Enabled = false;
+                btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                btnReView.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+                btnReView.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+            });
+        }
+
+        public void ShowAmountDueFailed()
+        {
+            Activity.RunOnUiThread(() =>
+            {
+                StopAmountDueShimmer();
+                re_img.Visibility = ViewStates.Visible;
+                rePayableLayout.Visibility = ViewStates.Visible;
+                totalPayableLayout.Visibility = ViewStates.Visible;
+                txtDueDate.Text = "- -";
+                reDueDate.Text = "- -";
+                txtTotalPayable.Text = "- -";
+                reTotalPayable.Text = "- -";
+                DisablePayButton();
+                btnViewBill.Enabled = false;
+                btnReView.Enabled = false;
+                btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                btnReView.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+                btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+                btnReView.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+            });
         }
 
         protected override Android.App.Activity GetActivityObject()
@@ -2387,25 +2147,32 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void ShowAccountStatus(AccountStatusData accountStatusData)
         {
-            if (accountStatusData.DisconnectionStatus != "Available")
+            if (accountStatusData != null)
             {
-                energyDisconnectionButton.Visibility = ViewStates.Visible;
-                string accountStatusMessage = accountStatusData?.AccountStatusMessage ?? "Your electricity is currently disconnected.";
-                string whatDoesThisMeanLabel = accountStatusData?.AccountStatusModalTitle ?? "What does this mean?";
-                string whatDoesThisToolTipMessage = accountStatusData?.AccountStatusModalMessage ?? "<strong>What does this mean?</strong><br/><br/>Your electricity has been disconnected and is unavailable. This was not caused by a power outage.<br/><br/>If you’ve made a payment, please give us some time for this to be reflected.";
-                string whatDoesThisToolTipBtnLabel = accountStatusData?.AccountStatusModalBtnText ?? "Got It!";
-                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                if (accountStatusData.DisconnectionStatus != "Available")
                 {
-                    txtEnergyDisconnection.TextFormatted = Html.FromHtml(accountStatusMessage, FromHtmlOptions.ModeLegacy);
+                    energyDisconnectionButton.Visibility = ViewStates.Visible;
+                    string accountStatusMessage = accountStatusData?.AccountStatusMessage ?? "Your electricity is currently disconnected.";
+                    string whatDoesThisMeanLabel = accountStatusData?.AccountStatusModalTitle ?? "What does this mean?";
+                    string whatDoesThisToolTipMessage = accountStatusData?.AccountStatusModalMessage ?? "<strong>What does this mean?</strong><br/><br/>Your electricity has been disconnected and is unavailable. This was not caused by a power outage.<br/><br/>If you’ve made a payment, please give us some time for this to be reflected.";
+                    string whatDoesThisToolTipBtnLabel = accountStatusData?.AccountStatusModalBtnText ?? "Got It!";
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                    {
+                        txtEnergyDisconnection.TextFormatted = Html.FromHtml(accountStatusMessage, FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        txtEnergyDisconnection.TextFormatted = Html.FromHtml(accountStatusMessage);
+                    }
+                    txtEnergyDisconnection.Click += delegate
+                    {
+                        OnWhatIsThisAccountStatusTap(whatDoesThisToolTipMessage, whatDoesThisToolTipBtnLabel);
+                    };
                 }
                 else
                 {
-                    txtEnergyDisconnection.TextFormatted = Html.FromHtml(accountStatusMessage);
+                    energyDisconnectionButton.Visibility = ViewStates.Gone;
                 }
-                txtEnergyDisconnection.Click += delegate
-                {
-                    OnWhatIsThisAccountStatusTap(whatDoesThisToolTipMessage, whatDoesThisToolTipBtnLabel);
-                };
             }
             else
             {
@@ -2487,17 +2254,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                     });
 
-                    if (IsActive())
-                    {
-                        HideAmountProgress();
-                    }
                 }
                 else
                 {
-                    if (IsActive())
-                    {
-                        HideAmountProgress();
-                    }
                     HideSSMRDashboardView();
                 }
             }
@@ -2733,6 +2492,308 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 Utility.LoggingNonFatalError(err);
             }
+        }
+
+        public bool isSMDataError()
+        {
+            return !string.IsNullOrEmpty(errorMSG);
+        }
+
+        public bool IsBCRMDownFlag()
+        {
+            return isBCRMDown;
+        }
+
+        public bool IsLoadUsageNeeded()
+        {
+            return isUsageLoadedNeeded;
+        }
+
+        public AccountData GetSelectedAccount()
+        {
+            return selectedAccount;
+        }
+
+        public void SetUsageData(UsageHistoryData data)
+        {
+            if (data != null)
+            {
+                isUsageLoadedNeeded = false;
+                selectedHistoryData = data;
+            }
+        }
+
+        public void StartAddressShimmer()
+        {
+            try
+            {
+                var shimmerBuilder = ShimmerUtils.InvertedShimmerBuilderConfig();
+                if (shimmerBuilder != null)
+                {
+                    shimmrtTxtAddress1.SetShimmer(shimmerBuilder?.Build());
+                    shimmrtTxtAddress2.SetShimmer(shimmerBuilder?.Build());
+                }
+                shimmrtTxtAddress1.StartShimmer();
+                shimmrtTxtAddress2.StartShimmer();
+                shimmrtAddressView.Visibility = ViewStates.Visible;
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void StopAddressShimmer()
+        {
+            try
+            {
+                shimmrtAddressView.Visibility = ViewStates.Gone;
+                if (shimmrtTxtAddress1.IsShimmerStarted)
+                {
+                    shimmrtTxtAddress1.StopShimmer();
+                }
+                if (shimmrtTxtAddress2.IsShimmerStarted)
+                {
+                    shimmrtTxtAddress2.StopShimmer();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void StartRangeShimmer()
+        {
+            try
+            {
+                var shimmerBuilder = ShimmerUtils.InvertedShimmerBuilderConfig();
+                if (shimmerBuilder != null)
+                {
+                    shimmrtTxtRange.SetShimmer(shimmerBuilder?.Build());
+                }
+                shimmrtTxtRange.StartShimmer();
+                shimmrtRangeView.Visibility = ViewStates.Visible;
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void StopRangeShimmer()
+        {
+            try
+            {
+                shimmrtRangeView.Visibility = ViewStates.Gone;
+                if (shimmrtTxtRange.IsShimmerStarted)
+                {
+                    shimmrtTxtRange.StopShimmer();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void StartGraphShimmer()
+        {
+            try
+            {
+                var shimmerBuilder = ShimmerUtils.InvertedShimmerBuilderConfig();
+                if (shimmerBuilder != null)
+                {
+                    shimmrtGraph.SetShimmer(shimmerBuilder?.Build());
+                }
+                shimmrtGraph.StartShimmer();
+                shimmrtGraphView.Visibility = ViewStates.Visible;
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void StopGraphShimmer()
+        {
+            try
+            {
+                shimmrtGraphView.Visibility = ViewStates.Gone;
+                if (shimmrtGraph.IsShimmerStarted)
+                {
+                    shimmrtGraph.StopShimmer();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public UsageHistoryData GetUsageHistoryData()
+        {
+            return selectedHistoryData;
+        }
+
+        public void StartAmountDueShimmer()
+        {
+            try
+            {
+                if (selectedAccount != null)
+                {
+                    if (selectedAccount.AccountCategoryId.Equals("2"))
+                    {
+                        var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+                        if (shimmerBuilder != null)
+                        {
+                            shimmrtRETotalPayableTitle.SetShimmer(shimmerBuilder?.Build());
+                            shimmrtRETotalPayable.SetShimmer(shimmerBuilder?.Build());
+                            shimmrtREDueDate.SetShimmer(shimmerBuilder?.Build());
+                            shimmerREImg.SetShimmer(shimmerBuilder?.Build());
+                        }
+                        shimmrtTotalPayableTitle.StartShimmer();
+                        shimmrtTotalPayable.StartShimmer();
+                        shimmrtDueDate.StartShimmer();
+                        shimmerREImg.StartShimmer();
+                        shimmerREImg.Visibility = ViewStates.Visible;
+                        shimmerREPayableLayout.Visibility = ViewStates.Visible;
+                    }
+                    else
+                    {
+                        var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+                        if (shimmerBuilder != null)
+                        {
+                            shimmrtTotalPayableTitle.SetShimmer(shimmerBuilder?.Build());
+                            shimmrtTotalPayable.SetShimmer(shimmerBuilder?.Build());
+                            shimmrtDueDate.SetShimmer(shimmerBuilder?.Build());
+                        }
+                        shimmrtTotalPayableTitle.StartShimmer();
+                        shimmrtTotalPayable.StartShimmer();
+                        shimmrtDueDate.StartShimmer();
+                        shimmerPayableLayout.Visibility = ViewStates.Visible;
+                    }
+                }
+                else
+                {
+                    var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+                    if (shimmerBuilder != null)
+                    {
+                        shimmrtTotalPayableTitle.SetShimmer(shimmerBuilder?.Build());
+                        shimmrtTotalPayable.SetShimmer(shimmerBuilder?.Build());
+                        shimmrtDueDate.SetShimmer(shimmerBuilder?.Build());
+                    }
+                    shimmrtTotalPayableTitle.StartShimmer();
+                    shimmrtTotalPayable.StartShimmer();
+                    shimmrtDueDate.StartShimmer();
+                    shimmerPayableLayout.Visibility = ViewStates.Visible;
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void StopAmountDueShimmer()
+        {
+            try
+            {
+                if (selectedAccount != null)
+                {
+                    if (selectedAccount.AccountCategoryId.Equals("2"))
+                    {
+                        shimmerREImg.Visibility = ViewStates.Gone;
+                        shimmerREPayableLayout.Visibility = ViewStates.Gone;
+                        if (shimmrtRETotalPayableTitle.IsShimmerStarted)
+                        {
+                            shimmrtRETotalPayableTitle.StopShimmer();
+                        }
+                        if (shimmrtRETotalPayable.IsShimmerStarted)
+                        {
+                            shimmrtRETotalPayable.StopShimmer();
+                        }
+                        if (shimmrtREDueDate.IsShimmerStarted)
+                        {
+                            shimmrtREDueDate.StopShimmer();
+                        }
+                        if (shimmerREImg.IsShimmerStarted)
+                        {
+                            shimmerREImg.StopShimmer();
+                        }
+                    }
+                    else
+                    {
+                        shimmerPayableLayout.Visibility = ViewStates.Gone;
+                        if (shimmrtTotalPayableTitle.IsShimmerStarted)
+                        {
+                            shimmrtTotalPayableTitle.StopShimmer();
+                        }
+                        if (shimmrtTotalPayable.IsShimmerStarted)
+                        {
+                            shimmrtTotalPayable.StopShimmer();
+                        }
+                        if (shimmrtDueDate.IsShimmerStarted)
+                        {
+                            shimmrtDueDate.StopShimmer();
+                        }
+                    }
+                }
+                else
+                {
+                    shimmerPayableLayout.Visibility = ViewStates.Gone;
+                    if (shimmrtTotalPayableTitle.IsShimmerStarted)
+                    {
+                        shimmrtTotalPayableTitle.StopShimmer();
+                    }
+                    if (shimmrtTotalPayable.IsShimmerStarted)
+                    {
+                        shimmrtTotalPayable.StopShimmer();
+                    }
+                    if (shimmrtDueDate.IsShimmerStarted)
+                    {
+                        shimmrtDueDate.StopShimmer();
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void SetRefreshLayoutParams()
+        {
+            LinearLayout.LayoutParams refreshImgParams = refresh_image.LayoutParameters as LinearLayout.LayoutParams;
+
+            refreshImgParams.Width = GetDeviceHorizontalScaleInPixel(0.431f);
+            refreshImgParams.Height = GetDeviceHorizontalScaleInPixel(0.431f);
+            refreshImgParams.TopMargin = (int)DPUtils.ConvertDPToPx(38f);
+            refresh_image.RequestLayout();
+
+            LinearLayout.LayoutParams refreshTxtParams = txtNewRefreshMessage.LayoutParameters as LinearLayout.LayoutParams;
+            refreshTxtParams.TopMargin = (int)DPUtils.ConvertDPToPx(24f);
+            txtNewRefreshMessage.RequestLayout();
+
+            LinearLayout.LayoutParams refreshButtonParams = btnNewRefresh.LayoutParameters as LinearLayout.LayoutParams;
+            refreshButtonParams.TopMargin = (int)DPUtils.ConvertDPToPx(24f);
+            refreshButtonParams.BottomMargin = (int)DPUtils.ConvertDPToPx(21f);
+            btnNewRefresh.RequestLayout();
+            
+        }
+
+        public void SetMaintenanceLayoutParams()
+        {
+            LinearLayout.LayoutParams refreshImgParams = refresh_image.LayoutParameters as LinearLayout.LayoutParams;
+
+            refreshImgParams.Width = GetDeviceHorizontalScaleInPixel(0.603f);
+            refreshImgParams.Height = GetDeviceHorizontalScaleInPixel(0.603f);
+            refreshImgParams.TopMargin = (int) DPUtils.ConvertDPToPx(8f);
+            refresh_image.RequestLayout();
+
+            LinearLayout.LayoutParams refreshTxtParams = txtNewRefreshMessage.LayoutParameters as LinearLayout.LayoutParams;
+            refreshTxtParams.TopMargin = (int)DPUtils.ConvertDPToPx(6f);
+            txtNewRefreshMessage.RequestLayout();
         }
     }
 }

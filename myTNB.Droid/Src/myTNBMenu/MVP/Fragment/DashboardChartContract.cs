@@ -35,22 +35,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// <summary>
             /// Show no internet
             /// </summary>
-            void ShowNoInternet();
-
-            void ShowNoInternetWithWord(string contentTxt, string buttonTxt);
+            void ShowNoInternet(string contentTxt, string buttonTxt);
 
             /// <summary>
             ///  Show no internet snackbar
             /// </summary>
             void ShowNoInternetSnackbar();
-
-            /// <summary>
-            /// Returns connectivity
-            /// true has no internet
-            /// false has internet
-            /// </summary>
-            /// <returns>bool</returns>
-            bool HasNoInternet();
 
             /// <summary>
             /// Show tab refresh
@@ -61,22 +51,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// Show notification list
             /// </summary>
             void ShowNotification();
-
-            /// <summary>
-            /// Show bottom view amount progress
-            /// </summary>
-            void ShowAmountProgress();
-
-            /// <summary>
-            /// Show learn more
-            /// </summary>
-            /// <param name="weblink">Weblink</param>
-            void ShowLearnMore(Weblink weblink);
-
-            /// <summary>
-            /// Hide bottom view amount progress
-            /// </summary>
-            void HideAmountProgress();
 
             /// <summary>
             /// Show amount due
@@ -95,24 +69,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void DisablePayButton();
 
             void ShowLoadBillRetryOptions();
-
-            /// <summary>
-            /// Shows a cancelled exception with an option to retry
-            /// </summary>
-            /// <param name="operationCanceledException">the returned exception</param>
-            void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException);
-
-            /// <summary>
-            /// Shows an api exception with an option to retry
-            /// </summary>
-            /// <param name="apiException">the returned exception</param>
-            void ShowRetryOptionsApiException(ApiException apiException);
-
-            /// <summary>
-            /// Shows an unknown exception with an option to retry
-            /// </summary>
-            /// <param name="exception">the returned exception</param>
-            void ShowRetryOptionsUnknownException(Exception exception);
 
             /// <summary>
             /// Show Account Status
@@ -134,6 +90,23 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
             void HideProgress();
 
+            bool isSMDataError();
+
+            bool IsBCRMDownFlag();
+
+            bool IsLoadUsageNeeded();
+
+            AccountData GetSelectedAccount();
+
+            void DisableViewBillButton();
+
+            void EnableViewBillButton();
+
+            void ShowAmountDueFailed();
+
+            void SetUsageData(UsageHistoryData data);
+
+            UsageHistoryData GetUsageHistoryData();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -169,15 +142,13 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void OnNotification();
 
             /// <summary>
-            /// Action to load amount of account
-            /// </summary>
-            /// <param name="accountNum">string</param>
-            void OnLoadAmount(string accountNum);
-
-            /// <summary>
             /// Action to navigate to learn more
             /// </summary>
             void OnLearnMore();
+
+            bool IsOwnedSMR(string accountNumber);
+
+            bool IsBillingAvailable();
 
         }
     }

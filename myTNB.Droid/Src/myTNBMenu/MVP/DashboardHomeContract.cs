@@ -20,20 +20,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			/// </summary>
 			/// <param name="data">UsageHistoryData</param>
 			/// <param name="selectedAccount">AccountData</param>
-			void ShowChart(UsageHistoryData data, AccountData selectedAccount, AccountDueAmountResponse amountDueResponse);
-
-			/// <summary>
-			/// Show the bar charts with error msg
-			/// </summary>
-			/// <param name="data">UsageHistoryData</param>
-			/// <param name="selectedAccount">AccountData</param>
-			void ShowChartWithError(UsageHistoryData data, AccountData selectedAccount, String errorCode, String errorMsg, AccountDueAmountResponse amountDueResponse);
-
-			/// <summary>
-			/// Show the bar charts
-			/// </summary>
-			/// <param name="data">UsageHistoryData</param>
-			/// <param name="selectedAccount">AccountData</param>
 			void ShowSMChart(SMUsageHistoryData data, AccountData selectedAccount);
 
 			/// <summary>
@@ -91,23 +77,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			/// Show no account in bill menu
 			/// </summary>
 			void ShowNoAccountBillMenu();
-
-			/// <summary>
-			/// Show no internet connection in dashboard
-			/// </summary>
-			/// <param name="accountName">string</param>
-			void ShowOwnerDashboardNoInternetConnection(string accountName, UsageHistoryResponse response, AccountData selectedAccount);
-
-			/// <summary>
-			/// Show no internet connection in bill menu
-			/// </summary>
-			/// <param name="selectedAccount"></param>
-			void ShowOwnerBillsNoInternetConnection(AccountData selectedAccount);
-
-			void ShowOwnerDashboardNoInternetConnection(string accountName, bool amountDueFailed, string contentText, string btnText, AccountData selectedAccount);
-
-
-            void ShowOwnerDashboardNoInternetConnection(string accountName, UsageHistoryResponse response, AccountData selectedAccount, AccountDueAmountResponse amountDueResponse);
 
             /// <summary>
             /// Set toolbar title
@@ -219,9 +188,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             void UnsetToolbarBackground();
 
-            void ShowNMREChart(bool isAmountDueDown, bool isGraphDown, bool isBillingAvailable, UsageHistoryResponse response, AccountData selectedAccount, AccountDueAmountResponse amountDueResponse);
-
-            void ShowNMREChartWithError(bool isAmountDueDown, bool isGraphDown, bool isBillingAvailable, UsageHistoryResponse response, AccountData selectedAccount, AccountDueAmountResponse amountDueResponse, string errorCode, string errorMsg);
+            void ShowNMREChart(UsageHistoryResponse response, AccountData selectedAccount, string errorCode, string errorMsg);
 
         }
 

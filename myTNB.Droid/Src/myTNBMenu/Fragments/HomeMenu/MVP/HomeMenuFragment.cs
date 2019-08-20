@@ -276,12 +276,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 };
                 ((DashboardHomeActivity)Activity).SetStatusBarBackground();
 
+                ((DashboardHomeActivity)Activity).ShowBottomNavigationBar();
+
                 this.presenter.GetSmartMeterReadingWalkthroughtTimeStamp();
 
                 this.presenter.GetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
 
                 this.presenter.GetEnergySavingTipsTimeStamp();
                 SetRefreshLayoutParams();
+
+                ((DashboardHomeActivity)Activity).EnableDropDown(false);
+                ((DashboardHomeActivity)Activity).HideAccountName();
+                ((DashboardHomeActivity)Activity).ShowBackButton(false);
+                ((DashboardHomeActivity)Activity).SetToolbarTitle(Resource.String.dashboard_activity_title);
             }
             catch (System.Exception e)
             {

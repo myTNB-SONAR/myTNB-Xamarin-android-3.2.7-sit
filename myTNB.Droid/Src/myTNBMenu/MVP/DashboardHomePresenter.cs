@@ -130,11 +130,13 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                     }
                                     else
                                     {
+                                        usageHistoryResponse = null;
                                         LoadUsageHistory(selectedAccount);
                                     }
                                 }
                                 else
                                 {
+                                    usageHistoryResponse = null;
                                     LoadUsageHistory(selectedAccount);
                                 }
                             }
@@ -232,123 +234,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 							catch (System.Exception e)
 							{
 								Utility.LoggingNonFatalError(e);
-							}
-						}
-						else if (extras.ContainsKey(Constants.REFRESH_MODE) && extras.GetBoolean(Constants.REFRESH_MODE))
-						{
-							CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetSelectedOrFirst();
-							if (currentBottomNavigationMenu == Resource.Id.menu_bill)
-							{
-								CustomerBillingAccount selectedCustomerAccount = CustomerBillingAccount.GetSelectedOrFirst();
-								AccountData selectedAccount = AccountData.Copy(selectedCustomerAccount, true);
-								bool isOwned = true;
-								if (customerBillingAccount != null)
-								{
-									isOwned = customerBillingAccount.isOwned;
-									selectedAccount.IsOwner = isOwned;
-									selectedAccount.AccountCategoryId = customerBillingAccount.AccountCategoryId;
-
-								}
-								try
-								{
-                                    this.mView.ShowAccountName();
-                                    this.mView.BillsMenuAccess(selectedAccount);
-								}
-								catch (System.Exception e)
-								{
-									Utility.LoggingNonFatalError(e);
-								}
-							}
-						}
-						else if (CustomerBillingAccount.HasSelected())
-						{
-							CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.GetSelectedOrFirst();
-							if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
-							{
-                                if (customerBillingAccount != null && !customerBillingAccount.isOwned)
-								{
-									CustomerBillingAccount selected = CustomerBillingAccount.GetSelected();
-                                    this.mView.HideAccountName();
-                                }
-								else
-								{
-									CustomerBillingAccount selected = CustomerBillingAccount.GetSelected();
-                                    this.mView.HideAccountName();
-                                    if (selected.AccountCategoryId.Equals("2"))
-                                    {
-                                        this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_re_activity_title);
-                                    }
-                                    else
-                                    {
-                                        this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
-                                    }
-                                    if (selected != null && !string.IsNullOrEmpty(selected.AccNum))
-									{
-										this.mView.ShowOwnerDashboardNoInternetConnection(selected.AccDesc, null, AccountData.Copy(selected, true));
-									}
-									else
-									{
-										this.mView.ShowOwnerDashboardNoInternetConnection(selected.AccDesc, null, null);
-									}
-								}
-							}
-							else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
-							{
-                                if (customerBillingAccount != null && !customerBillingAccount.isOwned)
-								{
-									CustomerBillingAccount selected = CustomerBillingAccount.GetSelected();
-
-									this.mView.ShowAccountName();
-									this.mView.ShowBillMenu(AccountData.Copy(selected, true));
-								}
-								else
-								{
-									CustomerBillingAccount selected = CustomerBillingAccount.GetSelected();
-									this.mView.ShowAccountName();
-									this.mView.ShowOwnerBillsNoInternetConnection(AccountData.Copy(selected, true));
-								}
-							}
-
-
-							if (customerBillingAccount != null)
-							{
-								List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
-								bool enableDropDown = accountList.Count > 0 ? true : false;
-								if (customerBillingAccount.AccountCategoryId.Equals("2"))
-								{
-									this.mView.ShowREAccount(enableDropDown);
-								}
-								else
-								{
-									this.mView.EnableDropDown(enableDropDown);
-								}
-							}
-
-
-						}
-						else
-						{
-							CustomerBillingAccount selected = CustomerBillingAccount.GetSelected();
-                            this.mView.HideAccountName();
-                            this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
-                            if (selected != null && !string.IsNullOrEmpty(selected.AccNum))
-							{
-								this.mView.ShowOwnerDashboardNoInternetConnection(selected.AccDesc, null, AccountData.Copy(selected, true));
-							}
-							else
-							{
-								this.mView.ShowOwnerDashboardNoInternetConnection(selected.AccDesc, null, null);
-							}
-
-							List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
-							bool enableDropDown = accountList.Count > 0 ? true : false;
-							if (selected.AccountCategoryId.Equals("2"))
-							{
-								this.mView.ShowREAccount(enableDropDown);
-							}
-							else
-							{
-								this.mView.EnableDropDown(enableDropDown);
 							}
 						}
 					}
@@ -538,443 +423,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 		}
 
-        private async Task GetAccountStatus(CustomerBillingAccount accountSelected)
-        {
-            try
-            {
-                cts = new CancellationTokenSource();
-                this.mView.ShowProgressDialog();
-
-                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-#if DEBUG
-                var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-                var installDetailsApi = RestService.For<IGetInstallationDetailsApi>(httpClient);
-
-#else
-            var installDetailsApi = RestService.For<IGetInstallationDetailsApi>(Constants.SERVER_URL.END_POINT);
-
-#endif
-
-                UserInterface currentUsrInf = new UserInterface()
-                {
-                    eid = UserEntity.GetActive().Email,
-                    sspuid = UserEntity.GetActive().UserID,
-                    did = this.mView.GetDeviceId(),
-                    ft = FirebaseTokenEntity.GetLatest().FBToken,
-                    lang = Constants.DEFAULT_LANG.ToUpper(),
-                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
-                    sec_auth_k2 = "",
-                    ses_param1 = "",
-                    ses_param2 = ""
-                };
-
-                var installDetailsResponse = await installDetailsApi.GetInstallationDetails(new Requests.GetInstallationDetailsRequest()
-                {
-                    AccountNumber = accountSelected.AccNum,
-                    IsOwner = accountSelected.isOwned ? "true" : "false",
-                    usrInf = currentUsrInf
-                }, cts.Token);
-
-
-                if (installDetailsResponse != null && installDetailsResponse.Data != null && installDetailsResponse.Data.ErrorCode == "7200")
-                {
-                    if (installDetailsResponse.Data.Data.DisconnectionStatus == "Available")
-                    {
-                        InnerDashboardAPICahceUtil.OnSetAccountStatusResponse(null);
-                        bool isSMR = IsOwnedSMR(accountSelected.AccNum);
-                        if (isSMR)
-                        {
-                            await GetSSMRAccountStatus(accountSelected);
-                        }
-                        else
-                        {
-                            InnerDashboardAPICahceUtil.OnSetSMRActivityInfoResponse(null);
-                        }
-                    }
-                    else
-                    {
-                        InnerDashboardAPICahceUtil.OnSetAccountStatusResponse(installDetailsResponse);
-                        InnerDashboardAPICahceUtil.OnSetSMRActivityInfoResponse(null);
-                    }
-                }
-                else
-                {
-                    InnerDashboardAPICahceUtil.OnSetAccountStatusResponse(null);
-                    bool isSMR = IsOwnedSMR(accountSelected.AccNum);
-                    if (isSMR)
-                    {
-                        await GetSSMRAccountStatus(accountSelected);
-                    }
-                    else
-                    {
-                        InnerDashboardAPICahceUtil.OnSetSMRActivityInfoResponse(null);
-                    }
-                }
-            }
-            catch (System.OperationCanceledException e)
-            {
-                InnerDashboardAPICahceUtil.OnSetAccountStatusResponse(null);
-                Utility.LoggingNonFatalError(e);
-                bool isSMR = IsOwnedSMR(accountSelected.AccNum);
-                if (isSMR)
-                {
-                    await GetSSMRAccountStatus(accountSelected);
-                }
-                else
-                {
-                    InnerDashboardAPICahceUtil.OnSetSMRActivityInfoResponse(null);
-                }
-            }
-            catch (ApiException apiException)
-            {
-                // ADD HTTP CONNECTION EXCEPTION HERE
-                InnerDashboardAPICahceUtil.OnSetAccountStatusResponse(null);
-                Utility.LoggingNonFatalError(apiException);
-                bool isSMR = IsOwnedSMR(accountSelected.AccNum);
-                if (isSMR)
-                {
-                    await GetSSMRAccountStatus(accountSelected);
-                }
-                else
-                {
-                    InnerDashboardAPICahceUtil.OnSetSMRActivityInfoResponse(null);
-                }
-            }
-            catch (Exception e)
-            {
-                // ADD UNKNOWN EXCEPTION HERE
-                InnerDashboardAPICahceUtil.OnSetAccountStatusResponse(null);
-                Utility.LoggingNonFatalError(e);
-                bool isSMR = IsOwnedSMR(accountSelected.AccNum);
-                if (isSMR)
-                {
-                    await GetSSMRAccountStatus(accountSelected);
-                }
-                else
-                {
-                    InnerDashboardAPICahceUtil.OnSetSMRActivityInfoResponse(null);
-                }
-            }
-
-        }
-
-        public async Task GetSSMRAccountStatus(CustomerBillingAccount accountSelected)
-        {
-            try
-            {
-                cts = new CancellationTokenSource();
-
-                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-
-                UserInterface currentUsrInf = new UserInterface()
-                {
-                    eid = UserEntity.GetActive().Email,
-                    sspuid = UserEntity.GetActive().UserID,
-                    did = this.mView.GetDeviceId(),
-                    ft = FirebaseTokenEntity.GetLatest().FBToken,
-                    lang = Constants.DEFAULT_LANG.ToUpper(),
-                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
-                    sec_auth_k2 = "",
-                    ses_param1 = "",
-                    ses_param2 = ""
-                };
-
-#if DEBUG
-                var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-                var ssmrAccountAPI = RestService.For<ISMRAccountActivityInfoApi>(httpClient);
-
-#else
-            var ssmrAccountAPI = RestService.For<ISMRAccountActivityInfoApi>(Constants.SERVER_URL.END_POINT);
-#endif 
-
-                SMRActivityInfoResponse SMRAccountActivityInfoResponse = await ssmrAccountAPI.GetSMRAccountActivityInfo(new Requests.SMRAccountActivityInfoRequest()
-                {
-                    AccountNumber = accountSelected.AccNum,
-                    IsOwnedAccount = accountSelected.isOwned ? "true" : "false",
-                    userInterface = currentUsrInf
-                }, cts.Token);
-
-
-                if (SMRAccountActivityInfoResponse != null && SMRAccountActivityInfoResponse.Response != null && SMRAccountActivityInfoResponse.Response.ErrorCode == "7200")
-                {
-                    InnerDashboardAPICahceUtil.OnSetSMRActivityInfoResponse(SMRAccountActivityInfoResponse);
-                    SMRPopUpUtils.OnSetSMRActivityInfoResponse(SMRAccountActivityInfoResponse);
-                }
-                else
-                {
-                    InnerDashboardAPICahceUtil.OnSetSMRActivityInfoResponse(null);
-                }
-            }
-            catch (System.OperationCanceledException e)
-            {
-                InnerDashboardAPICahceUtil.OnSetSMRActivityInfoResponse(null);
-                Utility.LoggingNonFatalError(e);
-            }
-            catch (ApiException apiException)
-            {
-                // ADD HTTP CONNECTION EXCEPTION HERE
-                InnerDashboardAPICahceUtil.OnSetSMRActivityInfoResponse(null);
-                Utility.LoggingNonFatalError(apiException);
-            }
-            catch (Exception e)
-            {
-                // ADD UNKNOWN EXCEPTION HERE
-                InnerDashboardAPICahceUtil.OnSetSMRActivityInfoResponse(null);
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        private async Task LoadingBillsHistory(CustomerBillingAccount selectedAccount)
-        {
-            try
-            {
-                isBillAvailable = true;
-                cts = new CancellationTokenSource();
-                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-#if DEBUG || STUB
-                var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new System.Uri(Constants.SERVER_URL.END_POINT) };
-                var api = RestService.For<IBillsPaymentHistoryApi>(httpClient);
-#else
-            var api = RestService.For<IBillsPaymentHistoryApi>(Constants.SERVER_URL.END_POINT);
-#endif
-
-                var billsHistoryResponseApi = await api.GetBillHistoryV5(new BillHistoryRequest(Constants.APP_CONFIG.API_KEY_ID)
-                {
-                    AccountNum = selectedAccount.AccNum,
-                    IsOwner = selectedAccount.isOwned,
-                    Email = UserEntity.GetActive().Email
-                }, cts.Token);
-
-                var billsHistoryResponseV5 = billsHistoryResponseApi;
-
-
-                if (billsHistoryResponseV5 != null && billsHistoryResponseV5.Data != null)
-                {
-                    if (!billsHistoryResponseV5.Data.IsError && !string.IsNullOrEmpty(billsHistoryResponseV5.Data.Status)
-                        && billsHistoryResponseV5.Data.Status.Equals("success"))
-                    {
-                        if (billsHistoryResponseV5.Data.BillHistory != null && billsHistoryResponseV5.Data.BillHistory.Count > 0)
-                        {
-                            isBillAvailable = true;
-                        }
-                        else
-                        {
-                            isBillAvailable = false;
-                        }
-                    }
-                    else
-                    {
-                        isBillAvailable = true;
-                    }
-                }
-                else
-                {
-                    isBillAvailable = true;
-                }
-
-            }
-            catch (System.OperationCanceledException e)
-            {
-                isBillAvailable = true;
-                Utility.LoggingNonFatalError(e);
-            }
-            catch (ApiException apiException)
-            {
-                isBillAvailable = true;
-                Utility.LoggingNonFatalError(apiException);
-            }
-            catch (Exception e)
-            {
-                isBillAvailable = true;
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-
-        private async void LoadUsageHistory(CustomerBillingAccount accountSelected)
+        private void LoadUsageHistory(CustomerBillingAccount accountSelected)
 		{
-            bool isAmountDueFailed = false;
-            AccountDueAmountResponse dueResponse = null;
-            try
-			{
-                await GetAccountStatus(accountSelected);
-
-                await LoadingBillsHistory(accountSelected);
-
-                cts = new CancellationTokenSource();
-				ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-#if DEBUG
-                var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-                var amountDueApi = RestService.For<IAmountDueApi>(httpClient);
-#else
-				var amountDueApi = RestService.For<IAmountDueApi>(Constants.SERVER_URL.END_POINT);
-#endif
-
-                dueResponse = await amountDueApi.GetAccountDueAmount(new Requests.AccountDueAmountRequest()
-				{
-					ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-					AccNum = accountSelected.AccNum
-
-				}, cts.Token);
-
-				if (dueResponse != null && dueResponse.Data != null && dueResponse.Data.Status.ToUpper() == Constants.REFRESH_MODE)
-				{
-                    isAmountDueFailed = true;
-                    dueResponse = null;
-				}
-				else if (!dueResponse.Data.IsError)
-				{
-                    isAmountDueFailed = false;
-                }
-				else
-				{
-                    dueResponse = null;
-                    isAmountDueFailed = true;
-                }
-			}
-			catch (System.OperationCanceledException e)
-			{
-                isAmountDueFailed = true;
-                dueResponse = null;
-                Utility.LoggingNonFatalError(e);
-			}
-			catch (ApiException apiException)
-			{
-                isAmountDueFailed = true;
-                dueResponse = null;
-                Utility.LoggingNonFatalError(apiException);
-			}
-			catch (Exception e)
-			{
-                isAmountDueFailed = true;
-                dueResponse = null;
-                Utility.LoggingNonFatalError(e);
-			}
-
             try
             {
-                cts = new CancellationTokenSource();
-                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-#if DEBUG
-                var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-                var api = RestService.For<IUsageHistoryApi>(httpClient);
-#else
-				var api = RestService.For<IUsageHistoryApi>(Constants.SERVER_URL.END_POINT);
-#endif
-
-                UserInterface currentUsrInf = new UserInterface()
-                {
-                    eid = UserEntity.GetActive().Email,
-                    sspuid = UserEntity.GetActive().UserID,
-                    did = this.mView.GetDeviceId(),
-                    ft = FirebaseTokenEntity.GetLatest().FBToken,
-                    lang = Constants.DEFAULT_LANG.ToUpper(),
-                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
-                    sec_auth_k2 = "",
-                    ses_param1 = "",
-                    ses_param2 = ""
-                };
-
-                if (usageHistoryResponse == null)
-                {
-                    usageHistoryResponse = await api.DoQuery(new Requests.UsageHistoryRequest()
-                    {
-                        AccountNumber = accountSelected.AccNum,
-                        isOwner = accountSelected.isOwned ? "true" : "false",
-                        userInterface = currentUsrInf
-                    }, cts.Token);
-                }
-
-                if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode != "7200")
-                {
-                    if (this.mView.IsActive())
-                    {
-                        this.mView.HideProgressDialog();
-                    }
-                    this.mView.HideAccountName();
-                    if (accountSelected.AccountCategoryId.Equals("2"))
-                    {
-                        this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_re_activity_title);
-                    }
-                    else
-                    {
-                        this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
-                    }
-                    this.mView.ShowNMREChart(isAmountDueFailed, true, isBillAvailable, usageHistoryResponse, AccountData.Copy(accountSelected, true), dueResponse);
-                    usageHistoryResponse = null;
-                }
-                else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7200")
-                {
-                    if (this.mView.IsActive())
-                    {
-                        this.mView.HideProgressDialog();
-                    }
-
-                    if (IsCheckHaveByMonthData(usageHistoryResponse.Data.UsageHistoryData))
-                    {
-                        UsageHistoryEntity smUsageModel = new UsageHistoryEntity();
-                        smUsageModel.Timestamp = DateTime.Now.ToLocalTime();
-                        smUsageModel.JsonResponse = JsonConvert.SerializeObject(usageHistoryResponse);
-                        smUsageModel.AccountNo = accountSelected.AccNum;
-                        UsageHistoryEntity.InsertItem(smUsageModel);
-                    }
-
-                    if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
-                    {
-                        if (smDataError)
-                        {
-                            smDataError = false;
-                            this.mView.ShowNMREChartWithError(isAmountDueFailed, false, isBillAvailable, usageHistoryResponse, AccountData.Copy(accountSelected, true), dueResponse, smErrorCode, smErrorMessage);
-                        }
-                        else
-                        {
-                            this.mView.ShowNMREChart(isAmountDueFailed, false, isBillAvailable, usageHistoryResponse, AccountData.Copy(accountSelected, true), dueResponse);
-                        }
-                        usageHistoryResponse = null;
-                        this.mView.HideAccountName();
-                        if (accountSelected.AccountCategoryId.Equals("2"))
-                        {
-                            this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_re_activity_title);
-                        }
-                        else
-                        {
-                            this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
-                        }
-                    }
-                    else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
-                    {
-                        this.mView.ShowAccountName();
-                        this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
-                        LoadBills(accountSelected);
-                    }
-                    this.mView.SetAccountName(accountSelected.AccDesc);
-                }
-                else
-                {
-                    if (this.mView.IsActive())
-                    {
-                        this.mView.HideProgressDialog();
-                    }
-                    this.mView.HideAccountName();
-                    if (accountSelected.AccountCategoryId.Equals("2"))
-                    {
-                        this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_re_activity_title);
-                    }
-                    else
-                    {
-                        this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
-                    }
-                    this.mView.ShowNMREChart(isAmountDueFailed, true, isBillAvailable, null, AccountData.Copy(accountSelected, true), dueResponse);
-                    this.mView.SetAccountName(accountSelected.AccDesc);
-                    usageHistoryResponse = null;
-                }
-            }
-            catch (System.OperationCanceledException e)
-            {
-                if (this.mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 this.mView.HideAccountName();
                 if (accountSelected.AccountCategoryId.Equals("2"))
                 {
@@ -984,35 +436,20 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 {
                     this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
                 }
-                this.mView.ShowNMREChart(isAmountDueFailed, true, isBillAvailable, null, AccountData.Copy(accountSelected, true), dueResponse);
-                usageHistoryResponse = null;
-                Utility.LoggingNonFatalError(e);
-            }
-            catch (ApiException apiException)
-            {
-                if (this.mView.IsActive())
+
+                if (smDataError)
                 {
-                    this.mView.HideProgressDialog();
-                }
-                this.mView.HideAccountName();
-                if (accountSelected.AccountCategoryId.Equals("2"))
-                {
-                    this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_re_activity_title);
+                    smDataError = false;
+                    this.mView.ShowNMREChart(usageHistoryResponse, AccountData.Copy(accountSelected, true), smErrorCode, smErrorMessage);
                 }
                 else
                 {
-                    this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
+                    this.mView.ShowNMREChart(usageHistoryResponse, AccountData.Copy(accountSelected, true), null, null);
                 }
-                this.mView.ShowNMREChart(isAmountDueFailed, true, isBillAvailable, null, AccountData.Copy(accountSelected, true), dueResponse);
                 usageHistoryResponse = null;
-                Utility.LoggingNonFatalError(apiException);
             }
             catch (System.Exception e)
             {
-                if (this.mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
                 this.mView.HideAccountName();
                 if (accountSelected.AccountCategoryId.Equals("2"))
                 {
@@ -1022,7 +459,16 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 {
                     this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
                 }
-                this.mView.ShowNMREChart(isAmountDueFailed, true, isBillAvailable, null, AccountData.Copy(accountSelected, true), dueResponse);
+
+                if (smDataError)
+                {
+                    smDataError = false;
+                    this.mView.ShowNMREChart(usageHistoryResponse, AccountData.Copy(accountSelected, true), smErrorCode, smErrorMessage);
+                }
+                else
+                {
+                    this.mView.ShowNMREChart(usageHistoryResponse, AccountData.Copy(accountSelected, true), null, null);
+                }
                 usageHistoryResponse = null;
                 Utility.LoggingNonFatalError(e);
             }
@@ -1484,12 +930,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 									}
 									else
 									{
-										LoadUsageHistory(selected);
+                                        usageHistoryResponse = null;
+                                        LoadUsageHistory(selected);
 									}
 								}
 								else
 								{
-									LoadUsageHistory(selected);
+                                    usageHistoryResponse = null;
+                                    LoadUsageHistory(selected);
 								}
 							}
 
@@ -1604,18 +1052,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             {
                 this.mView.DisableBillMenu();
             }
-        }
-
-        private bool IsOwnedSMR(string accountNumber)
-        {
-            foreach (SMRAccount smrAccount in UserSessions.GetSMRAccountList())
-            {
-                if (smrAccount.accountNumber == accountNumber)
-                {
-                    return true;
-                }
-            }
-            return false;
         }
 
         private bool IsCheckHaveByMonthData(UsageHistoryData data)

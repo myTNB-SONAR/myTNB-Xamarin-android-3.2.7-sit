@@ -44,37 +44,35 @@
 					        <LinearLayout
 						        android:orientation="vertical"
 						        android:layout_width="match_parent"
-						        android:layout_height="match_parent"
-						        android:paddingTop="24dp">
-						        <ImageView
-							        android:id="@+id/refresh_image"
-							        android:layout_height="96dp"
-							        android:layout_width="96dp"
-							        android:layout_gravity="center_horizontal"
-							        android:src="@drawable/refresh_on_bg"/>
-						        <TextView
-							        android:id="@+id/refresh_content"
-							        android:layout_width="wrap_content"
-							        android:layout_height="wrap_content"
-							        android:layout_gravity="center_horizontal"
-							        android:layout_marginTop="24dp"
-							        android:gravity="center"
-							        android:lineSpacingExtra="4sp"
-							        android:paddingLeft="18dp"
-							        android:paddingRight="18dp"
-							        android:textSize="16sp"
-							        android:text="@string/text_new_refresh_content"
-							        android:textColor="@color/white"/>
-						        <Button
-							        android:layout_width="match_parent"
-							        android:layout_height="wrap_content"
-							        android:layout_marginTop="16dp"
-							        android:layout_marginLeft="18dp"
-							        android:layout_marginRight="18dp"
-                                    android:layout_marginBottom="24dp"
-							        android:text="@string/text_new_refresh"
-							        android:id="@+id/btnRefresh"
-							        style="@style/Theme.RefreshWhiteButton" />
+						        android:layout_height="match_parent">
+                                <ImageView
+                                    android:layout_width="132dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="48dp"
+                                    android:src="@drawable/refresh_1"
+                                    android:id="@+id/refresh_image"
+                                    android:layout_gravity="center"/>
+                                <TextView
+                                    android:id="@+id/refresh_content"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="24dp"
+                                    android:layout_marginLeft="32dp"
+                                    android:layout_marginRight="32dp"
+                                    android:lineSpacingExtra="3dp"
+                                    android:textSize="14dp"
+                                    android:textColor="#8b8b8b"
+                                    android:layout_gravity="center"/>
+                                <Button
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="18dp"
+                                    android:layout_marginLeft="16dp"
+                                    android:layout_marginRight="16dp"
+                                    android:layout_weight="1"
+                                    android:id="@+id/btnRefresh"
+                                    style="@style/Theme.RefreshButton" />
 					        </LinearLayout>
 				        </LinearLayout>
                         <LinearLayout
@@ -104,6 +102,49 @@
                             android:layout_marginBottom="12dp"
                             android:text="Account Name"
                             android:ellipsize="end" />
+                        <LinearLayout
+					    android:id="@+id/shimmrtAddressView"
+					    android:layout_width="match_parent"
+					    android:layout_height="wrap_content"
+					    android:orientation="vertical"
+                        android:visibility="gone"
+                        android:layout_marginBottom="12dp">
+                            <com.facebook.shimmer.ShimmerFrameLayout
+                                android:id="@+id/shimmrtTxtAddress1"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:layout_marginLeft="60dp"
+                                android:layout_marginRight="60dp"
+                                android:layout_marginBottom="4dp">
+                                <TextView
+						            android:layout_height="wrap_content"
+						            android:layout_width="match_parent"
+						            android:textSize="14dp"
+						            android:layout_gravity="center"
+                                    android:gravity="center"
+						            android:textColor="@color/shimmer_color_second"
+                                    android:background="@color/shimmer_color_second" />
+                            </com.facebook.shimmer.ShimmerFrameLayout>
+                            <com.facebook.shimmer.ShimmerFrameLayout
+                                android:id="@+id/shimmrtTxtAddress2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:layout_marginLeft="60dp"
+                                android:layout_marginRight="60dp">
+                                <TextView
+						            android:layout_height="wrap_content"
+						            android:layout_width="match_parent"
+						            android:textSize="14dp"
+						            android:layout_gravity="center"
+                                    android:gravity="center"
+						            android:textColor="@color/shimmer_color_second"
+                                    android:background="@color/shimmer_color_second" />
+                            </com.facebook.shimmer.ShimmerFrameLayout>
+                        </LinearLayout>
 					    <TextView
 						    android:layout_height="wrap_content"
 						    android:layout_width="match_parent"
@@ -156,6 +197,31 @@
                                     android:layout_gravity="right|center_vertical"
                                     android:text="Your electricity is currently disconnected."/>
                         </LinearLayout>
+                        <LinearLayout
+					        android:id="@+id/shimmrtRangeView"
+					        android:layout_width="match_parent"
+					        android:layout_height="wrap_content"
+					        android:orientation="vertical"
+                            android:visibility="gone"
+                            android:layout_marginBottom="24dp">
+                            <com.facebook.shimmer.ShimmerFrameLayout
+                                android:id="@+id/shimmrtTxtRange"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:layout_marginLeft="98dp"
+                                android:layout_marginRight="98dp">
+                                <TextView
+						        android:layout_height="wrap_content"
+						        android:layout_width="match_parent"
+						        android:textSize="14dp"
+                                android:layout_gravity="center"
+						        android:gravity="center"
+						        android:textColor="@color/shimmer_color_second"
+                                android:background="@color/shimmer_color_second"/>
+                            </com.facebook.shimmer.ShimmerFrameLayout>
+                        </LinearLayout>
 					    <TextView
 						    android:layout_height="wrap_content"
 						    android:layout_width="wrap_content"
@@ -169,6 +235,29 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent">
+                            <LinearLayout
+					            android:id="@+id/shimmrtGraphView"
+					            android:layout_width="match_parent"
+					            android:layout_height="190dp"
+					            android:orientation="vertical"
+                                android:visibility="gone"
+                                android:layout_marginBottom="5dp">
+                                <com.facebook.shimmer.ShimmerFrameLayout
+                                    android:id="@+id/shimmrtGraph"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:layout_marginLeft="16dp"
+                                    android:layout_marginRight="16dp">
+                                    <LinearLayout
+					                    android:layout_width="match_parent"
+					                    android:layout_height="match_parent"
+					                    android:orientation="vertical"
+                                        android:background="@drawable/shimmer_round_rectangle" >
+                                    </LinearLayout>
+                                </com.facebook.shimmer.ShimmerFrameLayout>
+                            </LinearLayout>
 					        <com.github.mikephil.charting.charts.BarChart
 						        android:id="@+id/bar_chart"
 						        android:layout_width="match_parent"
@@ -333,6 +422,20 @@
                                     android:layout_marginLeft="16dp"
                                     android:layout_marginRight="16dp"
                                     android:layout_marginBottom="8dp">
+                                <com.facebook.shimmer.ShimmerFrameLayout
+                                    android:id="@+id/shimmerREImg"
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
+                                    android:layout_marginTop="3dp"
+                                    android:layout_marginLeft="2dp"
+                                    android:layout_marginRight="12dp"
+                                    android:visibility="gone">
+                                    <ImageView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:scaleType="fitCenter"
+                                        android:src="@drawable/round_circle"/>
+                                </com.facebook.shimmer.ShimmerFrameLayout>
                                 <ImageView
                                     android:id="@+id/re_img"
                                     android:src="@drawable/ic_display_r_eleaf"
@@ -341,7 +444,67 @@
                                     android:layout_marginTop="3dp"
                                     android:layout_marginLeft="2dp"
                                     android:layout_marginRight="12dp"
+                                    android:visibility="visible"
                                     android:scaleType="fitCenter" />
+                                <RelativeLayout
+                                    android:id="@+id/shimmerREPayableLayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/white"
+                                    android:visibility="gone">
+                                    <com.facebook.shimmer.ShimmerFrameLayout
+                                        android:id="@+id/shimmrtRETotalPayableTitle"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_alignParentTop="true">
+                                        <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/shimmer_color"
+                                        android:background="@color/shimmer_color"
+                                        android:text="                            "
+                                        android:textSize="13dp" />
+                                    </com.facebook.shimmer.ShimmerFrameLayout>
+                                    <com.facebook.shimmer.ShimmerFrameLayout
+                                        android:id="@+id/shimmrtRETotalPayable"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_alignParentTop="true"
+                                        android:layout_marginTop="4dp"
+                                        android:layout_marginRight="1dp">
+                                        <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_alignParentTop="true"
+                                        android:text="@string/dashboard_need_pay"
+                                        android:textColor="@color/shimmer_color"
+                                        android:background="@color/shimmer_color"
+                                        android:textSize="18dp" />
+                                    </com.facebook.shimmer.ShimmerFrameLayout>
+                                    <com.facebook.shimmer.ShimmerFrameLayout
+                                        android:id="@+id/shimmrtREDueDate"
+                                        android:layout_below="@+id/shimmrtRETotalPayableTitle"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_marginTop="5dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content">
+                                        <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_alignParentTop="true"
+                                        android:text="                                    "
+                                        android:textColor="@color/shimmer_color"
+                                        android:background="@color/shimmer_color"
+                                        android:textSize="8dp" />
+                                    </com.facebook.shimmer.ShimmerFrameLayout>
+                                </RelativeLayout>
                                 <RelativeLayout
                                     android:id="@+id/rePayableLayout"
                                     android:layout_width="match_parent"
@@ -523,7 +686,71 @@
             android:orientation="vertical"
             android:background="@color/white"
             android:paddingLeft="17dp"
-            android:paddingRight="17dp">
+            android:paddingRight="17dp"
+            android:paddingBottom="6dp">
+            <RelativeLayout
+                android:id="@+id/shimmerPayableLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/_10sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:background="@color/white"
+                android:minHeight="25px"
+                android:minWidth="25px"
+                android:paddingBottom="5dp"
+                android:paddingTop="5dp"
+                android:visibility="gone">
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmrtTotalPayableTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true">
+                    <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/shimmer_color"
+                    android:background="@color/shimmer_color"
+                    android:text="                            "
+                    android:textSize="13dp" />
+                </com.facebook.shimmer.ShimmerFrameLayout>
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmrtTotalPayable"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true">
+                    <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:text="@string/dashboard_need_pay"
+                    android:textColor="@color/shimmer_color"
+                    android:background="@color/shimmer_color"
+                    android:textSize="18dp" />
+                </com.facebook.shimmer.ShimmerFrameLayout>
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/shimmrtDueDate"
+                    android:layout_below="@+id/shimmrtTotalPayableTitle"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:text="                                    "
+                    android:textColor="@color/shimmer_color"
+                    android:background="@color/shimmer_color"
+                    android:textSize="8dp" />
+                </com.facebook.shimmer.ShimmerFrameLayout>
+            </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/noPayableLayout"
                 android:layout_width="match_parent"

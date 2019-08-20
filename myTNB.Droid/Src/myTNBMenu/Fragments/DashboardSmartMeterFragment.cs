@@ -2360,6 +2360,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     // SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
                     activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
                     activity.UnsetToolbarBackground();
+                    activity.ShowBottomNavigationBar();
                 }
             }
             catch (Java.Lang.ClassCastException e)

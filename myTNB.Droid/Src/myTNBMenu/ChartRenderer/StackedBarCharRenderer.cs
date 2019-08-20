@@ -142,7 +142,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                         else
                         {
                             float diffX = currentSelectedDrawX - currentItem;
-                            if (diffX >= 19.000f && diffX < 22.000f)
+                            if (diffX >= 5.000f && diffX < 30.000f)
                             {
                                 MRenderPaint.Alpha = 255;
                             }
@@ -151,7 +151,6 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                 MRenderPaint.Color = new Color(dataSet.GetColor(j / 4));
                             }
                         }
-                        Log.Debug("current HightLight Alpha", MRenderPaint.Alpha.ToString());
                         if (nextIndex >= buffer.Size())
                         {
                             if (mRadius > 0)
@@ -195,7 +194,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                         else
                         {
                             float diffX = currentSelectedDrawX - currentItem;
-                            if (diffX >= 19.000f && diffX < 22.000f)
+                            if (diffX >= 5.000f && diffX < 30.000f)
                             {
                                 MRenderPaint.Alpha = 255;
                             }
@@ -204,7 +203,6 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                 MRenderPaint.Color = new Color(dataSet.GetColor(j / 4));
                             }
                         }
-                        Log.Debug("current HightLight Alpha", MRenderPaint.Alpha.ToString());
                         if (nextIndex >= buffer.Size())
                         {
 

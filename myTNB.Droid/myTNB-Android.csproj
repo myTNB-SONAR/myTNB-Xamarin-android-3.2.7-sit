@@ -2193,6 +2193,42 @@
     <AndroidResource Include="Resources\drawable-xhdpi\search_cancel.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\search_cancel.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\search_cancel.png" />
+    <AndroidResource Include="Resources\drawable\shimmer_round_rectangle.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\animator\enter_from_left.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\animator\exit_from_right.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\dasbord_chart_refresh_bg.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\maintenance_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\maintenance_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\maintenance_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\maintenance_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\maintenance_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -2571,6 +2607,7 @@
     <Folder Include="Src\SSMR\SSMRBase\MVP\" />
     <Folder Include="Src\myTNBMenu\ChartRenderer\" />
     <Folder Include="Resources\anim\" />
+    <Folder Include="Resources\animator\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
