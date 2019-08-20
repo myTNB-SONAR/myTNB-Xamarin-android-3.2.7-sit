@@ -1007,14 +1007,6 @@
     <ImageAsset Include="Assets.xcassets\IC-Info.imageset\infoWhiteFull.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info.imageset\infoWhiteFull%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info.imageset\infoWhiteFull%403x.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-History-BG.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SMR-Open-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SMR-Open-Icon.imageset\SMR-Open-Icon.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-Open-Icon.imageset\SMR-Open-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-Open-Icon.imageset\SMR-Open-Icon%403x.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-History-BG.imageset\SMR-History-BG-1.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-History-BG.imageset\SMR-History-BG%402x-1.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-History-BG.imageset\SMR-History-BG%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Delete-White.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Delete-White.imageset\IC-Action-Delete-White.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Delete-White.imageset\IC-Action-Delete-White%402x.png" />
@@ -1076,10 +1068,6 @@
     <ImageAsset Include="Assets.xcassets\Refresh-Icon.imageset\Refresh-Icon.png" />
     <ImageAsset Include="Assets.xcassets\Refresh-Icon.imageset\Refresh-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Refresh-Icon.imageset\Refresh-Icon%403x.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-Closed-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SMR-Closed-Icon.imageset\SMR-Closed-Icon.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-Closed-Icon.imageset\SMR-Closed-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-Closed-Icon.imageset\SMR-Closed-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Header-Dropdown.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IC-Header-Dropdown.imageset\icHeaderDropdown12Px.png" />
     <ImageAsset Include="Assets.xcassets\IC-Header-Dropdown.imageset\icHeaderDropdown12Px%402x.png" />
@@ -1151,6 +1139,9 @@
     <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-Refresh.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SSMR-Refresh.imageset\bgApplicationStatus%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-Refresh.imageset\bgApplicationStatus%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1528,6 +1519,7 @@
     <Folder Include="Usage\" />
     <Folder Include="Components\Usage View\" />
     <Folder Include="Components\Usage View\Charts\" />
+    <Folder Include="Assets.xcassets\SSMR-Refresh.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

@@ -13,8 +13,9 @@ namespace myTNB
     {
         private SSMRReadingHistoryHeaderComponent _ssmrHeaderComponent;
         private UITableView _readingHistoryTableView;
-        private UIView _headerView, _footerView, _navbarView;
+        private UIView _headerView, _footerView, _navbarView, _viewRefreshContainer;
         private CustomUIButtonV2 _btnDisable;
+        private UIImageView _bgImageView;
         private MeterReadingHistoryModel _meterReadingHistory;
         private List<MeterReadingHistoryItemModel> _readingHistoryList;
         private CAGradientLayer _gradientLayer;
@@ -150,12 +151,12 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear
             };
 
-            UIImageView bgImageView = new UIImageView(new CGRect(0, 0, ViewWidth, ViewWidth * 0.70F))
+            _bgImageView = new UIImageView(new CGRect(0, 0, ViewWidth, ViewWidth * 0.70F))
             {
                 Image = UIImage.FromBundle(SSMRConstants.IMG_ReadingHistoryBanner)
             };
 
-            View.AddSubview(bgImageView);
+            View.AddSubview(_bgImageView);
 
             UIView viewTitleBar = new UIView(new CGRect(0, yLocation, _navbarView.Frame.Width, titleBarHeight));
 
@@ -322,31 +323,13 @@ namespace myTNB
         #region Events
         public void OnTableViewScrolled(object sender, EventArgs e)
         {
-            var scrollDiff = _readingHistoryTableView.ContentOffset.Y - _previousScrollOffset;
-            var isScrollingDown = scrollDiff > 0;
-            var isScrollingUp = scrollDiff < 0;
+            UIScrollView scrollView = sender as UIScrollView;
+            CGRect frame = _bgImageView.Frame;
+            if ((nfloat)Math.Abs(frame.Y) == frame.Height) { return; }
 
-            var newHeight = _headerHeight;
-
-            if (_readingHistoryTableView.ContentOffset.Y == 0)
-            {
-                newHeight = _maxHeaderHeight;
-            }
-            else if (isScrollingDown)
-            {
-                newHeight = (float)Math.Max(_minHeaderHeight, _headerHeight - Math.Abs(scrollDiff));
-            }
-            else if (isScrollingUp)
-            {
-                newHeight = (float)Math.Min(_maxHeaderHeight, _headerHeight + Math.Abs(scrollDiff));
-            }
-
-            if (newHeight != _headerHeight)
-            {
-                _headerHeight = newHeight;
-                ViewHelper.AdjustFrameSetHeight(_headerView, _headerHeight);
-                _readingHistoryTableView.TableHeaderView = _headerView;
-            }
+            nfloat newYLoc = 0 - scrollView.ContentOffset.Y;
+            frame.Y = newYLoc;
+            _bgImageView.Frame = frame;
 
             _previousScrollOffset = _readingHistoryTableView.ContentOffset.Y;
             var opac = _previousScrollOffset / _tableViewOffset;
@@ -507,12 +490,19 @@ namespace myTNB
                         _smrActivityInfoResponse.d.data != null &&
                         _smrActivityInfoResponse.d.IsSuccess)
                     {
+                        _bgImageView.Image = UIImage.FromBundle(SSMRConstants.IMG_ReadingHistoryBanner);
+                        if (_viewRefreshContainer != null)
+                        {
+                            _viewRefreshContainer.RemoveFromSuperview();
+                        }
                         SSMRActivityInfoCache.SetReadingHistoryCache(_smrActivityInfoResponse);
                         UpdateTable();
+                        _readingHistoryTableView.Hidden = false;
                     }
                     else
                     {
-                        //Todo: Refresh State
+                        _readingHistoryTableView.Hidden = true;
+                        DisplayRefresh();
                     }
                 });
             });
@@ -535,7 +525,39 @@ namespace myTNB
         #endregion
 
         #region Refresh
+        private void DisplayRefresh()
+        {
+            _bgImageView.Image = UIImage.FromBundle(SSMRConstants.IMG_Refresh);
+            if (_viewRefreshContainer != null) { _viewRefreshContainer.RemoveFromSuperview(); }
+            _viewRefreshContainer = new UIView(new CGRect(BaseMargin, GetYLocationFromFrame(_bgImageView.Frame, 16)
+                , BaseMarginedWidth, GetScaledHeight(112)))
+            { Tag = 10 };
+            UILabel lblDescription = new UILabel(new CGRect(0, 0, BaseMarginedWidth, GetScaledHeight(48)))
+            {
+                TextAlignment = UITextAlignment.Center,
+                Font = TNBFont.MuseoSans_16_300,
+                Text = GetCommonI18NValue(SSMRConstants.I18N_RefreshDescription),
+                LineBreakMode = UILineBreakMode.WordWrap,
+                Lines = 0,
+                TextColor = MyTNBColor.BrownGreyThree
+            };
+            CustomUIButtonV2 btnRefresh = new CustomUIButtonV2()
+            {
+                Frame = new CGRect(0, GetYLocationFromFrame(lblDescription.Frame, 16), BaseMarginedWidth, GetScaledHeight(48)),
+                BackgroundColor = MyTNBColor.FreshGreen,
+                PageName = PageName,
+                EventName = SSMRConstants.EVENT_Refresh
+            };
+            btnRefresh.SetTitle(GetCommonI18NValue(SSMRConstants.I18N_RefreshNow), UIControlState.Normal);
+            btnRefresh.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                EvaluateEntry();
+            }));
 
+            _viewRefreshContainer.AddSubview(lblDescription);
+            _viewRefreshContainer.AddSubview(btnRefresh);
+            View.AddSubview(_viewRefreshContainer);
+        }
         #endregion
     }
 }

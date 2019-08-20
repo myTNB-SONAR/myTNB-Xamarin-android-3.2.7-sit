@@ -49,6 +49,8 @@ namespace myTNB.SSMR
         public static string I18N_Email = "emailAddress";
         public static string I18N_SelectAccounts = "selectAccounts";
         public static string I18N_Delete = "delete";
+        public static string I18N_RefreshNow = "refreshNow";
+        public static string I18N_RefreshDescription = "refreshDescription";
 
         //Application
         public static string I18N_ApplyingFor = "applyingFor";
@@ -72,8 +74,6 @@ namespace myTNB.SSMR
         public static string IMG_MobileNumber = "Mobile";
         public static string IMG_Email = "Email";
         public static string IMG_SMRMediumIcon = "SMR-Medium-Icon";
-        public static string IMG_SMROpenIcon = "SMR-Open-Icon";
-        public static string IMG_SMRClosedIcon = "SMR-Closed-Icon";
         public static string IMG_BackIcon = "Back-White";
         public static string IMG_PrimaryIcon = "SSMRPrimaryIcon";
         public static string IMG_Info = "IC-Info";
@@ -86,6 +86,7 @@ namespace myTNB.SSMR
         public static string IMG_BGToolTip3 = "SMR-ToolTip-BG3";
         public static string IMG_NoData = "SSMR-NoData";
         public static string IMG_ReadingHistoryBanner = "SSMR-Reading-History-Banner";
+        public static string IMG_Refresh = "SSMR-Refresh";
 
         //Error
         public static string I18N_InvalidEmail = "invalid_email";
@@ -144,5 +145,8 @@ namespace myTNB.SSMR
         public static string EVENT_SubmitToOCR = "Submit Images to OCR";
         public static string EVENT_DeleteImage = "Delete Image";
         public static string EVENT_DisableSelfMeterReading = "Disable Self Meter Reading";
+        public static string EVENT_Refresh = "Refresh";
+
+        public static int Max_ReasonCharacterCount = 550;
     }
 }

@@ -33,7 +33,9 @@
         "cameraPermissionTitle": "\"myTNB\" Would like to Access the Camera",
         "galleryPermissionTitle": "\"myTNB\" Would like to Access Your Photos",
         "photoPermissionDescription": "Enable myTNB to access your camera roll to upload photos and save ones you’ve taken with the app.",
-        "delete": "Delete"
+        "delete": "Delete",
+        "refreshDescription": "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!",
+        "refreshNow": "Refresh Now"
     },
     "Hint": {
         "mobileNumber": "Please include the country code of your phone number.",
@@ -82,7 +84,7 @@
         "applyingFor": "I am enabling for:",
         "terminateFor": "I am disabling for:",
         "contactDetails": "My contact details:",
-        "terminateTitle": "We’re sorry to see you go! Can you tell us why you want to unsubscribe this service?",
+        "terminateTitle": "We’re sorry to see you go! Can you tell us why you want to disable this service?",
         "tncUnsubscribe": "By submitting, you are agreeing to the <a href=\"\\\">TNB’s Terms of Use</a>, <a href=\"\\\">Privacy policy</a>, <a href=\"\\\">Anti-Spam Policy</a> and <a href=\"\\\">Personal Data Protection Policy</a>.",
         "tncSubscribe": "By submitting, you are agreeing to the <a href=\"\\\">Self Meter Reading Terms and Conditions</a>, <a href=\"\\\">TNB’s Terms of Use</a>, <a href=\"\\\">Privacy policy</a>, <a href=\"\\\">Anti-Spam Policy</a> and <a href=\"\\\">Personal Data Protection Policy</a>.",
         "editContactInfo": "By editing, you will update your myTNB profile and electricity account contact details.",
