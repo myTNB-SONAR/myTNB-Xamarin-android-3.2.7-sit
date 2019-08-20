@@ -26,7 +26,7 @@ using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 {
-    [Activity(Label = "Select Account"
+    [Activity(Label = "Select Electricity Account"
     , ScreenOrientation = ScreenOrientation.Portrait
     , Theme = "@style/Theme.Dashboard")]
     public class SelectSMRAccountActivity : BaseToolbarAppCompatActivity, SelectSMRAccountContract.IView
@@ -35,7 +35,13 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         ListView accountSMRList;
 
         [BindView(Resource.Id.whyAccountsNotHere)]
-        TextView whyAccountsNotHere;
+        TextView whyAccountsNotHere; 
+
+        [BindView(Resource.Id.noEligibleAccountContainer)]
+        LinearLayout noEligibleAccountContainer; 
+
+        [BindView(Resource.Id.eligibleAccountListContainer)]
+        LinearLayout eligibleAccountListContainer;
 
         List<SMRAccount> accountList = new List<SMRAccount>();
         private SelectAccountAdapter selectAccountAdapter;
@@ -78,11 +84,20 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             {
                 accountList = JsonConvert.DeserializeObject<List<SMRAccount>>(extras.GetString("SMR_ELIGIBLE_ACCOUNT_LIST"));
             }
+            if (accountList.Count > 0)
+            {
+                noEligibleAccountContainer.Visibility = ViewStates.Gone;
+                eligibleAccountListContainer.Visibility = ViewStates.Visible;
+                selectAccountAdapter = new SelectAccountAdapter(this, accountList);
+                accountSMRList.Adapter = selectAccountAdapter;
 
-            selectAccountAdapter = new SelectAccountAdapter(this, accountList);
-            accountSMRList.Adapter = selectAccountAdapter;
-
-            accountSMRList.ItemClick += OnItemClick;
+                accountSMRList.ItemClick += OnItemClick;
+            }
+            else
+            {
+                noEligibleAccountContainer.Visibility = ViewStates.Visible;
+                eligibleAccountListContainer.Visibility = ViewStates.Gone;
+            }
         }
 
 

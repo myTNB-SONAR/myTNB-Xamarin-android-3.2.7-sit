@@ -89,6 +89,7 @@
                 android:textSize="16dp"
                 android:text="My contact details:"
                 android:textColor="@color/powerBlue"
+                android:visibility="gone"
                 android:layout_gravity="left"/>
             <LinearLayout
                 android:layout_width="match_parent"
@@ -98,6 +99,7 @@
                 android:paddingTop="18dp"
                 android:paddingLeft="12dp"
                 android:paddingStart="16dp"
+                android:visibility="gone"
                 android:id="@+id/contactDetailContainer">
                 <android.support.design.widget.TextInputLayout
                     android:id="@+id/txtInputLayoutEmail"

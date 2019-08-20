@@ -14,5 +14,6 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         public string email { get; set; }
         public string mobileNumber { get; set; }
         public bool isTaggedSMR { get; set; }
+        public string accountOwnerName { get; set; }
     }
 }

@@ -28,7 +28,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 {
     [Activity(Label = "Self Meter Reading"
         , ScreenOrientation = ScreenOrientation.Portrait
-        , Theme = "@style/Theme.SMRApplication")]
+        , Theme = "@style/Theme.SSMRMeterHistoryStyle")]
     public class SSMRTerminateActivity : BaseToolbarAppCompatActivity, SSMRTerminateContract.IView, View.IOnTouchListener
     {
         LoadingOverlay loadingOverlay;
@@ -204,7 +204,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
             txtMobileNo.TextChanged += TextChange;
             txtEmail.TextChanged += TextChange;
-            txtReason.TextChanged += Reason_TextChange;
+            //txtReason.TextChanged += Reason_TextChange;
 
             txtMobileNo.AddTextChangedListener(new InputFilterFormField(txtMobileNo, txtInputLayoutMobileNo));
             txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
@@ -226,17 +226,19 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 txtMobileNo.Text = "+60";
             }
 
-            ShowProgressDialog();
+            //ShowProgressDialog();
 
             if (extras!= null && extras.ContainsKey(Constants.SELECTED_ACCOUNT))
             {
                 selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
                 disconnectionAccountTtile.Text = selectedAccount.AccountNickName;
                 disconnectionAccountAddress.Text = selectedAccount.AddStreet;
-                this.mPresenter.InitiateCAInfo(selectedAccount);
+
+                //this.mPresenter.InitiateCAInfo(selectedAccount);
             }
 
             this.mPresenter.InitiateTerminationReasonsList();
+            EnableSubmitButton();
         }
 
         public override View OnCreateView(string name, Context context, IAttributeSet attrs)

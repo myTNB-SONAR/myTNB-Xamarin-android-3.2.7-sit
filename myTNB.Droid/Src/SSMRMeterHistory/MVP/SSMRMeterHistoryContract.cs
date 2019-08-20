@@ -14,6 +14,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             void HideProgressDialog();
             void ShowSMREligibleAccountList(List<SMRAccount> smrAccountList);
             void UpdateUIForSMR(SMRActivityInfoResponse activityInfoResponse);
+            void ShowRefreshScreen(bool isShow);
         }
 
         public interface IPresenter

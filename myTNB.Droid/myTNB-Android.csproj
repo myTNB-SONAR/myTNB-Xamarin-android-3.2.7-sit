@@ -1999,6 +1999,11 @@
     <Compile Include="Src\Base\SMRAccountActivityInfo.cs" />
     <Compile Include="Src\Base\MVP\IExceptionView.cs" />
     <AndroidResource Include="Resources\drawable\red_light_button_background.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\bg_application_status.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\bg_application_status.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\bg_application_status.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\bg_application_status.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\bg_application_status.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

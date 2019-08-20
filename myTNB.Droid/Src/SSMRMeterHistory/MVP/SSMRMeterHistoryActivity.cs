@@ -86,6 +86,12 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [BindView(Resource.Id.layout_content_nestedscroll)]
         NestedScrollView NestedScrollViewContent;
 
+        [BindView(Resource.Id.smrReadingHistoryDetailContent)]
+        LinearLayout smrReadingHistoryDetailContent;
+
+        [BindView(Resource.Id.accountListRefreshContainer)]
+        LinearLayout smrAccountListRefreshContainer;
+
         private SMRActivityInfoResponse smrResponse;
 
         private AccountData selectedAccount;
@@ -139,6 +145,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
                     {
                         selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                        selectedAccountNumber = selectedAccount.AccountNum;
                         selectedAccountNickName = selectedAccount.AccountNickName;
 
                         if (extras.ContainsKey(Constants.SMR_RESPONSE_KEY))
@@ -154,6 +161,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     SMRAccount smrSelectedAccount = smrAccountList.Find(account => {
                         return account.isTaggedSMR;
                     });
+                    selectedAccountNumber = smrSelectedAccount.accountNumber;
                     if (smrSelectedAccount != null)
                     {
                         selectedAccountNickName = smrSelectedAccount.accountName;
@@ -186,6 +194,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 
         private void UpdateUIForNonSMR()
         {
+            ShowRefreshScreen(false);
             SMRAccountSelected.Text = selectedAccountNickName;
             ShowNonSMRVisible(true,true);
         }
@@ -198,6 +207,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 
         public void UpdateUIForSMR(SMRActivityInfoResponse activityInfoResponse)
         {
+            ShowRefreshScreen(false);
             SMRAccountSelected.Text = selectedAccountNickName;
             ShowNonSMRVisible(false,false);
 
@@ -424,8 +434,14 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [OnClick(Resource.Id.btnDisableSubmitMeter)]
         void OnDisableSubmitMeter(object sender, EventArgs eventArgs)
         {
-            Intent intent = new Intent(this, typeof(SSMRTerminateActivity));
-            StartActivity(intent);
+            AccountData accountData = new AccountData();
+            SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
+            accountData.AccountNum = selectedAccountNumber;
+            accountData.AddStreet = eligibleAccount.accountAddress;
+            accountData.AccountNickName = eligibleAccount.accountName;
+            Intent SSMRTerminateActivity = new Intent(this, typeof(SSMRTerminateActivity));
+            SSMRTerminateActivity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+            StartActivity(SSMRTerminateActivity);
         }
 
         public void ShowSMREligibleAccountList(List<SMRAccount> smrEligibleAccountList)
@@ -433,6 +449,18 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             Intent intent = new Intent(this, typeof(SelectSMRAccountActivity));
             intent.PutExtra("SMR_ELIGIBLE_ACCOUNT_LIST", JsonConvert.SerializeObject(smrEligibleAccountList));
             StartActivityForResult(intent, SSMR_SELECT_ACCOUNT_ACTIVITY_CODE);
+        }
+
+        public void ShowRefreshScreen(bool isShow)
+        {
+            NestedScrollViewContent.Visibility = isShow ? ViewStates.Gone : ViewStates.Visible;
+            smrAccountListRefreshContainer.Visibility = isShow ? ViewStates.Visible : ViewStates.Gone;
+        }
+
+        [OnClick(Resource.Id.btnRefresh)]
+        internal void OnRefresh(object sender, EventArgs e)
+        {
+            this.mPresenter.GetSSMRAccountStatus(selectedAccountNumber);
         }
 
     }

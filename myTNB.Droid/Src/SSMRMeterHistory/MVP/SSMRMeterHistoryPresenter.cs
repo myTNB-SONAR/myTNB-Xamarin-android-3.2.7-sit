@@ -155,7 +155,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 else
                 {
                     this.mView.HideProgressDialog();
-                    this.mView.ShowGenericSnackbarException();
+                    this.mView.ShowRefreshScreen(true);
                 }
             }
             catch (System.OperationCanceledException e)
@@ -190,6 +190,8 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 smrEligibleAccount.accountName = account.AccDesc;
                 smrEligibleAccount.accountSelected = account.IsSelected;
                 smrEligibleAccount.isTaggedSMR = account.IsTaggedSMR;
+                smrEligibleAccount.accountAddress = account.AccountStAddress;
+                smrEligibleAccount.accountOwnerName = account.OwnerName;
                 smrEligibleAccountList.Add(smrEligibleAccount);
             });
             return smrEligibleAccountList;
