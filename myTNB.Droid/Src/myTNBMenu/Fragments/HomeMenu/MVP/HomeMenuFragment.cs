@@ -143,7 +143,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.accountCard)]
         CardView accountCard;
 
-        
+        [BindView(Resource.Id.addActionLabel)]
+        TextView addActionLabel;
+
+        [BindView(Resource.Id.searchActionLabel)]
+        TextView searchActionLabel; 
+
+        [BindView(Resource.Id.addActionContainer)]
+        LinearLayout addActionContainer;
+
+        [BindView(Resource.Id.searchActionContainer)]
+        LinearLayout searchActionContainer;
+
+        [BindView(Resource.Id.accountsActionsContainer)]
+        LinearLayout accountsActionsContainer;
+
+        [BindView(Resource.Id.refreshImg)]
+        ImageView refreshImg;
+
+        [BindView(Resource.Id.refreshMsg)]
+        TextView refreshMsg;
 
 
         AccountsRecyclerViewAdapter accountsAdapter;
@@ -183,7 +202,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             base.OnCreate(savedInstanceState);
             presenter = new HomeMenuPresenter(this);
-            //MyTNBAccountManagement.GetInstance().SetMasterCustomerBillingAccountList();
         }
 
         public override void OnAttach(Context context)
@@ -242,11 +260,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetupNewFAQView();
                 SetupNewPromotionView();
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg);
-                TextViewUtils.SetMuseoSans500Typeface(myServiceTitle, newFAQTitle, newPromotionTitle, btnRefresh, txtAdd);
+                TextViewUtils.SetMuseoSans500Typeface(myServiceTitle, newFAQTitle, newPromotionTitle, btnRefresh, txtAdd, addActionLabel, searchActionLabel);
 
-                addActionImage.SetOnClickListener(null);
+                addActionContainer.SetOnClickListener(null);
                 notificationHeaderIcon.SetOnClickListener(null);
-                addActionImage.Click += delegate
+                addActionContainer.Click += delegate
                 {
                     Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
                     linkAccount.PutExtra("fromDashboard", true);
@@ -263,11 +281,33 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 this.presenter.GetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
 
                 this.presenter.GetEnergySavingTipsTimeStamp();
+                SetRefreshLayoutParams();
             }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void SetRefreshLayoutParams()
+        {
+            LinearLayout.LayoutParams refreshImgParams = refreshImg.LayoutParameters as LinearLayout.LayoutParams;
+            LinearLayout.LayoutParams refreshMsgParams = refreshMsg.LayoutParameters as LinearLayout.LayoutParams;
+            LinearLayout.LayoutParams btnRefreshParams = btnRefresh.LayoutParameters as LinearLayout.LayoutParams;
+
+            refreshImgParams.Width = GetDeviceHorizontalScaleInPixel(0.431f);
+            refreshImgParams.Height = GetDeviceHorizontalScaleInPixel(0.431f);
+            refreshImg.RequestLayout();
+
+            refreshMsgParams.Width = GetDeviceHorizontalScaleInPixel(0.80f);
+            refreshMsgParams.RightMargin = GetDeviceHorizontalScaleInPixel(0.10f);
+            refreshMsgParams.LeftMargin = GetDeviceHorizontalScaleInPixel(0.10f);
+            refreshMsg.RequestLayout();
+
+            btnRefreshParams.Width = GetDeviceHorizontalScaleInPixel(0.90f);
+            btnRefreshParams.RightMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+            btnRefreshParams.LeftMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+            btnRefresh.RequestLayout();
         }
 
         public bool IsActive()
@@ -473,21 +513,37 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 accountHeaderTitle.Visibility = ViewStates.Gone;
                 searchEditText.Visibility = ViewStates.Visible;
                 searchEditText.SetMaxWidth(Integer.MaxValue);
-                searchActionIcon.Visibility = ViewStates.Gone;
+                searchActionContainer.Visibility = ViewStates.Gone;
+                searchEditText.OnActionViewExpanded();
                 searchEditText.RequestFocus();
+                if (searchEditText.Query != "")
+                {
+                    searchEditText.SetBackgroundResource(Resource.Drawable.rectangle_rounded_corner_bg);
+                }
+                else
+                {
+                    searchEditText.SetBackgroundResource(Resource.Drawable.search_edit_bg);
+                }
             }
             else
             {
                 accountHeaderTitle.Visibility = ViewStates.Visible;
                 searchEditText.Visibility = ViewStates.Gone;
-                searchActionIcon.Visibility = ViewStates.Visible;
+                searchActionContainer.Visibility = ViewStates.Visible;
             }
         }
 
         private void SetAccountActionHeader()
         {
+            LinearLayout.LayoutParams param = (LinearLayout.LayoutParams)accountsActionsContainer.LayoutParameters;
+            param.LeftMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+            param.RightMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+
             TextViewUtils.SetMuseoSans500Typeface(accountHeaderTitle, accountGreeting, accountGreetingName);
             searchEditText.SetOnQueryTextListener(new AccountsSearchOnQueryTextListener(this,accountsAdapter));
+            int closeViewId = searchEditText.Context.Resources.GetIdentifier("android:id/search_close_btn", null, null);
+            ImageView closeImageView = searchEditText.FindViewById<ImageView>(closeViewId);
+            closeImageView.SetPadding(0, 0, 0, 0);
             searchActionIcon.Click += (s, e) =>
             {
                 ShowSearchAction(true);
@@ -517,7 +573,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 var actionBar = act.SupportActionBar;
                 actionBar.Hide();
                 ShowBackButton(false);
-
+                ShowSearchAction(false);
                 DownTimeEntity bcrmDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 if (bcrmDownTime != null && bcrmDownTime.IsDown)
                 {
@@ -782,12 +838,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             if (accountList.Count <= 5)
             {
-                searchActionIcon.Visibility = ViewStates.Gone;
+                searchActionContainer.Visibility = ViewStates.Gone;
                 searchEditText.Visibility = ViewStates.Gone;
             }
             else
             {
-                searchActionIcon.Visibility = ViewStates.Visible;
+                searchActionContainer.Visibility = ViewStates.Visible;
             }
         }
 
@@ -862,7 +918,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 if (mCallBack != null)
                 {
                     mCallBack.NavigateToDashBoardFragment();
-                    //ShowBackArrowIndicator()
                 }
             }
         }
@@ -907,7 +962,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 if(searchEditText.Visibility == ViewStates.Visible)
                 {
                     searchEditText.ClearFocus();
-                    ShowSearchAction(false);
                     OnUpdateAccountListChanged(true);
                 }
             }
@@ -1048,12 +1102,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 accountListContainer.Visibility = ViewStates.Visible;
                 accountCard.Visibility = ViewStates.Gone;
-                addActionImage.Visibility = ViewStates.Visible;
+                addActionContainer.Visibility = ViewStates.Visible;
             }
             else
             {
                 myServiceTitle.SetTextColor(Color.White);
-                addActionImage.Visibility = ViewStates.Gone;
+                addActionContainer.Visibility = ViewStates.Gone;
                 accountListContainer.Visibility = ViewStates.Gone;
                 accountCard.Visibility = ViewStates.Visible;
             }
@@ -1217,6 +1271,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 // Read from cache
                 Utility.LoggingNonFatalError(e);
             }
+        }
+        public void UpdateSearchViewBackground(string searchText)
+        {
+            if (searchText != "")
+            {
+                searchEditText.SetBackgroundResource(Resource.Drawable.rectangle_rounded_corner_bg);
+            }
+            else
+            {
+                searchEditText.SetBackgroundResource(Resource.Drawable.search_edit_bg);
+            }
+            
         }
     }
 }

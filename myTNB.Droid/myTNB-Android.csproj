@@ -2187,6 +2187,12 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable\rectangle_rounded_corner_bg.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\search_cancel.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\search_cancel.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\search_cancel.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\search_cancel.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\search_cancel.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

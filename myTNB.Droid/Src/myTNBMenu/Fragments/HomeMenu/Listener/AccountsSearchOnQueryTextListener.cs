@@ -17,6 +17,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Listener
 
 		public bool OnQueryTextChange(string newText)
 		{
+            this.mViewListerner.UpdateSearchViewBackground(newText);
             this.mAdapter.Filter.InvokeFilter(newText);
             return true;
 		}

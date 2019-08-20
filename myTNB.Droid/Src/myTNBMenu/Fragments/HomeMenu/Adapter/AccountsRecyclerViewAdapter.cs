@@ -20,7 +20,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
         int accountsCardContainer = 0;
         int MAX_ACCOUNT_PER_CARD = 5;
         Filter accountsFilter;
-        static HomeMenuContract.IHomeMenuView viewListener;
+        static HomeMenuFragment viewListener;
 
         List<List<AccountCardModel>> cardList = new List<List<AccountCardModel>>();
         List<AccountCardModel> accountModelList = new List<AccountCardModel>();
@@ -29,7 +29,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
         public AccountsRecyclerViewAdapter(HomeMenuContract.IHomeMenuView listener)
         {
-            viewListener = listener;
+            viewListener = listener as HomeMenuFragment;
 
             //BitmapFactory.Options dimensions = new BitmapFactory.Options();
             //dimensions.inJustDecodeBounds = true;
@@ -105,6 +105,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                         int accountType = Int32.Parse(summaryDashBoardDetails.AccType);
                         cardModel.AccountNumber = summaryDashBoardDetails.AccNumber;
                         cardModel.AccountName = summaryDashBoardDetails.AccName;
+                        cardModel.IsNegativeAmount = (accountType == 2) ? false : AccountModelFormatter.IsNegativeAmount(summaryDashBoardDetails.AmountDue);
+                        cardModel.IsZeroAmount = AccountModelFormatter.IsAmountCleared(summaryDashBoardDetails.AmountDue);
                         cardModel.BillDueAmount = AccountModelFormatter.GetFormatAmount(summaryDashBoardDetails.AmountDue);
                         cardModel.BillDueNote = AccountModelFormatter.GetBillDueNote(accountType,
                             summaryDashBoardDetails.AmountDue, summaryDashBoardDetails.BillDueDate, summaryDashBoardDetails.IsTaggedSMR);
@@ -136,11 +138,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 cardModel.AccountNumber = summaryDashBoardDetails.AccNumber;
                 if (summaryDashBoardDetails.AmountDue != null)
                 {
+                    cardModel.AccountType = accountType;
                     cardModel.AccountName = summaryDashBoardDetails.AccName;
+                    cardModel.IsNegativeAmount = (accountType == 2) ? false : AccountModelFormatter.IsNegativeAmount(summaryDashBoardDetails.AmountDue);
+                    cardModel.IsZeroAmount = AccountModelFormatter.IsAmountCleared(summaryDashBoardDetails.AmountDue);
                     cardModel.BillDueAmount = AccountModelFormatter.GetFormatAmount(summaryDashBoardDetails.AmountDue);
                     cardModel.BillDueNote = AccountModelFormatter.GetBillDueNote(accountType,
                         summaryDashBoardDetails.AmountDue, summaryDashBoardDetails.BillDueDate, summaryDashBoardDetails.IsTaggedSMR);
-                    cardModel.AccountType = accountType;
                     cardModel.IsTaggedSMR = summaryDashBoardDetails.IsTaggedSMR;
                     if (summaryDashBoardDetails.SmartMeterCode == "0")
                     {
@@ -167,6 +171,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 model = new AccountCardModel();
                 model.AccountName = summaryDashBoardDetails.AccName;
                 model.AccountNumber = summaryDashBoardDetails.AccNumber;
+                model.IsNegativeAmount = (accountType == 2) ? false : AccountModelFormatter.IsNegativeAmount(summaryDashBoardDetails.AmountDue);
+                model.IsZeroAmount = AccountModelFormatter.IsAmountCleared(summaryDashBoardDetails.AmountDue);
                 model.BillDueAmount = summaryDashBoardDetails.AmountDue;
                 model.BillDueNote = summaryDashBoardDetails.BillDueDate;
                 model.AccountType = accountType;
@@ -207,7 +213,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             foreach (AccountCardModel cardModel in accountCardModel)
             {
                 float scale = parentGroup.Context.Resources.DisplayMetrics.Density;
-                int width = (int)((deviceWidth - 32) * scale + 0.5f);
+                int width = viewListener.GetDeviceHorizontalScaleInPixel(0.9f);
                 LinearLayout.LayoutParams layoutParams;
                 if (cardList.Count > 1)
                 {
@@ -216,14 +222,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                     layoutParams.BottomMargin = (int)(10 * scale + 0.5f);
                     if (position == 0)
                     {
-                        layoutParams.LeftMargin = (int)(16 * scale + 0.5f);
-                        layoutParams.RightMargin = (int)(8* scale + 0.5f);
+                        layoutParams.LeftMargin = viewListener.GetDeviceHorizontalScaleInPixel(0.05f);
+                        layoutParams.RightMargin = viewListener.GetDeviceHorizontalScaleInPixel(0.025f);
                         viewHolder.linearLayout.LayoutParameters = layoutParams;
                     }
                     else
                     {
-                        layoutParams.RightMargin = (int)(8 * scale + 0.5f);
-                        layoutParams.RightMargin = (int)(8 * scale + 0.5f);
+                        layoutParams.RightMargin = viewListener.GetDeviceHorizontalScaleInPixel(0.025f);
+                        layoutParams.RightMargin = viewListener.GetDeviceHorizontalScaleInPixel(0.025f);
                         viewHolder.linearLayout.LayoutParameters = layoutParams;
                     }
                 }
@@ -231,8 +237,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                 {
                     layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MatchParent,
                     LinearLayout.LayoutParams.WrapContent);
-                    layoutParams.LeftMargin = (int)(16 * scale + 0.5f);
-                    layoutParams.RightMargin = (int)(16 * scale + 0.5f);
+                    layoutParams.LeftMargin = viewListener.GetDeviceHorizontalScaleInPixel(0.05f);
+                    layoutParams.RightMargin = viewListener.GetDeviceHorizontalScaleInPixel(0.05f);
                     viewHolder.linearLayout.LayoutParameters = layoutParams;
                 }
 
@@ -316,6 +322,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             accountNumber.Text = cardModel.AccountNumber;
             billDueAmount.Text = cardModel.BillDueAmount;
             billDueNote.Text = cardModel.BillDueNote;
+
+            if (cardModel.IsZeroAmount)
+            {
+                billDueAmount.SetTextColor(parentGroup.Context.Resources.GetColor(Resource.Color.all_cleared_amount, null));
+            }
+            if (cardModel.IsNegativeAmount)
+            {
+                billDueAmount.SetTextColor(parentGroup.Context.Resources.GetColor(Resource.Color.freshGreen, null));
+            }
 
             accountTypeIcon.SetImageResource(GetAccountIcon(cardModel.AccountType, cardModel.SmartMeterCode, cardModel.IsTaggedSMR, cardModel.AccountNumber));
 

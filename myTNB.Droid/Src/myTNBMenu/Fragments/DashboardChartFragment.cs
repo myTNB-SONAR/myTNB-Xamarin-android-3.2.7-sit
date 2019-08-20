@@ -1072,7 +1072,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             mChart.SetOnChartValueSelectedListener(this);
         }
-        #region SETUP AXIS MONTH
+        #region SETUP AXIS RM
         internal void SetUpXAxis()
         {
 
@@ -1094,7 +1094,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         }
         #endregion
 
-        #region SETUP AXIS DAY
+        #region SETUP AXIS KWH
         internal void SetUpXAxiskWh()
         {
             XLabelsFormatter = new ChartsKWhFormatter(selectedHistoryData.ByMonth, mChart);
@@ -1115,7 +1115,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         }
         #endregion
 
-        #region SETUP Y AXIS BOTH MONTH
+        #region SETUP Y AXIS RM
         internal void SetUpYAxis()
         {
             IAxisValueFormatter custom = new MyAxisValueFormatter();
@@ -1143,7 +1143,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         }
         #endregion
 
-        #region SETUP Y AXIS BOTH DAY
+        #region SETUP Y AXIS KWH
         internal void SetUpYAxisKwh()
         {
             IAxisValueFormatter custom = new MyAxisValueFormatter();
@@ -1170,7 +1170,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         }
         #endregion
 
-        #region SETUP MARKERVIEW MONTH / HIGHLIGHT TEXT
+        #region SETUP MARKERVIEW RM / HIGHLIGHT TEXT
         internal void SetUpMarkerRMView()
         {
             SelectedMarkerView markerView = new SelectedMarkerView(Activity)
@@ -1184,7 +1184,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         }
         #endregion
 
-        #region SETUP MARKERVIEW DAY/ HIGHLIGHT TEXT
+        #region SETUP MARKERVIEW KWH/ HIGHLIGHT TEXT
         internal void SetUpMarkerKWhView()
         {
             SelectedMarkerView markerView = new SelectedMarkerView(Activity)
@@ -1198,7 +1198,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         }
         #endregion
 
-        #region SETUP MONTH DATA
+        #region SETUP RM DATA
         internal void SetData(int barLength)
         {
             if (isToggleTariff)
@@ -1334,7 +1334,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         }
         #endregion
 
-        #region SETUP DAY DATA
+        #region SETUP KWH DATA
         internal void SetKWhData(int barLength)
         {
             if (isToggleTariff)
@@ -2684,40 +2684,54 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         void IOnChartValueSelectedListenerSupport.OnValueSelected(Entry e, Highlight h)
         {
-            if (isToggleTariff && h != null)
+            try
             {
-                int stackedIndex = 0;
-                if (selectedHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList.Count > 0)
+                if (isToggleTariff && h != null)
                 {
-                    stackedIndex = selectedHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList.Count - 1;
-                }
-
-                Highlight stackedHigh = new Highlight((int)e.GetX(), 0, stackedIndex);
-                mChart.HighlightValue(stackedHigh, false);
-            }
-
-            if (e != null)
-            {
-                int index = (int)e.GetX();
-                if (index != CurrentParentIndex)
-                {
-                    CurrentParentIndex = index;
-                    Vibrator vibrator = (Vibrator)this.Activity.GetSystemService(Context.VibratorService);
-                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
+                    int stackedIndex = 0;
+                    if (selectedHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList.Count > 0)
                     {
-                        vibrator.Vibrate(VibrationEffect.CreateOneShot(200, 12));
-
+                        stackedIndex = selectedHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList.Count - 1;
                     }
-                    else
-                    {
-                        vibrator.Vibrate(200);
 
-                    }
+                    Highlight stackedHigh = new Highlight((int)e.GetX(), 0, stackedIndex);
+                    mChart.HighlightValue(stackedHigh, false);
                 }
             }
-            else
+            catch (System.Exception err)
             {
-                CurrentParentIndex = -1;
+                Utility.LoggingNonFatalError(err);
+            }
+
+            try
+            {
+                if (e != null)
+                {
+                    int index = (int)e.GetX();
+                    if (index != CurrentParentIndex)
+                    {
+                        CurrentParentIndex = index;
+                        Vibrator vibrator = (Vibrator)this.Activity.GetSystemService(Context.VibratorService);
+                        if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
+                        {
+                            vibrator.Vibrate(VibrationEffect.CreateOneShot(200, 12));
+
+                        }
+                        else
+                        {
+                            vibrator.Vibrate(200);
+
+                        }
+                    }
+                }
+                else
+                {
+                    CurrentParentIndex = -1;
+                }
+            }
+            catch (System.Exception err)
+            {
+                Utility.LoggingNonFatalError(err);
             }
         }
     }
