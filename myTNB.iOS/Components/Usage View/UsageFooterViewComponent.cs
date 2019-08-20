@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using CoreGraphics;
 using UIKit;
 
@@ -8,7 +9,7 @@ namespace myTNB
     {
         UIView _parentView, _containerView;
         public UIButton _btnViewBill, _btnPay;
-        UILabel _lblPaymentTitle, _lblAmount, _lblDate;
+        UILabel _lblPaymentTitle, _lblAmount, _lblDate, _lblCommon;
         nfloat _width;
         nfloat _viewHeight;
 
@@ -42,7 +43,8 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.GreyishBrown,
                 TextAlignment = UITextAlignment.Left,
-                Text = "I need to pay"
+                Text = "I need to pay",
+                Hidden = true
             };
             _containerView.AddSubview(_lblPaymentTitle);
 
@@ -51,16 +53,24 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_300,
                 TextColor = MyTNBColor.GreyishBrown,
                 TextAlignment = UITextAlignment.Left,
-                Text = "by 24 Sep 2019"
+                Hidden = true
             };
             _containerView.AddSubview(_lblDate);
+
+            _lblCommon = new UILabel(new CGRect(BaseMarginWidth16, GetScaledHeight(22f), (_width / 2) - BaseMarginWidth16, GetScaledHeight(20f)))
+            {
+                Font = TNBFont.MuseoSans_14_500,
+                TextColor = MyTNBColor.GreyishBrown,
+                TextAlignment = UITextAlignment.Left,
+                Hidden = true
+            };
+            _containerView.AddSubview(_lblCommon);
 
             _lblAmount = new UILabel(new CGRect(_width / 2, GetScaledHeight(20f), (_width / 2) - BaseMarginWidth16, GetScaledHeight(32f)))
             {
                 Font = TNBFont.MuseoSans_24_300,
                 TextColor = MyTNBColor.CharcoalGrey,
-                TextAlignment = UITextAlignment.Right,
-                Text = "RM 420.00"
+                TextAlignment = UITextAlignment.Right
             };
             _containerView.AddSubview(_lblAmount);
         }
@@ -91,6 +101,49 @@ namespace myTNB
             _btnPay.SetTitle("Common_Pay".Translate(), UIControlState.Normal);
             _btnPay.Font = TNBFont.MuseoSans_16_500;
             _containerView.AddSubview(_btnPay);
+        }
+
+        public void SetAmount(double amount)
+        {
+            if (amount >= 0)
+            {
+                _lblAmount.AttributedText = TextHelper.CreateValuePairString(amount.ToString("N2", CultureInfo.InvariantCulture)
+                        , TNBGlobal.UNIT_CURRENCY + " ", true, TNBFont.MuseoSans_24_300
+                        , MyTNBColor.CharcoalGrey, TNBFont.MuseoSans_12_500, MyTNBColor.CharcoalGrey);
+            }
+            else if (amount < 0)
+            {
+
+                _lblAmount.AttributedText = TextHelper.CreateValuePairString(Math.Abs(amount).ToString("N2", CultureInfo.InvariantCulture)
+                        , TNBGlobal.UNIT_CURRENCY + " ", true, TNBFont.MuseoSans_24_300
+                        , MyTNBColor.FreshGreen, TNBFont.MuseoSans_12_500, MyTNBColor.FreshGreen);
+            }
+            AdjustLabels(amount);
+        }
+        private void AdjustLabels(double amount)
+        {
+            if (amount > 0)
+            {
+                _lblPaymentTitle.Hidden = false;
+                _lblDate.Hidden = false;
+                _lblCommon.Hidden = true;
+            }
+            else
+            {
+                _lblPaymentTitle.Hidden = true;
+                _lblDate.Hidden = true;
+                _lblCommon.Hidden = false;
+                _lblCommon.Text = amount < 0 ? "I’ve paid extra" : "I’ve cleared all bills";
+            }
+        }
+
+        public void SetDate(string date)
+        {
+            if (!string.IsNullOrEmpty(date) && !string.IsNullOrWhiteSpace(date))
+            {
+                string formattedDate = DateHelper.GetFormattedDate(date, "dd MMM yyyy");
+                _lblDate.Text = formattedDate;
+            }
         }
     }
 }

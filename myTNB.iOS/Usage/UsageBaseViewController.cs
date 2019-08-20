@@ -15,6 +15,7 @@ namespace myTNB
         public UsageBaseViewController(IntPtr handle) : base(handle) { }
 
         TariffSelectionComponent _tariffSelectionComponent;
+        UsageFooterViewComponent _footerViewComponent;
 
         internal UIScrollView _scrollViewContent;
         internal CustomUIView _navbarContainer, _accountSelector, _viewSeparator, _viewStatus
@@ -192,6 +193,7 @@ namespace myTNB
         {
             AddAccountSelector();
             SetAddress();
+            SetDisconnectionComponent();
             SetChartView();
             SetTariffSelectionComponent();
             SetSSMRComponent();
@@ -492,7 +494,7 @@ namespace myTNB
         }
         #endregion
         #region FOOTER Methods
-        private void SetFooterView()
+        internal void SetFooterView()
         {
             nfloat footerRatio = 136.0f / 320.0f;
             nfloat footerHeight = ViewWidth * footerRatio;
@@ -508,9 +510,29 @@ namespace myTNB
             _origViewFrame = _viewFooter.Frame;
             AddFooterShadow(ref _viewFooter);
             View.AddSubview(_viewFooter);
-            UsageFooterViewComponent footerViewComponent = new UsageFooterViewComponent(View, footerHeight);
-            _viewFooter.AddSubview(footerViewComponent.GetUI());
+            _footerViewComponent = new UsageFooterViewComponent(View, footerHeight);
+            _viewFooter.AddSubview(_footerViewComponent.GetUI());
+            _footerViewComponent._btnViewBill.TouchUpInside += (sender, e) =>
+            {
+                OnCurrentBillButtonTap();
+            };
+            _footerViewComponent._btnPay.TouchUpInside += (sender, e) =>
+            {
+                DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                OnPayButtonTap(dueData.amountDue);
+            };
         }
+
+        internal void UpdateFooterUI()
+        {
+            DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+            _footerViewComponent.SetAmount(dueData.amountDue);
+            _footerViewComponent.SetDate(dueData.billDueDate);
+        }
+
+        internal virtual void OnCurrentBillButtonTap() { }
+
+        internal virtual void OnPayButtonTap(double amountDue) { }
 
         private void OnScroll(object sender, EventArgs e)
         {

@@ -64,7 +64,7 @@ namespace myTNB
         {
             SMRAccountActivityInfoResponseModel smrActivityInfoResponse = null;
             ServiceManager serviceManager = new ServiceManager();
-            object request = new
+            object requestParameter = new
             {
                 contractAccount = account.accNum,
                 isOwnedAccount = account.isOwned,
@@ -72,10 +72,28 @@ namespace myTNB
             };
             smrActivityInfoResponse = await Task.Run(() =>
             {
-                return serviceManager.OnExecuteAPIV6<SMRAccountActivityInfoResponseModel>("GetSMRAccountActivityInfo", request);
+                return serviceManager.OnExecuteAPIV6<SMRAccountActivityInfoResponseModel>("GetSMRAccountActivityInfo", requestParameter);
             });
 
             return smrActivityInfoResponse;
+        }
+
+
+        public static async Task<DueAmountResponseModel> GetAccountDueAmount(CustomerAccountRecordModel account)
+        {
+            DueAmountResponseModel dueAmountResponse = null;
+            ServiceManager serviceManager = new ServiceManager();
+            object requestParameter = new
+            {
+                accNum = account.accNum,
+                apiKeyID = TNBGlobal.API_KEY_ID
+            };
+            dueAmountResponse = await Task.Run(() =>
+            {
+                return serviceManager.OnExecuteAPI<DueAmountResponseModel>("GetAccountDueAmount", requestParameter);
+            });
+
+            return dueAmountResponse;
         }
     }
 }

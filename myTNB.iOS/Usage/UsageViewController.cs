@@ -1,5 +1,8 @@
+using myTNB.Model;
 using myTNB.Model.Usage;
 using System;
+using System.Diagnostics;
+using UIKit;
 
 namespace myTNB
 {
@@ -11,14 +14,73 @@ namespace myTNB
         {
             PageName = "UsageView";
             base.ViewDidLoad();
-            SetDisconnectionComponent();
             CallGetAccountUsageAPI();
+            CallGetAccountDueAmountAPI();
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
         }
+
+        public void OnCurrentBillViewDone()
+        {
+            Debug.WriteLine("OnCurrentBillViewDone()");
+        }
+
+
+        #region OVERRIDDEN Methods
+        internal override void OnCurrentBillButtonTap()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        UIStoryboard storyBoard = UIStoryboard.FromName("ViewBill", null);
+                        ViewBillViewController viewController =
+                            storyBoard.InstantiateViewController("ViewBillViewController") as ViewBillViewController;
+                        if (viewController != null)
+                        {
+                            viewController.OnDone = OnCurrentBillViewDone;
+                            var navController = new UINavigationController(viewController);
+                            PresentViewController(navController, true, null);
+                        }
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+        internal override void OnPayButtonTap(double amountDue)
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        UIStoryboard storyBoard = UIStoryboard.FromName("Payment", null);
+                        SelectBillsViewController selectBillsVC =
+                            storyBoard.InstantiateViewController("SelectBillsViewController") as SelectBillsViewController;
+                        if (selectBillsVC != null)
+                        {
+                            selectBillsVC.SelectedAccountDueAmount = amountDue;
+                            var navController = new UINavigationController(selectBillsVC);
+                            PresentViewController(navController, true, null);
+                        }
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+        #endregion
         #region API Calls
         private void CallGetAccountUsageAPI()
         {
@@ -36,6 +98,33 @@ namespace myTNB
                         AccountUsageCache.SetData(accountUsageResponse);
                         AddSubviews();
                         SetTariffLegendComponent();
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                    ActivityIndicator.Hide();
+                });
+            });
+        }
+        private void CallGetAccountDueAmountAPI()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        ActivityIndicator.Show();
+                        DueAmountResponseModel dueAmountResponse = await UsageServiceCall.GetAccountDueAmount(DataManager.DataManager.SharedInstance.SelectedAccount);
+                        if (dueAmountResponse != null &&
+                            dueAmountResponse.d != null &&
+                            dueAmountResponse.d.didSucceed &&
+                            dueAmountResponse.d.data != null)
+                        {
+                            AmountDueCache.SaveDues(dueAmountResponse.d.data);
+                            UpdateFooterUI();
+                        }
                     }
                     else
                     {
