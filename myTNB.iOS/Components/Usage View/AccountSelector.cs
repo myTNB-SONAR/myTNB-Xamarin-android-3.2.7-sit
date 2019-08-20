@@ -61,7 +61,7 @@ namespace myTNB
                     val = Empty;
                 }
                 _lblTitle.Text = val;
-                CGSize size = CustomUILabel.GetLabelSize(_lblTitle, _lblTitle.Frame.Width, _lblTitle.Frame.Height);
+                CGSize size = CustomUILabel.GetLabelSize(_lblTitle, _width - GetScaledWidth(56), _lblTitle.Frame.Height);
                 CGRect lblFrame = _lblTitle.Frame;
                 lblFrame.Width = size.Width;
                 _lblTitle.Frame = lblFrame;

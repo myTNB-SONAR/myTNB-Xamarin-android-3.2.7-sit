@@ -468,7 +468,7 @@ namespace myTNB
                 DataManager.DataManager.SharedInstance.SelectAccount(selected.accNum);
                 DataManager.DataManager.SharedInstance.IsSameAccount = false;
 
-                AccountManager.Instance.CurrentAccountIndex = index;
+                //AccountManager.Instance.CurrentAccountIndex = index;
                 UIStoryboard storyBoard = UIStoryboard.FromName("Usage", null);
                 var viewController = storyBoard.InstantiateViewController("UsageViewController") as UsageViewController;
                 var navController = new UINavigationController(viewController);
