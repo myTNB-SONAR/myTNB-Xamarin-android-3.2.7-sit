@@ -27,12 +27,13 @@ namespace myTNB
             return _mainView;
         }
 
-        public virtual CustomUIView GetShimmerUI()
+        public virtual CustomUIView GetShimmerUI(bool isREAccount = false)
         {
             nfloat baseWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
+            nfloat baseHeight = isREAccount ? GetHeightByScreenSize(203) : GetHeightByScreenSize(189);
             CustomShimmerView shimmeringView = new CustomShimmerView();
             CustomUIView parentView = new CustomUIView(new CGRect(BaseMarginWidth16, 0
-                , baseWidth - (BaseMarginWidth16 * 2), GetHeightByScreenSize(189)))
+                , baseWidth - (BaseMarginWidth16 * 2), baseHeight))
             { BackgroundColor = UIColor.Clear };
             UIView viewShimmerParent = new UIView(new CGRect(new CGPoint(0, 0), parentView.Frame.Size)) { BackgroundColor = UIColor.Clear };
             UIView viewShimmerContent = new UIView(new CGRect(new CGPoint(0, 0), parentView.Frame.Size)) { BackgroundColor = UIColor.Clear };
@@ -43,9 +44,12 @@ namespace myTNB
             {
                 BackgroundColor = new UIColor(red: 0.75f, green: 0.85f, blue: 0.95f, alpha: 0.25f)
             };
-            UIView viewShChart = new UIView(new CGRect(0, GetYLocationFromFrameScreenSize(viewShDate.Frame, 24)
-                , parentView.Frame.Width, GetHeightByScreenSize(1151)))
+            viewShDate.Layer.CornerRadius = GetScaledHeight(2f);
+            nfloat viewShChartYPos = GetYLocationFromFrameScreenSize(viewShDate.Frame, 24);
+            UIView viewShChart = new UIView(new CGRect(0, viewShChartYPos
+                , parentView.Frame.Width, baseHeight - viewShChartYPos))
             { BackgroundColor = new UIColor(red: 0.75f, green: 0.85f, blue: 0.95f, alpha: 0.25f) };
+            viewShChart.Layer.CornerRadius = GetScaledHeight(5f);
 
             viewShimmerContent.AddSubviews(new UIView[] { viewShDate, viewShChart });
             viewShimmerParent.AddSubview(shimmeringView);

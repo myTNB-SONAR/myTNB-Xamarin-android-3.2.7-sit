@@ -7,7 +7,8 @@ namespace myTNB
 {
     public class REAmountComponent : BaseComponent
     {
-        UIView _parentView, _containerView, _shimmerParent, _shimmerContent, _viewIcon, _viewTitle, _viewDate, _viewAmount;
+        CustomUIView _containerView;
+        UIView _parentView, _shimmerParent, _shimmerContent, _viewIcon, _viewTitle, _viewDate, _viewAmount;
         UIImageView _iconView;
         public UIButton _btnViewPaymentAdvice;
         UILabel _lblTitle, _lblDate, _lblAmount;
@@ -23,7 +24,7 @@ namespace myTNB
 
         private void CreateComponent()
         {
-            _containerView = new UIView(new CGRect(BaseMarginWidth16, 0, _viewWidth, _viewHeight))
+            _containerView = new CustomUIView(new CGRect(BaseMarginWidth16, 0, _viewWidth, _viewHeight))
             {
                 BackgroundColor = UIColor.White
             };
@@ -49,7 +50,7 @@ namespace myTNB
             UpdateUI(true);
         }
 
-        public UIView GetUI()
+        public CustomUIView GetUI()
         {
             CreateComponent();
             return _containerView;
@@ -134,7 +135,7 @@ namespace myTNB
             _containerView.AddSubview(_btnViewPaymentAdvice);
         }
 
-        private void AddContainerShadow(ref UIView view)
+        private void AddContainerShadow(ref CustomUIView view)
         {
             view.Layer.MasksToBounds = false;
             view.Layer.ShadowColor = MyTNBColor.BabyBlue35.CGColor;
