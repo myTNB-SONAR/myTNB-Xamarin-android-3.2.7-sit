@@ -487,7 +487,6 @@ namespace myTNB
                 var selected = DataManager.DataManager.SharedInstance.AccountRecordsList.d[index];
                 DataManager.DataManager.SharedInstance.SelectAccount(selected.accNum);
                 DataManager.DataManager.SharedInstance.IsSameAccount = false;
-                AccountManager.Instance.CurrentAccountIndex = index;
                 DataManager.DataManager.SharedInstance.AccountIsSSMR = _dashboardHomeHelper.IsSSMR(DataManager.DataManager.SharedInstance.SelectedAccount);
                 CallGetAccountStatusAPI();
             }

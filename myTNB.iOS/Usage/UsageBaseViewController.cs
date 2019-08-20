@@ -18,10 +18,9 @@ namespace myTNB
         UsageFooterViewComponent _footerViewComponent;
 
         internal UIScrollView _scrollViewContent;
-        internal CustomUIView _navbarContainer, _accountSelector, _viewSeparator, _viewStatus
+        internal CustomUIView _navbarContainer, _accountSelectorContainer, _viewSeparator, _viewStatus
             , _viewChart, _viewLegend, _viewToggle, _viewSSMR, _viewTips, _viewFooter, _rmKwhDropDownView
             , _chart;
-        internal ChartView _chartView;
         internal UILabel _lblAddress, _RMLabel, _kWhLabel;
 
         internal bool _rmkWhFlag, _tariffIsVisible = false;
@@ -29,6 +28,10 @@ namespace myTNB
         internal nfloat _lastContentOffset;
 
         internal CGRect _origViewFrame;
+
+        protected AccountSelector _accountSelector;
+        protected CustomUIView _viewAccountSelector;
+        protected BaseChartView _chartView;
 
         public override void ViewDidLoad()
         {
@@ -115,7 +118,7 @@ namespace myTNB
             _scrollViewContent.Scrolled += OnScroll;
             View.AddSubview(_scrollViewContent);
 
-            _accountSelector = new CustomUIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(24)));// { BackgroundColor = UIColor.Blue };
+            _accountSelectorContainer = new CustomUIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(24)));// { BackgroundColor = UIColor.Blue };
             _lblAddress = new UILabel(new CGRect(BaseMargin, 0, BaseMarginedWidth, 0))
             {
                 //BackgroundColor = UIColor.Red,
@@ -143,13 +146,13 @@ namespace myTNB
             };
             _viewTips = new CustomUIView(new CGRect(0, 0, ViewWidth, 0));
 
-            _scrollViewContent.AddSubviews(new UIView[] { _accountSelector
+            _scrollViewContent.AddSubviews(new UIView[] { _accountSelectorContainer
                 , _lblAddress, _viewSeparator, _viewStatus, _viewChart, _viewLegend, _viewToggle, _viewSSMR, _viewTips });
         }
 
         private void SetContentView()
         {
-            _lblAddress.Frame = new CGRect(new CGPoint(BaseMargin, GetYLocationFromFrame(_accountSelector.Frame, 8F)), _lblAddress.Frame.Size);
+            _lblAddress.Frame = new CGRect(new CGPoint(BaseMargin, GetYLocationFromFrame(_accountSelectorContainer.Frame, 8F)), _lblAddress.Frame.Size);
             _viewSeparator.Frame = new CGRect(new CGPoint(BaseMargin, GetYLocationFromFrame(_lblAddress.Frame, 16F)), _viewSeparator.Frame.Size);
 
             if (!AccountStatusCache.AccountStatusIsAvailable())
@@ -203,25 +206,28 @@ namespace myTNB
 
         private void AddAccountSelector()
         {
-            AccountSelector accountSelector = new AccountSelector();
-            CustomUIView viewAccountSelector = accountSelector.GetUI();
-            accountSelector.SetAction(null);
-            accountSelector.Title = AccountManager.Instance.Nickname;
-            _accountSelector.AddSubview(viewAccountSelector);
-            _accountSelector.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            if (_accountSelector == null || _viewAccountSelector == null)
             {
-                DataManager.DataManager.SharedInstance.IsSameAccount = true;
-                UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
-                SelectAccountTableViewController viewController =
-                    storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
-                var navController = new UINavigationController(viewController);
-                PresentViewController(navController, true, null);
-            }));
+                _accountSelector = new AccountSelector();
+                _viewAccountSelector = _accountSelector.GetUI();
+                _accountSelector.SetAction(null);
+                _accountSelectorContainer.AddSubview(_viewAccountSelector);
+                _accountSelectorContainer.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    DataManager.DataManager.SharedInstance.IsSameAccount = true;
+                    UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+                    SelectAccountTableViewController viewController =
+                        storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
+                    var navController = new UINavigationController(viewController);
+                    PresentViewController(navController, true, null);
+                }));
+            }
+            _accountSelector.Title = DataManager.DataManager.SharedInstance.SelectedAccount.accountNickName;//AccountManager.Instance.Nickname;
         }
 
         private void SetAddress()
         {
-            _lblAddress.Text = AccountManager.Instance.Address.ToUpper();
+            _lblAddress.Text = DataManager.DataManager.SharedInstance.SelectedAccount?.accountStAddress?.ToUpper();//AccountManager.Instance.Address.ToUpper();
             CGSize lblSize = GetLabelSize(_lblAddress, GetScaledHeight(42));
             CGRect lblFrame = _lblAddress.Frame;
             lblFrame.Height = lblSize.Height;
@@ -230,7 +236,15 @@ namespace myTNB
 
         private void SetChartView()
         {
-            _chartView = new ChartView();
+            if (DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount)
+            {
+                _chartView = new REChartView();
+            }
+            else
+            {
+                _chartView = new NormalChartView();
+            }
+
             if (_chart != null)
             {
                 _chart.RemoveFromSuperview();

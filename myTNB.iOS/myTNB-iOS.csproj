@@ -1518,6 +1518,7 @@
     <Folder Include="Model\Usage\" />
     <Folder Include="Usage\" />
     <Folder Include="Components\Usage View\" />
+    <Folder Include="Components\Usage View\Charts\" />
     <Folder Include="Assets.xcassets\SSMR-Refresh.imageset\" />
   </ItemGroup>
   <ItemGroup>
@@ -2335,10 +2336,12 @@
     <Compile Include="Components\Usage View\TariffSelectionComponent.cs" />
     <Compile Include="Components\Usage View\UsageFooterViewComponent.cs" />
     <Compile Include="Components\Usage View\AccountSelector.cs" />
-    <Compile Include="Components\Usage View\ChartView.cs" />
     <Compile Include="Components\BaseComponent.cs" />
     <Compile Include="Helpers\LanguageUtility.cs" />
     <Compile Include="Usage\UsageServiceCall.cs" />
+    <Compile Include="Components\Usage View\Charts\NormalChartView.cs" />
+    <Compile Include="Components\Usage View\Charts\BaseChartView.cs" />
+    <Compile Include="Components\Usage View\Charts\REChartView.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
