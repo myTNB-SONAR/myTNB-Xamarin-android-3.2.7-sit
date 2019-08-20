@@ -29,7 +29,8 @@ namespace myTNB
         UIPageControl _pageControl;
         UIScrollView _meterReadScrollView;
         UIImageView _cameraIconView;
-        UILabel _descriptionLabel, _takePhotoLabel, _errorLabel, _noteLabel;
+        UILabel _descriptionLabel, _takePhotoLabel, _errorLabel;
+        UITextView _txtViewNote;
         nfloat _paddingX = ScaleUtility.GetScaledWidth(16f);
         nfloat _paddingY = ScaleUtility.GetScaledHeight(16f);
         nfloat takePhotoViewRatio = 136.0f / 320.0f;
@@ -37,7 +38,6 @@ namespace myTNB
         CGRect scrollViewFrame;
         int _currentPageIndex;
         bool _isThreePhase = false;
-        bool _toolTipFlag = false;
 
         public class MeterReadingRequest
         {
@@ -52,8 +52,9 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             PageName = SSMRConstants.Pagename_SSMRMeterRead;
-            base.ViewDidLoad();
             NavigationController.NavigationBarHidden = false;
+
+            base.ViewDidLoad();
 
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
             NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
@@ -96,7 +97,6 @@ namespace myTNB
                 else
                 {
                     DismissViewController(true, null);
-                    //ViewHelper.DismissControllersAndSelectTab(this, 0, true);
                 }
             });
             UIBarButtonItem btnRight = new UIBarButtonItem(btnRightImg, UIBarButtonItemStyle.Done, (sender, e) =>
@@ -217,17 +217,24 @@ namespace myTNB
             };
             _noteView.AddSubview(_errorLabel);
 
-            _noteLabel = new UILabel(new CGRect(0, _errorLabel.Frame.GetMaxY() + GetScaledHeight(24f), _noteView.Frame.Width, GetScaledHeight(32f)))
+            NSError htmlBodyError = null;
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(SSMRConstants.I18N_Note)
+                , ref htmlBodyError, MyTNBFont.FONTNAME_300, (float)GetScaledHeight(12F));
+            NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
+            mutableHTMLBody.AddAttributes(new UIStringAttributes
             {
-                BackgroundColor = UIColor.Clear,
-                Font = MyTNBFont.MuseoSans12_300,
-                TextColor = MyTNBColor.GreyishBrownTwo,
-                Lines = 0,
-                TextAlignment = UITextAlignment.Left,
-                Text = "Note: Please round up the numbers if the reading values are showing decimal points on your meter.",
-                Hidden = false
+                ForegroundColor = MyTNBColor.GreyishBrownTwo
+            }, new NSRange(0, htmlBody.Length));
+            _txtViewNote = new UITextView(new CGRect(0, _errorLabel.Frame.GetMaxY() + GetScaledHeight(24f)
+                , _noteView.Frame.Width, GetScaledHeight(40f)))
+            {
+                Editable = false,
+                ScrollEnabled = true,
+                AttributedText = mutableHTMLBody,
+                UserInteractionEnabled = false
             };
-            _noteView.AddSubview(_noteLabel);
+            _txtViewNote.ScrollIndicatorInsets = UIEdgeInsets.Zero;
+            _noteView.AddSubview(_txtViewNote);
 
             ShowGeneralInlineError(false, string.Empty);
         }
@@ -241,13 +248,13 @@ namespace myTNB
             if (isError)
             {
                 _errorLabel.Text = errorMessage ?? string.Empty;
-                ViewHelper.AdjustFrameSetY(_noteLabel, _errorLabel.Frame.GetMaxY() + GetScaledHeight(24f));
+                ViewHelper.AdjustFrameSetY(_txtViewNote, _errorLabel.Frame.GetMaxY() + GetScaledHeight(24f));
             }
             else
             {
-                ViewHelper.AdjustFrameSetY(_noteLabel, 0);
+                ViewHelper.AdjustFrameSetY(_txtViewNote, 0);
             }
-            ViewHelper.AdjustFrameSetHeight(_noteView, _noteLabel.Frame.GetMaxY() + _paddingY);
+            ViewHelper.AdjustFrameSetHeight(_noteView, _txtViewNote.Frame.GetMaxY() + _paddingY);
 
             _meterReadScrollView.ContentSize = new CGSize(ViewWidth, _noteView.Frame.GetMaxY() + _paddingY);
             scrollViewFrame = _meterReadScrollView.Frame;
@@ -350,24 +357,26 @@ namespace myTNB
             nfloat widthMargin = GetScaledWidth(18f);
             nfloat width = currentWindow.Frame.Width;
             nfloat height = currentWindow.Frame.Height;
-            if (_toolTipParentView == null)
+            if (_toolTipParentView != null)
             {
-                _toolTipParentView = new UIView(new CGRect(0, 0, ViewWidth, height))
-                {
-                    BackgroundColor = MyTNBColor.Black60
-                };
-                currentWindow.AddSubview(_toolTipParentView);
-
-                _toolTipContainerView = new UIView(new CGRect(widthMargin, 104f, width - (widthMargin * 2), 500f))
-                {
-                    BackgroundColor = UIColor.White,
-                    ClipsToBounds = true
-                };
-                _toolTipContainerView.Layer.CornerRadius = 5f;
-                _toolTipParentView.AddSubview(_toolTipContainerView);
-                SetToolTipScrollView();
-                SetScrollViewSubViews();
+                _toolTipParentView.RemoveFromSuperview();
             }
+            _toolTipParentView = new UIView(new CGRect(0, 0, ViewWidth, height))
+            {
+                BackgroundColor = MyTNBColor.Black60
+            };
+            currentWindow.AddSubview(_toolTipParentView);
+
+            _toolTipContainerView = new UIView(new CGRect(widthMargin, 104f, width - (widthMargin * 2), 500f))
+            {
+                BackgroundColor = UIColor.White,
+                ClipsToBounds = true
+            };
+            _toolTipContainerView.Layer.CornerRadius = 5f;
+            _toolTipParentView.AddSubview(_toolTipContainerView);
+            SetToolTipScrollView();
+            SetScrollViewSubViews();
+
             _toolTipParentView.Hidden = false;
         }
 
@@ -459,15 +468,27 @@ namespace myTNB
                 ViewHelper.AdjustFrameSetHeight(title, titleNewSize.Height);
 
                 viewContainer.AddSubview(title);
-
-                UILabel description = new UILabel(new CGRect(widthMargin, title.Frame.GetMaxY() + GetScaledHeight(12f), viewContainer.Frame.Width - (widthMargin * 2), 0))
+                string desc = pageData[i]?.Description ?? string.Empty;
+                if (!string.IsNullOrEmpty(desc) && !string.IsNullOrWhiteSpace(desc) && desc.Contains("{0}"))
+                {
+                    int count = _previousMeterList.Count;
+                    string missingReading = string.Empty;
+                    for (int j = 0; j < count; j++)
+                    {
+                        missingReading += _previousMeterList[j].RegisterNumberType;
+                        if (j != count - 1) { missingReading += ", "; }
+                    }
+                    desc = string.Format(desc, count, missingReading);
+                }
+                UILabel description = new UILabel(new CGRect(widthMargin
+                    , title.Frame.GetMaxY() + GetScaledHeight(12f), viewContainer.Frame.Width - (widthMargin * 2), 0))
                 {
                     Font = MyTNBFont.MuseoSans14_300,
                     TextColor = MyTNBColor.CharcoalGrey,
                     TextAlignment = UITextAlignment.Left,
                     Lines = 0,
                     LineBreakMode = UILineBreakMode.TailTruncation,
-                    Text = pageData[i]?.Description ?? string.Empty
+                    Text = desc
                 };
 
                 CGSize descNewSize = description.SizeThatFits(new CGSize(viewContainer.Frame.Width - (widthMargin * 2), 1000f));
@@ -816,7 +837,9 @@ namespace myTNB
                     if (NetworkUtility.isReachable)
                     {
                         ActivityIndicator.Show();
-                        await CallSubmitSMRMeterReading(DataManager.DataManager.SharedInstance.SelectedAccount, meterReadingRequestList);
+                        await CallSubmitSMRMeterReading(IsFromDashboard
+                            ? SSMRActivityInfoCache.DashboardAccount : SSMRActivityInfoCache.ViewHistoryAccount
+                            , meterReadingRequestList);
                     }
                     else
                     {
@@ -865,6 +888,7 @@ namespace myTNB
                     {
                         if (_submitMeterResponse.d.IsSuccess)
                         {
+                            SSMRActivityInfoCache.SubmittedAccount = account;
                             UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
                             GenericStatusPageViewController status = storyBoard.InstantiateViewController("GenericStatusPageViewController") as GenericStatusPageViewController;
                             status.NextViewController = GetSMRReadingHistoryView();
@@ -925,6 +949,7 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
             SSMRReadingHistoryViewController viewController =
                 storyBoard.InstantiateViewController("SSMRReadingHistoryViewController") as SSMRReadingHistoryViewController;
+            viewController.FromStatusPage = true;
             return viewController;
         }
 

@@ -221,7 +221,10 @@ namespace myTNB.Dashboard
                         _smrActivityInfoResponse.d.data != null &&
                         _smrActivityInfoResponse.d.IsSuccess)
                     {
-                        SSMRActivityInfoCache.SetDashboardCache(_smrActivityInfoResponse);
+                        SSMRActivityInfoCache.SetDashboardCache(_smrActivityInfoResponse
+                            , DataManager.DataManager.SharedInstance.SelectedAccount);
+                        SSMRActivityInfoCache.SetReadingHistoryCache(_smrActivityInfoResponse
+                            , DataManager.DataManager.SharedInstance.SelectedAccount);
                     }
                     else
                     {

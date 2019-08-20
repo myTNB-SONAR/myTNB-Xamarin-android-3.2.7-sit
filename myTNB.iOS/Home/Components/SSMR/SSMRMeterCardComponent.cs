@@ -52,7 +52,7 @@ namespace myTNB
             _prevReadingLabel = new UILabel(new CGRect(_paddingX, _paddingY, viewBoxContainerWidth, ScaleUtility.GetScaledHeight(16f)))
             {
                 BackgroundColor = UIColor.Clear,
-                Font = MyTNBFont.MuseoSans12_300,
+                Font = TNBFont.MuseoSans_12_300,
                 TextColor = MyTNBColor.BrownGreyThree,
                 TextAlignment = UITextAlignment.Right,
                 Text = "Previous Meter Reading"
@@ -84,7 +84,7 @@ namespace myTNB
             _errorLabel = new UILabel(new CGRect(_paddingX, _viewBoxContainer.Frame.GetMaxY() + ScaleUtility.GetScaledHeight(4f), viewBoxContainerWidth, ScaleUtility.GetScaledHeight(14f)))
             {
                 BackgroundColor = UIColor.Clear,
-                Font = MyTNBFont.MuseoSans10_500,
+                Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.Tomato,
                 TextAlignment = UITextAlignment.Right,
                 Hidden = true
