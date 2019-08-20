@@ -65,22 +65,24 @@ namespace myTNB
                 nfloat barHeight = (nfloat)(divisor * value);
                 nfloat yLoc = lblHeight + amountBarMargin + (maxBarHeight - barHeight);
 
-                CustomUIView viewBar = new CustomUIView(new CGRect(0, yLoc, width, barHeight))
+                CustomUIView viewBar = new CustomUIView(new CGRect(0
+                    , segment.Frame.Height - lblHeight - GetScaledHeight(17), width, 0))
                 {
                     BackgroundColor = UIColor.Clear,
                     Tag = 1001,
                     ClipsToBounds = true
                 };
                 viewBar.Layer.CornerRadius = width / 2;
-                AddTariffBlocks(viewBar, item.tariffBlocks, value, index == usageData.Count - 1);
-                UIView viewCover = new UIView(new CGRect(new CGPoint(0, 0), viewBar.Frame.Size))
+                UIView viewCover = new UIView(new CGRect(new CGPoint(0, 0), new CGSize(viewBar.Frame.Width, barHeight)))
                 {
                     BackgroundColor = index < usageData.Count - 1 ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
                     Tag = 2001,
                     Hidden = false
                 };
                 viewBar.AddSubview(viewCover);
+                AddTariffBlocks(viewBar, item.tariffBlocks, value, index == usageData.Count - 1, viewCover.Frame.Size);
 
+                nfloat amtYLoc = yLoc - amountBarMargin - lblHeight;
                 UILabel lblAmount = new UILabel(new CGRect(0, viewBar.Frame.GetMinY() - amountBarMargin - lblHeight
                     , GetScaledWidth(100), lblHeight))
                 {
@@ -112,16 +114,25 @@ namespace myTNB
                 {
                     OnSegmentTap(index);
                 }));
-            }
 
+                UIView.Animate(1, 0.3, UIViewAnimationOptions.CurveEaseOut
+                    , () =>
+                    {
+                        viewBar.Frame = new CGRect(0, yLoc, width, barHeight);
+                        lblAmount.Frame = new CGRect(lblAmount.Frame.X, amtYLoc, lblAmount.Frame.Width, lblAmount.Frame.Height);
+                    }
+                    , () => { }
+                );
+            }
             _mainView.AddSubview(_segmentContainer);
         }
 
-        protected override void AddTariffBlocks(CustomUIView viewBar, List<TariffItemModel> tariff, double baseValue, bool isSelected)
+        protected override void AddTariffBlocks(CustomUIView viewBar, List<TariffItemModel> tariff
+            , double baseValue, bool isSelected, CGSize size)
         {
-            nfloat baseHeigt = viewBar.Frame.Height;
-            nfloat barMaxY = viewBar.Frame.Height;
-            UIView viewTariffContainer = new UIView(new CGRect(0, 0, viewBar.Frame.Width, viewBar.Frame.Height))
+            nfloat baseHeigt = size.Height;
+            nfloat barMaxY = size.Height;
+            UIView viewTariffContainer = new UIView(new CGRect(0, 0, size.Width, size.Height))
             {
                 Tag = 2002,
                 Hidden = true
@@ -133,7 +144,7 @@ namespace myTNB
                 nfloat percentage = (nfloat)(val / baseValue);
                 nfloat blockHeight = baseHeigt * percentage;
                 barMaxY -= blockHeight;
-                UIView viewTariffBlock = new UIView(new CGRect(0, barMaxY, viewBar.Frame.Width, blockHeight))
+                UIView viewTariffBlock = new UIView(new CGRect(0, barMaxY, size.Width, blockHeight))
                 {
                     BackgroundColor = GetTariffBlockColor(item.BlockId, isSelected)
                 };

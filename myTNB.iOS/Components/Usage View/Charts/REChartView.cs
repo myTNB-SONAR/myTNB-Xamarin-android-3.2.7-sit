@@ -67,7 +67,7 @@ namespace myTNB
                 nfloat barHeight = (nfloat)(divisor * value);
                 nfloat yLoc = (lblHeight * 2) + amountBarMargin + (maxBarHeight - barHeight);
 
-                CustomUIView viewBar = new CustomUIView(new CGRect(0, yLoc, width, barHeight))
+                CustomUIView viewBar = new CustomUIView(new CGRect(0, segment.Frame.Height - lblHeight - GetScaledHeight(17), width, 0))
                 {
                     BackgroundColor = UIColor.Clear,
                     Tag = 1001,
@@ -75,14 +75,14 @@ namespace myTNB
                 };
                 viewBar.Layer.CornerRadius = width / 2;
 
-                UIView viewCover = new UIView(new CGRect(new CGPoint(0, 0), viewBar.Frame.Size))
+                UIView viewCover = new UIView(new CGRect(new CGPoint(0, 0), new CGSize(viewBar.Frame.Width, barHeight)))
                 {
                     BackgroundColor = index < usageData.Count - 1 ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
                     Tag = 2001,
                     Hidden = false
                 };
                 viewBar.AddSubview(viewCover);
-
+                nfloat usageYLoc = yLoc - amountBarMargin - lblHeight;
                 UILabel lblUsage = new UILabel(new CGRect(0, viewBar.Frame.GetMinY() - amountBarMargin - lblHeight
                     , GetScaledWidth(100), lblHeight))
                 {
@@ -96,6 +96,7 @@ namespace myTNB
                 nfloat lblUsageWidth = lblUsage.GetLabelWidth(GetScaledWidth(100));
                 lblUsage.Frame = new CGRect((width - lblUsageWidth) / 2, lblUsage.Frame.Y, lblUsageWidth, lblUsage.Frame.Height);
 
+                nfloat amtYLoc = usageYLoc - lblHeight;
                 UILabel lblAmount = new UILabel(new CGRect(0, lblUsage.Frame.GetMinY() - lblHeight
                    , GetScaledWidth(100), lblHeight))
                 {
@@ -127,8 +128,17 @@ namespace myTNB
                 {
                     OnSegmentTap(index);
                 }));
-            }
 
+                UIView.Animate(1, 0.3, UIViewAnimationOptions.CurveEaseOut
+                   , () =>
+                   {
+                       viewBar.Frame = new CGRect(0, yLoc, width, barHeight);
+                       lblAmount.Frame = new CGRect(lblAmount.Frame.X, amtYLoc, lblAmount.Frame.Width, lblAmount.Frame.Height);
+                       lblUsage.Frame = new CGRect(lblUsage.Frame.X, usageYLoc, lblUsage.Frame.Width, lblUsage.Frame.Height);
+                   }
+                   , () => { }
+               );
+            }
             _mainView.AddSubview(_segmentContainer);
         }
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CoreGraphics;
 using myTNB.Model.Usage;
 using UIKit;
 
@@ -54,7 +55,8 @@ namespace myTNB
             return maxValue;
         }
 
-        protected virtual void AddTariffBlocks(CustomUIView viewBar, List<TariffItemModel> tariff, double baseValue, bool isSelected) { }
+        protected virtual void AddTariffBlocks(CustomUIView viewBar, List<TariffItemModel> tariff
+            , double baseValue, bool isSelected, CGSize size){ }
 
         protected virtual UIColor GetTariffBlockColor(string blockID, bool isSelected)
         {
