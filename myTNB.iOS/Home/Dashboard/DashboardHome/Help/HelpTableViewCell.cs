@@ -76,7 +76,7 @@ namespace myTNB
                 UIView viewShimmerContent = new UIView(new CGRect(0, 0, cardWidth, cardHeight)) { BackgroundColor = UIColor.Clear };
                 viewParent.AddSubviews(new UIView[] { viewShimmerParent, viewShimmerContent });
 
-                UIView viewShimmerUI = new UIView(new CGRect(0, 0, cardWidth, cardHeight)) { BackgroundColor = MyTNBColor.PowderBlue };
+                UIView viewShimmerUI = new UIView(new CGRect(0, 0, cardWidth, cardHeight)) { BackgroundColor = MyTNBColor.PaleGrey };
                 viewShimmerContent.AddSubview(viewShimmerUI);
 
                 viewShimmerParent.AddSubview(shimmeringView);

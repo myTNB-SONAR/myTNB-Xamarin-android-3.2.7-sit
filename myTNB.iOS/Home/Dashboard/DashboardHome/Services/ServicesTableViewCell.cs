@@ -173,11 +173,11 @@ namespace myTNB
             nfloat viewImgWidth = viewShimmerContent.Frame.Width * 0.27F;
             UIView viewImg = new UIView(new CGRect((viewShimmerContent.Frame.Width - viewImgWidth) / 2
                 , 16, viewImgWidth, viewImgWidth))
-            { BackgroundColor = MyTNBColor.PowderBlue };
+            { BackgroundColor = MyTNBColor.PaleGrey };
             viewImg.Layer.CornerRadius = viewImgWidth / 2;
             UIView viewLbl = new UIView(new CGRect(12, viewImgWidth + 32
                 , viewShimmerContent.Frame.Width - 24, 14))
-            { BackgroundColor = MyTNBColor.PowderBlue };
+            { BackgroundColor = MyTNBColor.PaleGrey };
 
             viewShimmerContent.AddSubviews(new UIView[] { viewImg, viewLbl });
 

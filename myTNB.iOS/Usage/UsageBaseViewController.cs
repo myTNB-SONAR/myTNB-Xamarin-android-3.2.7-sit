@@ -42,6 +42,7 @@ namespace myTNB
         {
             PageName = UsageConstants.PageName;
             base.ViewDidLoad();
+            InitializeValues();
             NavigationController.NavigationBarHidden = true;
             AddBackgroundImage();
             PrepareRefreshView();
