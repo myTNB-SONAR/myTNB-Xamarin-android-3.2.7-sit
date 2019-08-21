@@ -1,2 +1,4 @@
-SIT Build - 08/21
-- Pointing to SIT public DNS
+SIT Build - 08/22
+- [Normal Dashboard] As a myTNB app user, I want to be able to see summarised information regarding my usage and bill.
+- [RE Dashboard] As a myTNB app user, I want to be able to see summarised information regarding my earnings.
+- [SSMR Dashboard] As a myTNB app user, I want to be able to see summarised information regarding my usage, bill and meter reading submission status.
