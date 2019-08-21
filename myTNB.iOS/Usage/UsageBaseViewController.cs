@@ -569,8 +569,17 @@ namespace myTNB
             {
                 List<TipsModel> tipsList;
                 EnergyTipsEntity wsManager = new EnergyTipsEntity();
-                tipsList = wsManager.GetAllItems();
-
+                var tips = wsManager.GetAllItems();
+                tipsList = tips;
+                if (tips.Count > UsageConstants.MaxRandomTips)
+                {
+                    tipsList = new List<TipsModel>();
+                    var randomIndexes = UsageHelper.RandomizedTips(tips.Count, UsageConstants.MaxRandomTips);
+                    for (int i = 0; i < randomIndexes.Length; i++)
+                    {
+                        tipsList.Add(tips[randomIndexes[i]]);
+                    }
+                }
                 if (tipsList != null &&
                     tipsList.Count > 0)
                 {
