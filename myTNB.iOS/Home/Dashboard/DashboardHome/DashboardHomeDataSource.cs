@@ -100,6 +100,7 @@ namespace myTNB
                 cell._titleLabel.Text = _controller.GetI18NValue(DashboardHomeConstants.I18N_MyServices);
                 cell._titleLabel.TextColor = accountHeight.Height < tableView.Frame.Height * 0.30F ? UIColor.White : MyTNBColor.PowerBlue;
                 cell.AddCards(_services, _controller._servicesActionDictionary);
+                cell.ClipsToBounds = true;
                 return cell;
             }
             if (indexPath.Row == 2)

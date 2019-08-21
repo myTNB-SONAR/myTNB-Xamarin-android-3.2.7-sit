@@ -242,7 +242,11 @@ namespace myTNB
                 if (DataManager.DataManager.SharedInstance.ServicesList?.Count > 0)
                 {
                     var rowNumber = Math.Ceiling((double)DataManager.DataManager.SharedInstance.ServicesList.Count / 3);
-                    tableViewCellHeight = ((System.nfloat)(tableViewCellHeight + (cardHeight * rowNumber) + (12f * rowNumber)));
+                    tableViewCellHeight = (nfloat)(tableViewCellHeight + (cardHeight * rowNumber) + (12f * rowNumber));
+                }
+                else
+                {
+                    tableViewCellHeight = 0;
                 }
             }
             return tableViewCellHeight;
