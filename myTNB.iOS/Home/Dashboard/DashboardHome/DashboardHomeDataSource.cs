@@ -108,6 +108,7 @@ namespace myTNB
                 PromotionTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Promotion) as PromotionTableViewCell;
                 cell._titleLabel.Text = _controller.GetI18NValue(DashboardHomeConstants.I18N_Promotions);
                 cell.AddCards(_promotions);
+                cell.ClipsToBounds = true;
                 return cell;
             }
             if (indexPath.Row == 3)
@@ -115,6 +116,7 @@ namespace myTNB
                 HelpTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Help) as HelpTableViewCell;
                 cell._titleLabel.Text = _controller.GetI18NValue(DashboardHomeConstants.I18N_NeedHelp);
                 cell.AddCards(_helpList);
+                cell.ClipsToBounds = true;
                 return cell;
             }
             return new UITableViewCell() { BackgroundColor = UIColor.Clear };

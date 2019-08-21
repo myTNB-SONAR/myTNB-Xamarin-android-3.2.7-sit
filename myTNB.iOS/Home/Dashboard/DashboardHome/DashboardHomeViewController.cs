@@ -235,7 +235,8 @@ namespace myTNB
 
         private void AddTableView()
         {
-            _homeTableView = new UITableView(new CGRect(0, DeviceHelper.GetStatusBarHeight(), ViewWidth, ViewHeight)) { BackgroundColor = UIColor.Clear };
+            _homeTableView = new UITableView(new CGRect(0, DeviceHelper.GetStatusBarHeight()
+                , ViewWidth, ViewHeight)){ BackgroundColor = UIColor.Clear };
             _homeTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             _homeTableView.RegisterClassForCellReuse(typeof(AccountsTableViewCell), DashboardHomeConstants.Cell_Accounts);
             _homeTableView.RegisterClassForCellReuse(typeof(ServicesTableViewCell), DashboardHomeConstants.Cell_Services);
@@ -431,7 +432,6 @@ namespace myTNB
                 if (isValidTimeStamp)
                 {
                     string promotionsItems = iService.GetPromotionsItem();
-                    //Debug.WriteLine("debug: promo items: " + promotionsItems);
                     PromotionsV2ResponseModel promotionResponse = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(promotionsItems);
                     if (promotionResponse != null && promotionResponse.Status.Equals("Success")
                         && promotionResponse.Data != null && promotionResponse.Data.Count > 0)
