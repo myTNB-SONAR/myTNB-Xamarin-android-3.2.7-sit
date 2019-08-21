@@ -8,7 +8,7 @@ namespace myTNB
     {
         private readonly UIView _parentView;
         UIView _containerView;
-        public UIButton _submitBtn;
+        public CustomUIButtonV2 _submitBtn;
         nfloat containerHeight = ScaleUtility.GetScaledHeight(80.0f);
         nfloat buttonHeight = ScaleUtility.GetScaledHeight(48.0f);
         nfloat _parentHeight;
@@ -29,17 +29,13 @@ namespace myTNB
             };
             AddCardShadow(ref _containerView);
 
-            _submitBtn = new UIButton(UIButtonType.Custom)
+            _submitBtn = new CustomUIButtonV2()
             {
                 Frame = new CGRect(padding, padding, _containerView.Frame.Width - (padding * 2), buttonHeight)
             };
-            _submitBtn.Layer.CornerRadius = 4;
             _submitBtn.Layer.BorderColor = MyTNBColor.SilverChalice.CGColor;
-            _submitBtn.Layer.BorderWidth = 1;
             _submitBtn.BackgroundColor = MyTNBColor.SilverChalice;
-            _submitBtn.Font = MyTNBFont.MuseoSans16_500;
             _submitBtn.SetTitleColor(UIColor.White, UIControlState.Normal);
-            _submitBtn.SetTitle("Submit Reading", UIControlState.Normal);
             _submitBtn.Enabled = false;
 
             _containerView.AddSubview(_submitBtn);

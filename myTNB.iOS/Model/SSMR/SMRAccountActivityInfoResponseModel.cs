@@ -193,11 +193,15 @@ namespace myTNB.Model
 
     public class SMRMROValidateRegisterDetailsInfoModel
     {
+        private string _readingUnitDisplay = string.Empty;
+
         public string RegisterNumber { set; get; }
         public string MroID { set; get; }
         public string PrevMrDate { set; get; }
         public string SchMrDate { set; get; }
         public string PrevMeterReading { set; get; }
+        public string ReadingUnit { set; get; }
+        public string ReadingUnitDisplayTitle { set; get; }
         [JsonIgnore]
         public RegisterNumberEnum RegisterNumberType
         {

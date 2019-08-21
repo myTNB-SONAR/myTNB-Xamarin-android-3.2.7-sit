@@ -156,9 +156,12 @@
         "tooltipDescription3": "Enter the numbers according to its unit in the input. You’ll see your previous month's reading as a reference.",
         "tooltipDescription4": "Your meter will display the kWh reading by default. Enter the reading manually or just take/upload a photo, and we’ll do the reading for you.",
         "tooltipDescription5": "For manual reading, enter the kWh numbers in the input. You’ll see your previous month's reading as a reference.",
-        "headerDescription": "Take or upload photos, or manually enter your meter reading for each respective unit.",
+        "headerDescription": "<b>Take or upload photos</b>, or <b>manually enter</b> your meter reading for each respective unit.",
         "imReady": "I'm Ready!",
-        "note": "Note: Please <b>round up</b> the numbers if the reading values are showing decimal points on your meter."
+        "note": "Note: Please <b>round up</b> the numbers if the reading values are showing decimal points on your meter.",
+        "previousMeterReading": "Previous Meter Reading",
+        "submitReading": "Submit Reading",
+        "takeOrUploadPhoto": "Take Or Upload Photo"
     },
     "SSMRCaptureMeter": {
         "ocrReading": "Please wait for a moment while we read your photos…",
@@ -173,7 +176,6 @@
         "pluralOnto": "On to the next units {0} and {1}.",
         "deletePhoto": "Delete Photo"
     },
-
     "SSMRCaptureMeter_selector": {
         "SMRPhotoPopUpDetails": [
             {
