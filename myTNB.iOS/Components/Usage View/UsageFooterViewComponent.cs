@@ -121,7 +121,7 @@ namespace myTNB
             _btnViewBill.Layer.CornerRadius = GetScaledHeight(4f);
             _btnViewBill.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             _btnViewBill.Layer.BorderWidth = GetScaledHeight(1f);
-            _btnViewBill.SetTitle("Component_CurrentBill".Translate(), UIControlState.Normal);
+            _btnViewBill.SetTitle(LanguageUtility.GetCommonI18NValue(Constants.I18N_CurrentBill), UIControlState.Normal);
             _btnViewBill.Font = TNBFont.MuseoSans_16_500;
             _btnViewBill.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
             _containerView.AddSubview(_btnViewBill);
@@ -134,7 +134,7 @@ namespace myTNB
             _btnPay.Layer.BackgroundColor = MyTNBColor.FreshGreen.CGColor;
             _btnPay.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             _btnPay.Layer.BorderWidth = GetScaledHeight(1f);
-            _btnPay.SetTitle("Common_Pay".Translate(), UIControlState.Normal);
+            _btnPay.SetTitle(LanguageUtility.GetCommonI18NValue(Constants.I18N_Pay), UIControlState.Normal);
             _btnPay.Font = TNBFont.MuseoSans_16_500;
             _containerView.AddSubview(_btnPay);
         }
@@ -176,7 +176,7 @@ namespace myTNB
             if (amount > 0)
             {
                 _lblPaymentTitle.Hidden = false;
-                _lblPaymentTitle.Text = "I need to pay";
+                _lblPaymentTitle.Text = LanguageUtility.GetCommonI18NValue(Constants.I18N_NeedToPay);
                 _lblDate.Hidden = false;
                 _lblCommon.Hidden = true;
             }
@@ -186,7 +186,7 @@ namespace myTNB
                 _lblPaymentTitle.Text = string.Empty;
                 _lblDate.Hidden = true;
                 _lblCommon.Hidden = false;
-                _lblCommon.Text = amount < 0 ? "I’ve paid extra" : "I’ve cleared all bills";
+                _lblCommon.Text = amount < 0 ? LanguageUtility.GetCommonI18NValue(Constants.I18N_PaidExtra) : LanguageUtility.GetCommonI18NValue(Constants.I18N_ClearedAllBills);
             }
         }
 
@@ -202,7 +202,7 @@ namespace myTNB
         public void SetRefreshState()
         {
             _lblPaymentTitle.Hidden = false;
-            _lblPaymentTitle.Text = "I need to pay";
+            _lblPaymentTitle.Text = LanguageUtility.GetCommonI18NValue(Constants.I18N_NeedToPay);
             _lblDate.Hidden = false;
             _lblAmount.Hidden = false;
             _shimmerParent.Hidden = true;

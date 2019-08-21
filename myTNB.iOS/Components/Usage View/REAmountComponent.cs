@@ -60,7 +60,7 @@ namespace myTNB
         {
             _iconView = new UIImageView(new CGRect(BaseMarginWidth16, GetScaledHeight(18f), GetScaledWidth(28f), GetScaledHeight(28f)))
             {
-                Image = UIImage.FromBundle("Accounts-RE-Icon")
+                Image = UIImage.FromBundle(Constants.IMG_AcctREIcon)
             };
             _containerView.AddSubview(_iconView);
 
@@ -76,7 +76,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.GreyishBrown,
                 TextAlignment = UITextAlignment.Left,
-                Text = "My Earnings",
+                Text = LanguageUtility.GetCommonI18NValue(Constants.I18N_MyEarnings),
                 Hidden = false
             };
             _containerView.AddSubview(_lblTitle);
@@ -129,7 +129,7 @@ namespace myTNB
             _btnViewPaymentAdvice.Layer.CornerRadius = GetScaledHeight(4f);
             _btnViewPaymentAdvice.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             _btnViewPaymentAdvice.Layer.BorderWidth = GetScaledHeight(1f);
-            _btnViewPaymentAdvice.SetTitle("View Payment Advice", UIControlState.Normal);
+            _btnViewPaymentAdvice.SetTitle(LanguageUtility.GetCommonI18NValue(Constants.I18N_ViewPaymentAdvice), UIControlState.Normal);
             _btnViewPaymentAdvice.Font = TNBFont.MuseoSans_16_500;
             _btnViewPaymentAdvice.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
             _containerView.AddSubview(_btnViewPaymentAdvice);
@@ -159,7 +159,7 @@ namespace myTNB
                 string formattedDate = DateHelper.GetFormattedDate(date, "dd MMM");
 
                 _lblDate.AttributedText = TextHelper.CreateValuePairString(formattedDate
-                        , "I will get by" + " ", true, TNBFont.MuseoSans_12_300
+                        , LanguageUtility.GetCommonI18NValue(Constants.I18N_IWillGetBy) + " ", true, TNBFont.MuseoSans_12_300
                         , MyTNBColor.WarmGrey, TNBFont.MuseoSans_12_300, MyTNBColor.WarmGrey);
             }
         }
@@ -185,8 +185,8 @@ namespace myTNB
             _lblAmount.Hidden = false;
             _shimmerParent.Hidden = true;
 
-            _lblDate.Text = "- -";
-            _lblAmount.AttributedText = TextHelper.CreateValuePairString("- -"
+            _lblDate.Text = LanguageUtility.GetHintI18NValue(Constants.I18N_EmptyTextAPIFail);
+            _lblAmount.AttributedText = TextHelper.CreateValuePairString(LanguageUtility.GetHintI18NValue(Constants.I18N_EmptyTextAPIFail)
                         , TNBGlobal.UNIT_CURRENCY + " ", true, TNBFont.MuseoSans_16_300
                         , MyTNBColor.GreyishBrown, TNBFont.MuseoSans_10_300, MyTNBColor.GreyishBrown);
 

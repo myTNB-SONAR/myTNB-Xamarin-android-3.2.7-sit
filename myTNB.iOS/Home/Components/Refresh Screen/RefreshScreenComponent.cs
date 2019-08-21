@@ -42,11 +42,8 @@ namespace myTNB.Home.Components
                 Image = UIImage.FromBundle(DashboardHomeConstants.Img_RefreshIcon)
             };
 
-            //var descMsg = _descriptionMessage ?? _dashboardHomeViewController.GetI18NValue(DashboardHomeConstants.I18N_RefreshMsg);
-            //var btnText = _buttonText ?? _dashboardHomeViewController.GetI18NValue(DashboardHomeConstants.I18N_RefreshBtnTxt);
-
-            var descMsg = (!string.IsNullOrEmpty(_descriptionMessage)) ? _descriptionMessage : "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!";
-            var btnText = (!string.IsNullOrEmpty(_buttonText)) ? _buttonText : "Refresh Now";
+            var descMsg = !string.IsNullOrEmpty(_descriptionMessage) || !string.IsNullOrWhiteSpace(_descriptionMessage) ? _descriptionMessage : LanguageUtility.GetCommonI18NValue(Constants.I18N_RefreshMessage);
+            var btnText = (!string.IsNullOrEmpty(_buttonText)) || !string.IsNullOrWhiteSpace(_buttonText) ? _buttonText : LanguageUtility.GetCommonI18NValue(Constants.I18N_RefreshBtnText);
 
             NSMutableParagraphStyle msgParagraphStyle = new NSMutableParagraphStyle
             {

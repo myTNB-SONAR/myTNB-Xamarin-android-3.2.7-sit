@@ -39,6 +39,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            PageName = UsageConstants.PageName;
             base.ViewDidLoad();
             NavigationController.NavigationBarHidden = true;
             InitializeValues();
@@ -106,7 +107,7 @@ namespace myTNB
             UILabel lblTitle = new UILabel(new CGRect(GetScaledWidth(56f), 0, viewTitleBar.Frame.Width - (GetScaledWidth(56) * 2), GetScaledHeight(24f)))
             {
                 Font = TNBFont.MuseoSans_16_500,
-                Text = "Usage"
+                Text = GetI18NValue(UsageConstants.I18N_Usage)
             };
 
             lblTitle.TextAlignment = UITextAlignment.Center;
@@ -134,7 +135,7 @@ namespace myTNB
             nfloat height = GetScaledHeight(543f);
             _bgImageView = new UIImageView(new CGRect(0, 0, ViewWidth, height))
             {
-                Image = UIImage.FromBundle("Usage-Bg-Normal")
+                Image = UIImage.FromBundle(UsageConstants.IMG_BGNormal)
             };
             View.AddSubview(_bgImageView);
         }
@@ -143,14 +144,14 @@ namespace myTNB
         {
             nfloat height = isLegendVisible ? GetScaledHeight(691f) : GetScaledHeight(543f);
             ViewHelper.AdjustFrameSetHeight(_bgImageView, height);
-            _bgImageView.Image = UIImage.FromBundle(isLegendVisible ? "Usage-Bg-Long" : "Usage-Bg-Normal");
+            _bgImageView.Image = UIImage.FromBundle(isLegendVisible ? UsageConstants.IMG_BGLong : UsageConstants.IMG_BGNormal);
         }
 
         private void UpdateBGForRefresh()
         {
             nfloat height = GetScaledHeight(190f);
             ViewHelper.AdjustFrameSetHeight(_bgImageView, height);
-            _bgImageView.Image = UIImage.FromBundle("Usage-Refresh-Bg");
+            _bgImageView.Image = UIImage.FromBundle(UsageConstants.IMG_BGRefresh);
         }
 
         private void AddScrollView()
@@ -516,7 +517,6 @@ namespace myTNB
             };
             kWhView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                Debug.WriteLine("kWh Selected!");
                 _rMkWhEnum = RMkWhEnum.kWh;
                 ShowHideRMKwHDropDown();
                 _tariffSelectionComponent.SetRMkWhLabel(_rMkWhEnum);
@@ -544,7 +544,6 @@ namespace myTNB
             };
             rMView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                Debug.WriteLine("RM Selected!");
                 _rMkWhEnum = RMkWhEnum.RM;
                 ShowHideRMKwHDropDown();
                 _tariffSelectionComponent.SetRMkWhLabel(_rMkWhEnum);
@@ -651,8 +650,8 @@ namespace myTNB
                 _viewStatus.AddSubview(_status);
                 disconnectionComponent.SetGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
-                    var acctStatusTooltipBtnTitle = !string.IsNullOrWhiteSpace(accountStatusData.AccountStatusModalBtnText) ? accountStatusData.AccountStatusModalBtnText : "Common_GotIt".Translate();
-                    var acctStatusTooltipMsg = !string.IsNullOrWhiteSpace(accountStatusData.AccountStatusModalMessage) ? accountStatusData.AccountStatusModalMessage : "Dashboard_AccountStatusMessage".Translate();
+                    var acctStatusTooltipBtnTitle = !string.IsNullOrWhiteSpace(accountStatusData.AccountStatusModalBtnText) ? accountStatusData.AccountStatusModalBtnText : GetI18NValue(UsageConstants.I18N_GotIt);
+                    var acctStatusTooltipMsg = !string.IsNullOrWhiteSpace(accountStatusData.AccountStatusModalMessage) ? accountStatusData.AccountStatusModalMessage : GetI18NValue(UsageConstants.I18N_DisconnectionMessage);
                     DisplayCustomAlert(string.Empty, acctStatusTooltipMsg, acctStatusTooltipBtnTitle, null);
                 }));
             }
@@ -839,7 +838,7 @@ namespace myTNB
             _viewRefresh.Hidden = false;
             UpdateBGForRefresh();
             var bcrm = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
-            var bcrmMsg = bcrm?.DowntimeMessage ?? "Error_BCRMMessage".Translate();
+            var bcrmMsg = !string.IsNullOrEmpty(bcrm?.DowntimeMessage) && !string.IsNullOrWhiteSpace(bcrm?.DowntimeMessage) ? bcrm?.DowntimeMessage : GetCommonI18NValue(Constants.I18N_BCRMMessage);
             string desc = isBcrmAvailable ? AccountUsageCache.GetRefreshDataModel()?.RefreshMessage ?? string.Empty : bcrmMsg;
 
             if (_refresh != null)

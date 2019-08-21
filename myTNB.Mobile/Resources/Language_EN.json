@@ -35,11 +35,25 @@
         "photoPermissionDescription": "Enable myTNB to access your camera roll to upload photos and save ones you’ve taken with the app.",
         "delete": "Delete",
         "refreshDescription": "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!",
-        "refreshNow": "Refresh Now"
+        "refreshNow": "Refresh Now",
+        "bcrmMessage": "BRCM will be down for maintenance purpose",
+        "currentBill": "Current Bill",
+        "pay": "Pay",
+        "disconnectionMsg": "Your electricity is currently disconnected.",
+        "myEarnings": "My Earnings",
+        "viewPaymentAdvice": "View Payment Advice",
+        "iWillGetBy": "I will get by",
+        "showTariff": "Show Tariff",
+        "hideTariff": "Hide Tariff",
+        "needToPay": "I need to pay",
+        "paidExtra": "I've paid extra",
+        "clearedAllBills": "I've cleared all bills"
     },
     "Hint": {
         "mobileNumber": "Please include the country code of your phone number.",
-        "mobileNumberSample": "Example: +6012 345 6789"
+        "mobileNumberSample": "Example: +6012 345 6789",
+        "emptyAcctSelector": "---",
+        "emptyTextAPIFail": "- -"
     },
     "Error": {
         "invalid_email": "Invalid email address",
@@ -218,5 +232,12 @@
     "SelectElectricityAccounts": {
         "navTitle": "Select Electricity Account",
         "accountsMissing": "Why are some of my accounts not here?"
+    },
+
+    "UsageView": {
+        "navTitle": "Usage",
+        "accountsMissing": "Why are some of my accounts not here?",
+        "gotIt": "Got it!",
+        "disconnectionMsg": "<strong>What does this mean?</strong><br><br>Your electricity has been disconnected and is unavailable. This was not caused by a power outage.<br><br>If you’ve made a payment, please give us some time for this to be reflected."
     }
 }

@@ -12,7 +12,6 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
-            PageName = "UsageView";
             base.ViewDidLoad();
         }
 

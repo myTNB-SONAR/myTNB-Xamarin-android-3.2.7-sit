@@ -33,7 +33,7 @@ namespace myTNB
             nfloat iconHeight = GetScaledHeight(16f);
             UIImageView iconView = new UIImageView(new CGRect(iconXPos, iconYPos, iconWidth, iconHeight))
             {
-                Image = UIImage.FromBundle("Info-Black-Icon")
+                Image = UIImage.FromBundle(Constants.IMG_InfoBlackIcon)
             };
             _containerView.AddSubview(iconView);
 
@@ -45,7 +45,10 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.GreyishBrown,
-                Text = _accountStatusData.AccountStatusMessage ?? string.Empty // TO DO: assign fallback text 
+                Text = !string.IsNullOrEmpty(_accountStatusData?.AccountStatusMessage) &&
+                    !string.IsNullOrWhiteSpace(_accountStatusData?.AccountStatusMessage) ?
+                    _accountStatusData?.AccountStatusMessage :
+                    LanguageUtility.GetCommonI18NValue(Constants.I18N_DisconnectionMsg)
             };
             _containerView.AddSubview(label);
         }
