@@ -403,5 +403,18 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                     break;
             }
         }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Update Mobile Number");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
     }
 }

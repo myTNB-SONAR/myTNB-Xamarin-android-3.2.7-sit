@@ -16,11 +16,16 @@ namespace myTNB_Android.Src.myTNBMenu.Models
         [AliasAs("ByDay")]
         public List<ByDayData> ByDay { get; set; }
 
+        [JsonProperty(PropertyName = "TariffBlocksLegend")]
+        [AliasAs("TariffBlocksLegend")]
+        public List<TariffBlocksLegendData> TariffBlocksLegend { get; set; }
+
         public class ByMonthData
         {
             [JsonProperty(PropertyName = "Range")]
             [AliasAs("Range")]
             public string Range { get; set; }
+
             [JsonProperty(PropertyName = "Months")]
             [AliasAs("Months")]
             public List<MonthData> Months { get; set; }
@@ -30,19 +35,61 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 [JsonProperty(PropertyName = "Date")]
                 [AliasAs("Date")]
                 public string Date { get; set; }
+
+                [JsonProperty(PropertyName = "Year")]
+                [AliasAs("Year")]
+                public string Year { get; set; }
+
                 [JsonProperty(PropertyName = "Month")]
                 [AliasAs("Month")]
                 public string Month { get; set; }
-                [JsonProperty(PropertyName = "Amount")]
-                //[JsonConverter(typeof(DoubleDataAmountConverter))]
-                [AliasAs("Amount")]
-                public double Amount { get; set; }
-                [JsonProperty(PropertyName = "Usage")]
-                [AliasAs("Usage")]
-                public double Usage { get; set; }
+
+                [JsonProperty(PropertyName = "Day")]
+                [AliasAs("Day")]
+                public string Day { get; set; }
+
+                [JsonProperty(PropertyName = "AmountTotal")]
+                [AliasAs("AmountTotal")]
+                public double AmountTotal { get; set; }
+
+                [JsonProperty(PropertyName = "UsageTotal")]
+                [AliasAs("UsageTotal")]
+                public double UsageTotal { get; set; }
+
+                [JsonProperty(PropertyName = "Currency")]
+                [AliasAs("Currency")]
+                public string Currency { get; set; }
+
+                [JsonProperty(PropertyName = "UsageUnit")]
+                [AliasAs("UsageUnit")]
+                public string UsageUnit { get; set; }
+
                 [JsonProperty(PropertyName = "IsEstimatedReading")]
                 [AliasAs("IsEstimatedReading")]
                 public string IsEstimatedReading { get; set; }
+
+                [JsonProperty(PropertyName = "tariffBlocks")]
+                [AliasAs("tariffBlocks")]
+                public List<TariffBlock> TariffBlocksList { get; set; }
+            }
+
+            public class TariffBlock
+            {
+                [JsonProperty(PropertyName = "BlockId")]
+                [AliasAs("BlockId")]
+                public string BlockId { get; set; }
+
+                [JsonProperty(PropertyName = "Amount")]
+                [AliasAs("Amount")]
+                public double Amount { get; set; }
+
+                [JsonProperty(PropertyName = "Usage")]
+                [AliasAs("Usage")]
+                public double Usage { get; set; }
+
+                [JsonProperty(PropertyName = "BlockPrice")]
+                [AliasAs("BlockPrice")]
+                public string BlockPrice { get; set; }
             }
 
             class DoubleDataAmountConverter : JsonConverter
@@ -77,6 +124,40 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 {
                     serializer.Serialize(writer, value);
                 }
+            }
+        }
+
+        public class TariffBlocksLegendData
+        {
+            [JsonProperty(PropertyName = "BlockId")]
+            [AliasAs("BlockId")]
+            public string BlockId { get; set; }
+
+            [JsonProperty(PropertyName = "BlockRange")]
+            [AliasAs("BlockRange")]
+            public string BlockRange { get; set; }
+
+            [JsonProperty(PropertyName = "BlockPrice")]
+            [AliasAs("BlockPrice")]
+            public string BlockPrice { get; set; }
+
+            [JsonProperty(PropertyName = "RGB")]
+            [AliasAs("RGB")]
+            public ColorData Color { get; set; }
+
+            public class ColorData
+            {
+                [JsonProperty(PropertyName = "R")]
+                [AliasAs("R")]
+                public int RedColor { get; set; }
+
+                [JsonProperty(PropertyName = "G")]
+                [AliasAs("G")]
+                public int GreenColor { get; set; }
+
+                [JsonProperty(PropertyName = "B")]
+                [AliasAs("B")]
+                public int BlueData { get; set; }
             }
         }
 

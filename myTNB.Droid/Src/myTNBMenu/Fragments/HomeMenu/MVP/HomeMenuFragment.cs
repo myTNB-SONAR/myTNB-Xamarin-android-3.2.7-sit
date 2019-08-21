@@ -174,6 +174,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private string savedSSMRMeterReadingThreePhaseTimeStamp = "0000000";
 
+        private string savedEnergySavingTipsTimeStamp = "0000000";
+
         private static List<MyService> currentMyServiceList = new List<MyService>();
 
         private static List<NewFAQ> currentNewFAQList = new List<NewFAQ>();
@@ -209,12 +211,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             try
             {
                 mCallBack = context as ISummaryFragmentToDashBoardActivtyListener;
+                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Home Screen");
             }
             catch (Java.Lang.ClassCastException e)
             {
                 Utility.LoggingNonFatalError(e);
             }
-
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         private void UpdateGreetingsHeader(Constants.GREETING greeting)
@@ -265,21 +271,45 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 notificationHeaderIcon.SetOnClickListener(null);
                 addActionContainer.Click += delegate
                 {
+                    try
+                    {
+                        FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Home Screen -> Add Account");
+                    }
+                    catch (System.Exception err)
+                    {
+                        Utility.LoggingNonFatalError(err);
+                    }
                     Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
                     linkAccount.PutExtra("fromDashboard", true);
                     StartActivity(linkAccount);
                 };
                 notificationHeaderIcon.Click += delegate
                 {
+                    try
+                    {
+                        FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Home Screen -> Notification");
+                    }
+                    catch (System.Exception err)
+                    {
+                        Utility.LoggingNonFatalError(err);
+                    }
                     StartActivity(new Intent(this.Activity, typeof(NotificationActivity)));
                 };
                 ((DashboardHomeActivity)Activity).SetStatusBarBackground();
+
+                ((DashboardHomeActivity)Activity).ShowBottomNavigationBar();
 
                 this.presenter.GetSmartMeterReadingWalkthroughtTimeStamp();
 
                 this.presenter.GetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
 
+                this.presenter.GetEnergySavingTipsTimeStamp();
                 SetRefreshLayoutParams();
+
+                ((DashboardHomeActivity)Activity).EnableDropDown(false);
+                ((DashboardHomeActivity)Activity).HideAccountName();
+                ((DashboardHomeActivity)Activity).ShowBackButton(false);
+                ((DashboardHomeActivity)Activity).SetToolbarTitle(Resource.String.dashboard_activity_title);
             }
             catch (System.Exception e)
             {
@@ -545,6 +575,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             searchActionIcon.Click += (s, e) =>
             {
                 ShowSearchAction(true);
+                try
+                {
+                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Home Screen Search Button Clicked");
+                }
+                catch (System.Exception err)
+                {
+                    Utility.LoggingNonFatalError(err);
+                }
             };
         }
 
@@ -682,6 +720,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         }
                         StartActivity(applySMRIntent);
                     }
+
+                    try
+                    {
+                        FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "My Service Tile Clicked");
+                    }
+                    catch (System.Exception err)
+                    {
+                        Utility.LoggingNonFatalError(err);
+                    }
                 }
             }
             catch (System.Exception e)
@@ -700,6 +747,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
                     faqIntent.PutExtra(Constants.FAQ_ID_PARAM, selectedNewFAQ.TargetItem);
                     Activity.StartActivity(faqIntent);
+
+                    try
+                    {
+                        FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Need Help Tile Clicked");
+                    }
+                    catch (System.Exception err)
+                    {
+                        Utility.LoggingNonFatalError(err);
+                    }
                 }
             }
             catch (System.Exception e)
@@ -1224,6 +1280,52 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             StartActivity(linkAccount);
         }
 
+        public void OnSavedEnergySavingTipsTimeStamp(string mSavedTimeStamp)
+        {
+            if (mSavedTimeStamp != null)
+            {
+                this.savedEnergySavingTipsTimeStamp = mSavedTimeStamp;
+            }
+            this.presenter.OnGetEnergySavingTipsTimeStamp();
+        }
+
+        public void CheckEnergySavingTipsTimeStamp()
+        {
+            try
+            {
+                EnergySavingTipsParentEntity wtManager = new EnergySavingTipsParentEntity();
+                List<EnergySavingTipsParentEntity> items = wtManager.GetAllItems();
+                if (items != null)
+                {
+                    EnergySavingTipsParentEntity entity = items[0];
+                    if (entity != null)
+                    {
+                        if (!entity.Timestamp.Equals(savedEnergySavingTipsTimeStamp))
+                        {
+                            this.presenter.OnGetEnergySavingTips();
+                        }
+                        else
+                        {
+                            this.presenter.OnSetEnergySavingTipsToCache();
+                        }
+
+                    }
+                    else
+                    {
+                        this.presenter.OnSetEnergySavingTipsToCache();
+                    }
+                }
+                else
+                {
+                    this.presenter.OnSetEnergySavingTipsToCache();
+                }
+            }
+            catch (System.Exception e)
+            {
+                // Read from cache
+                Utility.LoggingNonFatalError(e);
+            }
+        }
         public void UpdateSearchViewBackground(string searchText)
         {
             if (searchText != "")

@@ -73,30 +73,44 @@ namespace myTNB_Android.Src.Barcode.Activity
         {
             base.OnResume();
 
-            var needsPermissionRequest = ZXing.Net.Mobile.Android.PermissionsHandler.NeedsPermissionRequest(this);
+            try
+            {
+                var needsPermissionRequest = ZXing.Net.Mobile.Android.PermissionsHandler.NeedsPermissionRequest(this);
 
-            if (needsPermissionRequest)
-            {
-                ZXing.Net.Mobile.Android.PermissionsHandler.RequestPermissionsAsync(this);
-            }
-            else
-            {
-                if (scanFragment == null)
+                if (needsPermissionRequest)
                 {
-                    scanFragment = new ZXingScannerFragment();
-                    SupportFragmentManager.BeginTransaction()
-                        .Replace(Resource.Id.barCodeView, scanFragment)
-
-                        .Commit()
-                        ;
-                    SupportFragmentManager.ExecutePendingTransactions();
+                    ZXing.Net.Mobile.Android.PermissionsHandler.RequestPermissionsAsync(this);
                 }
+                else
+                {
+                    if (scanFragment == null)
+                    {
+                        scanFragment = new ZXingScannerFragment();
+                        SupportFragmentManager.BeginTransaction()
+                            .Replace(Resource.Id.barCodeView, scanFragment)
 
-                scan();
+                            .Commit()
+                            ;
+                        SupportFragmentManager.ExecutePendingTransactions();
+                    }
 
+                    scan();
+
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
 
-
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Add Account -> Barcode Scan");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
 

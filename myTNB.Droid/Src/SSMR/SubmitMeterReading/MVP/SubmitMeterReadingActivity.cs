@@ -854,5 +854,18 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             TextView meterTypeView = (TextView)linearLayout.FindViewById(Resource.Id.reading_meter_type);
             meterTypeView.SetBackgroundResource(isSuccess ? Resource.Drawable.meter_reading_label_background_ready : Resource.Drawable.meter_reading_label_background_error);
         }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Submit Meter Reading Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
     }
 }

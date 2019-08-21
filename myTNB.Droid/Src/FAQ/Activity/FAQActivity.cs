@@ -223,6 +223,19 @@ namespace myTNB_Android.Src.FAQ.Activity
             }
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "FAQ");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
 
         public override void OnTrimMemory(TrimMemory level)
         {

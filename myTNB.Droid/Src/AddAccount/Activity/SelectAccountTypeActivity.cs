@@ -7,6 +7,7 @@ using myTNB_Android.Src.AddAccount.Activity;
 using myTNB_Android.Src.AddAccount.Adapter;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -98,6 +99,19 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             link_activity.PutExtra("selectedAccountType", JsonConvert.SerializeObject(selectedAccountType));
             SetResult(Result.Ok, link_activity);
             Finish();
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Add Account Select Account");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
 

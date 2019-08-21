@@ -442,6 +442,19 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
             return true;
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Pre Login Submit Feedback");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void ShowCamera()
         {
             var intent = new Intent(MediaStore.ActionImageCapture);

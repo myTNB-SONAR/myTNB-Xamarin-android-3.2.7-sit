@@ -328,5 +328,18 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
                     break;
             }
         }
+
+        protected override void OnResume()
+        {
+            try
+            {
+                base.OnResume();
+                FirebaseAnalyticsUtils.SetScreenName(this, "Update Account Nickname Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
     }
 }

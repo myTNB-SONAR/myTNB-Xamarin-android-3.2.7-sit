@@ -363,5 +363,18 @@ namespace myTNB_Android.Src.UpdatePassword.Activity
                     break;
             }
         }
+
+        protected override void OnResume()
+        {
+            try
+            {
+                base.OnResume();
+                FirebaseAnalyticsUtils.SetScreenName(this, "Change Password");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
     }
 }

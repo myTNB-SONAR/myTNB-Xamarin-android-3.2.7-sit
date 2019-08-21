@@ -82,7 +82,9 @@
 	
 	   <color name="grey_two">#D0D0D0</color>
     
-    <color name="shimmer_color">#bed9f1</color>
+    <color name="shimmer_color">#f1f6fb</color>
+
+    <color name="shimmer_color_second">#bed9f1</color>
     
     <color name="charcoalGrey">#424141</color>
     
@@ -93,6 +95,8 @@
     <color name="bar_color">#555be3</color>
     
     <color name="ssmr_header_background">#f9f8f8</color>
+
+    <color name="new_grey">#727171</color>
     
     <color name="all_cleared_amount">#8b8b8b</color>
 </resources>

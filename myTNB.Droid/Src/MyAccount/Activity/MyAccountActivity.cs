@@ -430,6 +430,19 @@ namespace myTNB_Android.Src.MyAccount.Activity
             }
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "More -> My Account");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void HideShowProgressDialog()
         {
             //if (accountRetrieverDialog != null && accountRetrieverDialog.IsShowing)

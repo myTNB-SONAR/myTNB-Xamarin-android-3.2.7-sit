@@ -1,5 +1,6 @@
 ﻿using Android.Util;
 using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Models;
@@ -289,10 +290,26 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
             try
             {
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = UserEntity.GetActive().Email,
+                    sspuid = UserEntity.GetActive().UserID,
+                    did = this.mView.GetDeviceId(),
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+
+                CustomerBillingAccount selectedAccount = CustomerBillingAccount.FindByAccNum(accountNum);
+
                 var installDetailsResponse = await installDetailsApi.GetInstallationDetails(new Requests.GetInstallationDetailsRequest()
                 {
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                    AccNum = accountNum
+                    AccountNumber = accountNum,
+                    IsOwner = selectedAccount.isOwned ? "true" : "false",
+                    usrInf = currentUsrInf
                 }, cts.Token);
 
 
@@ -300,7 +317,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     this.mView.HideAmountProgress();
 
-                    if (!installDetailsResponse.Data.IsError)
+                    if (installDetailsResponse.Data.ErrorCode == "7200")
                     {
                         this.mView.ShowAccountStatus(installDetailsResponse.Data.Data);
                     }

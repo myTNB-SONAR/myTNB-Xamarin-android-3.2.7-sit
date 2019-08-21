@@ -65,6 +65,19 @@ namespace myTNB_Android.Src.ResetPasswordSuccess.Activity
             return Resource.Layout.ResetPasswordSuccessView;
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Reset Password Success Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void SetPresenter(ResetPasswordSuccessContract.IUserActionsListener userActionListener)
         {
             this.userActionsListener = userActionListener;

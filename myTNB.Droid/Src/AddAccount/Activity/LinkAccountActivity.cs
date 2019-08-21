@@ -392,7 +392,14 @@ namespace myTNB_Android.Src.AddAccount.Activity
         protected override void OnResume()
         {
             base.OnResume();
-            Log.Debug("Link Account", "OnResume");
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Link Accounts Staging Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowNoAccountAddedError(string message)

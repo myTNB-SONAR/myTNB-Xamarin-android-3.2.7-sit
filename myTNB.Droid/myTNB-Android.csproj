@@ -746,10 +746,6 @@
     <Compile Include="Src\myTNBMenu\Models\UserNotificationTypeResponse.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\BillsPaymentFragmentContract.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\BillsPaymentFragmentPresenter.cs" />
-    <Compile Include="Src\myTNBMenu\MVP\Fragment\DashboardChartNoTNBAccountContract.cs" />
-    <Compile Include="Src\myTNBMenu\MVP\Fragment\DashboardChartNoTNBAccountPresenter.cs" />
-    <Compile Include="Src\myTNBMenu\MVP\Fragment\DashboardNonOwnerContract.cs" />
-    <Compile Include="Src\myTNBMenu\MVP\Fragment\DashboardNonOwnerPresenter.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\DashboardSmartMeterContract.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\DashboardSmartMeterPresenter.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\FeedbackMenuContract.cs" />
@@ -893,8 +889,6 @@
     <Compile Include="Src\myTNBMenu\Charts\Formatter\ChartsMonthFormatter.cs" />
     <Compile Include="Src\myTNBMenu\Charts\SelectedMarkerView\SelectedMarkerView.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\DashboardChartFragment.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\DashboardChartNonOwnerNoAccess.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\DashboardChartNoTNBAccount.cs" />
     <Compile Include="Src\myTNBMenu\Models\AccountData.cs" />
     <Compile Include="Src\myTNBMenu\Models\ChartType.cs" />
     <Compile Include="Src\myTNBMenu\Models\UsageHistoryData.cs" />
@@ -1959,12 +1953,266 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\SSMR\SMRApplication\MVP\SelectSMRAccountEmptyActivity.cs" />
+    <AndroidResource Include="Resources\layout\DashboardNewChartView.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\dashboard_extended_fluid_background.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\dashboard_extended_fluid_background.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\dashboard_extended_fluid_background.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\dashboard_extended_fluid_background.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\dashboard_extended_fluid_background.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\rectangle_rounded_button_bg.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\dashboard_chart_bg.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\dashboard_fluid_background.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\eye.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\rectangle.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\dashboard_fluid_background.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\eye.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\rectangle.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\dashboard_fluid_background.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\eye.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\rectangle.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\dashboard_fluid_background.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\eye.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\rectangle.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\dashboard_fluid_background.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\eye.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\rectangle.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\CustomDashboardGradientToolbar.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\myTNBMenu\Charts\Formatter\ChartsKWhFormatter.cs" />
+    <AndroidResource Include="Resources\layout\NewMarkerView.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\SitecoreCMS\Model\EnergySavingTipsModel.cs" />
+    <Compile Include="Src\Database\Model\EnergySavingTipsEntity.cs" />
+    <Compile Include="Src\Database\Model\EnergySavingTipsParentEntity.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\EnergySavingTipsService.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\fridge.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\saving_tips_bg.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\fridge.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\saving_tips_bg.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\fridge.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\saving_tips_bg.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\fridge.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\saving_tips_bg.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\fridge.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\saving_tips_bg.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\Utils\EnergyTipsUtils.cs" />
+    <AndroidResource Include="Resources\layout\EnergySavingTipsCardLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\myTNBMenu\Adapter\EnergySavingTipsAdapter.cs" />
+    <Compile Include="Src\myTNBMenu\Listener\NMREDashboardScrollView.cs" />
+    <AndroidResource Include="Resources\layout\SelectSupplyAccountItemLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\rectangle_yellow_button_bg.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\eye_hide.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\info_black.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\eye_hide.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\info_black.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\eye_hide.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\info_black.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\eye_hide.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\info_black.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\eye_hide.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\info_black.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\myTNBMenu\ChartRenderer\StackedBarCharRenderer.cs" />
+    <AndroidResource Include="Resources\drawable\tariff_legend_icon_default.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\dashboard_chart_extended_bg.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\TariffBlockLegendItem.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\myTNBMenu\Adapter\TariffBlockLegendAdapter.cs" />
+    <AndroidResource Include="Resources\anim\item_animation_fall_down.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\anim\layout_animation_fall_down.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\CustomDashboardGradientAccountSelector.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
     <AndroidResource Include="Resources\drawable\rectangle_rounded_corner_bg.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\search_cancel.png" />
     <AndroidResource Include="Resources\drawable-mdpi\search_cancel.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\search_cancel.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\search_cancel.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\search_cancel.png" />
+    <AndroidResource Include="Resources\drawable\shimmer_round_rectangle.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\dasbord_chart_refresh_bg.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\maintenance_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\maintenance_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\maintenance_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\maintenance_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\maintenance_new.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_camera_green.png" />
     <AndroidResource Include="Resources\drawable-mdpi\ic_action_camera_green.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_action_camera_green.png" />
@@ -2004,6 +2252,11 @@
     <AndroidResource Include="Resources\drawable-xhdpi\bg_application_status.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\bg_application_status.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\bg_application_status.png" />
+    <Compile Include="Src\Utils\FirebaseAnalyticsUtil.cs" />
+    <AndroidResource Include="Resources\layout\SelectAccountTypeRow.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -2069,12 +2322,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ChartHouseSpinnerDropDownRow.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\DashboardChartNonOwnerNoAccess.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\DashboardNoTNBAccount.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\SelectSupplyAccountRow.axml">
@@ -2380,6 +2627,8 @@
     <Folder Include="Src\SSMR\Util\" />
     <Folder Include="Src\SSMR\SSMRBase\" />
     <Folder Include="Src\SSMR\SSMRBase\MVP\" />
+    <Folder Include="Src\myTNBMenu\ChartRenderer\" />
+    <Folder Include="Resources\anim\" />
     <Folder Include="Src\SSMRMeterHistory\Api\" />
   </ItemGroup>
   <ItemGroup>

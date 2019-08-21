@@ -25,7 +25,7 @@ using System.Runtime;
 
 namespace myTNB_Android.Src.SelectSupplyAccount.Activity
 {
-    [Activity(Label = "@string/dashboard_select_supply_account_activity_title"
+    [Activity(Label = "Select Electricity Account"
               , Icon = "@drawable/ic_launcher"
     , ScreenOrientation = ScreenOrientation.Portrait
     , Theme = "@style/Theme.Dashboard")]
@@ -140,13 +140,20 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
 
                 listView.ItemClick += OnItemClick;
 
-                Button done = FindViewById<Button>(Resource.Id.btnAddAnotherAccount);
-                done.Click += delegate
-                {
-                    StartActivity(typeof(LinkAccountActivity));
-                };
-                TextViewUtils.SetMuseoSans500Typeface(done);
                 this.userActionsListener.Start();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Select Electricity Account Screen");
             }
             catch (Exception e)
             {
@@ -160,7 +167,12 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
             try
             {
                 CustomerBillingAccount customerAccount = accountListAdapter.GetItemObject(e.Position);
-                this.userActionsListener.OnSelectAccount(customerAccount);
+                CustomerBillingAccount.RemoveSelected();
+                CustomerBillingAccount.Update(customerAccount.AccNum, true);
+                Intent result = new Intent();
+                result.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(customerAccount));
+                SetResult(Result.Ok, result);
+                Finish();
             }
             catch (Exception ex)
             {

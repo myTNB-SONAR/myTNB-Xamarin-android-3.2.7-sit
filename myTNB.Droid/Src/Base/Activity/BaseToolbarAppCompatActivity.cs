@@ -143,6 +143,19 @@ namespace myTNB_Android.Src.Base.Activity
             }
         }
 
+        public virtual void RemoveToolbarBackground()
+        {
+            if (toolbar != null)
+            {
+                toolbar?.SetBackgroundResource(0);
+            }
+            else
+            {
+                toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
+                toolbar?.SetBackgroundResource(0);
+            }
+        }
+
         public virtual void SetStatusBarGradientBackground()
         {
             if (Build.VERSION.SdkInt >= Build.VERSION_CODES.Lollipop)

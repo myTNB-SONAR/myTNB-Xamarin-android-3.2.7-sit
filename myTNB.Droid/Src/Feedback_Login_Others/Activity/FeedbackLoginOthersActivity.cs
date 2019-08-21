@@ -261,6 +261,19 @@ namespace myTNB_Android.Src.Feedback_Login_Others.Activity
             this.userActionsListener.OnSelectFeedbackType();
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Submit Feedback");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
 
         [OnClick(Resource.Id.txtFeedbackType)]
         void OnSelectStateLayout2(object sender, EventArgs eventArgs)

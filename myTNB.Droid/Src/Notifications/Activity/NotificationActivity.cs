@@ -259,6 +259,19 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Notifications Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public override void OnTrimMemory(TrimMemory level)
         {
             base.OnTrimMemory(level);

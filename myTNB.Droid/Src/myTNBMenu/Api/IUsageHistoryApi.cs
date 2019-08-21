@@ -11,7 +11,8 @@ namespace myTNB_Android.Src.myTNBMenu.Api
     public interface IUsageHistoryApi
     {
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v5/my_billingssp.asmx/GetAccountUsageHistoryForGraph")]
+        //[Post("/v5/my_billingssp.asmx/GetAccountUsageHistoryForGraph")]
+        [Post("/v6/mytnbappws.asmx/GetAccountUsage")]
         Task<UsageHistoryResponse> DoQuery([Body] UsageHistoryRequest usageHistoryRequest, CancellationToken cancellationToken);
 
         [Headers("Content-Type:application/json; charset=utf-8")]

@@ -47,6 +47,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void UpdateEligibilitySMRAccountList();
 
+            void OnSavedEnergySavingTipsTimeStamp(string mSavedTimeStamp);
+
+            void CheckEnergySavingTipsTimeStamp();
             void UpdateSearchViewBackground(string searchText);
         }
 
@@ -83,6 +86,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             List<NewPromotion> LoadShimmerPromotionList(int count);
 
             Task InitiateNewPromotion();
+
+            void GetEnergySavingTipsTimeStamp();
+
+            Task OnGetEnergySavingTipsTimeStamp();
+
+            Task OnGetEnergySavingTips();
+
+            Task OnSetEnergySavingTipsToCache();
         }
 
         public interface IHomeMenuService

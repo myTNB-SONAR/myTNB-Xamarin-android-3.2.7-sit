@@ -376,8 +376,18 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         }
 
 
-
-
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Register New User");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
         public void ShowVerificationCodeProgressDialog()
         {

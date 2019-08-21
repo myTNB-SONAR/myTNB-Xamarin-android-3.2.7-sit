@@ -7,6 +7,7 @@ using Android.Util;
 using Android.Views;
 using myTNB_Android.Src.AddAccount.Fragment;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Utils;
 using System;
 using System.Runtime;
 using ZXing.Mobile;
@@ -92,6 +93,19 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 this.FragmentManager.PopBackStack();
             }
 
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Add Account / Link Account");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override Boolean ShowCustomToolbarTitle()

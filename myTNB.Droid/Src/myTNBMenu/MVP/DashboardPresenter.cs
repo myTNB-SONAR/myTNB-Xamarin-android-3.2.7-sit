@@ -325,8 +325,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     {
                         if (DashboardActivity.currentFragment != null && (DashboardActivity.currentFragment.GetType() == typeof(SummaryDashBoardFragment) ||
                             DashboardActivity.currentFragment.GetType() == typeof(DashboardChartFragment) ||
-                            DashboardActivity.currentFragment.GetType() == typeof(DashboardChartNoTNBAccount) ||
-                            DashboardActivity.currentFragment.GetType() == typeof(DashboardChartNonOwnerNoAccess) ||
                             DashboardActivity.currentFragment.GetType() == typeof(DashboardSmartMeterFragment)))
                         {
                             mView.ShowBackButton(false);
@@ -1200,7 +1198,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 else
                 {
                     this.mView.HideAccountName();
-                    this.mView.ShowNoAccountDashboardChartMenu();
                     this.mView.DisableBillMenu();
                 }
             }
@@ -1377,7 +1374,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 else
                 {
                     // 5
-                    this.mView.ShowNoAccountDashboardChartMenu();
                     this.mView.DisableBillMenu();
                 }
             }

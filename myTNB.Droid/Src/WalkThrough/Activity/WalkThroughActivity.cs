@@ -438,5 +438,18 @@ namespace myTNB_Android.Src.WalkThrough
                     break;
             }
         }
+
+        protected override void OnResume()
+        {
+            try
+            {
+                base.OnResume();
+                FirebaseAnalyticsUtils.SetScreenName(this, "Pre-Login Walkthrough Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
     }
 }
