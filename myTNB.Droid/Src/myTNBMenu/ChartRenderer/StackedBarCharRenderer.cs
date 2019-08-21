@@ -27,7 +27,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
         public float[] bufferItems { get; set; }
 
-        private float mRadius = 50f;
+        private float mRadius = 30f;
 
         private int selectedIndex = -1;
 
@@ -90,7 +90,6 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                         }
                     }
                     currentArrayIndex = currentArrayIndex * 4;
-                    Log.Debug("Current Array Index", currentArrayIndex.ToString());
                 }
                 else
                 {
@@ -172,7 +171,6 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                             }
                         }
                         currentArrayIndex = currentArrayIndex * 4;
-                        Log.Debug("Current Array Index", currentArrayIndex.ToString());
                     }
                     else
                     {
@@ -348,7 +346,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
             path.MoveTo(right, top + ry);
             if (tr)
-                path.RQuadTo(0, -ry, -rx, -ry);//top-right corner
+                path.ArcTo(right - 2 * rx, top, right, top + 2 * ry, 0, -90, false);//top-right corner
             else
             {
                 path.RLineTo(0, -ry);
@@ -356,7 +354,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
             }
             path.RLineTo(-widthMinusCorners, 0);
             if (tl)
-                path.RQuadTo(-rx, 0, -rx, ry); //top-left corner
+                path.ArcTo(left, top, left + 2 * rx, top + 2 * ry, 270, -90, false); //top-left corner
             else
             {
                 path.RLineTo(-rx, 0);
@@ -365,7 +363,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
             path.RLineTo(0, heightMinusCorners);
 
             if (bl)
-                path.RQuadTo(0, ry, rx, ry);//bottom-left corner
+                path.ArcTo(left, bottom - 2 * ry, left + 2 * rx, bottom, 180, -90, false);//bottom-left corner
             else
             {
                 path.RLineTo(0, ry);
@@ -374,7 +372,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
             path.RLineTo(widthMinusCorners, 0);
             if (br)
-                path.RQuadTo(rx, 0, rx, -ry); //bottom-right corner
+                path.ArcTo(right - 2 * rx, bottom - 2 * ry, right, bottom, 90, -90, false); //bottom-right corner
             else
             {
                 path.RLineTo(rx, 0);

@@ -35,7 +35,8 @@ namespace myTNB_Android.Src.Utils
                             Description = item.Description,
                             Image = item.Image,
                             isUpdateNeeded = true,
-                            ImageBitmap = null
+                            ImageBitmap = null,
+                            ID = item.ID
                         });
                     }
                 }

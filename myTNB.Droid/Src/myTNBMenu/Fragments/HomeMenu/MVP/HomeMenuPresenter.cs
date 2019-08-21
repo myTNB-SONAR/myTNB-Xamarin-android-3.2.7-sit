@@ -1076,7 +1076,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 Description = item.Description,
                                 Image = item.Image,
                                 isUpdateNeeded = true,
-                                ImageBitmap = null
+                                ImageBitmap = null,
+                                ID = item.ID
                             }); 
                         }
                         EnergyTipsUtils.OnSetEnergyTipsList(savedList);
