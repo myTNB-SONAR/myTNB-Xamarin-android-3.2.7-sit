@@ -492,7 +492,7 @@ namespace myTNB
         private void ToggleCTA()
         {
             bool isValid = !_isAllowEdit;
-            if (_isAllowEdit && isValid && _customEmailField != null && _customMobileField != null)
+            if (_isAllowEdit && _customEmailField != null && _customMobileField != null)
             {
                 isValid = _customEmailField.IsFieldValid && _customMobileField.IsFieldValid;
             }
