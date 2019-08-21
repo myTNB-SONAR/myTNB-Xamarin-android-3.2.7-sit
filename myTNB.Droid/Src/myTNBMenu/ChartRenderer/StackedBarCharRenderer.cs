@@ -27,7 +27,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
         public float[] bufferItems { get; set; }
 
-        private float mRadius = 20f;
+        private float mRadius = 100f;
 
         private int selectedIndex = -1;
 
