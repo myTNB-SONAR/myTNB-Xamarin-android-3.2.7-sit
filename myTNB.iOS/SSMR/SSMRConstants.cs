@@ -132,6 +132,9 @@ namespace myTNB.SSMR
         public static string I18N_ToolTipDesc5 = "tooltipDescription5";
         public static string I18N_ImReady = "imReady";
         public static string I18N_Note = "note";
+        public static string I18N_PreviousReading = "previousMeterReading";
+        public static string I18N_SubmitReading = "submitReading";
+        public static string I18N_TakeOrUploadPhoto = "takeOrUploadPhoto";
 
         //Patterns
         public static string Pattern_ImageName = "MYTNBAPP_SSMR_OCR_{0}_{1}";

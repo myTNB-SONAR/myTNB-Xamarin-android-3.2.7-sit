@@ -292,7 +292,8 @@ namespace myTNB
             _takePhotoView.AddSubview(_descriptionLabel);
 
             nfloat btnViewWidth = _meterReadScrollView.Frame.Width - (_paddingX * 2);
-            _takePhotoBtnView = new UIView(new CGRect(_paddingX, _descriptionLabel.Frame.GetMaxY() + GetScaledHeight(12f), btnViewWidth, GetScaledHeight(48f)))
+            _takePhotoBtnView = new UIView(new CGRect(_paddingX, _descriptionLabel.Frame.GetMaxY() + GetScaledHeight(12f)
+                , btnViewWidth, GetScaledHeight(48f)))
             {
                 BackgroundColor = UIColor.White
             };
@@ -327,11 +328,11 @@ namespace myTNB
             _takePhotoLabel = new UILabel(new CGRect(_cameraIconView.Frame.GetMaxX() + GetScaledWidth(12f), 0, takePhotoLabelWidth, 44f))
             {
                 BackgroundColor = UIColor.Clear,
-                Font = MyTNBFont.MuseoSans16_500,
+                Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.AlgaeGreen,
                 Lines = 0,
                 TextAlignment = UITextAlignment.Left,
-                Text = "Take Or Upload Photo"
+                Text = GetI18NValue(SSMRConstants.I18N_TakeOrUploadPhoto)
             };
             containerView.AddSubview(_takePhotoLabel);
 
@@ -689,10 +690,11 @@ namespace myTNB
         {
             _sSMRMeterFooterComponent = new SSMRMeterFooterComponent(View, ViewHeight);
             View.AddSubview(_sSMRMeterFooterComponent.GetUI());
-            _sSMRMeterFooterComponent._submitBtn.TouchUpInside += (sender, e) =>
+            _sSMRMeterFooterComponent._submitBtn.SetTitle(GetI18NValue(SSMRConstants.I18N_SubmitReading), UIControlState.Normal);
+            _sSMRMeterFooterComponent._submitBtn.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 OnTapSubmitReading();
-            };
+            }));
         }
 
         private void OnTapTakePhoto()
