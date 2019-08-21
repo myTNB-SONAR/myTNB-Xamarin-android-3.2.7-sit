@@ -1102,6 +1102,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
 
                 // HIGHLIGHT RIGHT MOST ITEM
+                CurrentParentIndex = barLength - 1;
                 Highlight rightMostBar = new Highlight(barLength - 1, 0, stackIndex);
                 mChart.HighlightValues(new Highlight[] { rightMostBar });
             }
@@ -1160,6 +1161,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
 
                 // HIGHLIGHT RIGHT MOST ITEM
+                CurrentParentIndex = barLength - 1;
                 Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
                 mChart.HighlightValues(new Highlight[] { rightMostBar });
             }
@@ -1254,6 +1256,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
 
                 // HIGHLIGHT RIGHT MOST ITEM
+                CurrentParentIndex = barLength - 1;
                 Highlight rightMostBar = new Highlight(barLength - 1, 0, stackIndex);
                 mChart.HighlightValues(new Highlight[] { rightMostBar });
             }
@@ -1312,6 +1315,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     mChart.Data = data;
                 }
                 // HIGHLIGHT RIGHT MOST ITEM
+                CurrentParentIndex = barLength - 1;
                 Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
                 mChart.HighlightValues(new Highlight[] { rightMostBar });
             }
