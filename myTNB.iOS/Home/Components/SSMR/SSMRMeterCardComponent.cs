@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
-using System.Globalization;
 using CoreGraphics;
 using myTNB.Model;
 using myTNB.SSMR;
@@ -139,22 +137,10 @@ namespace myTNB
         {
             if (model != null)
             {
-                if (!string.IsNullOrEmpty(model.RegisterNumber) && !string.IsNullOrWhiteSpace(model.RegisterNumber))
+                if (!string.IsNullOrEmpty(model.ReadingUnit) && !string.IsNullOrWhiteSpace(model.ReadingUnit))
                 {
-                    string stringLabel = string.Empty;
-                    switch (model.RegisterNumberType)
-                    {
-                        case RegisterNumberEnum.kWh:
-                            stringLabel = "kWh";
-                            break;
-                        case RegisterNumberEnum.kVARh:
-                            stringLabel = "kVARh";
-                            break;
-                        case RegisterNumberEnum.kW:
-                            stringLabel = "kW";
-                            break;
-                    }
-                    _iconLabel.Text = stringLabel;
+                    _iconLabel.Text = string.IsNullOrEmpty(model.ReadingUnitDisplayTitle)
+                            ? model.ReadingUnit : model.ReadingUnitDisplayTitle;
                 }
             }
         }

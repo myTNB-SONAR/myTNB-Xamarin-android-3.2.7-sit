@@ -31,6 +31,7 @@ namespace myTNB.Model
         public string MessageID { set; get; }
         public string Message { set; get; }
         public string RegisterNumber { set; get; }
+        public string ReadingUnit { set; get; }
         public bool IsSuccess { set; get; }
         [JsonIgnore]
         public RegisterNumberEnum RegisterNumberType

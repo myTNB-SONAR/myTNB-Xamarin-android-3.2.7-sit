@@ -212,7 +212,7 @@ namespace myTNB
             _errorLabel = new UILabel(new CGRect(0, 0, _noteView.Frame.Width, GetScaledHeight(16f)))
             {
                 BackgroundColor = UIColor.Clear,
-                Font = MyTNBFont.MuseoSans12_500,
+                Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.Tomato,
                 Lines = 0,
                 TextAlignment = UITextAlignment.Left,
@@ -234,7 +234,8 @@ namespace myTNB
                 Editable = false,
                 ScrollEnabled = true,
                 AttributedText = mutableHTMLBody,
-                UserInteractionEnabled = false
+                UserInteractionEnabled = false,
+                ContentInset = new UIEdgeInsets(0, -5, 0, -5)
             };
             _txtViewNote.ScrollIndicatorInsets = UIEdgeInsets.Zero;
             _noteView.AddSubview(_txtViewNote);
@@ -486,7 +487,8 @@ namespace myTNB
                     string missingReading = string.Empty;
                     for (int j = 0; j < count; j++)
                     {
-                        missingReading += _previousMeterList[j].RegisterNumberType;
+                        missingReading += string.IsNullOrEmpty(_previousMeterList[j].ReadingUnitDisplayTitle)
+                            ? _previousMeterList[j].ReadingUnit : _previousMeterList[j].ReadingUnitDisplayTitle;
                         if (j != count - 1) { missingReading += ", "; }
                     }
                     desc = string.Format(desc, count, missingReading);
@@ -552,15 +554,17 @@ namespace myTNB
                 }
             }
 
-            UIView line = new UIView(new CGRect(0, _pageControl.Frame.GetMaxY() + GetScaledHeight(16f), _toolTipFooterView.Frame.Width, GetScaledHeight(1f)))
+            UIView line = new UIView(new CGRect(0, _pageControl.Frame.GetMaxY() + GetScaledHeight(16f)
+                , _toolTipFooterView.Frame.Width, GetScaledHeight(1f)))
             {
                 BackgroundColor = MyTNBColor.VeryLightPink
             };
             _toolTipFooterView.AddSubview(line);
 
-            UILabel proceedLabel = new UILabel(new CGRect(0, line.Frame.GetMaxY() + GetScaledHeight(16f), _toolTipFooterView.Frame.Width, GetScaledHeight(24f)))
+            UILabel proceedLabel = new UILabel(new CGRect(0, line.Frame.GetMaxY() + GetScaledHeight(16f)
+                , _toolTipFooterView.Frame.Width, GetScaledHeight(24f)))
             {
-                Font = MyTNBFont.MuseoSans16_500,
+                Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
                 Text = GetI18NValue(SSMRConstants.I18N_ImReady),
                 TextAlignment = UITextAlignment.Center,
@@ -736,22 +740,8 @@ namespace myTNB
             {
                 foreach (var previousMeter in _previousMeterList)
                 {
-                    string registerStr = string.Empty;
-                    switch (previousMeter.RegisterNumberType)
-                    {
-                        case RegisterNumberEnum.kWh:
-                            registerStr = "kWh";
-                            break;
-                        case RegisterNumberEnum.kVARh:
-                            registerStr = "kVARh";
-                            break;
-                        case RegisterNumberEnum.kW:
-                            registerStr = "kW";
-                            break;
-                    }
-
                     bool needsPhoto = string.IsNullOrEmpty(previousMeter.CurrentReading) || !previousMeter.IsValidManualReading;
-                    ReadingDictionary.Add(registerStr, !needsPhoto);
+                    ReadingDictionary.Add(previousMeter.ReadingUnit, !needsPhoto);
                 }
                 UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
                 SSMRCaptureMeterViewController viewController =
@@ -783,7 +773,7 @@ namespace myTNB
                             previousMeter.IsValidManualReading = ocr.IsSuccess;
                             if (ocr.IsSuccess)
                             {
-                                if (previousMeter.RegisterNumberType == ocr.RegisterNumberTypeFromOCRUnit)
+                                if (previousMeter.ReadingUnit.ToUpper() == ocr.OCRUnit.ToUpper())
                                 {
                                     previousMeter.IsErrorFromOCR = !ocr.IsSuccess;
                                     previousMeter.CurrentReading = ocr.OCRValue;
@@ -791,7 +781,7 @@ namespace myTNB
                             }
                             else
                             {
-                                if (previousMeter.RegisterNumberType == ocr.RegisterNumberTypeFromRRUnit)
+                                if (previousMeter.ReadingUnit.ToUpper() == ocr.RequestReadingUnit.ToUpper())
                                 {
                                     previousMeter.IsErrorFromOCR = !ocr.IsSuccess;
                                     previousMeter.ErrorMessage = ocr.Message;
@@ -814,7 +804,7 @@ namespace myTNB
                     {
                         foreach (var previousMeter in _previousMeterList)
                         {
-                            if (previousMeter.RegisterNumberType == response.RegisterNumberType)
+                            if (previousMeter.ReadingUnit.ToUpper() == response.ReadingUnit.ToUpper())
                             {
                                 previousMeter.IsValidManualReading = response.IsSuccess;
                                 previousMeter.ErrorMessage = response.Message;
