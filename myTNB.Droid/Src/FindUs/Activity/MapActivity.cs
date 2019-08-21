@@ -521,10 +521,17 @@ namespace myTNB_Android.Src.FindUs.Activity
             Log.Debug(TAG, "Using " + _locationProvider + ".");
         }
 
-
         protected override void OnResume()
         {
             base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Locations Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         protected override void OnPause()

@@ -9,7 +9,7 @@
       android:layout_height="wrap_content"
       android:layout_marginLeft="16dp"
       android:layout_marginRight="16dp"
-      android:background="@drawable/rounded_corner_dialog">
+      android:background="@drawable/custom_round_white_background">
     <TextView
         android:id="@+id/txtToolTipContent"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         android:layout_gravity="center"
         android:textColor="@color/tunaGrey"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="6dp"
         android:textColorLink="@color/powerBlue"
         android:text=""
         android:textSize="14sp" />
@@ -39,7 +39,7 @@
             android:layout_toLeftOf="@+id/divider"
             android:gravity="center"
             android:textColor="@color/powerBlue"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="16dp"
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"

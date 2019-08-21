@@ -137,9 +137,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                     var activity = context as DashboardHomeActivity;
                     // SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
                     activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
+                    activity.UnsetToolbarBackground();
                 }
+                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Feedback Screen");
             }
             catch (ClassCastException e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }

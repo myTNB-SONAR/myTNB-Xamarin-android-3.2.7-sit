@@ -146,6 +146,18 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             return true;
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Reset Password Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
         public void ShowEmptyNewPasswordError()
         {

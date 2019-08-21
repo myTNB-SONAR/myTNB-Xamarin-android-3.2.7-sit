@@ -167,7 +167,14 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
         protected override void OnResume()
         {
             base.OnResume();
-
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Notification Setting Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
 

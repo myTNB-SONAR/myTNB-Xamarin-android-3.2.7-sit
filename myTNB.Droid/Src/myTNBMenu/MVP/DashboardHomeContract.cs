@@ -20,20 +20,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			/// </summary>
 			/// <param name="data">UsageHistoryData</param>
 			/// <param name="selectedAccount">AccountData</param>
-			void ShowChart(UsageHistoryData data, AccountData selectedAccount);
-
-			/// <summary>
-			/// Show the bar charts with error msg
-			/// </summary>
-			/// <param name="data">UsageHistoryData</param>
-			/// <param name="selectedAccount">AccountData</param>
-			void ShowChartWithError(UsageHistoryData data, AccountData selectedAccount, String errorCode, String errorMsg);
-
-			/// <summary>
-			/// Show the bar charts
-			/// </summary>
-			/// <param name="data">UsageHistoryData</param>
-			/// <param name="selectedAccount">AccountData</param>
 			void ShowSMChart(SMUsageHistoryData data, AccountData selectedAccount);
 
 			/// <summary>
@@ -83,34 +69,15 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			void ShowSelectSupplyAccount();
 
 			/// <summary>
-			/// Show no account in dashboard
-			/// </summary>
-			void ShowNoAccountDashboardChartMenu();
-
-			/// <summary>
 			/// Show no account in bill menu
 			/// </summary>
 			void ShowNoAccountBillMenu();
 
-			/// <summary>
-			/// Show no internet connection in dashboard
-			/// </summary>
-			/// <param name="accountName">string</param>
-			void ShowOwnerDashboardNoInternetConnection(string accountName, UsageHistoryResponse response, AccountData selectedAccount);
-
-			/// <summary>
-			/// Show no internet connection in bill menu
-			/// </summary>
-			/// <param name="selectedAccount"></param>
-			void ShowOwnerBillsNoInternetConnection(AccountData selectedAccount);
-
-			void ShowOwnerDashboardNoInternetConnection(string accountName, bool amountDueFailed, string contentText, string btnText, AccountData selectedAccount);
-
-			/// <summary>
-			/// Set toolbar title
-			/// </summary>
-			/// <param name="stringResourceId">integer</param>
-			void SetToolbarTitle(int stringResourceId);
+            /// <summary>
+            /// Set toolbar title
+            /// </summary>
+            /// <param name="stringResourceId">integer</param>
+            void SetToolbarTitle(int stringResourceId);
 
 			/// <summary>
 			/// Enable dropdown
@@ -211,6 +178,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void ShowToBeAddedToast();
 
             void PreShowBillMenu(AccountData selectedAccount);
+
+            void SetInnerDashboardToolbarBackground();
+
+            void UnsetToolbarBackground();
+
+            void ShowNMREChart(UsageHistoryResponse response, AccountData selectedAccount, string errorCode, string errorMsg);
 
         }
 

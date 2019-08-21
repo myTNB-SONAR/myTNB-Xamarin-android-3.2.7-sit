@@ -367,6 +367,19 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                 Utility.LoggingNonFatalError(e);
             }
         }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Apply SMR Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
     }
 }
  

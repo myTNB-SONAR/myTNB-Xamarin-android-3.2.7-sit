@@ -275,12 +275,15 @@ namespace myTNB_Android.Src.UpdateMobileNo
                 //    RegisterReceiver(pinDisplayerSMSReceiver , new IntentFilter("com.myTNB.smsReceiver"));
                 //}
                 this.userActionsListener.Start();
+                FirebaseAnalyticsUtils.SetScreenName(this, "Update Phone - OTP Token Input Screen");
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
         }
+
+
 
         protected override void OnDestroy()
         {

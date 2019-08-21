@@ -171,6 +171,18 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
             }
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Submit Feedback");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
         [Preserve]
         private void TextChanged(object sender, Android.Text.TextChangedEventArgs e)

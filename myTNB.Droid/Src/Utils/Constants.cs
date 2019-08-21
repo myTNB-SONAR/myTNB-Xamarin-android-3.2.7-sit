@@ -229,6 +229,12 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string SMR_TERMINATION_REASON_KEY = "smrTerminationReason";
         internal static readonly string SMR_TERMINATION_KEY = "smrTermination";
 
+        internal static readonly string AMOUNT_DUE_RESPONSE_KEY = ".amountDueResponse";
+
+        internal static readonly string SELECTED_ACCOUNT_USAGE_RESPONSE = ".selectedAccountUsageResponse";
+
+        internal static readonly string IS_BILLING_AVAILABLE_KEY = ".isBillingAvailable";
+
         public enum GREETING
         {
             MORNING,

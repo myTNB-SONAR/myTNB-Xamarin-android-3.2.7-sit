@@ -103,6 +103,19 @@ namespace myTNB_Android.Src.NotificationFilter.Activity
             }
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Notification Filter Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
 
         public override void OnTrimMemory(TrimMemory level)
         {

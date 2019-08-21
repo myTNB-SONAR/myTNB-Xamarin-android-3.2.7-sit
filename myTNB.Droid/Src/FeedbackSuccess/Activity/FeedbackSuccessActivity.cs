@@ -101,6 +101,19 @@ namespace myTNB_Android.Src.FeedbackSuccess.Activity
             Finish();
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Submit Feedback Success");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public override void OnTrimMemory(TrimMemory level)
         {
             base.OnTrimMemory(level);

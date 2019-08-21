@@ -552,5 +552,18 @@ namespace myTNB_Android.Src.ViewBill.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+
+        protected override void OnResume()
+        {
+            try
+            {
+                base.OnResume();
+                FirebaseAnalyticsUtils.SetScreenName(this, "View Bill PDF Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
     }
 }

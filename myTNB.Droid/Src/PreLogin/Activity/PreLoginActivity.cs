@@ -120,6 +120,18 @@ namespace myTNB_Android.Src.PreLogin.Activity
             StartActivity(typeof(RegistrationFormActivity));
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Pre Login");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
         [OnClick(Resource.Id.btnLogin)]
         void OnLogin(object sender, EventArgs eventArgs)

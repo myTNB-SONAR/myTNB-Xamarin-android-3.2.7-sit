@@ -441,6 +441,8 @@ You acknowledge that you have been provided with and have read and understood th
   <!-- End of Dashboard Activity-->
 
   <!-- Dashboard ChartView -->
+  <string name="dashboard_chartview_activity_title">Usage</string>
+  <string name="dashboard_chartview_re_activity_title">Earnings</string>
   <string name="dashboard_chartview_hour">Hour</string>
   <string name="dashboard_chartview_day">Day</string>
   <string name="dashboard_chartview_month">Month</string>
@@ -1425,6 +1427,8 @@ Please try again later.]]>
   <string name="meter_kwh">kWh</string>
   <string name="meter_kVARh">kVARh</string>
   <string name="meter_kW">kW</string>
+
+  <string name="dashboard_need_pay">I need to pay</string>
     
   <!--Smart Meter Take Photo-->
   <string name="ssmr_single_take_photo_note">Take a photo of the reading value you see on your meter.</string>

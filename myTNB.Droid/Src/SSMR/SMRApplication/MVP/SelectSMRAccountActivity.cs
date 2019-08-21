@@ -139,5 +139,18 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                 .SetCTALabel(tooltipData.cta)
                 .Build().Show();
         }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Select SMR Electricity Account Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
     }
 }

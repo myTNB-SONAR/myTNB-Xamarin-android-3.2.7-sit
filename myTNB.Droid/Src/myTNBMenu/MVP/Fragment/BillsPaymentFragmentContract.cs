@@ -125,7 +125,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
             void RefreshData();
 
-            void OnSelectAccount(CustomerBillingAccount selectedCustomerBilling);
         }
     }
 }

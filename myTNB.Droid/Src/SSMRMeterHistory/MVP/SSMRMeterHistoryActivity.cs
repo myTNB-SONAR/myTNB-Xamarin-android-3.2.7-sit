@@ -463,5 +463,17 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             this.mPresenter.GetSSMRAccountStatus(selectedAccountNumber);
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Meter Reading History Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
     }
 }

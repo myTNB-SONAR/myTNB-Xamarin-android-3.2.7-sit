@@ -175,16 +175,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             try
             {
                 if (currentFragment.GetType() == typeof(DashboardChartFragment) ||
-                    currentFragment.GetType() == typeof(DashboardChartNonOwnerNoAccess) ||
                     currentFragment.GetType() == typeof(DashboardSmartMeterFragment) ||
                     currentFragment.GetType() == typeof(FeedbackMenuFragment))
                 {
-                    EnableDropDown(false);
-                    HideAccountName();
-                    ShowBackButton(false);
-                    SetToolbarTitle(Resource.String.dashboard_activity_title);
                     ShowHomeDashBoard();
-
                 }
                 else
                 {
@@ -213,16 +207,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             if (this.mPresenter != null)
             {
                 this.mPresenter.OnValidateData();
-            }
-        }
-
-        public void ShowNoAccountDashboardChartMenu()
-        {
-            currentFragment = new DashboardChartNoTNBAccount();
-            FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, new DashboardChartNoTNBAccount())
-                           .CommitAllowingStateLoss();
-            ShowBackButton(false);
+            }            
         }
 
         public void ShowNoAccountBillMenu()
@@ -231,65 +216,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             FragmentManager.BeginTransaction()
                    .Replace(Resource.Id.content_layout, new BillingMenuNoTNBAccount())
                    .CommitAllowingStateLoss();
-        }
-
-        public void ShowOwnerDashboardNoInternetConnection(string accountName, UsageHistoryResponse response, AccountData selectedAccount)
-        {
-            txtAccountName.Text = accountName;
-            currentFragment = new DashboardChartFragment();
-            FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(true, response, selectedAccount),
-                                    typeof(DashboardChartFragment).Name)
-                           .CommitAllowingStateLoss();
-            ShowBackButton(true);
-        }
-
-        public void ShowOwnerDashboardNoInternetConnection(string accountName, bool amountDueFailed, string contentTxt, string btnTxt, AccountData selectedAccount)
-        {
-            txtAccountName.Text = accountName;
-            currentFragment = new DashboardChartFragment();
-            FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(true, amountDueFailed, contentTxt, btnTxt, selectedAccount),
-                                    typeof(DashboardChartFragment).Name)
-                           .CommitAllowingStateLoss();
-            ShowBackButton(true);
-        }
-
-
-        public void ShowOwnerBillsNoInternetConnection(AccountData selectedAccount)
-        {
-            ShowBackButton(false);
-            this.SelectedAccountData = selectedAccount;
-            txtAccountName.Text = SelectedAccountData.AccountNickName;
-            currentFragment = new BillsMenuFragment();
-            FragmentManager.BeginTransaction()
-                .Replace(Resource.Id.content_layout, BillsMenuFragment.NewInstance(selectedAccount, true))
-                .CommitAllowingStateLoss();
-
-        }
-
-        public void ShowChart(UsageHistoryData data, AccountData selectedAccount)
-        {
-            this.SelectedAccountData = selectedAccount;
-            txtAccountName.Text = SelectedAccountData.AccountName;
-            currentFragment = new DashboardChartFragment();
-            FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(data, SelectedAccountData),
-                                    typeof(DashboardChartFragment).Name)
-                           .CommitAllowingStateLoss();
-            ShowBackButton(true);
-        }
-
-        public void ShowChartWithError(UsageHistoryData data, AccountData selectedAccount, string errorCode, string errorMessage)
-        {
-            this.SelectedAccountData = selectedAccount;
-            txtAccountName.Text = SelectedAccountData.AccountName;
-            currentFragment = new DashboardChartFragment();
-            FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(data, SelectedAccountData, errorCode, errorMessage),
-                         typeof(DashboardChartFragment).Name)
-                           .CommitAllowingStateLoss();
-            ShowBackButton(true);
         }
 
         public void ShowSMChart(SMUsageHistoryData data, AccountData selectedAccount)
@@ -778,7 +704,40 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     }
                 }
             }
+            else if (ev.Action == MotionEventActions.Down
+                && this.userActionsListener?.CheckCurrentDashboardMenu() == Resource.Id.menu_dashboard
+                && currentFragment.GetType() == typeof(DashboardChartFragment))
+            {
+                try
+                {
+                    DashboardChartFragment fragment = (DashboardChartFragment)FragmentManager.FindFragmentById(Resource.Id.content_layout);
+                    TextView kwhLabel = fragment.GetkwhLabel();
+                    TextView rmLabel = fragment.GetRmLabel();
+                    LinearLayout rmKwhSelection = fragment.GetRmKwhSelection();
+                    int x = (int)ev.RawX;
+                    int y = (int)ev.RawY;
+                    if (!IsViewInBounds(kwhLabel, x, y) && !IsViewInBounds(rmLabel, x, y) && !IsViewInBounds(rmKwhSelection, x, y))
+                    {
+                        fragment.CheckRMKwhSelectDropDown();
+                    }
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
             return base.DispatchTouchEvent(ev);
+        }
+
+        private bool IsViewInBounds(View view, int x, int y)
+        {
+            Rect outRect = new Rect();
+            int[] location = new int[2];
+
+            view.GetDrawingRect(outRect);
+            view.GetLocationOnScreen(location);
+            outRect.Offset(location[0], location[1]);
+            return outRect.Contains(x, y);
         }
 
         public void SetStatusBarBackground()
@@ -789,6 +748,16 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
                 Window.SetBackgroundDrawable(drawable);
             }
+        }
+
+        public void SetInnerDashboardToolbarBackground()
+        {
+            SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+        }
+
+        public void UnsetToolbarBackground()
+        {
+            RemoveToolbarBackground();
         }
 
         public void BillMenuRecalled()
@@ -803,5 +772,80 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
+        public void OnSelectAccount()
+        {
+            this.userActionsListener.SelectSupplyAccount();
+        }
+
+        public void ShowNMREChart(UsageHistoryResponse response, AccountData selectedAccount, string errorCode, string errorMsg)
+        {
+            this.SelectedAccountData = selectedAccount;
+            txtAccountName.Text = SelectedAccountData.AccountNickName;
+            currentFragment = new DashboardChartFragment();
+            FragmentManager.BeginTransaction()
+                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(response, selectedAccount, errorCode, errorMsg),
+                                    typeof(DashboardChartFragment).Name)
+                           .CommitAllowingStateLoss();
+            ShowBackButton(true);
+        }
+
+        public void ShowBottomNavigationBar()
+        {
+            CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams)bottomNavigationView.LayoutParameters;
+
+            lp.Height = (int) DPUtils.ConvertDPToPx(48f);
+
+            bottomNavigationView.LayoutParameters = lp;
+
+            bottomNavigationView.RequestLayout();
+
+            CoordinatorLayout.LayoutParams lp2 = (CoordinatorLayout.LayoutParams)mainView.LayoutParameters;
+
+            lp2.Height = CoordinatorLayout.LayoutParams.MatchParent;
+
+            mainView.LayoutParameters = lp2;
+
+            mainView.RequestLayout();
+
+            ViewGroup.MarginLayoutParams lp3 = (ViewGroup.MarginLayoutParams) contentLayout.LayoutParameters;
+
+            lp3.BottomMargin = (int)DPUtils.ConvertDPToPx(41f);
+
+            contentLayout.LayoutParameters = lp3;
+
+            contentLayout.RequestLayout();
+
+            contentLayout.RequestLayout();
+        }
+
+        public void HideBottomNavigationBar()
+        {
+            CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams)bottomNavigationView.LayoutParameters;
+
+            lp.Height = 0;
+
+            bottomNavigationView.LayoutParameters = lp;
+
+            bottomNavigationView.RequestLayout();
+
+            CoordinatorLayout.LayoutParams lp2 = (CoordinatorLayout.LayoutParams)mainView.LayoutParameters;
+
+            lp2.Height = CoordinatorLayout.LayoutParams.MatchParent;
+
+            mainView.LayoutParameters = lp2;
+
+            mainView.RequestLayout();
+
+            ViewGroup.MarginLayoutParams lp3 = (ViewGroup.MarginLayoutParams) contentLayout.LayoutParameters;
+
+            lp3.BottomMargin = 0;
+
+            contentLayout.LayoutParameters = lp3;
+
+            contentLayout.RequestLayout();
+
+            rootView.RequestLayout();
+
+        }
     }
 }

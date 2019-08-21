@@ -126,6 +126,19 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Forget Password Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void ShowInvalidEmailError()
         {
             txtInputLayoutEmail.Error = GetString(Resource.String.forget_password_invalid_email_error);
