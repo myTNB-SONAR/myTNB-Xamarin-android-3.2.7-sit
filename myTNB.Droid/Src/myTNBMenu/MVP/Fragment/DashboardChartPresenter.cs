@@ -102,7 +102,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     if (installDetailsResponse.Data.Data.DisconnectionStatus == "Available")
                     {
-                        InnerDashboardAPICahceUtil.OnSetAccountStatusResponse(null);
                         this.mView.ShowAccountStatus(null);
                         bool isSMR = IsOwnedSMR(this.mView.GetSelectedAccount().AccountNum);
                         if (isSMR)
@@ -111,21 +110,17 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         }
                         else
                         {
-                            InnerDashboardAPICahceUtil.OnSetSMRActivityInfoResponse(null);
                             this.mView.HideSSMRDashboardView();
                         }
                     }
                     else
                     {
-                        InnerDashboardAPICahceUtil.OnSetAccountStatusResponse(installDetailsResponse);
-                        InnerDashboardAPICahceUtil.OnSetSMRActivityInfoResponse(null);
                         this.mView.ShowAccountStatus(installDetailsResponse.Data.Data);
                         this.mView.HideSSMRDashboardView();
                     }
                 }
                 else
                 {
-                    InnerDashboardAPICahceUtil.OnSetAccountStatusResponse(null);
                     this.mView.ShowAccountStatus(null);
                     bool isSMR = IsOwnedSMR(this.mView.GetSelectedAccount().AccountNum);
                     if (isSMR)
@@ -134,14 +129,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     }
                     else
                     {
-                        InnerDashboardAPICahceUtil.OnSetSMRActivityInfoResponse(null);
                         this.mView.HideSSMRDashboardView();
                     }
                 }
             }
             catch (System.OperationCanceledException e)
             {
-                InnerDashboardAPICahceUtil.OnSetAccountStatusResponse(null);
                 this.mView.ShowAccountStatus(null);
                 Utility.LoggingNonFatalError(e);
                 bool isSMR = IsOwnedSMR(this.mView.GetSelectedAccount().AccountNum);
@@ -151,14 +144,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 }
                 else
                 {
-                    InnerDashboardAPICahceUtil.OnSetSMRActivityInfoResponse(null);
                     this.mView.HideSSMRDashboardView();
                 }
             }
             catch (ApiException apiException)
             {
                 // ADD HTTP CONNECTION EXCEPTION HERE
-                InnerDashboardAPICahceUtil.OnSetAccountStatusResponse(null);
                 this.mView.ShowAccountStatus(null);
                 Utility.LoggingNonFatalError(apiException);
                 bool isSMR = IsOwnedSMR(this.mView.GetSelectedAccount().AccountNum);
@@ -168,14 +159,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 }
                 else
                 {
-                    InnerDashboardAPICahceUtil.OnSetSMRActivityInfoResponse(null);
                     this.mView.HideSSMRDashboardView();
                 }
             }
             catch (Exception e)
             {
                 // ADD UNKNOWN EXCEPTION HERE
-                InnerDashboardAPICahceUtil.OnSetAccountStatusResponse(null);
                 this.mView.ShowAccountStatus(null);
                 Utility.LoggingNonFatalError(e);
                 bool isSMR = IsOwnedSMR(this.mView.GetSelectedAccount().AccountNum);
@@ -185,7 +174,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 }
                 else
                 {
-                    InnerDashboardAPICahceUtil.OnSetSMRActivityInfoResponse(null);
                     this.mView.HideSSMRDashboardView();
                 }
             }
@@ -231,33 +219,28 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
                 if (SMRAccountActivityInfoResponse != null && SMRAccountActivityInfoResponse.Response != null && SMRAccountActivityInfoResponse.Response.ErrorCode == "7200")
                 {
-                    InnerDashboardAPICahceUtil.OnSetSMRActivityInfoResponse(SMRAccountActivityInfoResponse);
                     SMRPopUpUtils.OnSetSMRActivityInfoResponse(SMRAccountActivityInfoResponse);
                     this.mView.ShowSSMRDashboardView(SMRAccountActivityInfoResponse);
                 }
                 else
                 {
-                    InnerDashboardAPICahceUtil.OnSetSMRActivityInfoResponse(null);
                     this.mView.HideSSMRDashboardView();
                 }
             }
             catch (System.OperationCanceledException e)
             {
-                InnerDashboardAPICahceUtil.OnSetSMRActivityInfoResponse(null);
                 this.mView.HideSSMRDashboardView();
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
                 // ADD HTTP CONNECTION EXCEPTION HERE
-                InnerDashboardAPICahceUtil.OnSetSMRActivityInfoResponse(null);
                 this.mView.HideSSMRDashboardView();
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
             {
                 // ADD UNKNOWN EXCEPTION HERE
-                InnerDashboardAPICahceUtil.OnSetSMRActivityInfoResponse(null);
                 this.mView.HideSSMRDashboardView();
                 Utility.LoggingNonFatalError(e);
             }
@@ -519,12 +502,19 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         public bool IsOwnedSMR(string accountNumber)
         {
-            foreach (SMRAccount smrAccount in UserSessions.GetSMRAccountList())
+            try
             {
-                if (smrAccount.accountNumber == accountNumber)
+                foreach (SMRAccount smrAccount in UserSessions.GetSMRAccountList())
                 {
-                    return true;
+                    if (smrAccount.accountNumber == accountNumber)
+                    {
+                        return true;
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
             return false;
         }
@@ -533,23 +523,30 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         {
             bool isHaveData = true;
 
-            if (data == null || (data != null && data.ByMonth == null) || (data != null && data.ByMonth != null && data.ByMonth.Months.Count == 0))
+            try
             {
-                isHaveData = false;
-            }
-            else
-            {
-                foreach (UsageHistoryData.ByMonthData.MonthData monthData in data.ByMonth.Months)
+                if (data == null || (data != null && data.ByMonth == null) || (data != null && data.ByMonth != null && data.ByMonth.Months.Count == 0))
                 {
-                    if ((string.IsNullOrEmpty(monthData.UsageTotal.ToString()) && string.IsNullOrEmpty(monthData.AmountTotal.ToString())) || (Math.Abs(monthData.UsageTotal) < 0.001 && Math.Abs(monthData.AmountTotal) < 0.001))
+                    isHaveData = false;
+                }
+                else
+                {
+                    foreach (UsageHistoryData.ByMonthData.MonthData monthData in data.ByMonth.Months)
                     {
-                        isHaveData = false;
-                    }
-                    else
-                    {
-                        isHaveData = true;
+                        if ((string.IsNullOrEmpty(monthData.UsageTotal.ToString()) && string.IsNullOrEmpty(monthData.AmountTotal.ToString())) || (Math.Abs(monthData.UsageTotal) < 0.001 && Math.Abs(monthData.AmountTotal) < 0.001))
+                        {
+                            isHaveData = false;
+                        }
+                        else
+                        {
+                            isHaveData = true;
+                        }
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
 
             return isHaveData;

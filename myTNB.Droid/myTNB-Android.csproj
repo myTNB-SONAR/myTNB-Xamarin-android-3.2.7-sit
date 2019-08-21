@@ -2109,7 +2109,6 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <Compile Include="Src\Utils\InnerDashboardAPICahceUtil.cs" />
     <AndroidResource Include="Resources\drawable\rectangle_yellow_button_bg.xml">
       <SubType></SubType>
       <Generator></Generator>
@@ -2254,6 +2253,10 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\bg_application_status.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\bg_application_status.png" />
     <Compile Include="Src\Utils\FirebaseAnalyticsUtil.cs" />
+    <AndroidResource Include="Resources\layout\SelectAccountTypeRow.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

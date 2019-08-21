@@ -1935,85 +1935,89 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     Utility.LoggingNonFatalError(e);
                 }
 
-                Activity.RunOnUiThread(() =>
+                try
                 {
-                    StopAmountDueShimmer();
-                    if (d != null)
+                    Activity.RunOnUiThread(() =>
                     {
-                        if (selectedAccount != null)
+                        try
                         {
-                            if (isPaymentDown)
+                            StopAmountDueShimmer();
+                            if (d != null)
                             {
-                                DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
-                                DisablePayButton();
-                                Snackbar downtimeSnackBar = Snackbar.Make(rootView,
-                                        bcrmEntity.DowntimeTextMessage,
-                                        Snackbar.LengthLong);
-                                View v = downtimeSnackBar.View;
-                                TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-                                tv.SetMaxLines(5);
-                                if (!selectedAccount.AccountCategoryId.Equals("2"))
+                                if (selectedAccount != null)
                                 {
-                                    downtimeSnackBar.Show();
-                                }
-                            }
-                            else
-                            {
-                                EnablePayButton();
-                            }
+                                    if (isPaymentDown)
+                                    {
+                                        DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                                        DisablePayButton();
+                                        Snackbar downtimeSnackBar = Snackbar.Make(rootView,
+                                                bcrmEntity.DowntimeTextMessage,
+                                                Snackbar.LengthLong);
+                                        View v = downtimeSnackBar.View;
+                                        TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                                        tv.SetMaxLines(5);
+                                        if (!selectedAccount.AccountCategoryId.Equals("2"))
+                                        {
+                                            downtimeSnackBar.Show();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        EnablePayButton();
+                                    }
 
-                            if (this.userActionsListener.IsBillingAvailable())
-                            {
-                                EnableViewBillButton();
-                            }
-                            else
-                            {
-                                DisableViewBillButton();
-                            }
+                                    if (this.userActionsListener.IsBillingAvailable())
+                                    {
+                                        EnableViewBillButton();
+                                    }
+                                    else
+                                    {
+                                        DisableViewBillButton();
+                                    }
 
-                            txtTotalPayableCurrency.Visibility = ViewStates.Visible;
-                            btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
-                            btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
+                                    txtTotalPayableCurrency.Visibility = ViewStates.Visible;
+                                    btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
+                                    btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
 
-                            if (selectedAccount.AccountCategoryId.Equals("2"))
-                            {
-                                re_img.Visibility = ViewStates.Visible;
-                                rePayableLayout.Visibility = ViewStates.Visible;
-                                // txtWhyThisAmt.Visibility = ViewStates.Gone;
-                                selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
-                                double calAmt = selectedAccount.AmtCustBal * -1;
-                                if (calAmt <= 0)
-                                {
-                                    calAmt = 0.00;
-                                }
-                                else
-                                {
-                                    calAmt = System.Math.Abs(selectedAccount.AmtCustBal);
-                                }
-                                txtTotalPayable.Text = decimalFormat.Format(calAmt);
-                                reTotalPayable.Text = decimalFormat.Format(calAmt);
+                                    if (selectedAccount.AccountCategoryId.Equals("2"))
+                                    {
+                                        re_img.Visibility = ViewStates.Visible;
+                                        rePayableLayout.Visibility = ViewStates.Visible;
+                                        // txtWhyThisAmt.Visibility = ViewStates.Gone;
+                                        selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
+                                        double calAmt = selectedAccount.AmtCustBal * -1;
+                                        if (calAmt <= 0)
+                                        {
+                                            calAmt = 0.00;
+                                        }
+                                        else
+                                        {
+                                            calAmt = System.Math.Abs(selectedAccount.AmtCustBal);
+                                        }
+                                        txtTotalPayable.Text = decimalFormat.Format(calAmt);
+                                        reTotalPayable.Text = decimalFormat.Format(calAmt);
 
-                                int incrementDays = int.Parse(accountDueAmount.IncrementREDueDateByDays == null ? "0" : accountDueAmount.IncrementREDueDateByDays);
-                                Constants.RE_ACCOUNT_DATE_INCREMENT_DAYS = incrementDays;
-                                Calendar c = Calendar.Instance;
-                                c.Time = d;
-                                c.Add(CalendarField.Date, incrementDays);
-                                SimpleDateFormat df = new SimpleDateFormat("dd MMM");
-                                Date newDate = c.Time;
-                                string dateString = df.Format(newDate);
-                                if (System.Math.Abs(calAmt) < 0.0001)
-                                {
-                                    txtDueDate.Text = "- -";
-                                    reDueDate.Text = "- -";
-                                }
-                                else
-                                {
-                                    txtDueDate.Text = "I will get by " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(newDate));
-                                    reDueDate.Text = "I will get by " + dateString;
-                                }
-                            }
-                            else
-                            {
+                                        int incrementDays = int.Parse(accountDueAmount.IncrementREDueDateByDays == null ? "0" : accountDueAmount.IncrementREDueDateByDays);
+                                        Constants.RE_ACCOUNT_DATE_INCREMENT_DAYS = incrementDays;
+                                        Calendar c = Calendar.Instance;
+                                        c.Time = d;
+                                        c.Add(CalendarField.Date, incrementDays);
+                                        SimpleDateFormat df = new SimpleDateFormat("dd MMM");
+                                        Date newDate = c.Time;
+                                        string dateString = df.Format(newDate);
+                                        if (System.Math.Abs(calAmt) < 0.0001)
+                                        {
+                                            txtDueDate.Text = "- -";
+                                            reDueDate.Text = "- -";
+                                        }
+                                        else
+                                        {
+                                            txtDueDate.Text = "I will get by " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(newDate));
+                                            reDueDate.Text = "I will get by " + dateString;
+                                        }
+                                    }
+                                    else
+                                    {
 #if STUB
                             if(accountDueAmount.OpenChargesTotal == 0)
                             {
@@ -2024,50 +2028,60 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 txtWhyThisAmt.Visibility = ViewStates.Visible;
                             }
 #endif
-                                txtTotalPayable.Text = decimalFormat.Format(accountDueAmount.AmountDue);
-                                selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
-                                double calAmt = selectedAccount.AmtCustBal;
-                                if (calAmt <= 0.00)
-                                {
-                                    totalPayableLayout.Visibility = ViewStates.Gone;
-                                    noPayableLayout.Visibility = ViewStates.Visible;
-                                    if (System.Math.Abs(calAmt) < 0.0001)
-                                    {
-                                        txtNoPayableTitle.Text = "I’ve cleared all bills";
-                                        txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
-                                        txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                        txtTotalPayable.Text = decimalFormat.Format(accountDueAmount.AmountDue);
+                                        selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
+                                        double calAmt = selectedAccount.AmtCustBal;
+                                        if (calAmt <= 0.00)
+                                        {
+                                            totalPayableLayout.Visibility = ViewStates.Gone;
+                                            noPayableLayout.Visibility = ViewStates.Visible;
+                                            if (System.Math.Abs(calAmt) < 0.0001)
+                                            {
+                                                txtNoPayableTitle.Text = "I’ve cleared all bills";
+                                                txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                                txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                            }
+                                            else
+                                            {
+                                                txtNoPayableTitle.Text = "I’ve paid extra";
+                                                txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
+                                                txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
+                                            }
+                                            txtNoPayable.Text = decimalFormat.Format(System.Math.Abs(accountDueAmount.AmountDue));
+                                            txtDueDate.Text = "- -";
+                                        }
+                                        else
+                                        {
+                                            totalPayableLayout.Visibility = ViewStates.Visible;
+                                            noPayableLayout.Visibility = ViewStates.Gone;
+                                            txtDueDate.Text = "by " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(d));
+                                        }
                                     }
-                                    else
-                                    {
-                                        txtNoPayableTitle.Text = "I’ve paid extra";
-                                        txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
-                                        txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
-                                    }
-                                    txtNoPayable.Text = decimalFormat.Format(System.Math.Abs(accountDueAmount.AmountDue));
-                                    txtDueDate.Text = "- -";
                                 }
                                 else
                                 {
-                                    totalPayableLayout.Visibility = ViewStates.Visible;
-                                    noPayableLayout.Visibility = ViewStates.Gone;
-                                    txtDueDate.Text = "by " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(d));
+                                    // txtWhyThisAmt.Visibility = ViewStates.Gone;
                                 }
                             }
+                            else
+                            {
+                                txtDueDate.Text = "- -";
+                                reDueDate.Text = "- -";
+                                txtTotalPayable.Text = "- -";
+                                reTotalPayable.Text = "- -";
+                                // txtWhyThisAmt.Visibility = ViewStates.Gone;
+                            }
                         }
-                        else
+                        catch (System.Exception ne)
                         {
-                            // txtWhyThisAmt.Visibility = ViewStates.Gone;
+                            Utility.LoggingNonFatalError(ne);
                         }
-                    }
-                    else
-                    {
-                        txtDueDate.Text = "- -";
-                        reDueDate.Text = "- -";
-                        txtTotalPayable.Text = "- -";
-                        reTotalPayable.Text = "- -";
-                        // txtWhyThisAmt.Visibility = ViewStates.Gone;
-                    }
-                });
+                    });
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
             }
             catch (System.Exception e)
             {
