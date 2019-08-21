@@ -118,6 +118,18 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             return true;
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Select Submitted Feedback Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
         public void ShowList(List<SubmittedFeedback> list)
         {

@@ -594,6 +594,19 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             takePhotoFragment.UpdateTakePhotoFormattedNote(GetFormattedText(finalString));
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Take Meter Reading Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public class CropAreaPreView : View
         {
             public Rect cropAreaRect;

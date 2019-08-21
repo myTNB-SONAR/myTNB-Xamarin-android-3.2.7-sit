@@ -2362,8 +2362,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     activity.UnsetToolbarBackground();
                     activity.ShowBottomNavigationBar();
                 }
+                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Smart Meter Inner Dashboard");
             }
             catch (Java.Lang.ClassCastException e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }

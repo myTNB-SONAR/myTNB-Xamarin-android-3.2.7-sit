@@ -181,6 +181,19 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Feedback Details Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         private void Adapter_SelectClickEvent(object sender, int e)
         {
             AttachedImage selectedImage = adapter.GetItemObject(e);

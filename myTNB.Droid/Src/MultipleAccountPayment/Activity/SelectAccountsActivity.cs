@@ -576,6 +576,19 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             }
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Selec Bills Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void GetAccountDueAmountResult(List<MPAccount> accounts)
         {
             try

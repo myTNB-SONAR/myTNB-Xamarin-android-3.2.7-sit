@@ -746,10 +746,6 @@
     <Compile Include="Src\myTNBMenu\Models\UserNotificationTypeResponse.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\BillsPaymentFragmentContract.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\BillsPaymentFragmentPresenter.cs" />
-    <Compile Include="Src\myTNBMenu\MVP\Fragment\DashboardChartNoTNBAccountContract.cs" />
-    <Compile Include="Src\myTNBMenu\MVP\Fragment\DashboardChartNoTNBAccountPresenter.cs" />
-    <Compile Include="Src\myTNBMenu\MVP\Fragment\DashboardNonOwnerContract.cs" />
-    <Compile Include="Src\myTNBMenu\MVP\Fragment\DashboardNonOwnerPresenter.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\DashboardSmartMeterContract.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\DashboardSmartMeterPresenter.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\FeedbackMenuContract.cs" />
@@ -893,8 +889,6 @@
     <Compile Include="Src\myTNBMenu\Charts\Formatter\ChartsMonthFormatter.cs" />
     <Compile Include="Src\myTNBMenu\Charts\SelectedMarkerView\SelectedMarkerView.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\DashboardChartFragment.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\DashboardChartNonOwnerNoAccess.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\DashboardChartNoTNBAccount.cs" />
     <Compile Include="Src\myTNBMenu\Models\AccountData.cs" />
     <Compile Include="Src\myTNBMenu\Models\ChartType.cs" />
     <Compile Include="Src\myTNBMenu\Models\UsageHistoryData.cs" />
@@ -2196,14 +2190,6 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\animator\enter_from_left.xml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\animator\exit_from_right.xml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
     <AndroidResource Include="Resources\drawable\dasbord_chart_refresh_bg.xml">
       <SubType></SubType>
       <Generator></Generator>
@@ -2267,6 +2253,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\bg_application_status.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\bg_application_status.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\bg_application_status.png" />
+    <Compile Include="Src\Utils\FirebaseAnalyticsUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -2332,12 +2319,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ChartHouseSpinnerDropDownRow.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\DashboardChartNonOwnerNoAccess.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\DashboardNoTNBAccount.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\SelectSupplyAccountRow.axml">
@@ -2645,7 +2626,6 @@
     <Folder Include="Src\SSMR\SSMRBase\MVP\" />
     <Folder Include="Src\myTNBMenu\ChartRenderer\" />
     <Folder Include="Resources\anim\" />
-    <Folder Include="Resources\animator\" />
     <Folder Include="Src\SSMRMeterHistory\Api\" />
   </ItemGroup>
   <ItemGroup>

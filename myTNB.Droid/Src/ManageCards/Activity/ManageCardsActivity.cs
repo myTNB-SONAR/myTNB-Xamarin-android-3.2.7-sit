@@ -156,6 +156,19 @@ namespace myTNB_Android.Src.ManageCards.Activity
             this.userActionsListener = userActionListener;
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Manage Cards");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void ShowCards()
         {
             try

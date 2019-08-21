@@ -262,8 +262,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 				case Resource.Id.menu_dashboard:
 					if (DashboardHomeActivity.currentFragment != null && (DashboardHomeActivity.currentFragment.GetType() == typeof(HomeMenuFragment) ||
 						DashboardHomeActivity.currentFragment.GetType() == typeof(DashboardChartFragment) ||
-						DashboardHomeActivity.currentFragment.GetType() == typeof(DashboardChartNoTNBAccount) ||
-						DashboardHomeActivity.currentFragment.GetType() == typeof(DashboardChartNonOwnerNoAccess) ||
 						DashboardHomeActivity.currentFragment.GetType() == typeof(DashboardSmartMeterFragment)))
 					{
 						mView.ShowBackButton(false);

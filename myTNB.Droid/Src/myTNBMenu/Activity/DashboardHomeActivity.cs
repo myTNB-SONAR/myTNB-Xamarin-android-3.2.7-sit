@@ -175,7 +175,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             try
             {
                 if (currentFragment.GetType() == typeof(DashboardChartFragment) ||
-                    currentFragment.GetType() == typeof(DashboardChartNonOwnerNoAccess) ||
                     currentFragment.GetType() == typeof(DashboardSmartMeterFragment) ||
                     currentFragment.GetType() == typeof(FeedbackMenuFragment))
                 {
@@ -208,16 +207,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             if (this.mPresenter != null)
             {
                 this.mPresenter.OnValidateData();
-            }
-        }
-
-        public void ShowNoAccountDashboardChartMenu()
-        {
-            currentFragment = new DashboardChartNoTNBAccount();
-            FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, new DashboardChartNoTNBAccount())
-                           .CommitAllowingStateLoss();
-            ShowBackButton(false);
+            }            
         }
 
         public void ShowNoAccountBillMenu()

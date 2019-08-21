@@ -117,6 +117,19 @@ namespace myTNB_Android.Src.MakePayment.Activity
             }
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Select Payment Method");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public override void OnBackPressed()
         {
             try

@@ -69,11 +69,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			void ShowSelectSupplyAccount();
 
 			/// <summary>
-			/// Show no account in dashboard
-			/// </summary>
-			void ShowNoAccountDashboardChartMenu();
-
-			/// <summary>
 			/// Show no account in bill menu
 			/// </summary>
 			void ShowNoAccountBillMenu();

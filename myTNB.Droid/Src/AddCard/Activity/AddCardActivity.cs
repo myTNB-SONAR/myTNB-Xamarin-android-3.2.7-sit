@@ -139,6 +139,19 @@ namespace myTNB_Android.Src.AddCard.Activity
 
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Add Credit Card");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
 
         [Preserve]
         private void CardTextChange(object sender, Android.Text.TextChangedEventArgs e)
@@ -405,6 +418,15 @@ namespace myTNB_Android.Src.AddCard.Activity
             intent.PutExtra(CardIOActivity.ExtraCapturedCardImage, false);
             intent.PutExtra(CardIOActivity.ExtraScanResult, true);
             StartActivityForResult(intent, REQUEST_SCAN);
+
+            try
+            {
+                FirebaseAnalyticsUtils.LogClickEvent(this, "Credit Card Scan");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         protected override void OnActivityResult(int requestCode, Result result, Intent data)

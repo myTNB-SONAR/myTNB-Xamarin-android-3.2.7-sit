@@ -211,12 +211,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             try
             {
                 mCallBack = context as ISummaryFragmentToDashBoardActivtyListener;
+                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Home Screen");
             }
             catch (Java.Lang.ClassCastException e)
             {
                 Utility.LoggingNonFatalError(e);
             }
-
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         private void UpdateGreetingsHeader(Constants.GREETING greeting)
@@ -267,12 +271,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 notificationHeaderIcon.SetOnClickListener(null);
                 addActionContainer.Click += delegate
                 {
+                    try
+                    {
+                        FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Home Screen -> Add Account");
+                    }
+                    catch (System.Exception err)
+                    {
+                        Utility.LoggingNonFatalError(err);
+                    }
                     Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
                     linkAccount.PutExtra("fromDashboard", true);
                     StartActivity(linkAccount);
                 };
                 notificationHeaderIcon.Click += delegate
                 {
+                    try
+                    {
+                        FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Home Screen -> Notification");
+                    }
+                    catch (System.Exception err)
+                    {
+                        Utility.LoggingNonFatalError(err);
+                    }
                     StartActivity(new Intent(this.Activity, typeof(NotificationActivity)));
                 };
                 ((DashboardHomeActivity)Activity).SetStatusBarBackground();
@@ -555,6 +575,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             searchActionIcon.Click += (s, e) =>
             {
                 ShowSearchAction(true);
+                try
+                {
+                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Home Screen Search Button Clicked");
+                }
+                catch (System.Exception err)
+                {
+                    Utility.LoggingNonFatalError(err);
+                }
             };
         }
 
@@ -692,6 +720,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         }
                         StartActivity(applySMRIntent);
                     }
+
+                    try
+                    {
+                        FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "My Service Tile Clicked");
+                    }
+                    catch (System.Exception err)
+                    {
+                        Utility.LoggingNonFatalError(err);
+                    }
                 }
             }
             catch (System.Exception e)
@@ -710,6 +747,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
                     faqIntent.PutExtra(Constants.FAQ_ID_PARAM, selectedNewFAQ.TargetItem);
                     Activity.StartActivity(faqIntent);
+
+                    try
+                    {
+                        FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Need Help Tile Clicked");
+                    }
+                    catch (System.Exception err)
+                    {
+                        Utility.LoggingNonFatalError(err);
+                    }
                 }
             }
             catch (System.Exception e)

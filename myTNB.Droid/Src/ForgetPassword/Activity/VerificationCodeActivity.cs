@@ -316,6 +316,19 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             mSnackBar.Show();
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Verification Code (Email)");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void ShowProgressDialog()
         {
             //if (mVerificationProgressDialog != null && !mVerificationProgressDialog.IsShowing)

@@ -164,6 +164,19 @@ namespace myTNB_Android.Src.Login.Activity
             return Window.DecorView.RootView.IsShown && !IsFinishing;
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Login");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public override int ResourceId()
         {
             return Resource.Layout.LoginView;

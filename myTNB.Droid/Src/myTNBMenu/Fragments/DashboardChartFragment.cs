@@ -648,6 +648,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 }
                             }
                         }
+
+                        try
+                        {
+                            FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "BCRM Downtime Message Click");
+                        }
+                        catch (System.Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
                     }
 
                 };
@@ -1360,8 +1369,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     activity.SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
                     activity.SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 }
+                if (selectedAccount != null)
+                {
+                    if (selectedAccount.AccountCategoryId.Equals("2"))
+                    {
+                        FirebaseAnalyticsUtils.SetFragmentScreenName(this, "RE Inner Dashboard");
+                    }
+                    else
+                    {
+                        FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Normal Inner Dashboard");
+                    }
+                }
+                else
+                {
+                    FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Normal Inner Dashboard");
+                }
             }
             catch (ClassCastException e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -1430,24 +1458,56 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         internal void OnViewBill(object sender, EventArgs e)
         {
             this.userActionsListener.OnViewBill(selectedAccount);
+            try
+            {
+                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "View Bill Buttom Click");
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
         [OnClick(Resource.Id.btnReView)]
         internal void OnREViewBill(object sender, EventArgs e)
         {
             this.userActionsListener.OnViewBill(selectedAccount);
+            try
+            {
+                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "View Bill Buttom Click");
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
         [OnClick(Resource.Id.btnRefresh)]
         internal void OnRefresh(object sender, EventArgs e)
         {
             this.userActionsListener.OnTapRefresh();
+            try
+            {
+                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Inner Dashboard Refresh Buttom Click");
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
         [OnClick(Resource.Id.btnPay)]
         internal void OnUserPay(object sender, EventArgs e)
         {
             this.userActionsListener.OnPay();
+            try
+            {
+                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Inner Dashboard Payment Buttom Click");
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
         [OnClick(Resource.Id.rmKwhSelection)]
@@ -1461,42 +1521,58 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 rmKwhSelectDropdown.Visibility = ViewStates.Gone;
             }
+            try
+            {
+                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "RM / kWh Toggle Button Click");
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
         [OnClick(Resource.Id.tarifToggle)]
         internal void OnTariffToggled(object sender, EventArgs e)
         {
-            if (isToggleTariff)
+            try
             {
-                imgTarifToggle.SetImageResource(Resource.Drawable.eye);
-                txtTarifToggle.Text = "Show Tariff";
-                isToggleTariff = false;
-                tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
-                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
-            }
-            else
-            {
-                imgTarifToggle.SetImageResource(Resource.Drawable.eye_hide);
-                txtTarifToggle.Text = "Hide Tariff";
-                isToggleTariff = true;
-                tariffBlockLegendRecyclerView.Visibility = ViewStates.Visible;
-                if (tariffBlockLegendAdapter == null)
+                if (isToggleTariff)
                 {
-                    tariffBlockLegendAdapter = new TariffBlockLegendAdapter(selectedHistoryData.TariffBlocksLegend, this.Activity);
-                    tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
+                    imgTarifToggle.SetImageResource(Resource.Drawable.eye);
+                    txtTarifToggle.Text = "Show Tariff";
+                    isToggleTariff = false;
+                    tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
+                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
                 }
-                Context context = tariffBlockLegendRecyclerView.Context;
-                LayoutAnimationController controller =
-                        AnimationUtils.LoadLayoutAnimation(context, Resource.Animation.layout_animation_fall_down);
+                else
+                {
+                    imgTarifToggle.SetImageResource(Resource.Drawable.eye_hide);
+                    txtTarifToggle.Text = "Hide Tariff";
+                    isToggleTariff = true;
+                    tariffBlockLegendRecyclerView.Visibility = ViewStates.Visible;
+                    if (tariffBlockLegendAdapter == null)
+                    {
+                        tariffBlockLegendAdapter = new TariffBlockLegendAdapter(selectedHistoryData.TariffBlocksLegend, this.Activity);
+                        tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
+                    }
+                    Context context = tariffBlockLegendRecyclerView.Context;
+                    LayoutAnimationController controller =
+                            AnimationUtils.LoadLayoutAnimation(context, Resource.Animation.layout_animation_fall_down);
 
-                tariffBlockLegendRecyclerView.LayoutAnimation = controller;
-                tariffBlockLegendRecyclerView.GetAdapter().NotifyDataSetChanged();
-                tariffBlockLegendRecyclerView.ScheduleLayoutAnimation();
-                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_extended_bg);
+                    tariffBlockLegendRecyclerView.LayoutAnimation = controller;
+                    tariffBlockLegendRecyclerView.GetAdapter().NotifyDataSetChanged();
+                    tariffBlockLegendRecyclerView.ScheduleLayoutAnimation();
+                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_extended_bg);
+                }
+
+                mChart.Clear();
+                SetUp();
+                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Tariff Toggle Button Click");
             }
-
-            mChart.Clear();
-            SetUp();
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
         /*[OnClick(Resource.Id.btnLearnMore)]
@@ -2341,7 +2417,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 kwhLabel.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
                 rmLabel.SetTextColor(Resources.GetColor(Resource.Color.new_grey));
                 ShowByKwh();
-
+                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "kWh Selection Click");
             }
             catch (System.Exception ne)
             {
@@ -2360,6 +2436,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 rmLabel.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
                 kwhLabel.SetTextColor(Resources.GetColor(Resource.Color.new_grey));
                 ShowByRM();
+                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "RM Selection Click");
 
             }
             catch (System.Exception ne)
@@ -2379,30 +2456,37 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private void OnGetEnergyTipsItems()
         {
-            List<EnergySavingTipsModel> energyList = new List<EnergySavingTipsModel>();
-            List<EnergySavingTipsModel> localList = EnergyTipsUtils.GetAllItems();
-            if (localList.Count > 0)
+            try
             {
-                var random = new System.Random();
-                List<int> listNumbers = new List<int>();
-                int number;
-                for (int i = 0; i < 3; i++)
+                List<EnergySavingTipsModel> energyList = new List<EnergySavingTipsModel>();
+                List<EnergySavingTipsModel> localList = EnergyTipsUtils.GetAllItems();
+                if (localList != null && localList.Count > 0)
                 {
-                    do
+                    var random = new System.Random();
+                    List<int> listNumbers = new List<int>();
+                    int number;
+                    for (int i = 0; i < 3; i++)
                     {
-                        number = random.Next(1, localList.Count);
-                    } while (listNumbers.Contains(number));
-                    listNumbers.Add(number);
+                        do
+                        {
+                            number = random.Next(1, localList.Count);
+                        } while (listNumbers.Contains(number));
+                        listNumbers.Add(number);
+                    }
+
+
+                    for (int j = 0; j < listNumbers.Count; j++)
+                    {
+                        energyList.Add(localList[listNumbers[j]]);
+                    }
+
+                    energyTipsAdapter = new EnergySavingTipsAdapter(energyList, this.Activity);
+                    energyTipsList.SetAdapter(energyTipsAdapter);
                 }
-
-
-                for (int j = 0; j < listNumbers.Count; j++)
-                {
-                    energyList.Add(localList[listNumbers[j]]);
-                }
-
-                energyTipsAdapter = new EnergySavingTipsAdapter(energyList, this.Activity);
-                energyTipsList.SetAdapter(energyTipsAdapter);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -2447,6 +2531,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         void IOnChartValueSelectedListenerSupport.OnNothingSelected()
         {
             CurrentParentIndex = -1;
+            try
+            {
+                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Graph Hightlight Deselected");
+            }
+            catch (System.Exception err)
+            {
+                Utility.LoggingNonFatalError(err);
+            }
         }
 
         void IOnChartValueSelectedListenerSupport.OnValueSelected(Entry e, Highlight h)
@@ -2494,6 +2586,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 else
                 {
                     CurrentParentIndex = -1;
+                }
+
+                try
+                {
+                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Graph Hightlight Selected");
+                }
+                catch (System.Exception err)
+                {
+                    Utility.LoggingNonFatalError(err);
                 }
             }
             catch (System.Exception err)

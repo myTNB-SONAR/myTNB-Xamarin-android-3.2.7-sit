@@ -148,6 +148,19 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
             }
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Select Electricity Account Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         [Preserve]
         internal void OnItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {

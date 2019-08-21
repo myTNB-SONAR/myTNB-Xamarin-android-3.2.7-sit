@@ -245,6 +245,19 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             }
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "App Launch");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public int PlayServicesResultCode()
         {
             return GoogleApiAvailability.Instance.IsGooglePlayServicesAvailable(this);

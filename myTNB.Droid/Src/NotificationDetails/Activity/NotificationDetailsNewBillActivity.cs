@@ -199,6 +199,19 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Notification Detail New Bill Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
 
         [OnClick(Resource.Id.btnPay)]
         void OnPay(object sender, EventArgs eventArgs)

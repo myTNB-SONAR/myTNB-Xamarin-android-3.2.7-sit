@@ -615,5 +615,18 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             return this.Window.DecorView.RootView.IsShown;
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "SMR Termination Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
     }
 }
