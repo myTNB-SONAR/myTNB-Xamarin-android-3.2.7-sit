@@ -155,6 +155,23 @@ namespace myTNB
             return cachedDate.Date.AddDays(1) == currentDate.Date;
         }
         #endregion
+
+        public static void ClearCache()
+        {
+            string dataKey = string.Format(AccountDataPrefix, string.Empty);
+            string tStampKey = string.Format(TimeStampPrefix, string.Empty);
+            NSUserDefaults userDefaults = NSUserDefaults.StandardUserDefaults;
+            NSObject[] userDefaultKeys = userDefaults.ToDictionary().Keys;
+            for (int i = 0; i < userDefaultKeys.Length; i++)
+            {
+                string key = userDefaultKeys[i].ToString();
+                if (key.Contains(dataKey) || key.Contains(tStampKey))
+                {
+                    userDefaults.RemoveObject(key);
+                }
+            }
+            userDefaults.Synchronize();
+        }
         #endregion
     }
 }
