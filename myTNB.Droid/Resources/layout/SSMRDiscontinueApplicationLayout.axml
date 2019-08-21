@@ -172,7 +172,7 @@
                 android:paddingTop="18dp"
                 android:paddingLeft="12dp"
                 android:paddingStart="16dp"
-                android:id="@+id/contactDetailContainer">
+                android:id="@+id/reasonDetailContainer">
                 <FrameLayout
                     android:id="@+id/accountLayout"
                     android:layout_width="match_parent"
@@ -224,38 +224,38 @@
                         android:scrollbars="vertical"/>
                 </android.support.design.widget.TextInputLayout>
             </LinearLayout>
-            <LinearLayout
+            </LinearLayout>
+        </ScrollView>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:orientation="vertical"
+            android:background="@color/white"
+            android:layout_gravity="bottom"
+            android:id="@+id/disconnectionConfirmationContainer">
+            <TextView
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:orientation="vertical"
-                android:background="@color/white"
-                android:layout_gravity="bottom"
-                android:id="@+id/disconnectionConfirmationContainer">
-                <TextView
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="10dp"
-                    android:textSize="12dp"
-                    android:lineSpacingExtra="2dp"
-                    android:id="@+id/txtTermsConditions"
-                    android:gravity="bottom" />
-                <Button
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/ssmr_discontinue_btn_submit"
-                    android:id="@+id/btnDisconnectionSubmit"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginLeft="16dp"
-                    android:layout_marginRight="16dp"
-                    android:layout_marginBottom="16dp"
-                    style="@style/Theme.SSMRDiscontinue" />
-            </LinearLayout>
-            </LinearLayout>
-        </ScrollView>
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="12dp"
+                android:lineSpacingExtra="2dp"
+                android:id="@+id/txtTermsConditions"
+                android:gravity="bottom" />
+            <Button
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/ssmr_discontinue_btn_submit"
+                android:id="@+id/btnDisconnectionSubmit"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="16dp"
+                style="@style/Theme.SSMRDiscontinue" />
+        </LinearLayout>
     </FrameLayout>
 </android.support.design.widget.CoordinatorLayout>

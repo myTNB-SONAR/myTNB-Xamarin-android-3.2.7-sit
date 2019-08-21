@@ -2004,6 +2004,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\bg_application_status.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\bg_application_status.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\bg_application_status.png" />
+    <Compile Include="Src\SSMRMeterHistory\MVP\CAContactDetailsModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

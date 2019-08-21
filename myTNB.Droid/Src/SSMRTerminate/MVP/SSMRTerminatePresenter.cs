@@ -149,7 +149,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
         }
 
-        public async void OnSubmitApplication(string accountNum, string oldEmail, string oldPhoneNum, string newEmail, string newPhoneNum, string terminationReason)
+        public async void OnSubmitApplication(string accountNum, string oldEmail, string oldPhoneNum, string newEmail, string newPhoneNum, string terminationReason, string mode)
         {
             try
             {
@@ -176,7 +176,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                     NewPhone = newPhoneNum,
                     OldEmail = oldEmail,
                     NewEmail = newEmail,
-                    SMRMode = "T",
+                    SMRMode = mode,
                     TerminationReason = terminationReason,
                     usrInf = currentUsrInf
                 });
