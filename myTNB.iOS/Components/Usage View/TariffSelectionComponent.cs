@@ -58,7 +58,7 @@ namespace myTNB
             nfloat rmKwhIconHeight = GetScaledHeight(6f);
             _rmKwhIcon = new UIImageView(new CGRect(rmKwhIconXPos, rmKwhIconYPos, rmKwhIconWidth, rmKwhIconHeight))
             {
-                Image = UIImage.FromBundle("RmKwh-Dropdown-Icon")
+                Image = UIImage.FromBundle(Constants.IMG_RMKwHDropdownIcon)
             };
             _rmKwhSelectionView.AddSubview(_rmKwhIcon);
         }
@@ -82,7 +82,7 @@ namespace myTNB
             nfloat tariffIconHeight = GetScaledHeight(16f);
             _tariffIcon = new UIImageView(new CGRect(tarrifIconXPos, tarrifIconYPos, tariffIconWidth, tariffIconHeight))
             {
-                Image = UIImage.FromBundle("Tariff-Eye-Open-Icon")
+                Image = UIImage.FromBundle(Constants.IMG_TariffEyeOpenIcon)
             };
             _tariffSelectionView.AddSubview(_tariffIcon);
 
@@ -95,7 +95,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.WaterBlue,
                 TextAlignment = UITextAlignment.Left,
-                Text = "Show Tariff"
+                Text = LanguageUtility.GetCommonI18NValue(Constants.I18N_ShowTariff)
             };
             _tariffSelectionView.AddSubview(_tariffLabel);
         }
@@ -140,8 +140,8 @@ namespace myTNB
 
         public void UpdateTariffButton(bool showTariff)
         {
-            _tariffIcon.Image = showTariff ? UIImage.FromBundle("Tariff-Eye-Close-Icon") : UIImage.FromBundle("Tariff-Eye-Open-Icon");
-            _tariffLabel.Text = showTariff ? "Hide Tariff" : "Show Tariff";
+            _tariffIcon.Image = showTariff ? UIImage.FromBundle(Constants.IMG_TariffEyeCloseIcon) : UIImage.FromBundle(Constants.IMG_TariffEyeOpenIcon);
+            _tariffLabel.Text = showTariff ? LanguageUtility.GetCommonI18NValue(Constants.I18N_HideTariff) : LanguageUtility.GetCommonI18NValue(Constants.I18N_ShowTariff);
         }
         #endregion
     }

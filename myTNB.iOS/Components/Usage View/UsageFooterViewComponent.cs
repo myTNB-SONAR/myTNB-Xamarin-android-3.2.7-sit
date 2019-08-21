@@ -66,7 +66,7 @@ namespace myTNB
 
             _viewTitle = new UIView(new CGRect(BaseMarginWidth16, BaseMarginWidth16, labelWidth * 0.8F, _lblPaymentTitle.Frame.Height * 0.8F))
             {
-                BackgroundColor = MyTNBColor.PaleGreyThree
+                BackgroundColor = MyTNBColor.PaleGrey
             };
             _viewTitle.Layer.CornerRadius = GetScaledHeight(4f);
 
@@ -81,7 +81,7 @@ namespace myTNB
 
             _viewDate = new UIView(new CGRect(BaseMarginWidth16, _lblPaymentTitle.Frame.GetMaxY(), labelWidth * 0.7F, _lblDate.Frame.Height * 0.8F))
             {
-                BackgroundColor = MyTNBColor.PaleGreyThree
+                BackgroundColor = MyTNBColor.PaleGrey
             };
             _viewDate.Layer.CornerRadius = GetScaledHeight(4f);
 
@@ -104,7 +104,7 @@ namespace myTNB
 
             _viewAmount = new UIView(new CGRect(_width / 2 + labelWidth * 0.2F, GetScaledHeight(20f), labelWidth * 0.8F, _lblAmount.Frame.Height * 0.8F))
             {
-                BackgroundColor = MyTNBColor.PaleGreyThree
+                BackgroundColor = MyTNBColor.PaleGrey
             };
             _viewAmount.Layer.CornerRadius = GetScaledHeight(4f);
 
@@ -121,7 +121,7 @@ namespace myTNB
             _btnViewBill.Layer.CornerRadius = GetScaledHeight(4f);
             _btnViewBill.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             _btnViewBill.Layer.BorderWidth = GetScaledHeight(1f);
-            _btnViewBill.SetTitle("Component_CurrentBill".Translate(), UIControlState.Normal);
+            _btnViewBill.SetTitle(LanguageUtility.GetCommonI18NValue(Constants.I18N_CurrentBill), UIControlState.Normal);
             _btnViewBill.Font = TNBFont.MuseoSans_16_500;
             _btnViewBill.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
             _containerView.AddSubview(_btnViewBill);
@@ -134,59 +134,71 @@ namespace myTNB
             _btnPay.Layer.BackgroundColor = MyTNBColor.FreshGreen.CGColor;
             _btnPay.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             _btnPay.Layer.BorderWidth = GetScaledHeight(1f);
-            _btnPay.SetTitle("Common_Pay".Translate(), UIControlState.Normal);
+            _btnPay.SetTitle(LanguageUtility.GetCommonI18NValue(Constants.I18N_Pay), UIControlState.Normal);
             _btnPay.Font = TNBFont.MuseoSans_16_500;
             _containerView.AddSubview(_btnPay);
         }
 
         public void UpdateUI(bool isUpdating)
         {
-            _lblPaymentTitle.Hidden = isUpdating;
-            _lblDate.Hidden = isUpdating;
-            _lblAmount.Hidden = isUpdating;
-            _shimmerParent.Hidden = !isUpdating;
+            if (_containerView != null)
+            {
+                _lblPaymentTitle.Hidden = isUpdating;
+                _lblDate.Hidden = isUpdating;
+                _lblAmount.Hidden = isUpdating;
+                _shimmerParent.Hidden = !isUpdating;
 
-            _btnViewBill.Enabled = !isUpdating;
-            _btnViewBill.Layer.BorderColor = isUpdating ? MyTNBColor.SilverChalice.CGColor : MyTNBColor.FreshGreen.CGColor;
-            _btnViewBill.SetTitleColor(isUpdating ? MyTNBColor.SilverChalice : MyTNBColor.FreshGreen, UIControlState.Normal);
-            _btnPay.Enabled = !isUpdating;
-            _btnPay.Layer.BackgroundColor = isUpdating ? MyTNBColor.SilverChalice.CGColor : MyTNBColor.FreshGreen.CGColor;
-            _btnPay.Layer.BorderColor = isUpdating ? MyTNBColor.SilverChalice.CGColor : MyTNBColor.FreshGreen.CGColor;
+                _btnViewBill.Enabled = !isUpdating;
+                _btnViewBill.Layer.BorderColor = isUpdating ? MyTNBColor.SilverChalice.CGColor : MyTNBColor.FreshGreen.CGColor;
+                _btnViewBill.SetTitleColor(isUpdating ? MyTNBColor.SilverChalice : MyTNBColor.FreshGreen, UIControlState.Normal);
+                _btnPay.Enabled = !isUpdating;
+                _btnPay.Layer.BackgroundColor = isUpdating ? MyTNBColor.SilverChalice.CGColor : MyTNBColor.FreshGreen.CGColor;
+                _btnPay.Layer.BorderColor = isUpdating ? MyTNBColor.SilverChalice.CGColor : MyTNBColor.FreshGreen.CGColor;
+            }
         }
 
         public void SetAmount(double amount)
         {
             if (amount >= 0)
             {
-                _lblAmount.AttributedText = TextHelper.CreateValuePairString(amount.ToString("N2", CultureInfo.InvariantCulture)
+                if (_lblAmount != null)
+                {
+                    _lblAmount.AttributedText = TextHelper.CreateValuePairString(amount.ToString("N2", CultureInfo.InvariantCulture)
                         , TNBGlobal.UNIT_CURRENCY + " ", true, TNBFont.MuseoSans_24_300
                         , MyTNBColor.CharcoalGrey, TNBFont.MuseoSans_12_500, MyTNBColor.CharcoalGrey);
+                }
             }
             else if (amount < 0)
             {
-
-                _lblAmount.AttributedText = TextHelper.CreateValuePairString(Math.Abs(amount).ToString("N2", CultureInfo.InvariantCulture)
-                        , TNBGlobal.UNIT_CURRENCY + " ", true, TNBFont.MuseoSans_24_300
-                        , MyTNBColor.FreshGreen, TNBFont.MuseoSans_12_500, MyTNBColor.FreshGreen);
+                if (_lblAmount != null)
+                {
+                    _lblAmount.AttributedText = TextHelper.CreateValuePairString(Math.Abs(amount).ToString("N2", CultureInfo.InvariantCulture)
+                    , TNBGlobal.UNIT_CURRENCY + " ", true, TNBFont.MuseoSans_24_300
+                    , MyTNBColor.FreshGreen, TNBFont.MuseoSans_12_500, MyTNBColor.FreshGreen);
+                }
             }
+
             AdjustLabels(amount);
         }
         private void AdjustLabels(double amount)
         {
-            if (amount > 0)
+            if (_containerView != null)
             {
-                _lblPaymentTitle.Hidden = false;
-                _lblPaymentTitle.Text = "I need to pay";
-                _lblDate.Hidden = false;
-                _lblCommon.Hidden = true;
-            }
-            else
-            {
-                _lblPaymentTitle.Hidden = true;
-                _lblPaymentTitle.Text = string.Empty;
-                _lblDate.Hidden = true;
-                _lblCommon.Hidden = false;
-                _lblCommon.Text = amount < 0 ? "I’ve paid extra" : "I’ve cleared all bills";
+                if (amount > 0)
+                {
+                    _lblPaymentTitle.Hidden = false;
+                    _lblPaymentTitle.Text = LanguageUtility.GetCommonI18NValue(Constants.I18N_NeedToPay);
+                    _lblDate.Hidden = false;
+                    _lblCommon.Hidden = true;
+                }
+                else
+                {
+                    _lblPaymentTitle.Hidden = true;
+                    _lblPaymentTitle.Text = string.Empty;
+                    _lblDate.Hidden = true;
+                    _lblCommon.Hidden = false;
+                    _lblCommon.Text = amount < 0 ? LanguageUtility.GetCommonI18NValue(Constants.I18N_PaidExtra) : LanguageUtility.GetCommonI18NValue(Constants.I18N_ClearedAllBills);
+                }
             }
         }
 
@@ -194,8 +206,35 @@ namespace myTNB
         {
             if (!string.IsNullOrEmpty(date) && !string.IsNullOrWhiteSpace(date))
             {
-                string formattedDate = DateHelper.GetFormattedDate(date, "dd MMM yyyy");
-                _lblDate.Text = formattedDate;
+                if (_lblDate != null)
+                {
+                    string formattedDate = DateHelper.GetFormattedDate(date, "dd MMM yyyy");
+                    _lblDate.Text = formattedDate;
+                }
+            }
+        }
+
+        public void SetRefreshState()
+        {
+            if (_containerView != null)
+            {
+                _lblPaymentTitle.Hidden = false;
+                _lblPaymentTitle.Text = LanguageUtility.GetCommonI18NValue(Constants.I18N_NeedToPay);
+                _lblDate.Hidden = false;
+                _lblAmount.Hidden = false;
+                _shimmerParent.Hidden = true;
+
+                _lblDate.Text = "- -";
+                _lblAmount.AttributedText = TextHelper.CreateValuePairString("- -"
+                            , TNBGlobal.UNIT_CURRENCY + " ", true, TNBFont.MuseoSans_24_300
+                            , MyTNBColor.CharcoalGrey, TNBFont.MuseoSans_12_500, MyTNBColor.CharcoalGrey);
+
+                _btnViewBill.Enabled = false;
+                _btnViewBill.Layer.BorderColor = MyTNBColor.SilverChalice.CGColor;
+                _btnViewBill.SetTitleColor(MyTNBColor.SilverChalice, UIControlState.Normal);
+                _btnPay.Enabled = false;
+                _btnPay.Layer.BackgroundColor = MyTNBColor.SilverChalice.CGColor;
+                _btnPay.Layer.BorderColor = MyTNBColor.SilverChalice.CGColor;
             }
         }
     }

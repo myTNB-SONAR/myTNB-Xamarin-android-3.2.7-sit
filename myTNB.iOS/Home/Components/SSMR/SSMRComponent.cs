@@ -83,6 +83,62 @@ namespace myTNB
             _containerView.AddSubview(_smrButton);
         }
 
+        public virtual CustomUIView GetShimmerUI()
+        {
+            nfloat baseWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
+            nfloat iconPadding = GetScaledWidth(12f);
+            nfloat baseHeight = GetScaledHeight(128f);
+            nfloat imageWidth = GetScaledWidth(32f);
+            nfloat imageHeight = GetScaledHeight(32f);
+            nfloat buttonHeight = GetScaledHeight(40f);
+            CustomShimmerView shimmeringView = new CustomShimmerView();
+            CustomUIView parentView = new CustomUIView(new CGRect(BaseMarginWidth16, 0
+                , baseWidth - (BaseMarginWidth16 * 2), baseHeight))
+            { BackgroundColor = UIColor.White };
+            parentView.Layer.CornerRadius = GetScaledHeight(4f);
+            UIView viewShimmerParent = new UIView(new CGRect(new CGPoint(0, 0), parentView.Frame.Size)) { BackgroundColor = UIColor.Clear };
+            UIView viewShimmerContent = new UIView(new CGRect(new CGPoint(0, 0), parentView.Frame.Size)) { BackgroundColor = UIColor.Clear };
+            parentView.AddSubviews(new UIView[] { viewShimmerParent, viewShimmerContent });
+
+            UIView iconView = new UIView(new CGRect(BaseMarginWidth16, BaseMarginHeight16, imageWidth, imageHeight))
+            {
+                BackgroundColor = MyTNBColor.PaleGrey
+            };
+            iconView.Layer.CornerRadius = GetScaledHeight(16f);
+            UIView labelView = new UIView(new CGRect(iconView.Frame.GetMaxX() + iconPadding, BaseMarginHeight16, parentView.Frame.Width - GetScaledWidth(28f) - iconView.Frame.GetMaxX(), GetScaledHeight(16)))
+            {
+                BackgroundColor = MyTNBColor.PaleGrey
+            };
+            labelView.Layer.CornerRadius = GetScaledHeight(2f);
+
+            UIView labelView2 = new UIView(new CGRect(iconView.Frame.GetMaxX() + iconPadding, labelView.Frame.GetMaxY() + GetScaledHeight(8f), parentView.Frame.Width - GetScaledWidth(28f) - iconView.Frame.GetMaxX(), GetScaledHeight(16)))
+            {
+                BackgroundColor = MyTNBColor.PaleGrey
+            };
+            labelView2.Layer.CornerRadius = GetScaledHeight(2f);
+
+            UIButton smrButton = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(BaseMarginWidth16, labelView2.Frame.GetMaxY() + BaseMarginHeight16, parentView.Frame.Width - (BaseMarginWidth16 * 2), buttonHeight)
+            };
+            smrButton.Layer.CornerRadius = 4;
+            smrButton.Layer.BorderColor = MyTNBColor.SilverChalice.CGColor;
+            smrButton.Layer.BorderWidth = 1;
+            smrButton.Font = TNBFont.MuseoSans_16_500;
+            smrButton.SetTitleColor(MyTNBColor.SilverChalice, UIControlState.Normal);
+            smrButton.SetTitle(LanguageUtility.GetCommonI18NValue(Constants.I18N_ViewReadHistory), UIControlState.Normal);
+            smrButton.Enabled = false;
+
+            parentView.AddSubview(smrButton);
+            viewShimmerContent.AddSubviews(new UIView { iconView, labelView, labelView2 });
+            viewShimmerParent.AddSubview(shimmeringView);
+            shimmeringView.ContentView = viewShimmerContent;
+            shimmeringView.Shimmering = true;
+            shimmeringView.SetValues();
+
+            return parentView;
+        }
+
         public CustomUIView GetUI()
         {
             CreateComponent();

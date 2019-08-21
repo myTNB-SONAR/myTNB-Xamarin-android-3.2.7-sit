@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using CoreGraphics;
+using myTNB.Home.Components;
 using myTNB.Model;
 using myTNB.Model.Usage;
 using myTNB.SitecoreCMS.Model;
@@ -20,15 +21,16 @@ namespace myTNB
 
         internal UIScrollView _scrollViewContent;
         internal CustomUIView _navbarContainer, _accountSelectorContainer, _viewSeparator, _viewStatus
-            , _viewChart, _viewRE, _viewLegend, _viewToggle, _viewSSMR, _viewTips, _viewFooter, _rmKwhDropDownView
-            , _chart, _tips, _RE, _status, _ssmr, _tariff, _legend;
+            , _viewChart, _viewRE, _viewLegend, _viewToggle, _viewSSMR, _viewTips, _viewFooter, _rmKwhDropDownView, _viewRefresh
+            , _chart, _tips, _RE, _status, _ssmr, _tariff, _legend, _refresh;
         internal UILabel _lblAddress, _RMLabel, _kWhLabel;
         internal UIImageView _bgImageView;
 
-        internal bool _rmkWhFlag, _tariffIsVisible = false;
+        internal bool _rmkWhFlag, _tariffIsVisible;
         internal RMkWhEnum _rMkWhEnum;
         internal nfloat _lastContentOffset;
         internal bool isBcrmAvailable, isNormalChart, isREAccount, accountIsSSMR;
+        internal bool _statusIsLoading;
 
         internal CGRect _origViewFrame;
 
@@ -38,25 +40,28 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            PageName = UsageConstants.PageName;
             base.ViewDidLoad();
-            NavigationController.NavigationBarHidden = true;
             InitializeValues();
+            NavigationController.NavigationBarHidden = true;
             AddBackgroundImage();
+            PrepareRefreshView();
             SetNavigation();
             AddScrollView();
+            SetDisconnectionComponent(false);
+            SetSSMRComponent(false);
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            InitializeValues();
             if (!DataManager.DataManager.SharedInstance.IsSameAccount)
             {
-                _rmkWhFlag = false;
-                _tariffIsVisible = false;
-                _rMkWhEnum = RMkWhEnum.RM;
-                UpdateBackgroundImage(false);
-                AddSubviews();
+                ResetViews();
+                if (!accountIsSSMR)
+                {
+                    HideSSMRView();
+                }
             }
         }
 
@@ -70,6 +75,16 @@ namespace myTNB
             base.ViewWillDisappear(animated);
         }
 
+        private void PrepareRefreshView()
+        {
+            _viewRefresh = new CustomUIView(new CGRect(0, 0, ViewWidth, ViewHeight))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+            _viewRefresh.Hidden = true;
+            View.AddSubview(_viewRefresh);
+        }
+
         private void InitializeValues()
         {
             isREAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
@@ -78,18 +93,28 @@ namespace myTNB
             accountIsSSMR = UsageHelper.IsSSMR(DataManager.DataManager.SharedInstance.SelectedAccount);
         }
 
+        private void ResetViews()
+        {
+            InitializeValues();
+            _rmkWhFlag = false;
+            _tariffIsVisible = false;
+            _rMkWhEnum = RMkWhEnum.RM;
+            UpdateBackgroundImage(false);
+            AddSubviews();
+        }
+
         private void SetNavigation()
         {
             _navbarContainer = new CustomUIView(new CGRect(0, 0, ViewWidth, DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height))
             {
                 BackgroundColor = UIColor.Clear
             };
-            UIView viewTitleBar = new UIView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + 8f, _navbarContainer.Frame.Width, GetScaledHeight(24f)));
+            UIView viewTitleBar = new UIView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + GetScaledHeight(8f), _navbarContainer.Frame.Width, GetScaledHeight(24f)));
 
-            UILabel lblTitle = new UILabel(new CGRect(58, 0, _navbarContainer.Frame.Width - 116, GetScaledHeight(24f)))
+            UILabel lblTitle = new UILabel(new CGRect(GetScaledWidth(56f), 0, viewTitleBar.Frame.Width - (GetScaledWidth(56) * 2), GetScaledHeight(24f)))
             {
                 Font = TNBFont.MuseoSans_16_500,
-                Text = "Usage"
+                Text = GetI18NValue(UsageConstants.I18N_Usage)
             };
 
             lblTitle.TextAlignment = UITextAlignment.Center;
@@ -97,7 +122,7 @@ namespace myTNB
             viewTitleBar.AddSubview(lblTitle);
 
             nfloat imageWidth = GetScaledWidth(24f);
-            UIView viewBack = new UIView(new CGRect(18, 0, imageWidth, imageWidth));
+            UIView viewBack = new UIView(new CGRect(BaseMarginWidth16, 0, imageWidth, imageWidth));
             UIImageView imgViewBack = new UIImageView(new CGRect(0, 0, imageWidth, imageWidth))
             {
                 Image = UIImage.FromBundle(UsageConstants.IMG_Back)
@@ -117,7 +142,7 @@ namespace myTNB
             nfloat height = GetScaledHeight(543f);
             _bgImageView = new UIImageView(new CGRect(0, 0, ViewWidth, height))
             {
-                Image = UIImage.FromBundle("Usage-Bg-Normal")
+                Image = UIImage.FromBundle(UsageConstants.IMG_BGNormal)
             };
             View.AddSubview(_bgImageView);
         }
@@ -126,7 +151,14 @@ namespace myTNB
         {
             nfloat height = isLegendVisible ? GetScaledHeight(691f) : GetScaledHeight(543f);
             ViewHelper.AdjustFrameSetHeight(_bgImageView, height);
-            _bgImageView.Image = UIImage.FromBundle(isLegendVisible ? "Usage-Bg-Long" : "Usage-Bg-Normal");
+            _bgImageView.Image = UIImage.FromBundle(isLegendVisible ? UsageConstants.IMG_BGLong : UsageConstants.IMG_BGNormal);
+        }
+
+        private void UpdateBGForRefresh()
+        {
+            nfloat height = GetScaledHeight(190f);
+            ViewHelper.AdjustFrameSetHeight(_bgImageView, height);
+            _bgImageView.Image = UIImage.FromBundle(UsageConstants.IMG_BGRefresh);
         }
 
         private void AddScrollView()
@@ -144,7 +176,7 @@ namespace myTNB
             _scrollViewContent.Scrolled += OnScroll;
             View.AddSubview(_scrollViewContent);
 
-            _accountSelectorContainer = new CustomUIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(24)));// { BackgroundColor = UIColor.Blue };
+            _accountSelectorContainer = new CustomUIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(24)));
             _lblAddress = new UILabel(new CGRect(BaseMargin, 0, BaseMarginedWidth, 0))
             {
                 LineBreakMode = UILineBreakMode.WordWrap,
@@ -190,7 +222,7 @@ namespace myTNB
             _lblAddress.Frame = new CGRect(new CGPoint(BaseMargin, GetYLocationFromFrame(_accountSelectorContainer.Frame, 8F)), _lblAddress.Frame.Size);
             _viewSeparator.Frame = new CGRect(new CGPoint(BaseMargin, GetYLocationFromFrame(_lblAddress.Frame, 16F)), _viewSeparator.Frame.Size);
 
-            if (!AccountStatusCache.AccountStatusIsAvailable())
+            if (!AccountStatusCache.AccountStatusIsAvailable() || _statusIsLoading)
             {
                 _viewStatus.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewSeparator.Frame, 16F)), _viewStatus.Frame.Size);
                 _viewChart.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewStatus.Frame, 16F)), _viewChart.Frame.Size);
@@ -237,10 +269,8 @@ namespace myTNB
         {
             AddAccountSelector();
             SetAddress();
-            SetDisconnectionComponent();
             SetChartView(true);
             SetTariffSelectionComponent();
-            SetSSMRComponent();
             SetEnergyTipsComponent();
             SetContentView();
             SetFooterView();
@@ -306,44 +336,57 @@ namespace myTNB
         }
 
         #region SSMR Methods
-        internal void SetSSMRComponent()
+        internal void SetSSMRComponent(bool isUpdating)
         {
             if (!isREAccount && accountIsSSMR)
             {
-                MeterReadingHistoryModel smrAcountInfo = SSMRActivityInfoCache.DashboardMeterReadingHistory;
-                if (smrAcountInfo != null)
+                ViewHelper.AdjustFrameSetHeight(_viewSSMR, GetScaledHeight(116f));
+                _viewSSMR.BackgroundColor = UIColor.Clear;
+                _viewSSMR.Hidden = false;
+
+                if (_ssmr != null)
                 {
-                    if (_ssmr != null)
-                    {
-                        _ssmr.RemoveFromSuperview();
-                    }
-                    SSMRComponent sSMRComponent = new SSMRComponent(_viewSSMR);
-                    _ssmr = sSMRComponent.GetUI();
+                    _ssmr.RemoveFromSuperview();
+                }
+                SSMRComponent sSMRComponent = new SSMRComponent(_viewSSMR);
+
+                if (isUpdating)
+                {
+                    _ssmr = sSMRComponent.GetShimmerUI();
                     _viewSSMR.AddSubview(_ssmr);
-                    sSMRComponent.SetDescription(smrAcountInfo.DashboardMessage);
-                    sSMRComponent.SetButtonText(smrAcountInfo.DashboardCTAText);
-                    sSMRComponent.SetSRMButtonEnable(smrAcountInfo.IsDashboardCTADisabled);
-                    sSMRComponent.ShowHistoryLink(smrAcountInfo.ShowReadingHistoryLink, smrAcountInfo.ReadingHistoryLinkText);
-                    sSMRComponent._labelViewHistory.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                }
+                else
+                {
+                    MeterReadingHistoryModel smrAcountInfo = SSMRActivityInfoCache.DashboardMeterReadingHistory;
+                    if (smrAcountInfo != null)
                     {
-                        OnReadHistoryTap();
-                    }));
-                    sSMRComponent._smrButton.TouchUpInside += (sender, e) =>
-                    {
-                        var ctaChar = smrAcountInfo.DashboardCTAType.ToLower();
-                        if (ctaChar == DashboardHomeConstants.CTA_ShowReadingHistory)
+                        _ssmr = sSMRComponent.GetUI();
+                        _viewSSMR.AddSubview(_ssmr);
+                        sSMRComponent.SetDescription(smrAcountInfo.DashboardMessage);
+                        sSMRComponent.SetButtonText(smrAcountInfo.DashboardCTAText);
+                        sSMRComponent.SetSRMButtonEnable(smrAcountInfo.IsDashboardCTADisabled);
+                        sSMRComponent.ShowHistoryLink(smrAcountInfo.ShowReadingHistoryLink, smrAcountInfo.ReadingHistoryLinkText);
+                        sSMRComponent._labelViewHistory.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                         {
                             OnReadHistoryTap();
-                        }
-                        else if (ctaChar == DashboardHomeConstants.CTA_ShowSubmitReading)
+                        }));
+                        sSMRComponent._smrButton.TouchUpInside += (sender, e) =>
                         {
-                            OnSubmitMeterTap();
-                        }
-                    };
-                    ViewHelper.AdjustFrameSetHeight(_viewSSMR, sSMRComponent.GetContainerHeight());
-                    _viewSSMR.BackgroundColor = UIColor.Clear;
-                    _viewSSMR.Hidden = false;
-                    AddSSMRViewShadow(ref _viewSSMR);
+                            var ctaChar = smrAcountInfo.DashboardCTAType.ToLower();
+                            if (ctaChar == DashboardHomeConstants.CTA_ShowReadingHistory)
+                            {
+                                OnReadHistoryTap();
+                            }
+                            else if (ctaChar == DashboardHomeConstants.CTA_ShowSubmitReading)
+                            {
+                                OnSubmitMeterTap();
+                            }
+                        };
+                        ViewHelper.AdjustFrameSetHeight(_viewSSMR, sSMRComponent.GetContainerHeight());
+                        _viewSSMR.BackgroundColor = UIColor.Clear;
+                        _viewSSMR.Hidden = false;
+                        AddSSMRViewShadow(ref _viewSSMR);
+                    }
                 }
             }
             else
@@ -354,9 +397,22 @@ namespace myTNB
             SetContentView();
         }
 
-        internal virtual void OnReadHistoryTap() { }
+        internal void HideSSMRView()
+        {
+            ViewHelper.AdjustFrameSetHeight(_viewSSMR, 0);
+            _viewSSMR.Hidden = true;
+            SetContentView();
+        }
 
-        internal virtual void OnSubmitMeterTap() { }
+        internal virtual void OnReadHistoryTap()
+        {
+            DataManager.DataManager.SharedInstance.IsSameAccount = true;
+        }
+
+        internal virtual void OnSubmitMeterTap()
+        {
+            DataManager.DataManager.SharedInstance.IsSameAccount = true;
+        }
 
         private void AddSSMRViewShadow(ref CustomUIView view)
         {
@@ -486,12 +542,10 @@ namespace myTNB
             };
             kWhView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                Debug.WriteLine("kWh Selected!");
                 _rMkWhEnum = RMkWhEnum.kWh;
                 ShowHideRMKwHDropDown();
                 _tariffSelectionComponent.SetRMkWhLabel(_rMkWhEnum);
                 UpdateRMkWhSelectionColour(_rMkWhEnum);
-                //TO DO: Add Action here when KWH is selected....
                 _chartView.ToggleRMKWHValues(_rMkWhEnum);
             }));
             _rmKwhDropDownView.AddSubview(kWhView);
@@ -515,12 +569,10 @@ namespace myTNB
             };
             rMView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                Debug.WriteLine("RM Selected!");
                 _rMkWhEnum = RMkWhEnum.RM;
                 ShowHideRMKwHDropDown();
                 _tariffSelectionComponent.SetRMkWhLabel(_rMkWhEnum);
                 UpdateRMkWhSelectionColour(_rMkWhEnum);
-                //TO DO: Add Action here when RM is selected....
                 _chartView.ToggleRMKWHValues(_rMkWhEnum);
             }));
             _rmKwhDropDownView.AddSubview(rMView);
@@ -569,8 +621,17 @@ namespace myTNB
             {
                 List<TipsModel> tipsList;
                 EnergyTipsEntity wsManager = new EnergyTipsEntity();
-                tipsList = wsManager.GetAllItems();
-
+                var tips = wsManager.GetAllItems();
+                tipsList = tips;
+                if (tips.Count > UsageConstants.MaxRandomTips)
+                {
+                    tipsList = new List<TipsModel>();
+                    var randomIndexes = UsageHelper.RandomizedTips(tips.Count, UsageConstants.MaxRandomTips);
+                    for (int i = 0; i < randomIndexes.Length; i++)
+                    {
+                        tipsList.Add(tips[randomIndexes[i]]);
+                    }
+                }
                 if (tipsList != null &&
                     tipsList.Count > 0)
                 {
@@ -595,34 +656,42 @@ namespace myTNB
         }
         #endregion
         #region DISCONNECTION Methods
-        public void SetDisconnectionComponent()
+        public void SetDisconnectionComponent(bool isUpdating)
         {
+            _statusIsLoading = isUpdating;
             AccountStatusDataModel accountStatusData = AccountStatusCache.GetAccountStatusData();
-            if (!AccountStatusCache.AccountStatusIsAvailable())
+            ViewHelper.AdjustFrameSetHeight(_viewStatus, GetScaledHeight(24f));
+            _viewStatus.BackgroundColor = UIColor.Clear;
+            _viewStatus.Hidden = false;
+
+            if (_status != null)
             {
-                ViewHelper.AdjustFrameSetHeight(_viewStatus, GetScaledHeight(24f));
-                _viewStatus.BackgroundColor = UIColor.Clear;
-                _viewStatus.Hidden = false;
-
-                if (_status != null)
-                {
-                    _status.RemoveFromSuperview();
-                }
-
-                DisconnectionComponent disconnectionComponent = new DisconnectionComponent(_scrollViewContent, accountStatusData);
-                _status = disconnectionComponent.GetUI();
+                _status.RemoveFromSuperview();
+            }
+            DisconnectionComponent disconnectionComponent = new DisconnectionComponent(_scrollViewContent, accountStatusData);
+            if (isUpdating)
+            {
+                _status = disconnectionComponent.GetShimmerUI();
                 _viewStatus.AddSubview(_status);
-                disconnectionComponent.SetGestureRecognizer(new UITapGestureRecognizer(() =>
-                {
-                    var acctStatusTooltipBtnTitle = !string.IsNullOrWhiteSpace(accountStatusData.AccountStatusModalBtnText) ? accountStatusData.AccountStatusModalBtnText : "Common_GotIt".Translate();
-                    var acctStatusTooltipMsg = !string.IsNullOrWhiteSpace(accountStatusData.AccountStatusModalMessage) ? accountStatusData.AccountStatusModalMessage : "Dashboard_AccountStatusMessage".Translate();
-                    DisplayCustomAlert(string.Empty, acctStatusTooltipMsg, acctStatusTooltipBtnTitle, null);
-                }));
             }
             else
             {
-                _viewStatus.Hidden = true;
-                ViewHelper.AdjustFrameSetHeight(_viewStatus, 0);
+                if (!AccountStatusCache.AccountStatusIsAvailable())
+                {
+                    _status = disconnectionComponent.GetUI();
+                    disconnectionComponent.SetGestureRecognizer(new UITapGestureRecognizer(() =>
+                    {
+                        var acctStatusTooltipBtnTitle = !string.IsNullOrWhiteSpace(accountStatusData.AccountStatusModalBtnText) ? accountStatusData.AccountStatusModalBtnText : GetI18NValue(UsageConstants.I18N_GotIt);
+                        var acctStatusTooltipMsg = !string.IsNullOrWhiteSpace(accountStatusData.AccountStatusModalMessage) ? accountStatusData.AccountStatusModalMessage : GetI18NValue(UsageConstants.I18N_DisconnectionMessage);
+                        DisplayCustomAlert(string.Empty, acctStatusTooltipMsg, acctStatusTooltipBtnTitle, null);
+                    }));
+                    _viewStatus.AddSubview(_status);
+                }
+                else
+                {
+                    _viewStatus.Hidden = true;
+                    ViewHelper.AdjustFrameSetHeight(_viewStatus, 0);
+                }
             }
             SetContentView();
         }
@@ -657,11 +726,18 @@ namespace myTNB
                 _rEAmountComponent.UpdateUI(isUpdating);
                 if (!isUpdating)
                 {
-                    _rEAmountComponent.UpdateUI(isUpdating);
                     DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
                     _rEAmountComponent.SetAmount(dueData.amountDue);
                     _rEAmountComponent.SetDate(dueData.billDueDate);
                 }
+            }
+        }
+
+        internal void UpdateREAmountViewForRefreshState()
+        {
+            if (_rEAmountComponent != null)
+            {
+                _rEAmountComponent.SetRefreshState();
             }
         }
         #endregion
@@ -716,11 +792,21 @@ namespace myTNB
                 _footerViewComponent.UpdateUI(isUpdating);
                 if (!isUpdating)
                 {
-                    _footerViewComponent.UpdateUI(isUpdating);
                     DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
-                    _footerViewComponent.SetAmount(dueData.amountDue);
-                    _footerViewComponent.SetDate(dueData.billDueDate);
+                    if (dueData != null)
+                    {
+                        _footerViewComponent.SetAmount(dueData.amountDue);
+                        _footerViewComponent.SetDate(dueData.billDueDate);
+                    }
                 }
+            }
+        }
+
+        internal void UpdateFooterForRefreshState()
+        {
+            if (_footerViewComponent != null)
+            {
+                _footerViewComponent.SetRefreshState();
             }
         }
 
@@ -777,6 +863,37 @@ namespace myTNB
             view.Layer.ShadowOffset = new CGSize(0, -8);
             view.Layer.ShadowRadius = 8;
             view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
+        }
+        #endregion
+        #region Refresh Methods
+        internal void SetRefreshScreen()
+        {
+            _scrollViewContent.Hidden = true;
+            _viewRefresh.Hidden = false;
+            UpdateBGForRefresh();
+            var bcrm = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
+            var bcrmMsg = !string.IsNullOrEmpty(bcrm?.DowntimeMessage) && !string.IsNullOrWhiteSpace(bcrm?.DowntimeMessage) ? bcrm?.DowntimeMessage : GetCommonI18NValue(Constants.I18N_BCRMMessage);
+            string desc = isBcrmAvailable ? AccountUsageCache.GetRefreshDataModel()?.RefreshMessage ?? string.Empty : bcrmMsg;
+
+            if (_refresh != null)
+            {
+                _refresh.RemoveFromSuperview();
+            }
+            RefreshScreenComponent refreshScreenComponent = new RefreshScreenComponent(View, GetScaledHeight(84f));
+            refreshScreenComponent.SetIsBCRMDown(!isBcrmAvailable);
+            refreshScreenComponent.SetRefreshButtonHidden(!isBcrmAvailable);
+            refreshScreenComponent.SetButtonText(AccountUsageCache.GetRefreshDataModel()?.RefreshBtnText ?? string.Empty);
+            refreshScreenComponent.SetDescription(desc);
+            refreshScreenComponent.CreateComponent();
+            refreshScreenComponent.OnButtonTap = RefreshButtonOnTap;
+            _refresh = refreshScreenComponent.GetView();
+            _viewRefresh.AddSubview(_refresh);
+        }
+        internal virtual void RefreshButtonOnTap()
+        {
+            _scrollViewContent.Hidden = false;
+            _viewRefresh.Hidden = true;
+            ResetViews();
         }
         #endregion
     }

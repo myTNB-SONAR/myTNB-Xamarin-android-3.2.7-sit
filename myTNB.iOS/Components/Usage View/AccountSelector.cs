@@ -9,9 +9,6 @@ namespace myTNB
     {
         public AccountSelector() { }
 
-        protected const string IMG_Dropdown = "IC-Header-Dropdown";
-        protected const string Empty = "---";
-
         private CustomUIView _mainView, _viewContainer;
         private UILabel _lblTitle;
         private UIImageView _imgDropDown;
@@ -33,7 +30,7 @@ namespace myTNB
 
             nfloat imgWidth = GetScaledWidth(16);
             _imgDropDown = new UIImageView(new CGRect(0, (height - imgWidth) / 2, imgWidth, imgWidth))
-            { Image = UIImage.FromBundle(IMG_Dropdown) };
+            { Image = UIImage.FromBundle(Constants.IMG_Dropdown) };
 
             _viewContainer.AddSubviews(new UIView[] { _lblTitle, _imgDropDown });
             _mainView.AddSubview(_viewContainer);
@@ -58,7 +55,7 @@ namespace myTNB
                 string val = value;
                 if (string.IsNullOrEmpty(val) || string.IsNullOrWhiteSpace(val))
                 {
-                    val = Empty;
+                    val = LanguageUtility.GetHintI18NValue(Constants.I18N_EmptyAcctSelector);
                 }
                 _lblTitle.Text = val;
                 CGSize size = CustomUILabel.GetLabelSize(_lblTitle, _width - GetScaledWidth(56), _lblTitle.Frame.Height);

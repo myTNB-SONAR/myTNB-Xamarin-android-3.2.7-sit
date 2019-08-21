@@ -60,13 +60,13 @@ namespace myTNB
         {
             _iconView = new UIImageView(new CGRect(BaseMarginWidth16, GetScaledHeight(18f), GetScaledWidth(28f), GetScaledHeight(28f)))
             {
-                Image = UIImage.FromBundle("Accounts-RE-Icon")
+                Image = UIImage.FromBundle(Constants.IMG_AcctREIcon)
             };
             _containerView.AddSubview(_iconView);
 
             _viewIcon = new UIView(new CGRect(BaseMarginWidth16, GetScaledHeight(18f), GetScaledWidth(28f), GetScaledHeight(28f)))
             {
-                BackgroundColor = MyTNBColor.PaleGreyThree
+                BackgroundColor = MyTNBColor.PaleGrey
             };
             _viewIcon.Layer.CornerRadius = GetScaledHeight(14f);
 
@@ -76,14 +76,14 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.GreyishBrown,
                 TextAlignment = UITextAlignment.Left,
-                Text = "My Earnings",
+                Text = LanguageUtility.GetCommonI18NValue(Constants.I18N_MyEarnings),
                 Hidden = false
             };
             _containerView.AddSubview(_lblTitle);
 
             _viewTitle = new UIView(new CGRect(_iconView.Frame.GetMaxX() + GetScaledWidth(12F), BaseMarginWidth16, labelWidth * 0.8F, _lblTitle.Frame.Height * 0.8F))
             {
-                BackgroundColor = MyTNBColor.PaleGreyThree
+                BackgroundColor = MyTNBColor.PaleGrey
             };
             _viewTitle.Layer.CornerRadius = GetScaledHeight(4f);
 
@@ -98,7 +98,7 @@ namespace myTNB
 
             _viewDate = new UIView(new CGRect(_iconView.Frame.GetMaxX() + GetScaledWidth(12F), _lblTitle.Frame.GetMaxY(), labelWidth * 0.7F, _lblDate.Frame.Height * 0.8F))
             {
-                BackgroundColor = MyTNBColor.PaleGreyThree
+                BackgroundColor = MyTNBColor.PaleGrey
             };
             _viewDate.Layer.CornerRadius = GetScaledHeight(4f);
 
@@ -112,7 +112,7 @@ namespace myTNB
 
             _viewAmount = new UIView(new CGRect(_viewWidth / 2 + labelWidth * 0.2F, GetScaledHeight(22f), labelWidth * 0.8F, _lblAmount.Frame.Height * 0.8F))
             {
-                BackgroundColor = MyTNBColor.PaleGreyThree
+                BackgroundColor = MyTNBColor.PaleGrey
             };
             _viewAmount.Layer.CornerRadius = GetScaledHeight(4f);
 
@@ -129,7 +129,7 @@ namespace myTNB
             _btnViewPaymentAdvice.Layer.CornerRadius = GetScaledHeight(4f);
             _btnViewPaymentAdvice.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             _btnViewPaymentAdvice.Layer.BorderWidth = GetScaledHeight(1f);
-            _btnViewPaymentAdvice.SetTitle("View Payment Advice", UIControlState.Normal);
+            _btnViewPaymentAdvice.SetTitle(LanguageUtility.GetCommonI18NValue(Constants.I18N_ViewPaymentAdvice), UIControlState.Normal);
             _btnViewPaymentAdvice.Font = TNBFont.MuseoSans_16_500;
             _btnViewPaymentAdvice.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
             _containerView.AddSubview(_btnViewPaymentAdvice);
@@ -159,7 +159,7 @@ namespace myTNB
                 string formattedDate = DateHelper.GetFormattedDate(date, "dd MMM");
 
                 _lblDate.AttributedText = TextHelper.CreateValuePairString(formattedDate
-                        , "I will get by" + " ", true, TNBFont.MuseoSans_12_300
+                        , LanguageUtility.GetCommonI18NValue(Constants.I18N_IWillGetBy) + " ", true, TNBFont.MuseoSans_12_300
                         , MyTNBColor.WarmGrey, TNBFont.MuseoSans_12_300, MyTNBColor.WarmGrey);
             }
         }
@@ -175,6 +175,24 @@ namespace myTNB
             _btnViewPaymentAdvice.Enabled = !isUpdating;
             _btnViewPaymentAdvice.Layer.BorderColor = isUpdating ? MyTNBColor.SilverChalice.CGColor : MyTNBColor.FreshGreen.CGColor;
             _btnViewPaymentAdvice.SetTitleColor(isUpdating ? MyTNBColor.SilverChalice : MyTNBColor.FreshGreen, UIControlState.Normal);
+        }
+
+        public void SetRefreshState()
+        {
+            _iconView.Hidden = false;
+            _lblTitle.Hidden = false;
+            _lblDate.Hidden = false;
+            _lblAmount.Hidden = false;
+            _shimmerParent.Hidden = true;
+
+            _lblDate.Text = LanguageUtility.GetHintI18NValue(Constants.I18N_EmptyTextAPIFail);
+            _lblAmount.AttributedText = TextHelper.CreateValuePairString(LanguageUtility.GetHintI18NValue(Constants.I18N_EmptyTextAPIFail)
+                        , TNBGlobal.UNIT_CURRENCY + " ", true, TNBFont.MuseoSans_16_300
+                        , MyTNBColor.GreyishBrown, TNBFont.MuseoSans_10_300, MyTNBColor.GreyishBrown);
+
+            _btnViewPaymentAdvice.Enabled = false;
+            _btnViewPaymentAdvice.Layer.BorderColor = MyTNBColor.SilverChalice.CGColor;
+            _btnViewPaymentAdvice.SetTitleColor(MyTNBColor.SilverChalice, UIControlState.Normal);
         }
     }
 }

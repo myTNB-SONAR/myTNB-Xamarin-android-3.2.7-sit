@@ -80,7 +80,7 @@ namespace myTNB
 
                 bgView = new UIImageView(new CGRect(0, 0, viewWidth, viewHeight))
                 {
-                    Image = UIImage.FromBundle("Saving-Tips-Bg")
+                    Image = UIImage.FromBundle(Constants.IMG_SavingTipsBg)
                 };
                 viewContainer.AddSubview(bgView);
 

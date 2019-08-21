@@ -70,15 +70,15 @@ namespace myTNB
                 UIView viewShimmerContent = new UIView(new CGRect(0, 0, cardWidth, cardHeight)) { BackgroundColor = UIColor.Clear };
                 viewParent.AddSubviews(new UIView[] { viewShimmerParent, viewShimmerContent });
 
-                UIView viewImg = new UIView(new CGRect(0, 0, cardWidth, cardHeight * 0.50F)) { BackgroundColor = MyTNBColor.PowderBlue };
+                UIView viewImg = new UIView(new CGRect(0, 0, cardWidth, cardHeight * 0.50F)) { BackgroundColor = MyTNBColor.PaleGrey };
                 UIView viewTitle = new UIView(new CGRect(16, viewImg.Frame.GetMaxY() + 16, cardWidth * 0.62F, 16))
-                { BackgroundColor = MyTNBColor.PowderBlue };
+                { BackgroundColor = MyTNBColor.PaleGrey };
                 UIView viewContent1 = new UIView(new CGRect(16, viewTitle.Frame.GetMaxY() + 4, viewTitle.Frame.Width * 0.8F, 14))
-                { BackgroundColor = MyTNBColor.PowderBlue };
+                { BackgroundColor = MyTNBColor.PaleGrey };
                 UIView viewContent2 = new UIView(new CGRect(16, viewContent1.Frame.GetMaxY() + 4, viewTitle.Frame.Width * 0.5F, 14))
-                { BackgroundColor = MyTNBColor.PowderBlue };
+                { BackgroundColor = MyTNBColor.PaleGrey };
                 UIView viewContent3 = new UIView(new CGRect(16, viewContent2.Frame.GetMaxY() + 4, cardWidth - 32, 14))
-                { BackgroundColor = MyTNBColor.PowderBlue };
+                { BackgroundColor = MyTNBColor.PaleGrey };
 
                 viewShimmerContent.AddSubviews(new UIView[] { viewImg, viewTitle, viewContent1, viewContent2, viewContent3 });
 

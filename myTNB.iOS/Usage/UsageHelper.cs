@@ -1,4 +1,6 @@
-﻿using myTNB.Model;
+﻿using System;
+using System.Linq;
+using myTNB.Model;
 
 namespace myTNB
 {
@@ -55,6 +57,19 @@ namespace myTNB
                 }
             }
             return model;
+        }
+
+        public static int[] RandomizedTips(int count, int randomSize)
+        {
+            int[] intValues = new int[randomSize];
+            var random = new Random();
+            var values = Enumerable.Range(0, count).OrderBy(x => random.Next()).ToArray();
+
+            for (int i = 0; i < randomSize; i++)
+            {
+                intValues[i] = values[i];
+            }
+            return intValues;
         }
     }
 }

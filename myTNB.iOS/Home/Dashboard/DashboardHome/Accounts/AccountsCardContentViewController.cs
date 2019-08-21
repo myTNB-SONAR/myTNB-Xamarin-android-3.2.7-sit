@@ -108,7 +108,7 @@ namespace myTNB
             {
                 OnAddAccountAction();
             }));
-            View.AddSubview(addAcctView);
+            _parentView.AddSubview(addAcctView);
         }
 
         private void SetSearchView()

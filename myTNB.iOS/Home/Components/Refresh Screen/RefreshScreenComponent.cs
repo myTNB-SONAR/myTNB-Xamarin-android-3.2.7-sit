@@ -9,8 +9,7 @@ namespace myTNB.Home.Components
     public class RefreshScreenComponent
     {
         private readonly UIView _parentView;
-        DashboardHomeViewController _dashboardHomeViewController;
-        UIView _viewContainer;
+        CustomUIView _viewContainer;
         UIImageView _iconView;
         UITextView _txtDescription;
         public UIButton _btnRefresh;
@@ -20,32 +19,31 @@ namespace myTNB.Home.Components
         bool _isBCRMDown;
         string _buttonText;
         bool _isBtnHidden;
+        nfloat _iconYPos;
 
-        public RefreshScreenComponent(DashboardHomeViewController dashboardHomeViewController, UIView parentView)
+        public RefreshScreenComponent(UIView parentView, nfloat iconYPos)
         {
-            _dashboardHomeViewController = dashboardHomeViewController;
             _parentView = parentView;
+            _iconYPos = iconYPos;
         }
 
         public void CreateComponent()
         {
             nfloat width = _parentView.Frame.Width;
-            nfloat iconYPos = 64f;
-            nfloat lineTextHeight = 24f;
 
-            _viewContainer = new UIView(new CGRect(0, 0, width, 300f))
+            _viewContainer = new CustomUIView(new CGRect(0, 0, width, 300f))
             {
                 BackgroundColor = UIColor.Clear
             };
 
             nfloat iconWidth = ScaleUtility.GetScaledWidth(138f);
-            _iconView = new UIImageView(new CGRect(ScaleUtility.GetXLocationToCenterObject(iconWidth, _viewContainer), iconYPos, iconWidth, iconWidth))
+            _iconView = new UIImageView(new CGRect(ScaleUtility.GetXLocationToCenterObject(iconWidth, _viewContainer), _iconYPos, iconWidth, iconWidth))
             {
                 Image = UIImage.FromBundle(DashboardHomeConstants.Img_RefreshIcon)
             };
 
-            var descMsg = _descriptionMessage ?? _dashboardHomeViewController.GetI18NValue(DashboardHomeConstants.I18N_RefreshMsg);
-            var btnText = _buttonText ?? _dashboardHomeViewController.GetI18NValue(DashboardHomeConstants.I18N_RefreshBtnTxt);
+            var descMsg = !string.IsNullOrEmpty(_descriptionMessage) || !string.IsNullOrWhiteSpace(_descriptionMessage) ? _descriptionMessage : LanguageUtility.GetCommonI18NValue(Constants.I18N_RefreshMessage);
+            var btnText = (!string.IsNullOrEmpty(_buttonText)) || !string.IsNullOrWhiteSpace(_buttonText) ? _buttonText : LanguageUtility.GetCommonI18NValue(Constants.I18N_RefreshBtnText);
 
             NSMutableParagraphStyle msgParagraphStyle = new NSMutableParagraphStyle
             {
@@ -166,7 +164,7 @@ namespace myTNB.Home.Components
             AdjustContainerHeight();
         }
 
-        public UIView GetView()
+        public CustomUIView GetView()
         {
             return _viewContainer;
         }
