@@ -27,7 +27,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
         public float[] bufferItems { get; set; }
 
-        private float mRadius = 30f;
+        private float mRadius = 20f;
 
         private int selectedIndex = -1;
 
@@ -341,6 +341,10 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
             float height = bottom - top;
             if (rx > width / 2) rx = width / 2;
             if (ry > height / 2) ry = height / 2;
+            if (rx < ry)
+            {
+                ry = rx;
+            }
             float widthMinusCorners = (width - (2 * rx));
             float heightMinusCorners = (height - (2 * ry) - 4f);
 
