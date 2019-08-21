@@ -92,10 +92,10 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                             {
                                 BarEntry listEntries = currentDataSet.Values[j] as BarEntry;
                                 float[] yLsit = listEntries.GetYVals();
-                                currentArrayIndex += yLsit.Length - 1;
+                                currentArrayIndex += yLsit.Length;
                                 if (j == selectedIndex)
                                 {
-                                    currentArrayIndex += 1;
+                                    currentArrayIndex -= 1;
                                 }
                             }
                         }
@@ -180,10 +180,10 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                 {
                                     BarEntry listEntries = currentDataSet.Values[j] as BarEntry;
                                     float[] yLsit = listEntries.GetYVals();
-                                    currentArrayIndex += yLsit.Length - 1;
+                                    currentArrayIndex += yLsit.Length;
                                     if (j == selectedIndex)
                                     {
-                                        currentArrayIndex += 1;
+                                        currentArrayIndex -= 1;
                                     }
                                 }
                             }

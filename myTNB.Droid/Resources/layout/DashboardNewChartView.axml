@@ -426,9 +426,9 @@
                                     android:id="@+id/shimmerREImg"
                                     android:layout_width="28dp"
                                     android:layout_height="28dp"
-                                    android:layout_marginTop="3dp"
                                     android:layout_marginLeft="2dp"
                                     android:layout_marginRight="12dp"
+                                    android:layout_gravity="center"
                                     android:visibility="gone">
                                     <ImageView
                                         android:layout_width="match_parent"
@@ -441,9 +441,9 @@
                                     android:src="@drawable/ic_display_r_eleaf"
                                     android:layout_width="28dp"
                                     android:layout_height="28dp"
-                                    android:layout_marginTop="3dp"
                                     android:layout_marginLeft="2dp"
                                     android:layout_marginRight="12dp"
+                                    android:layout_gravity="center"
                                     android:visibility="visible"
                                     android:scaleType="fitCenter" />
                                 <RelativeLayout
@@ -594,46 +594,50 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="vertical">
-                                <LinearLayout
+                                <RelativeLayout
                                     android:id="@+id/ssmr_account_message"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:orientation="horizontal"
                                     android:layout_marginTop="16dp"
                                     android:layout_marginLeft="16dp"
                                     android:layout_marginRight="16dp"
                                     android:layout_marginBottom="8dp">
-                                <ImageView
-                                    android:id="@+id/ssmr_img"
-                                    android:src="@drawable/smr_48_x_48"
-                                    android:layout_width="32dp"
-                                    android:layout_height="32dp"
-                                    android:layout_marginTop="4dp"
-                                    android:layout_marginLeft="2dp"
-                                    android:layout_marginRight="12dp"
-                                    android:scaleType="fitCenter" />
-                                <LinearLayout 
+                                    <ImageView
+                                        android:id="@+id/ssmr_img"
+                                        android:layout_width="36dp"
+                                        android:layout_height="36dp"
+                                        android:paddingLeft="1dp"
+                                        android:paddingRight="3dp"
+                                        android:paddingBottom="3dp"
+                                        android:paddingTop="5dp"
+                                        android:layout_marginRight="7dp"
+                                        android:src="@drawable/smr_48_x_48"
+                                        android:layout_centerVertical="true"
+                                        android:scaleType="fitCenter"
+                                        android:visibility="visible" />
+                                    <LinearLayout 
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:orientation="vertical">
-                                    <TextView
-                                    android:id="@+id/ssmrAccountStatusText"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:textColor="@color/charcoalGrey"
-                                    android:text=""
-                                    android:textSize="12dp"/>
-                                    <TextView
-                                    android:id="@+id/btnTxtSsmrViewHistory"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:textColor="@color/powerBlue"
-                                    android:text="View my reading history"
-                                    android:clickable="true"
-                                    android:visibility="gone"
-                                    android:textSize="12dp"/>
-                                </LinearLayout>
-                                </LinearLayout>
+                                    android:orientation="vertical"
+                                    android:layout_toRightOf="@+id/ssmr_img">
+                                        <TextView
+                                        android:id="@+id/ssmrAccountStatusText"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/charcoalGrey"
+                                        android:text=""
+                                        android:textSize="13dp"/>
+                                        <TextView
+                                        android:id="@+id/btnTxtSsmrViewHistory"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/powerBlue"
+                                        android:text="View my reading history"
+                                        android:clickable="true"
+                                        android:visibility="gone"
+                                        android:textSize="13dp"/>
+                                    </LinearLayout>
+                                </RelativeLayout>
                                 <Button
                                     android:id="@+id/btnReadingHistory"
                                     style="@style/Theme.MeterReading"

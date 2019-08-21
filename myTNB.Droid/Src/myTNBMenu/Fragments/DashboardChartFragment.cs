@@ -1077,21 +1077,53 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     set1 = new BarDataSet(yVals1, "");
                     set1.SetDrawIcons(false);
 
-                    if (selectedHistoryData.TariffBlocksLegend != null && selectedHistoryData.TariffBlocksLegend.Count > 0)
+                    List<int> listOfColor = new List<int>();
+                   
+                    for (int i = 0; i < barLength; i++)
                     {
-                        int[] colorSet = new int[selectedHistoryData.TariffBlocksLegend.Count];
-                        for (int k = 0; k < selectedHistoryData.TariffBlocksLegend.Count; k++)
+                        if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
                         {
-                            colorSet[k] = Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData);
-                        }
+                            for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                            {
+                                if (selectedHistoryData.TariffBlocksLegend != null && selectedHistoryData.TariffBlocksLegend.Count > 0)
+                                {
+                                    bool isFound = false;
+                                    for (int k = 0; k < selectedHistoryData.TariffBlocksLegend.Count; k++)
+                                    {
+                                        if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedHistoryData.TariffBlocksLegend[k].BlockId)
+                                        {
+                                            isFound = true;
+                                            listOfColor.Add(Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData));
+                                            break;
+                                        }
+                                    }
 
-                        set1.SetColors(colorSet);
+                                    if (!isFound)
+                                    {
+                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                    }
+
+                                }
+                                else
+                                {
+                                    listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                        }
                     }
-                    else
+
+
+                    int[] colorSet = new int[listOfColor.Count];
+                    for (int z = 0; z < listOfColor.Count; z++)
                     {
-                        int[] color = { Color.Argb(50, 255, 255, 255) };
-                        set1.SetColors(color);
+                        colorSet[z] = listOfColor[z];
                     }
+
+                    set1.SetColors(colorSet);
 
                     List<IBarDataSet> dataSets = new List<IBarDataSet>();
                     dataSets.Add(set1);
@@ -1231,21 +1263,53 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     set1 = new BarDataSet(yVals1, "");
                     set1.SetDrawIcons(false);
 
-                    if (selectedHistoryData.TariffBlocksLegend != null && selectedHistoryData.TariffBlocksLegend.Count > 0)
-                    {
-                        int[] colorSet = new int[selectedHistoryData.TariffBlocksLegend.Count];
-                        for (int k = 0; k < selectedHistoryData.TariffBlocksLegend.Count; k++)
-                        {
-                            colorSet[k] = Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData);
-                        }
+                    List<int> listOfColor = new List<int>();
 
-                        set1.SetColors(colorSet);
-                    }
-                    else
+                    for (int i = 0; i < barLength; i++)
                     {
-                        int[] color = { Color.Argb(50, 255, 255, 255) };
-                        set1.SetColors(color);
+                        if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                        {
+                            for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                            {
+                                if (selectedHistoryData.TariffBlocksLegend != null && selectedHistoryData.TariffBlocksLegend.Count > 0)
+                                {
+                                    bool isFound = false;
+                                    for (int k = 0; k < selectedHistoryData.TariffBlocksLegend.Count; k++)
+                                    {
+                                        if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedHistoryData.TariffBlocksLegend[k].BlockId)
+                                        {
+                                            isFound = true;
+                                            listOfColor.Add(Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData));
+                                            break;
+                                        }
+                                    }
+
+                                    if (!isFound)
+                                    {
+                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                    }
+
+                                }
+                                else
+                                {
+                                    listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                }
+                            }
+                        }
+                        else
+                        {
+                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                        }
                     }
+
+
+                    int[] colorSet = new int[listOfColor.Count];
+                    for (int z = 0; z < listOfColor.Count; z++)
+                    {
+                        colorSet[z] = listOfColor[z];
+                    }
+
+                    set1.SetColors(colorSet);
 
                     List<IBarDataSet> dataSets = new List<IBarDataSet>();
                     dataSets.Add(set1);
