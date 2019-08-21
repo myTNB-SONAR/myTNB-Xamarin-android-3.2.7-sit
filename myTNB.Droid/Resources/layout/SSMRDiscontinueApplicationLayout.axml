@@ -13,16 +13,17 @@
     <include
         layout="@layout/toolbar"
         id="@+id/toolbar" />
-    <FrameLayout
+    <LinearLayout
         android:id="@+id/rootview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="?actionBarSize"
+        android:orientation="vertical"
         android:background="@color/greyBackground">
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:overScrollMode="never"
             android:scrollbars="none"
             android:fillViewport="false">
@@ -232,6 +233,7 @@
             android:layout_marginTop="16dp"
             android:orientation="vertical"
             android:background="@color/white"
+            android:gravity="bottom"
             android:layout_gravity="bottom"
             android:id="@+id/disconnectionConfirmationContainer">
             <TextView
@@ -257,5 +259,5 @@
                 android:layout_marginBottom="16dp"
                 style="@style/Theme.SSMRDiscontinue" />
         </LinearLayout>
-    </FrameLayout>
+    </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>

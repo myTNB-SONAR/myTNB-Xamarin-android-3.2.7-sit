@@ -289,7 +289,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
         private void ShowContactDetails()
         {
-            if (contactDetails != null && contactDetails.isAllowEdit)
+            if (contactDetails != null && !contactDetails.isAllowEdit)
             {
                 contactDetailTtile.Visibility = ViewStates.Visible;
                 contactDetailContainer.Visibility = ViewStates.Visible;
@@ -493,7 +493,17 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             }
             
             this.mPresenter.OnSubmitApplication(selectedAccount.AccountNum,
-                oldEmail, oldPhoneNumber, newEmail, newPhoneNumber, terminationReason, smrMode);
+                oldEmail, FormatMobileNumberForSubmit(oldPhoneNumber), newEmail, FormatMobileNumberForSubmit(newPhoneNumber), terminationReason, smrMode);
+        }
+
+        private string FormatMobileNumberForSubmit(string mobileNumber)
+        {
+            string output = mobileNumber;
+            if (mobileNumber != "" && mobileNumber.Contains("+60"))
+            {
+                output = mobileNumber.Replace("+60","0");
+            }
+            return output;
         }
 
         public void ShowTermsAndConditions()
