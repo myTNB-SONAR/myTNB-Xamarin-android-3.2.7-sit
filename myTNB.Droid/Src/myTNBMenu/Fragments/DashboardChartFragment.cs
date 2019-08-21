@@ -30,6 +30,7 @@ using MikePhil.Charting.Listener;
 using MikePhil.Charting.Util;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.FAQ.Activity;
@@ -2186,7 +2187,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 if (response != null && response.Response != null && response.Response.Data != null)
                 {
+                    smrResponse = response;
+                    MyTNBAccountManagement.GetInstance().SetAccountActivityInfo(new SMRAccountActivityInfo(selectedAccount.AccountNum, smrResponse));
                     SMRPopUpUtils.OnSetSMRActivityInfoResponse(response);
+                    MyTNBAppToolTipData.SetSMRActivityInfo(response.Response);
                     Activity.RunOnUiThread(() =>
                     {
                         ssmrHistoryContainer.Visibility = ViewStates.Visible;

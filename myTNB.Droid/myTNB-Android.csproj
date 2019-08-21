@@ -1461,7 +1461,6 @@
     <Compile Include="Src\SSMRTerminate\MVP\SSMRTerminateContract.cs" />
     <Compile Include="Src\SSMRTerminate\MVP\SSMRTerminatePresenter.cs" />
     <Compile Include="Src\SSMR\SMRApplication\Adapter\SelectAccountAdapter.cs" />
-    <Compile Include="Src\SSMR\SubmitMeterReading\SubmitMeterReadingHelper.cs" />
     <AndroidResource Include="Resources\layout\SubmitMeterReadingLayout.axml" />
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\SubmitMeterReadingActivity.cs" />
     <AndroidResource Include="Resources\layout\SubmitMeterReadingCardLayout.axml" />
@@ -2229,6 +2228,45 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_action_camera_green.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_action_camera_green.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_camera_green.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_camera_green.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_camera_green.png" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\MeterValidationData.cs" />
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\PhotoContainerBox.cs" />
+    <AndroidResource Include="Resources\layout\CustomDialogWithImageHeader.axml" />
+    <Compile Include="Src\SSMR\Util\MyTNBAppToolTip.cs" />
+    <Compile Include="Src\SSMR\Util\MyTNBAppToolTipBuilder.cs" />
+    <Compile Include="Src\Base\MyTNBAppToolTipData.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\multiple_phase.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\multi_phase.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\multi_phase.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\multi_phase.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\multi_phase.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\meter_history_header_bg.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\meter_history_header_bg.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\meter_history_header_bg.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\meter_history_header_bg.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\meter_history_header_bg.png" />
+    <Compile Include="Src\SSMRMeterHistory\MVP\SSMRMeterHistoryPresenter.cs" />
+    <Compile Include="Src\SSMRMeterHistory\MVP\SSMRMeterHistoryContract.cs" />
+    <Compile Include="Src\SSMRMeterHistory\Api\GetAccountListSMREligibilityRequest.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\smr_why_accounts_info.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\smr_why_accounts_info.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\smr_why_accounts_info.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\smr_why_accounts_info.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\smr_why_accounts_info.png" />
+    <AndroidResource Include="Resources\drawable\rectangle_rounded_corner_light_blue_bg.xml" />
+    <AndroidResource Include="Resources\layout\CustomToolTipWithHeaderLayout.axml" />
+    <Compile Include="Src\Base\SMRAccountActivityInfo.cs" />
+    <Compile Include="Src\Base\MVP\IExceptionView.cs" />
+    <AndroidResource Include="Resources\drawable\red_light_button_background.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\bg_application_status.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\bg_application_status.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\bg_application_status.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\bg_application_status.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\bg_application_status.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -2608,6 +2646,7 @@
     <Folder Include="Src\myTNBMenu\ChartRenderer\" />
     <Folder Include="Resources\anim\" />
     <Folder Include="Resources\animator\" />
+    <Folder Include="Src\SSMRMeterHistory\Api\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

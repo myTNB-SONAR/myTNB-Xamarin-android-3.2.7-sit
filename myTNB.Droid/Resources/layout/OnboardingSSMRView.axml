@@ -31,42 +31,28 @@
       android:layout_width="match_parent"
       android:layout_height="80dp"
       android:layout_alignParentBottom="true"
-      android:paddingLeft="24dp"
-      android:paddingRight="24dp"
       android:gravity="center"
+      android:paddingLeft="16dp"
+      android:paddingRight="16dp"
       android:orientation="horizontal"
       android:background="@color/white">
-      <CheckBox
-          android:id="@+id/dontShowAgainCheckbox"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:button="@drawable/checkbox_selector"
-          android:checked="false"
-          android:layout_weight=".1"
-          android:text=" "/>
-      <TextView
-          android:id="@+id/dontShowMeAgainLabel"
-          android:layout_width="0dp"
-          android:layout_height="wrap_content"
-          android:text="Don't show me again"
-          android:layout_weight=".8"
-          android:textColor="#979797"
-          android:textSize="12dp"/>
       <TextView
           android:id="@+id/skipOnboarding"
-          android:layout_width="0dp"
+          android:layout_width="match_parent"
           android:layout_height="wrap_content"
           android:text="Skip"
-          android:layout_weight=".1"
+          android:layout_marginRight="8dp"
+          android:gravity="right"
           android:textColor="#979797"
           android:textSize="12dp"/>
         <Button
             android:id="@+id/btnStartApplication"
             android:layout_height="wrap_content"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:visibility="gone"
-            android:text="Start Application"
+            android:text="Get Started!"
             android:textAllCaps="false"
             style="@style/DarkButton"/>
   </LinearLayout>      

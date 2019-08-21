@@ -5,7 +5,6 @@ using Android.Util;
 using Android.Views;
 using Android.App;
 using Android.Widget;
-using Android.Support.V4.Content;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.Listener;
 using Java.Util.Concurrent;
 using Android.Hardware.Camera2;
@@ -13,15 +12,13 @@ using Android.Graphics;
 using Java.Lang;
 using System.Collections.Generic;
 using Android.Media;
-using Android;
-using Android.Content.PM;
-using Android.Support.V13.App;
 using Android.Hardware.Camera2.Params;
 using Java.Util;
 using Java.IO;
 using Orientation = Android.Content.Res.Orientation;
 using Android.Content;
 using myTNB_Android.Src.Utils;
+using Android.Text;
 
 namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 {
@@ -89,6 +86,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         SeekBar seekBar;
         Rect zoomArea;
         CropAreaView cropAreaView;
+        TextView takePhotoNoteView;
 
         public static SubmitMeterTakePhotoFragment NewInstance()
         {
@@ -176,6 +174,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             mTextureView = (AutoFitTextureView)view.FindViewById(Resource.Id.texture_view_autofit);
             ImageView captureImage = (ImageView)view.FindViewById(Resource.Id.imageTakePhoto);
             galleryPreview = (ImageView)view.FindViewById(Resource.Id.imageGallery);
+            galleryPreview.SetScaleType(ImageView.ScaleType.CenterCrop);
             galleryPreview.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.meter_capture_holder_inactive));
             seekBar = (SeekBar)view.FindViewById(Resource.Id.seekBar);
 
@@ -193,9 +192,16 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             seekBar.SetOnSeekBarChangeListener(new OnSeekbarChangeListener(this));
             LinearLayout linearLayout = view.FindViewById<LinearLayout>(Resource.Id.cropAreaContainer);
-            linearLayout.Alpha = 0.6f;
+            linearLayout.Alpha = 0.8f;
             cropAreaView = new CropAreaView(this.Activity);
             linearLayout.AddView(cropAreaView);
+
+            takePhotoNoteView = view.FindViewById<TextView>(Resource.Id.take_photo_note);
+            takePhotoNoteView.Text = GetString(Resource.String.ssmr_single_take_photo_note);
+            takePhotoNoteView.BringToFront();
+
+            TextViewUtils.SetMuseoSans300Typeface(takePhotoNoteView);
+
             try
             {
                 ((SubmitMeterTakePhotoActivity)Activity).EnableMoreMenu();
@@ -722,6 +728,16 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             galleryPreview.SetImageBitmap(myBitmap);
         }
 
+        public void UpdateTakePhotoNote(string takePhotoNote)
+        {
+            takePhotoNoteView.Text = takePhotoNote;
+        }
+
+        public void UpdateTakePhotoFormattedNote(ISpanned takePhotoFormattedNote)
+        {
+            takePhotoNoteView.TextFormatted = takePhotoFormattedNote;
+        }
+
         public class UpdateImageView : Java.Lang.Object, IRunnable
         {
             SubmitMeterTakePhotoFragment owner;
@@ -760,7 +776,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 base.OnDraw(canvas);
 
                 Paint rectPaint = new Paint(PaintFlags.AntiAlias);
-                rectPaint.Color = Color.Gray;
+                rectPaint.Color = Color.ParseColor("#49494a");
                 rectPaint.SetStyle(Paint.Style.Fill);
                 canvas.DrawPaint(rectPaint);
 
@@ -768,16 +784,17 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 int height = canvas.Height;
                 int width = canvas.Width;
                 int left = (int)(width - (width * .809)); 
-                int top = (int)(height - (height * .974));
+                int top = (int)(height - (height * .70));
                 int right = (int)(width - (width * .191));
                 int bottom = (int)(height - (height * .25));
-                canvas.DrawRect(left, top, right, bottom, rectPaint);
+                canvas.DrawRect(0, top, width, bottom, rectPaint);
                 cropAreaRect = new Rect(left,top,right,bottom);
 
                 rectPaint.SetXfermode(null);
-                rectPaint.Color = Color.Blue;
+                rectPaint.Color = Color.White;
                 rectPaint.SetStyle(Paint.Style.Stroke);
-                canvas.DrawRoundRect(left, top, right, bottom, 4, 4, rectPaint);
+                rectPaint.StrokeWidth = 10;
+                canvas.DrawRoundRect(-10, top, width + 10, bottom, 0, 0, rectPaint);
             }
 
             public Rect GetCropAreaRect()

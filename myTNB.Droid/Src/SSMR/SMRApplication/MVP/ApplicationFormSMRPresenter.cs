@@ -7,6 +7,7 @@ using Android.Util;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SSMR.SMRApplication.Api;
+using myTNB_Android.Src.SSMRMeterHistory.Api;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
@@ -134,11 +135,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                         ses_param2 = ""
                     };
 
-                    GetAccountsSMREligibilityResponse response = await this.api.GetAccountsSMREligibility(new GetAccountSMREligibilityRequest()
-                    {
-                        ContractAccounts = accountList,
-                        UserInterface = currentUsrInf
-                    });
+                    GetAccountsSMREligibilityResponse response = await this.api.GetAccountsSMREligibility(new GetAccountListSMREligibilityRequest(accountList));
 
                     if (response != null && response.Response != null && response.Response.ErrorCode == "7200" && response.Response.Data.SMREligibilityList.Count > 0)
                     {

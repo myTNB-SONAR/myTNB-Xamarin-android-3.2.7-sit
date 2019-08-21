@@ -8,11 +8,80 @@
   <include
       layout="@layout/toolbar"
       android:id="@+id/toolbar" />
-  <ListView
-      android:minWidth="25px"
-      android:minHeight="25px"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      android:id="@+id/account_list_view"
-      android:background="@color/white" />
+    <LinearLayout
+        android:id="@+id/eligibleAccountListContainer"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:background="@color/white">
+        <ListView
+          android:minWidth="25px"
+          android:minHeight="25px"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:id="@+id/account_list_view"
+          android:background="@color/white" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+        android:background="#e4e4e4"/>
+      <LinearLayout
+            android:id="@+id/smrWhyTheseAccountsInfo"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:paddingLeft="16dp"
+            android:paddingTop="18dp"
+            android:paddingBottom="18dp"
+            android:paddingRight="16dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:paddingLeft="2dp"
+                android:paddingTop="6dp"
+                android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/whyAccountsNotHere"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:textSize="12dp"
+                    android:textColor="#1c79ca"
+                    android:drawablePadding="1dp"
+                    android:text="Why are some of my accounts not here?"
+                    android:drawableLeft="@drawable/smr_why_accounts_info"/>
+            </LinearLayout>
+      </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#f9f8f8"
+        android:visibility="gone"
+        android:id="@+id/noEligibleAccountContainer">
+        <ImageView
+            android:id="@+id/noEligibleAccountImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-35dp"
+            android:foregroundGravity="center_horizontal|center"
+            android:scaleType="fitXY"
+            android:src="@drawable/no_eliglible_acc" />
+        <TextView
+            android:id="@+id/noEligibleAccountMessage"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Looks like your accounts aren’t eligible to enable Self Meter Reading service"
+            android:layout_marginTop="24dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:lineSpacingExtra="3dp"
+            android:textSize="14dp"
+            android:textColor="#8b8b8b"
+            android:layout_gravity="center"/>
+    </LinearLayout>
 </LinearLayout>

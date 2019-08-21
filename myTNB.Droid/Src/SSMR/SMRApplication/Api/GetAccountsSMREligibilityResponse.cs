@@ -50,12 +50,33 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Api
             [JsonProperty(PropertyName = "SMREligibility")]
             public string SMREligibility { get; set; }
 
+            [JsonProperty(PropertyName = "IsSMRTagged")]
+            public string IsSMRTagged { get; set; }
+
+        }
+
+        public class SMREligibiltyPopUpDetails
+        {
+            [JsonProperty(PropertyName = "Title")]
+            public string Title { get; set; }
+
+            [JsonProperty(PropertyName = "Description")]
+            public string Description { get; set; }
+
+            [JsonProperty(PropertyName = "CTA")]
+            public string CTA { get; set; }
+
+            [JsonProperty(PropertyName = "Type")]
+            public string Type { get; set; }
         }
 
         public class SMREligibilityListModel
         {
             [JsonProperty(PropertyName = "accountEligibilities")]
             public List<SMREligibilityModel> SMREligibilityList { get; set; }
+
+            [JsonProperty(PropertyName = "SMREligibiltyPopUpDetails")]
+            public List<SMREligibiltyPopUpDetails> SMREligibiltyPopUpDetailList { get; set; }
 
         }
 

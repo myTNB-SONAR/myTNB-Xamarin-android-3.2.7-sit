@@ -21,6 +21,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             void AddMeterImage(string readingUnit, string imageId, Bitmap imageBitmap);
             void AddMeterImageAt(int imagePosition, string readingUnit, string imageId, Bitmap imageBitmap);
             void RemoveMeterImageAt(int position);
+            void SetMeterImageList(List<MeterImageModel> meterImageDataList);
         }
     }
 }

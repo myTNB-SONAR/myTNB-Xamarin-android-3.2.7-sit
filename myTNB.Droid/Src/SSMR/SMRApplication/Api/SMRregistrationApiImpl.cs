@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Threading.Tasks;
+using myTNB_Android.Src.SSMRMeterHistory.Api;
 using myTNB_Android.Src.Utils;
 using Refit;
 
@@ -30,9 +31,9 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Api
             return api.SubmitSMRApplication(request);
         }
 
-        public Task<GetAccountsSMREligibilityResponse> GetAccountsSMREligibility([Body] GetAccountSMREligibilityRequest request)
+        public Task<GetAccountsSMREligibilityResponse> GetAccountsSMREligibility([Body] BaseRequest request)
         {
-            return api.GetAccountsSMREligibility(request);
+            return api.GetAccountsSMREligibility((GetAccountListSMREligibilityRequest)request);
         }
     }
 }

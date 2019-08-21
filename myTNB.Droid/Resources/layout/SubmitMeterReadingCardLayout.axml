@@ -10,8 +10,8 @@
         android:layout_gravity="center"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:contentPadding="8dp"
@@ -24,9 +24,16 @@
             android:layout_marginRight="8dp"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:weightSum="9"
+            android:weightSum="8"
             android:gravity="center"
             android:orientation="vertical">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Previous Meter Reading"
+                android:textColor="#8b8b8b"
+                android:textSize="12dp"
+                android:gravity="right"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
@@ -119,30 +126,12 @@
                     android:layout_marginLeft="1dp"
                     android:layout_marginTop="8dp"
                     android:textColor="#8b8b8b"/>
-                <TextView
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:textSize="16dp"
-                    android:text="."
-                    android:layout_marginTop="8dp"
-                    android:gravity="center"
-                    android:textColor="#8b8b8b"/>
-                <TextView
-                    android:id="@+id/previous_reading_9"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:text=""
-                    android:textSize="16dp"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:layout_marginTop="8dp"
-                    android:textColor="#8b8b8b"/>
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:orientation="horizontal"
-                android:weightSum="9"
+                android:weightSum="8"
                 android:gravity="right">
                 <EditText
                     android:id="@+id/new_reading_1"
@@ -214,7 +203,7 @@
                     android:gravity="center"
                     android:inputType="number"
                     android:digits="0123456789"/>
-            <EditText
+                <EditText
                     android:id="@+id/new_reading_6"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
@@ -233,9 +222,9 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:textSize="16dp"
-                    android:layout_weight="1"
                     android:text=""
                     android:maxLength="1"
+                    android:layout_weight="1"
                     android:layout_marginLeft="1dp"
                     android:layout_marginTop="8dp"
                     android:background="#f3f3f3"
@@ -248,30 +237,10 @@
                     android:layout_height="match_parent"
                     android:textSize="16dp"
                     android:text=""
+                    android:textDirection="rtl"
                     android:maxLength="1"
                     android:layout_weight="1"
                     android:layout_marginLeft="1dp"
-                    android:layout_marginTop="8dp"
-                    android:background="#f3f3f3"
-                    android:gravity="center"
-                    android:inputType="number"
-                    android:digits="0123456789"/>
-                <TextView
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:textSize="16dp"
-                    android:text="."
-                    android:layout_marginTop="8dp"
-                    android:gravity="center"/>
-                <EditText
-                    android:id="@+id/new_reading_9"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:textSize="16dp"
-                    android:text=""
-                    android:textDirection="rtl"
-                    android:maxLength="2"
-                    android:layout_weight="1"
                     android:layout_marginTop="8dp"
                     android:background="#f3f3f3"
                     android:gravity="center"
@@ -284,10 +253,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:layout_gravity="right"
+                android:visibility="gone"
                 android:textSize="10dp"
                 android:textColor="#e44b21"
-                android:visibility="gone"
-                android:text="This value is too high!"/>  
+                android:text="This value is less than your previous reading."/>  
             <TextView
                 android:id="@+id/reading_meter_type"
                 android:layout_width="wrap_content"
