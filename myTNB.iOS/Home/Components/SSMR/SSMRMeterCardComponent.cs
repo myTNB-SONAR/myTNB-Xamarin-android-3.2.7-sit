@@ -29,6 +29,7 @@ namespace myTNB
         nfloat _containerHeightOriginal;
         string _previousMeterReadingValue = string.Empty;
         public string _meterReadingValue = string.Empty;
+        public bool IsActive;
 
         public SSMRMeterCardComponent(SSMRReadMeterViewController controller, UIView parentView, nfloat yLocation)
         {
@@ -210,6 +211,11 @@ namespace myTNB
 
         private void SetTextFieldEvents(UITextField textField)
         {
+            textField.ShouldBeginEditing = (sender) =>
+            {
+                IsActive = true;
+                return true;
+            };
             textField.EditingChanged += (sender, e) =>
             {
                 string textStr = textField.Text;
@@ -252,6 +258,7 @@ namespace myTNB
                 {
                     UpdateMeterReadingValue();
                 }
+                IsActive = true;
             };
             textField.EditingDidEnd += (sender, e) =>
             {
@@ -261,6 +268,7 @@ namespace myTNB
                 }
                 RepopulateTextFields();
                 ValidateTextField();
+                IsActive = false;
             };
         }
 
@@ -410,7 +418,7 @@ namespace myTNB
             }
         }
 
-        private void ValidateTextField()
+        public void ValidateTextField()
         {
             if (!string.IsNullOrEmpty(_meterReadingValue) && !string.IsNullOrWhiteSpace(_meterReadingValue))
             {

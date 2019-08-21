@@ -39,6 +39,9 @@ namespace myTNB
         int _currentPageIndex;
         bool _isThreePhase = false;
 
+        private bool _isKeyboardActive;
+        private List<SSMRMeterCardComponent> _meterCardComponentList = new List<SSMRMeterCardComponent>();
+
         public class MeterReadingRequest
         {
             public string MroID { set; get; }
@@ -615,6 +618,7 @@ namespace myTNB
                 bool hasOCRError = false;
                 string errorMessage = string.Empty;
                 nfloat yPos = _takePhotoView.Frame.GetMaxY() + _paddingY;
+                _meterCardComponentList.Clear();
                 foreach (var previousMeter in _previousMeterList)
                 {
                     SSMRMeterCardComponent sSMRMeterCardComponent = new SSMRMeterCardComponent(this, _meterReadScrollView, yPos);
@@ -647,6 +651,7 @@ namespace myTNB
                     yPos = sSMRMeterCardComponent.GetView().Frame.GetMaxY() + _paddingY;
                     _meterReadScrollView.ContentSize = new CGSize(ViewWidth, yPos);
                     scrollViewFrame = _meterReadScrollView.Frame;
+                    _meterCardComponentList.Add(sSMRMeterCardComponent);
                 }
                 lastCardYPos = yPos;
                 ShowGeneralInlineError(hasOCRError, errorMessage);
@@ -714,6 +719,18 @@ namespace myTNB
 
         private void OnTapTakePhoto()
         {
+            if (_isKeyboardActive && _meterCardComponentList != null)
+            {
+                for (int i = 0; i < _meterCardComponentList.Count; i++)
+                {
+                    SSMRMeterCardComponent item = _meterCardComponentList[i];
+                    if (item != null && item.IsActive)
+                    {
+                        item.ValidateTextField();
+                        item.IsActive = false;
+                    }
+                }
+            }
             Dictionary<string, bool> ReadingDictionary = new Dictionary<string, bool>();
             if (_previousMeterList != null)
             {
@@ -732,7 +749,9 @@ namespace myTNB
                             registerStr = "kW";
                             break;
                     }
-                    ReadingDictionary.Add(registerStr, false);
+
+                    bool needsPhoto = string.IsNullOrEmpty(previousMeter.CurrentReading) || !previousMeter.IsValidManualReading;
+                    ReadingDictionary.Add(registerStr, !needsPhoto);
                 }
                 UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
                 SSMRCaptureMeterViewController viewController =
@@ -871,13 +890,13 @@ namespace myTNB
             if (!IsViewLoaded)
                 return;
 
-            bool visible = notification.Name == UIKeyboard.WillShowNotification;
+            _isKeyboardActive = notification.Name == UIKeyboard.WillShowNotification;
             UIView.BeginAnimations("AnimateForKeyboard");
             UIView.SetAnimationBeginsFromCurrentState(true);
             UIView.SetAnimationDuration(UIKeyboard.AnimationDurationFromNotification(notification));
             UIView.SetAnimationCurve((UIViewAnimationCurve)UIKeyboard.AnimationCurveFromNotification(notification));
 
-            if (visible)
+            if (_isKeyboardActive)
             {
                 CGRect r = UIKeyboard.BoundsFromNotification(notification);
                 CGRect viewFrame = View.Bounds;
