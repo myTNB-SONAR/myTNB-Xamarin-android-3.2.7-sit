@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using CoreGraphics;
+using myTNB.Home.Components;
 using myTNB.Model;
 using myTNB.Model.Usage;
 using myTNB.SitecoreCMS.Model;
@@ -20,12 +21,12 @@ namespace myTNB
 
         internal UIScrollView _scrollViewContent;
         internal CustomUIView _navbarContainer, _accountSelectorContainer, _viewSeparator, _viewStatus
-            , _viewChart, _viewRE, _viewLegend, _viewToggle, _viewSSMR, _viewTips, _viewFooter, _rmKwhDropDownView
-            , _chart, _tips, _RE, _status, _ssmr, _tariff, _legend;
+            , _viewChart, _viewRE, _viewLegend, _viewToggle, _viewSSMR, _viewTips, _viewFooter, _rmKwhDropDownView, _viewRefresh
+            , _chart, _tips, _RE, _status, _ssmr, _tariff, _legend, _refresh;
         internal UILabel _lblAddress, _RMLabel, _kWhLabel;
         internal UIImageView _bgImageView;
 
-        internal bool _rmkWhFlag, _tariffIsVisible = false;
+        internal bool _rmkWhFlag, _tariffIsVisible;
         internal RMkWhEnum _rMkWhEnum;
         internal nfloat _lastContentOffset;
         internal bool isBcrmAvailable, isNormalChart, isREAccount, accountIsSSMR;
@@ -42,6 +43,8 @@ namespace myTNB
             NavigationController.NavigationBarHidden = true;
             InitializeValues();
             AddBackgroundImage();
+            PrepareRefreshView();
+            View.AddSubview(_viewRefresh);
             SetNavigation();
             AddScrollView();
         }
@@ -49,14 +52,9 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            InitializeValues();
             if (!DataManager.DataManager.SharedInstance.IsSameAccount)
             {
-                _rmkWhFlag = false;
-                _tariffIsVisible = false;
-                _rMkWhEnum = RMkWhEnum.RM;
-                UpdateBackgroundImage(false);
-                AddSubviews();
+                ResetViews();
             }
         }
 
@@ -70,6 +68,15 @@ namespace myTNB
             base.ViewWillDisappear(animated);
         }
 
+        private void PrepareRefreshView()
+        {
+            _viewRefresh = new CustomUIView(new CGRect(0, 0, ViewWidth, ViewHeight))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+            _viewRefresh.Hidden = true;
+        }
+
         private void InitializeValues()
         {
             isREAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
@@ -78,15 +85,25 @@ namespace myTNB
             accountIsSSMR = UsageHelper.IsSSMR(DataManager.DataManager.SharedInstance.SelectedAccount);
         }
 
+        private void ResetViews()
+        {
+            InitializeValues();
+            _rmkWhFlag = false;
+            _tariffIsVisible = false;
+            _rMkWhEnum = RMkWhEnum.RM;
+            UpdateBackgroundImage(false);
+            AddSubviews();
+        }
+
         private void SetNavigation()
         {
             _navbarContainer = new CustomUIView(new CGRect(0, 0, ViewWidth, DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height))
             {
                 BackgroundColor = UIColor.Clear
             };
-            UIView viewTitleBar = new UIView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + 8f, _navbarContainer.Frame.Width, GetScaledHeight(24f)));
+            UIView viewTitleBar = new UIView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + GetScaledHeight(8f), _navbarContainer.Frame.Width, GetScaledHeight(24f)));
 
-            UILabel lblTitle = new UILabel(new CGRect(58, 0, _navbarContainer.Frame.Width - 116, GetScaledHeight(24f)))
+            UILabel lblTitle = new UILabel(new CGRect(GetScaledWidth(56f), 0, viewTitleBar.Frame.Width - (GetScaledWidth(56) * 2), GetScaledHeight(24f)))
             {
                 Font = TNBFont.MuseoSans_16_500,
                 Text = "Usage"
@@ -97,7 +114,7 @@ namespace myTNB
             viewTitleBar.AddSubview(lblTitle);
 
             nfloat imageWidth = GetScaledWidth(24f);
-            UIView viewBack = new UIView(new CGRect(18, 0, imageWidth, imageWidth));
+            UIView viewBack = new UIView(new CGRect(BaseMarginWidth16, 0, imageWidth, imageWidth));
             UIImageView imgViewBack = new UIImageView(new CGRect(0, 0, imageWidth, imageWidth))
             {
                 Image = UIImage.FromBundle(UsageConstants.IMG_Back)
@@ -129,6 +146,13 @@ namespace myTNB
             _bgImageView.Image = UIImage.FromBundle(isLegendVisible ? "Usage-Bg-Long" : "Usage-Bg-Normal");
         }
 
+        private void UpdateBGForRefresh()
+        {
+            nfloat height = GetScaledHeight(190f);
+            ViewHelper.AdjustFrameSetHeight(_bgImageView, height);
+            _bgImageView.Image = UIImage.FromBundle("Usage-Refresh-Bg");
+        }
+
         private void AddScrollView()
         {
             nfloat height = UIScreen.MainScreen.Bounds.Height - _navbarContainer.Frame.GetMaxY() - GetScaledHeight(8F);
@@ -144,7 +168,7 @@ namespace myTNB
             _scrollViewContent.Scrolled += OnScroll;
             View.AddSubview(_scrollViewContent);
 
-            _accountSelectorContainer = new CustomUIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(24)));// { BackgroundColor = UIColor.Blue };
+            _accountSelectorContainer = new CustomUIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(24)));
             _lblAddress = new UILabel(new CGRect(BaseMargin, 0, BaseMarginedWidth, 0))
             {
                 LineBreakMode = UILineBreakMode.WordWrap,
@@ -354,9 +378,15 @@ namespace myTNB
             SetContentView();
         }
 
-        internal virtual void OnReadHistoryTap() { }
+        internal virtual void OnReadHistoryTap()
+        {
+            DataManager.DataManager.SharedInstance.IsSameAccount = true;
+        }
 
-        internal virtual void OnSubmitMeterTap() { }
+        internal virtual void OnSubmitMeterTap()
+        {
+            DataManager.DataManager.SharedInstance.IsSameAccount = true;
+        }
 
         private void AddSSMRViewShadow(ref CustomUIView view)
         {
@@ -491,7 +521,6 @@ namespace myTNB
                 ShowHideRMKwHDropDown();
                 _tariffSelectionComponent.SetRMkWhLabel(_rMkWhEnum);
                 UpdateRMkWhSelectionColour(_rMkWhEnum);
-                //TO DO: Add Action here when KWH is selected....
                 _chartView.ToggleRMKWHValues(_rMkWhEnum);
             }));
             _rmKwhDropDownView.AddSubview(kWhView);
@@ -520,7 +549,6 @@ namespace myTNB
                 ShowHideRMKwHDropDown();
                 _tariffSelectionComponent.SetRMkWhLabel(_rMkWhEnum);
                 UpdateRMkWhSelectionColour(_rMkWhEnum);
-                //TO DO: Add Action here when RM is selected....
                 _chartView.ToggleRMKWHValues(_rMkWhEnum);
             }));
             _rmKwhDropDownView.AddSubview(rMView);
@@ -786,6 +814,37 @@ namespace myTNB
             view.Layer.ShadowOffset = new CGSize(0, -8);
             view.Layer.ShadowRadius = 8;
             view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
+        }
+        #endregion
+        #region Refresh Methods
+        internal void SetRefreshScreen()
+        {
+            _scrollViewContent.Hidden = true;
+            _viewRefresh.Hidden = false;
+            UpdateBGForRefresh();
+            var bcrm = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
+            var bcrmMsg = bcrm?.DowntimeMessage ?? "Error_BCRMMessage".Translate();
+            string desc = isBcrmAvailable ? AccountUsageCache.GetRefreshDataModel()?.RefreshMessage ?? string.Empty : bcrmMsg;
+
+            if (_refresh != null)
+            {
+                _refresh.RemoveFromSuperview();
+            }
+            RefreshScreenComponent refreshScreenComponent = new RefreshScreenComponent(View, GetScaledHeight(84f));
+            refreshScreenComponent.SetIsBCRMDown(!isBcrmAvailable);
+            refreshScreenComponent.SetRefreshButtonHidden(!isBcrmAvailable);
+            refreshScreenComponent.SetButtonText(AccountUsageCache.GetRefreshDataModel()?.RefreshBtnText ?? string.Empty);
+            refreshScreenComponent.SetDescription(desc);
+            refreshScreenComponent.CreateComponent();
+            refreshScreenComponent.OnButtonTap = RefreshButtonOnTap;
+            _refresh = refreshScreenComponent.GetView();
+            _viewRefresh.AddSubview(_refresh);
+        }
+        internal virtual void RefreshButtonOnTap()
+        {
+            _scrollViewContent.Hidden = false;
+            _viewRefresh.Hidden = true;
+            ResetViews();
         }
         #endregion
     }

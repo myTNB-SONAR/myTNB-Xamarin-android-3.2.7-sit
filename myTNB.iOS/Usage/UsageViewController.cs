@@ -34,6 +34,7 @@ namespace myTNB
         #region OVERRIDDEN Methods
         internal override void OnReadHistoryTap()
         {
+            base.OnReadHistoryTap();
             UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
             SSMRReadingHistoryViewController viewController =
                 storyBoard.InstantiateViewController("SSMRReadingHistoryViewController") as SSMRReadingHistoryViewController;
@@ -45,6 +46,7 @@ namespace myTNB
         }
         internal override void OnSubmitMeterTap()
         {
+            base.OnSubmitMeterTap();
             UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
             SSMRReadMeterViewController viewController =
                 storyBoard.InstantiateViewController("SSMRReadMeterViewController") as SSMRReadMeterViewController;
@@ -111,6 +113,12 @@ namespace myTNB
         {
             CallGetAccountStatusAPI();
         }
+        internal override void RefreshButtonOnTap()
+        {
+            base.RefreshButtonOnTap();
+            CallGetAccountUsageAPI();
+            CallGetAccountDueAmountAPI();
+        }
         #endregion
         #region API Calls
         private void CallGetAccountUsageAPI()
@@ -125,16 +133,24 @@ namespace myTNB
                         {
                             AccountUsageCache.ClearTariffLegendList();
                             AccountUsageResponseModel accountUsageResponse = await UsageServiceCall.GetAccountUsage(DataManager.DataManager.SharedInstance.SelectedAccount);
-                            AccountUsageCache.AddTariffLegendList(accountUsageResponse);
                             AccountUsageCache.SetData(DataManager.DataManager.SharedInstance.SelectedAccount.accNum, accountUsageResponse);
+                            if (AccountUsageCache.IsSuccess)
+                            {
+                                SetTariffLegendComponent();
+                                SetChartView(false);
+                            }
+                            else
+                            {
+                                SetRefreshScreen();
+                            }
                         }
                         else
                         {
                             AccountUsageCache.ClearTariffLegendList();
                             AccountUsageCache.GetCachedData(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                            SetTariffLegendComponent();
+                            SetChartView(false);
                         }
-                        SetTariffLegendComponent();
-                        SetChartView(false);
                     }
                     else
                     {

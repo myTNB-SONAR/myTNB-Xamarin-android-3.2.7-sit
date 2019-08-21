@@ -13,22 +13,9 @@ namespace myTNB
         public static AccountUsageCache Instance { get { return lazy.Value; } }
 
         private static List<LegendItemModel> TariffLegendList = new List<LegendItemModel>();
+        public static AccountUsageResponseDataModel RefreshDataModel;
 
-        public static void AddTariffLegendList(AccountUsageResponseModel response)
-        {
-            if (TariffLegendList == null)
-            {
-                TariffLegendList = new List<LegendItemModel>();
-            }
-            if (response != null &&
-                response.d != null &&
-                response.d.data != null &&
-                response.d.data.TariffBlocksLegend != null &&
-                response.d.data.TariffBlocksLegend.Count > 0)
-            {
-                TariffLegendList = response.d.data.TariffBlocksLegend;
-            }
-        }
+        public static bool IsSuccess;
 
         public static void ClearTariffLegendList()
         {
@@ -44,8 +31,18 @@ namespace myTNB
             return new List<LegendItemModel>();
         }
 
+        public static AccountUsageResponseDataModel GetRefreshDataModel()
+        {
+            if (RefreshDataModel != null)
+            {
+                return RefreshDataModel;
+            }
+            return new AccountUsageResponseDataModel();
+        }
+
         public static void SetData(string accountNumber, AccountUsageResponseModel response)
         {
+            IsSuccess = response?.d?.IsSuccess ?? false;
             if (response != null && response.d != null
                 && response.d.IsSuccess && response.d.data != null)
             {
@@ -55,6 +52,10 @@ namespace myTNB
                 ByMonthUsage = data.ByMonth.Months;
 
                 SaveToCache(accountNumber, data);
+            }
+            else
+            {
+                RefreshDataModel = response?.d ?? new AccountUsageResponseDataModel();
             }
         }
 

@@ -1144,6 +1144,9 @@
     <ImageAsset Include="Assets.xcassets\Usage-Bg-Long.imageset\Usage-Bg-Long%403x.png" />
     <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\ocrReading%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\ocrReading%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Usage-Refresh-Bg.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Usage-Refresh-Bg.imageset\Usage-Refresh-Bg%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Usage-Refresh-Bg.imageset\Usage-Refresh-Bg%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1523,6 +1526,7 @@
     <Folder Include="Assets.xcassets\SSMR-Refresh.imageset\" />
     <Folder Include="Assets.xcassets\Usage-Bg-Normal.imageset\" />
     <Folder Include="Assets.xcassets\Usage-Bg-Long.imageset\" />
+    <Folder Include="Assets.xcassets\Usage-Refresh-Bg.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
