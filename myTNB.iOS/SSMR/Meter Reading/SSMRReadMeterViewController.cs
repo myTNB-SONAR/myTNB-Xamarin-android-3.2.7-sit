@@ -29,7 +29,7 @@ namespace myTNB
         UIPageControl _pageControl;
         UIScrollView _meterReadScrollView;
         UIImageView _cameraIconView;
-        UILabel _descriptionLabel, _takePhotoLabel, _errorLabel;
+        UILabel _takePhotoLabel, _errorLabel;
         UITextView _txtViewNote;
         nfloat _paddingX = ScaleUtility.GetScaledWidth(16f);
         nfloat _paddingY = ScaleUtility.GetScaledHeight(16f);
@@ -276,23 +276,30 @@ namespace myTNB
                 Tag = 1
             };
 
-            _descriptionLabel = new UILabel(new CGRect(_paddingX, _paddingY, descLabelWidth, 44f))
+            NSError htmlBodyError = null;
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(SSMRConstants.I18N_HeaderDesc)
+                , ref htmlBodyError, MyTNBFont.FONTNAME_300, (float)GetScaledHeight(14F));
+            NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
+            mutableHTMLBody.AddAttributes(new UIStringAttributes
             {
-                BackgroundColor = UIColor.Clear,
-                Font = MyTNBFont.MuseoSans14_300,
-                TextColor = MyTNBColor.CharcoalGrey,
-                Lines = 0,
-                TextAlignment = UITextAlignment.Left,
-                Text = GetI18NValue(SSMRConstants.I18N_HeaderDesc)
+                ForegroundColor = MyTNBColor.CharcoalGrey
+            }, new NSRange(0, htmlBody.Length));
+            UITextView description = new UITextView(new CGRect(_paddingX, _paddingY, descLabelWidth, GetScaledHeight(44)))
+            {
+                Editable = false,
+                ScrollEnabled = true,
+                AttributedText = mutableHTMLBody,
+                UserInteractionEnabled = false,
+                ContentInset = new UIEdgeInsets(0, -5, 0, -5)
             };
+            description.ScrollIndicatorInsets = UIEdgeInsets.Zero;
+            CGSize size = description.SizeThatFits(new CGSize(description.Frame.Width, 1000F));
+            description.Frame = new CGRect(description.Frame.Location, new CGSize(description.Frame.Width, size.Height));
 
-            CGSize cGSize = _descriptionLabel.SizeThatFits(new CGSize(descLabelWidth, 1000f));
-
-            ViewHelper.AdjustFrameSetHeight(_descriptionLabel, cGSize.Height);
-            _takePhotoView.AddSubview(_descriptionLabel);
+            _takePhotoView.AddSubview(description);
 
             nfloat btnViewWidth = _meterReadScrollView.Frame.Width - (_paddingX * 2);
-            _takePhotoBtnView = new UIView(new CGRect(_paddingX, _descriptionLabel.Frame.GetMaxY() + GetScaledHeight(12f)
+            _takePhotoBtnView = new UIView(new CGRect(_paddingX, description.Frame.GetMaxY() + GetScaledHeight(12f)
                 , btnViewWidth, GetScaledHeight(48f)))
             {
                 BackgroundColor = UIColor.White
@@ -457,7 +464,7 @@ namespace myTNB
 
                 UILabel title = new UILabel(new CGRect(widthMargin, imageView.Frame.GetMaxY() + GetScaledHeight(24f), viewContainer.Frame.Width - (widthMargin * 2), 0))
                 {
-                    Font = MyTNBFont.MuseoSans14_500,
+                    Font = TNBFont.MuseoSans_14_500,
                     TextColor = MyTNBColor.CharcoalGrey,
                     TextAlignment = UITextAlignment.Left,
                     Lines = 0,
@@ -481,19 +488,27 @@ namespace myTNB
                     }
                     desc = string.Format(desc, count, missingReading);
                 }
-                UILabel description = new UILabel(new CGRect(widthMargin
+
+                NSError htmlBodyError = null;
+                NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(desc
+                    , ref htmlBodyError, MyTNBFont.FONTNAME_300, (float)GetScaledHeight(14F));
+                NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
+                mutableHTMLBody.AddAttributes(new UIStringAttributes
+                {
+                    ForegroundColor = MyTNBColor.CharcoalGrey
+                }, new NSRange(0, htmlBody.Length));
+                UITextView description = new UITextView(new CGRect(widthMargin
                     , title.Frame.GetMaxY() + GetScaledHeight(12f), viewContainer.Frame.Width - (widthMargin * 2), 0))
                 {
-                    Font = MyTNBFont.MuseoSans14_300,
-                    TextColor = MyTNBColor.CharcoalGrey,
-                    TextAlignment = UITextAlignment.Left,
-                    Lines = 0,
-                    LineBreakMode = UILineBreakMode.TailTruncation,
-                    Text = desc
+                    Editable = false,
+                    ScrollEnabled = true,
+                    AttributedText = mutableHTMLBody,
+                    UserInteractionEnabled = false,
+                    ContentInset = new UIEdgeInsets(0, -5, 0, -5)
                 };
-
-                CGSize descNewSize = description.SizeThatFits(new CGSize(viewContainer.Frame.Width - (widthMargin * 2), 1000f));
-                ViewHelper.AdjustFrameSetHeight(description, descNewSize.Height);
+                description.ScrollIndicatorInsets = UIEdgeInsets.Zero;
+                CGSize size = description.SizeThatFits(new CGSize(description.Frame.Width, 1000F));
+                description.Frame = new CGRect(description.Frame.Location, new CGSize(description.Frame.Width, size.Height));
 
                 viewContainer.AddSubview(description);
 
