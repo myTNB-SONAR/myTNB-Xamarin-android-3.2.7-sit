@@ -66,7 +66,7 @@ namespace myTNB
 
             _viewIcon = new UIView(new CGRect(BaseMarginWidth16, GetScaledHeight(18f), GetScaledWidth(28f), GetScaledHeight(28f)))
             {
-                BackgroundColor = MyTNBColor.PaleGreyThree
+                BackgroundColor = MyTNBColor.PaleGrey
             };
             _viewIcon.Layer.CornerRadius = GetScaledHeight(14f);
 
@@ -83,7 +83,7 @@ namespace myTNB
 
             _viewTitle = new UIView(new CGRect(_iconView.Frame.GetMaxX() + GetScaledWidth(12F), BaseMarginWidth16, labelWidth * 0.8F, _lblTitle.Frame.Height * 0.8F))
             {
-                BackgroundColor = MyTNBColor.PaleGreyThree
+                BackgroundColor = MyTNBColor.PaleGrey
             };
             _viewTitle.Layer.CornerRadius = GetScaledHeight(4f);
 
@@ -98,7 +98,7 @@ namespace myTNB
 
             _viewDate = new UIView(new CGRect(_iconView.Frame.GetMaxX() + GetScaledWidth(12F), _lblTitle.Frame.GetMaxY(), labelWidth * 0.7F, _lblDate.Frame.Height * 0.8F))
             {
-                BackgroundColor = MyTNBColor.PaleGreyThree
+                BackgroundColor = MyTNBColor.PaleGrey
             };
             _viewDate.Layer.CornerRadius = GetScaledHeight(4f);
 
@@ -112,7 +112,7 @@ namespace myTNB
 
             _viewAmount = new UIView(new CGRect(_viewWidth / 2 + labelWidth * 0.2F, GetScaledHeight(22f), labelWidth * 0.8F, _lblAmount.Frame.Height * 0.8F))
             {
-                BackgroundColor = MyTNBColor.PaleGreyThree
+                BackgroundColor = MyTNBColor.PaleGrey
             };
             _viewAmount.Layer.CornerRadius = GetScaledHeight(4f);
 

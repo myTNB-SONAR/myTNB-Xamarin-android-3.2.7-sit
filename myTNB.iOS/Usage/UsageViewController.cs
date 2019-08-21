@@ -21,7 +21,7 @@ namespace myTNB
             if (!DataManager.DataManager.SharedInstance.IsSameAccount)
             {
                 CallGetAccountUsageAPI();
-                CallGetAccountDueAmountAPI();
+                CallGetAccountDueAmountAPI(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
             }
         }
 
@@ -116,7 +116,7 @@ namespace myTNB
         {
             base.RefreshButtonOnTap();
             CallGetAccountUsageAPI();
-            CallGetAccountDueAmountAPI();
+            CallGetAccountDueAmountAPI(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
         }
         #endregion
         #region API Calls
@@ -158,7 +158,7 @@ namespace myTNB
                 });
             });
         }
-        private void CallGetAccountDueAmountAPI()
+        private void CallGetAccountDueAmountAPI(string accNum)
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -176,40 +176,43 @@ namespace myTNB
                         }
                         var account = DataManager.DataManager.SharedInstance.SelectedAccount;
                         DueAmountResponseModel dueAmountResponse = await UsageServiceCall.GetAccountDueAmount(account);
-                        if (dueAmountResponse != null &&
+                        if (accNum == DataManager.DataManager.SharedInstance.SelectedAccount.accNum)
+                        {
+                            if (dueAmountResponse != null &&
                             dueAmountResponse.d != null &&
                             dueAmountResponse.d.didSucceed &&
                             dueAmountResponse.d.data != null)
-                        {
-                            var model = dueAmountResponse.d.data;
-                            var item = new DueAmountDataModel
                             {
-                                accNum = account.accNum,
-                                accNickName = account.accountNickName,
-                                IsReAccount = account.IsREAccount,
-                                amountDue = model.amountDue,
-                                billDueDate = model.billDueDate,
-                                IncrementREDueDateByDays = model.IncrementREDueDateByDays
-                            };
-                            AmountDueCache.SaveDues(item);
-                            if (isREAccount)
-                            {
-                                UpdateREAmountViewUI(false);
+                                var model = dueAmountResponse.d.data;
+                                var item = new DueAmountDataModel
+                                {
+                                    accNum = account.accNum,
+                                    accNickName = account.accountNickName,
+                                    IsReAccount = account.IsREAccount,
+                                    amountDue = model.amountDue,
+                                    billDueDate = model.billDueDate,
+                                    IncrementREDueDateByDays = model.IncrementREDueDateByDays
+                                };
+                                AmountDueCache.SaveDues(item);
+                                if (isREAccount)
+                                {
+                                    UpdateREAmountViewUI(false);
+                                }
+                                else
+                                {
+                                    UpdateFooterUI(false);
+                                }
                             }
                             else
                             {
-                                UpdateFooterUI(false);
-                            }
-                        }
-                        else
-                        {
-                            if (isREAccount)
-                            {
-                                UpdateREAmountViewForRefreshState();
-                            }
-                            else
-                            {
-                                UpdateFooterForRefreshState();
+                                if (isREAccount)
+                                {
+                                    UpdateREAmountViewForRefreshState();
+                                }
+                                else
+                                {
+                                    UpdateFooterForRefreshState();
+                                }
                             }
                         }
                     }
@@ -228,25 +231,23 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        ActivityIndicator.Show();
+                        SetDisconnectionComponent(true);
                         AccountStatusCache.ClearAccountStatusData();
 
                         AccountStatusResponseModel accountStatusResponse = await UsageServiceCall.GetAccountStatus(DataManager.DataManager.SharedInstance.SelectedAccount);
                         AccountStatusCache.AddAccountStatusData(accountStatusResponse);
-                        SetDisconnectionComponent();
+                        SetDisconnectionComponent(false);
 
                         if (AccountStatusCache.AccountStatusIsAvailable())
                         {
-                            if (accountIsSSMR)
+                            if (!isREAccount && accountIsSSMR)
                             {
                                 GetSMRAccountActivityInfo();
                             }
                         }
-                        ActivityIndicator.Hide();
                     }
                     else
                     {
-                        ActivityIndicator.Hide();
                         DisplayNoDataAlert();
                     }
                 });
@@ -260,7 +261,7 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        ActivityIndicator.Show();
+                        SetSSMRComponent(true);
                         SMRAccountActivityInfoResponseModel ssmrInfoResponse = await UsageServiceCall.GetSMRAccountActivityInfo(DataManager.DataManager.SharedInstance.SelectedAccount);
                         if (ssmrInfoResponse != null &&
                             ssmrInfoResponse.d != null &&
@@ -269,13 +270,15 @@ namespace myTNB
                         {
                             SSMRActivityInfoCache.SetDashboardCache(ssmrInfoResponse, DataManager.DataManager.SharedInstance.SelectedAccount);
                             SSMRActivityInfoCache.SetReadingHistoryCache(ssmrInfoResponse, DataManager.DataManager.SharedInstance.SelectedAccount);
+                            SetSSMRComponent(false);
                         }
-                        SetSSMRComponent();
-                        ActivityIndicator.Hide();
+                        else
+                        {
+                            HideSSMRView();
+                        }
                     }
                     else
                     {
-                        ActivityIndicator.Hide();
                         DisplayNoDataAlert();
                     }
                 });

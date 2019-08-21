@@ -29,5 +29,6 @@
         public static string I18N_NeedToPay = "needToPay";
         public static string I18N_PaidExtra = "paidExtra";
         public static string I18N_ClearedAllBills = "clearedAllBills";
+        public static string I18N_ViewReadHistory = "viewReadHistory";
     }
 }

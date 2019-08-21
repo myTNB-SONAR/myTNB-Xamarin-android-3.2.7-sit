@@ -30,6 +30,7 @@ namespace myTNB
         internal RMkWhEnum _rMkWhEnum;
         internal nfloat _lastContentOffset;
         internal bool isBcrmAvailable, isNormalChart, isREAccount, accountIsSSMR;
+        internal bool _statusIsLoading;
 
         internal CGRect _origViewFrame;
 
@@ -42,12 +43,12 @@ namespace myTNB
             PageName = UsageConstants.PageName;
             base.ViewDidLoad();
             NavigationController.NavigationBarHidden = true;
-            InitializeValues();
             AddBackgroundImage();
             PrepareRefreshView();
-            View.AddSubview(_viewRefresh);
             SetNavigation();
             AddScrollView();
+            SetDisconnectionComponent(false);
+            SetSSMRComponent(false);
         }
 
         public override void ViewWillAppear(bool animated)
@@ -56,6 +57,10 @@ namespace myTNB
             if (!DataManager.DataManager.SharedInstance.IsSameAccount)
             {
                 ResetViews();
+                if (!accountIsSSMR)
+                {
+                    HideSSMRView();
+                }
             }
         }
 
@@ -76,6 +81,7 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear
             };
             _viewRefresh.Hidden = true;
+            View.AddSubview(_viewRefresh);
         }
 
         private void InitializeValues()
@@ -215,7 +221,7 @@ namespace myTNB
             _lblAddress.Frame = new CGRect(new CGPoint(BaseMargin, GetYLocationFromFrame(_accountSelectorContainer.Frame, 8F)), _lblAddress.Frame.Size);
             _viewSeparator.Frame = new CGRect(new CGPoint(BaseMargin, GetYLocationFromFrame(_lblAddress.Frame, 16F)), _viewSeparator.Frame.Size);
 
-            if (!AccountStatusCache.AccountStatusIsAvailable())
+            if (!AccountStatusCache.AccountStatusIsAvailable() || _statusIsLoading)
             {
                 _viewStatus.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewSeparator.Frame, 16F)), _viewStatus.Frame.Size);
                 _viewChart.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewStatus.Frame, 16F)), _viewChart.Frame.Size);
@@ -262,10 +268,8 @@ namespace myTNB
         {
             AddAccountSelector();
             SetAddress();
-            SetDisconnectionComponent();
             SetChartView(true);
             SetTariffSelectionComponent();
-            SetSSMRComponent();
             SetEnergyTipsComponent();
             SetContentView();
             SetFooterView();
@@ -331,44 +335,57 @@ namespace myTNB
         }
 
         #region SSMR Methods
-        internal void SetSSMRComponent()
+        internal void SetSSMRComponent(bool isUpdating)
         {
             if (!isREAccount && accountIsSSMR)
             {
-                MeterReadingHistoryModel smrAcountInfo = SSMRActivityInfoCache.DashboardMeterReadingHistory;
-                if (smrAcountInfo != null)
+                ViewHelper.AdjustFrameSetHeight(_viewSSMR, GetScaledHeight(116f));
+                _viewSSMR.BackgroundColor = UIColor.Clear;
+                _viewSSMR.Hidden = false;
+
+                if (_ssmr != null)
                 {
-                    if (_ssmr != null)
-                    {
-                        _ssmr.RemoveFromSuperview();
-                    }
-                    SSMRComponent sSMRComponent = new SSMRComponent(_viewSSMR);
-                    _ssmr = sSMRComponent.GetUI();
+                    _ssmr.RemoveFromSuperview();
+                }
+                SSMRComponent sSMRComponent = new SSMRComponent(_viewSSMR);
+
+                if (isUpdating)
+                {
+                    _ssmr = sSMRComponent.GetShimmerUI();
                     _viewSSMR.AddSubview(_ssmr);
-                    sSMRComponent.SetDescription(smrAcountInfo.DashboardMessage);
-                    sSMRComponent.SetButtonText(smrAcountInfo.DashboardCTAText);
-                    sSMRComponent.SetSRMButtonEnable(smrAcountInfo.IsDashboardCTADisabled);
-                    sSMRComponent.ShowHistoryLink(smrAcountInfo.ShowReadingHistoryLink, smrAcountInfo.ReadingHistoryLinkText);
-                    sSMRComponent._labelViewHistory.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                }
+                else
+                {
+                    MeterReadingHistoryModel smrAcountInfo = SSMRActivityInfoCache.DashboardMeterReadingHistory;
+                    if (smrAcountInfo != null)
                     {
-                        OnReadHistoryTap();
-                    }));
-                    sSMRComponent._smrButton.TouchUpInside += (sender, e) =>
-                    {
-                        var ctaChar = smrAcountInfo.DashboardCTAType.ToLower();
-                        if (ctaChar == DashboardHomeConstants.CTA_ShowReadingHistory)
+                        _ssmr = sSMRComponent.GetUI();
+                        _viewSSMR.AddSubview(_ssmr);
+                        sSMRComponent.SetDescription(smrAcountInfo.DashboardMessage);
+                        sSMRComponent.SetButtonText(smrAcountInfo.DashboardCTAText);
+                        sSMRComponent.SetSRMButtonEnable(smrAcountInfo.IsDashboardCTADisabled);
+                        sSMRComponent.ShowHistoryLink(smrAcountInfo.ShowReadingHistoryLink, smrAcountInfo.ReadingHistoryLinkText);
+                        sSMRComponent._labelViewHistory.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                         {
                             OnReadHistoryTap();
-                        }
-                        else if (ctaChar == DashboardHomeConstants.CTA_ShowSubmitReading)
+                        }));
+                        sSMRComponent._smrButton.TouchUpInside += (sender, e) =>
                         {
-                            OnSubmitMeterTap();
-                        }
-                    };
-                    ViewHelper.AdjustFrameSetHeight(_viewSSMR, sSMRComponent.GetContainerHeight());
-                    _viewSSMR.BackgroundColor = UIColor.Clear;
-                    _viewSSMR.Hidden = false;
-                    AddSSMRViewShadow(ref _viewSSMR);
+                            var ctaChar = smrAcountInfo.DashboardCTAType.ToLower();
+                            if (ctaChar == DashboardHomeConstants.CTA_ShowReadingHistory)
+                            {
+                                OnReadHistoryTap();
+                            }
+                            else if (ctaChar == DashboardHomeConstants.CTA_ShowSubmitReading)
+                            {
+                                OnSubmitMeterTap();
+                            }
+                        };
+                        ViewHelper.AdjustFrameSetHeight(_viewSSMR, sSMRComponent.GetContainerHeight());
+                        _viewSSMR.BackgroundColor = UIColor.Clear;
+                        _viewSSMR.Hidden = false;
+                        AddSSMRViewShadow(ref _viewSSMR);
+                    }
                 }
             }
             else
@@ -376,6 +393,13 @@ namespace myTNB
                 ViewHelper.AdjustFrameSetHeight(_viewSSMR, 0);
                 _viewSSMR.Hidden = true;
             }
+            SetContentView();
+        }
+
+        internal void HideSSMRView()
+        {
+            ViewHelper.AdjustFrameSetHeight(_viewSSMR, 0);
+            _viewSSMR.Hidden = true;
             SetContentView();
         }
 
@@ -631,34 +655,42 @@ namespace myTNB
         }
         #endregion
         #region DISCONNECTION Methods
-        public void SetDisconnectionComponent()
+        public void SetDisconnectionComponent(bool isUpdating)
         {
+            _statusIsLoading = isUpdating;
             AccountStatusDataModel accountStatusData = AccountStatusCache.GetAccountStatusData();
-            if (!AccountStatusCache.AccountStatusIsAvailable())
+            ViewHelper.AdjustFrameSetHeight(_viewStatus, GetScaledHeight(24f));
+            _viewStatus.BackgroundColor = UIColor.Clear;
+            _viewStatus.Hidden = false;
+
+            if (_status != null)
             {
-                ViewHelper.AdjustFrameSetHeight(_viewStatus, GetScaledHeight(24f));
-                _viewStatus.BackgroundColor = UIColor.Clear;
-                _viewStatus.Hidden = false;
-
-                if (_status != null)
-                {
-                    _status.RemoveFromSuperview();
-                }
-
-                DisconnectionComponent disconnectionComponent = new DisconnectionComponent(_scrollViewContent, accountStatusData);
-                _status = disconnectionComponent.GetUI();
+                _status.RemoveFromSuperview();
+            }
+            DisconnectionComponent disconnectionComponent = new DisconnectionComponent(_scrollViewContent, accountStatusData);
+            if (isUpdating)
+            {
+                _status = disconnectionComponent.GetShimmerUI();
                 _viewStatus.AddSubview(_status);
-                disconnectionComponent.SetGestureRecognizer(new UITapGestureRecognizer(() =>
-                {
-                    var acctStatusTooltipBtnTitle = !string.IsNullOrWhiteSpace(accountStatusData.AccountStatusModalBtnText) ? accountStatusData.AccountStatusModalBtnText : GetI18NValue(UsageConstants.I18N_GotIt);
-                    var acctStatusTooltipMsg = !string.IsNullOrWhiteSpace(accountStatusData.AccountStatusModalMessage) ? accountStatusData.AccountStatusModalMessage : GetI18NValue(UsageConstants.I18N_DisconnectionMessage);
-                    DisplayCustomAlert(string.Empty, acctStatusTooltipMsg, acctStatusTooltipBtnTitle, null);
-                }));
             }
             else
             {
-                _viewStatus.Hidden = true;
-                ViewHelper.AdjustFrameSetHeight(_viewStatus, 0);
+                if (!AccountStatusCache.AccountStatusIsAvailable())
+                {
+                    _status = disconnectionComponent.GetUI();
+                    disconnectionComponent.SetGestureRecognizer(new UITapGestureRecognizer(() =>
+                    {
+                        var acctStatusTooltipBtnTitle = !string.IsNullOrWhiteSpace(accountStatusData.AccountStatusModalBtnText) ? accountStatusData.AccountStatusModalBtnText : GetI18NValue(UsageConstants.I18N_GotIt);
+                        var acctStatusTooltipMsg = !string.IsNullOrWhiteSpace(accountStatusData.AccountStatusModalMessage) ? accountStatusData.AccountStatusModalMessage : GetI18NValue(UsageConstants.I18N_DisconnectionMessage);
+                        DisplayCustomAlert(string.Empty, acctStatusTooltipMsg, acctStatusTooltipBtnTitle, null);
+                    }));
+                    _viewStatus.AddSubview(_status);
+                }
+                else
+                {
+                    _viewStatus.Hidden = true;
+                    ViewHelper.AdjustFrameSetHeight(_viewStatus, 0);
+                }
             }
             SetContentView();
         }
@@ -693,7 +725,6 @@ namespace myTNB
                 _rEAmountComponent.UpdateUI(isUpdating);
                 if (!isUpdating)
                 {
-                    _rEAmountComponent.UpdateUI(isUpdating);
                     DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
                     _rEAmountComponent.SetAmount(dueData.amountDue);
                     _rEAmountComponent.SetDate(dueData.billDueDate);
@@ -760,10 +791,12 @@ namespace myTNB
                 _footerViewComponent.UpdateUI(isUpdating);
                 if (!isUpdating)
                 {
-                    _footerViewComponent.UpdateUI(isUpdating);
                     DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
-                    _footerViewComponent.SetAmount(dueData.amountDue);
-                    _footerViewComponent.SetDate(dueData.billDueDate);
+                    if (dueData != null)
+                    {
+                        _footerViewComponent.SetAmount(dueData.amountDue);
+                        _footerViewComponent.SetDate(dueData.billDueDate);
+                    }
                 }
             }
         }
