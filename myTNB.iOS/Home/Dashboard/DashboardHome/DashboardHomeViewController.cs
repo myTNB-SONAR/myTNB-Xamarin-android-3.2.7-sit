@@ -144,7 +144,7 @@ namespace myTNB
             if (DataManager.DataManager.SharedInstance.SummaryNeedsRefresh)
             {
                 SetAccountsCardViewController();
-                ReloadAccountsTable();
+                OnUpdateCell(DashboardHomeConstants.CellIndex_Accounts);
             }
             //SSMRAccounts.SetEligibleAccounts();
             OnLoadHomeData();
@@ -244,7 +244,8 @@ namespace myTNB
 
         private void AddTableView()
         {
-            _homeTableView = new UITableView(new CGRect(0, DeviceHelper.GetStatusBarHeight(), ViewWidth, ViewHeight)) { BackgroundColor = UIColor.Clear };
+            _homeTableView = new UITableView(new CGRect(0, DeviceHelper.GetStatusBarHeight()
+                , ViewWidth, ViewHeight)){ BackgroundColor = UIColor.Clear };
             _homeTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             _homeTableView.RegisterClassForCellReuse(typeof(AccountsTableViewCell), DashboardHomeConstants.Cell_Accounts);
             _homeTableView.RegisterClassForCellReuse(typeof(ServicesTableViewCell), DashboardHomeConstants.Cell_Services);
@@ -313,12 +314,6 @@ namespace myTNB
             _statusBarView.Hidden = !(scrollDiff > 0 && scrollDiff > _imageGradientHeight / 2);
         }
 
-        private void ReloadAccountsTable()
-        {
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent);
-            _homeTableView.ReloadData();
-        }
-
         private void OnGetServices()
         {
             InvokeInBackground(async () =>
@@ -331,12 +326,12 @@ namespace myTNB
                     if (_services != null && _services.d != null && _services.d.IsSuccess)
                     {
                         DataManager.DataManager.SharedInstance.ServicesList = _services.d.data?.services;
-                        OnUpdateCell(DashboardHomeConstants.CellIndex_Services);
                     }
                     else
                     {
-                        //Todo: Handle fail scenario
+                        DataManager.DataManager.SharedInstance.ServicesList.Clear();
                     }
+                    OnUpdateCell(DashboardHomeConstants.CellIndex_Services);
                 });
             });
         }
@@ -446,7 +441,6 @@ namespace myTNB
                 if (isValidTimeStamp)
                 {
                     string promotionsItems = iService.GetPromotionsItem();
-                    //Debug.WriteLine("debug: promo items: " + promotionsItems);
                     PromotionsV2ResponseModel promotionResponse = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(promotionsItems);
                     if (promotionResponse != null && promotionResponse.Status.Equals("Success")
                         && promotionResponse.Data != null && promotionResponse.Data.Count > 0)
@@ -643,7 +637,7 @@ namespace myTNB
             frame.Y = 0;
             ImageViewGradientImage.Frame = frame;
             SetAccountsCardViewController();
-            ReloadAccountsTable();
+            OnUpdateCell(DashboardHomeConstants.CellIndex_Accounts);
         }
 
         public void DismissmissActiveKeyboard()

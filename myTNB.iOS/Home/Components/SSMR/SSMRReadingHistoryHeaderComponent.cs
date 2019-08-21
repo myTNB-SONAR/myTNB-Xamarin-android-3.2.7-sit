@@ -1,5 +1,6 @@
 ﻿using System;
 using CoreGraphics;
+using Foundation;
 using myTNB.Model;
 using myTNB.SSMR;
 using UIKit;
@@ -96,11 +97,9 @@ namespace myTNB
             _txtDesc = new UITextView(new CGRect(_padding, ScaleUtility.GetYLocationFromFrame(_lblAction.Frame, 8)
                 , baseWidth, ScaleUtility.GetScaledHeight(60)))
             {
-                Font = MyTNBFont.MuseoSans14_300,
-                TextColor = MyTNBColor.GreyishBrownTwo,
-                TextAlignment = UITextAlignment.Left,
                 Editable = false,
-                BackgroundColor = UIColor.Clear,
+                ScrollEnabled = true,
+                UserInteractionEnabled = false,
                 ContentInset = new UIEdgeInsets(0, -5, 0, -5)
             };
             _btnSubmit = new CustomUIButtonV2
@@ -206,7 +205,15 @@ namespace myTNB
 
         public void SetDescription(string text)
         {
-            _txtDesc.Text = text ?? string.Empty;
+            NSError htmlBodyError = null;
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(text ?? string.Empty, ref htmlBodyError
+                , MyTNBFont.FONTNAME_300, (float)ScaleUtility.GetScaledHeight(14F));
+            NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
+            mutableHTMLBody.AddAttributes(new UIStringAttributes
+            {
+                ForegroundColor = MyTNBColor.GreyishBrownTwo
+            }, new NSRange(0, htmlBody.Length));
+            _txtDesc.AttributedText = mutableHTMLBody;
             CGSize labelNewSize = _txtDesc.SizeThatFits(new CGSize(_parentView.Frame.Width - (_padding * 2), 1000f));
             CGRect frame = _txtDesc.Frame;
             frame.Height = labelNewSize.Height;

@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
-using System.Globalization;
 using CoreGraphics;
 using myTNB.Model;
+using myTNB.SSMR;
 using UIKit;
 
 namespace myTNB
@@ -28,6 +27,7 @@ namespace myTNB
         nfloat _containerHeightOriginal;
         string _previousMeterReadingValue = string.Empty;
         public string _meterReadingValue = string.Empty;
+        public bool IsActive;
 
         public SSMRMeterCardComponent(SSMRReadMeterViewController controller, UIView parentView, nfloat yLocation)
         {
@@ -55,7 +55,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_12_300,
                 TextColor = MyTNBColor.BrownGreyThree,
                 TextAlignment = UITextAlignment.Right,
-                Text = "Previous Meter Reading"
+                Text = _controller.GetI18NValue(SSMRConstants.I18N_PreviousReading)
             };
             _containerView.AddSubview(_prevReadingLabel);
 
@@ -84,7 +84,7 @@ namespace myTNB
             _errorLabel = new UILabel(new CGRect(_paddingX, _viewBoxContainer.Frame.GetMaxY() + ScaleUtility.GetScaledHeight(4f), viewBoxContainerWidth, ScaleUtility.GetScaledHeight(14f)))
             {
                 BackgroundColor = UIColor.Clear,
-                Font = TNBFont.MuseoSans_12_500,
+                Font = TNBFont.MuseoSans_10_500,
                 TextColor = MyTNBColor.Tomato,
                 TextAlignment = UITextAlignment.Right,
                 Hidden = true
@@ -102,7 +102,7 @@ namespace myTNB
 
             _iconLabel = new UILabel(new CGRect(0, 0, _iconView.Frame.Width, _iconView.Frame.Height))
             {
-                Font = MyTNBFont.MuseoSans14_500,
+                Font = TNBFont.MuseoSans_14_500,
                 TextColor = UIColor.White,
                 TextAlignment = UITextAlignment.Center
             };
@@ -137,22 +137,10 @@ namespace myTNB
         {
             if (model != null)
             {
-                if (!string.IsNullOrEmpty(model.RegisterNumber) && !string.IsNullOrWhiteSpace(model.RegisterNumber))
+                if (!string.IsNullOrEmpty(model.ReadingUnit) && !string.IsNullOrWhiteSpace(model.ReadingUnit))
                 {
-                    string stringLabel = string.Empty;
-                    switch (model.RegisterNumberType)
-                    {
-                        case RegisterNumberEnum.kWh:
-                            stringLabel = "kWh";
-                            break;
-                        case RegisterNumberEnum.kVARh:
-                            stringLabel = "kVARh";
-                            break;
-                        case RegisterNumberEnum.kW:
-                            stringLabel = "kW";
-                            break;
-                    }
-                    _iconLabel.Text = stringLabel;
+                    _iconLabel.Text = string.IsNullOrEmpty(model.ReadingUnitDisplayTitle)
+                            ? model.ReadingUnit : model.ReadingUnitDisplayTitle;
                 }
             }
         }
@@ -190,8 +178,8 @@ namespace myTNB
             UITextField txtFieldDigit = new UITextField(new CGRect(0, 0, width, height))
             {
                 Enabled = false,
-                TextColor = MyTNBColor.TunaGrey(),
-                Font = MyTNBFont.MuseoSans16_500,
+                TextColor = MyTNBColor.GreyishBrownTwo,
+                Font = TNBFont.MuseoSans_14_500,
                 Tag = index + 1,
                 KeyboardType = UIKeyboardType.NumberPad,
                 AutocorrectionType = UITextAutocorrectionType.No,
@@ -209,6 +197,11 @@ namespace myTNB
 
         private void SetTextFieldEvents(UITextField textField)
         {
+            textField.ShouldBeginEditing = (sender) =>
+            {
+                IsActive = true;
+                return true;
+            };
             textField.EditingChanged += (sender, e) =>
             {
                 string textStr = textField.Text;
@@ -251,6 +244,7 @@ namespace myTNB
                 {
                     UpdateMeterReadingValue();
                 }
+                IsActive = true;
             };
             textField.EditingDidEnd += (sender, e) =>
             {
@@ -260,6 +254,7 @@ namespace myTNB
                 }
                 RepopulateTextFields();
                 ValidateTextField();
+                IsActive = false;
             };
         }
 
@@ -380,8 +375,8 @@ namespace myTNB
 
             UILabel digitLabel = new UILabel(new CGRect(0, 0, width, height))
             {
-                Font = MyTNBFont.MuseoSans14_300,
-                TextColor = MyTNBColor.Grey,
+                Font = TNBFont.MuseoSans_14_300,
+                TextColor = MyTNBColor.BrownGreyThree,
                 TextAlignment = UITextAlignment.Center,
                 Text = digit.ToString()
             };
@@ -409,7 +404,7 @@ namespace myTNB
             }
         }
 
-        private void ValidateTextField()
+        public void ValidateTextField()
         {
             if (!string.IsNullOrEmpty(_meterReadingValue) && !string.IsNullOrWhiteSpace(_meterReadingValue))
             {
@@ -437,7 +432,7 @@ namespace myTNB
             {
                 _errorLabel.Hidden = true;
                 _errorLabel.Text = string.Empty;
-                _iconView.BackgroundColor = MyTNBColor.FreshGreen;
+                _iconView.BackgroundColor = MyTNBColor.AlgaeGreen;
                 ViewHelper.AdjustFrameSetY(_iconView, _iconYposOriginal);
             }
             AddCardShadow(ref _containerView);
@@ -462,7 +457,7 @@ namespace myTNB
                     {
                         txtField.Enabled = false;
                         txtField.Text = string.Empty;
-                        txtField.TextColor = MyTNBColor.TunaGrey();
+                        txtField.TextColor = MyTNBColor.GreyishBrownTwo;
                     }
                 }
             }
@@ -490,7 +485,7 @@ namespace myTNB
                     UITextField txtField = subSubViews[0] as UITextField;
                     if (txtField != null)
                     {
-                        txtField.TextColor = isError ? MyTNBColor.Tomato : MyTNBColor.FreshGreen;
+                        txtField.TextColor = isError ? MyTNBColor.Tomato : MyTNBColor.AlgaeGreen;
                     }
                 }
             }

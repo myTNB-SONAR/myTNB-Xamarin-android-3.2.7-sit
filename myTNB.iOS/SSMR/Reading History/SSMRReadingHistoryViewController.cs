@@ -160,7 +160,8 @@ namespace myTNB
 
             _bgImageView = new UIImageView(new CGRect(0, 0, ViewWidth, ViewWidth * 0.70F))
             {
-                Image = UIImage.FromBundle(SSMRConstants.IMG_ReadingHistoryBanner)
+                Image = UIImage.FromBundle(SSMRConstants.IMG_ReadingHistoryBanner),
+                BackgroundColor = UIColor.White
             };
 
             View.AddSubview(_bgImageView);

@@ -295,12 +295,6 @@ namespace myTNB
             };
             UIView viewMobile = _customMobileField.GetUI();
 
-            if (IsApplication)
-            {
-                _customEmailField.SetEnable = false;
-                _customMobileField.SetEnable = false;
-            }
-
             _lblEditInfo = new UILabel(new CGRect(BaseMargin, GetYLocationFromFrame(viewMobile.Frame, 12)
                 , _viewContactDetails.Frame.Width - GetScaledWidth(32), GetScaledHeight(32)))
             {
@@ -489,12 +483,16 @@ namespace myTNB
             _viewTerminateContainer.Frame = newFrame;
             _scrollContainer.ContentSize = new CGSize(ViewWidth, _viewTerminateContainer.Frame.GetMaxY());
             ToggleCTA();
+            if (shouldDisplay && _txtViewReason != null)
+            {
+                _txtViewReason.BecomeFirstResponder();
+            }
         }
 
         private void ToggleCTA()
         {
             bool isValid = !_isAllowEdit;
-            if (_isAllowEdit && isValid && _customEmailField != null && _customMobileField != null)
+            if (_isAllowEdit && _customEmailField != null && _customMobileField != null)
             {
                 isValid = _customEmailField.IsFieldValid && _customMobileField.IsFieldValid;
             }
@@ -555,6 +553,10 @@ namespace myTNB
         private void OnGetInfo()
         {
             _isAllowEdit = ContactDetails.d.data.isAllowEdit;
+            if (!IsApplication)
+            {
+                _isAllowEdit = false;
+            }
             if (_isAllowEdit)
             {
                 _lblEditInfo.Hidden = true;
