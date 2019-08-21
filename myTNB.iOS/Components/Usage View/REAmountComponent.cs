@@ -176,5 +176,23 @@ namespace myTNB
             _btnViewPaymentAdvice.Layer.BorderColor = isUpdating ? MyTNBColor.SilverChalice.CGColor : MyTNBColor.FreshGreen.CGColor;
             _btnViewPaymentAdvice.SetTitleColor(isUpdating ? MyTNBColor.SilverChalice : MyTNBColor.FreshGreen, UIControlState.Normal);
         }
+
+        public void SetRefreshState()
+        {
+            _iconView.Hidden = false;
+            _lblTitle.Hidden = false;
+            _lblDate.Hidden = false;
+            _lblAmount.Hidden = false;
+            _shimmerParent.Hidden = true;
+
+            _lblDate.Text = "- -";
+            _lblAmount.AttributedText = TextHelper.CreateValuePairString("- -"
+                        , TNBGlobal.UNIT_CURRENCY + " ", true, TNBFont.MuseoSans_16_300
+                        , MyTNBColor.GreyishBrown, TNBFont.MuseoSans_10_300, MyTNBColor.GreyishBrown);
+
+            _btnViewPaymentAdvice.Enabled = false;
+            _btnViewPaymentAdvice.Layer.BorderColor = MyTNBColor.SilverChalice.CGColor;
+            _btnViewPaymentAdvice.SetTitleColor(MyTNBColor.SilverChalice, UIControlState.Normal);
+        }
     }
 }

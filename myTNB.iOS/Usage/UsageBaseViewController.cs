@@ -701,6 +701,14 @@ namespace myTNB
                 }
             }
         }
+
+        internal void UpdateREAmountViewForRefreshState()
+        {
+            if (_rEAmountComponent != null)
+            {
+                _rEAmountComponent.SetRefreshState();
+            }
+        }
         #endregion
         #region FOOTER Methods
         internal void SetFooterView()
@@ -758,6 +766,14 @@ namespace myTNB
                     _footerViewComponent.SetAmount(dueData.amountDue);
                     _footerViewComponent.SetDate(dueData.billDueDate);
                 }
+            }
+        }
+
+        internal void UpdateFooterForRefreshState()
+        {
+            if (_footerViewComponent != null)
+            {
+                _footerViewComponent.SetRefreshState();
             }
         }
 

@@ -167,13 +167,13 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        if (!isREAccount)
+                        if (isREAccount)
                         {
-                            UpdateFooterUI(true);
+                            UpdateREAmountViewUI(true);
                         }
                         else
                         {
-                            UpdateREAmountViewUI(true);
+                            UpdateFooterUI(true);
                         }
                         var account = DataManager.DataManager.SharedInstance.SelectedAccount;
                         DueAmountResponseModel dueAmountResponse = await UsageServiceCall.GetAccountDueAmount(account);
@@ -193,18 +193,25 @@ namespace myTNB
                                 IncrementREDueDateByDays = model.IncrementREDueDateByDays
                             };
                             AmountDueCache.SaveDues(item);
-                            if (!isREAccount)
+                            if (isREAccount)
                             {
-                                UpdateFooterUI(false);
+                                UpdateREAmountViewUI(false);
                             }
                             else
                             {
-                                UpdateREAmountViewUI(false);
+                                UpdateFooterUI(false);
                             }
                         }
                         else
                         {
-                            //TO DO: Add Fail Handling here...
+                            if (isREAccount)
+                            {
+                                UpdateREAmountViewForRefreshState();
+                            }
+                            else
+                            {
+                                UpdateFooterForRefreshState();
+                            }
                         }
                     }
                     else

@@ -198,5 +198,26 @@ namespace myTNB
                 _lblDate.Text = formattedDate;
             }
         }
+
+        public void SetRefreshState()
+        {
+            _lblPaymentTitle.Hidden = false;
+            _lblPaymentTitle.Text = "I need to pay";
+            _lblDate.Hidden = false;
+            _lblAmount.Hidden = false;
+            _shimmerParent.Hidden = true;
+
+            _lblDate.Text = "- -";
+            _lblAmount.AttributedText = TextHelper.CreateValuePairString("- -"
+                        , TNBGlobal.UNIT_CURRENCY + " ", true, TNBFont.MuseoSans_24_300
+                        , MyTNBColor.CharcoalGrey, TNBFont.MuseoSans_12_500, MyTNBColor.CharcoalGrey);
+
+            _btnViewBill.Enabled = false;
+            _btnViewBill.Layer.BorderColor = MyTNBColor.SilverChalice.CGColor;
+            _btnViewBill.SetTitleColor(MyTNBColor.SilverChalice, UIControlState.Normal);
+            _btnPay.Enabled = false;
+            _btnPay.Layer.BackgroundColor = MyTNBColor.SilverChalice.CGColor;
+            _btnPay.Layer.BorderColor = MyTNBColor.SilverChalice.CGColor;
+        }
     }
 }
