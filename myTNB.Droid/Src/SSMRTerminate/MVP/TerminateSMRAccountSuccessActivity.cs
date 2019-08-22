@@ -12,7 +12,9 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SSMR.SMRApplication.Api;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -47,6 +49,8 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         Button btnBackToHomeSuccess;
 
 
+        private AccountData selectedAccount;
+
         public override int ResourceId()
         {
             return Resource.Layout.TerminateSMRAccountSuccessView;
@@ -75,11 +79,21 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 refNumberValue.Text = response.Data.AccountDetailsData.ApplicationID;
                 appliedOnDateValue.Text = response.Data.AccountDetailsData.AppliedOn;
             }
+
+            if (extras != null && extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+            {
+                selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+            }
         }
 
         [OnClick(Resource.Id.btnBackToHomeSuccess)]
         void OnBackToHome(object sender, EventArgs eventArgs)
         {
+            if (selectedAccount != null)
+            {
+                CustomerBillingAccount.RemoveSelected();
+                CustomerBillingAccount.SetSelected(selectedAccount.AccountNum);
+            }
             SetResult(Result.Ok);
             Finish();
         }

@@ -100,6 +100,8 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 
         private MaterialDialog SSMRMenuDialog;
 
+        private bool IsFromUsage = false;
+
         LoadingOverlay loadingOverlay;
 
         SSMRMeterHistoryMenuAdapter meterHistoryMenuAdapter;
@@ -147,21 +149,52 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                         selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
                         selectedAccountNumber = selectedAccount.AccountNum;
                         selectedAccountNickName = selectedAccount.AccountNickName;
-
+                        CustomerBillingAccount.RemoveSelected();
+                        CustomerBillingAccount.SetSelected(selectedAccount.AccountNum);
                         if (extras.ContainsKey(Constants.SMR_RESPONSE_KEY))
                         {
                             smrResponse = JsonConvert.DeserializeObject<SMRActivityInfoResponse>(extras.GetString(Constants.SMR_RESPONSE_KEY));
                             UpdateUIForSMR(smrResponse);
                         }
                     }
+                    else
+                    {
+                        SMRAccount smrSelectedAccount = smrAccountList.Find(account => {
+                            return account.isTaggedSMR;
+                        });
+                        selectedAccountNumber = smrSelectedAccount.accountNumber;
+                        CustomerBillingAccount.RemoveSelected();
+                        CustomerBillingAccount.SetSelected(smrSelectedAccount.accountNumber);
+                        if (smrSelectedAccount != null)
+                        {
+                            selectedAccountNickName = smrSelectedAccount.accountName;
+                            this.mPresenter.GetSSMRAccountStatus(smrSelectedAccount.accountNumber);
+                        }
+                        else
+                        {
+                            ShowNonSMRVisible(true, false);
+                        }
+                    }
+
+                    if (extras.ContainsKey("fromUsage"))
+                    {
+                        IsFromUsage = extras.GetBoolean("fromUsage");
+                    }
+                    else
+                    {
+                        IsFromUsage = false;
+                    }
                 }
                 //Else from HomeScreen
                 else
                 {
+                    IsFromUsage = false;
                     SMRAccount smrSelectedAccount = smrAccountList.Find(account => {
                         return account.isTaggedSMR;
                     });
                     selectedAccountNumber = smrSelectedAccount.accountNumber;
+                    CustomerBillingAccount.RemoveSelected();
+                    CustomerBillingAccount.SetSelected(smrSelectedAccount.accountNumber);
                     if (smrSelectedAccount != null)
                     {
                         selectedAccountNickName = smrSelectedAccount.accountName;
@@ -266,6 +299,8 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                         return account.accountNumber == selectedAccountNumber;
                     });
                     selectedAccountNickName = selectedEligibleAccount.accountName;
+                    CustomerBillingAccount.RemoveSelected();
+                    CustomerBillingAccount.SetSelected(selectedEligibleAccount.accountNumber);
                     if (selectedEligibleAccount.isTaggedSMR)
                     {
                         this.mPresenter.GetSSMRAccountStatus(selectedAccountNumber);
@@ -441,7 +476,20 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             accountData.AccountNickName = eligibleAccount.accountName;
             Intent SSMRTerminateActivity = new Intent(this, typeof(SSMRTerminateActivity));
             SSMRTerminateActivity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
-            StartActivity(SSMRTerminateActivity);
+            StartActivityForResult(SSMRTerminateActivity, SSMR_METER_HISTORY_ACTIVITY_CODE);
+        }
+
+        public override void OnBackPressed()
+        {
+            if (IsFromUsage)
+            {
+                SetResult(Result.Ok);
+                Finish();
+            }
+            else
+            {
+                Finish();
+            }
         }
 
         public void ShowSMREligibleAccountList(List<SMRAccount> smrEligibleAccountList)

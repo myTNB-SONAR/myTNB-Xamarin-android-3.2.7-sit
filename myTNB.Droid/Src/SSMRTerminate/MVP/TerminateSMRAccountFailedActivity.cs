@@ -12,7 +12,9 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SSMR.SMRApplication.Api;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -34,6 +36,8 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
         [BindView(Resource.Id.btnTryAgainFailed)]
         Button btnTryAgainFailed;
+
+        private AccountData selectedAccount;
 
 
         public override int ResourceId()
@@ -79,11 +83,21 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 txtTitleInfoError.Text = "Please Try Again";
                 txtMessageInfoError.Text = "It looks like we can't process your application at the moment.";
             }
+
+            if (extras != null && extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+            {
+                selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+            }
         }
 
         [OnClick(Resource.Id.btnBackToHomeFailed)]
         void OnBackToHome(object sender, EventArgs eventArgs)
         {
+            if (selectedAccount != null)
+            {
+                CustomerBillingAccount.RemoveSelected();
+                CustomerBillingAccount.SetSelected(selectedAccount.AccountNum);
+            }
             SetResult(Result.Ok);
             Finish();
         }
