@@ -1147,6 +1147,12 @@
     <ImageAsset Include="Assets.xcassets\Usage-Refresh-Bg.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Usage-Refresh-Bg.imageset\Usage-Refresh-Bg%402x.png" />
     <ImageAsset Include="Assets.xcassets\Usage-Refresh-Bg.imageset\Usage-Refresh-Bg%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Zoom.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Zoom.imageset\searchNoGradient%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Zoom.imageset\searchNoGradient%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Usage-MissingReading.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Usage-MissingReading.imageset\missingCopy%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Usage-MissingReading.imageset\missingCopy%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1528,6 +1534,8 @@
     <Folder Include="Assets.xcassets\Usage-Bg-Long.imageset\" />
     <Folder Include="Assets.xcassets\Usage-Refresh-Bg.imageset\" />
     <Folder Include="Components\Usage View\Charts\Smart Meter\" />
+    <Folder Include="Assets.xcassets\IC-Action-Zoom.imageset\" />
+    <Folder Include="Assets.xcassets\Usage-MissingReading.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2352,6 +2360,7 @@
     <Compile Include="Components\Usage View\Charts\REChartView.cs" />
     <Compile Include="Components\Usage View\REAmountComponent.cs" />
     <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterChartView.cs" />
+    <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterZOut.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
