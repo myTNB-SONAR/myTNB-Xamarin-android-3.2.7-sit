@@ -212,6 +212,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
             contactDetailConsent.Visibility = ViewStates.Gone;
             txtInputLayoutTxtReason.Visibility = ViewStates.Gone;
+            txtInputLayoutTxtReason.CounterMaxLength = 550;
 
             txtMobileNo.TextChanged += TextChange;
             txtEmail.TextChanged += TextChange;
@@ -335,10 +336,9 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             {
                 string mobile_no = txtMobileNo.Text.ToString().Trim();
                 string email = txtEmail.Text.ToString().Trim();
-                string reason = txtReason.Text.ToString().Trim();
                 newEmail = email;
                 newPhoneNumber = mobile_no;
-                this.mPresenter.CheckRequiredFields(mobile_no, email, isOtherReasonSelected, reason);
+                this.mPresenter.CheckRequiredFieldsForApply(mobile_no, email);
 
                 if (checkForEditingInfo)
                 {
@@ -359,7 +359,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 string mobile_no = txtMobileNo.Text.ToString().Trim();
                 string email = txtEmail.Text.ToString().Trim();
                 string reason = txtReason.Text.ToString().Trim();
-                this.mPresenter.CheckRequiredFields(mobile_no, email, isOtherReasonSelected, reason);
+                this.mPresenter.CheckRequiredFieldsForTerminate(isOtherReasonSelected, reason);
             }
             catch (Exception ex)
             {

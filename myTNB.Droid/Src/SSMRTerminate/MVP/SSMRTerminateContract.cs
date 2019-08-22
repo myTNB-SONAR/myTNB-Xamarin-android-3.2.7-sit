@@ -34,7 +34,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
         public interface IPresenter
         {
-            void CheckRequiredFields(string mobile_no, string email, bool isOtherReasonSelected, string otherReason);
+            //void CheckRequiredFields(string mobile_no, string email, bool isOtherReasonSelected, string otherReason);
 
             void InitiateCAInfo(AccountData selectedAccount);
 

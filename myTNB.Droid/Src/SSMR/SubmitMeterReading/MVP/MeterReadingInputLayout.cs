@@ -177,6 +177,15 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             editTextArray[1].RemoveTextChangedListener(onMeterReadingValueChange);
             editTextArray[0].RemoveTextChangedListener(onMeterReadingValueChange);
 
+            editTextArray[7].Text = "";
+            editTextArray[6].Text = "";
+            editTextArray[5].Text = "";
+            editTextArray[4].Text = "";
+            editTextArray[3].Text = "";
+            editTextArray[2].Text = "";
+            editTextArray[1].Text = "";
+            editTextArray[0].Text = "";
+
             for (int i = (readingInArray.Length - 1); i >= 0; i--)
             {
                 editTextArray[MAX_METER_DIGIT].Text = readingInArray[i].ToString();
