@@ -156,6 +156,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.energyTipsList)]
         RecyclerView energyTipsList;
 
+        [BindView(Resource.Id.energyTipsShimmerView)]
+        LinearLayout energyTipsShimmerView;
+
+        [BindView(Resource.Id.energyTipsShimmerList)]
+        RecyclerView energyTipsShimmerList;
+
+
         [BindView(Resource.Id.ssmrHistoryContainer)]
         LinearLayout ssmrHistoryContainer;
 
@@ -169,6 +176,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         Button btnReadingHistory;
 
         EnergySavingTipsAdapter energyTipsAdapter;
+
+        EnergySavingTipsShimmerAdapter energyTipsShimmerAdapter;
 
         [BindView(Resource.Id.energyDisconnectionButton)]
         LinearLayout energyDisconnectionButton;
@@ -604,6 +613,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                     LinearSnapHelper snapHelper = new LinearSnapHelper();
                     snapHelper.AttachToRecyclerView(energyTipsList);
+
+                    LinearLayoutManager linearEnergyTipShimmerLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
+                    energyTipsShimmerList.SetLayoutManager(linearEnergyTipShimmerLayoutManager);
+                    energyTipsShimmerList.NestedScrollingEnabled = true;
+
+                    LinearSnapHelper snapShimmerHelper = new LinearSnapHelper();
+                    snapShimmerHelper.AttachToRecyclerView(energyTipsShimmerList);
 
                     DisablePayButton();
                     DisableViewBillButton();
@@ -2563,36 +2579,74 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
-                List<EnergySavingTipsModel> energyList = new List<EnergySavingTipsModel>();
                 List<EnergySavingTipsModel> localList = EnergyTipsUtils.GetAllItems();
-                if (localList != null && localList.Count > 0)
+                if (localList != null && localList.Count >= 3)
                 {
-                    var random = new System.Random();
-                    List<int> listNumbers = new List<int>();
-                    int number;
-                    for (int i = 0; i < 3; i++)
-                    {
-                        do
-                        {
-                            number = random.Next(1, localList.Count);
-                        } while (listNumbers.Contains(number));
-                        listNumbers.Add(number);
-                    }
+                    _ = this.mPresenter.OnRandomizeEnergyTipsView(localList);
+                }
+                else
+                {
+                    energyTipsView.Visibility = ViewStates.Gone;
+                    energyTipsShimmerView.Visibility = ViewStates.Visible;
+                    OnSetEnergyTipsShimmerAdapter(this.mPresenter.OnLoadEnergySavingTipsShimmerList(3));
 
-
-                    for (int j = 0; j < listNumbers.Count; j++)
-                    {
-                        energyList.Add(localList[listNumbers[j]]);
-                    }
-
-                    energyTipsAdapter = new EnergySavingTipsAdapter(energyList, this.Activity);
-                    energyTipsList.SetAdapter(energyTipsAdapter);
+                    this.mPresenter.OnGetEnergySavingTips();
                 }
             }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void HideEnergyTipsShimmerView()
+        {
+            Activity.RunOnUiThread(() =>
+            {
+                try
+                {
+                    energyTipsShimmerView.Visibility = ViewStates.Gone;
+                    OnSetEnergyTipsShimmerAdapter(null);
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            });
+        }
+
+        private void OnSetEnergyTipsShimmerAdapter(List<EnergySavingTipsModel> list)
+        {
+            Activity.RunOnUiThread(() =>
+            {
+                try
+                {
+                    energyTipsShimmerAdapter = new EnergySavingTipsShimmerAdapter(list, this.Activity);
+                    energyTipsShimmerList.SetAdapter(energyTipsShimmerAdapter);
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            });
+        }
+
+        public void ShowEnergyTipsView(List<EnergySavingTipsModel> list)
+        {
+            Activity.RunOnUiThread(() =>
+            {
+                try
+                {
+                    energyTipsView.Visibility = ViewStates.Visible;
+                    energyTipsAdapter = new EnergySavingTipsAdapter(list, this.Activity);
+                    energyTipsList.SetAdapter(energyTipsAdapter);
+                    HideEnergyTipsShimmerView();
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            });
         }
 
         void ViewTreeObserver.IOnGlobalLayoutListener.OnGlobalLayout()
