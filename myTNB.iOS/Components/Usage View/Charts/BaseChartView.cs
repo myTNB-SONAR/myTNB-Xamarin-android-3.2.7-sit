@@ -9,13 +9,12 @@ namespace myTNB
 {
     public class BaseChartView : BaseComponent
     {
-        public BaseChartView()
-        {
-        }
+        public BaseChartView() { }
         protected CustomUIView _mainView, _segmentContainer;
         protected nfloat _width, _baseMargin, _baseMarginedWidth;
         protected UILabel _lblDateRange;
         protected string Format_Value = "{0} {1}";
+        protected nfloat ShimmerHeight;
 
         public virtual void ToggleTariffView(bool isTariffView) { }
 
@@ -30,10 +29,9 @@ namespace myTNB
         public virtual CustomUIView GetShimmerUI(bool isREAccount = false)
         {
             nfloat baseWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
-            nfloat baseHeight = isREAccount ? GetHeightByScreenSize(203) : GetHeightByScreenSize(189);
             CustomShimmerView shimmeringView = new CustomShimmerView();
             CustomUIView parentView = new CustomUIView(new CGRect(BaseMarginWidth16, 0
-                , baseWidth - (BaseMarginWidth16 * 2), baseHeight))
+                , baseWidth - (BaseMarginWidth16 * 2), ShimmerHeight))
             { BackgroundColor = UIColor.Clear };
             UIView viewShimmerParent = new UIView(new CGRect(new CGPoint(0, 0), parentView.Frame.Size)) { BackgroundColor = UIColor.Clear };
             UIView viewShimmerContent = new UIView(new CGRect(new CGPoint(0, 0), parentView.Frame.Size)) { BackgroundColor = UIColor.Clear };
@@ -47,7 +45,7 @@ namespace myTNB
             viewShDate.Layer.CornerRadius = GetScaledHeight(2f);
             nfloat viewShChartYPos = GetYLocationFromFrameScreenSize(viewShDate.Frame, 24);
             UIView viewShChart = new UIView(new CGRect(0, viewShChartYPos
-                , parentView.Frame.Width, baseHeight - viewShChartYPos))
+                , parentView.Frame.Width, ShimmerHeight - viewShChartYPos))
             { BackgroundColor = new UIColor(red: 0.75f, green: 0.85f, blue: 0.95f, alpha: 0.25f) };
             viewShChart.Layer.CornerRadius = GetScaledHeight(5f);
 
@@ -88,8 +86,12 @@ namespace myTNB
             return maxValue;
         }
 
-        protected virtual void AddTariffBlocks(CustomUIView viewBar, List<TariffItemModel> tariff
+        protected virtual void AddTariffBlocks(CustomUIView viewBar, List<TariffItemModel> tariffList
             , double baseValue, bool isSelected, CGSize size)
+        { }
+
+        protected virtual void AddTariffBlocks(CustomUIView viewBar, List<TariffItemModel> tariffList
+            , double baseValue, bool isSelected, CGSize size, bool isLatestBar)
         { }
 
         protected virtual UIColor GetTariffBlockColor(string blockID, bool isSelected)

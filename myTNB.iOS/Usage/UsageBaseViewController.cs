@@ -321,9 +321,13 @@ namespace myTNB
             {
                 _chartView = new REChartView();
             }
-            else
+            else if(isNormalChart)
             {
                 _chartView = new NormalChartView();
+            }
+            else
+            {
+                _chartView = new SmartMeterChartView();
             }
 
             if (_chart != null)

@@ -1527,6 +1527,7 @@
     <Folder Include="Assets.xcassets\Usage-Bg-Normal.imageset\" />
     <Folder Include="Assets.xcassets\Usage-Bg-Long.imageset\" />
     <Folder Include="Assets.xcassets\Usage-Refresh-Bg.imageset\" />
+    <Folder Include="Components\Usage View\Charts\Smart Meter\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2350,6 +2351,7 @@
     <Compile Include="Components\Usage View\Charts\BaseChartView.cs" />
     <Compile Include="Components\Usage View\Charts\REChartView.cs" />
     <Compile Include="Components\Usage View\REAmountComponent.cs" />
+    <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterChartView.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using CoreGraphics;
 using myTNB.Model.Usage;
@@ -7,11 +8,11 @@ using UIKit;
 
 namespace myTNB
 {
-    public class NormalChartView : BaseChartView
+    public class SmartMeterChartView : BaseChartView
     {
-        public NormalChartView()
+        public SmartMeterChartView()
         {
-            ShimmerHeight = GetHeightByScreenSize(189);
+            ShimmerHeight = GetHeightByScreenSize(203);
         }
 
         protected override void CreatUI()
@@ -61,12 +62,13 @@ namespace myTNB
             for (int i = 0; i < usageData.Count; i++)
             {
                 int index = i;
+                bool isLatestBar = index == usageData.Count - 1;
                 MonthItemModel item = usageData[index];
                 CustomUIView segment = new CustomUIView(new CGRect(xLoc, 0, segmentWidth, height))
                 {
                     Tag = index,
                     PageName = "InnerDashboard",
-                    EventName = "OnTapNormalBar"
+                    EventName = "OnTapSmartMeterMonthBar"
                 };
                 _segmentContainer.AddSubview(segment);
                 xLoc += segmentWidth + segmentMargin;
@@ -75,22 +77,37 @@ namespace myTNB
                 nfloat barHeight = (nfloat)(divisor * value);
                 nfloat yLoc = lblHeight + amountBarMargin + (maxBarHeight - barHeight);
 
-                CustomUIView viewBar = new CustomUIView(new CGRect(barMargin
-                    , segment.Frame.Height - lblHeight - GetHeightByScreenSize(17), width, 0))
+                nfloat barWidth = isLatestBar ? GetWidthByScreenSize(16) : width;
+                nfloat barXLoc = isLatestBar ? barMargin - GetWidthByScreenSize(2) : barMargin;
+                CustomUIView viewBar = new CustomUIView(new CGRect(barXLoc
+                    , segment.Frame.Height - lblHeight - GetHeightByScreenSize(17), barWidth, 0))
                 {
                     BackgroundColor = UIColor.Clear,
                     Tag = 1001,
                     ClipsToBounds = true
                 };
-                viewBar.Layer.CornerRadius = width / 2;
-                UIView viewCover = new UIView(new CGRect(new CGPoint(0, 0), new CGSize(viewBar.Frame.Width, barHeight)))
+                viewBar.Layer.CornerRadius = barWidth / 2;
+                if (isLatestBar)
+                {
+                    viewBar.Layer.BorderWidth = GetWidthByScreenSize(1);
+                    viewBar.Layer.BorderColor = (index < usageData.Count - 1 ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White).CGColor;
+                }
+
+                nfloat coverWidth = isLatestBar ? viewBar.Frame.Width - GetWidthByScreenSize(6) : viewBar.Frame.Width;
+                nfloat coverXLoc = isLatestBar ? GetWidthByScreenSize(3) : 0;
+                nfloat coverHeight = isLatestBar ? barHeight - GetHeightByScreenSize(6) : barHeight;
+                nfloat coverYLoc = isLatestBar ? GetHeightByScreenSize(3) : 0;
+
+                UIView viewCover = new UIView(new CGRect(new CGPoint(coverXLoc, coverYLoc), new CGSize(coverWidth, coverHeight)))
                 {
                     BackgroundColor = index < usageData.Count - 1 ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
                     Tag = 2001,
                     Hidden = false
                 };
+                if (isLatestBar) { viewCover.Layer.CornerRadius = coverWidth / 2; }
                 viewBar.AddSubview(viewCover);
-                AddTariffBlocks(viewBar, item.tariffBlocks, value, index == usageData.Count - 1, viewCover.Frame.Size);
+
+                AddTariffBlocks(viewBar, item.tariffBlocks, value, index == usageData.Count - 1, viewCover.Frame.Size, isLatestBar);
 
                 nfloat amtYLoc = yLoc - amountBarMargin - lblHeight;
                 UILabel lblAmount = new UILabel(new CGRect(0, viewBar.Frame.GetMinY() - amountBarMargin - lblHeight
@@ -138,16 +155,20 @@ namespace myTNB
         }
 
         protected override void AddTariffBlocks(CustomUIView viewBar, List<TariffItemModel> tariffList
-            , double baseValue, bool isSelected, CGSize size)
+            , double baseValue, bool isSelected, CGSize size, bool isLatestBar)
         {
             if (viewBar == null || tariffList == null || tariffList.Count == 0) { return; }
             nfloat baseHeigt = size.Height;
             nfloat barMaxY = size.Height;
-            UIView viewTariffContainer = new UIView(new CGRect(0, 0, size.Width, size.Height))
+            nfloat xLoc = isLatestBar ? GetWidthByScreenSize(3) : 0;
+            nfloat yLoc = isLatestBar ? GetHeightByScreenSize(3) : 0;
+            UIView viewTariffContainer = new UIView(new CGRect(xLoc, yLoc, size.Width, size.Height))
             {
                 Tag = 2002,
-                Hidden = true
+                Hidden = true,
+                ClipsToBounds = true
             };
+            if (isLatestBar) { viewTariffContainer.Layer.CornerRadius = size.Width / 2; }
             for (int i = 0; i < tariffList.Count; i++)
             {
                 TariffItemModel item = tariffList[i];
@@ -172,10 +193,15 @@ namespace myTNB
             selectionFeedback.ImpactOccurred();
             for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
             {
+                bool isLatestBar = i == _segmentContainer.Subviews.Count() - 1;
                 CustomUIView segmentView = _segmentContainer.Subviews[i] as CustomUIView;
                 if (segmentView == null) { continue; }
                 bool isSelected = segmentView.Tag == index;
                 CustomUIView bar = segmentView.ViewWithTag(1001) as CustomUIView;
+                if (isLatestBar)
+                {
+                    bar.Layer.BorderColor = (isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F)).CGColor;
+                }
                 if (bar != null)
                 {
                     UIView viewCover = bar.ViewWithTag(2001);
@@ -200,11 +226,15 @@ namespace myTNB
                 UILabel value = segmentView.ViewWithTag(1002) as UILabel;
                 if (value != null)
                 {
-                    value.TextColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F);
-                    value.Hidden = !isSelected;
+                    value.TextColor = isLatestBar || isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F);
+                    value.Hidden = isLatestBar ? false : !isSelected;
                 }
                 UILabel date = segmentView.ViewWithTag(1003) as UILabel;
                 if (date != null) { date.TextColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F); }
+                if (isLatestBar)
+                {
+                    Debug.WriteLine("Todo: Go to day view.");
+                }
             }
         }
 
