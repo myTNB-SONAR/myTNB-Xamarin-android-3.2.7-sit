@@ -1,4 +1,6 @@
-﻿using Android.Util;
+﻿using Android.Graphics;
+using Android.Util;
+using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
@@ -10,6 +12,7 @@ using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using Refit;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -556,6 +559,125 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         {
             return isBillAvailable;
         }
+
+        public Task OnGetEnergySavingTips()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    EnergySavingTipsEntity EnergySavingTipsManager = new EnergySavingTipsEntity();
+                    List<EnergySavingTipsEntity> energyList = EnergySavingTipsManager.GetAllItems();
+                    if (energyList.Count > 0)
+                    {
+                        List<EnergySavingTipsModel> savedList = new List<EnergySavingTipsModel>();
+                        foreach (EnergySavingTipsEntity item in energyList)
+                        {
+
+                            savedList.Add(new EnergySavingTipsModel()
+                            {
+                                Title = item.Title,
+                                Description = item.Description,
+                                Image = item.Image,
+                                isUpdateNeeded = true,
+                                ImageBitmap = null,
+                                ID = item.ID
+                            });
+                        }
+
+                        _ = OnRandomizeEnergyTipsView(savedList);
+                    }
+                    else
+                    {
+                        this.mView.HideEnergyTipsShimmerView();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }).ContinueWith((Task previous) =>
+            {
+            }, new CancellationTokenSource().Token);
+        }
+
+        public async Task OnRandomizeEnergyTipsView(List<EnergySavingTipsModel> list)
+        {
+            List<EnergySavingTipsModel> energyList = new List<EnergySavingTipsModel>();
+            var random = new System.Random();
+            List<int> listNumbers = new List<int>();
+            int number;
+            if (list.Count >= 3)
+            {
+                for (int i = 0; i < 3; i++)
+                {
+                    do
+                    {
+                        number = random.Next(1, list.Count);
+                    } while (listNumbers.Contains(number));
+                    listNumbers.Add(number);
+                }
+            }
+            else
+            {
+                for (int i = 0; i < list.Count; i++)
+                {
+                    listNumbers.Add(i);
+                }
+            }
+
+
+            for (int j = 0; j < listNumbers.Count; j++)
+            {
+                energyList.Add(list[listNumbers[j]]);
+            }
+
+            foreach (EnergySavingTipsModel energyItem in energyList)
+            {
+                if (energyItem.ImageBitmap == null)
+                {
+                    energyItem.ImageBitmap = await GetPhoto(energyItem.Image);
+                    energyItem.isUpdateNeeded = false;
+                }
+            }
+
+            this.mView.ShowEnergyTipsView(energyList);
+
+        }
+
+        private static async Task<Bitmap> GetPhoto(string imageUrl)
+        {
+            CancellationTokenSource cts = new CancellationTokenSource();
+            Bitmap imageBitmap = null;
+            try
+            {
+                await Task.Run(() =>
+                {
+                    imageBitmap = ImageUtils.GetImageBitmapFromUrl(imageUrl);
+                }, cts.Token);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return imageBitmap;
+        }
+
+        public List<EnergySavingTipsModel> OnLoadEnergySavingTipsShimmerList(int count)
+        {
+            List<EnergySavingTipsModel> energyList = new List<EnergySavingTipsModel>();
+
+            for(int i = 0; i < count; i++)
+            {
+                energyList.Add(new EnergySavingTipsModel()
+                {
+                    Title = ""
+                });
+            }
+            return energyList;
+        }
+
 
     }
 }
