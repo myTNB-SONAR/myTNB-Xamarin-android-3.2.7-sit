@@ -21,53 +21,27 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public EditText editText6;
         public EditText editText7;
         public EditText editText8;
+        public EditText[] editTextArray;
         Context mContext;
-
-
-        //public MeterReadingInputLayout(Context context) : base(context)
-        //{
-        //    mContext = context;
-        //    LayoutParameters = LayoutParameters;
-        //    Orientation = Orientation.Horizontal;
-        //    WeightSum = 8;
-        //    InitializeInputBoxes();
-        //}
+        public SubmitMeterReadingContract.IView mOwnerView;
+        private string mMeterId;
+        OnMeterReadingValueChange onMeterReadingValueChange;
 
         public MeterReadingInputLayout(Context context, IAttributeSet attrs) : base(context, attrs)
         {
             mContext = context;
-            //LayoutParameters = LayoutParameters;
-            //Orientation = Orientation.Horizontal;
-            //WeightSum = 8;
             InitializeInputBoxes();
         }
 
-        //public MeterReadingInputLayout(Context context, IAttributeSet attrs, int defStyleAttr) : base(context, attrs, defStyleAttr)
-        //{
-        //    mContext = context;
-        //    LayoutParameters = LayoutParameters;
-        //    Orientation = Orientation.Horizontal;
-        //    WeightSum = 8;
-        //    InitializeInputBoxes();
-        //}
+        public void SetMeterId(string meterId)
+        {
+            mMeterId = meterId;
+        }
 
-        //public MeterReadingInputLayout(Context context, IAttributeSet attrs, int defStyleAttr, int defStyleRes) : base(context, attrs, defStyleAttr, defStyleRes)
-        //{
-        //    mContext = context;
-        //    LayoutParameters = LayoutParameters;
-        //    Orientation = Orientation.Horizontal;
-        //    WeightSum = 8;
-        //    InitializeInputBoxes();
-        //}
-
-        //protected MeterReadingInputLayout(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
-        //{
-        //    //mContext = context;
-        //    LayoutParameters = LayoutParameters;
-        //    Orientation = Orientation.Horizontal;
-        //    WeightSum = 8;
-        //    InitializeInputBoxes();
-        //}
+        public string GetMeterId()
+        {
+            return mMeterId;
+        }
 
         public int convertPixelsToDp(float px)
         {
@@ -86,96 +60,171 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         private void InitializeInputBoxes()
         {
+            editTextArray = new EditText[8];
+            onMeterReadingValueChange = new OnMeterReadingValueChange(this);
+
             editText1 = new EditText(mContext);
             //editText1.SetTag(TAG_KEY, ".editText1");
             editText1.LayoutParameters = GetInputBoxLayoutParams();
             editText1.Gravity = Android.Views.GravityFlags.Center;
             editText1.SetBackgroundColor(Color.ParseColor("#f3f3f3"));
-            editText1.AddTextChangedListener(new OnMeterReadingValueChange(this));
+            editText1.AddTextChangedListener(onMeterReadingValueChange);
             editText1.SetOnKeyListener(new OnMeterInputKeyListener(this));
             editText1.InputType = InputTypes.ClassNumber;
             editText1.OnFocusChangeListener = new OnMeterInputFocus(this);//SetOnClickListener(new OnMeterInputClick(this));
             editText1.RequestLayout();
             AddView(editText1);
+            editTextArray[0] = editText1;
 
             editText2 = new EditText(mContext);
             //editText2.SetTag(TAG_KEY, ".editText2");
             editText2.LayoutParameters = GetInputBoxLayoutParams();
             editText2.Gravity = Android.Views.GravityFlags.Center;
             editText2.SetBackgroundColor(Color.ParseColor("#f3f3f3"));
-            editText2.AddTextChangedListener(new OnMeterReadingValueChange(this));
+            editText2.AddTextChangedListener(onMeterReadingValueChange);
             editText2.SetOnKeyListener(new OnMeterInputKeyListener(this));
             editText2.InputType = InputTypes.ClassNumber;
             editText2.OnFocusChangeListener = new OnMeterInputFocus(this);//.SetOnClickListener(new OnMeterInputClick(this));
             AddView(editText2);
+            editTextArray[1] = editText2;
 
             editText3 = new EditText(mContext);
             //editText3.SetTag(TAG_KEY, ".editText3");
             editText3.LayoutParameters = GetInputBoxLayoutParams();
             editText3.Gravity = Android.Views.GravityFlags.Center;
             editText3.SetBackgroundColor(Color.ParseColor("#f3f3f3"));
-            editText3.AddTextChangedListener(new OnMeterReadingValueChange(this));
+            editText3.AddTextChangedListener(onMeterReadingValueChange);
             editText3.SetOnKeyListener(new OnMeterInputKeyListener(this));
             editText3.InputType = InputTypes.ClassNumber;
             editText3.OnFocusChangeListener = new OnMeterInputFocus(this); //SetOnClickListener(new OnMeterInputClick(this));
             AddView(editText3);
+            editTextArray[2] = editText3;
 
             editText4 = new EditText(mContext);
             //editText4.SetTag(TAG_KEY, ".editText4");
             editText4.LayoutParameters = GetInputBoxLayoutParams();
             editText4.Gravity = Android.Views.GravityFlags.Center;
             editText4.SetBackgroundColor(Color.ParseColor("#f3f3f3"));
-            editText4.AddTextChangedListener(new OnMeterReadingValueChange(this));
+            editText4.AddTextChangedListener(onMeterReadingValueChange);
             editText4.SetOnKeyListener(new OnMeterInputKeyListener(this));
             editText4.InputType = InputTypes.ClassNumber;
             editText4.OnFocusChangeListener = new OnMeterInputFocus(this); //SetOnClickListener(new OnMeterInputClick(this));
             AddView(editText4);
+            editTextArray[3] = editText4;
 
             editText5 = new EditText(mContext);
             //editText5.SetTag(TAG_KEY, ".editText5");
             editText5.LayoutParameters = GetInputBoxLayoutParams();
             editText5.Gravity = Android.Views.GravityFlags.Center;
             editText5.SetBackgroundColor(Color.ParseColor("#f3f3f3"));
-            editText5.AddTextChangedListener(new OnMeterReadingValueChange(this));
+            editText5.AddTextChangedListener(onMeterReadingValueChange);
             editText5.SetOnKeyListener(new OnMeterInputKeyListener(this));
             editText5.InputType = InputTypes.ClassNumber;
             editText5.OnFocusChangeListener = new OnMeterInputFocus(this); //SetOnClickListener(new OnMeterInputClick(this));
             AddView(editText5);
+            editTextArray[4] = editText5;
 
             editText6 = new EditText(mContext);
             //editText6.SetTag(TAG_KEY, ".editText6");
             editText6.LayoutParameters = GetInputBoxLayoutParams();
             editText6.Gravity = Android.Views.GravityFlags.Center;
             editText6.SetBackgroundColor(Color.ParseColor("#f3f3f3"));
-            editText6.AddTextChangedListener(new OnMeterReadingValueChange(this));
+            editText6.AddTextChangedListener(onMeterReadingValueChange);
             editText6.SetOnKeyListener(new OnMeterInputKeyListener(this));
             editText6.InputType = InputTypes.ClassNumber;
             editText6.OnFocusChangeListener = new OnMeterInputFocus(this); //SetOnClickListener(new OnMeterInputClick(this));
             AddView(editText6);
+            editTextArray[5] = editText6;
 
             editText7 = new EditText(mContext);
             //editText7.SetTag(TAG_KEY, ".editText7");
             editText7.LayoutParameters = GetInputBoxLayoutParams();
             editText7.Gravity = Android.Views.GravityFlags.Center;
             editText7.SetBackgroundColor(Color.ParseColor("#f3f3f3"));
-            editText7.AddTextChangedListener(new OnMeterReadingValueChange(this));
+            editText7.AddTextChangedListener(onMeterReadingValueChange);
             editText7.SetOnKeyListener(new OnMeterInputKeyListener(this));
             editText7.InputType = InputTypes.ClassNumber;
             editText7.OnFocusChangeListener = new OnMeterInputFocus(this); //SetOnClickListener(new OnMeterInputClick(this));
             AddView(editText7);
+            editTextArray[6] = editText7;
 
             editText8 = new EditText(mContext);
             //editText8.SetTag(TAG_KEY, ".editText8");
             editText8.LayoutParameters = GetInputBoxLayoutParams();
             editText8.Gravity = Android.Views.GravityFlags.Center;
             editText8.SetBackgroundColor(Color.ParseColor("#f3f3f3"));
-            editText8.AddTextChangedListener(new OnMeterReadingValueChange(this));
+            editText8.AddTextChangedListener(onMeterReadingValueChange);
             editText8.SetOnKeyListener(new OnMeterInputKeyListener(this));
             editText8.InputType = InputTypes.ClassNumber;
             //editText8.OnFocusChangeListener = new OnMeterInputFocus(this); //SetOnClickListener(new OnMeterInputClick(this));
             AddView(editText8);
+            editTextArray[7] = editText8;
 
             RequestLayout();
+        }
+
+        public void UpdateMeterReadingInput(string updatedReading)
+        {
+            char[] readingInArray = updatedReading.ToCharArray();
+            int MAX_METER_DIGIT = 7;
+
+            editTextArray[7].RemoveTextChangedListener(onMeterReadingValueChange);
+            editTextArray[6].RemoveTextChangedListener(onMeterReadingValueChange);
+            editTextArray[5].RemoveTextChangedListener(onMeterReadingValueChange);
+            editTextArray[4].RemoveTextChangedListener(onMeterReadingValueChange);
+            editTextArray[3].RemoveTextChangedListener(onMeterReadingValueChange);
+            editTextArray[2].RemoveTextChangedListener(onMeterReadingValueChange);
+            editTextArray[1].RemoveTextChangedListener(onMeterReadingValueChange);
+            editTextArray[0].RemoveTextChangedListener(onMeterReadingValueChange);
+
+            for (int i = (readingInArray.Length - 1); i >= 0; i--)
+            {
+                editTextArray[MAX_METER_DIGIT].Text = readingInArray[i].ToString();
+                MAX_METER_DIGIT--;
+            }
+
+            editTextArray[7].AddTextChangedListener(onMeterReadingValueChange);
+            editTextArray[6].AddTextChangedListener(onMeterReadingValueChange);
+            editTextArray[5].AddTextChangedListener(onMeterReadingValueChange);
+            editTextArray[4].AddTextChangedListener(onMeterReadingValueChange);
+            editTextArray[3].AddTextChangedListener(onMeterReadingValueChange);
+            editTextArray[2].AddTextChangedListener(onMeterReadingValueChange);
+            editTextArray[1].AddTextChangedListener(onMeterReadingValueChange);
+            editTextArray[0].AddTextChangedListener(onMeterReadingValueChange);
+        }
+
+        public string GetMeterReadingInput()
+        {
+            return (editText1.Text + editText2.Text + editText3.Text + editText4.Text +
+                editText5.Text + editText6.Text + editText7.Text + editText8.Text);
+        }
+
+        public void SetOnValidateInput(SubmitMeterReadingContract.IView view)
+        {
+            mOwnerView = view;
+        }
+
+        public bool HasReadingInput()
+        {
+            return (editText1.Text != "" || editText2.Text != "" || editText3.Text != "" || editText4.Text != ""
+                || editText5.Text != "" || editText6.Text != "" || editText7.Text != "" || editText8.Text != "");
+        }
+
+        public void SetInputColor(Color color)
+        {
+            editText1.SetTextColor(color);
+            editText2.SetTextColor(color);
+            editText3.SetTextColor(color);
+            editText4.SetTextColor(color);
+            editText5.SetTextColor(color);
+            editText6.SetTextColor(color);
+            editText7.SetTextColor(color);
+            editText8.SetTextColor(color);
+        }
+
+        public void UpdateSubmitReadingButton()
+        {
+            mOwnerView.OnUpdateSubmitMeterButton();
         }
 
         class OnMeterReadingValueChange : Java.Lang.Object, ITextWatcher
@@ -189,18 +238,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             public void AfterTextChanged(IEditable s)
             {
-                //bool e1 = mContainer.GetChildAt(0).HasFocus;
-                //bool e2 = mContainer.GetChildAt(1).HasFocus;
-                //bool e3 = mContainer.GetChildAt(2).HasFocus;
-                //bool e4 = mContainer.GetChildAt(3).HasFocus;
-                //bool e5 = mContainer.GetChildAt(4).HasFocus;
-                //bool e6 = mContainer.GetChildAt(5).HasFocus;
-                //bool e7 = mContainer.GetChildAt(6).HasFocus;
-                //bool e8 = mContainer.GetChildAt(7).HasFocus;
-
                 string val = s.ToString();
                 char[] charArray = val.ToCharArray();
-
                 if (charArray.Length > 1)
                 {
                     ((EditText)mContainer.GetChildAt(7)).RemoveTextChangedListener(this);
@@ -362,7 +401,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             public void BeforeTextChanged(ICharSequence s, int start, int count, int after){}
 
-            public void OnTextChanged(ICharSequence s, int start, int before, int count){}
+            public void OnTextChanged(ICharSequence s, int start, int before, int count)
+            {}
         }
 
         class OnMeterInputClick : Java.Lang.Object, IOnClickListener
@@ -405,6 +445,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                         ((EditText)v).SetSelection(1);
                     }
                 }
+                //mContainer.UpdateSubmitReadingButton();
             }
         }
 
@@ -424,6 +465,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
                 if (keyCode == Keycode.Del)
                 {
+                    if (mContainer.editText8.Text == "" && mContainer.editText7.Text == "" && mContainer.editText6.Text == ""
+                        && mContainer.editText5.Text == "" && mContainer.editText4.Text == "" && mContainer.editText3.Text == ""
+                        && mContainer.editText2.Text == "" && mContainer.editText1.Text == "")
+                        return true;
+
                     if (mContainer.editText8 == v && mContainer.editText8.Text == "")
                     {
                         mContainer.editText8.Text = mContainer.editText7.Text;
@@ -435,7 +481,15 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                         mContainer.editText2.Text = mContainer.editText1.Text;
                         mContainer.editText1.Text = "";
 
-                        mContainer.editText8.SetSelection(1);
+                        if (mContainer.editText8.Text != "")
+                        {
+                            mContainer.editText8.SetSelection(1);
+                        }
+                        else
+                        {
+                            return true;
+                        }
+                        
                     }
 
                     if (mContainer.editText7 == v && mContainer.editText7.Text == "")
@@ -448,7 +502,14 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                         mContainer.editText2.Text = mContainer.editText1.Text;
                         mContainer.editText1.Text = "";
 
-                        mContainer.editText7.SetSelection(1);
+                        if (mContainer.editText7.Text != "")
+                        {
+                            mContainer.editText7.SetSelection(1);
+                        }
+                        else
+                        {
+                            return true;
+                        }
                     }
 
                     if (mContainer.editText6 == v && mContainer.editText6.Text == "")
@@ -460,7 +521,14 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                         mContainer.editText2.Text = mContainer.editText1.Text;
                         mContainer.editText1.Text = "";
 
-                        mContainer.editText6.SetSelection(1);
+                        if (mContainer.editText6.Text != "")
+                        {
+                            mContainer.editText6.SetSelection(1);
+                        }
+                        else
+                        {
+                            return true;
+                        }
                     }
 
                     if (mContainer.editText5 == v && mContainer.editText5.Text == "")
@@ -471,7 +539,14 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                         mContainer.editText2.Text = mContainer.editText1.Text;
                         mContainer.editText1.Text = "";
 
-                        mContainer.editText5.SetSelection(1);
+                        if (mContainer.editText5.Text != "")
+                        {
+                            mContainer.editText5.SetSelection(1);
+                        }
+                        else
+                        {
+                            return true;
+                        }
                     }
 
                     if (mContainer.editText4 == v && mContainer.editText4.Text == "")
@@ -481,7 +556,14 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                         mContainer.editText2.Text = mContainer.editText1.Text;
                         mContainer.editText1.Text = "";
 
-                        mContainer.editText4.SetSelection(1);
+                        if (mContainer.editText4.Text != "")
+                        {
+                            mContainer.editText4.SetSelection(1);
+                        }
+                        else
+                        {
+                            return true;
+                        }
                     }
 
                     if (mContainer.editText3 == v && mContainer.editText3.Text == "")
@@ -490,7 +572,14 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                         mContainer.editText2.Text = mContainer.editText1.Text;
                         mContainer.editText1.Text = "";
 
-                        mContainer.editText3.SetSelection(1);
+                        if (mContainer.editText3.Text != "")
+                        {
+                            mContainer.editText3.SetSelection(1);
+                        }
+                        else
+                        {
+                            return true;
+                        }
                     }
 
                     if (mContainer.editText2 == v && mContainer.editText2.Text == "")
@@ -498,14 +587,28 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                         mContainer.editText2.Text = mContainer.editText1.Text;
                         mContainer.editText1.Text = "";
 
-                        mContainer.editText2.SetSelection(1);
+                        if (mContainer.editText2.Text != "")
+                        {
+                            mContainer.editText2.SetSelection(1);
+                        }
+                        else
+                        {
+                            return true;
+                        }
                     }
 
                     if (mContainer.editText1 == v && mContainer.editText1.Text == "")
                     {
                         mContainer.editText1.Text = "";
 
-                        mContainer.editText1.SetSelection(1);
+                        if (mContainer.editText1.Text != "")
+                        {
+                            mContainer.editText1.SetSelection(1);
+                        }
+                        else
+                        {
+                            return true;
+                        }
                     }
                 }
                 return false;

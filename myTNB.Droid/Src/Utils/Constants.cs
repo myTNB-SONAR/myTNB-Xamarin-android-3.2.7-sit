@@ -233,6 +233,10 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string SMR_ENABLE_FLAG = "ENABLE_SMR";
         internal static readonly string SMR_DISABLE_FLAG = "DISABLE_SMR";
 
+        internal static readonly string SMR_METER_UNIT_KWH = "KWH";
+        internal static readonly string SMR_METER_UNIT_KVAR = "KVAR";
+        internal static readonly string SMR_METER_UNIT_KW = "KW";
+
         internal static readonly string AMOUNT_DUE_RESPONSE_KEY = ".amountDueResponse";
 
         internal static readonly string SELECTED_ACCOUNT_USAGE_RESPONSE = ".selectedAccountUsageResponse";

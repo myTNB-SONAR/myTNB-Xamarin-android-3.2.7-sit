@@ -29,6 +29,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             void ShowProgressDialog();
 
             void HideProgressDialog();
+
+            void OnUpdateSubmitMeterButton();
         }
 
         public interface IPresenter

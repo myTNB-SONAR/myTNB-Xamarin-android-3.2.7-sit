@@ -62,8 +62,12 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.Api
             [JsonProperty(PropertyName = "RegisterNumber")]
             public string RegisterNumber { get; set; }
 
+            [JsonProperty(PropertyName = "ReadingUnit")]
+            public string ReadingUnit { get; set; }
+
             [JsonProperty(PropertyName = "IsSuccess")]
             public bool IsSuccess { get; set; }
+            
         }
     }
 }

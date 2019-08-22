@@ -86,7 +86,7 @@ namespace myTNB_Android.Src.SSMR.Util
 
         public void ValidateMeterInput()
         {
-            mView.ValidateMeterInput(meterCard);
+            //mView.ValidateMeterInput(meterCard);
         }
 
         public class OnEditorActionChangeListener : Java.Lang.Object, TextView.IOnEditorActionListener

@@ -32,27 +32,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         {
             SubmitMeterReadingRequest request = new SubmitMeterReadingRequest(contractAccountValue, isOwnedAccountValue, meterReadingList);
             SubmitMeterReadingResponse response = await api.SubmitSMRMeetingReading(request);
-            ////////////////////// STUB - START
-            //SubmitMeterReadingResponse response = new SubmitMeterReadingResponse();
-            //SMRSubmitResponseData data = new SMRSubmitResponseData();
-            //SMRSubmitResponseDetails smrResponseDetails = new SMRSubmitResponseDetails();
-            //data.ErrorCode = "7100";
-            //data.DisplayTitle = "Reading Submitted";
-            //data.DisplayMessage = "Thank you for your meter reading submission. We will notify you when your meter reading has been validated.";
-
-
-            //List<SubmitSMRMeterReadingsResp> SubmitSMRMeterReadingsRespList = new List<SubmitSMRMeterReadingsResp>();
-            //SubmitSMRMeterReadingsResp resp = new SubmitSMRMeterReadingsResp();
-            //resp.Message = "This reading could not be validated, please try again.";
-            //resp.RegisterNumber = "001";
-            //resp.IsSuccess = false;
-            //SubmitSMRMeterReadingsRespList.Add(resp);
-            //smrResponseDetails.SubmitSMRMeterReadingsResp = SubmitSMRMeterReadingsRespList;
-            //data.ResponseDetailsData = smrResponseDetails;
-
-            //response.Data = data;
-            ///////////////////// STUB - END
-
             if (response.Data != null && response.Data.ErrorCode == "7200")
             {
                 this.mView.OnRequestSuccessful(response.Data);
@@ -69,6 +48,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                         validationData.message = meterReadingResp.Message;
                         validationData.registerNumber = meterReadingResp.RegisterNumber;
                         validationData.isSuccess = meterReadingResp.IsSuccess;
+                        validationData.meterReadingUnit = meterReadingResp.ReadingUnit;
                         meterValidationDataList.Add(validationData);
                     }
                 }
