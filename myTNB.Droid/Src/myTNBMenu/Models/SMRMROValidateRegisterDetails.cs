@@ -25,5 +25,13 @@ namespace myTNB_Android.Src.myTNBMenu.Models
         [JsonProperty(PropertyName = "PrevMeterReading")]
         [AliasAs("PrevMeterReading")]
         public string PrevMeterReading { get; set; }
+
+        [JsonProperty(PropertyName = "ReadingUnit")]
+        [AliasAs("ReadingUnit")]
+        public string ReadingUnit { get; set; }
+
+        [JsonProperty(PropertyName = "ReadingUnitDisplayTitle")]
+        [AliasAs("ReadingUnitDisplayTitle")]
+        public string ReadingUnitDisplayTitle { get; set; }
     }
 }
