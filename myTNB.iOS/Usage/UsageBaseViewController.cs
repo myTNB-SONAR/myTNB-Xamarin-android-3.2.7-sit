@@ -21,15 +21,15 @@ namespace myTNB
 
         internal UIScrollView _scrollViewContent;
         internal CustomUIView _navbarContainer, _accountSelectorContainer, _viewSeparator, _viewStatus
-            , _viewChart, _viewRE, _viewLegend, _viewToggle, _viewSSMR, _viewTips, _viewFooter, _rmKwhDropDownView, _viewRefresh
-            , _chart, _tips, _RE, _status, _ssmr, _tariff, _legend, _refresh;
+            , _viewChart, _viewRE, _viewLegend, _viewToggle, _viewSSMR, _viewSmartMeter, _viewTips, _viewFooter, _rmKwhDropDownView, _viewRefresh
+            , _chart, _tips, _RE, _status, _sm, _ssmr, _tariff, _legend, _refresh;
         internal UILabel _lblAddress, _RMLabel, _kWhLabel;
         internal UIImageView _bgImageView;
 
         internal bool _rmkWhFlag, _tariffIsVisible;
         internal RMkWhEnum _rMkWhEnum;
         internal nfloat _lastContentOffset;
-        internal bool isBcrmAvailable, isNormalChart, isREAccount, accountIsSSMR;
+        internal bool isBcrmAvailable, isNormalChart, isREAccount, isSmartMeterAccount, accountIsSSMR;
         internal bool _statusIsLoading, _legendIsVisible;
 
         internal CGRect _origViewFrame;
@@ -89,8 +89,10 @@ namespace myTNB
         {
             isREAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
             isNormalChart = DataManager.DataManager.SharedInstance.SelectedAccount.IsNormalMeter || isREAccount;
+            isSmartMeterAccount = !isREAccount && !isNormalChart;
             isBcrmAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
             accountIsSSMR = UsageHelper.IsSSMR(DataManager.DataManager.SharedInstance.SelectedAccount);
+            Debug.WriteLine("isSmartMeterAccount: " + isSmartMeterAccount);
         }
 
         private void ResetViews()
@@ -206,6 +208,10 @@ namespace myTNB
             {
                 Hidden = true
             };
+            _viewSmartMeter = new CustomUIView(new CGRect(0, 0, ViewWidth, 0))
+            {
+                Hidden = true
+            };
             _viewSSMR = new CustomUIView(new CGRect(0, 0, ViewWidth, 0))
             {
                 Hidden = true
@@ -216,7 +222,7 @@ namespace myTNB
             };
 
             _scrollViewContent.AddSubviews(new UIView[] { _accountSelectorContainer
-                , _lblAddress, _viewSeparator, _viewStatus, _viewChart, _viewRE, _viewLegend, _viewToggle, _viewSSMR, _viewTips });
+                , _lblAddress, _viewSeparator, _viewStatus, _viewChart, _viewSmartMeter, _viewRE, _viewLegend, _viewToggle, _viewSSMR, _viewTips });
         }
 
         private void SetContentView()
@@ -323,7 +329,7 @@ namespace myTNB
             {
                 _chartView = new REChartView();
             }
-            else if(isNormalChart)
+            else if (isNormalChart)
             {
                 _chartView = new NormalChartView();
             }
@@ -341,6 +347,9 @@ namespace myTNB
             ViewHelper.AdjustFrameSetHeight(_viewChart, _chart.Frame.Height);
         }
 
+        #region
+
+        #endregion
         #region SSMR Methods
         internal void SetSSMRComponent(bool isUpdating)
         {
