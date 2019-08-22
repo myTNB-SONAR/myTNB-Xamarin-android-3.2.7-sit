@@ -1147,6 +1147,9 @@
     <ImageAsset Include="Assets.xcassets\Usage-Refresh-Bg.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Usage-Refresh-Bg.imageset\Usage-Refresh-Bg%402x.png" />
     <ImageAsset Include="Assets.xcassets\Usage-Refresh-Bg.imageset\Usage-Refresh-Bg%403x.png" />
+    <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\BCRM-Down-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\BCRM-Down-Icon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1527,6 +1530,7 @@
     <Folder Include="Assets.xcassets\Usage-Bg-Normal.imageset\" />
     <Folder Include="Assets.xcassets\Usage-Bg-Long.imageset\" />
     <Folder Include="Assets.xcassets\Usage-Refresh-Bg.imageset\" />
+    <Folder Include="Assets.xcassets\BCRM-Down-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
