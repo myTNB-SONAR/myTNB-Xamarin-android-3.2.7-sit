@@ -2260,6 +2260,11 @@
     <Compile Include="Src\SSMRMeterHistory\MVP\CAContactDetailsModel.cs" />
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\TakePhotoScaledImageView.cs" />
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\MeterReadingInputLayout.cs" />
+    <AndroidResource Include="Resources\layout\EnergyTipShimmerCardLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\myTNBMenu\Adapter\EnergySavingTipsShimmerAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
