@@ -503,6 +503,47 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         graphToggleSelection.Visibility = ViewStates.Visible;
                         energyTipsView.Visibility = ViewStates.Visible;
                     }
+
+                    if (selectedAccount.AccountCategoryId.Equals("2"))
+                    {
+                        try
+                        {
+                            FirebaseAnalyticsUtils.SetFragmentScreenName(this, "RE Inner Dashboard");
+                        }
+                        catch (System.Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            if (!string.IsNullOrEmpty(errorMSG))
+                            {
+                                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Smart Meter Inner Dashboard");
+                            }
+                            else
+                            {
+                                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Normal Inner Dashboard");
+                            }
+                        }
+                        catch (System.Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Normal / RE Inner Dashboard");
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
                 }
 
                 if (isBCRMDown)
@@ -773,6 +814,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             Intent ssmr_history_activity = new Intent(this.Activity, typeof(SSMRMeterHistoryActivity));
             ssmr_history_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
             ssmr_history_activity.PutExtra(Constants.SMR_RESPONSE_KEY, JsonConvert.SerializeObject(smrResponse));
+            ssmr_history_activity.PutExtra("fromUsage", true);
             StartActivityForResult(ssmr_history_activity, SSMR_METER_HISTORY_ACTIVITY_CODE);
         }
 
@@ -1432,21 +1474,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     // SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
                     activity.SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
                     activity.SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
-                }
-                if (selectedAccount != null)
-                {
-                    if (selectedAccount.AccountCategoryId.Equals("2"))
-                    {
-                        FirebaseAnalyticsUtils.SetFragmentScreenName(this, "RE Inner Dashboard");
-                    }
-                    else
-                    {
-                        FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Normal Inner Dashboard");
-                    }
-                }
-                else
-                {
-                    FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Normal Inner Dashboard");
                 }
             }
             catch (ClassCastException e)

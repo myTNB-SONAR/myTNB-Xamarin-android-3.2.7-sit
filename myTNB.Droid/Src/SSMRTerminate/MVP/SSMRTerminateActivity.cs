@@ -431,6 +431,10 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             {
                 intent.PutExtra("SUBMIT_RESULT", JsonConvert.SerializeObject(response));
             }
+            if (selectedAccount != null)
+            {
+                intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+            }
             StartActivityForResult(intent, SSMR_METER_HISTORY_ACTIVITY_CODE);
         }
 
@@ -440,6 +444,10 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             if (response != null)
             {
                 intent.PutExtra("SUBMIT_RESULT", JsonConvert.SerializeObject(response));
+            }
+            if (selectedAccount != null)
+            {
+                intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
             }
             StartActivityForResult(intent, SSMR_METER_HISTORY_ACTIVITY_CODE);
         }
