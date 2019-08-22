@@ -86,6 +86,23 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             }
             if (accountList.Count > 0)
             {
+                if (CustomerBillingAccount.HasSelected())
+                {
+                    CustomerBillingAccount selectedAccount =  CustomerBillingAccount.GetSelected();
+                    int index = accountList.FindIndex(x => x.accountNumber == selectedAccount.AccNum);
+                    if (index != -1)
+                    {
+                        accountList[index].accountSelected = true;
+                    }
+                    else
+                    {
+                        accountList[0].accountSelected = true;
+                    }
+                }
+                else
+                {
+                    accountList[0].accountSelected = true;
+                }
                 noEligibleAccountContainer.Visibility = ViewStates.Gone;
                 eligibleAccountListContainer.Visibility = ViewStates.Visible;
                 selectAccountAdapter = new SelectAccountAdapter(this, accountList);

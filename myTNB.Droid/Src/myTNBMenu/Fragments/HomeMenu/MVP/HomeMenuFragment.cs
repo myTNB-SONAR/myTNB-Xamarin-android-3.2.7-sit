@@ -34,6 +34,7 @@ using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.Base;
 using Android.Text;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
+using Android.Runtime;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -176,6 +177,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private string savedEnergySavingTipsTimeStamp = "0000000";
 
+        public readonly static int SSMR_METER_HISTORY_ACTIVITY_CODE = 8796;
+
         private static List<MyService> currentMyServiceList = new List<MyService>();
 
         private static List<NewFAQ> currentNewFAQList = new List<NewFAQ>();
@@ -236,6 +239,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 default:
                     accountGreeting.Text = GetString(Resource.String.greeting_text_evening);
                     break;
+            }
+        }
+
+        public override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            if (requestCode == SSMR_METER_HISTORY_ACTIVITY_CODE)
+            {
+                if (resultCode == Result.Ok)
+                {
+                    try
+                    {
+                        ((DashboardHomeActivity)Activity).OnTapRefresh();
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                }
             }
         }
 
@@ -718,7 +739,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         {
                             applySMRIntent = new Intent(this.Activity, typeof(OnBoardingActivity));
                         }
-                        StartActivity(applySMRIntent);
+                        StartActivityForResult(applySMRIntent, SSMR_METER_HISTORY_ACTIVITY_CODE);
                     }
 
                     try
