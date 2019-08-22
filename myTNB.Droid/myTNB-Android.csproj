@@ -2262,6 +2262,7 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\myTNBMenu\Adapter\EnergySavingTipsShimmerAdapter.cs" />
+    <Compile Include="Src\myTNBMenu\ChartRenderer\SMStackedBarChartRenderer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
