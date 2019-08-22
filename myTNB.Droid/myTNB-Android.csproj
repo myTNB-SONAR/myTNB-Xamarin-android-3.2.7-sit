@@ -2257,6 +2257,11 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\layout\EnergyTipShimmerCardLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\myTNBMenu\Adapter\EnergySavingTipsShimmerAdapter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

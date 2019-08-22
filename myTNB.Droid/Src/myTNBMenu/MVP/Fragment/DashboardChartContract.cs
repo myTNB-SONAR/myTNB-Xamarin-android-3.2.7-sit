@@ -5,6 +5,9 @@ using Refit;
 using System;
 using myTNB_Android.Src.AppLaunch.Models;
 using static myTNB_Android.Src.myTNBMenu.Models.GetInstallationDetailsResponse;
+using myTNB.SitecoreCMS.Model;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -107,6 +110,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void SetUsageData(UsageHistoryData data);
 
             UsageHistoryData GetUsageHistoryData();
+
+            void HideEnergyTipsShimmerView();
+
+            void ShowEnergyTipsView(List<EnergySavingTipsModel> list);
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -150,6 +157,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
             bool IsBillingAvailable();
 
+            Task OnRandomizeEnergyTipsView(List<EnergySavingTipsModel> list);
+
+
+            List<EnergySavingTipsModel> OnLoadEnergySavingTipsShimmerList(int count);
         }
     }
 }
