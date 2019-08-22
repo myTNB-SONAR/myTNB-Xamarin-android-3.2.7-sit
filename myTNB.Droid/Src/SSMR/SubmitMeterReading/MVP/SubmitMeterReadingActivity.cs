@@ -215,6 +215,10 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     mPresenter.EvaluateOCRReadingResponse(extras.GetString("OCR_RESULTS"));
                 }
             }
+            if (resultCode == Result.Canceled)
+            {
+                HideProgressDialog();
+            }
         }
 
         protected override void OnStart()

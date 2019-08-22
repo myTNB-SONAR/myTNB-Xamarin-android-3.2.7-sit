@@ -289,7 +289,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
         private void ShowContactDetails()
         {
-            if (contactDetails != null && !contactDetails.isAllowEdit)
+            if (contactDetails != null && contactDetails.isAllowEdit)
             {
                 contactDetailTtile.Visibility = ViewStates.Visible;
                 contactDetailContainer.Visibility = ViewStates.Visible;
