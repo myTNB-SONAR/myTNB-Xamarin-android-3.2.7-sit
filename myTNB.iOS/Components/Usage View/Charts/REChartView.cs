@@ -9,7 +9,10 @@ namespace myTNB
 {
     public class REChartView : BaseChartView
     {
-        public REChartView() { }
+        public REChartView()
+        {
+            ShimmerHeight = GetHeightByScreenSize(203);
+        }
 
         protected override void CreatUI()
         {
