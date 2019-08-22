@@ -42,7 +42,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         PhotoContainerBox selectedPhotoBox;
         SubmitMeterTakePhotoFragment takePhotoFragment;
 
-
         [BindView(Resource.Id.meter_capture_container)]
         LinearLayout meterCapturedContainer;
 
@@ -54,8 +53,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         [BindView(Resource.Id.btnDeletePhoto)]
         Button btnDeletePhoto;
-
-
 
         public override int ResourceId()
         {
@@ -292,7 +289,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
             else
             {
-                ImageView previewImage = FindViewById<ImageView>(Resource.Id.adjust_photo_preview);
+                ScaledImageView previewImage = FindViewById<ScaledImageView>(Resource.Id.adjust_photo_preview);
                 previewImage.SetScaleType(ImageView.ScaleType.CenterCrop);
                 previewImage.SetImageBitmap(capturedImage);
                 ShowImagePreView(true);
@@ -321,7 +318,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 {
                     photoBox.Click += delegate {
                         ShowImagePreView(true);
-                        ImageView previewImage = FindViewById<ImageView>(Resource.Id.adjust_photo_preview);
+                        ScaledImageView previewImage = FindViewById<ScaledImageView>(Resource.Id.adjust_photo_preview);
                         previewImage.SetScaleType(ImageView.ScaleType.CenterCrop);
                         previewImage.SetImageBitmap(photoBox.photoBitmap);
                         selectedPhotoBox = photoBox;
@@ -345,7 +342,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             else
             {
                 ShowImagePreView(true);
-                ImageView previewImage = FindViewById<ImageView>(Resource.Id.adjust_photo_preview);
+                ScaledImageView previewImage = FindViewById<ScaledImageView>(Resource.Id.adjust_photo_preview);
                 previewImage.SetScaleType(ImageView.ScaleType.CenterCrop);
                 previewImage.SetImageBitmap(photoContainerBoxes[0].photoBitmap);
                 selectedPhotoBox = photoContainerBoxes[0];

@@ -11,6 +11,9 @@ namespace myTNB_Android.Src.SSMRTerminate.Api
         [JsonProperty("isOwnedAccount")]
         public string IsOwnedAccount { get; set; }
 
+        [JsonProperty("ICNumber")]
+        public string ICNumber { get; set; }
+
         [JsonProperty("usrInf")]
         public UserInterface usrInf { get; set; }
     }

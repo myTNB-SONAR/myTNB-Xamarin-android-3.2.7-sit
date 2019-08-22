@@ -42,7 +42,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
             void NavigateToTermsAndConditions();
 
-            void OnSubmitApplication(string accountNum, string oldEmail, string oldPhoneNum, string newEmail, string newPhoneNum, string terminationReason);
+            void OnSubmitApplication(string accountNum, string oldEmail, string oldPhoneNum, string newEmail, string newPhoneNum, string terminationReason, string mode);
         }
 
         public interface SSMRTerminateApiPresenter

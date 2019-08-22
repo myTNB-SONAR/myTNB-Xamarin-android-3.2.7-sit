@@ -48,10 +48,10 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         TextView SMRListHeader;
 
         [BindView(Resource.Id.btnSubmitMeter)]
-        Button btnSubmitMeter; 
+        Button btnSubmitMeter;
 
         [BindView(Resource.Id.btnEnableSubmitMeter)]
-        Button btnEnableSubmitMeter; 
+        Button btnEnableSubmitMeter;
 
         [BindView(Resource.Id.btnDisableSubmitMeter)]
         Button btnDisableSubmitMeter;
@@ -67,21 +67,21 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 
         [BindView(Resource.Id.selector_smr_account)]
         TextView SMRAccountSelected;
-        
+
         [BindView(Resource.Id.smrActionContainer)]
-        LinearLayout SMRActionContainer; 
+        LinearLayout SMRActionContainer;
 
         [BindView(Resource.Id.nonSMRActionContainer)]
-        LinearLayout NonSMRActionContainer; 
+        LinearLayout NonSMRActionContainer;
 
         [BindView(Resource.Id.readingHistoryList)]
         LinearLayout ReadingHistoryListContainer;
 
         [BindView(Resource.Id.disableSMRBtnContainer)]
-        LinearLayout DisableSMRBtnContainer; 
+        LinearLayout DisableSMRBtnContainer;
 
         [BindView(Resource.Id.non_smr_note_content)]
-        TextView NonSMRNoteContent; 
+        TextView NonSMRNoteContent;
 
         [BindView(Resource.Id.layout_content_nestedscroll)]
         NestedScrollView NestedScrollViewContent;
@@ -91,6 +91,8 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 
         [BindView(Resource.Id.accountListRefreshContainer)]
         LinearLayout smrAccountListRefreshContainer;
+
+        private string SMR_ACTION_KEY;
 
         private SMRActivityInfoResponse smrResponse;
 
@@ -243,6 +245,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             ShowRefreshScreen(false);
             SMRAccountSelected.Text = selectedAccountNickName;
             ShowNonSMRVisible(false,false);
+            smrResponse = activityInfoResponse;
 
             SSMRMeterHistoryAdapter adapter = new SSMRMeterHistoryAdapter(activityInfoResponse.Response.Data.MeterReadingHistory);
             mSMRRecyclerView.SetAdapter(adapter);
@@ -436,8 +439,12 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [OnClick(Resource.Id.btnSubmitMeter)]
         internal void OnSubmitMeter(object sender, EventArgs eventArgs)
         {
+            AccountData accountData = new AccountData();
+            SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
+            accountData.AccountNum = selectedAccountNumber;
+
             Intent ssmr_submit_meter_activity = new Intent(this, typeof(SubmitMeterReadingActivity));
-            ssmr_submit_meter_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+            ssmr_submit_meter_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
             ssmr_submit_meter_activity.PutExtra(Constants.SMR_RESPONSE_KEY, JsonConvert.SerializeObject(smrResponse));
             StartActivityForResult(ssmr_submit_meter_activity, SSMR_SUBMIT_METER_ACTIVITY_CODE);
         }
@@ -474,9 +481,8 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             accountData.AccountNum = selectedAccountNumber;
             accountData.AddStreet = eligibleAccount.accountAddress;
             accountData.AccountNickName = eligibleAccount.accountName;
-            Intent SSMRTerminateActivity = new Intent(this, typeof(SSMRTerminateActivity));
-            SSMRTerminateActivity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
-            StartActivityForResult(SSMRTerminateActivity, SSMR_METER_HISTORY_ACTIVITY_CODE);
+						SMR_ACTION_KEY = Constants.SMR_DISABLE_FLAG;
+            this.mPresenter.GetCARegisteredContactInfoAsync(accountData);
         }
 
         public override void OnBackPressed()
@@ -490,6 +496,18 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             {
                 Finish();
             }
+        }
+
+        [OnClick(Resource.Id.btnEnableSubmitMeter)]
+        void OnEnableSubmitMeter(object sender, EventArgs eventArgs)
+        {
+            AccountData accountData = new AccountData();
+            SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
+            accountData.AccountNum = selectedAccountNumber;
+            accountData.AddStreet = eligibleAccount.accountAddress;
+            accountData.AccountNickName = eligibleAccount.accountName;
+            SMR_ACTION_KEY = Constants.SMR_ENABLE_FLAG;
+            this.mPresenter.GetCARegisteredContactInfoAsync(accountData);
         }
 
         public void ShowSMREligibleAccountList(List<SMRAccount> smrEligibleAccountList)
@@ -510,7 +528,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         {
             this.mPresenter.GetSSMRAccountStatus(selectedAccountNumber);
         }
-
+				
         protected override void OnResume()
         {
             base.OnResume();
@@ -522,6 +540,20 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+				}
+        public void ShowEnableDisableSMR(CAContactDetailsModel contactDetailsModel)
+        {
+            AccountData accountData = new AccountData();
+            SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
+            accountData.AccountNum = selectedAccountNumber;
+            accountData.AddStreet = eligibleAccount.accountAddress;
+            accountData.AccountNickName = eligibleAccount.accountName;
+
+            Intent SSMRTerminateActivity = new Intent(this, typeof(SSMRTerminateActivity));
+            SSMRTerminateActivity.PutExtra("SMR_ACTION", SMR_ACTION_KEY);
+            SSMRTerminateActivity.PutExtra("SMR_CONTACT_DETAILS", JsonConvert.SerializeObject(contactDetailsModel));
+            SSMRTerminateActivity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+            StartActivity(SSMRTerminateActivity);
         }
     }
 }
