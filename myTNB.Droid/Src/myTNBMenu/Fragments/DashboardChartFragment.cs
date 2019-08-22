@@ -545,6 +545,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else
                 {
+                    energyTipsView.Visibility = ViewStates.Gone;
                     try
                     {
                         FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Normal / RE Inner Dashboard");
@@ -652,8 +653,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                     energyDisconnectionButton.Visibility = ViewStates.Gone;
 
-                    OnGetEnergyTipsItems();
-
+                    if (selectedAccount != null)
+                    {
+                        if (!selectedAccount.AccountCategoryId.Equals("2"))
+                        {
+                            OnGetEnergyTipsItems();
+                        }
+                    }                  
 
                     this.userActionsListener?.Start();
 
@@ -2579,6 +2585,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
+                energyTipsView.Visibility = ViewStates.Gone;
+                energyTipsShimmerView.Visibility = ViewStates.Visible;
+                OnSetEnergyTipsShimmerAdapter(this.mPresenter.OnLoadEnergySavingTipsShimmerList(3));
                 List<EnergySavingTipsModel> localList = EnergyTipsUtils.GetAllItems();
                 if (localList != null && localList.Count >= 3)
                 {
@@ -2586,10 +2595,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else
                 {
-                    energyTipsView.Visibility = ViewStates.Gone;
-                    energyTipsShimmerView.Visibility = ViewStates.Visible;
-                    OnSetEnergyTipsShimmerAdapter(this.mPresenter.OnLoadEnergySavingTipsShimmerList(3));
-
                     this.mPresenter.OnGetEnergySavingTips();
                 }
             }
@@ -2601,34 +2606,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void HideEnergyTipsShimmerView()
         {
-            Activity.RunOnUiThread(() =>
-            {
-                try
-                {
-                    energyTipsShimmerView.Visibility = ViewStates.Gone;
-                    OnSetEnergyTipsShimmerAdapter(null);
-                }
-                catch (System.Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-            });
+            energyTipsShimmerView.Visibility = ViewStates.Gone;
+            OnSetEnergyTipsShimmerAdapter(null);
         }
 
         private void OnSetEnergyTipsShimmerAdapter(List<EnergySavingTipsModel> list)
         {
-            Activity.RunOnUiThread(() =>
-            {
-                try
-                {
-                    energyTipsShimmerAdapter = new EnergySavingTipsShimmerAdapter(list, this.Activity);
-                    energyTipsShimmerList.SetAdapter(energyTipsShimmerAdapter);
-                }
-                catch (System.Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-            });
+            energyTipsShimmerAdapter = new EnergySavingTipsShimmerAdapter(list, this.Activity);
+            energyTipsShimmerList.SetAdapter(energyTipsShimmerAdapter);
         }
 
         public void ShowEnergyTipsView(List<EnergySavingTipsModel> list)
