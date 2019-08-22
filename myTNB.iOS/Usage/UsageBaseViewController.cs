@@ -30,7 +30,7 @@ namespace myTNB
         internal RMkWhEnum _rMkWhEnum;
         internal nfloat _lastContentOffset;
         internal bool isBcrmAvailable, isNormalChart, isREAccount, accountIsSSMR;
-        internal bool _statusIsLoading;
+        internal bool _statusIsLoading, _legendIsVisible;
 
         internal CGRect _origViewFrame;
 
@@ -171,7 +171,9 @@ namespace myTNB
             _scrollViewContent = new UIScrollView(new CGRect(0, GetYLocationFromFrame(_navbarContainer.Frame, 8F), ViewWidth, height))
             {
                 BackgroundColor = UIColor.Clear,
-                Bounces = false
+                Bounces = false,
+                CanCancelContentTouches = false,
+                DelaysContentTouches = true
             };
             _scrollViewContent.Scrolled += OnScroll;
             View.AddSubview(_scrollViewContent);
@@ -238,7 +240,7 @@ namespace myTNB
             }
             else
             {
-                _viewLegend.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, !_viewLegend.Hidden ? 16F : 0F)), _viewLegend.Frame.Size);
+                _viewLegend.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, _legendIsVisible ? 16F : 0F)), _viewLegend.Frame.Size);
                 _viewToggle.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewLegend.Frame, 16F)), _viewToggle.Frame.Size);
 
                 if (accountIsSSMR)
@@ -457,15 +459,24 @@ namespace myTNB
         }
         private void ShowHideTariffLegends(bool isVisible)
         {
+            _legendIsVisible = isVisible;
             List<LegendItemModel> tariffList = new List<LegendItemModel>(AccountUsageCache.GetTariffLegendList());
             if (tariffList != null && tariffList.Count > 0)
             {
                 UpdateBackgroundImage(isVisible);
-                _viewLegend.Hidden = !isVisible;
 
-                nfloat height = isVisible ? tariffList.Count * GetScaledHeight(25f) : 0;
-                ViewHelper.AdjustFrameSetHeight(_viewLegend, height);
-                SetContentView();
+                UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseIn
+                    , () =>
+                    {
+                        nfloat height = isVisible ? tariffList.Count * GetScaledHeight(25f) : 0;
+                        ViewHelper.AdjustFrameSetHeight(_viewLegend, height);
+                        SetContentView();
+                    }
+                    , () =>
+                    {
+                        _viewLegend.Hidden = !isVisible;
+                    }
+                );
             }
         }
         #endregion
@@ -697,7 +708,15 @@ namespace myTNB
                     ViewHelper.AdjustFrameSetHeight(_viewStatus, 0);
                 }
             }
-            SetContentView();
+
+            UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseIn
+                    , () =>
+                    {
+                        SetContentView();
+                    }
+                    , () =>
+                    { }
+                );
         }
         #endregion
         #region RE Methods
