@@ -253,7 +253,7 @@ namespace myTNB
                     _viewTips.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewToggle.Frame, 24F)), _viewTips.Frame.Size);
                 }
             }
-            _scrollViewContent.ContentSize = new CGSize(ViewWidth, GetAdditionalHeight(isREAccount ? _viewRE.Frame.GetMaxY() : _viewTips.Frame.GetMaxY()));
+            _scrollViewContent.ContentSize = new CGSize(ViewWidth, isREAccount ? _viewRE.Frame.GetMaxY() : GetAdditionalHeight(_viewTips.Frame.GetMaxY()));
         }
 
         private nfloat GetAdditionalHeight(nfloat maxYPos)
