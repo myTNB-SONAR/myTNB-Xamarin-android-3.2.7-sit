@@ -70,7 +70,7 @@ namespace myTNB
             double maxValue = 10;// GetMaxValue(RMkWhEnum.RM, valueList);
             double divisor = maxBarHeight / maxValue;
 
-            for (int i = 0; i < 30; i++)// usageData.Count; i++)
+            for (int i = 0; i < 31; i++)// usageData.Count; i++)
             {
                 int index = i;
                 //MonthItemModel item = usageData[index];
