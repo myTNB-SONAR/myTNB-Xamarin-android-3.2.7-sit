@@ -58,6 +58,7 @@ namespace myTNB
             for (int i = 0; i < usageData.Count; i++)
             {
                 int index = i;
+                bool isSelected = index < usageData.Count - 1;
                 MonthItemModel item = usageData[index];
                 CustomUIView segment = new CustomUIView(new CGRect(xLoc, 0, segmentWidth, height))
                 {
@@ -82,7 +83,7 @@ namespace myTNB
 
                 UIView viewCover = new UIView(new CGRect(new CGPoint(0, 0), new CGSize(viewBar.Frame.Width, barHeight)))
                 {
-                    BackgroundColor = index < usageData.Count - 1 ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
+                    BackgroundColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
                     Tag = 2001,
                     Hidden = false
                 };
@@ -93,9 +94,9 @@ namespace myTNB
                 {
                     TextAlignment = UITextAlignment.Center,
                     Font = TNBFont.MuseoSans_10_300,
-                    TextColor = index < usageData.Count - 1 ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
+                    TextColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
                     Text = string.Format(Format_Value, item.UsageTotal, item.UsageUnit),
-                    Hidden = index < usageData.Count - 1,
+                    Hidden = isSelected,
                     Tag = 1002
                 };
                 nfloat lblUsageWidth = lblUsage.GetLabelWidth(GetWidthByScreenSize(100));
@@ -107,25 +108,23 @@ namespace myTNB
                 {
                     TextAlignment = UITextAlignment.Center,
                     Font = TNBFont.MuseoSans_10_500,
-                    TextColor = index < usageData.Count - 1 ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
+                    TextColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
                     Text = item.AmountTotal.FormatAmountString(item.Currency),
-                    Hidden = index < usageData.Count - 1,
+                    Hidden = isSelected,
                     Tag = 1003
                 };
                 nfloat lblAmountWidth = lblAmount.GetLabelWidth(GetWidthByScreenSize(100));
                 lblAmount.Frame = new CGRect((segmentWidth - lblAmountWidth) / 2, lblAmount.Frame.Y, lblAmountWidth, lblAmount.Frame.Height);
 
-                UILabel lblDate = new UILabel(new CGRect(0, segment.Frame.Height - lblHeight
-                    , GetWidthByScreenSize(30), lblHeight))
+                UILabel lblDate = new UILabel(new CGRect((segmentWidth - GetWidthByScreenSize(40)) / 2, segment.Frame.Height - lblHeight
+                    , GetWidthByScreenSize(40), lblHeight))
                 {
                     TextAlignment = UITextAlignment.Center,
-                    Font = TNBFont.MuseoSans_10_300,
-                    TextColor = index < usageData.Count - 1 ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
+                    Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300,
+                    TextColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
                     Text = string.IsNullOrEmpty(item.Year) ? item.Month : string.Format(Format_Value, item.Month, item.Year),
                     Tag = 1004
                 };
-                nfloat lblDateWidth = lblDate.GetLabelWidth(GetWidthByScreenSize(30));
-                lblDate.Frame = new CGRect((segmentWidth - lblDateWidth) / 2, lblDate.Frame.Y, lblDateWidth, lblDate.Frame.Height);
 
                 segment.AddSubviews(new UIView[] { lblUsage, lblAmount, viewBar, lblDate });
 
@@ -195,6 +194,7 @@ namespace myTNB
                 if (date != null)
                 {
                     date.TextColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F);
+                    date.Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300;
                 }
             }
         }

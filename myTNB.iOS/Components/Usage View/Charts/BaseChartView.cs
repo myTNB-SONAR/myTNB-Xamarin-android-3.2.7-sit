@@ -88,7 +88,7 @@ namespace myTNB
             return maxValue;
         }
 
-        protected virtual void AddTariffBlocks(CustomUIView viewBar, List<TariffItemModel> tariff
+        protected virtual void AddTariffBlocks(CustomUIView viewBar, List<TariffItemModel> tariffList
             , double baseValue, bool isSelected, CGSize size)
         { }
 
