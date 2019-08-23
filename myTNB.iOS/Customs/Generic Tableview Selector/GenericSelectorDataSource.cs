@@ -34,6 +34,7 @@ namespace myTNB
             cell.TextLabel.Font = TNBFont.MuseoSans_16_300;
             cell.TextLabel.Lines = 0;
             cell.TextLabel.LineBreakMode = UILineBreakMode.WordWrap;
+            cell.TextLabel.BackgroundColor = UIColor.Clear;
             nfloat accWidth = ScaleUtility.GetScaledWidth(24);
             if (_controller.SelectedIndex > -1 && indexPath.Row == _controller.SelectedIndex)
             {
