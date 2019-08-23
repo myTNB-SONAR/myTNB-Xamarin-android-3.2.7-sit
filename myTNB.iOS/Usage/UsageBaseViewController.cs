@@ -278,6 +278,11 @@ namespace myTNB
                     _viewSSMR.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewToggle.Frame, 16F)), _viewSSMR.Frame.Size);
                     _viewTips.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewSSMR.Frame, 16F)), _viewTips.Frame.Size);
                 }
+                else if (isSmartMeterAccount)
+                {
+                    _viewSmartMeter.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewToggle.Frame, 24F)), _viewSmartMeter.Frame.Size);
+                    _viewTips.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewSmartMeter.Frame, 16F)), _viewTips.Frame.Size);
+                }
                 else
                 {
                     _viewTips.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewToggle.Frame, 24F)), _viewTips.Frame.Size);
@@ -303,6 +308,7 @@ namespace myTNB
             SetAddress();
             SetChartView(true);
             SetTariffSelectionComponent();
+            SetSmartMeterComponent();
             SetEnergyTipsComponent();
             SetContentView();
             SetFooterView();
@@ -372,7 +378,36 @@ namespace myTNB
         }
 
         #region
+        internal void SetSmartMeterComponent()
+        {
+            if (isSmartMeterAccount)
+            {
+                ViewHelper.AdjustFrameSetHeight(_viewSmartMeter, GetScaledHeight(169F));
+                _viewSmartMeter.BackgroundColor = UIColor.Clear;
+                _viewSmartMeter.Hidden = false;
 
+                if (_sm != null)
+                {
+                    _sm.RemoveFromSuperview();
+                }
+                SmartMeterCardComponent smartMeterComponent = new SmartMeterCardComponent(_viewSmartMeter);
+                _sm = smartMeterComponent.GetUI();
+                _viewSmartMeter.AddSubview(_sm);
+                AddSmartMeterViewShadow(ref _sm);
+            }
+            SetContentView();
+        }
+
+
+        private void AddSmartMeterViewShadow(ref CustomUIView view)
+        {
+            view.Layer.MasksToBounds = false;
+            view.Layer.ShadowColor = MyTNBColor.BabyBlue60.CGColor;
+            view.Layer.ShadowOpacity = .32f;
+            view.Layer.ShadowOffset = new CGSize(0, 8);
+            view.Layer.ShadowRadius = 8;
+            view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
+        }
         #endregion
         #region SSMR Methods
         internal void SetSSMRComponent(bool isUpdating, bool forRefreshScreen = false)
@@ -432,7 +467,7 @@ namespace myTNB
                         ViewHelper.AdjustFrameSetHeight(_viewSSMR, sSMRComponent.GetContainerHeight());
                         _viewSSMR.BackgroundColor = UIColor.Clear;
                         _viewSSMR.Hidden = false;
-                        AddSSMRViewShadow(ref _viewSSMR);
+                        AddSSMRViewShadow(ref _ssmr);
                         if (forRefreshScreen)
                         {
                             _ssmrRefresh.AddSubview(_ssmr);
@@ -440,7 +475,7 @@ namespace myTNB
                             ViewHelper.AdjustFrameSetY(_ssmrRefresh, GetYLocationFromFrame(_refresh.Frame, GetScaledHeight(8F)));
                             ViewHelper.AdjustFrameSetHeight(_ssmrRefresh, sSMRComponent.GetContainerHeight());
                             ViewHelper.AdjustFrameSetHeight(_viewRefresh, _refresh.Frame.Height + sSMRComponent.GetContainerHeight() + GetScaledHeight(16F));
-                            AddSSMRViewShadow(ref _ssmrRefresh);
+                            AddSSMRViewShadow(ref _ssmr);
                             SetContentViewForRefresh();
                         }
                     }
