@@ -323,7 +323,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         static bool isUsageLoadedNeeded = true;
 
+        bool isSMDown = false;
+
         public StackedBarChartRenderer renderer;
+
+        public SMStackedBarChartRenderer smRenderer;
 
         static bool requireScroll;
 
@@ -503,6 +507,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         txtTotalPayableTitle.Text = GetString(Resource.String.title_payment_advice_amount);
                         graphToggleSelection.Visibility = ViewStates.Gone;
                     }
+                    else if (! selectedAccount.SmartMeterCode.Equals("0"))
+                    {
+                        isREAccount = false;
+                        reContainer.Visibility = ViewStates.Gone;
+                        btnPay.Visibility = ViewStates.Visible;
+                        btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
+                        graphToggleSelection.Visibility = ViewStates.Visible;
+                        energyTipsView.Visibility = ViewStates.Visible;
+                        // TODO: Statistic View
+                    }
                     else
                     {
                         isREAccount = false;
@@ -518,6 +532,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         try
                         {
                             FirebaseAnalyticsUtils.SetFragmentScreenName(this, "RE Inner Dashboard");
+                        }
+                        catch (System.Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                    }
+                    else if (!selectedAccount.SmartMeterCode.Equals("0"))
+                    {
+                        try
+                        {
+                            FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Smart Meter Inner Dashboard");
                         }
                         catch (System.Exception e)
                         {
@@ -883,18 +908,55 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 isToggleTariff = false;
             }
 
-            if (isToggleTariff)
+            if (!selectedAccount.SmartMeterCode.Equals("0"))
             {
-                renderer = new StackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
+                if (!isSMDown)
                 {
-                    selectedHistoryData = selectedHistoryData,
-                    currentContext = Activity
-                };
-                mChart.Renderer = renderer;
+                    if (isToggleTariff)
+                    {
+                        // TODO: Change selected data
+                        smRenderer = new SMStackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
+                        {
+                            selectedHistoryData = selectedHistoryData,
+                            currentContext = Activity,
+                            isStacked = true,
+                            currentChartType = ChartType
+                        };
+                        mChart.Renderer = smRenderer;
+                    }
+                    else
+                    {
+                        // TODO: Change selected data
+                        smRenderer = new SMStackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
+                        {
+                            selectedHistoryData = selectedHistoryData,
+                            currentContext = Activity,
+                            isStacked = false,
+                            currentChartType = ChartType
+                        };
+                        mChart.Renderer = smRenderer;
+                    }
+                }
+                else
+                {
+                    // TODO: SM Down Handling
+                }
             }
             else
             {
-                mChart.SetRoundedBarRadius(100f);
+                if (isToggleTariff)
+                {
+                    renderer = new StackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
+                    {
+                        selectedHistoryData = selectedHistoryData,
+                        currentContext = Activity
+                    };
+                    mChart.Renderer = renderer;
+                }
+                else
+                {
+                    mChart.SetRoundedBarRadius(100f);
+                }
             }
 
             mChart.SetDrawBarShadow(false);
@@ -977,6 +1039,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             xAxis.SetDrawGridLines(false);
 
+            try
+            {
+                Typeface plain = Typeface.CreateFromAsset(Context.Assets, "fonts/" + TextViewUtils.MuseoSans300);
+                xAxis.Typeface = plain;
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
             xAxis.Granularity = 1f; // only intervals of 1 day
             xAxis.LabelCount = selectedHistoryData.ByMonth.Months.Count;
             xAxis.ValueFormatter = XLabelsFormatter;
@@ -997,6 +1069,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             xAxis.AxisLineColor = Color.ParseColor("#4cffffff");
 
             xAxis.SetDrawGridLines(false);
+
+            try
+            {
+                Typeface plain = Typeface.CreateFromAsset(Context.Assets, "fonts/" + TextViewUtils.MuseoSans300);
+                xAxis.Typeface = plain;
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
 
             xAxis.Granularity = 1f; // only intervals of 1 day
             xAxis.LabelCount = selectedHistoryData.ByMonth.Months.Count;
@@ -1092,185 +1174,381 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #region SETUP RM DATA
         internal void SetData(int barLength)
         {
-            if (isToggleTariff)
+            if (selectedAccount.SmartMeterCode.Equals("0"))
             {
-                int stackIndex = 0;
-                List<BarEntry> yVals1 = new List<BarEntry>();
-                for (int i = 0; i < barLength; i++)
+
+                if (isToggleTariff)
                 {
-                    if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
-                    {
-                        float[] valList = new float[selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count];
-                        for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
-                        {
-                            float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
-                            if (float.IsPositiveInfinity(val))
-                            {
-                                val = float.PositiveInfinity;
-                            }
-                            valList[j] = System.Math.Abs(val);
-                        }
-                        if (i == barLength - 1)
-                        {
-                            stackIndex = valList.Length - 1;
-                        }
-                        yVals1.Add(new BarEntry(i, valList));
-                    }
-                    else
-                    {
-                        yVals1.Add(new BarEntry(i, 0));
-                    }
-                }
-
-                BarDataSet set1;
-
-                if (mChart.Data != null && mChart.Data is BarData)
-                {
-                    var barData = mChart.Data as BarData;
-
-                    if (barData.DataSetCount > 0)
-                    {
-                        set1 = barData.GetDataSetByIndex(0) as BarDataSet;
-                        set1.Values = yVals1;
-                        barData.NotifyDataChanged();
-                        mChart.NotifyDataSetChanged();
-                    }
-                }
-                else
-                {
-                    set1 = new BarDataSet(yVals1, "");
-                    set1.SetDrawIcons(false);
-
-                    List<int> listOfColor = new List<int>();
-                   
+                    int stackIndex = 0;
+                    List<BarEntry> yVals1 = new List<BarEntry>();
                     for (int i = 0; i < barLength; i++)
                     {
                         if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
                         {
+                            float[] valList = new float[selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count];
                             for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
                             {
-                                if (selectedHistoryData.TariffBlocksLegend != null && selectedHistoryData.TariffBlocksLegend.Count > 0)
+                                float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
+                                if (float.IsPositiveInfinity(val))
                                 {
-                                    bool isFound = false;
-                                    for (int k = 0; k < selectedHistoryData.TariffBlocksLegend.Count; k++)
-                                    {
-                                        if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedHistoryData.TariffBlocksLegend[k].BlockId)
-                                        {
-                                            isFound = true;
-                                            listOfColor.Add(Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData));
-                                            break;
-                                        }
-                                    }
-
-                                    if (!isFound)
-                                    {
-                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
-                                    }
-
+                                    val = float.PositiveInfinity;
                                 }
-                                else
-                                {
-                                    listOfColor.Add(Color.Argb(50, 255, 255, 255));
-                                }
+                                valList[j] = System.Math.Abs(val);
                             }
+                            if (i == barLength - 1)
+                            {
+                                stackIndex = valList.Length - 1;
+                            }
+                            yVals1.Add(new BarEntry(i, valList));
                         }
                         else
                         {
-                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                            yVals1.Add(new BarEntry(i, 0));
                         }
                     }
 
+                    BarDataSet set1;
 
-                    int[] colorSet = new int[listOfColor.Count];
-                    for (int z = 0; z < listOfColor.Count; z++)
+                    if (mChart.Data != null && mChart.Data is BarData)
                     {
-                        colorSet[z] = listOfColor[z];
+                        var barData = mChart.Data as BarData;
+
+                        if (barData.DataSetCount > 0)
+                        {
+                            set1 = barData.GetDataSetByIndex(0) as BarDataSet;
+                            set1.Values = yVals1;
+                            barData.NotifyDataChanged();
+                            mChart.NotifyDataSetChanged();
+                        }
+                    }
+                    else
+                    {
+                        set1 = new BarDataSet(yVals1, "");
+                        set1.SetDrawIcons(false);
+
+                        List<int> listOfColor = new List<int>();
+
+                        for (int i = 0; i < barLength; i++)
+                        {
+                            if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                            {
+                                for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                                {
+                                    if (selectedHistoryData.TariffBlocksLegend != null && selectedHistoryData.TariffBlocksLegend.Count > 0)
+                                    {
+                                        bool isFound = false;
+                                        for (int k = 0; k < selectedHistoryData.TariffBlocksLegend.Count; k++)
+                                        {
+                                            if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedHistoryData.TariffBlocksLegend[k].BlockId)
+                                            {
+                                                isFound = true;
+                                                listOfColor.Add(Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData));
+                                                break;
+                                            }
+                                        }
+
+                                        if (!isFound)
+                                        {
+                                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                            }
+                        }
+
+
+                        int[] colorSet = new int[listOfColor.Count];
+                        for (int z = 0; z < listOfColor.Count; z++)
+                        {
+                            colorSet[z] = listOfColor[z];
+                        }
+
+                        set1.SetColors(colorSet);
+
+                        List<IBarDataSet> dataSets = new List<IBarDataSet>();
+                        dataSets.Add(set1);
+
+
+                        BarData data = new BarData(dataSets);
+
+                        data.BarWidth = 0.25f;
+
+                        set1.HighLightAlpha = 0;
+
+                        data.HighlightEnabled = true;
+                        data.SetValueTextSize(10f);
+                        data.SetDrawValues(false);
+
+                        mChart.Data = data;
                     }
 
-                    set1.SetColors(colorSet);
-
-                    List<IBarDataSet> dataSets = new List<IBarDataSet>();
-                    dataSets.Add(set1);
-
-
-                    BarData data = new BarData(dataSets);
-
-                    data.BarWidth = 0.25f;
-
-                    set1.HighLightAlpha = 0;
-
-                    data.HighlightEnabled = true;
-                    data.SetValueTextSize(10f);
-                    data.SetDrawValues(false);
-
-                    mChart.Data = data;
-                }
-
-                // HIGHLIGHT RIGHT MOST ITEM
-                CurrentParentIndex = barLength - 1;
-                Highlight rightMostBar = new Highlight(barLength - 1, 0, stackIndex);
-                mChart.HighlightValues(new Highlight[] { rightMostBar });
-            }
-            else
-            {
-                List<BarEntry> yVals1 = new List<BarEntry>();
-                for (int i = 0; i < barLength; i++)
-                {
-                    float val = (float)selectedHistoryData.ByMonth.Months[i].AmountTotal;
-                    if (float.IsPositiveInfinity(val))
-                    {
-                        val = float.PositiveInfinity;
-                    }
-
-                    yVals1.Add(new BarEntry(i, System.Math.Abs(val)));
-                }
-
-                BarDataSet set1;
-
-                if (mChart.Data != null && mChart.Data is BarData)
-                {
-                    var barData = mChart.Data as BarData;
-
-                    if (barData.DataSetCount > 0)
-                    {
-                        set1 = barData.GetDataSetByIndex(0) as BarDataSet;
-                        set1.Values = yVals1;
-                        barData.NotifyDataChanged();
-                        mChart.NotifyDataSetChanged();
-                    }
+                    // HIGHLIGHT RIGHT MOST ITEM
+                    CurrentParentIndex = barLength - 1;
+                    Highlight rightMostBar = new Highlight(barLength - 1, 0, stackIndex);
+                    mChart.HighlightValues(new Highlight[] { rightMostBar });
                 }
                 else
                 {
-                    set1 = new BarDataSet(yVals1, "");
-                    set1.SetDrawIcons(false);
+                    List<BarEntry> yVals1 = new List<BarEntry>();
+                    for (int i = 0; i < barLength; i++)
+                    {
+                        float val = (float)selectedHistoryData.ByMonth.Months[i].AmountTotal;
+                        if (float.IsPositiveInfinity(val))
+                        {
+                            val = float.PositiveInfinity;
+                        }
+
+                        yVals1.Add(new BarEntry(i, System.Math.Abs(val)));
+                    }
+
+                    BarDataSet set1;
+
+                    if (mChart.Data != null && mChart.Data is BarData)
+                    {
+                        var barData = mChart.Data as BarData;
+
+                        if (barData.DataSetCount > 0)
+                        {
+                            set1 = barData.GetDataSetByIndex(0) as BarDataSet;
+                            set1.Values = yVals1;
+                            barData.NotifyDataChanged();
+                            mChart.NotifyDataSetChanged();
+                        }
+                    }
+                    else
+                    {
+                        set1 = new BarDataSet(yVals1, "");
+                        set1.SetDrawIcons(false);
 
 
-                    set1.HighLightColor = Color.Argb(255, 255, 255, 255);
-                    set1.HighLightAlpha = 255;
+                        set1.HighLightColor = Color.Argb(255, 255, 255, 255);
+                        set1.HighLightAlpha = 255;
 
-                    int[] color = { Color.Argb(100, 255, 255, 255) };
-                    set1.SetColors(color);
-                    List<IBarDataSet> dataSets = new List<IBarDataSet>();
-                    dataSets.Add(set1);
+                        int[] color = { Color.Argb(100, 255, 255, 255) };
+                        set1.SetColors(color);
+                        List<IBarDataSet> dataSets = new List<IBarDataSet>();
+                        dataSets.Add(set1);
 
 
-                    BarData data = new BarData(dataSets);
+                        BarData data = new BarData(dataSets);
 
-                    data.BarWidth = 0.25f;
+                        data.BarWidth = 0.25f;
 
-                    data.HighlightEnabled = true;
-                    data.SetValueTextSize(10f);
-                    data.SetDrawValues(false);
+                        data.HighlightEnabled = true;
+                        data.SetValueTextSize(10f);
+                        data.SetDrawValues(false);
 
-                    mChart.Data = data;
+                        mChart.Data = data;
+                    }
+
+                    // HIGHLIGHT RIGHT MOST ITEM
+                    CurrentParentIndex = barLength - 1;
+                    Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
+                    mChart.HighlightValues(new Highlight[] { rightMostBar });
                 }
-
-                // HIGHLIGHT RIGHT MOST ITEM
-                CurrentParentIndex = barLength - 1;
-                Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
-                mChart.HighlightValues(new Highlight[] { rightMostBar });
             }
+            else
+            {
+                if (isToggleTariff)
+                {
+                    int stackIndex = 0;
+                    List<BarEntry> yVals1 = new List<BarEntry>();
+                    for (int i = 0; i < barLength; i++)
+                    {
+                        if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                        {
+                            float[] valList = new float[selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count];
+                            for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                            {
+                                float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
+                                if (float.IsPositiveInfinity(val))
+                                {
+                                    val = float.PositiveInfinity;
+                                }
+                                valList[j] = System.Math.Abs(val);
+                            }
+                            if (i == barLength - 1)
+                            {
+                                stackIndex = valList.Length - 1;
+                            }
+                            yVals1.Add(new BarEntry(i, valList));
+                        }
+                        else
+                        {
+                            yVals1.Add(new BarEntry(i, 0));
+                        }
+                    }
 
+                    BarDataSet set1;
+
+                    if (mChart.Data != null && mChart.Data is BarData)
+                    {
+                        var barData = mChart.Data as BarData;
+
+                        if (barData.DataSetCount > 0)
+                        {
+                            set1 = barData.GetDataSetByIndex(0) as BarDataSet;
+                            set1.Values = yVals1;
+                            barData.NotifyDataChanged();
+                            mChart.NotifyDataSetChanged();
+                        }
+                    }
+                    else
+                    {
+                        set1 = new BarDataSet(yVals1, "");
+                        set1.SetDrawIcons(false);
+
+                        List<int> listOfColor = new List<int>();
+
+                        for (int i = 0; i < barLength; i++)
+                        {
+                            if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                            {
+                                for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                                {
+                                    if (selectedHistoryData.TariffBlocksLegend != null && selectedHistoryData.TariffBlocksLegend.Count > 0)
+                                    {
+                                        bool isFound = false;
+                                        for (int k = 0; k < selectedHistoryData.TariffBlocksLegend.Count; k++)
+                                        {
+                                            if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedHistoryData.TariffBlocksLegend[k].BlockId)
+                                            {
+                                                isFound = true;
+                                                listOfColor.Add(Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData));
+                                                break;
+                                            }
+                                        }
+
+                                        if (!isFound)
+                                        {
+                                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                            }
+                        }
+
+
+                        int[] colorSet = new int[listOfColor.Count];
+                        for (int z = 0; z < listOfColor.Count; z++)
+                        {
+                            colorSet[z] = listOfColor[z];
+                        }
+
+                        set1.SetColors(colorSet);
+
+                        List<IBarDataSet> dataSets = new List<IBarDataSet>();
+                        dataSets.Add(set1);
+
+
+                        BarData data = new BarData(dataSets);
+
+                        data.BarWidth = 0.25f;
+
+                        set1.HighLightAlpha = 0;
+
+                        data.HighlightEnabled = true;
+                        data.SetValueTextSize(10f);
+                        data.SetDrawValues(false);
+
+                        mChart.Data = data;
+                    }
+
+                    // HIGHLIGHT RIGHT MOST ITEM
+                    CurrentParentIndex = barLength - 1;
+                    Highlight rightMostBar = new Highlight(barLength - 1, 0, stackIndex);
+                    mChart.HighlightValues(new Highlight[] { rightMostBar });
+                }
+                else
+                {
+                    List<BarEntry> yVals1 = new List<BarEntry>();
+                    for (int i = 0; i < barLength; i++)
+                    {
+                        float[] valList = new float[1];
+                        float val = (float)selectedHistoryData.ByMonth.Months[i].AmountTotal;
+                        if (float.IsPositiveInfinity(val))
+                        {
+                            val = float.PositiveInfinity;
+                        }
+                        valList[0] = System.Math.Abs(val);
+                        yVals1.Add(new BarEntry(i, valList));
+                    }
+
+                    BarDataSet set1;
+
+                    if (mChart.Data != null && mChart.Data is BarData)
+                    {
+                        var barData = mChart.Data as BarData;
+
+                        if (barData.DataSetCount > 0)
+                        {
+                            set1 = barData.GetDataSetByIndex(0) as BarDataSet;
+                            set1.Values = yVals1;
+                            barData.NotifyDataChanged();
+                            mChart.NotifyDataSetChanged();
+                        }
+                    }
+                    else
+                    {
+                        set1 = new BarDataSet(yVals1, "");
+                        set1.SetDrawIcons(false);
+
+                        List<int> listOfColor = new List<int>();
+
+                        for (int i = 0; i < barLength; i++)
+                        {
+                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                        }
+
+                        int[] colorSet = new int[listOfColor.Count];
+                        for (int z = 0; z < listOfColor.Count; z++)
+                        {
+                            colorSet[z] = listOfColor[z];
+                        }
+
+                        set1.SetColors(colorSet);
+
+                        List<IBarDataSet> dataSets = new List<IBarDataSet>();
+                        dataSets.Add(set1);
+
+
+                        BarData data = new BarData(dataSets);
+
+                        data.BarWidth = 0.25f;
+
+                        set1.HighLightAlpha = 0;
+
+                        data.HighlightEnabled = true;
+                        data.SetValueTextSize(10f);
+                        data.SetDrawValues(false);
+
+                        mChart.Data = data;
+                    }
+
+                    // HIGHLIGHT RIGHT MOST ITEM
+                    CurrentParentIndex = barLength - 1;
+                    Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
+                    mChart.HighlightValues(new Highlight[] { rightMostBar });
+                }
+            }
 
         }
         #endregion
@@ -1278,183 +1556,379 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #region SETUP KWH DATA
         internal void SetKWhData(int barLength)
         {
-            if (isToggleTariff)
+            if (selectedAccount.SmartMeterCode.Equals("0"))
             {
-                int stackIndex = 0;
-                List<BarEntry> yVals1 = new List<BarEntry>();
-                for (int i = 0; i < barLength; i++)
+                if (isToggleTariff)
                 {
-                    if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
-                    {
-                        float[] valList = new float[selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count];
-                        for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
-                        {
-                            float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
-                            if (float.IsPositiveInfinity(val))
-                            {
-                                val = float.PositiveInfinity;
-                            }
-                            valList[j] = System.Math.Abs(val);
-                        }
-                        if (i == barLength - 1)
-                        {
-                            stackIndex = valList.Length - 1;
-                        }
-                        yVals1.Add(new BarEntry(i, valList));
-                    }
-                    else
-                    {
-                        yVals1.Add(new BarEntry(i, 0));
-                    }
-                }
-
-                BarDataSet set1;
-
-                if (mChart.Data != null && mChart.Data is BarData)
-                {
-                    var barData = mChart.Data as BarData;
-
-                    if (barData.DataSetCount > 0)
-                    {
-                        set1 = barData.GetDataSetByIndex(0) as BarDataSet;
-                        set1.Values = yVals1;
-                        barData.NotifyDataChanged();
-                        mChart.NotifyDataSetChanged();
-                    }
-                }
-                else
-                {
-                    set1 = new BarDataSet(yVals1, "");
-                    set1.SetDrawIcons(false);
-
-                    List<int> listOfColor = new List<int>();
-
+                    int stackIndex = 0;
+                    List<BarEntry> yVals1 = new List<BarEntry>();
                     for (int i = 0; i < barLength; i++)
                     {
                         if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
                         {
+                            float[] valList = new float[selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count];
                             for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
                             {
-                                if (selectedHistoryData.TariffBlocksLegend != null && selectedHistoryData.TariffBlocksLegend.Count > 0)
+                                float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
+                                if (float.IsPositiveInfinity(val))
                                 {
-                                    bool isFound = false;
-                                    for (int k = 0; k < selectedHistoryData.TariffBlocksLegend.Count; k++)
-                                    {
-                                        if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedHistoryData.TariffBlocksLegend[k].BlockId)
-                                        {
-                                            isFound = true;
-                                            listOfColor.Add(Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData));
-                                            break;
-                                        }
-                                    }
-
-                                    if (!isFound)
-                                    {
-                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
-                                    }
-
+                                    val = float.PositiveInfinity;
                                 }
-                                else
-                                {
-                                    listOfColor.Add(Color.Argb(50, 255, 255, 255));
-                                }
+                                valList[j] = System.Math.Abs(val);
                             }
+                            if (i == barLength - 1)
+                            {
+                                stackIndex = valList.Length - 1;
+                            }
+                            yVals1.Add(new BarEntry(i, valList));
                         }
                         else
                         {
-                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                            yVals1.Add(new BarEntry(i, 0));
                         }
                     }
 
+                    BarDataSet set1;
 
-                    int[] colorSet = new int[listOfColor.Count];
-                    for (int z = 0; z < listOfColor.Count; z++)
+                    if (mChart.Data != null && mChart.Data is BarData)
                     {
-                        colorSet[z] = listOfColor[z];
+                        var barData = mChart.Data as BarData;
+
+                        if (barData.DataSetCount > 0)
+                        {
+                            set1 = barData.GetDataSetByIndex(0) as BarDataSet;
+                            set1.Values = yVals1;
+                            barData.NotifyDataChanged();
+                            mChart.NotifyDataSetChanged();
+                        }
+                    }
+                    else
+                    {
+                        set1 = new BarDataSet(yVals1, "");
+                        set1.SetDrawIcons(false);
+
+                        List<int> listOfColor = new List<int>();
+
+                        for (int i = 0; i < barLength; i++)
+                        {
+                            if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                            {
+                                for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                                {
+                                    if (selectedHistoryData.TariffBlocksLegend != null && selectedHistoryData.TariffBlocksLegend.Count > 0)
+                                    {
+                                        bool isFound = false;
+                                        for (int k = 0; k < selectedHistoryData.TariffBlocksLegend.Count; k++)
+                                        {
+                                            if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedHistoryData.TariffBlocksLegend[k].BlockId)
+                                            {
+                                                isFound = true;
+                                                listOfColor.Add(Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData));
+                                                break;
+                                            }
+                                        }
+
+                                        if (!isFound)
+                                        {
+                                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                            }
+                        }
+
+
+                        int[] colorSet = new int[listOfColor.Count];
+                        for (int z = 0; z < listOfColor.Count; z++)
+                        {
+                            colorSet[z] = listOfColor[z];
+                        }
+
+                        set1.SetColors(colorSet);
+
+                        List<IBarDataSet> dataSets = new List<IBarDataSet>();
+                        dataSets.Add(set1);
+
+
+                        BarData data = new BarData(dataSets);
+
+                        data.BarWidth = 0.25f;
+
+                        set1.HighLightAlpha = 0;
+
+                        data.HighlightEnabled = true;
+                        data.SetValueTextSize(10f);
+                        data.SetDrawValues(false);
+
+                        mChart.Data = data;
                     }
 
-                    set1.SetColors(colorSet);
-
-                    List<IBarDataSet> dataSets = new List<IBarDataSet>();
-                    dataSets.Add(set1);
-
-
-                    BarData data = new BarData(dataSets);
-
-                    data.BarWidth = 0.25f;
-
-                    set1.HighLightAlpha = 0;
-
-                    data.HighlightEnabled = true;
-                    data.SetValueTextSize(10f);
-                    data.SetDrawValues(false);
-
-                    mChart.Data = data;
-                }
-
-                // HIGHLIGHT RIGHT MOST ITEM
-                CurrentParentIndex = barLength - 1;
-                Highlight rightMostBar = new Highlight(barLength - 1, 0, stackIndex);
-                mChart.HighlightValues(new Highlight[] { rightMostBar });
-            }
-            else
-            {
-
-                List<BarEntry> yVals1 = new List<BarEntry>();
-                for (int i = 0; i < barLength; i++)
-                {
-                    float val = (float)selectedHistoryData.ByMonth.Months[i].UsageTotal;
-                    if (float.IsPositiveInfinity(val))
-                    {
-                        val = float.PositiveInfinity;
-                    }
-
-                    yVals1.Add(new BarEntry(i, System.Math.Abs(val)));
-                }
-
-                BarDataSet set1;
-
-                if (mChart.Data != null && mChart.Data is BarData)
-                {
-                    var barData = mChart.Data as BarData;
-
-                    if (barData.DataSetCount > 0)
-                    {
-                        set1 = barData.GetDataSetByIndex(0) as BarDataSet;
-                        set1.Values = yVals1;
-                        barData.NotifyDataChanged();
-                        mChart.NotifyDataSetChanged();
-                    }
+                    // HIGHLIGHT RIGHT MOST ITEM
+                    CurrentParentIndex = barLength - 1;
+                    Highlight rightMostBar = new Highlight(barLength - 1, 0, stackIndex);
+                    mChart.HighlightValues(new Highlight[] { rightMostBar });
                 }
                 else
                 {
-                    set1 = new BarDataSet(yVals1, "");
-                    set1.SetDrawIcons(false);
+
+                    List<BarEntry> yVals1 = new List<BarEntry>();
+                    for (int i = 0; i < barLength; i++)
+                    {
+                        float val = (float)selectedHistoryData.ByMonth.Months[i].UsageTotal;
+                        if (float.IsPositiveInfinity(val))
+                        {
+                            val = float.PositiveInfinity;
+                        }
+
+                        yVals1.Add(new BarEntry(i, System.Math.Abs(val)));
+                    }
+
+                    BarDataSet set1;
+
+                    if (mChart.Data != null && mChart.Data is BarData)
+                    {
+                        var barData = mChart.Data as BarData;
+
+                        if (barData.DataSetCount > 0)
+                        {
+                            set1 = barData.GetDataSetByIndex(0) as BarDataSet;
+                            set1.Values = yVals1;
+                            barData.NotifyDataChanged();
+                            mChart.NotifyDataSetChanged();
+                        }
+                    }
+                    else
+                    {
+                        set1 = new BarDataSet(yVals1, "");
+                        set1.SetDrawIcons(false);
 
 
-                    set1.HighLightColor = Color.Argb(255, 255, 255, 255);
-                    set1.HighLightAlpha = 255;
+                        set1.HighLightColor = Color.Argb(255, 255, 255, 255);
+                        set1.HighLightAlpha = 255;
 
-                    int[] color = { Color.Argb(100, 255, 255, 255) };
-                    set1.SetColors(color);
-                    List<IBarDataSet> dataSets = new List<IBarDataSet>();
-                    dataSets.Add(set1);
+                        int[] color = { Color.Argb(100, 255, 255, 255) };
+                        set1.SetColors(color);
+                        List<IBarDataSet> dataSets = new List<IBarDataSet>();
+                        dataSets.Add(set1);
 
 
-                    BarData data = new BarData(dataSets);
+                        BarData data = new BarData(dataSets);
 
-                    data.BarWidth = 0.25f;
+                        data.BarWidth = 0.25f;
 
-                    data.HighlightEnabled = true;
-                    data.SetValueTextSize(10f);
-                    data.SetDrawValues(false);
+                        data.HighlightEnabled = true;
+                        data.SetValueTextSize(10f);
+                        data.SetDrawValues(false);
 
-                    mChart.Data = data;
+                        mChart.Data = data;
+                    }
+                    // HIGHLIGHT RIGHT MOST ITEM
+                    CurrentParentIndex = barLength - 1;
+                    Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
+                    mChart.HighlightValues(new Highlight[] { rightMostBar });
                 }
-                // HIGHLIGHT RIGHT MOST ITEM
-                CurrentParentIndex = barLength - 1;
-                Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
-                mChart.HighlightValues(new Highlight[] { rightMostBar });
+            }
+            else
+            {
+                if (isToggleTariff)
+                {
+                    int stackIndex = 0;
+                    List<BarEntry> yVals1 = new List<BarEntry>();
+                    for (int i = 0; i < barLength; i++)
+                    {
+                        if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                        {
+                            float[] valList = new float[selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count];
+                            for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                            {
+                                float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
+                                if (float.IsPositiveInfinity(val))
+                                {
+                                    val = float.PositiveInfinity;
+                                }
+                                valList[j] = System.Math.Abs(val);
+                            }
+                            if (i == barLength - 1)
+                            {
+                                stackIndex = valList.Length - 1;
+                            }
+                            yVals1.Add(new BarEntry(i, valList));
+                        }
+                        else
+                        {
+                            yVals1.Add(new BarEntry(i, 0));
+                        }
+                    }
+
+                    BarDataSet set1;
+
+                    if (mChart.Data != null && mChart.Data is BarData)
+                    {
+                        var barData = mChart.Data as BarData;
+
+                        if (barData.DataSetCount > 0)
+                        {
+                            set1 = barData.GetDataSetByIndex(0) as BarDataSet;
+                            set1.Values = yVals1;
+                            barData.NotifyDataChanged();
+                            mChart.NotifyDataSetChanged();
+                        }
+                    }
+                    else
+                    {
+                        set1 = new BarDataSet(yVals1, "");
+                        set1.SetDrawIcons(false);
+
+                        List<int> listOfColor = new List<int>();
+
+                        for (int i = 0; i < barLength; i++)
+                        {
+                            if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                            {
+                                for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                                {
+                                    if (selectedHistoryData.TariffBlocksLegend != null && selectedHistoryData.TariffBlocksLegend.Count > 0)
+                                    {
+                                        bool isFound = false;
+                                        for (int k = 0; k < selectedHistoryData.TariffBlocksLegend.Count; k++)
+                                        {
+                                            if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedHistoryData.TariffBlocksLegend[k].BlockId)
+                                            {
+                                                isFound = true;
+                                                listOfColor.Add(Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData));
+                                                break;
+                                            }
+                                        }
+
+                                        if (!isFound)
+                                        {
+                                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                            }
+                        }
+
+
+                        int[] colorSet = new int[listOfColor.Count];
+                        for (int z = 0; z < listOfColor.Count; z++)
+                        {
+                            colorSet[z] = listOfColor[z];
+                        }
+
+                        set1.SetColors(colorSet);
+
+                        List<IBarDataSet> dataSets = new List<IBarDataSet>();
+                        dataSets.Add(set1);
+
+
+                        BarData data = new BarData(dataSets);
+
+                        data.BarWidth = 0.25f;
+
+                        set1.HighLightAlpha = 0;
+
+                        data.HighlightEnabled = true;
+                        data.SetValueTextSize(10f);
+                        data.SetDrawValues(false);
+
+                        mChart.Data = data;
+                    }
+
+                    // HIGHLIGHT RIGHT MOST ITEM
+                    CurrentParentIndex = barLength - 1;
+                    Highlight rightMostBar = new Highlight(barLength - 1, 0, stackIndex);
+                    mChart.HighlightValues(new Highlight[] { rightMostBar });
+                }
+                else
+                {
+                    List<BarEntry> yVals1 = new List<BarEntry>();
+                    for (int i = 0; i < barLength; i++)
+                    {
+                        float[] valList = new float[1];
+                        float val = (float)selectedHistoryData.ByMonth.Months[i].UsageTotal;
+                        if (float.IsPositiveInfinity(val))
+                        {
+                            val = float.PositiveInfinity;
+                        }
+                        valList[0] = System.Math.Abs(val);
+                        yVals1.Add(new BarEntry(i, valList));
+                    }
+
+                    BarDataSet set1;
+
+                    if (mChart.Data != null && mChart.Data is BarData)
+                    {
+                        var barData = mChart.Data as BarData;
+
+                        if (barData.DataSetCount > 0)
+                        {
+                            set1 = barData.GetDataSetByIndex(0) as BarDataSet;
+                            set1.Values = yVals1;
+                            barData.NotifyDataChanged();
+                            mChart.NotifyDataSetChanged();
+                        }
+                    }
+                    else
+                    {
+                        set1 = new BarDataSet(yVals1, "");
+                        set1.SetDrawIcons(false);
+
+                        List<int> listOfColor = new List<int>();
+
+                        for (int i = 0; i < barLength; i++)
+                        {
+                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                        }
+
+                        int[] colorSet = new int[listOfColor.Count];
+                        for (int z = 0; z < listOfColor.Count; z++)
+                        {
+                            colorSet[z] = listOfColor[z];
+                        }
+
+                        set1.SetColors(colorSet);
+
+                        List<IBarDataSet> dataSets = new List<IBarDataSet>();
+                        dataSets.Add(set1);
+
+
+                        BarData data = new BarData(dataSets);
+
+                        data.BarWidth = 0.25f;
+
+                        set1.HighLightAlpha = 0;
+
+                        data.HighlightEnabled = true;
+                        data.SetValueTextSize(10f);
+                        data.SetDrawValues(false);
+
+                        mChart.Data = data;
+                    }
+
+                    // HIGHLIGHT RIGHT MOST ITEM
+                    CurrentParentIndex = barLength - 1;
+                    Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
+                    mChart.HighlightValues(new Highlight[] { rightMostBar });
+                }
             }
         }
         #endregion
@@ -1776,61 +2250,71 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
-                ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
-                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.bg_smr);
-                scrollViewContent.SetBackgroundResource(Resource.Drawable.dasbord_chart_refresh_bg);
-
-
-                refreshLayout.Visibility = ViewStates.Visible;
-                allGraphLayout.Visibility = ViewStates.Gone;
-                if (isBCRMDown)
+                Activity.RunOnUiThread(() =>
                 {
-                    refresh_image.SetImageResource(Resource.Drawable.maintenance_new);
-                    SetMaintenanceLayoutParams();
-                    btnNewRefresh.Visibility = ViewStates.Gone;
+                    try
+                    {
+                        ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
+                        ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.bg_smr);
+                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dasbord_chart_refresh_bg);
 
-                }
-                else
-                {
-                    refresh_image.SetImageResource(Resource.Drawable.refresh_1);
-                    SetRefreshLayoutParams();
-                    StopAddressShimmer();
-                    StopRangeShimmer();
-                    StopGraphShimmer();
-                    btnNewRefresh.Visibility = ViewStates.Visible;
-                    energyTipsView.Visibility = ViewStates.Gone;
-                    if (string.IsNullOrEmpty(buttonTxt))
-                    {
-                        btnNewRefresh.Text = txtBtnRefreshTitle;
-                    }
-                    else
-                    {
-                        btnNewRefresh.Text = buttonTxt;
-                    }
 
-                    if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
-                    {
-                        if (string.IsNullOrEmpty(contentTxt))
+                        refreshLayout.Visibility = ViewStates.Visible;
+                        allGraphLayout.Visibility = ViewStates.Gone;
+                        if (isBCRMDown)
                         {
-                            txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg, FromHtmlOptions.ModeLegacy);
+                            refresh_image.SetImageResource(Resource.Drawable.maintenance_new);
+                            SetMaintenanceLayoutParams();
+                            btnNewRefresh.Visibility = ViewStates.Gone;
+
                         }
                         else
                         {
-                            txtNewRefreshMessage.TextFormatted = Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                            refresh_image.SetImageResource(Resource.Drawable.refresh_1);
+                            SetRefreshLayoutParams();
+                            StopAddressShimmer();
+                            StopRangeShimmer();
+                            StopGraphShimmer();
+                            btnNewRefresh.Visibility = ViewStates.Visible;
+                            energyTipsView.Visibility = ViewStates.Gone;
+                            if (string.IsNullOrEmpty(buttonTxt))
+                            {
+                                btnNewRefresh.Text = txtBtnRefreshTitle;
+                            }
+                            else
+                            {
+                                btnNewRefresh.Text = buttonTxt;
+                            }
+
+                            if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                            {
+                                if (string.IsNullOrEmpty(contentTxt))
+                                {
+                                    txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg, FromHtmlOptions.ModeLegacy);
+                                }
+                                else
+                                {
+                                    txtNewRefreshMessage.TextFormatted = Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                                }
+                            }
+                            else
+                            {
+                                if (string.IsNullOrEmpty(contentTxt))
+                                {
+                                    txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg);
+                                }
+                                else
+                                {
+                                    txtNewRefreshMessage.TextFormatted = Html.FromHtml(contentTxt);
+                                }
+                            }
                         }
                     }
-                    else
+                    catch (System.Exception e)
                     {
-                        if (string.IsNullOrEmpty(contentTxt))
-                        {
-                            txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg);
-                        }
-                        else
-                        {
-                            txtNewRefreshMessage.TextFormatted = Html.FromHtml(contentTxt);
-                        }
+                        Utility.LoggingNonFatalError(e);
                     }
-                }
+                });
             }
             catch (System.Exception e)
             {
@@ -2606,8 +3090,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void HideEnergyTipsShimmerView()
         {
-            energyTipsShimmerView.Visibility = ViewStates.Gone;
-            OnSetEnergyTipsShimmerAdapter(null);
+            Activity.RunOnUiThread(() =>
+            {
+                try
+                {
+                    energyTipsShimmerView.Visibility = ViewStates.Gone;
+                    OnSetEnergyTipsShimmerAdapter(null);
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            });
         }
 
         private void OnSetEnergyTipsShimmerAdapter(List<EnergySavingTipsModel> list)
@@ -2625,31 +3119,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     energyTipsView.Visibility = ViewStates.Visible;
                     energyTipsAdapter = new EnergySavingTipsAdapter(list, this.Activity);
                     energyTipsList.SetAdapter(energyTipsAdapter);
-                    HideEnergyTipsShimmerView();
                 }
                 catch (System.Exception e)
                 {
                     Utility.LoggingNonFatalError(e);
                 }
             });
+            HideEnergyTipsShimmerView();
         }
 
         void ViewTreeObserver.IOnGlobalLayoutListener.OnGlobalLayout()
         {
             try
             {
-                int viewHeight = scrollView.MeasuredHeight;
-                int contentHeight = scrollView.GetChildAt(0).Height;
-                if (viewHeight - contentHeight < 0)
-                {
-                    scrollView.SetScrollingEnabled(true);
-                    scrollView.SmoothScrollingEnabled = true;
-                    scrollView.setOnScrollViewListener(this);
-                }
-                else
-                {
-                    scrollView.SetScrollingEnabled(false);
-                }
+                scrollView.setOnScrollViewListener(this);
+                scrollView.OverScrollMode = OverScrollMode.Always;
             }
             catch (System.Exception e)
             {
@@ -3047,6 +3531,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             LinearLayout.LayoutParams refreshTxtParams = txtNewRefreshMessage.LayoutParameters as LinearLayout.LayoutParams;
             refreshTxtParams.TopMargin = (int)DPUtils.ConvertDPToPx(6f);
             txtNewRefreshMessage.RequestLayout();
+        }
+
+        public bool GetIsSMDown()
+        {
+            return isSMDown;
+        }
+
+        public void SetISSMDown(bool flag)
+        {
+            isSMDown = flag;
         }
     }
 }

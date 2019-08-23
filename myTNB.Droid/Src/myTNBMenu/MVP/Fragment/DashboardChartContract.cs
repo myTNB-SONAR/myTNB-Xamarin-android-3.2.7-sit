@@ -114,6 +114,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void HideEnergyTipsShimmerView();
 
             void ShowEnergyTipsView(List<EnergySavingTipsModel> list);
+
+            bool GetIsSMDown();
+
+            void SetISSMDown(bool flag);
         }
 
         public interface IUserActionsListener : IBasePresenter

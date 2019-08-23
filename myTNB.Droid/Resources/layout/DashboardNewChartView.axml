@@ -8,15 +8,10 @@
     android:theme="@style/Theme.Dashboard"
     android:background="@color/greyBackground"
     android:id="@+id/rootView">
-    <LinearLayout
-        android:id="@+id/subMainView"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:orientation="vertical">
-        <myTNB_Android.Src.myTNBMenu.Listener.NMREDashboardScrollView
+    <myTNB_Android.Src.myTNBMenu.Listener.NMREDashboardScrollView
 		    android:id="@+id/scroll_view"
 		    android:layout_width="match_parent"
-		    android:overScrollMode="never"
+		    android:overScrollMode="always"
 		    android:layout_height="match_parent"
 		    android:minWidth="25px"
 		    android:minHeight="25px">
@@ -527,11 +522,11 @@
                                         android:layout_alignParentEnd="true"
                                         android:layout_alignParentRight="true"
                                         android:layout_alignParentTop="true"
-                                        android:layout_marginTop="4dp"
+                                        android:layout_marginTop="7dp"
                                         android:layout_marginRight="1dp"
                                         android:text="0.00"
                                         android:textColor="@color/charcoalGrey"
-                                        android:textSize="23dp" />
+                                        android:textSize="17dp" />
                                     <TextView
                                         android:id="@+id/reTotalPayableCurrency"
                                         android:layout_width="wrap_content"
@@ -626,13 +621,15 @@
                                         android:layout_height="wrap_content"
                                         android:textColor="@color/charcoalGrey"
                                         android:text=""
-                                        android:textSize="13dp"/>
+                                        android:textSize="13dp"
+                                        android:lineSpacingExtra="2dp"/>
                                         <TextView
                                         android:id="@+id/btnTxtSsmrViewHistory"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:textColor="@color/powerBlue"
                                         android:text="View my reading history"
+                                        android:layout_marginTop="2dp"
                                         android:clickable="true"
                                         android:visibility="gone"
                                         android:textSize="13dp"/>
@@ -679,14 +676,13 @@
                         </LinearLayout>
                         <LinearLayout
 					        android:layout_width="match_parent"
-					        android:layout_height="100dp"
+					        android:layout_height="50dp"
 					        android:orientation="vertical">
                         </LinearLayout>
 				    </LinearLayout>
 			    </FrameLayout>
 		    </LinearLayout>
 	    </myTNB_Android.Src.myTNBMenu.Listener.NMREDashboardScrollView>
-    </LinearLayout>
     <LinearLayout
         android:id="@+id/bottom_sheet"
         android:layout_height="wrap_content"

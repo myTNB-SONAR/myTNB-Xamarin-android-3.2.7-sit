@@ -1,4 +1,5 @@
-﻿using Android.Content;
+﻿using Android.Animation;
+using Android.Content;
 using Android.Support.V4.Widget;
 using Android.Util;
 using Android.Views;
@@ -11,17 +12,28 @@ namespace myTNB_Android.Src.myTNBMenu.Listener
 
         private bool scrollable = true;
 
+        private static int MAX_Y_OVERSCROLL_DISTANCE = 200;
+
+        private Context mContext;
+
+        private int mMaxYOverscrollDistance;
+
         public NMREDashboardScrollView(Context context) : base(context)
         {
+            mContext = context;
+            init();
         }
 
         public NMREDashboardScrollView(Context context, IAttributeSet attrs) : base(context, attrs)
         {
+            mContext = context;
+            init();
         }
 
         public NMREDashboardScrollView(Context context, IAttributeSet attrs, int defStyleAttr) : base(context, attrs, defStyleAttr)
         {
-
+            mContext = context;
+            init();
         }
 
 
@@ -35,6 +47,14 @@ namespace myTNB_Android.Src.myTNBMenu.Listener
         public void setOnScrollViewListener(NMREDashboardScrollViewListener scrollViewListener)
         {
             this.scrollViewListener = scrollViewListener;
+        }
+
+        private void init()
+        {
+            DisplayMetrics metrics = mContext.Resources.DisplayMetrics;
+            float density = metrics.Density;
+
+            mMaxYOverscrollDistance = (int)(density * MAX_Y_OVERSCROLL_DISTANCE);
         }
 
 
@@ -61,6 +81,11 @@ namespace myTNB_Android.Src.myTNBMenu.Listener
         public void SetScrollingEnabled(bool enabled)
         {
             scrollable = enabled;
+        }
+
+        protected override bool OverScrollBy(int deltaX, int deltaY, int scrollX, int scrollY, int scrollRangeX, int scrollRangeY, int maxOverScrollX, int maxOverScrollY, bool isTouchEvent)
+        {
+            return base.OverScrollBy(deltaX, deltaY, scrollX, scrollY, scrollRangeX, scrollRangeY, maxOverScrollX, mMaxYOverscrollDistance, isTouchEvent);
         }
 
     }
