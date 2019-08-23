@@ -741,7 +741,7 @@ namespace myTNB
                 foreach (var previousMeter in _previousMeterList)
                 {
                     bool needsPhoto = string.IsNullOrEmpty(previousMeter.CurrentReading) || !previousMeter.IsValidManualReading;
-                    ReadingDictionary.Add(previousMeter.ReadingUnit, !needsPhoto);
+                    ReadingDictionary.Add(previousMeter.ReadingUnitDisplayTitle, !needsPhoto);
                 }
                 UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
                 SSMRCaptureMeterViewController viewController =
