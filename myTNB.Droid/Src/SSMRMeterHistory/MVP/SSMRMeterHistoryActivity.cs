@@ -142,6 +142,12 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 mPresenter = new SSMRMeterHistoryPresenter(this);
                 mSMRRecyclerView.SetLayoutManager(new LinearLayoutManager(this));
                 smrAccountList = this.mPresenter.GetEligibleSMRAccountList();
+
+                foreach (SMRAccount account in smrAccountList)
+                {
+                    account.accountSelected = false;
+                }
+
                 Bundle extras = Intent.Extras;
                 //If has selected account - means coming from inner dashboard
                 if (extras != null)
@@ -161,7 +167,8 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     }
                     else
                     {
-                        SMRAccount smrSelectedAccount = smrAccountList.Find(account => {
+                        SMRAccount smrSelectedAccount = smrAccountList.Find(account =>
+                        {
                             return account.isTaggedSMR;
                         });
                         selectedAccountNumber = smrSelectedAccount.accountNumber;
@@ -204,7 +211,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     }
                     else
                     {
-                        ShowNonSMRVisible(true,false);
+                        ShowNonSMRVisible(true, false);
                     }
                 }
             }
@@ -297,10 +304,18 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 if (resultCode == Result.Ok)
                 {
                     selectedAccountNumber = data.GetStringExtra("SELECTED_ACCOUNT_NUMBER");
-                    selectedEligibleAccount = smrAccountList.Find(account =>
+                    foreach(SMRAccount account in smrAccountList)
                     {
-                        return account.accountNumber == selectedAccountNumber;
-                    });
+                        if (account.accountNumber == selectedAccountNumber)
+                        {
+                            selectedEligibleAccount = account;
+                            account.accountSelected = true;
+                        }
+                        else
+                        {
+                            account.accountSelected = false;
+                        }
+                    }
                     selectedAccountNickName = selectedEligibleAccount.accountName;
                     CustomerBillingAccount.RemoveSelected();
                     CustomerBillingAccount.SetSelected(selectedEligibleAccount.accountNumber);

@@ -988,7 +988,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             if (accountNumber != null)
             {
                 CustomerBillingAccount.RemoveSelected();
-                CustomerBillingAccount.Update(accountNumber,true);
+                CustomerBillingAccount.SetSelected(accountNumber);
 
                 if (mCallBack != null)
                 {

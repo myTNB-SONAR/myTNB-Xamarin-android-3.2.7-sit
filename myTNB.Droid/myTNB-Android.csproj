@@ -2332,9 +2332,6 @@
     <AndroidResource Include="Resources\layout\ChartHouseSpinnerDropDownRow.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\SelectSupplyAccountRow.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\SelectSupplyAccountView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>

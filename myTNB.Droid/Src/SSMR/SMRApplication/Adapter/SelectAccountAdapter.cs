@@ -21,7 +21,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Adapter
             AccountTypeViewHolder vh = null;
             if (convertView == null)
             {
-                convertView = LayoutInflater.From(context).Inflate(Resource.Layout.SelectSupplyAccountRow, parent, false);
+                convertView = LayoutInflater.From(context).Inflate(Resource.Layout.SelectSupplyAccountItemLayout, parent, false);
                 vh = new AccountTypeViewHolder(convertView);
                 convertView.Tag = vh;
             }
@@ -63,7 +63,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Adapter
             [BindView(Resource.Id.imageActionIcon)]
             public ImageView imageActionIcon;
 
-            [BindView(Resource.Id.accountIcon)]
+            [BindView(Resource.Id.imageLeaf)]
             public ImageView accountIcon;
 
             public AccountTypeViewHolder(View itemView) : base(itemView)

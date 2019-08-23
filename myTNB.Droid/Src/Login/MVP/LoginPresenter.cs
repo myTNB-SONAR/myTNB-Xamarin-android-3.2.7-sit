@@ -15,6 +15,7 @@ using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Login.Api;
 using myTNB_Android.Src.Login.Requests;
+using myTNB_Android.Src.LogoutRate.Api;
 using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -439,6 +440,7 @@ namespace myTNB_Android.Src.Login.MVP
                     this.mView.HideProgressDialog();
                     this.mView.ShowRetryOptionsCancelledException(e);
                 }
+                ClearDataCache();
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
@@ -449,6 +451,7 @@ namespace myTNB_Android.Src.Login.MVP
                     this.mView.HideProgressDialog();
                     this.mView.ShowRetryOptionsApiException(apiException);
                 }
+                ClearDataCache();
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
@@ -461,6 +464,7 @@ namespace myTNB_Android.Src.Login.MVP
                     this.mView.ShowRetryOptionsUnknownException(e);
 
                 }
+                ClearDataCache();
                 Utility.LoggingNonFatalError(e);
             }
 
@@ -471,6 +475,35 @@ namespace myTNB_Android.Src.Login.MVP
             }
 
 
+        }
+
+        private void ClearDataCache()
+        {
+            try
+            {
+                UserEntity.RemoveActive();
+                UserRegister.RemoveActive();
+                CustomerBillingAccount.RemoveActive();
+                NotificationFilterEntity.RemoveAll();
+                UserNotificationEntity.RemoveAll();
+                SubmittedFeedbackEntity.Remove();
+                SMUsageHistoryEntity.RemoveAll();
+                UsageHistoryEntity.RemoveAll();
+                PromotionsEntityV2 promotionTable = new PromotionsEntityV2();
+                promotionTable.DeleteTable();
+                PromotionsParentEntityV2 promotionEntityTable = new PromotionsParentEntityV2();
+                promotionEntityTable.DeleteTable();
+                BillHistoryEntity.RemoveAll();
+                PaymentHistoryEntity.RemoveAll();
+                REPaymentHistoryEntity.RemoveAll();
+                AccountDataEntity.RemoveAll();
+                SummaryDashBoardAccountEntity.RemoveAll();
+                SelectBillsEntity.RemoveAll();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
 

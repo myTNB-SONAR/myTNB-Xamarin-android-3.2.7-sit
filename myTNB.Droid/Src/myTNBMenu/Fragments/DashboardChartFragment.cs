@@ -2606,8 +2606,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void HideEnergyTipsShimmerView()
         {
-            energyTipsShimmerView.Visibility = ViewStates.Gone;
-            OnSetEnergyTipsShimmerAdapter(null);
+            Activity.RunOnUiThread(() =>
+            {
+                energyTipsShimmerView.Visibility = ViewStates.Gone;
+                OnSetEnergyTipsShimmerAdapter(null);
+            });
         }
 
         private void OnSetEnergyTipsShimmerAdapter(List<EnergySavingTipsModel> list)
@@ -2625,13 +2628,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     energyTipsView.Visibility = ViewStates.Visible;
                     energyTipsAdapter = new EnergySavingTipsAdapter(list, this.Activity);
                     energyTipsList.SetAdapter(energyTipsAdapter);
-                    HideEnergyTipsShimmerView();
                 }
                 catch (System.Exception e)
                 {
                     Utility.LoggingNonFatalError(e);
                 }
             });
+            HideEnergyTipsShimmerView();
         }
 
         void ViewTreeObserver.IOnGlobalLayoutListener.OnGlobalLayout()
