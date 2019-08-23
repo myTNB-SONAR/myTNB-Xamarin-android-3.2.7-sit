@@ -38,7 +38,7 @@ using Android.Runtime;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
-    public class HomeMenuFragment : BaseFragment, HomeMenuContract.IHomeMenuView
+    public class HomeMenuFragment : BaseFragment, HomeMenuContract.IHomeMenuView, ViewTreeObserver.IOnGlobalLayoutListener
     {
         [BindView(Resource.Id.newFAQShimmerView)]
         LinearLayout newFAQShimmerView;
@@ -331,6 +331,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 ((DashboardHomeActivity)Activity).HideAccountName();
                 ((DashboardHomeActivity)Activity).ShowBackButton(false);
                 ((DashboardHomeActivity)Activity).SetToolbarTitle(Resource.String.dashboard_activity_title);
+
+                try
+                {
+                    newFAQListRecycleView.Focusable = false;
+                    newFAQShimmerList.Focusable = false;
+                    myServiceListRecycleView.Focusable = false;
+                    myServiceShimmerList.Focusable = false;
+                    accountsRecyclerView.Focusable = false;
+                    newPromotionShimmerList.Focusable = false;
+                    newPromotionList.Focusable = false;
+                    topRootView.Focusable = true;
+                    topRootView.RequestFocus();
+                    ViewTreeObserver observer = summaryNestScrollView.ViewTreeObserver;
+                    observer.AddOnGlobalLayoutListener(this);
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
             }
             catch (System.Exception e)
             {
@@ -1358,6 +1377,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 searchEditText.SetBackgroundResource(Resource.Drawable.search_edit_bg);
             }
 
+        }
+
+        void ViewTreeObserver.IOnGlobalLayoutListener.OnGlobalLayout()
+        {
+            try
+            {
+                summaryNestScrollView.SmoothScrollTo(0, 0);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }
