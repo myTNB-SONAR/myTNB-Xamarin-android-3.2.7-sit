@@ -30,5 +30,39 @@ namespace myTNB
             CreateComponent();
             return _containerView;
         }
+
+        private UIView ItemDetailView(UIView parentView, nfloat yPos, string imageName)
+        {
+            UIImageView icon;
+            UILabel title, dateRange, amount;
+            nfloat width = parentView.Frame.Width;
+            nfloat height = GetScaledHeight(64F);
+            nfloat iconWidth = GetScaledWidth(28F);
+            nfloat iconHeight = GetScaledHeight(28F);
+            UIView itemView = new UIView(new CGRect(0, yPos, width, height))
+            {
+                BackgroundColor = UIColor.Yellow
+            };
+            icon = new UIImageView(new CGRect(BaseMarginWidth16, GetScaledHeight(18F), iconWidth, iconHeight))
+            {
+                Image = UIImage.FromBundle(imageName)
+            };
+            title = new UILabel(new CGRect(icon.Frame.GetMaxX() + GetScaledWidth(12), BaseMarginHeight16, width * .40F, GetScaledHeight(16F)))
+            {
+                Font = TNBFont.MuseoSans_12_500,
+                TextColor = MyTNBColor.GreyishBrown,
+                TextAlignment = UITextAlignment.Left,
+                Text = "My bill amount so far"
+            };
+            dateRange = new UILabel(new CGRect(icon.Frame.GetMaxX() + GetScaledWidth(12), title.Frame.GetMaxY(), width * .40F, GetScaledHeight(16F)))
+            {
+                Font = TNBFont.MuseoSans_12_300,
+                TextColor = MyTNBColor.WarmGrey,
+                TextAlignment = UITextAlignment.Left,
+                Text = "for 22 Jun - 21 Jul"
+            };
+            itemView.AddSubviews(new UIView { icon, title, dateRange });
+            return itemView;
+        }
     }
 }
