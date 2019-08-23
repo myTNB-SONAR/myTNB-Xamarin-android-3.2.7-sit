@@ -2265,6 +2265,7 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\myTNBMenu\Adapter\EnergySavingTipsShimmerAdapter.cs" />
+    <Compile Include="Src\Database\Model\OnboardingSSMRParentEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

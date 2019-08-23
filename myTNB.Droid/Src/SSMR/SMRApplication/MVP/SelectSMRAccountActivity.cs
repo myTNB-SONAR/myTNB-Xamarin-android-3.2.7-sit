@@ -80,11 +80,18 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             base.OnCreate(savedInstanceState);
             TextViewUtils.SetMuseoSans500Typeface(whyAccountsNotHere);
             Bundle extras = Intent.Extras;
-            if (extras.ContainsKey("SMR_ELIGIBLE_ACCOUNT_LIST"))
+            if (extras != null && extras.ContainsKey("SMR_ELIGIBLE_ACCOUNT_LIST"))
             {
-                accountList = JsonConvert.DeserializeObject<List<SMRAccount>>(extras.GetString("SMR_ELIGIBLE_ACCOUNT_LIST"));
+                try
+                {
+                    accountList = JsonConvert.DeserializeObject<List<SMRAccount>>(extras.GetString("SMR_ELIGIBLE_ACCOUNT_LIST"));
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
             }
-            if (accountList.Count > 0)
+            if (accountList != null && accountList.Count > 0)
             {
                 if (CustomerBillingAccount.HasSelected())
                 {
@@ -112,6 +119,8 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             }
             else
             {
+                SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
+                SetStatusBarBackground(Resource.Drawable.bg_smr);
                 noEligibleAccountContainer.Visibility = ViewStates.Visible;
                 eligibleAccountListContainer.Visibility = ViewStates.Gone;
             }

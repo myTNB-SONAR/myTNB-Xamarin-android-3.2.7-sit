@@ -39,6 +39,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
         private string savedPromoTimeStamp = "0000000";
 
+        private string mApplySSMRSavedTimeStamp = "0000000";
+
         public AppLaunchPresenter(AppLaunchContract.IView mView, ISharedPreferences sharedPreferences)
         {
             this.mView = mView;
@@ -79,7 +81,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     Console.WriteLine("GooglePlayServices is Installed");
                     ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
                     LoadAccounts();
-                    GetSSMRWalkThrough();
+                    OnGetSSMRTimeStamp();
                 }
             }
             catch (Exception e)
@@ -210,6 +212,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             else
                                             {
                                                 proceed = true;
+                                                if (UserEntity.IsCurrentlyActive())
+                                                {
+                                                    UserEntity.UpdatePhoneNumber(phoneVerifyResponse.verificationData.Data.PhoneNumber);
+                                                }
+                                                UserSessions.SavePhoneVerified(mSharedPref, true);
                                             }
                                         }
                                         else
@@ -469,7 +476,29 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             this.mView.OnAppUpdateClick();
         }
 
-        public Task GetSSMRWalkThrough()
+        public void OnGetSSMRTimeStamp()
+        {
+            try
+            {
+                OnboardingSSMRParentEntity wtManager = new OnboardingSSMRParentEntity();
+                List<OnboardingSSMRParentEntity> items = wtManager.GetAllItems();
+                if (items != null && items.Count != 0)
+                {
+                    foreach (OnboardingSSMRParentEntity obj in items)
+                    {
+                        mApplySSMRSavedTimeStamp = obj.Timestamp;
+                    }
+                }
+                GetSSMRWalkThroughTimeStamp();
+            }
+            catch (Exception e)
+            {
+                GetSSMRWalkThroughTimeStamp();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public Task GetSSMRWalkThroughTimeStamp()
         {
             return Task.Factory.StartNew(() =>
             {
@@ -478,6 +507,35 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
                     ApplySSMRTimeStampResponseModel test = getItemsService.GetApplySSMRWalkthroughTimestampItem();
+
+                    if (test.Status.Equals("Success"))
+                    {
+                        OnboardingSSMRParentEntity wtManager = new OnboardingSSMRParentEntity();
+                        wtManager.DeleteTable();
+                        wtManager.CreateTable();
+                        wtManager.InsertListOfItems(test.Data);
+                    }
+                    if (test.Data[0].Timestamp != mApplySSMRSavedTimeStamp)
+                    {
+                        GetSSMRWalkThrough();
+                    }
+                }
+                catch (Exception e)
+                {
+                    GetSSMRWalkThrough();
+                    Utility.LoggingNonFatalError(e);
+                }
+            });
+        }
+
+        public Task GetSSMRWalkThrough()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    string density = DPUtils.GetDeviceDensity(Application.Context);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
                     ApplySSMRResponseModel responseModel = getItemsService.GetApplySSMRWalkthroughItems();
 
                     if (responseModel.Status.Equals("Success"))
@@ -486,13 +544,10 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         wtManager.DeleteTable();
                         wtManager.CreateTable();
                         wtManager.InsertListOfItems(responseModel.Data);
-                        Log.Debug("WalkThroughResponse", responseModel.Data.ToString());
                     }
                 }
                 catch (Exception e)
                 {
-                    Log.Error("API Exception", e.StackTrace);
-                    mView.OnTimeStampRecieved(null);
                     Utility.LoggingNonFatalError(e);
                 }
             });
