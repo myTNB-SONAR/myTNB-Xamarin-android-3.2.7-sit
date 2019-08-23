@@ -16,6 +16,7 @@ using Android.Util;
 using MikePhil.Charting.Data;
 using System.Collections.Generic;
 using myTNB_Android.Src.Utils;
+using Android.Icu.Text;
 
 namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 {
@@ -25,6 +26,8 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
         public UsageHistoryData selectedHistoryData { get; set; }
 
         public Context currentContext { get; set; }
+
+        public ChartType currentChartType { get; set; }
 
         public float[] bufferItems { get; set; }
 
@@ -42,17 +45,21 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
         private int lastMonthLastIndex = -1;
 
-        private float lastMonthFirstPoint = -1f;
+        private float lastMonthLeftPoint = -1f;
 
-        private float lastMonthSecondPoint = -1f;
+        private float lastMonthTopPoint = -1f;
 
-        private float lastMonthThirdPoint = -1f;
+        private float lastMonthRightPoint = -1f;
 
-        private float lastMonthForthPoint = -1f;
+        private float lastMonthBottomPoint = -1f;
 
         private bool isDeductedNoNeed = false;
 
         public bool isStacked { get; set; }
+
+
+        private DecimalFormat decimalFormat = new DecimalFormat("#,###,##0.00");
+        private DecimalFormat kwhFormat = new DecimalFormat("#,###,##0");
 
         public SMStackedBarChartRenderer(BarChart chart, ChartAnimator animator, ViewPortHandler viewPortHandler) : base(chart, animator, viewPortHandler)
         {
@@ -309,18 +316,18 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
                     if (lastMonthIndex != -1)
                     {
-                        lastMonthFirstPoint = bufferItems[lastMonthFirstIndex];
-                        lastMonthSecondPoint = bufferItems[lastMonthLastIndex + 1];
-                        lastMonthThirdPoint = bufferItems[lastMonthLastIndex + 2];
-                        lastMonthForthPoint = bufferItems[lastMonthFirstIndex + 3];
-                        offsetValue = newBufferItems[0] - lastMonthFirstPoint;
+                        lastMonthLeftPoint = bufferItems[lastMonthFirstIndex];
+                        lastMonthTopPoint = bufferItems[lastMonthLastIndex + 1];
+                        lastMonthRightPoint = bufferItems[lastMonthLastIndex + 2];
+                        lastMonthBottomPoint = bufferItems[lastMonthFirstIndex + 3];
+                        offsetValue = newBufferItems[0] - lastMonthLeftPoint;
                     }
                     else
                     {
-                        lastMonthFirstPoint = -1f;
-                        lastMonthSecondPoint = -1f;
-                        lastMonthThirdPoint = -1f;
-                        lastMonthForthPoint = -1f;
+                        lastMonthLeftPoint = -1f;
+                        lastMonthTopPoint = -1f;
+                        lastMonthRightPoint = -1f;
+                        lastMonthBottomPoint = -1f;
                     }
 
 
@@ -380,7 +387,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                 }
                                 else
                                 {
-                                    if (Math.Abs(lastMonthFirstPoint - currentSelectedDrawX) < 0.0001)
+                                    if (Math.Abs(lastMonthLeftPoint - currentSelectedDrawX) < 0.0001)
                                     {
                                         MBarBorderPaint.Color = new Color(255, 255, 255, 255);
                                     }
@@ -486,7 +493,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                 }
                                 else
                                 {
-                                    if (Math.Abs(lastMonthFirstPoint - currentSelectedDrawX) < 0.0001)
+                                    if (Math.Abs(lastMonthLeftPoint - currentSelectedDrawX) < 0.0001)
                                     {
                                         MBarBorderPaint.Color = new Color(255, 255, 255, 255);
                                     }
@@ -548,6 +555,40 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                         {
                                             canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, false, false, false, false), MRenderPaint);
                                         }
+                                    }
+                                }
+
+
+                                if (Math.Abs(currentSelectedDrawX - currentItem) > 0.0001)
+                                {
+                                    MRenderPaint.Color = new Color(255, 255, 255, 50);
+                                    MRenderPaint.TextSize = DPUtils.ConvertDPToPx(10f);
+                                    MRenderPaint.TextAlign = Paint.Align.Center;
+
+                                    try
+                                    {
+                                        Typeface plain = Typeface.CreateFromAsset(currentContext.Assets, "fonts/" + TextViewUtils.MuseoSans500);
+                                        MRenderPaint.SetTypeface(plain);
+                                    }
+                                    catch (System.Exception e)
+                                    {
+                                        Utility.LoggingNonFatalError(e);
+                                    }
+
+                                    float x = lastMonthLeftPoint + ((lastMonthRightPoint - lastMonthLeftPoint) / 2);
+                                    float y = lastMonthTopPoint - DPUtils.ConvertDPToPx(7f);
+
+                                    if (currentChartType == ChartType.RM)
+                                    {
+                                        float val = (float)selectedHistoryData.ByMonth.Months[selectedHistoryData.ByMonth.Months.Count - 1].AmountTotal;
+                                        string txt = selectedHistoryData.ByMonth.Months[selectedHistoryData.ByMonth.Months.Count - 1].Currency + " " + decimalFormat.Format(val);
+                                        canvas.DrawText(txt, x, y, MRenderPaint);
+                                    }
+                                    else if (currentChartType == ChartType.kWh)
+                                    {
+                                        float valKwh = (float)selectedHistoryData.ByMonth.Months[selectedHistoryData.ByMonth.Months.Count - 1].UsageTotal;
+                                        string txt = kwhFormat.Format(Math.Abs(valKwh)) + " " + selectedHistoryData.ByMonth.Months[selectedHistoryData.ByMonth.Months.Count - 1].UsageUnit;
+                                        canvas.DrawText(txt, x, y, MRenderPaint);
                                     }
                                 }
                             }
@@ -614,7 +655,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
                     if (lastMonthIndex != -1 && bufferItems.Length > 0)
                     {
-                        canvas.DrawPath(GenerateRoundRectangleWithNoSpace(lastMonthFirstPoint + offsetValue, lastMonthSecondPoint + offsetValue, lastMonthThirdPoint - offsetValue, lastMonthForthPoint - offsetValue, mRadius, mRadius, true, true, true, true), MBarBorderPaint);
+                        canvas.DrawPath(GenerateRoundRectangleWithNoSpace(lastMonthLeftPoint + offsetValue, lastMonthTopPoint + offsetValue, lastMonthRightPoint - offsetValue, lastMonthBottomPoint - offsetValue, mRadius, mRadius, true, true, true, true), MBarBorderPaint);
                     }
                 }
             }
