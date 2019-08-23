@@ -141,6 +141,14 @@ namespace myTNB
                             else
                             {
                                 SetRefreshScreen();
+                                if (isREAccount)
+                                {
+                                    SetREAmountViewForRefresh();
+                                }
+                                if (accountIsSSMR)
+                                {
+                                    GetSMRAccountActivityInfo(true);
+                                }
                             }
                         }
                         else
@@ -253,7 +261,7 @@ namespace myTNB
                 });
             });
         }
-        private void GetSMRAccountActivityInfo()
+        private void GetSMRAccountActivityInfo(bool isForRefreshScreen = false)
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -261,7 +269,7 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        SetSSMRComponent(true);
+                        SetSSMRComponent(true, isForRefreshScreen);
                         SMRAccountActivityInfoResponseModel ssmrInfoResponse = await UsageServiceCall.GetSMRAccountActivityInfo(DataManager.DataManager.SharedInstance.SelectedAccount);
                         if (ssmrInfoResponse != null &&
                             ssmrInfoResponse.d != null &&
@@ -270,7 +278,7 @@ namespace myTNB
                         {
                             SSMRActivityInfoCache.SetDashboardCache(ssmrInfoResponse, DataManager.DataManager.SharedInstance.SelectedAccount);
                             SSMRActivityInfoCache.SetReadingHistoryCache(ssmrInfoResponse, DataManager.DataManager.SharedInstance.SelectedAccount);
-                            SetSSMRComponent(false);
+                            SetSSMRComponent(false, isForRefreshScreen);
                         }
                         else
                         {

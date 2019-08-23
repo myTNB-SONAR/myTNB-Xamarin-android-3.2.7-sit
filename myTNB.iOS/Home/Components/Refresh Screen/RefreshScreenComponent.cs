@@ -6,7 +6,7 @@ using UIKit;
 
 namespace myTNB.Home.Components
 {
-    public class RefreshScreenComponent
+    public class RefreshScreenComponent : BaseComponent
     {
         private readonly UIView _parentView;
         CustomUIView _viewContainer;
@@ -36,14 +36,15 @@ namespace myTNB.Home.Components
                 BackgroundColor = UIColor.Clear
             };
 
-            nfloat iconWidth = ScaleUtility.GetScaledWidth(138f);
-            _iconView = new UIImageView(new CGRect(ScaleUtility.GetXLocationToCenterObject(iconWidth, _viewContainer), _iconYPos, iconWidth, iconWidth))
+            nfloat iconWidth = _isBCRMDown ? GetScaledWidth(193f) : GetScaledWidth(138f);
+            nfloat iconHeight = GetScaledHeight(138f);
+            _iconView = new UIImageView(new CGRect(GetXLocationToCenterObject(iconWidth, _viewContainer), _iconYPos, iconWidth, iconHeight))
             {
-                Image = UIImage.FromBundle(DashboardHomeConstants.Img_RefreshIcon)
+                Image = UIImage.FromBundle(_isBCRMDown ? Constants.IMG_BCRMDownIcon : Constants.IMG_RefreshIcon)
             };
 
-            var descMsg = !string.IsNullOrEmpty(_descriptionMessage) || !string.IsNullOrWhiteSpace(_descriptionMessage) ? _descriptionMessage : LanguageUtility.GetCommonI18NValue(Constants.I18N_RefreshMessage);
-            var btnText = (!string.IsNullOrEmpty(_buttonText)) || !string.IsNullOrWhiteSpace(_buttonText) ? _buttonText : LanguageUtility.GetCommonI18NValue(Constants.I18N_RefreshBtnText);
+            var descMsg = !string.IsNullOrEmpty(_descriptionMessage) || !string.IsNullOrWhiteSpace(_descriptionMessage) ? _descriptionMessage : GetCommonI18NValue(Constants.I18N_RefreshMessage);
+            var btnText = (!string.IsNullOrEmpty(_buttonText)) || !string.IsNullOrWhiteSpace(_buttonText) ? _buttonText : GetCommonI18NValue(Constants.I18N_RefreshBtnText);
 
             NSMutableParagraphStyle msgParagraphStyle = new NSMutableParagraphStyle
             {
@@ -66,13 +67,13 @@ namespace myTNB.Home.Components
                 BackgroundColor = UIColor.Clear
             };
 
-            nfloat descPadding = ScaleUtility.GetScaledWidth(32f);
-            nfloat buttonPadding = ScaleUtility.GetScaledWidth(16f);
+            nfloat descPadding = GetScaledWidth(32f);
+            nfloat buttonPadding = GetScaledWidth(16f);
             nfloat labelWidth = (float)(_viewContainer.Frame.Width - (descPadding * 2));
             nfloat buttonWidth = (float)(_viewContainer.Frame.Width - (buttonPadding * 2));
-            nfloat buttonHeight = ScaleUtility.GetScaledHeight(48f);
+            nfloat buttonHeight = GetScaledHeight(48f);
 
-            _txtDescription = new UITextView(new CGRect(descPadding, _iconView.Frame.GetMaxY() + ScaleUtility.BaseMarginWidth16, labelWidth, 90f))
+            _txtDescription = new UITextView(new CGRect(descPadding, _iconView.Frame.GetMaxY() + BaseMarginWidth16, labelWidth, 90f))
             {
                 BackgroundColor = UIColor.Clear,
                 Editable = false,
@@ -138,7 +139,7 @@ namespace myTNB.Home.Components
             }
 
             CGSize cGSize = _txtDescription.SizeThatFits(new CGSize(labelWidth, 1000f));
-            _txtDescription.Frame = new CGRect(descPadding, _iconView.Frame.GetMaxY() + ScaleUtility.BaseMarginWidth16, labelWidth, cGSize.Height);
+            _txtDescription.Frame = new CGRect(descPadding, _iconView.Frame.GetMaxY() + BaseMarginWidth16, labelWidth, cGSize.Height);
 
             _btnRefresh = new UIButton(UIButtonType.Custom)
             {
@@ -191,9 +192,7 @@ namespace myTNB.Home.Components
 
         private void AdjustContainerHeight()
         {
-            CGRect frame = _viewContainer.Frame;
-            frame.Height = _isBtnHidden ? _txtDescription.Frame.GetMaxY() + ScaleUtility.BaseMarginWidth16 : _btnRefresh.Frame.GetMaxY() + ScaleUtility.BaseMarginWidth16;
-            _viewContainer.Frame = frame;
+            ViewHelper.AdjustFrameSetHeight(_viewContainer, _isBtnHidden ? _txtDescription.Frame.GetMaxY() + BaseMarginWidth16 : _btnRefresh.Frame.GetMaxY() + BaseMarginWidth16);
         }
 
         public nfloat GetViewHeight()

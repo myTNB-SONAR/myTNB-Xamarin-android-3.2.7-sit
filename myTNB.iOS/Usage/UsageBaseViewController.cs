@@ -19,10 +19,10 @@ namespace myTNB
         UsageFooterViewComponent _footerViewComponent;
         REAmountComponent _rEAmountComponent;
 
-        internal UIScrollView _scrollViewContent;
+        internal UIScrollView _scrollViewContent, _refreshScrollView;
         internal CustomUIView _navbarContainer, _accountSelectorContainer, _viewSeparator, _viewStatus
             , _viewChart, _viewRE, _viewLegend, _viewToggle, _viewSSMR, _viewSmartMeter, _viewTips, _viewFooter, _rmKwhDropDownView, _viewRefresh
-            , _chart, _tips, _RE, _status, _sm, _ssmr, _tariff, _legend, _refresh;
+            , _chart, _tips, _RE, _RERefresh, _status, _sm, _ssmr, _ssmrRefresh, _tariff, _legend, _refresh;
         internal UILabel _lblAddress, _RMLabel, _kWhLabel;
         internal UIImageView _bgImageView;
 
@@ -30,7 +30,7 @@ namespace myTNB
         internal RMkWhEnum _rMkWhEnum;
         internal nfloat _lastContentOffset;
         internal bool isBcrmAvailable, isNormalChart, isREAccount, isSmartMeterAccount, accountIsSSMR;
-        internal bool _statusIsLoading, _legendIsVisible;
+        internal bool _legendIsVisible;
 
         internal CGRect _origViewFrame;
 
@@ -45,8 +45,8 @@ namespace myTNB
             InitializeValues();
             NavigationController.NavigationBarHidden = true;
             AddBackgroundImage();
-            PrepareRefreshView();
             SetNavigation();
+            PrepareRefreshView();
             AddScrollView();
             SetDisconnectionComponent(false);
             SetSSMRComponent(false);
@@ -77,12 +77,36 @@ namespace myTNB
 
         private void PrepareRefreshView()
         {
+            nfloat height = UIScreen.MainScreen.Bounds.Height - _navbarContainer.Frame.GetMaxY() - GetScaledHeight(8F);
+            if (DeviceHelper.IsIphoneXUpResolution())
+            {
+                height -= 20f;
+            }
+            _refreshScrollView = new UIScrollView(new CGRect(0, GetYLocationFromFrame(_navbarContainer.Frame, 8F), ViewWidth, height))
+            {
+                BackgroundColor = UIColor.Clear,
+                Bounces = false,
+                CanCancelContentTouches = false,
+                DelaysContentTouches = true,
+                Hidden = true
+            };
+            _refreshScrollView.Scrolled += OnScroll;
+            View.AddSubview(_refreshScrollView);
             _viewRefresh = new CustomUIView(new CGRect(0, 0, ViewWidth, ViewHeight))
             {
                 BackgroundColor = UIColor.Clear
             };
-            _viewRefresh.Hidden = true;
-            View.AddSubview(_viewRefresh);
+            _refreshScrollView.AddSubview(_viewRefresh);
+            _ssmrRefresh = new CustomUIView(new CGRect(0, 0, ViewWidth, 0))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+            _viewRefresh.AddSubview(_ssmrRefresh);
+            _RERefresh = new CustomUIView(new CGRect(0, 0, ViewWidth, 0))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+            _viewRefresh.AddSubview(_RERefresh);
         }
 
         private void InitializeValues()
@@ -230,7 +254,7 @@ namespace myTNB
             _lblAddress.Frame = new CGRect(new CGPoint(BaseMargin, GetYLocationFromFrame(_accountSelectorContainer.Frame, 8F)), _lblAddress.Frame.Size);
             _viewSeparator.Frame = new CGRect(new CGPoint(BaseMargin, GetYLocationFromFrame(_lblAddress.Frame, 16F)), _viewSeparator.Frame.Size);
 
-            if (!AccountStatusCache.AccountStatusIsAvailable() || _statusIsLoading)
+            if (!AccountStatusCache.AccountStatusIsAvailable() && !_viewStatus.Hidden)
             {
                 _viewStatus.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewSeparator.Frame, 16F)), _viewStatus.Frame.Size);
                 _viewChart.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewStatus.Frame, 16F)), _viewChart.Frame.Size);
@@ -259,7 +283,7 @@ namespace myTNB
                     _viewTips.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewToggle.Frame, 24F)), _viewTips.Frame.Size);
                 }
             }
-            _scrollViewContent.ContentSize = new CGSize(ViewWidth, GetAdditionalHeight(isREAccount ? _viewRE.Frame.GetMaxY() : _viewTips.Frame.GetMaxY()));
+            _scrollViewContent.ContentSize = new CGSize(ViewWidth, isREAccount ? _viewRE.Frame.GetMaxY() : GetAdditionalHeight(_viewTips.Frame.GetMaxY()));
         }
 
         private nfloat GetAdditionalHeight(nfloat maxYPos)
@@ -351,7 +375,7 @@ namespace myTNB
 
         #endregion
         #region SSMR Methods
-        internal void SetSSMRComponent(bool isUpdating)
+        internal void SetSSMRComponent(bool isUpdating, bool forRefreshScreen = false)
         {
             if (!isREAccount && accountIsSSMR)
             {
@@ -363,12 +387,19 @@ namespace myTNB
                 {
                     _ssmr.RemoveFromSuperview();
                 }
-                SSMRComponent sSMRComponent = new SSMRComponent(_viewSSMR);
+                SSMRComponent sSMRComponent = new SSMRComponent(forRefreshScreen ? _viewRefresh : _viewSSMR);
 
                 if (isUpdating)
                 {
                     _ssmr = sSMRComponent.GetShimmerUI();
                     _viewSSMR.AddSubview(_ssmr);
+                    if (forRefreshScreen)
+                    {
+                        _ssmrRefresh.AddSubview(_ssmr);
+                        ViewHelper.AdjustFrameSetY(_ssmrRefresh, GetYLocationFromFrame(_refresh.Frame, GetScaledHeight(8F)));
+                        ViewHelper.AdjustFrameSetHeight(_ssmrRefresh, GetScaledHeight(116f));
+                        _viewRefresh.AddSubview(_ssmrRefresh);
+                    }
                 }
                 else
                 {
@@ -376,7 +407,7 @@ namespace myTNB
                     if (smrAcountInfo != null)
                     {
                         _ssmr = sSMRComponent.GetUI();
-                        _viewSSMR.AddSubview(_ssmr);
+
                         sSMRComponent.SetDescription(smrAcountInfo.DashboardMessage);
                         sSMRComponent.SetButtonText(smrAcountInfo.DashboardCTAText);
                         sSMRComponent.SetSRMButtonEnable(smrAcountInfo.IsDashboardCTADisabled);
@@ -397,17 +428,38 @@ namespace myTNB
                                 OnSubmitMeterTap();
                             }
                         };
+                        _viewSSMR.AddSubview(_ssmr);
                         ViewHelper.AdjustFrameSetHeight(_viewSSMR, sSMRComponent.GetContainerHeight());
                         _viewSSMR.BackgroundColor = UIColor.Clear;
                         _viewSSMR.Hidden = false;
                         AddSSMRViewShadow(ref _viewSSMR);
+                        if (forRefreshScreen)
+                        {
+                            _ssmrRefresh.AddSubview(_ssmr);
+                            _viewRefresh.AddSubview(_ssmrRefresh);
+                            ViewHelper.AdjustFrameSetY(_ssmrRefresh, GetYLocationFromFrame(_refresh.Frame, GetScaledHeight(8F)));
+                            ViewHelper.AdjustFrameSetHeight(_ssmrRefresh, sSMRComponent.GetContainerHeight());
+                            ViewHelper.AdjustFrameSetHeight(_viewRefresh, _refresh.Frame.Height + sSMRComponent.GetContainerHeight() + GetScaledHeight(16F));
+                            AddSSMRViewShadow(ref _ssmrRefresh);
+                            SetContentViewForRefresh();
+                        }
                     }
                 }
             }
             else
             {
-                ViewHelper.AdjustFrameSetHeight(_viewSSMR, 0);
-                _viewSSMR.Hidden = true;
+                if (forRefreshScreen)
+                {
+                    if (_ssmr != null)
+                    {
+                        _ssmr.RemoveFromSuperview();
+                    }
+                }
+                else
+                {
+                    ViewHelper.AdjustFrameSetHeight(_viewSSMR, 0);
+                    _viewSSMR.Hidden = true;
+                }
             }
             SetContentView();
         }
@@ -682,12 +734,7 @@ namespace myTNB
         #region DISCONNECTION Methods
         public void SetDisconnectionComponent(bool isUpdating)
         {
-            _statusIsLoading = isUpdating;
             AccountStatusDataModel accountStatusData = AccountStatusCache.GetAccountStatusData();
-            ViewHelper.AdjustFrameSetHeight(_viewStatus, GetScaledHeight(24f));
-            _viewStatus.BackgroundColor = UIColor.Clear;
-            _viewStatus.Hidden = false;
-
             if (_status != null)
             {
                 _status.RemoveFromSuperview();
@@ -695,13 +742,16 @@ namespace myTNB
             DisconnectionComponent disconnectionComponent = new DisconnectionComponent(_scrollViewContent, accountStatusData);
             if (isUpdating)
             {
-                _status = disconnectionComponent.GetShimmerUI();
-                _viewStatus.AddSubview(_status);
+                _viewStatus.Hidden = true;
+                ViewHelper.AdjustFrameSetHeight(_viewStatus, 0);
             }
             else
             {
                 if (!AccountStatusCache.AccountStatusIsAvailable())
                 {
+                    ViewHelper.AdjustFrameSetHeight(_viewStatus, GetScaledHeight(24f));
+                    _viewStatus.BackgroundColor = UIColor.Clear;
+                    _viewStatus.Hidden = false;
                     _status = disconnectionComponent.GetUI();
                     disconnectionComponent.SetGestureRecognizer(new UITapGestureRecognizer(() =>
                     {
@@ -717,15 +767,7 @@ namespace myTNB
                     ViewHelper.AdjustFrameSetHeight(_viewStatus, 0);
                 }
             }
-
-            UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseIn
-                    , () =>
-                    {
-                        SetContentView();
-                    }
-                    , () =>
-                    { }
-                );
+            SetContentView();
         }
         #endregion
         #region RE Methods
@@ -770,6 +812,19 @@ namespace myTNB
             if (_rEAmountComponent != null)
             {
                 _rEAmountComponent.SetRefreshState();
+            }
+        }
+
+        internal void SetREAmountViewForRefresh()
+        {
+            if (_RERefresh != null && _RE != null)
+            {
+                _RERefresh.AddSubview(_RE);
+                ViewHelper.AdjustFrameSetY(_RERefresh, GetYLocationFromFrame(_refresh.Frame, GetScaledHeight(8F)));
+                ViewHelper.AdjustFrameSetHeight(_RERefresh, _RE.Frame.Height);
+                _viewRefresh.AddSubview(_RERefresh);
+                ViewHelper.AdjustFrameSetHeight(_viewRefresh, _refresh.Frame.Height + _RE.Frame.Height + GetScaledHeight(16F));
+                SetContentViewForRefresh();
             }
         }
         #endregion
@@ -901,7 +956,7 @@ namespace myTNB
         internal void SetRefreshScreen()
         {
             _scrollViewContent.Hidden = true;
-            _viewRefresh.Hidden = false;
+            _refreshScrollView.Hidden = false;
             UpdateBGForRefresh();
             var bcrm = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
             var bcrmMsg = !string.IsNullOrEmpty(bcrm?.DowntimeMessage) && !string.IsNullOrWhiteSpace(bcrm?.DowntimeMessage) ? bcrm?.DowntimeMessage : GetCommonI18NValue(Constants.I18N_BCRMMessage);
@@ -911,7 +966,7 @@ namespace myTNB
             {
                 _refresh.RemoveFromSuperview();
             }
-            RefreshScreenComponent refreshScreenComponent = new RefreshScreenComponent(View, GetScaledHeight(84f));
+            RefreshScreenComponent refreshScreenComponent = new RefreshScreenComponent(View, GetScaledHeight(84F) - (DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height));
             refreshScreenComponent.SetIsBCRMDown(!isBcrmAvailable);
             refreshScreenComponent.SetRefreshButtonHidden(!isBcrmAvailable);
             refreshScreenComponent.SetButtonText(AccountUsageCache.GetRefreshDataModel()?.RefreshBtnText ?? string.Empty);
@@ -920,12 +975,28 @@ namespace myTNB
             refreshScreenComponent.OnButtonTap = RefreshButtonOnTap;
             _refresh = refreshScreenComponent.GetView();
             _viewRefresh.AddSubview(_refresh);
+            ViewHelper.AdjustFrameSetHeight(_viewRefresh, _refresh.Frame.Height);
         }
         internal virtual void RefreshButtonOnTap()
         {
+            _refreshScrollView.Hidden = true;
             _scrollViewContent.Hidden = false;
-            _viewRefresh.Hidden = true;
+            if (!isREAccount && accountIsSSMR)
+            {
+                _viewSSMR.AddSubview(_ssmr);
+            }
             ResetViews();
+        }
+        internal void SetContentViewForRefresh()
+        {
+            if (accountIsSSMR)
+            {
+                _refreshScrollView.ContentSize = new CGSize(ViewWidth, GetAdditionalHeight(_viewRefresh.Frame.GetMaxY()));
+            }
+            else
+            {
+                _refreshScrollView.ContentSize = new CGSize(ViewWidth, _viewRefresh.Frame.GetMaxY() + BaseMarginHeight16);
+            }
         }
         #endregion
     }
