@@ -15,6 +15,7 @@ using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.myTNBMenu.Requests;
 using Refit;
 using static myTNB_Android.Src.SSMR.SMRApplication.Api.GetAccountsSMREligibilityResponse;
+using myTNB_Android.Src.SSMRTerminate.Api;
 
 namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 {
@@ -22,11 +23,13 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
     {
         SSMRMeterHistoryContract.IView mView;
         SMRregistrationApi api;
+        SSMRTerminateImpl terminationApi;
         CancellationTokenSource cts;
         public SSMRMeterHistoryPresenter(SSMRMeterHistoryContract.IView view)
         {
             mView = view;
             api = new SMRregistrationApiImpl();
+            terminationApi = new SSMRTerminateImpl();
         }
 
         public async void CheckSMRAccountEligibility(List<SMRAccount> smrAccountList)
@@ -176,6 +179,72 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 this.mView.ShowGenericSnackbarException();
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public async void GetCARegisteredContactInfoAsync(AccountData selectedAccount)
+        {
+            //SMRAccount selectedSMRAccount = new SMRAccount();
+            //selectedSMRAccount.email = "";
+            //selectedSMRAccount.mobileNumber = "";
+            //selectedSMRAccount = UserSessions.GetSMRAccountList().Find(x => x.accountNumber == selectedAccount.AccountNum);
+            //if (UserSessions.GetSMRAccountList().Count > 0)
+            //{
+            //    selectedSMRAccount = UserSessions.GetSMRAccountList().Find(x => x.accountNumber == selectedAccount.AccountNum);
+            //}
+            try
+            {
+                CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
+                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = UserEntity.GetActive().Email,
+                    sspuid = UserEntity.GetActive().UserID,
+                    did = "",
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+
+                CARegisteredContactInfoResponse response = await this.terminationApi.GetCARegisteredContactInfo(new GetRegisteredContactInfoRequest()
+                {
+                    AccountNumber = selectedAccount.AccountNum,
+                    IsOwnedAccount = "true",
+                    ICNumber = account.ICNum,
+                    usrInf = currentUsrInf
+                });
+
+                if (response.Data.ErrorCode == "7200")
+                {
+                    CAContactDetailsModel contactDetailsModel = new CAContactDetailsModel();
+                    contactDetailsModel.email = response.Data.AccountDetailsData.Email;
+                    contactDetailsModel.mobile = response.Data.AccountDetailsData.Mobile;
+                    contactDetailsModel.isAllowEdit = response.Data.AccountDetailsData.isAllowEdit;
+                    this.mView.ShowEnableDisableSMR(contactDetailsModel);
+                }
+                else
+                {
+                    //this.mView.UpdateSMRData(selectedSMRAccount.email, selectedSMRAccount.mobileNumber);
+                }
+            }
+            catch (System.OperationCanceledException cancelledException)
+            {
+                //this.mView.UpdateSMRData(selectedSMRAccount.email, selectedSMRAccount.mobileNumber);
+                Utility.LoggingNonFatalError(cancelledException);
+            }
+            catch (ApiException apiException)
+            {
+                //this.mView.UpdateSMRData(selectedSMRAccount.email, selectedSMRAccount.mobileNumber);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception unknownException)
+            {
+                //this.mView.UpdateSMRData(selectedSMRAccount.email, selectedSMRAccount.mobileNumber);
+                Utility.LoggingNonFatalError(unknownException);
+            }
+
         }
 
         public List<SMRAccount> GetEligibleSMRAccountList()

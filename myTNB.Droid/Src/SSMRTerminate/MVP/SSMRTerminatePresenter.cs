@@ -149,7 +149,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
         }
 
-        public async void OnSubmitApplication(string accountNum, string oldEmail, string oldPhoneNum, string newEmail, string newPhoneNum, string terminationReason)
+        public async void OnSubmitApplication(string accountNum, string oldEmail, string oldPhoneNum, string newEmail, string newPhoneNum, string terminationReason, string mode)
         {
             try
             {
@@ -176,7 +176,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                     NewPhone = newPhoneNum,
                     OldEmail = oldEmail,
                     NewEmail = newEmail,
-                    SMRMode = "T",
+                    SMRMode = mode,
                     TerminationReason = terminationReason,
                     usrInf = currentUsrInf
                 });
@@ -212,9 +212,38 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
         }
 
-        public void CheckRequiredFields(string mobile_no, string email, bool isOtherReasonSelected, string otherReason)
+        public void CheckRequiredFieldsForTerminate(bool isOtherReasonSelected, string otherReason)
         {
+            try
+            {
+                if (isOtherReasonSelected)
+                {
+                    if (TextUtils.IsEmpty(otherReason))
+                    {
+                        this.mView.ShowEmptyReasonError();
+                        this.mView.DisableSubmitButton();
+                        this.mView.DisableSubmitButton();
+                    }
+                    else
+                    {
+                        this.mView.ClearReasonError();
+                        this.mView.EnableSubmitButton();
+                    }
+                }
+                else
+                {
+                    this.mView.ClearReasonError();
+                    this.mView.EnableSubmitButton();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
+        public void CheckRequiredFieldsForApply(string mobile_no, string email)
+        {
             try
             {
                 if (!TextUtils.IsEmpty(mobile_no) && !TextUtils.IsEmpty(email))
@@ -260,24 +289,6 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                     else
                     {
                         this.mView.ClearInvalidMobileError();
-                    }
-
-                    if (isOtherReasonSelected)
-                    {
-                        if (TextUtils.IsEmpty(otherReason))
-                        {
-                            this.mView.ShowEmptyReasonError();
-                            this.mView.DisableSubmitButton();
-                            isError = true;
-                        }
-                        else
-                        {
-                            this.mView.ClearReasonError();
-                        }
-                    }
-                    else
-                    {
-                        this.mView.ClearReasonError();
                     }
 
                     if (isError == true)

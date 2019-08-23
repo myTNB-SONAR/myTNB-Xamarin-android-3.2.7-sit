@@ -23,6 +23,7 @@ using myTNB_Android.Src.SSMRTerminate.Api;
 using Android.Runtime;
 using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.SSMR.SMRApplication.Api;
+using myTNB_Android.Src.SSMRMeterHistory.MVP;
 
 namespace myTNB_Android.Src.SSMRTerminate.MVP
 {
@@ -81,7 +82,13 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         TextView terminationReasonTitle;
 
         [BindView(Resource.Id.btnDisconnectionSubmit)]
-        Button btnDisconnectionSubmit;
+        Button btnDisconnectionSubmit; 
+
+        [BindView(Resource.Id.contactDetailContainer)]
+        LinearLayout contactDetailContainer; 
+
+        [BindView(Resource.Id.reasonDetailContainer)]
+        LinearLayout reasonDetailContainer;
 
         SSMRTerminatePresenter mPresenter;
 
@@ -108,6 +115,10 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         private static int SELECT_TERMINATION_ACTIVITY_CODE = 4321;
 
         public readonly static int SSMR_METER_HISTORY_ACTIVITY_CODE = 8796;
+
+        public string SMR_ACTION = "";
+
+        public CAContactDetailsModel contactDetails;
 
         public override int ResourceId()
         {
@@ -201,10 +212,11 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
             contactDetailConsent.Visibility = ViewStates.Gone;
             txtInputLayoutTxtReason.Visibility = ViewStates.Gone;
+            txtInputLayoutTxtReason.CounterMaxLength = 550;
 
             txtMobileNo.TextChanged += TextChange;
             txtEmail.TextChanged += TextChange;
-            //txtReason.TextChanged += Reason_TextChange;
+            txtReason.TextChanged += Reason_TextChange;
 
             txtMobileNo.AddTextChangedListener(new InputFilterFormField(txtMobileNo, txtInputLayoutMobileNo));
             txtEmail.AddTextChangedListener(new InputFilterFormField(txtEmail, txtInputLayoutEmail));
@@ -228,17 +240,71 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
             //ShowProgressDialog();
 
-            if (extras!= null && extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+            if (extras != null)
             {
-                selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
-                disconnectionAccountTtile.Text = selectedAccount.AccountNickName;
-                disconnectionAccountAddress.Text = selectedAccount.AddStreet;
+                if (extras.ContainsKey("SMR_ACTION"))
+                {
+                    SMR_ACTION = extras.GetString("SMR_ACTION");
+                }
 
-                //this.mPresenter.InitiateCAInfo(selectedAccount);
+                if (extras.ContainsKey("SMR_CONTACT_DETAILS"))
+                {
+                    contactDetails = JsonConvert.DeserializeObject<CAContactDetailsModel>(extras.GetString("SMR_CONTACT_DETAILS"));
+                }
+
+                if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                {
+                    selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                    disconnectionAccountTtile.Text = selectedAccount.AccountNickName;
+                    disconnectionAccountAddress.Text = selectedAccount.AddStreet;
+
+                    //this.mPresenter.InitiateCAInfo(selectedAccount);
+                }
+
+
             }
+            ShowUIDetails();
+        }
 
-            this.mPresenter.InitiateTerminationReasonsList();
-            EnableSubmitButton();
+        private void ShowUIDetails()
+        {
+            if (SMR_ACTION == Constants.SMR_ENABLE_FLAG)
+            {
+                disconnectionTtile.Text = "I am enabling for:";
+                terminationReasonTitle.Visibility = ViewStates.Gone;
+                reasonDetailContainer.Visibility = ViewStates.Gone;
+                ShowContactDetails();
+            }
+            else
+            {
+                disconnectionTtile.Text = "I am disabling for:";
+                terminationReasonTitle.Visibility = ViewStates.Visible;
+                reasonDetailContainer.Visibility = ViewStates.Visible;
+
+                contactDetailTtile.Visibility = ViewStates.Gone;
+                contactDetailContainer.Visibility = ViewStates.Gone;
+                this.mPresenter.InitiateTerminationReasonsList();
+                EnableSubmitButton();
+            }
+        }
+
+        private void ShowContactDetails()
+        {
+            if (contactDetails != null && contactDetails.isAllowEdit)
+            {
+                contactDetailTtile.Visibility = ViewStates.Visible;
+                contactDetailContainer.Visibility = ViewStates.Visible;
+
+                txtEmail.Text = contactDetails.email;
+                txtMobileNo.Text = contactDetails.mobile;
+            }
+            else
+            {
+                contactDetailTtile.Visibility = ViewStates.Gone;
+                contactDetailContainer.Visibility = ViewStates.Gone;
+
+                EnableSubmitButton();
+            }
         }
 
         public override View OnCreateView(string name, Context context, IAttributeSet attrs)
@@ -270,10 +336,9 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             {
                 string mobile_no = txtMobileNo.Text.ToString().Trim();
                 string email = txtEmail.Text.ToString().Trim();
-                string reason = txtReason.Text.ToString().Trim();
                 newEmail = email;
                 newPhoneNumber = mobile_no;
-                this.mPresenter.CheckRequiredFields(mobile_no, email, isOtherReasonSelected, reason);
+                this.mPresenter.CheckRequiredFieldsForApply(mobile_no, email);
 
                 if (checkForEditingInfo)
                 {
@@ -294,7 +359,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 string mobile_no = txtMobileNo.Text.ToString().Trim();
                 string email = txtEmail.Text.ToString().Trim();
                 string reason = txtReason.Text.ToString().Trim();
-                this.mPresenter.CheckRequiredFields(mobile_no, email, isOtherReasonSelected, reason);
+                this.mPresenter.CheckRequiredFieldsForTerminate(isOtherReasonSelected, reason);
             }
             catch (Exception ex)
             {
@@ -408,15 +473,37 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         void OnSubmitRequest(object sender, EventArgs eventArgs)
         {
             string terminationReason = "";
-            if (isOtherReasonSelected)
+            string smrMode;
+
+            if (SMR_ACTION == Constants.SMR_ENABLE_FLAG)
             {
-                terminationReason = txtReason.Text;
+                smrMode = "R";
             }
             else
             {
-                terminationReason = selectedReason.ReasonName;
+                smrMode = "T";
+                if (isOtherReasonSelected)
+                {
+                    terminationReason = txtReason.Text;
+                }
+                else
+                {
+                    terminationReason = selectedReason.ReasonName;
+                }
             }
-            this.mPresenter.OnSubmitApplication(selectedAccount.AccountNum, oldEmail, oldPhoneNumber, newEmail, newPhoneNumber, terminationReason);
+            
+            this.mPresenter.OnSubmitApplication(selectedAccount.AccountNum,
+                oldEmail, FormatMobileNumberForSubmit(oldPhoneNumber), newEmail, FormatMobileNumberForSubmit(newPhoneNumber), terminationReason, smrMode);
+        }
+
+        private string FormatMobileNumberForSubmit(string mobileNumber)
+        {
+            string output = mobileNumber;
+            if (mobileNumber != "" && mobileNumber.Contains("+60"))
+            {
+                output = mobileNumber.Replace("+60","0");
+            }
+            return output;
         }
 
         public void ShowTermsAndConditions()

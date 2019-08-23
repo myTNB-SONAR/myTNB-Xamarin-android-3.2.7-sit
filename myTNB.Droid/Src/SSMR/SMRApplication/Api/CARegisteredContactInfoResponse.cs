@@ -46,6 +46,9 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Api
 
             [JsonProperty(PropertyName = "Mobile")]
             public string Mobile { get; set; }
+
+            [JsonProperty(PropertyName = "isAllowEdit")]
+            public bool isAllowEdit { get; set; }
         }
     }
 }

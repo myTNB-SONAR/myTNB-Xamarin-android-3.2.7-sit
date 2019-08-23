@@ -15,6 +15,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             void ShowSMREligibleAccountList(List<SMRAccount> smrAccountList);
             void UpdateUIForSMR(SMRActivityInfoResponse activityInfoResponse);
             void ShowRefreshScreen(bool isShow);
+            void ShowEnableDisableSMR(CAContactDetailsModel contactDetailsModel);
         }
 
         public interface IPresenter
@@ -22,6 +23,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             List<SMRAccount> GetEligibleSMRAccountList();
             void CheckSMRAccountEligibility(List<SMRAccount> smrAccountList);
             void GetSSMRAccountStatus(string accountNumber);
+            void GetCARegisteredContactInfoAsync(AccountData selectedAccount);
         }
 
         public interface IApiNotification

@@ -6,6 +6,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public string messageId { get; set; }
         public string message { get; set; }
         public string registerNumber { get; set; }
+        public string meterReadingUnit { get; set; }
         public bool isSuccess { get; set; }
     }
 }

@@ -12,6 +12,7 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
 using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.SubmitMeterReadingResponse;
@@ -83,14 +84,16 @@ namespace myTNB_Android.Src.SSMR.SSMRBase.MVP
         [OnClick(Resource.Id.btnBackToHomeFailed)]
         void OnBackToHome(object sender, EventArgs eventArgs)
         {
-            SetResult(Result.Ok);
-            Finish();
+            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+            DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            StartActivity(DashboardIntent);
         }
 
         [OnClick(Resource.Id.btnTryAgainFailed)]
         void OnTryAgain(object sender, EventArgs eventArgs)
         {
-            OnBackPressed();
+            SetResult(Result.Canceled);
+            Finish();
         }
     }
 }
