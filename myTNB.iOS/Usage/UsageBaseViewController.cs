@@ -346,7 +346,7 @@ namespace myTNB
             {
                 _chartView = new REChartView();
             }
-            else if(isNormalChart)
+            else if (isNormalChart)
             {
                 _chartView = new NormalChartView();
             }

@@ -10,9 +10,10 @@ namespace myTNB
     public class BaseChartView : BaseComponent
     {
         public BaseChartView() { }
-        protected CustomUIView _mainView, _segmentContainer;
+        protected CustomUIView _mainView, _segmentContainer, _zoomView;
         protected nfloat _width, _baseMargin, _baseMarginedWidth;
         protected UILabel _lblDateRange;
+
         protected string Format_Value = "{0} {1}";
         protected nfloat ShimmerHeight;
 
