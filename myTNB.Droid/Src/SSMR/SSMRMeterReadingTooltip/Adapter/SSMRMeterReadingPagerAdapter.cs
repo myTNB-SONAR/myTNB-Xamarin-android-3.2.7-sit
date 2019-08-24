@@ -1,6 +1,8 @@
 ﻿using Android.Content;
 using Android.Graphics;
+using Android.OS;
 using Android.Support.V4.View;
+using Android.Text;
 using Android.Text.Method;
 using Android.Util;
 using Android.Views;
@@ -106,7 +108,15 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.Adapter
             }
 
             titleView.Text = model.Title;
-            descriptionView.Text = model.Description;
+            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+            {
+                descriptionView.TextFormatted = Html.FromHtml(model.Description, FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                descriptionView.TextFormatted = Html.FromHtml(model.Description);
+            }
+            //descriptionView.Text = model.Description;
 
             container.AddView(rootView);
             return rootView;

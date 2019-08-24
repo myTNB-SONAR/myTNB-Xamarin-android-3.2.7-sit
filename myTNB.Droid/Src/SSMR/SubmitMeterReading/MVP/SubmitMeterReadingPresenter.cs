@@ -54,7 +54,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             resp.IsSuccess = false;
             SubmitSMRMeterReadingsRespList.Add(resp);
             mockResponse.Data = new SMRSubmitResponseData();
-            mockResponse.Data.ErrorCode = "7200";
+            mockResponse.Data.ErrorCode = "7100";
             mockResponse.Data.DisplayTitle = "Reading Submitted Test";
             mockResponse.Data.DisplayMessage = "Thank you for your meter reading submission. We will notify you when your meter reading has been validated.";
             mockResponse.Data.ResponseDetailsData = new SMRSubmitResponseDetails();
@@ -304,15 +304,15 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             sMRMROValidateRegisterDetails.ReadingUnitDisplayTitle = "kW";
             sMRMROValidateRegisterDetailsList.Add(sMRMROValidateRegisterDetails);
 
-            sMRMROValidateRegisterDetails = new SMRMROValidateRegisterDetails();
-            sMRMROValidateRegisterDetails.RegisterNumber = "003";
-            sMRMROValidateRegisterDetails.MroID = "0000002432432";
-            sMRMROValidateRegisterDetails.PrevMrDate = "2-8-2019";
-            sMRMROValidateRegisterDetails.SchMrDate = "2-8-2019";
-            sMRMROValidateRegisterDetails.PrevMeterReading = "1234567";
-            sMRMROValidateRegisterDetails.ReadingUnit = "KVAR";
-            sMRMROValidateRegisterDetails.ReadingUnitDisplayTitle = "kVARh";
-            sMRMROValidateRegisterDetailsList.Add(sMRMROValidateRegisterDetails);
+            //sMRMROValidateRegisterDetails = new SMRMROValidateRegisterDetails();
+            //sMRMROValidateRegisterDetails.RegisterNumber = "003";
+            //sMRMROValidateRegisterDetails.MroID = "0000002432432";
+            //sMRMROValidateRegisterDetails.PrevMrDate = "2-8-2019";
+            //sMRMROValidateRegisterDetails.SchMrDate = "2-8-2019";
+            //sMRMROValidateRegisterDetails.PrevMeterReading = "1234567";
+            //sMRMROValidateRegisterDetails.ReadingUnit = "KVAR";
+            //sMRMROValidateRegisterDetails.ReadingUnitDisplayTitle = "kVARh";
+            //sMRMROValidateRegisterDetailsList.Add(sMRMROValidateRegisterDetails);
 
             return GetMeterReadingModelList(sMRMROValidateRegisterDetailsList);
         }

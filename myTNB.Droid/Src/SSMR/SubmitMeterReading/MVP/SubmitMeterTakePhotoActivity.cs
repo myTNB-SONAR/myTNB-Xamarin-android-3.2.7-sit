@@ -35,8 +35,12 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         private bool isFromSingleCapture = false;
         private string singlePhaseMeterId = "";
         private Bitmap singlePhaseImageData = null;
-        List<MeterValidation> validatedMeterList;
-        List<MeterValidation> validationStateList;
+        //List<MeterValidation> validatedMeterList;
+        //List<MeterValidation> validationStateList;
+
+        List<MeterReadingModel> meterReadingModelList;
+        List<MeterReadingModel> requiredMeterReadingModelList;
+
         List<MeterCapturedData> meteredCapturedDataList;
         List<PhotoContainerBox> photoContainerBoxes;
         PhotoContainerBox selectedPhotoBox;
@@ -81,36 +85,13 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 contractNumber = extras.GetString("CONTRACT_NUMBER");
             }
 
-            if (extras != null && extras.ContainsKey("REQUEST_PHOTOS"))
+            if (extras != null && extras.ContainsKey("REQUESTED_PHOTOS"))
             {
-                validationStateList = JsonConvert.DeserializeObject<List<MeterValidation>>(extras.GetString("REQUEST_PHOTOS"));
-                validatedMeterList = validationStateList.FindAll(validatedMeter => { return validatedMeter.validated == false; });
-                MeterCapturedData meteredCapturedData;
-                meteredCapturedDataList = new List<MeterCapturedData>();
-                if (validatedMeterList.Count == 0) //means all validated but should still able to take picture
+                meterReadingModelList = JsonConvert.DeserializeObject<List<MeterReadingModel>>(extras.GetString("REQUESTED_PHOTOS"));
+                requiredMeterReadingModelList = meterReadingModelList.FindAll(model =>
                 {
-                    validatedMeterList = validationStateList;
-                    foreach (MeterValidation meterValidation in validationStateList)
-                    {
-                        meterValidation.validated = false;
-                    }
-                }
-                foreach (MeterValidation nonValidatedMeter in validatedMeterList)
-                {
-                    meteredCapturedData = new MeterCapturedData();
-                    meteredCapturedData.meterId = nonValidatedMeter.meterId;
-                    meteredCapturedDataList.Add(meteredCapturedData);
-                }
-                meteredCapturedDataList[0].isSelected = true; //For initial selection;
-                mPresenter.InitializeModelList(meteredCapturedDataList.Count);
-                if (!isSinglePhase)
-                {
-                    CreatePhotoBoxContainer();
-                }
-                else
-                {
-                    singlePhaseMeterId = GetMeterNameFromCode(validationStateList[0].meterId);
-                }
+                    return !model.isValidated;
+                });
             }
 
             if (isSinglePhase)
@@ -119,7 +100,16 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             }
             else
             {
+                meteredCapturedDataList = new List<MeterCapturedData>();
+                MeterCapturedData meteredCapturedModel;
+                requiredMeterReadingModelList.ForEach(meterReadingModel =>
+                {
+                    meteredCapturedModel = new MeterCapturedData();
+                    meteredCapturedModel.meterId = meterReadingModel.meterReadingUnit.ToUpper();
+                    meteredCapturedDataList.Add(meteredCapturedModel);
+                });
                 meterCapturedContainer.Visibility = ViewStates.Visible;
+                CreatePhotoBoxContainer();
             }
 
             if (savedInstanceState == null)
@@ -208,14 +198,14 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         protected override void OnStart()
         {
             base.OnStart();
-            if (validatedMeterList.Count > 0 && validatedMeterList.Count < validationStateList.Count)
-            {
-                UpdateTakePhotoFormattedNote();
-            }
-            else
-            {
-                UpdateTakePhotoNote();
-            }
+            //if (validatedMeterList.Count > 0 && validatedMeterList.Count < validationStateList.Count)
+            //{
+            //    UpdateTakePhotoFormattedNote();
+            //}
+            //else
+            //{
+            //    UpdateTakePhotoNote();
+            //}
         }
 
         private void ShowOCRLoadingScreen()
@@ -374,7 +364,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 }
 
                 SetPhotoBoxClickable();
-                if(validatedMeterList.Count == validationStateList.Count)
+                if(meterReadingModelList.Count == requiredMeterReadingModelList.Count)
                 {
                     UpdateTakePhotoNote();
                 }
@@ -427,14 +417,14 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         private void ShowTakePhotoTooltip()
         {
             List<string> needMeterCaptureList = new List<string>();
-            for (int i=0; i < validatedMeterList.Count; i++)
+            for (int i=0; i < requiredMeterReadingModelList.Count; i++)
             {
-                needMeterCaptureList.Add(GetMeterNameFromCode(validatedMeterList[i].meterId));
+                needMeterCaptureList.Add(requiredMeterReadingModelList[i].meterReadingUnitDisplay);
             }
             string remainingMeter = needMeterCaptureList.Count > 1 ? String.Join(",", needMeterCaptureList.ToArray()) : needMeterCaptureList[0];
             SMRPhotoPopUpDetailsModel tooltipData = MyTNBAppToolTipData.GetTakePhotoToolTipData(isSinglePhase,
-                validatedMeterList.Count == 1,
-                validatedMeterList.Count.ToString(),
+                requiredMeterReadingModelList.Count == 1,
+                requiredMeterReadingModelList.Count.ToString(),
                 remainingMeter);
             MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
                 .SetHeaderImage(isSinglePhase ? Resource.Drawable.single_phase : Resource.Drawable.multiple_phase)
@@ -448,14 +438,14 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         private void ShowUploadPhotoTooltip()
         {
             List<string> needMeterCaptureList = new List<string>();
-            for (int i = 0; i < validatedMeterList.Count; i++)
+            for (int i = 0; i < requiredMeterReadingModelList.Count; i++)
             {
-                needMeterCaptureList.Add(GetMeterNameFromCode(validatedMeterList[i].meterId));
+                needMeterCaptureList.Add(GetMeterNameFromCode(requiredMeterReadingModelList[i].meterReadingUnitDisplay));
             }
             string remainingMeter = needMeterCaptureList.Count > 1 ? String.Join(",", needMeterCaptureList.ToArray()) : needMeterCaptureList[0];
             SMRPhotoPopUpDetailsModel tooltipData = MyTNBAppToolTipData.GetUploadPhotoToolTipData(isSinglePhase,
-                validatedMeterList.Count == 1,
-                validatedMeterList.Count.ToString(),
+                requiredMeterReadingModelList.Count == 1,
+                requiredMeterReadingModelList.Count.ToString(),
                 remainingMeter);
             MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.IMAGE_HEADER)
                 .SetHeaderImage(isSinglePhase ? Resource.Drawable.single_phase : Resource.Drawable.multiple_phase)
@@ -554,20 +544,20 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             List<string> doneUnitList = new List<string>();
             List<string> notDoneUnitList = new List<string>();
 
-            for (int i=0; i < validationStateList.Count; i++)
+            for (int i=0; i < requiredMeterReadingModelList.Count; i++)
             {
-                if (validationStateList[i].validated)
+                if (requiredMeterReadingModelList[i].isValidated)
                 {
-                    doneUnitList.Add(validationStateList[i].meterId);
+                    doneUnitList.Add(requiredMeterReadingModelList[i].meterReadingUnitDisplay);
                 }
                 else
                 {
-                    notDoneUnitList.Add(validationStateList[i].meterId);
+                    notDoneUnitList.Add(requiredMeterReadingModelList[i].meterReadingUnitDisplay);
                 }
             }
 
             string finalString;
-            if (validationStateList.Count == 3)
+            if (requiredMeterReadingModelList.Count == 3)
             {
                 if (doneUnitList.Count == 2)
                 {

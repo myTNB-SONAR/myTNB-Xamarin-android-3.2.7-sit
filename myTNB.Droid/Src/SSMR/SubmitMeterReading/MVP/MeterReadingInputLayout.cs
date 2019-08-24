@@ -30,7 +30,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public MeterReadingInputLayout(Context context, IAttributeSet attrs) : base(context, attrs)
         {
             mContext = context;
-            InitializeInputBoxes();
+            //InitializeInputBoxes();
         }
 
         public void SetMeterId(string meterId)
@@ -58,7 +58,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             return layoutParams;
         }
 
-        private void InitializeInputBoxes()
+        public void InitializeInputBoxes()
         {
             editTextArray = new EditText[8];
             onMeterReadingValueChange = new OnMeterReadingValueChange(this);
@@ -406,6 +406,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     ((EditText)mContainer.GetChildAt(1)).AddTextChangedListener(this);
                     ((EditText)mContainer.GetChildAt(0)).AddTextChangedListener(this);
                 }
+
+                mContainer.UpdateSubmitReadingButton();
             }
 
             public void BeforeTextChanged(ICharSequence s, int start, int count, int after){}
