@@ -118,7 +118,7 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear
             };
 
-            _headerTitle = new UILabel(new CGRect(BaseMarginWidth16, 0, GetScaledWidth(84f), GetScaledHeight(24f)))
+            _headerTitle = new UILabel(new CGRect(BaseMarginWidth16, GetScaledHeight(4f), GetScaledWidth(84f), GetScaledHeight(20f)))
             {
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = UIColor.White,
