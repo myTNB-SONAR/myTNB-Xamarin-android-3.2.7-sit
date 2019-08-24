@@ -212,11 +212,18 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             else
                                             {
                                                 proceed = true;
-                                                if (UserEntity.IsCurrentlyActive())
+                                                try
                                                 {
-                                                    UserEntity.UpdatePhoneNumber(phoneVerifyResponse.verificationData.Data.PhoneNumber);
+                                                    if (UserEntity.IsCurrentlyActive())
+                                                    {
+                                                        UserEntity.UpdatePhoneNumber(phoneVerifyResponse.verificationData.Data.PhoneNumber);
+                                                    }
+                                                    UserSessions.SavePhoneVerified(mSharedPref, true);
                                                 }
-                                                UserSessions.SavePhoneVerified(mSharedPref, true);
+                                                catch (System.Exception e)
+                                                {
+                                                    Utility.LoggingNonFatalError(e);
+                                                }
                                             }
                                         }
                                         else

@@ -232,6 +232,16 @@ namespace myTNB_Android.Src.Login.MVP
                         SelectBillsEntity.RemoveAll();
                         MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                         UserSessions.RemoveSessionData();
+                        try
+                        {
+                            UserEntity.UpdatePhoneNumber(userResponse.Data.User.MobileNo);
+                            UserSessions.SavePhoneVerified(mSharedPref, true);
+                        }
+                        catch (System.Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+
                         int Id = UserEntity.InsertOrReplace(userResponse.Data.User);
                         if (Id > 0)
                         {

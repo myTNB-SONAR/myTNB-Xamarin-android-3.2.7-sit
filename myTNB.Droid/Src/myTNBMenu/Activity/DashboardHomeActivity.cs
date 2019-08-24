@@ -700,7 +700,15 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     if (!rect.Contains((int)ev.RawX, (int)ev.RawY))
                     {
                         HomeMenuFragment fragment = (HomeMenuFragment) FragmentManager.FindFragmentById(Resource.Id.content_layout);
-                        fragment.OnSearchOutFocus();
+                        LinearLayout searchContainer = fragment.GetSearchLayout();
+                        if (IsViewInBounds(searchContainer, (int)ev.RawX, (int)ev.RawY))
+                        {
+                            fragment.OnSearchOutFocus(true);
+                        }
+                        else
+                        {
+                            fragment.OnSearchOutFocus(false);
+                        }
                     }
                 }
             }
@@ -791,60 +799,74 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowBottomNavigationBar()
         {
-            CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams)bottomNavigationView.LayoutParameters;
+            try
+            {
+                CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams)bottomNavigationView.LayoutParameters;
 
-            lp.Height = (int) DPUtils.ConvertDPToPx(48f);
+                lp.Height = (int)DPUtils.ConvertDPToPx(48f);
 
-            bottomNavigationView.LayoutParameters = lp;
+                bottomNavigationView.LayoutParameters = lp;
 
-            bottomNavigationView.RequestLayout();
+                bottomNavigationView.RequestLayout();
 
-            CoordinatorLayout.LayoutParams lp2 = (CoordinatorLayout.LayoutParams)mainView.LayoutParameters;
+                CoordinatorLayout.LayoutParams lp2 = (CoordinatorLayout.LayoutParams)mainView.LayoutParameters;
 
-            lp2.Height = CoordinatorLayout.LayoutParams.MatchParent;
+                lp2.Height = CoordinatorLayout.LayoutParams.MatchParent;
 
-            mainView.LayoutParameters = lp2;
+                mainView.LayoutParameters = lp2;
 
-            mainView.RequestLayout();
+                mainView.RequestLayout();
 
-            ViewGroup.MarginLayoutParams lp3 = (ViewGroup.MarginLayoutParams) contentLayout.LayoutParameters;
+                ViewGroup.MarginLayoutParams lp3 = (ViewGroup.MarginLayoutParams)contentLayout.LayoutParameters;
 
-            lp3.BottomMargin = (int)DPUtils.ConvertDPToPx(41f);
+                lp3.BottomMargin = (int)DPUtils.ConvertDPToPx(41f);
 
-            contentLayout.LayoutParameters = lp3;
+                contentLayout.LayoutParameters = lp3;
 
-            contentLayout.RequestLayout();
+                contentLayout.RequestLayout();
 
-            contentLayout.RequestLayout();
+                contentLayout.RequestLayout();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void HideBottomNavigationBar()
         {
-            CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams)bottomNavigationView.LayoutParameters;
+            try
+            {
+                CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams)bottomNavigationView.LayoutParameters;
 
-            lp.Height = 0;
+                lp.Height = 0;
 
-            bottomNavigationView.LayoutParameters = lp;
+                bottomNavigationView.LayoutParameters = lp;
 
-            bottomNavigationView.RequestLayout();
+                bottomNavigationView.RequestLayout();
 
-            CoordinatorLayout.LayoutParams lp2 = (CoordinatorLayout.LayoutParams)mainView.LayoutParameters;
+                CoordinatorLayout.LayoutParams lp2 = (CoordinatorLayout.LayoutParams)mainView.LayoutParameters;
 
-            lp2.Height = CoordinatorLayout.LayoutParams.MatchParent;
+                lp2.Height = CoordinatorLayout.LayoutParams.MatchParent;
 
-            mainView.LayoutParameters = lp2;
+                mainView.LayoutParameters = lp2;
 
-            mainView.RequestLayout();
+                mainView.RequestLayout();
 
-            ViewGroup.MarginLayoutParams lp3 = (ViewGroup.MarginLayoutParams) contentLayout.LayoutParameters;
+                ViewGroup.MarginLayoutParams lp3 = (ViewGroup.MarginLayoutParams)contentLayout.LayoutParameters;
 
-            lp3.BottomMargin = 0;
+                lp3.BottomMargin = 0;
 
-            contentLayout.LayoutParameters = lp3;
+                contentLayout.LayoutParameters = lp3;
 
-            contentLayout.RequestLayout();
+                contentLayout.RequestLayout();
 
-            rootView.RequestLayout();
+                rootView.RequestLayout();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
 
         }
     }
