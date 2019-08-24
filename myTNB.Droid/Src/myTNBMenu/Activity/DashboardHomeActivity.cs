@@ -801,29 +801,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             try
             {
-                CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams)bottomNavigationView.LayoutParameters;
-
-                lp.Height = (int)DPUtils.ConvertDPToPx(48f);
-
-                bottomNavigationView.LayoutParameters = lp;
-
-                bottomNavigationView.RequestLayout();
-
-                CoordinatorLayout.LayoutParams lp2 = (CoordinatorLayout.LayoutParams)mainView.LayoutParameters;
-
-                lp2.Height = CoordinatorLayout.LayoutParams.MatchParent;
-
-                mainView.LayoutParameters = lp2;
-
-                mainView.RequestLayout();
+                bottomNavigationView.Visibility = ViewStates.Visible;
 
                 ViewGroup.MarginLayoutParams lp3 = (ViewGroup.MarginLayoutParams)contentLayout.LayoutParameters;
 
                 lp3.BottomMargin = (int)DPUtils.ConvertDPToPx(41f);
 
                 contentLayout.LayoutParameters = lp3;
-
-                contentLayout.RequestLayout();
 
                 contentLayout.RequestLayout();
             }
@@ -837,21 +821,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         {
             try
             {
-                CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams)bottomNavigationView.LayoutParameters;
-
-                lp.Height = 0;
-
-                bottomNavigationView.LayoutParameters = lp;
-
-                bottomNavigationView.RequestLayout();
-
-                CoordinatorLayout.LayoutParams lp2 = (CoordinatorLayout.LayoutParams)mainView.LayoutParameters;
-
-                lp2.Height = CoordinatorLayout.LayoutParams.MatchParent;
-
-                mainView.LayoutParameters = lp2;
-
-                mainView.RequestLayout();
+                bottomNavigationView.Visibility = ViewStates.Gone;
 
                 ViewGroup.MarginLayoutParams lp3 = (ViewGroup.MarginLayoutParams)contentLayout.LayoutParameters;
 
@@ -860,8 +830,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 contentLayout.LayoutParameters = lp3;
 
                 contentLayout.RequestLayout();
-
-                rootView.RequestLayout();
             }
             catch (System.Exception e)
             {

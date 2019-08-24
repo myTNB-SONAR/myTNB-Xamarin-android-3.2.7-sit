@@ -617,7 +617,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             param.RightMargin = GetDeviceHorizontalScaleInPixel(0.05f);
 
             TextViewUtils.SetMuseoSans500Typeface(accountHeaderTitle, accountGreeting, accountGreetingName);
-            searchEditText.SetOnQueryTextListener(new AccountsSearchOnQueryTextListener(this,accountsAdapter, searchActionContainer));
+            searchEditText.SetOnQueryTextListener(new AccountsSearchOnQueryTextListener(this,accountsAdapter));
             int closeViewId = searchEditText.Context.Resources.GetIdentifier("android:id/search_close_btn", null, null);
             int canceledViewId = searchEditText.Context.Resources.GetIdentifier("android:id/search_close_btn", null, null);
             ImageView closeImageView = searchEditText.FindViewById<ImageView>(closeViewId);

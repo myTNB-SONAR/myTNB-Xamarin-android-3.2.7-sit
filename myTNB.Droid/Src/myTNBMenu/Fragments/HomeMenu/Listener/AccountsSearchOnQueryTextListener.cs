@@ -9,13 +9,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Listener
 	{
         AccountsRecyclerViewAdapter mAdapter;
         HomeMenuContract.IHomeMenuView mViewListerner;
-        LinearLayout searchContainer;
 
-		public AccountsSearchOnQueryTextListener(HomeMenuContract.IHomeMenuView viewListerner, AccountsRecyclerViewAdapter adapter, LinearLayout container)
+		public AccountsSearchOnQueryTextListener(HomeMenuContract.IHomeMenuView viewListerner, AccountsRecyclerViewAdapter adapter)
 		{
             this.mAdapter = adapter;
             this.mViewListerner = viewListerner;
-            this.searchContainer = container;
 		}
 
 		public bool OnQueryTextChange(string newText)

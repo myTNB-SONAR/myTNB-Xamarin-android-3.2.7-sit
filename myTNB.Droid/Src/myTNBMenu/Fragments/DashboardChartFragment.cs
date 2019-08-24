@@ -400,8 +400,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             SetHasOptionsMenu(true);
             this.mPresenter = new DashboardChartPresenter(this);
-
-            ((DashboardHomeActivity)Activity).HideBottomNavigationBar();
         }
 
         internal static DashboardChartFragment NewInstance(UsageHistoryResponse usageHistoryResponse, AccountData accountData, string error, string errorMessage)
@@ -723,6 +721,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
 
                 };
+
+                ((DashboardHomeActivity)Activity).HideBottomNavigationBar();
 
             }
             catch (System.Exception e)
