@@ -5,7 +5,7 @@ using UIKit;
 
 namespace myTNB.Payment
 {
-    public class CreditCardScannerViewController : UIViewController
+    public partial class CreditCardScannerViewController : UIViewController
     {
         public CreditCardScannerViewController(IntPtr handle) : base(handle)
         {

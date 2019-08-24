@@ -27,33 +27,11 @@ namespace myTNB.SSMR
 
         public override void SetSubViews()
         {
-            UIImage displayImage;             if (SSMRDataObject.IsSitecoreData)             {                 if (string.IsNullOrEmpty(SSMRDataObject.Image) || string.IsNullOrWhiteSpace(SSMRDataObject.Image))                 {                     displayImage = UIImage.FromBundle(string.Empty);                 }                 else                 {
-                    try
-                    {
-                        displayImage = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(SSMRDataObject.Image)));
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.WriteLine("Image load Error: " + e.Message);
-                        displayImage = UIImage.FromBundle(string.Empty);
-                    }                 }             }             else             {
-                if (string.IsNullOrEmpty(SSMRDataObject.Image) || string.IsNullOrWhiteSpace(SSMRDataObject.Image))
-                {
-                    displayImage = UIImage.FromBundle(string.Empty);
-                }
-                else
-                {
-                    displayImage = UIImage.FromBundle(SSMRDataObject.Image);
-                }             }
-
             nfloat width = 320;
             nfloat height = 325;
             ScaleUtility.GetValuesFromAspectRatio(ref width, ref height);
 
-            UIImageView imgBackground = new UIImageView(new CGRect(0, 0, width, height))
-            {
-                Image = displayImage
-            };
+            UIImageView imgBackground = new UIImageView(new CGRect(0, 0, width, height));
             UILabel lblTitle = new UILabel(new CGRect(ScaleUtility.GetScaledWidth(16), ScaleUtility.GetYLocationFromFrame(imgBackground.Frame, 23)
                 , that.View.Frame.Width - ScaleUtility.GetScaledWidth(32), ScaleUtility.GetScaledHeight(19)))
             {
@@ -76,6 +54,31 @@ namespace myTNB.SSMR
             CGSize size = GetLabelSize(lblDescription, that.View.Frame.Width - ScaleUtility.GetScaledWidth(32), ScaleUtility.GetScaledHeight(80));
             lblDescription.Frame = new CGRect(lblDescription.Frame.X, lblDescription.Frame.Y, lblDescription.Frame.Width, size.Height);
             that.View.AddSubviews(new UIView[] { imgBackground, lblTitle, lblDescription });
+
+            UIImage displayImage;             if (SSMRDataObject.IsSitecoreData)             {                 if (string.IsNullOrEmpty(SSMRDataObject.Image) || string.IsNullOrWhiteSpace(SSMRDataObject.Image))                 {                     displayImage = UIImage.FromBundle(string.Empty);                 }                 else                 {
+                    NSError error;
+                    try
+                    {
+                        displayImage = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(SSMRDataObject.Image), NSDataReadingOptions.MappedAlways, out error));
+                        if (error == null)
+                        {
+                            displayImage = UIImage.FromBundle(SSMRDataObject.FallbackImage);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine("Image load Error: " + e.Message);
+                        displayImage = UIImage.FromBundle(SSMRDataObject.FallbackImage);
+                    }                 }             }             else             {
+                if (string.IsNullOrEmpty(SSMRDataObject.Image) || string.IsNullOrWhiteSpace(SSMRDataObject.Image))
+                {
+                    displayImage = UIImage.FromBundle(string.Empty);
+                }
+                else
+                {
+                    displayImage = UIImage.FromBundle(SSMRDataObject.Image);
+                }             }
+            imgBackground.Image = displayImage;
         }
     }
 }
