@@ -152,6 +152,7 @@ namespace myTNB.DataManager
         public void ClearLoginState()
         {
             AccountUsageCache.ClearCache();
+            AccountUsageSmartCache.ClearCache();
             UserEntity uManager = new UserEntity();
             uManager.DeleteTable();
             UserAccountsEntity uaManager = new UserAccountsEntity();

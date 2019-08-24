@@ -113,6 +113,7 @@ namespace myTNB
             {
                 contractAccount = account.accNum,
                 isOwner = account.isOwned,
+                metercode = account.smartMeterCode,
                 serviceManager.usrInf
             };
 

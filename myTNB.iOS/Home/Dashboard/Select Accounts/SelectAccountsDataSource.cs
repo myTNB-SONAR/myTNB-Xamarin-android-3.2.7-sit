@@ -114,6 +114,11 @@ namespace myTNB.Dashboard.SelectAccounts
                 {
                     _controller?.OnSelect(indexPath.Row);
                 }
+                if (_controller.IsFromUsage)
+                {
+                    _controller.NavigationController.PopViewController(true);
+                    return;
+                }
                 _controller.DismissViewController(true, null);
             }
         }

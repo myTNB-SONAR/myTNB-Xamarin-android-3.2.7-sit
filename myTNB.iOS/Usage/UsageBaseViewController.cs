@@ -30,7 +30,7 @@ namespace myTNB
         internal RMkWhEnum _rMkWhEnum;
         internal nfloat _lastContentOffset;
         internal bool isBcrmAvailable, isNormalChart, isREAccount, isSmartMeterAccount, accountIsSSMR;
-        internal bool _legendIsVisible;
+        internal bool _legendIsVisible, _acctSelectorIsTapped;
 
         internal CGRect _origViewFrame;
 
@@ -43,7 +43,6 @@ namespace myTNB
             PageName = UsageConstants.PageName;
             base.ViewDidLoad();
             InitializeValues();
-            NavigationController.NavigationBarHidden = true;
             AddBackgroundImage();
             SetNavigation();
             PrepareRefreshView();
@@ -55,6 +54,8 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            _acctSelectorIsTapped = false;
+            NavigationController.SetNavigationBarHidden(true, true);
             if (!DataManager.DataManager.SharedInstance.IsSameAccount)
             {
                 ResetViews();
@@ -73,6 +74,10 @@ namespace myTNB
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
+            if (_acctSelectorIsTapped)
+            {
+                NavigationController.SetNavigationBarHidden(false, true);
+            }
         }
 
         private void PrepareRefreshView()
@@ -116,7 +121,6 @@ namespace myTNB
             isSmartMeterAccount = !isREAccount && !isNormalChart;
             isBcrmAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
             accountIsSSMR = UsageHelper.IsSSMR(DataManager.DataManager.SharedInstance.SelectedAccount);
-            Debug.WriteLine("isSmartMeterAccount: " + isSmartMeterAccount);
         }
 
         private void ResetViews()
@@ -128,6 +132,8 @@ namespace myTNB
             UpdateBackgroundImage(false);
             AddSubviews();
         }
+
+        internal virtual void InitiateAPICalls(bool fromRefreshState = false) { }
 
         private void SetNavigation()
         {
@@ -333,18 +339,17 @@ namespace myTNB
                     _rmKwhDropDownView.Hidden = true;
                 }
                 DataManager.DataManager.SharedInstance.IsSameAccount = true;
+                _acctSelectorIsTapped = true;
                 UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                 SelectAccountTableViewController viewController =
                     storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
-                viewController.OnSelect = OnSelectAccount;
-                var navController = new UINavigationController(viewController);
-                PresentViewController(navController, true, null);
+                viewController.IsRoot = true;
+                viewController.IsFromUsage = true;
+                NavigationController.PushViewController(viewController, true);
             }));
 
             _accountSelector.Title = DataManager.DataManager.SharedInstance.SelectedAccount.accountNickName;//AccountManager.Instance.Nickname;
         }
-
-        internal virtual void OnSelectAccount(int index) { }
 
         private void SetAddress()
         {
@@ -394,6 +399,11 @@ namespace myTNB
                 _sm = smartMeterComponent.GetUI();
                 _viewSmartMeter.AddSubview(_sm);
                 AddSmartMeterViewShadow(ref _sm);
+            }
+            else
+            {
+                ViewHelper.AdjustFrameSetHeight(_viewSmartMeter, 0);
+                _viewSmartMeter.Hidden = true;
             }
             SetContentView();
         }
@@ -926,9 +936,19 @@ namespace myTNB
 
         internal void UpdateFooterForRefreshState()
         {
-            if (_footerViewComponent != null)
+            if (isSmartMeterAccount)
             {
-                _footerViewComponent.SetRefreshState();
+                if (_viewFooter != null)
+                {
+                    _viewFooter.RemoveFromSuperview();
+                }
+            }
+            else
+            {
+                if (_footerViewComponent != null)
+                {
+                    _footerViewComponent.SetRefreshState();
+                }
             }
         }
 

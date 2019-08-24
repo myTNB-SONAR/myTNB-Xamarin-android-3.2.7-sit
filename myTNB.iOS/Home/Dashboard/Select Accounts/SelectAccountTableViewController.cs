@@ -12,6 +12,7 @@ namespace myTNB
         public SelectAccountTableViewController(IntPtr handle) : base(handle) { }
 
         public bool IsFromSSMR;
+        public bool IsFromUsage;
         public bool IsRoot;
         public int CurrentSelectedIndex = -1;
         public Action<int> OnSelect;

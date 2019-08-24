@@ -27,7 +27,7 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Center,
                 TextColor = MyTNBColor.ButterScotch,
                 Font = TNBFont.MuseoSans_12_500,
-                Text = AccountUsageCache.ByMonthDateRange
+                Text = AccountUsageSmartCache.ByMonthDateRange
             };
 
             CustomUIView viewLine = new CustomUIView(new CGRect(_baseMargin, GetYLocationFromFrameScreenSize(_lblDateRange.Frame, 150)
@@ -54,7 +54,7 @@ namespace myTNB
             nfloat segmentWidth = GetWidthByScreenSize(30);
             nfloat barMargin = GetWidthByScreenSize(7);
 
-            List<MonthItemModel> usageData = AccountUsageCache.ByMonthUsage;
+            List<MonthItemModel> usageData = AccountUsageSmartCache.ByMonthUsage;
             List<string> valueList = usageData.Select(x => x.UsageTotal).ToList();
             double maxValue = GetMaxValue(RMkWhEnum.RM, valueList);
             double divisor = maxBarHeight / maxValue;
@@ -281,7 +281,7 @@ namespace myTNB
 
         public override void ToggleRMKWHValues(RMkWhEnum state)
         {
-            List<MonthItemModel> usageData = AccountUsageCache.ByMonthUsage;
+            List<MonthItemModel> usageData = AccountUsageSmartCache.ByMonthUsage;
             for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
             {
                 CustomUIView segmentView = _segmentContainer.Subviews[i] as CustomUIView;

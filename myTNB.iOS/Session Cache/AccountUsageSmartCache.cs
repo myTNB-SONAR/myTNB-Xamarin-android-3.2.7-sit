@@ -5,7 +5,7 @@ using Foundation;
 using myTNB.Model.Usage;
 using Newtonsoft.Json;
 
-namespace myTNB.SessionCache
+namespace myTNB
 {
     public sealed class AccountUsageSmartCache
     {
@@ -48,8 +48,8 @@ namespace myTNB.SessionCache
             {
                 AccountUsageSmartDataModel data = response.d.data.DeepClone();
                 TariffLegendList = data.TariffBlocksLegend;
-                //ByMonthDateRange = data.ByMonth.Range;
-                //ByMonthUsage = data.ByMonth.Months;
+                ByMonthDateRange = data.ByMonth[0].Range; // TO DO: Need to revisit when the response data structure has changed
+                ByMonthUsage = data.ByMonth[0].Months;// TO DO: Need to revisit when the response data structure has changed
 
                 SaveToCache(accountNumber, data);
             }
@@ -122,8 +122,8 @@ namespace myTNB.SessionCache
                     if (data != null)
                     {
                         TariffLegendList = data.TariffBlocksLegend;
-                        //ByMonthDateRange = data.ByMonth.Range;
-                        //ByMonthUsage = data.ByMonth.Months;
+                        ByMonthDateRange = data.ByMonth[0].Range; // TO DO: Need to revisit when the response data structure has changed
+                        ByMonthUsage = data.ByMonth[0].Months;// TO DO: Need to revisit when the response data structure has changed
                         return data;
                     }
                 }
