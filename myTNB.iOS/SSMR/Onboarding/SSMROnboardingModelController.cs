@@ -24,6 +24,7 @@ namespace myTNB.SSMR
                 Image = SSMRConstants.IMG_BGOnboarding1,
                 Title = GetI18NValue(SSMRConstants.I18N_Title1),
                 Description = GetI18NValue(SSMRConstants.I18N_Description1),
+                FallbackImage = SSMRConstants.IMG_BGOnboarding1
             };
             pageData.Add(item1);
 
@@ -32,6 +33,7 @@ namespace myTNB.SSMR
                 Image = SSMRConstants.IMG_BGOnboarding2,
                 Title = GetI18NValue(SSMRConstants.I18N_Title2),
                 Description = GetI18NValue(SSMRConstants.I18N_Description2),
+                FallbackImage = SSMRConstants.IMG_BGOnboarding2
             };
             pageData.Add(item2);
         }
@@ -52,6 +54,7 @@ namespace myTNB.SSMR
                             Title = walkThroughList[i].Title,
                             Description = walkThroughList[i].Description,
                             Image = walkThroughList[i].Image,
+                            FallbackImage = string.Format("SSMR_Background_{0}", i + 1),
                             IsSitecoreData = true
                         };
                         pageData.Add(item);
