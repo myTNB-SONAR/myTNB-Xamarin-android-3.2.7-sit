@@ -1153,6 +1153,12 @@
     <ImageAsset Include="Assets.xcassets\Predict-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Predict-Icon.imageset\Predict-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Predict-Icon.imageset\Predict-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Zoom.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Zoom.imageset\searchNoGradient%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Zoom.imageset\searchNoGradient%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Usage-MissingReading.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Usage-MissingReading.imageset\missingCopy%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Usage-MissingReading.imageset\missingCopy%403x.png" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\BCRM-Down-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\BCRM-Down-Icon%403x.png" />
@@ -1539,6 +1545,8 @@
     <Folder Include="Components\Usage View\Charts\Smart Meter\" />
     <Folder Include="Assets.xcassets\Calendar-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Predict-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Zoom.imageset\" />
+    <Folder Include="Assets.xcassets\Usage-MissingReading.imageset\" />
     <Folder Include="Assets.xcassets\BCRM-Down-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
@@ -2370,6 +2378,7 @@
     <Compile Include="Model\Usage\ByMonthModel.cs" />
     <Compile Include="Model\Usage\LegendItemModel.cs" />
     <Compile Include="Session Cache\AccountUsageSmartCache.cs" />
+    <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterZOut.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

@@ -52,7 +52,7 @@ namespace myTNB
             nfloat maxBarHeight = GetHeightByScreenSize(108);
             nfloat amountBarMargin = GetHeightByScreenSize(4);
             nfloat segmentWidth = GetWidthByScreenSize(30);
-            nfloat barMargin = GetWidthByScreenSize(9);
+            nfloat barMargin = GetWidthByScreenSize(7);
 
             List<MonthItemModel> usageData = AccountUsageCache.ByMonthUsage;
             List<string> valueList = usageData.Select(x => x.UsageTotal).ToList();
@@ -63,6 +63,7 @@ namespace myTNB
             {
                 int index = i;
                 bool isLatestBar = index == usageData.Count - 1;
+                bool isSelected = index < usageData.Count - 1;
                 MonthItemModel item = usageData[index];
                 CustomUIView segment = new CustomUIView(new CGRect(xLoc, 0, segmentWidth, height))
                 {
@@ -77,7 +78,7 @@ namespace myTNB
                 nfloat barHeight = (nfloat)(divisor * value);
                 nfloat yLoc = lblHeight + amountBarMargin + (maxBarHeight - barHeight);
 
-                nfloat barWidth = isLatestBar ? GetWidthByScreenSize(16) : width;
+                nfloat barWidth = isLatestBar ? GetWidthByScreenSize(18) : width;
                 nfloat barXLoc = isLatestBar ? barMargin - GetWidthByScreenSize(2) : barMargin;
                 CustomUIView viewBar = new CustomUIView(new CGRect(barXLoc
                     , segment.Frame.Height - lblHeight - GetHeightByScreenSize(17), barWidth, 0))
@@ -90,7 +91,7 @@ namespace myTNB
                 if (isLatestBar)
                 {
                     viewBar.Layer.BorderWidth = GetWidthByScreenSize(1);
-                    viewBar.Layer.BorderColor = (index < usageData.Count - 1 ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White).CGColor;
+                    viewBar.Layer.BorderColor = (isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White).CGColor;
                 }
 
                 nfloat coverWidth = isLatestBar ? viewBar.Frame.Width - GetWidthByScreenSize(6) : viewBar.Frame.Width;
@@ -100,7 +101,7 @@ namespace myTNB
 
                 UIView viewCover = new UIView(new CGRect(new CGPoint(coverXLoc, coverYLoc), new CGSize(coverWidth, coverHeight)))
                 {
-                    BackgroundColor = index < usageData.Count - 1 ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
+                    BackgroundColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
                     Tag = 2001,
                     Hidden = false
                 };
@@ -115,26 +116,23 @@ namespace myTNB
                 {
                     TextAlignment = UITextAlignment.Center,
                     Font = TNBFont.MuseoSans_10_300,
-                    TextColor = index < usageData.Count - 1 ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
+                    TextColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
                     Text = item.AmountTotal.FormatAmountString(item.Currency),
-                    Hidden = index < usageData.Count - 1,
+                    Hidden = isSelected,
                     Tag = 1002
                 };
                 nfloat lblAmountWidth = lblAmount.GetLabelWidth(GetWidthByScreenSize(100));
                 lblAmount.Frame = new CGRect((segmentWidth - lblAmountWidth) / 2, lblAmount.Frame.Y, lblAmountWidth, lblAmount.Frame.Height);
 
-                UILabel lblDate = new UILabel(new CGRect(0, segment.Frame.Height - lblHeight
-                    , GetWidthByScreenSize(30), lblHeight))
+                UILabel lblDate = new UILabel(new CGRect((segmentWidth - GetWidthByScreenSize(40)) / 2, segment.Frame.Height - lblHeight
+                    , GetWidthByScreenSize(40), lblHeight))
                 {
                     TextAlignment = UITextAlignment.Center,
-                    Font = TNBFont.MuseoSans_10_300,
-                    TextColor = index < usageData.Count - 1 ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
+                    Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300,
+                    TextColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
                     Text = string.IsNullOrEmpty(item.Year) ? item.Month : string.Format(Format_Value, item.Month, item.Year),
                     Tag = 1003
                 };
-                nfloat lblDateWidth = lblDate.GetLabelWidth(GetWidthByScreenSize(30));
-                lblDate.Frame = new CGRect((segmentWidth - lblDateWidth) / 2, lblDate.Frame.Y, lblDateWidth, lblDate.Frame.Height);
-
                 segment.AddSubviews(new UIView[] { lblAmount, viewBar, lblDate });
 
                 segment.AddGestureRecognizer(new UITapGestureRecognizer(() =>
@@ -230,7 +228,11 @@ namespace myTNB
                     value.Hidden = isLatestBar ? false : !isSelected;
                 }
                 UILabel date = segmentView.ViewWithTag(1003) as UILabel;
-                if (date != null) { date.TextColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F); }
+                if (date != null)
+                {
+                    date.TextColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F);
+                    date.Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300;
+                }
                 if (isLatestBar)
                 {
                     Debug.WriteLine("Todo: Go to day view.");
@@ -240,16 +242,40 @@ namespace myTNB
 
         public override void ToggleTariffView(bool isTariffView)
         {
+            nfloat amountBarMargin = GetHeightByScreenSize(4);
             for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
             {
                 CustomUIView segmentView = _segmentContainer.Subviews[i] as CustomUIView;
                 if (segmentView == null) { continue; }
                 CustomUIView bar = segmentView.ViewWithTag(1001) as CustomUIView;
                 if (bar == null) { continue; }
+                CGRect barOriginalFrame = bar.Frame;
+                bar.Frame = new CGRect(bar.Frame.X, bar.Frame.GetMaxY(), bar.Frame.Width, 0);
+
                 UIView viewCover = bar.ViewWithTag(2001);
                 if (viewCover != null) { viewCover.Hidden = isTariffView; }
                 UIView viewTariff = bar.ViewWithTag(2002);
                 if (viewTariff != null) { viewTariff.Hidden = !isTariffView; }
+
+                UILabel value = segmentView.ViewWithTag(1002) as UILabel;
+                CGRect valueOriginalFrame = new CGRect();
+                if (value != null)
+                {
+                    valueOriginalFrame = value.Frame;
+                    value.Frame = new CGRect(value.Frame.X, bar.Frame.GetMinY() - amountBarMargin - value.Frame.Height
+                        , value.Frame.Width, value.Frame.Height);
+                }
+                UIView.Animate(1, 0.3, UIViewAnimationOptions.CurveEaseOut
+                   , () =>
+                   {
+                       bar.Frame = barOriginalFrame;
+                       if (value != null)
+                       {
+                           value.Frame = valueOriginalFrame;
+                       }
+                   }
+                   , () => { }
+               );
             }
         }
 
