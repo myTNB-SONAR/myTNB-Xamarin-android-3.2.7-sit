@@ -2365,6 +2365,11 @@
     <Compile Include="Components\Usage View\REAmountComponent.cs" />
     <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterChartView.cs" />
     <Compile Include="Components\Usage View\SmartMeterCardComponent.cs" />
+    <Compile Include="Model\Usage\AccountUsageSmartModel.cs" />
+    <Compile Include="Model\Usage\ByDayModel.cs" />
+    <Compile Include="Model\Usage\ByMonthModel.cs" />
+    <Compile Include="Model\Usage\LegendItemModel.cs" />
+    <Compile Include="Session Cache\AccountUsageSmartCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
