@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 using myTNB.Model;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
@@ -188,17 +187,35 @@ namespace myTNB
         /// <returns>pageViewHeight</returns>
         public nfloat GetHeightForAccountCards()
         {
-            nfloat additionalHeight = DashboardHomeConstants.SearchViewHeight + DashboardHomeConstants.PageControlHeight + ScaleUtility.GetScaledHeight(32f);
-            nfloat pageViewHeight = 80f + additionalHeight;
+            bool hasAccounts = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0;
+            nfloat additionalHeight = DashboardHomeConstants.SearchViewHeight + ScaleUtility.GetScaledHeight(32f);
+            nfloat pageViewHeight = hasAccounts ? additionalHeight : ScaleUtility.GetScaledHeight(60f) + ScaleUtility.GetScaledHeight(16F) + additionalHeight;
             var groupAccountsList = DataManager.DataManager.SharedInstance.AccountsGroupList;
             if (groupAccountsList.Count > 1)
             {
-                pageViewHeight = 5 * (ScaleUtility.GetScaledHeight(60f) + ScaleUtility.GetScaledHeight(8f)) + additionalHeight + ScaleUtility.GetScaledHeight(10f);
+                pageViewHeight = 5 * (ScaleUtility.GetScaledHeight(60f) +
+                    ScaleUtility.GetScaledHeight(8f)) +
+                    additionalHeight +
+                    ScaleUtility.GetScaledHeight(16f) +
+                    DashboardHomeConstants.PageControlHeight -
+                    ScaleUtility.GetScaledHeight(8f);
             }
             else if (groupAccountsList.Count == 1)
             {
                 var accountsList = groupAccountsList[0];
-                pageViewHeight = accountsList.Count * (ScaleUtility.GetScaledHeight(60f) + ScaleUtility.GetScaledHeight(8f)) + additionalHeight;
+                if (accountsList.Count > 1)
+                {
+                    pageViewHeight = accountsList.Count * (ScaleUtility.GetScaledHeight(60f) + ScaleUtility.GetScaledHeight(8f)) +
+                        ScaleUtility.GetScaledHeight(16F) +
+                        additionalHeight -
+                        ScaleUtility.GetScaledHeight(8f);
+                }
+                else
+                {
+                    pageViewHeight = ScaleUtility.GetScaledHeight(16F) + ScaleUtility.GetScaledHeight(60f) +
+                        additionalHeight;
+                }
+
             }
             return pageViewHeight;
         }
