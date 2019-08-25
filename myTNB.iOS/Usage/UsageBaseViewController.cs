@@ -829,6 +829,7 @@ namespace myTNB
                 if (DeviceHelper.IsIphoneXUpResolution())
                 {
                     footerYPos -= 20f;
+                    footerHeight += 20f;
                 }
                 _viewFooter = new CustomUIView(new CGRect(0, footerYPos, ViewWidth, footerHeight))
                 {
@@ -913,9 +914,9 @@ namespace myTNB
                 {
                     if (isHidden)
                     {
+                        nfloat addtl = DeviceHelper.IsIphoneXUpResolution() ? 20f : 0;
                         var temp = _origViewFrame;
-                        temp.Y = _scrollViewContent.Frame.GetMaxY();
-
+                        temp.Y = _scrollViewContent.Frame.GetMaxY() + addtl;
                         _viewFooter.Frame = temp;
                     }
                     else
@@ -932,7 +933,7 @@ namespace myTNB
         {
             view.Layer.MasksToBounds = false;
             view.Layer.ShadowColor = MyTNBColor.BabyBlue35.CGColor;
-            view.Layer.ShadowOpacity = .16f;
+            view.Layer.ShadowOpacity = 1f;
             view.Layer.ShadowOffset = new CGSize(0, -8);
             view.Layer.ShadowRadius = 8;
             view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
