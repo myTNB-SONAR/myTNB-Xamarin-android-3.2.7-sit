@@ -204,14 +204,14 @@ namespace myTNB
             nfloat textFieldWidth = textViewWidth - BaseMarginWidth12 - iconWidth - BaseMarginWidth8;
             _textFieldSearch = new UITextField(new CGRect(BaseMarginWidth12, 0, textFieldWidth, textViewHeight))
             {
+                Font = TNBFont.MuseoSans_14_500,
+                TextColor = MyTNBColor.TunaGrey(),
                 AttributedPlaceholder = new NSAttributedString(
                     GetI18NValue(DashboardHomeConstants.I18N_SearchPlaceholder)
                     , font: TNBFont.MuseoSans_12_500
                     , foregroundColor: MyTNBColor.VeryLightPinkTwo
                     , strokeWidth: 0
                 ),
-                TextColor = MyTNBColor.TunaGrey(),
-                Font = TNBFont.MuseoSans_14_500,
                 BackgroundColor = UIColor.Clear
             };
             _textFieldHelper.SetKeyboard(_textFieldSearch);
