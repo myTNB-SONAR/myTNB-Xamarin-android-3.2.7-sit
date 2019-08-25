@@ -31,36 +31,37 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public async void SubmitMeterReading(string contractAccountValue, bool isOwnedAccountValue, List<MeterReading> meterReadingList)
         {
             SubmitMeterReadingRequest request = new SubmitMeterReadingRequest(contractAccountValue, isOwnedAccountValue, meterReadingList);
-            SubmitMeterReadingResponse mockResponse = new SubmitMeterReadingResponse();
-            List<SubmitSMRMeterReadingsResp> SubmitSMRMeterReadingsRespList = new List<SubmitSMRMeterReadingsResp>();
-            SubmitSMRMeterReadingsResp resp = new SubmitSMRMeterReadingsResp();
-            resp.MessageID = "24";
-            resp.ReadingUnit = "KWH";
-            resp.Message = "Your meter reading could not be validated. Please try again.";
-            resp.IsSuccess = false;
-            SubmitSMRMeterReadingsRespList.Add(resp);
+            //Mock - START
+            //SubmitMeterReadingResponse mockResponse = new SubmitMeterReadingResponse();
+            //List<SubmitSMRMeterReadingsResp> SubmitSMRMeterReadingsRespList = new List<SubmitSMRMeterReadingsResp>();
+            //SubmitSMRMeterReadingsResp resp = new SubmitSMRMeterReadingsResp();
+            //resp.MessageID = "24";
+            //resp.ReadingUnit = "KWH";
+            //resp.Message = "Your meter reading could not be validated. Please try again.";
+            //resp.IsSuccess = false;
+            //SubmitSMRMeterReadingsRespList.Add(resp);
 
-            resp = new SubmitSMRMeterReadingsResp();
-            resp.MessageID = "24";
-            resp.ReadingUnit = "KW";
-            resp.Message = "Your meter reading could not be validated. Please try again.";
-            resp.IsSuccess = true;
-            SubmitSMRMeterReadingsRespList.Add(resp);
+            //resp = new SubmitSMRMeterReadingsResp();
+            //resp.MessageID = "24";
+            //resp.ReadingUnit = "KW";
+            //resp.Message = "Your meter reading could not be validated. Please try again.";
+            //resp.IsSuccess = true;
+            //SubmitSMRMeterReadingsRespList.Add(resp);
 
-            resp = new SubmitSMRMeterReadingsResp();
-            resp.MessageID = "24";
-            resp.ReadingUnit = "KVAR";
-            resp.Message = "Your meter reading could not be validated. Please try again.";
-            resp.IsSuccess = false;
-            SubmitSMRMeterReadingsRespList.Add(resp);
-            mockResponse.Data = new SMRSubmitResponseData();
-            mockResponse.Data.ErrorCode = "7100";
-            mockResponse.Data.DisplayTitle = "Reading Submitted Test";
-            mockResponse.Data.DisplayMessage = "Thank you for your meter reading submission. We will notify you when your meter reading has been validated.";
-            mockResponse.Data.ResponseDetailsData = new SMRSubmitResponseDetails();
-            mockResponse.Data.ResponseDetailsData.SubmitSMRMeterReadingsResp = SubmitSMRMeterReadingsRespList;
-
-            SubmitMeterReadingResponse response = mockResponse;// await api.SubmitSMRMeetingReading(request);
+            //resp = new SubmitSMRMeterReadingsResp();
+            //resp.MessageID = "24";
+            //resp.ReadingUnit = "KVAR";
+            //resp.Message = "Your meter reading could not be validated. Please try again.";
+            //resp.IsSuccess = false;
+            //SubmitSMRMeterReadingsRespList.Add(resp);
+            //mockResponse.Data = new SMRSubmitResponseData();
+            //mockResponse.Data.ErrorCode = "7100";
+            //mockResponse.Data.DisplayTitle = "Reading Submitted Test";
+            //mockResponse.Data.DisplayMessage = "Thank you for your meter reading submission. We will notify you when your meter reading has been validated.";
+            //mockResponse.Data.ResponseDetailsData = new SMRSubmitResponseDetails();
+            //mockResponse.Data.ResponseDetailsData.SubmitSMRMeterReadingsResp = SubmitSMRMeterReadingsRespList;
+            ////Mock - END
+            SubmitMeterReadingResponse response = await api.SubmitSMRMeetingReading(request);
             if (response.Data != null && response.Data.ErrorCode == "7200")
             {
                 this.mView.OnRequestSuccessful(response.Data);

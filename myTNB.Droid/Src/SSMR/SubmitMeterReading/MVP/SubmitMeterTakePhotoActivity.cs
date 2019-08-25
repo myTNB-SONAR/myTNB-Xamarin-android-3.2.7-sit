@@ -92,6 +92,14 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 {
                     return !model.isValidated;
                 });
+
+                if (requiredMeterReadingModelList.Count == 0)
+                {
+                    requiredMeterReadingModelList = meterReadingModelList;
+                    requiredMeterReadingModelList.ForEach(model=> {
+                        model.isValidated = false;
+                    });
+                }
             }
 
             if (isSinglePhase)
