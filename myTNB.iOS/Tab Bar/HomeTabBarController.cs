@@ -72,6 +72,13 @@ namespace myTNB
             {
                 return;
             }
+            UITextAttributes normalSelected = new UITextAttributes();
+            normalSelected.Font = TNBFont.MuseoSans_10_300;
+            normalSelected.TextColor = MyTNBColor.SilverChalice;
+
+            UITextAttributes attrSelected = new UITextAttributes();
+            attrSelected.Font = TNBFont.MuseoSans_10_500;
+            attrSelected.TextColor = MyTNBColor.WaterBlue;
 
             UITabBarItem[] tabbarItem = TabBar.Items;
             tabbarItem[0].Title = GetI18NValue(TabbarConstants.Tab_Home);
@@ -79,6 +86,18 @@ namespace myTNB
             tabbarItem[2].Title = GetI18NValue(TabbarConstants.Tab_Promotion);
             tabbarItem[3].Title = GetI18NValue(TabbarConstants.Tab_Rewards);
             tabbarItem[4].Title = GetI18NValue(TabbarConstants.Tab_Profile);
+
+            tabbarItem[0].SetTitleTextAttributes(normalSelected, UIControlState.Normal);
+            tabbarItem[1].SetTitleTextAttributes(normalSelected, UIControlState.Normal);
+            tabbarItem[2].SetTitleTextAttributes(normalSelected, UIControlState.Normal);
+            tabbarItem[3].SetTitleTextAttributes(normalSelected, UIControlState.Normal);
+            tabbarItem[4].SetTitleTextAttributes(normalSelected, UIControlState.Normal);
+
+            tabbarItem[0].SetTitleTextAttributes(attrSelected, UIControlState.Selected);
+            tabbarItem[1].SetTitleTextAttributes(attrSelected, UIControlState.Selected);
+            tabbarItem[2].SetTitleTextAttributes(attrSelected, UIControlState.Selected);
+            tabbarItem[3].SetTitleTextAttributes(attrSelected, UIControlState.Selected);
+            tabbarItem[4].SetTitleTextAttributes(attrSelected, UIControlState.Selected);
 
             foreach (UITabBarItem item in tabbarItem)
             {
