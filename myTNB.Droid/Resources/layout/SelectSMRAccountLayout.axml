@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:background="@color/white">
+        android:background="#f9f8f8">
         <ListView
           android:minWidth="25px"
           android:minHeight="25px"
@@ -21,39 +21,6 @@
           android:layout_height="wrap_content"
           android:id="@+id/account_list_view"
           android:background="@color/white" />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-        android:background="#e4e4e4"/>
-      <LinearLayout
-            android:id="@+id/smrWhyTheseAccountsInfo"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:paddingLeft="16dp"
-            android:paddingTop="18dp"
-            android:paddingBottom="18dp"
-            android:paddingRight="16dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="24dp"
-                android:paddingLeft="2dp"
-                android:paddingTop="6dp"
-                android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
-                android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/whyAccountsNotHere"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:textSize="12dp"
-                    android:textColor="#1c79ca"
-                    android:drawablePadding="1dp"
-                    android:text="Why are some of my accounts not here?"
-                    android:drawableLeft="@drawable/smr_why_accounts_info"/>
-            </LinearLayout>
-      </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"

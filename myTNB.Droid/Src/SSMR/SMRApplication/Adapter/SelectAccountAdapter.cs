@@ -19,39 +19,36 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Adapter
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
             AccountTypeViewHolder vh = null;
-            if (convertView == null)
+            if (position == (itemList.Count - 1))
+            {
+                convertView = LayoutInflater.From(context).Inflate(Resource.Layout.SelectSMRAccountInfoLayout, parent, false);
+            }
+            else
             {
                 convertView = LayoutInflater.From(context).Inflate(Resource.Layout.SelectSupplyAccountItemLayout, parent, false);
                 vh = new AccountTypeViewHolder(convertView);
-                convertView.Tag = vh;
-            }
-            else
-            {
-                vh = convertView.Tag as AccountTypeViewHolder;
 
-            }
+                SMRAccount item = GetItemObject(position);
+                vh.txtSupplyAccountName.Text = item.accountName;
 
-            SMRAccount item = GetItemObject(position);
-            vh.txtSupplyAccountName.Text = item.accountName;
+                if (item.accountSelected)
+                {
+                    vh.imageActionIcon.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    vh.imageActionIcon.Visibility = ViewStates.Gone;
+                }
 
-            if (item.accountSelected)
-            {
-                vh.imageActionIcon.Visibility = ViewStates.Visible;
+                if (item.isTaggedSMR)
+                {
+                    vh.accountIcon.SetImageResource(Resource.Drawable.smr_48_x_48);
+                }
+                else
+                {
+                    vh.accountIcon.SetImageResource(Resource.Drawable.ic_display_normal_meter);
+                }
             }
-            else
-            {
-                vh.imageActionIcon.Visibility = ViewStates.Gone;
-            }
-
-            if (item.isTaggedSMR)
-            {
-                vh.accountIcon.SetImageResource(Resource.Drawable.smr_48_x_48);
-            }
-            else
-            {
-                vh.accountIcon.SetImageResource(Resource.Drawable.ic_display_normal_meter);
-            }
-
             return convertView;
         }
 

@@ -32,10 +32,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
     public class SelectSMRAccountActivity : BaseToolbarAppCompatActivity, SelectSMRAccountContract.IView
     {
         [BindView(Resource.Id.account_list_view)]
-        ListView accountSMRList;
-
-        [BindView(Resource.Id.whyAccountsNotHere)]
-        TextView whyAccountsNotHere; 
+        ListView accountSMRList; 
 
         [BindView(Resource.Id.noEligibleAccountContainer)]
         LinearLayout noEligibleAccountContainer; 
@@ -78,7 +75,6 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            TextViewUtils.SetMuseoSans500Typeface(whyAccountsNotHere);
             Bundle extras = Intent.Extras;
             if (extras != null && extras.ContainsKey("SMR_ELIGIBLE_ACCOUNT_LIST"))
             {
@@ -112,7 +108,9 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                 }
                 noEligibleAccountContainer.Visibility = ViewStates.Gone;
                 eligibleAccountListContainer.Visibility = ViewStates.Visible;
-                selectAccountAdapter = new SelectAccountAdapter(this, accountList);
+                List<SMRAccount> newItemList = accountList.GetRange(0, accountList.Count);
+                newItemList.Add(new SMRAccount()); //To show info item
+                selectAccountAdapter = new SelectAccountAdapter(this, newItemList);
                 accountSMRList.Adapter = selectAccountAdapter;
 
                 accountSMRList.ItemClick += OnItemClick;
@@ -137,33 +135,34 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 
         internal void OnItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            for (int i = 0; i < accountList.Count; i++)
+            if (e.Position == accountList.Count)//Handling Account list Info tooltip from list
             {
-                if (i == e.Position)
-                {
-                    accountList[i].accountSelected = true;
-                }
-                else
-                {
-                    accountList[i].accountSelected = false;
-                }
+                MyTNBAppToolTipData.SMREligibiltyPopUpDetailData tooltipData = MyTNBAppToolTipData.GetInstance().GetSMREligibiltyPopUpDetails();
+
+                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                    .SetTitle(tooltipData.title)
+                    .SetMessage(tooltipData.description)
+                    .SetCTALabel(tooltipData.cta)
+                    .Build().Show();
             }
-            Intent returnIntent = new Intent();
-            returnIntent.PutExtra("SELECTED_ACCOUNT_NUMBER", accountList.Find(x => { return x.accountSelected; }).accountNumber);
-            SetResult(Result.Ok, returnIntent);
-            Finish();
-        }
-
-        [OnClick(Resource.Id.smrWhyTheseAccountsInfo)]
-        internal void OnWhyTheseAccountsTap(object sender, EventArgs eventArgs)
-        {
-            MyTNBAppToolTipData.SMREligibiltyPopUpDetailData tooltipData = MyTNBAppToolTipData.GetInstance().GetSMREligibiltyPopUpDetails();
-
-            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                .SetTitle(tooltipData.title)
-                .SetMessage(tooltipData.description)
-                .SetCTALabel(tooltipData.cta)
-                .Build().Show();
+            else
+            {
+                for (int i = 0; i < accountList.Count; i++)
+                {
+                    if (i == e.Position)
+                    {
+                        accountList[i].accountSelected = true;
+                    }
+                    else
+                    {
+                        accountList[i].accountSelected = false;
+                    }
+                }
+                Intent returnIntent = new Intent();
+                returnIntent.PutExtra("SELECTED_ACCOUNT_NUMBER", accountList.Find(x => { return x.accountSelected; }).accountNumber);
+                SetResult(Result.Ok, returnIntent);
+                Finish();
+            }
         }
 
         protected override void OnResume()
