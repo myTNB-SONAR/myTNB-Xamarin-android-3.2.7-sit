@@ -142,25 +142,64 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 mPresenter = new SSMRMeterHistoryPresenter(this);
                 mSMRRecyclerView.SetLayoutManager(new LinearLayoutManager(this));
                 smrAccountList = this.mPresenter.GetEligibleSMRAccountList();
-                Bundle extras = Intent.Extras;
-                //If has selected account - means coming from inner dashboard
-                if (extras != null)
+
+                if (smrAccountList != null && smrAccountList.Count > 0)
                 {
-                    if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
+                    foreach (SMRAccount account in smrAccountList)
                     {
-                        selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
-                        selectedAccountNumber = selectedAccount.AccountNum;
-                        selectedAccountNickName = selectedAccount.AccountNickName;
-                        CustomerBillingAccount.RemoveSelected();
-                        CustomerBillingAccount.SetSelected(selectedAccount.AccountNum);
-                        if (extras.ContainsKey(Constants.SMR_RESPONSE_KEY))
+                        account.accountSelected = false;
+                    }
+
+                    Bundle extras = Intent.Extras;
+                    //If has selected account - means coming from inner dashboard
+                    if (extras != null)
+                    {
+                        if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
                         {
-                            smrResponse = JsonConvert.DeserializeObject<SMRActivityInfoResponse>(extras.GetString(Constants.SMR_RESPONSE_KEY));
-                            UpdateUIForSMR(smrResponse);
+                            selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+                            selectedAccountNumber = selectedAccount.AccountNum;
+                            selectedAccountNickName = selectedAccount.AccountNickName;
+                            CustomerBillingAccount.RemoveSelected();
+                            CustomerBillingAccount.SetSelected(selectedAccount.AccountNum);
+                            if (extras.ContainsKey(Constants.SMR_RESPONSE_KEY))
+                            {
+                                smrResponse = JsonConvert.DeserializeObject<SMRActivityInfoResponse>(extras.GetString(Constants.SMR_RESPONSE_KEY));
+                                UpdateUIForSMR(smrResponse);
+                            }
+                        }
+                        else
+                        {
+                            SMRAccount smrSelectedAccount = smrAccountList.Find(account =>
+                            {
+                                return account.isTaggedSMR;
+                            });
+                            selectedAccountNumber = smrSelectedAccount.accountNumber;
+                            CustomerBillingAccount.RemoveSelected();
+                            CustomerBillingAccount.SetSelected(smrSelectedAccount.accountNumber);
+                            if (smrSelectedAccount != null)
+                            {
+                                selectedAccountNickName = smrSelectedAccount.accountName;
+                                this.mPresenter.GetSSMRAccountStatus(smrSelectedAccount.accountNumber);
+                            }
+                            else
+                            {
+                                ShowNonSMRVisible(true, false);
+                            }
+                        }
+
+                        if (extras.ContainsKey("fromUsage"))
+                        {
+                            IsFromUsage = extras.GetBoolean("fromUsage");
+                        }
+                        else
+                        {
+                            IsFromUsage = false;
                         }
                     }
+                    //Else from HomeScreen
                     else
                     {
+                        IsFromUsage = false;
                         SMRAccount smrSelectedAccount = smrAccountList.Find(account => {
                             return account.isTaggedSMR;
                         });
@@ -177,35 +216,11 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                             ShowNonSMRVisible(true, false);
                         }
                     }
-
-                    if (extras.ContainsKey("fromUsage"))
-                    {
-                        IsFromUsage = extras.GetBoolean("fromUsage");
-                    }
-                    else
-                    {
-                        IsFromUsage = false;
-                    }
                 }
-                //Else from HomeScreen
                 else
                 {
                     IsFromUsage = false;
-                    SMRAccount smrSelectedAccount = smrAccountList.Find(account => {
-                        return account.isTaggedSMR;
-                    });
-                    selectedAccountNumber = smrSelectedAccount.accountNumber;
-                    CustomerBillingAccount.RemoveSelected();
-                    CustomerBillingAccount.SetSelected(smrSelectedAccount.accountNumber);
-                    if (smrSelectedAccount != null)
-                    {
-                        selectedAccountNickName = smrSelectedAccount.accountName;
-                        this.mPresenter.GetSSMRAccountStatus(smrSelectedAccount.accountNumber);
-                    }
-                    else
-                    {
-                        ShowNonSMRVisible(true,false);
-                    }
+                    ShowNonSMRVisible(true, false);
                 }
             }
             catch (Exception e)
@@ -297,10 +312,18 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 if (resultCode == Result.Ok)
                 {
                     selectedAccountNumber = data.GetStringExtra("SELECTED_ACCOUNT_NUMBER");
-                    selectedEligibleAccount = smrAccountList.Find(account =>
+                    foreach(SMRAccount account in smrAccountList)
                     {
-                        return account.accountNumber == selectedAccountNumber;
-                    });
+                        if (account.accountNumber == selectedAccountNumber)
+                        {
+                            selectedEligibleAccount = account;
+                            account.accountSelected = true;
+                        }
+                        else
+                        {
+                            account.accountSelected = false;
+                        }
+                    }
                     selectedAccountNickName = selectedEligibleAccount.accountName;
                     CustomerBillingAccount.RemoveSelected();
                     CustomerBillingAccount.SetSelected(selectedEligibleAccount.accountNumber);
@@ -470,7 +493,15 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [OnClick(Resource.Id.selectAccountContainer)]
         void OnSelectAccount(object sender, EventArgs eventArgs)
         {
-            this.mPresenter.CheckSMRAccountEligibility(smrAccountList);
+            if (smrAccountList != null && smrAccountList.Count > 0)
+            {
+                this.mPresenter.CheckSMRAccountEligibility(smrAccountList);
+            }
+            else
+            {
+                Intent intent = new Intent(this, typeof(SelectSMRAccountActivity));
+                StartActivityForResult(intent, SSMR_SELECT_ACCOUNT_ACTIVITY_CODE);
+            }
         }
 
         [OnClick(Resource.Id.btnDisableSubmitMeter)]
