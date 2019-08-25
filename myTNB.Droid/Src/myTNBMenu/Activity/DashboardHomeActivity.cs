@@ -24,6 +24,7 @@ using myTNB_Android.Src.myTNBMenu.Fragments;
 using myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu;
 using myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
+using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
 using myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.MVP;
@@ -264,9 +265,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public void ShowBillMenu(AccountData selectedAccount)
         {
             ShowBackButton(false);
-            this.SelectedAccountData = selectedAccount;
-            txtAccountName.Text = SelectedAccountData.AccountNickName;
-            currentFragment = new BillsMenuFragment();
+            //this.SelectedAccountData = selectedAccount;
+            //txtAccountName.Text = SelectedAccountData.AccountNickName;
+            //currentFragment = new BillsMenuFragment();
+            //FragmentManager.BeginTransaction()
+            //    .Replace(Resource.Id.content_layout, BillsMenuFragment.NewInstance(selectedAccount))
+            //    .CommitAllowingStateLoss();
+
+            currentFragment = new ItemisedBillingMenuFragment();
             FragmentManager.BeginTransaction()
                 .Replace(Resource.Id.content_layout, BillsMenuFragment.NewInstance(selectedAccount))
                 .CommitAllowingStateLoss();

@@ -2268,6 +2268,8 @@
     <Compile Include="Src\SSMR\SubmitMeterReading\MVP\MeterReadingModel.cs" />
     <Compile Include="Src\Database\Model\OnboardingSSMRParentEntity.cs" />
     <AndroidResource Include="Resources\layout\SelectSMRAccountInfoLayout.axml" />
+    <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\ItemisedBillingMenuFragment.cs" />
+    <AndroidResource Include="Resources\layout\ItemisedBillingMenuLayout.axml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -2638,6 +2640,7 @@
     <Folder Include="Src\myTNBMenu\ChartRenderer\" />
     <Folder Include="Resources\anim\" />
     <Folder Include="Src\SSMRMeterHistory\Api\" />
+    <Folder Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
