@@ -22,6 +22,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            NavigationController.NavigationBarHidden = true;
             base.ViewDidLoad();
             NSNotificationCenter.DefaultCenter.AddObserver((Foundation.NSString)"LanguageDidChange", LanguageDidChange);
             SetSubviews();
@@ -30,13 +31,15 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            //NavigationController.SetNavigationBarHidden(true, true);
             moreTableView.Source = new MoreDataSource(this, GetMoreList());
             moreTableView.ReloadData();
         }
 
-        public override void ViewDidAppear(bool animated)
+        public override void ViewWillDisappear(bool animated)
         {
-            base.ViewDidAppear(animated);
+            base.ViewWillDisappear(animated);
+            //NavigationController.SetNavigationBarHidden(false, true);
         }
 
         public void LanguageDidChange(NSNotification notification)

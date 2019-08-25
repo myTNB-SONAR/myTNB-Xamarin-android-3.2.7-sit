@@ -98,7 +98,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="389" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1200.8" y="-939.5802"/>
+            <point key="canvasLocation" x="609.8" y="-942.5802"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="829">
@@ -128,10 +128,10 @@
                     <connections>
                         <outlet property="optionsTabBar" destination="2039" id="name-outlet-2039"/>
                         <segue destination="76W-3G-VcO" kind="relationship" relationship="viewControllers" id="2104"/>
-                        <segue destination="3082" kind="relationship" relationship="viewControllers" id="3177"/>
-                        <segue destination="3096" kind="relationship" relationship="viewControllers" id="18630"/>
-                        <segue id="29658" destination="28995" kind="relationship" relationship="viewControllers"/>
-                        <segue id="29709" destination="3103" kind="relationship" relationship="viewControllers"/>
+                        <segue id="30972" destination="17420" kind="relationship" relationship="viewControllers"/>
+                        <segue id="31158" destination="31088" kind="relationship" relationship="viewControllers"/>
+                        <segue id="31321" destination="31238" kind="relationship" relationship="viewControllers"/>
+                        <segue id="31391" destination="31247" kind="relationship" relationship="viewControllers"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2040" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -150,7 +150,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5749">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5749" misplaced="YES">
                                 <rect key="frame" x="1" y="89" width="412" height="596"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
@@ -274,7 +274,6 @@
                             </mask>
                         </variation>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="1" title="Bills" image="Tab-Bill" id="3176" selectedImage="Tab-Bill-Selected"/>
                     <navigationItem key="navigationItem" title="Title" id="17750"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
@@ -285,7 +284,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3084" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1788" y="-890.1049"/>
+            <point key="canvasLocation" x="1787" y="-1745.105"/>
         </scene>
         <!--Feedback-->
         <scene sceneID="3088">
@@ -357,15 +356,15 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="2" title="Promotions" image="Tab-Promotions" id="3258"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="promotionsTableView" destination="21327" id="name-outlet-21327"/>
                     </connections>
+                    <navigationItem title="Title" id="31233" key="navigationItem"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3098" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2386.4" y="-296.4018"/>
+            <point key="canvasLocation" x="2345.4" y="-298.4018"/>
         </scene>
         <!--More-->
         <scene sceneID="3102">
@@ -397,15 +396,15 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="4" title="More" id="3394" image="Tab-Profile" selectedImage="Tab-Profile-Selected"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="moreTableView" destination="16511" id="name-outlet-16511"/>
                     </connections>
+                    <navigationItem title="Title" id="31613" key="navigationItem"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3105" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="254" y="368"/>
+            <point key="canvasLocation" x="251" y="1203"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="17419">
@@ -418,10 +417,12 @@
                     <connections>
                         <segue destination="3082" kind="relationship" relationship="rootViewController" id="17751"/>
                     </connections>
+                    <tabBarItem key="tabBarItem" title="Bills" id="30971" image="Tab-Bill" selectedImage="Tab-Bill-Selected"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="17423" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="854" y="-1709"/>
+            <point key="canvasLocation" x="1210" y="-1748"/>
         </scene>
         <!--Title-->
         <scene sceneID="20723">
@@ -648,7 +649,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lyc-AY-B9Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="261.6" y="-939.5802"/>
+            <point key="canvasLocation" x="38.60001" y="-939.5802"/>
         </scene>
         <scene sceneID="28994">
             <objects>
@@ -662,12 +663,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="29657" selectedImage="Tab-Rewards-Selected" image="Tab-Rewards"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationItem title="Title" id="31508" key="navigationItem"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="28997" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="919" y="183"/>
+            <point key="canvasLocation" x="938" y="1186"/>
         </scene>
         <scene sceneID="30312">
             <objects>
@@ -686,6 +687,57 @@
             </objects>
             <point key="canvasLocation" x="259" y="-1743"/>
         </scene>
+        <scene sceneID="31087">
+            <objects>
+                <navigationController id="31088" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="31091">
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <tabBarItem key="tabBarItem" title="Promotions" id="31157" image="Tab-Promotions"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <segue id="31234" destination="3096" kind="relationship" relationship="rootViewController"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="31092" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1718" y="-297"/>
+        </scene>
+        <scene sceneID="31237">
+            <objects>
+                <navigationController id="31238" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="31241">
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <tabBarItem key="tabBarItem" title="Rewards" id="31320" selectedImage="Tab-Rewards-Selected" image="Tab-Rewards"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <segue id="31509" destination="28995" kind="relationship" relationship="rootViewController"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="31242" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="939" y="213"/>
+        </scene>
+        <scene sceneID="31246">
+            <objects>
+                <navigationController id="31247" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="31250">
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <tabBarItem key="tabBarItem" title="Profile" id="31390" selectedImage="Tab-Profile-Selected" image="Tab-Profile"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <segue id="31614" destination="3103" kind="relationship" relationship="rootViewController"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="31251" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="245.3999" y="223"/>
+        </scene>
     </scenes>
     <resources>
         <image name="IC-RE-Leaf-Green" width="24" height="24"/>
@@ -700,7 +752,4 @@
         <image name="Tab-Rewards-Selected" width="28" height="28"/>
         <image name="Tab-Home" width="28" height="28"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="3177"/>
-    </inferredMetricsTieBreakers>
 </document>

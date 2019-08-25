@@ -2354,6 +2354,7 @@
     <Compile Include="Components\Usage View\Charts\BaseChartView.cs" />
     <Compile Include="Components\Usage View\Charts\REChartView.cs" />
     <Compile Include="Components\Usage View\REAmountComponent.cs" />
+    <Compile Include="Home\Bill\BillConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
