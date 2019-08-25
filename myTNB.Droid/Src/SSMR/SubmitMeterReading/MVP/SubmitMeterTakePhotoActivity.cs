@@ -276,7 +276,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 photoContainerBox.SetPhotoImage(capturedImage);
                 UpdateAllPhotoBoxes();
                 SetPhotoBoxClickable();
-            }
+				takePhotoFragment.ResetZoom();
+			}
             else
             {
                 ScaledImageView previewImage = FindViewById<ScaledImageView>(Resource.Id.adjust_photo_preview);

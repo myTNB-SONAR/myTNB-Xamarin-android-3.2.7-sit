@@ -728,6 +728,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             galleryPreview.SetImageBitmap(myBitmap);
         }
 
+        public void ResetZoom()
+        {
+            seekBar.SetProgress(0, false);
+        }
+
         public void UpdateTakePhotoNote(string takePhotoNote)
         {
             takePhotoNoteView.Text = takePhotoNote;
