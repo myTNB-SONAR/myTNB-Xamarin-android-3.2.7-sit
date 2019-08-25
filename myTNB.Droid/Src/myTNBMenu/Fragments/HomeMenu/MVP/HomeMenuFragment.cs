@@ -35,10 +35,11 @@ using myTNB_Android.Src.Base;
 using Android.Text;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using Android.Runtime;
+using Android.Util;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
-    public class HomeMenuFragment : BaseFragment, HomeMenuContract.IHomeMenuView
+    public class HomeMenuFragment : BaseFragment, HomeMenuContract.IHomeMenuView, ViewTreeObserver.IOnGlobalLayoutListener
     {
         [BindView(Resource.Id.newFAQShimmerView)]
         LinearLayout newFAQShimmerView;
@@ -185,6 +186,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private static bool isBCRMDown = false;
 
+        private static bool isFirstInitiate = true;
+
+        private bool isSearchClose = false;
+
         HomeMenuContract.IHomeMenuPresenter presenter;
         ISummaryFragmentToDashBoardActivtyListener mCallBack;
 
@@ -201,6 +206,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         NewPromotionAdapter newPromotionAdapter;
 
         private LoadingOverlay loadingOverlay;
+
+
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -277,6 +284,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             base.OnViewCreated(view, savedInstanceState);
             try
             {
+                isSearchClose = true;
+                isFirstInitiate = true;
                 UpdateGreetingsHeader(this.presenter.GetGreeting());
                 accountGreetingName.Text = this.presenter.GetAccountDisplay() + "!";
                 SetNotificationIndicator();
@@ -331,6 +340,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 ((DashboardHomeActivity)Activity).HideAccountName();
                 ((DashboardHomeActivity)Activity).ShowBackButton(false);
                 ((DashboardHomeActivity)Activity).SetToolbarTitle(Resource.String.dashboard_activity_title);
+
+                try
+                {
+                    newFAQListRecycleView.Focusable = false;
+                    newFAQShimmerList.Focusable = false;
+                    myServiceListRecycleView.Focusable = false;
+                    myServiceShimmerList.Focusable = false;
+                    accountsRecyclerView.Focusable = false;
+                    newPromotionShimmerList.Focusable = false;
+                    newPromotionList.Focusable = false;
+                    topRootView.Focusable = true;
+                    topRootView.RequestFocus();
+                    ViewTreeObserver observer = summaryNestScrollView.ViewTreeObserver;
+                    observer.AddOnGlobalLayoutListener(this);
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
             }
             catch (System.Exception e)
             {
@@ -591,18 +619,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             TextViewUtils.SetMuseoSans500Typeface(accountHeaderTitle, accountGreeting, accountGreetingName);
             searchEditText.SetOnQueryTextListener(new AccountsSearchOnQueryTextListener(this,accountsAdapter));
             int closeViewId = searchEditText.Context.Resources.GetIdentifier("android:id/search_close_btn", null, null);
+            int canceledViewId = searchEditText.Context.Resources.GetIdentifier("android:id/search_close_btn", null, null);
             ImageView closeImageView = searchEditText.FindViewById<ImageView>(closeViewId);
             closeImageView.SetPadding(0, 0, 0, 0);
-            searchActionIcon.Click += (s, e) =>
+            searchActionContainer.Click += (s, e) =>
             {
-                ShowSearchAction(true);
-                try
+                if (isSearchClose)
                 {
-                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Home Screen Search Button Clicked");
+                    ShowSearchAction(true);
+                    try
+                    {
+                        FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Home Screen Search Button Clicked");
+                    }
+                    catch (System.Exception err)
+                    {
+                        Utility.LoggingNonFatalError(err);
+                    }
+                    isSearchClose = false;
                 }
-                catch (System.Exception err)
+                else
                 {
-                    Utility.LoggingNonFatalError(err);
+                    isSearchClose = true;
                 }
             };
         }
@@ -988,7 +1025,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             if (accountNumber != null)
             {
                 CustomerBillingAccount.RemoveSelected();
-                CustomerBillingAccount.Update(accountNumber,true);
+                CustomerBillingAccount.SetSelected(accountNumber);
 
                 if (mCallBack != null)
                 {
@@ -1030,15 +1067,37 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        public void OnSearchOutFocus()
+        public void OnSearchOutFocus(bool isSearchLayoutInRange)
         {
-            if (searchEditText != null)
+            try
             {
-                if(searchEditText.Visibility == ViewStates.Visible)
+                if (!isSearchLayoutInRange)
                 {
-                    searchEditText.ClearFocus();
-                    OnUpdateAccountListChanged(true);
+                    isSearchClose = true;
                 }
+                if (searchEditText != null)
+                {
+                    if (searchEditText.Visibility == ViewStates.Visible)
+                    {
+                        if (isSearchLayoutInRange)
+                        {
+                            try
+                            {
+                                searchEditText.SetQuery("", false);
+                            }
+                            catch (System.Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
+                        }
+                        searchEditText.ClearFocus();
+                        OnUpdateAccountListChanged(true);
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
             }
         }
 
@@ -1359,5 +1418,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
 
         }
+
+        void ViewTreeObserver.IOnGlobalLayoutListener.OnGlobalLayout()
+        {
+            try
+            {
+                if (isFirstInitiate)
+                {
+                    isFirstInitiate = false;
+                    summaryNestScrollView.SmoothScrollTo(0, 0);
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public LinearLayout GetSearchLayout()
+        {
+            return searchActionContainer;
+        }
+
     }
 }

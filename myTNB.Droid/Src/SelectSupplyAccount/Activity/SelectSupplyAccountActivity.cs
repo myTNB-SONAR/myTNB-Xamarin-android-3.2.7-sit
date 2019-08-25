@@ -168,7 +168,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
             {
                 CustomerBillingAccount customerAccount = accountListAdapter.GetItemObject(e.Position);
                 CustomerBillingAccount.RemoveSelected();
-                CustomerBillingAccount.Update(customerAccount.AccNum, true);
+                CustomerBillingAccount.SetSelected(customerAccount.AccNum);
                 Intent result = new Intent();
                 result.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(customerAccount));
                 SetResult(Result.Ok, result);
