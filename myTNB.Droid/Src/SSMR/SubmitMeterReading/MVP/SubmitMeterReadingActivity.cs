@@ -72,8 +72,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         private IMenu ssmrMenu;
         private static bool isFirstLaunch = true;
 
-        private static List<SSMRMeterReadingModel> singlePhaseList;
-        private static List<SSMRMeterReadingModel> threePhaseList;
+        private List<SSMRMeterReadingModel> singlePhaseList;
+        private List<SSMRMeterReadingModel> threePhaseList;
 
         LoadingOverlay loadingOverlay;
 
@@ -561,11 +561,12 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 threePhaseList = list;
             }
             HideProgressDialog();
-            if (!MyTNBAccountManagement.GetInstance().GetSMRMeterReadingThreePhaseOnboardingShown() && isFirstLaunch)
+            if (!MyTNBAccountManagement.GetInstance().GetSMRMeterReadingThreePhaseOnboardingShown())
             {
                 ShowMeterReadingTooltip();
                 isFirstLaunch = false;
             }
+            MyTNBAccountManagement.GetInstance().UpdateIsSMRMeterReadingThreePhaseOnboardingShown(true);
         }
 
         public void OnUpdateOnePhaseTooltipData(List<SSMRMeterReadingModel> list)
@@ -575,11 +576,12 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 singlePhaseList = list;
             }
             HideProgressDialog();
-            if (!MyTNBAccountManagement.GetInstance().GetSMRMeterReadingOnePhaseOnboardingShown() && isFirstLaunch)
+            if (!MyTNBAccountManagement.GetInstance().GetSMRMeterReadingOnePhaseOnboardingShown())
             {
                 ShowMeterReadingTooltip();
                 isFirstLaunch = false;
             }
+            MyTNBAccountManagement.GetInstance().UpdateIsSMRMeterReadingOnePhaseOnboardingShown(true);
         }
 
         private void ShowMeterReadingTooltip()
