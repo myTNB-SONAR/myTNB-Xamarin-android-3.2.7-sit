@@ -721,7 +721,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 					accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
 					this.mView.ShowBillMenu(accountData);
 				}
-				this.mView.ShowAccountName();
+				//this.mView.ShowAccountName();
                 this.mView.ShowHideActionBar(true);
                 this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
 				currentBottomNavigationMenu = Resource.Id.menu_bill;

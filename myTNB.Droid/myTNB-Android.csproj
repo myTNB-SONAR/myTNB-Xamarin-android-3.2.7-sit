@@ -2270,6 +2270,12 @@
     <AndroidResource Include="Resources\layout\SelectSMRAccountInfoLayout.axml" />
     <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\ItemisedBillingMenuFragment.cs" />
     <AndroidResource Include="Resources\layout\ItemisedBillingMenuLayout.axml" />
+    <AndroidResource Include="Resources\drawable-hdpi\bill_screen_filter_icon.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\bill_screen_filter_icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\bill_screen_filter_icon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\bill_screen_filter_icon.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\bill_screen_filter_icon.png" />
+    <AndroidResource Include="Resources\drawable\rectangle_rounded_corner_dark_blue_bg.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

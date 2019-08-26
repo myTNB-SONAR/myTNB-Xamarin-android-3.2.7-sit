@@ -271,10 +271,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             //FragmentManager.BeginTransaction()
             //    .Replace(Resource.Id.content_layout, BillsMenuFragment.NewInstance(selectedAccount))
             //    .CommitAllowingStateLoss();
-
+            txtAccountName.Visibility = ViewStates.Gone;
             currentFragment = new ItemisedBillingMenuFragment();
             FragmentManager.BeginTransaction()
-                .Replace(Resource.Id.content_layout, BillsMenuFragment.NewInstance(selectedAccount))
+                .Replace(Resource.Id.content_layout, ItemisedBillingMenuFragment.NewInstance(selectedAccount))
                 .CommitAllowingStateLoss();
         }
 
