@@ -471,156 +471,55 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             public bool OnKey(View v, [GeneratedEnum] Keycode keyCode, KeyEvent e)
             {
-                if (e.Action != KeyEventActions.Down)
-                    return true;
-
-                if (keyCode == Keycode.Del)
+                if (keyCode == Keycode.Del && e.Action == KeyEventActions.Up)
                 {
                     if (mContainer.editText8.Text == "" && mContainer.editText7.Text == "" && mContainer.editText6.Text == ""
                         && mContainer.editText5.Text == "" && mContainer.editText4.Text == "" && mContainer.editText3.Text == ""
                         && mContainer.editText2.Text == "" && mContainer.editText1.Text == "")
                         return true;
 
-                    if (mContainer.editText8 == v && mContainer.editText8.Text == "")
+                    string meterReading = mContainer.editText1.Text +
+                        mContainer.editText2.Text +
+                        mContainer.editText3.Text +
+                        mContainer.editText4.Text +
+                        mContainer.editText5.Text +
+                        mContainer.editText6.Text +
+                        mContainer.editText7.Text +
+                        mContainer.editText8.Text;
+                    mContainer.UpdateMeterReadingInput(meterReading);
+                    if (mContainer.editText8 == v && mContainer.editText8.Text != "")
                     {
-                        mContainer.editText8.Text = mContainer.editText7.Text;
-                        mContainer.editText7.Text = mContainer.editText6.Text;
-                        mContainer.editText6.Text = mContainer.editText5.Text;
-                        mContainer.editText5.Text = mContainer.editText4.Text;
-                        mContainer.editText4.Text = mContainer.editText3.Text;
-                        mContainer.editText3.Text = mContainer.editText2.Text;
-                        mContainer.editText2.Text = mContainer.editText1.Text;
-                        mContainer.editText1.Text = "";
-
-                        if (mContainer.editText8.Text != "")
-                        {
-                            mContainer.editText8.SetSelection(1);
-                        }
-                        else
-                        {
-                            return true;
-                        }
-                        
+                        mContainer.editText8.SetSelection(1);
                     }
-
-                    if (mContainer.editText7 == v && mContainer.editText7.Text == "")
+                    if (mContainer.editText7 == v && mContainer.editText7.Text != "")
                     {
-                        mContainer.editText7.Text = mContainer.editText6.Text;
-                        mContainer.editText6.Text = mContainer.editText5.Text;
-                        mContainer.editText5.Text = mContainer.editText4.Text;
-                        mContainer.editText4.Text = mContainer.editText3.Text;
-                        mContainer.editText3.Text = mContainer.editText2.Text;
-                        mContainer.editText2.Text = mContainer.editText1.Text;
-                        mContainer.editText1.Text = "";
-
-                        if (mContainer.editText7.Text != "")
-                        {
-                            mContainer.editText7.SetSelection(1);
-                        }
-                        else
-                        {
-                            return true;
-                        }
+                        mContainer.editText7.SetSelection(1);
                     }
-
-                    if (mContainer.editText6 == v && mContainer.editText6.Text == "")
+                    if (mContainer.editText6 == v && mContainer.editText6.Text != "")
                     {
-                        mContainer.editText6.Text = mContainer.editText5.Text;
-                        mContainer.editText5.Text = mContainer.editText4.Text;
-                        mContainer.editText4.Text = mContainer.editText3.Text;
-                        mContainer.editText3.Text = mContainer.editText2.Text;
-                        mContainer.editText2.Text = mContainer.editText1.Text;
-                        mContainer.editText1.Text = "";
-
-                        if (mContainer.editText6.Text != "")
-                        {
-                            mContainer.editText6.SetSelection(1);
-                        }
-                        else
-                        {
-                            return true;
-                        }
+                        mContainer.editText6.SetSelection(1);
                     }
-
-                    if (mContainer.editText5 == v && mContainer.editText5.Text == "")
+                    if (mContainer.editText5 == v && mContainer.editText5.Text != "")
                     {
-                        mContainer.editText5.Text = mContainer.editText4.Text;
-                        mContainer.editText4.Text = mContainer.editText3.Text;
-                        mContainer.editText3.Text = mContainer.editText2.Text;
-                        mContainer.editText2.Text = mContainer.editText1.Text;
-                        mContainer.editText1.Text = "";
-
-                        if (mContainer.editText5.Text != "")
-                        {
-                            mContainer.editText5.SetSelection(1);
-                        }
-                        else
-                        {
-                            return true;
-                        }
+                        mContainer.editText5.SetSelection(1);
                     }
-
-                    if (mContainer.editText4 == v && mContainer.editText4.Text == "")
+                    if (mContainer.editText4 == v && mContainer.editText4.Text != "")
                     {
-                        mContainer.editText4.Text = mContainer.editText3.Text;
-                        mContainer.editText3.Text = mContainer.editText2.Text;
-                        mContainer.editText2.Text = mContainer.editText1.Text;
-                        mContainer.editText1.Text = "";
-
-                        if (mContainer.editText4.Text != "")
-                        {
-                            mContainer.editText4.SetSelection(1);
-                        }
-                        else
-                        {
-                            return true;
-                        }
+                        mContainer.editText4.SetSelection(1);
                     }
-
-                    if (mContainer.editText3 == v && mContainer.editText3.Text == "")
+                    if (mContainer.editText3 == v && mContainer.editText3.Text != "")
                     {
-                        mContainer.editText3.Text = mContainer.editText2.Text;
-                        mContainer.editText2.Text = mContainer.editText1.Text;
-                        mContainer.editText1.Text = "";
-
-                        if (mContainer.editText3.Text != "")
-                        {
-                            mContainer.editText3.SetSelection(1);
-                        }
-                        else
-                        {
-                            return true;
-                        }
+                        mContainer.editText3.SetSelection(1);
                     }
-
-                    if (mContainer.editText2 == v && mContainer.editText2.Text == "")
+                    if (mContainer.editText2 == v && mContainer.editText2.Text != "")
                     {
-                        mContainer.editText2.Text = mContainer.editText1.Text;
-                        mContainer.editText1.Text = "";
-
-                        if (mContainer.editText2.Text != "")
-                        {
-                            mContainer.editText2.SetSelection(1);
-                        }
-                        else
-                        {
-                            return true;
-                        }
+                        mContainer.editText2.SetSelection(1);
                     }
-
-                    if (mContainer.editText1 == v && mContainer.editText1.Text == "")
+                    if (mContainer.editText1 == v && mContainer.editText1.Text != "")
                     {
-                        mContainer.editText1.Text = "";
-
-                        if (mContainer.editText1.Text != "")
-                        {
-                            mContainer.editText1.SetSelection(1);
-                        }
-                        else
-                        {
-                            return true;
-                        }
+                        mContainer.editText1.SetSelection(1);
                     }
+                    return false;
                 }
                 return false;
             }
