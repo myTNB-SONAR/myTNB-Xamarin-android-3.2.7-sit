@@ -449,7 +449,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             List<string> needMeterCaptureList = new List<string>();
             for (int i = 0; i < requiredMeterReadingModelList.Count; i++)
             {
-                needMeterCaptureList.Add(GetMeterNameFromCode(requiredMeterReadingModelList[i].meterReadingUnitDisplay));
+                needMeterCaptureList.Add(requiredMeterReadingModelList[i].meterReadingUnitDisplay);
             }
             string remainingMeter = needMeterCaptureList.Count > 1 ? String.Join(",", needMeterCaptureList.ToArray()) : needMeterCaptureList[0];
             SMRPhotoPopUpDetailsModel tooltipData = MyTNBAppToolTipData.GetUploadPhotoToolTipData(isSinglePhase,
@@ -570,21 +570,21 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 if (doneUnitList.Count == 2)
                 {
-                    finalString = doneMeter + "<font color='#20bd4c'>" + GetMeterNameFromCode(doneUnitList[0])
-                        + "</font> and <font color='#20bd4c'>" + GetMeterNameFromCode(doneUnitList[1]) + "</font> "
-                        + onTo + finalUnit + "<font color='#fecd39'>" + GetMeterNameFromCode(notDoneUnitList[0]) + "</font>" + " now.";
+                    finalString = doneMeter + "<font color='#20bd4c'>" + doneUnitList[0]
+                        + "</font> and <font color='#20bd4c'>" + doneUnitList[1] + "</font> "
+                        + onTo + finalUnit + "<font color='#fecd39'>" + notDoneUnitList[0] + "</font>" + " now.";
                 }
                 else
                 {
-                    finalString = doneMeter + "<font color='#20bd4c'>" + GetMeterNameFromCode(doneUnitList[0]) + "</font>"
-                        + onTo + twoMoreUnits + "<font color='#fecd39'>" + GetMeterNameFromCode(notDoneUnitList[0]) + "</font> and <font color='#fecd39'>"
-                        + GetMeterNameFromCode(notDoneUnitList[1]) + "</font> now.";
+                    finalString = doneMeter + "<font color='#20bd4c'>" + doneUnitList[0] + "</font>"
+                        + onTo + twoMoreUnits + "<font color='#fecd39'>" + notDoneUnitList[0] + "</font> and <font color='#fecd39'>"
+                        + notDoneUnitList[1] + "</font> now.";
                 }
             }
             else
             {
-                finalString = doneMeter + "<font color='#20bd4c'>" + GetMeterNameFromCode(doneUnitList[0]) + "</font> "
-                        + onTo + finalUnit + "<font color='#fecd39'>" + GetMeterNameFromCode(notDoneUnitList[0]) + "</font>" + " now.";
+                finalString = doneMeter + "<font color='#20bd4c'>" + doneUnitList[0] + "</font> "
+                        + onTo + finalUnit + "<font color='#fecd39'>" + notDoneUnitList[0] + "</font>" + " now.";
             }
 
             takePhotoFragment.UpdateTakePhotoFormattedNote(GetFormattedText(finalString));
