@@ -157,11 +157,10 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 DeleteCapturedImage();
             };
 
-            isTakePhotFirstEnter = true;
-
-            if (isTakePhotFirstEnter)
+            if (!MyTNBAccountManagement.GetInstance().GetIsSMRTakePhotoOnBoardShown())
             {
                 ShowTakePhotoTooltip();
+                MyTNBAccountManagement.GetInstance().SetIsSMRTakePhotoOnBoardShown();
             }
             EnableSubmitButton();
             TextViewUtils.SetMuseoSans500Typeface(btnDeletePhoto, btnSubmitPhotoToOCR);
@@ -406,6 +405,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 intent.SetType("image/*");
                 intent.SetAction(Intent.ActionGetContent);
                 StartActivityForResult(Intent.CreateChooser(intent, "Select Picture"), PickImageId);
+                isGalleryFirstPress = true;
             }
         }
 
@@ -523,24 +523,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     takePhotoFragment.UpdateTakePhotoNote("Great! Now take a photo of the next unit you see.");
                 }
             }
-        }
-
-        private string GetMeterNameFromCode(string code)
-        {
-            string meterName;
-            switch (code)
-            {
-                case "001":
-                    meterName = "kWh";
-                    break;
-                case "002":
-                    meterName = "kW";
-                    break;
-                default:
-                    meterName = "kVARh";
-                    break;
-            }
-            return meterName;
         }
 
         public void UpdateTakePhotoFormattedNote()

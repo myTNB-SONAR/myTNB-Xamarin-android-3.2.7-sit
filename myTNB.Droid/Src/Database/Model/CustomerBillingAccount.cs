@@ -82,6 +82,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("IsSMRMeterReadingThreePhaseOnBoardShown")]
         public bool IsSMRMeterReadingThreePhaseOnBoardShown { get; set; }
 
+        [Column("IsSMRTakePhotoOnBoardShown")]
+        public bool IsSMRTakePhotoOnBoardShown { get; set; }
+
         public static int CreateTable()
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
@@ -681,6 +684,13 @@ namespace myTNB_Android.Src.Database.Model
             db.Execute("Update CustomerBillingAccountEntity SET IsSMRMeterReadingThreePhaseOnBoardShown = 0");
         }
 
+        public static void SetIsSMRTakePhotoOnBoardShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            db.Execute("Update CustomerBillingAccountEntity SET IsSMRTakePhotoOnBoardShown = 1");
+        }
+
+
         public static bool GetIsSMRMeterReadingThreePhaseOnBoardShown()
         {
             var db = DBHelper.GetSQLiteConnection();
@@ -689,6 +699,18 @@ namespace myTNB_Android.Src.Database.Model
             if (customerBillingAccounts.Count > 0)
             {
                 isShown = customerBillingAccounts[0].IsSMRMeterReadingThreePhaseOnBoardShown;
+            }
+            return isShown;
+        }
+
+        public static bool GetIsSMRTakePhotoOnBoardShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            bool isShown = false;
+            List<CustomerBillingAccount> customerBillingAccounts = db.Query<CustomerBillingAccount>("Select IsSMRTakePhotoOnBoardShown from CustomerBillingAccountEntity");
+            if (customerBillingAccounts.Count > 0)
+            {
+                isShown = customerBillingAccounts[0].IsSMRTakePhotoOnBoardShown;
             }
             return isShown;
         }

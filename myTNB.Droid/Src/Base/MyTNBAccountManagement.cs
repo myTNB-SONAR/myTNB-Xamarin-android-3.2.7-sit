@@ -169,5 +169,15 @@ namespace myTNB_Android.Src.Base
             }
             return accountActivityInfo;
         }
+
+        public void SetIsSMRTakePhotoOnBoardShown()
+        {
+            CustomerBillingAccount.SetIsSMRTakePhotoOnBoardShown();
+        }
+
+        public bool GetIsSMRTakePhotoOnBoardShown()
+        {
+            return CustomerBillingAccount.GetIsSMRTakePhotoOnBoardShown();
+        }
     }
 }
