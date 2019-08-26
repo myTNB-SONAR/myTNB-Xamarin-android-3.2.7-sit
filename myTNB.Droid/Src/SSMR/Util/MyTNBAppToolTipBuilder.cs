@@ -6,6 +6,8 @@ using Android.Widget;
 using Android.OS;
 using Android.Text;
 using myTNB_Android.Src.Utils;
+using Android.Text.Style;
+using Android.Text.Method;
 
 namespace myTNB_Android.Src.SSMR.Util
 {
@@ -24,6 +26,7 @@ namespace myTNB_Android.Src.SSMR.Util
         private string ctaLabel;
         private Action ctaAction;
         private MaterialDialog dialog;
+        private ClickableSpan clickableSpan;
 
         private MyTNBAppToolTipBuilder()
         {
@@ -89,6 +92,12 @@ namespace myTNB_Android.Src.SSMR.Util
             return this;
         }
 
+        public MyTNBAppToolTipBuilder SetClickableSpan(ClickableSpan clickSpan)
+        {
+            this.clickableSpan = clickSpan;
+            return this;
+        }
+
         public MyTNBAppToolTipBuilder Build()
         {
             if (this.toolTipType == ToolTipType.IMAGE_HEADER)
@@ -146,6 +155,11 @@ namespace myTNB_Android.Src.SSMR.Util
                 {
                     tooltipMessage.TextFormatted = Html.FromHtml(this.message);
                 }
+                if (this.clickableSpan != null)
+                {
+                    tooltipMessage.TextFormatted = Utility.GetFormattedURLString(this.clickableSpan, tooltipMessage.TextFormatted);
+                    tooltipMessage.MovementMethod = new LinkMovementMethod();
+                }
                 tooltipCTA.Text = this.ctaLabel;
 
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
@@ -157,6 +171,24 @@ namespace myTNB_Android.Src.SSMR.Util
         public void Show()
         {
             this.dialog.Show();
+        }
+
+        class ClickSpan : ClickableSpan
+        {
+            public Action<View> Click;
+            public override void OnClick(View widget)
+            {
+                if (Click != null)
+                {
+                    Click(widget);
+                }
+            }
+
+            public override void UpdateDrawState(TextPaint ds)
+            {
+                base.UpdateDrawState(ds);
+                ds.UnderlineText = false;
+            }
         }
     }
 }

@@ -10,6 +10,8 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.V7.Widget;
+using Android.Text;
+using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -17,6 +19,7 @@ using myTNB_Android.Src.AddAccount.Adapter;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.FAQ.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Adapter;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.SSMR.SMRApplication.Adapter;
@@ -133,14 +136,53 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             }
         }
 
+        class ClickSpan : ClickableSpan
+        {
+            public Action<View> Click;
+            public override void OnClick(View widget)
+            {
+                if (Click != null)
+                {
+                    Click(widget);
+                }
+            }
+
+            public override void UpdateDrawState(TextPaint ds)
+            {
+                base.UpdateDrawState(ds);
+                ds.UnderlineText = false;
+            }
+        }
+
         internal void OnItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             if (e.Position == accountList.Count)//Handling Account list Info tooltip from list
             {
                 MyTNBAppToolTipData.SMREligibiltyPopUpDetailData tooltipData = MyTNBAppToolTipData.GetInstance().GetSMREligibiltyPopUpDetails();
-
+                var clickableSpan = new ClickSpan();
+                clickableSpan.Click += v =>
+                {
+                    if (tooltipData.description != null && tooltipData.description.Contains("faq"))
+                    {
+                        //Lauch FAQ
+                        int startIndex = tooltipData.description.LastIndexOf("=") + 1;
+                        int lastIndex = tooltipData.description.LastIndexOf("}");
+                        int lengthOfId = (lastIndex - startIndex) + 1;
+                        if (lengthOfId < tooltipData.description.Length)
+                        {
+                            string faqid = tooltipData.description.Substring(startIndex, lengthOfId);
+                            if (!string.IsNullOrEmpty(faqid))
+                            {
+                                Intent faqIntent = new Intent(this, typeof(FAQListActivity));
+                                faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+                                StartActivity(faqIntent);
+                            }
+                        }
+                    }
+                };
                 MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                     .SetTitle(tooltipData.title)
+                    .SetClickableSpan(clickableSpan)
                     .SetMessage(tooltipData.description)
                     .SetCTALabel(tooltipData.cta)
                     .Build().Show();

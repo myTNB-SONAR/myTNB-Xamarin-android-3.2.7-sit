@@ -38,6 +38,7 @@
         android:scrollbars="vertical"
         android:text="Be sure to upload a clear, straight-facing photo of the entire meter box with no shadows, reflections or flashes and the image can’t be skewed. Any of these may cause the value to be unreadable."
         android:textSize="14dp"
+        android:textColorLink="@color/powerBlue"
         android:lineSpacingExtra="3dp"/>
     <LinearLayout
           android:orientation="vertical"
