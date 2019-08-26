@@ -207,7 +207,7 @@ namespace myTNB.Home.Bill
                         if (_paymentHistory.d.data[indexPath.Row].NmPBranch == "myTNB Mobile App")
                         {
                             string merchantTransactionID = _paymentHistory.d.data[indexPath.Row].MechantTransId;
-                            _billViewController.ViewReceipt(merchantTransactionID);
+                            //_billViewController.ViewReceipt(merchantTransactionID);
                         }
                     }
                 }

@@ -464,8 +464,8 @@ namespace myTNB
                 BillViewController billVC = storyBoard.InstantiateViewController(vc) as BillViewController;
                 if (billVC != null)
                 {
-                    billVC.NotificationInfo = NotificationInfo;
-                    billVC.IsFromNavigation = true;
+                    //billVC.NotificationInfo = NotificationInfo;
+                    //billVC.IsFromNavigation = true;
                     NavigationController?.PushViewController(billVC, true);
                 }
             }
