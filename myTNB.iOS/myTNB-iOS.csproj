@@ -1153,6 +1153,15 @@
     <ImageAsset Include="Assets.xcassets\IC-Action-Filter.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Filter.imageset\filterCopy1%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Filter.imageset\filterCopy1%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Expand.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Expand.imageset\expandRight16X16%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Expand.imageset\expandRight16X16%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-Cleared-Banner.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\needToPay%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\needToPay%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-Cleared-Banner.imageset\noOutstanding%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-Cleared-Banner.imageset\noOutstanding%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1535,6 +1544,10 @@
     <Folder Include="Assets.xcassets\Usage-Refresh-Bg.imageset\" />
     <Folder Include="Assets.xcassets\BCRM-Down-Icon.imageset\" />
     <Folder Include="Assets.xcassets\IC-Action-Filter.imageset\" />
+    <Folder Include="Assets.xcassets\Arrow-Expand.imageset\" />
+    <Folder Include="Assets.xcassets\Bills-Cleared-Banner.imageset\" />
+    <Folder Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\" />
+    <Folder Include="Model\GetAccountsCharges\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2360,6 +2373,9 @@
     <Compile Include="Components\Usage View\REAmountComponent.cs" />
     <Compile Include="Home\Bill\BillConstants.cs" />
     <Compile Include="Home\Bill\BillHistorySource.cs" />
+    <Compile Include="Home\Bill\BillHistoryViewCell.cs" />
+    <Compile Include="Model\GetAccountsCharges\GetAccountsChargesResponseModel.cs" />
+    <Compile Include="Home\Bill\BillSectionViewCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

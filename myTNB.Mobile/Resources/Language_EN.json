@@ -242,5 +242,14 @@
         "accountsMissing": "Why are some of my accounts not here?",
         "gotIt": "Got it!",
         "disconnectionMsg": "<strong>What does this mean?</strong><br><br>Your electricity has been disconnected and is unavailable. This was not caused by a power outage.<br><br>If you’ve made a payment, please give us some time for this to be reflected."
+    },
+
+    "Bills": {
+        "navTitle": "Bills",
+        "clearedBills": "I’ve cleared all bills",
+        "viewMore": "View More",
+        "paidExtra": "I’ve paid extra",
+        "needToPay": "I need to pay",
+        "by": "by"
     }
 }
