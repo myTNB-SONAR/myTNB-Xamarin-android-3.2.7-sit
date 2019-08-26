@@ -1548,6 +1548,8 @@
     <Folder Include="Assets.xcassets\Bills-Cleared-Banner.imageset\" />
     <Folder Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\" />
     <Folder Include="Model\GetAccountsCharges\" />
+    <Folder Include="Home\Bill\Bills\" />
+    <Folder Include="Home\Bill\Bill Details\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1585,6 +1587,7 @@
     <InterfaceDefinition Include="SSMR\SSMR.storyboard" />
     <InterfaceDefinition Include="Customs\Generic No Data Page\GenericNoData.storyboard" />
     <InterfaceDefinition Include="Usage\Usage.storyboard" />
+    <InterfaceDefinition Include="Home\Bill\Bill Details\BillDetails.storyboard" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -1688,10 +1691,6 @@
     <Compile Include="Home\Dashboard\Select Accounts\SelectAccountTableViewController.cs" />
     <Compile Include="Home\Dashboard\Select Accounts\SelectAccountTableViewController.designer.cs">
       <DependentUpon>..\..\..\Dashboard\Select Accounts\SelectAccountTableViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Bill\BillViewController.cs" />
-    <Compile Include="Home\Bill\BillViewController.designer.cs">
-      <DependentUpon>BillViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Home\Promotions\PromotionsViewController.cs" />
     <Compile Include="Home\Promotions\PromotionsViewController.designer.cs">
@@ -2372,10 +2371,18 @@
     <Compile Include="Components\Usage View\Charts\REChartView.cs" />
     <Compile Include="Components\Usage View\REAmountComponent.cs" />
     <Compile Include="Home\Bill\BillConstants.cs" />
-    <Compile Include="Home\Bill\BillHistorySource.cs" />
-    <Compile Include="Home\Bill\BillHistoryViewCell.cs" />
     <Compile Include="Model\GetAccountsCharges\GetAccountsChargesResponseModel.cs" />
-    <Compile Include="Home\Bill\BillSectionViewCell.cs" />
+    <Compile Include="Home\Bill\Bills\BillHistorySource.cs" />
+    <Compile Include="Home\Bill\Bills\BillHistoryViewCell.cs" />
+    <Compile Include="Home\Bill\Bills\BillSectionViewCell.cs" />
+    <Compile Include="Home\Bill\Bills\BillViewController.cs" />
+    <Compile Include="Home\Bill\Bills\BillViewController.designer.cs">
+      <DependentUpon>BillViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Bill\Bill Details\BillDetailsViewController.cs" />
+    <Compile Include="Home\Bill\Bill Details\BillDetailsViewController.designer.cs">
+      <DependentUpon>BillDetailsViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

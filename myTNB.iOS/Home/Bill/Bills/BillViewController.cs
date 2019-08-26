@@ -169,6 +169,14 @@ namespace myTNB
             _btnMore.SetTitle(GetI18NValue(BillConstants.I18N_ViewMore), UIControlState.Normal);
             _btnMore.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
             _btnMore.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
+            _btnMore.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                UIStoryboard storyBoard = UIStoryboard.FromName("BillDetails", null);
+                BillDetailsViewController viewController =
+                    storyBoard.InstantiateViewController("BillDetailsView") as BillDetailsViewController;
+                var navController = new UINavigationController(viewController);
+                PresentViewController(navController, true, null);
+            }));
 
             _btnPay = new CustomUIButtonV2()
             {
