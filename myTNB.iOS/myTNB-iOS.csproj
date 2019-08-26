@@ -2357,7 +2357,7 @@
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
-    <BundleResource Include="Firebase\dev\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">
+    <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">
       <LogicalName>GoogleService-Info.plist</LogicalName>
     </BundleResource>
     <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Master'">
