@@ -149,7 +149,7 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Left,
                 Text = "200.00"
             };
-
+            _viewAmount.AddSubviews(new UIView[] { _lblCurrency, _lblAmount });
             UpdateViewAmount();
 
             _lblDate = new UILabel(new CGRect(0, GetYLocationFromFrame(_viewAmount.Frame, 8), ViewWidth, GetScaledHeight(20)))
@@ -188,7 +188,6 @@ namespace myTNB
 
             _viewCTA.AddSubviews(new CustomUIButtonV2[] { _btnMore, _btnPay });
 
-            _viewAmount.AddSubviews(new UIView[] { _lblCurrency, _lblAmount });
             _headerView.AddSubviews(new UIView[] { _lblPaymentStatus, _viewAmount, _lblDate, _viewCTA });
             _headerViewContainer.AddSubviews(_headerView);//.AddSubviews(new UIView[] { _lblPaymentStatus, _viewAmount, _lblDate, _viewCTA });
             _headerViewContainer.AddSubviews(_accountSelectorContainer);
