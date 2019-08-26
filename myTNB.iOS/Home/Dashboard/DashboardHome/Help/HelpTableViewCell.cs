@@ -18,10 +18,10 @@ namespace myTNB
         {
             cardWidth = ScaleUtility.GetScaledWidth(92);
             cardHeight = cardWidth;
-            _titleLabel = new UILabel(new CGRect(ScaleUtility.BaseMarginWidth16, 16f, cellWidth - 32, 20f))
+            _titleLabel = new UILabel(new CGRect(ScaleUtility.BaseMarginWidth16, ScaleUtility.GetScaledHeight(2f), cellWidth - 32, 20f))
             {
                 Font = TNBFont.MuseoSans_14_500,
-                TextColor = MyTNBColor.PowerBlue
+                TextColor = MyTNBColor.WaterBlue
             };
             AddSubview(_titleLabel);
             UIView view = new UIView(new CGRect(0, _titleLabel.Frame.GetMaxY() + 8f, cellWidth, cardHeight + 24.0F))
@@ -110,7 +110,7 @@ namespace myTNB
                 UILabel lblHelp = new UILabel(new CGRect(8, 8, helpCardView.Frame.Width - 16, helpCardView.Frame.Height - 16))
                 {
                     TextColor = UIColor.White,
-                    Font = TNBFont.MuseoSans_10_500,
+                    Font = TNBFont.MuseoSans_12_500,
                     TextAlignment = UITextAlignment.Left,
                     Lines = 0,
                     LineBreakMode = UILineBreakMode.WordWrap,
