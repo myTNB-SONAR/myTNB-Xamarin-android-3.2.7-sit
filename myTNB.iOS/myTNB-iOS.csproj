@@ -1535,6 +1535,7 @@
     <Folder Include="Assets.xcassets\Usage-Refresh-Bg.imageset\" />
     <Folder Include="Assets.xcassets\BCRM-Down-Icon.imageset\" />
     <Folder Include="Assets.xcassets\IC-Action-Filter.imageset\" />
+    <Folder Include="Components\Common\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2360,6 +2361,7 @@
     <Compile Include="Components\Usage View\REAmountComponent.cs" />
     <Compile Include="Home\Bill\BillConstants.cs" />
     <Compile Include="Home\Bill\BillHistorySource.cs" />
+    <Compile Include="Components\Common\PaginatedTooltipComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

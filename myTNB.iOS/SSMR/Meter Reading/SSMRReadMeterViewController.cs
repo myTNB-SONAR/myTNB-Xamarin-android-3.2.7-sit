@@ -366,8 +366,8 @@ namespace myTNB
         private void PrepareToolTipView()
         {
             UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
-            nfloat widthMargin = GetScaledWidth(18f);
-            nfloat width = currentWindow.Frame.Width;
+            //nfloat widthMargin = GetScaledWidth(18f);
+            //nfloat width = currentWindow.Frame.Width;
             nfloat height = currentWindow.Frame.Height;
             if (_toolTipParentView != null)
             {
@@ -379,16 +379,20 @@ namespace myTNB
             };
             currentWindow.AddSubview(_toolTipParentView);
 
-            _toolTipContainerView = new UIView(new CGRect(widthMargin, 104f, width - (widthMargin * 2), 500f))
-            {
-                BackgroundColor = UIColor.White,
-                ClipsToBounds = true
-            };
-            _toolTipContainerView.Layer.CornerRadius = 5f;
-            _toolTipParentView.AddSubview(_toolTipContainerView);
-            SetToolTipScrollView();
-            SetScrollViewSubViews();
+            //_toolTipContainerView = new UIView(new CGRect(widthMargin, 104f, width - (widthMargin * 2), 500f))
+            //{
+            //    BackgroundColor = UIColor.White,
+            //    ClipsToBounds = true
+            //};
+            //_toolTipContainerView.Layer.CornerRadius = 5f;
+            //_toolTipParentView.AddSubview(_toolTipContainerView);
+            //SetToolTipScrollView();
+            //SetScrollViewSubViews();
 
+            PaginatedTooltipComponent tooltipComponent = new PaginatedTooltipComponent(_toolTipParentView, true);
+            tooltipComponent.SetSSMRData(pageData);
+            tooltipComponent.SetPreviousMeterData(_previousMeterList);
+            _toolTipParentView.AddSubview(tooltipComponent.GetUI());
             _toolTipParentView.Hidden = false;
         }
 
