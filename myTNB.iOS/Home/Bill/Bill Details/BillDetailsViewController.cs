@@ -1,5 +1,4 @@
 using CoreGraphics;
-using Foundation;
 using myTNB.Home.Bill;
 using myTNB.Model;
 using System;
@@ -45,9 +44,9 @@ namespace myTNB
                 DismissViewController(true, null);
             });
             UIBarButtonItem btnInfo = new UIBarButtonItem(UIImage.FromBundle(BillConstants.IMG_Info)
-               , UIBarButtonItemStyle.Done, (sender, e) =>
-               {
-               });
+            , UIBarButtonItemStyle.Done, (sender, e) =>
+            {
+            });
             NavigationItem.LeftBarButtonItem = btnBack;
             NavigationItem.RightBarButtonItem = btnInfo;
             Title = GetI18NValue(BillConstants.I18N_NavTitle);
@@ -108,8 +107,11 @@ namespace myTNB
                 , Math.Abs(Charges.AccountCharges[0].OutstandingCharges).ToString("N2", CultureInfo.InvariantCulture), isOutstandingOverpaid);
             UIView viewMonthBill = GetCommonLabelView(GetYLocationFromFrame(viewOutstanding.Frame, 16), GetI18NValue(BillConstants.I18N_BillThisMonth)
                 , Math.Abs(Charges.AccountCharges[0].CurrentCharges).ToString("N2", CultureInfo.InvariantCulture));
+
             _viewMandatory = GetMandatoryView(GetYLocationFromFrame(viewMonthBill.Frame, 16));
-            _viewLine = new UIView(new CGRect(BaseMargin, GetYLocationFromFrame(_viewMandatory.Frame, 16), BaseMarginedWidth, GetScaledHeight(1)))
+
+            nfloat lineYLoc = GetYLocationFromFrame(HasMandatory ? _viewMandatory.Frame : viewMonthBill.Frame, 16);
+            _viewLine = new UIView(new CGRect(BaseMargin, lineYLoc, BaseMarginedWidth, GetScaledHeight(1)))
             {
                 BackgroundColor = MyTNBColor.VeryLightPinkThree
             };
@@ -117,9 +119,18 @@ namespace myTNB
             _viewPayment = GetPaymentDetails(GetYLocationFromFrame(_viewLine.Frame, 20));
             _viewTooltip = GetTooltipView(GetYLocationFromFrame(_viewPayment.Frame, 16));
 
-            _viewBreakdown.AddSubviews(new UIView[] { viewOutstanding, viewMonthBill, _viewMandatory, _viewLine, _viewPayment, _viewTooltip });
+
+            _viewBreakdown.AddSubviews(new UIView[] { viewOutstanding, viewMonthBill, _viewLine, _viewPayment });
+
+            nfloat breakDownViewHeight = _viewPayment.Frame.GetMaxY();
+            if (HasMandatory)
+            {
+                _viewBreakdown.AddSubviews(new UIView[] { _viewMandatory, _viewTooltip });
+                breakDownViewHeight = _viewTooltip.Frame.GetMaxY();
+            }
+
             _viewBreakdown.Frame = new CGRect(new CGPoint(0, _viewTitleSection.Frame.GetMaxY()), new CGSize(ViewWidth
-                , _viewTooltip.Frame.GetMaxY() + GetScaledHeight(16)));
+                , breakDownViewHeight + GetScaledHeight(16)));
 
             _uiScrollView.AddSubview(_viewBreakdown);
             _uiScrollView.ContentSize = new CGSize(ViewWidth, _viewBreakdown.Frame.GetMaxY());
@@ -142,7 +153,7 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Right,
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = isOverpaid ? MyTNBColor.FreshGreen : MyTNBColor.CharcoalGrey,
-                Text = valueString
+                Text = string.Format(BillConstants.Format_Amount, TNBGlobal.UNIT_CURRENCY, valueString)
             };
             nfloat valueWidth = value.GetLabelWidth(ViewWidth);
             value.Frame = new CGRect(new CGPoint(ViewWidth - BaseMargin - valueWidth, value.Frame.Y), new CGSize(valueWidth, value.Frame.Height));
@@ -176,7 +187,7 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Left,
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.CharcoalGrey,
-                Text = string.Format("{0} {1}", GetI18NValue(BillConstants.I18N_By), result),
+                Text = string.Format(BillConstants.Format_Amount, GetI18NValue(BillConstants.I18N_By), result),
                 Hidden = isOverPaid
             };
             nfloat dueWidth = lblDue.GetLabelWidth(ViewWidth);
@@ -217,8 +228,17 @@ namespace myTNB
 
         private CustomUIView GetMandatoryView(nfloat yLoc)
         {
+            if (!HasMandatory)
+            {
+                return new CustomUIView();
+            }
             isMandatoryExpanded = false;
-            CustomUIView view = new CustomUIView(new CGRect(0, yLoc, ViewWidth, GetScaledHeight(20))) { ClipsToBounds = true };
+            CustomUIView view = new CustomUIView(new CGRect(0, yLoc, ViewWidth, GetScaledHeight(20)))
+            {
+                ClipsToBounds = true,
+                PageName = PageName,
+                EventName = BillConstants.Event_MandatoryDetails
+            };
             UILabel item = new UILabel(new CGRect(BaseMargin, 0, BaseMarginedWidth / 2, GetScaledHeight(20)))
             {
                 TextAlignment = UITextAlignment.Left,
@@ -241,7 +261,7 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Right,
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.CharcoalGrey,
-                Text = string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY
+                Text = string.Format(BillConstants.Format_Amount, TNBGlobal.UNIT_CURRENCY
                 , Charges.AccountCharges[0].MandatoryCharges.TotalAmount.ToString("N2", CultureInfo.InvariantCulture))
             };
             nfloat valueWidth = value.GetLabelWidth(ViewWidth);
@@ -260,6 +280,7 @@ namespace myTNB
                 for (int i = 0; i < Charges.AccountCharges[0].MandatoryCharges.Charges.Count; i++)
                 {
                     ChargesModel chargeItem = Charges.AccountCharges[0].MandatoryCharges.Charges[i];
+                    if (chargeItem.Amount < 0) { continue; }
                     UILabel subItem = new UILabel(new CGRect(0, subYLoc, BaseMarginedWidth / 2, GetScaledHeight(20)))
                     {
                         TextAlignment = UITextAlignment.Left,
@@ -276,7 +297,7 @@ namespace myTNB
                         TextAlignment = UITextAlignment.Right,
                         Font = TNBFont.MuseoSans_14_300,
                         TextColor = MyTNBColor.GreyishBrown,
-                        Text = string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, chargeItem.Amount.ToString("N2", CultureInfo.InvariantCulture))
+                        Text = string.Format(BillConstants.Format_Amount, TNBGlobal.UNIT_CURRENCY, chargeItem.Amount.ToString("N2", CultureInfo.InvariantCulture))
                     };
                     nfloat subValueWidth = subValue.GetLabelWidth(ViewWidth);
                     subValue.Frame = new CGRect(new CGPoint(mandatoryView.Frame.Width - valueWidth, subValue.Frame.Y)
@@ -292,17 +313,20 @@ namespace myTNB
             view.AddSubview(mandatoryView);
             CGRect newFrame = view.Frame;
             newFrame.Height = mandatoryView.Frame.GetMaxY();
-            //view.Frame = newFrame;
             return view;
         }
 
         private CustomUIView GetTooltipView(nfloat yLoc)
         {
+            if (!HasMandatory)
+            {
+                return new CustomUIView();
+            }
             CustomUIView view = new CustomUIView(new CGRect(0, yLoc, ViewWidth, GetScaledHeight(24)))
             {
                 BackgroundColor = UIColor.White,
                 PageName = PageName,
-                EventName = "MandatoryChargesPopup"
+                EventName = BillConstants.Event_MandatoryChargesPopup
             };
             CustomUIView viewInfo = new CustomUIView(new CGRect(BaseMargin, 0, BaseMarginedWidth, GetScaledHeight(24)))
             {
@@ -380,6 +404,19 @@ namespace myTNB
                     }
                 );
             }));
+        }
+
+        private bool HasMandatory
+        {
+            get
+            {
+                if (Charges != null && Charges.AccountCharges != null && Charges.AccountCharges[0] != null
+                    && Charges.AccountCharges[0].MandatoryCharges != null)
+                {
+                    return Charges.AccountCharges[0].MandatoryCharges.TotalAmount > 0;
+                }
+                return false;
+            }
         }
     }
 }

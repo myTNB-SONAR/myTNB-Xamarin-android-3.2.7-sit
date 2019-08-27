@@ -13,6 +13,7 @@ namespace myTNB.Home.Bill
         //Format
         public static string Format_DateParse = "yyyyMMdd";
         public static string Format_Date = "dd MMM yyyy";
+        public static string Format_Amount = "{0} {1}";
 
         //ViewCell
         public static string Cell_BillHistory = "billHistoryTableViewCell";
@@ -44,5 +45,8 @@ namespace myTNB.Home.Bill
         public static string IMG_BackIcon = "Back-White";
         public static string IMG_Info = "IC-Info";
 
+        //Event
+        public static string Event_MandatoryChargesPopup = "MandatoryChargesPopup";
+        public static string Event_MandatoryDetails = "ExpandCollapseMandatoryList";
     }
 }

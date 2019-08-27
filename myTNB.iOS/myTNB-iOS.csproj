@@ -904,13 +904,7 @@
     <ImageAsset Include="Assets.xcassets\Tab-Home-Selected.imageset\homeSelected%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Home-Selected.imageset\homeSelected%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Profile-Selected.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Tab-Profile-Selected.imageset\profileSelected.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Profile-Selected.imageset\profileSelected%402x.png" />
@@ -1187,6 +1181,10 @@
     <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\smrOnboarding1%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill%403x-1.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />

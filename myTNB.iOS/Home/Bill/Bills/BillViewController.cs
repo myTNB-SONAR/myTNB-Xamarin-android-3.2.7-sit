@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
 using CoreAnimation;
 using CoreGraphics;
-using Foundation;
 using myTNB.Home.Bill;
-using myTNB.SSMR;
 using UIKit;
 
 namespace myTNB
@@ -259,6 +256,10 @@ namespace myTNB
                                {
                                    UpdateHeaderData(_accountCharges.d.data.AccountCharges[0]);
                                }
+                               else
+                               {
+                                   DisplayServiceError(_accountCharges?.d?.ErrorMessage);
+                               }
                            });
                        });
                    }
@@ -280,7 +281,7 @@ namespace myTNB
             {
                 _lblPaymentStatus.Text = GetI18NValue(BillConstants.I18N_NeedToPay);
                 string result = DateTime.ParseExact(data.DueDate, BillConstants.Format_DateParse, CultureInfo.InvariantCulture).ToString(BillConstants.Format_Date);
-                _lblDate.Text = string.Format("{0} {1}", GetI18NValue(BillConstants.I18N_By), result);
+                _lblDate.Text = string.Format(BillConstants.Format_Amount, GetI18NValue(BillConstants.I18N_By), result);
                 _lblDate.Hidden = false;
 
                 ctaFrame.Y = GetYLocationFromFrame(_lblDate.Frame, 24);
@@ -301,8 +302,6 @@ namespace myTNB
 
             _headerViewContainer.Frame = new CGRect(_headerViewContainer.Frame.Location
                 , new CGSize(_headerViewContainer.Frame.Width, _headerView.Frame.GetMaxY()));
-
-            AddGroupedDate();
             _historyTableView.ReloadData();
         }
 
@@ -321,51 +320,6 @@ namespace myTNB
             _historyTableView.Bounces = false;
             _historyTableView.TableHeaderView = _headerViewContainer;
             View.AddSubview(_historyTableView);
-            //_historyTableView.Layer.BorderWidth = 1;
-            //_historyTableView.Layer.BorderColor = UIColor.Red.CGColor;
-            AddGroupedDate();
-        }
-
-        private void AddGroupedDate()
-        {
-            return;
-            for (int j = 0; j < _historyTableView.Subviews.Length; j++)
-            {
-                if (_historyTableView.Subviews[j].Tag == 101)
-                {
-                    _historyTableView.Subviews[j].RemoveFromSuperview();
-                }
-            }
-            for (int i = 0; i < 10; i++)
-            {
-                //if (i == 0) { continue; }
-
-                //if (i == 0 || i == 3)
-                // {
-                CGRect cellRect = _historyTableView.RectForRowAtIndexPath(NSIndexPath.Create(0, i));
-                nfloat yLoc = cellRect.GetMinY();// + GetScaledHeight(51);
-
-                UIView viewGroupedDate = new UIView(new CGRect(ScaleUtility.GetScaledWidth(16), yLoc
-                    , ScaleUtility.GetScaledWidth(70), ScaleUtility.GetScaledHeight(24)))
-                {
-                    ClipsToBounds = true,
-                    Tag = 101
-                };
-                UILabel _lblGroupedDate = new UILabel(new CGRect(new CGPoint(0, 0), viewGroupedDate.Frame.Size))
-                {
-                    BackgroundColor = MyTNBColor.WaterBlue,
-                    TextColor = UIColor.White,
-                    Font = TNBFont.MuseoSans_12_500,
-                    TextAlignment = UITextAlignment.Center,
-                    Text = "Aug 2019" + i
-                };
-                viewGroupedDate.AddSubview(_lblGroupedDate);
-                viewGroupedDate.Layer.CornerRadius = ScaleUtility.GetScaledHeight(12);
-                viewGroupedDate.Layer.ZPosition = 99;
-                _historyTableView.AddSubview(viewGroupedDate);
-                _historyTableView.BringSubviewToFront(viewGroupedDate);
-                // }
-            }
         }
         #endregion
 
