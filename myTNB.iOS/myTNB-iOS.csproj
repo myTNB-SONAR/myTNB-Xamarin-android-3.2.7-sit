@@ -1162,6 +1162,12 @@
     <ImageAsset Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\needToPay%403x.png" />
     <ImageAsset Include="Assets.xcassets\Bills-Cleared-Banner.imageset\noOutstanding%402x.png" />
     <ImageAsset Include="Assets.xcassets\Bills-Cleared-Banner.imageset\noOutstanding%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Expand-Down.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Collapse-Up.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Expand-Down.imageset\icActionExpandDown%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Expand-Down.imageset\icActionExpandDown%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Collapse-Up.imageset\icActionExpandDownUp%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Collapse-Up.imageset\icActionExpandDownUp%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1550,6 +1556,8 @@
     <Folder Include="Model\GetAccountsCharges\" />
     <Folder Include="Home\Bill\Bills\" />
     <Folder Include="Home\Bill\Bill Details\" />
+    <Folder Include="Assets.xcassets\Arrow-Expand-Down.imageset\" />
+    <Folder Include="Assets.xcassets\Arrow-Collapse-Up.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
