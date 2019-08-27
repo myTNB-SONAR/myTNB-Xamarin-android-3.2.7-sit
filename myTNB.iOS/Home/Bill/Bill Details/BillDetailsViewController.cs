@@ -1,21 +1,26 @@
 using CoreGraphics;
 using Foundation;
-using myTNB.SSMR;
+using myTNB.Home.Bill;
+using myTNB.Model;
 using System;
+using System.Collections.Generic;
 using UIKit;
 
 namespace myTNB
 {
     public partial class BillDetailsViewController : CustomUIViewController
     {
-        private UIView _viewDetails, _viewTitleSection, _viewBreakdown, _viewLine;
-        CustomUIView _viewMandatory;
+        private UIView _viewDetails, _viewTitleSection, _viewBreakdown, _viewLine, _viewPayment;
+        private CustomUIView _viewMandatory, _viewTooltip;
         private UIScrollView _uiScrollView;
+        private bool isMandatoryExpanded;
 
+        public AccountChargesDataModel Charges { set; private get; }
         public BillDetailsViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
         {
+            PageName = BillConstants.Pagename_BillDetails;
             NavigationController.SetNavigationBarHidden(false, true);
             base.ViewDidLoad();
             View.BackgroundColor = MyTNBColor.LightGrayBG;
@@ -33,18 +38,18 @@ namespace myTNB
 
         private void SetNavigation()
         {
-            UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle(SSMRConstants.IMG_BackIcon)
+            UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle(BillConstants.IMG_BackIcon)
             , UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 DismissViewController(true, null);
             });
-            UIBarButtonItem btnInfo = new UIBarButtonItem(UIImage.FromBundle(SSMRConstants.IMG_Info)
+            UIBarButtonItem btnInfo = new UIBarButtonItem(UIImage.FromBundle(BillConstants.IMG_Info)
                , UIBarButtonItemStyle.Done, (sender, e) =>
                {
                });
             NavigationItem.LeftBarButtonItem = btnBack;
             NavigationItem.RightBarButtonItem = btnInfo;
-            Title = "Bill Details";
+            Title = GetI18NValue(BillConstants.I18N_NavTitle);
         }
 
         private void AddDetails()
@@ -96,18 +101,18 @@ namespace myTNB
             _viewBreakdown = new UIView { BackgroundColor = UIColor.White };
             UIView viewOutstanding = GetCommonLabelView(GetScaledHeight(16), "My outstanding charges", "RM 0.00");
             UIView viewMonthBill = GetCommonLabelView(GetYLocationFromFrame(viewOutstanding.Frame, 16), "My bill this month", "RM 0.00");
-             _viewMandatory = GetMandatoryView(GetYLocationFromFrame(viewMonthBill.Frame, 16));
+            _viewMandatory = GetMandatoryView(GetYLocationFromFrame(viewMonthBill.Frame, 16));
             _viewLine = new UIView(new CGRect(BaseMargin, GetYLocationFromFrame(_viewMandatory.Frame, 16), BaseMarginedWidth, GetScaledHeight(1)))
             {
                 BackgroundColor = MyTNBColor.VeryLightPinkThree
             };
 
-            UIView viewPayment = GetPaymentDetails(GetYLocationFromFrame(_viewLine.Frame, 20));
-            CustomUIView viewTooltip = GetTooltipView(GetYLocationFromFrame(viewPayment.Frame, 16));
+            _viewPayment = GetPaymentDetails(GetYLocationFromFrame(_viewLine.Frame, 20));
+            _viewTooltip = GetTooltipView(GetYLocationFromFrame(_viewPayment.Frame, 16));
 
-            _viewBreakdown.AddSubviews(new UIView[] { viewOutstanding, viewMonthBill, _viewMandatory, _viewLine, viewPayment, viewTooltip });
+            _viewBreakdown.AddSubviews(new UIView[] { viewOutstanding, viewMonthBill, _viewMandatory, _viewLine, _viewPayment, _viewTooltip });
             _viewBreakdown.Frame = new CGRect(new CGPoint(0, _viewTitleSection.Frame.GetMaxY()), new CGSize(ViewWidth
-                , viewTooltip.Frame.GetMaxY() + GetScaledHeight(16)));
+                , _viewTooltip.Frame.GetMaxY() + GetScaledHeight(16)));
 
             _uiScrollView.AddSubview(_viewBreakdown);
             _uiScrollView.ContentSize = new CGSize(ViewWidth, _viewBreakdown.Frame.GetMaxY());
@@ -196,6 +201,7 @@ namespace myTNB
 
         private CustomUIView GetMandatoryView(nfloat yLoc)
         {
+            isMandatoryExpanded = false;
             CustomUIView view = new CustomUIView(new CGRect(0, yLoc, ViewWidth, GetScaledHeight(20))) { ClipsToBounds = true };
             UILabel item = new UILabel(new CGRect(BaseMargin, 0, BaseMarginedWidth / 2, GetScaledHeight(20)))
             {
@@ -210,7 +216,8 @@ namespace myTNB
             UIImageView imgIndicator = new UIImageView(new CGRect(item.Frame.GetMaxX() + GetScaledWidth(4)
                 , 0, GetScaledWidth(20), GetScaledWidth(20)))
             {
-                Image = UIImage.FromBundle("Arrow-Expand-Down")
+                Image = UIImage.FromBundle(BillConstants.IMG_ArrowDown),
+                Tag = 99
             };
 
             UILabel value = new UILabel(new CGRect(BaseMargin + (BaseMarginedWidth / 2), 0, BaseMarginedWidth / 2, GetScaledHeight(20)))
@@ -224,7 +231,9 @@ namespace myTNB
             value.Frame = new CGRect(new CGPoint(ViewWidth - BaseMargin - valueWidth, value.Frame.Y), new CGSize(valueWidth, value.Frame.Height));
             view.AddSubviews(new UIView[] { item, imgIndicator, value });
 
-            UIView mandatoryView = new UIView(new CGRect(GetScaledWidth(24), GetYLocationFromFrame(item.Frame, 4), ViewWidth - GetScaledWidth(40), 0));
+            UIView mandatoryView = new UIView(new CGRect(GetScaledWidth(24), GetYLocationFromFrame(item.Frame, 4)
+                , ViewWidth - GetScaledWidth(40), 0))
+            { Tag = 98 };
             nfloat subYLoc = 0;
             int itemCount = 0;
             for (int i = 0; i < 4; i++)
@@ -259,7 +268,7 @@ namespace myTNB
             view.AddSubview(mandatoryView);
             CGRect newFrame = view.Frame;
             newFrame.Height = mandatoryView.Frame.GetMaxY();
-            view.Frame = newFrame;
+            //view.Frame = newFrame;
             return view;
         }
 
@@ -267,7 +276,9 @@ namespace myTNB
         {
             CustomUIView view = new CustomUIView(new CGRect(0, yLoc, ViewWidth, GetScaledHeight(24)))
             {
-                BackgroundColor = UIColor.White
+                BackgroundColor = UIColor.White,
+                PageName = PageName,
+                EventName = "MandatoryChargesPopup"
             };
             CustomUIView viewInfo = new CustomUIView(new CGRect(BaseMargin, 0, BaseMarginedWidth, GetScaledHeight(24)))
             {
@@ -276,7 +287,7 @@ namespace myTNB
             UIImageView imgView = new UIImageView(new CGRect(GetScaledWidth(4)
                 , GetScaledHeight(4), GetScaledWidth(16), GetScaledWidth(16)))
             {
-                Image = UIImage.FromBundle("IC-Info-Blue")
+                Image = UIImage.FromBundle(BillConstants.IMG_InfoBlue)
             };
             UILabel lblDescription = new UILabel(new CGRect(GetScaledWidth(28)
                 , GetScaledHeight(4), view.Frame.Width - GetScaledWidth(44), GetScaledHeight(16)))
@@ -291,17 +302,60 @@ namespace myTNB
             view.AddSubview(viewInfo);
             view.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                /* Model.PopupModel popUpContent = SSMRAccounts.GetPopupDetailsByType(SelectAccountConstants.Popup_NoSSMRCA);
-                 DisplayCustomAlert(popUpContent.Title, popUpContent.Description
-                     , new Dictionary<string, Action> { { popUpContent.CTA, null } }
-                     , false);*/
+                if (Charges != null && Charges.MandatoryChargesPopUpDetails != null)
+                {
+                    PopupModel popUpContent = Charges.MandatoryChargesPopUpDetails.Find(x => x.Type == "HasMandatoryCharges");
+                    if (popUpContent != null)
+                    {
+                        DisplayCustomAlert(popUpContent.Title, popUpContent.Description
+                            , new Dictionary<string, Action> { { popUpContent.CTA, null } }
+                            , false);
+                    }
+                }
             }));
             return view;
         }
 
         private void SetEvents()
         {
-            
+            if (_viewMandatory == null) { return; }
+            _viewMandatory.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                nfloat mandatoryViewHeight = GetScaledHeight(20);
+                if (!isMandatoryExpanded)
+                {
+                    UIView view = _viewMandatory.ViewWithTag(98) as UIView;
+                    if (view != null)
+                    {
+                        mandatoryViewHeight = view.Frame.GetMaxY();
+                    }
+                }
+                isMandatoryExpanded = !isMandatoryExpanded;
+                UIImageView imgView = _viewMandatory.ViewWithTag(99) as UIImageView;
+                if (imgView != null)
+                {
+                    imgView.Image = UIImage.FromBundle(isMandatoryExpanded ? BillConstants.IMG_ArrowUp : BillConstants.IMG_ArrowDown);
+                }
+                UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseIn
+                    , () =>
+                    {
+                        _viewMandatory.Frame = new CGRect(_viewMandatory.Frame.Location, new CGSize(_viewMandatory.Frame.Width
+                            , mandatoryViewHeight));
+                        _viewLine.Frame = new CGRect(new CGPoint(_viewLine.Frame.X
+                            , GetYLocationFromFrame(_viewMandatory.Frame, 16)), _viewLine.Frame.Size);
+                        _viewPayment.Frame = new CGRect(new CGPoint(_viewPayment.Frame.X
+                            , GetYLocationFromFrame(_viewLine.Frame, 20)), _viewPayment.Frame.Size);
+                        _viewTooltip.Frame = new CGRect(new CGPoint(_viewTooltip.Frame.X
+                            , GetYLocationFromFrame(_viewPayment.Frame, 16)), _viewTooltip.Frame.Size);
+                        _viewBreakdown.Frame = new CGRect(new CGPoint(0, _viewTitleSection.Frame.GetMaxY()), new CGSize(ViewWidth
+                            , _viewTooltip.Frame.GetMaxY() + GetScaledHeight(16)));
+                    }
+                    , () =>
+                    {
+                        _uiScrollView.ContentSize = new CGSize(ViewWidth, _viewBreakdown.Frame.GetMaxY());
+                    }
+                );
+            }));
         }
     }
 }

@@ -247,9 +247,21 @@
     "Bills": {
         "navTitle": "Bills",
         "clearedBills": "I’ve cleared all bills",
-        "viewMore": "View More",
+        "viewMore": "View Details",
         "paidExtra": "I’ve paid extra",
         "needToPay": "I need to pay",
         "by": "by"
+    },
+
+    "BillDetails": {
+        "navTitle": "Bill Details",
+        "billDetails": "My Bill Details",
+        "outstandingCharges": "My outstanding charges",
+        "billThisMonth": "My bill this month",
+        "needToPay": "I need to pay",
+        "by": "by",
+        "paidExtra": "I’ve paid extra",
+        "minimumChargeDescription": "This account has a minimum charge.",
+        "applicationCharges": "My application charges"
     }
 }

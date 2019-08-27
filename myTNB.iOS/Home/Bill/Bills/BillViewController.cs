@@ -29,6 +29,8 @@ namespace myTNB
         private const string ParseFormat = "yyyyMMdd";
         private const string DateFormat = "dd MMM yyyy";
 
+        private GetAccountsChargesResponseModel _accountCharges;
+
         public BillViewController(IntPtr handle) : base(handle) { }
 
         #region Life Cycle
@@ -93,7 +95,7 @@ namespace myTNB
             UILabel lblTitle = new UILabel(new CGRect(0, 0, ViewWidth, GetScaledHeight(24)))
             {
                 Font = TNBFont.MuseoSans_16_500,
-                Text = GetI18NValue(BillConstants.I18N_NavTitle),
+                Text = GetI18NValue(BillConstants.I18N_BillNavTitle),
                 TextColor = UIColor.White,
                 TextAlignment = UITextAlignment.Center
             };
@@ -174,8 +176,12 @@ namespace myTNB
                 UIStoryboard storyBoard = UIStoryboard.FromName("BillDetails", null);
                 BillDetailsViewController viewController =
                     storyBoard.InstantiateViewController("BillDetailsView") as BillDetailsViewController;
-                var navController = new UINavigationController(viewController);
-                PresentViewController(navController, true, null);
+                if (viewController != null)
+                {
+                    viewController.Charges = _accountCharges.d.data;
+                    var navController = new UINavigationController(viewController);
+                    PresentViewController(navController, true, null);
+                }
             }));
 
             _btnPay = new CustomUIButtonV2()
@@ -248,14 +254,14 @@ namespace myTNB
                    {
                        InvokeInBackground(async () =>
                        {
-                           GetAccountsChargesResponseModel accountCharges = await GetAccountsCharges();
+                           _accountCharges = await GetAccountsCharges();
                            InvokeOnMainThread(() =>
                            {
-                               if (accountCharges != null && accountCharges.d != null && accountCharges.d.IsSuccess
-                                    && accountCharges.d.data != null && accountCharges.d.data.AccountCharges != null
-                                    && accountCharges.d.data.AccountCharges.Count > 0 && accountCharges.d.data.AccountCharges[0] != null)
+                               if (_accountCharges != null && _accountCharges.d != null && _accountCharges.d.IsSuccess
+                                    && _accountCharges.d.data != null && _accountCharges.d.data.AccountCharges != null
+                                    && _accountCharges.d.data.AccountCharges.Count > 0 && _accountCharges.d.data.AccountCharges[0] != null)
                                {
-                                   UpdateHeaderData(accountCharges.d.data.AccountCharges[0]);
+                                   UpdateHeaderData(_accountCharges.d.data.AccountCharges[0]);
                                }
                            });
                        });

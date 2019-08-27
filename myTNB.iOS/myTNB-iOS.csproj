@@ -1158,16 +1158,16 @@
     <ImageAsset Include="Assets.xcassets\Arrow-Expand.imageset\expandRight16X16%403x.png" />
     <ImageAsset Include="Assets.xcassets\Bills-Cleared-Banner.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\needToPay%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\needToPay%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Bills-Cleared-Banner.imageset\noOutstanding%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Bills-Cleared-Banner.imageset\noOutstanding%403x.png" />
     <ImageAsset Include="Assets.xcassets\Arrow-Expand-Down.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Arrow-Collapse-Up.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Arrow-Expand-Down.imageset\icActionExpandDown%402x.png" />
     <ImageAsset Include="Assets.xcassets\Arrow-Expand-Down.imageset\icActionExpandDown%403x.png" />
     <ImageAsset Include="Assets.xcassets\Arrow-Collapse-Up.imageset\icActionExpandDownUp%402x.png" />
     <ImageAsset Include="Assets.xcassets\Arrow-Collapse-Up.imageset\icActionExpandDownUp%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-Cleared-Banner.imageset\noOutstanding%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-Cleared-Banner.imageset\noOutstanding%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\needToPay%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\needToPay%403x-1.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1601,6 +1601,7 @@
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
     <None Include="packages.config" />
+    <None Include="GoogleService-Info.plist" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
