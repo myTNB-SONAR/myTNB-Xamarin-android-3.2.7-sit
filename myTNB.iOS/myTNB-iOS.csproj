@@ -1168,6 +1168,12 @@
     <ImageAsset Include="Assets.xcassets\Arrow-Expand-Down.imageset\icActionExpandDown%403x.png" />
     <ImageAsset Include="Assets.xcassets\Arrow-Collapse-Up.imageset\icActionExpandDownUp%402x.png" />
     <ImageAsset Include="Assets.xcassets\Arrow-Collapse-Up.imageset\icActionExpandDownUp%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Itemized-Tooltip1.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Itemized-Tooltip1.imageset\Itemized-Tooltip1%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Itemized-Tooltip1.imageset\Itemized-Tooltip1%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Itemized-Tooltip2.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Itemized-Tooltip2.imageset\Itemized-Tooltip2%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Itemized-Tooltip2.imageset\Itemized-Tooltip2%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1559,6 +1565,8 @@
     <Folder Include="Home\Bill\Bill Details\" />
     <Folder Include="Assets.xcassets\Arrow-Expand-Down.imageset\" />
     <Folder Include="Assets.xcassets\Arrow-Collapse-Up.imageset\" />
+    <Folder Include="Assets.xcassets\Itemized-Tooltip1.imageset\" />
+    <Folder Include="Assets.xcassets\Itemized-Tooltip2.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

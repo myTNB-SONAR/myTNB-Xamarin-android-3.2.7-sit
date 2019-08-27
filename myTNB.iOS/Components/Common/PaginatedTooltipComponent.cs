@@ -13,19 +13,18 @@ namespace myTNB
     {
         UIView _parentView, _containerView, _toolTipFooterView;
         UIScrollView _scrollView;
+        UILabel _proceedLabel;
         int _currentPageIndex;
         List<SSMRMeterReadWalkthroughModel> _ssmrData;
         List<SMRMROValidateRegisterDetailsInfoModel> _previousMeterList;
         UIPageControl _pageControl;
-        bool _isForSSMRData;
 
-        public PaginatedTooltipComponent(UIView parent, bool isForSSMRData)
+        public PaginatedTooltipComponent(UIView parent)
         {
             _parentView = parent;
-            _isForSSMRData = isForSSMRData;
         }
 
-        private void CreateComponent()
+        private void CreateSSMRTooltip()
         {
             nfloat widthMargin = GetScaledWidth(18f);
             nfloat width = _parentView.Frame.Width;
@@ -37,7 +36,155 @@ namespace myTNB
             };
             _containerView.Layer.CornerRadius = 5f;
             SetToolTipScrollView();
-            SetScrollViewSubViews();
+            SetSubViewsForSSMRTooltip();
+        }
+
+        private void CreateBillDetailsTooltip()
+        {
+            nfloat widthMargin = GetScaledWidth(18f);
+            nfloat width = _parentView.Frame.Width;
+            nfloat height = GetScaledHeight(500f);
+            _containerView = new UIView(new CGRect(widthMargin, GetYLocationToCenterObject(height, _parentView), width - (widthMargin * 2), height))
+            {
+                BackgroundColor = UIColor.White,
+                ClipsToBounds = true
+            };
+            _containerView.Layer.CornerRadius = 5f;
+            SetToolTipScrollView();
+            SetSubViewsForBillDetailsTooltip();
+        }
+
+        #region Bill Details
+        public UIView GetBillDetailsTooltip()
+        {
+            CreateBillDetailsTooltip();
+            return _containerView;
+        }
+
+        private void SetSubViewsForBillDetailsTooltip()
+        {
+            nfloat widthMargin = GetScaledWidth(16f);
+            nfloat width = _scrollView.Frame.Width;
+            nfloat newHeight = 0f;
+            for (int i = 0; i < 2; i++)
+            {
+                UIView viewContainer = new UIView(_scrollView.Bounds);
+                viewContainer.BackgroundColor = UIColor.White;
+
+                UIImage displayImage;
+                //if (_ssmrData[i].IsSitecoreData)
+                //{
+                //    if (string.IsNullOrEmpty(_ssmrData[i].Image) || string.IsNullOrWhiteSpace(_ssmrData[i].Image))
+                //    {
+                //        displayImage = UIImage.FromBundle(string.Empty);
+                //    }
+                //    else
+                //    {
+                //        try
+                //        {
+                //            displayImage = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(_ssmrData[i].Image)));
+                //        }
+                //        catch (Exception e)
+                //        {
+                //            Debug.WriteLine("Image load Error: " + e.Message);
+                //            displayImage = UIImage.FromBundle(string.Empty);
+                //        }
+                //    }
+                //}
+                //else
+                //{
+                //    if (string.IsNullOrEmpty(_ssmrData[i].Image) || string.IsNullOrWhiteSpace(_ssmrData[i].Image))
+                //    {
+                //        displayImage = UIImage.FromBundle(string.Empty);
+                //    }
+                //    else
+                //    {
+                //        displayImage = UIImage.FromBundle(_ssmrData[i].Image);
+                //    }
+                //}
+                displayImage = UIImage.FromBundle("Itemized-Tooltip1");
+
+                nfloat origImageRatio = 180.0f / 284.0f;
+                nfloat imageHeight = viewContainer.Frame.Width * origImageRatio;
+                UIImageView imageView = new UIImageView(new CGRect(0, 0, viewContainer.Frame.Width, imageHeight))
+                {
+                    Image = displayImage,
+                };
+                viewContainer.AddSubview(imageView);
+
+                UILabel title = new UILabel(new CGRect(widthMargin, imageView.Frame.GetMaxY() + GetScaledHeight(16f), viewContainer.Frame.Width - (widthMargin * 2), 0))
+                {
+                    Font = TNBFont.MuseoSans_14_500,
+                    TextColor = MyTNBColor.CharcoalGrey,
+                    TextAlignment = UITextAlignment.Left,
+                    Lines = 0,
+                    LineBreakMode = UILineBreakMode.TailTruncation,
+                    Text = "Items from your demand letter"
+                };
+
+                CGSize titleNewSize = title.SizeThatFits(new CGSize(viewContainer.Frame.Width - (widthMargin * 2), 1000f));
+                ViewHelper.AdjustFrameSetHeight(title, titleNewSize.Height);
+
+                viewContainer.AddSubview(title);
+
+                UIView itemView = ItemView(viewContainer, title.Frame.GetMaxY() + BaseMarginHeight16);
+                viewContainer.AddSubview(itemView);
+
+                ViewHelper.AdjustFrameSetX(viewContainer, i * width);
+                ViewHelper.AdjustFrameSetWidth(viewContainer, width);
+                ViewHelper.AdjustFrameSetHeight(viewContainer, itemView.Frame.GetMaxY() + GetScaledHeight(32f));
+
+                _scrollView.AddSubview(viewContainer);
+                if (newHeight < viewContainer.Frame.GetMaxY())
+                {
+                    newHeight = viewContainer.Frame.GetMaxY();
+                }
+            }
+            _scrollView.ContentSize = new CGSize(_scrollView.Frame.Width * 2, newHeight);
+            ViewHelper.AdjustFrameSetHeight(_scrollView, newHeight);
+
+            //SetToolTipFooterView();
+        }
+
+        private UIView ItemView(UIView parent, nfloat yPos)
+        {
+            nfloat width = parent.Frame.Width;
+            nfloat height = GetScaledHeight(20F);
+            UIView itemView = new UIView(new CGRect(BaseMarginWidth16, yPos, width, height))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+            UIView numberView = new UIView(new CGRect(0, 0, GetScaledWidth(20F), GetScaledHeight(20F)))
+            {
+                BackgroundColor = MyTNBColor.ButterScotch
+            };
+            numberView.Layer.CornerRadius = GetScaledHeight(10F);
+            nfloat labelWidth = width - numberView.Frame.GetMaxX() - GetScaledWidth(8F) - BaseMarginWidth16;
+            UILabel descLabel = new UILabel(new CGRect(numberView.Frame.GetMaxX() + GetScaledWidth(8F), 0, labelWidth, GetScaledHeight(20F)))
+            {
+                Font = TNBFont.MuseoSans_12_500,
+                TextColor = MyTNBColor.GreyishBrown,
+                TextAlignment = UITextAlignment.Left,
+                Text = "My bill this month (electricity usage only)"
+            };
+            itemView.AddSubviews(new UIView { numberView, descLabel });
+            CGSize size = descLabel.SizeThatFits(new CGSize(labelWidth, 1000f));
+            ViewHelper.AdjustFrameSetHeight(descLabel, size.Height);
+            ViewHelper.AdjustFrameSetY(descLabel, GetYLocationToCenterObject(descLabel.Frame.Height, itemView));
+            if (descLabel.Frame.Height > height)
+            {
+                ViewHelper.AdjustFrameSetHeight(itemView, descLabel.Frame.GetMaxY());
+            }
+            return itemView;
+        }
+
+        #endregion
+
+        #region SSMR
+        public UIView GetSSMRTooltip()
+        {
+            CreateSSMRTooltip();
+            return _containerView;
         }
 
         public void SetSSMRData(List<SSMRMeterReadWalkthroughModel> data)
@@ -56,23 +203,7 @@ namespace myTNB
             }
         }
 
-        private void SetToolTipScrollView()
-        {
-            _scrollView = new UIScrollView(new CGRect(0, 0, _containerView.Frame.Width, 0f))
-            {
-                Delegate = new PaginatedTooltipDelegate(this),
-                PagingEnabled = true,
-                ShowsHorizontalScrollIndicator = false,
-                ShowsVerticalScrollIndicator = false,
-                ClipsToBounds = true,
-                BackgroundColor = UIColor.Clear,
-                Hidden = false
-            };
-
-            _containerView.AddSubview(_scrollView);
-        }
-
-        private void SetScrollViewSubViews()
+        private void SetSubViewsForSSMRTooltip()
         {
             nfloat widthMargin = GetScaledWidth(16f);
             nfloat width = _scrollView.Frame.Width;
@@ -188,6 +319,24 @@ namespace myTNB
 
             SetToolTipFooterView();
         }
+        #endregion
+
+        private void SetToolTipScrollView()
+        {
+            _scrollView = new UIScrollView(new CGRect(0, 0, _containerView.Frame.Width, 0f))
+            {
+                Delegate = new PaginatedTooltipDelegate(this),
+                PagingEnabled = true,
+                ShowsHorizontalScrollIndicator = false,
+                ShowsVerticalScrollIndicator = false,
+                ClipsToBounds = true,
+                BackgroundColor = UIColor.Clear,
+                Hidden = false,
+                Bounces = false
+            };
+
+            _containerView.AddSubview(_scrollView);
+        }
 
         private void SetToolTipFooterView()
         {
@@ -217,7 +366,7 @@ namespace myTNB
             };
             _toolTipFooterView.AddSubview(line);
 
-            UILabel proceedLabel = new UILabel(new CGRect(0, line.Frame.GetMaxY() + GetScaledHeight(16f)
+            _proceedLabel = new UILabel(new CGRect(0, line.Frame.GetMaxY() + GetScaledHeight(16f)
                 , _toolTipFooterView.Frame.Width, GetScaledHeight(24f)))
             {
                 Font = TNBFont.MuseoSans_16_500,
@@ -226,13 +375,9 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Center,
                 UserInteractionEnabled = true
             };
-            proceedLabel.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-            {
-                //MakeToolTipVisible(false);
-            }));
-            _toolTipFooterView.AddSubview(proceedLabel);
+            _toolTipFooterView.AddSubview(_proceedLabel);
 
-            ViewHelper.AdjustFrameSetHeight(_toolTipFooterView, proceedLabel.Frame.GetMaxY() + GetScaledHeight(16f));
+            ViewHelper.AdjustFrameSetHeight(_toolTipFooterView, _proceedLabel.Frame.GetMaxY() + GetScaledHeight(16f));
 
             _containerView.AddSubview(_toolTipFooterView);
 
@@ -240,6 +385,14 @@ namespace myTNB
 
             ViewHelper.AdjustFrameSetHeight(_containerView, _toolTipFooterView.Frame.GetMaxY());
             ViewHelper.AdjustFrameSetY(_containerView, (currentWindow.Frame.Height / 2) - (_containerView.Frame.Height / 2));
+        }
+
+        public void SetGestureRecognizer(UITapGestureRecognizer recognizer)
+        {
+            if (_proceedLabel != null)
+            {
+                _proceedLabel.AddGestureRecognizer(recognizer);
+            }
         }
 
         private void AddPageControl()
@@ -288,12 +441,5 @@ namespace myTNB
                 _controller.ScrollViewHasPaginated();
             }
         }
-
-        public UIView GetUI()
-        {
-            CreateComponent();
-            return _containerView;
-        }
-
     }
 }

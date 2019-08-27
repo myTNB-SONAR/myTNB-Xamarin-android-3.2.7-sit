@@ -2,13 +2,14 @@ using CoreGraphics;
 using Foundation;
 using myTNB.SSMR;
 using System;
+using System.Diagnostics;
 using UIKit;
 
 namespace myTNB
 {
     public partial class BillDetailsViewController : CustomUIViewController
     {
-        private UIView _viewDetails, _viewTitleSection, _viewBreakdown, _viewLine;
+        private UIView _viewDetails, _viewTitleSection, _viewBreakdown, _viewLine, _toolTipParentView;
         CustomUIView _viewMandatory;
         private UIScrollView _uiScrollView;
 
@@ -41,11 +42,47 @@ namespace myTNB
             UIBarButtonItem btnInfo = new UIBarButtonItem(UIImage.FromBundle(SSMRConstants.IMG_Info)
                , UIBarButtonItemStyle.Done, (sender, e) =>
                {
+                   Debug.WriteLine("btnInfo tapped");
+                   PrepareToolTipView();
                });
             NavigationItem.LeftBarButtonItem = btnBack;
             NavigationItem.RightBarButtonItem = btnInfo;
             Title = "Bill Details";
         }
+
+        #region
+        private void PrepareToolTipView()
+        {
+            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+            nfloat height = currentWindow.Frame.Height;
+            if (_toolTipParentView != null)
+            {
+                _toolTipParentView.RemoveFromSuperview();
+            }
+            _toolTipParentView = new UIView(new CGRect(0, 0, ViewWidth, height))
+            {
+                BackgroundColor = MyTNBColor.Black60
+            };
+            currentWindow.AddSubview(_toolTipParentView);
+            PaginatedTooltipComponent tooltipComponent = new PaginatedTooltipComponent(_toolTipParentView);
+            //tooltipComponent.SetSSMRData(pageData);
+            //tooltipComponent.SetPreviousMeterData(_previousMeterList);
+            _toolTipParentView.AddSubview(tooltipComponent.GetBillDetailsTooltip());
+            tooltipComponent.SetGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                MakeToolTipVisible(false);
+            }));
+            _toolTipParentView.Hidden = false;
+        }
+
+        private void MakeToolTipVisible(bool isVisible)
+        {
+            if (_toolTipParentView != null)
+            {
+                _toolTipParentView.Hidden = !isVisible;
+            }
+        }
+        #endregion
 
         private void AddDetails()
         {
@@ -96,7 +133,7 @@ namespace myTNB
             _viewBreakdown = new UIView { BackgroundColor = UIColor.White };
             UIView viewOutstanding = GetCommonLabelView(GetScaledHeight(16), "My outstanding charges", "RM 0.00");
             UIView viewMonthBill = GetCommonLabelView(GetYLocationFromFrame(viewOutstanding.Frame, 16), "My bill this month", "RM 0.00");
-             _viewMandatory = GetMandatoryView(GetYLocationFromFrame(viewMonthBill.Frame, 16));
+            _viewMandatory = GetMandatoryView(GetYLocationFromFrame(viewMonthBill.Frame, 16));
             _viewLine = new UIView(new CGRect(BaseMargin, GetYLocationFromFrame(_viewMandatory.Frame, 16), BaseMarginedWidth, GetScaledHeight(1)))
             {
                 BackgroundColor = MyTNBColor.VeryLightPinkThree
@@ -301,7 +338,7 @@ namespace myTNB
 
         private void SetEvents()
         {
-            
+
         }
     }
 }
