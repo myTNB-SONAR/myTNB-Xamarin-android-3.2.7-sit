@@ -2276,6 +2276,29 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\bill_screen_filter_icon.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\bill_screen_filter_icon.png" />
     <AndroidResource Include="Resources\drawable\rectangle_rounded_corner_dark_blue_bg.xml" />
+    <AndroidResource Include="Resources\drawable-hdpi\expand_right_arrow.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\expand_right_arrow.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\expand_right_arrow.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\expand_right_arrow.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\expand_right_arrow.png" />
+    <AndroidResource Include="Resources\layout\ItemisedBillingHeaderLayout.axml" />
+    <Compile Include="Src\CompoundView\ItemisedBillingHeaderView.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\bill_need_to_pay_banner.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\bill_no_outstanding_banner.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\bill_need_to_pay_banner.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\bill_no_outstanding_banner.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\bill_need_to_pay_banner.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\bill_no_outstanding_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\bill_need_to_pay_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\bill_no_outstanding_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\bill_need_to_pay_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\bill_no_outstanding_banner.png" />
+    <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\ItemisedBillingMenuPresenter.cs" />
+    <AndroidResource Include="Resources\layout\ItemisedBillingHistoryGroupingLayout.axml" />
+    <AndroidResource Include="Resources\layout\ItemisedBillingGroupContentLayout.axml" />
+    <Compile Include="Src\CompoundView\ItemisedBillingGroupComponent.cs" />
+    <Compile Include="Src\CompoundView\ItemisedBillingGroupContentComponent.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\ItemisedBillingHistoryModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -2647,6 +2670,8 @@
     <Folder Include="Resources\anim\" />
     <Folder Include="Src\SSMRMeterHistory\Api\" />
     <Folder Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\" />
+    <Folder Include="Src\CompoundView\" />
+    <Folder Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
