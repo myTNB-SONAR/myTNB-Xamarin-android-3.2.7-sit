@@ -1153,6 +1153,21 @@
     <ImageAsset Include="Assets.xcassets\IC-Action-Filter.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Filter.imageset\filterCopy1%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Filter.imageset\filterCopy1%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Expand.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Expand.imageset\expandRight16X16%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Expand.imageset\expandRight16X16%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-Cleared-Banner.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\needToPay%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\needToPay%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-Cleared-Banner.imageset\noOutstanding%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-Cleared-Banner.imageset\noOutstanding%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Expand-Down.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Collapse-Up.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Expand-Down.imageset\icActionExpandDown%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Expand-Down.imageset\icActionExpandDown%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Collapse-Up.imageset\icActionExpandDownUp%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Collapse-Up.imageset\icActionExpandDownUp%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1536,6 +1551,14 @@
     <Folder Include="Assets.xcassets\BCRM-Down-Icon.imageset\" />
     <Folder Include="Assets.xcassets\IC-Action-Filter.imageset\" />
     <Folder Include="Components\Common\" />
+    <Folder Include="Assets.xcassets\Arrow-Expand.imageset\" />
+    <Folder Include="Assets.xcassets\Bills-Cleared-Banner.imageset\" />
+    <Folder Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\" />
+    <Folder Include="Model\GetAccountsCharges\" />
+    <Folder Include="Home\Bill\Bills\" />
+    <Folder Include="Home\Bill\Bill Details\" />
+    <Folder Include="Assets.xcassets\Arrow-Expand-Down.imageset\" />
+    <Folder Include="Assets.xcassets\Arrow-Collapse-Up.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1573,6 +1596,7 @@
     <InterfaceDefinition Include="SSMR\SSMR.storyboard" />
     <InterfaceDefinition Include="Customs\Generic No Data Page\GenericNoData.storyboard" />
     <InterfaceDefinition Include="Usage\Usage.storyboard" />
+    <InterfaceDefinition Include="Home\Bill\Bill Details\BillDetails.storyboard" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -1676,10 +1700,6 @@
     <Compile Include="Home\Dashboard\Select Accounts\SelectAccountTableViewController.cs" />
     <Compile Include="Home\Dashboard\Select Accounts\SelectAccountTableViewController.designer.cs">
       <DependentUpon>..\..\..\Dashboard\Select Accounts\SelectAccountTableViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Bill\BillViewController.cs" />
-    <Compile Include="Home\Bill\BillViewController.designer.cs">
-      <DependentUpon>BillViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Home\Promotions\PromotionsViewController.cs" />
     <Compile Include="Home\Promotions\PromotionsViewController.designer.cs">
@@ -2360,12 +2380,31 @@
     <Compile Include="Components\Usage View\Charts\REChartView.cs" />
     <Compile Include="Components\Usage View\REAmountComponent.cs" />
     <Compile Include="Home\Bill\BillConstants.cs" />
-    <Compile Include="Home\Bill\BillHistorySource.cs" />
     <Compile Include="Components\Common\PaginatedTooltipComponent.cs" />
+    <Compile Include="Model\GetAccountsCharges\GetAccountsChargesResponseModel.cs" />
+    <Compile Include="Home\Bill\Bills\BillHistorySource.cs" />
+    <Compile Include="Home\Bill\Bills\BillHistoryViewCell.cs" />
+    <Compile Include="Home\Bill\Bills\BillSectionViewCell.cs" />
+    <Compile Include="Home\Bill\Bills\BillViewController.cs" />
+    <Compile Include="Home\Bill\Bills\BillViewController.designer.cs">
+      <DependentUpon>BillViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Bill\Bill Details\BillDetailsViewController.cs" />
+    <Compile Include="Home\Bill\Bill Details\BillDetailsViewController.designer.cs">
+      <DependentUpon>BillDetailsViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
-    <BundleResource Include="GoogleService-Info.plist" />
+    <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Debug'">
+      <LogicalName>GoogleService-Info.plist</LogicalName>
+    </BundleResource>
+    <BundleResource Include="Firebase\sit\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Master'">
+      <LogicalName>GoogleService-Info.plist</LogicalName>
+    </BundleResource>
+    <BundleResource Include="Firebase\prod\GoogleService-Info.plist" Condition="'$(Configuration)' == 'Release'">
+      <LogicalName>GoogleService-Info.plist</LogicalName>
+    </BundleResource>
     <BundleResource Include="Resources\FAQ.json" />
     <BundleResource Include="Resources\Fonts\MuseoSans_500.otf">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

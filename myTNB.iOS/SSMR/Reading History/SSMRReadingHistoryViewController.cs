@@ -23,7 +23,7 @@ namespace myTNB
         private SMRAccountActivityInfoResponseModel _smrActivityInfoResponse;
         private CustomerAccountRecordModel _currAcc;
         private ContactDetailsResponseModel _contactDetails;
-        private nfloat  _navBarHeight, _previousScrollOffset;
+        private nfloat _navBarHeight, _previousScrollOffset;
         private nfloat _tableViewOffset = 64f;
         private nfloat titleBarHeight = 24f;
         private int _currentIndex = -1;
@@ -57,7 +57,8 @@ namespace myTNB
                 accName = _currAcc?.accountNickName ?? string.Empty;
                 _ssmrHeaderComponent.AccountName = accName;
                 EvaluateEntry();
-            }else if (FromStatusPage)
+            }
+            else if (FromStatusPage)
             {
                 _currAcc = SSMRActivityInfoCache.SubmittedAccount;
                 accName = _currAcc?.accountNickName ?? string.Empty;
