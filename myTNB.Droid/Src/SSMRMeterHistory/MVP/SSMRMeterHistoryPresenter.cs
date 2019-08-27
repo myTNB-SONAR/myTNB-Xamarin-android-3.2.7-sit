@@ -69,17 +69,16 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     });
                     isTaggedSMRList.AddRange(eligibleList);
 
-                    //Mock Data - START
-                    List<SMREligibiltyPopUpDetails> popupDetailList = new List<SMREligibiltyPopUpDetails>();
-                    SMREligibiltyPopUpDetails detail = new SMREligibiltyPopUpDetails();
-                    detail.Title = "Why are some of my accounts not here?";
-                    detail.Description = "We took the liberty to only show you electricity accounts that are eligble for the Self Meter Reading service. <a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">Click here</a> to learn more about its eligibility.";
-                    detail.CTA = "Got It!";
-                    detail.Type = "Not_SMR_CA";
-                    popupDetailList.Add(detail);
-                    //Mock Data - END
-                    response.Response.Data.SMREligibiltyPopUpDetailList = popupDetailList;
-
+                    ////Mock Data - START
+                    //List<SMREligibiltyPopUpDetails> popupDetailList =  new List<SMREligibiltyPopUpDetails>();
+                    //SMREligibiltyPopUpDetails detail = new SMREligibiltyPopUpDetails();
+                    //detail.Title = "Why are some of my accounts not here?";
+                    //detail.Description = "We took the liberty to only show you electricity accounts that are eligble for the Self Meter Reading service. <a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">Click here</a> to learn more about its eligibility.";
+                    //detail.CTA = "Got It!";
+                    //detail.Type = "Not_SMR_CA";
+                    //popupDetailList.Add(detail);
+                    ////Mock Data - END
+                    //response.Response.Data.SMREligibiltyPopUpDetailList = popupDetailList;
                     MyTNBAppToolTipData.GetInstance().SetSMREligibiltyPopUpDetailList(response.Response.Data.SMREligibiltyPopUpDetailList);
 
                     this.mView.ShowSMREligibleAccountList(isTaggedSMRList);

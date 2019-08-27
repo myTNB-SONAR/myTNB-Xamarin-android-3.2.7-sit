@@ -916,7 +916,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 										CustomerBillingAccount.RemoveSelected();
 										if (!string.IsNullOrEmpty(selected.AccNum))
 										{
-											CustomerBillingAccount.Update(selected.AccNum, true);
+											CustomerBillingAccount.SetSelected(selected.AccNum);
 										}
 										usageHistoryResponse = JsonConvert.DeserializeObject<UsageHistoryResponse>(storedEntity.JsonResponse);
 										if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode != "7200")

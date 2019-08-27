@@ -51,6 +51,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void CheckEnergySavingTipsTimeStamp();
             void UpdateSearchViewBackground(string searchText);
+
         }
 
         public interface IHomeMenuPresenter

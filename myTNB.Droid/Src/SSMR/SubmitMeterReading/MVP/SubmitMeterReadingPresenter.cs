@@ -31,6 +31,36 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public async void SubmitMeterReading(string contractAccountValue, bool isOwnedAccountValue, List<MeterReading> meterReadingList)
         {
             SubmitMeterReadingRequest request = new SubmitMeterReadingRequest(contractAccountValue, isOwnedAccountValue, meterReadingList);
+            //Mock - START
+            //SubmitMeterReadingResponse mockResponse = new SubmitMeterReadingResponse();
+            //List<SubmitSMRMeterReadingsResp> SubmitSMRMeterReadingsRespList = new List<SubmitSMRMeterReadingsResp>();
+            //SubmitSMRMeterReadingsResp resp = new SubmitSMRMeterReadingsResp();
+            //resp.MessageID = "24";
+            //resp.ReadingUnit = "KWH";
+            //resp.Message = "Your meter reading could not be validated. Please try again.";
+            //resp.IsSuccess = false;
+            //SubmitSMRMeterReadingsRespList.Add(resp);
+
+            //resp = new SubmitSMRMeterReadingsResp();
+            //resp.MessageID = "24";
+            //resp.ReadingUnit = "KW";
+            //resp.Message = "Your meter reading could not be validated. Please try again.";
+            //resp.IsSuccess = true;
+            //SubmitSMRMeterReadingsRespList.Add(resp);
+
+            //resp = new SubmitSMRMeterReadingsResp();
+            //resp.MessageID = "24";
+            //resp.ReadingUnit = "KVAR";
+            //resp.Message = "Your meter reading could not be validated. Please try again.";
+            //resp.IsSuccess = false;
+            //SubmitSMRMeterReadingsRespList.Add(resp);
+            //mockResponse.Data = new SMRSubmitResponseData();
+            //mockResponse.Data.ErrorCode = "7100";
+            //mockResponse.Data.DisplayTitle = "Reading Submitted Test";
+            //mockResponse.Data.DisplayMessage = "Thank you for your meter reading submission. We will notify you when your meter reading has been validated.";
+            //mockResponse.Data.ResponseDetailsData = new SMRSubmitResponseDetails();
+            //mockResponse.Data.ResponseDetailsData.SubmitSMRMeterReadingsResp = SubmitSMRMeterReadingsRespList;
+            ////Mock - END
             SubmitMeterReadingResponse response = await api.SubmitSMRMeetingReading(request);
             if (response.Data != null && response.Data.ErrorCode == "7200")
             {
@@ -250,6 +280,61 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 items.Add(dataModel);
             }
             return items;
+        }
+
+        public List<MeterReadingModel> GetDummyData()
+        {
+            List<SMRMROValidateRegisterDetails> sMRMROValidateRegisterDetailsList = new List<SMRMROValidateRegisterDetails>();
+            SMRMROValidateRegisterDetails sMRMROValidateRegisterDetails = new SMRMROValidateRegisterDetails();
+            sMRMROValidateRegisterDetails.RegisterNumber = "001";
+            sMRMROValidateRegisterDetails.MroID = "0000002432432";
+            sMRMROValidateRegisterDetails.PrevMrDate = "2-8-2019";
+            sMRMROValidateRegisterDetails.SchMrDate = "2-8-2019";
+            sMRMROValidateRegisterDetails.PrevMeterReading = "1234567";
+            sMRMROValidateRegisterDetails.ReadingUnit = "KWH";
+            sMRMROValidateRegisterDetails.ReadingUnitDisplayTitle = "kWh";
+            sMRMROValidateRegisterDetailsList.Add(sMRMROValidateRegisterDetails);
+
+            sMRMROValidateRegisterDetails = new SMRMROValidateRegisterDetails();
+            sMRMROValidateRegisterDetails.RegisterNumber = "002";
+            sMRMROValidateRegisterDetails.MroID = "0000002432432";
+            sMRMROValidateRegisterDetails.PrevMrDate = "2-8-2019";
+            sMRMROValidateRegisterDetails.SchMrDate = "2-8-2019";
+            sMRMROValidateRegisterDetails.PrevMeterReading = "1234567";
+            sMRMROValidateRegisterDetails.ReadingUnit = "KW";
+            sMRMROValidateRegisterDetails.ReadingUnitDisplayTitle = "kW";
+            sMRMROValidateRegisterDetailsList.Add(sMRMROValidateRegisterDetails);
+
+            //sMRMROValidateRegisterDetails = new SMRMROValidateRegisterDetails();
+            //sMRMROValidateRegisterDetails.RegisterNumber = "003";
+            //sMRMROValidateRegisterDetails.MroID = "0000002432432";
+            //sMRMROValidateRegisterDetails.PrevMrDate = "2-8-2019";
+            //sMRMROValidateRegisterDetails.SchMrDate = "2-8-2019";
+            //sMRMROValidateRegisterDetails.PrevMeterReading = "1234567";
+            //sMRMROValidateRegisterDetails.ReadingUnit = "KVAR";
+            //sMRMROValidateRegisterDetails.ReadingUnitDisplayTitle = "kVARh";
+            //sMRMROValidateRegisterDetailsList.Add(sMRMROValidateRegisterDetails);
+
+            return GetMeterReadingModelList(sMRMROValidateRegisterDetailsList);
+        }
+
+        public List<MeterReadingModel> GetMeterReadingModelList(List<SMRMROValidateRegisterDetails> sMRMROValidateRegisterDetailsList)
+        {
+            List<MeterReadingModel> meterReadingModelList = new List<MeterReadingModel>();
+            MeterReadingModel meterReadingModel;
+            sMRMROValidateRegisterDetailsList.ForEach(validatedRegister =>
+            {
+                meterReadingModel = new MeterReadingModel();
+                meterReadingModel.mroID = validatedRegister.MroID;
+                meterReadingModel.registerNumber = validatedRegister.RegisterNumber;
+                meterReadingModel.previousMeterReadingValue = validatedRegister.PrevMeterReading;
+                meterReadingModel.currentMeterReadingValue = "";
+                meterReadingModel.isValidated = false;
+                meterReadingModel.meterReadingUnit = validatedRegister.ReadingUnit;
+                meterReadingModel.meterReadingUnitDisplay = validatedRegister.ReadingUnitDisplayTitle;
+                meterReadingModelList.Add(meterReadingModel);
+            });
+            return meterReadingModelList;
         }
     }
 }

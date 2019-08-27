@@ -56,18 +56,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public void SetMeterId(string meterId)
         {
-            switch (meterId)
-            {
-                case "001":
-                    mMeterId = "kwh";
-                    break;
-                case "002":
-                    mMeterId = "kw";
-                    break;
-                default:
-                    mMeterId = "kvarh";
-                    break;
-            }
+            mMeterId = meterId;
         }
 
         public void UpdateBackground()

@@ -10,6 +10,8 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.V7.Widget;
+using Android.Text;
+using Android.Text.Style;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -17,6 +19,7 @@ using myTNB_Android.Src.AddAccount.Adapter;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.FAQ.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Adapter;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.SSMR.SMRApplication.Adapter;
@@ -32,10 +35,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
     public class SelectSMRAccountActivity : BaseToolbarAppCompatActivity, SelectSMRAccountContract.IView
     {
         [BindView(Resource.Id.account_list_view)]
-        ListView accountSMRList;
-
-        [BindView(Resource.Id.whyAccountsNotHere)]
-        TextView whyAccountsNotHere; 
+        ListView accountSMRList; 
 
         [BindView(Resource.Id.noEligibleAccountContainer)]
         LinearLayout noEligibleAccountContainer; 
@@ -78,13 +78,19 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            TextViewUtils.SetMuseoSans500Typeface(whyAccountsNotHere);
             Bundle extras = Intent.Extras;
-            if (extras.ContainsKey("SMR_ELIGIBLE_ACCOUNT_LIST"))
+            if (extras != null && extras.ContainsKey("SMR_ELIGIBLE_ACCOUNT_LIST"))
             {
-                accountList = JsonConvert.DeserializeObject<List<SMRAccount>>(extras.GetString("SMR_ELIGIBLE_ACCOUNT_LIST"));
+                try
+                {
+                    accountList = JsonConvert.DeserializeObject<List<SMRAccount>>(extras.GetString("SMR_ELIGIBLE_ACCOUNT_LIST"));
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
             }
-            if (accountList.Count > 0)
+            if (accountList != null && accountList.Count > 0)
             {
                 if (CustomerBillingAccount.HasSelected())
                 {
@@ -105,13 +111,17 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                 }
                 noEligibleAccountContainer.Visibility = ViewStates.Gone;
                 eligibleAccountListContainer.Visibility = ViewStates.Visible;
-                selectAccountAdapter = new SelectAccountAdapter(this, accountList);
+                List<SMRAccount> newItemList = accountList.GetRange(0, accountList.Count);
+                newItemList.Add(new SMRAccount()); //To show info item
+                selectAccountAdapter = new SelectAccountAdapter(this, newItemList);
                 accountSMRList.Adapter = selectAccountAdapter;
 
                 accountSMRList.ItemClick += OnItemClick;
             }
             else
             {
+                SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
+                SetStatusBarBackground(Resource.Drawable.bg_smr);
                 noEligibleAccountContainer.Visibility = ViewStates.Visible;
                 eligibleAccountListContainer.Visibility = ViewStates.Gone;
             }
@@ -126,35 +136,75 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             }
         }
 
-        internal void OnItemClick(object sender, AdapterView.ItemClickEventArgs e)
+        class ClickSpan : ClickableSpan
         {
-            for (int i = 0; i < accountList.Count; i++)
+            public Action<View> Click;
+            public override void OnClick(View widget)
             {
-                if (i == e.Position)
+                if (Click != null)
                 {
-                    accountList[i].accountSelected = true;
-                }
-                else
-                {
-                    accountList[i].accountSelected = false;
+                    Click(widget);
                 }
             }
-            Intent returnIntent = new Intent();
-            returnIntent.PutExtra("SELECTED_ACCOUNT_NUMBER", accountList.Find(x => { return x.accountSelected; }).accountNumber);
-            SetResult(Result.Ok, returnIntent);
-            Finish();
+
+            public override void UpdateDrawState(TextPaint ds)
+            {
+                base.UpdateDrawState(ds);
+                ds.UnderlineText = false;
+            }
         }
 
-        [OnClick(Resource.Id.smrWhyTheseAccountsInfo)]
-        internal void OnWhyTheseAccountsTap(object sender, EventArgs eventArgs)
+        internal void OnItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            MyTNBAppToolTipData.SMREligibiltyPopUpDetailData tooltipData = MyTNBAppToolTipData.GetInstance().GetSMREligibiltyPopUpDetails();
-
-            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                .SetTitle(tooltipData.title)
-                .SetMessage(tooltipData.description)
-                .SetCTALabel(tooltipData.cta)
-                .Build().Show();
+            if (e.Position == accountList.Count)//Handling Account list Info tooltip from list
+            {
+                MyTNBAppToolTipData.SMREligibiltyPopUpDetailData tooltipData = MyTNBAppToolTipData.GetInstance().GetSMREligibiltyPopUpDetails();
+                var clickableSpan = new ClickSpan();
+                clickableSpan.Click += v =>
+                {
+                    if (tooltipData.description != null && tooltipData.description.Contains("faq"))
+                    {
+                        //Lauch FAQ
+                        int startIndex = tooltipData.description.LastIndexOf("=") + 1;
+                        int lastIndex = tooltipData.description.LastIndexOf("}");
+                        int lengthOfId = (lastIndex - startIndex) + 1;
+                        if (lengthOfId < tooltipData.description.Length)
+                        {
+                            string faqid = tooltipData.description.Substring(startIndex, lengthOfId);
+                            if (!string.IsNullOrEmpty(faqid))
+                            {
+                                Intent faqIntent = new Intent(this, typeof(FAQListActivity));
+                                faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+                                StartActivity(faqIntent);
+                            }
+                        }
+                    }
+                };
+                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                    .SetTitle(tooltipData.title)
+                    .SetClickableSpan(clickableSpan)
+                    .SetMessage(tooltipData.description)
+                    .SetCTALabel(tooltipData.cta)
+                    .Build().Show();
+            }
+            else
+            {
+                for (int i = 0; i < accountList.Count; i++)
+                {
+                    if (i == e.Position)
+                    {
+                        accountList[i].accountSelected = true;
+                    }
+                    else
+                    {
+                        accountList[i].accountSelected = false;
+                    }
+                }
+                Intent returnIntent = new Intent();
+                returnIntent.PutExtra("SELECTED_ACCOUNT_NUMBER", accountList.Find(x => { return x.accountSelected; }).accountNumber);
+                SetResult(Result.Ok, returnIntent);
+                Finish();
+            }
         }
 
         protected override void OnResume()

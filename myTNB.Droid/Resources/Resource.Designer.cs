@@ -8164,11 +8164,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00c5
 			public const int account_list_recycler_view = 2131558597;
 			
-			// aapt resource value: 0x7f0d03e2
-			public const int account_list_view = 2131559394;
+			// aapt resource value: 0x7f0d03e4
+			public const int account_list_view = 2131559396;
 			
-			// aapt resource value: 0x7f0d03df
-			public const int account_name_value = 2131559391;
+			// aapt resource value: 0x7f0d03e1
+			public const int account_name_value = 2131559393;
 			
 			// aapt resource value: 0x7f0d00cd
 			public const int account_no_edittext = 2131558605;
@@ -8875,8 +8875,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00a5
 			public const int edit_query = 2131558565;
 			
-			// aapt resource value: 0x7f0d03e1
-			public const int eligibleAccountListContainer = 2131559393;
+			// aapt resource value: 0x7f0d03e3
+			public const int eligibleAccountListContainer = 2131559395;
 			
 			// aapt resource value: 0x7f0d010b
 			public const int emptyLayout = 2131558667;
@@ -10093,8 +10093,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d00b1
 			public const int select_dialog_listview = 2131558577;
 			
-			// aapt resource value: 0x7f0d03e0
-			public const int select_smr_account = 2131559392;
+			// aapt resource value: 0x7f0d03e2
+			public const int select_smr_account = 2131559394;
 			
 			// aapt resource value: 0x7f0d00d1
 			public const int selector_account_type = 2131558609;
@@ -10243,8 +10243,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d03ff
 			public const int smrReadingHistoryDetailContent = 2131559423;
 			
-			// aapt resource value: 0x7f0d03e3
-			public const int smrWhyTheseAccountsInfo = 2131559395;
+			// aapt resource value: 0x7f0d03df
+			public const int smrWhyTheseAccountsInfo = 2131559391;
 			
 			// aapt resource value: 0x7f0d040b
 			public const int smr_content_history_header = 2131559435;
@@ -11536,8 +11536,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0470
 			public const int welcome_fragment = 2131559536;
 			
-			// aapt resource value: 0x7f0d03e4
-			public const int whyAccountsNotHere = 2131559396;
+			// aapt resource value: 0x7f0d03e0
+			public const int whyAccountsNotHere = 2131559392;
 			
 			// aapt resource value: 0x7f0d002e
 			public const int wide = 2131558446;
@@ -12343,16 +12343,16 @@ namespace myTNB_Android
 			public const int SelectSMRAccountEmptyLayout = 2130903278;
 			
 			// aapt resource value: 0x7f0300ef
-			public const int SelectSMRAccountItemLayout = 2130903279;
+			public const int SelectSMRAccountInfoLayout = 2130903279;
 			
 			// aapt resource value: 0x7f0300f0
-			public const int SelectSMRAccountLayout = 2130903280;
+			public const int SelectSMRAccountItemLayout = 2130903280;
 			
 			// aapt resource value: 0x7f0300f1
-			public const int SelectSupplyAccountItemLayout = 2130903281;
+			public const int SelectSMRAccountLayout = 2130903281;
 			
 			// aapt resource value: 0x7f0300f2
-			public const int SelectSupplyAccountRow = 2130903282;
+			public const int SelectSupplyAccountItemLayout = 2130903282;
 			
 			// aapt resource value: 0x7f0300f3
 			public const int SelectSupplyAccountView = 2130903283;

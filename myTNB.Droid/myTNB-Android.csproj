@@ -2346,6 +2346,9 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\SSMR\SubmitMeterReading\MVP\MeterReadingModel.cs" />
+    <Compile Include="Src\Database\Model\OnboardingSSMRParentEntity.cs" />
+    <AndroidResource Include="Resources\layout\SelectSMRAccountInfoLayout.axml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -2411,9 +2414,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ChartHouseSpinnerDropDownRow.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\SelectSupplyAccountRow.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\SelectSupplyAccountView.axml">
