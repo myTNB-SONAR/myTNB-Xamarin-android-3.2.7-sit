@@ -100,8 +100,12 @@ namespace myTNB
         private void AddBreakdown()
         {
             _viewBreakdown = new UIView { BackgroundColor = UIColor.White };
-            UIView viewOutstanding = GetCommonLabelView(GetScaledHeight(16), GetI18NValue(BillConstants.I18N_OutstandingCharges)
-                , Math.Abs(Charges.AccountCharges[0].OutstandingCharges).ToString("N2", CultureInfo.InvariantCulture));
+
+            bool isOutstandingOverpaid = Charges.AccountCharges[0].OutstandingCharges < 0;
+            string outstandingTilte = isOutstandingOverpaid ? GetI18NValue(BillConstants.I18N_PaidExtra)
+                : GetI18NValue(BillConstants.I18N_OutstandingCharges);
+            UIView viewOutstanding = GetCommonLabelView(GetScaledHeight(16), outstandingTilte
+                , Math.Abs(Charges.AccountCharges[0].OutstandingCharges).ToString("N2", CultureInfo.InvariantCulture), isOutstandingOverpaid);
             UIView viewMonthBill = GetCommonLabelView(GetYLocationFromFrame(viewOutstanding.Frame, 16), GetI18NValue(BillConstants.I18N_BillThisMonth)
                 , Math.Abs(Charges.AccountCharges[0].CurrentCharges).ToString("N2", CultureInfo.InvariantCulture));
             _viewMandatory = GetMandatoryView(GetYLocationFromFrame(viewMonthBill.Frame, 16));
@@ -121,7 +125,7 @@ namespace myTNB
             _uiScrollView.ContentSize = new CGSize(ViewWidth, _viewBreakdown.Frame.GetMaxY());
         }
 
-        private UIView GetCommonLabelView(nfloat yLocation, string itemString, string valueString)
+        private UIView GetCommonLabelView(nfloat yLocation, string itemString, string valueString, bool isOverpaid = false)
         {
             UIView view = new UIView(new CGRect(0, yLocation, ViewWidth, GetScaledHeight(20)));
             UILabel item = new UILabel(new CGRect(BaseMargin, 0, BaseMarginedWidth / 2, GetScaledHeight(20)))
@@ -137,7 +141,7 @@ namespace myTNB
             {
                 TextAlignment = UITextAlignment.Right,
                 Font = TNBFont.MuseoSans_14_500,
-                TextColor = MyTNBColor.CharcoalGrey,
+                TextColor = isOverpaid ? MyTNBColor.FreshGreen : MyTNBColor.CharcoalGrey,
                 Text = valueString
             };
             nfloat valueWidth = value.GetLabelWidth(ViewWidth);
@@ -148,9 +152,10 @@ namespace myTNB
 
         private UIView GetPaymentDetails(nfloat yLoc)
         {
+            bool isOverPaid = Charges.AccountCharges[0].AmountDue < 0;
             UIView viewPayment = new UIView(new CGRect(0, yLoc, ViewWidth, GetScaledHeight(32)));
-
-            UILabel lblStatus = new UILabel(new CGRect(BaseMargin, 0, BaseMarginedWidth / 2, GetScaledHeight(16)))
+            nfloat statusYLoc = isOverPaid ? GetScaledHeight(8) : 0;
+            UILabel lblStatus = new UILabel(new CGRect(BaseMargin, statusYLoc, BaseMarginedWidth / 2, GetScaledHeight(16)))
             {
                 TextAlignment = UITextAlignment.Left,
                 Font = TNBFont.MuseoSans_14_500,
@@ -171,7 +176,8 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Left,
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.CharcoalGrey,
-                Text = string.Format("{0} {1}", GetI18NValue(BillConstants.I18N_By), result)
+                Text = string.Format("{0} {1}", GetI18NValue(BillConstants.I18N_By), result),
+                Hidden = isOverPaid
             };
             nfloat dueWidth = lblDue.GetLabelWidth(ViewWidth);
             lblDue.Frame = new CGRect(lblDue.Frame.Location, new CGSize(dueWidth, lblDue.Frame.Height));
@@ -179,7 +185,7 @@ namespace myTNB
             UIView viewAmount = new UIView();
             UILabel lblCurrency = new UILabel(new CGRect(0, GetScaledHeight(11), GetScaledWidth(100), GetScaledHeight(18)))
             {
-                TextColor = MyTNBColor.CharcoalGrey,
+                TextColor = isOverPaid ? MyTNBColor.FreshGreen : MyTNBColor.CharcoalGrey,
                 Font = TNBFont.MuseoSans_12_500,
                 TextAlignment = UITextAlignment.Right,
                 Text = TNBGlobal.UNIT_CURRENCY
@@ -191,7 +197,7 @@ namespace myTNB
             UILabel lblAmount = new UILabel(new CGRect(lblCurrency.Frame.GetMaxX() + GetScaledWidth(6)
                 , 0, GetScaledWidth(100), GetScaledHeight(32)))
             {
-                TextColor = MyTNBColor.CharcoalGrey,
+                TextColor = isOverPaid ? MyTNBColor.FreshGreen : MyTNBColor.CharcoalGrey,
                 Font = TNBFont.MuseoSans_24_300,
                 TextAlignment = UITextAlignment.Left,
                 Text = Math.Abs(Charges.AccountCharges[0].AmountDue).ToString("N2", CultureInfo.InvariantCulture)
