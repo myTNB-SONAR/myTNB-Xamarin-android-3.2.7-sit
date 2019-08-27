@@ -6,9 +6,9 @@ using Android.Views;
 
 namespace myTNB_Android.Src.myTNBMenu.Listener
 {
-    public class NMREDashboardScrollView : NestedScrollView
+    public class NMRESMDashboardScrollView : NestedScrollView
     {
-        public NMREDashboardScrollViewListener scrollViewListener = null;
+        public NMRESMDashboardScrollViewListener scrollViewListener = null;
 
         private bool scrollable = true;
 
@@ -18,33 +18,33 @@ namespace myTNB_Android.Src.myTNBMenu.Listener
 
         private int mMaxYOverscrollDistance;
 
-        public NMREDashboardScrollView(Context context) : base(context)
+        public NMRESMDashboardScrollView(Context context) : base(context)
         {
             mContext = context;
             init();
         }
 
-        public NMREDashboardScrollView(Context context, IAttributeSet attrs) : base(context, attrs)
+        public NMRESMDashboardScrollView(Context context, IAttributeSet attrs) : base(context, attrs)
         {
             mContext = context;
             init();
         }
 
-        public NMREDashboardScrollView(Context context, IAttributeSet attrs, int defStyleAttr) : base(context, attrs, defStyleAttr)
+        public NMRESMDashboardScrollView(Context context, IAttributeSet attrs, int defStyleAttr) : base(context, attrs, defStyleAttr)
         {
             mContext = context;
             init();
         }
 
 
-        public interface NMREDashboardScrollViewListener
+        public interface NMRESMDashboardScrollViewListener
         {
-            void OnScrollChanged(NMREDashboardScrollView v, int l, int t, int oldl, int oldt);
+            void OnScrollChanged(NMRESMDashboardScrollView v, int l, int t, int oldl, int oldt);
         }
 
 
 
-        public void setOnScrollViewListener(NMREDashboardScrollViewListener scrollViewListener)
+        public void setOnScrollViewListener(NMRESMDashboardScrollViewListener scrollViewListener)
         {
             this.scrollViewListener = scrollViewListener;
         }

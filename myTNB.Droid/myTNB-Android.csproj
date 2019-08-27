@@ -2104,7 +2104,7 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\myTNBMenu\Adapter\EnergySavingTipsAdapter.cs" />
-    <Compile Include="Src\myTNBMenu\Listener\NMREDashboardScrollView.cs" />
+    <Compile Include="Src\myTNBMenu\Listener\NMRESMDashboardScrollView.cs" />
     <AndroidResource Include="Resources\layout\SelectSupplyAccountItemLayout.axml">
       <SubType></SubType>
       <Generator></Generator>

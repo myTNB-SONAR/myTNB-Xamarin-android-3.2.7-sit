@@ -55,12 +55,12 @@ using System;
 using System.Collections.Generic;
 using static MikePhil.Charting.Components.XAxis;
 using static MikePhil.Charting.Components.YAxis;
-using static myTNB_Android.Src.myTNBMenu.Listener.NMREDashboardScrollView;
+using static myTNB_Android.Src.myTNBMenu.Listener.NMRESMDashboardScrollView;
 using static myTNB_Android.Src.myTNBMenu.Models.GetInstallationDetailsResponse;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
-    public class DashboardChartFragment : BaseFragment, DashboardChartContract.IView, NMREDashboardScrollViewListener, ViewTreeObserver.IOnGlobalLayoutListener, MikePhil.Charting.Listener.IOnChartValueSelectedListenerSupport
+    public class DashboardChartFragment : BaseFragment, DashboardChartContract.IView, NMRESMDashboardScrollViewListener, ViewTreeObserver.IOnGlobalLayoutListener, MikePhil.Charting.Listener.IOnChartValueSelectedListenerSupport
     {
 
         [BindView(Resource.Id.totalPayableLayout)]
@@ -124,7 +124,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private static BottomSheetBehavior bottomSheetBehavior;
 
-        private NMREDashboardScrollView scrollView;
+        private NMRESMDashboardScrollView scrollView;
 
         [BindView(Resource.Id.bottom_sheet)]
         LinearLayout bottomSheet;
@@ -284,6 +284,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.re_img)]
         ImageView re_img;
 
+        [BindView(Resource.Id.virtualHeight)]
+        LinearLayout virtualHeight;
+
         TariffBlockLegendAdapter tariffBlockLegendAdapter;
 
         private DashboardChartContract.IUserActionsListener userActionsListener;
@@ -441,7 +444,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
                 bottomSheetBehavior.SetBottomSheetCallback(new DashboardBottomSheetCallBack());
 
-                scrollView = view.FindViewById<NMREDashboardScrollView>(Resource.Id.scroll_view);
+                scrollView = view.FindViewById<NMRESMDashboardScrollView>(Resource.Id.scroll_view);
                 ViewTreeObserver observer = scrollView.ViewTreeObserver;
                 observer.AddOnGlobalLayoutListener(this);
 
@@ -504,19 +507,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         // txtUsageHistory.Visibility = ViewStates.Gone;
                         txtTotalPayableTitle.Text = GetString(Resource.String.title_payment_advice_amount);
                         graphToggleSelection.Visibility = ViewStates.Gone;
+                        SetVirtualHeightParams(12f);
+                        
                     }
                     else if (! selectedAccount.SmartMeterCode.Equals("0"))
                     {
+                        // Smart Meter
+                        SetVirtualHeightParams(80f);
                         isREAccount = false;
                         reContainer.Visibility = ViewStates.Gone;
                         btnPay.Visibility = ViewStates.Visible;
                         btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
                         graphToggleSelection.Visibility = ViewStates.Visible;
                         energyTipsView.Visibility = ViewStates.Visible;
-                        // TODO: Statistic View
+                        // Lin Siong TODO: Statistic View, on DashboardNewChartView also
+                        // Lin Siong TODO: Api change call to Smart Meter Usage, currently still using the normal meter api, also the variable 
+                        // Lin Siong TODO: Last bar tap event to day view
+                        // Lin Siong TODO: Stripped bar background implementation
+                        // Lin Siong TODO: Estimated Reading Handling & Display
+                        // Lin Siong TODO: Graph Explanatory ToolTip
+                        // Lin Siong TODO: Fallback for Error from MDMS service
                     }
                     else
                     {
+                        SetVirtualHeightParams(80f);
                         isREAccount = false;
                         reContainer.Visibility = ViewStates.Gone;
                         btnPay.Visibility = ViewStates.Visible;
@@ -568,6 +582,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else
                 {
+                    SetVirtualHeightParams(80f);
                     energyTipsView.Visibility = ViewStates.Gone;
                     try
                     {
@@ -2971,7 +2986,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             return this.DeviceId();
         }
 
-        void NMREDashboardScrollViewListener.OnScrollChanged(NMREDashboardScrollView v, int l, int t, int oldl, int oldt)
+        void NMRESMDashboardScrollViewListener.OnScrollChanged(NMRESMDashboardScrollView v, int l, int t, int oldl, int oldt)
         {
             View view = (View)scrollView.GetChildAt(scrollView.ChildCount - 1);
             int scrollPosition = t - oldt;
@@ -3501,36 +3516,49 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void SetRefreshLayoutParams()
         {
-            LinearLayout.LayoutParams refreshImgParams = refresh_image.LayoutParameters as LinearLayout.LayoutParams;
+            try
+            {
+                LinearLayout.LayoutParams refreshImgParams = refresh_image.LayoutParameters as LinearLayout.LayoutParams;
 
-            refreshImgParams.Width = GetDeviceHorizontalScaleInPixel(0.431f);
-            refreshImgParams.Height = GetDeviceHorizontalScaleInPixel(0.431f);
-            refreshImgParams.TopMargin = (int)DPUtils.ConvertDPToPx(38f);
-            refresh_image.RequestLayout();
+                refreshImgParams.Width = GetDeviceHorizontalScaleInPixel(0.431f);
+                refreshImgParams.Height = GetDeviceHorizontalScaleInPixel(0.431f);
+                refreshImgParams.TopMargin = (int)DPUtils.ConvertDPToPx(38f);
+                refresh_image.RequestLayout();
 
-            LinearLayout.LayoutParams refreshTxtParams = txtNewRefreshMessage.LayoutParameters as LinearLayout.LayoutParams;
-            refreshTxtParams.TopMargin = (int)DPUtils.ConvertDPToPx(24f);
-            txtNewRefreshMessage.RequestLayout();
+                LinearLayout.LayoutParams refreshTxtParams = txtNewRefreshMessage.LayoutParameters as LinearLayout.LayoutParams;
+                refreshTxtParams.TopMargin = (int)DPUtils.ConvertDPToPx(24f);
+                txtNewRefreshMessage.RequestLayout();
 
-            LinearLayout.LayoutParams refreshButtonParams = btnNewRefresh.LayoutParameters as LinearLayout.LayoutParams;
-            refreshButtonParams.TopMargin = (int)DPUtils.ConvertDPToPx(24f);
-            refreshButtonParams.BottomMargin = (int)DPUtils.ConvertDPToPx(21f);
-            btnNewRefresh.RequestLayout();
-            
+                LinearLayout.LayoutParams refreshButtonParams = btnNewRefresh.LayoutParameters as LinearLayout.LayoutParams;
+                refreshButtonParams.TopMargin = (int)DPUtils.ConvertDPToPx(24f);
+                refreshButtonParams.BottomMargin = (int)DPUtils.ConvertDPToPx(21f);
+                btnNewRefresh.RequestLayout();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void SetMaintenanceLayoutParams()
         {
-            LinearLayout.LayoutParams refreshImgParams = refresh_image.LayoutParameters as LinearLayout.LayoutParams;
+            try
+            {
+                LinearLayout.LayoutParams refreshImgParams = refresh_image.LayoutParameters as LinearLayout.LayoutParams;
 
-            refreshImgParams.Width = GetDeviceHorizontalScaleInPixel(0.603f);
-            refreshImgParams.Height = GetDeviceHorizontalScaleInPixel(0.603f);
-            refreshImgParams.TopMargin = (int) DPUtils.ConvertDPToPx(8f);
-            refresh_image.RequestLayout();
+                refreshImgParams.Width = GetDeviceHorizontalScaleInPixel(0.603f);
+                refreshImgParams.Height = GetDeviceHorizontalScaleInPixel(0.603f);
+                refreshImgParams.TopMargin = (int)DPUtils.ConvertDPToPx(8f);
+                refresh_image.RequestLayout();
 
-            LinearLayout.LayoutParams refreshTxtParams = txtNewRefreshMessage.LayoutParameters as LinearLayout.LayoutParams;
-            refreshTxtParams.TopMargin = (int)DPUtils.ConvertDPToPx(6f);
-            txtNewRefreshMessage.RequestLayout();
+                LinearLayout.LayoutParams refreshTxtParams = txtNewRefreshMessage.LayoutParameters as LinearLayout.LayoutParams;
+                refreshTxtParams.TopMargin = (int)DPUtils.ConvertDPToPx(6f);
+                txtNewRefreshMessage.RequestLayout();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public bool GetIsSMDown()
@@ -3541,6 +3569,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public void SetISSMDown(bool flag)
         {
             isSMDown = flag;
+        }
+
+        public void SetVirtualHeightParams(float heightInDP)
+        {
+            try
+            {
+                LinearLayout.LayoutParams virtualHeightParams = virtualHeight.LayoutParameters as LinearLayout.LayoutParams;
+
+                virtualHeightParams.Height = (int)DPUtils.ConvertDPToPx(heightInDP);
+                virtualHeight.RequestLayout();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

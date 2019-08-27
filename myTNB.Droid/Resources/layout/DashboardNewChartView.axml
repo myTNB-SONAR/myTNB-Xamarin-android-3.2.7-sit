@@ -8,7 +8,7 @@
     android:theme="@style/Theme.Dashboard"
     android:background="@color/greyBackground"
     android:id="@+id/rootView">
-    <myTNB_Android.Src.myTNBMenu.Listener.NMREDashboardScrollView
+    <myTNB_Android.Src.myTNBMenu.Listener.NMRESMDashboardScrollView
 		    android:id="@+id/scroll_view"
 		    android:layout_width="match_parent"
 		    android:overScrollMode="always"
@@ -675,6 +675,7 @@
                                 android:scrollIndicators="none" />
                         </LinearLayout>
                         <LinearLayout
+                            android:id="@+id/virtualHeight"
 					        android:layout_width="match_parent"
 					        android:layout_height="50dp"
 					        android:orientation="vertical">
@@ -682,7 +683,7 @@
 				    </LinearLayout>
 			    </FrameLayout>
 		    </LinearLayout>
-	    </myTNB_Android.Src.myTNBMenu.Listener.NMREDashboardScrollView>
+	    </myTNB_Android.Src.myTNBMenu.Listener.NMRESMDashboardScrollView>
     <LinearLayout
         android:id="@+id/bottom_sheet"
         android:layout_height="wrap_content"
