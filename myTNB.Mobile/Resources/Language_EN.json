@@ -252,7 +252,10 @@
         "viewMore": "View Details",
         "paidExtra": "I’ve paid extra",
         "needToPay": "I need to pay",
-        "by": "by"
+        "by": "by",
+        "getBy": "get by",
+        "myEarnings": "My earnings",
+        "beenPaidExtra": "I’ve been paid extra"
     },
 
     "BillDetails": {

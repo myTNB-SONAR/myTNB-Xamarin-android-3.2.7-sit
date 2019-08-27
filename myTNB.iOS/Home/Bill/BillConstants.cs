@@ -13,7 +13,7 @@ namespace myTNB.Home.Bill
         //Format
         public static string Format_DateParse = "yyyyMMdd";
         public static string Format_Date = "dd MMM yyyy";
-        public static string Format_Amount = "{0} {1}";
+        public static string Format_Default = "{0} {1}";
 
         //ViewCell
         public static string Cell_BillHistory = "billHistoryTableViewCell";
@@ -28,6 +28,9 @@ namespace myTNB.Home.Bill
         public static string I18N_NeedToPay = "needToPay";
         public static string I18N_By = "by";
         public static string I18N_Pay = "pay";
+        public static string I18N_GetBy = "getBy";
+        public static string I18N_MyEarnings = "myEarnings";
+        public static string I18N_BeenPaidExtra = "beenPaidExtra";
 
         //Bill Details
         public static string I18N_BillDetails = "billDetails";

@@ -188,7 +188,7 @@ namespace myTNB
             _viewCTA.AddSubviews(new CustomUIButtonV2[] { _btnMore, _btnPay });
 
             _headerView.AddSubviews(new UIView[] { _lblPaymentStatus, _viewAmount, _lblDate, _viewCTA });
-            _headerViewContainer.AddSubviews(_headerView);//.AddSubviews(new UIView[] { _lblPaymentStatus, _viewAmount, _lblDate, _viewCTA });
+            _headerViewContainer.AddSubviews(_headerView);
             _headerViewContainer.AddSubviews(_accountSelectorContainer);
 
             CGRect frame = _headerView.Frame;
@@ -273,31 +273,44 @@ namespace myTNB
 
         private void UpdateHeaderData(AccountChargesModel data)
         {
+            bool isRe = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
+
+            if (isRe && DataManager.DataManager.SharedInstance.SelectedAccount.accNum == "240001050406")
+            {
+                data.AmountDue = Math.Abs(data.AmountDue);
+            }
+
             _lblAmount.Text = Math.Abs(data.AmountDue).ToString("N2", CultureInfo.InvariantCulture);
             CGRect ctaFrame = _viewCTA.Frame;
-            _bgImageView.Image = UIImage.FromBundle(data.AmountDue > 0 ? BillConstants.IMG_NeedToPay : BillConstants.IMG_Cleared);
+
+            _bgImageView.Image = isRe ? UIImage.FromBundle(BillConstants.IMG_Cleared)
+                : UIImage.FromBundle(data.AmountDue > 0 ? BillConstants.IMG_NeedToPay : BillConstants.IMG_Cleared);
 
             if (data.AmountDue > 0)
             {
-                _lblPaymentStatus.Text = GetI18NValue(BillConstants.I18N_NeedToPay);
-                string result = DateTime.ParseExact(data.DueDate, BillConstants.Format_DateParse, CultureInfo.InvariantCulture).ToString(BillConstants.Format_Date);
-                _lblDate.Text = string.Format(BillConstants.Format_Amount, GetI18NValue(BillConstants.I18N_By), result);
+                _lblPaymentStatus.Text = GetI18NValue(isRe ? BillConstants.I18N_MyEarnings : BillConstants.I18N_NeedToPay);
+                string result = DateTime.ParseExact(data.DueDate, BillConstants.Format_DateParse
+                    , CultureInfo.InvariantCulture).ToString(BillConstants.Format_Date);
+                _lblDate.Text = string.Format(BillConstants.Format_Default
+                    , GetI18NValue(isRe ? BillConstants.I18N_GetBy : BillConstants.I18N_By), result);
                 _lblDate.Hidden = false;
-
                 ctaFrame.Y = GetYLocationFromFrame(_lblDate.Frame, 24);
             }
             else
             {
-                _lblPaymentStatus.Text = GetI18NValue(data.AmountDue == 0 ? BillConstants.I18N_ClearedBills : BillConstants.I18N_PaidExtra);
+                _lblPaymentStatus.Text = isRe ? GetI18NValue(BillConstants.I18N_BeenPaidExtra)
+                    : GetI18NValue(data.AmountDue == 0 ? BillConstants.I18N_ClearedBills : BillConstants.I18N_PaidExtra);
                 _lblDate.Hidden = true;
                 ctaFrame.Y = GetYLocationFromFrame(_viewAmount.Frame, 24);
             }
             UpdateViewAmount(data.AmountDue < 0);
 
             _viewCTA.Frame = ctaFrame;
+            _viewCTA.Hidden = isRe;
 
+            nfloat headerHeight = isRe ? _lblDate.Hidden ? _viewAmount.Frame.GetMaxY() : _lblDate.Frame.GetMaxY() : _viewCTA.Frame.GetMaxY();
             CGRect frame = _headerView.Frame;
-            frame.Height = GetYLocationFromFrame(_viewCTA.Frame, 16);
+            frame.Height = headerHeight + GetScaledHeight(isRe ? 24 : 16);
             _headerView.Frame = frame;
 
             _headerViewContainer.Frame = new CGRect(_headerViewContainer.Frame.Location
@@ -371,7 +384,6 @@ namespace myTNB
             GetAccountsChargesResponseModel response = serviceManager.OnExecuteAPIV6<GetAccountsChargesResponseModel>(BillConstants.Service_GetAccountsCharges, request);
             return response;
         }
-
         #endregion
     }
 }

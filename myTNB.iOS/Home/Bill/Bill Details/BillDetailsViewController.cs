@@ -153,7 +153,7 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Right,
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = isOverpaid ? MyTNBColor.FreshGreen : MyTNBColor.CharcoalGrey,
-                Text = string.Format(BillConstants.Format_Amount, TNBGlobal.UNIT_CURRENCY, valueString)
+                Text = string.Format(BillConstants.Format_Default, TNBGlobal.UNIT_CURRENCY, valueString)
             };
             nfloat valueWidth = value.GetLabelWidth(ViewWidth);
             value.Frame = new CGRect(new CGPoint(ViewWidth - BaseMargin - valueWidth, value.Frame.Y), new CGSize(valueWidth, value.Frame.Height));
@@ -187,7 +187,7 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Left,
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.CharcoalGrey,
-                Text = string.Format(BillConstants.Format_Amount, GetI18NValue(BillConstants.I18N_By), result),
+                Text = string.Format(BillConstants.Format_Default, GetI18NValue(BillConstants.I18N_By), result),
                 Hidden = isOverPaid
             };
             nfloat dueWidth = lblDue.GetLabelWidth(ViewWidth);
@@ -261,7 +261,7 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Right,
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.CharcoalGrey,
-                Text = string.Format(BillConstants.Format_Amount, TNBGlobal.UNIT_CURRENCY
+                Text = string.Format(BillConstants.Format_Default, TNBGlobal.UNIT_CURRENCY
                 , Charges.AccountCharges[0].MandatoryCharges.TotalAmount.ToString("N2", CultureInfo.InvariantCulture))
             };
             nfloat valueWidth = value.GetLabelWidth(ViewWidth);
@@ -297,7 +297,7 @@ namespace myTNB
                         TextAlignment = UITextAlignment.Right,
                         Font = TNBFont.MuseoSans_14_300,
                         TextColor = MyTNBColor.GreyishBrown,
-                        Text = string.Format(BillConstants.Format_Amount, TNBGlobal.UNIT_CURRENCY, chargeItem.Amount.ToString("N2", CultureInfo.InvariantCulture))
+                        Text = string.Format(BillConstants.Format_Default, TNBGlobal.UNIT_CURRENCY, chargeItem.Amount.ToString("N2", CultureInfo.InvariantCulture))
                     };
                     nfloat subValueWidth = subValue.GetLabelWidth(ViewWidth);
                     subValue.Frame = new CGRect(new CGPoint(mandatoryView.Frame.Width - valueWidth, subValue.Frame.Y)
