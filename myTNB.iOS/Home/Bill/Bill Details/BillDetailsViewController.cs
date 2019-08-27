@@ -4,6 +4,7 @@ using myTNB.Home.Bill;
 using myTNB.Model;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using UIKit;
 
 namespace myTNB
@@ -63,7 +64,7 @@ namespace myTNB
                 TextColor = MyTNBColor.CharcoalGrey,
                 Font = TNBFont.MuseoSans_14_500,
                 LineBreakMode = UILineBreakMode.TailTruncation,
-                Text = "My House"
+                Text = DataManager.DataManager.SharedInstance.SelectedAccount.accountNickName
             };
             UILabel lblAddress = new UILabel(new CGRect(BaseMargin, GetYLocationFromFrame(lblAccountName.Frame, 8)
                 , BaseMarginedWidth, GetScaledHeight(32)))
@@ -73,7 +74,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_12_500,
                 LineBreakMode = UILineBreakMode.WordWrap,
                 Lines = 0,
-                Text = "No. 3 Jalan Melur, 12 Taman Melur, 68000 Ampang, Selangor"
+                Text = DataManager.DataManager.SharedInstance.SelectedAccount.accountStAddress
             };
             nfloat height = lblAddress.GetLabelHeight(GetScaledHeight(100));
             lblAddress.Frame = new CGRect(lblAddress.Frame.Location, new CGSize(lblAddress.Frame.Width, height));
@@ -90,7 +91,7 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Left,
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = "My Bill Details"
+                Text = GetI18NValue(BillConstants.I18N_BillDetails)
             };
             _viewTitleSection.AddSubview(lblSectionTitle);
             _uiScrollView.AddSubview(_viewTitleSection);
@@ -99,8 +100,10 @@ namespace myTNB
         private void AddBreakdown()
         {
             _viewBreakdown = new UIView { BackgroundColor = UIColor.White };
-            UIView viewOutstanding = GetCommonLabelView(GetScaledHeight(16), "My outstanding charges", "RM 0.00");
-            UIView viewMonthBill = GetCommonLabelView(GetYLocationFromFrame(viewOutstanding.Frame, 16), "My bill this month", "RM 0.00");
+            UIView viewOutstanding = GetCommonLabelView(GetScaledHeight(16), GetI18NValue(BillConstants.I18N_OutstandingCharges)
+                , Math.Abs(Charges.AccountCharges[0].OutstandingCharges).ToString("N2", CultureInfo.InvariantCulture));
+            UIView viewMonthBill = GetCommonLabelView(GetYLocationFromFrame(viewOutstanding.Frame, 16), GetI18NValue(BillConstants.I18N_BillThisMonth)
+                , Math.Abs(Charges.AccountCharges[0].CurrentCharges).ToString("N2", CultureInfo.InvariantCulture));
             _viewMandatory = GetMandatoryView(GetYLocationFromFrame(viewMonthBill.Frame, 16));
             _viewLine = new UIView(new CGRect(BaseMargin, GetYLocationFromFrame(_viewMandatory.Frame, 16), BaseMarginedWidth, GetScaledHeight(1)))
             {
@@ -152,17 +155,23 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Left,
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.CharcoalGrey,
-                Text = "I need to pay"
+                Text = GetI18NValue(Charges.AccountCharges[0].AmountDue < 0 ? BillConstants.I18N_PaidExtra : BillConstants.I18N_NeedToPay)
             };
             nfloat statusWidth = lblStatus.GetLabelWidth(ViewWidth);
             lblStatus.Frame = new CGRect(lblStatus.Frame.Location, new CGSize(statusWidth, lblStatus.Frame.Height));
 
+            string result = string.Empty;
+            if (Charges.AccountCharges[0].DueDate != null)
+            {
+                result = DateTime.ParseExact(Charges.AccountCharges[0].DueDate
+                   , BillConstants.Format_DateParse, CultureInfo.InvariantCulture).ToString(BillConstants.Format_Date);
+            }
             UILabel lblDue = new UILabel(new CGRect(BaseMargin, lblStatus.Frame.GetMaxY(), BaseMarginedWidth / 2, GetScaledHeight(16)))
             {
                 TextAlignment = UITextAlignment.Left,
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.CharcoalGrey,
-                Text = "by 24 Sep 2019"
+                Text = string.Format("{0} {1}", GetI18NValue(BillConstants.I18N_By), result)
             };
             nfloat dueWidth = lblDue.GetLabelWidth(ViewWidth);
             lblDue.Frame = new CGRect(lblDue.Frame.Location, new CGSize(dueWidth, lblDue.Frame.Height));
@@ -179,12 +188,13 @@ namespace myTNB
             nfloat currencyWidth = lblCurrency.GetLabelWidth(ViewWidth);
             lblCurrency.Frame = new CGRect(lblCurrency.Frame.Location, new CGSize(currencyWidth, lblCurrency.Frame.Height));
 
-            UILabel lblAmount = new UILabel(new CGRect(lblCurrency.Frame.GetMaxX() + GetScaledWidth(6), 0, GetScaledWidth(100), GetScaledHeight(32)))
+            UILabel lblAmount = new UILabel(new CGRect(lblCurrency.Frame.GetMaxX() + GetScaledWidth(6)
+                , 0, GetScaledWidth(100), GetScaledHeight(32)))
             {
                 TextColor = MyTNBColor.CharcoalGrey,
                 Font = TNBFont.MuseoSans_24_300,
                 TextAlignment = UITextAlignment.Left,
-                Text = "100.00"
+                Text = Math.Abs(Charges.AccountCharges[0].AmountDue).ToString("N2", CultureInfo.InvariantCulture)
             };
 
             nfloat amountWidth = lblAmount.GetLabelWidth(ViewWidth);
@@ -208,7 +218,7 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Left,
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.CharcoalGrey,
-                Text = "My other charges"
+                Text = GetI18NValue(BillConstants.I18N_ApplicationCharges)
             };
             nfloat itemWidth = item.GetLabelWidth(ViewWidth);
             item.Frame = new CGRect(item.Frame.Location, new CGSize(itemWidth, item.Frame.Height));
@@ -225,7 +235,8 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Right,
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.CharcoalGrey,
-                Text = "RM 200.00"
+                Text = string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY
+                , Charges.AccountCharges[0].MandatoryCharges.TotalAmount.ToString("N2", CultureInfo.InvariantCulture))
             };
             nfloat valueWidth = value.GetLabelWidth(ViewWidth);
             value.Frame = new CGRect(new CGPoint(ViewWidth - BaseMargin - valueWidth, value.Frame.Y), new CGSize(valueWidth, value.Frame.Height));
@@ -236,31 +247,38 @@ namespace myTNB
             { Tag = 98 };
             nfloat subYLoc = 0;
             int itemCount = 0;
-            for (int i = 0; i < 4; i++)
+            if (Charges != null && Charges.AccountCharges != null && Charges.AccountCharges.Count > 0
+                && Charges.AccountCharges[0] != null && Charges.AccountCharges[0].MandatoryCharges != null
+                && Charges.AccountCharges[0].MandatoryCharges.Charges != null)
             {
-                UILabel subItem = new UILabel(new CGRect(0, subYLoc, BaseMarginedWidth / 2, GetScaledHeight(20)))
+                for (int i = 0; i < Charges.AccountCharges[0].MandatoryCharges.Charges.Count; i++)
                 {
-                    TextAlignment = UITextAlignment.Left,
-                    Font = TNBFont.MuseoSans_14_300,
-                    TextColor = MyTNBColor.GreyishBrown,
-                    Text = "My other charges"
-                };
-                nfloat subItemWidth = subItem.GetLabelWidth(ViewWidth);
-                subItem.Frame = new CGRect(subItem.Frame.Location, new CGSize(subItemWidth, subItem.Frame.Height));
+                    ChargesModel chargeItem = Charges.AccountCharges[0].MandatoryCharges.Charges[i];
+                    UILabel subItem = new UILabel(new CGRect(0, subYLoc, BaseMarginedWidth / 2, GetScaledHeight(20)))
+                    {
+                        TextAlignment = UITextAlignment.Left,
+                        Font = TNBFont.MuseoSans_14_300,
+                        TextColor = MyTNBColor.GreyishBrown,
+                        Text = chargeItem.Title
+                    };
+                    nfloat subItemWidth = subItem.GetLabelWidth(ViewWidth);
+                    subItem.Frame = new CGRect(subItem.Frame.Location, new CGSize(subItemWidth, subItem.Frame.Height));
 
-                UILabel subValue = new UILabel(new CGRect(BaseMargin + (BaseMarginedWidth / 2), subYLoc, BaseMarginedWidth / 2, GetScaledHeight(20)))
-                {
-                    TextAlignment = UITextAlignment.Right,
-                    Font = TNBFont.MuseoSans_14_300,
-                    TextColor = MyTNBColor.GreyishBrown,
-                    Text = "RM 200.00"
-                };
-                nfloat subValueWidth = subValue.GetLabelWidth(ViewWidth);
-                subValue.Frame = new CGRect(new CGPoint(mandatoryView.Frame.Width - valueWidth, subValue.Frame.Y)
-                    , new CGSize(subValueWidth, subValue.Frame.Height));
-                mandatoryView.AddSubviews(new UIView[] { subItem, subValue });
-                itemCount++;
-                subYLoc += GetScaledHeight(20);
+                    UILabel subValue = new UILabel(new CGRect(BaseMargin + (BaseMarginedWidth / 2)
+                        , subYLoc, BaseMarginedWidth / 2, GetScaledHeight(20)))
+                    {
+                        TextAlignment = UITextAlignment.Right,
+                        Font = TNBFont.MuseoSans_14_300,
+                        TextColor = MyTNBColor.GreyishBrown,
+                        Text = string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, chargeItem.Amount.ToString("N2", CultureInfo.InvariantCulture))
+                    };
+                    nfloat subValueWidth = subValue.GetLabelWidth(ViewWidth);
+                    subValue.Frame = new CGRect(new CGPoint(mandatoryView.Frame.Width - valueWidth, subValue.Frame.Y)
+                        , new CGSize(subValueWidth, subValue.Frame.Height));
+                    mandatoryView.AddSubviews(new UIView[] { subItem, subValue });
+                    itemCount++;
+                    subYLoc += GetScaledHeight(20);
+                }
             }
 
             mandatoryView.Frame = new CGRect(mandatoryView.Frame.Location, new CGSize(mandatoryView.Frame.Width, itemCount * GetScaledHeight(20)));
@@ -295,7 +313,7 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Left,
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = "This account has a minimum charge."
+                Text = GetI18NValue(BillConstants.I18N_MinimumChargeDescription)
             };
             viewInfo.Layer.CornerRadius = GetScaledHeight(12);
             viewInfo.AddSubviews(new UIView[] { imgView, lblDescription });

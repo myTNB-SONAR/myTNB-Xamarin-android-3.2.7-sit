@@ -26,8 +26,6 @@ namespace myTNB
         private CustomUIButtonV2 _btnMore, _btnPay;
         private AccountSelector _accountSelector;
         private CustomUIView _viewAccountSelector;
-        private const string ParseFormat = "yyyyMMdd";
-        private const string DateFormat = "dd MMM yyyy";
 
         private GetAccountsChargesResponseModel _accountCharges;
 
@@ -81,9 +79,7 @@ namespace myTNB
 
             _bgImageView = new UIImageView(new CGRect(0, 0, ViewWidth, ViewWidth * 0.70F))
             {
-                //Bills-Cleared-Banner
-                //Bills-NeedToPay-Banner
-                Image = UIImage.FromBundle("Bills-Cleared-Banner"),
+                Image = UIImage.FromBundle(BillConstants.IMG_Cleared),
                 BackgroundColor = UIColor.White
             };
 
@@ -95,7 +91,7 @@ namespace myTNB
             UILabel lblTitle = new UILabel(new CGRect(0, 0, ViewWidth, GetScaledHeight(24)))
             {
                 Font = TNBFont.MuseoSans_16_500,
-                Text = GetI18NValue(BillConstants.I18N_BillNavTitle),
+                Text = GetI18NValue(BillConstants.I18N_NavTitle),
                 TextColor = UIColor.White,
                 TextAlignment = UITextAlignment.Center
             };
@@ -276,8 +272,6 @@ namespace myTNB
 
         private void UpdateHeaderData(AccountChargesModel data)
         {
-            //Bills-Cleared-Banner
-            //Bills-NeedToPay-Banner
             _lblAmount.Text = Math.Abs(data.AmountDue).ToString("N2", CultureInfo.InvariantCulture);
             CGRect ctaFrame = _viewCTA.Frame;
             _bgImageView.Image = UIImage.FromBundle(data.AmountDue > 0 ? BillConstants.IMG_NeedToPay : BillConstants.IMG_Cleared);
@@ -285,7 +279,7 @@ namespace myTNB
             if (data.AmountDue > 0)
             {
                 _lblPaymentStatus.Text = GetI18NValue(BillConstants.I18N_NeedToPay);
-                string result = DateTime.ParseExact(data.DueDate, ParseFormat, CultureInfo.InvariantCulture).ToString(DateFormat);
+                string result = DateTime.ParseExact(data.DueDate, BillConstants.Format_DateParse, CultureInfo.InvariantCulture).ToString(BillConstants.Format_Date);
                 _lblDate.Text = string.Format("{0} {1}", GetI18NValue(BillConstants.I18N_By), result);
                 _lblDate.Hidden = false;
 
@@ -420,7 +414,7 @@ namespace myTNB
                 accounts = new List<string> { DataManager.DataManager.SharedInstance.SelectedAccount.accNum ?? string.Empty },
                 isOwnedAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsOwnedAccount
             };
-            GetAccountsChargesResponseModel response = serviceManager.OnExecuteAPIV6<GetAccountsChargesResponseModel>("GetAccountsCharges", request);
+            GetAccountsChargesResponseModel response = serviceManager.OnExecuteAPIV6<GetAccountsChargesResponseModel>(BillConstants.Service_GetAccountsCharges, request);
             return response;
         }
 

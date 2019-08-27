@@ -65,7 +65,7 @@ namespace myTNB
                 UILabel title, desc;
                 UIImageView bgView, iconView;
 
-                UIView viewContainer = new UIView(_scrollView.Bounds);
+                CustomUIView viewContainer = new CustomUIView(_scrollView.Bounds);
                 viewContainer.BackgroundColor = UIColor.White;
 
                 ViewHelper.AdjustFrameSetX(viewContainer, (i * width) + margin);
@@ -73,7 +73,6 @@ namespace myTNB
                 ViewHelper.AdjustFrameSetWidth(viewContainer, width - (margin * 1));
 
                 viewContainer.Layer.CornerRadius = ScaleUtility.GetScaledHeight(4f);
-                AddCardShadow(ref viewContainer);
 
                 nfloat viewWidth = viewContainer.Frame.Width;
                 nfloat viewHeight = viewContainer.Frame.Height;
@@ -138,7 +137,7 @@ namespace myTNB
                     Text = _tipsList[i].Description
                 };
                 descView.AddSubview(desc);
-
+                AddTipsShadow(ref viewContainer);
                 _scrollView.AddSubview(viewContainer);
             }
             _scrollView.ContentSize = new CGSize(_scrollView.Frame.Width * _tipsList.Count, _scrollView.Frame.Height);
@@ -165,9 +164,8 @@ namespace myTNB
             view.Frame = AdjustFrame(view.Frame, x, y, w, h);
         }
 
-        private void AddCardShadow(ref UIView view)
+        private void AddTipsShadow(ref CustomUIView view)
         {
-            view.Layer.CornerRadius = 5f;
             view.Layer.MasksToBounds = false;
             view.Layer.ShadowColor = MyTNBColor.BabyBlue60.CGColor;
             view.Layer.ShadowOpacity = .32f;

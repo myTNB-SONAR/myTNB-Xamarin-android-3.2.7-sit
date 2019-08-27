@@ -1091,12 +1091,6 @@
     <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group%403x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\smrOnboarding1.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\smrOnboarding1%402x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\smrOnboarding1%403x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%403x-1.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%402x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-Reading-History-Banner.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SSMR-Reading-History-Banner.imageset\group6.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-Reading-History-Banner.imageset\group6%402x.png" />
@@ -1147,6 +1141,18 @@
     <ImageAsset Include="Assets.xcassets\Usage-Refresh-Bg.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Usage-Refresh-Bg.imageset\Usage-Refresh-Bg%402x.png" />
     <ImageAsset Include="Assets.xcassets\Usage-Refresh-Bg.imageset\Usage-Refresh-Bg%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Calendar-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Calendar-Icon.imageset\Calendar-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Calendar-Icon.imageset\Calendar-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Predict-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Predict-Icon.imageset\Predict-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Predict-Icon.imageset\Predict-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Zoom.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Zoom.imageset\searchNoGradient%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Zoom.imageset\searchNoGradient%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Usage-MissingReading.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Usage-MissingReading.imageset\missingCopy%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Usage-MissingReading.imageset\missingCopy%403x.png" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\BCRM-Down-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\BCRM-Down-Icon%403x.png" />
@@ -1168,6 +1174,19 @@
     <ImageAsset Include="Assets.xcassets\Bills-Cleared-Banner.imageset\noOutstanding%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\needToPay%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\needToPay%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Trend-Down-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Trend-Down-Icon.imageset\Trend-Down-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Trend-Down-Icon.imageset\Trend-Down-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Trend-Up-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Trend-Up-Icon.imageset\Trend-Up-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Trend-Up-Icon.imageset\Trend-Up-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Trend-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Trend-Icon.imageset\Trend-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Trend-Icon.imageset\Trend-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\smrOnboarding1%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\smrOnboarding1%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1548,6 +1567,11 @@
     <Folder Include="Assets.xcassets\Usage-Bg-Normal.imageset\" />
     <Folder Include="Assets.xcassets\Usage-Bg-Long.imageset\" />
     <Folder Include="Assets.xcassets\Usage-Refresh-Bg.imageset\" />
+    <Folder Include="Components\Usage View\Charts\Smart Meter\" />
+    <Folder Include="Assets.xcassets\Calendar-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Predict-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Zoom.imageset\" />
+    <Folder Include="Assets.xcassets\Usage-MissingReading.imageset\" />
     <Folder Include="Assets.xcassets\BCRM-Down-Icon.imageset\" />
     <Folder Include="Assets.xcassets\IC-Action-Filter.imageset\" />
     <Folder Include="Assets.xcassets\Arrow-Expand.imageset\" />
@@ -1558,6 +1582,9 @@
     <Folder Include="Home\Bill\Bill Details\" />
     <Folder Include="Assets.xcassets\Arrow-Expand-Down.imageset\" />
     <Folder Include="Assets.xcassets\Arrow-Collapse-Up.imageset\" />
+    <Folder Include="Assets.xcassets\Trend-Down-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Trend-Up-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Trend-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2392,6 +2419,14 @@
     <Compile Include="Home\Bill\Bill Details\BillDetailsViewController.designer.cs">
       <DependentUpon>BillDetailsViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterChartView.cs" />
+    <Compile Include="Components\Usage View\SmartMeterCardComponent.cs" />
+    <Compile Include="Model\Usage\AccountUsageSmartModel.cs" />
+    <Compile Include="Model\Usage\ByDayModel.cs" />
+    <Compile Include="Model\Usage\ByMonthModel.cs" />
+    <Compile Include="Model\Usage\LegendItemModel.cs" />
+    <Compile Include="Session Cache\AccountUsageSmartCache.cs" />
+    <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterZOut.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
