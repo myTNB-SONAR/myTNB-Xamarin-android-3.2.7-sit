@@ -59,10 +59,6 @@ namespace myTNB
             if (!DataManager.DataManager.SharedInstance.IsSameAccount)
             {
                 ResetViews();
-                if (!accountIsSSMR)
-                {
-                    HideSSMRView();
-                }
             }
         }
 
@@ -129,11 +125,17 @@ namespace myTNB
             _rmkWhFlag = false;
             _tariffIsVisible = false;
             _rMkWhEnum = RMkWhEnum.RM;
+            HideTariffLegend();
+            if (!accountIsSSMR)
+            {
+                HideSSMRView();
+            }
             UpdateBackgroundImage(false);
             AddSubviews();
+            SetContentView();
         }
 
-        internal virtual void InitiateAPICalls(bool fromRefreshState = false) { }
+        internal virtual void InitiateAPICalls() { }
 
         private void SetNavigation()
         {
@@ -277,7 +279,7 @@ namespace myTNB
             else
             {
                 _viewLegend.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, _legendIsVisible ? 16F : 0F)), _viewLegend.Frame.Size);
-                _viewToggle.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewLegend.Frame, 16F)), _viewToggle.Frame.Size);
+                _viewToggle.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_legendIsVisible ? _viewLegend.Frame : _viewChart.Frame, 16F)), _viewToggle.Frame.Size);
 
                 if (accountIsSSMR)
                 {
@@ -316,7 +318,6 @@ namespace myTNB
             SetTariffSelectionComponent();
             SetSmartMeterComponent(true);
             SetEnergyTipsComponent();
-            SetContentView();
             SetFooterView();
             SetREAmountView();
         }
@@ -411,10 +412,10 @@ namespace myTNB
                     {
                         toolTipItem = toolTips.Find(x => x.UsageCostType == usageCostModel[1].UsageCostType);
                     }
-                    var toolTipMsg = toolTipItem?.Message[0] ?? "Dashboard_ProjectedCostMessage".Translate();
-                    var toolTipBtnTitle = toolTipItem?.SMBtnText ?? "Common_GotIt".Translate();
+                    var toolTipMsg = toolTipItem?.Message[0] ?? GetI18NValue(UsageConstants.I18N_ProjectedCostMessage);
+                    var toolTipBtnTitle = toolTipItem?.SMBtnText ?? GetI18NValue(UsageConstants.I18N_GotIt);
                     _sm = smartMeterComponent.GetUI();
-                    smartMeterComponent.SetTooltipText(toolTipItem?.SMLink ?? "What are these?");
+                    smartMeterComponent.SetTooltipText(toolTipItem?.SMLink ?? GetI18NValue(UsageConstants.I18N_ProjectCostTitle));
                     smartMeterComponent.SetTooltipTapRecognizer(new UITapGestureRecognizer(() =>
                     {
                         DisplayCustomAlert(string.Empty, toolTipMsg, toolTipBtnTitle, null);
@@ -543,7 +544,13 @@ namespace myTNB
         {
             ViewHelper.AdjustFrameSetHeight(_viewSSMR, 0);
             _viewSSMR.Hidden = true;
-            SetContentView();
+        }
+
+        internal void HideTariffLegend()
+        {
+            ViewHelper.AdjustFrameSetHeight(_viewLegend, 0);
+            _viewLegend.Hidden = true;
+            _legendIsVisible = false;
         }
 
         internal virtual void OnReadHistoryTap()

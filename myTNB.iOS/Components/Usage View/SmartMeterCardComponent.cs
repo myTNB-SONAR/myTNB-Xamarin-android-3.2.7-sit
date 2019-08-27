@@ -31,13 +31,13 @@ namespace myTNB
                 BackgroundColor = UIColor.White
             };
             _containerView.Layer.CornerRadius = GetScaledHeight(5F);
-            _containerView.AddSubview(ItemDetailView(_containerView, 0, "Calendar-Icon", _usageCostModel[0]));
+            _containerView.AddSubview(ItemDetailView(_containerView, 0, Constants.IMG_CalendarIcon, _usageCostModel[0]));
             UIView line = new UIView(new CGRect(BaseMarginWidth16, GetScaledHeight(64F), width - (BaseMarginHeight16 * 2), GetScaledHeight(1F)))
             {
                 BackgroundColor = MyTNBColor.VeryLightPinkThree
             };
             _containerView.AddSubview(line);
-            _containerView.AddSubview(ItemDetailView(_containerView, line.Frame.GetMaxY(), "Predict-Icon", _usageCostModel[1]));
+            _containerView.AddSubview(ItemDetailView(_containerView, line.Frame.GetMaxY(), Constants.IMG_PredictIcon, _usageCostModel[1]));
 
             if (_RMkWh == RMkWhEnum.RM)
             {
@@ -48,7 +48,7 @@ namespace myTNB
                 _toolTipView.Layer.CornerRadius = GetScaledHeight(12F);
                 UIImageView toolTipIcon = new UIImageView(new CGRect(GetScaledWidth(4F), GetScaledHeight(4F), GetScaledWidth(16F), GetScaledHeight(16F)))
                 {
-                    Image = UIImage.FromBundle("IC-Info-Blue")
+                    Image = UIImage.FromBundle(Constants.IMG_InfoBlue)
                 };
                 _toolTipLabel = new UILabel(new CGRect(toolTipIcon.Frame.GetMaxX() + GetScaledWidth(8F), GetScaledHeight(4F), _toolTipView.Frame.Width * .80F, GetScaledHeight(16F)))
                 {
@@ -84,14 +84,14 @@ namespace myTNB
             };
             icon = new UIImageView(new CGRect(BaseMarginWidth16, GetScaledHeight(18F), iconWidth, iconHeight))
             {
-                Image = UIImage.FromBundle(!isAverageUsage ? imageName : "Trend-Icon")
+                Image = UIImage.FromBundle(!isAverageUsage ? imageName : Constants.IMG_TrendIcon)
             };
             title = new UILabel(new CGRect(icon.Frame.GetMaxX() + GetScaledWidth(12), BaseMarginHeight16, width * .70F, GetScaledHeight(16F)))
             {
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.GreyishBrownTwo,
                 TextAlignment = UITextAlignment.Left,
-                Text = (model != null) ? model.Title : "My bill amount so far"
+                Text = (model != null) ? model.Title : string.Empty
             };
             dateRange = new UILabel(new CGRect(icon.Frame.GetMaxX() + GetScaledWidth(12), title.Frame.GetMaxY(), width * .70F, GetScaledHeight(16F)))
             {
@@ -133,7 +133,7 @@ namespace myTNB
             {
                 UIImageView trendIcon = new UIImageView(new CGRect(amount.Frame.GetMinX() - GetScaledWidth(6F) - GetScaledWidth(4.5F), amount.Frame.GetMinY() + GetScaledHeight(4F), GetScaledWidth(6F), GetScaledHeight(12F)))
                 {
-                    Image = UIImage.FromBundle((model.TrendType == TrendEnum.UP) ? "Trend-Up-Icon" : "Trend-Down-Icon")
+                    Image = UIImage.FromBundle((model.TrendType == TrendEnum.UP) ? Constants.IMG_TrendUpIcon : Constants.IMG_TrendDownIcon)
                 };
                 itemView.AddSubview(trendIcon);
             }

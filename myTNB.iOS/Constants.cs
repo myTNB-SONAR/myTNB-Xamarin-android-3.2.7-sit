@@ -13,6 +13,12 @@
         public static string IMG_TariffEyeCloseIcon = "Tariff-Eye-Close-Icon";
         public static string IMG_RefreshIcon = "Refresh-Icon";
         public static string IMG_BCRMDownIcon = "BCRM-Down-Icon";
+        public static string IMG_CalendarIcon = "Calendar-Icon";
+        public static string IMG_PredictIcon = "Predict-Icon";
+        public static string IMG_TrendIcon = "Trend-Icon";
+        public static string IMG_InfoBlue = "IC-Info-Blue";
+        public static string IMG_TrendUpIcon = "Trend-Up-Icon";
+        public static string IMG_TrendDownIcon = "Trend-Down-Icon";
 
         //I18N Keys
         public static string I18N_BCRMMessage = "bcrmMessage";
@@ -32,5 +38,6 @@
         public static string I18N_PaidExtra = "paidExtra";
         public static string I18N_ClearedAllBills = "clearedAllBills";
         public static string I18N_ViewReadHistory = "viewReadHistory";
+
     }
 }

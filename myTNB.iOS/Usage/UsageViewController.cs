@@ -21,7 +21,7 @@ namespace myTNB
             InitiateAPICalls();
         }
 
-        internal override void InitiateAPICalls(bool fromRefreshState = false)
+        internal override void InitiateAPICalls()
         {
             if (!DataManager.DataManager.SharedInstance.IsSameAccount)
             {
@@ -118,7 +118,7 @@ namespace myTNB
         internal override void RefreshButtonOnTap()
         {
             base.RefreshButtonOnTap();
-            InitiateAPICalls(true);
+            InitiateAPICalls();
         }
         #endregion
         #region API Calls
