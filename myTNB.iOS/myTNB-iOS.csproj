@@ -1162,6 +1162,15 @@
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\BCRM-Down-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\BCRM-Down-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Trend-Down-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Trend-Down-Icon.imageset\Trend-Down-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Trend-Down-Icon.imageset\Trend-Down-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Trend-Up-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Trend-Up-Icon.imageset\Trend-Up-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Trend-Up-Icon.imageset\Trend-Up-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Trend-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Trend-Icon.imageset\Trend-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Trend-Icon.imageset\Trend-Icon%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1548,6 +1557,9 @@
     <Folder Include="Assets.xcassets\IC-Action-Zoom.imageset\" />
     <Folder Include="Assets.xcassets\Usage-MissingReading.imageset\" />
     <Folder Include="Assets.xcassets\BCRM-Down-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Trend-Down-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Trend-Up-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Trend-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

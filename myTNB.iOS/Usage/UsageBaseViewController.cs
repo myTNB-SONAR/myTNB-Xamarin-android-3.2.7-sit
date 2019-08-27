@@ -314,7 +314,7 @@ namespace myTNB
             SetAddress();
             SetChartView(true);
             SetTariffSelectionComponent();
-            SetSmartMeterComponent();
+            SetSmartMeterComponent(true);
             SetEnergyTipsComponent();
             SetContentView();
             SetFooterView();
@@ -377,17 +377,17 @@ namespace myTNB
             {
                 _chart.RemoveFromSuperview();
             }
-            _chart = isUpdating ? _chartView.GetShimmerUI(isREAccount) : _chartView.GetUI();
+            _chart = isUpdating ? _chartView.GetShimmerUI() : _chartView.GetUI();
             _viewChart.AddSubview(_chart);
             ViewHelper.AdjustFrameSetHeight(_viewChart, _chart.Frame.Height);
         }
 
-        #region
-        internal void SetSmartMeterComponent()
+        #region SMART METER Methods
+        internal void SetSmartMeterComponent(bool isUpdating, List<UsageCostItemModel> usageCostModel = null)
         {
             if (isSmartMeterAccount)
             {
-                ViewHelper.AdjustFrameSetHeight(_viewSmartMeter, GetScaledHeight(169F));
+                ViewHelper.AdjustFrameSetHeight(_viewSmartMeter, _rMkWhEnum == RMkWhEnum.RM ? GetScaledHeight(169F) : GetScaledHeight(129F));
                 _viewSmartMeter.BackgroundColor = UIColor.Clear;
                 _viewSmartMeter.Hidden = false;
 
@@ -395,19 +395,49 @@ namespace myTNB
                 {
                     _sm.RemoveFromSuperview();
                 }
-                SmartMeterCardComponent smartMeterComponent = new SmartMeterCardComponent(_viewSmartMeter);
-                _sm = smartMeterComponent.GetUI();
-                _viewSmartMeter.AddSubview(_sm);
-                AddSmartMeterViewShadow(ref _sm);
+                SmartMeterCardComponent smartMeterComponent = new SmartMeterCardComponent(_viewSmartMeter, usageCostModel, _rMkWhEnum);
+                if (isUpdating)
+                {
+                    _sm = smartMeterComponent.GetShimmerUI();
+                    _viewSmartMeter.AddSubview(_sm);
+                    AddSmartMeterViewShadow(ref _sm);
+                }
+                else
+                {
+                    List<ToolTipItemModel> toolTips = AccountUsageSmartCache.GetTooltips();
+                    ToolTipItemModel toolTipItem = new ToolTipItemModel();
+                    if (toolTips != null && toolTips.Count > 0 &&
+                        usageCostModel != null && usageCostModel.Count > 1)
+                    {
+                        toolTipItem = toolTips.Find(x => x.UsageCostType == usageCostModel[1].UsageCostType);
+                    }
+                    var toolTipMsg = toolTipItem?.Message[0] ?? "Dashboard_ProjectedCostMessage".Translate();
+                    var toolTipBtnTitle = toolTipItem?.SMBtnText ?? "Common_GotIt".Translate();
+                    _sm = smartMeterComponent.GetUI();
+                    smartMeterComponent.SetTooltipText(toolTipItem?.SMLink ?? "What are these?");
+                    smartMeterComponent.SetTooltipTapRecognizer(new UITapGestureRecognizer(() =>
+                    {
+                        DisplayCustomAlert(string.Empty, toolTipMsg, toolTipBtnTitle, null);
+                    }));
+                    _viewSmartMeter.AddSubview(_sm);
+                    AddSmartMeterViewShadow(ref _sm);
+                }
             }
             else
             {
                 ViewHelper.AdjustFrameSetHeight(_viewSmartMeter, 0);
                 _viewSmartMeter.Hidden = true;
             }
-            SetContentView();
+            UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseIn
+                    , () =>
+                    {
+                        SetContentView();
+                    }
+                    , () =>
+                    {
+                    }
+                );
         }
-
 
         private void AddSmartMeterViewShadow(ref CustomUIView view)
         {
@@ -541,7 +571,7 @@ namespace myTNB
         {
             if (!isREAccount)
             {
-                List<LegendItemModel> tariffList = new List<LegendItemModel>(AccountUsageCache.GetTariffLegendList());
+                List<LegendItemModel> tariffList = new List<LegendItemModel>(isSmartMeterAccount ? AccountUsageSmartCache.GetTariffLegendList() : AccountUsageCache.GetTariffLegendList());
                 if (tariffList != null && tariffList.Count > 0)
                 {
                     ViewHelper.AdjustFrameSetHeight(_viewLegend, 0);
@@ -566,7 +596,7 @@ namespace myTNB
         private void ShowHideTariffLegends(bool isVisible)
         {
             _legendIsVisible = isVisible;
-            List<LegendItemModel> tariffList = new List<LegendItemModel>(AccountUsageCache.GetTariffLegendList());
+            List<LegendItemModel> tariffList = new List<LegendItemModel>(isSmartMeterAccount ? AccountUsageSmartCache.GetTariffLegendList() : AccountUsageCache.GetTariffLegendList());
             if (tariffList != null && tariffList.Count > 0)
             {
                 UpdateBackgroundImage(isVisible);
@@ -668,6 +698,14 @@ namespace myTNB
                 _tariffSelectionComponent.SetRMkWhLabel(_rMkWhEnum);
                 UpdateRMkWhSelectionColour(_rMkWhEnum);
                 _chartView.ToggleRMKWHValues(_rMkWhEnum);
+                if (isSmartMeterAccount)
+                {
+                    OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
+                    if (model != null)
+                    {
+                        SetSmartMeterComponent(false, model.Usage);
+                    }
+                }
             }));
             _rmKwhDropDownView.AddSubview(kWhView);
 
@@ -695,6 +733,14 @@ namespace myTNB
                 _tariffSelectionComponent.SetRMkWhLabel(_rMkWhEnum);
                 UpdateRMkWhSelectionColour(_rMkWhEnum);
                 _chartView.ToggleRMKWHValues(_rMkWhEnum);
+                if (isSmartMeterAccount)
+                {
+                    OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
+                    if (model != null)
+                    {
+                        SetSmartMeterComponent(false, model.Cost);
+                    }
+                }
             }));
             _rmKwhDropDownView.AddSubview(rMView);
 
@@ -1015,7 +1061,9 @@ namespace myTNB
             UpdateBGForRefresh();
             var bcrm = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
             var bcrmMsg = !string.IsNullOrEmpty(bcrm?.DowntimeMessage) && !string.IsNullOrWhiteSpace(bcrm?.DowntimeMessage) ? bcrm?.DowntimeMessage : GetCommonI18NValue(Constants.I18N_BCRMMessage);
-            string desc = isBcrmAvailable ? AccountUsageCache.GetRefreshDataModel()?.RefreshMessage ?? string.Empty : bcrmMsg;
+            var refreshMsg = isSmartMeterAccount ? AccountUsageSmartCache.GetRefreshDataModel()?.RefreshMessage ?? string.Empty : AccountUsageCache.GetRefreshDataModel()?.RefreshMessage ?? string.Empty;
+            var refreshBtnTxt = isSmartMeterAccount ? AccountUsageSmartCache.GetRefreshDataModel()?.RefreshBtnText ?? string.Empty : AccountUsageCache.GetRefreshDataModel()?.RefreshBtnText ?? string.Empty;
+            string desc = isBcrmAvailable ? refreshMsg : bcrmMsg;
 
             if (_refresh != null)
             {
@@ -1024,7 +1072,7 @@ namespace myTNB
             RefreshScreenComponent refreshScreenComponent = new RefreshScreenComponent(View, GetScaledHeight(84F) - (DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height));
             refreshScreenComponent.SetIsBCRMDown(!isBcrmAvailable);
             refreshScreenComponent.SetRefreshButtonHidden(!isBcrmAvailable);
-            refreshScreenComponent.SetButtonText(AccountUsageCache.GetRefreshDataModel()?.RefreshBtnText ?? string.Empty);
+            refreshScreenComponent.SetButtonText(refreshBtnTxt);
             refreshScreenComponent.SetDescription(desc);
             refreshScreenComponent.CreateComponent();
             refreshScreenComponent.OnButtonTap = RefreshButtonOnTap;

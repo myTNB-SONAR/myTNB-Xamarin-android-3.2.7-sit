@@ -13,6 +13,8 @@ namespace myTNB
         public static AccountUsageSmartCache Instance { get { return lazy.Value; } }
 
         private static List<LegendItemModel> TariffLegendList = new List<LegendItemModel>();
+        private static OtherUsageMetricsModel UsageMetrics = new OtherUsageMetricsModel();
+        private static List<ToolTipItemModel> Tooltips = new List<ToolTipItemModel>();
         public static AccountUsageSmartResponseDataModel RefreshDataModel;
 
         public static bool IsSuccess;
@@ -29,6 +31,24 @@ namespace myTNB
                 return TariffLegendList;
             }
             return new List<LegendItemModel>();
+        }
+
+        public static OtherUsageMetricsModel GetUsageMetrics()
+        {
+            if (UsageMetrics != null)
+            {
+                return UsageMetrics;
+            }
+            return new OtherUsageMetricsModel();
+        }
+
+        public static List<ToolTipItemModel> GetTooltips()
+        {
+            if (Tooltips != null)
+            {
+                return Tooltips;
+            }
+            return new List<ToolTipItemModel>();
         }
 
         public static AccountUsageSmartResponseDataModel GetRefreshDataModel()
@@ -48,8 +68,10 @@ namespace myTNB
             {
                 AccountUsageSmartDataModel data = response.d.data.DeepClone();
                 TariffLegendList = data.TariffBlocksLegend;
-                ByMonthDateRange = data.ByMonth[0].Range; // TO DO: Need to revisit when the response data structure has changed
-                ByMonthUsage = data.ByMonth[0].Months;// TO DO: Need to revisit when the response data structure has changed
+                ByMonthDateRange = data.ByMonth.Range;
+                ByMonthUsage = data.ByMonth.Months;
+                UsageMetrics = data.OtherUsageMetrics;
+                Tooltips = data.ToolTips;
 
                 SaveToCache(accountNumber, data);
             }
@@ -122,8 +144,10 @@ namespace myTNB
                     if (data != null)
                     {
                         TariffLegendList = data.TariffBlocksLegend;
-                        ByMonthDateRange = data.ByMonth[0].Range; // TO DO: Need to revisit when the response data structure has changed
-                        ByMonthUsage = data.ByMonth[0].Months;// TO DO: Need to revisit when the response data structure has changed
+                        ByMonthDateRange = data.ByMonth.Range;
+                        ByMonthUsage = data.ByMonth.Months;
+                        UsageMetrics = data.OtherUsageMetrics;
+                        Tooltips = data.ToolTips;
                         return data;
                     }
                 }

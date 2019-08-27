@@ -175,11 +175,14 @@ namespace myTNB
                     {
                         if (AccountUsageSmartCache.IsRefreshNeeded(DataManager.DataManager.SharedInstance.SelectedAccount.accNum))
                         {
+                            SetSmartMeterComponent(true);
                             AccountUsageSmartCache.ClearTariffLegendList();
                             AccountUsageSmartResponseModel accountUsageSmartResponse = await UsageServiceCall.GetAccountUsageSmart(DataManager.DataManager.SharedInstance.SelectedAccount);
                             AccountUsageSmartCache.SetData(DataManager.DataManager.SharedInstance.SelectedAccount.accNum, accountUsageSmartResponse);
                             if (AccountUsageSmartCache.IsSuccess)
                             {
+                                OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
+                                SetSmartMeterComponent(false, model.Cost);
                                 SetTariffLegendComponent();
                                 SetChartView(false);
                             }
@@ -192,6 +195,8 @@ namespace myTNB
                         {
                             AccountUsageSmartCache.ClearTariffLegendList();
                             AccountUsageSmartCache.GetCachedData(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                            OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
+                            SetSmartMeterComponent(false, model.Cost);
                             SetTariffLegendComponent();
                             SetChartView(false);
                         }
