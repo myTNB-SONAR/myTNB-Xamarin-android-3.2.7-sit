@@ -18,5 +18,7 @@
         public static string I18N_Usage = "navTitle";
         public static string I18N_GotIt = "gotIt";
         public static string I18N_DisconnectionMessage = "disconnectionMsg";
+        public static string I18N_ProjectedCostMessage = "projectedCostMsg";
+        public static string I18N_ProjectCostTitle = "projectedCostTitle";
     }
 }

@@ -241,6 +241,8 @@
         "navTitle": "Usage",
         "accountsMissing": "Why are some of my accounts not here?",
         "gotIt": "Got it!",
-        "disconnectionMsg": "<strong>What does this mean?</strong><br><br>Your electricity has been disconnected and is unavailable. This was not caused by a power outage.<br><br>If you’ve made a payment, please give us some time for this to be reflected."
+        "disconnectionMsg": "<strong>What does this mean?</strong><br><br>Your electricity has been disconnected and is unavailable. This was not caused by a power outage.<br><br>If you’ve made a payment, please give us some time for this to be reflected.",
+        "projectedCostMsg": "<strong>My bill amount so far:</strong><br><br>Your bill amount so far is the amount you have used up until yesterday.<br><br><strong> My bill may reach:</strong><br><br>This is calculated based on your average daily consumption for the past one (1) month, your actual bill may differ. To find out more, please visit our <strong><a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">FAQ page.</a></strong><br><br>Note: The amount shown is before applicable taxes / additional charges.",
+        "projectedCostTitle": "What are these?"
     }
 }

@@ -410,7 +410,8 @@ namespace myTNB
                 ShowsVerticalScrollIndicator = false,
                 ClipsToBounds = true,
                 BackgroundColor = UIColor.Clear,
-                Hidden = false
+                Hidden = false,
+                Bounces = false
             };
 
             _toolTipContainerView.AddSubview(_toolTipScrollView);

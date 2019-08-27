@@ -27,7 +27,7 @@ namespace myTNB
             return _mainView;
         }
 
-        public virtual CustomUIView GetShimmerUI(bool isREAccount = false)
+        public virtual CustomUIView GetShimmerUI()
         {
             nfloat baseWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
             CustomShimmerView shimmeringView = new CustomShimmerView();
@@ -95,9 +95,9 @@ namespace myTNB
             , double baseValue, bool isSelected, CGSize size, bool isLatestBar)
         { }
 
-        protected virtual UIColor GetTariffBlockColor(string blockID, bool isSelected)
+        protected virtual UIColor GetTariffBlockColor(string blockID, bool isSelected, bool isSmartMeter)
         {
-            List<LegendItemModel> legend = AccountUsageCache.GetTariffLegendList();
+            List<LegendItemModel> legend = isSmartMeter ? AccountUsageSmartCache.GetTariffLegendList() : AccountUsageCache.GetTariffLegendList();
             LegendItemModel item = legend.Find(x => x.BlockId == blockID);
             if (item != null)
             {

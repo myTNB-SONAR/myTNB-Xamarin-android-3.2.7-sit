@@ -156,7 +156,7 @@ namespace myTNB
                 barMaxY -= blockHeight;
                 UIView viewTariffBlock = new UIView(new CGRect(0, barMaxY, size.Width, blockHeight))
                 {
-                    BackgroundColor = GetTariffBlockColor(item.BlockId, isSelected)
+                    BackgroundColor = GetTariffBlockColor(item.BlockId, isSelected, false)
                 };
                 viewTariffContainer.AddSubview(viewTariffBlock);
                 barMaxY -= GetHeightByScreenSize(1);
@@ -240,7 +240,7 @@ namespace myTNB
                    , () =>
                    {
                        bar.Frame = barOriginalFrame;
-                       if (value!=null)
+                       if (value != null)
                        {
                            value.Frame = valueOriginalFrame;
                        }
