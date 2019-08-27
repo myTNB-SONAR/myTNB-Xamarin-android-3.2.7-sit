@@ -797,6 +797,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             ShowBackButton(true);
         }
 
+        // Show Bottom Navigation Bar in Fragment
         public void ShowBottomNavigationBar()
         {
             try
@@ -817,6 +818,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
+        // Hide Bottom Navigation Bar in Fragment
         public void HideBottomNavigationBar()
         {
             try

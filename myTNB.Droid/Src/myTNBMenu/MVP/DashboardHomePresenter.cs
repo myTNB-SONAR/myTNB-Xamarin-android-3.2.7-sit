@@ -164,10 +164,13 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                     {
                                         LoadSMUsageHistory(selectedAccount);
                                     }*/
+
+                                    // Lin Siong TODO: To do the  the usage data cache handling for smart meter 
                                     LoadUsageHistory(selectedAccount);
                                 }
                                 else
                                 {
+                                    // Lin Siong TODO: To do the  the usage data cache handling for smart meter 
                                     // LoadSMUsageHistory(selectedAccount);
                                     LoadUsageHistory(selectedAccount);
                                 }
@@ -897,11 +900,15 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                     {
                                         LoadSMUsageHistory(selectedAccount);
                                     }*/
+
+                                    // Lin Siong TODO: To do the  the usage data cache handling for smart meter 
                                     LoadUsageHistory(selected);
                                 }
                                 else
                                 {
                                     // LoadSMUsageHistory(selectedAccount);
+
+                                    // Lin Siong TODO: To do the  the usage data cache handling for smart meter 
                                     LoadUsageHistory(selected);
                                 }
                             }

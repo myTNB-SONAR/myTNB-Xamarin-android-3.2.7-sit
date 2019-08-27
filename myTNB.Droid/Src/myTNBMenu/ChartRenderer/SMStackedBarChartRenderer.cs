@@ -23,7 +23,10 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
     public class SMStackedBarChartRenderer : BarChartRenderer
     {
         private BarChart barChart;
+
+        // Lin Siong TODO: Change UsageHistoryData to SMUsageHistoryData
         public UsageHistoryData selectedHistoryData { get; set; }
+
 
         public Context currentContext { get; set; }
 
@@ -61,6 +64,14 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
         private DecimalFormat decimalFormat = new DecimalFormat("#,###,##0.00");
         private DecimalFormat kwhFormat = new DecimalFormat("#,###,##0");
 
+        // Lin Siong Note: this is for use of tariff block on smart meter inner dashboard
+        // Lin Siong Note: Smart Meter Chart Renderer support isStacked Flag, to determine whether wanna have spacing between bar or not
+
+        // Lin Siong TODO: To draw the missing note icon
+        // Lin Siong TODO: To draw the unavailable icon on canvas when have downtime
+        // Lin Siong TODO: To see if have isEstimated Reading then have plan to draw the stripped background out
+
+
         public SMStackedBarChartRenderer(BarChart chart, ChartAnimator animator, ViewPortHandler viewPortHandler) : base(chart, animator, viewPortHandler)
         {
             barChart = chart;
@@ -78,9 +89,9 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
         public override void DrawExtras(Canvas canvas)
         {
-            // base.DrawExtras(canvas);
             try
             {
+                // Lin Siong Note: to get current hightlighted data entry
                 Highlight[] highlighted = barChart.GetHighlighted();
 
                 if (highlighted != null && highlighted.Length > 0)
@@ -134,6 +145,9 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                         currentArrayIndex = -1;
                     }
 
+                    // Lin Siong Note: to determine on whether which bar is last month
+                    // Lin Siong Note: but actually have quesiton on this, if the smart meter just open and one have one month of data
+                    // Lin Siong Note: How backend return the data to us?
                     lastMonthIndex = currentDataSet.Values.Count;
                     lastMonthFirstIndex = 0;
                     lastMonthLastIndex = 0;
@@ -188,6 +202,13 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
         {
             try
             {
+                // Lin Siong Note:
+                // The concept of drawing the tariff block out with which bar need to be hightlighted:
+                // 1) First it will get the left point of the box that going to draw, also the next four index
+                // 2) i) if the next four index already out of buffer, direct draw the full rounded bar out
+                // 2) ii) if no, then determine if next index is same, if yes then draw lower rounded bar, else draw the full rounded bar out
+                // 2) iii) For next if is still same as previous and next, then will draw rectangle bar, else draw upper rounded bar
+
                 Transformer trans = barChart.GetTransformer(dataSet.AxisDependency);
 
                 MShadowPaint.Color = new Color(dataSet.BarShadowColor);
@@ -207,7 +228,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
                 buffer.Feed(dataSet);
 
-
+                // Lin Siong Note: to get current hightlighted data entry
                 Highlight[] highlighted = barChart.GetHighlighted();
                 if (highlighted != null && highlighted.Length > 0)
                 {
@@ -253,6 +274,9 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                         currentArrayIndex = -1;
                     }
 
+                    // Lin Siong Note: to determine on whether which bar is last month
+                    // Lin Siong Note: but actually have quesiton on this, if the smart meter just open and one have one month of data
+                    // Lin Siong Note: How backend return the data to us?
                     lastMonthIndex = currentDataSet.Values.Count;
                     lastMonthFirstIndex = 0;
                     lastMonthLastIndex = 0;
@@ -363,6 +387,9 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                             isFirstTime = false;
                            
                             int nextIndex = j + 4;
+                            // Lin Siong Note: check if need to hightlight the entry
+                            // Lin Siong Note: if yes then set alpha to 255
+                            // Lin Siong Note: else get the default alpha, set to 50
                             if (Math.Abs(currentSelectedDrawX - -1f) < 0.0001)
                             {
                                 MRenderPaint.Color = new Color(dataSet.GetColor(j / 4));
@@ -557,40 +584,6 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                         }
                                     }
                                 }
-
-
-                                if (Math.Abs(currentSelectedDrawX - currentItem) > 0.0001)
-                                {
-                                    MRenderPaint.Color = new Color(255, 255, 255, 50);
-                                    MRenderPaint.TextSize = DPUtils.ConvertDPToPx(10f);
-                                    MRenderPaint.TextAlign = Paint.Align.Center;
-
-                                    try
-                                    {
-                                        Typeface plain = Typeface.CreateFromAsset(currentContext.Assets, "fonts/" + TextViewUtils.MuseoSans500);
-                                        MRenderPaint.SetTypeface(plain);
-                                    }
-                                    catch (System.Exception e)
-                                    {
-                                        Utility.LoggingNonFatalError(e);
-                                    }
-
-                                    float x = lastMonthLeftPoint + ((lastMonthRightPoint - lastMonthLeftPoint) / 2);
-                                    float y = lastMonthTopPoint - DPUtils.ConvertDPToPx(7f);
-
-                                    if (currentChartType == ChartType.RM)
-                                    {
-                                        float val = (float)selectedHistoryData.ByMonth.Months[selectedHistoryData.ByMonth.Months.Count - 1].AmountTotal;
-                                        string txt = selectedHistoryData.ByMonth.Months[selectedHistoryData.ByMonth.Months.Count - 1].Currency + " " + decimalFormat.Format(val);
-                                        canvas.DrawText(txt, x, y, MRenderPaint);
-                                    }
-                                    else if (currentChartType == ChartType.kWh)
-                                    {
-                                        float valKwh = (float)selectedHistoryData.ByMonth.Months[selectedHistoryData.ByMonth.Months.Count - 1].UsageTotal;
-                                        string txt = kwhFormat.Format(Math.Abs(valKwh)) + " " + selectedHistoryData.ByMonth.Months[selectedHistoryData.ByMonth.Months.Count - 1].UsageUnit;
-                                        canvas.DrawText(txt, x, y, MRenderPaint);
-                                    }
-                                }
                             }
                             else
                             {
@@ -655,11 +648,63 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
                     if (lastMonthIndex != -1 && bufferItems.Length > 0)
                     {
+                        // Lin Siong Note: Draw Ring on Last bar
+                        // Lin Siong Note: Draw Text On Lasg bar
                         canvas.DrawPath(GenerateRoundRectangleWithNoSpace(lastMonthLeftPoint + offsetValue, lastMonthTopPoint + offsetValue, lastMonthRightPoint - offsetValue, lastMonthBottomPoint - offsetValue, mRadius, mRadius, true, true, true, true), MBarBorderPaint);
+                        DrawTextOnCanvas(canvas, lastMonthTopPoint, lastMonthLeftPoint, lastMonthRightPoint, selectedHistoryData.ByMonth.Months[selectedHistoryData.ByMonth.Months.Count - 1].Currency, selectedHistoryData.ByMonth.Months[selectedHistoryData.ByMonth.Months.Count - 1].AmountTotal, selectedHistoryData.ByMonth.Months[selectedHistoryData.ByMonth.Months.Count - 1].UsageUnit, selectedHistoryData.ByMonth.Months[selectedHistoryData.ByMonth.Months.Count - 1].UsageTotal);
                     }
                 }
             }
             catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        // Lin Siong Note: To draw the text on last bar and always show it
+        private void DrawTextOnCanvas(Canvas c, float top, float left, float right, string currencyUnitTxt, double amount, string usageUnitTxt, double usage)
+        {
+            try
+            {
+                // Lin Siong Note: Set Render Paint to white with alpha 50
+                // Lin Siong Note: Set Render Text to 10dp
+                // Lin Siong Note: Set text to align center
+                MRenderPaint.Color = new Color(255, 255, 255, 50);
+                MRenderPaint.TextSize = DPUtils.ConvertDPToPx(10f);
+                MRenderPaint.TextAlign = Paint.Align.Center;
+
+                // Lin Siong Note: Set the typeface to MuseoSans500
+                try
+                {
+                    Typeface plain = Typeface.CreateFromAsset(currentContext.Assets, "fonts/" + TextViewUtils.MuseoSans500);
+                    MRenderPaint.SetTypeface(plain);
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+
+                // Lin Siong Note: calculate the point that need the text to write on
+                // Lin Siong Note: the x is on left point with offset which consist with right point - left point and divided by two
+                // Lin Siong Note: the y is top point + 7dp 
+                float x = left + ((right - left) / 2);
+                float y = top - DPUtils.ConvertDPToPx(7f);
+
+                // Lin Siong Note: to show either RM or kWh
+                if (currentChartType == ChartType.RM)
+                {
+                    float val = (float)amount;
+                    string txt = currencyUnitTxt + " " + decimalFormat.Format(val);
+                    c.DrawText(txt, x, y, MRenderPaint);
+                }
+                else if (currentChartType == ChartType.kWh)
+                {
+                    float valKwh = (float)usage;
+                    string txt = kwhFormat.Format(Math.Abs(valKwh)) + " " + usageUnitTxt;
+                    c.DrawText(txt, x, y, MRenderPaint);
+                }
+            }
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }

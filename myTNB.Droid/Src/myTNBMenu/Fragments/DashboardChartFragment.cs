@@ -348,7 +348,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             if (extras.ContainsKey(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE))
             {
-                isUsageLoadedNeeded = false; 
+                isUsageLoadedNeeded = false;
+                // Lin Siong TODO: To split the usage data cache handling for smart meter 
                 var usageHistoryDataResponse = JsonConvert.DeserializeObject<UsageHistoryResponse>(extras.GetString(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE));
                 selectedHistoryData = usageHistoryDataResponse.Data.UsageHistoryData;
                 try
@@ -691,6 +692,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                     energyDisconnectionButton.Visibility = ViewStates.Gone;
 
+                    // Lin Siong Note: Energy Saving Tip On Start Shimmer and get data
                     if (selectedAccount != null)
                     {
                         if (!selectedAccount.AccountCategoryId.Equals("2"))
@@ -762,6 +764,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 };
 
+                // Hide Bottom Navigation Bar
                 ((DashboardHomeActivity)Activity).HideBottomNavigationBar();
 
             }
@@ -900,6 +903,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             mChart.Visibility = ViewStates.Visible;
 
+            // Lin Siong TODO: This part to determine if tariff is available or not, soon will replace by flag
+            // Lin Siong TODO: And also UI handling for this
             bool isTariffAvailable = true;
             for (int i = 0; i < selectedHistoryData.ByMonth.Months.Count; i++)
             {
@@ -925,11 +930,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             if (!selectedAccount.SmartMeterCode.Equals("0"))
             {
+                // Lin Siong Note: this is for smart meter Inner Dashboard
+                // Lin Siong Note: the isStacked is to determine whether want to have spacing or not
+                // Lin Siong Note: isStacked = true -> have spacing
+                // Lin Siong Note: isStacked = false -> no spacing
+
+                // Lin Siong TODO: To Add day view chart view render on smart meter
+                // 
+
                 if (!isSMDown)
                 {
                     if (isToggleTariff)
                     {
-                        // TODO: Change selected data
+                        // Lin Siong TODO: Change selectedHistoryData to Smart Meter one
                         smRenderer = new SMStackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
                         {
                             selectedHistoryData = selectedHistoryData,
@@ -941,7 +954,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                     else
                     {
-                        // TODO: Change selected data
+                        // Lin Siong TODO: Change selectedHistoryData to Smart Meter one
                         smRenderer = new SMStackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
                         {
                             selectedHistoryData = selectedHistoryData,
@@ -954,11 +967,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else
                 {
-                    // TODO: SM Down Handling
+                    // Lin Siong TODO: SM Downtime Handling
+                    // Lin Siong TODO: To use back the SMStackedBarChartRenderer with new flag inside like isDowntime = true
+                    // Lin Siong TODO: Then draw the unavialble things out
                 }
             }
             else
             {
+                // Lin Siong Note: this is for normal / RE Inner Dashboard
+                // Lin Siong Note: Only tariff is using the renderer as it's the only need
                 if (isToggleTariff)
                 {
                     renderer = new StackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
@@ -1054,6 +1071,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             xAxis.SetDrawGridLines(false);
 
+            // Adding the MuseoSans300 to X Axis
             try
             {
                 Typeface plain = Typeface.CreateFromAsset(Context.Assets, "fonts/" + TextViewUtils.MuseoSans300);
@@ -1085,6 +1103,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             xAxis.SetDrawGridLines(false);
 
+            // Lin Siong Note: Adding the MuseoSans300 to X Axis
             try
             {
                 Typeface plain = Typeface.CreateFromAsset(Context.Assets, "fonts/" + TextViewUtils.MuseoSans300);
@@ -1118,6 +1137,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             leftAxis.SpaceTop = 10f;
             leftAxis.SpaceBottom = 10f;
             leftAxis.AxisMinimum = lowestPossibleSpace;
+            // Lin Siong Note: the 1.5f is important as it give the spacing for marker to render
             leftAxis.AxisMaximum = maxVal + 1.5f;
 
             YAxis rightAxis = mChart.AxisRight;
@@ -1126,6 +1146,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             rightAxis.SpaceTop = 10f;
             rightAxis.SpaceBottom = 10f;
             rightAxis.AxisMinimum = lowestPossibleSpace;
+            // Lin Siong Note: the 1.5f is important as it give the spacing for marker to render
             rightAxis.AxisMaximum = maxVal + 1.5f;
 
         }
@@ -1191,7 +1212,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             if (selectedAccount.SmartMeterCode.Equals("0"))
             {
-
+                // Lin Siong Note: the tariff data entry handling
+                // Lin Siong Note: one row will contain stacked of data
                 if (isToggleTariff)
                 {
                     int stackIndex = 0;
@@ -1218,7 +1240,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         else
                         {
-                            yVals1.Add(new BarEntry(i, 0));
+                            float[] valList = new float[1];
+                            valList[0] = 0f;
+                            yVals1.Add(new BarEntry(i, valList));
                         }
                     }
 
@@ -1241,6 +1265,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         set1 = new BarDataSet(yVals1, "");
                         set1.SetDrawIcons(false);
 
+                        // Lin Siong Note: the tariff data entrycolor  handling
+                        // Lin Siong Note: it will track on which block it will use which color
+                        // Lin Siong Note: then fill the color inside the array
+                        // Lin Siong Note: then set the color array to chart
                         List<int> listOfColor = new List<int>();
 
                         for (int i = 0; i < barLength; i++)
@@ -1375,6 +1403,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 if (isToggleTariff)
                 {
+                    // Lin Siong Note: the tariff data entry handling
+                    // Lin Siong Note: one row will contain stacked of data
                     int stackIndex = 0;
                     List<BarEntry> yVals1 = new List<BarEntry>();
                     for (int i = 0; i < barLength; i++)
@@ -1399,7 +1429,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         else
                         {
-                            yVals1.Add(new BarEntry(i, 0));
+                            float[] valList = new float[1];
+                            valList[0] = 0f;
+                            yVals1.Add(new BarEntry(i, valList));
                         }
                     }
 
@@ -1423,6 +1455,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         set1.SetDrawIcons(false);
 
                         List<int> listOfColor = new List<int>();
+
+                        // Lin Siong Note: the tariff data entrycolor  handling
+                        // Lin Siong Note: it will track on which block it will use which color
+                        // Lin Siong Note: then fill the color inside the array
+                        // Lin Siong Note: then set the color array to chart
 
                         for (int i = 0; i < barLength; i++)
                         {
@@ -1494,6 +1531,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else
                 {
+                    // Lin Siong Note: the normal data entry handling for smart meter
+                    // Lin Siong Note: one row will contain stack of data, but only first is filleded
                     List<BarEntry> yVals1 = new List<BarEntry>();
                     for (int i = 0; i < barLength; i++)
                     {
@@ -1575,6 +1614,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 if (isToggleTariff)
                 {
+                    // Lin Siong Note: the tariff data entry handling
+                    // Lin Siong Note: one row will contain stacked of data
                     int stackIndex = 0;
                     List<BarEntry> yVals1 = new List<BarEntry>();
                     for (int i = 0; i < barLength; i++)
@@ -1599,7 +1640,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         else
                         {
-                            yVals1.Add(new BarEntry(i, 0));
+                            float[] valList = new float[1];
+                            valList[0] = 0f;
+                            yVals1.Add(new BarEntry(i, valList));
                         }
                     }
 
@@ -1621,6 +1664,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         set1 = new BarDataSet(yVals1, "");
                         set1.SetDrawIcons(false);
+
+                        // Lin Siong Note: the tariff data entrycolor  handling
+                        // Lin Siong Note: it will track on which block it will use which color
+                        // Lin Siong Note: then fill the color inside the array
+                        // Lin Siong Note: then set the color array to chart
 
                         List<int> listOfColor = new List<int>();
 
@@ -1756,6 +1804,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 if (isToggleTariff)
                 {
+                    // Lin Siong Note: the tariff data entry handling
+                    // Lin Siong Note: one row will contain stacked of data
                     int stackIndex = 0;
                     List<BarEntry> yVals1 = new List<BarEntry>();
                     for (int i = 0; i < barLength; i++)
@@ -1780,7 +1830,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         else
                         {
-                            yVals1.Add(new BarEntry(i, 0));
+                            float[] valList = new float[1];
+                            valList[0] = 0f;
+                            yVals1.Add(new BarEntry(i, valList));
                         }
                     }
 
@@ -1802,6 +1854,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         set1 = new BarDataSet(yVals1, "");
                         set1.SetDrawIcons(false);
+
+                        // Lin Siong Note: the tariff data entrycolor  handling
+                        // Lin Siong Note: it will track on which block it will use which color
+                        // Lin Siong Note: then fill the color inside the array
+                        // Lin Siong Note: then set the color array to chart
 
                         List<int> listOfColor = new List<int>();
 
@@ -1875,6 +1932,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else
                 {
+                    // Lin Siong Note: the normal data entry handling for smart meter
+                    // Lin Siong Note: one row will contain stack of data, but only first is filleded
                     List<BarEntry> yVals1 = new List<BarEntry>();
                     for (int i = 0; i < barLength; i++)
                     {
@@ -1948,6 +2007,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         }
         #endregion
 
+        // Lin Siong Note: Show by kWh graph
         public void ShowByKwh()
         {
             ChartType = ChartType.kWh;
@@ -1961,6 +2021,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             SetUp();
         }
 
+        // Lin Siong Note: Show by RM graph
         public void ShowByRM()
         {
             ChartType = ChartType.RM;
@@ -2112,6 +2173,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+        // Lin Siong Note: Switch between RM or kWh Graph
         [OnClick(Resource.Id.rmKwhSelection)]
         internal void OnRMKwhToogleSelection(object sender, EventArgs e)
         {
@@ -2133,6 +2195,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+        // Lin Siong Note: Toggle the tariff block graph
         [OnClick(Resource.Id.tarifToggle)]
         internal void OnTariffToggled(object sender, EventArgs e)
         {
@@ -2887,6 +2950,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+
+        // Lin Siong Note: SSMR Dashboard View Setup
         public void ShowSSMRDashboardView(SMRActivityInfoResponse response)
         {
             try
@@ -3184,6 +3249,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+        // Lin Siong Note: Handle the chart select event
+        // Lin Siong Note: Will have vibration effect when selected
+        // Lin Siong Note: if isToggleTariff = true then it will force the entry to be hightlighted to most upper one
+        // Lin Siong TODO: Select last bar trigger to day view
         void IOnChartValueSelectedListenerSupport.OnValueSelected(Entry e, Highlight h)
         {
             try
@@ -3514,6 +3583,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+        // Lin Siong Note: Set Refresh Screen layout param
         public void SetRefreshLayoutParams()
         {
             try
@@ -3540,6 +3610,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+        // Lin Siong Note: Set Refresh Screen layout param
         public void SetMaintenanceLayoutParams()
         {
             try
@@ -3571,6 +3642,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             isSMDown = flag;
         }
 
+        // Lin Siong Note: Set virtual height layout param
+        // Lin Siong Note: To handle UI misalignment
         public void SetVirtualHeightParams(float heightInDP)
         {
             try

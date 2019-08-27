@@ -255,6 +255,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
             isBillAvailable = false;
 
+            // Lin Siong TODO: To split the usage calling for smart meter 
             if (this.mView.IsLoadUsageNeeded())
             {
                 try
