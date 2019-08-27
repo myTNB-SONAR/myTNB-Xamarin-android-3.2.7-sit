@@ -1091,12 +1091,6 @@
     <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group%403x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\smrOnboarding1.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\smrOnboarding1%402x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\smrOnboarding1%403x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%403x-1.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%402x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-Reading-History-Banner.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SSMR-Reading-History-Banner.imageset\group6.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-Reading-History-Banner.imageset\group6%402x.png" />
@@ -1171,6 +1165,10 @@
     <ImageAsset Include="Assets.xcassets\Trend-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Trend-Icon.imageset\Trend-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Trend-Icon.imageset\Trend-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\smrOnboarding1%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\smrOnboarding1%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
