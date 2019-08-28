@@ -185,9 +185,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             void ShowNMREChart(UsageHistoryResponse response, AccountData selectedAccount, string errorCode, string errorMsg);
 
+            void ShowSMChart(SMUsageHistoryResponse response, AccountData selectedAccount);
         }
 
-		public interface IUserActionsListener : IBasePresenter
+        public interface IUserActionsListener : IBasePresenter
 		{
 			/// <summary>
 			/// Action to logout NOT USED

@@ -797,6 +797,18 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             ShowBackButton(true);
         }
 
+        public void ShowSMChart(SMUsageHistoryResponse response, AccountData selectedAccount)
+        {
+            this.SelectedAccountData = selectedAccount;
+            txtAccountName.Text = SelectedAccountData.AccountNickName;
+            currentFragment = new DashboardChartFragment();
+            FragmentManager.BeginTransaction()
+                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(response, selectedAccount),
+                                    typeof(DashboardChartFragment).Name)
+                           .CommitAllowingStateLoss();
+            ShowBackButton(true);
+        }
+
         // Show Bottom Navigation Bar in Fragment
         public void ShowBottomNavigationBar()
         {

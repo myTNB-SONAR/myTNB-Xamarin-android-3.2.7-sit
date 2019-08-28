@@ -351,9 +351,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             if (extras.ContainsKey(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE))
             {
                 isUsageLoadedNeeded = false;
-                // Lin Siong TODO: To split the usage data cache handling for smart meter 
+                selectedSMHistoryData = null;
                 var usageHistoryDataResponse = JsonConvert.DeserializeObject<UsageHistoryResponse>(extras.GetString(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE));
-                selectedHistoryData = usageHistoryDataResponse.Data.UsageHistoryData;
+                if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.UsageHistoryData != null)
+                {
+                    selectedHistoryData = usageHistoryDataResponse.Data.UsageHistoryData;
+                }
                 try
                 {
                     if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshMessage != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshMessage))
@@ -391,6 +394,59 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 isUsageLoadedNeeded = true;
                 selectedHistoryData = null;
+                selectedSMHistoryData = null;
+                txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
+                txtBtnRefreshTitle = "Reload Now";
+            }
+
+            if (extras.ContainsKey(Constants.SELECTED_SM_ACCOUNT_USAGE_RESPONSE))
+            {
+                isUsageLoadedNeeded = false;
+                selectedHistoryData = null;
+                // Lin Siong TODO: To check whether the cache will bring foward here once api integration done
+                var usageHistoryDataResponse = JsonConvert.DeserializeObject<SMUsageHistoryResponse>(extras.GetString(Constants.SELECTED_SM_ACCOUNT_USAGE_RESPONSE));
+                if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.SMUsageHistoryData != null)
+                {
+                    selectedSMHistoryData = usageHistoryDataResponse.Data.SMUsageHistoryData;
+                }
+                try
+                {
+                    if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshMessage != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshMessage))
+                    {
+                        txtRefreshMsg = usageHistoryDataResponse.Data.RefreshMessage;
+                    }
+                    else
+                    {
+                        txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
+                    }
+                }
+                catch (System.Exception e)
+                {
+                    txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
+                    Utility.LoggingNonFatalError(e);
+                }
+                try
+                {
+                    if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshBtnText != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshBtnText))
+                    {
+                        txtBtnRefreshTitle = usageHistoryDataResponse.Data.RefreshBtnText;
+                    }
+                    else
+                    {
+                        txtBtnRefreshTitle = "Reload Now";
+                    }
+                }
+                catch (System.Exception e)
+                {
+                    txtBtnRefreshTitle = "Reload Now";
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+            else
+            {
+                isUsageLoadedNeeded = true;
+                selectedHistoryData = null;
+                selectedSMHistoryData = null;
                 txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
                 txtBtnRefreshTitle = "Reload Now";
             }
@@ -432,6 +488,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             if (!string.IsNullOrEmpty(errorMessage))
             {
                 bundle.PutString(Constants.SELECTED_ERROR_MSG, errorMessage);
+            }
+
+            chartFragment.Arguments = bundle;
+            return chartFragment;
+        }
+
+        internal static DashboardChartFragment NewInstance(SMUsageHistoryResponse usageHistoryResponse, AccountData accountData)
+        {
+            DashboardChartFragment chartFragment = new DashboardChartFragment();
+            Bundle bundle = new Bundle();
+            if (usageHistoryResponse != null)
+            {
+                bundle.PutString(Constants.SELECTED_SM_ACCOUNT_USAGE_RESPONSE, JsonConvert.SerializeObject(usageHistoryResponse));
+            }
+            if (accountData != null)
+            {
+                bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
             }
 
             chartFragment.Arguments = bundle;

@@ -241,6 +241,8 @@ namespace myTNB_Android.Src.Utils
 
         internal static readonly string SELECTED_ACCOUNT_USAGE_RESPONSE = ".selectedAccountUsageResponse";
 
+        internal static readonly string SELECTED_SM_ACCOUNT_USAGE_RESPONSE = ".selectedSMAccountUsageResponse";
+
         internal static readonly string IS_BILLING_AVAILABLE_KEY = ".isBillingAvailable";
 
         public enum GREETING
