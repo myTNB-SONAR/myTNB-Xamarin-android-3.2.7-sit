@@ -103,7 +103,7 @@ namespace myTNB
                         UIStoryboard storyBoard = UIStoryboard.FromName("Receipt", null);
                         ReceiptViewController viewController =
                             storyBoard.InstantiateViewController("ReceiptViewController") as ReceiptViewController;
-                        viewController.MerchatTransactionID = transID;
+                        viewController.DetailedInfoNumber = transID;
                         viewController.isCCFlow = true;
                         var navController = new UINavigationController(viewController);
 

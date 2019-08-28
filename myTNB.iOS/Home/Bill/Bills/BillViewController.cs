@@ -356,7 +356,7 @@ namespace myTNB
         }
         #endregion
 
-        #region Scroll Events
+        #region Events
         public void OnTableViewScroll(object sender, EventArgs e)
         {
             UIScrollView scrollView = sender as UIScrollView;
@@ -388,6 +388,37 @@ namespace myTNB
             gradientLayer.Opacity = opacity;
             _navbarView.Layer.ReplaceSublayer(_gradientLayer, gradientLayer);
             _gradientLayer = gradientLayer;
+        }
+
+        private void DisplayBillPDF()
+        {
+
+        }
+
+        private void DisplayReceipt(string DetailedInfoNumber)
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        UIStoryboard storyBoard = UIStoryboard.FromName("Receipt", null);
+                        ReceiptViewController viewController =
+                            storyBoard.InstantiateViewController("ReceiptViewController") as ReceiptViewController;
+                        if (viewController != null)
+                        {
+                            viewController.DetailedInfoNumber = DetailedInfoNumber;
+                            var navController = new UINavigationController(viewController);
+                            PresentViewController(navController, true, null);
+                        }
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
         }
         #endregion
 

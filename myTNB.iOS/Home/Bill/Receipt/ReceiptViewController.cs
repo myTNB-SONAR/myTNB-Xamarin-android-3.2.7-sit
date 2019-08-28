@@ -36,7 +36,7 @@ namespace myTNB
         //UIWebView _webViewReceipt;
         string _pdfFilePath = string.Empty;
 
-        public string MerchatTransactionID = string.Empty;
+        public string DetailedInfoNumber = string.Empty;
         public bool isCCFlow = false;
         string paymentMethod = String.Empty;
 
@@ -402,7 +402,7 @@ namespace myTNB
                 object requestParameter = new
                 {
                     apiKeyID = TNBGlobal.API_KEY_ID,
-                    merchant_transId = MerchatTransactionID
+                    merchant_transId = DetailedInfoNumber
                 };
                 _receipt = serviceManager.OnExecuteAPI<ReceiptResponseModel>("GetMultiReceiptByTransId", requestParameter);
             });
