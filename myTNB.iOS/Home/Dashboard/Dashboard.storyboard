@@ -149,138 +149,13 @@
                     <view key="view" contentMode="scaleToFill" id="3083">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5749" misplaced="YES">
-                                <rect key="frame" x="1" y="89" width="412" height="596"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="billCell" rowHeight="62" id="5750" customClass="BillTableViewCell">
-                                        <rect key="frame" x="0.0" y="28" width="412" height="62"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5750" id="5751">
-                                            <rect key="frame" x="0.0" y="0.0" width="412" height="61.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoDataViewCell" rowHeight="44" id="19356" customClass="NoDataViewCell">
-                                        <rect key="frame" x="0.0" y="90" width="412" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="19356" id="19357">
-                                            <rect key="frame" x="0.0" y="0.0" width="412" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </prototypes>
-                                <variation key="heightClass=regular-widthClass=compact" preservesSuperviewLayoutMargins="YES"/>
-                            </tableView>
-                            <view hidden="YES" tag="100" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="27216">
-                                <rect key="frame" x="18" y="52" width="378" height="64"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" tag="102" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Our systems are currently undergoing a maintenance activity. Please see FAQs section for other payment options." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="27217">
-                                        <rect key="frame" x="16" y="16" width="346" height="32"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="32" id="27222"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="27222"/>
-                                            </mask>
-                                        </variation>
-                                        <variation key="heightClass=regular-widthClass=compact">
-                                            <mask key="constraints">
-                                                <include reference="27222"/>
-                                            </mask>
-                                        </variation>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="64" id="27218"/>
-                                    <constraint firstItem="27217" firstAttribute="top" secondItem="27216" secondAttribute="top" constant="14" id="27219">
-                                        <variation key="heightClass=regular-widthClass=compact" constant="16"/>
-                                    </constraint>
-                                    <constraint firstItem="27217" firstAttribute="leading" secondItem="27216" secondAttribute="leading" constant="8" id="27220">
-                                        <variation key="heightClass=regular-widthClass=compact" constant="16"/>
-                                    </constraint>
-                                    <constraint firstAttribute="trailing" secondItem="27217" secondAttribute="trailing" constant="8" id="27221">
-                                        <variation key="heightClass=regular-widthClass=compact" constant="16"/>
-                                    </constraint>
-                                </constraints>
-                                <variation key="default">
-                                    <mask key="subviews">
-                                        <exclude reference="27217"/>
-                                    </mask>
-                                    <mask key="constraints">
-                                        <exclude reference="27218"/>
-                                        <exclude reference="27219"/>
-                                        <exclude reference="27220"/>
-                                        <exclude reference="27221"/>
-                                    </mask>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=compact">
-                                    <color key="backgroundColor" red="0.98823529409999999" green="0.76078431369999999" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
-                                    <mask key="subviews">
-                                        <include reference="27217"/>
-                                    </mask>
-                                    <mask key="constraints">
-                                        <include reference="27218"/>
-                                        <include reference="27219"/>
-                                        <include reference="27220"/>
-                                        <include reference="27221"/>
-                                    </mask>
-                                </variation>
-                            </view>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="5749" firstAttribute="top" secondItem="3079" secondAttribute="bottom" constant="69" id="13609"/>
-                            <constraint firstItem="5749" firstAttribute="trailing" secondItem="3083" secondAttribute="trailingMargin" constant="16" id="13610">
-                                <variation key="heightClass=regular-widthClass=compact" constant="19"/>
-                            </constraint>
-                            <constraint firstAttribute="leadingMargin" secondItem="5749" secondAttribute="leading" constant="16" id="13611">
-                                <variation key="heightClass=regular-widthClass=compact" constant="19"/>
-                            </constraint>
-                            <constraint firstItem="3080" firstAttribute="top" secondItem="5749" secondAttribute="bottom" constant="1" id="13612"/>
-                            <constraint firstItem="27216" firstAttribute="top" secondItem="3083" secondAttribute="top" constant="52" id="95P-8W-xgS"/>
-                            <constraint firstItem="27216" firstAttribute="leading" secondItem="3083" secondAttribute="leading" constant="18" id="9mb-cN-8kc"/>
-                            <constraint firstItem="27216" firstAttribute="centerX" secondItem="3083" secondAttribute="centerX" id="Ri1-OJ-kZF"/>
-                            <constraint firstAttribute="trailing" secondItem="27216" secondAttribute="trailing" constant="18" id="hb5-gw-2nC"/>
-                        </constraints>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="5749"/>
-                            </mask>
-                            <mask key="constraints">
-                                <exclude reference="13612"/>
-                                <exclude reference="13609"/>
-                                <exclude reference="13610"/>
-                                <exclude reference="13611"/>
-                            </mask>
-                        </variation>
                         <variation key="heightClass=regular-widthClass=compact">
                             <color key="backgroundColor" red="0.87058823529411766" green="0.87058823529411766" blue="0.87058823529411766" alpha="1" colorSpace="calibratedRGB"/>
-                            <mask key="subviews">
-                                <include reference="5749"/>
-                            </mask>
-                            <mask key="constraints">
-                                <include reference="13612"/>
-                                <include reference="13609"/>
-                                <include reference="13610"/>
-                                <include reference="13611"/>
-                            </mask>
                         </variation>
                     </view>
                     <navigationItem key="navigationItem" title="Title" id="17750"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="billTableView" destination="5749" id="name-outlet-5749"/>
-                        <outlet property="toastMessage" destination="27217" id="name-outlet-27217"/>
-                        <outlet property="toastView" destination="27216" id="name-outlet-27216"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3084" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

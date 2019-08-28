@@ -1185,6 +1185,9 @@
     <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-No-History-Data.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Bills-No-History-Data.imageset\bills%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-No-History-Data.imageset\bills%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1583,6 +1586,8 @@
     <Folder Include="Assets.xcassets\Trend-Down-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Trend-Up-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Trend-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Bills-No-History-Data.imageset\" />
+    <Folder Include="Model\GetAccountBillPayHistory\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1768,11 +1773,6 @@
     <Compile Include="Home\Dashboard\Get Access\GetAccessViewController.cs" />
     <Compile Include="Home\Dashboard\Get Access\GetAccessViewController.designer.cs">
       <DependentUpon>GetAccessViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Bill\BillTableViewDataSource.cs" />
-    <Compile Include="Home\Bill\BillTableViewCell.cs" />
-    <Compile Include="Home\Bill\BillTableViewCell.designer.cs">
-      <DependentUpon>BillTableViewCell.cs</DependentUpon>
     </Compile>
     <Compile Include="Payment\Add Card\AddCardViewController.cs" />
     <Compile Include="Payment\Add Card\AddCardViewController.designer.cs">
@@ -2028,10 +2028,6 @@
     </Compile>
     <Compile Include="Home\Feedback\Feedback Details\FeedbackDetailsDataSource.cs" />
     <Compile Include="Helpers\ScrollViewDelegate.cs" />
-    <Compile Include="Home\Bill\NoDataViewCell.cs" />
-    <Compile Include="Home\Bill\NoDataViewCell.designer.cs">
-      <DependentUpon>NoDataViewCell.cs</DependentUpon>
-    </Compile>
     <Compile Include="Helpers\LabelHelper.cs" />
     <Compile Include="Home\Feedback\FeedbackFileNameHelper.cs" />
     <Compile Include="SQLite\SQLite Data Manager\TermsAndConditionEntity.cs" />
@@ -2425,6 +2421,8 @@
     <Compile Include="Model\Usage\LegendItemModel.cs" />
     <Compile Include="Session Cache\AccountUsageSmartCache.cs" />
     <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterZOut.cs" />
+    <Compile Include="Home\Bill\Bills\NoDataViewCell.cs" />
+    <Compile Include="Model\GetAccountBillPayHistory\GetAccountBillPayHistoryResponseModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

@@ -6,7 +6,8 @@ namespace myTNB.Home.Bill
 {
     public class BillHistoryViewCell : UITableViewCell
     {
-        private UIView _view;
+        private UIView _view, _viewGroupedDate;
+        private UILabel _lblGroupedDate;
         private nfloat _cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
         private nfloat _baseHMargin = ScaleUtility.GetScaledWidth(16);
         private nfloat _baseVMargin = ScaleUtility.GetScaledHeight(16);
@@ -23,6 +24,7 @@ namespace myTNB.Home.Bill
                 _view.TopAnchor.ConstraintEqualTo(TopAnchor).Active = true;
                 _view.BottomAnchor.ConstraintEqualTo(BottomAnchor).Active = true;
             }
+            SelectionStyle = UITableViewCellSelectionStyle.None;
         }
 
         private UIView _viewLine;
@@ -35,8 +37,7 @@ namespace myTNB.Home.Bill
             {
                 TextColor = MyTNBColor.CharcoalGrey,
                 TextAlignment = UITextAlignment.Left,
-                Font = TNBFont.MuseoSans_12_500,
-                Text = "26 Aug - Payment"
+                Font = TNBFont.MuseoSans_12_500
             };
 
             _lblSource = new UILabel(new CGRect(_baseHMargin, ScaleUtility.GetYLocationFromFrame(_lblDate.Frame, 4)
@@ -44,8 +45,7 @@ namespace myTNB.Home.Bill
             {
                 TextColor = MyTNBColor.Grey,
                 TextAlignment = UITextAlignment.Left,
-                Font = TNBFont.MuseoSans_12_300,
-                Text = "23 Jul - 24 Aug 2019"
+                Font = TNBFont.MuseoSans_12_300
             };
 
             _lblAmount = new UILabel(new CGRect(_cellWidth - ScaleUtility.GetScaledWidth(148), ScaleUtility.GetScaledHeight(26)
@@ -53,8 +53,7 @@ namespace myTNB.Home.Bill
             {
                 TextColor = MyTNBColor.FreshGreen,
                 TextAlignment = UITextAlignment.Right,
-                Font = TNBFont.MuseoSans_12_500,
-                Text = "RM 201.80"
+                Font = TNBFont.MuseoSans_12_500
             };
 
             _imgArrow = new UIImageView(new CGRect(_cellWidth - ScaleUtility.GetScaledWidth(32), ScaleUtility.GetScaledHeight(26)
@@ -69,26 +68,122 @@ namespace myTNB.Home.Bill
 
             _view.AddSubviews(new UIView[] { _lblDate, _lblSource, _lblAmount, _imgArrow, _viewLine });
 
-
-            UIView viewGroupedDate = new UIView(new CGRect(ScaleUtility.GetScaledWidth(16), 0 - ScaleUtility.GetScaledHeight(12)
-                   , ScaleUtility.GetScaledWidth(70), ScaleUtility.GetScaledHeight(24)))
+            _viewGroupedDate = new UIView(new CGRect(ScaleUtility.GetScaledWidth(16), 0 - ScaleUtility.GetScaledHeight(12)
+                  , ScaleUtility.GetScaledWidth(70), ScaleUtility.GetScaledHeight(24)))
             {
                 ClipsToBounds = true,
-                Tag = 101
+                Hidden = true
             };
-            UILabel _lblGroupedDate = new UILabel(new CGRect(new CGPoint(0, 0), viewGroupedDate.Frame.Size))
+            _lblGroupedDate = new UILabel(new CGRect(new CGPoint(0, 0), _viewGroupedDate.Frame.Size))
             {
                 BackgroundColor = MyTNBColor.WaterBlue,
                 TextColor = UIColor.White,
                 Font = TNBFont.MuseoSans_12_500,
-                TextAlignment = UITextAlignment.Center,
-                Text = "Aug 2019"
+                TextAlignment = UITextAlignment.Center
             };
-            viewGroupedDate.AddSubview(_lblGroupedDate);
-            viewGroupedDate.Layer.CornerRadius = ScaleUtility.GetScaledHeight(12);
-            viewGroupedDate.Layer.ZPosition = 99;
+            _viewGroupedDate.AddSubview(_lblGroupedDate);
+            _viewGroupedDate.Layer.CornerRadius = ScaleUtility.GetScaledHeight(12);
+            _viewGroupedDate.Layer.ZPosition = 99;
 
-            _view.AddSubview(viewGroupedDate);
+            _view.AddSubview(_viewGroupedDate);
+        }
+
+        public string Type
+        {
+            set
+            {
+                if (!IsValidInput(value))
+                {
+                    value = string.Empty;
+                }
+                _lblDate.Text = value;
+            }
+        }
+        public string Source
+        {
+            set
+            {
+                if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
+                {
+                    value = string.Empty;
+                }
+                _lblSource.Text = value;
+            }
+        }
+        public string Amount
+        {
+            set
+            {
+                if (!IsValidInput(value))
+                {
+                    value = string.Empty;
+                }
+                _lblAmount.Text = string.Format(BillConstants.Format_Default, TNBGlobal.UNIT_CURRENCY, value);
+            }
+        }
+        public bool IsArrowHidden
+        {
+            set
+            {
+                _imgArrow.Hidden = value;
+            }
+        }
+        public bool IsPayment
+        {
+            set
+            {
+                _lblAmount.TextColor = value ? MyTNBColor.FreshGreen : MyTNBColor.CharcoalGrey;
+            }
+        }
+        public string Date
+        {
+            set
+            {
+                if (!IsValidInput(value))
+                {
+                    value = string.Empty;
+                }
+                _lblGroupedDate.Text = value;
+                _viewGroupedDate.Hidden = string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value);
+            }
+        }
+        private bool IsValidInput(string value)
+        {
+            return !string.IsNullOrEmpty(value) && !string.IsNullOrWhiteSpace(value);
+        }
+        public void SetWidgetHeight(bool hasDate, bool isTop = true, bool isBottom = false)
+        {
+            if (hasDate)
+            {
+                _view.Frame = new CGRect(_view.Frame.Location, new CGSize(_view.Frame.Width, ScaleUtility.GetScaledHeight(isTop && isBottom ? 92 : 80)));
+                nfloat dateYloc = _baseVMargin;
+                nfloat amtYloc = ScaleUtility.GetScaledHeight(26);
+                nfloat lineXloc = 0;
+                nfloat lineWidth = _cellWidth;
+                if (isTop && isBottom)
+                {
+                    dateYloc = ScaleUtility.GetScaledHeight(28);
+                    amtYloc = ScaleUtility.GetScaledHeight((92 - 16) / 2);
+                    lineXloc = 0;
+                    lineWidth = _cellWidth;
+                }
+                else if (isTop)
+                {
+                    dateYloc = ScaleUtility.GetScaledHeight(28);
+                    amtYloc = ScaleUtility.GetScaledHeight(33);
+                    lineXloc = _baseHMargin;
+                    lineWidth = _cellWidth - (_baseHMargin * 2);
+                }
+
+                _lblDate.Frame = new CGRect(new CGPoint(_lblDate.Frame.X, dateYloc), _lblDate.Frame.Size);
+                _lblSource.Frame = new CGRect(new CGPoint(_lblSource.Frame.X, ScaleUtility.GetYLocationFromFrame(_lblDate.Frame, 4))
+                    , _lblSource.Frame.Size);
+                _lblAmount.Frame = new CGRect(new CGPoint(_lblAmount.Frame.X, amtYloc), _lblAmount.Frame.Size);
+                _imgArrow.Frame = new CGRect(new CGPoint(_imgArrow.Frame.X, amtYloc), _imgArrow.Frame.Size);
+
+                _viewLine.Frame = new CGRect(lineXloc, _view.Frame.Height - ScaleUtility.GetScaledHeight(1)
+                       , lineWidth, ScaleUtility.GetScaledHeight(1));
+            }
         }
     }
 }

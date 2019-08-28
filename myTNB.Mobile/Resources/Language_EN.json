@@ -255,7 +255,9 @@
         "by": "by",
         "getBy": "get by",
         "myEarnings": "My earnings",
-        "beenPaidExtra": "I’ve been paid extra"
+        "myHistory": "My History",
+        "beenPaidExtra": "I’ve been paid extra",
+        "noHistoryData": "Looks like you have no bills yet! Once you do, your bills and payment history will appear here."
     },
 
     "BillDetails": {

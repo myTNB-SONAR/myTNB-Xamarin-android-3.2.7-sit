@@ -9,6 +9,9 @@ namespace myTNB.Home.Bill
 
         //Service
         public static string Service_GetAccountsCharges = "GetAccountsCharges";
+        public static string Service_GetAccountBillPayHistory = "GetAccountBillPayHistory";
+        public static string Param_RE = "RE";
+        public static string Param_UTIL = "UTIL";
 
         //Format
         public static string Format_DateParse = "yyyyMMdd";
@@ -18,6 +21,7 @@ namespace myTNB.Home.Bill
         //ViewCell
         public static string Cell_BillHistory = "billHistoryTableViewCell";
         public static string Cell_BillSection = "billSectionTableViewCell";
+        public static string Cell_NoHistoryData = "noHistoryDataTableViewCell";
 
         //I18N
         //Bill
@@ -31,6 +35,8 @@ namespace myTNB.Home.Bill
         public static string I18N_GetBy = "getBy";
         public static string I18N_MyEarnings = "myEarnings";
         public static string I18N_BeenPaidExtra = "beenPaidExtra";
+        public static string I18N_NoHistoryData = "noHistoryData";
+        public static string I18N_MyHistory = "myHistory";
 
         //Bill Details
         public static string I18N_BillDetails = "billDetails";
@@ -47,6 +53,7 @@ namespace myTNB.Home.Bill
         public static string IMG_InfoBlue = "IC-Info-Blue";
         public static string IMG_BackIcon = "Back-White";
         public static string IMG_Info = "IC-Info";
+        public static string IMG_NoHistoryData = "Bills-No-History-Data";
 
         //Event
         public static string Event_MandatoryChargesPopup = "MandatoryChargesPopup";

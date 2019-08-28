@@ -25,6 +25,7 @@ namespace myTNB
         private CustomUIView _viewAccountSelector;
 
         private GetAccountsChargesResponseModel _accountCharges;
+        private GetAccountBillPayHistoryResponseModel _billHistory;
 
         public BillViewController(IntPtr handle) : base(handle) { }
 
@@ -48,14 +49,12 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            //NavigationController.SetNavigationBarHidden(true, true);
             OnSelectAccount(0);
         }
 
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
-            // NavigationController.SetNavigationBarHidden(false, true);
         }
         #endregion
 
@@ -142,7 +141,7 @@ namespace myTNB
                 TextColor = MyTNBColor.CharcoalGrey,
                 Font = TNBFont.MuseoSans_36_500,
                 TextAlignment = UITextAlignment.Left,
-                Text = "200.00"
+                Text = string.Empty
             };
             _viewAmount.AddSubviews(new UIView[] { _lblCurrency, _lblAmount });
             UpdateViewAmount();
@@ -152,7 +151,7 @@ namespace myTNB
                 TextColor = MyTNBColor.GreyishBrown,
                 Font = TNBFont.MuseoSans_14_300,
                 TextAlignment = UITextAlignment.Center,
-                Text = "by 24 Sep 2019"
+                Text = string.Empty
             };
             nfloat btnWidth = (BaseMarginedWidth - GetScaledWidth(4)) / 2;
             _viewCTA = new UIView(new CGRect(0, GetYLocationFromFrame(_lblDate.Frame, 24), ViewWidth, GetScaledHeight(48)));
@@ -262,6 +261,28 @@ namespace myTNB
                                }
                            });
                        });
+                       InvokeInBackground(async () =>
+                       {
+                           _billHistory = await GetAccountBillPayHistory();
+                           InvokeOnMainThread(() =>
+                           {
+                               if (_billHistory != null && _billHistory.d != null && _billHistory.d.IsSuccess
+                                    && _billHistory.d.data != null)
+                               {
+                                   List<BillPayHistoryModel> test = _billHistory.d.data.BillPayHistories;
+                                   _historyTableView.Source = new BillHistorySource(test)
+                                   {
+                                       OnTableViewScroll = OnTableViewScroll,
+                                       GetI18NValue = GetI18NValue
+                                   };
+                                   _historyTableView.ReloadData();
+                               }
+                               else
+                               {
+                                   DisplayServiceError(_billHistory?.d?.ErrorMessage);
+                               }
+                           });
+                       });
                    }
                    else
                    {
@@ -274,12 +295,6 @@ namespace myTNB
         private void UpdateHeaderData(AccountChargesModel data)
         {
             bool isRe = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
-
-            if (isRe && DataManager.DataManager.SharedInstance.SelectedAccount.accNum == "240001050406")
-            {
-                data.AmountDue = Math.Abs(data.AmountDue);
-            }
-
             _lblAmount.Text = Math.Abs(data.AmountDue).ToString("N2", CultureInfo.InvariantCulture);
             CGRect ctaFrame = _viewCTA.Frame;
 
@@ -325,7 +340,12 @@ namespace myTNB
             _historyTableView = new UITableView(new CGRect(0, _navbarView.Frame.GetMaxY(), ViewWidth, height));
             _historyTableView.RegisterClassForCellReuse(typeof(BillHistoryViewCell), BillConstants.Cell_BillHistory);
             _historyTableView.RegisterClassForCellReuse(typeof(BillSectionViewCell), BillConstants.Cell_BillSection);
-            _historyTableView.Source = new BillHistorySource() { OnTableViewScroll = OnTableViewScroll };
+            _historyTableView.RegisterClassForCellReuse(typeof(NoDataViewCell), BillConstants.Cell_NoHistoryData);
+            _historyTableView.Source = new BillHistorySource(new List<BillPayHistoryModel>())
+            {
+                OnTableViewScroll = OnTableViewScroll,
+                GetI18NValue = GetI18NValue
+            };
             _historyTableView.BackgroundColor = UIColor.Clear;
             _historyTableView.RowHeight = UITableView.AutomaticDimension;
             _historyTableView.EstimatedRowHeight = GetScaledHeight(90);
@@ -382,6 +402,20 @@ namespace myTNB
                 isOwnedAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsOwnedAccount
             };
             GetAccountsChargesResponseModel response = serviceManager.OnExecuteAPIV6<GetAccountsChargesResponseModel>(BillConstants.Service_GetAccountsCharges, request);
+            return response;
+        }
+
+        private async Task<GetAccountBillPayHistoryResponseModel> GetAccountBillPayHistory()
+        {
+            ServiceManager serviceManager = new ServiceManager();
+            object request = new
+            {
+                serviceManager.usrInf,
+                contractAccount = DataManager.DataManager.SharedInstance.SelectedAccount.accNum ?? string.Empty,
+                isOwnedAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsOwnedAccount,
+                accountType = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount ? BillConstants.Param_RE : BillConstants.Param_UTIL
+            };
+            GetAccountBillPayHistoryResponseModel response = serviceManager.OnExecuteAPIV6<GetAccountBillPayHistoryResponseModel>(BillConstants.Service_GetAccountBillPayHistory, request);
             return response;
         }
         #endregion
