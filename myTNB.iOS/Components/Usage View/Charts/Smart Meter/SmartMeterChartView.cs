@@ -38,10 +38,21 @@ namespace myTNB
             CreateSegment();
         }
 
+        protected void PinchAction(UIPinchGestureRecognizer obj)
+        {
+            Debug.WriteLine("PinchAction");
+            Debug.WriteLine("obj.Scale=== " + obj.Scale);
+        }
+
         protected override void CreateSegment()
         {
             _segmentContainer = new CustomUIView(new CGRect(0, GetYLocationFromFrameScreenSize(_lblDateRange.Frame, 16)
                , _width, GetHeightByScreenSize(157)));
+
+            _segmentContainer.AddGestureRecognizer(new UIPinchGestureRecognizer((obj) =>
+            {
+                PinchAction(obj);
+            }));
 
             nfloat height = _segmentContainer.Frame.Height;
             nfloat width = GetWidthByScreenSize(12);

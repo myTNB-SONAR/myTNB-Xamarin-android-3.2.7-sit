@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using CoreGraphics;
+using myTNB.Enums;
 using myTNB.Home.Components;
 using myTNB.Model;
 using myTNB.Model.Usage;
@@ -28,6 +29,7 @@ namespace myTNB
 
         internal bool _rmkWhFlag, _tariffIsVisible;
         internal RMkWhEnum _rMkWhEnum;
+        internal SmartMeterViewEnum _smViewEnum;
         internal nfloat _lastContentOffset;
         internal bool isBcrmAvailable, isNormalChart, isREAccount, isSmartMeterAccount, accountIsSSMR;
         internal bool _legendIsVisible, _acctSelectorIsTapped;

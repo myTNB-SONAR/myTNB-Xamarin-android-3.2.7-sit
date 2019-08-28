@@ -1,5 +1,6 @@
 ﻿using System;
 using CoreGraphics;
+using myTNB.Enums;
 using UIKit;
 
 namespace myTNB
@@ -11,10 +12,12 @@ namespace myTNB
         UIImageView _tariffIcon, _rmKwhIcon, _monthDayIcon;
         UILabel _rmKwhLabel, _tariffLabel, _monthDayLabel;
         nfloat containerHeight = ScaleUtility.GetScaledHeight(24f);
+        SmartMeterViewEnum _smViewEnum;
 
-        public TariffSelectionComponent(UIView parentView)
+        public TariffSelectionComponent(UIView parentView, SmartMeterViewEnum smViewEnum = SmartMeterViewEnum.Month)
         {
             _parentView = parentView;
+            _smViewEnum = smViewEnum;
         }
 
         private void CreateComponent()
@@ -27,6 +30,8 @@ namespace myTNB
 
             CreateRMKwhView();
             CreateTariffView();
+            CreateMonthDayView();
+            AdjustViews();
         }
 
         private void CreateRMKwhView()
@@ -68,7 +73,17 @@ namespace myTNB
             nfloat width = _parentView.Frame.Width;
             nfloat tariffWidth = GetScaledWidth(108f);
             nfloat tariffHeight = GetScaledHeight(24f);
-            nfloat tariffXPos = width - tariffWidth - BaseMarginWidth16;
+            nfloat tariffXPos;
+
+            if (_smViewEnum == SmartMeterViewEnum.Month)
+            {
+                tariffXPos = width - tariffWidth - BaseMarginWidth16;
+            }
+            else
+            {
+                tariffXPos = _rmKwhSelectionView.Frame.GetMaxX() + GetScaledWidth(17f);
+            }
+
             _tariffSelectionView = new UIView(new CGRect(tariffXPos, 0, tariffWidth, tariffHeight))
             {
                 BackgroundColor = UIColor.White,
@@ -98,6 +113,68 @@ namespace myTNB
                 Text = LanguageUtility.GetCommonI18NValue(Constants.I18N_ShowTariff)
             };
             _tariffSelectionView.AddSubview(_tariffLabel);
+        }
+
+        private void CreateMonthDayView()
+        {
+            if (_smViewEnum == SmartMeterViewEnum.Month)
+                return;
+
+            nfloat width = _parentView.Frame.Width;
+            nfloat monthDayWidth = _smViewEnum == SmartMeterViewEnum.Day ? GetScaledWidth(87f) : GetScaledWidth(71f);
+            nfloat monthDayHeight = GetScaledHeight(24f);
+            nfloat monthDayXPos = width - monthDayWidth - BaseMarginWidth16;
+            _monthDayView = new UIView(new CGRect(monthDayXPos, 0, monthDayWidth, monthDayHeight))
+            {
+                BackgroundColor = UIColor.White,
+            };
+            _monthDayView.Layer.CornerRadius = GetScaledHeight(13f);
+            _containerView.AddSubview(_monthDayView);
+            nfloat iconXPos = GetScaledWidth(12f);
+            nfloat iconYPos = GetScaledHeight(4f);
+            nfloat iconWidth = GetScaledWidth(16f);
+            nfloat iconHeight = GetScaledHeight(16f);
+            _monthDayIcon = new UIImageView(new CGRect(iconXPos, iconYPos, iconWidth, iconHeight))
+            {
+                Image = UIImage.FromBundle(Constants.IMG_ArrowLeftBlueIcon)
+            };
+            _monthDayView.AddSubview(_monthDayIcon);
+            nfloat labelXPos = GetScaledWidth(32f);
+            nfloat labelYPos = GetScaledHeight(4f);
+            nfloat labelWidth = GetScaledWidth(64f);
+            nfloat labelHeight = GetScaledHeight(16f);
+            _monthDayLabel = new UILabel(new CGRect(labelXPos, labelYPos, labelWidth, labelHeight))
+            {
+                Font = TNBFont.MuseoSans_12_500,
+                TextColor = MyTNBColor.WaterBlue,
+                TextAlignment = UITextAlignment.Left,
+                Text = GetMonthDayString()
+            };
+            _monthDayView.AddSubview(_monthDayLabel);
+        }
+
+        private string GetMonthDayString()
+        {
+            string str = string.Empty;
+            switch (_smViewEnum)
+            {
+                case SmartMeterViewEnum.Day:
+                    str = LanguageUtility.GetCommonI18NValue(Constants.I18N_Months);
+                    break;
+                case SmartMeterViewEnum.Hour:
+                    str = LanguageUtility.GetCommonI18NValue(Constants.I18N_Days);
+                    break;
+            }
+            return str;
+        }
+
+        private void AdjustViews()
+        {
+            if (_smViewEnum != SmartMeterViewEnum.Month)
+            {
+                nfloat newXPos = _monthDayView.Frame.GetMinX() - _tariffSelectionView.Frame.Width - BaseMarginWidth16;
+                ViewHelper.AdjustFrameSetX(_tariffSelectionView, newXPos);
+            }
         }
 
         public CustomUIView GetUI()

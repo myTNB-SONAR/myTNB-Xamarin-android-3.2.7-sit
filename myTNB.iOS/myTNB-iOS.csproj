@@ -1169,6 +1169,9 @@
     <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\smrOnboarding1%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Left-Blue.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Left-Blue.imageset\Arrow-Left-Blue%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Left-Blue.imageset\Arrow-Left-Blue%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1558,6 +1561,7 @@
     <Folder Include="Assets.xcassets\Trend-Down-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Trend-Up-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Trend-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Arrow-Left-Blue.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2389,6 +2393,7 @@
     <Compile Include="Model\Usage\LegendItemModel.cs" />
     <Compile Include="Session Cache\AccountUsageSmartCache.cs" />
     <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterZOut.cs" />
+    <Compile Include="Enums\SmartMeterViewEnum.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
