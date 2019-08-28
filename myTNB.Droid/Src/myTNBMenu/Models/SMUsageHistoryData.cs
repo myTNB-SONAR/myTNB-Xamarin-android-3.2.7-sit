@@ -5,6 +5,7 @@ using System.Collections.Generic;
 
 namespace myTNB_Android.Src.myTNBMenu.Models
 {
+    // Lin Siong TODO: To update the SMUsageHistoryData to the latest one
     public class SMUsageHistoryData
     {
 
@@ -137,6 +138,25 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 public string CO2 { get; set; }
             }
 
+            public class TariffBlock
+            {
+                [JsonProperty(PropertyName = "BlockId")]
+                [AliasAs("BlockId")]
+                public string BlockId { get; set; }
+
+                [JsonProperty(PropertyName = "Amount")]
+                [AliasAs("Amount")]
+                public double Amount { get; set; }
+
+                [JsonProperty(PropertyName = "Usage")]
+                [AliasAs("Usage")]
+                public double Usage { get; set; }
+
+                [JsonProperty(PropertyName = "BlockPrice")]
+                [AliasAs("BlockPrice")]
+                public string BlockPrice { get; set; }
+            }
+
         }
 
         public class ByDayData
@@ -207,6 +227,40 @@ namespace myTNB_Android.Src.myTNBMenu.Models
             [JsonProperty(PropertyName = "SMBtnText")]
             [AliasAs("SMBtnText")]
             public string SMBtnText { get; set; }
+        }
+
+        public class TariffBlocksLegendData
+        {
+            [JsonProperty(PropertyName = "BlockId")]
+            [AliasAs("BlockId")]
+            public string BlockId { get; set; }
+
+            [JsonProperty(PropertyName = "BlockRange")]
+            [AliasAs("BlockRange")]
+            public string BlockRange { get; set; }
+
+            [JsonProperty(PropertyName = "BlockPrice")]
+            [AliasAs("BlockPrice")]
+            public string BlockPrice { get; set; }
+
+            [JsonProperty(PropertyName = "RGB")]
+            [AliasAs("RGB")]
+            public ColorData Color { get; set; }
+
+            public class ColorData
+            {
+                [JsonProperty(PropertyName = "R")]
+                [AliasAs("R")]
+                public int RedColor { get; set; }
+
+                [JsonProperty(PropertyName = "G")]
+                [AliasAs("G")]
+                public int GreenColor { get; set; }
+
+                [JsonProperty(PropertyName = "B")]
+                [AliasAs("B")]
+                public int BlueData { get; set; }
+            }
         }
     }
 

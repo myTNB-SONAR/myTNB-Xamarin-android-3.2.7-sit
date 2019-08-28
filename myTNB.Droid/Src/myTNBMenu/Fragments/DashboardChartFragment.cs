@@ -74,6 +74,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         UsageHistoryData selectedHistoryData;
 
+        SMUsageHistoryData selectedSMHistoryData;
+
         AccountData selectedAccount;
 
         ChartType ChartType = ChartType.RM;
@@ -508,7 +510,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         // txtUsageHistory.Visibility = ViewStates.Gone;
                         txtTotalPayableTitle.Text = GetString(Resource.String.title_payment_advice_amount);
                         graphToggleSelection.Visibility = ViewStates.Gone;
-                        SetVirtualHeightParams(12f);
+                        SetVirtualHeightParams(6f);
                         
                     }
                     else if (! selectedAccount.SmartMeterCode.Equals("0"))
@@ -1002,6 +1004,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             mChart.AnimateY(1000);
 
             txtAddress.Text = selectedAccount.AddStreet;
+
+            // Lin Siong TODO: Estimated Reading Handling & Display on graph X Axis on Smart Meter
 
             if (ChartType == ChartType.RM)
             {
@@ -3632,11 +3636,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+        // To get isSMDown flag
         public bool GetIsSMDown()
         {
             return isSMDown;
         }
 
+        // To set isSMDown flag
         public void SetISSMDown(bool flag)
         {
             isSMDown = flag;

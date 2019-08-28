@@ -26,7 +26,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
         // Lin Siong TODO: Change UsageHistoryData to SMUsageHistoryData
         public UsageHistoryData selectedHistoryData { get; set; }
-
+        public SMUsageHistoryData selectedSMHistoryData { get; set; }
 
         public Context currentContext { get; set; }
 

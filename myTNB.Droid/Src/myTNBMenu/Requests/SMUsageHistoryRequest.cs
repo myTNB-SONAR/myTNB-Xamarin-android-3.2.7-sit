@@ -6,6 +6,8 @@ namespace myTNB_Android.Src.myTNBMenu.Requests
 {
     public class SMUsageHistoryRequest : BaseRequest
     {
+        // Lin Siong TODO: new api format request
+
         [JsonProperty("accNum")]
         [AliasAs("accNum")]
         public string AccountNum { get; set; }
