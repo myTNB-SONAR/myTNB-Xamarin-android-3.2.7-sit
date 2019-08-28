@@ -273,7 +273,9 @@ namespace myTNB
                                    _historyTableView.Source = new BillHistorySource(test)
                                    {
                                        OnTableViewScroll = OnTableViewScroll,
-                                       GetI18NValue = GetI18NValue
+                                       GetI18NValue = GetI18NValue,
+                                       OnSelectBill = DisplayBillPDF,
+                                       OnSelectPayment = DisplayReceipt
                                    };
                                    _historyTableView.ReloadData();
                                }
@@ -390,9 +392,31 @@ namespace myTNB
             _gradientLayer = gradientLayer;
         }
 
-        private void DisplayBillPDF()
+        private void DisplayBillPDF(string DetailedInfoNumber)
         {
-
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        DataManager.DataManager.SharedInstance.IsSameAccount = true;
+                        UIStoryboard storyBoard = UIStoryboard.FromName("ViewBill", null);
+                        ViewBillViewController viewController =
+                            storyBoard.InstantiateViewController("ViewBillViewController") as ViewBillViewController;
+                        if (viewController != null)
+                        {
+                            viewController.BillingNumber = DetailedInfoNumber;
+                            var navController = new UINavigationController(viewController);
+                            PresentViewController(navController, true, null);
+                        }
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
         }
 
         private void DisplayReceipt(string DetailedInfoNumber)

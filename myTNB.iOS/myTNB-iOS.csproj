@@ -2005,8 +2005,6 @@
     <Compile Include="Model\SubmitFeedback\SubmitFeedbackModel.cs" />
     <Compile Include="Model\SubmitFeedback\SubmitFeedbackResponseModel.cs" />
     <Compile Include="Model\GetStatesForFeedback\StatesForFeedbackDataModel.cs" />
-    <Compile Include="Model\GetBillHistory\BillHistoryDataModel.cs" />
-    <Compile Include="Model\GetBillHistory\BillHistoryModel.cs" />
     <Compile Include="Model\GetBillHistory\BillHistoryResponseModel.cs" />
     <Compile Include="Model\GetPaymentHistory\PaymentHistoryDataModel.cs" />
     <Compile Include="Model\GetPaymentHistory\PaymentHistoryModel.cs" />

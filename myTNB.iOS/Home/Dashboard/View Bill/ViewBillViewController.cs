@@ -12,19 +12,21 @@ using System.Diagnostics;
 
 namespace myTNB
 {
-    public partial class ViewBillViewController : UIViewController
+    public partial class ViewBillViewController : CustomUIViewController
     {
         public ViewBillViewController(IntPtr handle) : base(handle)
         {
         }
-        UIWebView _webViewBill;
-        BillHistoryResponseModel _billHistory = new BillHistoryResponseModel();
-        string _url = string.Empty;
-        string _pdfFilePath = string.Empty;
-        string _titleSuffix = string.Empty;
-        string _formattedDate = string.Empty;
+        private UIWebView _webViewBill;
+        private BillHistoryResponseModel _billHistory = new BillHistoryResponseModel();
+        private string _url = string.Empty;
+        private string _pdfFilePath = string.Empty;
+        private string _titleSuffix = string.Empty;
+        private string _formattedDate = string.Empty;
 
         public int selectedIndex = -1;
+        public bool IsFromUsage { set; private get; }
+        public string BillingNumber { set; private get; } = string.Empty;
         public Action OnDone;
 
         public override void ViewDidLoad()
@@ -133,30 +135,32 @@ namespace myTNB
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
-                if (_billHistory != null && _billHistory?.d != null && _billHistory?.d?.data != null && _billHistory?.d?.data?.Count > 0)
+                if (IsFromUsage)
                 {
                     Dictionary<string, string> requestParams = new Dictionary<string, string>(){
-                    {"apiKeyID", TNBGlobal.API_KEY_ID},
-                    {"accNum", DataManager.DataManager.SharedInstance.SelectedAccount.accNum},
-                    {"billingNo", selectedIndex > -1 && selectedIndex < _billHistory.d.data.Count
-                    ? _billHistory.d.data[selectedIndex].BillingNo
-                    : _billHistory.d.data[0].BillingNo}
+                        {"apiKeyID", TNBGlobal.API_KEY_ID},
+                        {"accNum", DataManager.DataManager.SharedInstance.SelectedAccount.accNum}
                     };
-                    _url = serviceManager.GetPDFServiceURL(selectedIndex > -1 ? "GetBillPDFByBillNo" : "GetBillPDF", requestParams);
+                    _url = serviceManager.GetPDFServiceURL("GetBillPDF", requestParams);
+                }
+                else
+                {
+                    Dictionary<string, string> requestParams = new Dictionary<string, string>(){
+                        {"apiKeyID", TNBGlobal.API_KEY_ID},
+                        {"billingNo", BillingNumber}
+                    };
+                    _url = serviceManager.GetPDFServiceURL("GetBillPDFByBillNo", requestParams);
                 }
             });
         }
 
         internal void GetFilePath()
         {
-            string billingNo = string.Empty;
-            string pdfFileName = string.Empty;
-            string documentsPath = string.Empty;
-            billingNo = selectedIndex > -1 && selectedIndex < _billHistory?.d?.data?.Count
+            string billingNo = selectedIndex > -1 && selectedIndex < _billHistory?.d?.data?.Count
                     ? _billHistory?.d?.data[selectedIndex]?.BillingNo
                     : _billHistory?.d?.data[0]?.BillingNo;
-            pdfFileName = DataManager.DataManager.SharedInstance.SelectedAccount.accNum + '_' + billingNo + _formattedDate + ".pdf";
-            documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            string pdfFileName = string.Format("{0}_{1}{2}.pdf", DataManager.DataManager.SharedInstance.SelectedAccount.accNum, billingNo, _formattedDate);
+            string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             _pdfFilePath = Path.Combine(documentsPath, pdfFileName);
         }
 
@@ -167,8 +171,8 @@ namespace myTNB
             {
                 InvokeOnMainThread(async () =>
                 {
-                    if (_billHistory != null
-                        && _billHistory?.d?.didSucceed == true
+                    if (_billHistory != null && _billHistory?.d != null
+                        && _billHistory.d.IsSuccess
                         && _billHistory?.d?.data != null
                         && _billHistory?.d?.data?.Count > 0)
                     {
@@ -181,7 +185,7 @@ namespace myTNB
                     }
                     else
                     {
-                        AlertHandler.DisplayServiceError(this, _billHistory?.d?.message, (obj) =>
+                        AlertHandler.DisplayServiceError(this, _billHistory?.d?.ErrorMessage, (obj) =>
                         {
                             DismissViewController(true, null);
                         });
@@ -199,27 +203,25 @@ namespace myTNB
                 var emailAddress = string.Empty;
                 if (DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
                 {
-                    emailAddress = DataManager.DataManager.SharedInstance.UserEntity[0]?.email;
+                    emailAddress = DataManager.DataManager.SharedInstance.UserEntity[0]?.email ?? string.Empty;
                 }
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum,
-                    isOwner = DataManager.DataManager.SharedInstance.SelectedAccount.isOwned,
-                    email = emailAddress
+                    serviceManager.usrInf,
+                    contractAccount = DataManager.DataManager.SharedInstance.SelectedAccount.accNum,
+                    isOwnedAccount = DataManager.DataManager.SharedInstance.SelectedAccount.isOwned,
                 };
-                _billHistory = serviceManager.OnExecuteAPI<BillHistoryResponseModel>("GetBillHistory", requestParameter);
+                _billHistory = serviceManager.OnExecuteAPIV6<BillHistoryResponseModel>("GetBillHistory", requestParameter);
             });
         }
 
         internal void SetNavigationTitle()
         {
-            string billDate = string.Empty;
             string formattedDate = string.Empty;
             if (_billHistory != null && _billHistory?.d != null
                 && _billHistory?.d?.data != null && _billHistory?.d?.data?.Count > 0)
             {
-                billDate = selectedIndex > -1 && selectedIndex < _billHistory?.d?.data?.Count
+                string billDate = selectedIndex > -1 && selectedIndex < _billHistory?.d?.data?.Count
                     ? _billHistory?.d?.data[selectedIndex]?.DtBill
                     : _billHistory?.d?.data[0]?.DtBill;
                 formattedDate = DateHelper.GetFormattedDate(billDate, "MMM yyyy");

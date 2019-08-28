@@ -6,7 +6,8 @@ namespace myTNB.Home.Bill
 {
     public class BillHistoryViewCell : UITableViewCell
     {
-        private UIView _view, _viewGroupedDate;
+        private CustomUIView _view;
+        private UIView _viewGroupedDate;
         private UILabel _lblGroupedDate;
         private nfloat _cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
         private nfloat _baseHMargin = ScaleUtility.GetScaledWidth(16);
@@ -14,7 +15,7 @@ namespace myTNB.Home.Bill
 
         public BillHistoryViewCell(IntPtr handle) : base(handle)
         {
-            _view = new UIView(new CGRect(0, 0, _cellWidth, ScaleUtility.GetScaledHeight(68))) { ClipsToBounds = false };
+            _view = new CustomUIView(new CGRect(0, 0, _cellWidth, ScaleUtility.GetScaledHeight(68))) { ClipsToBounds = false };
             AddViews();
             AddSubview(_view);
             if (_view != null)
@@ -183,6 +184,16 @@ namespace myTNB.Home.Bill
 
                 _viewLine.Frame = new CGRect(lineXloc, _view.Frame.Height - ScaleUtility.GetScaledHeight(1)
                        , lineWidth, ScaleUtility.GetScaledHeight(1));
+            }
+        }
+        public UITapGestureRecognizer SetAction
+        {
+            set
+            {
+                if (value != null)
+                {
+                    _view.AddGestureRecognizer(value);
+                }
             }
         }
     }

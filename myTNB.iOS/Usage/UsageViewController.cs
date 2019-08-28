@@ -78,6 +78,7 @@ namespace myTNB
                             storyBoard.InstantiateViewController("ViewBillViewController") as ViewBillViewController;
                         if (viewController != null)
                         {
+                            viewController.IsFromUsage = true;
                             var navController = new UINavigationController(viewController);
                             PresentViewController(navController, true, null);
                         }

@@ -9,6 +9,8 @@ namespace myTNB.Home.Bill
     {
         public EventHandler OnTableViewScroll;
         public Func<string, string> GetI18NValue;
+        public Action<string> OnSelectBill;
+        public Action<string> OnSelectPayment;
         private List<BillPayHistoryModel> _historyResponseList;
         private List<BillPayHistoryDataModel> _historyList = new List<BillPayHistoryDataModel>();
         private Dictionary<int, string> _historyDictionary = new Dictionary<int, string>();
@@ -91,6 +93,27 @@ namespace myTNB.Home.Bill
                     else if (_historyDictionary.ContainsKey(index + 1))
                     {
                         cell.SetWidgetHeight(true, false, true);
+                    }
+
+                    if (item.IsPayment)
+                    {
+                        cell.SetAction = new UITapGestureRecognizer(() =>
+                        {
+                            if (OnSelectPayment != null)
+                            {
+                                OnSelectPayment.Invoke(item.DetailedInfoNumber);
+                            }
+                        });
+                    }
+                    else
+                    {
+                        cell.SetAction = new UITapGestureRecognizer(() =>
+                        {
+                            if (OnSelectBill != null)
+                            {
+                                OnSelectBill.Invoke(item.DetailedInfoNumber);
+                            }
+                        });
                     }
 
                     cell.ClipsToBounds = false;
