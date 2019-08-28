@@ -6,6 +6,7 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
@@ -17,6 +18,7 @@ using CheeseBind;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.myTNBMenu.Activity;
+using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.API;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
@@ -24,7 +26,7 @@ using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 {
-    public class ItemisedBillingMenuFragment : BaseFragment
+    public class ItemisedBillingMenuFragment : BaseFragment, ItemisedBillingContract.IView
     {
         [BindView(Resource.Id.itemisedBillingHeaderImage)]
         ImageView itemisedBillingHeaderImage;
@@ -67,7 +69,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            mPresenter = new ItemisedBillingMenuPresenter();
+            mPresenter = new ItemisedBillingMenuPresenter(this);
             Bundle extras = Arguments;
 
             if (extras.ContainsKey(SELECTED_ACCOUNT_KEY))
@@ -113,24 +115,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             TextViewUtils.SetMuseoSans500Typeface(accountSelection, itemisedBillingInfoNote,
                 btnViewDetails, btnPayBill, itemisedBillingInfoAmountCurrency, myBillHistoryTitle);
             TextViewUtils.SetMuseoSans300Typeface(itemisedBillingInfoDate, itemisedBillingInfoAmount);
-
-            //ItemisedBillingGroupComponent itemisedBillingGroupComponent = new ItemisedBillingGroupComponent(Activity);
-            //itemisedBillingGroupComponent.AddContent(new ItemisedBillingGroupContentComponent(Activity));
-            //itemisedBillingGroupComponent.AddContent(new ItemisedBillingGroupContentComponent(Activity));
-
-            //itemisedBillingList.AddView(itemisedBillingGroupComponent);
-
-            //itemisedBillingGroupComponent = new ItemisedBillingGroupComponent(Activity);
-            //itemisedBillingGroupComponent.SetBackground();
-            //itemisedBillingGroupComponent.AddContent(new ItemisedBillingGroupContentComponent(Activity));
-            //itemisedBillingList.AddView(itemisedBillingGroupComponent);
             RenderUI();
-            PopulateBillingHistory();
+
+            mPresenter.GetAccountsCharges(mSelectedAccountData.AccountNum,
+                mSelectedAccountData.IsOwner);
+            mPresenter.GetAccountBillPayHistory(mSelectedAccountData.AccountNum,
+                mSelectedAccountData.IsOwner,
+                (mSelectedAccountData.AccountCategoryId != "2") ? "UTIL" : "RE");
         }
 
         public void RenderUI()
         {
-            itemisedBillingHeaderImage.SetImageResource(mPresenter.GetBillImageHeader(mSelectedAccountData));
             accountSelection.Text = mSelectedAccountData.AccountNickName;
             if (mPresenter.IsEnableAccountSelection())
             {
@@ -144,14 +139,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 accountSelection.SetCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             }
 
-            //itemisedBillingCTAContainer.Visibility = mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId) ? ViewStates.Gone : ViewStates.Visible;
+            itemisedBillingCTAContainer.Visibility = mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId) ? ViewStates.Gone : ViewStates.Visible;
         }
 
-        public void PopulateBillingHistory()
+        public void PopulateBillingHistoryList(List<ItemisedBillingHistoryModel> billingHistoryModelList)
         {
-            List<ItemisedBillingHistoryModel> billingHistoryModelList = mPresenter.GetBillingHistoryList();
             ItemisedBillingGroupComponent itemisedBillingGroupComponent;
-            for (int i=0; i < billingHistoryModelList.Count; i++)
+            for (int i = 0; i < billingHistoryModelList.Count; i++)
             {
                 itemisedBillingGroupComponent = new ItemisedBillingGroupComponent(Activity);
                 ItemisedBillingGroupContentComponent content;
@@ -169,14 +163,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                     itemisedBillingGroupComponent.SetBackground();
                 }
 
-                for (int j=0; j < model.BillingHistoryDataList.Count; j++)
+                for (int j = 0; j < model.BillingHistoryDataList.Count; j++)
                 {
-                    content = new ItemisedBillingGroupContentComponent(Activity);
                     ItemisedBillingHistoryModel.BillingHistoryData data = model.BillingHistoryDataList[j];
                     content = new ItemisedBillingGroupContentComponent(Activity);
                     content.SetDateHistoryType(data.DateAndHistoryType);
                     content.SetPaidVia(data.PaidVia);
                     content.SetAmount(data.Amount);
+                    if (data.DetailedInfoNumber != "")
+                    {
+                        content.SetShowBillingDetailsListener(new OnShowBillingDetailsListener(this));
+                    }
+                    else
+                    {
+                        content.SetShowBillingDetailsListener(null);
+                    }
 
                     if (j == (model.BillingHistoryDataList.Count - 1))
                     {
@@ -191,6 +192,68 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 }
 
                 itemisedBillingList.AddView(itemisedBillingGroupComponent);
+            }
+        }
+
+        public void GetAccountBillPayHistory()
+        {
+            mPresenter.GetAccountBillPayHistory(mSelectedAccountData.AccountNum,
+                true,
+                (mSelectedAccountData.AccountCategoryId != "2") ? "UTIL" : "RE");
+        }
+
+        public void PopulateAccountCharge(List<AccountChargeModel> accountChargesModelList)
+        {
+            AccountChargeModel accountChargeModel = accountChargesModelList[0];
+            int imageResource = Resource.Drawable.bill_no_outstanding_banner;
+
+            mPresenter.EvaluateAccountCharge(accountChargeModel);
+
+            itemisedBillingInfoAmount.Text = accountChargeModel.AmountDue.ToString();
+            if (mPresenter.isCleared)
+            {
+                itemisedBillingInfoNote.Text = "I’ve cleared all bills";
+                itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
+                itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#49494a"));
+                itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#49494a"));
+
+                itemisedBillingInfoDate.Visibility = ViewStates.Gone;
+            }
+            else if (mPresenter.isOverPaid)
+            {
+                itemisedBillingInfoNote.Text = "I’ve paid extra";
+                itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
+                itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#20bd4c"));
+                itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#20bd4c"));
+
+                itemisedBillingInfoDate.Visibility = ViewStates.Gone;
+            }
+            else if (mPresenter.isNeedToPay)
+            {
+                imageResource = Resource.Drawable.bill_need_to_pay_banner;
+                itemisedBillingInfoNote.Text = "I need to pay";
+                itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
+                itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#49494a"));
+                itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#49494a"));
+
+                itemisedBillingInfoDate.Visibility = ViewStates.Visible;
+                itemisedBillingInfoDate.Text = "by " + accountChargeModel.DueDate;
+            }
+
+            itemisedBillingHeaderImage.SetImageResource(imageResource);
+        }
+
+        class OnShowBillingDetailsListener : Java.Lang.Object, View.IOnClickListener
+        {
+            ItemisedBillingMenuFragment mView;
+            public OnShowBillingDetailsListener(ItemisedBillingMenuFragment view)
+            {
+                mView = view;
+            }
+            public void OnClick(View v)
+            {
+                //throw new NotImplementedException();
+                //mView.GetAccountBillPayHistory();
             }
         }
     }

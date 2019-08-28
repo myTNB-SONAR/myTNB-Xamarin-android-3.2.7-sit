@@ -34,7 +34,7 @@
                     android:foregroundGravity="center_horizontal|center"
                     android:layout_gravity="bottom"
                     android:scaleType="fitXY"
-                    android:src="@drawable/meter_history_header_bg" />
+                    android:src="@drawable/bill_no_outstanding_banner" />
                 <LinearLayout
                     android:id="@+id/itemisedBillingInfoContainer"
                     android:layout_width="match_parent"

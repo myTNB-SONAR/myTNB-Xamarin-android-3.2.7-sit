@@ -1,19 +1,143 @@
 ﻿using System;
 using System.Collections.Generic;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.API;
 using myTNB_Android.Src.myTNBMenu.Models;
+using static myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.API.AccountBillPayHistoryResponse;
+using myTNB_Android.Src.Utils;
+using System.Threading;
+using myTNB_Android.Src.AddAccount.Models;
+using static myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.API.AccountChargesResponse;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 {
     public class ItemisedBillingMenuPresenter
     {
-        public ItemisedBillingMenuPresenter()
+        ItemisedBillingAPIImpl api;
+        ItemisedBillingContract.IView mView;
+        AccountChargesModel mAccountChargesModel;
+        public bool isNeedToPay = false;
+        public bool isCleared = false;
+        public bool isOverPaid = false;
+
+
+        public ItemisedBillingMenuPresenter(ItemisedBillingContract.IView view)
         {
+            mView = view;
+            api = new ItemisedBillingAPIImpl();
         }
 
-        public int GetBillImageHeader(AccountData selectedAccount)
+        public async void GetAccountsCharges(string contractAccountValue, bool isOwnedAccountValue)
         {
-            return Resource.Drawable.bill_no_outstanding_banner;
+            List<string> accountList = new List<string>();
+            accountList.Add(contractAccountValue);
+            AccountsChargesRequest request = new AccountsChargesRequest(
+                accountList,
+                isOwnedAccountValue
+                );
+            AccountChargesResponse response = await api.GetAccountsCharges(request);
+            if (response.Data != null && response.Data.ErrorCode == "7200")
+            {
+                List<AccountChargeModel> accountChargeModelList = GetAccountCharges(response.Data.ResponseData.AccountCharges);
+                mView.PopulateAccountCharge(accountChargeModelList);
+            }
+        }
+
+        public async void GetAccountBillPayHistory(string contractAccountValue, bool isOwnedAccountValue, string accountTypeValue)
+        {
+            AccountBillPayHistoryRequest request = new AccountBillPayHistoryRequest(
+                contractAccountValue,
+                isOwnedAccountValue,
+                accountTypeValue);
+
+            AccountBillPayHistoryResponse response = await api.GetAccountBillPayHistory(request);
+            if (response.Data != null && response.Data.ErrorCode == "7200")
+            {
+                List<ItemisedBillingHistoryModel> billingHistoryList = GetBillingHistoryModelList(response.Data.ResponseData.BillPayHistories);
+                mView.PopulateBillingHistoryList(billingHistoryList);
+            }
+        }
+
+        private List<AccountChargeModel> GetAccountCharges(List<AccountCharge> accountCharges)
+        {
+            List<AccountChargeModel> accountChargeModelList = new List<AccountChargeModel>();
+            accountCharges.ForEach(accountCharge =>
+            {
+                MandatoryCharge mandatoryCharge = accountCharge.MandatoryCharges;
+                List<ChargeModel> chargeModelList = new List<ChargeModel>();
+                mandatoryCharge.Charges.ForEach(charge =>
+                {
+                    ChargeModel chargeModel = new ChargeModel();
+                    chargeModel.Key = charge.Key;
+                    chargeModel.Title = charge.Title;
+                    chargeModel.Amount = charge.Amount;
+                    chargeModelList.Add(chargeModel);
+                });
+                MandatoryChargeModel mandatoryChargeModel = new MandatoryChargeModel();
+                mandatoryChargeModel.TotalAmount = mandatoryCharge.TotalAmount;
+                mandatoryChargeModel.ChargeModelList = chargeModelList;
+
+                AccountChargeModel accountChargeModel = new AccountChargeModel();
+                accountChargeModel.ContractAccount = accountCharge.ContractAccount;
+                accountChargeModel.CurrentCharges = accountCharge.CurrentCharges;
+                accountChargeModel.OutstandingCharges = accountCharge.OutstandingCharges;
+                accountChargeModel.AmountDue = accountCharge.AmountDue;
+                accountChargeModel.DueDate = accountCharge.DueDate;
+                accountChargeModel.BillDate = accountCharge.BillDate;
+                accountChargeModel.IncrementREDueDateByDays = accountCharge.IncrementREDueDateByDays;
+                accountChargeModel.MandatoryCharges = mandatoryChargeModel;
+                accountChargeModelList.Add(accountChargeModel);
+            });
+            return accountChargeModelList;
+        }
+
+        private List<ItemisedBillingHistoryModel> GetBillingHistoryModelList(List<BillPayHistory> billPayHistoryList)
+        {
+            List<ItemisedBillingHistoryModel> modelList = new List<ItemisedBillingHistoryModel>();
+            List<ItemisedBillingHistoryModel.BillingHistoryData> dataList;
+            ItemisedBillingHistoryModel.BillingHistoryData data;
+            ItemisedBillingHistoryModel model;
+            billPayHistoryList.ForEach(history =>
+            {
+                dataList = new List<ItemisedBillingHistoryModel.BillingHistoryData>();
+                model = new ItemisedBillingHistoryModel();
+                model.MonthYear = history.MonthYear;
+
+                history.BillPayHistoryData.ForEach(historyData =>
+                {
+                    data = new ItemisedBillingHistoryModel.BillingHistoryData();
+                    data.HistoryType = historyData.HistoryType;
+                    data.DateAndHistoryType = historyData.DateAndHistoryType;
+                    data.Amount = historyData.Amount;
+                    data.DetailedInfoNumber = historyData.DetailedInfoNumber;
+                    data.PaidVia = historyData.PaidVia;
+                    dataList.Add(data);
+                });
+
+                model.BillingHistoryDataList = dataList;
+                modelList.Add(model);
+            });
+
+            return modelList;
+        }
+
+        public void EvaluateAccountCharge(AccountChargeModel accountChargeModel)
+        {
+            float amountDue = accountChargeModel.AmountDue;
+            if (amountDue < 0f)
+            {
+                isOverPaid = true;
+            }
+
+            if (amountDue > 0f)
+            {
+                isNeedToPay = true;
+            }
+
+            if (amountDue == 0f)
+            {
+                isCleared = true;
+            }
         }
 
         public bool IsEnableAccountSelection()
@@ -35,6 +159,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             model.MonthYear = "Feb 2019";
 
             List<ItemisedBillingHistoryModel.BillingHistoryData> dataList = new List<ItemisedBillingHistoryModel.BillingHistoryData>();
+
             ItemisedBillingHistoryModel.BillingHistoryData data = new ItemisedBillingHistoryModel.BillingHistoryData();
             data.HistoryType = "BILL";
             data.DateAndHistoryType = "24 Feb - Bill";
@@ -42,6 +167,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             data.DetailedInfoNumber = "000530477074";
             data.PaidVia = "24 Feb 2019";
             dataList.Add(data);
+
+            data = new ItemisedBillingHistoryModel.BillingHistoryData();
 
             data.HistoryType = "PAYMENT";
             data.DateAndHistoryType = "05 Mar - Payment";
@@ -57,12 +184,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             model = new ItemisedBillingHistoryModel();
             model.MonthYear = "Mar 2019";
 
+            dataList = new List<ItemisedBillingHistoryModel.BillingHistoryData>();
+            data = new ItemisedBillingHistoryModel.BillingHistoryData();
+
             data.HistoryType = "PAYMENT";
             data.DateAndHistoryType = "03 May - Payment";
             data.Amount = "25.00";
             data.DetailedInfoNumber = "000530477074";
             data.PaidVia = "26 Feb 2019";
             dataList.Add(data);
+
+            data = new ItemisedBillingHistoryModel.BillingHistoryData();
 
             data.HistoryType = "BILL";
             data.DateAndHistoryType = "2 Jun - Bill";

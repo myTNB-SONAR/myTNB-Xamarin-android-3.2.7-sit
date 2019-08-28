@@ -2299,6 +2299,22 @@
     <Compile Include="Src\CompoundView\ItemisedBillingGroupComponent.cs" />
     <Compile Include="Src\CompoundView\ItemisedBillingGroupContentComponent.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\ItemisedBillingHistoryModel.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\API\ItemisedBillingAPI.cs" />
+    <Compile Include="Src\Base\Request\APIBaseRequest.cs" />
+    <Compile Include="Src\Base\Response\APIBaseResponse.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\API\AccountBillPayHistoryRequest.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\API\ItemisedBillingAPIImpl.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\API\AccountBillPayHistoryResponse.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\ItemisedBillingContract.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\ItemisedBillingAccountDataModel.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\API\AccountChargesResponse.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\API\AccountsChargesRequest.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\AccountChargesModel.cs" />
+    <Compile Include="Src\Billing\MVP\BillingDetailsActivity.cs" />
+    <AndroidResource Include="Resources\layout\BillingDetailsLayout.axml" />
+    <AndroidResource Include="Resources\layout\ExpandingTextViewLayout.axml" />
+    <Compile Include="Src\CompoundView\ExpandableTextViewComponent.cs" />
+    <AndroidResource Include="Resources\layout\MyOtherChargesItemLayout.axml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -2672,6 +2688,10 @@
     <Folder Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\" />
     <Folder Include="Src\CompoundView\" />
     <Folder Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\" />
+    <Folder Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\API\" />
+    <Folder Include="Src\Base\Response\" />
+    <Folder Include="Src\Billing\" />
+    <Folder Include="Src\Billing\MVP\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
