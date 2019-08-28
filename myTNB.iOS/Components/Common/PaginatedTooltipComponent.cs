@@ -119,7 +119,7 @@ namespace myTNB
                     TextAlignment = UITextAlignment.Left,
                     Lines = 0,
                     LineBreakMode = UILineBreakMode.TailTruncation,
-                    Text = "Items from your demand letter"
+                    Text = "Items from your paper/PDF bill"
                 };
 
                 CGSize titleNewSize = title.SizeThatFits(new CGSize(viewContainer.Frame.Width - (widthMargin * 2), 1000f));
@@ -127,12 +127,15 @@ namespace myTNB
 
                 viewContainer.AddSubview(title);
 
-                UIView itemView = ItemView(viewContainer, title.Frame.GetMaxY() + BaseMarginHeight16);
-                viewContainer.AddSubview(itemView);
+                UIView itemView1 = ItemView(viewContainer, title.Frame.GetMaxY() + BaseMarginHeight16);
+                viewContainer.AddSubview(itemView1);
+
+                UIView itemView2 = ItemView(viewContainer, itemView1.Frame.GetMaxY());
+                viewContainer.AddSubview(itemView2);
 
                 ViewHelper.AdjustFrameSetX(viewContainer, i * width);
                 ViewHelper.AdjustFrameSetWidth(viewContainer, width);
-                ViewHelper.AdjustFrameSetHeight(viewContainer, itemView.Frame.GetMaxY() + GetScaledHeight(32f));
+                ViewHelper.AdjustFrameSetHeight(viewContainer, itemView2.Frame.GetMaxY() + GetScaledHeight(32f));
 
                 _scrollView.AddSubview(viewContainer);
                 if (newHeight < viewContainer.Frame.GetMaxY())
@@ -143,12 +146,12 @@ namespace myTNB
             _scrollView.ContentSize = new CGSize(_scrollView.Frame.Width * 2, newHeight);
             ViewHelper.AdjustFrameSetHeight(_scrollView, newHeight);
 
-            //SetToolTipFooterView();
+            SetToolTipBillDetailsFooterView();
         }
 
         private UIView ItemView(UIView parent, nfloat yPos)
         {
-            nfloat width = parent.Frame.Width;
+            nfloat width = parent.Frame.Width - (BaseMarginWidth16 * 2);
             nfloat height = GetScaledHeight(20F);
             UIView itemView = new UIView(new CGRect(BaseMarginWidth16, yPos, width, height))
             {
@@ -159,25 +162,84 @@ namespace myTNB
                 BackgroundColor = MyTNBColor.ButterScotch
             };
             numberView.Layer.CornerRadius = GetScaledHeight(10F);
-            nfloat labelWidth = width - numberView.Frame.GetMaxX() - GetScaledWidth(8F) - BaseMarginWidth16;
-            UILabel descLabel = new UILabel(new CGRect(numberView.Frame.GetMaxX() + GetScaledWidth(8F), 0, labelWidth, GetScaledHeight(20F)))
+            UILabel numberLabel = new UILabel(new CGRect(GetScaledWidth(7F), GetScaledHeight(2F), GetScaledWidth(6F), GetScaledHeight(16F)))
             {
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.GreyishBrown,
+                TextAlignment = UITextAlignment.Center,
+                Text = "1"
+            };
+            numberView.AddSubview(numberLabel);
+            nfloat labelWidth = width - numberView.Frame.GetMaxX() - GetScaledWidth(8F);
+            UILabel descLabel = new UILabel(new CGRect(numberView.Frame.GetMaxX() + GetScaledWidth(8F), 0, labelWidth, GetScaledHeight(20F)))
+            {
+                BackgroundColor = UIColor.Clear,
+                Font = TNBFont.MuseoSans_14_300,
+                TextColor = MyTNBColor.CharcoalGrey,
                 TextAlignment = UITextAlignment.Left,
+                Lines = 0,
                 Text = "My bill this month (electricity usage only)"
             };
             itemView.AddSubviews(new UIView { numberView, descLabel });
             CGSize size = descLabel.SizeThatFits(new CGSize(labelWidth, 1000f));
             ViewHelper.AdjustFrameSetHeight(descLabel, size.Height);
-            ViewHelper.AdjustFrameSetY(descLabel, GetYLocationToCenterObject(descLabel.Frame.Height, itemView));
             if (descLabel.Frame.Height > height)
             {
                 ViewHelper.AdjustFrameSetHeight(itemView, descLabel.Frame.GetMaxY());
             }
+            ViewHelper.AdjustFrameSetY(descLabel, GetYLocationToCenterObject(descLabel.Frame.Height, itemView));
             return itemView;
         }
+        private void SetToolTipBillDetailsFooterView()
+        {
+            _toolTipFooterView = new UIView(new CGRect(0, _scrollView.Frame.GetMaxY(), _containerView.Frame.Width, 130f))
+            {
+                BackgroundColor = UIColor.Clear,
+                ClipsToBounds = true,
+                UserInteractionEnabled = true
+            };
+            //if (_ssmrData.Count > 1)
+            //{
+            //    AddPageControl();
+            //    UpdatePageControl(_pageControl, _currentPageIndex, _ssmrData.Count);
+            //}
+            //else
+            //{
+            //    if (_pageControl != null)
+            //    {
+            //        _pageControl.Hidden = true;
+            //    }
+            //}
 
+            //UIView line = new UIView(new CGRect(0, _pageControl.Frame.GetMaxY() + GetScaledHeight(16f)
+
+            UIView line = new UIView(new CGRect(0, 0
+                , _toolTipFooterView.Frame.Width, GetScaledHeight(1f)))
+            {
+                BackgroundColor = MyTNBColor.VeryLightPink
+            };
+            _toolTipFooterView.AddSubview(line);
+
+            _proceedLabel = new UILabel(new CGRect(0, line.Frame.GetMaxY() + GetScaledHeight(16f)
+                , _toolTipFooterView.Frame.Width, GetScaledHeight(24f)))
+            {
+                Font = TNBFont.MuseoSans_16_500,
+                TextColor = MyTNBColor.WaterBlue,
+                Text = "Got It!",//GetI18NValue(SSMRConstants.I18N_ImReady),
+                TextAlignment = UITextAlignment.Center,
+                UserInteractionEnabled = true
+            };
+            _toolTipFooterView.AddSubview(_proceedLabel);
+
+            ViewHelper.AdjustFrameSetHeight(_toolTipFooterView, _proceedLabel.Frame.GetMaxY() + GetScaledHeight(16f));
+
+            _containerView.AddSubview(_toolTipFooterView);
+
+            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+
+            ViewHelper.AdjustFrameSetHeight(_containerView, _toolTipFooterView.Frame.GetMaxY());
+            ViewHelper.AdjustFrameSetY(_containerView, (currentWindow.Frame.Height / 2) - (_containerView.Frame.Height / 2));
+        }
         #endregion
 
         #region SSMR
@@ -317,7 +379,7 @@ namespace myTNB
             _scrollView.ContentSize = new CGSize(_scrollView.Frame.Width * _ssmrData.Count, newHeight);
             ViewHelper.AdjustFrameSetHeight(_scrollView, newHeight);
 
-            SetToolTipFooterView();
+            SetToolTipSSMRFooterView();
         }
         #endregion
 
@@ -338,7 +400,7 @@ namespace myTNB
             _containerView.AddSubview(_scrollView);
         }
 
-        private void SetToolTipFooterView()
+        private void SetToolTipSSMRFooterView()
         {
             _toolTipFooterView = new UIView(new CGRect(0, _scrollView.Frame.GetMaxY(), _containerView.Frame.Width, 130f))
             {
