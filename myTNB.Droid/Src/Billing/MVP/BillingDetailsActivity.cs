@@ -15,7 +15,7 @@ using myTNB_Android.Src.Base.Activity;
 
 namespace myTNB_Android.Src.Billing.MVP
 {
-    [Activity(Label = "Bill Details", MainLauncher = true, ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
+    [Activity(Label = "Bill Details", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class BillingDetailsActivity : BaseToolbarAppCompatActivity
     {
         public override int ResourceId()
