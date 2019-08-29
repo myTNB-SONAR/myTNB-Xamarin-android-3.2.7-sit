@@ -9,10 +9,12 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V4.Content;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.API;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
@@ -20,7 +22,7 @@ using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.Billing.MVP
 {
-    [Activity(Label = "Bill Details", MainLauncher = true,ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
+    [Activity(Label = "Bill Details", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class BillingDetailsActivity : BaseToolbarAppCompatActivity
     {
         [BindView(Resource.Id.accountName)]
@@ -59,7 +61,16 @@ namespace myTNB_Android.Src.Billing.MVP
         [BindView(Resource.Id.accountMinChargeLabel)]
         TextView accountMinChargeLabel;
 
+        [BindView(Resource.Id.otherChargesExpandableView)]
+        ExpandableTextViewComponent otherChargesExpandableView;
+
+        [BindView(Resource.Id.accountMinChargeLabelContainer)]
+        LinearLayout accountMinChargeLabelContainer;
+
         List<AccountChargeModel> selectedAccountChargesModelList;
+        AccountChargeModel selectedAccountChargeModel;
+
+
 
         public override int ResourceId()
         {
@@ -78,11 +89,53 @@ namespace myTNB_Android.Src.Billing.MVP
             TextViewUtils.SetMuseoSans500Typeface(accountName, myBillDetailsLabel, accountChargeLabel, accountChargeValue,
                 accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel, accountPayAmountCurrency, accountMinChargeLabel);
 
-            //Bundle extras = Intent.Extras;
-            //if (extras.ContainsKey("BILL_DETAILS"))
-            //{
-            //    selectedAccountChargesModelList = JsonConvert.DeserializeObject<List<AccountChargeModel>>(extras.GetString("BILL_DETAILS"));
-            //}
+            Bundle extras = Intent.Extras;
+            if (extras.ContainsKey("BILL_DETAILS"))
+            {
+                selectedAccountChargesModelList = JsonConvert.DeserializeObject<List<AccountChargeModel>>(extras.GetString("BILL_DETAILS"));
+                selectedAccountChargeModel = selectedAccountChargesModelList[0];
+            }
+
+            PopulateCharges();
+        }
+
+        private void PopulateCharges()
+        {
+            if (selectedAccountChargeModel.MandatoryCharges.ChargeModelList.Count > 0)
+            {
+                otherChargesExpandableView.Visibility = ViewStates.Visible;
+                accountMinChargeLabelContainer.Visibility = ViewStates.Visible;
+                otherChargesExpandableView.SetOtherCharges(selectedAccountChargeModel.MandatoryCharges.TotalAmount,selectedAccountChargeModel.MandatoryCharges.ChargeModelList);
+            }
+            else
+            {
+                otherChargesExpandableView.Visibility = ViewStates.Gone;
+                accountMinChargeLabelContainer.Visibility = ViewStates.Gone;
+            }
+
+            accountChargeValue.Text = "RM " + selectedAccountChargeModel.OutstandingCharges.ToString("0.00");
+            accountBillThisMonthValue.Text = "RM " + selectedAccountChargeModel.CurrentCharges.ToString("0.00");
+            accountPayAmountValue.Text = selectedAccountChargeModel.AmountDue.ToString("0.00");
+            if (selectedAccountChargeModel.AmountDue > 0)
+            {
+                accountPayAmountLabel.Visibility = ViewStates.Visible;
+                accountPayAmountLabel.Text = "I need to pay";
+                accountPayAmountDate.Visibility = ViewStates.Visible;
+                accountPayAmountDate.Text = "by " + selectedAccountChargeModel.DueDate;
+
+
+                accountPayAmountCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
+                accountPayAmountValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
+            }
+            else
+            {
+                accountPayAmountLabel.Visibility = ViewStates.Visible;
+                accountPayAmountDate.Visibility = ViewStates.Gone;
+
+                accountPayAmountLabel.Text = "I've paid extra";
+                accountPayAmountCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.freshGreen)));
+                accountPayAmountValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.freshGreen)));
+            }
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)

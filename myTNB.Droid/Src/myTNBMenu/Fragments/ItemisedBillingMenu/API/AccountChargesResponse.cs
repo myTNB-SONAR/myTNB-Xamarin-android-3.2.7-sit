@@ -81,7 +81,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.API
         public class MandatoryCharge
         {
             [JsonProperty(PropertyName = "TotalAmount")]
-            public string TotalAmount { get; set; }
+            public float TotalAmount { get; set; }
 
             [JsonProperty(PropertyName = "Charges")]
             public List<Charge> Charges { get; set; }

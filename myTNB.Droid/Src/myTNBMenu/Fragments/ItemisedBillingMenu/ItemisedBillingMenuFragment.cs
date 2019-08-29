@@ -215,7 +215,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
             mPresenter.EvaluateAccountCharge(accountChargeModel);
 
-            itemisedBillingInfoAmount.Text = accountChargeModel.AmountDue.ToString();
+            itemisedBillingInfoAmount.Text = accountChargeModel.AmountDue.ToString("0.00");
             if (mPresenter.isCleared)
             {
                 itemisedBillingInfoNote.Text = "I’ve cleared all bills";

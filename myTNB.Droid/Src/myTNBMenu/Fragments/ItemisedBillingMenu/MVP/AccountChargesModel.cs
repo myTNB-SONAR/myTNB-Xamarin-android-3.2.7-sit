@@ -23,7 +23,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.API
 
     public class MandatoryChargeModel
     {
-        public string TotalAmount { get; set; }
+        public float TotalAmount { get; set; }
         public List<ChargeModel> ChargeModelList { get; set; }
     }
 

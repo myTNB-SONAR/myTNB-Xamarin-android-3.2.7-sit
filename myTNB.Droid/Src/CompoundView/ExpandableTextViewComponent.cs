@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Android.Content;
 using Android.Graphics.Drawables;
 using Android.Support.V4.Content;
@@ -6,6 +7,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.API;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.CompoundView
@@ -50,9 +52,9 @@ namespace myTNB_Android.Src.CompoundView
 
             TextViewUtils.SetMuseoSans500Typeface(myApplicationChargesLabel, myApplicationChargesValue);
 
-
-
-            CreateItems();
+            SetOnClickListener(new OnExpandListener(this));
+            expandableContainer.Visibility = ViewStates.Gone;
+            expandableContainer.RemoveAllViews();
         }
 
         public void OnClickExpand(bool isExpand)
@@ -70,24 +72,18 @@ namespace myTNB_Android.Src.CompoundView
             expandableContainer.Visibility = isExpand ? ViewStates.Visible : ViewStates.Gone;
         }
 
-        public void CreateItems()
+        public void SetOtherCharges(float totalAmount, List<ChargeModel> chargeList)
         {
-            SetOnClickListener(new OnExpandListener(this));
-            expandableContainer.Visibility = ViewStates.Gone;
-
-            LinearLayout item = (LinearLayout)Inflate(mContext,Resource.Layout.MyOtherChargesItemLayout,null);
-            TextView textView = item.FindViewById<TextView>(Resource.Id.otherChargeItem);
-            TextView textValue = item.FindViewById<TextView>(Resource.Id.otherChargeValue);
-            textView.Text = "Test 1";
-            textValue.Text = "RM1.00";
-            expandableContainer.AddView(item);
-
-            item = (LinearLayout)Inflate(mContext, Resource.Layout.MyOtherChargesItemLayout, null);
-            textView = item.FindViewById<TextView>(Resource.Id.otherChargeItem);
-            textValue = item.FindViewById<TextView>(Resource.Id.otherChargeValue);
-            textView.Text = "Test 2";
-            textValue.Text = "RM2.00";
-            expandableContainer.AddView(item);
+            myApplicationChargesValue.Text = "RM " + totalAmount.ToString("0.00");
+            chargeList.ForEach(charge =>
+            {
+                LinearLayout item = (LinearLayout)Inflate(mContext, Resource.Layout.MyOtherChargesItemLayout, null);
+                TextView textView = item.FindViewById<TextView>(Resource.Id.otherChargeItem);
+                TextView textValue = item.FindViewById<TextView>(Resource.Id.otherChargeValue);
+                textView.Text = charge.Title;
+                textValue.Text = "RM" + charge.Amount.ToString("0.00");
+                expandableContainer.AddView(item);
+            });
         }
 
         public class OnExpandListener : Java.Lang.Object, IOnClickListener
