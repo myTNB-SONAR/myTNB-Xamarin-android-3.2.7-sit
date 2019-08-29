@@ -45,6 +45,10 @@ namespace myTNB.Home.Bill
         public static string I18N_BillThisMonth = "billThisMonth";
         public static string I18N_MinimumChargeDescription = "minimumChargeDescription";
         public static string I18N_ApplicationCharges = "applicationCharges";
+        public static string I18N_ToolTipTitle1 = "tooltiptitle1";
+        public static string I18N_ToolTipDesc1 = "tooltipdesc1";
+        public static string I18N_ToolTipTitle2 = "tooltiptitle2";
+        public static string I18N_ToolTipDesc2 = "tooltipdesc2";
 
         //Image
         public static string IMG_NeedToPay = "Bills-NeedToPay-Banner";
@@ -55,7 +59,9 @@ namespace myTNB.Home.Bill
         public static string IMG_BackIcon = "Back-White";
         public static string IMG_Info = "IC-Info";
         public static string IMG_NoHistoryData = "Bills-No-History-Data";
-        public static string IMG_ArrowExpand= "Arrow-Expand";
+        public static string IMG_BGToolTip1 = "Itemized-Tooltip1";
+        public static string IMG_BGToolTip2 = "Itemized-Tooltip2";
+        public static string IMG_ArrowExpand = "Arrow-Expand";
 
         //Event
         public static string Event_MandatoryChargesPopup = "MandatoryChargesPopup";

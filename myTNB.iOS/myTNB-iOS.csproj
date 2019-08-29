@@ -1164,6 +1164,12 @@
     <ImageAsset Include="Assets.xcassets\Arrow-Expand-Down.imageset\icActionExpandDown%403x.png" />
     <ImageAsset Include="Assets.xcassets\Arrow-Collapse-Up.imageset\icActionExpandDownUp%402x.png" />
     <ImageAsset Include="Assets.xcassets\Arrow-Collapse-Up.imageset\icActionExpandDownUp%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Itemized-Tooltip1.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Itemized-Tooltip1.imageset\Itemized-Tooltip1%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Itemized-Tooltip1.imageset\Itemized-Tooltip1%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Itemized-Tooltip2.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Itemized-Tooltip2.imageset\Itemized-Tooltip2%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Itemized-Tooltip2.imageset\Itemized-Tooltip2%403x.png" />
     <ImageAsset Include="Assets.xcassets\Bills-Cleared-Banner.imageset\noOutstanding%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Bills-Cleared-Banner.imageset\noOutstanding%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\needToPay%402x-1.png" />
@@ -1578,6 +1584,7 @@
     <Folder Include="Assets.xcassets\Usage-MissingReading.imageset\" />
     <Folder Include="Assets.xcassets\BCRM-Down-Icon.imageset\" />
     <Folder Include="Assets.xcassets\IC-Action-Filter.imageset\" />
+    <Folder Include="Components\Common\" />
     <Folder Include="Assets.xcassets\Arrow-Expand.imageset\" />
     <Folder Include="Assets.xcassets\Bills-Cleared-Banner.imageset\" />
     <Folder Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\" />
@@ -1586,11 +1593,14 @@
     <Folder Include="Home\Bill\Bill Details\" />
     <Folder Include="Assets.xcassets\Arrow-Expand-Down.imageset\" />
     <Folder Include="Assets.xcassets\Arrow-Collapse-Up.imageset\" />
+    <Folder Include="Assets.xcassets\Itemized-Tooltip1.imageset\" />
+    <Folder Include="Assets.xcassets\Itemized-Tooltip2.imageset\" />
     <Folder Include="Assets.xcassets\Trend-Down-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Trend-Up-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Trend-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Bills-No-History-Data.imageset\" />
     <Folder Include="Model\GetAccountBillPayHistory\" />
+    <Folder Include="Sitecore CMS\Model\Bill Details\" />
     <Folder Include="Assets.xcassets\BCRM-Down-Background.imageset\" />
   </ItemGroup>
   <ItemGroup>
@@ -2403,6 +2413,7 @@
     <Compile Include="Components\Usage View\Charts\REChartView.cs" />
     <Compile Include="Components\Usage View\REAmountComponent.cs" />
     <Compile Include="Home\Bill\BillConstants.cs" />
+    <Compile Include="Components\Common\PaginatedTooltipComponent.cs" />
     <Compile Include="Model\GetAccountsCharges\GetAccountsChargesResponseModel.cs" />
     <Compile Include="Home\Bill\Bills\BillHistorySource.cs" />
     <Compile Include="Home\Bill\Bills\BillHistoryViewCell.cs" />
@@ -2425,6 +2436,9 @@
     <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterZOut.cs" />
     <Compile Include="Home\Bill\Bills\NoDataViewCell.cs" />
     <Compile Include="Model\GetAccountBillPayHistory\GetAccountBillPayHistoryResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\Bill Details\BillDetailsTooltipModel.cs" />
+    <Compile Include="Sitecore CMS\Service\BillDetailsTooltipService.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\BillDetailsTooltipEntity.cs" />
     <Compile Include="Home\Bill\Bills\BillHistoryShimmerViewCell.cs" />
   </ItemGroup>
   <ItemGroup>

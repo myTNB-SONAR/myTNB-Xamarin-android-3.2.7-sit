@@ -2,17 +2,22 @@ using CoreGraphics;
 using myTNB.Home.Bill;
 using myTNB.Model;
 using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Globalization;
 using UIKit;
+using myTNB.SQLite.SQLiteDataManager;
+using myTNB.SitecoreCMS.Model;
 
 namespace myTNB
 {
     public partial class BillDetailsViewController : CustomUIViewController
     {
-        private UIView _viewDetails, _viewTitleSection, _viewBreakdown, _viewLine, _viewPayment;
+        private UIView _viewDetails, _viewTitleSection, _viewBreakdown, _viewLine, _viewPayment, _toolTipParentView;
         private CustomUIView _viewMandatory, _viewTooltip;
         private UIScrollView _uiScrollView;
+        List<BillsTooltipModelEntity> _toolTipList;
+        List<BillsTooltipModel> _pageData;
         private bool isMandatoryExpanded;
 
         public AccountChargesDataModel Charges { set; private get; }
@@ -24,6 +29,7 @@ namespace myTNB
             NavigationController.SetNavigationBarHidden(false, true);
             base.ViewDidLoad();
             View.BackgroundColor = MyTNBColor.LightGrayBG;
+            InitializeTooltip();
             SetNavigation();
             AddDetails();
             AddSectionTitle();
@@ -46,11 +52,104 @@ namespace myTNB
             UIBarButtonItem btnInfo = new UIBarButtonItem(UIImage.FromBundle(BillConstants.IMG_Info)
             , UIBarButtonItemStyle.Done, (sender, e) =>
             {
+                PrepareToolTipView();
             });
             NavigationItem.LeftBarButtonItem = btnBack;
             NavigationItem.RightBarButtonItem = btnInfo;
             Title = GetI18NValue(BillConstants.I18N_NavTitle);
         }
+
+        #region Tooltip
+        private void SetTooltipFallbackData()
+        {
+            _pageData = new List<BillsTooltipModel>();
+            var item1 = new BillsTooltipModel
+            {
+                Image = BillConstants.IMG_BGToolTip1,
+                Title = GetI18NValue(BillConstants.I18N_ToolTipTitle1),
+                Description = GetDescriptionList(GetI18NValue(BillConstants.I18N_ToolTipDesc1))
+            };
+            _pageData.Add(item1);
+
+            var item2 = new BillsTooltipModel
+            {
+                Image = BillConstants.IMG_BGToolTip2,
+                Title = GetI18NValue(BillConstants.I18N_ToolTipTitle2),
+                Description = GetDescriptionList(GetI18NValue(BillConstants.I18N_ToolTipDesc2))
+            };
+            _pageData.Add(item2);
+        }
+
+        private List<string> GetDescriptionList(string description)
+        {
+            List<string> descList = new List<string>();
+            var descSplit = description.Split('|');
+
+            if (descSplit.Length > 0)
+            {
+                foreach (string str in descSplit)
+                {
+                    descList.Add(str);
+                }
+            }
+            return descList;
+        }
+
+        private void InitializeTooltip()
+        {
+            SetTooltipFallbackData();
+            BillDetailsTooltipEntity wsManager = new BillDetailsTooltipEntity();
+            _toolTipList = wsManager.GetAllItems();
+            if (_toolTipList != null && _toolTipList.Count > 0)
+            {
+                if (_pageData != null)
+                {
+                    _pageData.Clear();
+                }
+                for (int i = 0; i < _toolTipList.Count; i++)
+                {
+                    BillsTooltipModel item = new BillsTooltipModel
+                    {
+                        Title = _toolTipList[i].Title,
+                        Description = GetDescriptionList(_toolTipList[i].Description),
+                        Image = _toolTipList[i].Image,
+                        IsSitecoreData = true
+                    };
+                    _pageData.Add(item);
+                }
+            }
+        }
+
+        private void PrepareToolTipView()
+        {
+            if (_toolTipParentView == null)
+            {
+                UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+                nfloat height = currentWindow.Frame.Height;
+                _toolTipParentView = new UIView(new CGRect(0, 0, ViewWidth, height))
+                {
+                    BackgroundColor = MyTNBColor.Black60
+                };
+                currentWindow.AddSubview(_toolTipParentView);
+                PaginatedTooltipComponent tooltipComponent = new PaginatedTooltipComponent(_toolTipParentView);
+                tooltipComponent.SetBillsToolTipData(_pageData);
+                _toolTipParentView.AddSubview(tooltipComponent.GetBillDetailsTooltip());
+                tooltipComponent.SetGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    MakeToolTipVisible(false);
+                }));
+            }
+            _toolTipParentView.Hidden = false;
+        }
+
+        private void MakeToolTipVisible(bool isVisible)
+        {
+            if (_toolTipParentView != null)
+            {
+                _toolTipParentView.Hidden = !isVisible;
+            }
+        }
+        #endregion
 
         private void AddDetails()
         {
@@ -99,7 +198,6 @@ namespace myTNB
         private void AddBreakdown()
         {
             _viewBreakdown = new UIView { BackgroundColor = UIColor.White };
-
             bool isOutstandingOverpaid = Charges.AccountCharges[0].OutstandingCharges < 0;
             string outstandingTilte = isOutstandingOverpaid ? GetI18NValue(BillConstants.I18N_PaidExtra)
                 : GetI18NValue(BillConstants.I18N_OutstandingCharges);

@@ -269,6 +269,10 @@
         "by": "by",
         "paidExtra": "I’ve paid extra",
         "minimumChargeDescription": "This account has a minimum charge.",
-        "applicationCharges": "My application charges"
+        "applicationCharges": "My application charges",
+        "tooltiptitle1": "Items from your paper/PDF bill",
+        "tooltiptitle2": "Items from your demand letter",
+        "tooltipdesc1": "I need to pay|My outstanding charges|My bill this month (electricity usage only)",
+        "tooltipdesc2": "Security Deposit|Stamp Duty|Processing Fee|Meter Fee"
     }
 }
