@@ -78,7 +78,11 @@ namespace myTNB
             return smrActivityInfoResponse;
         }
 
-
+        /// <summary>
+        /// API Call for GetAccountDueAmount
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
         public static async Task<DueAmountResponseModel> GetAccountDueAmount(CustomerAccountRecordModel account)
         {
             DueAmountResponseModel dueAmountResponse = null;
@@ -94,6 +98,31 @@ namespace myTNB
             });
 
             return dueAmountResponse;
+        }
+
+        /// <summary>
+        /// API Call for GetAccountUsageSmart
+        /// </summary>
+        /// <param name="account"></param>
+        /// <returns></returns>
+        public static async Task<AccountUsageSmartResponseModel> GetAccountUsageSmart(CustomerAccountRecordModel account)
+        {
+            AccountUsageSmartResponseModel accountUsageSmartResponse = null;
+            ServiceManager serviceManager = new ServiceManager();
+            object requestParameter = new
+            {
+                contractAccount = account.accNum,
+                isOwner = account.isOwned,
+                metercode = account.smartMeterCode,
+                serviceManager.usrInf
+            };
+
+            accountUsageSmartResponse = await Task.Run(() =>
+            {
+                return serviceManager.OnExecuteAPIV6<AccountUsageSmartResponseModel>("GetAccountUsageSmart", requestParameter);
+            });
+
+            return accountUsageSmartResponse;
         }
     }
 }

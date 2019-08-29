@@ -245,7 +245,8 @@ namespace myTNB
         private void AddTableView()
         {
             _homeTableView = new UITableView(new CGRect(0, DeviceHelper.GetStatusBarHeight()
-                , ViewWidth, ViewHeight)){ BackgroundColor = UIColor.Clear };
+                , ViewWidth, ViewHeight))
+            { BackgroundColor = UIColor.Clear };
             _homeTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             _homeTableView.RegisterClassForCellReuse(typeof(AccountsTableViewCell), DashboardHomeConstants.Cell_Accounts);
             _homeTableView.RegisterClassForCellReuse(typeof(ServicesTableViewCell), DashboardHomeConstants.Cell_Services);
@@ -482,75 +483,8 @@ namespace myTNB
                 DataManager.DataManager.SharedInstance.SelectAccount(selected.accNum);
                 DataManager.DataManager.SharedInstance.IsSameAccount = false;
                 DataManager.DataManager.SharedInstance.AccountIsSSMR = _dashboardHomeHelper.IsSSMR(DataManager.DataManager.SharedInstance.SelectedAccount);
-                CallGetAccountStatusAPI();
+                NavigateToUsageView();
             }
-        }
-
-        private void CallGetAccountStatusAPI()
-        {
-            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
-            {
-                InvokeOnMainThread(async () =>
-                {
-                    if (NetworkUtility.isReachable)
-                    {
-                        ActivityIndicator.Show();
-                        AccountStatusCache.ClearAccountStatusData();
-
-                        AccountStatusResponseModel accountStatusResponse = await UsageServiceCall.GetAccountStatus(DataManager.DataManager.SharedInstance.SelectedAccount);
-                        AccountStatusCache.AddAccountStatusData(accountStatusResponse);
-
-                        if (AccountStatusCache.AccountStatusIsAvailable())
-                        {
-                            if (DataManager.DataManager.SharedInstance.AccountIsSSMR)
-                            {
-                                GetSMRAccountActivityInfo();
-                            }
-                            else
-                            {
-                                NavigateToUsageView();
-                            }
-                        }
-                        else
-                        {
-                            NavigateToUsageView();
-                        }
-                    }
-                    else
-                    {
-                        ActivityIndicator.Hide();
-                        DisplayNoDataAlert();
-                    }
-                });
-            });
-        }
-
-        private void GetSMRAccountActivityInfo()
-        {
-            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
-            {
-                InvokeOnMainThread(async () =>
-                {
-                    if (NetworkUtility.isReachable)
-                    {
-                        SMRAccountActivityInfoResponseModel ssmrInfoResponse = await UsageServiceCall.GetSMRAccountActivityInfo(DataManager.DataManager.SharedInstance.SelectedAccount);
-                        if (ssmrInfoResponse != null &&
-                            ssmrInfoResponse.d != null &&
-                            ssmrInfoResponse.d.data != null &&
-                            ssmrInfoResponse.d.IsSuccess)
-                        {
-                            SSMRActivityInfoCache.SetDashboardCache(ssmrInfoResponse, DataManager.DataManager.SharedInstance.SelectedAccount);
-                            SSMRActivityInfoCache.SetReadingHistoryCache(ssmrInfoResponse, DataManager.DataManager.SharedInstance.SelectedAccount);
-                        }
-                        NavigateToUsageView();
-                    }
-                    else
-                    {
-                        ActivityIndicator.Hide();
-                        DisplayNoDataAlert();
-                    }
-                });
-            });
         }
 
         private void SetActionsDictionary()

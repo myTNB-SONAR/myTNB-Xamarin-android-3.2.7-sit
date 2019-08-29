@@ -50,7 +50,7 @@ namespace myTNB
                         storyBoard.InstantiateViewController("ReceiptViewController") as ReceiptViewController;
                     if (viewController != null)
                     {
-                        viewController.MerchatTransactionID = transID;
+                        viewController.DetailedInfoNumber = transID;
                         viewController.isCCFlow = false;
                         var navController = new UINavigationController(viewController);
                         if (!(topVc is ReceiptViewController))

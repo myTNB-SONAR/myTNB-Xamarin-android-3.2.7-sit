@@ -1,13 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
 using CoreAnimation;
 using CoreGraphics;
-using Foundation;
 using myTNB.Home.Bill;
-using myTNB.SSMR;
 using UIKit;
 
 namespace myTNB
@@ -26,8 +23,9 @@ namespace myTNB
         private CustomUIButtonV2 _btnMore, _btnPay;
         private AccountSelector _accountSelector;
         private CustomUIView _viewAccountSelector;
-        private const string ParseFormat = "yyyyMMdd";
-        private const string DateFormat = "dd MMM yyyy";
+
+        private GetAccountsChargesResponseModel _accountCharges;
+        private GetAccountBillPayHistoryResponseModel _billHistory;
 
         public BillViewController(IntPtr handle) : base(handle) { }
 
@@ -51,14 +49,12 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            //NavigationController.SetNavigationBarHidden(true, true);
             OnSelectAccount(0);
         }
 
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
-            // NavigationController.SetNavigationBarHidden(false, true);
         }
         #endregion
 
@@ -79,9 +75,7 @@ namespace myTNB
 
             _bgImageView = new UIImageView(new CGRect(0, 0, ViewWidth, ViewWidth * 0.70F))
             {
-                //Bills-Cleared-Banner
-                //Bills-NeedToPay-Banner
-                Image = UIImage.FromBundle("Bills-Cleared-Banner"),
+                Image = UIImage.FromBundle(BillConstants.IMG_Cleared),
                 BackgroundColor = UIColor.White
             };
 
@@ -147,7 +141,7 @@ namespace myTNB
                 TextColor = MyTNBColor.CharcoalGrey,
                 Font = TNBFont.MuseoSans_36_500,
                 TextAlignment = UITextAlignment.Left,
-                Text = "200.00"
+                Text = string.Empty
             };
             _viewAmount.AddSubviews(new UIView[] { _lblCurrency, _lblAmount });
             UpdateViewAmount();
@@ -157,7 +151,7 @@ namespace myTNB
                 TextColor = MyTNBColor.GreyishBrown,
                 Font = TNBFont.MuseoSans_14_300,
                 TextAlignment = UITextAlignment.Center,
-                Text = "by 24 Sep 2019"
+                Text = string.Empty
             };
             nfloat btnWidth = (BaseMarginedWidth - GetScaledWidth(4)) / 2;
             _viewCTA = new UIView(new CGRect(0, GetYLocationFromFrame(_lblDate.Frame, 24), ViewWidth, GetScaledHeight(48)));
@@ -174,8 +168,12 @@ namespace myTNB
                 UIStoryboard storyBoard = UIStoryboard.FromName("BillDetails", null);
                 BillDetailsViewController viewController =
                     storyBoard.InstantiateViewController("BillDetailsView") as BillDetailsViewController;
-                var navController = new UINavigationController(viewController);
-                PresentViewController(navController, true, null);
+                if (viewController != null)
+                {
+                    viewController.Charges = _accountCharges.d.data;
+                    var navController = new UINavigationController(viewController);
+                    PresentViewController(navController, true, null);
+                }
             }));
 
             _btnPay = new CustomUIButtonV2()
@@ -189,7 +187,7 @@ namespace myTNB
             _viewCTA.AddSubviews(new CustomUIButtonV2[] { _btnMore, _btnPay });
 
             _headerView.AddSubviews(new UIView[] { _lblPaymentStatus, _viewAmount, _lblDate, _viewCTA });
-            _headerViewContainer.AddSubviews(_headerView);//.AddSubviews(new UIView[] { _lblPaymentStatus, _viewAmount, _lblDate, _viewCTA });
+            _headerViewContainer.AddSubviews(_headerView);
             _headerViewContainer.AddSubviews(_accountSelectorContainer);
 
             CGRect frame = _headerView.Frame;
@@ -248,14 +246,42 @@ namespace myTNB
                    {
                        InvokeInBackground(async () =>
                        {
-                           GetAccountsChargesResponseModel accountCharges = await GetAccountsCharges();
+                           _accountCharges = await GetAccountsCharges();
                            InvokeOnMainThread(() =>
                            {
-                               if (accountCharges != null && accountCharges.d != null && accountCharges.d.IsSuccess
-                                    && accountCharges.d.data != null && accountCharges.d.data.AccountCharges != null
-                                    && accountCharges.d.data.AccountCharges.Count > 0 && accountCharges.d.data.AccountCharges[0] != null)
+                               if (_accountCharges != null && _accountCharges.d != null && _accountCharges.d.IsSuccess
+                                    && _accountCharges.d.data != null && _accountCharges.d.data.AccountCharges != null
+                                    && _accountCharges.d.data.AccountCharges.Count > 0 && _accountCharges.d.data.AccountCharges[0] != null)
                                {
-                                   UpdateHeaderData(accountCharges.d.data.AccountCharges[0]);
+                                   UpdateHeaderData(_accountCharges.d.data.AccountCharges[0]);
+                               }
+                               else
+                               {
+                                   DisplayServiceError(_accountCharges?.d?.ErrorMessage);
+                               }
+                           });
+                       });
+                       InvokeInBackground(async () =>
+                       {
+                           _billHistory = await GetAccountBillPayHistory();
+                           InvokeOnMainThread(() =>
+                           {
+                               if (_billHistory != null && _billHistory.d != null && _billHistory.d.IsSuccess
+                                    && _billHistory.d.data != null)
+                               {
+                                   List<BillPayHistoryModel> test = _billHistory.d.data.BillPayHistories;
+                                   _historyTableView.Source = new BillHistorySource(test)
+                                   {
+                                       OnTableViewScroll = OnTableViewScroll,
+                                       GetI18NValue = GetI18NValue,
+                                       OnSelectBill = DisplayBillPDF,
+                                       OnSelectPayment = DisplayReceipt
+                                   };
+                                   _historyTableView.ReloadData();
+                               }
+                               else
+                               {
+                                   DisplayServiceError(_billHistory?.d?.ErrorMessage);
                                }
                            });
                        });
@@ -270,39 +296,42 @@ namespace myTNB
 
         private void UpdateHeaderData(AccountChargesModel data)
         {
-            //Bills-Cleared-Banner
-            //Bills-NeedToPay-Banner
+            bool isRe = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
             _lblAmount.Text = Math.Abs(data.AmountDue).ToString("N2", CultureInfo.InvariantCulture);
             CGRect ctaFrame = _viewCTA.Frame;
-            _bgImageView.Image = UIImage.FromBundle(data.AmountDue > 0 ? BillConstants.IMG_NeedToPay : BillConstants.IMG_Cleared);
+
+            _bgImageView.Image = isRe ? UIImage.FromBundle(BillConstants.IMG_Cleared)
+                : UIImage.FromBundle(data.AmountDue > 0 ? BillConstants.IMG_NeedToPay : BillConstants.IMG_Cleared);
 
             if (data.AmountDue > 0)
             {
-                _lblPaymentStatus.Text = GetI18NValue(BillConstants.I18N_NeedToPay);
-                string result = DateTime.ParseExact(data.DueDate, ParseFormat, CultureInfo.InvariantCulture).ToString(DateFormat);
-                _lblDate.Text = string.Format("{0} {1}", GetI18NValue(BillConstants.I18N_By), result);
+                _lblPaymentStatus.Text = GetI18NValue(isRe ? BillConstants.I18N_MyEarnings : BillConstants.I18N_NeedToPay);
+                string result = DateTime.ParseExact(data.DueDate, BillConstants.Format_DateParse
+                    , CultureInfo.InvariantCulture).ToString(BillConstants.Format_Date);
+                _lblDate.Text = string.Format(BillConstants.Format_Default
+                    , GetI18NValue(isRe ? BillConstants.I18N_GetBy : BillConstants.I18N_By), result);
                 _lblDate.Hidden = false;
-
                 ctaFrame.Y = GetYLocationFromFrame(_lblDate.Frame, 24);
             }
             else
             {
-                _lblPaymentStatus.Text = GetI18NValue(data.AmountDue == 0 ? BillConstants.I18N_ClearedBills : BillConstants.I18N_PaidExtra);
+                _lblPaymentStatus.Text = isRe ? GetI18NValue(BillConstants.I18N_BeenPaidExtra)
+                    : GetI18NValue(data.AmountDue == 0 ? BillConstants.I18N_ClearedBills : BillConstants.I18N_PaidExtra);
                 _lblDate.Hidden = true;
                 ctaFrame.Y = GetYLocationFromFrame(_viewAmount.Frame, 24);
             }
             UpdateViewAmount(data.AmountDue < 0);
 
             _viewCTA.Frame = ctaFrame;
+            _viewCTA.Hidden = isRe;
 
+            nfloat headerHeight = isRe ? _lblDate.Hidden ? _viewAmount.Frame.GetMaxY() : _lblDate.Frame.GetMaxY() : _viewCTA.Frame.GetMaxY();
             CGRect frame = _headerView.Frame;
-            frame.Height = GetYLocationFromFrame(_viewCTA.Frame, 16);
+            frame.Height = headerHeight + GetScaledHeight(isRe ? 24 : 16);
             _headerView.Frame = frame;
 
             _headerViewContainer.Frame = new CGRect(_headerViewContainer.Frame.Location
                 , new CGSize(_headerViewContainer.Frame.Width, _headerView.Frame.GetMaxY()));
-
-            AddGroupedDate();
             _historyTableView.ReloadData();
         }
 
@@ -313,7 +342,12 @@ namespace myTNB
             _historyTableView = new UITableView(new CGRect(0, _navbarView.Frame.GetMaxY(), ViewWidth, height));
             _historyTableView.RegisterClassForCellReuse(typeof(BillHistoryViewCell), BillConstants.Cell_BillHistory);
             _historyTableView.RegisterClassForCellReuse(typeof(BillSectionViewCell), BillConstants.Cell_BillSection);
-            _historyTableView.Source = new BillHistorySource() { OnTableViewScroll = OnTableViewScroll };
+            _historyTableView.RegisterClassForCellReuse(typeof(NoDataViewCell), BillConstants.Cell_NoHistoryData);
+            _historyTableView.Source = new BillHistorySource(new List<BillPayHistoryModel>())
+            {
+                OnTableViewScroll = OnTableViewScroll,
+                GetI18NValue = GetI18NValue
+            };
             _historyTableView.BackgroundColor = UIColor.Clear;
             _historyTableView.RowHeight = UITableView.AutomaticDimension;
             _historyTableView.EstimatedRowHeight = GetScaledHeight(90);
@@ -321,55 +355,10 @@ namespace myTNB
             _historyTableView.Bounces = false;
             _historyTableView.TableHeaderView = _headerViewContainer;
             View.AddSubview(_historyTableView);
-            //_historyTableView.Layer.BorderWidth = 1;
-            //_historyTableView.Layer.BorderColor = UIColor.Red.CGColor;
-            AddGroupedDate();
-        }
-
-        private void AddGroupedDate()
-        {
-            return;
-            for (int j = 0; j < _historyTableView.Subviews.Length; j++)
-            {
-                if (_historyTableView.Subviews[j].Tag == 101)
-                {
-                    _historyTableView.Subviews[j].RemoveFromSuperview();
-                }
-            }
-            for (int i = 0; i < 10; i++)
-            {
-                //if (i == 0) { continue; }
-
-                //if (i == 0 || i == 3)
-                // {
-                CGRect cellRect = _historyTableView.RectForRowAtIndexPath(NSIndexPath.Create(0, i));
-                nfloat yLoc = cellRect.GetMinY();// + GetScaledHeight(51);
-
-                UIView viewGroupedDate = new UIView(new CGRect(ScaleUtility.GetScaledWidth(16), yLoc
-                    , ScaleUtility.GetScaledWidth(70), ScaleUtility.GetScaledHeight(24)))
-                {
-                    ClipsToBounds = true,
-                    Tag = 101
-                };
-                UILabel _lblGroupedDate = new UILabel(new CGRect(new CGPoint(0, 0), viewGroupedDate.Frame.Size))
-                {
-                    BackgroundColor = MyTNBColor.WaterBlue,
-                    TextColor = UIColor.White,
-                    Font = TNBFont.MuseoSans_12_500,
-                    TextAlignment = UITextAlignment.Center,
-                    Text = "Aug 2019" + i
-                };
-                viewGroupedDate.AddSubview(_lblGroupedDate);
-                viewGroupedDate.Layer.CornerRadius = ScaleUtility.GetScaledHeight(12);
-                viewGroupedDate.Layer.ZPosition = 99;
-                _historyTableView.AddSubview(viewGroupedDate);
-                _historyTableView.BringSubviewToFront(viewGroupedDate);
-                // }
-            }
         }
         #endregion
 
-        #region Scroll Events
+        #region Events
         public void OnTableViewScroll(object sender, EventArgs e)
         {
             UIScrollView scrollView = sender as UIScrollView;
@@ -402,6 +391,59 @@ namespace myTNB
             _navbarView.Layer.ReplaceSublayer(_gradientLayer, gradientLayer);
             _gradientLayer = gradientLayer;
         }
+
+        private void DisplayBillPDF(string DetailedInfoNumber)
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        DataManager.DataManager.SharedInstance.IsSameAccount = true;
+                        UIStoryboard storyBoard = UIStoryboard.FromName("ViewBill", null);
+                        ViewBillViewController viewController =
+                            storyBoard.InstantiateViewController("ViewBillViewController") as ViewBillViewController;
+                        if (viewController != null)
+                        {
+                            viewController.BillingNumber = DetailedInfoNumber;
+                            var navController = new UINavigationController(viewController);
+                            PresentViewController(navController, true, null);
+                        }
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
+        private void DisplayReceipt(string DetailedInfoNumber)
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        UIStoryboard storyBoard = UIStoryboard.FromName("Receipt", null);
+                        ReceiptViewController viewController =
+                            storyBoard.InstantiateViewController("ReceiptViewController") as ReceiptViewController;
+                        if (viewController != null)
+                        {
+                            viewController.DetailedInfoNumber = DetailedInfoNumber;
+                            var navController = new UINavigationController(viewController);
+                            PresentViewController(navController, true, null);
+                        }
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
         #endregion
 
         #region Services
@@ -414,10 +456,23 @@ namespace myTNB
                 accounts = new List<string> { DataManager.DataManager.SharedInstance.SelectedAccount.accNum ?? string.Empty },
                 isOwnedAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsOwnedAccount
             };
-            GetAccountsChargesResponseModel response = serviceManager.OnExecuteAPIV6<GetAccountsChargesResponseModel>("GetAccountsCharges", request);
+            GetAccountsChargesResponseModel response = serviceManager.OnExecuteAPIV6<GetAccountsChargesResponseModel>(BillConstants.Service_GetAccountsCharges, request);
             return response;
         }
 
+        private async Task<GetAccountBillPayHistoryResponseModel> GetAccountBillPayHistory()
+        {
+            ServiceManager serviceManager = new ServiceManager();
+            object request = new
+            {
+                serviceManager.usrInf,
+                contractAccount = DataManager.DataManager.SharedInstance.SelectedAccount.accNum ?? string.Empty,
+                isOwnedAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsOwnedAccount,
+                accountType = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount ? BillConstants.Param_RE : BillConstants.Param_UTIL
+            };
+            GetAccountBillPayHistoryResponseModel response = serviceManager.OnExecuteAPIV6<GetAccountBillPayHistoryResponseModel>(BillConstants.Service_GetAccountBillPayHistory, request);
+            return response;
+        }
         #endregion
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
-using CoreGraphics;
+using System.Collections.Generic;
 using Foundation;
 using UIKit;
 
@@ -9,9 +8,33 @@ namespace myTNB.Home.Bill
     public class BillHistorySource : UITableViewSource
     {
         public EventHandler OnTableViewScroll;
+        public Func<string, string> GetI18NValue;
+        public Action<string> OnSelectBill;
+        public Action<string> OnSelectPayment;
+        private List<BillPayHistoryModel> _historyResponseList;
+        private List<BillPayHistoryDataModel> _historyList = new List<BillPayHistoryDataModel>();
+        private Dictionary<int, string> _historyDictionary = new Dictionary<int, string>();
 
-        public BillHistorySource()
+        public BillHistorySource(List<BillPayHistoryModel> historyResponseList)
         {
+            _historyResponseList = historyResponseList;
+            for (int i = 0; i < _historyResponseList.Count; i++)
+            {
+                BillPayHistoryModel item = _historyResponseList[i];
+                if (i == 0)
+                {
+                    _historyDictionary.Add(i, item.MonthYear);
+                }
+                else
+                {
+                    _historyDictionary.Add(_historyList.Count, item.MonthYear);
+                }
+                for (int j = 0; j < item.BillPayHistoryData.Count; j++)
+                {
+                    BillPayHistoryDataModel jItem = item.BillPayHistoryData[j];
+                    _historyList.Add(jItem);
+                }
+            }
         }
 
         public override nint NumberOfSections(UITableView tableView)
@@ -21,55 +44,82 @@ namespace myTNB.Home.Bill
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            return 10;
+            int rowCount = 1;//Default to 1 for section view
+            if (IsEmptyHistory)
+            {
+                rowCount++;
+            }
+            else
+            {
+                rowCount += _historyList.Count;
+            }
+            return rowCount;
         }
 
-        /*public override UIView GetViewForHeader(UITableView tableView, nint section)
-        {
-            nfloat scaled16 = ScaleUtility.GetScaledWidth(16);
-            UIView sectionView = new UIView(new CGRect(0, 0, tableView.Frame.Width, ScaleUtility.GetScaledHeight(60)));
-            sectionView.BackgroundColor = MyTNBColor.LightGrayBG;
-            UILabel lblTitle = new UILabel(new CGRect(scaled16, ScaleUtility.GetScaledHeight(16), sectionView.Frame.Width, ScaleUtility.GetScaledHeight(24)))
-            {
-                Text = "My History",
-                Font = TNBFont.MuseoSans_16_500,
-                TextColor = MyTNBColor.WaterBlue
-            };
-
-            UIView viewFilter = new UIView(new CGRect(tableView.Frame.Width - ScaleUtility.GetScaledWidth(32), ScaleUtility.GetScaledHeight(20)
-                , scaled16, scaled16));
-            UIImageView imgFilter = new UIImageView(new CGRect(0, 0, scaled16, scaled16))
-            {
-                Image = UIImage.FromBundle("IC-Action-Filter")
-            };
-            viewFilter.AddGestureRecognizer(new UITapGestureRecognizer(()=> {
-                Debug.WriteLine("Filter");
-            }));
-            viewFilter.AddSubview(imgFilter);
-
-            sectionView.AddSubview(lblTitle);
-            sectionView.AddSubview(viewFilter);
-            return sectionView;
-        }*/
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
             if (indexPath.Row == 0)
             {
                 BillSectionViewCell cell = tableView.DequeueReusableCell(BillConstants.Cell_BillSection) as BillSectionViewCell;
-
-                cell.SelectionStyle = UITableViewCellSelectionStyle.None;
+                cell.SectionTitle = GetI18NValue(BillConstants.I18N_MyHistory);
                 return cell;
             }
             else
             {
-                BillHistoryViewCell cell = tableView.DequeueReusableCell(BillConstants.Cell_BillHistory) as BillHistoryViewCell;
-                cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-                cell.ClipsToBounds = false;
-                //cell.Layer.BorderColor = UIColor.Green.CGColor;
-                //cell.Layer.BorderWidth = 1;
+                if (IsEmptyHistory)
+                {
+                    NoDataViewCell cell = tableView.DequeueReusableCell(BillConstants.Cell_NoHistoryData) as NoDataViewCell;
+                    cell.Image = BillConstants.IMG_NoHistoryData;
+                    cell.Message = GetI18NValue(BillConstants.I18N_NoHistoryData);
+                    return cell;
+                }
+                else
+                {
+                    int index = indexPath.Row - 1;
+                    BillPayHistoryDataModel item = _historyList[index];
+                    BillHistoryViewCell cell = tableView.DequeueReusableCell(BillConstants.Cell_BillHistory) as BillHistoryViewCell;
 
-            cell.Layer.ZPosition = 10 + indexPath.Row;
-                return cell;
+                    cell.Type = item.DateAndHistoryType;
+                    cell.Source = item.PaidVia;
+                    cell.Amount = item.Amount;
+                    cell.IsArrowHidden = !item.IsViaMobileApp;
+                    cell.IsPayment = item.IsPayment;
+
+                    if (_historyDictionary.ContainsKey(index))
+                    {
+                        cell.Date = _historyDictionary[index];
+                        cell.SetWidgetHeight(true, true, _historyDictionary.ContainsKey(index + 1));
+                    }
+                    else if (_historyDictionary.ContainsKey(index + 1))
+                    {
+                        cell.SetWidgetHeight(true, false, true);
+                    }
+
+                    if (item.IsPayment)
+                    {
+                        cell.SetAction = new UITapGestureRecognizer(() =>
+                        {
+                            if (OnSelectPayment != null)
+                            {
+                                OnSelectPayment.Invoke(item.DetailedInfoNumber);
+                            }
+                        });
+                    }
+                    else
+                    {
+                        cell.SetAction = new UITapGestureRecognizer(() =>
+                        {
+                            if (OnSelectBill != null)
+                            {
+                                OnSelectBill.Invoke(item.DetailedInfoNumber);
+                            }
+                        });
+                    }
+
+                    cell.ClipsToBounds = false;
+                    cell.Layer.ZPosition = 10 + indexPath.Section + indexPath.Row;
+                    return cell;
+                }
             }
         }
 
@@ -81,6 +131,14 @@ namespace myTNB.Home.Bill
         public override void Scrolled(UIScrollView scrollView)
         {
             OnTableViewScroll?.Invoke(scrollView, null);
+        }
+
+        private bool IsEmptyHistory
+        {
+            get
+            {
+                return _historyResponseList == null || _historyResponseList.Count == 0;
+            }
         }
     }
 }

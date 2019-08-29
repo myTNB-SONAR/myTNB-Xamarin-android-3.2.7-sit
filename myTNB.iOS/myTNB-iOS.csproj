@@ -904,13 +904,7 @@
     <ImageAsset Include="Assets.xcassets\Tab-Home-Selected.imageset\homeSelected%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Home-Selected.imageset\homeSelected%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Profile-Selected.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Tab-Profile-Selected.imageset\profileSelected.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Profile-Selected.imageset\profileSelected%402x.png" />
@@ -1091,12 +1085,6 @@
     <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group%403x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\smrOnboarding1.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\smrOnboarding1%402x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\smrOnboarding1%403x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%403x-1.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%402x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-Reading-History-Banner.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SSMR-Reading-History-Banner.imageset\group6.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-Reading-History-Banner.imageset\group6%402x.png" />
@@ -1147,6 +1135,18 @@
     <ImageAsset Include="Assets.xcassets\Usage-Refresh-Bg.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Usage-Refresh-Bg.imageset\Usage-Refresh-Bg%402x.png" />
     <ImageAsset Include="Assets.xcassets\Usage-Refresh-Bg.imageset\Usage-Refresh-Bg%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Calendar-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Calendar-Icon.imageset\Calendar-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Calendar-Icon.imageset\Calendar-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Predict-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Predict-Icon.imageset\Predict-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Predict-Icon.imageset\Predict-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Zoom.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Zoom.imageset\searchNoGradient%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Zoom.imageset\searchNoGradient%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Usage-MissingReading.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Usage-MissingReading.imageset\missingCopy%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Usage-MissingReading.imageset\missingCopy%403x.png" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\BCRM-Down-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\BCRM-Down-Icon%403x.png" />
@@ -1158,10 +1158,6 @@
     <ImageAsset Include="Assets.xcassets\Arrow-Expand.imageset\expandRight16X16%403x.png" />
     <ImageAsset Include="Assets.xcassets\Bills-Cleared-Banner.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\needToPay%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\needToPay%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Bills-Cleared-Banner.imageset\noOutstanding%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Bills-Cleared-Banner.imageset\noOutstanding%403x.png" />
     <ImageAsset Include="Assets.xcassets\Arrow-Expand-Down.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Arrow-Collapse-Up.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Arrow-Expand-Down.imageset\icActionExpandDown%402x.png" />
@@ -1174,6 +1170,30 @@
     <ImageAsset Include="Assets.xcassets\Itemized-Tooltip2.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Itemized-Tooltip2.imageset\Itemized-Tooltip2%402x.png" />
     <ImageAsset Include="Assets.xcassets\Itemized-Tooltip2.imageset\Itemized-Tooltip2%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-Cleared-Banner.imageset\noOutstanding%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-Cleared-Banner.imageset\noOutstanding%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\needToPay%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\needToPay%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Trend-Down-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Trend-Down-Icon.imageset\Trend-Down-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Trend-Down-Icon.imageset\Trend-Down-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Trend-Up-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Trend-Up-Icon.imageset\Trend-Up-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Trend-Up-Icon.imageset\Trend-Up-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Trend-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Trend-Icon.imageset\Trend-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Trend-Icon.imageset\Trend-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\smrOnboarding1%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\smrOnboarding1%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-No-History-Data.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Bills-No-History-Data.imageset\bills%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-No-History-Data.imageset\bills%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1554,6 +1574,11 @@
     <Folder Include="Assets.xcassets\Usage-Bg-Normal.imageset\" />
     <Folder Include="Assets.xcassets\Usage-Bg-Long.imageset\" />
     <Folder Include="Assets.xcassets\Usage-Refresh-Bg.imageset\" />
+    <Folder Include="Components\Usage View\Charts\Smart Meter\" />
+    <Folder Include="Assets.xcassets\Calendar-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Predict-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Zoom.imageset\" />
+    <Folder Include="Assets.xcassets\Usage-MissingReading.imageset\" />
     <Folder Include="Assets.xcassets\BCRM-Down-Icon.imageset\" />
     <Folder Include="Assets.xcassets\IC-Action-Filter.imageset\" />
     <Folder Include="Components\Common\" />
@@ -1567,6 +1592,11 @@
     <Folder Include="Assets.xcassets\Arrow-Collapse-Up.imageset\" />
     <Folder Include="Assets.xcassets\Itemized-Tooltip1.imageset\" />
     <Folder Include="Assets.xcassets\Itemized-Tooltip2.imageset\" />
+    <Folder Include="Assets.xcassets\Trend-Down-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Trend-Up-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Trend-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Bills-No-History-Data.imageset\" />
+    <Folder Include="Model\GetAccountBillPayHistory\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1610,6 +1640,7 @@
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
     <None Include="packages.config" />
+    <None Include="GoogleService-Info.plist" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -1751,11 +1782,6 @@
     <Compile Include="Home\Dashboard\Get Access\GetAccessViewController.cs" />
     <Compile Include="Home\Dashboard\Get Access\GetAccessViewController.designer.cs">
       <DependentUpon>GetAccessViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Bill\BillTableViewDataSource.cs" />
-    <Compile Include="Home\Bill\BillTableViewCell.cs" />
-    <Compile Include="Home\Bill\BillTableViewCell.designer.cs">
-      <DependentUpon>BillTableViewCell.cs</DependentUpon>
     </Compile>
     <Compile Include="Payment\Add Card\AddCardViewController.cs" />
     <Compile Include="Payment\Add Card\AddCardViewController.designer.cs">
@@ -1988,8 +2014,6 @@
     <Compile Include="Model\SubmitFeedback\SubmitFeedbackModel.cs" />
     <Compile Include="Model\SubmitFeedback\SubmitFeedbackResponseModel.cs" />
     <Compile Include="Model\GetStatesForFeedback\StatesForFeedbackDataModel.cs" />
-    <Compile Include="Model\GetBillHistory\BillHistoryDataModel.cs" />
-    <Compile Include="Model\GetBillHistory\BillHistoryModel.cs" />
     <Compile Include="Model\GetBillHistory\BillHistoryResponseModel.cs" />
     <Compile Include="Model\GetPaymentHistory\PaymentHistoryDataModel.cs" />
     <Compile Include="Model\GetPaymentHistory\PaymentHistoryModel.cs" />
@@ -2011,10 +2035,6 @@
     </Compile>
     <Compile Include="Home\Feedback\Feedback Details\FeedbackDetailsDataSource.cs" />
     <Compile Include="Helpers\ScrollViewDelegate.cs" />
-    <Compile Include="Home\Bill\NoDataViewCell.cs" />
-    <Compile Include="Home\Bill\NoDataViewCell.designer.cs">
-      <DependentUpon>NoDataViewCell.cs</DependentUpon>
-    </Compile>
     <Compile Include="Helpers\LabelHelper.cs" />
     <Compile Include="Home\Feedback\FeedbackFileNameHelper.cs" />
     <Compile Include="SQLite\SQLite Data Manager\TermsAndConditionEntity.cs" />
@@ -2401,6 +2421,16 @@
     <Compile Include="Home\Bill\Bill Details\BillDetailsViewController.designer.cs">
       <DependentUpon>BillDetailsViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterChartView.cs" />
+    <Compile Include="Components\Usage View\SmartMeterCardComponent.cs" />
+    <Compile Include="Model\Usage\AccountUsageSmartModel.cs" />
+    <Compile Include="Model\Usage\ByDayModel.cs" />
+    <Compile Include="Model\Usage\ByMonthModel.cs" />
+    <Compile Include="Model\Usage\LegendItemModel.cs" />
+    <Compile Include="Session Cache\AccountUsageSmartCache.cs" />
+    <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterZOut.cs" />
+    <Compile Include="Home\Bill\Bills\NoDataViewCell.cs" />
+    <Compile Include="Model\GetAccountBillPayHistory\GetAccountBillPayHistoryResponseModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

@@ -18,16 +18,24 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            if (!DataManager.DataManager.SharedInstance.IsSameAccount)
-            {
-                CallGetAccountUsageAPI();
-                CallGetAccountDueAmountAPI(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
-            }
+            InitiateAPICalls();
         }
 
-        public void OnCurrentBillViewDone()
+        internal override void InitiateAPICalls()
         {
-            Debug.WriteLine("OnCurrentBillViewDone()");
+            if (!DataManager.DataManager.SharedInstance.IsSameAccount)
+            {
+                CallGetAccountStatusAPI();
+                if (isSmartMeterAccount)
+                {
+                    CallGetAccountUsageSmartAPI();
+                }
+                else
+                {
+                    CallGetAccountUsageAPI();
+                }
+                CallGetAccountDueAmountAPI(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+            }
         }
 
         #region OVERRIDDEN Methods
@@ -70,7 +78,7 @@ namespace myTNB
                             storyBoard.InstantiateViewController("ViewBillViewController") as ViewBillViewController;
                         if (viewController != null)
                         {
-                            viewController.OnDone = OnCurrentBillViewDone;
+                            viewController.IsFromUsage = true;
                             var navController = new UINavigationController(viewController);
                             PresentViewController(navController, true, null);
                         }
@@ -108,15 +116,10 @@ namespace myTNB
                 });
             });
         }
-        internal override void OnSelectAccount(int index)
-        {
-            CallGetAccountStatusAPI();
-        }
         internal override void RefreshButtonOnTap()
         {
             base.RefreshButtonOnTap();
-            CallGetAccountUsageAPI();
-            CallGetAccountDueAmountAPI(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+            InitiateAPICalls();
         }
         #endregion
         #region API Calls
@@ -145,16 +148,56 @@ namespace myTNB
                                 {
                                     SetREAmountViewForRefresh();
                                 }
-                                if (accountIsSSMR)
-                                {
-                                    GetSMRAccountActivityInfo(true);
-                                }
+                                CallGetSMRAccountActivityInfo(true);
                             }
                         }
                         else
                         {
                             AccountUsageCache.ClearTariffLegendList();
                             AccountUsageCache.GetCachedData(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                            SetTariffLegendComponent();
+                            SetChartView(false);
+                        }
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+        private void CallGetAccountUsageSmartAPI()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        if (AccountUsageSmartCache.IsRefreshNeeded(DataManager.DataManager.SharedInstance.SelectedAccount.accNum))
+                        {
+                            SetSmartMeterComponent(true);
+                            AccountUsageSmartCache.ClearTariffLegendList();
+                            AccountUsageSmartResponseModel accountUsageSmartResponse = await UsageServiceCall.GetAccountUsageSmart(DataManager.DataManager.SharedInstance.SelectedAccount);
+                            AccountUsageSmartCache.SetData(DataManager.DataManager.SharedInstance.SelectedAccount.accNum, accountUsageSmartResponse);
+                            if (AccountUsageSmartCache.IsSuccess)
+                            {
+                                OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
+                                SetSmartMeterComponent(false, model.Cost);
+                                SetTariffLegendComponent();
+                                SetChartView(false);
+                            }
+                            else
+                            {
+                                SetRefreshScreen();
+                            }
+                        }
+                        else
+                        {
+                            AccountUsageSmartCache.ClearTariffLegendList();
+                            AccountUsageSmartCache.GetCachedData(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                            OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
+                            SetSmartMeterComponent(false, model.Cost);
                             SetTariffLegendComponent();
                             SetChartView(false);
                         }
@@ -250,7 +293,7 @@ namespace myTNB
                         {
                             if (!isREAccount && accountIsSSMR)
                             {
-                                GetSMRAccountActivityInfo();
+                                CallGetSMRAccountActivityInfo();
                             }
                         }
                     }
@@ -261,7 +304,7 @@ namespace myTNB
                 });
             });
         }
-        private void GetSMRAccountActivityInfo(bool isForRefreshScreen = false)
+        private void CallGetSMRAccountActivityInfo(bool isForRefreshScreen = false)
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {

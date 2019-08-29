@@ -16,6 +16,7 @@ namespace myTNB
     public class AccountChargesDataModel
     {
         public List<AccountChargesModel> AccountCharges { set; get; } = new List<AccountChargesModel>();
+        public List<PopupModel> MandatoryChargesPopUpDetails { set; get; } = new List<PopupModel>();
     }
 
     public class AccountChargesModel
