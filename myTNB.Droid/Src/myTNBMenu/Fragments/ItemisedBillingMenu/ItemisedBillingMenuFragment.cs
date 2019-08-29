@@ -16,6 +16,7 @@ using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Fragments;
+using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.API;
@@ -64,6 +65,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         ItemisedBillingMenuPresenter mPresenter;
         AccountData mSelectedAccountData;
 
+        List<AccountChargeModel> selectedAccountChargesModelList;
+
+
         const string SELECTED_ACCOUNT_KEY = "SELECTED_ACCOUNT";
 
         public override void OnCreate(Bundle savedInstanceState)
@@ -81,6 +85,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         public override int ResourceId()
         {
             return Resource.Layout.ItemisedBillingMenuLayout;
+        }
+
+        [OnClick(Resource.Id.btnViewDetails)]
+        void OnViewDetails(object sender, EventArgs eventArgs)
+        {
+            Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
+            intent.PutExtra("BILL_DETAILS",JsonConvert.SerializeObject(selectedAccountChargesModelList));
+            StartActivity(intent);
         }
 
         [OnClick(Resource.Id.accountSelection)]
@@ -195,15 +207,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
         }
 
-        public void GetAccountBillPayHistory()
-        {
-            mPresenter.GetAccountBillPayHistory(mSelectedAccountData.AccountNum,
-                true,
-                (mSelectedAccountData.AccountCategoryId != "2") ? "UTIL" : "RE");
-        }
-
         public void PopulateAccountCharge(List<AccountChargeModel> accountChargesModelList)
         {
+            selectedAccountChargesModelList = accountChargesModelList.GetRange(0, accountChargesModelList.Count);
             AccountChargeModel accountChargeModel = accountChargesModelList[0];
             int imageResource = Resource.Drawable.bill_no_outstanding_banner;
 
@@ -241,6 +247,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
 
             itemisedBillingHeaderImage.SetImageResource(imageResource);
+        }
+
+        public void GetAccountBillPayHistory()
+        {
+            mPresenter.GetAccountBillPayHistory(mSelectedAccountData.AccountNum,
+                true,
+                (mSelectedAccountData.AccountCategoryId != "2") ? "UTIL" : "RE");
         }
 
         class OnShowBillingDetailsListener : Java.Lang.Object, View.IOnClickListener

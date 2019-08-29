@@ -2,15 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
     android:orientation="horizontal" 
     android:layout_width="match_parent" 
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:layout_marginBottom="5dp">
     <TextView
         android:id="@+id/otherChargeItem"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.5"
         android:gravity="left"
-        android:layout_marginBottom="8dp"
         android:text="Item1"
+        android:textColor="#424141"
         android:textSize="14dp"/>
     <TextView
         android:id="@+id/otherChargeValue"
@@ -18,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="0.5"
         android:gravity="right"
-        android:layout_marginBottom="8dp"
         android:text="Value1"
+        android:textColor="#424141"
         android:textSize="14dp"/>
 </LinearLayout>
