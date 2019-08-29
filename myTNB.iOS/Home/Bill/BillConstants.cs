@@ -22,6 +22,7 @@ namespace myTNB.Home.Bill
         public static string Cell_BillHistory = "billHistoryTableViewCell";
         public static string Cell_BillSection = "billSectionTableViewCell";
         public static string Cell_NoHistoryData = "noHistoryDataTableViewCell";
+        public static string Cell_BillHistoryShimmer = "billHistoryShimmerViewCell";
 
         //I18N
         //Bill
@@ -60,6 +61,7 @@ namespace myTNB.Home.Bill
         public static string IMG_NoHistoryData = "Bills-No-History-Data";
         public static string IMG_BGToolTip1 = "Itemized-Tooltip1";
         public static string IMG_BGToolTip2 = "Itemized-Tooltip2";
+        public static string IMG_ArrowExpand = "Arrow-Expand";
 
         //Event
         public static string Event_MandatoryChargesPopup = "MandatoryChargesPopup";

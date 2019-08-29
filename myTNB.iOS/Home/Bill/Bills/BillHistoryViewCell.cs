@@ -7,8 +7,9 @@ namespace myTNB.Home.Bill
     public class BillHistoryViewCell : UITableViewCell
     {
         private CustomUIView _view;
-        private UIView _viewGroupedDate;
-        private UILabel _lblGroupedDate;
+        private UIView _viewGroupedDate, _viewLine;
+        private UILabel _lblGroupedDate, _lblDate, _lblSource, _lblAmount;
+        private UIImageView _imgArrow;
         private nfloat _cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
         private nfloat _baseHMargin = ScaleUtility.GetScaledWidth(16);
         private nfloat _baseVMargin = ScaleUtility.GetScaledHeight(16);
@@ -27,11 +28,6 @@ namespace myTNB.Home.Bill
             }
             SelectionStyle = UITableViewCellSelectionStyle.None;
         }
-
-        private UIView _viewLine;
-        private UILabel _lblDate, _lblSource, _lblAmount;
-        private UIImageView _imgArrow;
-
         private void AddViews()
         {
             _lblDate = new UILabel(new CGRect(_baseHMargin, _baseVMargin, ScaleUtility.GetScaledWidth(200), _baseVMargin))
@@ -60,7 +56,7 @@ namespace myTNB.Home.Bill
             _imgArrow = new UIImageView(new CGRect(_cellWidth - ScaleUtility.GetScaledWidth(32), ScaleUtility.GetScaledHeight(26)
                 , _baseHMargin, _baseHMargin))
             {
-                Image = UIImage.FromBundle("Arrow-Expand")
+                Image = UIImage.FromBundle(BillConstants.IMG_ArrowExpand)
             };
 
             _viewLine = new UIView(new CGRect(_baseHMargin, _view.Frame.Height - ScaleUtility.GetScaledHeight(1)
@@ -88,7 +84,6 @@ namespace myTNB.Home.Bill
 
             _view.AddSubview(_viewGroupedDate);
         }
-
         public string Type
         {
             set

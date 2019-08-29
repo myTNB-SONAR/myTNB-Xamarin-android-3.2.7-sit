@@ -14,8 +14,9 @@ namespace myTNB.Home.Bill
         private List<BillPayHistoryModel> _historyResponseList;
         private List<BillPayHistoryDataModel> _historyList = new List<BillPayHistoryDataModel>();
         private Dictionary<int, string> _historyDictionary = new Dictionary<int, string>();
+        private bool _isLoading;
 
-        public BillHistorySource(List<BillPayHistoryModel> historyResponseList)
+        public BillHistorySource(List<BillPayHistoryModel> historyResponseList, bool isLoading)
         {
             _historyResponseList = historyResponseList;
             for (int i = 0; i < _historyResponseList.Count; i++)
@@ -35,6 +36,7 @@ namespace myTNB.Home.Bill
                     _historyList.Add(jItem);
                 }
             }
+            _isLoading = isLoading;
         }
 
         public override nint NumberOfSections(UITableView tableView)
@@ -45,7 +47,7 @@ namespace myTNB.Home.Bill
         public override nint RowsInSection(UITableView tableview, nint section)
         {
             int rowCount = 1;//Default to 1 for section view
-            if (IsEmptyHistory)
+            if (IsEmptyHistory || _isLoading)
             {
                 rowCount++;
             }
@@ -62,10 +64,18 @@ namespace myTNB.Home.Bill
             {
                 BillSectionViewCell cell = tableView.DequeueReusableCell(BillConstants.Cell_BillSection) as BillSectionViewCell;
                 cell.SectionTitle = GetI18NValue(BillConstants.I18N_MyHistory);
+                cell.IsLoading = _isLoading;
+                cell.Layer.ZPosition = 1;
                 return cell;
             }
             else
             {
+                if (_isLoading)
+                {
+                    BillHistoryShimmerViewCell cell = tableView.DequeueReusableCell(BillConstants.Cell_BillHistoryShimmer) as BillHistoryShimmerViewCell;
+                    cell.ClipsToBounds = false;
+                    return cell;
+                }
                 if (IsEmptyHistory)
                 {
                     NoDataViewCell cell = tableView.DequeueReusableCell(BillConstants.Cell_NoHistoryData) as NoDataViewCell;

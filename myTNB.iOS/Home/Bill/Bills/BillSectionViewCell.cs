@@ -10,6 +10,7 @@ namespace myTNB.Home.Bill
         private UIView _view;
         private UILabel _lblTitle;
         private nfloat _cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
+        private nfloat _baseHMargin = ScaleUtility.GetScaledWidth(16);
 
         public BillSectionViewCell(IntPtr handle) : base(handle)
         {
@@ -57,6 +58,43 @@ namespace myTNB.Home.Bill
                     value = string.Empty;
                 }
                 _lblTitle.Text = value;
+            }
+        }
+
+        public bool IsLoading
+        {
+            set
+            {
+                if (value)
+                {
+                    CustomShimmerView shimmeringView = new CustomShimmerView();
+                    UIView viewParent = new UIView(new CGRect(new CGPoint(0, 0), _view.Frame.Size)) { BackgroundColor = UIColor.Clear, Tag = 99 };
+                    UIView viewShimmerParent = new UIView(new CGRect(new CGPoint(0, 0), _view.Frame.Size)) { BackgroundColor = UIColor.Clear };
+                    UIView viewShimmerContent = new UIView(new CGRect(new CGPoint(0, 0), _view.Frame.Size)) { BackgroundColor = UIColor.Clear };
+                    viewParent.AddSubviews(new UIView[] { viewShimmerParent, viewShimmerContent });
+
+                    UIView viewGroupedData = new UIView(new CGRect(_baseHMargin, _view.Frame.GetMaxY() - ScaleUtility.GetScaledHeight(12)
+                        , ScaleUtility.GetScaledWidth(100), ScaleUtility.GetScaledHeight(12)))
+                    {
+                        BackgroundColor = MyTNBColor.PaleGrey,
+                    };
+                    viewShimmerContent.AddSubviews(new UIView[] { viewGroupedData });
+
+                    viewShimmerParent.AddSubview(shimmeringView);
+                    shimmeringView.ContentView = viewShimmerContent;
+                    shimmeringView.Shimmering = true;
+                    shimmeringView.SetValues();
+
+                    _view.AddSubview(viewParent);
+                }
+                else
+                {
+                    UIView view = _view.ViewWithTag(99);
+                    if (view != null)
+                    {
+                        view.RemoveFromSuperview();
+                    }
+                }
             }
         }
     }

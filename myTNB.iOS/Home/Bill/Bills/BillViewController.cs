@@ -1,17 +1,21 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
+using System.Threading;
 using System.Threading.Tasks;
 using CoreAnimation;
 using CoreGraphics;
 using myTNB.Home.Bill;
+using myTNB.SSMR;
 using UIKit;
 
 namespace myTNB
 {
     public partial class BillViewController : CustomUIViewController
     {
-        private UIView _headerViewContainer, _headerView, _footerView, _navbarView, _viewRefreshContainer;
+        private UIView _headerViewContainer, _headerView, _navbarView
+            , _shimmerView, _viewRefreshContainer;
         private UIImageView _bgImageView;
         private CAGradientLayer _gradientLayer;
         private CustomUIView _accountSelectorContainer;
@@ -176,7 +180,7 @@ namespace myTNB
                 }
             }));
 
-            _btnPay = new CustomUIButtonV2()
+            _btnPay = new CustomUIButtonV2
             {
                 Frame = new CGRect(_btnMore.Frame.GetMaxX() + GetScaledWidth(4), 0, btnWidth, GetScaledHeight(48)),
                 BackgroundColor = MyTNBColor.FreshGreen
@@ -186,7 +190,9 @@ namespace myTNB
 
             _viewCTA.AddSubviews(new CustomUIButtonV2[] { _btnMore, _btnPay });
 
-            _headerView.AddSubviews(new UIView[] { _lblPaymentStatus, _viewAmount, _lblDate, _viewCTA });
+            _shimmerView = GetShimmerView();
+
+            _headerView.AddSubviews(new UIView[] { _lblPaymentStatus, _viewAmount, _lblDate, _viewCTA, _shimmerView });
             _headerViewContainer.AddSubviews(_headerView);
             _headerViewContainer.AddSubviews(_accountSelectorContainer);
 
@@ -230,6 +236,103 @@ namespace myTNB
             _accountSelectorContainer.AddSubview(_viewAccountSelector);
             _accountSelector.Title = DataManager.DataManager.SharedInstance.SelectedAccount.accountNickName;//AccountManager.Instance.Nickname;
         }
+
+        private UIView GetShimmerView()
+        {
+            CustomShimmerView shimmeringView = new CustomShimmerView();
+            UIView viewParent = new UIView(new CGRect(BaseMargin, 0, BaseMarginedWidth, GetScaledHeight(108))) { BackgroundColor = UIColor.White };//.White };
+            UIView viewShimmerParent = new UIView(new CGRect(new CGPoint(0, 0), viewParent.Frame.Size)) { BackgroundColor = UIColor.Clear };
+            UIView viewShimmerContent = new UIView(new CGRect(new CGPoint(0, 0), viewParent.Frame.Size)) { BackgroundColor = UIColor.Clear };
+            viewParent.AddSubviews(new UIView[] { viewShimmerParent, viewShimmerContent });
+
+            UIView viewStatus = new UIView(new CGRect((BaseMarginedWidth - ScaleUtility.GetWidthByScreenSize(120)) / 2
+                , GetScaledHeight(16), ScaleUtility.GetWidthByScreenSize(120), GetScaledHeight(20)))
+            { BackgroundColor = MyTNBColor.PaleGrey };
+
+            UIView viewAmt = new UIView(new CGRect((BaseMarginedWidth - ScaleUtility.GetWidthByScreenSize(260)) / 2
+                , GetYLocationFromFrame(viewStatus.Frame, 8), ScaleUtility.GetWidthByScreenSize(260), GetScaledHeight(36)))
+            { BackgroundColor = MyTNBColor.PaleGrey };
+
+            UIView viewDate = new UIView(new CGRect((BaseMarginedWidth - ScaleUtility.GetWidthByScreenSize(120)) / 2
+                , GetYLocationFromFrame(viewAmt.Frame, 8), ScaleUtility.GetWidthByScreenSize(120), GetScaledHeight(20)))
+            { BackgroundColor = MyTNBColor.PaleGrey };
+
+            viewShimmerContent.AddSubviews(new UIView[] { viewStatus, viewAmt, viewDate });
+
+            viewShimmerParent.AddSubview(shimmeringView);
+            shimmeringView.ContentView = viewShimmerContent;
+            shimmeringView.Shimmering = true;
+            shimmeringView.SetValues();
+
+            return viewParent;
+        }
+
+        private void SetHeaderLoading(bool isLoading)
+        {
+            _shimmerView.Hidden = !isLoading;
+
+            _btnMore.Enabled = !isLoading;
+            _btnMore.Layer.BorderColor = (isLoading ? MyTNBColor.SilverChalice : MyTNBColor.FreshGreen).CGColor;
+            _btnMore.SetTitleColor(isLoading ? MyTNBColor.SilverChalice : MyTNBColor.FreshGreen, UIControlState.Normal);
+
+            _btnPay.Enabled = !isLoading;
+            _btnPay.BackgroundColor = isLoading ? MyTNBColor.SilverChalice : MyTNBColor.FreshGreen;
+
+            _viewCTA.Hidden = !isLoading;
+            if (isLoading)
+            {
+                _viewCTA.Frame = new CGRect(new CGPoint(_viewCTA.Frame.X
+                    , GetYLocationFromFrame(_shimmerView.Frame, 16)), _viewCTA.Frame.Size);
+
+                CGRect frame = _headerView.Frame;
+                frame.Height = GetYLocationFromFrame(_viewCTA.Frame, 16);
+                _headerView.Frame = frame;
+
+                _headerViewContainer.Frame = new CGRect(_headerViewContainer.Frame.Location
+               , new CGSize(_headerViewContainer.Frame.Width, _headerView.Frame.GetMaxY()));
+            }
+
+            _historyTableView.ReloadData();
+            _historyTableView.Hidden = false;
+        }
+        #endregion
+
+        #region Refresh
+        private void DisplayRefresh()
+        {
+            _bgImageView.Image = UIImage.FromBundle("SSMR-Refresh");
+            if (_viewRefreshContainer != null) { _viewRefreshContainer.RemoveFromSuperview(); }
+            _viewRefreshContainer = new UIView()
+            { Tag = 10, BackgroundColor = UIColor.White };
+            UILabel lblDescription = new UILabel(new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(48)))
+            {
+                TextAlignment = UITextAlignment.Center,
+                Font = TNBFont.MuseoSans_16_300,
+                Text = GetCommonI18NValue(SSMRConstants.I18N_RefreshDescription),
+                LineBreakMode = UILineBreakMode.WordWrap,
+                Lines = 0,
+                TextColor = MyTNBColor.BrownGreyThree
+            };
+            CustomUIButtonV2 btnRefresh = new CustomUIButtonV2()
+            {
+                Frame = new CGRect(BaseMargin, GetYLocationFromFrame(lblDescription.Frame, 16), BaseMarginedWidth, GetScaledHeight(48)),
+                BackgroundColor = MyTNBColor.FreshGreen,
+                PageName = PageName,
+                EventName = SSMRConstants.EVENT_Refresh
+            };
+            btnRefresh.SetTitle(GetCommonI18NValue(SSMRConstants.I18N_RefreshNow), UIControlState.Normal);
+            btnRefresh.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                // call services again
+                OnSelectAccount(0);
+            }));
+
+            _viewRefreshContainer.AddSubview(lblDescription);
+            _viewRefreshContainer.AddSubview(btnRefresh);
+            _viewRefreshContainer.Frame = new CGRect(0, _bgImageView.Frame.GetMaxY()
+               , ViewWidth, btnRefresh.Frame.GetMaxY() + GetScaledHeight(16));
+            View.AddSubview(_viewRefreshContainer);
+        }
         #endregion
 
         private void OnSelectAccount(int index)
@@ -244,23 +347,36 @@ namespace myTNB
                {
                    if (NetworkUtility.isReachable)
                    {
-                       InvokeInBackground(async () =>
+                       SetHeaderLoading(true);
+                       if (_viewRefreshContainer != null)
                        {
-                           _accountCharges = await GetAccountsCharges();
-                           InvokeOnMainThread(() =>
+                           _viewRefreshContainer.RemoveFromSuperview();
+                       }
+                       _historyTableView.Source = new BillHistorySource(new List<BillPayHistoryModel>(), true)
+                       {
+                           GetI18NValue = GetI18NValue
+                       };
+                       InvokeInBackground(async () =>
+                   {
+                       _accountCharges = await GetAccountsCharges();
+                       InvokeOnMainThread(() =>
+                       {
+                           SetHeaderLoading(false);
+
+                           if (_accountCharges != null && _accountCharges.d != null && _accountCharges.d.IsSuccess
+                                && _accountCharges.d.data != null && _accountCharges.d.data.AccountCharges != null
+                                && _accountCharges.d.data.AccountCharges.Count > 0 && _accountCharges.d.data.AccountCharges[0] != null)
                            {
-                               if (_accountCharges != null && _accountCharges.d != null && _accountCharges.d.IsSuccess
-                                    && _accountCharges.d.data != null && _accountCharges.d.data.AccountCharges != null
-                                    && _accountCharges.d.data.AccountCharges.Count > 0 && _accountCharges.d.data.AccountCharges[0] != null)
-                               {
-                                   UpdateHeaderData(_accountCharges.d.data.AccountCharges[0]);
-                               }
-                               else
-                               {
-                                   DisplayServiceError(_accountCharges?.d?.ErrorMessage);
-                               }
-                           });
+                               UpdateHeaderData(_accountCharges.d.data.AccountCharges[0]);
+                           }
+                           else
+                           {
+                                   //DisplayServiceError(_accountCharges?.d?.ErrorMessage);
+                                   _historyTableView.Hidden = true;
+                               DisplayRefresh();
+                           }
                        });
+                   });
                        InvokeInBackground(async () =>
                        {
                            _billHistory = await GetAccountBillPayHistory();
@@ -269,8 +385,8 @@ namespace myTNB
                                if (_billHistory != null && _billHistory.d != null && _billHistory.d.IsSuccess
                                     && _billHistory.d.data != null)
                                {
-                                   List<BillPayHistoryModel> test = _billHistory.d.data.BillPayHistories;
-                                   _historyTableView.Source = new BillHistorySource(test)
+                                   List<BillPayHistoryModel> historyList = _billHistory.d.data.BillPayHistories;
+                                   _historyTableView.Source = new BillHistorySource(historyList, false)
                                    {
                                        OnTableViewScroll = OnTableViewScroll,
                                        GetI18NValue = GetI18NValue,
@@ -281,7 +397,9 @@ namespace myTNB
                                }
                                else
                                {
-                                   DisplayServiceError(_billHistory?.d?.ErrorMessage);
+                                   //DisplayServiceError(_billHistory?.d?.ErrorMessage);
+                                   _historyTableView.Hidden = true;
+                                   DisplayRefresh();
                                }
                            });
                        });
@@ -343,7 +461,8 @@ namespace myTNB
             _historyTableView.RegisterClassForCellReuse(typeof(BillHistoryViewCell), BillConstants.Cell_BillHistory);
             _historyTableView.RegisterClassForCellReuse(typeof(BillSectionViewCell), BillConstants.Cell_BillSection);
             _historyTableView.RegisterClassForCellReuse(typeof(NoDataViewCell), BillConstants.Cell_NoHistoryData);
-            _historyTableView.Source = new BillHistorySource(new List<BillPayHistoryModel>())
+            _historyTableView.RegisterClassForCellReuse(typeof(BillHistoryShimmerViewCell), BillConstants.Cell_BillHistoryShimmer);
+            _historyTableView.Source = new BillHistorySource(new List<BillPayHistoryModel>(), true)
             {
                 OnTableViewScroll = OnTableViewScroll,
                 GetI18NValue = GetI18NValue
@@ -366,6 +485,10 @@ namespace myTNB
             if ((nfloat)Math.Abs(frame.Y) == frame.Height) { return; }
 
             nfloat newYLoc = 0 - scrollView.ContentOffset.Y;
+
+            Debug.WriteLine("Content Offest {0}, {1}", scrollView.ContentOffset.Y
+                , _headerViewContainer.Frame.Height + ScaleUtility.GetScaledHeight(30));
+
             frame.Y = newYLoc;
             _bgImageView.Frame = frame;
 
@@ -449,6 +572,7 @@ namespace myTNB
         #region Services
         private async Task<GetAccountsChargesResponseModel> GetAccountsCharges()
         {
+            Thread.Sleep(5000);
             ServiceManager serviceManager = new ServiceManager();
             object request = new
             {
@@ -462,6 +586,7 @@ namespace myTNB
 
         private async Task<GetAccountBillPayHistoryResponseModel> GetAccountBillPayHistory()
         {
+            Thread.Sleep(5000);
             ServiceManager serviceManager = new ServiceManager();
             object request = new
             {
