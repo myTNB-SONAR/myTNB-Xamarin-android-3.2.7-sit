@@ -2394,6 +2394,7 @@
     <Compile Include="Session Cache\AccountUsageSmartCache.cs" />
     <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterZOut.cs" />
     <Compile Include="Enums\SmartMeterViewEnum.cs" />
+    <Compile Include="Components\Usage View\SmartMeterOverlayComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
@@ -2417,6 +2418,7 @@
     <BundleResource Include="Resources\Base.lproj\Localizable.strings" />
     <BundleResource Include="Resources\tnbReceiptLogoHeader.jpg" />
     <BundleResource Include="Resources\Base.lproj\InfoPlist.strings" />
+    <BundleResource Include="Resources\DashboardZoom.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\myTNB.Mobile\myTNB.Mobile.csproj">

@@ -26,6 +26,7 @@ namespace myTNB
             , _chart, _tips, _RE, _RERefresh, _status, _sm, _ssmr, _ssmrRefresh, _tariff, _legend, _refresh;
         internal UILabel _lblAddress, _RMLabel, _kWhLabel;
         internal UIImageView _bgImageView;
+        internal UIView _smOverlayParentView;
 
         internal bool _rmkWhFlag, _tariffIsVisible;
         internal RMkWhEnum _rMkWhEnum;
@@ -62,6 +63,7 @@ namespace myTNB
             {
                 ResetViews();
             }
+            ShowPinchOverlay();
         }
 
         public override void ViewDidAppear(bool animated)
@@ -76,6 +78,29 @@ namespace myTNB
             {
                 NavigationController.SetNavigationBarHidden(false, true);
             }
+        }
+
+        private void ShowPinchOverlay()
+        {
+            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+            nfloat widthMargin = GetScaledWidth(18f);
+            nfloat width = currentWindow.Frame.Width;
+            nfloat height = currentWindow.Frame.Height;
+            if (_smOverlayParentView != null)
+            {
+                _smOverlayParentView.RemoveFromSuperview();
+            }
+            _smOverlayParentView = new UIView(new CGRect(0, 0, ViewWidth, height))
+            {
+                BackgroundColor = MyTNBColor.Black60
+            };
+            currentWindow.AddSubview(_smOverlayParentView);
+            SmartMeterOverlayComponent overlay = new SmartMeterOverlayComponent(_smOverlayParentView);
+            _smOverlayParentView.AddSubview(overlay.GetUI());
+            overlay.SetGestureForButton(new UITapGestureRecognizer(() =>
+            {
+                _smOverlayParentView.RemoveFromSuperview();
+            }));
         }
 
         private void PrepareRefreshView()
