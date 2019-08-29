@@ -557,6 +557,53 @@ namespace myTNB
             });
         }
 
+        private Task LoadBillDetailsTooltip()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS
+                    , DataManager.DataManager.SharedInstance.ImageSize, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
+                BillDetailsTooltipTimeStampResponseModel timeStamp = iService.GetBillDetailsTooltipTimestampItem();
+
+                bool needsUpdate = true;
+                if (timeStamp != null && timeStamp.Data != null && timeStamp.Data.Count > 0 && timeStamp.Data[0] != null
+                    && !string.IsNullOrEmpty(timeStamp.Data[0].Timestamp))
+                {
+                    NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                    string currentTS = sharedPreference.StringForKey("BillDetailsTooltipTimeStamp");
+                    if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
+                    {
+                        sharedPreference.SetString(timeStamp.Data[0].Timestamp, "BillDetailsTooltipTimeStamp");
+                        sharedPreference.Synchronize();
+                    }
+                    else
+                    {
+                        if (currentTS.Equals(timeStamp.Data[0].Timestamp))
+                        {
+                            needsUpdate = false;
+                        }
+                        else
+                        {
+                            sharedPreference.SetString(timeStamp.Data[0].Timestamp, "BillDetailsTooltipTimeStamp");
+                            sharedPreference.Synchronize();
+                        }
+                    }
+                }
+
+                if (needsUpdate)
+                {
+                    BillDetailsTooltipResponseModel tooltipsItems = iService.GetBillDetailsTooltipItem();
+                    if (tooltipsItems != null && tooltipsItems.Data != null && tooltipsItems.Data.Count > 0)
+                    {
+                        BillDetailsTooltipEntity wsManager = new BillDetailsTooltipEntity();
+                        wsManager.DeleteTable();
+                        wsManager.CreateTable();
+                        wsManager.InsertListOfItems(tooltipsItems.Data);
+                    }
+                }
+            });
+        }
+
         private void OpenUpdateLink()
         {
             int index = DataManager.DataManager.SharedInstance.WebLinks?.FindIndex(x => x.Code.ToLower().Equals("ios")) ?? -1;
@@ -662,6 +709,7 @@ namespace myTNB
                 await LoadMeterReadSSMRWalkthrough();
                 await LoadMeterReadSSMRWalkthroughV2();
                 await LoadEnergyTips();
+                await LoadBillDetailsTooltip();
             });
         }
 

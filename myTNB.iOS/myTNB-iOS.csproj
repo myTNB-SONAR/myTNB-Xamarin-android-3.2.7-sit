@@ -1597,6 +1597,7 @@
     <Folder Include="Assets.xcassets\Trend-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Bills-No-History-Data.imageset\" />
     <Folder Include="Model\GetAccountBillPayHistory\" />
+    <Folder Include="Sitecore CMS\Model\Bill Details\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2431,6 +2432,9 @@
     <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterZOut.cs" />
     <Compile Include="Home\Bill\Bills\NoDataViewCell.cs" />
     <Compile Include="Model\GetAccountBillPayHistory\GetAccountBillPayHistoryResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\Bill Details\BillDetailsTooltipModel.cs" />
+    <Compile Include="Sitecore CMS\Service\BillDetailsTooltipService.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\BillDetailsTooltipEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

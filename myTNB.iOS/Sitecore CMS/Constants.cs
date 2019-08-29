@@ -97,6 +97,13 @@
                     public const string Description = "Description";
                     public const string Image = "Image";
                 }
+
+                public struct BillDetailsTooltip
+                {
+                    public const string Title = "Title";
+                    public const string Description = "Description";
+                    public const string Image = "Image";
+                }
             }
 
             public struct ItemID
@@ -125,6 +132,7 @@
                 public const string MeterReadSSMRWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead OnePhase";
                 public const string MeterReadSSMRWalkthroughV2 = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead ThreePhase";
                 public const string EnergyTips = "/sitecore/content/myTNBapp/Contents/Energy Saving Tips";
+                public const string BillDetailsTooltip = "/sitecore/content/myTNBapp/Contents/Itemised Billing Tooltip";
             }
         }
     }

@@ -362,25 +362,24 @@ namespace myTNB
 
         private void PrepareToolTipView()
         {
-            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
-            nfloat height = currentWindow.Frame.Height;
-            if (_toolTipParentView != null)
+            if (_toolTipParentView == null)
             {
-                _toolTipParentView.RemoveFromSuperview();
+                UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+                nfloat height = currentWindow.Frame.Height;
+                _toolTipParentView = new UIView(new CGRect(0, 0, ViewWidth, height))
+                {
+                    BackgroundColor = MyTNBColor.Black60
+                };
+                currentWindow.AddSubview(_toolTipParentView);
+                PaginatedTooltipComponent tooltipComponent = new PaginatedTooltipComponent(_toolTipParentView);
+                tooltipComponent.SetSSMRData(pageData);
+                tooltipComponent.SetPreviousMeterData(_previousMeterList);
+                _toolTipParentView.AddSubview(tooltipComponent.GetSSMRTooltip());
+                tooltipComponent.SetGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    MakeToolTipVisible(false);
+                }));
             }
-            _toolTipParentView = new UIView(new CGRect(0, 0, ViewWidth, height))
-            {
-                BackgroundColor = MyTNBColor.Black60
-            };
-            currentWindow.AddSubview(_toolTipParentView);
-            PaginatedTooltipComponent tooltipComponent = new PaginatedTooltipComponent(_toolTipParentView);
-            tooltipComponent.SetSSMRData(pageData);
-            tooltipComponent.SetPreviousMeterData(_previousMeterList);
-            _toolTipParentView.AddSubview(tooltipComponent.GetSSMRTooltip());
-            tooltipComponent.SetGestureRecognizer(new UITapGestureRecognizer(() =>
-            {
-                MakeToolTipVisible(false);
-            }));
             _toolTipParentView.Hidden = false;
         }
 
