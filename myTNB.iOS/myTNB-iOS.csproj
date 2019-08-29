@@ -1188,6 +1188,9 @@
     <ImageAsset Include="Assets.xcassets\Bills-No-History-Data.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Bills-No-History-Data.imageset\bills%402x.png" />
     <ImageAsset Include="Assets.xcassets\Bills-No-History-Data.imageset\bills%403x.png" />
+    <ImageAsset Include="Assets.xcassets\BCRM-Down-Background.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\BCRM-Down-Background.imageset\down%402x.png" />
+    <ImageAsset Include="Assets.xcassets\BCRM-Down-Background.imageset\down%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1588,6 +1591,7 @@
     <Folder Include="Assets.xcassets\Trend-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Bills-No-History-Data.imageset\" />
     <Folder Include="Model\GetAccountBillPayHistory\" />
+    <Folder Include="Assets.xcassets\BCRM-Down-Background.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2421,6 +2425,7 @@
     <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterZOut.cs" />
     <Compile Include="Home\Bill\Bills\NoDataViewCell.cs" />
     <Compile Include="Model\GetAccountBillPayHistory\GetAccountBillPayHistoryResponseModel.cs" />
+    <Compile Include="Home\Bill\Bills\BillHistoryShimmerViewCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
