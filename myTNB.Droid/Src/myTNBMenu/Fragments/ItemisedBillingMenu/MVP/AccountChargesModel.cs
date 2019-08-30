@@ -18,6 +18,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.API
         public string DueDate { get; set; }
         public string BillDate { get; set; }
         public string IncrementREDueDateByDays { get; set; }
+        public bool IsCleared { get; set; }
+        public bool IsPaidExtra { get; set; }
+        public bool IsNeedPay { get; set; }
         public MandatoryChargeModel MandatoryCharges { get; set; }
     }
 

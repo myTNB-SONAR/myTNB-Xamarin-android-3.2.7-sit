@@ -74,15 +74,20 @@ namespace myTNB_Android.Src.CompoundView
 
         public void SetOtherCharges(float totalAmount, List<ChargeModel> chargeList)
         {
-            myApplicationChargesValue.Text = "RM " + totalAmount.ToString("0.00");
+            myApplicationChargesValue.Text = "RM " + totalAmount.ToString("#,##0.00");
             chargeList.ForEach(charge =>
             {
-                LinearLayout item = (LinearLayout)Inflate(mContext, Resource.Layout.MyOtherChargesItemLayout, null);
-                TextView textView = item.FindViewById<TextView>(Resource.Id.otherChargeItem);
-                TextView textValue = item.FindViewById<TextView>(Resource.Id.otherChargeValue);
-                textView.Text = charge.Title;
-                textValue.Text = "RM" + charge.Amount.ToString("0.00");
-                expandableContainer.AddView(item);
+                if (charge.Amount > 0f)
+                {
+                    LinearLayout item = (LinearLayout)Inflate(mContext, Resource.Layout.MyOtherChargesItemLayout, null);
+                    TextView textView = item.FindViewById<TextView>(Resource.Id.otherChargeItem);
+                    TextView textValue = item.FindViewById<TextView>(Resource.Id.otherChargeValue);
+
+                    textView.Text = charge.Title;
+                    textValue.Text = "RM" + charge.Amount.ToString("#,##0.00");
+                    TextViewUtils.SetMuseoSans300Typeface(textView, textValue);
+                    expandableContainer.AddView(item);
+                }
             });
         }
 

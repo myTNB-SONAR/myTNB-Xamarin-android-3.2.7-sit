@@ -16,9 +16,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
         ItemisedBillingAPIImpl api;
         ItemisedBillingContract.IView mView;
         AccountChargesModel mAccountChargesModel;
-        public bool isNeedToPay = false;
-        public bool isCleared = false;
-        public bool isOverPaid = false;
 
 
         public ItemisedBillingMenuPresenter(ItemisedBillingContract.IView view)
@@ -78,6 +75,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 mandatoryChargeModel.ChargeModelList = chargeModelList;
 
                 AccountChargeModel accountChargeModel = new AccountChargeModel();
+                accountChargeModel.IsCleared = false;
+                accountChargeModel.IsNeedPay = false;
+                accountChargeModel.IsPaidExtra = false;
                 accountChargeModel.ContractAccount = accountCharge.ContractAccount;
                 accountChargeModel.CurrentCharges = accountCharge.CurrentCharges;
                 accountChargeModel.OutstandingCharges = accountCharge.OutstandingCharges;
@@ -86,6 +86,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 accountChargeModel.BillDate = accountCharge.BillDate;
                 accountChargeModel.IncrementREDueDateByDays = accountCharge.IncrementREDueDateByDays;
                 accountChargeModel.MandatoryCharges = mandatoryChargeModel;
+                EvaluateAmountDue(accountChargeModel);
                 accountChargeModelList.Add(accountChargeModel);
             });
             return accountChargeModelList;
@@ -121,22 +122,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             return modelList;
         }
 
-        public void EvaluateAccountCharge(AccountChargeModel accountChargeModel)
+        public void EvaluateAmountDue(AccountChargeModel accountChargeModel)
         {
-            float amountDue = accountChargeModel.AmountDue;
-            if (amountDue < 0f)
+            if (accountChargeModel.AmountDue > 0f)
             {
-                isOverPaid = true;
+                accountChargeModel.IsNeedPay = true;
             }
 
-            if (amountDue > 0f)
+            if (accountChargeModel.AmountDue < 0f)
             {
-                isNeedToPay = true;
+                accountChargeModel.IsPaidExtra = true;
             }
 
-            if (amountDue == 0f)
+            if (accountChargeModel.AmountDue == 0f)
             {
-                isCleared = true;
+                accountChargeModel.IsCleared = true;
             }
         }
 

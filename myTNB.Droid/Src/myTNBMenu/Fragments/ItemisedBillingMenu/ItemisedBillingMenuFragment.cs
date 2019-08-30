@@ -15,6 +15,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using Java.Text;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.CompoundView;
@@ -23,6 +24,8 @@ using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.API;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.ViewBill.Activity;
+using myTNB_Android.Src.ViewReceipt.Activity;
 using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
@@ -67,6 +70,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         List<AccountChargeModel> selectedAccountChargesModelList;
 
+        SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
+
+        SimpleDateFormat billPdfDateParser = new SimpleDateFormat("dd MMM yyyy");
+        SimpleDateFormat billPdfDateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+
 
         const string SELECTED_ACCOUNT_KEY = "SELECTED_ACCOUNT";
 
@@ -91,6 +100,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         void OnViewDetails(object sender, EventArgs eventArgs)
         {
             Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
+            intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(mSelectedAccountData));
             intent.PutExtra("BILL_DETAILS",JsonConvert.SerializeObject(selectedAccountChargesModelList));
             StartActivity(intent);
         }
@@ -179,12 +189,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 {
                     ItemisedBillingHistoryModel.BillingHistoryData data = model.BillingHistoryDataList[j];
                     content = new ItemisedBillingGroupContentComponent(Activity);
+                    content.IsPayment(data.HistoryType.ToUpper() == "PAYMENT");
                     content.SetDateHistoryType(data.DateAndHistoryType);
                     content.SetPaidVia(data.PaidVia);
                     content.SetAmount(data.Amount);
                     if (data.DetailedInfoNumber != "")
                     {
-                        content.SetShowBillingDetailsListener(new OnShowBillingDetailsListener(this));
+                        content.SetShowBillingDetailsListener(new OnShowBillingDetailsListener(this,data));
                     }
                     else
                     {
@@ -213,10 +224,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             AccountChargeModel accountChargeModel = accountChargesModelList[0];
             int imageResource = Resource.Drawable.bill_no_outstanding_banner;
 
-            mPresenter.EvaluateAccountCharge(accountChargeModel);
-
-            itemisedBillingInfoAmount.Text = accountChargeModel.AmountDue.ToString("0.00");
-            if (mPresenter.isCleared)
+            itemisedBillingInfoAmount.Text = accountChargeModel.AmountDue.ToString("#,##0.00");
+            if (accountChargeModel.IsCleared)
             {
                 itemisedBillingInfoNote.Text = "I’ve cleared all bills";
                 itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
@@ -225,16 +234,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
                 itemisedBillingInfoDate.Visibility = ViewStates.Gone;
             }
-            else if (mPresenter.isOverPaid)
+            else if (accountChargeModel.IsPaidExtra)
             {
                 itemisedBillingInfoNote.Text = "I’ve paid extra";
+                itemisedBillingInfoAmount.Text = (Math.Abs(accountChargeModel.AmountDue)).ToString("#,##0.00");
                 itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
                 itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#20bd4c"));
                 itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#20bd4c"));
 
                 itemisedBillingInfoDate.Visibility = ViewStates.Gone;
             }
-            else if (mPresenter.isNeedToPay)
+            else if (accountChargeModel.IsNeedPay)
             {
                 imageResource = Resource.Drawable.bill_need_to_pay_banner;
                 itemisedBillingInfoNote.Text = "I need to pay";
@@ -243,6 +253,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#49494a"));
 
                 itemisedBillingInfoDate.Visibility = ViewStates.Visible;
+                accountChargeModel.DueDate = dateFormatter.Format(dateParser.Parse(accountChargeModel.DueDate));
                 itemisedBillingInfoDate.Text = "by " + accountChargeModel.DueDate;
             }
 
@@ -256,17 +267,44 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 (mSelectedAccountData.AccountCategoryId != "2") ? "UTIL" : "RE");
         }
 
+        public void ShowBillPDFPage(ItemisedBillingHistoryModel.BillingHistoryData billHistoryData)
+        {
+            BillHistoryV5 selectedBill = new BillHistoryV5();
+            selectedBill.DtBill = billPdfDateFormatter.Format((billPdfDateParser.Parse(billHistoryData.PaidVia)));
+            selectedBill.NrBill = billHistoryData.DetailedInfoNumber;
+            Intent viewBill = new Intent(Activity, typeof(ViewBillActivity));
+            viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
+            viewBill.PutExtra(Constants.SELECTED_BILL, JsonConvert.SerializeObject(selectedBill));
+            StartActivity(viewBill);
+        }
+
+        public void ShowPayPDFPage(ItemisedBillingHistoryModel.BillingHistoryData billHistoryData)
+        {
+            Intent viewReceipt = new Intent(this.Activity, typeof(ViewReceiptMultiAccountNewDesignActivty));
+            viewReceipt.PutExtra("merchantTransId", billHistoryData.DetailedInfoNumber);
+            StartActivity(viewReceipt);
+        }
+
         class OnShowBillingDetailsListener : Java.Lang.Object, View.IOnClickListener
         {
             ItemisedBillingMenuFragment mView;
-            public OnShowBillingDetailsListener(ItemisedBillingMenuFragment view)
+            ItemisedBillingHistoryModel.BillingHistoryData mBillHistoryData;
+
+            public OnShowBillingDetailsListener(ItemisedBillingMenuFragment view, ItemisedBillingHistoryModel.BillingHistoryData billHistoryData)
             {
                 mView = view;
+                mBillHistoryData = billHistoryData;
             }
             public void OnClick(View v)
             {
-                //throw new NotImplementedException();
-                //mView.GetAccountBillPayHistory();
+                if (mBillHistoryData.HistoryType.ToUpper() == "PAYMENT")
+                {
+                    mView.ShowPayPDFPage(mBillHistoryData);
+                }
+                else
+                {
+                    mView.ShowBillPDFPage(mBillHistoryData);
+                }
             }
         }
     }

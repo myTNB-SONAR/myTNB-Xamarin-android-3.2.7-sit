@@ -16,6 +16,7 @@ using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.API;
+using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -70,7 +71,7 @@ namespace myTNB_Android.Src.Billing.MVP
         List<AccountChargeModel> selectedAccountChargesModelList;
         AccountChargeModel selectedAccountChargeModel;
 
-
+        AccountData selectedAccountData;
 
         public override int ResourceId()
         {
@@ -90,22 +91,28 @@ namespace myTNB_Android.Src.Billing.MVP
                 accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel, accountPayAmountCurrency, accountMinChargeLabel);
 
             Bundle extras = Intent.Extras;
+            if (extras.ContainsKey("SELECTED_ACCOUNT"))
+            {
+                selectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString("SELECTED_ACCOUNT"));
+            }
             if (extras.ContainsKey("BILL_DETAILS"))
             {
                 selectedAccountChargesModelList = JsonConvert.DeserializeObject<List<AccountChargeModel>>(extras.GetString("BILL_DETAILS"));
                 selectedAccountChargeModel = selectedAccountChargesModelList[0];
             }
 
+            accountName.Text = selectedAccountData.AccountNickName;
+            accountAddress.Text = selectedAccountData.AddStreet;
             PopulateCharges();
         }
 
         private void PopulateCharges()
         {
-            if (selectedAccountChargeModel.MandatoryCharges.ChargeModelList.Count > 0)
+            if (selectedAccountChargeModel.MandatoryCharges.TotalAmount > 0f)
             {
                 otherChargesExpandableView.Visibility = ViewStates.Visible;
                 accountMinChargeLabelContainer.Visibility = ViewStates.Visible;
-                otherChargesExpandableView.SetOtherCharges(selectedAccountChargeModel.MandatoryCharges.TotalAmount,selectedAccountChargeModel.MandatoryCharges.ChargeModelList);
+                otherChargesExpandableView.SetOtherCharges(selectedAccountChargeModel.MandatoryCharges.TotalAmount, selectedAccountChargeModel.MandatoryCharges.ChargeModelList);
             }
             else
             {
@@ -113,28 +120,37 @@ namespace myTNB_Android.Src.Billing.MVP
                 accountMinChargeLabelContainer.Visibility = ViewStates.Gone;
             }
 
-            accountChargeValue.Text = "RM " + selectedAccountChargeModel.OutstandingCharges.ToString("0.00");
-            accountBillThisMonthValue.Text = "RM " + selectedAccountChargeModel.CurrentCharges.ToString("0.00");
-            accountPayAmountValue.Text = selectedAccountChargeModel.AmountDue.ToString("0.00");
-            if (selectedAccountChargeModel.AmountDue > 0)
+            accountChargeValue.Text = "RM " + selectedAccountChargeModel.OutstandingCharges.ToString("#,##0.00");
+            accountBillThisMonthValue.Text = "RM " + selectedAccountChargeModel.CurrentCharges.ToString("#,##0.00");
+            accountPayAmountValue.Text = selectedAccountChargeModel.AmountDue.ToString("#,##0.00");
+            if (selectedAccountChargeModel.IsNeedPay)
             {
                 accountPayAmountLabel.Visibility = ViewStates.Visible;
                 accountPayAmountLabel.Text = "I need to pay";
                 accountPayAmountDate.Visibility = ViewStates.Visible;
                 accountPayAmountDate.Text = "by " + selectedAccountChargeModel.DueDate;
 
-
                 accountPayAmountCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
                 accountPayAmountValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
             }
-            else
+            else if(selectedAccountChargeModel.IsPaidExtra)
             {
                 accountPayAmountLabel.Visibility = ViewStates.Visible;
                 accountPayAmountDate.Visibility = ViewStates.Gone;
 
                 accountPayAmountLabel.Text = "I've paid extra";
+                accountPayAmountValue.Text = (Math.Abs(selectedAccountChargeModel.AmountDue)).ToString("#,##0.00");
                 accountPayAmountCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.freshGreen)));
                 accountPayAmountValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.freshGreen)));
+            }
+            else if (selectedAccountChargeModel.IsCleared)
+            {
+                accountPayAmountLabel.Visibility = ViewStates.Visible;
+                accountPayAmountDate.Visibility = ViewStates.Gone;
+
+                accountPayAmountLabel.Text = "I've cleared all bills";
+                accountPayAmountCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
+                accountPayAmountValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
             }
         }
 
