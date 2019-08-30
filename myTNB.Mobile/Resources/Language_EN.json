@@ -268,6 +268,7 @@
         "needToPay": "I need to pay",
         "by": "by",
         "paidExtra": "I’ve paid extra",
+        "clearedBills": "I’ve cleared all bills",
         "minimumChargeDescription": "This account has a minimum charge.",
         "applicationCharges": "My application charges",
         "tooltiptitle1": "Items from your paper/PDF bill",
