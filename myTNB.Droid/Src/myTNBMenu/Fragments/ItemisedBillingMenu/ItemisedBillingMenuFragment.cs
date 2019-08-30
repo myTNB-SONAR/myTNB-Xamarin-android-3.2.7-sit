@@ -19,6 +19,7 @@ using Java.Text;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.CompoundView;
+using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.API;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
@@ -103,6 +104,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(mSelectedAccountData));
             intent.PutExtra("BILL_DETAILS",JsonConvert.SerializeObject(selectedAccountChargesModelList));
             StartActivity(intent);
+        }
+
+        [OnClick(Resource.Id.btnPayBill)]
+        void OnPayment(object sender, EventArgs eventArgs)
+        {
+            Intent payment_activity = new Intent(this.Activity, typeof(SelectAccountsActivity));
+            payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
+            StartActivityForResult(payment_activity, DashboardHomeActivity.PAYMENT_RESULT_CODE);
         }
 
         [OnClick(Resource.Id.accountSelection)]
