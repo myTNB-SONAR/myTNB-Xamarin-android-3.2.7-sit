@@ -2422,6 +2422,7 @@
     <BundleResource Include="Resources\Base.lproj\Localizable.strings" />
     <BundleResource Include="Resources\tnbReceiptLogoHeader.jpg" />
     <BundleResource Include="Resources\Base.lproj\InfoPlist.strings" />
+    <BundleResource Include="Resources\OCR Reading.json" />
     <BundleResource Include="Resources\DashboardZoom.json" />
   </ItemGroup>
   <ItemGroup>

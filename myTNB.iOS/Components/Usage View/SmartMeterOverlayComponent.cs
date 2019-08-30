@@ -34,25 +34,25 @@ namespace myTNB
                 Text = "How do I view my daily usage?"
             };
             _contentView.AddSubview(_title);
-            //nfloat animationWidth = GetScaledWidth(76F);
-            //nfloat animationHeight = GetScaledWidth(76F);
-            //LOTAnimationView pinchAnimation = LOTAnimationView.AnimationNamed("DashboardZoom.json");
-            //pinchAnimation.Frame = new CGRect(GetXLocationToCenterObject(animationWidth, _contentView), _title.Frame.GetMaxY() + GetScaledHeight(32F),
-            //                             animationWidth, animationHeight);
-            //pinchAnimation.LoopAnimation = true;             //pinchAnimation.Play();
-            //_contentView.AddSubview(pinchAnimation);
+            nfloat animationWidth = GetScaledWidth(76F);
+            nfloat animationHeight = GetScaledWidth(76F);
+            LOTAnimationView pinchAnimation = LOTAnimationView.AnimationNamed("DashboardZoom.json");
+            pinchAnimation.Frame = new CGRect(GetXLocationToCenterObject(animationWidth, _contentView), _title.Frame.GetMaxY() + GetScaledHeight(32F),
+                                         animationWidth, animationHeight);
+            pinchAnimation.LoopAnimation = true;             pinchAnimation.Play();
+            _contentView.AddSubview(pinchAnimation);
 
-            nfloat imageWidth = GetScaledWidth(76F);
-            nfloat imageHeight = GetScaledWidth(76F);
-            nfloat imageXPos = GetXLocationToCenterObject(imageWidth, _contentView);
-            _imageView = new UIImageView(new CGRect(imageXPos, _title.Frame.GetMaxY() + GetScaledHeight(32F), imageWidth, imageHeight))
-            {
-                Image = UIImage.FromBundle("Pinch-Icon")
-            };
-            _contentView.AddSubview(_imageView);
+            //nfloat imageWidth = GetScaledWidth(76F);
+            //nfloat imageHeight = GetScaledWidth(76F);
+            //nfloat imageXPos = GetXLocationToCenterObject(imageWidth, _contentView);
+            //_imageView = new UIImageView(new CGRect(imageXPos, _title.Frame.GetMaxY() + GetScaledHeight(32F), imageWidth, imageHeight))
+            //{
+            //    Image = UIImage.FromBundle("Pinch-Icon")
+            //};
+            //_contentView.AddSubview(_imageView);
 
             nfloat descWidth = width - (GetScaledWidth(34F) * 2);
-            _description = new UILabel(new CGRect(GetScaledWidth(34F), _imageView.Frame.GetMaxY() + GetScaledHeight(24F), descWidth, 0))
+            _description = new UILabel(new CGRect(GetScaledWidth(34F), pinchAnimation.Frame.GetMaxY() + GetScaledHeight(24F), descWidth, 0))
             {
                 Font = TNBFont.MuseoSans_14_300,
                 TextColor = UIColor.White,
