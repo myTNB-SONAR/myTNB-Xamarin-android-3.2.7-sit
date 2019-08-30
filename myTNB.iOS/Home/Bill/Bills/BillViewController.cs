@@ -196,6 +196,31 @@ namespace myTNB
             };
             _btnPay.SetTitle(GetCommonI18NValue(BillConstants.I18N_Pay), UIControlState.Normal);
             _btnPay.SetTitleColor(UIColor.White, UIControlState.Normal);
+            _btnPay.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+                {
+                    InvokeOnMainThread(() =>
+                    {
+                        if (NetworkUtility.isReachable)
+                        {
+                            UIStoryboard storyBoard = UIStoryboard.FromName("Payment", null);
+                            SelectBillsViewController selectBillsVC =
+                                storyBoard.InstantiateViewController("SelectBillsViewController") as SelectBillsViewController;
+                            if (selectBillsVC != null)
+                            {
+                                //selectBillsVC.SelectedAccountDueAmount = 0;//DataManager.DataManager.SharedInstance.BillingAccountDetails.amCustBal;
+                                var navController = new UINavigationController(selectBillsVC);
+                                PresentViewController(navController, true, null);
+                            }
+                        }
+                        else
+                        {
+                            DisplayNoDataAlert();
+                        }
+                    });
+                });
+            }));
 
             _viewCTA.AddSubviews(new CustomUIButtonV2[] { _btnMore, _btnPay });
 
