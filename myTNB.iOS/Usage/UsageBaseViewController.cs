@@ -63,7 +63,6 @@ namespace myTNB
             {
                 ResetViews();
             }
-            ShowPinchOverlay();
         }
 
         public override void ViewDidAppear(bool animated)
@@ -95,7 +94,7 @@ namespace myTNB
                 BackgroundColor = MyTNBColor.Black60
             };
             currentWindow.AddSubview(_smOverlayParentView);
-            SmartMeterOverlayComponent overlay = new SmartMeterOverlayComponent(_smOverlayParentView, _viewChart.Frame.GetMaxY());
+            SmartMeterOverlayComponent overlay = new SmartMeterOverlayComponent(_smOverlayParentView, _viewChart.Frame.GetMinY());
             _smOverlayParentView.AddSubview(overlay.GetUI());
             overlay.SetGestureForButton(new UITapGestureRecognizer(() =>
             {
