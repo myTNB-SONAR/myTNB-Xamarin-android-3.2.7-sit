@@ -517,6 +517,10 @@ namespace myTNB
 
         private void DisplayBillPDF(string DetailedInfoNumber)
         {
+            if (string.IsNullOrEmpty(DetailedInfoNumber) || string.IsNullOrWhiteSpace(DetailedInfoNumber))
+            {
+                return;
+            }
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
                 InvokeOnMainThread(() =>
@@ -544,6 +548,10 @@ namespace myTNB
 
         private void DisplayReceipt(string DetailedInfoNumber)
         {
+            if (string.IsNullOrEmpty(DetailedInfoNumber) || string.IsNullOrWhiteSpace(DetailedInfoNumber))
+            {
+                return;
+            }
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
                 InvokeOnMainThread(() =>
@@ -572,7 +580,7 @@ namespace myTNB
         #region Services
         private async Task<GetAccountsChargesResponseModel> GetAccountsCharges()
         {
-            Thread.Sleep(5000);
+            //Thread.Sleep(5000);
             ServiceManager serviceManager = new ServiceManager();
             object request = new
             {
@@ -586,7 +594,7 @@ namespace myTNB
 
         private async Task<GetAccountBillPayHistoryResponseModel> GetAccountBillPayHistory()
         {
-            Thread.Sleep(5000);
+            //Thread.Sleep(5000);
             ServiceManager serviceManager = new ServiceManager();
             object request = new
             {

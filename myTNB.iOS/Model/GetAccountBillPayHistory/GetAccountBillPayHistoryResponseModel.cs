@@ -44,7 +44,7 @@ namespace myTNB
                 return false;
             }
         }
-        public bool IsViaMobileApp
+        public bool IsDocumentAvailable
         {
             get
             {

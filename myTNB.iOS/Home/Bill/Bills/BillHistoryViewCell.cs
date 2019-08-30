@@ -170,6 +170,10 @@ namespace myTNB.Home.Bill
                     lineXloc = _baseHMargin;
                     lineWidth = _cellWidth - (_baseHMargin * 2);
                 }
+                else
+                {
+                    _viewGroupedDate.Hidden = true;
+                }
 
                 _lblDate.Frame = new CGRect(new CGPoint(_lblDate.Frame.X, dateYloc), _lblDate.Frame.Size);
                 _lblSource.Frame = new CGRect(new CGPoint(_lblSource.Frame.X, ScaleUtility.GetYLocationFromFrame(_lblDate.Frame, 4))
@@ -189,6 +193,20 @@ namespace myTNB.Home.Bill
                 {
                     _view.AddGestureRecognizer(value);
                 }
+            }
+        }
+        public bool IsLineHidden
+        {
+            set
+            {
+                _viewLine.Hidden = value;
+            }
+        }
+        public bool IsGroupedDateHidden
+        {
+            set
+            {
+                _viewGroupedDate.Hidden = value;
             }
         }
     }

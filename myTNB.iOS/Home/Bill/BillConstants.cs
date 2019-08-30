@@ -62,6 +62,7 @@ namespace myTNB.Home.Bill
         public static string IMG_BGToolTip1 = "Itemized-Tooltip1";
         public static string IMG_BGToolTip2 = "Itemized-Tooltip2";
         public static string IMG_ArrowExpand = "Arrow-Expand";
+        public static string IMG_BCRMDown = "BCRM-Down-Background";
 
         //Event
         public static string Event_MandatoryChargesPopup = "MandatoryChargesPopup";

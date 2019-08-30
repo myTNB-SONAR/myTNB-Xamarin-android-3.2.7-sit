@@ -92,38 +92,53 @@ namespace myTNB.Home.Bill
                     cell.Type = item.DateAndHistoryType;
                     cell.Source = item.PaidVia;
                     cell.Amount = item.Amount;
-                    cell.IsArrowHidden = !item.IsViaMobileApp;
+                    cell.IsArrowHidden = !item.IsDocumentAvailable;
                     cell.IsPayment = item.IsPayment;
 
-                    if (_historyDictionary.ContainsKey(index))
+                    if (_historyDictionary.ContainsKey(index) && _historyDictionary.ContainsKey(index + 1))
                     {
                         cell.Date = _historyDictionary[index];
-                        cell.SetWidgetHeight(true, true, _historyDictionary.ContainsKey(index + 1));
+                        cell.SetWidgetHeight(true, true, true);
+                        cell.IsGroupedDateHidden = false;
+                    }
+                    else if (_historyDictionary.ContainsKey(index))
+                    {
+                        cell.Date = _historyDictionary[index];
+                        cell.SetWidgetHeight(true);
+                        cell.IsGroupedDateHidden = false;
                     }
                     else if (_historyDictionary.ContainsKey(index + 1))
                     {
                         cell.SetWidgetHeight(true, false, true);
-                    }
-
-                    if (item.IsPayment)
-                    {
-                        cell.SetAction = new UITapGestureRecognizer(() =>
-                        {
-                            if (OnSelectPayment != null)
-                            {
-                                OnSelectPayment.Invoke(item.DetailedInfoNumber);
-                            }
-                        });
+                        cell.IsGroupedDateHidden = true;
                     }
                     else
                     {
-                        cell.SetAction = new UITapGestureRecognizer(() =>
+                        cell.IsGroupedDateHidden = true;
+                    }
+                    cell.IsLineHidden = indexPath.Row == _historyList.Count;
+                    if (item.IsDocumentAvailable)
+                    {
+                        if (item.IsPayment)
                         {
-                            if (OnSelectBill != null)
+                            cell.SetAction = new UITapGestureRecognizer(() =>
                             {
-                                OnSelectBill.Invoke(item.DetailedInfoNumber);
-                            }
-                        });
+                                if (OnSelectPayment != null)
+                                {
+                                    OnSelectPayment.Invoke(item.DetailedInfoNumber);
+                                }
+                            });
+                        }
+                        else
+                        {
+                            cell.SetAction = new UITapGestureRecognizer(() =>
+                            {
+                                if (OnSelectBill != null)
+                                {
+                                    OnSelectBill.Invoke(item.DetailedInfoNumber);
+                                }
+                            });
+                        }
                     }
 
                     cell.ClipsToBounds = false;
