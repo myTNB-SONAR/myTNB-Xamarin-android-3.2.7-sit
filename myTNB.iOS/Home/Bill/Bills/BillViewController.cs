@@ -18,11 +18,11 @@ namespace myTNB
             , _shimmerView, _viewRefreshContainer;
         private UIImageView _bgImageView;
         private CAGradientLayer _gradientLayer;
-        private CustomUIView _accountSelectorContainer;
+        private CustomUIView _accountSelectorContainer, _viewFilter;
         private nfloat _navBarHeight, _previousScrollOffset;
         private nfloat _tableViewOffset;
         private UITableView _historyTableView;
-        private UILabel _lblPaymentStatus, _lblCurrency, _lblAmount, _lblDate;
+        private UILabel _lblPaymentStatus, _lblCurrency, _lblAmount, _lblDate, _lblNavTitle;
         private UIView _viewAmount, _viewCTA;
         private CustomUIButtonV2 _btnMore, _btnPay;
         private AccountSelector _accountSelector;
@@ -88,14 +88,23 @@ namespace myTNB
 
             UIView viewTitleBar = new UIView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + GetScaledHeight(12)
                 , _navbarView.Frame.Width, GetScaledHeight(24)));
-            UILabel lblTitle = new UILabel(new CGRect(0, 0, ViewWidth, GetScaledHeight(24)))
+            _lblNavTitle = new UILabel(new CGRect(0, 0, ViewWidth, GetScaledHeight(24)))
             {
                 Font = TNBFont.MuseoSans_16_500,
                 Text = GetI18NValue(BillConstants.I18N_NavTitle),
                 TextColor = UIColor.White,
                 TextAlignment = UITextAlignment.Center
             };
-            viewTitleBar.AddSubview(lblTitle);
+            _viewFilter = new CustomUIView(new CGRect(_navbarView.Frame.Width - GetScaledWidth(32), 0
+                , GetScaledWidth(16), GetScaledWidth(16)))
+            { Hidden = true };
+            UIImageView imgFilter = new UIImageView(new CGRect(0, 0, GetScaledWidth(16), GetScaledWidth(16)))
+            {
+                Image = UIImage.FromBundle("IC-Action-Filter")
+            };
+            _viewFilter.AddSubview(imgFilter);
+            viewTitleBar.AddSubview(_lblNavTitle);
+            viewTitleBar.AddSubview(_viewFilter);
             _navbarView.AddSubview(viewTitleBar);
 
             var startColor = MyTNBColor.GradientPurpleDarkElement;
@@ -269,8 +278,11 @@ namespace myTNB
 
         private void SetHeaderLoading(bool isLoading)
         {
+            if (isLoading)
+            {
+                _bgImageView.Image = UIImage.FromBundle(BillConstants.IMG_LoadingBanner);
+            }
             _shimmerView.Hidden = !isLoading;
-
             _btnMore.Enabled = !isLoading;
             _btnMore.Layer.BorderColor = (isLoading ? MyTNBColor.SilverChalice : MyTNBColor.FreshGreen).CGColor;
             _btnMore.SetTitleColor(isLoading ? MyTNBColor.SilverChalice : MyTNBColor.FreshGreen, UIControlState.Normal);
@@ -371,8 +383,7 @@ namespace myTNB
                            }
                            else
                            {
-                                   //DisplayServiceError(_accountCharges?.d?.ErrorMessage);
-                                   _historyTableView.Hidden = true;
+                               _historyTableView.Hidden = true;
                                DisplayRefresh();
                            }
                        });
@@ -478,24 +489,25 @@ namespace myTNB
         #endregion
 
         #region Events
-        public void OnTableViewScroll(object sender, EventArgs e)
+        private void OnTableViewScroll(object sender, EventArgs e)
         {
             UIScrollView scrollView = sender as UIScrollView;
             CGRect frame = _bgImageView.Frame;
             if ((nfloat)Math.Abs(frame.Y) == frame.Height) { return; }
-
             nfloat newYLoc = 0 - scrollView.ContentOffset.Y;
-
-            Debug.WriteLine("Content Offest {0}, {1}", scrollView.ContentOffset.Y
-                , _headerViewContainer.Frame.Height + ScaleUtility.GetScaledHeight(30));
-
+            FilterDisplay(scrollView.ContentOffset.Y > _headerViewContainer.Frame.Height + ScaleUtility.GetScaledHeight(36));
             frame.Y = newYLoc;
             _bgImageView.Frame = frame;
-
             _previousScrollOffset = _historyTableView.ContentOffset.Y;
             var opac = _previousScrollOffset / _tableViewOffset;
             var absOpacity = Math.Abs((float)opac);
             AddViewWithOpacity(absOpacity);
+        }
+
+        private void FilterDisplay(bool isHeader)
+        {
+            _lblNavTitle.Text = GetI18NValue(isHeader ? BillConstants.I18N_MyHistory : BillConstants.I18N_NavTitle);
+            _viewFilter.Hidden = !isHeader;
         }
 
         private void AddViewWithOpacity(float opacity)

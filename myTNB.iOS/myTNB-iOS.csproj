@@ -1197,6 +1197,9 @@
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Background.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Background.imageset\down%402x.png" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Background.imageset\down%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Bill-Loading-Banner.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Bill-Loading-Banner.imageset\loading%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Bill-Loading-Banner.imageset\loading%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1602,6 +1605,7 @@
     <Folder Include="Model\GetAccountBillPayHistory\" />
     <Folder Include="Sitecore CMS\Model\Bill Details\" />
     <Folder Include="Assets.xcassets\BCRM-Down-Background.imageset\" />
+    <Folder Include="Assets.xcassets\Bill-Loading-Banner.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
