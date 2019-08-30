@@ -151,6 +151,7 @@ namespace myTNB
             _rmkWhFlag = false;
             _tariffIsVisible = false;
             _rMkWhEnum = RMkWhEnum.RM;
+            UpdateRMkWhSelectionColour(_rMkWhEnum);
             HideTariffLegend();
             if (!accountIsSSMR)
             {
@@ -673,14 +674,7 @@ namespace myTNB
                 }));
                 _tariffSelectionComponent.SetGestureRecognizerForTariff(new UITapGestureRecognizer(() =>
                 {
-                    if (_rmKwhDropDownView != null)
-                    {
-                        _rmKwhDropDownView.Hidden = true;
-                    }
-                    _tariffIsVisible = !_tariffIsVisible;
-                    _tariffSelectionComponent.UpdateTariffButton(_tariffIsVisible);
-                    ShowHideTariffLegends(_tariffIsVisible);
-                    _chartView.ToggleTariffView(_tariffIsVisible);
+                    ShowHideTariffLegend();
                 }));
 
                 if (_rmKwhDropDownView == null)
@@ -694,6 +688,22 @@ namespace myTNB
                 _viewToggle.Hidden = true;
             }
             SetContentView();
+        }
+
+        private void ShowHideTariffLegend()
+        {
+            List<LegendItemModel> tariffList = new List<LegendItemModel>(isSmartMeterAccount ? AccountUsageSmartCache.GetTariffLegendList() : AccountUsageCache.GetTariffLegendList());
+            if (tariffList != null && tariffList.Count > 0)
+            {
+                if (_rmKwhDropDownView != null)
+                {
+                    _rmKwhDropDownView.Hidden = true;
+                }
+                _tariffIsVisible = !_tariffIsVisible;
+                _tariffSelectionComponent.UpdateTariffButton(_tariffIsVisible);
+                ShowHideTariffLegends(_tariffIsVisible);
+                _chartView.ToggleTariffView(_tariffIsVisible);
+            }
         }
 
         private void CreateRMKwhDropdown()
@@ -730,15 +740,7 @@ namespace myTNB
                 ShowHideRMKwHDropDown();
                 _tariffSelectionComponent.SetRMkWhLabel(_rMkWhEnum);
                 UpdateRMkWhSelectionColour(_rMkWhEnum);
-                _chartView.ToggleRMKWHValues(_rMkWhEnum);
-                if (isSmartMeterAccount)
-                {
-                    OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
-                    if (model != null)
-                    {
-                        SetSmartMeterComponent(false, model.Usage);
-                    }
-                }
+                ToggleRMkWh();
             }));
             _rmKwhDropDownView.AddSubview(kWhView);
 
@@ -765,15 +767,7 @@ namespace myTNB
                 ShowHideRMKwHDropDown();
                 _tariffSelectionComponent.SetRMkWhLabel(_rMkWhEnum);
                 UpdateRMkWhSelectionColour(_rMkWhEnum);
-                _chartView.ToggleRMKWHValues(_rMkWhEnum);
-                if (isSmartMeterAccount)
-                {
-                    OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
-                    if (model != null)
-                    {
-                        SetSmartMeterComponent(false, model.Cost);
-                    }
-                }
+                ToggleRMkWh();
             }));
             _rmKwhDropDownView.AddSubview(rMView);
 
@@ -801,16 +795,32 @@ namespace myTNB
 
         private void UpdateRMkWhSelectionColour(RMkWhEnum rMkWhEnum)
         {
-            switch (rMkWhEnum)
+            if (_kWhLabel != null & _RMLabel != null)
             {
-                case RMkWhEnum.RM:
-                    _kWhLabel.TextColor = MyTNBColor.WarmGrey;
-                    _RMLabel.TextColor = MyTNBColor.WaterBlue;
-                    break;
-                case RMkWhEnum.kWh:
-                    _kWhLabel.TextColor = MyTNBColor.WaterBlue;
-                    _RMLabel.TextColor = MyTNBColor.WarmGrey;
-                    break;
+                switch (rMkWhEnum)
+                {
+                    case RMkWhEnum.RM:
+                        _kWhLabel.TextColor = MyTNBColor.WarmGrey;
+                        _RMLabel.TextColor = MyTNBColor.WaterBlue;
+                        break;
+                    case RMkWhEnum.kWh:
+                        _kWhLabel.TextColor = MyTNBColor.WaterBlue;
+                        _RMLabel.TextColor = MyTNBColor.WarmGrey;
+                        break;
+                }
+            }
+        }
+
+        private void ToggleRMkWh()
+        {
+            OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
+            if (model != null && (model.Cost != null || model.Usage != null))
+            {
+                _chartView.ToggleRMKWHValues(_rMkWhEnum);
+                if (isSmartMeterAccount)
+                {
+                    SetSmartMeterComponent(false, (_rMkWhEnum == RMkWhEnum.RM) ? model.Cost : model.Usage);
+                }
             }
         }
         #endregion
