@@ -16,7 +16,7 @@ namespace myTNB
         string _paymentURL = string.Empty;
 
         string[] _domain = new string[]{
-            "http://mobiletestingws.tnb.com.my:94",
+            "https://mobiletestingws.tnb.com.my",
             "https://mytnbapp.tnb.com.my"
         };
         string[] _endpointDevURL = new string[]{

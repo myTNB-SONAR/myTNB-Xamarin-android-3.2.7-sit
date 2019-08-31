@@ -1034,6 +1034,7 @@ namespace myTNB
                             storyBoard.InstantiateViewController("ReceiptViewController") as ReceiptViewController;
                         if (viewController != null)
                         {
+                            viewController.isFromBills = true;
                             viewController.MerchatTransactionID = merchantTransactionID;//"MYTN201801041414";//
                             viewController.OnDone = OnDone;
                             var navController = new UINavigationController(viewController);
