@@ -2423,7 +2423,8 @@
     <BundleResource Include="Resources\tnbReceiptLogoHeader.jpg" />
     <BundleResource Include="Resources\Base.lproj\InfoPlist.strings" />
     <BundleResource Include="Resources\OCR Reading.json" />
-    <BundleResource Include="Resources\DashboardZoom.json" />
+    <BundleResource Include="Resources\dashboardzoom.json" />
+    <BundleResource Include="Resources\GeneralLoadingR1.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\myTNB.Mobile\myTNB.Mobile.csproj">
