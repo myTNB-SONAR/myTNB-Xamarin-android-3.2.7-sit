@@ -6,7 +6,9 @@ using System.Threading;
 using System.Threading.Tasks;
 using CoreAnimation;
 using CoreGraphics;
+using Foundation;
 using myTNB.Home.Bill;
+using myTNB.Model;
 using myTNB.SSMR;
 using UIKit;
 
@@ -30,6 +32,7 @@ namespace myTNB
 
         private GetAccountsChargesResponseModel _accountCharges;
         private GetAccountBillPayHistoryResponseModel _billHistory;
+        private bool _isBCRMAvailable;
 
         public BillViewController(IntPtr handle) : base(handle) { }
 
@@ -43,6 +46,7 @@ namespace myTNB
             NavigationController.NavigationBarHidden = true;
             PageName = BillConstants.Pagename_Bills;
             base.ViewDidLoad();
+            _isBCRMAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
             View.BackgroundColor = UIColor.White;
             SetNavigation();
             SetHeaderView();
@@ -53,7 +57,15 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            OnSelectAccount(0);
+            if (_isBCRMAvailable)
+            {
+                OnSelectAccount(0);
+            }
+            else
+            {
+                _historyTableView.Hidden = true;
+                DisplayRefresh();
+            }
         }
 
         public override void ViewWillDisappear(bool animated)
@@ -337,25 +349,61 @@ namespace myTNB
         #region Refresh
         private void DisplayRefresh()
         {
-            _bgImageView.Image = UIImage.FromBundle("SSMR-Refresh");
+            string errMessage = GetCommonI18NValue(SSMRConstants.I18N_RefreshDescription);
+            if (!_isBCRMAvailable)
+            {
+                DowntimeDataModel bcrm = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
+                errMessage = bcrm?.DowntimeMessage ?? GetI18NValue(BillConstants.I18N_BcrmDownMessage);
+            }
+
+            _bgImageView.Image = UIImage.FromBundle(_isBCRMAvailable ? BillConstants.IMG_Refresh : BillConstants.IMG_BCRMDown);
             if (_viewRefreshContainer != null) { _viewRefreshContainer.RemoveFromSuperview(); }
             _viewRefreshContainer = new UIView()
             { Tag = 10, BackgroundColor = UIColor.White };
-            UILabel lblDescription = new UILabel(new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(48)))
+
+            // HTML / Plain text for UITextView
+            NSError htmlBodyError = null;
+            UIStringAttributes linkAttributes = new UIStringAttributes
             {
-                TextAlignment = UITextAlignment.Center,
-                Font = TNBFont.MuseoSans_16_300,
-                Text = GetCommonI18NValue(SSMRConstants.I18N_RefreshDescription),
-                LineBreakMode = UILineBreakMode.WordWrap,
-                Lines = 0,
-                TextColor = MyTNBColor.BrownGreyThree
+                ForegroundColor = MyTNBColor.PowerBlue,
+                Font = TNBFont.MuseoSans_14_300,
+                UnderlineStyle = NSUnderlineStyle.None,
+                UnderlineColor = UIColor.Clear
             };
+
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(errMessage
+                , ref htmlBodyError, MyTNBFont.FONTNAME_300, (float)GetScaledHeight(14));
+            NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
+            mutableHTMLBody.AddAttributes(new UIStringAttributes
+            {
+                ForegroundColor = MyTNBColor.Grey
+            }, new NSRange(0, htmlBody.Length));
+
+            UITextView txtViewDetails = new UITextView
+            {
+                Editable = false,
+                ScrollEnabled = true,
+                AttributedText = mutableHTMLBody,
+                WeakLinkTextAttributes = linkAttributes.Dictionary
+            };
+            txtViewDetails.ScrollIndicatorInsets = UIEdgeInsets.Zero;
+
+            //Resize
+            CGSize size = txtViewDetails.SizeThatFits(new CGSize(BaseMarginedWidth, ViewHeight));
+            txtViewDetails.Frame = new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, size.Height);
+            txtViewDetails.TextAlignment = UITextAlignment.Center;
+            Action<NSUrl> action = new Action<NSUrl>((url) =>
+            {
+                RedirectAlert(url);
+            });
+            txtViewDetails.Delegate = new TextViewDelegate(action);
             CustomUIButtonV2 btnRefresh = new CustomUIButtonV2()
             {
-                Frame = new CGRect(BaseMargin, GetYLocationFromFrame(lblDescription.Frame, 16), BaseMarginedWidth, GetScaledHeight(48)),
+                Frame = new CGRect(BaseMargin, GetYLocationFromFrame(txtViewDetails.Frame, 16), BaseMarginedWidth, GetScaledHeight(48)),
                 BackgroundColor = MyTNBColor.FreshGreen,
                 PageName = PageName,
-                EventName = SSMRConstants.EVENT_Refresh
+                EventName = SSMRConstants.EVENT_Refresh,
+                Hidden = !_isBCRMAvailable
             };
             btnRefresh.SetTitle(GetCommonI18NValue(SSMRConstants.I18N_RefreshNow), UIControlState.Normal);
             btnRefresh.AddGestureRecognizer(new UITapGestureRecognizer(() =>
@@ -364,11 +412,61 @@ namespace myTNB
                 OnSelectAccount(0);
             }));
 
-            _viewRefreshContainer.AddSubview(lblDescription);
+            _viewRefreshContainer.AddSubview(txtViewDetails);
             _viewRefreshContainer.AddSubview(btnRefresh);
             _viewRefreshContainer.Frame = new CGRect(0, _bgImageView.Frame.GetMaxY()
-               , ViewWidth, btnRefresh.Frame.GetMaxY() + GetScaledHeight(16));
+               , ViewWidth, (_isBCRMAvailable ? btnRefresh.Frame.GetMaxY() : txtViewDetails.Frame.GetMaxY()) + GetScaledHeight(16));
             View.AddSubview(_viewRefreshContainer);
+        }
+
+        private void RedirectAlert(NSUrl url)
+        {
+            string absURL = url?.AbsoluteString;
+            if (!string.IsNullOrEmpty(absURL))
+            {
+                int whileCount = 0;
+                bool isContained = false;
+                while (!isContained && whileCount < AlertHandler.RedirectTypeList.Count)
+                {
+                    isContained = absURL.Contains(AlertHandler.RedirectTypeList[whileCount]);
+                    if (isContained) { break; }
+                    whileCount++;
+                }
+
+                if (isContained)
+                {
+                    if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[0])
+                    {
+                        string key = absURL.Split(AlertHandler.RedirectTypeList[0])[1];
+                        key = key.Replace("%7B", "{").Replace("%7D", "}");
+                        ViewHelper.GoToFAQScreenWithId(key);
+                    }
+                    else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[1])
+                    {
+                        string urlString = absURL.Split(AlertHandler.RedirectTypeList[1])[1];
+                        var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                        var topVc = AppDelegate.GetTopViewController(baseRootVc);
+                        if (topVc != null)
+                        {
+                            UIStoryboard storyBoard = UIStoryboard.FromName("Browser", null);
+                            BrowserViewController viewController =
+                                storyBoard.InstantiateViewController("BrowserViewController") as BrowserViewController;
+                            if (viewController != null)
+                            {
+                                viewController.URL = urlString;
+                                viewController.IsDelegateNeeded = false;
+                                var navController = new UINavigationController(viewController);
+                                topVc.PresentViewController(navController, true, null);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        string urlString = absURL.Split(AlertHandler.RedirectTypeList[2])[1];
+                        UIApplication.SharedApplication.OpenUrl(new NSUrl(string.Format(urlString)));
+                    }
+                }
+            }
         }
         #endregion
 

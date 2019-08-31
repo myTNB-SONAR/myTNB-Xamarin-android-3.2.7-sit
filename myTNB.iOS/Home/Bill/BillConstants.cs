@@ -38,6 +38,7 @@ namespace myTNB.Home.Bill
         public static string I18N_BeenPaidExtra = "beenPaidExtra";
         public static string I18N_NoHistoryData = "noHistoryData";
         public static string I18N_MyHistory = "myHistory";
+        public static string I18N_BcrmDownMessage = "bcrmDownMessage";
 
         //Bill Details
         public static string I18N_BillDetails = "billDetails";
@@ -64,6 +65,7 @@ namespace myTNB.Home.Bill
         public static string IMG_ArrowExpand = "Arrow-Expand";
         public static string IMG_BCRMDown = "BCRM-Down-Background";
         public static string IMG_LoadingBanner = "Bill-Loading-Banner";
+        public static string IMG_Refresh = "SSMR-Refresh";
 
         //Event
         public static string Event_MandatoryChargesPopup = "MandatoryChargesPopup";

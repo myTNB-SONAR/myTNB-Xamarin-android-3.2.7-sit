@@ -257,7 +257,8 @@
         "myEarnings": "My earnings",
         "myHistory": "My History",
         "beenPaidExtra": "I’ve been paid extra",
-        "noHistoryData": "Looks like you have no bills yet! Once you do, your bills and payment history will appear here."
+        "noHistoryData": "Looks like you have no bills yet! Once you do, your bills and payment history will appear here.",
+        "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while."
     },
 
     "BillDetails": {

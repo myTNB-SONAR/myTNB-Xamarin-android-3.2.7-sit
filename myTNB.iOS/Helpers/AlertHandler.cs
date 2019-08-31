@@ -8,7 +8,7 @@ namespace myTNB
 {
     public static class AlertHandler
     {
-        private static List<string> RedirectTypeList = new List<string> { "faqid=", "inAppBrowser=", "externalBrowser=" };
+        public static List<string> RedirectTypeList = new List<string> { "faqid=", "inAppBrowser=", "externalBrowser=" };
 
         /// <summary>
         /// Displays the no data alert.
