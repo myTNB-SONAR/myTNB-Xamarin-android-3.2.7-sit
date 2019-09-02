@@ -175,7 +175,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             TextViewUtils.SetMuseoSans500Typeface(txtAccountName);
             //TextViewUtils.SetMuseoSans500Typeface(btnLogout);
 
-            // Get CategoryBrowsable intent data 
+            // Get CategoryBrowsable intent data
             var data = Intent?.Data?.EncodedAuthority;
             if (!String.IsNullOrEmpty(data))
             {
@@ -244,7 +244,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             //          AmtCustBal = -746.12,
             //          IsSelected = true
             //    } }
-            //};  
+            //};
 
 
             // TODO : ADD DRAWABLE RIGHT IF ACCOUNTS IN DATABASE IS GREATER THAN 1
@@ -278,7 +278,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 accountList = CustomerBillingAccount.List();
                 if (accountList?.Count > 1 &&
                                 currentFragment.GetType() == typeof(DashboardChartFragment) ||
-                                //currentFragment.GetType() == typeof(DashboardChartNoTNBAccount) || 
+                                //currentFragment.GetType() == typeof(DashboardChartNoTNBAccount) ||
                                 currentFragment.GetType() == typeof(DashboardChartNonOwnerNoAccess) ||
                                 currentFragment.GetType() == typeof(DashboardSmartMeterFragment))
                 {
@@ -712,6 +712,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             {
                                 Intent viewReceipt = new Intent(this, typeof(ViewReceiptMultiAccountNewDesignActivty));
                                 viewReceipt.PutExtra("merchantTransId", transID);
+                                viewReceipt.PutExtra("contractAccount", "");
+                                viewReceipt.PutExtra("email", UserEntity.GetActive().Email);
                                 StartActivity(viewReceipt);
                                 urlSchemaCalled = false;
                             }

@@ -24,7 +24,7 @@ namespace myTNB_Android.Src.ViewReceipt.MVP
 
             void NevigateToNextScreen();
 
-            void GetReceiptDetails(string apiKeyId, string merchantTransId);
+            void GetReceiptDetails(string apiKeyId, string merchantTransId, string contractAccount, string email);
         }
     }
 }

@@ -8,6 +8,7 @@ using Android.Views;
 using Android.Webkit;
 using Android.Widget;
 using Java.Net;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Rating.Activity;
@@ -302,6 +303,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         string merchantTransId = url.Substring(url.LastIndexOf("=") + 1);//GetQueryString(url, "transid");
                         Intent payment_activity = new Intent(mActivity, typeof(ViewReceiptMultiAccountNewDesignActivty));
                         payment_activity.PutExtra("merchantTransId", merchantTransId);
+                        payment_activity.PutExtra("contractAccount", "");
+                        payment_activity.PutExtra("email", UserEntity.GetActive().Email);
                         mActivity.StartActivity(payment_activity);
                         //((PaymentActivity)this.mActivity).SetResult(Result.Ok);
                         //((PaymentActivity)this.mActivity).Finish();
