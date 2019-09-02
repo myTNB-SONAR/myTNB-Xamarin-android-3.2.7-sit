@@ -317,7 +317,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         ((PaymentActivity)this.mActivity).ShowToolBar();
 
                     }
-                    else if (url.ToLower().Contains("mytnbapp://payment/") && !isRedirected)
+                    else if (url.ToLower().Contains("mytnbapp://payment/"))// && !isRedirected)
                     {
                         isRedirected = true;
                         /* This call inject JavaScript into the page which just finished loading. */
