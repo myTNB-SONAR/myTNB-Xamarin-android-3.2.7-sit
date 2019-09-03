@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Linq;
-using myTNB.Model.RequestPayBill;
 using Foundation;
 using System.Globalization;
 using System.Diagnostics;
@@ -47,7 +46,6 @@ namespace myTNB
         UIButton btnCheckBox;
 
         TextFieldHelper _textFieldHelper = new TextFieldHelper();
-        RequestPayBillResponseModel _requestPayBill = new RequestPayBillResponseModel();
         public double _amountDue = 0;
         public RegisteredCardsResponseModel _registeredCards;
         bool _cardAlreadySaved = false;
@@ -770,57 +768,33 @@ namespace myTNB
             UIView.CommitAnimations();
         }
 
-        internal Task RequestMultiPayBill()
-        {
-            List<PaymentItemsModel> paymentItemList = new List<PaymentItemsModel>();
-            PaymentItemsModel paymentItem;
-            int count = AccountsForPayment?.Count ?? 0;
-            string ownerName = count == 1 ? AccountsForPayment[0].accountOwnerName : string.Empty;
-
-            foreach (var item in AccountsForPayment)
-            {
-                paymentItem = new PaymentItemsModel();
-                paymentItem.AccountOwnerName = count > 1 ? item.accountOwnerName : DataManager.DataManager.SharedInstance.UserEntity[0].displayName;
-                paymentItem.AccountNo = item.accNum;
-                paymentItem.Amount = item.Amount.ToString(CultureInfo.InvariantCulture);
-                paymentItemList.Add(paymentItem);
-            }
-
-            return Task.Factory.StartNew(() =>
-            {
-                ServiceManager serviceManager = new ServiceManager();
-                object requestParameter = new
-                {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    customerName = count > 1 ? DataManager.DataManager.SharedInstance.UserEntity[0].displayName : ownerName,
-                    accNum = DataManager.DataManager.SharedInstance.BillingAccountDetails.accNum,
-                    email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
-                    phoneNo = DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo != null ? DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo : string.Empty,
-                    sspUserId = DataManager.DataManager.SharedInstance.User.UserID,
-                    platform = "2",
-                    registeredCardId = string.Empty,
-                    paymentMode = "CC",
-                    totalAmount = TotalAmount,
-                    paymentItems = paymentItemList
-                };
-                _requestPayBill = serviceManager.OnExecuteAPI<RequestPayBillResponseModel>("RequestMultiPayBill", requestParameter);
-            });
-        }
-
         private async Task<GetPaymentTransactionIdResponseModel> GetPaymentTransactionId(string platform = "2", string paymentMode = "CC")
         {
             int count = AccountsForPayment?.Count ?? 0;
             string ownerName = count == 1 ? AccountsForPayment[0].accountOwnerName : string.Empty;
-            List<PayItemsModel> paymentItems = new List<PayItemsModel>();
+            List<object> paymentItems = new List<object>();
 
             foreach (CustomerAccountRecordModel item in AccountsForPayment)
             {
-                paymentItems.Add(new PayItemsModel()
+                if (AccountChargesCache.HasMandatory(item.accNum))
                 {
-                    AccountOwnerName = count > 1 ? item.accountOwnerName : DataManager.DataManager.SharedInstance.UserEntity[0].displayName,
-                    AccountNo = item?.accNum ?? string.Empty,
-                    AccountAmount = item.Amount.ToString(CultureInfo.InvariantCulture)
-                });
+                    paymentItems.Add(new
+                    {
+                        AccountOwnerName = count > 1 ? item.accountOwnerName : DataManager.DataManager.SharedInstance.UserEntity[0].displayName,
+                        AccountNo = item?.accNum ?? string.Empty,
+                        AccountAmount = item.Amount.ToString(CultureInfo.InvariantCulture),
+                        AccountPayments = AccountChargesCache.GetAccountPayments(item.accNum)
+                    });
+                }
+                else
+                {
+                    paymentItems.Add(new
+                    {
+                        AccountOwnerName = count > 1 ? item.accountOwnerName : DataManager.DataManager.SharedInstance.UserEntity[0].displayName,
+                        AccountNo = item?.accNum ?? string.Empty,
+                        AccountAmount = item.Amount.ToString(CultureInfo.InvariantCulture)
+                    });
+                }
             }
 
             ServiceManager serviceManager = new ServiceManager();
