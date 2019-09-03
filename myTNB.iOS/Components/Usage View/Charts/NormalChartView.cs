@@ -213,6 +213,7 @@ namespace myTNB
 
         public override void ToggleTariffView(bool isTariffView)
         {
+            if (_segmentContainer == null) { return; }
             nfloat amountBarMargin = GetHeightByScreenSize(4);
             for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
             {
@@ -252,6 +253,7 @@ namespace myTNB
 
         public override void ToggleRMKWHValues(RMkWhEnum state)
         {
+            if (_segmentContainer == null) { return; }
             List<MonthItemModel> usageData = AccountUsageCache.ByMonthUsage;
             for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
             {
