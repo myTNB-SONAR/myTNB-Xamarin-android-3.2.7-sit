@@ -561,7 +561,8 @@ namespace myTNB
                 {
                     AccountOwnerName = count > 1 ? item.accountOwnerName : DataManager.DataManager.SharedInstance.UserEntity[0].displayName,
                     AccountNo = item?.accNum ?? string.Empty,
-                    AccountAmount = item.Amount.ToString(CultureInfo.InvariantCulture)
+                    AccountAmount = item.Amount.ToString(CultureInfo.InvariantCulture),
+                    AccountPayments = AccountChargesCache.GetAccountPayments(item.accNum)
                 });
             }
 

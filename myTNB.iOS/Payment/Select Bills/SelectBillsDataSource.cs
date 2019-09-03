@@ -57,11 +57,6 @@ namespace myTNB.Payment.SelectBills
                     UpdateUIForInputError(true, cell);
                 }
             }));
-
-            //var isValidAmount = amountStatus.ContainsKey(acctNumber) ? amountStatus[acctNumber] : true;
-            //cell._txtFieldAmount.TextColor = isValidAmount ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
-            //cell._lblAmountError.Hidden = isValidAmount;
-            //cell._viewLineAmount.BackgroundColor = isValidAmount ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
             SetTextField(cell);
             return cell;
         }
@@ -118,12 +113,6 @@ namespace myTNB.Payment.SelectBills
                     _controller.UpDateTotalAmount();
                 }
             };
-            /*cell._txtFieldAmount.EditingDidBegin += (sender, e) =>
-            {
-                cell._viewLineAmount.BackgroundColor = MyTNBColor.PowerBlue;
-                int index = _accounts.FindIndex(x => x.accNum.Equals(cell._lblAccountNo.Text));
-                //ShowErrorMessage(error, index, cell);
-            };*/
             cell._txtFieldAmount.ShouldEndEditing = (sender) =>
             {
                 int index = _accounts.FindIndex(x => x.accNum.Equals(cell._lblAccountNo.Text));

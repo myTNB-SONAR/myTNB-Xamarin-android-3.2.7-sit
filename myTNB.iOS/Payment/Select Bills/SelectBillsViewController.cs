@@ -35,6 +35,7 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
+            AccountChargesCache.Clear();
             SetDefaultTableFrame();
             InitializedSubViews();
             AddBackButton();
@@ -191,7 +192,11 @@ namespace myTNB
             if (selectedAccountIndex > -1)
             {
                 _selectedAccount = _accounts[selectedAccountIndex];
-                _selectedAccount.IsAccountSelected = _accounts[selectedAccountIndex].Amount > 0;//SelectedAccountDueAmount > 0;//true;
+                int accountChargesIndex = _accountChargesResponse.d.data.AccountCharges.FindIndex(x => x.ContractAccount.Equals(_selectedAccount.accNum));
+                if (accountChargesIndex > -1)
+                {
+                    _selectedAccount.IsAccountSelected = _accountChargesResponse.d.data.AccountCharges[selectedAccountIndex].AmountDue > 0;//SelectedAccountDueAmount > 0;//true;
+                }
                 //_accounts.RemoveAt(selectedAccountIndex);
                 //_accounts.Insert(0, _selectedAccount);
             }
@@ -311,6 +316,7 @@ namespace myTNB
                         if (_accountChargesResponse != null && _accountChargesResponse.d != null && _accountChargesResponse.d.IsSuccess
                         && _accountChargesResponse.d.data != null && _accountChargesResponse.d.data.AccountCharges != null)
                         {
+                            AccountChargesCache.SetData(_accountChargesResponse);
                             SetInitialSelectedAccount();
                             UpdateAccountListWithAmount();
                             UpdateDuesDisplay();

@@ -2446,6 +2446,7 @@
     <Compile Include="SQLite\SQLite Data Manager\BillDetailsTooltipEntity.cs" />
     <Compile Include="Home\Bill\Bills\BillHistoryShimmerViewCell.cs" />
     <Compile Include="Model\GetPaymentTransactionId\GetPaymentTransactionIdResponseModel.cs" />
+    <Compile Include="Session Cache\AccountChargesCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
