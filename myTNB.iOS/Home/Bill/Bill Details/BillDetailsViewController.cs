@@ -1,6 +1,5 @@
 using CoreGraphics;
 using myTNB.Home.Bill;
-using myTNB.Model;
 using System;
 using System.Diagnostics;
 using System.Collections.Generic;
@@ -22,7 +21,8 @@ namespace myTNB
         private List<BillsTooltipModel> _pageData;
         private bool isMandatoryExpanded;
 
-        public AccountChargesDataModel Charges { set; private get; }
+        private AccountChargesModel _charges = new AccountChargesModel();
+        public string AccountNumber { set; private get; } = string.Empty;
         public BillDetailsViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
@@ -31,6 +31,7 @@ namespace myTNB
             NavigationController.SetNavigationBarHidden(false, true);
             base.ViewDidLoad();
             View.BackgroundColor = MyTNBColor.LightGrayBG;
+            _charges = AccountChargesCache.GetAccountCharges(AccountNumber);
             InitializeTooltip();
             SetNavigation();
             AddCTAs();
@@ -201,13 +202,13 @@ namespace myTNB
         private void AddBreakdown()
         {
             _viewBreakdown = new UIView { BackgroundColor = UIColor.White };
-            bool isOutstandingOverpaid = Charges.AccountCharges[0].OutstandingCharges < 0;
+            bool isOutstandingOverpaid = _charges.OutstandingCharges < 0;
             string outstandingTilte = isOutstandingOverpaid ? GetI18NValue(BillConstants.I18N_PaidExtra)
                 : GetI18NValue(BillConstants.I18N_OutstandingCharges);
             UIView viewOutstanding = GetCommonLabelView(GetScaledHeight(16), outstandingTilte
-                , Math.Abs(Charges.AccountCharges[0].OutstandingCharges).ToString("N2", CultureInfo.InvariantCulture), isOutstandingOverpaid);
+                , Math.Abs(_charges.OutstandingCharges).ToString("N2", CultureInfo.InvariantCulture), isOutstandingOverpaid);
             UIView viewMonthBill = GetCommonLabelView(GetYLocationFromFrame(viewOutstanding.Frame, 16), GetI18NValue(BillConstants.I18N_BillThisMonth)
-                , Math.Abs(Charges.AccountCharges[0].CurrentCharges).ToString("N2", CultureInfo.InvariantCulture));
+                , Math.Abs(_charges.CurrentCharges).ToString("N2", CultureInfo.InvariantCulture));
 
             _viewMandatory = GetMandatoryView(GetYLocationFromFrame(viewMonthBill.Frame, 16));
 
@@ -264,17 +265,17 @@ namespace myTNB
 
         private UIView GetPaymentDetails(nfloat yLoc)
         {
-            bool isOverPaid = Charges.AccountCharges[0].AmountDue <= 0;
+            bool isOverPaid = _charges.AmountDue <= 0;
             UIView viewPayment = new UIView(new CGRect(0, yLoc, ViewWidth, GetScaledHeight(32)));
             nfloat statusYLoc = isOverPaid ? GetScaledHeight(8) : 0;
             string statusString;
-            if (Charges.AccountCharges[0].AmountDue == 0)
+            if (_charges.AmountDue == 0)
             {
                 statusString = BillConstants.I18N_ClearedBills;
             }
             else
             {
-                statusString = Charges.AccountCharges[0].AmountDue < 0 ? BillConstants.I18N_PaidExtra : BillConstants.I18N_NeedToPay;
+                statusString = _charges.AmountDue < 0 ? BillConstants.I18N_PaidExtra : BillConstants.I18N_NeedToPay;
             }
             UILabel lblStatus = new UILabel(new CGRect(BaseMargin, statusYLoc, BaseMarginedWidth / 2, GetScaledHeight(16)))
             {
@@ -287,9 +288,9 @@ namespace myTNB
             lblStatus.Frame = new CGRect(lblStatus.Frame.Location, new CGSize(statusWidth, lblStatus.Frame.Height));
 
             string result = string.Empty;
-            if (Charges.AccountCharges[0].DueDate != null)
+            if (_charges.DueDate != null)
             {
-                result = DateTime.ParseExact(Charges.AccountCharges[0].DueDate
+                result = DateTime.ParseExact(_charges.DueDate
                    , BillConstants.Format_DateParse, CultureInfo.InvariantCulture).ToString(BillConstants.Format_Date);
             }
             UILabel lblDue = new UILabel(new CGRect(BaseMargin, lblStatus.Frame.GetMaxY(), BaseMarginedWidth / 2, GetScaledHeight(16)))
@@ -321,7 +322,7 @@ namespace myTNB
                 TextColor = isOverPaid ? MyTNBColor.FreshGreen : MyTNBColor.CharcoalGrey,
                 Font = TNBFont.MuseoSans_24_300,
                 TextAlignment = UITextAlignment.Left,
-                Text = Math.Abs(Charges.AccountCharges[0].AmountDue).ToString("N2", CultureInfo.InvariantCulture)
+                Text = Math.Abs(_charges.AmountDue).ToString("N2", CultureInfo.InvariantCulture)
             };
 
             nfloat amountWidth = lblAmount.GetLabelWidth(ViewWidth);
@@ -372,7 +373,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.CharcoalGrey,
                 Text = string.Format(BillConstants.Format_Default, TNBGlobal.UNIT_CURRENCY
-                , Charges.AccountCharges[0].MandatoryCharges.TotalAmount.ToString("N2", CultureInfo.InvariantCulture))
+                , _charges.MandatoryCharges.TotalAmount.ToString("N2", CultureInfo.InvariantCulture))
             };
             nfloat valueWidth = value.GetLabelWidth(ViewWidth);
             value.Frame = new CGRect(new CGPoint(ViewWidth - BaseMargin - valueWidth, value.Frame.Y), new CGSize(valueWidth, value.Frame.Height));
@@ -383,13 +384,11 @@ namespace myTNB
             { Tag = 98 };
             nfloat subYLoc = 0;
             int itemCount = 0;
-            if (Charges != null && Charges.AccountCharges != null && Charges.AccountCharges.Count > 0
-                && Charges.AccountCharges[0] != null && Charges.AccountCharges[0].MandatoryCharges != null
-                && Charges.AccountCharges[0].MandatoryCharges.Charges != null)
+            if (_charges != null && _charges.MandatoryCharges != null && _charges.MandatoryCharges.Charges != null)
             {
-                for (int i = 0; i < Charges.AccountCharges[0].MandatoryCharges.Charges.Count; i++)
+                for (int i = 0; i < _charges.MandatoryCharges.Charges.Count; i++)
                 {
-                    ChargesModel chargeItem = Charges.AccountCharges[0].MandatoryCharges.Charges[i];
+                    ChargesModel chargeItem = _charges.MandatoryCharges.Charges[i];
                     if (chargeItem.Amount < 0) { continue; }
                     UILabel subItem = new UILabel(new CGRect(0, subYLoc, BaseMarginedWidth / 2, GetScaledHeight(20)))
                     {
@@ -460,15 +459,12 @@ namespace myTNB
             view.AddSubview(viewInfo);
             view.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                if (Charges != null && Charges.MandatoryChargesPopUpDetails != null)
+                var popupData = AccountChargesCache.GetPopupByType("MandatoryCharges");
+                if (popupData != null)
                 {
-                    PopupModel popUpContent = Charges.MandatoryChargesPopUpDetails.Find(x => x.Type == "HasMandatoryCharges");
-                    if (popUpContent != null)
-                    {
-                        DisplayCustomAlert(popUpContent.Title, popUpContent.Description
-                            , new Dictionary<string, Action> { { popUpContent.CTA, null } }
-                            , false);
-                    }
+                    DisplayCustomAlert(popupData.Title, popupData.Description
+                        , new Dictionary<string, Action> { { popupData.CTA, null } }
+                        , false);
                 }
             }));
             return view;
@@ -605,12 +601,7 @@ namespace myTNB
         {
             get
             {
-                if (Charges != null && Charges.AccountCharges != null && Charges.AccountCharges[0] != null
-                    && Charges.AccountCharges[0].MandatoryCharges != null)
-                {
-                    return Charges.AccountCharges[0].MandatoryCharges.TotalAmount > 0;
-                }
-                return false;
+                return AccountChargesCache.HasMandatory(AccountNumber);
             }
         }
     }

@@ -63,8 +63,23 @@ namespace myTNB
                     return AccountChargesDisctionary[accountNumber];
                 }
             }
-
             return new AccountChargesModel();
+        }
+
+        public static MandatoryChargesModel GetMandatoryCharges(string accountNumber)
+        {
+            if (!string.IsNullOrEmpty(accountNumber) && !string.IsNullOrWhiteSpace(accountNumber) && AccountChargesDisctionary != null)
+            {
+                if (AccountChargesDisctionary.ContainsKey(accountNumber))
+                {
+                    AccountChargesModel item = AccountChargesDisctionary[accountNumber];
+                    if (item != null && item.MandatoryCharges != null)
+                    {
+                        return item.MandatoryCharges;
+                    }
+                }
+            }
+            return new MandatoryChargesModel();
         }
 
         public static List<PaymentTypeModel> GetAccountPayments(string accountNumber)
@@ -97,6 +112,19 @@ namespace myTNB
         {
             AccountChargesDisctionary.Clear();
             AccountChargesPopupList.Clear();
+        }
+
+        public static bool HasMandatory(string accountNumber)
+        {
+            if (!string.IsNullOrEmpty(accountNumber) && !string.IsNullOrWhiteSpace(accountNumber) && AccountChargesDisctionary != null)
+            {
+                if (AccountChargesDisctionary.ContainsKey(accountNumber))
+                {
+                    AccountChargesModel item = AccountChargesDisctionary[accountNumber];
+                    return item.MandatoryCharges.TotalAmount > 0;
+                }
+            }
+            return false;
         }
     }
 }

@@ -2447,6 +2447,7 @@
     <Compile Include="Home\Bill\Bills\BillHistoryShimmerViewCell.cs" />
     <Compile Include="Model\GetPaymentTransactionId\GetPaymentTransactionIdResponseModel.cs" />
     <Compile Include="Session Cache\AccountChargesCache.cs" />
+    <Compile Include="Payment\PaymentConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

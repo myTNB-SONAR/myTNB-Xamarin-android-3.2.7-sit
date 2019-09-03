@@ -21,7 +21,6 @@ namespace myTNB
         public List<CustomerAccountRecordModel> _accountsForPayment = new List<CustomerAccountRecordModel>();
         public double totalAmount;
 
-        // private MultiAccountDueAmountResponseModel _multiAccountDueAmount = new MultiAccountDueAmountResponseModel();
         private List<CustomerAccountRecordModel> _accounts = new List<CustomerAccountRecordModel>();
         private List<PaymentRecordModel> _accountsForDisplay = new List<PaymentRecordModel>();
         private CustomerAccountRecordModel _selectedAccount = new CustomerAccountRecordModel();
@@ -30,7 +29,7 @@ namespace myTNB
         private UIView _viewAmount, _viewFooter;
         private UILabel _lblTotalAmountValue, _lblCurrency;
         private int loadMoreCount, lastStartIndex, lastEndIndex;
-        private bool isViewDidLoad, isItemisedTooltipDisplayed;
+        private bool isViewDidLoad;
 
         public override void ViewDidLoad()
         {
@@ -99,7 +98,6 @@ namespace myTNB
         {
             SelectBillsTableView.Source = new SelectBillsDataSource(this, new List<PaymentRecordModel>());
             SelectBillsTableView.ReloadData();
-            // _multiAccountDueAmount = new MultiAccountDueAmountResponseModel();
             _accounts = new List<CustomerAccountRecordModel>();
             _accountsForDisplay = new List<PaymentRecordModel>();
             _selectedAccount = new CustomerAccountRecordModel();
@@ -121,17 +119,6 @@ namespace myTNB
                     UpdateAccountsForDisplay(_accounts[itemIndex], item);
                 }
             }
-
-            /* foreach (var item in _multiAccountDueAmount.d.data)
-             {
-                 int itemIndex = _accounts.FindIndex(x => x.accNum.Equals(item.accNum));
-                 if (itemIndex > -1)
-                 {
-                     _accounts[itemIndex].Amount = item.amountDue;
-                     _accounts[itemIndex].AmountDue = item.amountDue;
-                     UpdateAccountsForDisplay(_accounts[itemIndex], item);
-                 }
-             }*/
         }
 
         private void UpdateAccountsForDisplay(CustomerAccountRecordModel customerAccount
@@ -139,8 +126,6 @@ namespace myTNB
         {
             _accountsForDisplay.Add(new PaymentRecordModel
             {
-                //ItemizedBillings = dueAmtData.ItemizedBillings,
-                //OpenChargesTotal = dueAmtData.OpenChargesTotal,
                 Amount = dueAmtData.AmountDue,
                 AmountDue = dueAmtData.AmountDue,
                 accNum = customerAccount.accNum,
@@ -180,7 +165,7 @@ namespace myTNB
             if (selectedAccountIndex > -1)
             {
                 _selectedAccount = _accounts[selectedAccountIndex];
-                _selectedAccount.IsAccountSelected = true;//SelectedAccountDueAmount > 0;//true;
+                _selectedAccount.IsAccountSelected = true;
                 _accounts.RemoveAt(selectedAccountIndex);
                 _accounts.Insert(0, _selectedAccount);
             }
@@ -197,8 +182,6 @@ namespace myTNB
                 {
                     _selectedAccount.IsAccountSelected = _accountChargesResponse.d.data.AccountCharges[selectedAccountIndex].AmountDue > 0;//SelectedAccountDueAmount > 0;//true;
                 }
-                //_accounts.RemoveAt(selectedAccountIndex);
-                //_accounts.Insert(0, _selectedAccount);
             }
         }
 
@@ -246,24 +229,14 @@ namespace myTNB
                 if (_accountChargesResponse != null && _accountChargesResponse.d != null && _accountChargesResponse.d.IsSuccess
                        && _accountChargesResponse.d.data != null && _accountChargesResponse.d.data.AccountCharges != null
                        && item.IsAccountSelected)
-                //          if (_multiAccountDueAmount != null && _multiAccountDueAmount.d != null
-                //        && _multiAccountDueAmount.d.data != null && item.IsAccountSelected)
                 {
-                    double otherCharges = 0;
                     selectedAccountCount++;
-#if false
-                    int accIndex = _multiAccountDueAmount.d.data.FindIndex(x => x.accNum == item.accNum);
-                    if (accIndex > -1 && _multiAccountDueAmount.d.data[accIndex].IsItemisedBilling)
-                    {
-                        otherCharges = _multiAccountDueAmount.d.data[accIndex].OpenChargesTotal;
-                    }
-#endif
                     if (item.Amount < TNBGlobal.PaymentMinAmnt)
                     {
                         hasInvalidSelection = true;
                     }
 
-                    totalAmount += item.Amount;// + otherCharges;
+                    totalAmount += item.Amount;
                 }
             }
             _lblTotalAmountValue.Text = totalAmount.ToString("N2", CultureInfo.InvariantCulture);
@@ -278,29 +251,37 @@ namespace myTNB
             BtnPayBill.Enabled = isValid;
         }
 
+        private string _selectedAccountNumber = string.Empty;
         internal void OnShowItemisedTooltip(string accNum)
         {
-            if (!isItemisedTooltipDisplayed)
+            PopupModel popupData = AccountChargesCache.GetPopupByType("MandatoryPayment");
+            MandatoryChargesModel mandatoryCharges = AccountChargesCache.GetMandatoryCharges(accNum);
+            _selectedAccountNumber = accNum;
+            string description = string.Format(popupData.Description, mandatoryCharges.TotalAmount.ToString("N2", CultureInfo.InvariantCulture));
+            string[] cta = popupData.CTA.Split(',');
+            Dictionary<string, Action> ctaDictionary = new Dictionary<string, Action>();
+            for (int i = 0; i < cta.Length; i++)
             {
-                /*var data = _multiAccountDueAmount.d;
-                DisplayCustomAlert(data.MandatoryChargesTitle, data.MandatoryChargesMessage, new Dictionary<string, Action>() {
-                    {
-                        data.MandatoryChargesPriButtonText, ()=>{
-                            if (DataManager.DataManager.SharedInstance.AccountRecordsList!=null
-                                && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null)
-                            {
-                                DataManager.DataManager.SharedInstance.SelectedAccount
-                                    = DataManager.DataManager.SharedInstance.AccountRecordsList.d.Find(x => x.accNum == accNum);
-                                ViewHelper.DismissControllersAndSelectTab(this, 1, true);
-                            }
-                        }
-                    }
-                    ,{
-                        data.MandatoryChargesSecButtonText, null
-                    }
-                });
-                isItemisedTooltipDisplayed = true;
-                */
+                Action action = null;
+                if (i == 0)
+                {
+                    action = OnViewDetails;
+                }
+                ctaDictionary.Add(cta[i], action);
+            }
+            DisplayCustomAlert(popupData.Title, description, ctaDictionary);
+        }
+
+        private void OnViewDetails()
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("BillDetails", null);
+            BillDetailsViewController viewController =
+                storyBoard.InstantiateViewController("BillDetailsView") as BillDetailsViewController;
+            if (viewController != null)
+            {
+                viewController.AccountNumber = _selectedAccountNumber;
+                var navController = new UINavigationController(viewController);
+                PresentViewController(navController, true, null);
             }
         }
 
@@ -324,30 +305,9 @@ namespace myTNB
                         else
                         {
                             UpDateTotalAmount();
-                            //DisplayServiceError(_multiAccountDueAmount?.d?.message);
                             DisplayServiceError(_accountChargesResponse?.d?.ErrorMessage ?? string.Empty);
                         }
                         ActivityIndicator.Hide();
-
-
-                        /*await GetMultiAccountDueAmount(accountsForQuery).ContinueWith(task =>
-                        {
-                            InvokeOnMainThread(() =>
-                            {
-                                if (_multiAccountDueAmount != null && _multiAccountDueAmount.d != null
-                                    && _multiAccountDueAmount.d.data != null)
-                                {
-                                    UpdateAccountListWithAmount();
-                                    UpdateDuesDisplay();
-                                }
-                                else
-                                {
-                                    UpDateTotalAmount();
-                                    DisplayServiceError(_multiAccountDueAmount?.d?.message);
-                                }
-                                ActivityIndicator.Hide();
-                            });
-                        });*/
                     }
                     else
                     {
@@ -482,24 +442,8 @@ namespace myTNB
             ResetValues();
         }
 
-        /*
-        private Task GetMultiAccountDueAmount(List<string> accountList)
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                ServiceManager serviceManager = new ServiceManager();
-                object requestParameter = new
-                {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    accounts = accountList
-                };
-                _multiAccountDueAmount = serviceManager.OnExecuteAPI<MultiAccountDueAmountResponseModel>("GetMultiAccountDueAmount", requestParameter);
-            });
-        }*/
-
         private async Task<GetAccountsChargesResponseModel> GetAccountsCharges(List<string> accountList)
         {
-            //Thread.Sleep(5000);
             ServiceManager serviceManager = new ServiceManager();
             object request = new
             {

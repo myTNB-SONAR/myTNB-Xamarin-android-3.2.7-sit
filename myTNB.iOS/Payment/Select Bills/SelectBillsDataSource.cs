@@ -31,22 +31,31 @@ namespace myTNB.Payment.SelectBills
         {
             string CELLIDENTIFIER = "SelectBillsTableViewCell";
             string acctNumber = _accounts[indexPath.Row].accNum;
-
+            bool hasMandatoryCharges = AccountChargesCache.HasMandatory(acctNumber);
             var cell = tableView.DequeueReusableCell(CELLIDENTIFIER, indexPath) as SelectBillsTableViewCell;
             cell._lblName.Text = _accounts[indexPath.Row].accountNickName;
             cell._lblAccountNo.Text = acctNumber;
             cell._txtViewAddress.Text = _accounts[indexPath.Row].accountStAddress;
             cell._imgViewCheckBox.Image = UIImage.FromBundle(_accounts[indexPath.Row].IsAccountSelected
                 ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
+            cell._txtFieldAmount.Placeholder = PaymentConstants.I18N_EnterAmount;
             if (_accounts[indexPath.Row].Amount > 0)
             {
                 cell._txtFieldAmount.Text = _accounts[indexPath.Row].Amount.ToString("N2", CultureInfo.InvariantCulture);
             }
-            cell._txtFieldAmount.Placeholder = "Enter amount";
+            else if (hasMandatoryCharges)
+            {
+                MandatoryChargesModel mandatoryCharges = AccountChargesCache.GetMandatoryCharges(_accounts[indexPath.Row].accNum);
+                cell._txtFieldAmount.Text = mandatoryCharges.TotalAmount.ToString("N2", CultureInfo.InvariantCulture);
+            }
             cell._viewCheckBox.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                if (_accounts[indexPath.Row].Amount >= TNBGlobal.PaymentMinAmnt)
+                if (_accounts[indexPath.Row].Amount >= TNBGlobal.PaymentMinAmnt || hasMandatoryCharges)
                 {
+                    if (hasMandatoryCharges && !_accounts[indexPath.Row].IsAccountSelected)
+                    {
+                        _controller.OnShowItemisedTooltip(_accounts[indexPath.Row].accNum);
+                    }
                     UpdateCheckBox(cell);
                     UpdateUIForInputError(false, cell);
                 }
