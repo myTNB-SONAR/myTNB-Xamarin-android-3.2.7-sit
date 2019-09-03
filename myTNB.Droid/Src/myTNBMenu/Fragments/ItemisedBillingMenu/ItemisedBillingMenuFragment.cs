@@ -15,6 +15,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using Facebook.Shimmer;
 using Java.Text;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Billing.MVP;
@@ -65,6 +66,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         [BindView(Resource.Id.accountSelection)]
         TextView accountSelection;
+
+        [BindView(Resource.Id.itemisedBillingInfoShimmer)]
+        ShimmerFrameLayout itemisedBillingInfoShimmer;
+
+        [BindView(Resource.Id.itemisedBillingListShimmer)]
+        LinearLayout itemisedBillingListShimmer;
+
+        [BindView(Resource.Id.itemisedBillingInfoContainer)]
+        LinearLayout itemisedBillingInfoContainer;
 
         ItemisedBillingMenuPresenter mPresenter;
         AccountData mSelectedAccountData;
@@ -138,6 +148,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
+            itemisedBillingInfoShimmer = view.FindViewById<ShimmerFrameLayout>(Resource.Id.itemisedBillingInfoShimmer);
+            itemisedBillingInfoShimmer.SetShimmer(ShimmerUtils.ShimmerBuilderConfig().Build());
+            itemisedBillingInfoShimmer.StartShimmer();
+
             base.OnViewCreated(view, savedInstanceState);
             ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
             ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.bg_smr);
@@ -169,12 +183,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             {
                 accountSelection.SetCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
             }
+        }
 
-            itemisedBillingCTAContainer.Visibility = mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId) ? ViewStates.Gone : ViewStates.Visible;
+        public void ShowShimmerLoading()
+        {
+            itemisedBillingHeaderImage.SetImageResource(Resource.Drawable.bill_menu_loading_banner);
+
+            itemisedBillingList.Visibility = ViewStates.Gone;
+            itemisedBillingInfoContainer.Visibility = ViewStates.Gone;
+
+            itemisedBillingListShimmer.Visibility = ViewStates.Visible;
+            itemisedBillingInfoShimmer.Visibility = ViewStates.Visible;
         }
 
         public void PopulateBillingHistoryList(List<ItemisedBillingHistoryModel> billingHistoryModelList)
         {
+            itemisedBillingList.Visibility = ViewStates.Visible;
+            itemisedBillingListShimmer.Visibility = ViewStates.Gone;
+            itemisedBillingCTAContainer.Visibility = mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId) ? ViewStates.Gone : ViewStates.Visible;
+
             ItemisedBillingGroupComponent itemisedBillingGroupComponent;
             for (int i = 0; i < billingHistoryModelList.Count; i++)
             {
@@ -229,6 +256,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         public void PopulateAccountCharge(List<AccountChargeModel> accountChargesModelList)
         {
+            itemisedBillingInfoShimmer.Visibility = ViewStates.Gone;
+            itemisedBillingInfoContainer.Visibility = ViewStates.Visible;
+
             selectedAccountChargesModelList = accountChargesModelList.GetRange(0, accountChargesModelList.Count);
             AccountChargeModel accountChargeModel = accountChargesModelList[0];
             int imageResource = Resource.Drawable.bill_no_outstanding_banner;

@@ -27,16 +27,20 @@
                 android:paddingBottom="16dp"
                 android:background="@color/white">
                 <ImageView
-                    android:id="@+id/itemisedBillingHeaderImage"
+                android:id="@+id/itemisedBillingHeaderImage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-35dp"
+                android:foregroundGravity="center_horizontal|center"
+                android:layout_gravity="bottom"
+                android:scaleType="fitXY"
+                android:src="@drawable/bill_menu_loading_banner"/>
+                <com.facebook.shimmer.ShimmerFrameLayout
+                    android:id="@+id/itemisedBillingInfoShimmer"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="-35dp"
-                    android:foregroundGravity="center_horizontal|center"
-                    android:layout_gravity="bottom"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/bill_no_outstanding_banner" />
-                <LinearLayout
-                    android:id="@+id/itemisedBillingInfoContainer"
+                    android:layout_height="match_parent">
+                    <LinearLayout
+                    android:id="@+id/itemisedParentContainerShimmer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -45,19 +49,52 @@
                     android:paddingRight="16dp"
                     android:layout_marginBottom="24dp"
                     android:orientation="vertical">
-                    <TextView
-                        android:id="@+id/itemisedBillingInfoNote"
-                        android:text="I’ve cleared all bills"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textSize="14dp"
+                        <TextView
+                        android:id="@+id/itemisedBillingInfoNoteShimmer"
+                        android:background="@color/shimmer_color"
+                        android:layout_width="122dp"
+                        android:layout_height="20dp"
                         android:gravity="center"/>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        <LinearLayout
+                        android:layout_width="152dp"
+                        android:layout_height="36dp"
                         android:layout_marginTop="8dp"
+                        android:background="@color/shimmer_color"
                         android:gravity="center_horizontal"
                         android:orientation="horizontal">
+                        </LinearLayout>
+                        <TextView
+                        android:id="@+id/itemisedBillingInfoDatShimmer"
+                        android:layout_marginTop="8dp"
+                        android:background="@color/shimmer_color"
+                        android:layout_width="98dp"
+                        android:layout_height="20dp"/>
+                    </LinearLayout>
+                </com.facebook.shimmer.ShimmerFrameLayout>
+                <LinearLayout
+                android:id="@+id/itemisedBillingInfoContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_marginTop="16dp"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
+                android:layout_marginBottom="24dp"
+                android:visibility="gone"
+                android:orientation="vertical">
+                    <TextView
+                    android:id="@+id/itemisedBillingInfoNote"
+                    android:text="I’ve cleared all bills"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="14dp"
+                    android:gravity="center"/>
+                    <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:gravity="center_horizontal"
+                    android:orientation="horizontal">
                         <TextView
                             android:id="@+id/itemisedBillingInfoAmountCurrency"
                             android:text="RM"
@@ -75,13 +112,13 @@
                             android:layout_height="wrap_content"/>
                     </LinearLayout>
                     <TextView
-                        android:id="@+id/itemisedBillingInfoDate"
-                        android:text="by 24 Sep 2019"
-                        android:layout_marginTop="8dp"
-                        android:textSize="14dp"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"/>
+                    android:id="@+id/itemisedBillingInfoDate"
+                    android:text="by 24 Sep 2019"
+                    android:layout_marginTop="8dp"
+                    android:textSize="14dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"/>
                 </LinearLayout>
                 <LinearLayout
                     android:id="@+id/itemisedBillingCTAContainer"
@@ -91,6 +128,7 @@
                     android:paddingLeft="13dp"
                     android:paddingRight="13dp"
                     android:weightSum="1"
+                    android:visibility="gone"
                     android:orientation="horizontal">
                     <Button
                         android:id="@+id/btnViewDetails"
@@ -136,13 +174,101 @@
                     android:src="@drawable/bill_screen_filter_icon"/>
             </LinearLayout>
             <LinearLayout
-                android:id="@+id/itemisedBillingList"
+                android:id="@+id/itemisedBillingListShimmer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/bills_list_title_container"
                 android:orientation="vertical"
                 android:paddingBottom="24dp">
+                <RelativeLayout
+                    android:id="@+id/bill_item_1Shimmer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:id="@+id/itemisedBillingGroupContentShimmer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:paddingTop="26dp"
+                        android:paddingBottom="14dp"
+                        android:paddingLeft="16dp"
+                        android:paddingRight="16dp"
+                        android:background="@color/white"
+                        android:orientation="vertical">
+                        <com.facebook.shimmer.ShimmerFrameLayout
+                            android:id="@+id/itemisedBillingListContentShimmer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/bills_list_title_container">
+                        <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight=".5"
+                                android:orientation="vertical">
+                                <View
+                                    android:id="@+id/itemisedBillingItemTitleShimmer"
+                                    android:background="@color/shimmer_color"
+                                    android:layout_width="100dp"
+                                    android:layout_height="16dp"/>
+                                <View
+                                    android:id="@+id/itemisedBillingItemSubTitleShimmer"
+                                    android:background="@color/shimmer_color"
+                                    android:layout_width="84dp"
+                                    android:layout_height="16dp"/>
+                            </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="0dp"
+                                android:layout_height="match_parent"
+                                android:layout_weight=".5"
+                                android:gravity="center|right"
+                                android:orientation="horizontal">
+                                <View
+                                    android:id="@+id/itemisedBillingItemAmountShimmer"
+                                    android:layout_width="60dp"
+                                    android:layout_height="16dp"
+                                    android:background="@color/shimmer_color"
+                                    android:layout_marginRight="12dp"/>
+                                <ImageView
+                                    android:id="@+id/itemisedBillingRightArrowShimmer"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:src="@drawable/expand_right_arrow"/>
+                            </LinearLayout>
+                        </LinearLayout>
+                        </com.facebook.shimmer.ShimmerFrameLayout>
+                        <View
+                            android:id="@+id/itemisedBillingGroupContentSeparatorShimmer"
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="16dp"
+                            android:background="@color/platinumGrey"/>
+                    </LinearLayout>
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                            android:id="@+id/itemisedBillingListGroupLabelShimmer"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+                            <View
+                                android:id="@+id/itemisedBillingGroupLabelShimmer"
+                                android:layout_width="70dp"
+                                android:layout_height="24dp"
+                                android:background="@color/shimmer_color"
+                                android:layout_marginLeft="16dp"/>
+                    </com.facebook.shimmer.ShimmerFrameLayout>
+                </RelativeLayout>
             </LinearLayout>
+            <LinearLayout
+                android:id="@+id/itemisedBillingList"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bills_list_title_container"
+                android:orientation="vertical"
+                android:paddingBottom="24dp"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
