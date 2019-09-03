@@ -48,7 +48,8 @@
         "needToPay": "I need to pay",
         "paidExtra": "I've paid extra",
         "clearedAllBills": "I've cleared all bills",
-        "viewReadHistory": "View Reading History"
+        "viewReadHistory": "View Reading History",
+        "viewBill":  "View Bill"
     },
     "Hint": {
         "mobileNumber": "Please include the country code of your phone number.",

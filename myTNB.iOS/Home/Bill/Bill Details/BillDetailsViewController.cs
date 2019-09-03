@@ -13,11 +13,13 @@ namespace myTNB
 {
     public partial class BillDetailsViewController : CustomUIViewController
     {
-        private UIView _viewDetails, _viewTitleSection, _viewBreakdown, _viewLine, _viewPayment, _toolTipParentView;
+        private UIView _viewDetails, _viewTitleSection, _viewBreakdown, _viewLine
+            , _viewPayment, _toolTipParentView, _viewCTAContainer;
         private CustomUIView _viewMandatory, _viewTooltip;
         private UIScrollView _uiScrollView;
-        List<BillsTooltipModelEntity> _toolTipList;
-        List<BillsTooltipModel> _pageData;
+        private CustomUIButtonV2 _btnViewBill, _btnPay;
+        private List<BillsTooltipModelEntity> _toolTipList;
+        private List<BillsTooltipModel> _pageData;
         private bool isMandatoryExpanded;
 
         public AccountChargesDataModel Charges { set; private get; }
@@ -31,6 +33,7 @@ namespace myTNB
             View.BackgroundColor = MyTNBColor.LightGrayBG;
             InitializeTooltip();
             SetNavigation();
+            AddCTAs();
             AddDetails();
             AddSectionTitle();
             AddBreakdown();
@@ -153,7 +156,7 @@ namespace myTNB
 
         private void AddDetails()
         {
-            _uiScrollView = new UIScrollView(new CGRect(0, 0, ViewWidth, ViewHeight));
+            _uiScrollView = new UIScrollView(new CGRect(0, 0, ViewWidth, ViewHeight - _viewCTAContainer.Frame.Height));
             View.AddSubview(_uiScrollView);
             _viewDetails = new UIView { BackgroundColor = UIColor.White };
             UILabel lblAccountName = new UILabel(new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(20)))
@@ -471,45 +474,130 @@ namespace myTNB
             return view;
         }
 
+        private void AddCTAs()
+        {
+            nfloat containerHeight = GetScaledHeight(80) + UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Bottom;
+            nfloat yLoc = View.Frame.Height - UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Top - NavigationController.NavigationBar.Frame.Height - containerHeight;
+            _viewCTAContainer = new UIView(new CGRect(0, yLoc, ViewWidth, containerHeight)) { BackgroundColor = UIColor.White };
+
+            nfloat btnWidth = (BaseMarginedWidth - GetScaledWidth(4)) / 2;
+            _btnViewBill = new CustomUIButtonV2
+            {
+                Frame = new CGRect(BaseMargin, GetScaledHeight(16), btnWidth, GetScaledHeight(48)),
+                BackgroundColor = UIColor.White
+            };
+            _btnViewBill.SetTitle(GetCommonI18NValue(BillConstants.I18N_ViewBill), UIControlState.Normal);
+            _btnViewBill.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
+            _btnViewBill.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
+
+            _btnPay = new CustomUIButtonV2
+            {
+                Frame = new CGRect(_btnViewBill.Frame.GetMaxX() + GetScaledWidth(4), GetScaledHeight(16), btnWidth, GetScaledHeight(48)),
+                BackgroundColor = MyTNBColor.FreshGreen
+            };
+            _btnPay.SetTitle(GetCommonI18NValue(BillConstants.I18N_Pay), UIControlState.Normal);
+            _btnPay.SetTitleColor(UIColor.White, UIControlState.Normal);
+
+            _viewCTAContainer.AddSubviews(new UIView[] { _btnViewBill, _btnPay });
+
+            View.AddSubview(_viewCTAContainer);
+        }
+
         private void SetEvents()
         {
-            if (_viewMandatory == null) { return; }
-            _viewMandatory.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            if (_viewMandatory != null)
             {
-                nfloat mandatoryViewHeight = GetScaledHeight(20);
-                if (!isMandatoryExpanded)
+                _viewMandatory.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
-                    UIView view = _viewMandatory.ViewWithTag(98) as UIView;
-                    if (view != null)
+                    nfloat mandatoryViewHeight = GetScaledHeight(20);
+                    if (!isMandatoryExpanded)
                     {
-                        mandatoryViewHeight = view.Frame.GetMaxY();
+                        UIView view = _viewMandatory.ViewWithTag(98) as UIView;
+                        if (view != null)
+                        {
+                            mandatoryViewHeight = view.Frame.GetMaxY();
+                        }
                     }
-                }
-                isMandatoryExpanded = !isMandatoryExpanded;
-                UIImageView imgView = _viewMandatory.ViewWithTag(99) as UIImageView;
-                if (imgView != null)
+                    isMandatoryExpanded = !isMandatoryExpanded;
+                    UIImageView imgView = _viewMandatory.ViewWithTag(99) as UIImageView;
+                    if (imgView != null)
+                    {
+                        imgView.Image = UIImage.FromBundle(isMandatoryExpanded ? BillConstants.IMG_ArrowUp : BillConstants.IMG_ArrowDown);
+                    }
+                    UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseIn
+                        , () =>
+                        {
+                            _viewMandatory.Frame = new CGRect(_viewMandatory.Frame.Location, new CGSize(_viewMandatory.Frame.Width
+                                , mandatoryViewHeight));
+                            _viewLine.Frame = new CGRect(new CGPoint(_viewLine.Frame.X
+                                , GetYLocationFromFrame(_viewMandatory.Frame, 16)), _viewLine.Frame.Size);
+                            _viewPayment.Frame = new CGRect(new CGPoint(_viewPayment.Frame.X
+                                , GetYLocationFromFrame(_viewLine.Frame, 20)), _viewPayment.Frame.Size);
+                            _viewTooltip.Frame = new CGRect(new CGPoint(_viewTooltip.Frame.X
+                                , GetYLocationFromFrame(_viewPayment.Frame, 16)), _viewTooltip.Frame.Size);
+                            _viewBreakdown.Frame = new CGRect(new CGPoint(0, _viewTitleSection.Frame.GetMaxY()), new CGSize(ViewWidth
+                                , _viewTooltip.Frame.GetMaxY() + GetScaledHeight(16)));
+                        }
+                        , () =>
+                        {
+                            _uiScrollView.ContentSize = new CGSize(ViewWidth, _viewBreakdown.Frame.GetMaxY());
+                        }
+                    );
+                }));
+            }
+            _btnViewBill.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                 {
-                    imgView.Image = UIImage.FromBundle(isMandatoryExpanded ? BillConstants.IMG_ArrowUp : BillConstants.IMG_ArrowDown);
-                }
-                UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseIn
-                    , () =>
+                    InvokeOnMainThread(() =>
                     {
-                        _viewMandatory.Frame = new CGRect(_viewMandatory.Frame.Location, new CGSize(_viewMandatory.Frame.Width
-                            , mandatoryViewHeight));
-                        _viewLine.Frame = new CGRect(new CGPoint(_viewLine.Frame.X
-                            , GetYLocationFromFrame(_viewMandatory.Frame, 16)), _viewLine.Frame.Size);
-                        _viewPayment.Frame = new CGRect(new CGPoint(_viewPayment.Frame.X
-                            , GetYLocationFromFrame(_viewLine.Frame, 20)), _viewPayment.Frame.Size);
-                        _viewTooltip.Frame = new CGRect(new CGPoint(_viewTooltip.Frame.X
-                            , GetYLocationFromFrame(_viewPayment.Frame, 16)), _viewTooltip.Frame.Size);
-                        _viewBreakdown.Frame = new CGRect(new CGPoint(0, _viewTitleSection.Frame.GetMaxY()), new CGSize(ViewWidth
-                            , _viewTooltip.Frame.GetMaxY() + GetScaledHeight(16)));
-                    }
-                    , () =>
+                        if (NetworkUtility.isReachable)
+                        {
+                            Debug.WriteLine("_btnViewBill");
+                            DataManager.DataManager.SharedInstance.IsSameAccount = true;
+                            UIStoryboard storyBoard = UIStoryboard.FromName("ViewBill", null);
+                            ViewBillViewController viewController =
+                                storyBoard.InstantiateViewController("ViewBillViewController") as ViewBillViewController;
+                            if (viewController != null)
+                            {
+                                viewController.IsFromUsage = true;
+                                var navController = new UINavigationController(viewController);
+                                PresentViewController(navController, true, null);
+                            }
+                        }
+                        else
+                        {
+                            DisplayNoDataAlert();
+                        }
+                    });
+                });
+            }));
+
+            _btnPay.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+                {
+                    InvokeOnMainThread(() =>
                     {
-                        _uiScrollView.ContentSize = new CGSize(ViewWidth, _viewBreakdown.Frame.GetMaxY());
-                    }
-                );
+                        if (NetworkUtility.isReachable)
+                        {
+                            Debug.WriteLine("_btnPay");
+                            UIStoryboard storyBoard = UIStoryboard.FromName("Payment", null);
+                            SelectBillsViewController selectBillsVC =
+                                storyBoard.InstantiateViewController("SelectBillsViewController") as SelectBillsViewController;
+                            if (selectBillsVC != null)
+                            {
+                                //selectBillsVC.SelectedAccountDueAmount = 0;//DataManager.DataManager.SharedInstance.BillingAccountDetails.amCustBal;
+                                var navController = new UINavigationController(selectBillsVC);
+                                PresentViewController(navController, true, null);
+                            }
+                        }
+                        else
+                        {
+                            DisplayNoDataAlert();
+                        }
+                    });
+                });
             }));
         }
 

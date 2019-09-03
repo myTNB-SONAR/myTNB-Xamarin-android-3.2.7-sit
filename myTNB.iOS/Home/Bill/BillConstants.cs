@@ -39,6 +39,7 @@ namespace myTNB.Home.Bill
         public static string I18N_NoHistoryData = "noHistoryData";
         public static string I18N_MyHistory = "myHistory";
         public static string I18N_BcrmDownMessage = "bcrmDownMessage";
+        public static string I18N_ViewBill = "viewBill";
 
         //Bill Details
         public static string I18N_BillDetails = "billDetails";
