@@ -340,6 +340,7 @@ namespace myTNB
 
             _historyTableView.ReloadData();
             _historyTableView.Hidden = false;
+            OnResetBGRect();
         }
         #endregion
 
@@ -582,6 +583,7 @@ namespace myTNB
             _headerViewContainer.Frame = new CGRect(_headerViewContainer.Frame.Location
                 , new CGSize(_headerViewContainer.Frame.Width, _headerView.Frame.GetMaxY()));
             _historyTableView.ReloadData();
+            OnResetBGRect();
         }
 
         #region Table
@@ -622,6 +624,11 @@ namespace myTNB
             var opac = _previousScrollOffset / _tableViewOffset;
             var absOpacity = Math.Abs((float)opac);
             AddViewWithOpacity(absOpacity);
+        }
+
+        private void OnResetBGRect()
+        {
+            _bgImageView.Frame = new CGRect(new CGPoint(0, 0), _bgImageView.Frame.Size);
         }
 
         private void FilterDisplay(bool isHeader)
