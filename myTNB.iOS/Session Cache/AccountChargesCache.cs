@@ -12,7 +12,11 @@ namespace myTNB
         public static AccountChargesCache Instance { get { return lazy.Value; } }
 
         private static Dictionary<string, AccountChargesModel> AccountChargesDisctionary = new Dictionary<string, AccountChargesModel>();
-        private static List<PopupModel> AccountChargesPopupList = new List<PopupModel>();
+        private static List<PopupModel> PopupDetailList = new List<PopupModel>();
+        private static Dictionary<string, List<PopupSelectorModel>> PopupDetailsDictionary;
+        private static List<PopupSelectorModel> PopupList;
+        private static readonly string SelectorKey = Home.Bill.BillConstants.Pagename_Bills;
+        private static readonly string PopupKey = Home.Bill.BillConstants.Popup_MandatoryChargesPopUpDetails;
 
         public static void SetData(GetAccountsChargesResponseModel response)
         {
@@ -33,25 +37,9 @@ namespace myTNB
                 }
                 if (response.d.data.MandatoryChargesPopUpDetails != null && response.d.data.MandatoryChargesPopUpDetails.Count > 0)
                 {
-                    AccountChargesPopupList = response.d.data.MandatoryChargesPopUpDetails.DeepClone();
+                    PopupDetailList = response.d.data.MandatoryChargesPopUpDetails.DeepClone();
                 }
             }
-        }
-
-        public static PopupModel GetPopupByType(string type)
-        {
-            if (string.IsNullOrEmpty(type) || string.IsNullOrWhiteSpace(type)
-                || AccountChargesPopupList == null || AccountChargesPopupList.Count < 1)
-            {
-                return null;
-            }
-
-            int popupIndex = AccountChargesPopupList.FindIndex(x => x.Type == type);
-            if (popupIndex > -1)
-            {
-                return AccountChargesPopupList[popupIndex].DeepClone();
-            }
-            return null;
         }
 
         public static AccountChargesModel GetAccountCharges(string accountNumber)
@@ -111,7 +99,7 @@ namespace myTNB
         public static void Clear()
         {
             AccountChargesDisctionary.Clear();
-            AccountChargesPopupList.Clear();
+            PopupDetailList.Clear();
         }
 
         public static bool HasMandatory(string accountNumber)
@@ -126,5 +114,72 @@ namespace myTNB
             }
             return false;
         }
+
+        #region Popup
+        public static PopupModel GetPopupDetailsByType(string type)
+        {
+            SetPopupSelectorValues();
+            if (!string.IsNullOrEmpty(type) && !string.IsNullOrWhiteSpace(type))
+            {
+                PopupSelectorModel fallback = GetFallbackPopupValue(type);
+                if (PopupDetailList != null)
+                {
+                    int index = PopupDetailList.FindIndex(x => x.Type.ToLower() == type.ToLower());
+                    if (index > -1)
+                    {
+                        PopupModel popupDetails = PopupDetailList[index];
+                        return new PopupModel
+                        {
+                            Title = popupDetails != null && !string.IsNullOrEmpty(popupDetails.Title)
+                                ? popupDetails.Title : fallback.Title,
+                            Description = popupDetails != null && !string.IsNullOrEmpty(popupDetails.Description)
+                                ? popupDetails.Description : fallback.Description,
+                            CTA = popupDetails != null && !string.IsNullOrEmpty(popupDetails.CTA)
+                                ? popupDetails.CTA : fallback.CTA,
+                            Type = popupDetails != null && !string.IsNullOrEmpty(popupDetails.Type)
+                                ? popupDetails.Type : fallback.Type
+                        };
+                    }
+                }
+                else
+                {
+                    return new PopupModel
+                    {
+                        Title = fallback.Title,
+                        Description = fallback.Description,
+                        CTA = fallback.CTA,
+                        Type = fallback.Type
+                    };
+                }
+            }
+            return null;
+        }
+
+        private static void SetPopupSelectorValues()
+        {
+            if (PopupDetailsDictionary == null || PopupDetailsDictionary.Count == 0
+                || PopupList == null || PopupList.Count == 0)
+            {
+                PopupDetailsDictionary = LanguageManager.Instance.GetPopupSelectorsByPage(SelectorKey);
+                if (PopupDetailsDictionary.ContainsKey(PopupKey))
+                {
+                    PopupList = PopupDetailsDictionary[PopupKey];
+                }
+            }
+        }
+
+        private static PopupSelectorModel GetFallbackPopupValue(string type)
+        {
+            if (PopupList != null || PopupList.Count > 0)
+            {
+                PopupSelectorModel item = PopupList.Find(x => x.Type == type);
+                if (item != null)
+                {
+                    return item;
+                }
+            }
+            return new PopupSelectorModel();
+        }
+        #endregion
     }
 }

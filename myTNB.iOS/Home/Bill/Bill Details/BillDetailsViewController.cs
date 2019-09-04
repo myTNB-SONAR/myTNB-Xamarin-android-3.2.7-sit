@@ -7,6 +7,7 @@ using System.Globalization;
 using UIKit;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB.SitecoreCMS.Model;
+using myTNB.Model;
 
 namespace myTNB
 {
@@ -459,7 +460,7 @@ namespace myTNB
             view.AddSubview(viewInfo);
             view.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                var popupData = AccountChargesCache.GetPopupByType("MandatoryCharges");
+                PopupModel popupData = AccountChargesCache.GetPopupDetailsByType(BillConstants.Popup_MandatoryChargesKey);
                 if (popupData != null)
                 {
                     DisplayCustomAlert(popupData.Title, popupData.Description

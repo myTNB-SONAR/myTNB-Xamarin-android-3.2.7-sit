@@ -254,7 +254,7 @@ namespace myTNB
 
         internal void OnShowItemisedTooltip(string accNum)
         {
-            PopupModel popupData = AccountChargesCache.GetPopupByType("MandatoryPayment");
+            PopupModel popupData = AccountChargesCache.GetPopupDetailsByType(BillConstants.Popup_MandatoryPaymentKey);
             MandatoryChargesModel mandatoryCharges = AccountChargesCache.GetMandatoryCharges(accNum);
             _selectedAccountNumber = accNum;
             string description = string.Format(popupData.Description

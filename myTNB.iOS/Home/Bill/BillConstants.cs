@@ -6,6 +6,9 @@
         public static string Pagename_Bills = "Bills";
         public static string Pagename_BillDetails = "BillDetails";
         public static string Pagename_BillFilter = "BillFilter";
+        public static string Popup_MandatoryChargesPopUpDetails = "MandatoryChargesPopUpDetails";
+        public static string Popup_MandatoryChargesKey = "MandatoryCharges";
+        public static string Popup_MandatoryPaymentKey = "MandatoryPayment";
 
         //Service
         public static string Service_GetAccountsCharges = "GetAccountsCharges";
