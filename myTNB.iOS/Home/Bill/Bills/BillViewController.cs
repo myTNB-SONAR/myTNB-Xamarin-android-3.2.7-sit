@@ -41,7 +41,7 @@ namespace myTNB
             {
                 v.RemoveFromSuperview();
             }
-            NavigationController.NavigationBarHidden = true;
+            if (NavigationController != null) { NavigationController.NavigationBarHidden = true; }
             PageName = BillConstants.Pagename_Bills;
             base.ViewDidLoad();
             _isBCRMAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
