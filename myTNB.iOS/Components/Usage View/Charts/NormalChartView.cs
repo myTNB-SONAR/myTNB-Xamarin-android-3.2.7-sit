@@ -9,7 +9,10 @@ namespace myTNB
 {
     public class NormalChartView : BaseChartView
     {
-        public NormalChartView() { }
+        public NormalChartView()
+        {
+            ShimmerHeight = GetHeightByScreenSize(189);
+        }
 
         protected override void CreatUI()
         {
@@ -154,7 +157,7 @@ namespace myTNB
                 barMaxY -= blockHeight;
                 UIView viewTariffBlock = new UIView(new CGRect(0, barMaxY, size.Width, blockHeight))
                 {
-                    BackgroundColor = GetTariffBlockColor(item.BlockId, isSelected)
+                    BackgroundColor = GetTariffBlockColor(item.BlockId, isSelected, false)
                 };
                 viewTariffContainer.AddSubview(viewTariffBlock);
                 barMaxY -= GetHeightByScreenSize(1);

@@ -23,9 +23,9 @@ namespace myTNB
         private SMRAccountActivityInfoResponseModel _smrActivityInfoResponse;
         private CustomerAccountRecordModel _currAcc;
         private ContactDetailsResponseModel _contactDetails;
-        private nfloat  _navBarHeight, _previousScrollOffset;
+        private nfloat _navBarHeight, _previousScrollOffset;
         private nfloat _tableViewOffset = 64f;
-        private nfloat titleBarHeight = 24f;
+        private nfloat titleBarHeight = ScaleUtility.GetScaledHeight(24f);
         private int _currentIndex = -1;
         private bool _isFromSelection;
 
@@ -57,7 +57,8 @@ namespace myTNB
                 accName = _currAcc?.accountNickName ?? string.Empty;
                 _ssmrHeaderComponent.AccountName = accName;
                 EvaluateEntry();
-            }else if (FromStatusPage)
+            }
+            else if (FromStatusPage)
             {
                 _currAcc = SSMRActivityInfoCache.SubmittedAccount;
                 accName = _currAcc?.accountNickName ?? string.Empty;
@@ -147,12 +148,6 @@ namespace myTNB
                 _navBarHeight = NavigationController.NavigationBar.Frame.Height;
             }
 
-            int yLocation = 26;
-            if (DeviceHelper.IsIphoneXUpResolution())
-            {
-                yLocation = 50;
-            }
-
             _navbarView = new UIView(new CGRect(0, 0, ViewWidth, DeviceHelper.GetStatusBarHeight() + _navBarHeight))
             {
                 BackgroundColor = UIColor.Clear
@@ -166,19 +161,19 @@ namespace myTNB
 
             View.AddSubview(_bgImageView);
 
-            UIView viewTitleBar = new UIView(new CGRect(0, yLocation, _navbarView.Frame.Width, titleBarHeight));
+            UIView viewTitleBar = new UIView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + GetScaledHeight(8f), _navbarView.Frame.Width, titleBarHeight));
 
-            UIView viewBack = new UIView(new CGRect(18, 0, 24, titleBarHeight));
-            UIImageView imgViewBack = new UIImageView(new CGRect(0, 0, 24, titleBarHeight))
+            UIView viewBack = new UIView(new CGRect(BaseMarginWidth16, 0, GetScaledWidth(24F), titleBarHeight));
+            UIImageView imgViewBack = new UIImageView(new CGRect(0, 0, GetScaledWidth(24F), titleBarHeight))
             {
                 Image = UIImage.FromBundle(SSMRConstants.IMG_BackIcon)
             };
             viewBack.AddSubview(imgViewBack);
             viewTitleBar.AddSubview(viewBack);
 
-            UILabel lblTitle = new UILabel(new CGRect(58, 0, _navbarView.Frame.Width - 116, titleBarHeight))
+            UILabel lblTitle = new UILabel(new CGRect(GetScaledWidth(56F), 0, _navbarView.Frame.Width - (GetScaledWidth(56F) * 2), titleBarHeight))
             {
-                Font = MyTNBFont.MuseoSans16_500,
+                Font = TNBFont.MuseoSans_16_500,
                 Text = GetI18NValue(SSMRConstants.I18N_NavTitle)
             };
 
