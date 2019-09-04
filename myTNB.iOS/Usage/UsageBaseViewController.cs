@@ -28,7 +28,6 @@ namespace myTNB
 
         internal bool _rmkWhFlag, _tariffIsVisible;
         internal RMkWhEnum _rMkWhEnum;
-        internal nfloat _lastContentOffset;
         internal bool isBcrmAvailable, isNormalChart, isREAccount, isSmartMeterAccount, accountIsSSMR;
         internal bool _legendIsVisible, _acctSelectorIsTapped;
 
@@ -205,7 +204,7 @@ namespace myTNB
             _scrollViewContent = new UIScrollView(new CGRect(0, GetYLocationFromFrame(_navbarContainer.Frame, 8F), ViewWidth, height))
             {
                 BackgroundColor = UIColor.Clear,
-                Bounces = false,
+                Bounces = true,
                 CanCancelContentTouches = false,
                 DelaysContentTouches = true
             };
@@ -1015,15 +1014,23 @@ namespace myTNB
             UIScrollView scrollView = sender as UIScrollView;
             if (scrollView != null)
             {
-                if (_lastContentOffset < 0 || _lastContentOffset < scrollView.ContentOffset.Y)
-                {
-                    AnimateFooterToHideAndShow(true);
-                }
-                else if (_lastContentOffset > scrollView.ContentOffset.Y)
+                nfloat scrollViewHeight = scrollView.Frame.Size.Height;
+                nfloat scrollContentSizeHeight = scrollView.ContentSize.Height;
+                nfloat scrollOffset = scrollView.ContentOffset.Y;
+
+                if (scrollOffset <= 0)
                 {
                     AnimateFooterToHideAndShow(false);
                 }
-                _lastContentOffset = scrollView.ContentOffset.Y;
+                else if ((scrollOffset + scrollViewHeight) >= scrollContentSizeHeight)
+                {
+                    AnimateFooterToHideAndShow(true);
+                }
+
+                if (scrollView.ContentOffset.Y > 3)
+                {
+                    ViewHelper.AdjustFrameSetY(_bgImageView, scrollView.ContentOffset.Y * -1);
+                }
             }
         }
 
