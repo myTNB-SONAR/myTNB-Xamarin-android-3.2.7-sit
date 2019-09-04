@@ -177,9 +177,6 @@
     <Reference Include="iCarousel.iOS">
       <HintPath>..\packages\Xamarin.iCarousel.1.8.3\lib\Xamarin.iOS\iCarousel.iOS.dll</HintPath>
     </Reference>
-    <Reference Include="Lottie.iOS">
-      <HintPath>..\packages\Com.Airbnb.iOS.Lottie.2.5.4\lib\xamarinios10\Lottie.iOS.dll</HintPath>
-    </Reference>
     <Reference Include="Facebook.CoreKit">
       <HintPath>..\packages\Xamarin.Facebook.CoreKit.iOS.4.35.0\lib\Xamarin.iOS10\Facebook.CoreKit.dll</HintPath>
     </Reference>
@@ -241,6 +238,9 @@
     </Reference>
     <Reference Include="DeepCloner">
       <HintPath>..\packages\DeepCloner.0.10.2\lib\netstandard1.3\DeepCloner.dll</HintPath>
+    </Reference>
+    <Reference Include="Lottie.iOS">
+      <HintPath>..\packages\Com.Airbnb.iOS.Lottie.2.5.9\lib\xamarinios10\Lottie.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -2425,6 +2425,7 @@
     <BundleResource Include="Resources\OCR Reading.json" />
     <BundleResource Include="Resources\dashboardzoom.json" />
     <BundleResource Include="Resources\GeneralLoadingR1.json" />
+    <BundleResource Include="Resources\Dashboard Zoom.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\myTNB.Mobile\myTNB.Mobile.csproj">
