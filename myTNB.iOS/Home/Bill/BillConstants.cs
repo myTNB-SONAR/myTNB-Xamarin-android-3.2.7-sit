@@ -6,6 +6,7 @@ namespace myTNB.Home.Bill
         //Pagename
         public static string Pagename_Bills = "Bills";
         public static string Pagename_BillDetails = "BillDetails";
+        public static string Pagename_BillFilter = "BillFilter";
 
         //Service
         public static string Service_GetAccountsCharges = "GetAccountsCharges";
@@ -52,6 +53,12 @@ namespace myTNB.Home.Bill
         public static string I18N_ToolTipTitle2 = "tooltiptitle2";
         public static string I18N_ToolTipDesc2 = "tooltipdesc2";
 
+        //Bill Filter
+        public static string I18N_FilterDescription = "description";
+        public static string I18N_FilterBy = "filterBy";
+        public static string I18N_ApplyFilter = "applyFilter";
+        public static string I18N_SelectFilter = "selectFilter";
+
         //Image
         public static string IMG_NeedToPay = "Bills-NeedToPay-Banner";
         public static string IMG_Cleared = "Bills-Cleared-Banner";
@@ -67,6 +74,7 @@ namespace myTNB.Home.Bill
         public static string IMG_BCRMDown = "BCRM-Down-Background";
         public static string IMG_LoadingBanner = "Bill-Loading-Banner";
         public static string IMG_Refresh = "SSMR-Refresh";
+        public static string IMG_DropdownIcon = "IC-Action-Dropdown";
 
         //Event
         public static string Event_MandatoryChargesPopup = "MandatoryChargesPopup";

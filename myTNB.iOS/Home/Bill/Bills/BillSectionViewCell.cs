@@ -7,7 +7,7 @@ namespace myTNB.Home.Bill
 {
     public class BillSectionViewCell : UITableViewCell
     {
-        private UIView _view;
+        private UIView _view, _viewFilter, _viewParent;
         private UILabel _lblTitle;
         private nfloat _cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
         private nfloat _baseHMargin = ScaleUtility.GetScaledWidth(16);
@@ -23,20 +23,16 @@ namespace myTNB.Home.Bill
                 TextColor = MyTNBColor.WaterBlue
             };
 
-            UIView viewFilter = new UIView(new CGRect(_cellWidth - ScaleUtility.GetScaledWidth(32), ScaleUtility.GetScaledHeight(20)
+            _viewFilter = new UIView(new CGRect(_cellWidth - ScaleUtility.GetScaledWidth(32), ScaleUtility.GetScaledHeight(20)
                 , scaled16, scaled16));
             UIImageView imgFilter = new UIImageView(new CGRect(0, 0, scaled16, scaled16))
             {
                 Image = UIImage.FromBundle("IC-Action-Filter")
             };
-            viewFilter.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-            {
-                Debug.WriteLine("Filter");
-            }));
-            viewFilter.AddSubview(imgFilter);
+            _viewFilter.AddSubview(imgFilter);
 
             _view.AddSubview(_lblTitle);
-            _view.AddSubview(viewFilter);
+            _view.AddSubview(_viewFilter);
 
             AddSubview(_view);
             if (_view != null)
@@ -67,11 +63,15 @@ namespace myTNB.Home.Bill
             {
                 if (value)
                 {
+                    if (_viewParent != null)
+                    {
+                        _viewParent.RemoveFromSuperview();
+                    }
                     CustomShimmerView shimmeringView = new CustomShimmerView();
-                    UIView viewParent = new UIView(new CGRect(new CGPoint(0, 0), _view.Frame.Size)) { BackgroundColor = UIColor.Clear, Tag = 99 };
+                    _viewParent = new UIView(new CGRect(new CGPoint(0, 0), _view.Frame.Size)) { BackgroundColor = UIColor.Clear, Tag = 99 };
                     UIView viewShimmerParent = new UIView(new CGRect(new CGPoint(0, 0), _view.Frame.Size)) { BackgroundColor = UIColor.Clear };
                     UIView viewShimmerContent = new UIView(new CGRect(new CGPoint(0, 0), _view.Frame.Size)) { BackgroundColor = UIColor.Clear };
-                    viewParent.AddSubviews(new UIView[] { viewShimmerParent, viewShimmerContent });
+                    _viewParent.AddSubviews(new UIView[] { viewShimmerParent, viewShimmerContent });
 
                     UIView viewGroupedData = new UIView(new CGRect(_baseHMargin, _view.Frame.GetMaxY() - ScaleUtility.GetScaledHeight(12)
                         , ScaleUtility.GetScaledWidth(100), ScaleUtility.GetScaledHeight(12)))
@@ -85,15 +85,28 @@ namespace myTNB.Home.Bill
                     shimmeringView.Shimmering = true;
                     shimmeringView.SetValues();
 
-                    _view.AddSubview(viewParent);
+                    _view.AddSubview(_viewParent);
                 }
                 else
                 {
-                    UIView view = _view.ViewWithTag(99);
-                    if (view != null)
+                    if (_viewParent != null)
                     {
-                        view.RemoveFromSuperview();
+                        _viewParent.RemoveFromSuperview();
                     }
+                }
+            }
+        }
+
+        public Action filterAction
+        {
+            set
+            {
+                if (value != null)
+                {
+                    _viewFilter.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                    {
+                        value.Invoke();
+                    }));
                 }
             }
         }

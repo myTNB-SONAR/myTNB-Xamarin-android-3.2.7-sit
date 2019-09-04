@@ -613,6 +613,23 @@
             </objects>
             <point key="canvasLocation" x="245.3999" y="223"/>
         </scene>
+        <scene sceneID="32197">
+            <objects>
+                <viewController id="32198" sceneMemberID="viewController" customClass="BillFilterViewController" storyboardIdentifier="BillFilterViewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="32195"/>
+                        <viewControllerLayoutGuide type="bottom" id="32196"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="32199">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="32200" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2264" y="-1747"/>
+        </scene>
     </scenes>
     <resources>
         <image name="IC-RE-Leaf-Green" width="24" height="24"/>

@@ -49,7 +49,7 @@
         "paidExtra": "I've paid extra",
         "clearedAllBills": "I've cleared all bills",
         "viewReadHistory": "View Reading History",
-        "viewBill":  "View Bill"
+        "viewBill": "View Bill"
     },
     "Hint": {
         "mobileNumber": "Please include the country code of your phone number.",
@@ -277,5 +277,13 @@
         "tooltiptitle2": "Items from your demand letter",
         "tooltipdesc1": "I need to pay|My outstanding charges|My bill this month (electricity usage only)",
         "tooltipdesc2": "Security Deposit|Stamp Duty|Processing Fee|Meter Fee"
+    },
+
+    "BillFilter": {
+        "navTitle": "Filter Views",
+        "description": "View your invoiced bills, payment receipts or both.",
+        "filterBy": "Filter By",
+        "applyFilter": "Apply Filter",
+        "selectFilter": "Select Filter"
     }
 }

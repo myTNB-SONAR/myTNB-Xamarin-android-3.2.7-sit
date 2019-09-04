@@ -51,5 +51,6 @@ namespace myTNB
                 return !string.IsNullOrEmpty(DetailedInfoNumber) && !string.IsNullOrWhiteSpace(DetailedInfoNumber);
             }
         }
+        public string HistoryTypeText { set; get; } = string.Empty;
     }
 }

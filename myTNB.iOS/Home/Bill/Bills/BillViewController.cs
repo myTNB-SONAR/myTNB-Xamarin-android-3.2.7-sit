@@ -1,9 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using CoreAnimation;
 using CoreGraphics;
+using Force.DeepCloner;
 using Foundation;
 using myTNB.Home.Bill;
 using myTNB.Model;
@@ -31,6 +34,10 @@ namespace myTNB
         private GetAccountsChargesResponseModel _accountCharges;
         private GetAccountBillPayHistoryResponseModel _billHistory;
         private bool _isBCRMAvailable;
+        private List<string> FilterTypes = new List<string>();
+        private List<string> FilterKeys = new List<string>();
+        private int FilterIndex = 0;
+        private bool isFromFilter;
 
         public BillViewController(IntPtr handle) : base(handle) { }
 
@@ -55,14 +62,21 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            if (_isBCRMAvailable)
+            if (!isFromFilter)
             {
-                OnSelectAccount(0);
+                if (_isBCRMAvailable)
+                {
+                    OnSelectAccount(0);
+                }
+                else
+                {
+                    _historyTableView.Hidden = true;
+                    DisplayRefresh();
+                }
             }
             else
             {
-                _historyTableView.Hidden = true;
-                DisplayRefresh();
+                isFromFilter = false;
             }
         }
 
@@ -112,6 +126,10 @@ namespace myTNB
             {
                 Image = UIImage.FromBundle("IC-Action-Filter")
             };
+            _viewFilter.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                ShowFilterScreen();
+            }));
             _viewFilter.AddSubview(imgFilter);
             viewTitleBar.AddSubview(_lblNavTitle);
             viewTitleBar.AddSubview(_viewFilter);
@@ -487,7 +505,8 @@ namespace myTNB
                        }
                        _historyTableView.Source = new BillHistorySource(new List<BillPayHistoryModel>(), true)
                        {
-                           GetI18NValue = GetI18NValue
+                           GetI18NValue = GetI18NValue,
+                           OnShowFilter = ShowFilterScreen
                        };
                        InvokeInBackground(async () =>
                        {
@@ -518,13 +537,16 @@ namespace myTNB
                                if (_billHistory != null && _billHistory.d != null && _billHistory.d.IsSuccess
                                     && _billHistory.d.data != null)
                                {
+                                   FilterTypes = GetHistoryFilterTypes(_billHistory.d.data.BillPayHistories);
+                                   FilterIndex = 0;
                                    List<BillPayHistoryModel> historyList = _billHistory.d.data.BillPayHistories;
                                    _historyTableView.Source = new BillHistorySource(historyList, false)
                                    {
                                        OnTableViewScroll = OnTableViewScroll,
                                        GetI18NValue = GetI18NValue,
                                        OnSelectBill = DisplayBillPDF,
-                                       OnSelectPayment = DisplayReceipt
+                                       OnSelectPayment = DisplayReceipt,
+                                       OnShowFilter = ShowFilterScreen
                                    };
                                    _historyTableView.ReloadData();
                                }
@@ -598,7 +620,8 @@ namespace myTNB
             _historyTableView.Source = new BillHistorySource(new List<BillPayHistoryModel>(), true)
             {
                 OnTableViewScroll = OnTableViewScroll,
-                GetI18NValue = GetI18NValue
+                GetI18NValue = GetI18NValue,
+                OnShowFilter = ShowFilterScreen
             };
             _historyTableView.BackgroundColor = UIColor.Clear;
             _historyTableView.RowHeight = UITableView.AutomaticDimension;
@@ -714,6 +737,22 @@ namespace myTNB
                 });
             });
         }
+
+        private void ShowFilterScreen()
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+            BillFilterViewController viewController =
+                storyBoard.InstantiateViewController("BillFilterViewController") as BillFilterViewController;
+            if (viewController != null)
+            {
+                isFromFilter = true;
+                viewController.FilterIndex = FilterIndex;
+                viewController.FilterTypes = FilterTypes;
+                viewController.ApplyFilter = ApplyFilterWithIndex;
+                var navController = new UINavigationController(viewController);
+                PresentViewController(navController, true, null);
+            }
+        }
         #endregion
 
         #region Services
@@ -743,6 +782,97 @@ namespace myTNB
             GetAccountBillPayHistoryResponseModel response = serviceManager.OnExecuteAPIV6<GetAccountBillPayHistoryResponseModel>(BillConstants.Service_GetAccountBillPayHistory, request);
             return response;
         }
+        #endregion
+
+        #region Filter
+        private List<string> GetHistoryFilterTypes(List<BillPayHistoryModel> billHistory)
+        {
+            List<string> filterKeys = new List<string>();
+            List<string> filterTypes = new List<string>();
+            List<BillPayHistoryDataModel> historyData = new List<BillPayHistoryDataModel>();
+            foreach (var obj in billHistory)
+            {
+                foreach (var obj2 in obj.BillPayHistoryData)
+                {
+                    historyData.Add(obj2);
+                }
+            }
+            var keys = historyData.Select(x => x.HistoryType).Distinct();
+            var names = historyData.Select(x => x.HistoryTypeText).Distinct();
+            filterKeys = new List<string>(keys);
+            filterKeys.Insert(0, "ALL");
+            FilterKeys = new List<string>(filterKeys);
+            filterTypes = new List<string>(names);
+            filterTypes.Insert(0, "All");
+            return filterTypes;
+        }
+
+        private void ApplyFilterWithIndex(int index)
+        {
+            FilterIndex = index;
+            isFromFilter = true;
+            List<BillPayHistoryModel> historyList = _billHistory?.d?.data?.BillPayHistories.DeepClone() ?? new List<BillPayHistoryModel>();
+            List<BillPayHistoryDataModel> dataToRemove = new List<BillPayHistoryDataModel>();
+            List<BillPayHistoryModel> historyToRemove = new List<BillPayHistoryModel>();
+            if (historyList.Count > 0)
+            {
+                if (index > 0)
+                {
+                    var filterKey = FilterKeys[index];
+                    foreach (var obj in historyList)
+                    {
+                        var historyData = obj.BillPayHistoryData;
+                        foreach (var data in historyData)
+                        {
+                            if (data.HistoryType != filterKey)
+                            {
+                                dataToRemove.Add(data);
+                            }
+                        }
+                    }
+
+                    if (dataToRemove.Count > 0)
+                    {
+                        foreach (var objToRemove in dataToRemove)
+                        {
+                            foreach (var obj in historyList)
+                            {
+                                var historyData = obj.BillPayHistoryData;
+                                historyData.Remove(objToRemove);
+                            }
+                        }
+                    }
+
+                    foreach (var obj in historyList)
+                    {
+                        var historyData = obj.BillPayHistoryData;
+                        if (historyData.Count == 0)
+                        {
+                            historyToRemove.Add(obj);
+                        }
+                    }
+
+                    if (historyToRemove.Count > 0)
+                    {
+                        foreach (var objToRemove in historyToRemove)
+                        {
+                            historyList.Remove(objToRemove);
+                        }
+                    }
+                }
+            }
+
+            _historyTableView.Source = new BillHistorySource(historyList, false)
+            {
+                OnTableViewScroll = OnTableViewScroll,
+                GetI18NValue = GetI18NValue,
+                OnSelectBill = DisplayBillPDF,
+                OnSelectPayment = DisplayReceipt,
+                OnShowFilter = ShowFilterScreen
+            };
+            _historyTableView.ReloadData();
+        }
+
         #endregion
     }
 }
