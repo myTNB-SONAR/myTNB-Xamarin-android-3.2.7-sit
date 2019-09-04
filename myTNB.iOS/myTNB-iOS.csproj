@@ -2447,6 +2447,10 @@
     <Compile Include="Home\Bill\Bills\BillHistoryShimmerViewCell.cs" />
     <Compile Include="Model\GetPaymentTransactionId\GetPaymentTransactionIdResponseModel.cs" />
     <Compile Include="Session Cache\AccountChargesCache.cs" />
+    <Compile Include="Home\Bill\Bills\BillFilterViewController.cs" />
+    <Compile Include="Home\Bill\Bills\BillFilterViewController.designer.cs">
+      <DependentUpon>BillFilterViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
