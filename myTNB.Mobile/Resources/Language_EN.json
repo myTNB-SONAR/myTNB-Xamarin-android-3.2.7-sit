@@ -49,7 +49,8 @@
         "paidExtra": "I've paid extra",
         "clearedAllBills": "I've cleared all bills",
         "viewReadHistory": "View Reading History",
-        "viewBill": "View Bill"
+        "viewBill": "View Bill",
+        "all":  "All"
     },
     "Hint": {
         "mobileNumber": "Please include the country code of your phone number.",

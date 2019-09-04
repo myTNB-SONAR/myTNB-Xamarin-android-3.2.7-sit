@@ -1,9 +1,7 @@
 using CoreGraphics;
-using Foundation;
 using myTNB.Home.Bill;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using UIKit;
 
 namespace myTNB

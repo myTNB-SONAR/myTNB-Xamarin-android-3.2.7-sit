@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using CoreAnimation;
 using CoreGraphics;
@@ -335,13 +334,7 @@ namespace myTNB
                 _bgImageView.Image = UIImage.FromBundle(BillConstants.IMG_LoadingBanner);
             }
             _shimmerView.Hidden = !isLoading;
-            _btnMore.Enabled = !isLoading;
-            _btnMore.Layer.BorderColor = (isLoading ? MyTNBColor.SilverChalice : MyTNBColor.FreshGreen).CGColor;
-            _btnMore.SetTitleColor(isLoading ? MyTNBColor.SilverChalice : MyTNBColor.FreshGreen, UIControlState.Normal);
-
-            _btnPay.Enabled = !isLoading;
-            _btnPay.BackgroundColor = isLoading ? MyTNBColor.SilverChalice : MyTNBColor.FreshGreen;
-
+            _viewCTA.Hidden = isLoading;
             _viewCTA.Hidden = !isLoading;
             if (isLoading)
             {
@@ -349,7 +342,7 @@ namespace myTNB
                     , GetYLocationFromFrame(_shimmerView.Frame, 16)), _viewCTA.Frame.Size);
 
                 CGRect frame = _headerView.Frame;
-                frame.Height = GetYLocationFromFrame(_viewCTA.Frame, 16);
+                frame.Height = GetYLocationFromFrame(_shimmerView.Frame, 16);
                 _headerView.Frame = frame;
 
                 _headerViewContainer.Frame = new CGRect(_headerViewContainer.Frame.Location
@@ -803,7 +796,7 @@ namespace myTNB
             filterKeys.Insert(0, "ALL");
             FilterKeys = new List<string>(filterKeys);
             filterTypes = new List<string>(names);
-            filterTypes.Insert(0, "All");
+            filterTypes.Insert(0, GetCommonI18NValue(BillConstants.I18N_All));
             return filterTypes;
         }
 
