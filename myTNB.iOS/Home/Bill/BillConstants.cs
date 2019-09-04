@@ -1,5 +1,4 @@
-﻿using System;
-namespace myTNB.Home.Bill
+﻿namespace myTNB.Home.Bill
 {
     public static class BillConstants
     {

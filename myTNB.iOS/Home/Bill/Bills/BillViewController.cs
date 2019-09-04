@@ -36,7 +36,7 @@ namespace myTNB
         private List<string> FilterTypes = new List<string>();
         private List<string> FilterKeys = new List<string>();
         private int FilterIndex = 0;
-        private bool isFromFilter;
+        public bool NeedsUpdate = true;
 
         public BillViewController(IntPtr handle) : base(handle) { }
 
@@ -61,7 +61,7 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            if (!isFromFilter)
+            if (NeedsUpdate)
             {
                 if (_isBCRMAvailable)
                 {
@@ -72,10 +72,6 @@ namespace myTNB
                     _historyTableView.Hidden = true;
                     DisplayRefresh();
                 }
-            }
-            else
-            {
-                isFromFilter = false;
             }
         }
 
@@ -205,6 +201,7 @@ namespace myTNB
             _btnMore.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             _btnMore.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
+                NeedsUpdate = false;
                 UIStoryboard storyBoard = UIStoryboard.FromName("BillDetails", null);
                 BillDetailsViewController viewController =
                     storyBoard.InstantiateViewController("BillDetailsView") as BillDetailsViewController;
@@ -231,6 +228,7 @@ namespace myTNB
                     {
                         if (NetworkUtility.isReachable)
                         {
+                            NeedsUpdate = false;
                             UIStoryboard storyBoard = UIStoryboard.FromName("Payment", null);
                             SelectBillsViewController selectBillsVC =
                                 storyBoard.InstantiateViewController("SelectBillsViewController") as SelectBillsViewController;
@@ -286,6 +284,7 @@ namespace myTNB
             _viewAccountSelector = _accountSelector.GetUI();
             _accountSelector.SetAction(() =>
             {
+                NeedsUpdate = true;
                 UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                 SelectAccountTableViewController viewController =
                     storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
@@ -682,6 +681,7 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
+                        NeedsUpdate = false;
                         DataManager.DataManager.SharedInstance.IsSameAccount = true;
                         UIStoryboard storyBoard = UIStoryboard.FromName("ViewBill", null);
                         ViewBillViewController viewController =
@@ -713,6 +713,7 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
+                        NeedsUpdate = false;
                         UIStoryboard storyBoard = UIStoryboard.FromName("Receipt", null);
                         ReceiptViewController viewController =
                             storyBoard.InstantiateViewController("ReceiptViewController") as ReceiptViewController;
@@ -738,7 +739,7 @@ namespace myTNB
                 storyBoard.InstantiateViewController("BillFilterViewController") as BillFilterViewController;
             if (viewController != null)
             {
-                isFromFilter = true;
+                NeedsUpdate = false;
                 viewController.FilterIndex = FilterIndex;
                 viewController.FilterTypes = FilterTypes;
                 viewController.ApplyFilter = ApplyFilterWithIndex;
@@ -803,7 +804,7 @@ namespace myTNB
         private void ApplyFilterWithIndex(int index)
         {
             FilterIndex = index;
-            isFromFilter = true;
+            NeedsUpdate = false;
             List<BillPayHistoryModel> historyList = _billHistory?.d?.data?.BillPayHistories.DeepClone() ?? new List<BillPayHistoryModel>();
             List<BillPayHistoryDataModel> dataToRemove = new List<BillPayHistoryDataModel>();
             List<BillPayHistoryModel> historyToRemove = new List<BillPayHistoryModel>();
