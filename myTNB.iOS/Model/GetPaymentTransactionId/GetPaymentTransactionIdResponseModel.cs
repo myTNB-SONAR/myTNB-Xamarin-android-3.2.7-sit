@@ -49,6 +49,10 @@ namespace myTNB
         public string AccountOwnerName { set; get; } = string.Empty;
         public string AccountNo { set; get; } = string.Empty;
         public string AccountAmount { set; get; } = string.Empty;
+    }
+
+    public class PayMandatoryItems : PayItemsModel
+    {
         public List<PaymentTypeModel> AccountPayments { set; get; } = new List<PaymentTypeModel>();
     }
 

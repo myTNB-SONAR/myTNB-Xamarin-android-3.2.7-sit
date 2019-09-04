@@ -1,15 +1,14 @@
 ﻿using System;
 using UIKit;
-using myTNB.Model;
 using Foundation;
 
 namespace myTNB.Home.Bill.Receipt
 {
     public class ReceiptTableViewDataSource : UITableViewSource
     {
-        ReceiptResponseModel _receipt = new ReceiptResponseModel();
+        private GetPaymentReceiptResponseModel _receipt = new GetPaymentReceiptResponseModel();
 
-        public ReceiptTableViewDataSource(ReceiptResponseModel receipt)
+        public ReceiptTableViewDataSource(GetPaymentReceiptResponseModel receipt)
         {
             _receipt = receipt;
         }

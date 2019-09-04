@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Threading;
@@ -49,7 +48,7 @@ namespace myTNB
             {
                 v.RemoveFromSuperview();
             }
-            NavigationController.NavigationBarHidden = true;
+            if (NavigationController != null) { NavigationController.NavigationBarHidden = true; }
             PageName = BillConstants.Pagename_Bills;
             base.ViewDidLoad();
             _isBCRMAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
@@ -212,7 +211,7 @@ namespace myTNB
                     storyBoard.InstantiateViewController("BillDetailsView") as BillDetailsViewController;
                 if (viewController != null)
                 {
-                    viewController.Charges = _accountCharges.d.data;
+                    viewController.AccountNumber = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
                     var navController = new UINavigationController(viewController);
                     PresentViewController(navController, true, null);
                 }
@@ -238,7 +237,6 @@ namespace myTNB
                                 storyBoard.InstantiateViewController("SelectBillsViewController") as SelectBillsViewController;
                             if (selectBillsVC != null)
                             {
-                                //selectBillsVC.SelectedAccountDueAmount = 0;//DataManager.DataManager.SharedInstance.BillingAccountDetails.amCustBal;
                                 var navController = new UINavigationController(selectBillsVC);
                                 PresentViewController(navController, true, null);
                             }
@@ -297,13 +295,13 @@ namespace myTNB
                 PresentViewController(navController, true, null);
             });
             _accountSelectorContainer.AddSubview(_viewAccountSelector);
-            _accountSelector.Title = DataManager.DataManager.SharedInstance.SelectedAccount.accountNickName;//AccountManager.Instance.Nickname;
+            _accountSelector.Title = DataManager.DataManager.SharedInstance.SelectedAccount.accountNickName;
         }
 
         private UIView GetShimmerView()
         {
             CustomShimmerView shimmeringView = new CustomShimmerView();
-            UIView viewParent = new UIView(new CGRect(BaseMargin, 0, BaseMarginedWidth, GetScaledHeight(108))) { BackgroundColor = UIColor.White };//.White };
+            UIView viewParent = new UIView(new CGRect(BaseMargin, 0, BaseMarginedWidth, GetScaledHeight(108))) { BackgroundColor = UIColor.White };
             UIView viewShimmerParent = new UIView(new CGRect(new CGPoint(0, 0), viewParent.Frame.Size)) { BackgroundColor = UIColor.Clear };
             UIView viewShimmerContent = new UIView(new CGRect(new CGPoint(0, 0), viewParent.Frame.Size)) { BackgroundColor = UIColor.Clear };
             viewParent.AddSubviews(new UIView[] { viewShimmerParent, viewShimmerContent });
@@ -360,6 +358,7 @@ namespace myTNB
 
             _historyTableView.ReloadData();
             _historyTableView.Hidden = false;
+            OnResetBGRect();
         }
         #endregion
 
@@ -510,25 +509,26 @@ namespace myTNB
                            OnShowFilter = ShowFilterScreen
                        };
                        InvokeInBackground(async () =>
-                   {
-                       _accountCharges = await GetAccountsCharges();
-                       InvokeOnMainThread(() =>
                        {
-                           SetHeaderLoading(false);
+                           _accountCharges = await GetAccountsCharges();
+                           InvokeOnMainThread(() =>
+                           {
+                               SetHeaderLoading(false);
 
-                           if (_accountCharges != null && _accountCharges.d != null && _accountCharges.d.IsSuccess
-                                && _accountCharges.d.data != null && _accountCharges.d.data.AccountCharges != null
-                                && _accountCharges.d.data.AccountCharges.Count > 0 && _accountCharges.d.data.AccountCharges[0] != null)
-                           {
-                               UpdateHeaderData(_accountCharges.d.data.AccountCharges[0]);
-                           }
-                           else
-                           {
-                               _historyTableView.Hidden = true;
-                               DisplayRefresh();
-                           }
+                               if (_accountCharges != null && _accountCharges.d != null && _accountCharges.d.IsSuccess
+                                    && _accountCharges.d.data != null && _accountCharges.d.data.AccountCharges != null
+                                    && _accountCharges.d.data.AccountCharges.Count > 0 && _accountCharges.d.data.AccountCharges[0] != null)
+                               {
+                                   AccountChargesCache.SetData(_accountCharges);
+                                   UpdateHeaderData(_accountCharges.d.data.AccountCharges[0]);
+                               }
+                               else
+                               {
+                                   _historyTableView.Hidden = true;
+                                   DisplayRefresh();
+                               }
+                           });
                        });
-                   });
                        InvokeInBackground(async () =>
                        {
                            _billHistory = await GetAccountBillPayHistory();
@@ -552,7 +552,6 @@ namespace myTNB
                                }
                                else
                                {
-                                   //DisplayServiceError(_billHistory?.d?.ErrorMessage);
                                    _historyTableView.Hidden = true;
                                    DisplayRefresh();
                                }
@@ -606,6 +605,7 @@ namespace myTNB
             _headerViewContainer.Frame = new CGRect(_headerViewContainer.Frame.Location
                 , new CGSize(_headerViewContainer.Frame.Width, _headerView.Frame.GetMaxY()));
             _historyTableView.ReloadData();
+            OnResetBGRect();
         }
 
         #region Table
@@ -647,6 +647,11 @@ namespace myTNB
             var opac = _previousScrollOffset / _tableViewOffset;
             var absOpacity = Math.Abs((float)opac);
             AddViewWithOpacity(absOpacity);
+        }
+
+        private void OnResetBGRect()
+        {
+            _bgImageView.Frame = new CGRect(new CGPoint(0, 0), _bgImageView.Frame.Size);
         }
 
         private void FilterDisplay(bool isHeader)
@@ -753,7 +758,6 @@ namespace myTNB
         #region Services
         private async Task<GetAccountsChargesResponseModel> GetAccountsCharges()
         {
-            //Thread.Sleep(5000);
             ServiceManager serviceManager = new ServiceManager();
             object request = new
             {
@@ -767,7 +771,6 @@ namespace myTNB
 
         private async Task<GetAccountBillPayHistoryResponseModel> GetAccountBillPayHistory()
         {
-            //Thread.Sleep(5000);
             ServiceManager serviceManager = new ServiceManager();
             object request = new
             {

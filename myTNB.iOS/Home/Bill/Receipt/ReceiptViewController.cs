@@ -32,16 +32,14 @@ namespace myTNB
         const float INNER_PADDING = 20f;
         const float LBL_WIDTH_PADDING = INNER_PADDING * 2;
 
-        ReceiptResponseModel _receipt = new ReceiptResponseModel();
-        //UIWebView _webViewReceipt;
-        string _pdfFilePath = string.Empty;
+        private GetPaymentReceiptResponseModel _receipt = new GetPaymentReceiptResponseModel();
+        private string _pdfFilePath = string.Empty;
 
         public string DetailedInfoNumber = string.Empty;
         public bool isCCFlow = false;
-        string paymentMethod = String.Empty;
+        private string paymentMethod = string.Empty;
 
-        UIView _headerView;
-        UIView _footerView;
+        private UIView _headerView, _footerView;
 
         public override void ViewDidLoad()
         {
@@ -60,7 +58,7 @@ namespace myTNB
                     if (NetworkUtility.isReachable)
                     {
                         ActivityIndicator.Show();
-                        await GetReceipt();
+                        await GetPaymentReceipt();
                         if (_receipt != null && _receipt?.d != null && _receipt?.d?.data != null && _receipt?.d?.didSucceed == true)
                         {
                             paymentMethod = _receipt?.d?.data?.payMethod;
@@ -394,18 +392,17 @@ namespace myTNB
             tableLayout.AddCell(cell);
         }
 
-        internal Task GetReceipt()
+        private async Task GetPaymentReceipt()
         {
-            return Task.Factory.StartNew(() =>
+            ServiceManager serviceManager = new ServiceManager();
+            object request = new
             {
-                ServiceManager serviceManager = new ServiceManager();
-                object requestParameter = new
-                {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    merchant_transId = DetailedInfoNumber
-                };
-                _receipt = serviceManager.OnExecuteAPI<ReceiptResponseModel>("GetMultiReceiptByTransId", requestParameter);
-            });
+                serviceManager.usrInf,
+                contractAccount = DataManager.DataManager.SharedInstance.SelectedAccount?.accNum ?? string.Empty,
+                isOwnedAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsOwnedAccount,
+                detailedInfoNumber = DetailedInfoNumber
+            };
+            _receipt = serviceManager.OnExecuteAPIV6<GetPaymentReceiptResponseModel>("GetPaymentReceipt", request);
         }
     }
 }

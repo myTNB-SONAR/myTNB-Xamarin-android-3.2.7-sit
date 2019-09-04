@@ -5,7 +5,6 @@ using CoreGraphics;
 using myTNB.Dashboard.DashboardComponents;
 using myTNB.Enums;
 using myTNB.Model;
-using myTNB.Model.RequestPayBill;
 using UIKit;
 using Foundation;
 using System.Globalization;
@@ -22,7 +21,6 @@ namespace myTNB
         }
 
         RegisteredCardsResponseModel _registeredCards = new RegisteredCardsResponseModel();
-        RequestPayBillResponseModel _requestPayBill = new RequestPayBillResponseModel();
         TitleBarComponent titleBarComponent;
         public double TotalAmount = 0.00;
         public UserNotificationDataModel NotificationInfo = new UserNotificationDataModel();
@@ -201,32 +199,32 @@ namespace myTNB
                 }
                 ActivityIndicator.Hide();
             });
-           /* RequestMultiPayBill(thePlatform, thePaymentMode, cardID, isNewCard, amountDue).ContinueWith(task =>
-            {
-                InvokeOnMainThread(() =>
-                {
-                    if (_requestPayBill != null && _requestPayBill.d != null
-                       && _requestPayBill.d.data != null)
-                    {
-                        InitializedTableView();
-                        if (isNewCard == false)
-                        {
-                            NavigateToVC(_requestPayBill, thePlatform, thePaymentMode);
-                        }
-                    }
-                    else
-                    {
-                        AlertHandler.DisplayServiceError(this, _requestPayBill?.d?.message);
-                    }
-                    ActivityIndicator.Hide();
-                });
-            });*/
+            /* RequestMultiPayBill(thePlatform, thePaymentMode, cardID, isNewCard, amountDue).ContinueWith(task =>
+             {
+                 InvokeOnMainThread(() =>
+                 {
+                     if (_requestPayBill != null && _requestPayBill.d != null
+                        && _requestPayBill.d.data != null)
+                     {
+                         InitializedTableView();
+                         if (isNewCard == false)
+                         {
+                             NavigateToVC(_requestPayBill, thePlatform, thePaymentMode);
+                         }
+                     }
+                     else
+                     {
+                         AlertHandler.DisplayServiceError(this, _requestPayBill?.d?.message);
+                     }
+                     ActivityIndicator.Hide();
+                 });
+             });*/
         }
 
         internal void InitializedTableView()
         {
             selectPaymentTableView.Source = new SelectPaymentTableViewSource(_registeredCards
-                , _requestPayBill, this, OnSelectUnavailablePaymentMethod);
+                , this, OnSelectUnavailablePaymentMethod);
             selectPaymentTableView.BackgroundColor = MyTNBColor.SectionGrey;
             selectPaymentTableView.ReloadData();
         }
@@ -252,22 +250,6 @@ namespace myTNB
                 errMsg = status?.DowntimeTextMessage;
             }
             AlertHandler.DisplayGenericAlert(this, string.Empty, errMsg);
-        }
-
-        internal void NavigateToVC(RequestPayBillResponseModel requestPayBillResponseModel, int platform, string paymentMode)
-        {
-            UIStoryboard storyBoard = UIStoryboard.FromName("MakePayment", null);
-            MakePaymentViewController makePaymentVC =
-                storyBoard.InstantiateViewController("MakePaymentViewController") as MakePaymentViewController;
-            if (makePaymentVC != null)
-            {
-                makePaymentVC._requestPayBillResponseModel = requestPayBillResponseModel;
-                makePaymentVC._isNewCard = false;
-                makePaymentVC._platform = platform;
-                makePaymentVC._paymentMode = paymentMode;
-                makePaymentVC._cardCVV = TextHelper.ConvertSecureStringToString(_cardCVVStr);
-                NavigationController.PushViewController(makePaymentVC, true);
-            }
         }
 
         internal void NavigateToVC(GetPaymentTransactionIdResponseModel paymentTransactionIDResponse, int platform, string paymentMode)
@@ -510,60 +492,33 @@ namespace myTNB
             }
         }
 
-        internal Task RequestMultiPayBill(int thePlatform, string thePaymentMode, string cardID, bool isNewCard, string amountDue)
-        {
-            List<PaymentItemsModel> paymentItemList = new List<PaymentItemsModel>();
-            PaymentItemsModel paymentItem;
-            int count = AccountsForPayment?.Count ?? 0;
-            string ownerName = count == 1 ? AccountsForPayment[0].accountOwnerName : string.Empty;
-
-            foreach (var item in AccountsForPayment)
-            {
-                paymentItem = new PaymentItemsModel();
-                paymentItem.AccountOwnerName = count > 1 ? item.accountOwnerName : DataManager.DataManager.SharedInstance.UserEntity[0].displayName;
-                paymentItem.AccountNo = item.accNum;
-                paymentItem.Amount = item.Amount.ToString(CultureInfo.InvariantCulture);
-                paymentItemList.Add(paymentItem);
-            }
-
-            ServiceManager serviceManager = new ServiceManager();
-            object requestParameter = new
-            {
-                apiKeyID = TNBGlobal.API_KEY_ID,
-                customerName = count > 1 ? DataManager.DataManager.SharedInstance.UserEntity[0].displayName : ownerName,
-                accNum = DataManager.DataManager.SharedInstance.BillingAccountDetails.accNum,
-                email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
-                phoneNo = DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo != null
-                    ? DataManager.DataManager.SharedInstance.UserEntity[0].mobileNo : string.Empty,
-                sspUserId = DataManager.DataManager.SharedInstance.User.UserID,
-                platform = thePlatform,
-                registeredCardId = cardID,
-                paymentMode = thePaymentMode,
-                totalAmount = TotalAmount,
-                paymentItems = paymentItemList
-            };
-
-            return Task.Factory.StartNew(() =>
-            {
-                _requestPayBill = serviceManager.OnExecuteAPI<RequestPayBillResponseModel>("RequestMultiPayBill", requestParameter);
-            });
-        }
-
         private async Task<GetPaymentTransactionIdResponseModel> GetPaymentTransactionId(int platform, string paymentMode, string cardID)
         {
             int count = AccountsForPayment?.Count ?? 0;
             string ownerName = count == 1 ? AccountsForPayment[0].accountOwnerName : string.Empty;
-            List<PayItemsModel> paymentItems = new List<PayItemsModel>();
+            List<object> paymentItems = new List<object>();
 
             foreach (CustomerAccountRecordModel item in AccountsForPayment)
             {
-                paymentItems.Add(new PayItemsModel()
+                if (AccountChargesCache.HasMandatory(item.accNum))
                 {
-                    AccountOwnerName = count > 1 ? item.accountOwnerName : DataManager.DataManager.SharedInstance.UserEntity[0].displayName,
-                    AccountNo = item?.accNum ?? string.Empty,
-                    AccountAmount = item.Amount.ToString(CultureInfo.InvariantCulture),
-                    AccountPayments = AccountChargesCache.GetAccountPayments(item.accNum)
-                });
+                    paymentItems.Add(new
+                    {
+                        AccountOwnerName = count > 1 ? item.accountOwnerName : DataManager.DataManager.SharedInstance.UserEntity[0].displayName,
+                        AccountNo = item?.accNum ?? string.Empty,
+                        AccountAmount = item.Amount.ToString(CultureInfo.InvariantCulture),
+                        AccountPayments = AccountChargesCache.GetAccountPayments(item.accNum)
+                    });
+                }
+                else
+                {
+                    paymentItems.Add(new
+                    {
+                        AccountOwnerName = count > 1 ? item.accountOwnerName : DataManager.DataManager.SharedInstance.UserEntity[0].displayName,
+                        AccountNo = item?.accNum ?? string.Empty,
+                        AccountAmount = item.Amount.ToString(CultureInfo.InvariantCulture)
+                    });
+                }
             }
 
             ServiceManager serviceManager = new ServiceManager();

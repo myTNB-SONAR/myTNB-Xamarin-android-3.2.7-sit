@@ -11,7 +11,6 @@ namespace myTNB
 {
     public partial class MakePaymentViewController : UIViewController
     {
-        public RequestPayBillResponseModel _requestPayBillResponseModel;
         public GetPaymentTransactionIdResponseModel _paymentTransactionIDResponseModel;
         public CardModel _card;
         public UIWebView _webView;

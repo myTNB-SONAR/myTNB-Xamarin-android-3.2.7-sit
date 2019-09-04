@@ -135,20 +135,18 @@ namespace myTNB
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
+                Dictionary<string, string> requestParams = new Dictionary<string, string>{
+                        {"apiKeyID", TNBGlobal.API_KEY_ID},
+                        {"lang", TNBGlobal.DEFAULT_LANGUAGE}
+                    };
                 if (IsFromUsage)
                 {
-                    Dictionary<string, string> requestParams = new Dictionary<string, string>(){
-                        {"apiKeyID", TNBGlobal.API_KEY_ID},
-                        {"accNum", DataManager.DataManager.SharedInstance.SelectedAccount.accNum}
-                    };
+                    requestParams.Add("contractAccount", DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
                     _url = serviceManager.GetPDFServiceURL("GetBillPDF", requestParams);
                 }
                 else
                 {
-                    Dictionary<string, string> requestParams = new Dictionary<string, string>(){
-                        {"apiKeyID", TNBGlobal.API_KEY_ID},
-                        {"billingNo", BillingNumber}
-                    };
+                    requestParams.Add("billingNo", BillingNumber);
                     _url = serviceManager.GetPDFServiceURL("GetBillPDFByBillNo", requestParams);
                 }
             });
