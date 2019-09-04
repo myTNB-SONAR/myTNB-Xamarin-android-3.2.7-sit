@@ -28,6 +28,7 @@ namespace myTNB
 
         private UIView _viewAmount, _viewFooter;
         private UILabel _lblTotalAmountValue, _lblCurrency;
+        private string _selectedAccountNumber = string.Empty;
         private int loadMoreCount, lastStartIndex, lastEndIndex;
         private bool isViewDidLoad;
 
@@ -251,13 +252,13 @@ namespace myTNB
             BtnPayBill.Enabled = isValid;
         }
 
-        private string _selectedAccountNumber = string.Empty;
         internal void OnShowItemisedTooltip(string accNum)
         {
             PopupModel popupData = AccountChargesCache.GetPopupByType("MandatoryPayment");
             MandatoryChargesModel mandatoryCharges = AccountChargesCache.GetMandatoryCharges(accNum);
             _selectedAccountNumber = accNum;
-            string description = string.Format(popupData.Description, mandatoryCharges.TotalAmount.ToString("N2", CultureInfo.InvariantCulture));
+            string description = string.Format(popupData.Description
+                , string.Format("{0}{1}", TNBGlobal.UNIT_CURRENCY, mandatoryCharges.TotalAmount.ToString("N2", CultureInfo.InvariantCulture)));
             string[] cta = popupData.CTA.Split(',');
             Dictionary<string, Action> ctaDictionary = new Dictionary<string, Action>();
             for (int i = 0; i < cta.Length; i++)
