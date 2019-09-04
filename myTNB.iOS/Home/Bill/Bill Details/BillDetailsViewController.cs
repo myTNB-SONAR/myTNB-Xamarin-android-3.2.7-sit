@@ -222,7 +222,6 @@ namespace myTNB
             _viewPayment = GetPaymentDetails(GetYLocationFromFrame(_viewLine.Frame, 20));
             _viewTooltip = GetTooltipView(GetYLocationFromFrame(_viewPayment.Frame, 16));
 
-
             _viewBreakdown.AddSubviews(new UIView[] { viewOutstanding, viewMonthBill, _viewLine, _viewPayment });
 
             nfloat breakDownViewHeight = _viewPayment.Frame.GetMaxY();
@@ -390,31 +389,33 @@ namespace myTNB
                 for (int i = 0; i < _charges.MandatoryCharges.Charges.Count; i++)
                 {
                     ChargesModel chargeItem = _charges.MandatoryCharges.Charges[i];
-                    if (chargeItem.Amount < 0) { continue; }
-                    UILabel subItem = new UILabel(new CGRect(0, subYLoc, BaseMarginedWidth / 2, GetScaledHeight(20)))
+                    if (chargeItem.Amount > 0)
                     {
-                        TextAlignment = UITextAlignment.Left,
-                        Font = TNBFont.MuseoSans_14_300,
-                        TextColor = MyTNBColor.GreyishBrown,
-                        Text = chargeItem.Title
-                    };
-                    nfloat subItemWidth = subItem.GetLabelWidth(ViewWidth);
-                    subItem.Frame = new CGRect(subItem.Frame.Location, new CGSize(subItemWidth, subItem.Frame.Height));
+                        UILabel subItem = new UILabel(new CGRect(0, subYLoc, BaseMarginedWidth / 2, GetScaledHeight(20)))
+                        {
+                            TextAlignment = UITextAlignment.Left,
+                            Font = TNBFont.MuseoSans_14_300,
+                            TextColor = MyTNBColor.GreyishBrown,
+                            Text = chargeItem.Title
+                        };
+                        nfloat subItemWidth = subItem.GetLabelWidth(ViewWidth);
+                        subItem.Frame = new CGRect(subItem.Frame.Location, new CGSize(subItemWidth, subItem.Frame.Height));
 
-                    UILabel subValue = new UILabel(new CGRect(BaseMargin + (BaseMarginedWidth / 2)
-                        , subYLoc, BaseMarginedWidth / 2, GetScaledHeight(20)))
-                    {
-                        TextAlignment = UITextAlignment.Right,
-                        Font = TNBFont.MuseoSans_14_300,
-                        TextColor = MyTNBColor.GreyishBrown,
-                        Text = string.Format(BillConstants.Format_Default, TNBGlobal.UNIT_CURRENCY, chargeItem.Amount.ToString("N2", CultureInfo.InvariantCulture))
-                    };
-                    nfloat subValueWidth = subValue.GetLabelWidth(ViewWidth);
-                    subValue.Frame = new CGRect(new CGPoint(mandatoryView.Frame.Width - valueWidth, subValue.Frame.Y)
-                        , new CGSize(subValueWidth, subValue.Frame.Height));
-                    mandatoryView.AddSubviews(new UIView[] { subItem, subValue });
-                    itemCount++;
-                    subYLoc += GetScaledHeight(20);
+                        UILabel subValue = new UILabel(new CGRect(BaseMargin + (BaseMarginedWidth / 2)
+                            , subYLoc, BaseMarginedWidth / 2, GetScaledHeight(20)))
+                        {
+                            TextAlignment = UITextAlignment.Right,
+                            Font = TNBFont.MuseoSans_14_300,
+                            TextColor = MyTNBColor.GreyishBrown,
+                            Text = string.Format(BillConstants.Format_Default, TNBGlobal.UNIT_CURRENCY, chargeItem.Amount.ToString("N2", CultureInfo.InvariantCulture))
+                        };
+                        nfloat subValueWidth = subValue.GetLabelWidth(ViewWidth);
+                        subValue.Frame = new CGRect(new CGPoint(mandatoryView.Frame.Width - subValueWidth, subValue.Frame.Y)
+                            , new CGSize(subValueWidth, subValue.Frame.Height));
+                        mandatoryView.AddSubviews(new UIView[] { subItem, subValue });
+                        itemCount++;
+                        subYLoc += GetScaledHeight(20);
+                    }
                 }
             }
 

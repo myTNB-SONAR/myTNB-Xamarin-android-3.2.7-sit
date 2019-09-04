@@ -644,6 +644,7 @@ namespace myTNB
         private void OnResetBGRect()
         {
             _bgImageView.Frame = new CGRect(new CGPoint(0, 0), _bgImageView.Frame.Size);
+            AddViewWithOpacity(0);
         }
 
         private void FilterDisplay(bool isHeader)
