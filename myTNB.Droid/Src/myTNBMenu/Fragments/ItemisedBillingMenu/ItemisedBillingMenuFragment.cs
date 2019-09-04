@@ -80,6 +80,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         AccountData mSelectedAccountData;
 
         List<AccountChargeModel> selectedAccountChargesModelList;
+        List<Item> itemFilterList = new List<Item>();
+        List<ItemisedBillingHistoryModel> selectedBillingHistoryModelList;
 
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
@@ -132,6 +134,40 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 ((DashboardHomeActivity)Activity).OnSelectAccount();
             }
             catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        [OnClick(Resource.Id.bill_filter_icon)]
+        void OnFilterBillHistory(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                Intent newIntent = new Intent(this.Activity,typeof(FilterBillHistoryActivity));
+                newIntent.PutExtra("ITEM_LIST", JsonConvert.SerializeObject(itemFilterList));
+                StartActivityForResult(newIntent, 12345);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            base.OnActivityResult(requestCode, resultCode, data);
+            try
+            {
+                if (requestCode == 12345)
+                {
+                    if (resultCode == Result.Ok)
+                    {
+                        UpdateBillingHistory(data.GetStringExtra("SELECTED_ITEM_FILTER"));
+                    }
+                }
+            }
+            catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -196,19 +232,71 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             itemisedBillingInfoShimmer.Visibility = ViewStates.Visible;
         }
 
-        public void PopulateBillingHistoryList(List<ItemisedBillingHistoryModel> billingHistoryModelList)
+        public void AddFilterItem(string itemTitle)
         {
-            itemisedBillingList.Visibility = ViewStates.Visible;
-            itemisedBillingListShimmer.Visibility = ViewStates.Gone;
-            itemisedBillingCTAContainer.Visibility = mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId) ? ViewStates.Gone : ViewStates.Visible;
+            if (itemFilterList.Count == 0)
+            {
+                Item allFilterItem = new Item();
+                allFilterItem.title = "All";
+                allFilterItem.selected = true;
+                itemFilterList.Add(allFilterItem);
+            }
 
+            int foundIndex = itemFilterList.FindIndex(item =>
+            {
+                return item.title == itemTitle;
+            });
+
+            if (foundIndex == -1)
+            {
+                Item newItem = new Item();
+                newItem.title = itemTitle;
+                newItem.selected = false;
+                itemFilterList.Add(newItem);
+            }
+        }
+
+        public void UpdateBillingHistory(string filterItemString)
+        {
+            Item selectedFilter = JsonConvert.DeserializeObject<Item>(filterItemString);
+            itemFilterList.ForEach(filterItem =>
+            {
+                filterItem.selected = (filterItem.title == selectedFilter.title) ? true : false;
+            });
+            RenderBillingHistoryList(true, selectedFilter.title);
+        }
+
+        private void RenderBillingHistoryList(bool isUpdate, string historyType)
+        {
+            itemisedBillingList.RemoveAllViews();
             ItemisedBillingGroupComponent itemisedBillingGroupComponent;
-            for (int i = 0; i < billingHistoryModelList.Count; i++)
+            List<ItemisedBillingHistoryModel> filteredBillingList = new List<ItemisedBillingHistoryModel>();
+            if (historyType == "All")
+            {
+                filteredBillingList.AddRange(selectedBillingHistoryModelList);
+            }
+            else
+            {
+                selectedBillingHistoryModelList.ForEach(billingHistory =>
+                {
+                    int foundIndex = billingHistory.BillingHistoryDataList.FindIndex(data =>
+                    {
+                        return data.HistoryTypeText == historyType;
+                    });
+
+                    if (foundIndex != -1)
+                    {
+                        filteredBillingList.Add(billingHistory);
+                    }
+                });
+            }
+
+            for (int i = 0; i < filteredBillingList.Count; i++)
             {
                 itemisedBillingGroupComponent = new ItemisedBillingGroupComponent(Activity);
                 ItemisedBillingGroupContentComponent content;
 
-                ItemisedBillingHistoryModel model = billingHistoryModelList[i];
+                ItemisedBillingHistoryModel model = filteredBillingList[i];
                 itemisedBillingGroupComponent.SetMonthYearLabel(model.MonthYear);
 
                 if (i == 0)
@@ -224,40 +312,95 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 for (int j = 0; j < model.BillingHistoryDataList.Count; j++)
                 {
                     ItemisedBillingHistoryModel.BillingHistoryData data = model.BillingHistoryDataList[j];
-                    content = new ItemisedBillingGroupContentComponent(Activity);
-                    content.IsPayment(data.HistoryType.ToUpper() == "PAYMENT");
-                    content.SetDateHistoryType(data.DateAndHistoryType);
-                    content.SetPaidVia(data.PaidVia);
-                    content.SetAmount(data.Amount);
-                    if (data.DetailedInfoNumber != "")
+                    //Rendering All History Type
+                    if (historyType == "All")
                     {
-                        content.SetShowBillingDetailsListener(new OnShowBillingDetailsListener(this,data));
+                        content = new ItemisedBillingGroupContentComponent(Activity);
+                        if (!isUpdate)
+                        {
+                            AddFilterItem(data.HistoryTypeText);
+                        }
+                        content.IsPayment(data.HistoryType.ToUpper() == "PAYMENT");
+                        content.SetDateHistoryType(data.DateAndHistoryType);
+                        content.SetPaidVia(data.PaidVia);
+                        content.SetAmount(data.Amount);
+                        if (data.DetailedInfoNumber != "")
+                        {
+                            content.SetShowBillingDetailsListener(new OnShowBillingDetailsListener(this, data));
+                        }
+                        else
+                        {
+                            content.SetShowBillingDetailsListener(null);
+                        }
+
+                        if (j == (model.BillingHistoryDataList.Count - 1))
+                        {
+                            content.ShowSeparator(false);
+                        }
+                        else
+                        {
+                            content.ShowSeparator(true);
+                        }
+
+                        itemisedBillingGroupComponent.AddContent(content);
                     }
+                    //Rendering Filtered History Type
                     else
                     {
-                        content.SetShowBillingDetailsListener(null);
-                    }
+                        if (historyType == data.HistoryTypeText)
+                        {
+                            content = new ItemisedBillingGroupContentComponent(Activity);
+                            if (!isUpdate)
+                            {
+                                AddFilterItem(data.HistoryType.ToUpper());
+                            }
+                            content.IsPayment(data.HistoryType.ToUpper() == "PAYMENT");
+                            content.SetDateHistoryType(data.DateAndHistoryType);
+                            content.SetPaidVia(data.PaidVia);
+                            content.SetAmount(data.Amount);
+                            if (data.DetailedInfoNumber != "")
+                            {
+                                content.SetShowBillingDetailsListener(new OnShowBillingDetailsListener(this, data));
+                            }
+                            else
+                            {
+                                content.SetShowBillingDetailsListener(null);
+                            }
 
-                    if (j == (model.BillingHistoryDataList.Count - 1))
-                    {
-                        content.ShowSeparator(false);
-                    }
-                    else
-                    {
-                        content.ShowSeparator(true);
-                    }
+                            if (j == (model.BillingHistoryDataList.Count - 1))
+                            {
+                                content.ShowSeparator(false);
+                            }
+                            else
+                            {
+                                content.ShowSeparator(true);
+                            }
 
-                    itemisedBillingGroupComponent.AddContent(content);
+                            itemisedBillingGroupComponent.AddContent(content);
+                        }
+                    }
                 }
-
                 itemisedBillingList.AddView(itemisedBillingGroupComponent);
             }
+        }
+
+        public void PopulateBillingHistoryList(List<ItemisedBillingHistoryModel> billingHistoryModelList)
+        {
+            
+            itemisedBillingList.Visibility = ViewStates.Visible;
+            itemisedBillingListShimmer.Visibility = ViewStates.Gone;
+
+            selectedBillingHistoryModelList = new List<ItemisedBillingHistoryModel>();
+            selectedBillingHistoryModelList = billingHistoryModelList;
+            itemFilterList = new List<Item>();
+            RenderBillingHistoryList(false,"All");
         }
 
         public void PopulateAccountCharge(List<AccountChargeModel> accountChargesModelList)
         {
             itemisedBillingInfoShimmer.Visibility = ViewStates.Gone;
             itemisedBillingInfoContainer.Visibility = ViewStates.Visible;
+            itemisedBillingCTAContainer.Visibility = mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId) ? ViewStates.Gone : ViewStates.Visible;
 
             selectedAccountChargesModelList = accountChargesModelList.GetRange(0, accountChargesModelList.Count);
             AccountChargeModel accountChargeModel = accountChargesModelList[0];

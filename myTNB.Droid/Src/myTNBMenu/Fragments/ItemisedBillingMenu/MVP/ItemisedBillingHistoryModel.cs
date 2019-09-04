@@ -15,6 +15,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             public string Amount { get; set; }
             public string DetailedInfoNumber { get; set; }
             public string PaidVia { get; set; }
+            public string HistoryTypeText { get; set; }
         }
     }
 }

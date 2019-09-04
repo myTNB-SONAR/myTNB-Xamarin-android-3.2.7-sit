@@ -77,6 +77,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.API
 
             [JsonProperty(PropertyName = "PaidVia")]
             public string PaidVia { get; set; }
+
+            [JsonProperty(PropertyName = "HistoryTypeText")]
+            public string HistoryTypeText { get; set; }
         }
     }
 }

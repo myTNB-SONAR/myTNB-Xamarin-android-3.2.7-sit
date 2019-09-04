@@ -2330,6 +2330,13 @@
     <AndroidResource Include="Resources\drawable-xhdpi\bill_menu_loading_banner.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\bill_menu_loading_banner.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\bill_menu_loading_banner.png" />
+    <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\SelectItemActivity.cs" />
+    <AndroidResource Include="Resources\layout\SelectItemLayout.axml" />
+    <AndroidResource Include="Resources\layout\SelectItemListLayout.axml" />
+    <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\SelectItemAdapter.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\Item.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\FilterBillHistoryActivity.cs" />
+    <AndroidResource Include="Resources\layout\FilterBillHistoryLayout.axml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
