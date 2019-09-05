@@ -6,7 +6,6 @@ using iTextSharp.text;
 using System.IO;
 using iTextSharp.text.pdf;
 using CoreGraphics;
-using myTNB.Model;
 using System.Drawing;
 using System.Threading.Tasks;
 using myTNB.Home.Bill.Receipt;
@@ -24,24 +23,19 @@ namespace myTNB
             set;
         }
 
-        const int START_PDF_Y_LOC = 600;
-        const int END_PDF_Y_LOC = 50;
-        const int ACCNUM_X_LOC = 220;
-        const int AMT_X_LOC = 400;
-        const float PADDING = 10f;
-        const float INNER_PADDING = 20f;
-        const float LBL_WIDTH_PADDING = INNER_PADDING * 2;
+        private const float PADDING = 10f;
+        private const float INNER_PADDING = 20f;
+        private const float LBL_WIDTH_PADDING = INNER_PADDING * 2;
 
-        ReceiptResponseModel _receipt = new ReceiptResponseModel();
-        //UIWebView _webViewReceipt;
-        string _pdfFilePath = string.Empty;
+        private GetPaymentReceiptResponseModel _receipt = new GetPaymentReceiptResponseModel();
+        private string _pdfFilePath = string.Empty;
 
-        public string MerchatTransactionID = string.Empty;
+        public bool showAllReceipts;
+        public string DetailedInfoNumber = string.Empty;
         public bool isCCFlow = false;
-        string paymentMethod = String.Empty;
+        private string paymentMethod = string.Empty;
 
-        UIView _headerView;
-        UIView _footerView;
+        private UIView _headerView, _footerView;
 
         public override void ViewDidLoad()
         {
@@ -60,7 +54,7 @@ namespace myTNB
                     if (NetworkUtility.isReachable)
                     {
                         ActivityIndicator.Show();
-                        await GetReceipt();
+                        await GetPaymentReceipt();
                         if (_receipt != null && _receipt?.d != null && _receipt?.d?.data != null && _receipt?.d?.didSucceed == true)
                         {
                             paymentMethod = _receipt?.d?.data?.payMethod;
@@ -111,7 +105,6 @@ namespace myTNB
                 }
                 else
                 {
-                    DataManager.DataManager.SharedInstance.IsPaymentDone = true;
                     DismissViewController(true, null);
                     OnDone?.Invoke();
                 }
@@ -394,18 +387,18 @@ namespace myTNB
             tableLayout.AddCell(cell);
         }
 
-        internal Task GetReceipt()
+        private async Task GetPaymentReceipt()
         {
-            return Task.Factory.StartNew(() =>
+            ServiceManager serviceManager = new ServiceManager();
+            object request = new
             {
-                ServiceManager serviceManager = new ServiceManager();
-                object requestParameter = new
-                {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    merchant_transId = MerchatTransactionID
-                };
-                _receipt = serviceManager.OnExecuteAPI<ReceiptResponseModel>("GetMultiReceiptByTransId", requestParameter);
-            });
+                serviceManager.usrInf,
+                contractAccount = showAllReceipts ? string.Empty : DataManager.DataManager.SharedInstance.SelectedAccount?.accNum ?? string.Empty,
+                isOwnedAccount = showAllReceipts ? true : DataManager.DataManager.SharedInstance.SelectedAccount.IsOwnedAccount,
+                detailedInfoNumber = DetailedInfoNumber,
+                showAllReceipts
+            };
+            _receipt = serviceManager.OnExecuteAPIV6<GetPaymentReceiptResponseModel>("GetPaymentReceipt", request);
         }
     }
 }

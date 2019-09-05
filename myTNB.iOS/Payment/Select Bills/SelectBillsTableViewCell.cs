@@ -7,7 +7,7 @@ namespace myTNB
 {
     public partial class SelectBillsTableViewCell : UITableViewCell
     {
-        public UILabel _lblName;
+        public UILabel _lblName, _lblAmountTitle;
         public UILabel _lblAccountNo;
         public UITextView _txtViewAddress;
         public UITextField _txtFieldAmount;
@@ -64,13 +64,13 @@ namespace myTNB
                 Tag = 0
             };
 
-            UILabel lblAmountTitle = new UILabel
+            _lblAmountTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewAmount.Frame.Width, 12),
                 AttributedText = new NSAttributedString("Common_Amount(RM)".Translate().ToUpper(),
-                    font: MyTNBFont.MuseoSans9_300,
-                    foregroundColor: MyTNBColor.SilverChalice,
-                    strokeWidth: 0),
+                   font: MyTNBFont.MuseoSans9_300,
+                   foregroundColor: MyTNBColor.SilverChalice,
+                   strokeWidth: 0),
                 TextAlignment = UITextAlignment.Left
             };
 
@@ -103,7 +103,7 @@ namespace myTNB
                 Tag = 1
             };
 
-            _viewAmount.AddSubviews(new UIView[] { lblAmountTitle, _lblAmountError, _txtFieldAmount, _viewLineAmount });
+            _viewAmount.AddSubviews(new UIView[] { _lblAmountTitle, _lblAmountError, _txtFieldAmount, _viewLineAmount });
 
             _viewSeparator = new UIView(new CGRect(0, 181, Frame.Width, 24))
             {

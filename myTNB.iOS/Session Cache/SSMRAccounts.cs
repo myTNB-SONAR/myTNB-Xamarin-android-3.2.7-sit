@@ -222,24 +222,27 @@ namespace myTNB
         public static PopupModel GetPopupDetailsByType(string type)
         {
             SetPopupSelectorValues();
-            PopupSelectorModel fallback = GetFallbackPopupValue(type);
-            if (PopupDetailsList != null && !string.IsNullOrEmpty(type) && !string.IsNullOrWhiteSpace(type))
+            if (!string.IsNullOrEmpty(type) && !string.IsNullOrWhiteSpace(type))
             {
-                int index = PopupDetailsList.FindIndex(x => x.Type.ToLower() == type.ToLower());
-                if (index > -1)
+                PopupSelectorModel fallback = GetFallbackPopupValue(type);
+                if (PopupDetailsList != null)
                 {
-                    PopupModel popupDetails = PopupDetailsList[index];
-                    return new PopupModel
+                    int index = PopupDetailsList.FindIndex(x => x.Type.ToLower() == type.ToLower());
+                    if (index > -1)
                     {
-                        Title = popupDetails != null && !string.IsNullOrEmpty(popupDetails.Title)
-                            ? popupDetails.Title : fallback.Title,
-                        Description = popupDetails != null && !string.IsNullOrEmpty(popupDetails.Description)
-                            ? popupDetails.Description : fallback.Description,
-                        CTA = popupDetails != null && !string.IsNullOrEmpty(popupDetails.CTA)
-                            ? popupDetails.CTA : fallback.CTA,
-                        Type = popupDetails != null && !string.IsNullOrEmpty(popupDetails.Type)
-                            ? popupDetails.Type : fallback.Type
-                    };
+                        PopupModel popupDetails = PopupDetailsList[index];
+                        return new PopupModel
+                        {
+                            Title = popupDetails != null && !string.IsNullOrEmpty(popupDetails.Title)
+                                ? popupDetails.Title : fallback.Title,
+                            Description = popupDetails != null && !string.IsNullOrEmpty(popupDetails.Description)
+                                ? popupDetails.Description : fallback.Description,
+                            CTA = popupDetails != null && !string.IsNullOrEmpty(popupDetails.CTA)
+                                ? popupDetails.CTA : fallback.CTA,
+                            Type = popupDetails != null && !string.IsNullOrEmpty(popupDetails.Type)
+                                ? popupDetails.Type : fallback.Type
+                        };
+                    }
                 }
                 else
                 {
