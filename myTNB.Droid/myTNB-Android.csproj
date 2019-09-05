@@ -2337,6 +2337,11 @@
     <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\Item.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\FilterBillHistoryActivity.cs" />
     <AndroidResource Include="Resources\layout\FilterBillHistoryLayout.axml" />
+    <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\BillDetailsTooltipModel.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\BillDetailsTooltipService.cs" />
+    <Compile Include="Src\Base\Fragments\BaseFragmentCustom.cs" />
+    <Compile Include="Src\Base\Fragments\IExceptionView.cs" />
+    <Compile Include="Src\Base\Fragments\IBaseFragmentCustomView.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

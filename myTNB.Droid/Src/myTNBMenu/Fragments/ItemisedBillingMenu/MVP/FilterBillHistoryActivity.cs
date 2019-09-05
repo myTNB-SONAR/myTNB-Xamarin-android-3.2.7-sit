@@ -101,7 +101,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 }
             }
 
-            
+            SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+            SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)

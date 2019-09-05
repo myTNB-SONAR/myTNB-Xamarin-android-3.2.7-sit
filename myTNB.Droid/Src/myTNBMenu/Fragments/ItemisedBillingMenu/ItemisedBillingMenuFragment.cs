@@ -10,6 +10,7 @@ using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Util;
 using Android.Views;
@@ -32,8 +33,17 @@ using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 {
-    public class ItemisedBillingMenuFragment : BaseFragment, ItemisedBillingContract.IView
+    public class ItemisedBillingMenuFragment : BaseFragmentCustom, ItemisedBillingContract.IView
     {
+        [BindView(Resource.Id.rootView)]
+        ViewGroup rootView;
+
+        [BindView(Resource.Id.smrReadingHistoryDetailContent)]
+        ViewGroup billingHistoryDetailsContent;
+
+        [BindView(Resource.Id.refreshContainer)]
+        ViewGroup refreshContent;
+
         [BindView(Resource.Id.itemisedBillingHeaderImage)]
         ImageView itemisedBillingHeaderImage;
 
@@ -154,6 +164,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
         }
 
+        [OnClick(Resource.Id.btnRefresh)]
+        void OnButtonRefresh(object sender, EventArgs eventArgs)
+        {
+            try
+            {
+                ShowRefreshPage(false);
+                mPresenter.GetBillingHistoryDetails(mSelectedAccountData.AccountNum, mSelectedAccountData.IsOwner, (mSelectedAccountData.AccountCategoryId != "2") ? "UTIL" : "RE");
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
@@ -198,11 +222,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             TextViewUtils.SetMuseoSans300Typeface(itemisedBillingInfoDate, itemisedBillingInfoAmount);
             RenderUI();
 
-            mPresenter.GetAccountsCharges(mSelectedAccountData.AccountNum,
-                mSelectedAccountData.IsOwner);
-            mPresenter.GetAccountBillPayHistory(mSelectedAccountData.AccountNum,
-                mSelectedAccountData.IsOwner,
-                (mSelectedAccountData.AccountCategoryId != "2") ? "UTIL" : "RE");
+            mPresenter.GetBillingHistoryDetails(mSelectedAccountData.AccountNum, mSelectedAccountData.IsOwner, (mSelectedAccountData.AccountCategoryId != "2") ? "UTIL" : "RE");
         }
 
         public void RenderUI()
@@ -442,13 +462,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             itemisedBillingHeaderImage.SetImageResource(imageResource);
         }
 
-        public void GetAccountBillPayHistory()
-        {
-            mPresenter.GetAccountBillPayHistory(mSelectedAccountData.AccountNum,
-                true,
-                (mSelectedAccountData.AccountCategoryId != "2") ? "UTIL" : "RE");
-        }
-
         public void ShowBillPDFPage(ItemisedBillingHistoryModel.BillingHistoryData billHistoryData)
         {
             BillHistoryV5 selectedBill = new BillHistoryV5();
@@ -465,6 +478,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             Intent viewReceipt = new Intent(this.Activity, typeof(ViewReceiptMultiAccountNewDesignActivty));
             viewReceipt.PutExtra("merchantTransId", billHistoryData.DetailedInfoNumber);
             StartActivity(viewReceipt);
+        }
+
+        public override ViewGroup GetRootView()
+        {
+            return rootView;
+        }
+
+        public void ShowRefreshPage(bool show)
+        {
+            billingHistoryDetailsContent.Visibility = show ? ViewStates.Gone : ViewStates.Visible;
+            refreshContent.Visibility = show ? ViewStates.Visible : ViewStates.Gone;
         }
 
         class OnShowBillingDetailsListener : Java.Lang.Object, View.IOnClickListener
@@ -489,5 +513,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 }
             }
         }
+
     }
 }

@@ -17,7 +17,7 @@
             android:id="@+id/bottomLayout"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
-            android:orientation="vertical"
+            android:orientation="horizontal"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:paddingBottom="8dp"
@@ -25,9 +25,19 @@
             android:background="@color/white"
             android:paddingTop="8dp">
             <Button
+                android:id="@+id/btnViewDetails"
+                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_weight=".5"
+                android:text="View Bill"
+                android:textAllCaps="false"
+                android:textSize="16dp"
+                style="@style/LightButtonWithIcon"/>
+            <Button
                 android:id="@+id/btnPayBill"
                 android:layout_height="wrap_content"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
+                android:layout_weight=".5"
                 android:text="Pay"
                 android:textSize="16dp"
                 android:textAllCaps="false"

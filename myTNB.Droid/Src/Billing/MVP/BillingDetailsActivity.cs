@@ -100,6 +100,8 @@ namespace myTNB_Android.Src.Billing.MVP
                 selectedAccountChargesModelList = JsonConvert.DeserializeObject<List<AccountChargeModel>>(extras.GetString("BILL_DETAILS"));
                 selectedAccountChargeModel = selectedAccountChargesModelList[0];
             }
+            SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+            SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
             accountName.Text = selectedAccountData.AccountNickName;
             accountAddress.Text = selectedAccountData.AddStreet;

@@ -24,33 +24,52 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             api = new ItemisedBillingAPIImpl();
         }
 
-        public async void GetAccountsCharges(string contractAccountValue, bool isOwnedAccountValue)
+        public async void GetBillingHistoryDetails(string contractAccountValue, bool isOwnedAccountValue, string accountTypeValue)
         {
+            //Get Account Charges Service Call
+            bool showRefreshState = false;
             List<string> accountList = new List<string>();
+            List<AccountChargeModel> accountChargeModelList = new List<AccountChargeModel>();
+            List<ItemisedBillingHistoryModel> billingHistoryList = new List<ItemisedBillingHistoryModel>();
             accountList.Add(contractAccountValue);
-            AccountsChargesRequest request = new AccountsChargesRequest(
+            AccountsChargesRequest accountChargeseRequest = new AccountsChargesRequest(
                 accountList,
                 isOwnedAccountValue
                 );
-            AccountChargesResponse response = await api.GetAccountsCharges(request);
-            if (response.Data != null && response.Data.ErrorCode == "7200")
+            AccountChargesResponse accountChargeseResponse = await api.GetAccountsCharges(accountChargeseRequest);
+            if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "7200")
             {
-                List<AccountChargeModel> accountChargeModelList = GetAccountCharges(response.Data.ResponseData.AccountCharges);
-                mView.PopulateAccountCharge(accountChargeModelList);
+                accountChargeModelList = GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges);
             }
-        }
+            else
+            {
+                showRefreshState = true;
+            }
 
-        public async void GetAccountBillPayHistory(string contractAccountValue, bool isOwnedAccountValue, string accountTypeValue)
-        {
-            AccountBillPayHistoryRequest request = new AccountBillPayHistoryRequest(
+            //Get Account Billing History
+            AccountBillPayHistoryRequest accountBillPayRequest = new AccountBillPayHistoryRequest(
                 contractAccountValue,
                 isOwnedAccountValue,
                 accountTypeValue);
 
-            AccountBillPayHistoryResponse response = await api.GetAccountBillPayHistory(request);
-            if (response.Data != null && response.Data.ErrorCode == "7200")
+            AccountBillPayHistoryResponse accountBillPayResponse = await api.GetAccountBillPayHistory(accountBillPayRequest);
+            if (accountBillPayResponse.Data != null && accountBillPayResponse.Data.ErrorCode == "7200")
             {
-                List<ItemisedBillingHistoryModel> billingHistoryList = GetBillingHistoryModelList(response.Data.ResponseData.BillPayHistories);
+                billingHistoryList = GetBillingHistoryModelList(accountBillPayResponse.Data.ResponseData.BillPayHistories);
+            }
+            else
+            {
+                showRefreshState = true;
+            }
+
+            if (showRefreshState)
+            {
+                mView.ShowRefreshPage(showRefreshState);
+            }
+            else
+            {
+                mView.ShowRefreshPage(showRefreshState);
+                mView.PopulateAccountCharge(accountChargeModelList);
                 mView.PopulateBillingHistoryList(billingHistoryList);
             }
         }
