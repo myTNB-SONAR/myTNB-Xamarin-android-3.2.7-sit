@@ -1,3 +1,4 @@
-iOS
-Version: 1.2.0 (20)
-- iOS Pipeline test
+Sprint 2 SIT Build
+
+* [US] 752: As a customer, I can see the breakdown of all my open charges, including consumption and non-consumption
+* [BUG] 2221: iOS - Normal Meter: Misalignment in Flow, Spacing, Copy, Icons, Font
