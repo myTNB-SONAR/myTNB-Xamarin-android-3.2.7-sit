@@ -105,8 +105,8 @@ namespace myTNB
                             storyBoard.InstantiateViewController("ReceiptViewController") as ReceiptViewController;
                         viewController.DetailedInfoNumber = transID;
                         viewController.isCCFlow = true;
+                        viewController.showAllReceipts = true;
                         var navController = new UINavigationController(viewController);
-
                         var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
                         var topVc = AppDelegate.GetTopViewController(baseRootVc);
                         topVc?.NavigationController?.PushViewController(viewController, true);

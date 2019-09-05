@@ -6,7 +6,6 @@ using iTextSharp.text;
 using System.IO;
 using iTextSharp.text.pdf;
 using CoreGraphics;
-using myTNB.Model;
 using System.Drawing;
 using System.Threading.Tasks;
 using myTNB.Home.Bill.Receipt;
@@ -24,17 +23,14 @@ namespace myTNB
             set;
         }
 
-        const int START_PDF_Y_LOC = 600;
-        const int END_PDF_Y_LOC = 50;
-        const int ACCNUM_X_LOC = 220;
-        const int AMT_X_LOC = 400;
-        const float PADDING = 10f;
-        const float INNER_PADDING = 20f;
-        const float LBL_WIDTH_PADDING = INNER_PADDING * 2;
+        private const float PADDING = 10f;
+        private const float INNER_PADDING = 20f;
+        private const float LBL_WIDTH_PADDING = INNER_PADDING * 2;
 
         private GetPaymentReceiptResponseModel _receipt = new GetPaymentReceiptResponseModel();
         private string _pdfFilePath = string.Empty;
 
+        public bool showAllReceipts;
         public string DetailedInfoNumber = string.Empty;
         public bool isCCFlow = false;
         private string paymentMethod = string.Empty;
@@ -398,9 +394,10 @@ namespace myTNB
             object request = new
             {
                 serviceManager.usrInf,
-                contractAccount = DataManager.DataManager.SharedInstance.SelectedAccount?.accNum ?? string.Empty,
-                isOwnedAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsOwnedAccount,
-                detailedInfoNumber = DetailedInfoNumber
+                contractAccount = showAllReceipts ? string.Empty : DataManager.DataManager.SharedInstance.SelectedAccount?.accNum ?? string.Empty,
+                isOwnedAccount = showAllReceipts ? true : DataManager.DataManager.SharedInstance.SelectedAccount.IsOwnedAccount,
+                detailedInfoNumber = DetailedInfoNumber,
+                showAllReceipts
             };
             _receipt = serviceManager.OnExecuteAPIV6<GetPaymentReceiptResponseModel>("GetPaymentReceipt", request);
         }
