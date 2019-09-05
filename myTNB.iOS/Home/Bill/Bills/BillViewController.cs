@@ -50,6 +50,7 @@ namespace myTNB
             if (NavigationController != null) { NavigationController.NavigationBarHidden = true; }
             PageName = BillConstants.Pagename_Bills;
             base.ViewDidLoad();
+            NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, OnEnterForeground);
             _isBCRMAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
             View.BackgroundColor = UIColor.White;
             SetNavigation();
@@ -78,6 +79,11 @@ namespace myTNB
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
+        }
+
+        private void OnEnterForeground(NSNotification notification)
+        {
+            ViewWillAppear(true);
         }
         #endregion
 
