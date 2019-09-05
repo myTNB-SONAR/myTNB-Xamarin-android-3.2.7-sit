@@ -9,6 +9,8 @@ namespace myTNB.Payment.SelectBills
 {
     public class SelectBillsDataSource : UITableViewSource
     {
+        public Func<string, string> GetI18NValue;
+
         SelectBillsViewController _controller;
         List<PaymentRecordModel> _accounts = new List<PaymentRecordModel>();
         TextFieldHelper _textFieldHelper = new TextFieldHelper();
@@ -186,26 +188,34 @@ namespace myTNB.Payment.SelectBills
         }
         #endregion
         #region ShowErrorMessage 
-        private bool ShowErrorMessage(int index, SelectBillsTableViewCell cell, bool endEditing = false)
+        private void ShowErrorMessage(int index, SelectBillsTableViewCell cell, bool endEditing = false)
         {
             bool isValid = false;
             if (index < 0 || index >= _accounts.Count)
             {
-                return isValid;
+                return;
             }
-            if (_accounts[index].Amount >= TNBGlobal.PaymentMinAmnt)
+            if (AccountChargesCache.HasMandatory(_accounts[index].accNum))
+            {
+                MandatoryChargesModel mandatoryCharges = AccountChargesCache.GetMandatoryCharges(_accounts[index].accNum);
+                double mandatoryAmount = mandatoryCharges.TotalAmount;
+                double enteredAmt = double.Parse(cell._txtFieldAmount.Text);
+                isValid = enteredAmt >= mandatoryAmount;
+                cell._lblAmountError.Hidden = isValid;
+                cell._lblAmountError.Text = string.Format(GetI18NValue(PaymentConstants.I18N_MinimumMandatoryPayment)
+                    , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, mandatoryAmount.ToString("N2", CultureInfo.InvariantCulture)));
+            }
+            else if (_accounts[index].Amount >= TNBGlobal.PaymentMinAmnt)
             {
                 isValid = true;
                 cell._lblAmountError.Hidden = isValid;
-                UpdateUIForInputError(false, cell, endEditing);
             }
             else
             {
                 cell._lblAmountError.Hidden = false;
-                cell._lblAmountError.Text = "Invalid_PayAmount".Translate();
-                UpdateUIForInputError(true, cell, endEditing);
+                cell._lblAmountError.Text = GetI18NValue(PaymentConstants.I18N_MinimumPayAmount);
             }
-            return isValid;
+            UpdateUIForInputError(!isValid, cell, endEditing);
         }
         #endregion
         #region UpdateUIForInputError

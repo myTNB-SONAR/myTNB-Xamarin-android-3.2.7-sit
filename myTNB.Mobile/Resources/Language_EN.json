@@ -303,5 +303,10 @@
         "filterBy": "Filter By",
         "applyFilter": "Apply Filter",
         "selectFilter": "Select Filter"
+    },
+
+    "SelectBills": {
+        "minimumMandatoryPayment": "Minimum amount must be at least {0}",
+        "minimumPayAmount": "Minimum amount cannot be lower than RM1.00"
     }
 }
