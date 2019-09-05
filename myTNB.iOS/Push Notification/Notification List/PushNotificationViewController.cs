@@ -158,6 +158,8 @@ namespace myTNB.PushNotification
                     }
                     pushNotificationTableView.Hidden = false;
                     pushNotificationTableView.ClearsContextBeforeDrawing = true;
+                    pushNotificationTableView.RowHeight = UITableView.AutomaticDimension;
+                    pushNotificationTableView.EstimatedRowHeight = GetScaledHeight(70);
                     pushNotificationTableView.Source = new PushNotificationDataSource(this, _notifications);
                     pushNotificationTableView.ReloadData();
                 }
@@ -415,7 +417,6 @@ namespace myTNB.PushNotification
         internal void SetSubViews()
         {
             pushNotificationTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 113 : 89, View.Frame.Width, View.Frame.Height - 89);
-            pushNotificationTableView.RowHeight = 66f;
             pushNotificationTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
         }
 
