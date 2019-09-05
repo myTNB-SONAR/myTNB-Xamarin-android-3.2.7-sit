@@ -63,30 +63,22 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            if (DataManager.DataManager.SharedInstance.IsPaymentDone)
+            if (isViewDidLoad)
             {
-                DataManager.DataManager.SharedInstance.IsPaymentDone = false;
-                DismissViewController(true, null);
-            }
-            else
-            {
-                if (isViewDidLoad)
+                SetDefaultTableFrame();
+                ResetValues();
+                GetAccountsForDisplay();
+                List<string> accountsForQuery = GetAccountsForQuery(0, 5);
+                if (accountsForQuery?.Count > 0)
                 {
-                    SetDefaultTableFrame();
-                    ResetValues();
-                    GetAccountsForDisplay();
-                    List<string> accountsForQuery = GetAccountsForQuery(0, 5);
-                    if (accountsForQuery?.Count > 0)
-                    {
-                        ActivityIndicator.Show();
-                        OnGetMultiAccountDueAmountServiceCall(accountsForQuery);
-                    }
-                    else
-                    {
-                        UpdateDuesDisplay();
-                    }
-                    isViewDidLoad = false;
+                    ActivityIndicator.Show();
+                    OnGetMultiAccountDueAmountServiceCall(accountsForQuery);
                 }
+                else
+                {
+                    UpdateDuesDisplay();
+                }
+                isViewDidLoad = false;
             }
         }
 

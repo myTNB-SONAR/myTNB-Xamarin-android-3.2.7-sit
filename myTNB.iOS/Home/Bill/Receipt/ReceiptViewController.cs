@@ -105,7 +105,6 @@ namespace myTNB
                 }
                 else
                 {
-                    DataManager.DataManager.SharedInstance.IsPaymentDone = true;
                     DismissViewController(true, null);
                     OnDone?.Invoke();
                 }

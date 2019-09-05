@@ -284,7 +284,7 @@ namespace myTNB
             _viewAccountSelector = _accountSelector.GetUI();
             _accountSelector.SetAction(() =>
             {
-                NeedsUpdate = true;
+                NeedsUpdate = false;
                 UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                 SelectAccountTableViewController viewController =
                     storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
@@ -422,8 +422,7 @@ namespace myTNB
 
             _viewRefreshContainer.AddSubview(txtViewDetails);
             _viewRefreshContainer.AddSubview(btnRefresh);
-            _viewRefreshContainer.Frame = new CGRect(0, _bgImageView.Frame.GetMaxY()
-               , ViewWidth, (_isBCRMAvailable ? btnRefresh.Frame.GetMaxY() : txtViewDetails.Frame.GetMaxY()) + GetScaledHeight(16));
+            _viewRefreshContainer.Frame = new CGRect(0, _bgImageView.Frame.GetMaxY(), ViewWidth, ViewHeight);
             View.AddSubview(_viewRefreshContainer);
         }
 
@@ -506,7 +505,6 @@ namespace myTNB
                            InvokeOnMainThread(() =>
                            {
                                SetHeaderLoading(false);
-
                                if (_accountCharges != null && _accountCharges.d != null && _accountCharges.d.IsSuccess
                                     && _accountCharges.d.data != null && _accountCharges.d.data.AccountCharges != null
                                     && _accountCharges.d.data.AccountCharges.Count > 0 && _accountCharges.d.data.AccountCharges[0] != null)
