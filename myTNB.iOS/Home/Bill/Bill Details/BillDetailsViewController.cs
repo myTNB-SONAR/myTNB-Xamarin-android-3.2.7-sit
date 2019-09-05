@@ -585,7 +585,6 @@ namespace myTNB
                                 storyBoard.InstantiateViewController("SelectBillsViewController") as SelectBillsViewController;
                             if (selectBillsVC != null)
                             {
-                                //selectBillsVC.SelectedAccountDueAmount = 0;//DataManager.DataManager.SharedInstance.BillingAccountDetails.amCustBal;
                                 var navController = new UINavigationController(selectBillsVC);
                                 PresentViewController(navController, true, null);
                             }
