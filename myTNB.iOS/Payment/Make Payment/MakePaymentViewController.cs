@@ -11,7 +11,7 @@ namespace myTNB
 {
     public partial class MakePaymentViewController : UIViewController
     {
-        public RequestPayBillResponseModel _requestPayBillResponseModel;
+        public GetPaymentTransactionIdResponseModel _paymentTransactionIDResponseModel;
         public CardModel _card;
         public UIWebView _webView;
         public UIView _barView;
@@ -122,10 +122,10 @@ namespace myTNB
                 ServiceManager serviceManager = new ServiceManager();
                 if (_paymentMode == "FPX")
                 {
-                    string param3 = _requestPayBillResponseModel?.d?.data?.payAccounts == null ? "0" : "1";
+                    string param3 = _paymentTransactionIDResponseModel?.d?.data?.payAccounts == null ? "0" : "1";
                     Dictionary<string, string> requestParams = new Dictionary<string, string>(){
                     {"Param1", "3"},
-                    {"Param2", _requestPayBillResponseModel?.d?.data?.payMerchant_transID},
+                    {"Param2", _paymentTransactionIDResponseModel?.d?.data?.payMerchant_transID},
                     {"Param3", param3}};
                     var tempURL = TNBGlobal.GetPaymentURL;
                     _url = serviceManager.GetPaymentURL(requestParams, tempURL);
@@ -133,17 +133,17 @@ namespace myTNB
                 else
                 {
                     Dictionary<string, string> requestParams = new Dictionary<string, string>(){
-                    { "MERCHANTID" , _requestPayBillResponseModel?.d?.data?.payMerchantID},
-                    { "MERCHANT_TRANID" , _requestPayBillResponseModel?.d?.data?.payMerchant_transID},
-                    { "PAYMENT_METHOD" , _requestPayBillResponseModel?.d?.data?.payMethod},
-                    { "CURRENCYCODE" , _requestPayBillResponseModel?.d?.data?.payCurrencyCode},
-                    { "AMOUNT" , _requestPayBillResponseModel?.d?.data?.payAmount},
-                    { "CUSTNAME" , _requestPayBillResponseModel?.d?.data?.payCustName},
-                    { "CUSTEMAIL" , _requestPayBillResponseModel?.d?.data?.payCustEmail},
-                    { "RETURN_URL" , _requestPayBillResponseModel?.d?.data?.payReturnUrl},
-                    { "SIGNATURE" , _requestPayBillResponseModel?.d?.data?.paySign},
-                    { "MPARAM1" , _requestPayBillResponseModel?.d?.data?.payMParam},
-                    { "DESCRIPTION" , _requestPayBillResponseModel?.d?.data?.payProdDesc},
+                    { "MERCHANTID" , _paymentTransactionIDResponseModel?.d?.data?.payMerchantID},
+                    { "MERCHANT_TRANID" , _paymentTransactionIDResponseModel?.d?.data?.payMerchant_transID},
+                    { "PAYMENT_METHOD" , _paymentTransactionIDResponseModel?.d?.data?.payMethod},
+                    { "CURRENCYCODE" , _paymentTransactionIDResponseModel?.d?.data?.payCurrencyCode},
+                    { "AMOUNT" , _paymentTransactionIDResponseModel?.d?.data?.payAmount},
+                    { "CUSTNAME" , _paymentTransactionIDResponseModel?.d?.data?.payCustName},
+                    { "CUSTEMAIL" , _paymentTransactionIDResponseModel?.d?.data?.payCustEmail},
+                    { "RETURN_URL" , _paymentTransactionIDResponseModel?.d?.data?.payReturnUrl},
+                    { "SIGNATURE" , _paymentTransactionIDResponseModel?.d?.data?.paySign},
+                    { "MPARAM1" , _paymentTransactionIDResponseModel?.d?.data?.payMParam},
+                    { "DESCRIPTION" , _paymentTransactionIDResponseModel?.d?.data?.payProdDesc},
                     { "TRANSACTIONTYPE", "1"}};
                     if (_isNewCard)
                     {
@@ -164,9 +164,9 @@ namespace myTNB
                         requestParams.Add("PYMT_IND", "tokenization");
                         requestParams.Add("PYMT_CRITERIA", "payment");
                         requestParams.Add("CARDCVC", _cardCVV);
-                        requestParams.Add("PYMT_TOKEN", _requestPayBillResponseModel?.d?.data?.tokenizedHashCodeCC);
+                        requestParams.Add("PYMT_TOKEN", _paymentTransactionIDResponseModel?.d?.data?.tokenizedHashCodeCC);
                     }
-                    _url = serviceManager.GetPaymentURL(requestParams, _requestPayBillResponseModel?.d?.data?.action);
+                    _url = serviceManager.GetPaymentURL(requestParams, _paymentTransactionIDResponseModel?.d?.data?.action);
                 }
             });
         }

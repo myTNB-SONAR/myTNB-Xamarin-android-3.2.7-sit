@@ -12,12 +12,10 @@ namespace myTNB.Payment
     {
 
         RegisteredCardsResponseModel _registeredCards = new RegisteredCardsResponseModel();
-        RequestPayBillResponseModel _requestPayBill = new RequestPayBillResponseModel();
         SelectPaymentMethodViewController _selectPaymentMethodVC;
         Action<SystemEnum> OnSelectUnavailablePaymentMethod;
 
         public SelectPaymentTableViewSource(RegisteredCardsResponseModel registeredCards
-            , RequestPayBillResponseModel requestPayBill
             , SelectPaymentMethodViewController selectPaymentMethodVC
             , Action<SystemEnum> onSelectUnavailablePaymentHandler)
         {
@@ -29,16 +27,6 @@ namespace myTNB.Payment
             {
                 _registeredCards.d = new RegisteredCardsModel();
                 _registeredCards.d.data = new System.Collections.Generic.List<RegisteredCardsDataModel>();
-            }
-
-            if (requestPayBill != null && requestPayBill.d != null && requestPayBill.d.data != null)
-            {
-                _requestPayBill = requestPayBill;
-            }
-            else
-            {
-                _requestPayBill.d = new RequestPayBillModel();
-                _requestPayBill.d.data = new RequestPayBillDataModel();
             }
 
             _selectPaymentMethodVC = selectPaymentMethodVC;

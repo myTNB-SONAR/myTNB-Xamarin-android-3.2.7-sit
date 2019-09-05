@@ -1,5 +1,4 @@
-﻿using System;
-using Facebook.Shimmer;
+﻿using Facebook.Shimmer;
 
 namespace myTNB
 {

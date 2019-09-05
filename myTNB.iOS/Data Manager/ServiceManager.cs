@@ -95,7 +95,7 @@ namespace myTNB
 #if DEBUG
             env = APIEnvironment.DEV;
 #endif
-            return baseService.GetFormattedURL(suffix, requestParams, APIVersion.V5, env);
+            return baseService.GetFormattedURL(suffix, requestParams, APIVersion.V6, env);
         }
 
         /// <summary>

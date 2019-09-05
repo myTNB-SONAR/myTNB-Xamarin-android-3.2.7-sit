@@ -904,13 +904,7 @@
     <ImageAsset Include="Assets.xcassets\Tab-Home-Selected.imageset\homeSelected%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Home-Selected.imageset\homeSelected%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Profile-Selected.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Tab-Profile-Selected.imageset\profileSelected.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Profile-Selected.imageset\profileSelected%402x.png" />
@@ -1156,6 +1150,30 @@
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\BCRM-Down-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\BCRM-Down-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Filter.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Filter.imageset\filterCopy1%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Filter.imageset\filterCopy1%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Expand.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Expand.imageset\expandRight16X16%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Expand.imageset\expandRight16X16%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-Cleared-Banner.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Expand-Down.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Collapse-Up.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Expand-Down.imageset\icActionExpandDown%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Expand-Down.imageset\icActionExpandDown%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Collapse-Up.imageset\icActionExpandDownUp%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Collapse-Up.imageset\icActionExpandDownUp%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Itemized-Tooltip1.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Itemized-Tooltip1.imageset\Itemized-Tooltip1%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Itemized-Tooltip1.imageset\Itemized-Tooltip1%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Itemized-Tooltip2.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Itemized-Tooltip2.imageset\Itemized-Tooltip2%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Itemized-Tooltip2.imageset\Itemized-Tooltip2%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-Cleared-Banner.imageset\noOutstanding%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-Cleared-Banner.imageset\noOutstanding%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\needToPay%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\needToPay%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\Trend-Down-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Trend-Down-Icon.imageset\Trend-Down-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Trend-Down-Icon.imageset\Trend-Down-Icon%403x.png" />
@@ -1169,6 +1187,19 @@
     <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\smrOnboarding1%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-No-History-Data.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Bills-No-History-Data.imageset\bills%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-No-History-Data.imageset\bills%403x.png" />
+    <ImageAsset Include="Assets.xcassets\BCRM-Down-Background.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\BCRM-Down-Background.imageset\down%402x.png" />
+    <ImageAsset Include="Assets.xcassets\BCRM-Down-Background.imageset\down%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Bill-Loading-Banner.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Bill-Loading-Banner.imageset\loading%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Bill-Loading-Banner.imageset\loading%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1293,7 +1324,6 @@
     <Folder Include="Assets.xcassets\IC-Field-Search.imageset\" />
     <Folder Include="Assets.xcassets\IC-Button-Map-Center.imageset\" />
     <Folder Include="Home\Bill\Receipt\" />
-    <Folder Include="Model\GetReceipt\" />
     <Folder Include="Assets.xcassets\IC-Header-Share.imageset\" />
     <Folder Include="Assets.xcassets\IC-Action-Dropdown.imageset\" />
     <Folder Include="Model\GetAccountDueAmount\" />
@@ -1372,9 +1402,6 @@
     <Folder Include="Assets.xcassets\IC-RE-Leaf-White.imageset\" />
     <Folder Include="Assets.xcassets\IC-Payment-Card-Amex.imageset\" />
     <Folder Include="Payment\Select Bills\" />
-    <Folder Include="Model\GetMultiReceiptByTransId\" />
-    <Folder Include="Model\GetMultiAccountDueAmount\" />
-    <Folder Include="Model\RequestPayBill\" />
     <Folder Include="Assets.xcassets\IC-Action-Show-PasswordWhite.imageset\" />
     <Folder Include="Home\Feedback\Submitted Feedback\" />
     <Folder Include="Assets.xcassets\Feedback-Empty.imageset\" />
@@ -1555,9 +1582,28 @@
     <Folder Include="Assets.xcassets\IC-Action-Zoom.imageset\" />
     <Folder Include="Assets.xcassets\Usage-MissingReading.imageset\" />
     <Folder Include="Assets.xcassets\BCRM-Down-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Filter.imageset\" />
+    <Folder Include="Components\Common\" />
+    <Folder Include="Assets.xcassets\Arrow-Expand.imageset\" />
+    <Folder Include="Assets.xcassets\Bills-Cleared-Banner.imageset\" />
+    <Folder Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\" />
+    <Folder Include="Model\GetAccountsCharges\" />
+    <Folder Include="Home\Bill\Bills\" />
+    <Folder Include="Home\Bill\Bill Details\" />
+    <Folder Include="Assets.xcassets\Arrow-Expand-Down.imageset\" />
+    <Folder Include="Assets.xcassets\Arrow-Collapse-Up.imageset\" />
+    <Folder Include="Assets.xcassets\Itemized-Tooltip1.imageset\" />
+    <Folder Include="Assets.xcassets\Itemized-Tooltip2.imageset\" />
     <Folder Include="Assets.xcassets\Trend-Down-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Trend-Up-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Trend-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Bills-No-History-Data.imageset\" />
+    <Folder Include="Model\GetAccountBillPayHistory\" />
+    <Folder Include="Sitecore CMS\Model\Bill Details\" />
+    <Folder Include="Assets.xcassets\BCRM-Down-Background.imageset\" />
+    <Folder Include="Assets.xcassets\Bill-Loading-Banner.imageset\" />
+    <Folder Include="Model\GetPaymentTransactionId\" />
+    <Folder Include="Model\GetPaymentReceipt\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1595,11 +1641,13 @@
     <InterfaceDefinition Include="SSMR\SSMR.storyboard" />
     <InterfaceDefinition Include="Customs\Generic No Data Page\GenericNoData.storyboard" />
     <InterfaceDefinition Include="Usage\Usage.storyboard" />
+    <InterfaceDefinition Include="Home\Bill\Bill Details\BillDetails.storyboard" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
     <None Include="Entitlements.plist" />
     <None Include="packages.config" />
+    <None Include="GoogleService-Info.plist" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Main.cs" />
@@ -1699,10 +1747,6 @@
     <Compile Include="Home\Dashboard\Select Accounts\SelectAccountTableViewController.designer.cs">
       <DependentUpon>..\..\..\Dashboard\Select Accounts\SelectAccountTableViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Home\Bill\BillViewController.cs" />
-    <Compile Include="Home\Bill\BillViewController.designer.cs">
-      <DependentUpon>BillViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Home\Promotions\PromotionsViewController.cs" />
     <Compile Include="Home\Promotions\PromotionsViewController.designer.cs">
       <DependentUpon>PromotionsViewController.cs</DependentUpon>
@@ -1745,11 +1789,6 @@
     <Compile Include="Home\Dashboard\Get Access\GetAccessViewController.cs" />
     <Compile Include="Home\Dashboard\Get Access\GetAccessViewController.designer.cs">
       <DependentUpon>GetAccessViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Bill\BillTableViewDataSource.cs" />
-    <Compile Include="Home\Bill\BillTableViewCell.cs" />
-    <Compile Include="Home\Bill\BillTableViewCell.designer.cs">
-      <DependentUpon>BillTableViewCell.cs</DependentUpon>
     </Compile>
     <Compile Include="Payment\Add Card\AddCardViewController.cs" />
     <Compile Include="Payment\Add Card\AddCardViewController.designer.cs">
@@ -1894,9 +1933,6 @@
     <Compile Include="Home\Bill\Receipt\ReceiptViewController.designer.cs">
       <DependentUpon>ReceiptViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\GetReceipt\ReceiptDataModel.cs" />
-    <Compile Include="Model\GetReceipt\ReceiptModel.cs" />
-    <Compile Include="Model\GetReceipt\ReceiptResponseModel.cs" />
     <Compile Include="Model\AddMultipleSupplyAccountsToUserReg\AddMultipleSupplyAccountsDataModel.cs" />
     <Compile Include="Model\AddMultipleSupplyAccountsToUserReg\AddMultipleSupplyAccountsModel.cs" />
     <Compile Include="Model\AddMultipleSupplyAccountsToUserReg\AddMultipleSupplyAccountsResponseModel.cs" />
@@ -1982,8 +2018,6 @@
     <Compile Include="Model\SubmitFeedback\SubmitFeedbackModel.cs" />
     <Compile Include="Model\SubmitFeedback\SubmitFeedbackResponseModel.cs" />
     <Compile Include="Model\GetStatesForFeedback\StatesForFeedbackDataModel.cs" />
-    <Compile Include="Model\GetBillHistory\BillHistoryDataModel.cs" />
-    <Compile Include="Model\GetBillHistory\BillHistoryModel.cs" />
     <Compile Include="Model\GetBillHistory\BillHistoryResponseModel.cs" />
     <Compile Include="Model\GetPaymentHistory\PaymentHistoryDataModel.cs" />
     <Compile Include="Model\GetPaymentHistory\PaymentHistoryModel.cs" />
@@ -2005,10 +2039,6 @@
     </Compile>
     <Compile Include="Home\Feedback\Feedback Details\FeedbackDetailsDataSource.cs" />
     <Compile Include="Helpers\ScrollViewDelegate.cs" />
-    <Compile Include="Home\Bill\NoDataViewCell.cs" />
-    <Compile Include="Home\Bill\NoDataViewCell.designer.cs">
-      <DependentUpon>NoDataViewCell.cs</DependentUpon>
-    </Compile>
     <Compile Include="Helpers\LabelHelper.cs" />
     <Compile Include="Home\Feedback\FeedbackFileNameHelper.cs" />
     <Compile Include="SQLite\SQLite Data Manager\TermsAndConditionEntity.cs" />
@@ -2049,16 +2079,6 @@
     <Compile Include="Payment\Select Bills\SelectBillsTableViewCell.designer.cs">
       <DependentUpon>SelectBillsTableViewCell.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\GetMultiReceiptByTransId\MultiReceiptResponseModel.cs" />
-    <Compile Include="Model\GetReceipt\MultiPayDataModel.cs" />
-    <Compile Include="Model\GetMultiAccountDueAmount\MultiAccountDueAmountResponseModel.cs" />
-    <Compile Include="Model\GetMultiAccountDueAmount\MultiAccountDueAmountModel.cs" />
-    <Compile Include="Model\GetMultiAccountDueAmount\MultiAccountDueAmountDataModel.cs" />
-    <Compile Include="Model\RequestPayBill\RequestPayBillDataModel.cs" />
-    <Compile Include="Model\RequestPayBill\RequestPayBillModel.cs" />
-    <Compile Include="Model\RequestPayBill\RequestPayBillResponseModel.cs" />
-    <Compile Include="Model\RequestPayBill\PayAccountDataModel.cs" />
-    <Compile Include="Model\RequestPayBill\PaymentItemsModel.cs" />
     <Compile Include="Home\Feedback\Submitted Feedback\SubmitFeedbackFailedViewController.cs" />
     <Compile Include="Home\Feedback\Submitted Feedback\SubmitFeedbackFailedViewController.designer.cs">
       <DependentUpon>SubmitFeedbackFailedViewController.cs</DependentUpon>
@@ -2381,6 +2401,20 @@
     <Compile Include="Components\Usage View\Charts\BaseChartView.cs" />
     <Compile Include="Components\Usage View\Charts\REChartView.cs" />
     <Compile Include="Components\Usage View\REAmountComponent.cs" />
+    <Compile Include="Home\Bill\BillConstants.cs" />
+    <Compile Include="Components\Common\PaginatedTooltipComponent.cs" />
+    <Compile Include="Model\GetAccountsCharges\GetAccountsChargesResponseModel.cs" />
+    <Compile Include="Home\Bill\Bills\BillHistorySource.cs" />
+    <Compile Include="Home\Bill\Bills\BillHistoryViewCell.cs" />
+    <Compile Include="Home\Bill\Bills\BillSectionViewCell.cs" />
+    <Compile Include="Home\Bill\Bills\BillViewController.cs" />
+    <Compile Include="Home\Bill\Bills\BillViewController.designer.cs">
+      <DependentUpon>BillViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Bill\Bill Details\BillDetailsViewController.cs" />
+    <Compile Include="Home\Bill\Bill Details\BillDetailsViewController.designer.cs">
+      <DependentUpon>BillDetailsViewController.cs</DependentUpon>
+    </Compile>
     <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterChartView.cs" />
     <Compile Include="Components\Usage View\SmartMeterCardComponent.cs" />
     <Compile Include="Model\Usage\AccountUsageSmartModel.cs" />
@@ -2389,6 +2423,20 @@
     <Compile Include="Model\Usage\LegendItemModel.cs" />
     <Compile Include="Session Cache\AccountUsageSmartCache.cs" />
     <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterZOut.cs" />
+    <Compile Include="Home\Bill\Bills\NoDataViewCell.cs" />
+    <Compile Include="Model\GetAccountBillPayHistory\GetAccountBillPayHistoryResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Model\Bill Details\BillDetailsTooltipModel.cs" />
+    <Compile Include="Sitecore CMS\Service\BillDetailsTooltipService.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\BillDetailsTooltipEntity.cs" />
+    <Compile Include="Home\Bill\Bills\BillHistoryShimmerViewCell.cs" />
+    <Compile Include="Model\GetPaymentTransactionId\GetPaymentTransactionIdResponseModel.cs" />
+    <Compile Include="Session Cache\AccountChargesCache.cs" />
+    <Compile Include="Home\Bill\Bills\BillFilterViewController.cs" />
+    <Compile Include="Home\Bill\Bills\BillFilterViewController.designer.cs">
+      <DependentUpon>BillFilterViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Payment\PaymentConstants.cs" />
+    <Compile Include="Model\GetPaymentReceipt\GetPaymentReceiptResponseModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

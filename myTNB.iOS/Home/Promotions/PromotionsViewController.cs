@@ -30,6 +30,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            NavigationController.NavigationBarHidden = true;
             base.ViewDidLoad();
             Debug.WriteLine("PROMOTION DID LOAD");
             NSNotificationCenter.DefaultCenter.AddObserver((Foundation.NSString)"LanguageDidChange", LanguageDidChange);
@@ -47,6 +48,7 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            //NavigationController.SetNavigationBarHidden(true, true);
             Debug.WriteLine("PROMOTION WILL APPEAR");
             if (!isPromoDetailScreen)
             {
@@ -89,6 +91,12 @@ namespace myTNB
                 SetSubViews();
                 isPromoDetailScreen = false;
             }
+        }
+
+        public override void ViewWillDisappear(bool animated)
+        {
+            base.ViewWillDisappear(animated);
+            //NavigationController.SetNavigationBarHidden(false, true);
         }
 
         Task GetPromotions()
