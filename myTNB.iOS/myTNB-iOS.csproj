@@ -1818,7 +1818,6 @@
     <Compile Include="Push Notification\Notification List\NotificationViewCell.designer.cs">
       <DependentUpon>NotificationViewCell.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\AccountDetailsModel.cs" />
     <Compile Include="Model\GetBillingAccountDetails\BillingAccountDetailsModel.cs" />
     <Compile Include="Model\GetBillingAccountDetails\BillingAccountDetailsDataModel.cs" />
     <Compile Include="Model\GetBillingAccountDetails\BillingAccountDetailsResponseModel.cs" />
@@ -2415,6 +2414,7 @@
     </Compile>
     <Compile Include="Payment\PaymentConstants.cs" />
     <Compile Include="Model\GetPaymentReceipt\GetPaymentReceiptResponseModel.cs" />
+    <Compile Include="Push Notification\PushNotificationConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

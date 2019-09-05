@@ -5,28 +5,35 @@ namespace myTNB.Model
 {
     public class UserNotificationDataModel
     {
-        public string Id { set; get; }
-        public string Email { set; get; }
-        public string DeviceId { set; get; }
-        public string AccountNum { set; get; }
-        public string Title { set; get; }
-        public string Message { set; get; }
-        public string IsRead { set; get; }
-        public string IsDeleted { set; get; }
-        public string NotificationTypeId { set; get; }
-        public string BCRMNotificationTypeId { set; get; }
-        public string CreatedDate { set; get; }
+        public string Id { set; get; } = string.Empty;
+        public string Email { set; get; } = string.Empty;
+        public string DeviceId { set; get; } = string.Empty;
+        public string AccountNum { set; get; } = string.Empty;
+        public string Title { set; get; } = string.Empty;
+        public string Message { set; get; } = string.Empty;
+        public string IsRead { set; get; } = string.Empty;
+        public string IsDeleted { set; get; } = string.Empty;
+        public string NotificationTypeId { set; get; } = string.Empty;
+        public string BCRMNotificationTypeId { set; get; } = string.Empty;
+        public string CreatedDate { set; get; } = string.Empty;
         public AccountDetailsModel AccountDetails { set; get; }
-        public string NotificationTitle { set; get; }
-        public string NotificationType { set; get; }
-        public string Target { set; get; }
+        public string NotificationTitle { set; get; } = string.Empty;
+        public string NotificationType { set; get; } = string.Empty;
+        public string Target { set; get; } = string.Empty;
+
+        public class AccountDetailsModel
+        {
+            public string BillDate { set; get; } = string.Empty;
+            public double AmountPayable { set; get; } = 0;
+            public string PaymentDueDate { set; get; } = string.Empty;
+        }
 
         [JsonIgnore]
         public BCRMNotificationEnum BCRMNotificationType
         {
             get
             {
-                BCRMNotificationEnum notificationType = default(BCRMNotificationEnum);
+                BCRMNotificationEnum notificationType = default;
 
                 if (!string.IsNullOrEmpty(BCRMNotificationTypeId))
                 {
@@ -55,6 +62,15 @@ namespace myTNB.Model
                             break;
                         case "99":
                             notificationType = BCRMNotificationEnum.Maintenance;
+                            break;
+                        case "50":
+                        case "51":
+                        case "52":
+                        case "53":
+                        case "0009":
+                        case "0010":
+                        case "0011":
+                            notificationType = BCRMNotificationEnum.SSMR;
                             break;
                     }
                 }

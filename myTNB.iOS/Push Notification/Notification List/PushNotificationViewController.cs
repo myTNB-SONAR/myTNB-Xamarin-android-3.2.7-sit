@@ -100,8 +100,10 @@ namespace myTNB.PushNotification
                 || userNotificationResponse?.d?.didSucceed == false
                 || userNotificationResponse?.d?.status?.ToLower() == "failed")
             {
-                var msg = !string.IsNullOrWhiteSpace(userNotificationResponse?.d?.RefreshMessage) ? userNotificationResponse?.d?.RefreshMessage : "Error_RefreshMessage".Translate();
-                var btnText = !string.IsNullOrWhiteSpace(userNotificationResponse?.d?.RefreshBtnText) ? userNotificationResponse?.d?.RefreshBtnText : "Error_RefreshBtnTitle".Translate();
+                var msg = !string.IsNullOrWhiteSpace(userNotificationResponse?.d?.RefreshMessage)
+                    ? userNotificationResponse?.d?.RefreshMessage : "Error_RefreshMessage".Translate();
+                var btnText = !string.IsNullOrWhiteSpace(userNotificationResponse?.d?.RefreshBtnText)
+                    ? userNotificationResponse?.d?.RefreshBtnText : "Error_RefreshBtnTitle".Translate();
                 DisplayRefreshScreen(msg, btnText);
                 _titleBarComponent.SetPrimaryVisibility(true);
                 _titleBarComponent.SetSecondaryVisibility(true);

@@ -10,6 +10,7 @@
         Reconnection,
         Promotion,
         News,
-        Maintenance
+        Maintenance,
+        SSMR
     }
 }

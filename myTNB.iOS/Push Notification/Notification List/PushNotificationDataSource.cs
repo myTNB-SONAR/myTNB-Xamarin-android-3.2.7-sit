@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using CoreGraphics;
 using Foundation;
+using myTNB.Enums;
 using myTNB.Model;
 using UIKit;
 
@@ -25,7 +26,7 @@ namespace myTNB.PushNotification
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            return 8;//_data.Count;
+            return 10;//_data.Count;
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
@@ -60,6 +61,12 @@ namespace myTNB.PushNotification
                 case 7://"99":
                     notification.BCRMNotificationTypeId = "99";
                     break;
+                case 8://"99":
+                    notification.BCRMNotificationTypeId = "0009";
+                    break;
+                case 9://"99":
+                    notification.BCRMNotificationTypeId = "0010";
+                    break;
             }
 
             var cell = tableView.DequeueReusableCell("pushNotificationCell") as NotificationViewCell;
@@ -69,7 +76,7 @@ namespace myTNB.PushNotification
             }
             cell.UpdateCell(_controller._isSelectionMode);
             cell.ClearsContextBeforeDrawing = true;
-            cell.imgIcon.Image = UIImage.FromBundle(GetIcon(notification.BCRMNotificationTypeId));
+            cell.imgIcon.Image = UIImage.FromBundle(GetIcon(notification.BCRMNotificationType));
             cell.lblTitle.Text = notification.Title;
             cell.lblDetails.Text = notification.Message;
             cell.lblDate.Text = GetDate(notification.CreatedDate);
@@ -113,26 +120,28 @@ namespace myTNB.PushNotification
             return string.Empty;
         }
 
-        internal string GetIcon(string id)
+        internal string GetIcon(BCRMNotificationEnum type)
         {
-            switch (id)
+            switch (type)
             {
-                case "01":
+                case BCRMNotificationEnum.NewBill:
                     return "Notification-New-Bill";
-                case "02":
+                case BCRMNotificationEnum.BillDue:
                     return "Notification-Bill-Due";
-                case "03":
+                case BCRMNotificationEnum.Dunning:
                     return "Notification-Dunning";
-                case "04":
+                case BCRMNotificationEnum.Disconnection:
                     return "Notification-Disconnection";
-                case "05":
+                case BCRMNotificationEnum.Reconnection:
                     return "Notification-Reconnection";
-                case "97":
+                case BCRMNotificationEnum.Promotion:
                     return "Notification-Promotion";
-                case "98":
+                case BCRMNotificationEnum.News:
                     return "Notification-News";
-                case "99":
+                case BCRMNotificationEnum.Maintenance:
                     return "Notification-Maintenance";
+                case BCRMNotificationEnum.SSMR:
+                    return "Notification-SSMR";
                 default:
                     return string.Empty;
             }
