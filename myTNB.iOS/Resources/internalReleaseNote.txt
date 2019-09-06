@@ -1,0 +1,4 @@
+Sprint 1 + Hot Fix SIT Build
+
+* Sprint 1
+* [BUG] 2251: BAU defects - Payees can view the same payment receipt as the Payer who makes payment for multiple accounts 
