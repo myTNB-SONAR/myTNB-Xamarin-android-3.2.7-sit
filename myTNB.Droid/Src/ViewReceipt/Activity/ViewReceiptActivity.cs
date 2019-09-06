@@ -178,7 +178,9 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
                 string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
                 string merchantTransId = Intent.Extras.GetString("merchantTransId");
-                this.userActionsListener.GetReceiptDetails(apiKeyID, merchantTransId);
+                string contractAccount = Intent.Extras.GetString("contractAccount");
+                string email = Intent.Extras.GetString("email");
+                this.userActionsListener.GetReceiptDetails(apiKeyID, merchantTransId, contractAccount, email);
             }
             catch (Exception e)
             {

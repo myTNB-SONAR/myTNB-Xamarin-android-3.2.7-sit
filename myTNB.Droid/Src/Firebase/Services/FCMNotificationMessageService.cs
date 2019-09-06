@@ -45,9 +45,8 @@ namespace myTNB_Android.Src.Firebase.Services
             UserEntity userEntity = UserEntity.GetActive();
 
             IDictionary<string, string> remoteData = remoteMessage.Data;
-            if (remoteData.ContainsKey("Email") && remoteData["Email"].Equals(userEntity.Email))
-            {
-
+            //if (remoteData.ContainsKey("Email"))
+            //{
                 String title = "";
                 if (remoteMessage.GetNotification().Title != null)
                 {
@@ -61,7 +60,7 @@ namespace myTNB_Android.Src.Firebase.Services
                 }
 
                 SendNotification(title, message);
-            }
+            //}
             if (remoteData.ContainsKey("Badge") && int.TryParse(remoteData["Badge"], out int count))
             {
                 if (count <= 0)
