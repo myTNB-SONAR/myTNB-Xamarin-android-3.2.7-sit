@@ -120,31 +120,13 @@ namespace myTNB.PushNotification
             return string.Empty;
         }
 
-        internal string GetIcon(BCRMNotificationEnum type)
+        private string GetIcon(BCRMNotificationEnum type)
         {
-            switch (type)
+            if (PushNotificationConstants.IconDictionary.ContainsKey(type))
             {
-                case BCRMNotificationEnum.NewBill:
-                    return "Notification-New-Bill";
-                case BCRMNotificationEnum.BillDue:
-                    return "Notification-Bill-Due";
-                case BCRMNotificationEnum.Dunning:
-                    return "Notification-Dunning";
-                case BCRMNotificationEnum.Disconnection:
-                    return "Notification-Disconnection";
-                case BCRMNotificationEnum.Reconnection:
-                    return "Notification-Reconnection";
-                case BCRMNotificationEnum.Promotion:
-                    return "Notification-Promotion";
-                case BCRMNotificationEnum.News:
-                    return "Notification-News";
-                case BCRMNotificationEnum.Maintenance:
-                    return "Notification-Maintenance";
-                case BCRMNotificationEnum.SSMR:
-                    return "Notification-SSMR";
-                default:
-                    return string.Empty;
+                return PushNotificationConstants.IconDictionary[type];
             }
+            return string.Empty;
         }
 
         public override bool CanEditRow(UITableView tableView, NSIndexPath indexPath)

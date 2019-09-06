@@ -13,4 +13,15 @@
         Maintenance,
         SSMR
     }
+
+    public enum SSMRNotificationEnum
+    {
+        RegistrationCompleted = 0,
+        RegistrationCancelled,
+        TerminationCompleted,
+        TerminationCancelled,
+        OpenMeterReadingPeriod,
+        NoSubmissionReminder,
+        MissedSubmission
+    }
 }

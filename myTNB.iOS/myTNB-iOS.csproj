@@ -1137,10 +1137,6 @@
     <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\smrOnboarding1%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-New-Bill.imageset\group7%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-New-Bill.imageset\group7%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Bill-Due.imageset\group7%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Bill-Due.imageset\group7%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-Dunning.imageset\group7%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-Dunning.imageset\group7%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-Disconnection.imageset\group7%402x-1.png" />
@@ -1149,12 +1145,8 @@
     <ImageAsset Include="Assets.xcassets\Notification-Banner-Reconnection.imageset\headerReconnected%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\group7%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\group7%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Bill-Due.imageset\billDue%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Bill-Due.imageset\billDue%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Reconnection.imageset\icConnection%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Reconnection.imageset\icConnection%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-New-Bill.imageset\icNotificationNewBill%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-New-Bill.imageset\icNotificationNewBill%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Disconnection.imageset\disconnection%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Disconnection.imageset\disconnection%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Dunning.imageset\icDunningDisconnection%402x.png" />
@@ -1177,6 +1169,14 @@
     <ImageAsset Include="Assets.xcassets\Bill-Loading-Banner.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Bill-Loading-Banner.imageset\loading%402x.png" />
     <ImageAsset Include="Assets.xcassets\Bill-Loading-Banner.imageset\loading%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-New-Bill.imageset\group7%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-New-Bill.imageset\group7%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Bill-Due.imageset\group7%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Bill-Due.imageset\group7%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Bill-Due.imageset\billDue%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Bill-Due.imageset\billDue%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-New-Bill.imageset\newBill%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-New-Bill.imageset\newBill%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />

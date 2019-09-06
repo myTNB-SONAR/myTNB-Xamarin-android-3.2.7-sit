@@ -34,7 +34,6 @@ namespace myTNB.Model
             get
             {
                 BCRMNotificationEnum notificationType = default;
-
                 if (!string.IsNullOrEmpty(BCRMNotificationTypeId))
                 {
                     switch (BCRMNotificationTypeId)
@@ -76,6 +75,43 @@ namespace myTNB.Model
                 }
 
                 return notificationType;
+            }
+        }
+
+        [JsonIgnore]
+        public SSMRNotificationEnum SSMRNotificationType
+        {
+            get
+            {
+                SSMRNotificationEnum ssmrType = default;
+                if (BCRMNotificationType == BCRMNotificationEnum.SSMR)
+                {
+                    switch (BCRMNotificationTypeId)
+                    {
+                        case "50":
+                            ssmrType = SSMRNotificationEnum.RegistrationCompleted;
+                            break;
+                        case "51":
+                            ssmrType = SSMRNotificationEnum.RegistrationCancelled;
+                            break;
+                        case "52":
+                            ssmrType = SSMRNotificationEnum.TerminationCompleted;
+                            break;
+                        case "53":
+                            ssmrType = SSMRNotificationEnum.TerminationCancelled;
+                            break;
+                        case "0009":
+                            ssmrType = SSMRNotificationEnum.OpenMeterReadingPeriod;
+                            break;
+                        case "0010":
+                            ssmrType = SSMRNotificationEnum.NoSubmissionReminder;
+                            break;
+                        case "0011":
+                            ssmrType = SSMRNotificationEnum.MissedSubmission;
+                            break;
+                    }
+                }
+                return ssmrType;
             }
         }
 

@@ -15,30 +15,29 @@ namespace myTNB.PushNotification
 {
     public partial class PushNotificationViewController : CustomUIViewController
     {
-        public PushNotificationViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public PushNotificationViewController(IntPtr handle) : base(handle) { }
         private DeleteNotificationResponseModel _deleteNotificationResponse = new DeleteNotificationResponseModel();
         private ReadNotificationResponseModel _readNotificationResponse = new ReadNotificationResponseModel();
-        UserNotificationResponseModel userNotificationResponse = new UserNotificationResponseModel();
+        private UserNotificationResponseModel userNotificationResponse = new UserNotificationResponseModel();
         public bool _isSelectionMode;
         internal bool _isDeletionMode;
-        bool _isAllSelected;
+        private bool _isAllSelected;
 
-        AccountSelectionComponent _notificationSelectionComponent;
-        NotificationDetailedInfoResponseModel _detailedInfo = new NotificationDetailedInfoResponseModel();
-        TitleBarComponent _titleBarComponent;
-        List<UserNotificationDataModel> _notifications;
-        List<UpdateNotificationModel> _notificationsForUpdate;
+        private AccountSelectionComponent _notificationSelectionComponent;
+        private NotificationDetailedInfoResponseModel _detailedInfo = new NotificationDetailedInfoResponseModel();
+        private TitleBarComponent _titleBarComponent;
+        private List<UserNotificationDataModel> _notifications;
+        private List<UpdateNotificationModel> _notificationsForUpdate;
 
-        UIImageView _imgCheckbox;
-        UILabel _lblTitle;
+        private UIImageView _imgCheckbox;
+        private UILabel _lblTitle;
 
-        RefreshViewComponent _refreshViewComponent;
-        UIView headerView;
+        private RefreshViewComponent _refreshViewComponent;
+        private UIView _headerView;
 
         public override void ViewDidLoad()
         {
+            PageName = PushNotificationConstants.Pagename_PushNotificationList;
             base.ViewDidLoad();
             NSNotificationCenter.DefaultCenter.AddObserver((NSString)"OnNotificationFilterDidChange", OnNotificationFilterDidChange);
             NSNotificationCenter.DefaultCenter.AddObserver((NSString)"OnReceiveNotificationFromDashboard", OnReceiveNotificationFromDashboard);
@@ -100,9 +99,9 @@ namespace myTNB.PushNotification
                 || userNotificationResponse?.d?.didSucceed == false
                 || userNotificationResponse?.d?.status?.ToLower() == "failed")
             {
-                var msg = !string.IsNullOrWhiteSpace(userNotificationResponse?.d?.RefreshMessage)
+                string msg = !string.IsNullOrWhiteSpace(userNotificationResponse?.d?.RefreshMessage)
                     ? userNotificationResponse?.d?.RefreshMessage : "Error_RefreshMessage".Translate();
-                var btnText = !string.IsNullOrWhiteSpace(userNotificationResponse?.d?.RefreshBtnText)
+                string btnText = !string.IsNullOrWhiteSpace(userNotificationResponse?.d?.RefreshBtnText)
                     ? userNotificationResponse?.d?.RefreshBtnText : "Error_RefreshBtnTitle".Translate();
                 DisplayRefreshScreen(msg, btnText);
                 _titleBarComponent.SetPrimaryVisibility(true);
@@ -135,7 +134,7 @@ namespace myTNB.PushNotification
             _notifications = new List<UserNotificationDataModel>();
             if (DataManager.DataManager.SharedInstance.UserNotifications.Count > 0)
             {
-                var format = @"M/d/yyyy h:mm:ss tt";
+                string format = @"M/d/yyyy h:mm:ss tt";
                 if (filterID == "all")
                 {
                     _notifications = DataManager.DataManager.SharedInstance.UserNotifications
@@ -234,8 +233,8 @@ namespace myTNB.PushNotification
                 }
             }
 
-            _refreshViewComponent = new RefreshViewComponent(View, headerView);
-            _refreshViewComponent.SetIconImage("Notification-Empty");
+            _refreshViewComponent = new RefreshViewComponent(View, _headerView);
+            _refreshViewComponent.SetIconImage(PushNotificationConstants.IMG_Empty);
             _refreshViewComponent.SetDescription("PushNotification_NoNotification".Translate());
             _refreshViewComponent.SetRefreshButtonHidden(true);
 
@@ -252,8 +251,8 @@ namespace myTNB.PushNotification
                 }
             }
 
-            _refreshViewComponent = new RefreshViewComponent(View, headerView);
-            _refreshViewComponent.SetIconImage("Refresh-Error-Normal");
+            _refreshViewComponent = new RefreshViewComponent(View, _headerView);
+            _refreshViewComponent.SetIconImage(PushNotificationConstants.IMG_RefreshErrorNormal);
             _refreshViewComponent.SetDescription(msg);
             _refreshViewComponent.SetButtonText(btnText);
             _refreshViewComponent.OnButtonTap = OnRefreshTap;
@@ -265,12 +264,12 @@ namespace myTNB.PushNotification
         {
             NavigationController?.SetNavigationBarHidden(true, false);
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 89, true);
-            headerView = gradientViewComponent.GetUI();
-            _titleBarComponent = new TitleBarComponent(headerView);
+            _headerView = gradientViewComponent.GetUI();
+            _titleBarComponent = new TitleBarComponent(_headerView);
 
             UIView titleBarView = _titleBarComponent.GetUI();
             _titleBarComponent.SetTitle("PushNotification_Title".Translate());
-            _titleBarComponent.SetSecondaryImage("Notification-MarkAsRead");
+            _titleBarComponent.SetSecondaryImage(PushNotificationConstants.IMG_MarkAsRead);
             _titleBarComponent.SetSecondaryAction(new UITapGestureRecognizer((obj) =>
             {
                 if (_notificationsForUpdate == null)
@@ -285,7 +284,7 @@ namespace myTNB.PushNotification
                 ReadNotification(_notificationsForUpdate, true);
             }));
             _titleBarComponent.SetPrimaryVisibility(false);
-            _titleBarComponent.SetPrimaryImage("Notification-Select");
+            _titleBarComponent.SetPrimaryImage(PushNotificationConstants.IMG_Select);
             SetPrimaryActionEvent();
 
             _titleBarComponent.SetBackVisibility(false);
@@ -300,7 +299,7 @@ namespace myTNB.PushNotification
                     OnBack();
                 }
             }));
-            headerView.AddSubview(titleBarView);
+            _headerView.AddSubview(titleBarView);
             SetSelectorEvent();
         }
 
@@ -321,7 +320,7 @@ namespace myTNB.PushNotification
                         bool areAllTobeDeleted = count == _notifications.Count;
                         string alertTitle = areAllTobeDeleted ? "PushNotification_DeleteTitleAll" : "PushNotification_DeleteTitleMultiple";
                         string alertMsg = areAllTobeDeleted ? "PushNotification_DeleteMessageAll" : "PushNotification_DeleteMessageMultiple";
-                        var deleteAlert = UIAlertController.Create(alertTitle.Translate(), alertMsg.Translate(), UIAlertControllerStyle.Alert);
+                        UIAlertController deleteAlert = UIAlertController.Create(alertTitle.Translate(), alertMsg.Translate(), UIAlertControllerStyle.Alert);
                         deleteAlert.AddAction(UIAlertAction.Create("Common_Yes".Translate(), UIAlertActionStyle.Default, (args) =>
                         {
                             if (_notificationsForUpdate != null)
@@ -339,7 +338,7 @@ namespace myTNB.PushNotification
                     {
                         return;
                     }
-                    _titleBarComponent.SetPrimaryImage("IC-Header-Cancel");
+                    _titleBarComponent.SetPrimaryImage(PushNotificationConstants.IMG_Cancel);
                     UpdateSelectAllFlags(false);
                     pushNotificationTableView.TableHeaderView = GetTableViewHeader();
                     _titleBarComponent.SetTitle(_isSelectionMode ? "PushNotification_Title".Translate() : "PushNotification_Select".Translate());
@@ -352,7 +351,7 @@ namespace myTNB.PushNotification
 
         private void SetSelectorEvent()
         {
-            _notificationSelectionComponent = new AccountSelectionComponent(headerView);
+            _notificationSelectionComponent = new AccountSelectionComponent(_headerView);
             UIView accountSelectionView = _notificationSelectionComponent.GetUI();
 
             if (DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex
@@ -369,11 +368,11 @@ namespace myTNB.PushNotification
                 viewController.Items = GetNotificationTypeList();
                 viewController.OnSelect = OnSelectAction;
                 viewController.SelectedIndex = DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex;
-                var navController = new UINavigationController(viewController);
+                UINavigationController navController = new UINavigationController(viewController);
                 PresentViewController(navController, true, null);
             }));
-            headerView.AddSubview(accountSelectionView);
-            View.AddSubview(headerView);
+            _headerView.AddSubview(accountSelectionView);
+            View.AddSubview(_headerView);
         }
 
         private void OnBack()
@@ -391,7 +390,7 @@ namespace myTNB.PushNotification
             pushNotificationTableView.ReloadData();
             _titleBarComponent.SetSecondaryVisibility(true);
             _titleBarComponent.SetTitle("PushNotification_Title".Translate());
-            _titleBarComponent.SetPrimaryImage("Notification-Select");
+            _titleBarComponent.SetPrimaryImage(PushNotificationConstants.IMG_Select);
             _isDeletionMode = false;
         }
 
@@ -444,8 +443,8 @@ namespace myTNB.PushNotification
                                     UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
                                     NotificationDetailsViewController viewController =
                                         storyBoard.InstantiateViewController("NotificationDetailsViewController") as NotificationDetailsViewController;
-                                    var index = DataManager.DataManager.SharedInstance.UserNotifications.FindIndex(x => x.Id == dataModel.Id);
-                                    var notificationTitle = string.Empty;
+                                    int index = DataManager.DataManager.SharedInstance.UserNotifications.FindIndex(x => x.Id == dataModel.Id);
+                                    string notificationTitle = string.Empty;
                                     if (index > -1)
                                     {
                                         DataManager.DataManager.SharedInstance.UserNotifications[index].IsRead = @"true";
@@ -475,8 +474,8 @@ namespace myTNB.PushNotification
 
         internal Task GetNotificationDetailedInfo(UserNotificationDataModel dataModel)
         {
-            var emailAddress = string.Empty;
-            var userId = string.Empty;
+            string emailAddress = string.Empty;
+            string userId = string.Empty;
             if (DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
             {
                 emailAddress = DataManager.DataManager.SharedInstance.UserEntity[0]?.email;
@@ -512,7 +511,7 @@ namespace myTNB.PushNotification
                         {
                             InvokeOnMainThread(() =>
                             {
-                                var readNotificationResponse = _readNotificationResponse;
+                                ReadNotificationResponseModel readNotificationResponse = _readNotificationResponse;
                                 if (readNotificationResponse != null && readNotificationResponse?.d != null
                                     && readNotificationResponse?.d?.status?.ToLower() == "success"
                                     && readNotificationResponse?.d?.didSucceed == true)
@@ -528,7 +527,7 @@ namespace myTNB.PushNotification
                                     }
                                     if (_imgCheckbox != null)
                                     {
-                                        _imgCheckbox.Image = UIImage.FromBundle("Payment-Checkbox-Inactive");
+                                        _imgCheckbox.Image = UIImage.FromBundle(PushNotificationConstants.IMG_ChkInactive);
                                     }
                                     _isDeletionMode = false;
                                     _isSelectionMode = isMultiple;
@@ -564,7 +563,7 @@ namespace myTNB.PushNotification
                         {
                             InvokeOnMainThread(() =>
                             {
-                                var deleteNotifResponse = _deleteNotificationResponse;
+                                DeleteNotificationResponseModel deleteNotifResponse = _deleteNotificationResponse;
                                 if (deleteNotifResponse != null && deleteNotifResponse?.d != null
                                     && deleteNotifResponse?.d?.status?.ToLower() == "success"
                                     && deleteNotifResponse?.d?.didSucceed == true)
@@ -664,7 +663,7 @@ namespace myTNB.PushNotification
 
         Task DeleteUserNotification(List<UpdateNotificationModel> deleteNotificationList)
         {
-            var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+            UserEntity user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
                 ? DataManager.DataManager.SharedInstance.UserEntity[0] : new UserEntity();
             return Task.Factory.StartNew(() =>
             {
@@ -683,7 +682,7 @@ namespace myTNB.PushNotification
 
         Task ReadUserNotification(List<UpdateNotificationModel> readNotificationList)
         {
-            var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+            UserEntity user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
                 ? DataManager.DataManager.SharedInstance.UserEntity[0]
                 : new UserEntity();
             return Task.Factory.StartNew(() =>
@@ -712,7 +711,7 @@ namespace myTNB.PushNotification
             UIView viewCheckBox = new UIView(new CGRect(cellWidth - 40, 22, 24, 24));
             _imgCheckbox = new UIImageView(new CGRect(0, 0, 24, 24))
             {
-                Image = UIImage.FromBundle("Payment-Checkbox-Inactive")
+                Image = UIImage.FromBundle(PushNotificationConstants.IMG_ChkInactive)
             };
             viewCheckBox.AddSubview(_imgCheckbox);
 
@@ -749,7 +748,7 @@ namespace myTNB.PushNotification
         {
             if (_imgCheckbox != null)
             {
-                _imgCheckbox.Image = UIImage.FromBundle(areAllSelected ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
+                _imgCheckbox.Image = UIImage.FromBundle(areAllSelected ? PushNotificationConstants.IMG_ChkActive : PushNotificationConstants.IMG_ChkInactive);
             }
             if (_lblTitle != null)
             {
@@ -794,7 +793,6 @@ namespace myTNB.PushNotification
                         });
                     }
                 }
-
                 pushNotificationTableView.ReloadData();
                 UpdateTitleRightIconImage();
             }
@@ -816,7 +814,7 @@ namespace myTNB.PushNotification
             if (_isSelectionMode)
             {
                 _titleBarComponent.SetSecondaryVisibility(false);
-                _titleBarComponent.SetPrimaryImage(_isDeletionMode ? "Notification-Delete" : "Notification-DeleteDisabled");
+                _titleBarComponent.SetPrimaryImage(_isDeletionMode ? PushNotificationConstants.IMG_Delete : PushNotificationConstants.IMG_DeleteInactive);
             }
 
             UpdateNotificationForDeletionList(notifModel);
@@ -833,8 +831,8 @@ namespace myTNB.PushNotification
                 }
             }
             _titleBarComponent.SetTitle(title);
-            _titleBarComponent.SetSecondaryImage(IsAtleastOneRead() ? "Notification-MarkAsRead" : "Notification-MarkAsReadDisabled");
-            _titleBarComponent.SetPrimaryImage(IsAtLeastOneIsSelected() ? "Notification-Delete" : "Notification-DeleteDisabled");
+            _titleBarComponent.SetSecondaryImage(IsAtleastOneRead() ? PushNotificationConstants.IMG_MarkAsRead : PushNotificationConstants.IMG_MarkAsReadInactive);
+            _titleBarComponent.SetPrimaryImage(IsAtLeastOneIsSelected() ? PushNotificationConstants.IMG_Delete : PushNotificationConstants.IMG_DeleteInactive);
         }
 
         private bool IsAtleastOneRead()

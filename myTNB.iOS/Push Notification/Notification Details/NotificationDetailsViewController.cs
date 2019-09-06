@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB.SitecoreCMS.Model;
 using System.Collections.Generic;
+using myTNB.PushNotification;
 
 namespace myTNB
 {
@@ -15,12 +16,12 @@ namespace myTNB
         public NotificationDetailsViewController(IntPtr handle) : base(handle)
         {
         }
-        TitleBarComponent _titleBarComponent;
-        UIView _viewCTA;
+        private TitleBarComponent _titleBarComponent;
+        private UIView _viewCTA;
 
-        DueAmountResponseModel _dueAmount = new DueAmountResponseModel();
-        BillingAccountDetailsResponseModel _billingAccountDetailsList = new BillingAccountDetailsResponseModel();
-        DeleteNotificationResponseModel _deleteNotificationResponse = new DeleteNotificationResponseModel();
+        private DueAmountResponseModel _dueAmount = new DueAmountResponseModel();
+        private BillingAccountDetailsResponseModel _billingAccountDetailsList = new BillingAccountDetailsResponseModel();
+        private DeleteNotificationResponseModel _deleteNotificationResponse = new DeleteNotificationResponseModel();
 
         public UserNotificationDataModel NotificationInfo = new UserNotificationDataModel();
 
@@ -372,45 +373,13 @@ namespace myTNB
             }
         }
 
-        string GetBannerImage()
+        private string GetBannerImage()
         {
-            if (NotificationInfo.BCRMNotificationTypeId.Equals("01"))
+            if (PushNotificationConstants.BannerImageDictionary.ContainsKey(NotificationInfo.BCRMNotificationType))
             {
-                return "Notification-Banner-New-Bill";
+                return PushNotificationConstants.BannerImageDictionary[NotificationInfo.BCRMNotificationType];
             }
-            else if (NotificationInfo.BCRMNotificationTypeId.Equals("02"))
-            {
-                return "Notification-Banner-Bill-Due";
-            }
-            else if (NotificationInfo.BCRMNotificationTypeId.Equals("03"))
-            {
-                return "Notification-Banner-Dunning";
-            }
-            else if (NotificationInfo.BCRMNotificationTypeId.Equals("04"))
-            {
-                return "Notification-Banner-Disconnection";
-            }
-            else if (NotificationInfo.BCRMNotificationTypeId.Equals("05"))
-            {
-                return "Notification-Banner-Reconnection";
-            }
-            else if (NotificationInfo.BCRMNotificationTypeId.Equals("97"))
-            {
-                return "Notification-Banner-Promotion";
-            }
-            else if (NotificationInfo.BCRMNotificationTypeId.Equals("98"))
-            {
-                return "Notification-Banner-News";
-            }
-            else if (NotificationInfo.BCRMNotificationTypeId.Equals("99"))
-            {
-                return "Notification-Banner-Maintenance";
-            }
-            else
-            {
-                return string.Empty;
-            }
-
+            return string.Empty;
         }
 
         /// <summary>
