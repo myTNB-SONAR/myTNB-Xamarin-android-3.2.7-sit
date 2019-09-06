@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using myTNB.Enum;
 using RestSharp;
 
@@ -62,7 +63,10 @@ namespace myTNB
             request.AddHeader(CONTENT_TYPE, APPLICATION_JSON);
             request.AddJsonBody(requestParams);
 
+            Debug.WriteLine("*****URL: " + url);
+            Debug.WriteLine("*****PARAMETERS: " + requestParams);
             RestResponse response = (RestResponse)client.Execute(request);
+            Debug.WriteLine("*****RESPONSE: " + response.Content.ToString());
             return response;
         }
 
