@@ -16,13 +16,19 @@
     <Folder Include="Data\Entities\" />
     <Folder Include="Business\Managers\" />
     <Folder Include="Resources\" />
+    <Folder Include="Resources\Language\" />
+    <Folder Include="Resources\Notification\" />
   </ItemGroup>
   <ItemGroup>
-    <None Remove="Resources\Language_EN.json" />
-    <None Remove="Resources\Language_MS.json" />
+    <None Remove="Resources\Language\Language_EN.json" />
+    <None Remove="Resources\Language\Language_MS.json" />
+    <None Remove="Resources\Notification\GetUserNotifications.json" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Resources\Language_EN.json" />
-    <EmbeddedResource Include="Resources\Language_MS.json" />
+    <EmbeddedResource Include="Resources\Language\Language_EN.json" />
+    <EmbeddedResource Include="Resources\Language\Language_MS.json">
+      <LogicalName>myTNB.Mobile.Resources.Language_MS.json</LogicalName>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Resources\Notification\GetUserNotifications.json" />
   </ItemGroup>
 </Project>

@@ -706,19 +706,20 @@ namespace myTNB.PushNotification
         UIView GetTableViewHeader()
         {
             nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
-            nfloat cellHeight = 66;
+            nfloat cellHeight = ScaleUtility.GetScaledHeight(70);
+            nfloat chkWidth = ScaleUtility.GetWidthByScreenSize(20);
 
-            UIView viewCheckBox = new UIView(new CGRect(cellWidth - 40, 22, 24, 24));
-            _imgCheckbox = new UIImageView(new CGRect(0, 0, 24, 24))
+            UIView viewCheckBox = new UIView(new CGRect(cellWidth - chkWidth - GetScaledWidth(16), GetScaledHeight(24), chkWidth, chkWidth));
+            _imgCheckbox = new UIImageView(new CGRect(0, 0, chkWidth, chkWidth))
             {
                 Image = UIImage.FromBundle(PushNotificationConstants.IMG_ChkInactive)
             };
             viewCheckBox.AddSubview(_imgCheckbox);
 
-            _lblTitle = new UILabel(new CGRect(18, 25, cellWidth - 96 - 60, 18))
+            _lblTitle = new UILabel(new CGRect(GetScaledWidth(16), GetScaledHeight(24), cellWidth / 2, GetScaledHeight(20)))
             {
-                TextColor = MyTNBColor.TunaGrey(),
-                Font = MyTNBFont.MuseoSans14,
+                TextColor = MyTNBColor.CharcoalGrey,
+                Font = TNBFont.MuseoSans_14_500,
                 Text = "Feedback_SelectAll".Translate()
             };
 
@@ -727,10 +728,9 @@ namespace myTNB.PushNotification
                 OnCheckboxSelect();
             }));
 
-
-            UIView viewLine = new UIView(new CGRect(0, cellHeight - 1, cellWidth, 1))
+            UIView viewLine = new UIView(new CGRect(0, cellHeight - GetScaledHeight(1), cellWidth, GetScaledHeight(1)))
             {
-                BackgroundColor = MyTNBColor.PlatinumGrey
+                BackgroundColor = MyTNBColor.VeryLightPinkThree
             };
 
             UIView viewHeader = new UIView

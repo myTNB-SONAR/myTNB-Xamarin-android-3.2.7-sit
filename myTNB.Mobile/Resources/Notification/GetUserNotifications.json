@@ -1,0 +1,29 @@
+﻿{
+    "d": {
+        "__type": "mytnb.lib.models.UsersNotificationsStatus",
+        "data": [
+            {
+                "NotificationType": "ODN",
+                "Id": "1002",
+                "Email": "",
+                "DeviceId": "",
+                "AccountNum": "",
+                "Title": "News",
+                "Message": "Good News!!",
+                "IsRead": "False",
+                "IsDeleted": "False",
+                "NotificationTypeId": "1000010",
+                "BCRMNotificationTypeId": "98",
+                "Target": "",
+                "CreatedDate": "9/1/2019 5:00:00 PM",
+                "AccountDetails": null
+            }
+        ],
+        "RefreshTitle": null,
+        "RefreshMessage": null,
+        "RefreshBtnText": null,
+        "status": "success",
+        "isError": "false",
+        "message": "Successful"
+    }
+}

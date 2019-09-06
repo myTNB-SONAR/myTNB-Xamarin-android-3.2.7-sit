@@ -171,7 +171,12 @@ namespace myTNB
                     email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
                     deviceId = DataManager.DataManager.SharedInstance.UDID
                 };
+#if DEBUG
+                UserNotificationManager.SetData();
+                _userNotifications = Newtonsoft.Json.JsonConvert.DeserializeObject<UserNotificationResponseModel>(UserNotificationManager.GetData());
+#else
                 _userNotifications = serviceManager.OnExecuteAPI<UserNotificationResponseModel>("GetUserNotifications", requestParameter);
+#endif
             });
         }
         /// <summary>

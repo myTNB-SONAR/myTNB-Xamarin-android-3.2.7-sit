@@ -26,64 +26,63 @@ namespace myTNB.PushNotification
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            return 10;//_data.Count;
+            return _data.Count;
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            UserNotificationDataModel notification = _data[0];// _data[indexPath.Row];
+            UserNotificationDataModel notification = _data[indexPath.Row];
 
-            int index = indexPath.Row;
-            switch (index)
-            {
-                case 0:// "01":
-                    notification.BCRMNotificationTypeId = "01";
-                    notification.IsRead = "FALSE";
-                    break;
-                case 1://"02":
-                    notification.BCRMNotificationTypeId = "02";
-                    break;
-                case 2://"03":
-                    notification.BCRMNotificationTypeId = "03";
-                    break;
-                case 3://"04":
-                    notification.BCRMNotificationTypeId = "04";
-                    break;
-                case 4://"05":
-                    notification.BCRMNotificationTypeId = "05";
-                    break;
-                case 5://"97":
-                    notification.BCRMNotificationTypeId = "97";
-                    break;
-                case 6:// "98":
-                    notification.BCRMNotificationTypeId = "98";
-                    break;
-                case 7://"99":
-                    notification.BCRMNotificationTypeId = "99";
-                    break;
-                case 8://"99":
-                    notification.BCRMNotificationTypeId = "0009";
-                    break;
-                case 9://"99":
-                    notification.BCRMNotificationTypeId = "0010";
-                    break;
-            }
+            /* int index = indexPath.Row;
+             switch (index)
+             {
+                 case 0:// "01":
+                     notification.BCRMNotificationTypeId = "01";
+                     notification.IsRead = "FALSE";
+                     break;
+                 case 1://"02":
+                     notification.BCRMNotificationTypeId = "02";
+                     break;
+                 case 2://"03":
+                     notification.BCRMNotificationTypeId = "03";
+                     break;
+                 case 3://"04":
+                     notification.BCRMNotificationTypeId = "04";
+                     break;
+                 case 4://"05":
+                     notification.BCRMNotificationTypeId = "05";
+                     break;
+                 case 5://"97":
+                     notification.BCRMNotificationTypeId = "97";
+                     break;
+                 case 6:// "98":
+                     notification.BCRMNotificationTypeId = "98";
+                     break;
+                 case 7://"99":
+                     notification.BCRMNotificationTypeId = "99";
+                     break;
+                 case 8://"99":
+                     notification.BCRMNotificationTypeId = "0009";
+                     break;
+                 case 9://"99":
+                     notification.BCRMNotificationTypeId = "0010";
+                     break;
+             }*/
 
             var cell = tableView.DequeueReusableCell("pushNotificationCell") as NotificationViewCell;
             if (cell == null)
             {
                 cell = new NotificationViewCell("pushNotificationCell");
             }
-            cell.UpdateCell(_controller._isSelectionMode);
+            cell.UpdateCell(_controller._isSelectionMode, notification.IsReadNotification);
             cell.ClearsContextBeforeDrawing = true;
             cell.imgIcon.Image = UIImage.FromBundle(GetIcon(notification.BCRMNotificationType));
             cell.lblTitle.Text = notification.Title;
             cell.lblDetails.Text = notification.Message;
             cell.lblDate.Text = GetDate(notification.CreatedDate);
-            cell.imgUnread.Hidden = notification.IsRead.ToLower() != "false";
-            cell.SelectionStyle = UITableViewCellSelectionStyle.None;
+            cell.IsRead = notification.IsReadNotification;
             cell.imgCheckbox.Image = UIImage.FromBundle(notification.IsSelected
-                ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
+                ? PushNotificationConstants.IMG_ChkActive : PushNotificationConstants.IMG_ChkInactive);
             return cell;
         }
 

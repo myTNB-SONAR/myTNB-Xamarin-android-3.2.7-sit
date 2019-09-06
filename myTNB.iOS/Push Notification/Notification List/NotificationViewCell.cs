@@ -14,20 +14,22 @@ namespace myTNB.PushNotification
         public UIView viewCheckBox;
         public UIImageView imgCheckbox;
 
+        private nfloat _unreadWidth;
+
         public NotificationViewCell(IntPtr handle) : base(handle)
         {
             nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
             nfloat cellHeight = ScaleUtility.GetScaledHeight(70);
             nfloat icnWidth = ScaleUtility.GetWidthByScreenSize(24);
             nfloat chkWidth = ScaleUtility.GetWidthByScreenSize(20);
-            nfloat unreadWidth = ScaleUtility.GetWidthByScreenSize(16);
+            _unreadWidth = ScaleUtility.GetWidthByScreenSize(16);
 
             UIView _view = new UIView(new CGRect(0, 0, cellWidth, cellHeight))
             {
                 BackgroundColor = UIColor.Clear
             };
 
-            viewCheckBox = new UIView(new CGRect(cellWidth - ScaleUtility.GetWidthByScreenSize(28)
+            viewCheckBox = new UIView(new CGRect(cellWidth - chkWidth - ScaleUtility.GetScaledWidth(16)
                 , (cellHeight - chkWidth) / 2, chkWidth, chkWidth));
             imgCheckbox = new UIImageView(new CGRect(0, 0, chkWidth, chkWidth))
             {
@@ -45,7 +47,8 @@ namespace myTNB.PushNotification
                 Font = TNBFont.MuseoSans_14_500
             };
 
-            lblDate = new UILabel(new CGRect(cellWidth - 94, (cellHeight - ScaleUtility.GetScaledHeight(14)) / 2
+            lblDate = new UILabel(new CGRect(cellWidth - ScaleUtility.GetPercentWidthValue(20F) - ScaleUtility.GetScaledWidth(36)
+                , (cellHeight - ScaleUtility.GetScaledHeight(14)) / 2
                 , ScaleUtility.GetPercentWidthValue(20F), ScaleUtility.GetScaledHeight(14)))
             {
                 TextColor = MyTNBColor.SilverChalice,
@@ -53,15 +56,15 @@ namespace myTNB.PushNotification
                 TextAlignment = UITextAlignment.Right
             };
 
-            imgUnread = new UIImageView(new CGRect(cellWidth - unreadWidth - ScaleUtility.GetWidthByScreenSize(16)
-                , (cellHeight - unreadWidth) / 2, unreadWidth, unreadWidth))
+            imgUnread = new UIImageView(new CGRect(cellWidth - _unreadWidth - ScaleUtility.GetWidthByScreenSize(16)
+                , (cellHeight - _unreadWidth) / 2, _unreadWidth, _unreadWidth))
             {
                 Image = UIImage.FromBundle("Notification-Unread"),
                 Hidden = true
             };
 
             lblDetails = new UILabel(new CGRect(imgIcon.Frame.GetMaxX() + ScaleUtility.GetScaledWidth(8)
-                , 40, ScaleUtility.GetPercentWidthValue(50F), ScaleUtility.GetScaledHeight(14)))
+                , ScaleUtility.GetYLocationFromFrame(lblTitle.Frame, 4), ScaleUtility.GetPercentWidthValue(50F), ScaleUtility.GetScaledHeight(14)))
             {
                 TextColor = MyTNBColor.SilverChalice,
                 Font = TNBFont.MuseoSans_10_300,
@@ -91,16 +94,17 @@ namespace myTNB.PushNotification
 
         }
 
-        public void UpdateCell(bool isSelectionMode)
+        public void UpdateCell(bool isSelectionMode, bool isRead)
         {
-            UpdateStyle(isSelectionMode);
+            UpdateStyle(isSelectionMode, isRead);
         }
 
-        private void UpdateStyle(bool isSelectionMode)
+        private void UpdateStyle(bool isSelectionMode, bool isRead)
         {
             nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
-            nfloat xDate = isSelectionMode ? cellWidth - 134 : cellWidth - 94;
-            nfloat xRead = isSelectionMode ? cellWidth - 64 : cellWidth - 34;
+            nfloat margin = isRead ? ScaleUtility.GetScaledWidth(16) : ScaleUtility.GetScaledWidth(36);
+            nfloat xDate = cellWidth - ScaleUtility.GetPercentWidthValue(20) - (isSelectionMode ? ScaleUtility.GetScaledWidth(64) : margin);
+            nfloat xRead = cellWidth - _unreadWidth - (isSelectionMode ? ScaleUtility.GetScaledWidth(44) : ScaleUtility.GetScaledWidth(16));
 
             imgCheckbox.Hidden = !isSelectionMode;
 
@@ -121,6 +125,14 @@ namespace myTNB.PushNotification
             {
                 lblDetails.Frame = new CGRect(lblDetails.Frame.X, lblDetails.Frame.Y
                     , cellWidth - (48 + lblDate.Frame.Width + 34 + 12), lblDetails.Frame.Height);
+            }
+        }
+
+        public bool IsRead
+        {
+            set
+            {
+                imgUnread.Hidden = value;
             }
         }
     }

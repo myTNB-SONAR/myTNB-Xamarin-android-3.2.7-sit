@@ -29,6 +29,18 @@ namespace myTNB.Model
         }
 
         [JsonIgnore]
+        public bool IsReadNotification
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(IsRead) && !string.IsNullOrWhiteSpace(IsRead))
+                {
+                    return IsRead.ToUpper() == "TRUE";
+                }
+                return false;
+            }
+        }
+        [JsonIgnore]
         public BCRMNotificationEnum BCRMNotificationType
         {
             get
