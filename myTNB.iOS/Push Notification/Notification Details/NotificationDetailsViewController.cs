@@ -312,18 +312,30 @@ namespace myTNB
             nfloat btnWidth = (ViewWidth - GetScaledWidth(36)) / 2;
             if (NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.BillDue
                 || NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.Dunning
-                || NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.NewBill)
+                || NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.NewBill
+                || NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.Disconnection)
             {
                 _btnPrimary = new CustomUIButtonV2
                 {
                     Frame = new CGRect(BaseMargin, GetScaledHeight(16), btnWidth, GetScaledHeight(48)),
                     BackgroundColor = UIColor.White
                 };
-                _btnPrimary.SetTitle("View Bill", UIControlState.Normal);
+                _btnPrimary.SetTitle(NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.Disconnection
+                    ? "Contact TNB" : "View Bill", UIControlState.Normal);
                 _btnPrimary.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
                 _btnPrimary.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
                 _btnPrimary.Layer.BorderWidth = 1;
-
+                _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    if (NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.Disconnection)
+                    {
+                        OnContact();
+                    }
+                    else
+                    {
+                        OnViewBill();
+                    }
+                }));
                 _btnSecondary = new CustomUIButtonV2
                 {
                     Frame = new CGRect(_btnPrimary.Frame.GetMaxX() + GetScaledWidth(4), GetScaledHeight(16), btnWidth, GetScaledHeight(48)),
@@ -331,8 +343,135 @@ namespace myTNB
                 };
                 _btnSecondary.SetTitle("Pay Now", UIControlState.Normal);
                 _btnSecondary.SetTitleColor(UIColor.White, UIControlState.Normal);
+                _btnSecondary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    OnPay();
+                }));
                 _viewCTA.AddSubviews(new UIView[] { _btnPrimary, _btnSecondary });
             }
+            else if (NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.Reconnection)
+            {
+                _btnPrimary = new CustomUIButtonV2
+                {
+                    Frame = new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(48)),
+                    BackgroundColor = UIColor.White
+                };
+                _btnPrimary.SetTitle("View My Usage", UIControlState.Normal);
+                _btnPrimary.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
+                _btnPrimary.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
+                _btnPrimary.Layer.BorderWidth = 1;
+                _viewCTA.AddSubview(_btnPrimary);
+            }
+            else if (NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.SSMR)
+            {
+                EvaluateSSMRCTA();
+            }
+        }
+
+        private void EvaluateSSMRCTA()
+        {
+            if (NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.OpenMeterReadingPeriod
+                || NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.NoSubmissionReminder)
+            {
+                _btnPrimary = new CustomUIButtonV2
+                {
+                    Frame = new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(48)),
+                    BackgroundColor = MyTNBColor.FreshGreen
+                };
+                _btnPrimary.SetTitle("Submit Meter Reading", UIControlState.Normal);
+                _btnPrimary.SetTitleColor(UIColor.White, UIControlState.Normal);
+            }
+            else if (NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.TerminationCompleted)
+            {
+                _btnPrimary = new CustomUIButtonV2
+                {
+                    Frame = new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(48)),
+                    BackgroundColor = UIColor.White
+                };
+                _btnPrimary.SetTitle("Re-enable Self Meter Reading", UIControlState.Normal);
+                _btnPrimary.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
+                _btnPrimary.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
+                _btnPrimary.Layer.BorderWidth = 1;
+            }
+            else if (NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.MissedSubmission)
+            {
+                _btnPrimary = new CustomUIButtonV2
+                {
+                    Frame = new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(48)),
+                    BackgroundColor = UIColor.White
+                };
+                _btnPrimary.SetTitle("View Reading History", UIControlState.Normal);
+                _btnPrimary.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
+                _btnPrimary.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
+                _btnPrimary.Layer.BorderWidth = 1;
+            }
+            _viewCTA.AddSubview(_btnPrimary);
+        }
+
+        private void OnPay()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        UIStoryboard storyBoard = UIStoryboard.FromName("Payment", null);
+                        SelectBillsViewController viewController = storyBoard.InstantiateViewController("SelectBillsViewController") as SelectBillsViewController;
+                        if (viewController != null)
+                        {
+                            var navController = new UINavigationController(viewController);
+                            PresentViewController(navController, true, null);
+                        }
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
+        private void OnViewBill()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        ViewHelper.DismissControllersAndSelectTab(this, 1, true);
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
+        private void OnContact()
+        {
+            if (IsValidWeblinks)
+            {
+                int index = DataManager.DataManager.SharedInstance.WebLinks.FindIndex(x => x.Code.ToLower().Equals("tnbcle"));
+                if (index > -1)
+                {
+                    string number = DataManager.DataManager.SharedInstance.WebLinks[index].Url;
+                    if (!string.IsNullOrEmpty(number) && !string.IsNullOrWhiteSpace(number))
+                    {
+                        NSUrl url = new NSUrl(new Uri("tel:" + number).AbsoluteUri);
+                        UIApplication.SharedApplication.OpenUrl(url);
+                        return;
+                    }
+                }
+            }
+            DisplayServiceError("Error_TelephoneNumberNotAvailable".Translate());
+        }
+
+        private bool IsValidWeblinks
+        {
+            get { return DataManager.DataManager.SharedInstance.WebLinks != null; }
         }
     }
 }
