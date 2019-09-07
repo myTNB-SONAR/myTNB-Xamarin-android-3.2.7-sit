@@ -12,6 +12,7 @@ namespace myTNB
 
         private static string JSONData = string.Empty;
         private const string NOTIFICATION_RESOURCE_PATH = "myTNB.Mobile.Resources.Notification.GetUserNotifications.json";
+        private const string NOTIFICATION_INFO_PATH = "myTNB.Mobile.Resources.Notification.NotificationInfo_{0}.json";
 
         public static void SetData()
         {
@@ -36,6 +37,28 @@ namespace myTNB
         public static string GetData()
         {
             return JSONData;
+        }
+
+        public static string GetInfo(string id)
+        {
+            string info = string.Empty;
+            try
+            {
+                Assembly assembly = Assembly.GetExecutingAssembly();
+                Stream stream = assembly.GetManifestResourceStream(string.Format(NOTIFICATION_INFO_PATH, id));
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    info = reader.ReadToEnd();
+                    Debug.WriteLine("DEBUG >> info: " + info);
+                }
+                Debug.WriteLine("DEBUG >> SUCCESS");
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("DEBUG >> GetInfo: " + e.Message);
+                info = string.Empty;
+            }
+            return info;
         }
     }
 }

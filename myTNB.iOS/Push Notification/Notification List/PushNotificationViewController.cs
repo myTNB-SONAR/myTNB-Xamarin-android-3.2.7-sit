@@ -494,7 +494,11 @@ namespace myTNB.PushNotification
                     DeviceId = DataManager.DataManager.SharedInstance.UDID,
                     SSPUserId = userId
                 };
+#if DEBUG
+                _detailedInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<NotificationDetailedInfoResponseModel>(UserNotificationManager.GetInfo(dataModel.Id));
+#else
                 _detailedInfo = serviceManager.OnExecuteAPI<NotificationDetailedInfoResponseModel>("GetNotificationDetailedInfo_V2", requestParameter);
+#endif
             });
         }
 

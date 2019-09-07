@@ -23,6 +23,12 @@
     <None Remove="Resources\Language\Language_EN.json" />
     <None Remove="Resources\Language\Language_MS.json" />
     <None Remove="Resources\Notification\GetUserNotifications.json" />
+    <None Remove="Resources\Notification\NotificationInfo_1001.json" />
+    <None Remove="Resources\Notification\NotificationInfo_1001 %28copy%29.json" />
+    <None Remove="Resources\Notification\NotificationInfo_1001 %28another copy%29.json" />
+    <None Remove="Resources\Notification\NotificationInfo_1001 %283rd copy%29.json" />
+    <None Remove="Resources\Notification\NotificationInfo_1001 %284th copy%29.json" />
+    <None Remove="Resources\Notification\NotificationInfo_1002.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Language\Language_EN.json" />
@@ -30,5 +36,16 @@
       <LogicalName>myTNB.Mobile.Resources.Language_MS.json</LogicalName>
     </EmbeddedResource>
     <EmbeddedResource Include="Resources\Notification\GetUserNotifications.json" />
+    <EmbeddedResource Include="Resources\Notification\NotificationInfo_1001.json" />
+    <EmbeddedResource Include="Resources\Notification\NotificationInfo_1005.json" />
+    <EmbeddedResource Include="Resources\Notification\NotificationInfo_1004.json" />
+    <EmbeddedResource Include="Resources\Notification\NotificationInfo_1003.json" />
+    <EmbeddedResource Include="Resources\Notification\NotificationInfo_1099.json" />
+    <EmbeddedResource Include="Resources\Notification\NotificationInfo_1002.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="Resources\Notification\NotificationInfo_1002.json">
+      <LogicalName>myTNB.Mobile.Resources.Notification.NotificationInfo_1001.json</LogicalName>
+    </None>
   </ItemGroup>
 </Project>
