@@ -2,6 +2,7 @@
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.MyTNBService.Model;
 using System.Collections.Generic;
 
 namespace myTNB_Android.Src.MultipleAccountPayment.MVP
@@ -69,6 +70,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             void ShowDashboardChart(AccountData accountData);
 
             void SetAccountsDueAmountResult(List<MPAccount> updatedAccountList);
+
+            void ShowHasMinimumAmoutToPayTooltip(AccountChargeModel accountChargeModel);
         }
 
         public interface IUserActionsListener : IBasePresenter

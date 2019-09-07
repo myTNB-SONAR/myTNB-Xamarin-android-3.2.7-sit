@@ -71,7 +71,6 @@ namespace myTNB_Android.Src.Billing.MVP
         [BindView(Resource.Id.accountMinChargeLabelContainer)]
         LinearLayout accountMinChargeLabelContainer;
 
-        List<AccountChargeModel> selectedAccountChargesModelList;
         AccountChargeModel selectedAccountChargeModel;
 
         AccountData selectedAccountData;
@@ -98,10 +97,9 @@ namespace myTNB_Android.Src.Billing.MVP
             {
                 selectedAccountData = JsonConvert.DeserializeObject<AccountData>(extras.GetString("SELECTED_ACCOUNT"));
             }
-            if (extras.ContainsKey("BILL_DETAILS"))
+            if (extras.ContainsKey("SELECTED_BILL_DETAILS"))
             {
-                selectedAccountChargesModelList = JsonConvert.DeserializeObject<List<AccountChargeModel>>(extras.GetString("BILL_DETAILS"));
-                selectedAccountChargeModel = selectedAccountChargesModelList[0];
+                selectedAccountChargeModel = JsonConvert.DeserializeObject<AccountChargeModel>(extras.GetString("SELECTED_BILL_DETAILS"));
             }
             SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);

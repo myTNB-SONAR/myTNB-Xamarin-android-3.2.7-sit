@@ -16,12 +16,17 @@ using Android.Views.InputMethods;
 using Android.Widget;
 using CheeseBind;
 using Java.Text;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MultipleAccountPayment.Adapter;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.MultipleAccountPayment.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
@@ -170,8 +175,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                         custAccounts.Add(item.AccNum);
                     }
                     firstTime = true;
-                    this.userActionsListener.GetMultiAccountDueAmount(Constants.APP_CONFIG.API_KEY_ID, custAccounts, preSelectedAccount);
-                    //this.userActionsListener.GetAccountsCharges(custAccounts, preSelectedAccount);
+                    //this.userActionsListener.GetMultiAccountDueAmount(Constants.APP_CONFIG.API_KEY_ID, custAccounts, preSelectedAccount);
+                    this.userActionsListener.GetAccountsCharges(custAccounts, preSelectedAccount);
                 }
 
                 accountListRecyclerView.SetLayoutManager(layoutManager);
@@ -733,6 +738,35 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void ShowHasMinimumAmoutToPayTooltip(AccountChargeModel accountChargeModel)
+        {
+            if (accountChargeModel.MandatoryCharges.TotalAmount > 0f)
+            {
+                BillMandatoryChargesTooltipModel mandatoryTooltipModel = MyTNBAppToolTipData.GetInstance().GetMandatoryPaymentTooltipData();
+                List<string> ctaList = mandatoryTooltipModel.CTA.Split(',').ToList();
+                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                    .SetTitle(mandatoryTooltipModel.Title)
+                    .SetMessage(string.Format(mandatoryTooltipModel.Description, "RM"+accountChargeModel.AmountDue.ToString("#,##0.00")))
+                    .SetCTALabel(ctaList[0])
+                    .SetCTAaction(()=> { ShowBillingDetails(accountChargeModel); })
+                    .SetSecondaryCTALabel(ctaList[1])
+                    .Build().Show();
+            }
+        }
+
+        private void ShowBillingDetails(AccountChargeModel accountChargeModel)
+        {
+            CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountChargeModel.ContractAccount);
+            AccountData selectedAccountData = new AccountData();
+            selectedAccountData.AccountNickName = customerBillingAccount.AccDesc;
+            selectedAccountData.AddStreet = customerBillingAccount.AccountStAddress;
+
+            Intent intent = new Intent(this, typeof(BillingDetailsActivity));
+            intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(selectedAccountData));
+            intent.PutExtra("SELECTED_BILL_DETAILS", JsonConvert.SerializeObject(accountChargeModel));
+            StartActivity(intent);
         }
     }
 }

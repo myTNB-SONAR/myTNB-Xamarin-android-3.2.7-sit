@@ -119,7 +119,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
             intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(mSelectedAccountData));
-            intent.PutExtra("BILL_DETAILS",JsonConvert.SerializeObject(selectedAccountChargesModelList));
+            intent.PutExtra("SELECTED_BILL_DETAILS", JsonConvert.SerializeObject(selectedAccountChargesModelList[0]));
             StartActivity(intent);
         }
 
