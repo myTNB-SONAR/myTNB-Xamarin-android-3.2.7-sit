@@ -2361,6 +2361,7 @@
     <Compile Include="Src\MyTNBService\Response\AccountBillPayHistoryResponse.cs" />
     <Compile Include="Src\MyTNBService\Model\AccountBillPayHistoryModel.cs" />
     <Compile Include="Src\Base\Models\BillMandatoryChargesTooltipModel.cs" />
+    <AndroidResource Include="Resources\layout\CustomToolTipWithHeaderTwoButtonLayout.axml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

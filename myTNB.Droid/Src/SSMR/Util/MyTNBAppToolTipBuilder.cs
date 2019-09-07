@@ -16,6 +16,7 @@ namespace myTNB_Android.Src.SSMR.Util
         {
             IMAGE_HEADER,
             NORMAL_WITH_HEADER,
+            NORMAL_WITH_HEADER_TWO_BUTTON,
             LISTVIEW_WITH_INDICATOR_AND_HEADER
         }
 
@@ -24,8 +25,10 @@ namespace myTNB_Android.Src.SSMR.Util
         private string title;
         private string message;
         private string ctaLabel;
+        private string secondaryCTALabel;
         private RecyclerView.Adapter adapter;
         private Action ctaAction;
+        private Action secondaryCTAAction;
         private MaterialDialog dialog;
         private Context mContext;
 
@@ -48,6 +51,9 @@ namespace myTNB_Android.Src.SSMR.Util
             }else if (mToolTipType == ToolTipType.LISTVIEW_WITH_INDICATOR_AND_HEADER)
             {
                 layoutResource = Resource.Layout.CustomDialogWithListViewLayout;
+            }else if (mToolTipType == ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+            {
+                layoutResource = Resource.Layout.CustomToolTipWithHeaderTwoButtonLayout;
             }
             tooltipBuilder.dialog = new MaterialDialog.Builder(context)
                 .CustomView(layoutResource, false)
@@ -90,6 +96,12 @@ namespace myTNB_Android.Src.SSMR.Util
             return this;
         }
 
+        public MyTNBAppToolTipBuilder SetSecondaryCTALabel(string secondaryCTALabel)
+        {
+            this.secondaryCTALabel = secondaryCTALabel;
+            return this;
+        }
+
         public MyTNBAppToolTipBuilder SetContext(Context context)
         {
             this.mContext = context;
@@ -108,7 +120,11 @@ namespace myTNB_Android.Src.SSMR.Util
             return this;
         }
 
-
+        public MyTNBAppToolTipBuilder SetSecondaryCTAaction(Action ctaFunc)
+        {
+            this.secondaryCTAAction = ctaFunc;
+            return this;
+        }
 
         public MyTNBAppToolTipBuilder Build()
         {
@@ -216,6 +232,46 @@ namespace myTNB_Android.Src.SSMR.Util
                         this.ctaAction();
                     }
                 };
+            }
+            else if (this.toolTipType == ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+            {
+                TextView tooltipTitle = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipTitle);
+                TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipMessage);
+                TextView tooltipPrimaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnPrimary);
+                TextView tooltipSecondaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnSecondary);
+
+                tooltipPrimaryCTA.Click += delegate
+                {
+                    this.dialog.Dismiss();
+                    if (ctaAction != null)
+                    {
+                        this.ctaAction();
+                    }
+                };
+
+                tooltipSecondaryCTA.Click += delegate
+                {
+                    this.dialog.Dismiss();
+                    if (secondaryCTAAction != null)
+                    {
+                        this.secondaryCTAAction();
+                    }
+                };
+
+                tooltipTitle.Text = this.title;
+                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    tooltipMessage.TextFormatted = Html.FromHtml(this.message, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    tooltipMessage.TextFormatted = Html.FromHtml(this.message);
+                }
+                tooltipPrimaryCTA.Text = this.ctaLabel;
+                tooltipSecondaryCTA.Text = this.secondaryCTALabel;
+
+                TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
+                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipPrimaryCTA, tooltipSecondaryCTA);
             }
             return this;
         }
