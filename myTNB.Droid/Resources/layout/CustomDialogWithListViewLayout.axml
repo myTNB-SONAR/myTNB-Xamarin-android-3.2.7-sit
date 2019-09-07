@@ -14,7 +14,7 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/dialogRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="335dp"/>
     <LinearLayout
           android:orientation="horizontal"
           android:layout_width="match_parent"

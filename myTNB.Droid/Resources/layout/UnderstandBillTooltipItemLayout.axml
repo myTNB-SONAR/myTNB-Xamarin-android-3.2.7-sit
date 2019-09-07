@@ -11,10 +11,16 @@
     <TextView
         android:id="@+id/txtToolTipTitle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:textSize="14dp"
+        android:textColor="#49494a"
+        android:layout_margin="16dp"
+    />
     <LinearLayout
         android:id="@+id/tooltipItemsContent"
         android:orientation="vertical"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 </LinearLayout>

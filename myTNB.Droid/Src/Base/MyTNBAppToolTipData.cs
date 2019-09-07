@@ -173,7 +173,7 @@ namespace myTNB_Android.Src.Base
         {
             List<UnderstandTooltipModel> tooltipModelDataList = new List<UnderstandTooltipModel>();
             List<SitecoreCmsEntity> entryList = SitecoreCmsEntity.GetItemById("BILL_TOOLTIP");
-            if (false)//entryList.Count > 0)
+            if (entryList.Count > 0)
             {
                 List<BillsTooltipModelEntity> billTooltipDataList = JsonConvert.DeserializeObject<List<BillsTooltipModelEntity>>(entryList[0].jsonStringData);
                 UnderstandTooltipModel tooltipModel;

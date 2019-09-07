@@ -7,6 +7,7 @@ using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Adapter;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter
 {
@@ -39,8 +40,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter
             for (int i=0; i < model.ItemList.Count; i++)
             {
                 linearLayout = (LinearLayout)LayoutInflater.From(this.mParent.Context).Inflate(Resource.Layout.UnderstandBillTooltipItem, this.mParent, false);
+                TextView labelNumber = linearLayout.FindViewById<TextView>(Resource.Id.txtBillItemNumber);
                 TextView labelTitle = linearLayout.FindViewById<TextView>(Resource.Id.txtBillItemLabel);
+                TextViewUtils.SetMuseoSans300Typeface(labelTitle);
+                TextViewUtils.SetMuseoSans500Typeface(labelNumber);
                 labelTitle.Text = model.ItemList[i];
+                labelNumber.Text = (i + 1).ToString();
                 vh.tooltipItemsContent.AddView(linearLayout);
             }
 
@@ -67,6 +72,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter
             imageToolTip = itemView.FindViewById<ImageView>(Resource.Id.tooltipImageHeader);
             txtToolTipTitle = itemView.FindViewById<TextView>(Resource.Id.txtToolTipTitle);
             tooltipItemsContent = itemView.FindViewById<LinearLayout>(Resource.Id.tooltipItemsContent);
+
+            TextViewUtils.SetMuseoSans500Typeface(txtToolTipTitle);
         }
     }
 }

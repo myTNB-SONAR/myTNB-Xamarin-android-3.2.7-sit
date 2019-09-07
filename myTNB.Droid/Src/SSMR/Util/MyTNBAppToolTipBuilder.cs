@@ -194,9 +194,10 @@ namespace myTNB_Android.Src.SSMR.Util
                 TextView tooltipCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipCTA);
                 LinearLayout indicatorContainer = this.dialog.FindViewById<LinearLayout>(Resource.Id.dialoagListViewIndicatorContainer);
 
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.mContext, LinearLayoutManager.Horizontal, false);
+                LinearLayoutManager layoutManager = new LinearLayoutManager(this.mContext, LinearLayoutManager.Horizontal, false);
                 recyclerView.SetLayoutManager(layoutManager);
                 recyclerView.SetAdapter(this.adapter);
+                recyclerView.AddOnScrollListener(new ToolTipRecyclerViewOnScrollListener(layoutManager, indicatorContainer));
 
                 try
                 {
@@ -279,6 +280,38 @@ namespace myTNB_Android.Src.SSMR.Util
         public void Show()
         {
             this.dialog.Show();
+        }
+
+        public class ToolTipRecyclerViewOnScrollListener : RecyclerView.OnScrollListener
+        {
+            private LinearLayoutManager mLinearLayoutManager;
+            private LinearLayout mIndicatorContainer;
+            public ToolTipRecyclerViewOnScrollListener(LinearLayoutManager layoutManager, LinearLayout indicatorContainer)
+            {
+                mLinearLayoutManager = layoutManager;
+                mIndicatorContainer = indicatorContainer;
+            }
+            public override void OnScrolled(RecyclerView recyclerView, int dx, int dy)
+            {
+                base.OnScrolled(recyclerView, dx, dy);
+                int currentPosition = mLinearLayoutManager.FindFirstCompletelyVisibleItemPosition();
+                if (currentPosition >= 0)
+                {
+                    ImageView imageView;
+                    for (int i = 0; i < mIndicatorContainer.ChildCount; i++)
+                    {
+                        imageView = (ImageView)mIndicatorContainer.GetChildAt(i);
+                        if (i == currentPosition)
+                        {
+                            imageView.SetImageResource(Resource.Drawable.circle_active);
+                        }
+                        else
+                        {
+                            imageView.SetImageResource(Resource.Drawable.circle);
+                        }
+                    }
+                }
+            }
         }
     }
 }

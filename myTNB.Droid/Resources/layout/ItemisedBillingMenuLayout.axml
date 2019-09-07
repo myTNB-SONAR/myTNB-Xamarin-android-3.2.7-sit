@@ -274,6 +274,32 @@
                 android:orientation="vertical"
                 android:paddingBottom="24dp"/>
             <LinearLayout
+                android:id="@+id/emptyItemisedBillingList"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/bills_list_title_container"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:paddingTop="24dp"
+                android:paddingBottom="16dp">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="7dp"
+                        android:src="@drawable/empty_bills_history"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:textSize="14dp"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginRight="32dp"
+                        android:id="@+id/emptyBillingHistoryMessage"
+                        android:text="Looks like you have no bills yet! Once you do, your bills and payment history will appear here."/>
+            </LinearLayout>
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"

@@ -2362,6 +2362,12 @@
     <Compile Include="Src\MyTNBService\Model\AccountBillPayHistoryModel.cs" />
     <Compile Include="Src\Base\Models\BillMandatoryChargesTooltipModel.cs" />
     <AndroidResource Include="Resources\layout\CustomToolTipWithHeaderTwoButtonLayout.axml" />
+    <AndroidResource Include="Resources\drawable-hdpi\empty_bills_history.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\empty_bills_history.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\empty_bills_history.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\empty_bills_history.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\empty_bills_history.png" />
+    <AndroidResource Include="Resources\drawable\item_circle_bg.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

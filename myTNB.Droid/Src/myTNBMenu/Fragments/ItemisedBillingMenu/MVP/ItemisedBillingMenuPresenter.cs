@@ -79,8 +79,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             else
             {
                 mView.ShowRefreshPage(showRefreshState);
-                mView.PopulateAccountCharge(accountChargeModelList);
-                mView.PopulateBillingHistoryList(billingHistoryList);
+                if (billingHistoryList.Count > 0)
+                {
+                    mView.PopulateAccountCharge(accountChargeModelList);
+                    mView.PopulateBillingHistoryList(billingHistoryList);
+                }
+                else
+                {
+                    mView.ShowEmptyState();
+                }
             }
 
             OnGetEnergySavingTips();
@@ -96,28 +103,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
                     BillDetailsTooltipResponseModel responseModel = getItemsService.GetBillDetailsTooltipItem();
-                    //SitecoreCmsEntity.DeleteTable();
-                    SitecoreCmsEntity.CreateTable();
                     SitecoreCmsEntity.InsertListOfItems("BILL_TOOLTIP", JsonConvert.SerializeObject(responseModel.Data));
-                    //if (responseModel.Status.Equals("Success"))
-                    //{
-                    //    if (EnergySavingTipsManager == null)
-                    //    {
-                    //        EnergySavingTipsManager = new EnergySavingTipsEntity();
-                    //    }
-                    //    EnergySavingTipsManager.DeleteTable();
-                    //    EnergySavingTipsManager.CreateTable();
-                    //    EnergySavingTipsManager.InsertListOfItems(responseModel.Data);
-                    //    OnSetEnergySavingTipsToCache();
-                    //}
-                    //else
-                    //{
-                    //    OnSetEnergySavingTipsToCache();
-                    //}
                 }
                 catch (Exception e)
                 {
-                    //OnSetEnergySavingTipsToCache();
                     Utility.LoggingNonFatalError(e);
                 }
             }).ContinueWith((Task previous) =>

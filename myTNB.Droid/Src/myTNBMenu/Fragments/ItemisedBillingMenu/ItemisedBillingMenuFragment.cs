@@ -42,6 +42,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         [BindView(Resource.Id.itemisedBillingHeaderImage)]
         ImageView itemisedBillingHeaderImage;
 
+        [BindView(Resource.Id.bill_filter_icon)]
+        ImageView billFilterIcon;
+
         [BindView(Resource.Id.itemisedBillingInfoNote)]
         TextView itemisedBillingInfoNote;
 
@@ -57,6 +60,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         [BindView(Resource.Id.myBillHistoryTitle)]
         TextView myBillHistoryTitle;
 
+        [BindView(Resource.Id.emptyBillingHistoryMessage)]
+        TextView emptyBillingHistoryMessage;
+
         [BindView(Resource.Id.btnViewDetails)]
         Button btnViewDetails;
 
@@ -68,6 +74,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         [BindView(Resource.Id.itemisedBillingList)]
         LinearLayout itemisedBillingList;
+
+        [BindView(Resource.Id.emptyItemisedBillingList)]
+        LinearLayout emptyItemisedBillingList;
 
         [BindView(Resource.Id.accountSelection)]
         TextView accountSelection;
@@ -214,7 +223,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
             TextViewUtils.SetMuseoSans500Typeface(accountSelection, itemisedBillingInfoNote,
                 btnViewDetails, btnPayBill, itemisedBillingInfoAmountCurrency, myBillHistoryTitle);
-            TextViewUtils.SetMuseoSans300Typeface(itemisedBillingInfoDate, itemisedBillingInfoAmount);
+            TextViewUtils.SetMuseoSans300Typeface(itemisedBillingInfoDate, itemisedBillingInfoAmount, emptyBillingHistoryMessage);
             RenderUI();
 
             mPresenter.GetBillingHistoryDetails(mSelectedAccountData.AccountNum, mSelectedAccountData.IsOwner, (mSelectedAccountData.AccountCategoryId != "2") ? "UTIL" : "RE");
@@ -399,16 +408,56 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
         }
 
+        public void ShowEmptyState()
+        {
+            int imageResource = Resource.Drawable.bill_menu_loading_banner;
+            itemisedBillingInfoShimmer.Visibility = ViewStates.Gone;
+            itemisedBillingInfoContainer.Visibility = ViewStates.Visible;
+            itemisedBillingCTAContainer.Visibility = mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId) ? ViewStates.Gone : ViewStates.Visible;
+            itemisedBillingInfoNote.Text = "I need to pay";
+            itemisedBillingInfoAmount.Text = "0.00";
+            itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
+            itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#49494a"));
+            itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#49494a"));
+            itemisedBillingInfoDate.Visibility = ViewStates.Gone;
+            itemisedBillingHeaderImage.SetImageResource(imageResource);
+
+
+            itemisedBillingListShimmer.Visibility = ViewStates.Gone;
+            itemisedBillingList.Visibility = ViewStates.Gone;
+            emptyItemisedBillingList.Visibility = ViewStates.Visible;
+            EnableActionButtons(false);
+        }
+
+        private void EnableActionButtons(bool isEnable)
+        {
+            billFilterIcon.Clickable = isEnable;
+            btnViewDetails.Enabled = isEnable;
+            btnPayBill.Enabled = isEnable;
+            if (isEnable)
+            {
+                btnViewDetails.SetTextColor(new Color(ContextCompat.GetColor(Context, Resource.Color.freshGreen)));
+                btnViewDetails.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_button_background);
+                btnPayBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.green_button_background);
+            }
+            else
+            {
+                btnViewDetails.SetTextColor(new Color(ContextCompat.GetColor(Context, Resource.Color.silverChalice)));
+                btnViewDetails.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_button_background_disabled);
+                btnPayBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_background);
+            }
+        }
+
         public void PopulateBillingHistoryList(List<AccountBillPayHistoryModel> billingHistoryModelList)
         {
-            
-            itemisedBillingList.Visibility = ViewStates.Visible;
             itemisedBillingListShimmer.Visibility = ViewStates.Gone;
-
+            emptyItemisedBillingList.Visibility = ViewStates.Gone;
+            itemisedBillingList.Visibility = ViewStates.Visible;
             selectedBillingHistoryModelList = new List<AccountBillPayHistoryModel>();
             selectedBillingHistoryModelList = billingHistoryModelList;
             itemFilterList = new List<Item>();
-            RenderBillingHistoryList(false,"All");
+            EnableActionButtons(true);
+            RenderBillingHistoryList(false, "All");
         }
 
         public void PopulateAccountCharge(List<AccountChargeModel> accountChargesModelList)
@@ -453,7 +502,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 accountChargeModel.DueDate = dateFormatter.Format(dateParser.Parse(accountChargeModel.DueDate));
                 itemisedBillingInfoDate.Text = "by " + accountChargeModel.DueDate;
             }
-
+            EnableActionButtons(true);
             itemisedBillingHeaderImage.SetImageResource(imageResource);
         }
 
