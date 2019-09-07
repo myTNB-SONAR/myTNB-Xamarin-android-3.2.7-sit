@@ -1,18 +1,13 @@
 ﻿
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
-using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -23,9 +18,9 @@ using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
-using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.API;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.ViewBill.Activity;
 using myTNB_Android.Src.ViewReceipt.Activity;
@@ -91,7 +86,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         List<AccountChargeModel> selectedAccountChargesModelList;
         List<Item> itemFilterList = new List<Item>();
-        List<ItemisedBillingHistoryModel> selectedBillingHistoryModelList;
+        List<AccountBillPayHistoryModel> selectedBillingHistoryModelList;
 
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
@@ -154,7 +149,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             try
             {
-                Intent newIntent = new Intent(this.Activity,typeof(FilterBillHistoryActivity));
+                Intent newIntent = new Intent(this.Activity, typeof(FilterBillHistoryActivity));
                 newIntent.PutExtra("ITEM_LIST", JsonConvert.SerializeObject(itemFilterList));
                 StartActivityForResult(newIntent, 12345);
             }
@@ -290,7 +285,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             itemisedBillingList.RemoveAllViews();
             ItemisedBillingGroupComponent itemisedBillingGroupComponent;
-            List<ItemisedBillingHistoryModel> filteredBillingList = new List<ItemisedBillingHistoryModel>();
+            List<AccountBillPayHistoryModel> filteredBillingList = new List<AccountBillPayHistoryModel>();
             if (historyType == "All")
             {
                 filteredBillingList.AddRange(selectedBillingHistoryModelList);
@@ -316,7 +311,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 itemisedBillingGroupComponent = new ItemisedBillingGroupComponent(Activity);
                 ItemisedBillingGroupContentComponent content;
 
-                ItemisedBillingHistoryModel model = filteredBillingList[i];
+                AccountBillPayHistoryModel model = filteredBillingList[i];
                 itemisedBillingGroupComponent.SetMonthYearLabel(model.MonthYear);
 
                 if (i == 0)
@@ -331,7 +326,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
                 for (int j = 0; j < model.BillingHistoryDataList.Count; j++)
                 {
-                    ItemisedBillingHistoryModel.BillingHistoryData data = model.BillingHistoryDataList[j];
+                    AccountBillPayHistoryModel.BillingHistoryData data = model.BillingHistoryDataList[j];
                     //Rendering All History Type
                     if (historyType == "All")
                     {
@@ -404,13 +399,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
         }
 
-        public void PopulateBillingHistoryList(List<ItemisedBillingHistoryModel> billingHistoryModelList)
+        public void PopulateBillingHistoryList(List<AccountBillPayHistoryModel> billingHistoryModelList)
         {
             
             itemisedBillingList.Visibility = ViewStates.Visible;
             itemisedBillingListShimmer.Visibility = ViewStates.Gone;
 
-            selectedBillingHistoryModelList = new List<ItemisedBillingHistoryModel>();
+            selectedBillingHistoryModelList = new List<AccountBillPayHistoryModel>();
             selectedBillingHistoryModelList = billingHistoryModelList;
             itemFilterList = new List<Item>();
             RenderBillingHistoryList(false,"All");
@@ -462,7 +457,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             itemisedBillingHeaderImage.SetImageResource(imageResource);
         }
 
-        public void ShowBillPDFPage(ItemisedBillingHistoryModel.BillingHistoryData billHistoryData)
+        public void ShowBillPDFPage(AccountBillPayHistoryModel.BillingHistoryData billHistoryData)
         {
             BillHistoryV5 selectedBill = new BillHistoryV5();
             selectedBill.DtBill = billPdfDateFormatter.Format((billPdfDateParser.Parse(billHistoryData.PaidVia)));
@@ -473,7 +468,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             StartActivity(viewBill);
         }
 
-        public void ShowPayPDFPage(ItemisedBillingHistoryModel.BillingHistoryData billHistoryData)
+        public void ShowPayPDFPage(AccountBillPayHistoryModel.BillingHistoryData billHistoryData)
         {
             Intent viewReceipt = new Intent(this.Activity, typeof(ViewReceiptMultiAccountNewDesignActivty));
             viewReceipt.PutExtra("merchantTransId", billHistoryData.DetailedInfoNumber);
@@ -494,9 +489,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         class OnShowBillingDetailsListener : Java.Lang.Object, View.IOnClickListener
         {
             ItemisedBillingMenuFragment mView;
-            ItemisedBillingHistoryModel.BillingHistoryData mBillHistoryData;
+            AccountBillPayHistoryModel.BillingHistoryData mBillHistoryData;
 
-            public OnShowBillingDetailsListener(ItemisedBillingMenuFragment view, ItemisedBillingHistoryModel.BillingHistoryData billHistoryData)
+            public OnShowBillingDetailsListener(ItemisedBillingMenuFragment view, AccountBillPayHistoryModel.BillingHistoryData billHistoryData)
             {
                 mView = view;
                 mBillHistoryData = billHistoryData;

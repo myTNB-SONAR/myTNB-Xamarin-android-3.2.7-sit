@@ -1,19 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using myTNB_Android.Src.Database.Model;
-using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.API;
-using myTNB_Android.Src.myTNBMenu.Models;
-using static myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.API.AccountBillPayHistoryResponse;
 using myTNB_Android.Src.Utils;
 using System.Threading;
-using myTNB_Android.Src.AddAccount.Models;
-using static myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.API.AccountChargesResponse;
+using System.Threading.Tasks;
+using myTNB.SitecoreCMS.Services;
+using myTNB_Android.Src.SiteCore;
+using myTNB.SitecoreCMS.Model;
+using Android.App;
+using Newtonsoft.Json;
+using myTNB_Android.Src.MyTNBService.Billing;
+using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.Response;
+using static myTNB_Android.Src.MyTNBService.Response.AccountChargesResponse;
+using static myTNB_Android.Src.MyTNBService.Response.AccountBillPayHistoryResponse;
+using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Base;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 {
     public class ItemisedBillingMenuPresenter
     {
-        ItemisedBillingAPIImpl api;
+        BillingApiImpl api;
         ItemisedBillingContract.IView mView;
         AccountChargesModel mAccountChargesModel;
 
@@ -21,7 +30,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
         public ItemisedBillingMenuPresenter(ItemisedBillingContract.IView view)
         {
             mView = view;
-            api = new ItemisedBillingAPIImpl();
+            api = new BillingApiImpl();
         }
 
         public async void GetBillingHistoryDetails(string contractAccountValue, bool isOwnedAccountValue, string accountTypeValue)
@@ -30,16 +39,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             bool showRefreshState = false;
             List<string> accountList = new List<string>();
             List<AccountChargeModel> accountChargeModelList = new List<AccountChargeModel>();
-            List<ItemisedBillingHistoryModel> billingHistoryList = new List<ItemisedBillingHistoryModel>();
+            List<AccountBillPayHistoryModel> billingHistoryList = new List<AccountBillPayHistoryModel>();
             accountList.Add(contractAccountValue);
             AccountsChargesRequest accountChargeseRequest = new AccountsChargesRequest(
                 accountList,
                 isOwnedAccountValue
                 );
-            AccountChargesResponse accountChargeseResponse = await api.GetAccountsCharges(accountChargeseRequest);
+            AccountChargesResponse accountChargeseResponse = await api.GetAccountsCharges<AccountChargesResponse>(accountChargeseRequest);
             if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "7200")
             {
                 accountChargeModelList = GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges);
+                MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
             }
             else
             {
@@ -52,7 +62,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 isOwnedAccountValue,
                 accountTypeValue);
 
-            AccountBillPayHistoryResponse accountBillPayResponse = await api.GetAccountBillPayHistory(accountBillPayRequest);
+            AccountBillPayHistoryResponse accountBillPayResponse = await api.GetAccountBillPayHistory<AccountBillPayHistoryResponse>(accountBillPayRequest);
             if (accountBillPayResponse.Data != null && accountBillPayResponse.Data.ErrorCode == "7200")
             {
                 billingHistoryList = GetBillingHistoryModelList(accountBillPayResponse.Data.ResponseData.BillPayHistories);
@@ -72,6 +82,47 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 mView.PopulateAccountCharge(accountChargeModelList);
                 mView.PopulateBillingHistoryList(billingHistoryList);
             }
+
+            OnGetEnergySavingTips();
+        }
+
+
+        public void OnGetEnergySavingTips()
+        {
+            Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    string density = DPUtils.GetDeviceDensity(Application.Context);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    BillDetailsTooltipResponseModel responseModel = getItemsService.GetBillDetailsTooltipItem();
+                    //SitecoreCmsEntity.DeleteTable();
+                    SitecoreCmsEntity.CreateTable();
+                    SitecoreCmsEntity.InsertListOfItems("BILL_TOOLTIP", JsonConvert.SerializeObject(responseModel.Data));
+                    //if (responseModel.Status.Equals("Success"))
+                    //{
+                    //    if (EnergySavingTipsManager == null)
+                    //    {
+                    //        EnergySavingTipsManager = new EnergySavingTipsEntity();
+                    //    }
+                    //    EnergySavingTipsManager.DeleteTable();
+                    //    EnergySavingTipsManager.CreateTable();
+                    //    EnergySavingTipsManager.InsertListOfItems(responseModel.Data);
+                    //    OnSetEnergySavingTipsToCache();
+                    //}
+                    //else
+                    //{
+                    //    OnSetEnergySavingTipsToCache();
+                    //}
+                }
+                catch (Exception e)
+                {
+                    //OnSetEnergySavingTipsToCache();
+                    Utility.LoggingNonFatalError(e);
+                }
+            }).ContinueWith((Task previous) =>
+            {
+            }, new CancellationTokenSource().Token);
         }
 
         private List<AccountChargeModel> GetAccountCharges(List<AccountCharge> accountCharges)
@@ -111,21 +162,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             return accountChargeModelList;
         }
 
-        private List<ItemisedBillingHistoryModel> GetBillingHistoryModelList(List<BillPayHistory> billPayHistoryList)
+        private List<AccountBillPayHistoryModel> GetBillingHistoryModelList(List<BillPayHistory> billPayHistoryList)
         {
-            List<ItemisedBillingHistoryModel> modelList = new List<ItemisedBillingHistoryModel>();
-            List<ItemisedBillingHistoryModel.BillingHistoryData> dataList;
-            ItemisedBillingHistoryModel.BillingHistoryData data;
-            ItemisedBillingHistoryModel model;
+            List<AccountBillPayHistoryModel> modelList = new List<AccountBillPayHistoryModel>();
+            List<AccountBillPayHistoryModel.BillingHistoryData> dataList;
+            AccountBillPayHistoryModel.BillingHistoryData data;
+            AccountBillPayHistoryModel model;
             billPayHistoryList.ForEach(history =>
             {
-                dataList = new List<ItemisedBillingHistoryModel.BillingHistoryData>();
-                model = new ItemisedBillingHistoryModel();
+                dataList = new List<AccountBillPayHistoryModel.BillingHistoryData>();
+                model = new AccountBillPayHistoryModel();
                 model.MonthYear = history.MonthYear;
 
                 history.BillPayHistoryData.ForEach(historyData =>
                 {
-                    data = new ItemisedBillingHistoryModel.BillingHistoryData();
+                    data = new AccountBillPayHistoryModel.BillingHistoryData();
                     data.HistoryType = historyData.HistoryType;
                     data.DateAndHistoryType = historyData.DateAndHistoryType;
                     data.Amount = historyData.Amount;
@@ -140,6 +191,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             });
 
             return modelList;
+        }
+
+        private List<BillMandatoryChargesTooltipModel> GetMandatoryChargesTooltipModelList(List<MandatoryChargesPopUpDetail> mandatoryChargesPopUpDetailList)
+        {
+            List<BillMandatoryChargesTooltipModel> billMandatoryChargesTooltipModelList = new List<BillMandatoryChargesTooltipModel>();
+            BillMandatoryChargesTooltipModel model;
+            mandatoryChargesPopUpDetailList.ForEach(popupDetail =>
+            {
+                model = new BillMandatoryChargesTooltipModel();
+                model.Title = popupDetail.Title;
+                model.Description = popupDetail.Description;
+                model.Type = popupDetail.Type;
+                model.CTA = popupDetail.CTA;
+                billMandatoryChargesTooltipModelList.Add(model);
+            });
+            return billMandatoryChargesTooltipModelList;
         }
 
         public void EvaluateAmountDue(AccountChargeModel accountChargeModel)
@@ -171,16 +238,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             return accountCategoryId.Equals("2");
         }
 
-        public List<ItemisedBillingHistoryModel> GetBillingHistoryList()
+        public List<AccountBillPayHistoryModel> GetBillingHistoryList()
         {
-            List<ItemisedBillingHistoryModel> modelList = new List<ItemisedBillingHistoryModel>();
+            List<AccountBillPayHistoryModel> modelList = new List<AccountBillPayHistoryModel>();
 
-            ItemisedBillingHistoryModel model = new ItemisedBillingHistoryModel();
+            AccountBillPayHistoryModel model = new AccountBillPayHistoryModel();
             model.MonthYear = "Feb 2019";
 
-            List<ItemisedBillingHistoryModel.BillingHistoryData> dataList = new List<ItemisedBillingHistoryModel.BillingHistoryData>();
+            List<AccountBillPayHistoryModel.BillingHistoryData> dataList = new List<AccountBillPayHistoryModel.BillingHistoryData>();
 
-            ItemisedBillingHistoryModel.BillingHistoryData data = new ItemisedBillingHistoryModel.BillingHistoryData();
+            AccountBillPayHistoryModel.BillingHistoryData data = new AccountBillPayHistoryModel.BillingHistoryData();
             data.HistoryType = "BILL";
             data.DateAndHistoryType = "24 Feb - Bill";
             data.Amount = "257.50";
@@ -188,7 +255,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             data.PaidVia = "24 Feb 2019";
             dataList.Add(data);
 
-            data = new ItemisedBillingHistoryModel.BillingHistoryData();
+            data = new AccountBillPayHistoryModel.BillingHistoryData();
 
             data.HistoryType = "PAYMENT";
             data.DateAndHistoryType = "05 Mar - Payment";
@@ -201,11 +268,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             model.BillingHistoryDataList = dataList;
             modelList.Add(model);
 
-            model = new ItemisedBillingHistoryModel();
+            model = new AccountBillPayHistoryModel();
             model.MonthYear = "Mar 2019";
 
-            dataList = new List<ItemisedBillingHistoryModel.BillingHistoryData>();
-            data = new ItemisedBillingHistoryModel.BillingHistoryData();
+            dataList = new List<AccountBillPayHistoryModel.BillingHistoryData>();
+            data = new AccountBillPayHistoryModel.BillingHistoryData();
 
             data.HistoryType = "PAYMENT";
             data.DateAndHistoryType = "03 May - Payment";
@@ -214,7 +281,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             data.PaidVia = "26 Feb 2019";
             dataList.Add(data);
 
-            data = new ItemisedBillingHistoryModel.BillingHistoryData();
+            data = new AccountBillPayHistoryModel.BillingHistoryData();
 
             data.HistoryType = "BILL";
             data.DateAndHistoryType = "2 Jun - Bill";

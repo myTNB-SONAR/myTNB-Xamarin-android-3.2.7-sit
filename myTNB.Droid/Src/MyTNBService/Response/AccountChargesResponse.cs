@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.API
+namespace myTNB_Android.Src.MyTNBService.Response
 {
     public class AccountChargesResponse
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using myTNB_Android.Src.Base.Request;
 
-namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.API
+namespace myTNB_Android.Src.MyTNBService.Request
 {
     public class AccountsChargesRequest : APIBaseRequest
     {

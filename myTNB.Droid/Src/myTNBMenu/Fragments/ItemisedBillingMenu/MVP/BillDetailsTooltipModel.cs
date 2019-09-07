@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using myTNB_Android.Src.SitecoreCMS.Model;
 using Newtonsoft.Json;
 
 namespace myTNB.SitecoreCMS.Model
@@ -11,15 +12,21 @@ namespace myTNB.SitecoreCMS.Model
 
     public class BillDetailsTooltipResponseModel
     {
-        public string Status { set; get; }
         public List<BillsTooltipModelEntity> Data { set; get; }
     }
 
     public class BillsTooltipModelEntity
     {
+        [JsonProperty("Title")]
         public string Title { set; get; }
+
+        [JsonProperty("Description")]
         public string Description { set; get; }
+
+        [JsonProperty("Image")]
         public string Image { set; get; }
+
+        [JsonProperty("ID")]
         public string ID { set; get; }
     }
 

@@ -6,6 +6,7 @@ using Android.Widget;
 using Android.OS;
 using Android.Text;
 using myTNB_Android.Src.Utils;
+using Android.Support.V7.Widget;
 
 namespace myTNB_Android.Src.SSMR.Util
 {
@@ -14,7 +15,8 @@ namespace myTNB_Android.Src.SSMR.Util
         public enum ToolTipType
         {
             IMAGE_HEADER,
-            NORMAL_WITH_HEADER
+            NORMAL_WITH_HEADER,
+            LISTVIEW_WITH_INDICATOR_AND_HEADER
         }
 
         private ToolTipType toolTipType;
@@ -22,8 +24,10 @@ namespace myTNB_Android.Src.SSMR.Util
         private string title;
         private string message;
         private string ctaLabel;
+        private RecyclerView.Adapter adapter;
         private Action ctaAction;
         private MaterialDialog dialog;
+        private Context mContext;
 
         private MyTNBAppToolTipBuilder()
         {
@@ -41,6 +45,9 @@ namespace myTNB_Android.Src.SSMR.Util
             }else if (mToolTipType == ToolTipType.NORMAL_WITH_HEADER)
             {
                 layoutResource = Resource.Layout.CustomToolTipWithHeaderLayout;
+            }else if (mToolTipType == ToolTipType.LISTVIEW_WITH_INDICATOR_AND_HEADER)
+            {
+                layoutResource = Resource.Layout.CustomDialogWithListViewLayout;
             }
             tooltipBuilder.dialog = new MaterialDialog.Builder(context)
                 .CustomView(layoutResource, false)
@@ -83,11 +90,25 @@ namespace myTNB_Android.Src.SSMR.Util
             return this;
         }
 
+        public MyTNBAppToolTipBuilder SetContext(Context context)
+        {
+            this.mContext = context;
+            return this;
+        }
+
+        public MyTNBAppToolTipBuilder SetAdapter(RecyclerView.Adapter adapter)
+        {
+            this.adapter = adapter;
+            return this;
+        }
+
         public MyTNBAppToolTipBuilder SetCTAaction(Action ctaFunc)
         {
             this.ctaAction = ctaFunc;
             return this;
         }
+
+
 
         public MyTNBAppToolTipBuilder Build()
         {
@@ -150,6 +171,51 @@ namespace myTNB_Android.Src.SSMR.Util
 
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
                 TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipCTA);
+            }
+            else if (this.toolTipType == ToolTipType.LISTVIEW_WITH_INDICATOR_AND_HEADER)
+            {
+                RecyclerView recyclerView = this.dialog.FindViewById<RecyclerView>(Resource.Id.dialogRecyclerView);
+                TextView tooltipCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipCTA);
+                LinearLayout indicatorContainer = this.dialog.FindViewById<LinearLayout>(Resource.Id.dialoagListViewIndicatorContainer);
+
+                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this.mContext, LinearLayoutManager.Horizontal, false);
+                recyclerView.SetLayoutManager(layoutManager);
+                recyclerView.SetAdapter(this.adapter);
+
+                try
+                {
+                    for (int i = 0; i < this.adapter.ItemCount; i++)
+                    {
+                        ImageView image = new ImageView(this.mContext);
+                        image.Id = i;
+                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+                        layoutParams.RightMargin = 8;
+                        layoutParams.LeftMargin = 8;
+                        image.LayoutParameters = layoutParams;
+                        if (i == 0)
+                        {
+                            image.SetImageResource(Resource.Drawable.onboarding_circle_active);
+                        }
+                        else
+                        {
+                            image.SetImageResource(Resource.Drawable.onboarding_circle_inactive);
+                        }
+                        indicatorContainer.AddView(image, i);
+                    }
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                tooltipCTA.Click += delegate
+                {
+                    this.dialog.Dismiss();
+                    if (this.ctaAction != null)
+                    {
+                        this.ctaAction();
+                    }
+                };
             }
             return this;
         }

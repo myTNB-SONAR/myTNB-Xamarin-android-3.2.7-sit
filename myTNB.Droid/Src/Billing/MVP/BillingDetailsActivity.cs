@@ -8,15 +8,18 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Android.Runtime;
 using Android.Support.V4.Content;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.CompoundView;
-using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.API;
+using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter;
+using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -115,6 +118,8 @@ namespace myTNB_Android.Src.Billing.MVP
                 otherChargesExpandableView.Visibility = ViewStates.Visible;
                 accountMinChargeLabelContainer.Visibility = ViewStates.Visible;
                 otherChargesExpandableView.SetOtherCharges(selectedAccountChargeModel.MandatoryCharges.TotalAmount, selectedAccountChargeModel.MandatoryCharges.ChargeModelList);
+                otherChargesExpandableView.RequestLayout();
+                ShowAccountHasMinCharge();
             }
             else
             {
@@ -162,6 +167,28 @@ namespace myTNB_Android.Src.Billing.MVP
             return base.OnCreateOptionsMenu(menu);
         }
 
+        private void ShowUnderstandBillTooltip()
+        {
+            List<UnderstandTooltipModel> modelList = MyTNBAppToolTipData.GetUnderstandBillTooltipData();
+            UnderstandBillToolTipAdapter adapter = new UnderstandBillToolTipAdapter(modelList);
+            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.LISTVIEW_WITH_INDICATOR_AND_HEADER)
+                .SetAdapter(adapter)
+                .SetContext(this)
+                .Build()
+                .Show();
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
+            {
+                case Resource.Id.action_ssmr_meter_reading_more:
+                    ShowUnderstandBillTooltip();
+                    break;
+            }
+            return base.OnOptionsItemSelected(item);
+        }
+
         [OnClick(Resource.Id.accountMinChargeLabelContainer)]
         void OnTapMinChargeTooltip(object sender, EventArgs eventArgs)
         {
@@ -170,12 +197,12 @@ namespace myTNB_Android.Src.Billing.MVP
 
         public void ShowAccountHasMinCharge()
         {
+            BillMandatoryChargesTooltipModel mandatoryTooltipModel = MyTNBAppToolTipData.GetInstance().GetMandatoryChargesTooltipData();
             MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                .SetTitle("This account has a minimum amount to be paid.")
-                .SetMessage("Your <strong>other charges</strong> like Security Deposit, Processing Fee, Stamp Duty and Meter Cost are required to be cleared first and will be your account’s minimum payment.")
-                .SetCTALabel("Got It!")
-                .Build()
-                .Show();
+                .SetTitle(mandatoryTooltipModel.Title)
+                .SetMessage(mandatoryTooltipModel.Description)
+                .SetCTALabel(mandatoryTooltipModel.CTA)
+                .Build().Show();
         }
     }
 }

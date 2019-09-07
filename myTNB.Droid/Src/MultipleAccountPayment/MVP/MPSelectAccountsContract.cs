@@ -67,6 +67,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             void GetAccountDueAmountResult(List<MPAccount> accounts);
 
             void ShowDashboardChart(AccountData accountData);
+
+            void SetAccountsDueAmountResult(List<MPAccount> updatedAccountList);
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -77,6 +79,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             void GetMultiAccountDueAmount(string apiKeyID, List<string> accounts, string preSelectedAccount);
 
             void OnSelectAccount(CustomerBillingAccount selectedCustomerBilling);
+            void GetAccountsCharges(List<string> accountList, string preSelectedAccount);
         }
     }
 }

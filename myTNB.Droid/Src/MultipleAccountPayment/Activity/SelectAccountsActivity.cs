@@ -171,6 +171,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     }
                     firstTime = true;
                     this.userActionsListener.GetMultiAccountDueAmount(Constants.APP_CONFIG.API_KEY_ID, custAccounts, preSelectedAccount);
+                    //this.userActionsListener.GetAccountsCharges(custAccounts, preSelectedAccount);
                 }
 
                 accountListRecyclerView.SetLayoutManager(layoutManager);
@@ -505,6 +506,13 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void SetAccountsDueAmountResult(List<MPAccount> updatedAccountList)
+        {
+            accountList.Clear();
+            accountList.AddRange(updatedAccountList);
+            ValidateAccountListAdapter();
         }
 
         public void GetAccountDueAmountResult(MPAccountDueResponse response)

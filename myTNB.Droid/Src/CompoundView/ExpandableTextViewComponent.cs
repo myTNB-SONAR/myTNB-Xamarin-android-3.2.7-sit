@@ -6,8 +6,7 @@ using Android.Support.V4.Content;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using CheeseBind;
-using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.API;
+using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.CompoundView
@@ -79,7 +78,7 @@ namespace myTNB_Android.Src.CompoundView
             {
                 if (charge.Amount > 0f)
                 {
-                    LinearLayout item = (LinearLayout)Inflate(mContext, Resource.Layout.MyOtherChargesItemLayout, null);
+                    LinearLayout item = (LinearLayout)LayoutInflater.From(mContext).Inflate(Resource.Layout.MyOtherChargesItemLayout,this,false);
                     TextView textView = item.FindViewById<TextView>(Resource.Id.otherChargeItem);
                     TextView textValue = item.FindViewById<TextView>(Resource.Id.otherChargeValue);
 
@@ -89,6 +88,8 @@ namespace myTNB_Android.Src.CompoundView
                     expandableContainer.AddView(item);
                 }
             });
+            expandableContainer.Invalidate();
+            expandableContainer.RequestLayout();
         }
 
         public class OnExpandListener : Java.Lang.Object, IOnClickListener
