@@ -61,56 +61,77 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
 
         public async void GetAccountsCharges(List<string> accountList, string preSelectedAccount)
         {
-            AccountsChargesRequest accountChargeseRequest = new AccountsChargesRequest(
-                accountList,
-                true
-                );
-            AccountChargesResponse accountChargeseResponse = await api.GetAccountsCharges<AccountChargesResponse>(accountChargeseRequest);
-            if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "7200")
+            try
             {
-                accountChargeModelList = GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges);
-                List<MPAccount> newAccountList = new List<MPAccount>();
-                accountChargeseResponse.Data.ResponseData.AccountCharges.ForEach(accountCharge =>
+                this.mView.ShowProgressDialog();
+                AccountsChargesRequest accountChargeseRequest = new AccountsChargesRequest(
+                    accountList,
+                    true
+                    );
+                AccountChargesResponse accountChargeseResponse = await api.GetAccountsCharges<AccountChargesResponse>(accountChargeseRequest);
+                if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "7200")
                 {
-                    CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountCharge.ContractAccount);
-                    double dueAmount = accountCharge.AmountDue;
-
-                    MPAccount mpAccount = new MPAccount()
+                    accountChargeModelList = GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges);
+                    List<MPAccount> newAccountList = new List<MPAccount>();
+                    accountChargeseResponse.Data.ResponseData.AccountCharges.ForEach(accountCharge =>
                     {
-                        accountLabel = customerBillingAccount.AccDesc,
-                        accountNumber = customerBillingAccount.AccNum,
-                        accountAddress = customerBillingAccount.AccountStAddress,
-                        isSelected = preSelectedAccount.Equals(customerBillingAccount.AccNum) ? true && dueAmount > 0 : false,
-                        isTooltipShow = false,
+                        CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountCharge.ContractAccount);
+                        double dueAmount = accountCharge.AmountDue;
+
+                        MPAccount mpAccount = new MPAccount()
+                        {
+                            accountLabel = customerBillingAccount.AccDesc,
+                            accountNumber = customerBillingAccount.AccNum,
+                            accountAddress = customerBillingAccount.AccountStAddress,
+                            isSelected = preSelectedAccount.Equals(customerBillingAccount.AccNum) ? true && dueAmount > 0 : false,
+                            isTooltipShow = false,
 #if STUB
                                     OpenChargeTotal = account.OpenChargesTotal == 0.00 ? 0.00 : account.OpenChargesTotal,
 #else
-                        OpenChargeTotal = 0.00,
+                            OpenChargeTotal = 0.00,
 #endif
-                        amount = dueAmount,
-                        orgAmount = dueAmount
-                    };
-                    newAccountList.Add(mpAccount);
-                    /*** Save SM Usage History For the Day***/
-                    SelectBillsEntity smUsageModel = new SelectBillsEntity();
-                    smUsageModel.Timestamp = DateTime.Now.ToLocalTime();
-                    smUsageModel.JsonResponse = JsonConvert.SerializeObject(mpAccount);
-                    smUsageModel.AccountNo = customerBillingAccount.AccNum;
-                    SelectBillsEntity.InsertItem(smUsageModel);
-                    /*****/
-                });
+                            amount = dueAmount,
+                            orgAmount = dueAmount
+                        };
+                        newAccountList.Add(mpAccount);
+                        /*** Save SM Usage History For the Day***/
+                        SelectBillsEntity smUsageModel = new SelectBillsEntity();
+                        smUsageModel.Timestamp = DateTime.Now.ToLocalTime();
+                        smUsageModel.JsonResponse = JsonConvert.SerializeObject(mpAccount);
+                        smUsageModel.AccountNo = customerBillingAccount.AccNum;
+                        SelectBillsEntity.InsertItem(smUsageModel);
+                        /*****/
+                    });
 
-                this.mView.SetAccountsDueAmountResult(newAccountList);
+                    this.mView.SetAccountsDueAmountResult(newAccountList);
 
-                int foundIndex = accountChargeModelList.FindIndex(model =>
-                {
-                    return model.ContractAccount == preSelectedAccount;
-                });
+                    int foundIndex = accountChargeModelList.FindIndex(model =>
+                    {
+                        return model.ContractAccount == preSelectedAccount;
+                    });
 
-                if (foundIndex != -1)
-                {
-                    this.mView.ShowHasMinimumAmoutToPayTooltip(accountChargeModelList[foundIndex]);
+                    if (foundIndex != -1)
+                    {
+                        this.mView.ShowHasMinimumAmoutToPayTooltip(accountChargeModelList[foundIndex]);
+                    }
                 }
+                else
+                {
+                    this.mView.ShowError(accountChargeseResponse.Data.DisplayMessage);
+                    this.mView.DisablePayButton();
+                }
+                this.mView.HideProgressDialog();
+            }
+            catch (Exception e)
+            {
+                Log.Debug(TAG, e.StackTrace);
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgressDialog();
+                }
+                Utility.LoggingNonFatalError(e);
+                this.mView.ShowError("Something went wrong, Please try again.");
+                this.mView.DisablePayButton();
             }
         }
 
