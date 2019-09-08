@@ -7,22 +7,28 @@ using System.Text;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
+using Android.Graphics;
 using Android.OS;
 using Android.Support.V4.Content;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using Java.Text;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.CompoundView;
+using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.ViewBill.Activity;
+using myTNB_Android.Src.ViewReceipt.Activity;
 using Newtonsoft.Json;
+using static myTNB_Android.Src.MyTNBService.Model.AccountBillPayHistoryModel;
 
 namespace myTNB_Android.Src.Billing.MVP
 {
@@ -71,9 +77,47 @@ namespace myTNB_Android.Src.Billing.MVP
         [BindView(Resource.Id.accountMinChargeLabelContainer)]
         LinearLayout accountMinChargeLabelContainer;
 
-        AccountChargeModel selectedAccountChargeModel;
+        [BindView(Resource.Id.btnViewBill)]
+        Button btnViewBill;
 
+        SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd");
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
+
+        SimpleDateFormat billPdfDateParser = new SimpleDateFormat("dd MMM yyyy");
+        SimpleDateFormat billPdfDateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+
+        AccountChargeModel selectedAccountChargeModel;
+        BillingHistoryData billingHistoryData;
         AccountData selectedAccountData;
+
+        [OnClick(Resource.Id.btnViewBill)]
+        void OnViewBill(object sender, EventArgs eventArgs)
+        {
+            if (billingHistoryData.HistoryType.ToUpper() == "PAYMENT")
+            {
+                Intent viewReceipt = new Intent(this, typeof(ViewReceiptMultiAccountNewDesignActivty));
+                viewReceipt.PutExtra("merchantTransId", billingHistoryData.DetailedInfoNumber);
+                StartActivity(viewReceipt);
+            }
+            else
+            {
+                BillHistoryV5 selectedBill = new BillHistoryV5();
+                selectedBill.DtBill = billPdfDateFormatter.Format((billPdfDateParser.Parse(billingHistoryData.PaidVia)));
+                selectedBill.NrBill = billingHistoryData.DetailedInfoNumber;
+                Intent viewBill = new Intent(this, typeof(ViewBillActivity));
+                viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
+                viewBill.PutExtra(Constants.SELECTED_BILL, JsonConvert.SerializeObject(selectedBill));
+                StartActivity(viewBill);
+            }
+        }
+
+        [OnClick(Resource.Id.btnPayBill)]
+        void OnPayBill(object sender, EventArgs eventArgs)
+        {
+            Intent payment_activity = new Intent(this, typeof(SelectAccountsActivity));
+            payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
+            StartActivity(payment_activity);
+        }
 
         public override int ResourceId()
         {
@@ -101,12 +145,39 @@ namespace myTNB_Android.Src.Billing.MVP
             {
                 selectedAccountChargeModel = JsonConvert.DeserializeObject<AccountChargeModel>(extras.GetString("SELECTED_BILL_DETAILS"));
             }
+            if (extras.ContainsKey("LATEST_BILL_HISTORY"))
+            {
+                billingHistoryData = JsonConvert.DeserializeObject<BillingHistoryData>(extras.GetString("LATEST_BILL_HISTORY"));
+                if (billingHistoryData.DetailedInfoNumber != "")
+                {
+                    EnableShowBillButtons(true);
+                }
+                else
+                {
+                    EnableShowBillButtons(false);
+                }
+            }
             SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
             accountName.Text = selectedAccountData.AccountNickName;
             accountAddress.Text = selectedAccountData.AddStreet;
             PopulateCharges();
+        }
+
+        private void EnableShowBillButtons(bool isEnable)
+        {
+            btnViewBill.Enabled = isEnable;
+            if (isEnable)
+            {
+                btnViewBill.SetTextColor(new Color(ContextCompat.GetColor(this, Resource.Color.freshGreen)));
+                btnViewBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_button_background);
+            }
+            else
+            {
+                btnViewBill.SetTextColor(new Color(ContextCompat.GetColor(this, Resource.Color.silverChalice)));
+                btnViewBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_button_background_disabled);
+            }
         }
 
         private void PopulateCharges()
@@ -117,7 +188,6 @@ namespace myTNB_Android.Src.Billing.MVP
                 accountMinChargeLabelContainer.Visibility = ViewStates.Visible;
                 otherChargesExpandableView.SetOtherCharges(selectedAccountChargeModel.MandatoryCharges.TotalAmount, selectedAccountChargeModel.MandatoryCharges.ChargeModelList);
                 otherChargesExpandableView.RequestLayout();
-                ShowAccountHasMinCharge();
             }
             else
             {
@@ -125,7 +195,17 @@ namespace myTNB_Android.Src.Billing.MVP
                 accountMinChargeLabelContainer.Visibility = ViewStates.Gone;
             }
 
-            accountChargeValue.Text = "RM " + selectedAccountChargeModel.OutstandingCharges.ToString("#,##0.00");
+            accountChargeValue.Text = "RM " + (Math.Abs(selectedAccountChargeModel.OutstandingCharges)).ToString("#,##0.00");
+            if (selectedAccountChargeModel.OutstandingCharges < 0f)
+            {
+                accountChargeLabel.Text = "I've paid extra";
+                accountChargeValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.freshGreen)));
+            }
+            else
+            {
+                accountChargeLabel.Text = "My outstanding charges";
+                accountChargeValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
+            }
             accountBillThisMonthValue.Text = "RM " + selectedAccountChargeModel.CurrentCharges.ToString("#,##0.00");
             accountPayAmountValue.Text = selectedAccountChargeModel.AmountDue.ToString("#,##0.00");
             if (selectedAccountChargeModel.IsNeedPay)

@@ -25,7 +25,7 @@
             android:background="@color/white"
             android:paddingTop="8dp">
             <Button
-                android:id="@+id/btnViewDetails"
+                android:id="@+id/btnViewBill"
                 android:layout_height="wrap_content"
                 android:layout_width="0dp"
                 android:layout_weight=".5"

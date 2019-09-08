@@ -15,7 +15,7 @@
             android:layout_gravity="center_horizontal"
             android:gravity="left"
             android:textColor="#49494a"
-            android:text="My other charges"
+            android:text="My service charges"
             android:textSize="14dp"/>
         <TextView
             android:id="@+id/myApplicationChargesValue"
