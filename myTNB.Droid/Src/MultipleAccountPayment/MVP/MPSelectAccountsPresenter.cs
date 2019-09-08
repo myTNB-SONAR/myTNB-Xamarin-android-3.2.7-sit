@@ -78,12 +78,17 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                         CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountCharge.ContractAccount);
                         double dueAmount = accountCharge.AmountDue;
 
+                        bool isSelectedAccount = false;
+                        if (preSelectedAccount != null)
+                        {
+                            isSelectedAccount = preSelectedAccount.Equals(customerBillingAccount.AccNum) ? true && dueAmount > 0 : false;
+                        }
                         MPAccount mpAccount = new MPAccount()
                         {
                             accountLabel = customerBillingAccount.AccDesc,
                             accountNumber = customerBillingAccount.AccNum,
                             accountAddress = customerBillingAccount.AccountStAddress,
-                            isSelected = preSelectedAccount.Equals(customerBillingAccount.AccNum) ? true && dueAmount > 0 : false,
+                            isSelected = isSelectedAccount,
                             isTooltipShow = false,
 #if STUB
                                     OpenChargeTotal = account.OpenChargesTotal == 0.00 ? 0.00 : account.OpenChargesTotal,

@@ -202,7 +202,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 {
                     if (IsNetworkAvailable())
                     {
-                        NO_OF_ITARATION = NO_OF_ITARATION - 1;
                         INDEX_COUNTER = INDEX_COUNTER + TOTAL_NUMBER_OF_ITEMS_TO_GET;
                         List<string> custAccounts = new List<string>();
                         List<CustomerBillingAccount> list = GetMoreCustomerAccounts(INDEX_COUNTER);
@@ -210,7 +209,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                         {
                             custAccounts.Add(item.AccNum);
                         }
-                        this.userActionsListener.GetMultiAccountDueAmount(Constants.APP_CONFIG.API_KEY_ID, custAccounts, null);
+                        //this.userActionsListener.GetMultiAccountDueAmount(Constants.APP_CONFIG.API_KEY_ID, custAccounts, null);
+                        this.userActionsListener.GetAccountsCharges(custAccounts, null);
+                        NO_OF_ITARATION = NO_OF_ITARATION - 1;
                     }
                     else
                     {
@@ -518,6 +519,14 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             accountList.Clear();
             accountList.AddRange(updatedAccountList);
             ValidateAccountListAdapter();
+            if (NO_OF_ITARATION <= 0 && REMAINING_ITEM_COUNT == 0)
+            {
+                textLoadMore.Visibility = ViewStates.Gone;
+            }
+            else
+            {
+                textLoadMore.Visibility = ViewStates.Visible;
+            }
         }
 
         public void GetAccountDueAmountResult(MPAccountDueResponse response)
@@ -658,6 +667,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                                 REMAINING_ITEM_COUNT = TOTAL_NUMBER_OF_ITEMS_TO_GET;
                             }
                             accountsToReturn.AddRange(registerdAccounts.GetRange(INDEX_COUNTER, REMAINING_ITEM_COUNT));
+                            REMAINING_ITEM_COUNT = 0;
                         }
                         else
                         {
