@@ -179,13 +179,13 @@ namespace myTNB
             AddTitle();
             AddDetails();
             View.AddSubview(_scrollView);
-            _scrollView.ContentSize = new CGSize(ViewWidth, ViewHeight * 2);// _txtViewDetails.Frame.GetMaxY());
+            _scrollView.ContentSize = new CGSize(ViewWidth, _txtViewDetails.Frame.GetMaxY());
         }
 
         private void AddTitle()
         {
             _lblTitle = new UILabel(new CGRect(BaseMargin, GetYLocationFromFrame(_bgImageView.Frame, 24)
-                - UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Top, BaseMarginedWidth, GetScaledHeight(48)))
+               , BaseMarginedWidth, GetScaledHeight(48)))
             {
                 TextAlignment = UITextAlignment.Left,
                 TextColor = MyTNBColor.WaterBlue,
@@ -360,6 +360,10 @@ namespace myTNB
                 _btnPrimary.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
                 _btnPrimary.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
                 _btnPrimary.Layer.BorderWidth = 1;
+                _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    OnViewUsage();
+                }));
                 _viewCTA.AddSubview(_btnPrimary);
             }
             else if (NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.SSMR)
@@ -420,6 +424,7 @@ namespace myTNB
                         SelectBillsViewController viewController = storyBoard.InstantiateViewController("SelectBillsViewController") as SelectBillsViewController;
                         if (viewController != null)
                         {
+                            DataManager.DataManager.SharedInstance.SelectAccount(NotificationInfo.AccountNum);
                             var navController = new UINavigationController(viewController);
                             PresentViewController(navController, true, null);
                         }
@@ -440,7 +445,30 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
+                        DataManager.DataManager.SharedInstance.SelectAccount(NotificationInfo.AccountNum);
                         ViewHelper.DismissControllersAndSelectTab(this, 1, true);
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
+        private void OnViewUsage()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        DataManager.DataManager.SharedInstance.SelectAccount(NotificationInfo.AccountNum);
+                        UIStoryboard stroryboard = UIStoryboard.FromName("Usage", null);
+                        UsageViewController viewController = stroryboard.InstantiateViewController("UsageViewController") as UsageViewController;
+                        UINavigationController navController = new UINavigationController(viewController);
+                        PresentViewController(navController, true, null);
                     }
                     else
                     {

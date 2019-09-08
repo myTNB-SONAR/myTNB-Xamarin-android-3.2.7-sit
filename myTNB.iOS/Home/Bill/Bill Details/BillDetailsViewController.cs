@@ -24,6 +24,7 @@ namespace myTNB
 
         private AccountChargesModel _charges = new AccountChargesModel();
         public string AccountNumber { set; private get; } = string.Empty;
+        public bool IsRoot { set; private get; } = false;
         public BillDetailsViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
@@ -52,7 +53,14 @@ namespace myTNB
             UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle(BillConstants.IMG_BackIcon)
             , UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                DismissViewController(true, null);
+                if (IsRoot)
+                {
+                    NavigationController.PopViewController(true);
+                }
+                else
+                {
+                    DismissViewController(true, null);
+                }
             });
             UIBarButtonItem btnInfo = new UIBarButtonItem(UIImage.FromBundle(BillConstants.IMG_Info)
             , UIBarButtonItemStyle.Done, (sender, e) =>
