@@ -524,7 +524,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         public void ShowPayPDFPage(AccountBillPayHistoryModel.BillingHistoryData billHistoryData)
         {
             Intent viewReceipt = new Intent(this.Activity, typeof(ViewReceiptMultiAccountNewDesignActivty));
-            viewReceipt.PutExtra("merchantTransId", billHistoryData.DetailedInfoNumber);
+            viewReceipt.PutExtra("SELECTED_ACCOUNT_NUMBER", mSelectedAccountData.AccountNum);
+            viewReceipt.PutExtra("DETAILED_INFO_NUMBER", billHistoryData.DetailedInfoNumber);
+            viewReceipt.PutExtra("IS_OWNED_ACCOUNT", true);
+            viewReceipt.PutExtra("IS_SHOW_ALL_RECEIPT", false);
             StartActivity(viewReceipt);
         }
 

@@ -96,7 +96,10 @@ namespace myTNB_Android.Src.Billing.MVP
             if (billingHistoryData.HistoryType.ToUpper() == "PAYMENT")
             {
                 Intent viewReceipt = new Intent(this, typeof(ViewReceiptMultiAccountNewDesignActivty));
-                viewReceipt.PutExtra("merchantTransId", billingHistoryData.DetailedInfoNumber);
+                viewReceipt.PutExtra("SELECTED_ACCOUNT_NUMBER", selectedAccountData.AccountNum);
+                viewReceipt.PutExtra("DETAILED_INFO_NUMBER", billingHistoryData.DetailedInfoNumber);
+                viewReceipt.PutExtra("IS_OWNED_ACCOUNT", true);
+                viewReceipt.PutExtra("IS_SHOW_ALL_RECEIPT", false);
                 StartActivity(viewReceipt);
             }
             else

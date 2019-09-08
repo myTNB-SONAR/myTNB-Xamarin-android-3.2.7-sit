@@ -31,5 +31,10 @@ namespace myTNB_Android.Src.MyTNBService.Billing
         {
             return api.GetAccountsCharges<T>(request);
         }
+
+        public Task<T> GetPaymentReceipt<T>([Body] APIBaseRequest request)
+        {
+            return api.GetPaymentReceipt<T>(request);
+        }
     }
 }

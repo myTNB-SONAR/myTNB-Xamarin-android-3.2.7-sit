@@ -2368,6 +2368,8 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\empty_bills_history.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\empty_bills_history.png" />
     <AndroidResource Include="Resources\drawable\item_circle_bg.xml" />
+    <Compile Include="Src\MyTNBService\Response\AccountReceiptResponse.cs" />
+    <Compile Include="Src\MyTNBService\Request\AccountReceiptRequest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
