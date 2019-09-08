@@ -38,7 +38,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
     public class ViewReceiptMultiAccountNewDesignActivty : BaseToolbarAppCompatActivity, ViewReceiptMultiAccountNewDesignContract.IView
     {
         private string TAG = "View Receipt Activity";
-        private string RECEPT_NO = "101010010";
+        private string RECEPT_NO;
 
         [BindView(Resource.Id.progressBar)]
         ProgressBar mProgressBar;
