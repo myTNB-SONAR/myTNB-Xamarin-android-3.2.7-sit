@@ -67,7 +67,14 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 vh.AccountNumber.Text = item.accountNumber;
                 vh.AccountAddress.Text = item.accountAddress;
                 vh.AccountLabel.Text = item.accountLabel;
-                vh.Amount.Text = payableFormatter.Format(item.amount);
+                if (item.amount == 0f)
+                {
+                    vh.Amount.Text = "";
+                }
+                else
+                {
+                    vh.Amount.Text = payableFormatter.Format(item.amount);
+                }
 
 #if STUB
                 if(item.OpenChargeTotal != 0)
@@ -120,6 +127,17 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                     if (newAmount < 1)
                     {
                         vh.AmountLabel.Error = mActicity.GetString(Resource.String.error_invalid_amount);
+                        vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                        vh.Amount.RequestFocus();
+                        item.isValidAmount = false;
+                        item.isSelected = false;
+                        item.tooltipPopUp = false;
+                        vh.SelectAccountView.Checked = false;
+                        CheckChanged(this, -2);
+                    }
+                    else if (newAmount < item.minimumAmountDue)
+                    {
+                        vh.AmountLabel.Error = string.Format("Minimum amount must be at least {0}", "RM " + item.minimumAmountDue.ToString("#,##0.00"));
                         vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                         vh.Amount.RequestFocus();
                         item.isValidAmount = false;

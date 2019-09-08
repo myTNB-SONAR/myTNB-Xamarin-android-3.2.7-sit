@@ -758,7 +758,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 List<string> ctaList = mandatoryTooltipModel.CTA.Split(',').ToList();
                 MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
                     .SetTitle(mandatoryTooltipModel.Title)
-                    .SetMessage(string.Format(mandatoryTooltipModel.Description, "RM"+accountChargeModel.AmountDue.ToString("#,##0.00")))
+                    .SetMessage(string.Format(mandatoryTooltipModel.Description, "RM"+ accountChargeModel.MandatoryCharges.TotalAmount.ToString("#,##0.00")))
                     .SetCTALabel(ctaList[0])
                     .SetCTAaction(()=> { ShowBillingDetails(accountChargeModel); })
                     .SetSecondaryCTALabel(ctaList[1])
