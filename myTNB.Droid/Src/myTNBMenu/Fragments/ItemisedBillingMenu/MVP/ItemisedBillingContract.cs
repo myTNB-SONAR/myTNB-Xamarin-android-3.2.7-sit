@@ -14,8 +14,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             void ShowBillPDFPage(AccountBillPayHistoryModel.BillingHistoryData billHistoryData);
             void ShowPayPDFPage(AccountBillPayHistoryModel.BillingHistoryData billHistoryData);
             void ShowShimmerLoading();
-            void ShowRefreshPage(bool show);
+            void ShowUnavailableBillContent(bool isRefresh);
+            void ShowAvailableBillContent();
             void ShowEmptyState();
+            void ShowDowntimeSnackbar(string message);
         }
     }
 }

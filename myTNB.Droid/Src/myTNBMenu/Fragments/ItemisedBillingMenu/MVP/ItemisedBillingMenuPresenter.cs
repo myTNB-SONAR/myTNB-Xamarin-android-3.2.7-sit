@@ -17,6 +17,8 @@ using static myTNB_Android.Src.MyTNBService.Response.AccountChargesResponse;
 using static myTNB_Android.Src.MyTNBService.Response.AccountBillPayHistoryResponse;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Base;
+using Android.Util;
+using Refit;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 {
@@ -30,71 +32,123 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
         public ItemisedBillingMenuPresenter(ItemisedBillingContract.IView view)
         {
             mView = view;
-            api = new BillingApiImpl();
+            //api = new BillingApiImpl();
         }
 
         public async void GetBillingHistoryDetails(string contractAccountValue, bool isOwnedAccountValue, string accountTypeValue)
         {
-            //Get Account Charges Service Call
-            bool showRefreshState = false;
-            List<string> accountList = new List<string>();
-            List<AccountChargeModel> accountChargeModelList = new List<AccountChargeModel>();
-            List<AccountBillPayHistoryModel> billingHistoryList = new List<AccountBillPayHistoryModel>();
-            accountList.Add(contractAccountValue);
-            AccountsChargesRequest accountChargeseRequest = new AccountsChargesRequest(
-                accountList,
-                isOwnedAccountValue
-                );
-            AccountChargesResponse accountChargeseResponse = await api.GetAccountsCharges<AccountChargesResponse>(accountChargeseRequest);
-            if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "7200")
+            try
             {
-                accountChargeModelList = GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges);
-                MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
-            }
-            else
-            {
-                showRefreshState = true;
-            }
+                //Get Account Charges Service Call
+                bool showRefreshState = false;
+                List<string> accountList = new List<string>();
+                List<AccountChargeModel> accountChargeModelList = new List<AccountChargeModel>();
+                List<AccountBillPayHistoryModel> billingHistoryList = new List<AccountBillPayHistoryModel>();
+                accountList.Add(contractAccountValue);
+                mView.ShowAvailableBillContent();
 
-            //Get Account Billing History
-            AccountBillPayHistoryRequest accountBillPayRequest = new AccountBillPayHistoryRequest(
-                contractAccountValue,
-                isOwnedAccountValue,
-                accountTypeValue);
-
-            AccountBillPayHistoryResponse accountBillPayResponse = await api.GetAccountBillPayHistory<AccountBillPayHistoryResponse>(accountBillPayRequest);
-            if (accountBillPayResponse.Data != null && accountBillPayResponse.Data.ErrorCode == "7200")
-            {
-                billingHistoryList = GetBillingHistoryModelList(accountBillPayResponse.Data.ResponseData.BillPayHistories);
-            }
-            else
-            {
-                showRefreshState = true;
-            }
-
-            if (showRefreshState)
-            {
-                mView.ShowRefreshPage(showRefreshState);
-            }
-            else
-            {
-                mView.ShowRefreshPage(showRefreshState);
-                if (billingHistoryList.Count > 0)
+                AccountsChargesRequest accountChargeseRequest = new AccountsChargesRequest(
+                    accountList,
+                    isOwnedAccountValue
+                    );
+                AccountChargesResponse accountChargeseResponse = await api.GetAccountsCharges<AccountChargesResponse>(accountChargeseRequest);
+                if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "7200")
                 {
-                    mView.PopulateAccountCharge(accountChargeModelList);
-                    mView.PopulateBillingHistoryList(billingHistoryList);
+                    accountChargeModelList = GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges);
+                    MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
                 }
                 else
                 {
-                    mView.ShowEmptyState();
+                    showRefreshState = true;
+                }
+
+                //Get Account Billing History
+                AccountBillPayHistoryRequest accountBillPayRequest = new AccountBillPayHistoryRequest(
+                    contractAccountValue,
+                    isOwnedAccountValue,
+                    accountTypeValue);
+
+                AccountBillPayHistoryResponse accountBillPayResponse = await api.GetAccountBillPayHistory<AccountBillPayHistoryResponse>(accountBillPayRequest);
+                if (accountBillPayResponse.Data != null && accountBillPayResponse.Data.ErrorCode == "7200")
+                {
+                    billingHistoryList = GetBillingHistoryModelList(accountBillPayResponse.Data.ResponseData.BillPayHistories);
+                }
+                else
+                {
+                    showRefreshState = true;
+                }
+
+                DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
+                DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
+                if (bcrmEntity.IsDown || pgCCEntity.IsDown && pgFPXEntity.IsDown)
+                {
+                    mView.ShowUnavailableBillContent(false);
+                }
+                else
+                {
+                    if (showRefreshState)
+                    {
+                        mView.ShowUnavailableBillContent(true);
+                    }
+                    else
+                    {
+                        if (billingHistoryList.Count > 0)
+                        {
+                            mView.PopulateAccountCharge(accountChargeModelList);
+                            mView.PopulateBillingHistoryList(billingHistoryList);
+                            OnGetBillTooltipContent();
+                        }
+                        else
+                        {
+                            mView.ShowEmptyState();
+                        }
+                    }
+                }
+
+                if (pgCCEntity != null && pgFPXEntity != null)
+                {
+                    if (pgCCEntity.IsDown && pgFPXEntity.IsDown)
+                    {
+                        mView.ShowDowntimeSnackbar(bcrmEntity.DowntimeTextMessage);
+                    }
                 }
             }
+            catch (System.OperationCanceledException e)
+            {
+                Log.Debug("BillPayment Presenter", "Cancelled Exception");
+                if (this.mView.IsActive())
+                {
+                    this.mView.ShowGenericExceptionSnackBar();
+                }
 
-            OnGetEnergySavingTips();
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                Log.Debug("BillPayment Presenter", "Stack " + apiException.StackTrace);
+                if (this.mView.IsActive())
+                {
+                    this.mView.ShowGenericExceptionSnackBar();
+                }
+
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                // ADD UNKNOWN EXCEPTION HERE
+                Log.Debug("BillPayment Presenter", "Stack " + e.StackTrace);
+                if (this.mView.IsActive())
+                {
+                    this.mView.ShowGenericExceptionSnackBar();
+                }
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
 
-        public void OnGetEnergySavingTips()
+        public void OnGetBillTooltipContent()
         {
             Task.Factory.StartNew(() =>
             {

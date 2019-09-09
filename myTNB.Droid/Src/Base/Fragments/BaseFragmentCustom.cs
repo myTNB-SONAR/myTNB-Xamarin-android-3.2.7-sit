@@ -6,6 +6,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
+using Android.Text;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -417,6 +418,23 @@ namespace myTNB_Android.Src.Base.Fragments
             }
             );
             mGenericExceptionSnackbar.Show();
+        }
+
+        public ISpanned GetFormattedText(string stringValue)
+        {
+            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+            {
+                return Html.FromHtml(stringValue, FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                return Html.FromHtml(stringValue);
+            }
+        }
+
+        public bool IsActive()
+        {
+            return IsAdded && IsVisible && !IsDetached && !IsRemoving;
         }
     }
 }

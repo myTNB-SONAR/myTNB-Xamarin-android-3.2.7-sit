@@ -2370,6 +2370,13 @@
     <AndroidResource Include="Resources\drawable\item_circle_bg.xml" />
     <Compile Include="Src\MyTNBService\Response\AccountReceiptResponse.cs" />
     <Compile Include="Src\MyTNBService\Request\AccountReceiptRequest.cs" />
+    <Compile Include="Src\MyTNBService\Request\PaymentTransactionIdRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\PaymentTransactionIdResponse.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\downtime_banner.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\downtime_banner.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\downtime_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\downtime_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\downtime_banner.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

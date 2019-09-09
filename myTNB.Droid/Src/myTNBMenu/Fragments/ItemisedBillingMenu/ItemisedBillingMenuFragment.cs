@@ -7,6 +7,7 @@ using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Views;
 using Android.Widget;
@@ -36,8 +37,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         [BindView(Resource.Id.smrReadingHistoryDetailContent)]
         ViewGroup billingHistoryDetailsContent;
 
-        [BindView(Resource.Id.refreshContainer)]
-        ViewGroup refreshContent;
+        [BindView(Resource.Id.unavailableBillContainer)]
+        ViewGroup unavailableBillContainer;
+
+        [BindView(Resource.Id.unavailableBillBannerImg)]
+        ImageView unavailableBillBannerImg;
+
+        [BindView(Resource.Id.unavailableBillMsg)]
+        TextView unavailableBillMsg;
 
         [BindView(Resource.Id.itemisedBillingHeaderImage)]
         ImageView itemisedBillingHeaderImage;
@@ -65,6 +72,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         [BindView(Resource.Id.btnViewDetails)]
         Button btnViewDetails;
+
+        [BindView(Resource.Id.btnRefresh)]
+        Button btnRefresh;
 
         [BindView(Resource.Id.btnPayBill)]
         Button btnPayBill;
@@ -177,7 +187,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             try
             {
-                ShowRefreshPage(false);
                 mPresenter.GetBillingHistoryDetails(mSelectedAccountData.AccountNum, mSelectedAccountData.IsOwner, (mSelectedAccountData.AccountCategoryId != "2") ? "UTIL" : "RE");
             }
             catch (System.Exception e)
@@ -226,8 +235,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
 
             TextViewUtils.SetMuseoSans500Typeface(accountSelection, itemisedBillingInfoNote,
-                btnViewDetails, btnPayBill, itemisedBillingInfoAmountCurrency, myBillHistoryTitle);
-            TextViewUtils.SetMuseoSans300Typeface(itemisedBillingInfoDate, itemisedBillingInfoAmount, emptyBillingHistoryMessage);
+                btnViewDetails, btnPayBill, itemisedBillingInfoAmountCurrency, myBillHistoryTitle, btnRefresh);
+            TextViewUtils.SetMuseoSans300Typeface(itemisedBillingInfoDate, itemisedBillingInfoAmount, emptyBillingHistoryMessage, unavailableBillMsg);
             RenderUI();
 
             mPresenter.GetBillingHistoryDetails(mSelectedAccountData.AccountNum, mSelectedAccountData.IsOwner, (mSelectedAccountData.AccountCategoryId != "2") ? "UTIL" : "RE");
@@ -536,10 +545,43 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             return rootView;
         }
 
-        public void ShowRefreshPage(bool show)
+        public void ShowUnavailableBillContent(bool isShowRefresh)
         {
-            billingHistoryDetailsContent.Visibility = show ? ViewStates.Gone : ViewStates.Visible;
-            refreshContent.Visibility = show ? ViewStates.Visible : ViewStates.Gone;
+            billingHistoryDetailsContent.Visibility = ViewStates.Gone;
+            unavailableBillContainer.Visibility = ViewStates.Visible;
+            //If not refresh bill, show downtime
+            if (isShowRefresh)
+            {
+                unavailableBillBannerImg.SetImageResource(Resource.Drawable.bg_application_status);
+                unavailableBillMsg.TextFormatted = GetFormattedText(GetString(Resource.String.unavailable_refresh_message));
+                btnRefresh.Visibility = ViewStates.Visible;
+            }
+            else
+            {
+                unavailableBillBannerImg.SetImageResource(Resource.Drawable.downtime_banner);
+                unavailableBillMsg.TextFormatted = GetFormattedText(GetString(Resource.String.unavailable_downtime_message));
+                btnRefresh.Visibility = ViewStates.Gone;
+            }
+        }
+
+        public void ShowDowntimeSnackbar(string message)
+        {
+            Snackbar downtimeSnackBar = Snackbar.Make(rootView,
+                            message,
+                            Snackbar.LengthLong);
+            View v = downtimeSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(4);
+            if (!mSelectedAccountData.AccountCategoryId.Equals("2"))
+            {
+                downtimeSnackBar.Show();
+            }
+        }
+
+        public void ShowAvailableBillContent()
+        {
+            billingHistoryDetailsContent.Visibility = ViewStates.Visible;
+            unavailableBillContainer.Visibility = ViewStates.Gone;
         }
 
         class OnShowBillingDetailsListener : Java.Lang.Object, View.IOnClickListener

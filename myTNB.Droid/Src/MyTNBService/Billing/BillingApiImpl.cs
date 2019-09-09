@@ -36,5 +36,10 @@ namespace myTNB_Android.Src.MyTNBService.Billing
         {
             return api.GetPaymentReceipt<T>(request);
         }
+
+        public Task<T> GetPaymentTransactionId<T>([Body] APIBaseRequest request)
+        {
+            return api.GetPaymentTransactionId<T>(request);
+        }
     }
 }
