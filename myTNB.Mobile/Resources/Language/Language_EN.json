@@ -308,5 +308,15 @@
     "SelectBills": {
         "minimumMandatoryPayment": "Minimum amount must be at least {0}",
         "minimumPayAmount": "Minimum amount cannot be lower than RM1.00"
+    },
+
+    "PushNotificationDetails": {
+        "contactTNB": "Contact TNB",
+        "viewBill": "View Bill",
+        "payNow": "Pay Now",
+        "viewMyUsage": "View My Usage",
+        "submitMeterReading": "Submit Meter Reading",
+        "reenableSSMR": "Re-enable Self Meter Reading",
+        "viewReadingHistory": "View Reading History"
     }
 }

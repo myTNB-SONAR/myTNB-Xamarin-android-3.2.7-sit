@@ -1,17 +1,13 @@
 using System;
 using UIKit;
-using myTNB.Dashboard.DashboardComponents;
 using myTNB.Model;
 using CoreGraphics;
 using System.Threading.Tasks;
-using myTNB.SQLite.SQLiteDataManager;
-using myTNB.SitecoreCMS.Model;
-using System.Collections.Generic;
 using myTNB.PushNotification;
-using myTNB.SSMR;
 using CoreAnimation;
-using System.Diagnostics;
 using Foundation;
+using System.Collections.Generic;
+using myTNB.SQLite.SQLiteDataManager;
 
 namespace myTNB
 {
@@ -30,10 +26,13 @@ namespace myTNB
         private nfloat titleBarHeight = ScaleUtility.GetScaledHeight(24f);
         private bool _isViewDidload;
 
+        private DeleteNotificationResponseModel _deleteNotificationResponse;
+        private SMRAccountActivityInfoResponseModel _smrActivityInfoResponse;
         public UserNotificationDataModel NotificationInfo { set; private get; } = new UserNotificationDataModel();
 
         public override void ViewDidLoad()
         {
+            PageName = PushNotificationConstants.Pagename_PushNotificationDetails;
             NavigationController.NavigationBarHidden = false;
             base.ViewDidLoad();
             _isViewDidload = true;
@@ -44,6 +43,7 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            NavigationController.SetNavigationBarHidden(true, true);
             int unreadCount = PushNotificationHelper.GetNotificationCount();
             UIApplication.SharedApplication.ApplicationIconBadgeNumber = unreadCount == 0 ? 0 : unreadCount - 1;
         }
@@ -68,7 +68,7 @@ namespace myTNB
             UIView viewBack = new UIView(new CGRect(BaseMarginWidth16, 0, GetScaledWidth(24F), titleBarHeight));
             UIImageView imgViewBack = new UIImageView(new CGRect(0, 0, GetScaledWidth(24F), titleBarHeight))
             {
-                Image = UIImage.FromBundle(SSMRConstants.IMG_BackIcon)
+                Image = UIImage.FromBundle(Constants.IMG_Back)
             };
             viewBack.AddSubview(imgViewBack);
             viewTitleBar.AddSubview(viewBack);
@@ -83,10 +83,16 @@ namespace myTNB
             lblTitle.TextColor = UIColor.White;
             viewTitleBar.AddSubview(lblTitle);
 
-            UIImageView imgViewRightBtn = new UIImageView(new CGRect(0, 0, 24, titleBarHeight))
+            CustomUIView viewDelete = new CustomUIView(new CGRect(ViewWidth - GetScaledWidth(40), 0, GetScaledWidth(24F), titleBarHeight));
+            viewDelete.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                Image = UIImage.FromBundle(SSMRConstants.IMG_PrimaryIcon)
-            };
+                OnDeleteNotification();
+            }));
+            viewDelete.AddSubview(new UIImageView(new CGRect(0, 0, GetScaledWidth(24F), titleBarHeight))
+            {
+                Image = UIImage.FromBundle(PushNotificationConstants.IMG_Delete)
+            });
+            viewTitleBar.AddSubview(viewDelete);
 
             viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
@@ -150,13 +156,21 @@ namespace myTNB
             AddViewWithOpacity(absOpacity);
         }
         #endregion
-        private string GetBannerImage()
+        private string BannerImage
         {
-            if (PushNotificationConstants.BannerImageDictionary.ContainsKey(NotificationInfo.BCRMNotificationType))
+            get
             {
-                return PushNotificationConstants.BannerImageDictionary[NotificationInfo.BCRMNotificationType];
+                if (NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.SSMR
+                    && PushNotificationConstants.SSMRBannerImageDictionary.ContainsKey(NotificationInfo.SSMRNotificationType))
+                {
+                    return PushNotificationConstants.SSMRBannerImageDictionary[NotificationInfo.SSMRNotificationType];
+                }
+                if (PushNotificationConstants.BannerImageDictionary.ContainsKey(NotificationInfo.BCRMNotificationType))
+                {
+                    return PushNotificationConstants.BannerImageDictionary[NotificationInfo.BCRMNotificationType];
+                }
+                return string.Empty;
             }
-            return string.Empty;
         }
 
         private void AddSubview()
@@ -171,7 +185,7 @@ namespace myTNB
 
             _bgImageView = new UIImageView(new CGRect(0, 0, ViewWidth, ViewWidth * 0.70F))
             {
-                Image = UIImage.FromBundle(GetBannerImage()),
+                Image = UIImage.FromBundle(BannerImage),
                 BackgroundColor = UIColor.White
             };
 
@@ -320,8 +334,8 @@ namespace myTNB
                     Frame = new CGRect(BaseMargin, GetScaledHeight(16), btnWidth, GetScaledHeight(48)),
                     BackgroundColor = UIColor.White
                 };
-                _btnPrimary.SetTitle(NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.Disconnection
-                    ? "Contact TNB" : "View Bill", UIControlState.Normal);
+                _btnPrimary.SetTitle(GetI18NValue(NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.Disconnection
+                    ? PushNotificationConstants.I18N_ContactTNB : PushNotificationConstants.I18N_ViewBill), UIControlState.Normal);
                 _btnPrimary.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
                 _btnPrimary.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
                 _btnPrimary.Layer.BorderWidth = 1;
@@ -341,7 +355,7 @@ namespace myTNB
                     Frame = new CGRect(_btnPrimary.Frame.GetMaxX() + GetScaledWidth(4), GetScaledHeight(16), btnWidth, GetScaledHeight(48)),
                     BackgroundColor = MyTNBColor.FreshGreen
                 };
-                _btnSecondary.SetTitle("Pay Now", UIControlState.Normal);
+                _btnSecondary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_Paynow), UIControlState.Normal);
                 _btnSecondary.SetTitleColor(UIColor.White, UIControlState.Normal);
                 _btnSecondary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
@@ -356,7 +370,7 @@ namespace myTNB
                     Frame = new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(48)),
                     BackgroundColor = UIColor.White
                 };
-                _btnPrimary.SetTitle("View My Usage", UIControlState.Normal);
+                _btnPrimary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_ViewMyUsage), UIControlState.Normal);
                 _btnPrimary.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
                 _btnPrimary.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
                 _btnPrimary.Layer.BorderWidth = 1;
@@ -382,8 +396,12 @@ namespace myTNB
                     Frame = new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(48)),
                     BackgroundColor = MyTNBColor.FreshGreen
                 };
-                _btnPrimary.SetTitle("Submit Meter Reading", UIControlState.Normal);
+                _btnPrimary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_SubmitMeterReading), UIControlState.Normal);
                 _btnPrimary.SetTitleColor(UIColor.White, UIControlState.Normal);
+                _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    OnSubmitMeterReading();
+                }));
             }
             else if (NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.TerminationCompleted)
             {
@@ -392,10 +410,13 @@ namespace myTNB
                     Frame = new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(48)),
                     BackgroundColor = UIColor.White
                 };
-                _btnPrimary.SetTitle("Re-enable Self Meter Reading", UIControlState.Normal);
+                _btnPrimary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_ReenableSSMR), UIControlState.Normal);
                 _btnPrimary.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
                 _btnPrimary.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
                 _btnPrimary.Layer.BorderWidth = 1;
+                _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                }));
             }
             else if (NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.MissedSubmission)
             {
@@ -404,14 +425,24 @@ namespace myTNB
                     Frame = new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(48)),
                     BackgroundColor = UIColor.White
                 };
-                _btnPrimary.SetTitle("View Reading History", UIControlState.Normal);
+                _btnPrimary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_ViewReadingHistory), UIControlState.Normal);
                 _btnPrimary.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
                 _btnPrimary.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
                 _btnPrimary.Layer.BorderWidth = 1;
+                _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    OnViewMeterReadingHistory();
+                }));
             }
             _viewCTA.AddSubview(_btnPrimary);
         }
 
+        private bool IsValidWeblinks
+        {
+            get { return DataManager.DataManager.SharedInstance.WebLinks != null; }
+        }
+
+        #region CTA Events
         private void OnPay()
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
@@ -494,12 +525,160 @@ namespace myTNB
                     }
                 }
             }
-            DisplayServiceError("Error_TelephoneNumberNotAvailable".Translate());
+            DisplayServiceError(string.Empty);
         }
 
-        private bool IsValidWeblinks
+        private void OnViewMeterReadingHistory()
         {
-            get { return DataManager.DataManager.SharedInstance.WebLinks != null; }
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        DataManager.DataManager.SharedInstance.SelectAccount(NotificationInfo.AccountNum);
+                        UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+                        SSMRReadingHistoryViewController viewController =
+                            storyBoard.InstantiateViewController("SSMRReadingHistoryViewController") as SSMRReadingHistoryViewController;
+                        if (viewController != null)
+                        {
+                            viewController.IsFromNotification = true;
+                            viewController.IsRoot = true;
+                            NavigationController.PushViewController(viewController, true);
+                        }
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
         }
+
+        private void OnSubmitMeterReading()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        ActivityIndicator.Show();
+                        DataManager.DataManager.SharedInstance.SelectAccount(NotificationInfo.AccountNum);
+                        await GetSMRAccountActivityInfo(DataManager.DataManager.SharedInstance.SelectedAccount).ContinueWith(task =>
+                        {
+                            InvokeOnMainThread(() =>
+                            {
+                                if (_smrActivityInfoResponse != null &&
+                                    _smrActivityInfoResponse.d != null &&
+                                    _smrActivityInfoResponse.d.data != null &&
+                                    _smrActivityInfoResponse.d.IsSuccess)
+                                {
+                                    SSMRActivityInfoCache.SetReadingHistoryCache(_smrActivityInfoResponse
+                                        , DataManager.DataManager.SharedInstance.SelectedAccount);
+                                    UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+                                    SSMRReadMeterViewController viewController =
+                                        storyBoard.InstantiateViewController("SSMRReadMeterViewController") as SSMRReadMeterViewController;
+                                    if (viewController != null)
+                                    {
+                                        viewController.IsRoot = true;
+                                        NavigationController.PushViewController(viewController, true);
+                                    }
+                                }
+                                else
+                                {
+                                    DisplayServiceError(_smrActivityInfoResponse?.d?.ErrorMessage ?? string.Empty);
+                                }
+                                ActivityIndicator.Hide();
+                            });
+                        });
+
+
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
+        private void OnDeleteNotification()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        ActivityIndicator.Show();
+                        await DeleteUserNotification(NotificationInfo?.Id);
+                        if (_deleteNotificationResponse != null && _deleteNotificationResponse?.d != null
+                            && _deleteNotificationResponse?.d?.didSucceed == true)
+                        {
+                            DataManager.DataManager.SharedInstance.IsNotificationDeleted = true;
+                            var index = DataManager.DataManager.SharedInstance.UserNotifications.FindIndex(x => x.Id == NotificationInfo?.Id);
+                            if (index > -1)
+                            {
+                                DataManager.DataManager.SharedInstance.UserNotifications.RemoveAt(index);
+                            }
+                            NavigationController?.PopViewController(true);
+                        }
+                        else
+                        {
+                            DisplayServiceError(_deleteNotificationResponse?.d?.message);
+                        }
+                        ActivityIndicator.Hide();
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+        #endregion
+
+        #region Service Call
+        private Task GetSMRAccountActivityInfo(CustomerAccountRecordModel account)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                ServiceManager serviceManager = new ServiceManager();
+                object request = new
+                {
+                    contractAccount = account.accNum,
+                    isOwnedAccount = account.isOwned,
+                    serviceManager.usrInf
+                };
+                _smrActivityInfoResponse = serviceManager.OnExecuteAPIV6<SMRAccountActivityInfoResponseModel>(PushNotificationConstants.Service_GetSMRAccountActivityInfo, request);
+            });
+        }
+
+        private Task DeleteUserNotification(string id)
+        {
+            var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+                ? DataManager.DataManager.SharedInstance.UserEntity[0] : new UserEntity();
+            return Task.Factory.StartNew(() =>
+            {
+                ServiceManager serviceManager = new ServiceManager();
+                object requestParameter = new
+                {
+                    ApiKeyID = TNBGlobal.API_KEY_ID,
+                    UpdatedNotifications = new List<UpdateNotificationModel>(){
+                        new UpdateNotificationModel()
+                        {
+                            NotificationType = NotificationInfo.NotificationType,
+                            NotificationId = id
+                        }
+                    },
+                    Email = user?.email,
+                    DeviceId = DataManager.DataManager.SharedInstance.UDID,
+                    SSPUserId = user?.userID
+                };
+                _deleteNotificationResponse = serviceManager.OnExecuteAPI<DeleteNotificationResponseModel>(PushNotificationConstants.Service_DeleteNotification, requestParameter);
+            });
+        }
+        #endregion
     }
 }

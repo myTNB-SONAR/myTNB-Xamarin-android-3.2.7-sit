@@ -41,7 +41,7 @@ namespace myTNB.PushNotification
                 , (cellHeight - icnWidth) / 2, icnWidth, icnWidth));
 
             lblTitle = new UILabel(new CGRect(imgIcon.Frame.GetMaxX() + ScaleUtility.GetScaledWidth(8), ScaleUtility.GetScaledHeight(16)
-                , ScaleUtility.GetPercentWidthValue(44F), ScaleUtility.GetScaledHeight(20)))
+                , ScaleUtility.GetPercentWidthValue(50F), ScaleUtility.GetScaledHeight(20)))
             {
                 TextColor = MyTNBColor.CharcoalGrey,
                 Font = TNBFont.MuseoSans_14_500

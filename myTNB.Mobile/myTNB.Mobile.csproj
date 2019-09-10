@@ -29,6 +29,9 @@
     <None Remove="Resources\Notification\NotificationInfo_1001 %283rd copy%29.json" />
     <None Remove="Resources\Notification\NotificationInfo_1001 %284th copy%29.json" />
     <None Remove="Resources\Notification\NotificationInfo_1002.json" />
+    <None Remove="Resources\Notification\NotificationInfo_1099 %28copy%29.json" />
+    <None Remove="Resources\Notification\NotificationInfo_1099 %28another copy%29.json" />
+    <None Remove="Resources\Notification\NotificationInfo_1099 %283rd copy%29.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\Language\Language_EN.json" />
@@ -42,6 +45,9 @@
     <EmbeddedResource Include="Resources\Notification\NotificationInfo_1003.json" />
     <EmbeddedResource Include="Resources\Notification\NotificationInfo_1099.json" />
     <EmbeddedResource Include="Resources\Notification\NotificationInfo_1002.json" />
+    <EmbeddedResource Include="Resources\Notification\NotificationInfo_10011.json" />
+    <EmbeddedResource Include="Resources\Notification\NotificationInfo_10010.json" />
+    <EmbeddedResource Include="Resources\Notification\NotificationInfo_10009.json" />
   </ItemGroup>
   <ItemGroup>
     <None Update="Resources\Notification\NotificationInfo_1002.json">

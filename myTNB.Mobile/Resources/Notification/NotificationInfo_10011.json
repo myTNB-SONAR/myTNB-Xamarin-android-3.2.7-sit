@@ -1,0 +1,24 @@
+﻿{
+    "d": {
+        "__type": "mytnb.lib.models.NoticationDetailsStatus",
+        "data": {
+            "NotificationType": "ODN",
+            "Id": "10011",
+            "Email": "",
+            "DeviceId": "",
+            "AccountNum": "220937712010",
+            "Title": "Missed Meter Reading Submission",
+            "Message": "Oh no, it looks like your bill for <b>May 2019</b> will be estimated as you did not submit a meter reading for this month.<br><br>Don't worry, you can avoid having your bill estimated by simply submitting your next meter reading on time.<br><br>Account: My House",
+            "IsRead": "true",
+            "IsDeleted": "false",
+            "NotificationTypeId": "1000010",
+            "BCRMNotificationTypeId": "0011",
+            "Target": "",
+            "CreatedDate": "9/1/2019 5:35:04 PM",
+            "AccountDetails": null
+        },
+        "status": "success",
+        "isError": "false",
+        "message": "Successful"
+    }
+}

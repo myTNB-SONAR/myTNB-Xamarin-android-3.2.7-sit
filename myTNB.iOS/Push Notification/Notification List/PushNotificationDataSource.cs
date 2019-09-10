@@ -32,43 +32,6 @@ namespace myTNB.PushNotification
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
             UserNotificationDataModel notification = _data[indexPath.Row];
-
-            /* int index = indexPath.Row;
-             switch (index)
-             {
-                 case 0:// "01":
-                     notification.BCRMNotificationTypeId = "01";
-                     notification.IsRead = "FALSE";
-                     break;
-                 case 1://"02":
-                     notification.BCRMNotificationTypeId = "02";
-                     break;
-                 case 2://"03":
-                     notification.BCRMNotificationTypeId = "03";
-                     break;
-                 case 3://"04":
-                     notification.BCRMNotificationTypeId = "04";
-                     break;
-                 case 4://"05":
-                     notification.BCRMNotificationTypeId = "05";
-                     break;
-                 case 5://"97":
-                     notification.BCRMNotificationTypeId = "97";
-                     break;
-                 case 6:// "98":
-                     notification.BCRMNotificationTypeId = "98";
-                     break;
-                 case 7://"99":
-                     notification.BCRMNotificationTypeId = "99";
-                     break;
-                 case 8://"99":
-                     notification.BCRMNotificationTypeId = "0009";
-                     break;
-                 case 9://"99":
-                     notification.BCRMNotificationTypeId = "0010";
-                     break;
-             }*/
-
             var cell = tableView.DequeueReusableCell("pushNotificationCell") as NotificationViewCell;
             if (cell == null)
             {
@@ -143,7 +106,7 @@ namespace myTNB.PushNotification
                     DeleteNotification(indexPath);
                 });
                 deleteAction.BackgroundColor = UIColor.FromPatternImage(RowActionImage(MyTNBColor.HarleyDavidsonOrange.CGColor, "Notification-Delete"));
-                if (notification.IsRead.ToLower() == "false")
+                if (!notification.IsReadNotification)
                 {
                     UITableViewRowAction readAction = UITableViewRowAction.Create(UITableViewRowActionStyle.Default, "        ", delegate
                     {
@@ -196,28 +159,6 @@ namespace myTNB.PushNotification
             _controller.ReadNotification(updateNotificationList, false, indexPath);
         }
 
-        /*public override UISwipeActionsConfiguration GetLeadingSwipeActionsConfiguration(UITableView tableView, NSIndexPath indexPath)
-        {
-            UserNotificationDataModel notification = _data[indexPath.Row];
-            if (notification.IsRead.ToLower() != "false" || _controller._isSelectionMode)
-            {
-                return null;
-            }
-#pragma warning disable XI0002 // Notifies you from using newer Apple APIs when targeting an older OS version
-            UIContextualAction contextualAction = UIContextualAction.FromContextualActionStyle(UIContextualActionStyle.Normal
-                , string.Empty
-                , (action, sourceView, completionHandler) =>
-                {
-                    ReadNotification(indexPath);
-                });
-            contextualAction.Image = UIImage.FromBundle("Notification-MarkAsRead");
-            contextualAction.BackgroundColor = MyTNBColor.Denim;
-            UISwipeActionsConfiguration leadingSwipe = UISwipeActionsConfiguration.FromActions(new UIContextualAction[] { contextualAction });
-            leadingSwipe.PerformsFirstActionWithFullSwipe = false;
-            return leadingSwipe;
-#pragma warning restore XI0002 // Notifies you from using newer Apple APIs when targeting an older OS version
-        }*/
-
         public override UISwipeActionsConfiguration GetTrailingSwipeActionsConfiguration(UITableView tableView, NSIndexPath indexPath)
         {
             if (_controller._isSelectionMode)
@@ -225,6 +166,7 @@ namespace myTNB.PushNotification
                 return null;
             }
 #pragma warning disable XI0002 // Notifies you from using newer Apple APIs when targeting an older OS version
+            UserNotificationDataModel notification = _data[indexPath.Row];
             UIContextualAction contextualReadAction = UIContextualAction.FromContextualActionStyle(UIContextualActionStyle.Normal
              , string.Empty
              , (action, sourceView, completionHandler) =>
@@ -239,9 +181,18 @@ namespace myTNB.PushNotification
                 {
                     DeleteNotification(indexPath);
                 });
+            UIContextualAction[] contextualAction;
+            if (notification.IsReadNotification)
+            {
+                contextualAction = new UIContextualAction[] { contextualDeleteAction };
+            }
+            else
+            {
+                contextualAction = new UIContextualAction[] { contextualDeleteAction, contextualReadAction };
+            }
             contextualDeleteAction.Image = UIImage.FromBundle("Notification-Delete");
             contextualDeleteAction.BackgroundColor = MyTNBColor.HarleyDavidsonOrange;
-            UISwipeActionsConfiguration trailingSwipe = UISwipeActionsConfiguration.FromActions(new UIContextualAction[] { contextualDeleteAction, contextualReadAction });
+            UISwipeActionsConfiguration trailingSwipe = UISwipeActionsConfiguration.FromActions(contextualAction);
             trailingSwipe.PerformsFirstActionWithFullSwipe = false;
             return trailingSwipe;
 #pragma warning restore XI0002 // Notifies you from using newer Apple APIs when targeting an older OS version

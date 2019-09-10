@@ -113,6 +113,38 @@
                 "Target": "",
                 "CreatedDate": "11/1/2019 5:00:00 PM",
                 "AccountDetails": null
+            },
+            {
+                "NotificationType": "ODN",
+                "Id": "10010",
+                "Email": "",
+                "DeviceId": "",
+                "AccountNum": "",
+                "Title": "Self Meter Reading",
+                "Message": "Dear customer, your Sep 2017 bill is already available. Please check mobile app or self service portal.",
+                "IsRead": "True",
+                "IsDeleted": "False",
+                "NotificationTypeId": "1000010",
+                "BCRMNotificationTypeId": "0010",
+                "Target": "",
+                "CreatedDate": "11/1/2019 5:00:00 PM",
+                "AccountDetails": null
+            },
+            {
+                "NotificationType": "ODN",
+                "Id": "10011",
+                "Email": "",
+                "DeviceId": "",
+                "AccountNum": "",
+                "Title": "Self Meter Reading",
+                "Message": "Dear customer, your Sep 2017 bill is already available. Please check mobile app or self service portal.",
+                "IsRead": "True",
+                "IsDeleted": "False",
+                "NotificationTypeId": "1000010",
+                "BCRMNotificationTypeId": "0011",
+                "Target": "",
+                "CreatedDate": "11/1/2019 5:00:00 PM",
+                "AccountDetails": null
             }
         ],
         "RefreshTitle": null,

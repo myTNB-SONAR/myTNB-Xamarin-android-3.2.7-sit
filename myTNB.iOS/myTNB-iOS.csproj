@@ -1177,6 +1177,12 @@
     <ImageAsset Include="Assets.xcassets\Notification-Bill-Due.imageset\billDue%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\Notification-New-Bill.imageset\newBill%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-New-Bill.imageset\newBill%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-SSMR-Open.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-SSMR-Open.imageset\group7%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-SSMR-Open.imageset\group7%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-SSMR-Missed.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-SSMR-Missed.imageset\group9%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-SSMR-Missed.imageset\group9%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1582,6 +1588,9 @@
     <Folder Include="Assets.xcassets\Bill-Loading-Banner.imageset\" />
     <Folder Include="Model\GetPaymentTransactionId\" />
     <Folder Include="Model\GetPaymentReceipt\" />
+    <Folder Include="Home\Bill\Bill Filter\" />
+    <Folder Include="Assets.xcassets\Notification-Banner-SSMR-Open.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Banner-SSMR-Missed.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2171,7 +2180,6 @@
     <Compile Include="Model\UpdateNotification\UpdateNotificationModel.cs" />
     <Compile Include="Model\Modify Notification\DeleteNotificationResponseModel.cs" />
     <Compile Include="Model\Modify Notification\ReadNotificationResponseModel.cs" />
-    <Compile Include="Customs\Bill\CustomBillUIViewController.cs" />
     <Compile Include="Customs\CustomUIButton.cs" />
     <Compile Include="Customs\CustomUILabel.cs" />
     <Compile Include="Home\Components\RefreshViewComponent.cs" />
@@ -2408,13 +2416,13 @@
     <Compile Include="Home\Bill\Bills\BillHistoryShimmerViewCell.cs" />
     <Compile Include="Model\GetPaymentTransactionId\GetPaymentTransactionIdResponseModel.cs" />
     <Compile Include="Session Cache\AccountChargesCache.cs" />
-    <Compile Include="Home\Bill\Bills\BillFilterViewController.cs" />
-    <Compile Include="Home\Bill\Bills\BillFilterViewController.designer.cs">
-      <DependentUpon>BillFilterViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Payment\PaymentConstants.cs" />
     <Compile Include="Model\GetPaymentReceipt\GetPaymentReceiptResponseModel.cs" />
     <Compile Include="Push Notification\PushNotificationConstants.cs" />
+    <Compile Include="Home\Bill\Bill Filter\BillFilterViewController.cs" />
+    <Compile Include="Home\Bill\Bill Filter\BillFilterViewController.designer.cs">
+      <DependentUpon>BillFilterViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

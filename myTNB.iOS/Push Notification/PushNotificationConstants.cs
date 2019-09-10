@@ -7,6 +7,11 @@ namespace myTNB.PushNotification
     {
         //Pagename
         public static string Pagename_PushNotificationList = "PushNotificationList";
+        public static string Pagename_PushNotificationDetails = "PushNotificationDetails";
+
+        //Service
+        public static string Service_DeleteNotification = "DeleteUserNotification_V3";
+        public static string Service_GetSMRAccountActivityInfo = "GetSMRAccountActivityInfo";
 
         //Image
         public static string IMG_Select = "Notification-Select";
@@ -30,6 +35,14 @@ namespace myTNB.PushNotification
             , { BCRMNotificationEnum.Promotion, "Notification-Banner-Promotion" }
             , { BCRMNotificationEnum.News, "Notification-Banner-News" }
             , { BCRMNotificationEnum.Maintenance, "Notification-Banner-Maintenance" }
+            , { BCRMNotificationEnum.SSMR, "SSMR-Reading-History-Banner" }
+        };
+
+        //SSMR Banner Dictionary
+        public static Dictionary<SSMRNotificationEnum, string> SSMRBannerImageDictionary = new Dictionary<SSMRNotificationEnum, string> {
+            { SSMRNotificationEnum.OpenMeterReadingPeriod, "Notification-Banner-SSMR-Open" }
+            , { SSMRNotificationEnum.NoSubmissionReminder, "Notification-Banner-SSMR-Open" }
+            , { SSMRNotificationEnum.MissedSubmission, "Notification-Banner-SSMR-Missed" }
         };
 
         //Icon Image Dictionary
@@ -44,5 +57,14 @@ namespace myTNB.PushNotification
             , { BCRMNotificationEnum.Maintenance, "Notification-Maintenance" }
             , { BCRMNotificationEnum.SSMR, "Notification-SSMR" }
         };
+
+        //I18N
+        public static string I18N_ContactTNB = "contactTNB";
+        public static string I18N_ViewBill = "viewBill";
+        public static string I18N_Paynow = "payNow";
+        public static string I18N_ViewMyUsage = "viewMyUsage";
+        public static string I18N_SubmitMeterReading = "submitMeterReading";
+        public static string I18N_ReenableSSMR = "reenableSSMR";
+        public static string I18N_ViewReadingHistory = "viewReadingHistory";
     }
 }

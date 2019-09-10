@@ -710,7 +710,7 @@ namespace myTNB.PushNotification
         UIView GetTableViewHeader()
         {
             nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
-            nfloat cellHeight = ScaleUtility.GetScaledHeight(70);
+            nfloat cellHeight = ScaleUtility.GetScaledHeight(62);
             nfloat chkWidth = ScaleUtility.GetWidthByScreenSize(20);
 
             UIView viewCheckBox = new UIView(new CGRect(cellWidth - chkWidth - GetScaledWidth(16), GetScaledHeight(24), chkWidth, chkWidth));

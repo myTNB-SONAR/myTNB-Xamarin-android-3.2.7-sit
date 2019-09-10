@@ -1,0 +1,24 @@
+﻿{
+    "d": {
+        "__type": "mytnb.lib.models.NoticationDetailsStatus",
+        "data": {
+            "NotificationType": "ODN",
+            "Id": "10010",
+            "Email": "",
+            "DeviceId": "",
+            "AccountNum": "220937712010",
+            "Title": "Meter Reading Submission Open",
+            "Message": "Submit your <b>May 2019</b> meter reading now. The submission period <b>will stay open for 2 days</b> from receiving this notification.<br><br>Account: My House",
+            "IsRead": "true",
+            "IsDeleted": "false",
+            "NotificationTypeId": "1000010",
+            "BCRMNotificationTypeId": "0010",
+            "Target": "",
+            "CreatedDate": "9/1/2019 5:35:04 PM",
+            "AccountDetails": null
+        },
+        "status": "success",
+        "isError": "false",
+        "message": "Successful"
+    }
+}

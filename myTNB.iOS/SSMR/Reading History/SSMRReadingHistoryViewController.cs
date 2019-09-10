@@ -30,7 +30,9 @@ namespace myTNB
         private bool _isFromSelection;
 
         public bool IsFromHome;
+        public bool IsFromNotification;
         public bool FromStatusPage;
+        public bool IsRoot;
         public SSMRReadingHistoryViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
@@ -49,7 +51,6 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            NavigationController.SetNavigationBarHidden(true, true);
             SetNoSSMR();
             string accName;
             if (_isFromSelection)
@@ -67,7 +68,7 @@ namespace myTNB
             }
             else
             {
-                if (IsFromHome)
+                if (IsFromHome || IsFromNotification)
                 {
                     if (SSMRAccounts.HasSSMRAccount)
                     {
@@ -94,7 +95,14 @@ namespace myTNB
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
-            NavigationController.SetNavigationBarHidden(false, true);
+            if (IsFromNotification)
+            {
+                NavigationController.SetNavigationBarHidden(true, true);
+            }
+            else
+            {
+                NavigationController.SetNavigationBarHidden(false, true);
+            }
         }
 
         private void EvaluateEntry()
@@ -181,14 +189,13 @@ namespace myTNB
             lblTitle.TextColor = UIColor.White;
             viewTitleBar.AddSubview(lblTitle);
 
-            UIImageView imgViewRightBtn = new UIImageView(new CGRect(0, 0, 24, titleBarHeight))
-            {
-                Image = UIImage.FromBundle(SSMRConstants.IMG_PrimaryIcon)
-            };
-
             viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                if (IsFromHome)
+                if (IsRoot)
+                {
+                    NavigationController.PopViewController(true);
+                }
+                else if (IsFromHome)
                 {
                     ViewHelper.DismissControllersAndSelectTab(this, 0, true);
                 }
@@ -305,9 +312,9 @@ namespace myTNB
 
         private void UpdateTable()
         {
-            _meterReadingHistory = IsFromHome || _isFromSelection || FromStatusPage
+            _meterReadingHistory = IsFromHome || IsFromNotification || _isFromSelection || FromStatusPage
                 ? SSMRActivityInfoCache.ViewMeterReadingHistory : SSMRActivityInfoCache.DashboardMeterReadingHistory;
-            _readingHistoryList = IsFromHome || _isFromSelection || FromStatusPage
+            _readingHistoryList = IsFromHome || IsFromNotification || _isFromSelection || FromStatusPage
                 ? SSMRActivityInfoCache.ViewReadingHistoryList : SSMRActivityInfoCache.DashboardReadingHistoryList;
 
             _ssmrHeaderComponent.SetSubmitButtonHidden(_meterReadingHistory);
