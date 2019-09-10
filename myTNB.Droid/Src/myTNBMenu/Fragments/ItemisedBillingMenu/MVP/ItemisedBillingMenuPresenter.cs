@@ -18,7 +18,7 @@ using static myTNB_Android.Src.MyTNBService.Response.AccountBillPayHistoryRespon
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Base;
 using Android.Util;
-using Refit;
+using Android.Gms.Common.Apis;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 {
@@ -32,7 +32,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
         public ItemisedBillingMenuPresenter(ItemisedBillingContract.IView view)
         {
             mView = view;
-            //api = new BillingApiImpl();
+            api = new BillingApiImpl();
         }
 
         public async void GetBillingHistoryDetails(string contractAccountValue, bool isOwnedAccountValue, string accountTypeValue)

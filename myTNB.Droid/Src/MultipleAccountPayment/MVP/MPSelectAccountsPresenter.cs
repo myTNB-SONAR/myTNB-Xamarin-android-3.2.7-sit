@@ -33,6 +33,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             this.mView = mView;
             this.mView.SetPresenter(this);
             api = new BillingApiImpl();
+            accountChargeModelList = new List<AccountChargeModel>();
         }
 
         public void Start()
@@ -71,7 +72,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                 AccountChargesResponse accountChargeseResponse = await api.GetAccountsCharges<AccountChargesResponse>(accountChargeseRequest);
                 if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "7200")
                 {
-                    accountChargeModelList = GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges);
+                    accountChargeModelList.AddRange(GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges));
                     List<MPAccount> newAccountList = new List<MPAccount>();
                     accountChargeseResponse.Data.ResponseData.AccountCharges.ForEach(accountCharge =>
                     {
@@ -244,6 +245,17 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             {
                 accountChargeModel.IsCleared = true;
             }
+        }
+
+        public List<AccountChargeModel> GetSelectedAccountChargesModelList(List<MPAccount> mpAccountList)
+        {
+            List<AccountChargeModel> selectedList = new List<AccountChargeModel>();
+            mpAccountList.ForEach(account =>
+            {
+                AccountChargeModel foundChargeModel = accountChargeModelList.Find(model => { return model.ContractAccount == account.accountNumber; });
+                selectedList.Add(foundChargeModel);
+            });
+            return selectedList;
         }
     }
 }

@@ -426,6 +426,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     Intent payment_activity = new Intent(this, typeof(PaymentActivity));
                     payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
                     payment_activity.PutExtra("PAYMENT_ITEMS", JsonConvert.SerializeObject(adapter.GetSelectedAccounts()));
+                    List<AccountChargeModel>  chargeModelList = mPresenter.GetSelectedAccountChargesModelList(adapter.GetSelectedAccounts());
+                    payment_activity.PutExtra("ACCOUNT_CHARGES_LIST", JsonConvert.SerializeObject(chargeModelList));
                     payment_activity.PutExtra("TOTAL", textTotalPayable.Text);
                     StartActivityForResult(payment_activity, PaymentActivity.SELECT_PAYMENT_ACTIVITY_CODE);
                 }
