@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using myTNB.Model;
 using System.Globalization;
 using myTNB.Home.Bill;
+using myTNB.Payment;
 
 namespace myTNB
 {
@@ -34,6 +35,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            PageName = PaymentConstants.Pagename_SelectBills;
             base.ViewDidLoad();
             AccountChargesCache.Clear();
             SetDefaultTableFrame();
@@ -89,7 +91,10 @@ namespace myTNB
 
         private void ResetValues()
         {
-            SelectBillsTableView.Source = new SelectBillsDataSource(this, new List<PaymentRecordModel>());
+            SelectBillsTableView.Source = new SelectBillsDataSource(this, new List<PaymentRecordModel>())
+            {
+                GetI18NValue = GetI18NValue
+            };
             SelectBillsTableView.ReloadData();
             _accounts = new List<CustomerAccountRecordModel>();
             _accountsForDisplay = new List<PaymentRecordModel>();
@@ -332,9 +337,20 @@ namespace myTNB
 
         internal void InitializedTableView()
         {
-            SelectBillsTableView.Source = new SelectBillsDataSource(this, _accountsForDisplay);
+            SelectBillsTableView.Source = new SelectBillsDataSource(this, _accountsForDisplay)
+            {
+                GetI18NValue = GetI18NValue
+            };
             SelectBillsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             SelectBillsTableView.ReloadData();
+
+            if (_accountsForDisplay != null && _accountsForDisplay.Count > 0 && _accountsForDisplay[0] != null)
+            {
+                if (AccountChargesCache.HasMandatory(_accountsForDisplay[0].accNum))
+                {
+                    OnShowItemisedTooltip(_accountsForDisplay[0].accNum);
+                }
+            }
         }
 
         internal void InitializedSubViews()
@@ -431,8 +447,8 @@ namespace myTNB
         private void OnBack()
         {
             View.EndEditing(true);
-            DismissViewController(true, null);
             ResetValues();
+            ViewHelper.DismissControllersAndSelectTab(this, 1, true);
         }
 
         private async Task<GetAccountsChargesResponseModel> GetAccountsCharges(List<string> accountList)
