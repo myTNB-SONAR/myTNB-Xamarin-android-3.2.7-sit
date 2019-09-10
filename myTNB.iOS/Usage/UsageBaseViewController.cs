@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using CoreGraphics;
+using Force.DeepCloner;
 using myTNB.Home.Components;
 using myTNB.Model;
 using myTNB.Model.Usage;
@@ -71,7 +72,7 @@ namespace myTNB
             base.ViewWillDisappear(animated);
             if (_acctSelectorIsTapped)
             {
-                NavigationController.SetNavigationBarHidden(false, true);
+                //NavigationController.SetNavigationBarHidden(false, true);
             }
         }
 
@@ -162,7 +163,8 @@ namespace myTNB
             };
             viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                DismissViewController(true, null);
+                //DismissViewController(true, null);
+                NavigationController.PopViewController(true);
             }));
             viewBack.AddSubview(imgViewBack);
             viewTitleBar.AddSubview(viewBack);
@@ -196,11 +198,7 @@ namespace myTNB
 
         private void AddScrollView()
         {
-            nfloat height = UIScreen.MainScreen.Bounds.Height - _navbarContainer.Frame.GetMaxY() - GetScaledHeight(8F);
-            if (DeviceHelper.IsIphoneXUpResolution())
-            {
-                height -= 20f;
-            }
+            nfloat height = UIScreen.MainScreen.Bounds.Height - _navbarContainer.Frame.Height - TabBarController.TabBar.Frame.Height - GetScaledHeight(8F);
             _scrollViewContent = new UIScrollView(new CGRect(0, GetYLocationFromFrame(_navbarContainer.Frame, 8F), ViewWidth, height))
             {
                 BackgroundColor = UIColor.Clear,
@@ -208,7 +206,7 @@ namespace myTNB
                 CanCancelContentTouches = false,
                 DelaysContentTouches = true
             };
-            _scrollViewContent.Scrolled += OnScroll;
+            //_scrollViewContent.Scrolled += OnScroll;
             View.AddSubview(_scrollViewContent);
 
             _accountSelectorContainer = new CustomUIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(24)));
@@ -316,8 +314,11 @@ namespace myTNB
             SetChartView(true);
             SetTariffSelectionComponent();
             SetSmartMeterComponent(true);
-            SetEnergyTipsComponent();
-            SetFooterView();
+            if (!AppLaunchMasterCache.IsEnergyTipsDisabled)
+            {
+                SetEnergyTipsComponent();
+            }
+            //SetFooterView();
             SetREAmountView();
         }
 
@@ -343,9 +344,10 @@ namespace myTNB
                 UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                 SelectAccountTableViewController viewController =
                     storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
-                viewController.IsRoot = true;
+                viewController.IsRoot = false;
                 viewController.IsFromUsage = true;
-                NavigationController.PushViewController(viewController, true);
+                var navController = new UINavigationController(viewController);
+                PresentViewController(navController, true, null);
             }));
 
             _accountSelector.Title = DataManager.DataManager.SharedInstance.SelectedAccount.accountNickName;//AccountManager.Instance.Nickname;
@@ -934,17 +936,16 @@ namespace myTNB
                 {
                     _viewFooter.RemoveFromSuperview();
                 }
-                nfloat footerRatio = 136.0f / 320.0f;
-                nfloat footerHeight = ViewWidth * footerRatio;
-                nfloat footerYPos = UIScreen.MainScreen.Bounds.Height - footerHeight;
-                if (DeviceHelper.IsIphoneXUpResolution())
-                {
-                    footerYPos -= 20f;
-                    footerHeight += 20f;
-                }
+                nfloat footerHeight = GetScaledHeight(136);
+                nfloat footerYPos = _scrollViewContent.Frame.GetMaxY() - footerHeight;
+                //if (DeviceHelper.IsIphoneXUpResolution())
+                //{
+                //    footerYPos -= 20f;
+                //    footerHeight += 20f;
+                //}
                 _viewFooter = new CustomUIView(new CGRect(0, footerYPos, ViewWidth, footerHeight))
                 {
-                    BackgroundColor = UIColor.White
+                    BackgroundColor = UIColor.Yellow
                 };
                 _origViewFrame = _viewFooter.Frame;
                 AddFooterShadow(ref _viewFooter);
@@ -1043,9 +1044,8 @@ namespace myTNB
                 {
                     if (isHidden)
                     {
-                        nfloat addtl = DeviceHelper.IsIphoneXUpResolution() ? 20f : 0;
                         var temp = _origViewFrame;
-                        temp.Y = _scrollViewContent.Frame.GetMaxY() + addtl;
+                        temp.Y = _scrollViewContent.Frame.GetMaxY();
                         _viewFooter.Frame = temp;
                     }
                     else

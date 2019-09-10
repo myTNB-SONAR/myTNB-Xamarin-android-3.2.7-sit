@@ -119,8 +119,9 @@ namespace myTNB
             get
             {
                 string email = DataManager.DataManager.SharedInstance.User.Email ?? string.Empty;
-                if (string.IsNullOrEmpty(email) && DataManager.DataManager.SharedInstance.UserEntity != null
-                    && DataManager.DataManager.SharedInstance.UserEntity[0] != null)
+                if (string.IsNullOrEmpty(email) && DataManager.DataManager.SharedInstance.UserEntity != null &&
+                    DataManager.DataManager.SharedInstance.UserEntity.Count > 0 &&
+                    DataManager.DataManager.SharedInstance.UserEntity[0] != null)
                 {
                     email = DataManager.DataManager.SharedInstance.UserEntity[0].email ?? string.Empty;
                 }

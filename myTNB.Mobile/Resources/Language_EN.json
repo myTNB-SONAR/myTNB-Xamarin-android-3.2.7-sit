@@ -50,7 +50,9 @@
         "clearedAllBills": "I've cleared all bills",
         "viewReadHistory": "View Reading History",
         "viewBill": "View Bill",
-        "all": "All"
+        "all": "All",
+        "maintenanceTitle": "We're fine-tuning!",
+        "maintenanceMsg": "System is under maintenance. Please try again later. We apologize for the inconvenience. Thank you."
     },
     "Hint": {
         "mobileNumber": "Please include the country code of your phone number.",
