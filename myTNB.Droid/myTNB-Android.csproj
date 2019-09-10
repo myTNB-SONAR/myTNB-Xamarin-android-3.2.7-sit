@@ -2377,6 +2377,16 @@
     <AndroidResource Include="Resources\drawable-xhdpi\downtime_banner.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\downtime_banner.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\downtime_banner.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_bills_menu_active.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_bills_menu_inactive.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_bills_menu_active.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\ic_bills_menu_inactive.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_bills_menu_active.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_bills_menu_inactive.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_bills_menu_active.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_bills_menu_inactive.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_bills_menu_active.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_bills_menu_inactive.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

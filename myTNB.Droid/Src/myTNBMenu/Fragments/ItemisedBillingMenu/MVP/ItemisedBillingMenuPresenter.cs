@@ -110,7 +110,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 {
                     if (pgCCEntity.IsDown && pgFPXEntity.IsDown)
                     {
-                        mView.ShowDowntimeSnackbar(bcrmEntity.DowntimeTextMessage);
+                        mView.ShowUnavailableBillContent(false);
                     }
                 }
             }
@@ -119,7 +119,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 Log.Debug("BillPayment Presenter", "Cancelled Exception");
                 if (this.mView.IsActive())
                 {
-                    this.mView.ShowGenericExceptionSnackBar();
+                    mView.ShowUnavailableBillContent(true);
                 }
 
                 Utility.LoggingNonFatalError(e);
@@ -130,7 +130,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 Log.Debug("BillPayment Presenter", "Stack " + apiException.StackTrace);
                 if (this.mView.IsActive())
                 {
-                    this.mView.ShowGenericExceptionSnackBar();
+                    mView.ShowUnavailableBillContent(true);
                 }
 
                 Utility.LoggingNonFatalError(apiException);
@@ -141,7 +141,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 Log.Debug("BillPayment Presenter", "Stack " + e.StackTrace);
                 if (this.mView.IsActive())
                 {
-                    this.mView.ShowGenericExceptionSnackBar();
+                    mView.ShowUnavailableBillContent(true);
                 }
                 Utility.LoggingNonFatalError(e);
             }
