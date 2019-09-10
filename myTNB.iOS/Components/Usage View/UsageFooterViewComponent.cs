@@ -121,7 +121,7 @@ namespace myTNB
             _btnViewBill.Layer.CornerRadius = GetScaledHeight(4f);
             _btnViewBill.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             _btnViewBill.Layer.BorderWidth = GetScaledHeight(1f);
-            _btnViewBill.SetTitle(LanguageUtility.GetCommonI18NValue(Constants.I18N_CurrentBill), UIControlState.Normal);
+            _btnViewBill.SetTitle(LanguageUtility.GetCommonI18NValue(Constants.I18N_ViewDetails), UIControlState.Normal);
             _btnViewBill.Font = TNBFont.MuseoSans_16_500;
             _btnViewBill.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
             _containerView.AddSubview(_btnViewBill);

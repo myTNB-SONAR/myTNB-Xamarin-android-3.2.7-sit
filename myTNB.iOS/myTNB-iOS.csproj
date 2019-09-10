@@ -1183,6 +1183,9 @@
     <ImageAsset Include="Assets.xcassets\Notification-Banner-SSMR-Missed.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-SSMR-Missed.imageset\group9%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-SSMR-Missed.imageset\group9%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Info-White-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Info-White-Icon.imageset\Info-White-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Info-White-Icon.imageset\Info-White-Icon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1591,6 +1594,7 @@
     <Folder Include="Home\Bill\Bill Filter\" />
     <Folder Include="Assets.xcassets\Notification-Banner-SSMR-Open.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Banner-SSMR-Missed.imageset\" />
+    <Folder Include="Assets.xcassets\Info-White-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2423,6 +2427,9 @@
     <Compile Include="Home\Bill\Bill Filter\BillFilterViewController.designer.cs">
       <DependentUpon>BillFilterViewController.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\GetAppLaunchMasterData\AppLaunchResponseModel.cs" />
+    <Compile Include="Session Cache\AppLaunchMasterCache.cs" />
+    <Compile Include="Onboarding\AppLaunchConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

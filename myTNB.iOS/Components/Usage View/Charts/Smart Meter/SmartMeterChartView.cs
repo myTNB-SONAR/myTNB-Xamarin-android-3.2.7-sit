@@ -12,7 +12,7 @@ namespace myTNB
     {
         public SmartMeterChartView()
         {
-            ShimmerHeight = GetHeightByScreenSize(203);
+            ShimmerHeight = GetHeightByScreenSize(229);
         }
 
         protected override void CreatUI()
@@ -20,9 +20,12 @@ namespace myTNB
             _width = UIScreen.MainScreen.Bounds.Width;
             _baseMargin = GetWidthByScreenSize(16);
             _baseMarginedWidth = _width - (_baseMargin * 2);
-            _mainView = new CustomUIView(new CGRect(0, 0, _width, GetHeightByScreenSize(189)));
+            _mainView = new CustomUIView(new CGRect(0, 0, _width, GetHeightByScreenSize(229)));
 
-            _lblDateRange = new UILabel(new CGRect(_baseMargin, 0, _baseMarginedWidth, GetHeightByScreenSize(16)))
+            UIView toggleView = GetToggleView(_mainView);
+            _mainView.AddSubview(toggleView);
+
+            _lblDateRange = new UILabel(new CGRect(_baseMargin, toggleView.Frame.GetMaxY() + GetScaledHeight(24), _baseMarginedWidth, GetHeightByScreenSize(16)))
             {
                 TextAlignment = UITextAlignment.Center,
                 TextColor = MyTNBColor.ButterScotch,
@@ -36,6 +39,83 @@ namespace myTNB
 
             _mainView.AddSubviews(new UIView[] { _lblDateRange, viewLine });
             CreateSegment();
+        }
+
+        private UIView GetToggleView(CustomUIView parentView)
+        {
+            UIView toggleView = new UIView(new CGRect(0, 0, parentView.Frame.Width, GetScaledHeight(26)))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+            nfloat toggleWidth = GetScaledWidth(122);
+            nfloat toggleHeight = GetScaledHeight(26);
+
+            UITextAttributes attr = new UITextAttributes();
+            attr.Font = TNBFont.MuseoSans_12_300;
+            attr.TextColor = UIColor.White;
+            UITextAttributes attrSelected = new UITextAttributes();
+            attrSelected.Font = TNBFont.MuseoSans_12_300;
+            attrSelected.TextColor = MyTNBColor.DarkPeriwinkle;
+
+            UISegmentedControl toggleBar = new UISegmentedControl(new CGRect(GetXLocationToCenterObject(toggleWidth, parentView), 1, toggleWidth, toggleHeight));
+            toggleBar.InsertSegment("Common_Day".Translate(), 0, false);
+            toggleBar.InsertSegment("Common_Month".Translate(), 1, false);
+            toggleBar.TintColor = UIColor.White;
+            toggleBar.SetTitleTextAttributes(attr, UIControlState.Normal);
+            toggleBar.SetTitleTextAttributes(attrSelected, UIControlState.Selected);
+            toggleBar.Layer.CornerRadius = toggleHeight / 2;
+            toggleBar.Layer.BorderColor = UIColor.White.CGColor;
+            toggleBar.Layer.BorderWidth = GetScaledHeight(1);
+            toggleBar.Layer.MasksToBounds = true;
+            toggleBar.SelectedSegment = 1;
+            toggleBar.ValueChanged += (sender, e) =>
+            {
+                Debug.WriteLine("toggleBar.SelectedSegment: " + toggleBar.SelectedSegment);
+            };
+            toggleView.AddSubview(toggleBar);
+            nfloat iconWidth = GetScaledWidth(24);
+            nfloat iconHeight = GetScaledHeight(24);
+            UIImageView iconView = new UIImageView(new CGRect(toggleBar.Frame.GetMaxX() + GetScaledWidth(59), 0, iconWidth, iconHeight))
+            {
+                Image = UIImage.FromBundle("Info-White-Icon")
+            };
+            toggleView.AddSubview(iconView);
+            return toggleView;
+        }
+
+        public override CustomUIView GetShimmerUI()
+        {
+            nfloat baseWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
+            CustomShimmerView shimmeringView = new CustomShimmerView();
+            CustomUIView parentView = new CustomUIView(new CGRect(BaseMarginWidth16, 0
+                , baseWidth - (BaseMarginWidth16 * 2), ShimmerHeight))
+            { BackgroundColor = UIColor.Clear };
+            UIView viewShimmerParent = new UIView(new CGRect(new CGPoint(0, 0), parentView.Frame.Size)) { BackgroundColor = UIColor.Clear };
+            UIView viewShimmerContent = new UIView(new CGRect(new CGPoint(0, 0), parentView.Frame.Size)) { BackgroundColor = UIColor.Clear };
+            parentView.AddSubviews(new UIView[] { viewShimmerParent, viewShimmerContent });
+
+            UIView toggleView = GetToggleView(parentView);
+            parentView.AddSubview(toggleView);
+
+            UIView viewShDate = new UIView(new CGRect(GetWidthByScreenSize(82), toggleView.Frame.GetMaxY() + GetScaledHeight(24)
+                , parentView.Frame.Width - GetWidthByScreenSize(164), GetHeightByScreenSize(14)))
+            {
+                BackgroundColor = new UIColor(red: 0.75f, green: 0.85f, blue: 0.95f, alpha: 0.25f)
+            };
+            viewShDate.Layer.CornerRadius = GetScaledHeight(2f);
+            nfloat viewShChartYPos = GetYLocationFromFrameScreenSize(viewShDate.Frame, 24);
+            UIView viewShChart = new UIView(new CGRect(0, viewShChartYPos
+                , parentView.Frame.Width, ShimmerHeight - viewShChartYPos))
+            { BackgroundColor = new UIColor(red: 0.75f, green: 0.85f, blue: 0.95f, alpha: 0.25f) };
+            viewShChart.Layer.CornerRadius = GetScaledHeight(5f);
+
+            viewShimmerContent.AddSubviews(new UIView[] { viewShDate, viewShChart });
+            viewShimmerParent.AddSubview(shimmeringView);
+            shimmeringView.ContentView = viewShimmerContent;
+            shimmeringView.Shimmering = true;
+            shimmeringView.SetValues();
+
+            return parentView;
         }
 
         protected override void CreateSegment()
