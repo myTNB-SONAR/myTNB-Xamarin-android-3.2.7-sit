@@ -293,30 +293,28 @@ namespace myTNB.DataManager
         /// Gets the app launch master data.
         /// </summary>
         /// <returns>The app launch master data.</returns>
-        public static async Task<MasterDataResponseModel> GetAppLaunchMasterData()
+        public static async Task<AppLaunchResponseModel> GetAppLaunchMasterData()
         {
-            MasterDataResponseModel response = null;
+            AppLaunchResponseModel response = null;
             ServiceManager serviceManager = new ServiceManager();
 
-            string userEmail = string.Empty;
-            if (DataManager.SharedInstance.UserEntity != null && DataManager.SharedInstance.UserEntity?.Count > 0)
+            object deviceInf = new
             {
-                userEmail = DataManager.SharedInstance.UserEntity[0].email;
-            }
-
-            object requestParameter = new
-            {
-                ApiKeyID = TNBGlobal.API_KEY_ID,
-                SSPUserId = string.Empty,
-                Email = userEmail,
                 DeviceId = DataManager.SharedInstance.UDID,
                 AppVersion = AppVersionHelper.GetAppShortVersion(),
                 OsType = TNBGlobal.DEVICE_PLATFORM_IOS,
-                OsVersion = DeviceHelper.GetOSVersion()
+                OsVersion = DeviceHelper.GetOSVersion(),
+                DeviceDesc = TNBGlobal.DEFAULT_LANGUAGE
+            };
+
+            object requestParameter = new
+            {
+                deviceInf,
+                serviceManager.usrInf
             };
             response = await Task.Run(() =>
             {
-                return serviceManager.OnExecuteAPIV2<MasterDataResponseModel>("GetAppLaunchMasterData", requestParameter);
+                return serviceManager.OnExecuteAPIV6<AppLaunchResponseModel>("GetAppLaunchMasterData", requestParameter);
             });
 
             return response;

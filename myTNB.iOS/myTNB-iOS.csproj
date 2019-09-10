@@ -1200,6 +1200,9 @@
     <ImageAsset Include="Assets.xcassets\Bill-Loading-Banner.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Bill-Loading-Banner.imageset\loading%402x.png" />
     <ImageAsset Include="Assets.xcassets\Bill-Loading-Banner.imageset\loading%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Info-White-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Info-White-Icon.imageset\Info-White-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Info-White-Icon.imageset\Info-White-Icon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1604,6 +1607,7 @@
     <Folder Include="Assets.xcassets\Bill-Loading-Banner.imageset\" />
     <Folder Include="Model\GetPaymentTransactionId\" />
     <Folder Include="Model\GetPaymentReceipt\" />
+    <Folder Include="Assets.xcassets\Info-White-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2437,6 +2441,9 @@
     </Compile>
     <Compile Include="Payment\PaymentConstants.cs" />
     <Compile Include="Model\GetPaymentReceipt\GetPaymentReceiptResponseModel.cs" />
+    <Compile Include="Model\GetAppLaunchMasterData\AppLaunchResponseModel.cs" />
+    <Compile Include="Session Cache\AppLaunchMasterCache.cs" />
+    <Compile Include="Onboarding\AppLaunchConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

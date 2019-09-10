@@ -31,8 +31,8 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            imgViewAppLaunch = new UIImageView(UIImage.FromBundle("App-Launch-Gradient"));
-            var imgViewLogo = new UIImageView(UIImage.FromBundle("New-Launch-Logo"));
+            imgViewAppLaunch = new UIImageView(UIImage.FromBundle(AppLaunchConstants.IMG_Bg));
+            var imgViewLogo = new UIImageView(UIImage.FromBundle(AppLaunchConstants.IMG_LaunchLogo));
 
             View.AddSubview(imgViewAppLaunch);
             View.AddSubview(imgViewLogo);
@@ -92,7 +92,6 @@ namespace myTNB
                             }
                             else
                             {
-                                Debug.WriteLine("No Network");
                                 AlertHandler.DisplayNoDataAlert(this);
                             }
                         });
@@ -218,7 +217,6 @@ namespace myTNB
                     }
                     else
                     {
-                        Debug.WriteLine("No Network");
                         AlertHandler.DisplayNoDataAlert(this);
                     }
                 });
@@ -242,6 +240,69 @@ namespace myTNB
             return false;
         }
 
+        private void PrepareMaintenanceScreen(AppLaunchMasterDataModel response)
+        {
+            isMaintenance = true;
+            float screenHeight = (float)UIApplication.SharedApplication.KeyWindow.Frame.Height;
+            float screenWidth = (float)UIApplication.SharedApplication.KeyWindow.Frame.Width;
+            float imageWidth = DeviceHelper.GetScaledWidth(151f);
+            float imageHeight = DeviceHelper.GetScaledHeight(136f);
+            float labelWidth = screenWidth - 40f;
+            float lineTextHeight = 24f;
+
+            UIImageView imageView = new UIImageView(UIImage.FromBundle(AppLaunchConstants.IMG_MaintenanceIcon))
+            {
+                Frame = new CGRect(DeviceHelper.GetCenterXWithObjWidth(imageWidth), DeviceHelper.GetScaledHeightWithY(90f), imageWidth, imageHeight)
+            };
+
+            var titleMsg = response?.DisplayTitle;
+            var descMsg = response?.DisplayMessage;
+
+            titleMsg = !string.IsNullOrEmpty(titleMsg) ? titleMsg : LanguageUtility.GetCommonI18NValue(AppLaunchConstants.I18N_MaintenanceTitle);
+            descMsg = !string.IsNullOrEmpty(descMsg) ? descMsg : LanguageUtility.GetCommonI18NValue(AppLaunchConstants.I18N_MaintenanceMsg);
+
+            UILabel lblTitle = new UILabel(new CGRect(DeviceHelper.GetCenterXWithObjWidth(labelWidth), imageView.Frame.GetMaxY() + 24f, labelWidth, 44f))
+            {
+                Text = titleMsg,
+                TextAlignment = UITextAlignment.Center,
+                TextColor = MyTNBColor.SunGlow,
+                Font = MyTNBFont.MuseoSans24_500
+            };
+
+            NSMutableParagraphStyle msgParagraphStyle = new NSMutableParagraphStyle
+            {
+                Alignment = UITextAlignment.Center,
+                MinimumLineHeight = lineTextHeight,
+                MaximumLineHeight = lineTextHeight
+            };
+
+            UIStringAttributes msgAttributes = new UIStringAttributes
+            {
+                Font = MyTNBFont.MuseoSans16_300,
+                ForegroundColor = UIColor.White,
+                BackgroundColor = UIColor.Clear,
+                ParagraphStyle = msgParagraphStyle
+            };
+
+            var attributedText = new NSMutableAttributedString(descMsg);
+            attributedText.AddAttributes(msgAttributes, new NSRange(0, descMsg.Length));
+
+            UILabel lblDesc = new UILabel()
+            {
+                AttributedText = attributedText,
+                Lines = 0
+            };
+
+            CGSize cGSize = lblDesc.SizeThatFits(new CGSize(labelWidth, 1000f));
+            lblDesc.Frame = new CGRect(DeviceHelper.GetCenterXWithObjWidth(labelWidth), lblTitle.Frame.GetMaxY() + 8f, labelWidth, cGSize.Height);
+
+            maintenanceView.AddSubviews(new UIView[] { imageView, lblTitle, lblDesc });
+            if (!maintenanceView.IsDescendantOfView(View))
+            {
+                View.AddSubview(maintenanceView);
+            }
+        }
+
         /// <summary>
         /// Loads the master data.
         /// </summary>
@@ -249,108 +310,16 @@ namespace myTNB
         private async Task LoadMasterData()
         {
             var response = await ServiceCall.GetAppLaunchMasterData();
-            if ((bool)response?.didSucceed)
+            AppLaunchMasterCache.AddAppLaunchResponseData(response);
+
+            if (response != null &&
+                response.d != null)
             {
-                if ((bool)response?.status.ToUpper().Equals("MAINTENANCE"))
-                {
-                    isMaintenance = true;
-                    float screenHeight = (float)UIApplication.SharedApplication.KeyWindow.Frame.Height;
-                    float screenWidth = (float)UIApplication.SharedApplication.KeyWindow.Frame.Width;
-                    float imageWidth = DeviceHelper.GetScaledWidth(151f);
-                    float imageHeight = DeviceHelper.GetScaledHeight(136f);
-                    float labelWidth = screenWidth - 40f;
-                    float lineTextHeight = 24f;
-
-                    UIImageView imageView = new UIImageView(UIImage.FromBundle("Maintenance-Image"))
-                    {
-                        Frame = new CGRect(DeviceHelper.GetCenterXWithObjWidth(imageWidth), DeviceHelper.GetScaledHeightWithY(90f), imageWidth, imageHeight)
-                    };
-
-                    var titleMsg = response?.data?.MaintenanceTitle ?? string.Empty;
-                    var descMsg = response?.data?.MaintenanceMessage ?? string.Empty;
-
-                    UILabel lblTitle = new UILabel(new CGRect(DeviceHelper.GetCenterXWithObjWidth(labelWidth), imageView.Frame.GetMaxY() + 24f, labelWidth, 44f))
-                    {
-                        Text = titleMsg,
-                        TextAlignment = UITextAlignment.Center,
-                        TextColor = MyTNBColor.SunGlow,
-                        Font = MyTNBFont.MuseoSans24_500
-                    };
-
-                    NSMutableParagraphStyle msgParagraphStyle = new NSMutableParagraphStyle
-                    {
-                        Alignment = UITextAlignment.Center,
-                        MinimumLineHeight = lineTextHeight,
-                        MaximumLineHeight = lineTextHeight
-                    };
-
-                    UIStringAttributes msgAttributes = new UIStringAttributes
-                    {
-                        Font = MyTNBFont.MuseoSans16_300,
-                        ForegroundColor = UIColor.White,
-                        BackgroundColor = UIColor.Clear,
-                        ParagraphStyle = msgParagraphStyle
-                    };
-
-                    var attributedText = new NSMutableAttributedString(descMsg);
-                    attributedText.AddAttributes(msgAttributes, new NSRange(0, descMsg.Length));
-
-                    UILabel lblDesc = new UILabel()
-                    {
-                        AttributedText = attributedText,
-                        Lines = 0
-                    };
-
-                    CGSize cGSize = lblDesc.SizeThatFits(new CGSize(labelWidth, 1000f));
-                    lblDesc.Frame = new CGRect(DeviceHelper.GetCenterXWithObjWidth(labelWidth), lblTitle.Frame.GetMaxY() + 8f, labelWidth, cGSize.Height);
-
-                    maintenanceView.AddSubviews(new UIView[] { imageView, lblTitle, lblDesc });
-                    if (!maintenanceView.IsDescendantOfView(View))
-                    {
-                        View.AddSubview(maintenanceView);
-                    }
-                }
-                else
+                if (response.d.IsSuccess &&
+                response.d.data != null)
                 {
                     isMaintenance = false;
-                    var data = response?.data;
-
-                    var iOSIndex = data?.AppVersions?.FindIndex(x => x.IsIos) ?? -1;
-                    DataManager.DataManager.SharedInstance.LatestAppVersion = data?.ForceUpdateInfo?.iOSLatestVersion;
-                    DataManager.DataManager.SharedInstance.SystemStatus = data?.SystemStatus ?? new List<DowntimeDataModel>();
-                    DataManager.DataManager.SharedInstance.SetSystemsAvailability();
-                    DataManager.DataManager.SharedInstance.WebLinks = data?.WebLinks ?? new List<WebLinksDataModel>();
-
-                    DataManager.DataManager.SharedInstance.LocationTypes = data?.LocationTypes ?? new List<LocationTypeDataModel>();
-                    if (data?.LocationTypes != null)
-                    {
-                        LocationTypeDataModel allLocationModel = new LocationTypeDataModel();
-                        allLocationModel.Id = "all";
-                        allLocationModel.Title = "All";
-                        allLocationModel.Description = "All";
-                        if (DataManager.DataManager.SharedInstance.LocationTypes != null)
-                        {
-                            DataManager.DataManager.SharedInstance.LocationTypes.Insert(0, allLocationModel);
-                        }
-                    }
-
-                    DataManager.DataManager.SharedInstance.StatesForFeedBack = data?.States ?? new List<StatesForFeedbackDataModel>();
-                    DataManager.DataManager.SharedInstance.FeedbackCategory = data?.FeedbackCategories ?? new List<FeedbackCategoryDataModel>();
-                    DataManager.DataManager.SharedInstance.OtherFeedbackType = data?.FeedbackTypes ?? new List<OtherFeedbackTypeDataModel>();
-
-                    var rawNotifGeneralTypes = data?.NotificationTypes ?? new List<NotificationPreferenceModel>();
-                    DataManager.DataManager.SharedInstance.NotificationGeneralTypes = rawNotifGeneralTypes.FindAll(item => item?.ShowInFilterList?.ToLower() == "true") ?? new List<NotificationPreferenceModel>();
-
-                    if (data?.NotificationTypes != null)
-                    {
-                        NotificationPreferenceModel allNotificationItem = new NotificationPreferenceModel();
-                        allNotificationItem.Title = "PushNotification_AllNotifications".Translate();
-                        allNotificationItem.Id = "all";
-                        if (DataManager.DataManager.SharedInstance.NotificationGeneralTypes != null)
-                        {
-                            DataManager.DataManager.SharedInstance.NotificationGeneralTypes.Insert(0, allNotificationItem);
-                        }
-                    }
+                    var data = AppLaunchMasterCache.GetAppLaunchMasterData();
                     if (IsAppUpdateRequired(data?.ForceUpdateInfo))
                     {
                         ForceUpdateInfoModel forceUpdateData = data?.ForceUpdateInfo;
@@ -362,10 +331,18 @@ namespace myTNB
                         ExecuteSiteCoreCall();
                     }
                 }
+                else if (response.d.IsMaintenance)
+                {
+                    PrepareMaintenanceScreen(response.d);
+                }
+                else
+                {
+                    AlertHandler.DisplayServiceError(this, response.d.DisplayMessage);
+                }
             }
             else
             {
-                AlertHandler.DisplayServiceError(this, response?.message);
+                AlertHandler.DisplayServiceError(this, string.Empty);
             }
         }
 
@@ -708,7 +685,10 @@ namespace myTNB
             {
                 await LoadMeterReadSSMRWalkthrough();
                 await LoadMeterReadSSMRWalkthroughV2();
-                await LoadEnergyTips();
+                if (!AppLaunchMasterCache.IsEnergyTipsDisabled)
+                {
+                    await LoadEnergyTips();
+                }
                 await LoadBillDetailsTooltip();
             });
         }

@@ -37,7 +37,7 @@
         "refreshDescription": "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!",
         "refreshNow": "Refresh Now",
         "bcrmMessage": "BRCM will be down for maintenance purpose",
-        "currentBill": "Current Bill",
+        "viewDetails": "View Details",
         "pay": "Pay",
         "disconnectionMsg": "Your electricity is currently disconnected.",
         "myEarnings": "My Earnings",
@@ -50,7 +50,9 @@
         "clearedAllBills": "I've cleared all bills",
         "viewReadHistory": "View Reading History",
         "viewBill": "View Bill",
-        "all": "All"
+        "all": "All",
+        "maintenanceTitle": "We're fine-tuning!",
+        "maintenanceMsg": "System is under maintenance. Please try again later. We apologize for the inconvenience. Thank you."
     },
     "Hint": {
         "mobileNumber": "Please include the country code of your phone number.",

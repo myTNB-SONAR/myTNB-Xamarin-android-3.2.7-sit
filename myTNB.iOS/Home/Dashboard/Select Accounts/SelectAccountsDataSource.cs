@@ -116,7 +116,7 @@ namespace myTNB.Dashboard.SelectAccounts
                 }
                 if (_controller.IsFromUsage)
                 {
-                    _controller.NavigationController.PopViewController(true);
+                    _controller.DismissViewController(true, null);
                     return;
                 }
                 _controller.DismissViewController(true, null);
