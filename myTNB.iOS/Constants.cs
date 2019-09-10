@@ -24,7 +24,7 @@
         public static string I18N_BCRMMessage = "bcrmMessage";
         public static string I18N_RefreshMessage = "refreshDescription";
         public static string I18N_RefreshBtnText = "refreshNow";
-        public static string I18N_CurrentBill = "currentBill";
+        public static string I18N_ViewDetails = "viewDetails";
         public static string I18N_Pay = "pay";
         public static string I18N_EmptyAcctSelector = "emptyAcctSelector";
         public static string I18N_DisconnectionMsg = "disconnectionMsg";

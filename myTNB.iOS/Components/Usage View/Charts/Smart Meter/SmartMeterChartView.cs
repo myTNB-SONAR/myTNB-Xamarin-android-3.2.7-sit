@@ -12,7 +12,7 @@ namespace myTNB
     {
         public SmartMeterChartView()
         {
-            ShimmerHeight = GetHeightByScreenSize(239);
+            ShimmerHeight = GetHeightByScreenSize(229);
         }
 
         protected override void CreatUI()
@@ -20,7 +20,7 @@ namespace myTNB
             _width = UIScreen.MainScreen.Bounds.Width;
             _baseMargin = GetWidthByScreenSize(16);
             _baseMarginedWidth = _width - (_baseMargin * 2);
-            _mainView = new CustomUIView(new CGRect(0, 0, _width, GetHeightByScreenSize(239)));
+            _mainView = new CustomUIView(new CGRect(0, 0, _width, GetHeightByScreenSize(229)));
 
             UIView toggleView = GetToggleView(_mainView);
             _mainView.AddSubview(toggleView);

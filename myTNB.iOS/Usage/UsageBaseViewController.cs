@@ -30,7 +30,7 @@ namespace myTNB
         internal bool _rmkWhFlag, _tariffIsVisible;
         internal RMkWhEnum _rMkWhEnum;
         internal bool isBcrmAvailable, isNormalChart, isREAccount, isSmartMeterAccount, accountIsSSMR;
-        internal bool _legendIsVisible, _acctSelectorIsTapped;
+        internal bool _legendIsVisible;
 
         internal CGRect _origViewFrame;
 
@@ -54,7 +54,6 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            _acctSelectorIsTapped = false;
             NavigationController.SetNavigationBarHidden(true, true);
             if (!DataManager.DataManager.SharedInstance.IsSameAccount)
             {
@@ -70,10 +69,6 @@ namespace myTNB
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
-            if (_acctSelectorIsTapped)
-            {
-                //NavigationController.SetNavigationBarHidden(false, true);
-            }
         }
 
         private void PrepareRefreshView()
@@ -206,7 +201,7 @@ namespace myTNB
                 CanCancelContentTouches = false,
                 DelaysContentTouches = true
             };
-            //_scrollViewContent.Scrolled += OnScroll;
+            _scrollViewContent.Scrolled += OnScroll;
             View.AddSubview(_scrollViewContent);
 
             _accountSelectorContainer = new CustomUIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(24)));
@@ -318,7 +313,7 @@ namespace myTNB
             {
                 SetEnergyTipsComponent();
             }
-            //SetFooterView();
+            SetFooterView();
             SetREAmountView();
         }
 
@@ -340,7 +335,6 @@ namespace myTNB
                     _rmKwhDropDownView.Hidden = true;
                 }
                 DataManager.DataManager.SharedInstance.IsSameAccount = true;
-                _acctSelectorIsTapped = true;
                 UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                 SelectAccountTableViewController viewController =
                     storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
@@ -938,14 +932,9 @@ namespace myTNB
                 }
                 nfloat footerHeight = GetScaledHeight(136);
                 nfloat footerYPos = _scrollViewContent.Frame.GetMaxY() - footerHeight;
-                //if (DeviceHelper.IsIphoneXUpResolution())
-                //{
-                //    footerYPos -= 20f;
-                //    footerHeight += 20f;
-                //}
                 _viewFooter = new CustomUIView(new CGRect(0, footerYPos, ViewWidth, footerHeight))
                 {
-                    BackgroundColor = UIColor.Yellow
+                    BackgroundColor = UIColor.Clear
                 };
                 _origViewFrame = _viewFooter.Frame;
                 AddFooterShadow(ref _viewFooter);
@@ -1047,10 +1036,12 @@ namespace myTNB
                         var temp = _origViewFrame;
                         temp.Y = _scrollViewContent.Frame.GetMaxY();
                         _viewFooter.Frame = temp;
+                        _viewFooter.Layer.ShadowColor = UIColor.Clear.CGColor;
                     }
                     else
                     {
                         _viewFooter.Frame = _origViewFrame;
+                        _viewFooter.Layer.ShadowColor = MyTNBColor.BabyBlue35.CGColor;
                     }
                 }
                 , () => { }
