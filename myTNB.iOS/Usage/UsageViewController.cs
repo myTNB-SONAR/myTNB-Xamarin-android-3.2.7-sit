@@ -64,6 +64,33 @@ namespace myTNB
                 PresentViewController(navController, true, null);
             }
         }
+        internal override void OnViewDetailsButtonTap()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        Debug.WriteLine("View.Frame.Height UsageView: " + View.Frame.Height);
+                        UIStoryboard storyBoard = UIStoryboard.FromName("BillDetails", null);
+                        BillDetailsViewController viewController =
+                            storyBoard.InstantiateViewController("BillDetailsView") as BillDetailsViewController;
+                        if (viewController != null)
+                        {
+                            viewController.AccountNumber = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
+                            viewController.IsFreshCall = true;
+                            var navController = new UINavigationController(viewController);
+                            PresentViewController(navController, true, null);
+                        }
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
         internal override void OnCurrentBillButtonTap()
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>

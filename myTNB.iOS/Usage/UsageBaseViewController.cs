@@ -943,7 +943,7 @@ namespace myTNB
                 _viewFooter.AddSubview(_footerViewComponent.GetUI());
                 _footerViewComponent._btnViewBill.TouchUpInside += (sender, e) =>
                 {
-                    OnCurrentBillButtonTap();
+                    OnViewDetailsButtonTap();
                 };
                 _footerViewComponent._btnPay.TouchUpInside += (sender, e) =>
                 {
@@ -994,6 +994,8 @@ namespace myTNB
                 }
             }
         }
+
+        internal virtual void OnViewDetailsButtonTap() { }
 
         internal virtual void OnCurrentBillButtonTap() { }
 

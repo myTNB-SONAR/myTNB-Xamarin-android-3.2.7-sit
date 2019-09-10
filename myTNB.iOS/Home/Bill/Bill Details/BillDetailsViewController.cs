@@ -8,6 +8,7 @@ using UIKit;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB.SitecoreCMS.Model;
 using myTNB.Model;
+using System.Threading.Tasks;
 
 namespace myTNB
 {
@@ -21,9 +22,11 @@ namespace myTNB
         private List<BillsTooltipModelEntity> _toolTipList;
         private List<BillsTooltipModel> _pageData;
         private bool isMandatoryExpanded;
+        public bool IsFreshCall;
 
         private AccountChargesModel _charges = new AccountChargesModel();
         public string AccountNumber { set; private get; } = string.Empty;
+        private GetAccountsChargesResponseModel _accountCharges;
         public BillDetailsViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
@@ -32,14 +35,16 @@ namespace myTNB
             NavigationController.SetNavigationBarHidden(false, true);
             base.ViewDidLoad();
             View.BackgroundColor = MyTNBColor.LightGrayBG;
-            _charges = AccountChargesCache.GetAccountCharges(AccountNumber);
-            InitializeTooltip();
             SetNavigation();
             AddCTAs();
-            AddDetails();
-            AddSectionTitle();
-            AddBreakdown();
-            SetEvents();
+            if (IsFreshCall)
+            {
+                OnRefreshCall();
+            }
+            else
+            {
+                LoadViews();
+            }
         }
 
         public override void ViewWillDisappear(bool animated)
@@ -62,6 +67,53 @@ namespace myTNB
             NavigationItem.LeftBarButtonItem = btnBack;
             NavigationItem.RightBarButtonItem = btnInfo;
             Title = GetI18NValue(BillConstants.I18N_NavTitle);
+        }
+
+        private void OnRefreshCall()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        ActivityIndicator.Show();
+                        InvokeInBackground(async () =>
+                        {
+                            _accountCharges = await GetAccountsCharges();
+                            InvokeOnMainThread(() =>
+                            {
+                                if (_accountCharges != null && _accountCharges.d != null && _accountCharges.d.IsSuccess
+                                    && _accountCharges.d.data != null && _accountCharges.d.data.AccountCharges != null
+                                    && _accountCharges.d.data.AccountCharges.Count > 0 && _accountCharges.d.data.AccountCharges[0] != null)
+                                {
+                                    AccountChargesCache.SetData(_accountCharges);
+                                    LoadViews();
+                                }
+                                else
+                                {
+                                    //TO DO: Handling if API fails...
+                                }
+                                ActivityIndicator.Hide();
+                            });
+                        });
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
+        private void LoadViews()
+        {
+            _charges = AccountChargesCache.GetAccountCharges(AccountNumber);
+            InitializeTooltip();
+            AddDetails();
+            AddSectionTitle();
+            AddBreakdown();
+            SetEvents();
         }
 
         #region Tooltip
@@ -604,6 +656,19 @@ namespace myTNB
             {
                 return AccountChargesCache.HasMandatory(AccountNumber);
             }
+        }
+
+        private async Task<GetAccountsChargesResponseModel> GetAccountsCharges()
+        {
+            ServiceManager serviceManager = new ServiceManager();
+            object request = new
+            {
+                serviceManager.usrInf,
+                accounts = new List<string> { DataManager.DataManager.SharedInstance.SelectedAccount.accNum ?? string.Empty },
+                isOwnedAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsOwnedAccount
+            };
+            GetAccountsChargesResponseModel response = serviceManager.OnExecuteAPIV6<GetAccountsChargesResponseModel>(BillConstants.Service_GetAccountsCharges, request);
+            return response;
         }
     }
 }
