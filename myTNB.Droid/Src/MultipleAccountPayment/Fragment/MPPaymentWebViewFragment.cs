@@ -302,7 +302,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         isRedirected = true;
                         string merchantTransId = url.Substring(url.LastIndexOf("=") + 1);//GetQueryString(url, "transid");
                         Intent payment_activity = new Intent(mActivity, typeof(ViewReceiptMultiAccountNewDesignActivty));
-                        payment_activity.PutExtra("merchantTransId", merchantTransId);
+                        payment_activity.PutExtra("SELECTED_ACCOUNT_NUMBER", "");
+                        payment_activity.PutExtra("DETAILED_INFO_NUMBER", merchantTransId);
+                        payment_activity.PutExtra("IS_OWNED_ACCOUNT", true);
+                        payment_activity.PutExtra("IS_SHOW_ALL_RECEIPT", true);
                         mActivity.StartActivity(payment_activity);
                         //((PaymentActivity)this.mActivity).SetResult(Result.Ok);
                         //((PaymentActivity)this.mActivity).Finish();

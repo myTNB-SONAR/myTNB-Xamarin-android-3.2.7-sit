@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/itemisedBillingHeaderImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-35dp"
+        android:foregroundGravity="center_horizontal|center"
+        android:layout_gravity="bottom"
+        android:scaleType="fitXY"
+        android:src="@drawable/meter_history_header_bg" />
+    <LinearLayout
+        android:id="@+id/itemisedBillingInfoContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_marginBottom="24dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/itemisedBillingInfoNote"
+            android:text="I’ve cleared all bills"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"/>
+        <TextView
+            android:id="@+id/itemisedBillingInfoAmount"
+            android:text="RM 0.00"
+            android:textSize="36dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"/>
+        <TextView
+            android:id="@+id/itemisedBillingInfoDate"
+            android:text="by 24 Sep 2019"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"/>
+    </LinearLayout>
+</LinearLayout>

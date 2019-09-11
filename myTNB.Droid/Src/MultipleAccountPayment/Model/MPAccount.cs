@@ -49,5 +49,7 @@
         public bool isSelected { get; set; }
 
         public bool isValidAmount { get; set; }
+
+        public double minimumAmountDue { get; set; }
     }
 }

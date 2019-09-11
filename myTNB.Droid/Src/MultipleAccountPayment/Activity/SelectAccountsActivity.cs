@@ -16,12 +16,17 @@ using Android.Views.InputMethods;
 using Android.Widget;
 using CheeseBind;
 using Java.Text;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MultipleAccountPayment.Adapter;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.MultipleAccountPayment.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
@@ -170,7 +175,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                         custAccounts.Add(item.AccNum);
                     }
                     firstTime = true;
-                    this.userActionsListener.GetMultiAccountDueAmount(Constants.APP_CONFIG.API_KEY_ID, custAccounts, preSelectedAccount);
+                    //this.userActionsListener.GetMultiAccountDueAmount(Constants.APP_CONFIG.API_KEY_ID, custAccounts, preSelectedAccount);
+                    this.userActionsListener.GetAccountsCharges(custAccounts, preSelectedAccount);
                 }
 
                 accountListRecyclerView.SetLayoutManager(layoutManager);
@@ -196,7 +202,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 {
                     if (IsNetworkAvailable())
                     {
-                        NO_OF_ITARATION = NO_OF_ITARATION - 1;
                         INDEX_COUNTER = INDEX_COUNTER + TOTAL_NUMBER_OF_ITEMS_TO_GET;
                         List<string> custAccounts = new List<string>();
                         List<CustomerBillingAccount> list = GetMoreCustomerAccounts(INDEX_COUNTER);
@@ -204,7 +209,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                         {
                             custAccounts.Add(item.AccNum);
                         }
-                        this.userActionsListener.GetMultiAccountDueAmount(Constants.APP_CONFIG.API_KEY_ID, custAccounts, null);
+                        //this.userActionsListener.GetMultiAccountDueAmount(Constants.APP_CONFIG.API_KEY_ID, custAccounts, null);
+                        this.userActionsListener.GetAccountsCharges(custAccounts, null);
+                        NO_OF_ITARATION = NO_OF_ITARATION - 1;
                     }
                     else
                     {
@@ -419,6 +426,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     Intent payment_activity = new Intent(this, typeof(PaymentActivity));
                     payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
                     payment_activity.PutExtra("PAYMENT_ITEMS", JsonConvert.SerializeObject(adapter.GetSelectedAccounts()));
+                    List<AccountChargeModel>  chargeModelList = mPresenter.GetSelectedAccountChargesModelList(adapter.GetSelectedAccounts());
+                    payment_activity.PutExtra("ACCOUNT_CHARGES_LIST", JsonConvert.SerializeObject(chargeModelList));
                     payment_activity.PutExtra("TOTAL", textTotalPayable.Text);
                     StartActivityForResult(payment_activity, PaymentActivity.SELECT_PAYMENT_ACTIVITY_CODE);
                 }
@@ -504,6 +513,21 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void SetAccountsDueAmountResult(List<MPAccount> updatedAccountList)
+        {
+            accountList.Clear();
+            accountList.AddRange(updatedAccountList);
+            ValidateAccountListAdapter();
+            if (NO_OF_ITARATION <= 0 && REMAINING_ITEM_COUNT == 0)
+            {
+                textLoadMore.Visibility = ViewStates.Gone;
+            }
+            else
+            {
+                textLoadMore.Visibility = ViewStates.Visible;
             }
         }
 
@@ -645,6 +669,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                                 REMAINING_ITEM_COUNT = TOTAL_NUMBER_OF_ITEMS_TO_GET;
                             }
                             accountsToReturn.AddRange(registerdAccounts.GetRange(INDEX_COUNTER, REMAINING_ITEM_COUNT));
+                            REMAINING_ITEM_COUNT = 0;
                         }
                         else
                         {
@@ -725,6 +750,35 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void ShowHasMinimumAmoutToPayTooltip(AccountChargeModel accountChargeModel)
+        {
+            if (accountChargeModel.MandatoryCharges.TotalAmount > 0f)
+            {
+                BillMandatoryChargesTooltipModel mandatoryTooltipModel = MyTNBAppToolTipData.GetInstance().GetMandatoryPaymentTooltipData();
+                List<string> ctaList = mandatoryTooltipModel.CTA.Split(',').ToList();
+                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                    .SetTitle(mandatoryTooltipModel.Title)
+                    .SetMessage(string.Format(mandatoryTooltipModel.Description, "RM"+ accountChargeModel.MandatoryCharges.TotalAmount.ToString("#,##0.00")))
+                    .SetCTALabel(ctaList[0])
+                    .SetCTAaction(()=> { ShowBillingDetails(accountChargeModel); })
+                    .SetSecondaryCTALabel(ctaList[1])
+                    .Build().Show();
+            }
+        }
+
+        private void ShowBillingDetails(AccountChargeModel accountChargeModel)
+        {
+            CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountChargeModel.ContractAccount);
+            AccountData selectedAccountData = new AccountData();
+            selectedAccountData.AccountNickName = customerBillingAccount.AccDesc;
+            selectedAccountData.AddStreet = customerBillingAccount.AccountStAddress;
+
+            Intent intent = new Intent(this, typeof(BillingDetailsActivity));
+            intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(selectedAccountData));
+            intent.PutExtra("SELECTED_BILL_DETAILS", JsonConvert.SerializeObject(accountChargeModel));
+            StartActivity(intent);
         }
     }
 }
