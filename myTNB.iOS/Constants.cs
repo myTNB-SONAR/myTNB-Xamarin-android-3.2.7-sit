@@ -20,6 +20,7 @@
         public static string IMG_InfoBlue = "IC-Info-Blue";
         public static string IMG_TrendUpIcon = "Trend-Up-Icon";
         public static string IMG_TrendDownIcon = "Trend-Down-Icon";
+        public static string IMG_ArrowLeftBlueIcon = "Arrow-Left-Blue";
 
         //I18N Keys
         public static string I18N_BCRMMessage = "bcrmMessage";
@@ -39,6 +40,7 @@
         public static string I18N_PaidExtra = "paidExtra";
         public static string I18N_ClearedAllBills = "clearedAllBills";
         public static string I18N_ViewReadHistory = "viewReadHistory";
-
+        public static string I18N_Months = "months";
+        public static string I18N_Days = "days";
     }
 }

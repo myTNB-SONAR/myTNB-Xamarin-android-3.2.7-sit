@@ -177,9 +177,6 @@
     <Reference Include="iCarousel.iOS">
       <HintPath>..\packages\Xamarin.iCarousel.1.8.3\lib\Xamarin.iOS\iCarousel.iOS.dll</HintPath>
     </Reference>
-    <Reference Include="Lottie.iOS">
-      <HintPath>..\packages\Com.Airbnb.iOS.Lottie.2.5.4\lib\xamarinios10\Lottie.iOS.dll</HintPath>
-    </Reference>
     <Reference Include="Facebook.CoreKit">
       <HintPath>..\packages\Xamarin.Facebook.CoreKit.iOS.4.35.0\lib\Xamarin.iOS10\Facebook.CoreKit.dll</HintPath>
     </Reference>
@@ -241,6 +238,9 @@
     </Reference>
     <Reference Include="DeepCloner">
       <HintPath>..\packages\DeepCloner.0.10.2\lib\netstandard1.3\DeepCloner.dll</HintPath>
+    </Reference>
+    <Reference Include="Lottie.iOS">
+      <HintPath>..\packages\Com.Airbnb.iOS.Lottie.2.5.9\lib\xamarinios10\Lottie.iOS.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -1149,6 +1149,12 @@
     <ImageAsset Include="Assets.xcassets\Notification-SSMR.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Notification-SSMR.imageset\icNotificationSmr%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-SSMR.imageset\icNotificationSmr%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Left-Blue.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Left-Blue.imageset\Arrow-Left-Blue%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Left-Blue.imageset\Arrow-Left-Blue%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Pinch-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Pinch-Icon.imageset\Pinch-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Pinch-Icon.imageset\Pinch-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill%402x-1.png" />
@@ -1588,6 +1594,8 @@
     <Folder Include="Assets.xcassets\Trend-Up-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Trend-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Notification-SSMR.imageset\" />
+    <Folder Include="Assets.xcassets\Arrow-Left-Blue.imageset\" />
+    <Folder Include="Assets.xcassets\Pinch-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Bills-No-History-Data.imageset\" />
     <Folder Include="Model\GetAccountBillPayHistory\" />
     <Folder Include="Sitecore CMS\Model\Bill Details\" />
@@ -2413,6 +2421,8 @@
     <Compile Include="Model\Usage\LegendItemModel.cs" />
     <Compile Include="Session Cache\AccountUsageSmartCache.cs" />
     <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterZOut.cs" />
+    <Compile Include="Enums\SmartMeterViewEnum.cs" />
+    <Compile Include="Components\Usage View\SmartMeterOverlayComponent.cs" />
     <Compile Include="Home\Bill\Bills\NoDataViewCell.cs" />
     <Compile Include="Model\GetAccountBillPayHistory\GetAccountBillPayHistoryResponseModel.cs" />
     <Compile Include="Sitecore CMS\Model\Bill Details\BillDetailsTooltipModel.cs" />
@@ -2456,6 +2466,10 @@
     <BundleResource Include="Resources\Base.lproj\Localizable.strings" />
     <BundleResource Include="Resources\tnbReceiptLogoHeader.jpg" />
     <BundleResource Include="Resources\Base.lproj\InfoPlist.strings" />
+    <BundleResource Include="Resources\OCR Reading.json" />
+    <BundleResource Include="Resources\dashboardzoom.json" />
+    <BundleResource Include="Resources\GeneralLoadingR1.json" />
+    <BundleResource Include="Resources\Dashboard Zoom.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\myTNB.Mobile\myTNB.Mobile.csproj">
