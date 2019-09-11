@@ -2387,6 +2387,45 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_bills_menu_inactive.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_bills_menu_active.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_bills_menu_inactive.png" />
+    <Compile Include="Src\MyTNBService\InterfaceAPI\INotificationAPI.cs" />
+    <Compile Include="Src\MyTNBService\Request\UserNotificationRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\UserNotificationResponse.cs" />
+    <Compile Include="Src\MyTNBService\Notification\NotificationApiImpl.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_bill_due.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_disconnection.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_dunning_disconnection.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_new_bill.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_reconnection.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_settings.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_smr.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\notification_bill_due.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\notification_disconnection.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\notification_dunning_disconnection.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\notification_new_bill.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\notification_reconnection.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\notification_settings.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\notification_smr.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\notification_bill_due.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\notification_disconnection.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\notification_dunning_disconnection.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\notification_new_bill.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\notification_reconnection.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\notification_settings.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\notification_smr.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notification_bill_due.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notification_disconnection.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notification_dunning_disconnection.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notification_new_bill.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notification_reconnection.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notification_settings.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notification_smr.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\notification_bill_due.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\notification_disconnection.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\notification_dunning_disconnection.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\notification_new_bill.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\notification_reconnection.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\notification_settings.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\notification_smr.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -2770,6 +2809,7 @@
     <Folder Include="Src\MyTNBService\Request\" />
     <Folder Include="Src\MyTNBService\Response\" />
     <Folder Include="Src\MyTNBService\Model\" />
+    <Folder Include="Src\MyTNBService\Notification\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
