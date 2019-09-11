@@ -62,7 +62,7 @@ namespace myTNB
             if (!DataManager.DataManager.SharedInstance.IsSameAccount)
             {
                 ResetViews();
-                ShowPinchOverlay();
+                //ShowPinchOverlay();
             }
         }
 
