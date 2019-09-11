@@ -25,6 +25,11 @@ namespace myTNB.PushNotification
         public static string IMG_Delete = "Notification-Delete";
         public static string IMG_DeleteInactive = "Notification-DeleteDisabled";
 
+        //Banner
+        public static string Banner_SSMRRemainder = "Notification-Banner-SSMR-Remainder";
+        public static string Banner_SSMROpen = "Notification-Banner-SSMR-Open";
+        public static string Banner_SSMRMissed = "Notification-Banner-SSMR-Missed";
+
         //Banner Dictionary
         public static Dictionary<BCRMNotificationEnum, string> BannerImageDictionary = new Dictionary<BCRMNotificationEnum, string> {
             { BCRMNotificationEnum.NewBill, "Notification-Banner-New-Bill" }
@@ -40,9 +45,13 @@ namespace myTNB.PushNotification
 
         //SSMR Banner Dictionary
         public static Dictionary<SSMRNotificationEnum, string> SSMRBannerImageDictionary = new Dictionary<SSMRNotificationEnum, string> {
-            { SSMRNotificationEnum.OpenMeterReadingPeriod, "Notification-Banner-SSMR-Open" }
-            , { SSMRNotificationEnum.NoSubmissionReminder, "Notification-Banner-SSMR-Open" }
-            , { SSMRNotificationEnum.MissedSubmission, "Notification-Banner-SSMR-Missed" }
+            { SSMRNotificationEnum.RegistrationCompleted, Banner_SSMRRemainder }
+            , { SSMRNotificationEnum.RegistrationCancelled, Banner_SSMRMissed }
+            , { SSMRNotificationEnum.OpenMeterReadingPeriod, Banner_SSMROpen }
+            , { SSMRNotificationEnum.NoSubmissionReminder, Banner_SSMRRemainder }
+            , { SSMRNotificationEnum.MissedSubmission, Banner_SSMRMissed }
+            , { SSMRNotificationEnum.TerminationCompleted, Banner_SSMRRemainder }
+            , { SSMRNotificationEnum.TerminationCancelled, Banner_SSMRMissed }
         };
 
         //Icon Image Dictionary

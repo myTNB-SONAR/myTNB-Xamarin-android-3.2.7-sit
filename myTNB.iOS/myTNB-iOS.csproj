@@ -1186,6 +1186,9 @@
     <ImageAsset Include="Assets.xcassets\Info-White-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Info-White-Icon.imageset\Info-White-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Info-White-Icon.imageset\Info-White-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-SSMR-Remainder.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-SSMR-Remainder.imageset\group6%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-SSMR-Remainder.imageset\group6%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1595,6 +1598,7 @@
     <Folder Include="Assets.xcassets\Notification-Banner-SSMR-Open.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Banner-SSMR-Missed.imageset\" />
     <Folder Include="Assets.xcassets\Info-White-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Banner-SSMR-Remainder.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

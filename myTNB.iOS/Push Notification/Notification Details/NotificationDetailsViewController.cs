@@ -8,6 +8,7 @@ using CoreAnimation;
 using Foundation;
 using System.Collections.Generic;
 using myTNB.SQLite.SQLiteDataManager;
+using System.Text.RegularExpressions;
 
 namespace myTNB
 {
@@ -224,8 +225,20 @@ namespace myTNB
                 UnderlineStyle = NSUnderlineStyle.None,
                 UnderlineColor = UIColor.Clear
             };
+            string message = string.Empty;
+            if (NotificationInfo != null && !string.IsNullOrEmpty(NotificationInfo.Message) && !string.IsNullOrWhiteSpace(NotificationInfo.Message)
+                && DataManager.DataManager.SharedInstance != null && DataManager.DataManager.SharedInstance.AccountRecordsList != null
+                && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null && DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count > 0)
+            {
+                int accountIndex = DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindIndex(x => x.accNum == NotificationInfo.AccountNum);
+                if (accountIndex > -1)
+                {
+                    string accountNickname = DataManager.DataManager.SharedInstance.AccountRecordsList.d[accountIndex].accountNickName ?? string.Empty;
+                    message = Regex.Replace(NotificationInfo.Message, "#accountNickname#", accountNickname);
+                }
+            }
 
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(NotificationInfo.Message ?? string.Empty
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(message ?? string.Empty
                 , ref htmlBodyError, MyTNBFont.FONTNAME_300, (float)GetScaledHeight(14));
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
@@ -331,14 +344,11 @@ namespace myTNB
             {
                 _btnPrimary = new CustomUIButtonV2
                 {
-                    Frame = new CGRect(BaseMargin, GetScaledHeight(16), btnWidth, GetScaledHeight(48)),
-                    BackgroundColor = UIColor.White
+                    Frame = new CGRect(BaseMargin, GetScaledHeight(16), btnWidth, GetScaledHeight(48))
                 };
+                UpdateCTA(ref _btnPrimary, false);
                 _btnPrimary.SetTitle(GetI18NValue(NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.Disconnection
                     ? PushNotificationConstants.I18N_ContactTNB : PushNotificationConstants.I18N_ViewBill), UIControlState.Normal);
-                _btnPrimary.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
-                _btnPrimary.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
-                _btnPrimary.Layer.BorderWidth = 1;
                 _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
                     if (NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.Disconnection)
@@ -352,11 +362,10 @@ namespace myTNB
                 }));
                 _btnSecondary = new CustomUIButtonV2
                 {
-                    Frame = new CGRect(_btnPrimary.Frame.GetMaxX() + GetScaledWidth(4), GetScaledHeight(16), btnWidth, GetScaledHeight(48)),
-                    BackgroundColor = MyTNBColor.FreshGreen
+                    Frame = new CGRect(_btnPrimary.Frame.GetMaxX() + GetScaledWidth(4), GetScaledHeight(16), btnWidth, GetScaledHeight(48))
                 };
+                UpdateCTA(ref _btnSecondary);
                 _btnSecondary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_Paynow), UIControlState.Normal);
-                _btnSecondary.SetTitleColor(UIColor.White, UIControlState.Normal);
                 _btnSecondary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
                     OnPay();
@@ -367,13 +376,10 @@ namespace myTNB
             {
                 _btnPrimary = new CustomUIButtonV2
                 {
-                    Frame = new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(48)),
-                    BackgroundColor = UIColor.White
+                    Frame = new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(48))
                 };
+                UpdateCTA(ref _btnPrimary, false);
                 _btnPrimary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_ViewMyUsage), UIControlState.Normal);
-                _btnPrimary.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
-                _btnPrimary.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
-                _btnPrimary.Layer.BorderWidth = 1;
                 _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
                     OnViewUsage();
@@ -388,53 +394,74 @@ namespace myTNB
 
         private void EvaluateSSMRCTA()
         {
+            _btnPrimary = new CustomUIButtonV2
+            {
+                Frame = new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(48))
+            };
             if (NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.OpenMeterReadingPeriod
                 || NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.NoSubmissionReminder)
             {
-                _btnPrimary = new CustomUIButtonV2
-                {
-                    Frame = new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(48)),
-                    BackgroundColor = MyTNBColor.FreshGreen
-                };
+                UpdateCTA(ref _btnPrimary);
                 _btnPrimary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_SubmitMeterReading), UIControlState.Normal);
-                _btnPrimary.SetTitleColor(UIColor.White, UIControlState.Normal);
                 _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
                     OnSubmitMeterReading();
                 }));
             }
-            else if (NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.TerminationCompleted)
-            {
-                _btnPrimary = new CustomUIButtonV2
-                {
-                    Frame = new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(48)),
-                    BackgroundColor = UIColor.White
-                };
-                _btnPrimary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_ReenableSSMR), UIControlState.Normal);
-                _btnPrimary.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
-                _btnPrimary.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
-                _btnPrimary.Layer.BorderWidth = 1;
-                _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-                {
-                }));
-            }
             else if (NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.MissedSubmission)
             {
-                _btnPrimary = new CustomUIButtonV2
-                {
-                    Frame = new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(48)),
-                    BackgroundColor = UIColor.White
-                };
+                UpdateCTA(ref _btnPrimary, false);
                 _btnPrimary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_ViewReadingHistory), UIControlState.Normal);
-                _btnPrimary.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
-                _btnPrimary.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
-                _btnPrimary.Layer.BorderWidth = 1;
                 _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
                     OnViewMeterReadingHistory();
                 }));
             }
+            else if (NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.TerminationCompleted)
+            {
+                UpdateCTA(ref _btnPrimary);
+                _btnPrimary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_ReenableSSMR), UIControlState.Normal);
+                _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    OnViewMeterReadingHistory();
+                }));
+            }
+            else if (NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.RegistrationCompleted)
+            {
+                UpdateCTA(ref _btnPrimary);
+                _btnPrimary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_ViewMyUsage), UIControlState.Normal);
+                _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    OnViewUsage();
+                }));
+            }
+            else if (NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.RegistrationCancelled
+                || NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.TerminationCancelled)
+            {
+                UpdateCTA(ref _btnPrimary, false);
+                _btnPrimary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_ContactTNB), UIControlState.Normal);
+                _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    OnContact();
+                }));
+            }
             _viewCTA.AddSubview(_btnPrimary);
+        }
+
+        private void UpdateCTA(ref CustomUIButtonV2 btn, bool isSolidBg = true)
+        {
+            if (isSolidBg)
+            {
+                btn.BackgroundColor = MyTNBColor.FreshGreen;
+                btn.SetTitleColor(UIColor.White, UIControlState.Normal);
+            }
+            else
+            {
+                btn.BackgroundColor = UIColor.White;
+                btn.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
+                btn.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
+                btn.Layer.BorderWidth = 1;
+            }
         }
 
         private bool IsValidWeblinks
@@ -498,8 +525,11 @@ namespace myTNB
                         DataManager.DataManager.SharedInstance.SelectAccount(NotificationInfo.AccountNum);
                         UIStoryboard stroryboard = UIStoryboard.FromName("Usage", null);
                         UsageViewController viewController = stroryboard.InstantiateViewController("UsageViewController") as UsageViewController;
-                        UINavigationController navController = new UINavigationController(viewController);
-                        PresentViewController(navController, true, null);
+                        if (viewController != null)
+                        {
+                            UINavigationController navController = new UINavigationController(viewController);
+                            PresentViewController(navController, true, null);
+                        }
                     }
                     else
                     {
