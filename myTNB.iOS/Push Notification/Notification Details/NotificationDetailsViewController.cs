@@ -133,47 +133,50 @@ namespace myTNB
 
         internal void OnCTAClick(string actionString)
         {
-            var index = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindIndex(x => x.accNum == NotificationInfo.AccountNum) ?? -1;
-            if (index > -1)
+            if (DataManager.DataManager.SharedInstance.AccountRecordsList != null && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null)
             {
-                ActivityIndicator.Show();
-                var selected = DataManager.DataManager.SharedInstance.AccountRecordsList.d[(int)index];
-                DataManager.DataManager.SharedInstance.SelectAccount(selected.accNum);
-
-                NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+                int index = 4;// DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindIndex(x => x.accNum == NotificationInfo.AccountNum);
+                if (index > -1)
                 {
-                    InvokeOnMainThread(() =>
+                    ActivityIndicator.Show();
+                    var selected = DataManager.DataManager.SharedInstance.AccountRecordsList.d[(int)index];
+                    DataManager.DataManager.SharedInstance.SelectAccount(selected.accNum);
+
+                    NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                     {
-                        if (NetworkUtility.isReachable)
+                        InvokeOnMainThread(() =>
                         {
-                            Task[] taskList = new Task[] { GetBillingAccountDetails() };
-                            Task.WaitAll(taskList);
-                            if (_billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
-                                && _billingAccountDetailsList?.d?.data != null && _billingAccountDetailsList?.d?.didSucceed == true)
+                            if (NetworkUtility.isReachable)
                             {
-                                DataManager.DataManager.SharedInstance.BillingAccountDetails = _billingAccountDetailsList.d.data;
-                                if (!DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount)
+                                Task[] taskList = new Task[] { GetBillingAccountDetails() };
+                                Task.WaitAll(taskList);
+                                if (_billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
+                                    && _billingAccountDetailsList?.d?.data != null && _billingAccountDetailsList?.d?.didSucceed == true)
                                 {
-                                    DataManager.DataManager.SharedInstance.SaveToBillingAccounts(DataManager.DataManager.SharedInstance.BillingAccountDetails
-                                        , DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                                    DataManager.DataManager.SharedInstance.BillingAccountDetails = _billingAccountDetailsList.d.data;
+                                    if (!DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount)
+                                    {
+                                        DataManager.DataManager.SharedInstance.SaveToBillingAccounts(DataManager.DataManager.SharedInstance.BillingAccountDetails
+                                            , DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                                    }
+                                    string storyboardID = actionString == "BillViewController" ? "Dashboard" : "Payment";
+                                    DisplayPage(storyboardID, actionString);
                                 }
-                                string storyboardID = actionString == "BillViewController" ? "Dashboard" : "Payment";
-                                DisplayPage(storyboardID, actionString);
+                                else
+                                {
+                                    DataManager.DataManager.SharedInstance.IsSameAccount = true;
+                                    DataManager.DataManager.SharedInstance.BillingAccountDetails = new BillingAccountDetailsDataModel();
+                                    DisplayServiceError(_billingAccountDetailsList?.d?.message);
+                                }
                             }
                             else
                             {
-                                DataManager.DataManager.SharedInstance.IsSameAccount = true;
-                                DataManager.DataManager.SharedInstance.BillingAccountDetails = new BillingAccountDetailsDataModel();
-                                DisplayServiceError(_billingAccountDetailsList?.d?.message);
+                                DisplayNoDataAlert();
                             }
-                        }
-                        else
-                        {
-                            DisplayNoDataAlert();
-                        }
-                        ActivityIndicator.Hide();
+                            ActivityIndicator.Hide();
+                        });
                     });
-                });
+                }
             }
         }
 
@@ -185,7 +188,7 @@ namespace myTNB
                 object requestParameter = new
                 {
                     apiKeyID = TNBGlobal.API_KEY_ID,
-                    CANum = NotificationInfo.AccountNum
+                    CANum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum
                 };
                 _billingAccountDetailsList = serviceManager.OnExecuteAPI<BillingAccountDetailsResponseModel>("GetBillingAccountDetails", requestParameter);
             });
@@ -199,7 +202,7 @@ namespace myTNB
                 object requestParameter = new
                 {
                     apiKeyID = TNBGlobal.API_KEY_ID,
-                    accNum = NotificationInfo.AccountNum
+                    accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum
                 };
                 _dueAmount = serviceManager.OnExecuteAPI<DueAmountResponseModel>("GetAccountDueAmount", requestParameter);
             });
@@ -461,13 +464,7 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName(storyboardID, null);
             if (vc == "BillViewController")
             {
-                BillViewController billVC = storyBoard.InstantiateViewController(vc) as BillViewController;
-                if (billVC != null)
-                {
-                    billVC.NotificationInfo = NotificationInfo;
-                    billVC.IsFromNavigation = true;
-                    NavigationController?.PushViewController(billVC, true);
-                }
+                ViewHelper.DismissControllersAndSelectTab(this, 1, true);
             }
             else
             {

@@ -13,6 +13,7 @@ namespace myTNB
         UILabel _rmKwhLabel, _tariffLabel, _monthDayLabel;
         nfloat containerHeight = ScaleUtility.GetScaledHeight(24f);
         SmartMeterViewEnum _smViewEnum;
+        public bool isTariffDisabled;
 
         public TariffSelectionComponent(UIView parentView, SmartMeterViewEnum smViewEnum = SmartMeterViewEnum.Month)
         {
@@ -219,6 +220,13 @@ namespace myTNB
         {
             _tariffIcon.Image = showTariff ? UIImage.FromBundle(Constants.IMG_TariffEyeCloseIcon) : UIImage.FromBundle(Constants.IMG_TariffEyeOpenIcon);
             _tariffLabel.Text = showTariff ? LanguageUtility.GetCommonI18NValue(Constants.I18N_HideTariff) : LanguageUtility.GetCommonI18NValue(Constants.I18N_ShowTariff);
+        }
+
+        public void SetTariffButtonDisable(bool isDisable)
+        {
+            isTariffDisabled = isDisable;
+            _tariffIcon.Image = isDisable ? UIImage.FromBundle(Constants.IMG_TariffEyeDisableIcon) : UIImage.FromBundle(Constants.IMG_TariffEyeCloseIcon);
+            _tariffLabel.TextColor = isDisable ? MyTNBColor.SilverChalice : MyTNBColor.WaterBlue;
         }
         #endregion
     }

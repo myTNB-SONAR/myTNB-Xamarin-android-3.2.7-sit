@@ -1,0 +1,115 @@
+﻿using System;
+using System.Collections.Generic;
+using myTNB.Model;
+
+namespace myTNB
+{
+    public sealed class AppLaunchMasterCache
+    {
+        private static readonly Lazy<AppLaunchMasterCache> lazy = new Lazy<AppLaunchMasterCache>(() => new AppLaunchMasterCache());
+        public static AppLaunchMasterCache Instance { get { return lazy.Value; } }
+
+        private static AppLaunchMasterDataModel dataModel = new AppLaunchMasterDataModel();
+        private static MasterDataModel masterData = new MasterDataModel();
+
+        public static void AddAppLaunchResponseData(AppLaunchResponseModel response)
+        {
+            if (dataModel == null)
+            {
+                dataModel = new AppLaunchMasterDataModel();
+            }
+            if (masterData == null)
+            {
+                masterData = new MasterDataModel();
+            }
+            if (response != null &&
+                response.d != null &&
+                response.d.data != null)
+            {
+                dataModel = response.d;
+                masterData = response.d.data;
+
+                DataManager.DataManager.SharedInstance.LatestAppVersion = masterData?.ForceUpdateInfo?.iOSLatestVersion;
+                DataManager.DataManager.SharedInstance.SystemStatus = masterData?.SystemStatus ?? new List<DowntimeDataModel>();
+                DataManager.DataManager.SharedInstance.SetSystemsAvailability();
+                DataManager.DataManager.SharedInstance.WebLinks = masterData?.WebLinks ?? new List<WebLinksDataModel>();
+
+                DataManager.DataManager.SharedInstance.LocationTypes = masterData?.LocationTypes ?? new List<LocationTypeDataModel>();
+                if (masterData?.LocationTypes != null)
+                {
+                    LocationTypeDataModel allLocationModel = new LocationTypeDataModel();
+                    allLocationModel.Id = "all";
+                    allLocationModel.Title = "All";
+                    allLocationModel.Description = "All";
+                    if (DataManager.DataManager.SharedInstance.LocationTypes != null)
+                    {
+                        DataManager.DataManager.SharedInstance.LocationTypes.Insert(0, allLocationModel);
+                    }
+                }
+
+                DataManager.DataManager.SharedInstance.StatesForFeedBack = masterData?.States ?? new List<StatesForFeedbackDataModel>();
+                DataManager.DataManager.SharedInstance.FeedbackCategory = masterData?.FeedbackCategories ?? new List<FeedbackCategoryDataModel>();
+                DataManager.DataManager.SharedInstance.OtherFeedbackType = masterData?.FeedbackTypes ?? new List<OtherFeedbackTypeDataModel>();
+
+                var rawNotifGeneralTypes = masterData?.NotificationTypes ?? new List<NotificationPreferenceModel>();
+                DataManager.DataManager.SharedInstance.NotificationGeneralTypes = rawNotifGeneralTypes.FindAll(item => item?.ShowInFilterList?.ToLower() == "true") ?? new List<NotificationPreferenceModel>();
+
+                if (masterData?.NotificationTypes != null)
+                {
+                    NotificationPreferenceModel allNotificationItem = new NotificationPreferenceModel();
+                    allNotificationItem.Title = "PushNotification_AllNotifications".Translate();
+                    allNotificationItem.Id = "all";
+                    if (DataManager.DataManager.SharedInstance.NotificationGeneralTypes != null)
+                    {
+                        DataManager.DataManager.SharedInstance.NotificationGeneralTypes.Insert(0, allNotificationItem);
+                    }
+                }
+            }
+        }
+
+        public static MasterDataModel GetAppLaunchMasterData()
+        {
+            if (masterData != null)
+            {
+                return masterData;
+            }
+            return new MasterDataModel();
+        }
+
+        public static bool IsSMRApplyDisabled
+        {
+            get
+            {
+                if (dataModel != null)
+                {
+                    return dataModel.IsSMRApplyDisabled;
+                }
+                return true;
+            }
+        }
+
+        public static bool IsEnergyTipsDisabled
+        {
+            get
+            {
+                if (dataModel != null)
+                {
+                    return dataModel.IsEnergyTipsDisabled;
+                }
+                return true;
+            }
+        }
+
+        public static bool IsOCRDown
+        {
+            get
+            {
+                if (dataModel != null)
+                {
+                    return dataModel.IsOCRDown;
+                }
+                return true;
+            }
+        }
+    }
+}

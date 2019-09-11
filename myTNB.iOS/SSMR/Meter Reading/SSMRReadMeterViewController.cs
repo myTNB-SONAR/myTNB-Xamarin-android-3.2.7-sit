@@ -24,9 +24,7 @@ namespace myTNB
         List<MeterReadSSMRModel> _toolTipList;
         public List<SSMRMeterReadWalkthroughModel> pageData;
 
-        UIView _toolTipParentView, _toolTipContainerView, _toolTipFooterView, _takePhotoView, _takePhotoBtnView, _noteView;
-        UIScrollView _toolTipScrollView;
-        UIPageControl _pageControl;
+        UIView _toolTipParentView, _takePhotoView, _takePhotoBtnView, _noteView;
         UIScrollView _meterReadScrollView;
         UIImageView _cameraIconView;
         UILabel _takePhotoLabel, _errorLabel;
@@ -36,7 +34,6 @@ namespace myTNB
         nfloat takePhotoViewRatio = 136.0f / 320.0f;
         nfloat lastCardYPos;
         CGRect scrollViewFrame;
-        int _currentPageIndex;
         bool _isThreePhase = false;
 
         private bool _isKeyboardActive;
@@ -365,30 +362,24 @@ namespace myTNB
 
         private void PrepareToolTipView()
         {
-            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
-            nfloat widthMargin = GetScaledWidth(18f);
-            nfloat width = currentWindow.Frame.Width;
-            nfloat height = currentWindow.Frame.Height;
-            if (_toolTipParentView != null)
+            if (_toolTipParentView == null)
             {
-                _toolTipParentView.RemoveFromSuperview();
+                UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+                nfloat height = currentWindow.Frame.Height;
+                _toolTipParentView = new UIView(new CGRect(0, 0, ViewWidth, height))
+                {
+                    BackgroundColor = MyTNBColor.Black60
+                };
+                currentWindow.AddSubview(_toolTipParentView);
+                PaginatedTooltipComponent tooltipComponent = new PaginatedTooltipComponent(_toolTipParentView);
+                tooltipComponent.SetSSMRData(pageData);
+                tooltipComponent.SetPreviousMeterData(_previousMeterList);
+                _toolTipParentView.AddSubview(tooltipComponent.GetSSMRTooltip());
+                tooltipComponent.SetGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    MakeToolTipVisible(false);
+                }));
             }
-            _toolTipParentView = new UIView(new CGRect(0, 0, ViewWidth, height))
-            {
-                BackgroundColor = MyTNBColor.Black60
-            };
-            currentWindow.AddSubview(_toolTipParentView);
-
-            _toolTipContainerView = new UIView(new CGRect(widthMargin, 104f, width - (widthMargin * 2), 500f))
-            {
-                BackgroundColor = UIColor.White,
-                ClipsToBounds = true
-            };
-            _toolTipContainerView.Layer.CornerRadius = 5f;
-            _toolTipParentView.AddSubview(_toolTipContainerView);
-            SetToolTipScrollView();
-            SetScrollViewSubViews();
-
             _toolTipParentView.Hidden = false;
         }
 
@@ -398,222 +389,6 @@ namespace myTNB
             {
                 _toolTipParentView.Hidden = !isVisible;
             }
-        }
-
-        private void SetToolTipScrollView()
-        {
-            _toolTipScrollView = new UIScrollView(new CGRect(0, 0, _toolTipContainerView.Frame.Width, 0f))
-            {
-                Delegate = new ToolTipScrollViewDelegate(this),
-                PagingEnabled = true,
-                ShowsHorizontalScrollIndicator = false,
-                ShowsVerticalScrollIndicator = false,
-                ClipsToBounds = true,
-                BackgroundColor = UIColor.Clear,
-                Hidden = false,
-                Bounces = false
-            };
-
-            _toolTipContainerView.AddSubview(_toolTipScrollView);
-        }
-
-        private void SetScrollViewSubViews()
-        {
-            nfloat widthMargin = GetScaledWidth(16f);
-            nfloat width = _toolTipScrollView.Frame.Width;
-            nfloat newHeight = 0f;
-            for (int i = 0; i < pageData.Count; i++)
-            {
-                UIView viewContainer = new UIView(_toolTipScrollView.Bounds);
-                viewContainer.BackgroundColor = UIColor.White;
-
-                UIImage displayImage;
-                if (pageData[i].IsSitecoreData)
-                {
-                    if (string.IsNullOrEmpty(pageData[i].Image) || string.IsNullOrWhiteSpace(pageData[i].Image))
-                    {
-                        displayImage = UIImage.FromBundle(string.Empty);
-                    }
-                    else
-                    {
-                        try
-                        {
-                            displayImage = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(pageData[i].Image)));
-                        }
-                        catch (Exception e)
-                        {
-                            Debug.WriteLine("Image load Error: " + e.Message);
-                            displayImage = UIImage.FromBundle(string.Empty);
-                        }
-                    }
-                }
-                else
-                {
-                    if (string.IsNullOrEmpty(pageData[i].Image) || string.IsNullOrWhiteSpace(pageData[i].Image))
-                    {
-                        displayImage = UIImage.FromBundle(string.Empty);
-                    }
-                    else
-                    {
-                        displayImage = UIImage.FromBundle(pageData[i].Image);
-                    }
-                }
-
-                nfloat origImageRatio = 155.0f / 284.0f;
-                nfloat imageHeight = viewContainer.Frame.Width * origImageRatio;
-                UIImageView imageView = new UIImageView(new CGRect(0, 0, viewContainer.Frame.Width, imageHeight))
-                {
-                    Image = displayImage,
-                };
-                viewContainer.AddSubview(imageView);
-
-                UILabel title = new UILabel(new CGRect(widthMargin, imageView.Frame.GetMaxY() + GetScaledHeight(24f), viewContainer.Frame.Width - (widthMargin * 2), 0))
-                {
-                    Font = TNBFont.MuseoSans_14_500,
-                    TextColor = MyTNBColor.CharcoalGrey,
-                    TextAlignment = UITextAlignment.Left,
-                    Lines = 0,
-                    LineBreakMode = UILineBreakMode.TailTruncation,
-                    Text = pageData[i]?.Title ?? string.Empty
-                };
-
-                CGSize titleNewSize = title.SizeThatFits(new CGSize(viewContainer.Frame.Width - (widthMargin * 2), 1000f));
-                ViewHelper.AdjustFrameSetHeight(title, titleNewSize.Height);
-
-                viewContainer.AddSubview(title);
-                string desc = pageData[i]?.Description ?? string.Empty;
-                if (!string.IsNullOrEmpty(desc) && !string.IsNullOrWhiteSpace(desc) && desc.Contains("{0}"))
-                {
-                    int count = _previousMeterList.Count;
-                    string missingReading = string.Empty;
-                    for (int j = 0; j < count; j++)
-                    {
-                        missingReading += string.IsNullOrEmpty(_previousMeterList[j].ReadingUnitDisplayTitle)
-                            ? _previousMeterList[j].ReadingUnit : _previousMeterList[j].ReadingUnitDisplayTitle;
-                        if (j != count - 1) { missingReading += ", "; }
-                    }
-                    desc = string.Format(desc, count, missingReading);
-                }
-
-                NSError htmlBodyError = null;
-                NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(desc
-                    , ref htmlBodyError, MyTNBFont.FONTNAME_300, (float)GetScaledHeight(14F));
-                NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
-                mutableHTMLBody.AddAttributes(new UIStringAttributes
-                {
-                    ForegroundColor = MyTNBColor.CharcoalGrey
-                }, new NSRange(0, htmlBody.Length));
-                UITextView description = new UITextView(new CGRect(widthMargin
-                    , title.Frame.GetMaxY() + GetScaledHeight(12f), viewContainer.Frame.Width - (widthMargin * 2), 0))
-                {
-                    Editable = false,
-                    ScrollEnabled = true,
-                    AttributedText = mutableHTMLBody,
-                    UserInteractionEnabled = false,
-                    ContentInset = new UIEdgeInsets(0, -5, 0, -5)
-                };
-                description.ScrollIndicatorInsets = UIEdgeInsets.Zero;
-                CGSize size = description.SizeThatFits(new CGSize(description.Frame.Width, 1000F));
-                description.Frame = new CGRect(description.Frame.Location, new CGSize(description.Frame.Width, size.Height));
-
-                viewContainer.AddSubview(description);
-
-                ViewHelper.AdjustFrameSetX(viewContainer, i * width);
-                ViewHelper.AdjustFrameSetWidth(viewContainer, width);
-                ViewHelper.AdjustFrameSetHeight(viewContainer, description.Frame.GetMaxY() + GetScaledHeight(32f));
-
-                _toolTipScrollView.AddSubview(viewContainer);
-                if (newHeight < viewContainer.Frame.GetMaxY())
-                {
-                    newHeight = viewContainer.Frame.GetMaxY();
-                }
-            }
-            _toolTipScrollView.ContentSize = new CGSize(_toolTipScrollView.Frame.Width * pageData.Count, newHeight);
-            ViewHelper.AdjustFrameSetHeight(_toolTipScrollView, newHeight);
-
-            SetToolTipFooterView();
-        }
-
-        private void SetToolTipFooterView()
-        {
-            _toolTipFooterView = new UIView(new CGRect(0, _toolTipScrollView.Frame.GetMaxY(), _toolTipContainerView.Frame.Width, 130f))
-            {
-                BackgroundColor = UIColor.Clear,
-                ClipsToBounds = true,
-                UserInteractionEnabled = true
-            };
-            if (pageData.Count > 1)
-            {
-                AddPageControl();
-                UpdatePageControl(_pageControl, _currentPageIndex, pageData.Count);
-            }
-            else
-            {
-                if (_pageControl != null)
-                {
-                    _pageControl.Hidden = true;
-                }
-            }
-
-            UIView line = new UIView(new CGRect(0, _pageControl.Frame.GetMaxY() + GetScaledHeight(16f)
-                , _toolTipFooterView.Frame.Width, GetScaledHeight(1f)))
-            {
-                BackgroundColor = MyTNBColor.VeryLightPink
-            };
-            _toolTipFooterView.AddSubview(line);
-
-            UILabel proceedLabel = new UILabel(new CGRect(0, line.Frame.GetMaxY() + GetScaledHeight(16f)
-                , _toolTipFooterView.Frame.Width, GetScaledHeight(24f)))
-            {
-                Font = TNBFont.MuseoSans_16_500,
-                TextColor = MyTNBColor.WaterBlue,
-                Text = GetI18NValue(SSMRConstants.I18N_ImReady),
-                TextAlignment = UITextAlignment.Center,
-                UserInteractionEnabled = true
-            };
-            proceedLabel.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-            {
-                MakeToolTipVisible(false);
-            }));
-            _toolTipFooterView.AddSubview(proceedLabel);
-
-            ViewHelper.AdjustFrameSetHeight(_toolTipFooterView, proceedLabel.Frame.GetMaxY() + GetScaledHeight(16f));
-
-            _toolTipContainerView.AddSubview(_toolTipFooterView);
-
-            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
-
-            ViewHelper.AdjustFrameSetHeight(_toolTipContainerView, _toolTipFooterView.Frame.GetMaxY());
-            ViewHelper.AdjustFrameSetY(_toolTipContainerView, (currentWindow.Frame.Height / 2) - (_toolTipContainerView.Frame.Height / 2));
-        }
-
-        private void AddPageControl()
-        {
-            if (_pageControl != null)
-            {
-                _pageControl.RemoveFromSuperview();
-            }
-            _pageControl = new UIPageControl(new CGRect(0, 0, _toolTipFooterView.Frame.Width, DashboardHomeConstants.PageControlHeight))
-            {
-                BackgroundColor = UIColor.Clear,
-                TintColor = MyTNBColor.WaterBlue,
-                PageIndicatorTintColor = MyTNBColor.VeryLightPinkTwo,
-                CurrentPageIndicatorTintColor = MyTNBColor.WaterBlue,
-                UserInteractionEnabled = false
-            };
-            _toolTipFooterView.AddSubview(_pageControl);
-        }
-
-        private void UpdatePageControl(UIPageControl pageControl, int current, int pages)
-        {
-            pageControl.CurrentPage = current;
-            pageControl.Pages = pages;
-            pageControl.UpdateCurrentPageDisplay();
-        }
-
-        private void ScrollViewHasPaginated()
-        {
-            UpdatePageControl(_pageControl, _currentPageIndex, pageData.Count);
         }
 
         private void PrepareMeterReadingCard(bool isBusinessError = false)
@@ -988,24 +763,6 @@ namespace myTNB
             view.Layer.ShadowOffset = new CGSize(0, 5);
             view.Layer.ShadowRadius = 5;
             view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
-        }
-
-        private class ToolTipScrollViewDelegate : UIScrollViewDelegate
-        {
-            SSMRReadMeterViewController _controller;
-            public ToolTipScrollViewDelegate(SSMRReadMeterViewController controller)
-            {
-                _controller = controller;
-            }
-            public override void Scrolled(UIScrollView scrollView)
-            {
-                int newPageIndex = (int)Math.Round(_controller._toolTipScrollView.ContentOffset.X / _controller._toolTipScrollView.Frame.Width);
-                if (newPageIndex == _controller._currentPageIndex)
-                    return;
-
-                _controller._currentPageIndex = newPageIndex;
-                _controller.ScrollViewHasPaginated();
-            }
         }
     }
 }

@@ -11,6 +11,7 @@
         public static string IMG_RMKwHDropdownIcon = "RmKwh-Dropdown-Icon";
         public static string IMG_TariffEyeOpenIcon = "Tariff-Eye-Open-Icon";
         public static string IMG_TariffEyeCloseIcon = "Tariff-Eye-Close-Icon";
+        public static string IMG_TariffEyeDisableIcon = "Tariff-Eye-Disable-Icon";
         public static string IMG_RefreshIcon = "Refresh-Icon";
         public static string IMG_BCRMDownIcon = "BCRM-Down-Icon";
         public static string IMG_CalendarIcon = "Calendar-Icon";
@@ -25,7 +26,7 @@
         public static string I18N_BCRMMessage = "bcrmMessage";
         public static string I18N_RefreshMessage = "refreshDescription";
         public static string I18N_RefreshBtnText = "refreshNow";
-        public static string I18N_CurrentBill = "currentBill";
+        public static string I18N_ViewDetails = "viewDetails";
         public static string I18N_Pay = "pay";
         public static string I18N_EmptyAcctSelector = "emptyAcctSelector";
         public static string I18N_DisconnectionMsg = "disconnectionMsg";

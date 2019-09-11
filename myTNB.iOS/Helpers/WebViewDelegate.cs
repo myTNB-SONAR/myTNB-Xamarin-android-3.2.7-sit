@@ -86,7 +86,6 @@ namespace myTNB
                     && Controller != null)
                 {
                     loadingOverlay?.Hide();
-                    DataManager.DataManager.SharedInstance.IsPaymentDone = true;
                     DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = true;
                     ViewHelper.DismissControllersAndSelectTab(Controller, 0, true, true);
                 }
@@ -103,10 +102,10 @@ namespace myTNB
                         UIStoryboard storyBoard = UIStoryboard.FromName("Receipt", null);
                         ReceiptViewController viewController =
                             storyBoard.InstantiateViewController("ReceiptViewController") as ReceiptViewController;
-                        viewController.MerchatTransactionID = transID;
+                        viewController.DetailedInfoNumber = transID;
                         viewController.isCCFlow = true;
+                        viewController.showAllReceipts = true;
                         var navController = new UINavigationController(viewController);
-
                         var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
                         var topVc = AppDelegate.GetTopViewController(baseRootVc);
                         topVc?.NavigationController?.PushViewController(viewController, true);
