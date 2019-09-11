@@ -167,9 +167,29 @@ namespace myTNB
             View.AddSubview(_navbarContainer);
         }
 
+        private nfloat GetBGImageHeight(bool isNormalBg)
+        {
+            nfloat height = 514f;
+
+            if (isNormalChart || accountIsSSMR)
+            {
+                height = isNormalBg ? 514f : 700f;
+            }
+            else if (isREAccount)
+            {
+                height = 479f;
+            }
+            else if (isSmartMeterAccount)
+            {
+                height = isNormalBg ? 570f : 700f;
+            }
+
+            return GetScaledHeight(height);
+        }
+
         private void AddBackgroundImage()
         {
-            nfloat height = GetScaledHeight(543f);
+            nfloat height = GetBGImageHeight(true);
             _bgImageView = new UIImageView(new CGRect(0, 0, ViewWidth, height))
             {
                 Image = UIImage.FromBundle(UsageConstants.IMG_BGNormal)
@@ -179,7 +199,7 @@ namespace myTNB
 
         private void UpdateBackgroundImage(bool isLegendVisible = false)
         {
-            nfloat height = isLegendVisible ? GetScaledHeight(691f) : GetScaledHeight(543f);
+            nfloat height = GetBGImageHeight(!isLegendVisible);
             ViewHelper.AdjustFrameSetHeight(_bgImageView, height);
             _bgImageView.Image = UIImage.FromBundle(isLegendVisible ? UsageConstants.IMG_BGLong : UsageConstants.IMG_BGNormal);
         }
@@ -601,8 +621,6 @@ namespace myTNB
             List<LegendItemModel> tariffList = new List<LegendItemModel>(isSmartMeterAccount ? AccountUsageSmartCache.GetTariffLegendList() : AccountUsageCache.GetTariffLegendList());
             if (tariffList != null && tariffList.Count > 0)
             {
-                UpdateBackgroundImage(isVisible);
-
                 UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseIn
                     , () =>
                     {
@@ -613,6 +631,7 @@ namespace myTNB
                     , () =>
                     {
                         _viewLegend.Hidden = !isVisible;
+                        UpdateBackgroundImage(isVisible);
                     }
                 );
             }
