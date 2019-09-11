@@ -38,8 +38,6 @@ namespace myTNB.PushNotification
             , { BCRMNotificationEnum.Dunning, "Notification-Banner-Dunning" }
             , { BCRMNotificationEnum.Disconnection, "Notification-Banner-Disconnection" }
             , { BCRMNotificationEnum.Reconnection, "Notification-Banner-Reconnection" }
-            , { BCRMNotificationEnum.Promotion, "Notification-Banner-Promotion" }
-            , { BCRMNotificationEnum.News, "Notification-Banner-News" }
             , { BCRMNotificationEnum.Maintenance, "Notification-Banner-Maintenance" }
             , { BCRMNotificationEnum.SSMR, "SSMR-Reading-History-Banner" }
         };

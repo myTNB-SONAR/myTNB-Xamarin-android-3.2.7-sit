@@ -316,7 +316,8 @@ namespace myTNB
 
         private void SetCTA()
         {
-            if (NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.Maintenance)
+            if (NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.Maintenance
+                || NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.None)
             {
                 _viewCTA = new UIView();
             }
