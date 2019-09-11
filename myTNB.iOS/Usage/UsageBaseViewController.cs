@@ -638,6 +638,26 @@ namespace myTNB
         }
         #endregion
         #region RM/KWH & TARIFF Methods
+        public void SetTariffButtonState()
+        {
+            if (_tariffSelectionComponent != null)
+            {
+                List<LegendItemModel> tariffList;
+                bool isDisable;
+                if (isSmartMeterAccount)
+                {
+                    tariffList = new List<LegendItemModel>(AccountUsageSmartCache.GetTariffLegendList());
+                    isDisable = AccountUsageSmartCache.IsMonthlyTariffDisable || AccountUsageSmartCache.IsMonthlyTariffUnavailable || tariffList == null || tariffList.Count == 0;
+                }
+                else
+                {
+                    tariffList = new List<LegendItemModel>(AccountUsageCache.GetTariffLegendList());
+                    isDisable = AccountUsageCache.IsMonthlyTariffDisable || AccountUsageCache.IsMonthlyTariffUnavailable || tariffList == null || tariffList.Count == 0;
+                }
+                _tariffSelectionComponent.SetTariffButtonDisable(isDisable);
+            }
+        }
+
         private void SetTariffSelectionComponent()
         {
             if (!isREAccount)
@@ -661,14 +681,17 @@ namespace myTNB
                 }));
                 _tariffSelectionComponent.SetGestureRecognizerForTariff(new UITapGestureRecognizer(() =>
                 {
-                    if (_rmKwhDropDownView != null)
+                    if (!_tariffSelectionComponent.isTariffDisabled)
                     {
-                        _rmKwhDropDownView.Hidden = true;
+                        if (_rmKwhDropDownView != null)
+                        {
+                            _rmKwhDropDownView.Hidden = true;
+                        }
+                        _tariffIsVisible = !_tariffIsVisible;
+                        _tariffSelectionComponent.UpdateTariffButton(_tariffIsVisible);
+                        ShowHideTariffLegends(_tariffIsVisible);
+                        _chartView.ToggleTariffView(_tariffIsVisible);
                     }
-                    _tariffIsVisible = !_tariffIsVisible;
-                    _tariffSelectionComponent.UpdateTariffButton(_tariffIsVisible);
-                    ShowHideTariffLegends(_tariffIsVisible);
-                    _chartView.ToggleTariffView(_tariffIsVisible);
                 }));
 
                 if (_rmKwhDropDownView == null)

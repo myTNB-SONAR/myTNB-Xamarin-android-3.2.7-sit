@@ -72,7 +72,6 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        Debug.WriteLine("View.Frame.Height UsageView: " + View.Frame.Height);
                         UIStoryboard storyBoard = UIStoryboard.FromName("BillDetails", null);
                         BillDetailsViewController viewController =
                             storyBoard.InstantiateViewController("BillDetailsView") as BillDetailsViewController;
@@ -165,6 +164,7 @@ namespace myTNB
                             AccountUsageCache.SetData(DataManager.DataManager.SharedInstance.SelectedAccount.accNum, accountUsageResponse);
                             if (AccountUsageCache.IsSuccess)
                             {
+                                SetTariffButtonState();
                                 SetTariffLegendComponent();
                                 SetChartView(false);
                             }
@@ -182,6 +182,7 @@ namespace myTNB
                         {
                             AccountUsageCache.ClearTariffLegendList();
                             AccountUsageCache.GetCachedData(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
+                            SetTariffButtonState();
                             SetTariffLegendComponent();
                             SetChartView(false);
                         }
@@ -211,6 +212,7 @@ namespace myTNB
                             {
                                 OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
                                 SetSmartMeterComponent(false, model.Cost);
+                                SetTariffButtonState();
                                 SetTariffLegendComponent();
                                 SetChartView(false);
                             }
@@ -225,6 +227,7 @@ namespace myTNB
                             AccountUsageSmartCache.GetCachedData(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
                             OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
                             SetSmartMeterComponent(false, model.Cost);
+                            SetTariffButtonState();
                             SetTariffLegendComponent();
                             SetChartView(false);
                         }

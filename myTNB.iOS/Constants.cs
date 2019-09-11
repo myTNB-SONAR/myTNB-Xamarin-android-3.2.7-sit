@@ -11,6 +11,7 @@
         public static string IMG_RMKwHDropdownIcon = "RmKwh-Dropdown-Icon";
         public static string IMG_TariffEyeOpenIcon = "Tariff-Eye-Open-Icon";
         public static string IMG_TariffEyeCloseIcon = "Tariff-Eye-Close-Icon";
+        public static string IMG_TariffEyeDisableIcon = "Tariff-Eye-Disable-Icon";
         public static string IMG_RefreshIcon = "Refresh-Icon";
         public static string IMG_BCRMDownIcon = "BCRM-Down-Icon";
         public static string IMG_CalendarIcon = "Calendar-Icon";

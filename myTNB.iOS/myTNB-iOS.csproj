@@ -1202,6 +1202,9 @@
     <ImageAsset Include="Assets.xcassets\Usage-Bg-Normal.imageset\Usage-Bg-Normal%403x.png" />
     <ImageAsset Include="Assets.xcassets\Usage-Bg-Long.imageset\Usage-Bg-Long%402x.png" />
     <ImageAsset Include="Assets.xcassets\Usage-Bg-Long.imageset\Usage-Bg-Long%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1607,6 +1610,7 @@
     <Folder Include="Model\GetPaymentTransactionId\" />
     <Folder Include="Model\GetPaymentReceipt\" />
     <Folder Include="Assets.xcassets\Info-White-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
