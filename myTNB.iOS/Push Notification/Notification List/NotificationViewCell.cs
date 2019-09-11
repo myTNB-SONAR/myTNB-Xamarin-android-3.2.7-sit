@@ -120,18 +120,17 @@ namespace myTNB.PushNotification
             readFrame.X = xRead;
             imgUnread.Frame = readFrame;
 
+            nfloat width = lblDate.Frame.GetMinX() - imgIcon.Frame.GetMaxX() - ScaleUtility.GetScaledWidth(8);
             if (isSelectionMode)
             {
-                lblTitle.Frame = new CGRect(lblTitle.Frame.Location, new CGSize(ScaleUtility.GetPercentWidthValue(50F), lblTitle.Frame.Height));
+                lblTitle.Frame = new CGRect(lblTitle.Frame.Location, new CGSize(width, lblTitle.Frame.Height));
                 lblDetails.Frame = new CGRect(lblDetails.Frame.X, lblDetails.Frame.Y
-                    , cellWidth - (48 + lblDate.Frame.Width + 34 + 12 + 40), lblDetails.Frame.Height);
+                    , width, lblDetails.Frame.Height);
             }
             else
             {
-                nfloat titleWidth = cellWidth - imgIcon.Frame.GetMaxX() - ScaleUtility.GetPercentWidthValue(20F) - ScaleUtility.GetScaledWidth(44);
-                lblTitle.Frame = new CGRect(lblTitle.Frame.Location, new CGSize(titleWidth, lblTitle.Frame.Height));
-                lblDetails.Frame = new CGRect(lblDetails.Frame.X, lblDetails.Frame.Y
-                    , cellWidth - (48 + lblDate.Frame.Width + 34 + 12), lblDetails.Frame.Height);
+                lblTitle.Frame = new CGRect(lblTitle.Frame.Location, new CGSize(width, lblTitle.Frame.Height));
+                lblDetails.Frame = new CGRect(lblDetails.Frame.X, lblDetails.Frame.Y, width, lblDetails.Frame.Height);
             }
         }
 
