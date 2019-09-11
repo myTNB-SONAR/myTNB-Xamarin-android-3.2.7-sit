@@ -339,6 +339,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         bool isSMDown = false;
 
+        bool isSMAccount = false;
+
         public StackedBarChartRenderer renderer;
 
         public SMStackedBarChartRenderer smRenderer;
@@ -357,112 +359,115 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             base.OnCreate(savedInstanceState);
             Bundle extras = Arguments;
 
-            if (extras.ContainsKey(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE))
-            {
-                isUsageLoadedNeeded = false;
-                selectedSMHistoryData = null;
-                var usageHistoryDataResponse = JsonConvert.DeserializeObject<UsageHistoryResponse>(extras.GetString(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE));
-                if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.UsageHistoryData != null)
-                {
-                    selectedHistoryData = usageHistoryDataResponse.Data.UsageHistoryData;
-                }
-                try
-                {
-                    if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshMessage != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshMessage))
-                    {
-                        txtRefreshMsg = usageHistoryDataResponse.Data.RefreshMessage;
-                    }
-                    else
-                    {
-                        txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
-                    }
-                }
-                catch (System.Exception e)
-                {
-                    txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
-                    Utility.LoggingNonFatalError(e);
-                }
-                try
-                {
-                    if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshBtnText != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshBtnText))
-                    {
-                        txtBtnRefreshTitle = usageHistoryDataResponse.Data.RefreshBtnText;
-                    }
-                    else
-                    {
-                        txtBtnRefreshTitle = "Reload Now";
-                    }
-                }
-                catch (System.Exception e)
-                {
-                    txtBtnRefreshTitle = "Reload Now";
-                    Utility.LoggingNonFatalError(e);
-                }
-            }
-            else
-            {
-                isUsageLoadedNeeded = true;
-                selectedHistoryData = null;
-                selectedSMHistoryData = null;
-                txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
-                txtBtnRefreshTitle = "Reload Now";
-            }
-
-            if (extras.ContainsKey(Constants.SELECTED_SM_ACCOUNT_USAGE_RESPONSE))
-            {
-                isUsageLoadedNeeded = false;
-                selectedHistoryData = null;
-                // Lin Siong TODO: To check whether the cache will bring foward here once api integration done
-                var usageHistoryDataResponse = JsonConvert.DeserializeObject<SMUsageHistoryResponse>(extras.GetString(Constants.SELECTED_SM_ACCOUNT_USAGE_RESPONSE));
-                if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.SMUsageHistoryData != null)
-                {
-                    selectedSMHistoryData = usageHistoryDataResponse.Data.SMUsageHistoryData;
-                }
-                try
-                {
-                    if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshMessage != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshMessage))
-                    {
-                        txtRefreshMsg = usageHistoryDataResponse.Data.RefreshMessage;
-                    }
-                    else
-                    {
-                        txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
-                    }
-                }
-                catch (System.Exception e)
-                {
-                    txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
-                    Utility.LoggingNonFatalError(e);
-                }
-                try
-                {
-                    if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshBtnText != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshBtnText))
-                    {
-                        txtBtnRefreshTitle = usageHistoryDataResponse.Data.RefreshBtnText;
-                    }
-                    else
-                    {
-                        txtBtnRefreshTitle = "Reload Now";
-                    }
-                }
-                catch (System.Exception e)
-                {
-                    txtBtnRefreshTitle = "Reload Now";
-                    Utility.LoggingNonFatalError(e);
-                }
-            }
-            else
-            {
-                isUsageLoadedNeeded = true;
-                selectedHistoryData = null;
-                selectedSMHistoryData = null;
-                txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
-                txtBtnRefreshTitle = "Reload Now";
-            }
-
             if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
             {
                 selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+            }
+
+            if (extras.ContainsKey(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE) || extras.ContainsKey(Constants.SELECTED_SM_ACCOUNT_USAGE_RESPONSE))
+            {
+                if (extras.ContainsKey(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE))
+                {
+                    isSMAccount = false;
+                    isUsageLoadedNeeded = false;
+                    selectedSMHistoryData = null;
+                    var usageHistoryDataResponse = JsonConvert.DeserializeObject<UsageHistoryResponse>(extras.GetString(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE));
+                    if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.UsageHistoryData != null)
+                    {
+                        selectedHistoryData = usageHistoryDataResponse.Data.UsageHistoryData;
+                    }
+                    try
+                    {
+                        if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshMessage != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshMessage))
+                        {
+                            txtRefreshMsg = usageHistoryDataResponse.Data.RefreshMessage;
+                        }
+                        else
+                        {
+                            txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
+                        }
+                    }
+                    catch (System.Exception e)
+                    {
+                        txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
+                        Utility.LoggingNonFatalError(e);
+                    }
+                    try
+                    {
+                        if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshBtnText != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshBtnText))
+                        {
+                            txtBtnRefreshTitle = usageHistoryDataResponse.Data.RefreshBtnText;
+                        }
+                        else
+                        {
+                            txtBtnRefreshTitle = "Reload Now";
+                        }
+                    }
+                    catch (System.Exception e)
+                    {
+                        txtBtnRefreshTitle = "Reload Now";
+                        Utility.LoggingNonFatalError(e);
+                    }
+                }
+                else
+                {
+                    isSMAccount = true;
+                    isUsageLoadedNeeded = false;
+                    selectedHistoryData = null;
+                    var usageHistoryDataResponse = JsonConvert.DeserializeObject<SMUsageHistoryResponse>(extras.GetString(Constants.SELECTED_SM_ACCOUNT_USAGE_RESPONSE));
+                    if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.SMUsageHistoryData != null)
+                    {
+                        selectedSMHistoryData = usageHistoryDataResponse.Data.SMUsageHistoryData;
+                    }
+                    try
+                    {
+                        if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshMessage != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshMessage))
+                        {
+                            txtRefreshMsg = usageHistoryDataResponse.Data.RefreshMessage;
+                        }
+                        else
+                        {
+                            txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
+                        }
+                    }
+                    catch (System.Exception e)
+                    {
+                        txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
+                        Utility.LoggingNonFatalError(e);
+                    }
+                    try
+                    {
+                        if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshBtnText != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshBtnText))
+                        {
+                            txtBtnRefreshTitle = usageHistoryDataResponse.Data.RefreshBtnText;
+                        }
+                        else
+                        {
+                            txtBtnRefreshTitle = "Reload Now";
+                        }
+                    }
+                    catch (System.Exception e)
+                    {
+                        txtBtnRefreshTitle = "Reload Now";
+                        Utility.LoggingNonFatalError(e);
+                    }
+                }
+            }
+            else
+            {
+                if (selectedAccount != null && !selectedAccount.SmartMeterCode.Equals("0"))
+                {
+                    isSMAccount = true;
+                }
+                else
+                {
+                    isSMAccount = false;
+                }
+                isUsageLoadedNeeded = true;
+                selectedHistoryData = null;
+                selectedSMHistoryData = null;
+                txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
+                txtBtnRefreshTitle = "Reload Now";
             }
 
             errorMSG = "";
@@ -1041,15 +1046,34 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             // Lin Siong TODO: This part to determine if tariff is available or not, soon will replace by flag
             // Lin Siong TODO: And also UI handling for this
             bool isTariffAvailable = true;
-            for (int i = 0; i < selectedHistoryData.ByMonth.Months.Count; i++)
+            if (isSMAccount)
             {
-                if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                for (int i = 0; i < selectedSMHistoryData.ByMonth.Months.Count; i++)
                 {
-                    isTariffAvailable = true;
+                    if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                    {
+                        isTariffAvailable = true;
+                        break;
+                    }
+                    else
+                    {
+                        isTariffAvailable = false;
+                    }
                 }
-                else
+            }
+            else
+            {
+                for (int i = 0; i < selectedHistoryData.ByMonth.Months.Count; i++)
                 {
-                    isTariffAvailable = false;
+                    if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                    {
+                        isTariffAvailable = true;
+                        break;
+                    }
+                    else
+                    {
+                        isTariffAvailable = false;
+                    }
                 }
             }
 
@@ -1063,7 +1087,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 isToggleTariff = false;
             }
 
-            if (!selectedAccount.SmartMeterCode.Equals("0"))
+            if (isSMAccount)
             {
                 // Lin Siong Note: this is for smart meter Inner Dashboard
                 // Lin Siong Note: the isStacked is to determine whether want to have spacing or not
@@ -1077,10 +1101,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     if (isToggleTariff)
                     {
-                        // Lin Siong TODO: Change selectedHistoryData to Smart Meter one
                         smRenderer = new SMStackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
                         {
-                            selectedHistoryData = selectedHistoryData,
+                            selectedSMHistoryData = selectedSMHistoryData,
                             currentContext = Activity,
                             isStacked = true,
                             currentChartType = ChartType
@@ -1089,10 +1112,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                     else
                     {
-                        // Lin Siong TODO: Change selectedHistoryData to Smart Meter one
                         smRenderer = new SMStackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
                         {
-                            selectedHistoryData = selectedHistoryData,
+                            selectedSMHistoryData = selectedSMHistoryData,
                             currentContext = Activity,
                             isStacked = false,
                             currentChartType = ChartType
@@ -1140,47 +1162,95 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             // Lin Siong TODO: Estimated Reading Handling & Display on graph X Axis on Smart Meter
 
-            if (ChartType == ChartType.RM)
+            if (isSMAccount)
             {
+                if (ChartType == ChartType.RM)
+                {
 
-                txtRange.Text = selectedHistoryData.ByMonth.Range;
+                    txtRange.Text = selectedSMHistoryData.ByMonth.Range;
 
-                // SETUP XAXIS
+                    // SETUP XAXIS
 
-                SetUpXAxis();
+                    SetUpXAxis();
 
-                // SETUP YAXIS
+                    // SETUP YAXIS
 
-                SetUpYAxis();
+                    SetUpYAxis();
 
-                // ADD DATA
+                    // ADD DATA
 
-                SetData(selectedHistoryData.ByMonth.Months.Count);
+                    SetData(selectedSMHistoryData.ByMonth.Months.Count);
 
 
-                // SETUP MARKER VIEW
+                    // SETUP MARKER VIEW
 
-                SetUpMarkerRMView();
+                    SetUpMarkerRMView();
 
+                }
+                else
+                {
+
+                    txtRange.Text = selectedSMHistoryData.ByMonth.Range;
+                    // SETUP XAXIS
+
+                    SetUpXAxiskWh();
+
+                    // SETUP YAXIS
+
+                    SetUpYAxisKwh();
+
+                    // ADD DATA
+                    SetKWhData(selectedSMHistoryData.ByMonth.Months.Count);
+
+                    // SETUP MARKER VIEW
+
+                    SetUpMarkerKWhView();
+                }
             }
             else
             {
+                if (ChartType == ChartType.RM)
+                {
 
-                txtRange.Text = selectedHistoryData.ByMonth.Range;
-                // SETUP XAXIS
+                    txtRange.Text = selectedHistoryData.ByMonth.Range;
 
-                SetUpXAxiskWh();
+                    // SETUP XAXIS
 
-                // SETUP YAXIS
+                    SetUpXAxis();
 
-                SetUpYAxisKwh();
+                    // SETUP YAXIS
 
-                // ADD DATA
-                SetKWhData(selectedHistoryData.ByMonth.Months.Count);
+                    SetUpYAxis();
 
-                // SETUP MARKER VIEW
+                    // ADD DATA
 
-                SetUpMarkerKWhView();
+                    SetData(selectedHistoryData.ByMonth.Months.Count);
+
+
+                    // SETUP MARKER VIEW
+
+                    SetUpMarkerRMView();
+
+                }
+                else
+                {
+
+                    txtRange.Text = selectedHistoryData.ByMonth.Range;
+                    // SETUP XAXIS
+
+                    SetUpXAxiskWh();
+
+                    // SETUP YAXIS
+
+                    SetUpYAxisKwh();
+
+                    // ADD DATA
+                    SetKWhData(selectedHistoryData.ByMonth.Months.Count);
+
+                    // SETUP MARKER VIEW
+
+                    SetUpMarkerKWhView();
+                }
             }
 
             int graphTopPadding = 30;
@@ -1197,8 +1267,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #region SETUP AXIS RM
         internal void SetUpXAxis()
         {
-
-            XLabelsFormatter = new ChartsMonthFormatter(selectedHistoryData.ByMonth, mChart);
+            if (isSMAccount)
+            {
+                XLabelsFormatter = new SMChartsMonthFormatter(selectedSMHistoryData.ByMonth, mChart);
+            }
+            else
+            {
+                XLabelsFormatter = new ChartsMonthFormatter(selectedHistoryData.ByMonth, mChart);
+            }
 
             XAxis xAxis = mChart.XAxis;
             xAxis.Position = XAxisPosition.Bottom;
@@ -1220,7 +1296,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
 
             xAxis.Granularity = 1f; // only intervals of 1 day
-            xAxis.LabelCount = selectedHistoryData.ByMonth.Months.Count;
+
+            if (isSMAccount)
+            {
+                xAxis.LabelCount = selectedSMHistoryData.ByMonth.Months.Count;
+            }
+            else
+            {
+                xAxis.LabelCount = selectedHistoryData.ByMonth.Months.Count;
+            }
             xAxis.ValueFormatter = XLabelsFormatter;
 
 
@@ -1230,7 +1314,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #region SETUP AXIS KWH
         internal void SetUpXAxiskWh()
         {
-            XLabelsFormatter = new ChartsKWhFormatter(selectedHistoryData.ByMonth, mChart);
+
+            if (isSMAccount)
+            {
+                XLabelsFormatter = new SMChartsKWhFormatter(selectedSMHistoryData.ByMonth, mChart);
+            }
+            else
+            {
+                XLabelsFormatter = new ChartsKWhFormatter(selectedHistoryData.ByMonth, mChart);
+            }
 
             XAxis xAxis = mChart.XAxis;
             xAxis.Position = XAxisPosition.Bottom;
@@ -1252,7 +1344,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
 
             xAxis.Granularity = 1f; // only intervals of 1 day
-            xAxis.LabelCount = selectedHistoryData.ByMonth.Months.Count;
+            if (isSMAccount)
+            {
+                xAxis.LabelCount = selectedSMHistoryData.ByMonth.Months.Count;
+            }
+            else
+            {
+                xAxis.LabelCount = selectedHistoryData.ByMonth.Months.Count;
+            }
             xAxis.ValueFormatter = XLabelsFormatter;
 
 
@@ -1319,35 +1418,66 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #region SETUP MARKERVIEW RM / HIGHLIGHT TEXT
         internal void SetUpMarkerRMView()
         {
-            SelectedMarkerView markerView = new SelectedMarkerView(Activity)
+            if (isSMAccount)
             {
-                UsageHistoryData = selectedHistoryData,
-                ChartType = ChartType.RM,
-                AccountType = selectedAccount.AccountCategoryId
-            };
-            markerView.ChartView = mChart;
-            mChart.Marker = markerView;
+                SMSelectedMarkerView markerView = new SMSelectedMarkerView(Activity)
+                {
+                    UsageHistoryData = selectedSMHistoryData,
+                    ChartType = ChartType.RM,
+                    AccountType = selectedAccount.AccountCategoryId
+                };
+
+                markerView.ChartView = mChart;
+                mChart.Marker = markerView;
+            }
+            else
+            {
+                SelectedMarkerView markerView = new SelectedMarkerView(Activity)
+                {
+                    UsageHistoryData = selectedHistoryData,
+                    ChartType = ChartType.RM,
+                    AccountType = selectedAccount.AccountCategoryId
+                };
+
+                markerView.ChartView = mChart;
+                mChart.Marker = markerView;
+            }
         }
         #endregion
 
         #region SETUP MARKERVIEW KWH/ HIGHLIGHT TEXT
         internal void SetUpMarkerKWhView()
         {
-            SelectedMarkerView markerView = new SelectedMarkerView(Activity)
+            if (isSMAccount)
             {
-                UsageHistoryData = selectedHistoryData,
-                ChartType = ChartType.kWh,
-                AccountType = selectedAccount.AccountCategoryId
-            };
-            markerView.ChartView = mChart;
-            mChart.Marker = markerView;
+                SMSelectedMarkerView markerView = new SMSelectedMarkerView(Activity)
+                {
+                    UsageHistoryData = selectedSMHistoryData,
+                    ChartType = ChartType.kWh,
+                    AccountType = selectedAccount.AccountCategoryId
+                };
+
+                markerView.ChartView = mChart;
+                mChart.Marker = markerView;
+            }
+            else
+            {
+                SelectedMarkerView markerView = new SelectedMarkerView(Activity)
+                {
+                    UsageHistoryData = selectedHistoryData,
+                    ChartType = ChartType.kWh,
+                    AccountType = selectedAccount.AccountCategoryId
+                };
+                markerView.ChartView = mChart;
+                mChart.Marker = markerView;
+            }
         }
         #endregion
 
         #region SETUP RM DATA
         internal void SetData(int barLength)
         {
-            if (selectedAccount.SmartMeterCode.Equals("0"))
+            if (!isSMAccount)
             {
                 // Lin Siong Note: the tariff data entry handling
                 // Lin Siong Note: one row will contain stacked of data
@@ -1546,12 +1676,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     List<BarEntry> yVals1 = new List<BarEntry>();
                     for (int i = 0; i < barLength; i++)
                     {
-                        if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                        if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
                         {
-                            float[] valList = new float[selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count];
-                            for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                            float[] valList = new float[selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count];
+                            for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
                             {
-                                float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
+                                float val = (float)selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
                                 if (float.IsPositiveInfinity(val))
                                 {
                                     val = float.PositiveInfinity;
@@ -1600,19 +1730,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                         for (int i = 0; i < barLength; i++)
                         {
-                            if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                            if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
                             {
-                                for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                                for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
                                 {
-                                    if (selectedHistoryData.TariffBlocksLegend != null && selectedHistoryData.TariffBlocksLegend.Count > 0)
+                                    if (selectedSMHistoryData.TariffBlocksLegend != null && selectedSMHistoryData.TariffBlocksLegend.Count > 0)
                                     {
                                         bool isFound = false;
-                                        for (int k = 0; k < selectedHistoryData.TariffBlocksLegend.Count; k++)
+                                        for (int k = 0; k < selectedSMHistoryData.TariffBlocksLegend.Count; k++)
                                         {
-                                            if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedHistoryData.TariffBlocksLegend[k].BlockId)
+                                            if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedSMHistoryData.TariffBlocksLegend[k].BlockId)
                                             {
                                                 isFound = true;
-                                                listOfColor.Add(Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData));
+                                                listOfColor.Add(Color.Argb(50, selectedSMHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.BlueData));
                                                 break;
                                             }
                                         }
@@ -1674,7 +1804,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     for (int i = 0; i < barLength; i++)
                     {
                         float[] valList = new float[1];
-                        float val = (float)selectedHistoryData.ByMonth.Months[i].AmountTotal;
+                        float val = (float)selectedSMHistoryData.ByMonth.Months[i].AmountTotal;
                         if (float.IsPositiveInfinity(val))
                         {
                             val = float.PositiveInfinity;
@@ -1747,7 +1877,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #region SETUP KWH DATA
         internal void SetKWhData(int barLength)
         {
-            if (selectedAccount.SmartMeterCode.Equals("0"))
+            if (!isSMAccount)
             {
                 if (isToggleTariff)
                 {
@@ -1947,12 +2077,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     List<BarEntry> yVals1 = new List<BarEntry>();
                     for (int i = 0; i < barLength; i++)
                     {
-                        if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                        if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
                         {
-                            float[] valList = new float[selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count];
-                            for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                            float[] valList = new float[selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count];
+                            for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
                             {
-                                float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
+                                float val = (float)selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
                                 if (float.IsPositiveInfinity(val))
                                 {
                                     val = float.PositiveInfinity;
@@ -2001,19 +2131,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                         for (int i = 0; i < barLength; i++)
                         {
-                            if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                            if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
                             {
-                                for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                                for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
                                 {
-                                    if (selectedHistoryData.TariffBlocksLegend != null && selectedHistoryData.TariffBlocksLegend.Count > 0)
+                                    if (selectedSMHistoryData.TariffBlocksLegend != null && selectedSMHistoryData.TariffBlocksLegend.Count > 0)
                                     {
                                         bool isFound = false;
-                                        for (int k = 0; k < selectedHistoryData.TariffBlocksLegend.Count; k++)
+                                        for (int k = 0; k < selectedSMHistoryData.TariffBlocksLegend.Count; k++)
                                         {
-                                            if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedHistoryData.TariffBlocksLegend[k].BlockId)
+                                            if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedSMHistoryData.TariffBlocksLegend[k].BlockId)
                                             {
                                                 isFound = true;
-                                                listOfColor.Add(Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData));
+                                                listOfColor.Add(Color.Argb(50, selectedSMHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.BlueData));
                                                 break;
                                             }
                                         }
@@ -2075,7 +2205,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     for (int i = 0; i < barLength; i++)
                     {
                         float[] valList = new float[1];
-                        float val = (float)selectedHistoryData.ByMonth.Months[i].UsageTotal;
+                        float val = (float)selectedSMHistoryData.ByMonth.Months[i].UsageTotal;
                         if (float.IsPositiveInfinity(val))
                         {
                             val = float.PositiveInfinity;
@@ -2359,8 +2489,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     tariffBlockLegendRecyclerView.Visibility = ViewStates.Visible;
                     if (tariffBlockLegendAdapter == null)
                     {
-                        tariffBlockLegendAdapter = new TariffBlockLegendAdapter(selectedHistoryData.TariffBlocksLegend, this.Activity);
-                        tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
+                        if (!isSMAccount)
+                        {
+                            tariffBlockLegendAdapter = new TariffBlockLegendAdapter(selectedHistoryData.TariffBlocksLegend, this.Activity);
+                            tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
+                        }
+                        else
+                        {
+                            tariffBlockLegendAdapter = new TariffBlockLegendAdapter(selectedSMHistoryData.TariffBlocksLegend, this.Activity);
+                            tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
+                        }
                     }
                     Context context = tariffBlockLegendRecyclerView.Context;
                     LayoutAnimationController controller =
@@ -2575,40 +2713,79 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             float val = 0;
             try
             {
-                if (isToggleTariff)
+                if(!isSMAccount)
                 {
-                    foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
+                    if (isToggleTariff)
                     {
-                        float valTotal = 0;
-                        for (int i = 0; i < MonthData.TariffBlocksList.Count; i++)
+                        foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
                         {
-                            valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Amount);
+                            float valTotal = 0;
+                            for (int i = 0; i < MonthData.TariffBlocksList.Count; i++)
+                            {
+                                valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Amount);
+                            }
+                            if (System.Math.Abs(valTotal) > val)
+                            {
+                                val = System.Math.Abs((float)valTotal);
+                            }
                         }
-                        if (System.Math.Abs(valTotal) > val)
+                        if (val == 0)
                         {
-                            val = System.Math.Abs((float)valTotal);
+                            val = 1;
                         }
                     }
-                    if (val == 0)
+                    else
                     {
-                        val = 1;
+                        foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
+                        {
+                            if (System.Math.Abs(MonthData.AmountTotal) > val)
+                            {
+                                val = System.Math.Abs((float)MonthData.AmountTotal);
+                            }
+                        }
+                        if (val == 0)
+                        {
+                            val = 1;
+                        }
                     }
                 }
                 else
                 {
-                    foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
+
+                    if (isToggleTariff)
                     {
-                        if (System.Math.Abs(MonthData.AmountTotal) > val)
+                        foreach (SMUsageHistoryData.ByMonthData.MonthData MonthData in selectedSMHistoryData.ByMonth.Months)
                         {
-                            val = System.Math.Abs((float)MonthData.AmountTotal);
+                            float valTotal = 0;
+                            for (int i = 0; i < MonthData.TariffBlocksList.Count; i++)
+                            {
+                                valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Amount);
+                            }
+                            if (System.Math.Abs(valTotal) > val)
+                            {
+                                val = System.Math.Abs((float)valTotal);
+                            }
+                        }
+                        if (val == 0)
+                        {
+                            val = 1;
                         }
                     }
-                    if (val == 0)
+                    else
                     {
-                        val = 1;
+                        foreach (SMUsageHistoryData.ByMonthData.MonthData MonthData in selectedSMHistoryData.ByMonth.Months)
+                        {
+                            if (System.Math.Abs(MonthData.AmountTotal) > val)
+                            {
+                                val = System.Math.Abs((float)MonthData.AmountTotal);
+                            }
+                        }
+                        if (val == 0)
+                        {
+                            val = 1;
+                        }
                     }
                 }
-
             }
             catch (System.Exception e)
             {
@@ -2622,37 +2799,76 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             float val = 0;
             try
             {
-                if (isToggleTariff)
+                if (!isSMAccount)
                 {
-                    foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
+                    if (isToggleTariff)
                     {
-                        float valTotal = 0;
-                        for (int i = 0; i < MonthData.TariffBlocksList.Count; i++)
+                        foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
                         {
-                            valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Usage);
+                            float valTotal = 0;
+                            for (int i = 0; i < MonthData.TariffBlocksList.Count; i++)
+                            {
+                                valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Usage);
+                            }
+                            if (System.Math.Abs(valTotal) > val)
+                            {
+                                val = System.Math.Abs((float)valTotal);
+                            }
                         }
-                        if (System.Math.Abs(valTotal) > val)
+                        if (val == 0)
                         {
-                            val = System.Math.Abs((float)valTotal);
+                            val = 1;
                         }
                     }
-                    if (val == 0)
+                    else
                     {
-                        val = 1;
+                        foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
+                        {
+                            if (System.Math.Abs(MonthData.UsageTotal) > val)
+                            {
+                                val = System.Math.Abs((float)MonthData.UsageTotal);
+                            }
+                        }
+                        if (val == 0)
+                        {
+                            val = 1;
+                        }
                     }
                 }
                 else
                 {
-                    foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
+                    if (isToggleTariff)
                     {
-                        if (System.Math.Abs(MonthData.UsageTotal) > val)
+                        foreach (SMUsageHistoryData.ByMonthData.MonthData MonthData in selectedSMHistoryData.ByMonth.Months)
                         {
-                            val = System.Math.Abs((float)MonthData.UsageTotal);
+                            float valTotal = 0;
+                            for (int i = 0; i < MonthData.TariffBlocksList.Count; i++)
+                            {
+                                valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Usage);
+                            }
+                            if (System.Math.Abs(valTotal) > val)
+                            {
+                                val = System.Math.Abs((float)valTotal);
+                            }
+                        }
+                        if (val == 0)
+                        {
+                            val = 1;
                         }
                     }
-                    if (val == 0)
+                    else
                     {
-                        val = 1;
+                        foreach (SMUsageHistoryData.ByMonthData.MonthData MonthData in selectedSMHistoryData.ByMonth.Months)
+                        {
+                            if (System.Math.Abs(MonthData.UsageTotal) > val)
+                            {
+                                val = System.Math.Abs((float)MonthData.UsageTotal);
+                            }
+                        }
+                        if (val == 0)
+                        {
+                            val = 1;
+                        }
                     }
                 }
             }
@@ -3432,16 +3648,33 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
-                if (isToggleTariff && h != null)
+                if (!isSMAccount)
                 {
-                    int stackedIndex = 0;
-                    if (selectedHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList.Count > 0)
+                    if (isToggleTariff && h != null)
                     {
-                        stackedIndex = selectedHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList.Count - 1;
-                    }
+                        int stackedIndex = 0;
+                        if (selectedHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList.Count > 0)
+                        {
+                            stackedIndex = selectedHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList.Count - 1;
+                        }
 
-                    Highlight stackedHigh = new Highlight((int)e.GetX(), 0, stackedIndex);
-                    mChart.HighlightValue(stackedHigh, false);
+                        Highlight stackedHigh = new Highlight((int)e.GetX(), 0, stackedIndex);
+                        mChart.HighlightValue(stackedHigh, false);
+                    }
+                }
+                else
+                {
+                    if (isToggleTariff && h != null)
+                    {
+                        int stackedIndex = 0;
+                        if (selectedSMHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList.Count > 0)
+                        {
+                            stackedIndex = selectedSMHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList.Count - 1;
+                        }
+
+                        Highlight stackedHigh = new Highlight((int)e.GetX(), 0, stackedIndex);
+                        mChart.HighlightValue(stackedHigh, false);
+                    }
                 }
             }
             catch (System.Exception err)
@@ -3516,6 +3749,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 isUsageLoadedNeeded = false;
                 selectedHistoryData = data;
+            }
+        }
+
+        public void SetSMUsageData(SMUsageHistoryData data)
+        {
+            if (data != null)
+            {
+                isUsageLoadedNeeded = false;
+                selectedSMHistoryData = data;
             }
         }
 
@@ -3630,6 +3872,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public UsageHistoryData GetUsageHistoryData()
         {
             return selectedHistoryData;
+        }
+
+        public SMUsageHistoryData GetSMUsageHistoryData()
+        {
+            return selectedSMHistoryData;
         }
 
         public void StartAmountDueShimmer()
@@ -3817,6 +4064,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public void SetISSMDown(bool flag)
         {
             isSMDown = flag;
+        }
+
+        public bool GetIsSMAccount()
+        {
+            return isSMAccount;
         }
 
         // Lin Siong Note: Set virtual height layout param

@@ -109,7 +109,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
             void SetUsageData(UsageHistoryData data);
 
+            void SetSMUsageData(SMUsageHistoryData data);
+
             UsageHistoryData GetUsageHistoryData();
+
+            SMUsageHistoryData GetSMUsageHistoryData();
 
             void HideEnergyTipsShimmerView();
 
@@ -118,6 +122,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             bool GetIsSMDown();
 
             void SetISSMDown(bool flag);
+
+            bool GetIsSMAccount();
         }
 
         public interface IUserActionsListener : IBasePresenter

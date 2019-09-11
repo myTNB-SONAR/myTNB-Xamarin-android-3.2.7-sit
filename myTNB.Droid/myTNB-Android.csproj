@@ -2397,6 +2397,8 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\myTNBMenu\Charts\Formatter\SMChartsKWhFormatter.cs" />
+    <Compile Include="Src\myTNBMenu\Models\TariffBlockLegendData.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

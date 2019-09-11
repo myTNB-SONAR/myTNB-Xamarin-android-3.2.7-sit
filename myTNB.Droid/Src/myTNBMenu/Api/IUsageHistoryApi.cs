@@ -19,14 +19,9 @@ namespace myTNB_Android.Src.myTNBMenu.Api
         [Post("/v5/my_billingssp.asmx/GetBillingAccountDetails")]
         Task<AccountDetailsResponse> GetDetailedAccount([Body] AccountDetailsRequest accountDetailResponse);
 
-        //Smart Meter APi
-        [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v5/my_billingssp.asmx/GetSmartMeterAccountData")]
-        Task<SMUsageHistoryResponse> DoSMQuery([Body] SMUsageHistoryRequest usageHistoryRequest, CancellationToken cancellationToken);
 
-        // Lin Siong TODO: New Api
         [Headers("Content-Type:application/json; charset=utf-8")]
-        [Post("/v5/my_billingssp.asmx/GetSmartMeterAccountData_V3")]
+        [Post("/v6/mytnbappws.asmx/GetAccountUsageSmart")]
         Task<SMUsageHistoryResponse> DoSMQueryV2([Body] SMUsageHistoryRequest usageHistoryRequest, CancellationToken cancellationToken);
         //[Post("/v5/my_billingssp.asmx/GetSmartMeterAccountData_V2")]
         //[Post("/v5/my_billingssp.asmx/GetSmartMeterAccountData_V3")]

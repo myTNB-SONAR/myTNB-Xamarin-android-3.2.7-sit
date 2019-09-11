@@ -257,20 +257,19 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
             if (this.mView.IsLoadUsageNeeded())
             {
-                if (this.mView.GetSelectedAccount().SmartMeterCode.Equals("0"))
+                if (!this.mView.GetIsSMAccount())
                 {
                     await LoadNMREUsageHistory();
                 }
                 else
                 {
-                    // Lin Siong TODO: To split the usage calling for smart meter
-                    await LoadNMREUsageHistory();
+                    await LoadSMUsageHistory();
                 }
             }
 
             try
             {
-                if (this.mView.GetSelectedAccount().SmartMeterCode.Equals("0"))
+                if (!this.mView.GetIsSMAccount())
                 {
                     if (IsCheckHaveByMonthData(this.mView.GetUsageHistoryData()))
                     {
@@ -283,8 +282,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 }
                 else
                 {
-                    // Lin Siong TODO: To check billing available flag
-                    isBillAvailable = true;
+                    if (IsCheckHaveByMonthData(this.mView.GetSMUsageHistoryData()))
+                    {
+                        isBillAvailable = true;
+                    }
+                    else
+                    {
+                        isBillAvailable = false;
+                    }
                 }
 
                 cts = new CancellationTokenSource();
@@ -383,6 +388,80 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     }
 
                     this.mView.SetUsageData(usageHistoryResponse.Data.UsageHistoryData);
+                    OnByRM();
+                }
+                else
+                {
+                    this.mView.ShowNoInternet(null, null);
+                }
+            }
+            catch (System.OperationCanceledException e)
+            {
+                this.mView.ShowNoInternet(null, null);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                this.mView.ShowNoInternet(null, null);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (System.Exception e)
+            {
+                this.mView.ShowNoInternet(null, null);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private async Task LoadSMUsageHistory()
+        {
+            try
+            {
+                cts = new CancellationTokenSource();
+                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+#if DEBUG
+                var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
+                var api = RestService.For<IUsageHistoryApi>(httpClient);
+#else
+				var api = RestService.For<IUsageHistoryApi>(Constants.SERVER_URL.END_POINT);
+#endif
+
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = UserEntity.GetActive().Email,
+                    sspuid = UserEntity.GetActive().UserID,
+                    did = this.mView.GetDeviceId(),
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+
+                var usageHistoryResponse = await api.DoSMQueryV2(new Requests.SMUsageHistoryRequest()
+                {
+                    AccountNumber = this.mView.GetSelectedAccount().AccountNum,
+                    isOwner = this.mView.GetSelectedAccount().IsOwner ? "true" : "false",
+                    MeterCode = this.mView.GetSelectedAccount().SmartMeterCode,
+                    userInterface = currentUsrInf
+                }, cts.Token);
+
+                if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode != "7200")
+                {
+                    this.mView.ShowNoInternet(usageHistoryResponse.Data.RefreshMessage, usageHistoryResponse.Data.RefreshBtnText);
+                }
+                else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7200")
+                {
+                    if (IsCheckHaveByMonthData(usageHistoryResponse.Data.SMUsageHistoryData))
+                    {
+                        SMUsageHistoryEntity smUsageModel = new SMUsageHistoryEntity();
+                        smUsageModel.Timestamp = DateTime.Now.ToLocalTime();
+                        smUsageModel.JsonResponse = JsonConvert.SerializeObject(usageHistoryResponse);
+                        smUsageModel.AccountNo = this.mView.GetSelectedAccount().AccountNum;
+                        SMUsageHistoryEntity.InsertItem(smUsageModel);
+                    }
+
+                    this.mView.SetSMUsageData(usageHistoryResponse.Data.SMUsageHistoryData);
                     OnByRM();
                 }
                 else
@@ -547,30 +626,51 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         {
             bool isHaveData = true;
 
-            try
+            if (data == null || (data != null && data.ByMonth == null) || (data != null && data.ByMonth != null && data.ByMonth.Months.Count == 0))
             {
-                if (data == null || (data != null && data.ByMonth == null) || (data != null && data.ByMonth != null && data.ByMonth.Months.Count == 0))
+                isHaveData = false;
+            }
+            else
+            {
+                for (int i = 0; i < data.ByMonth.Months.Count; i++)
                 {
-                    isHaveData = false;
-                }
-                else
-                {
-                    foreach (UsageHistoryData.ByMonthData.MonthData monthData in data.ByMonth.Months)
+                    if ((string.IsNullOrEmpty(data.ByMonth.Months[i].UsageTotal.ToString()) && string.IsNullOrEmpty(data.ByMonth.Months[i].AmountTotal.ToString())) || (Math.Abs(data.ByMonth.Months[i].UsageTotal) < 0.001 && Math.Abs(data.ByMonth.Months[i].AmountTotal) < 0.001))
                     {
-                        if ((string.IsNullOrEmpty(monthData.UsageTotal.ToString()) && string.IsNullOrEmpty(monthData.AmountTotal.ToString())) || (Math.Abs(monthData.UsageTotal) < 0.001 && Math.Abs(monthData.AmountTotal) < 0.001))
-                        {
-                            isHaveData = false;
-                        }
-                        else
-                        {
-                            isHaveData = true;
-                        }
+                        isHaveData = false;
+                    }
+                    else
+                    {
+                        isHaveData = true;
+                        break;
                     }
                 }
             }
-            catch (Exception e)
+
+            return isHaveData;
+        }
+
+        private bool IsCheckHaveByMonthData(SMUsageHistoryData data)
+        {
+            bool isHaveData = true;
+
+            if (data == null || (data != null && data.ByMonth == null) || (data != null && data.ByMonth != null && data.ByMonth.Months.Count == 0))
             {
-                Utility.LoggingNonFatalError(e);
+                isHaveData = false;
+            }
+            else
+            {
+                for (int i = 0; i < data.ByMonth.Months.Count; i++)
+                {
+                    if ((string.IsNullOrEmpty(data.ByMonth.Months[i].UsageTotal.ToString()) && string.IsNullOrEmpty(data.ByMonth.Months[i].AmountTotal.ToString())) || (Math.Abs(data.ByMonth.Months[i].UsageTotal) < 0.001 && Math.Abs(data.ByMonth.Months[i].AmountTotal) < 0.001))
+                    {
+                        isHaveData = false;
+                    }
+                    else
+                    {
+                        isHaveData = true;
+                        break;
+                    }
+                }
             }
 
             return isHaveData;

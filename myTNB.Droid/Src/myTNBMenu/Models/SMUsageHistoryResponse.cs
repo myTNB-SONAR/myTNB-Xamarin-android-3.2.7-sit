@@ -14,23 +14,6 @@ namespace myTNB_Android.Src.myTNBMenu.Models
             [JsonProperty(PropertyName = "__type")]
             public string Type { get; set; }
 
-            [JsonProperty(PropertyName = "status")]
-            [AliasAs("status")]
-            public string Status { get; set; }
-
-            [JsonProperty(PropertyName = "isError")]
-            [AliasAs("isError")]
-            public bool IsError { get; set; }
-
-            [JsonProperty(PropertyName = "message")]
-            [AliasAs("message")]
-            public string Message { get; set; }
-
-            [JsonProperty(PropertyName = "StatusCode")]
-            [AliasAs("StatusCode")]
-            public string StatusCode { get; set; }
-
-            // Lin Siong TODO: new api format response
             [JsonProperty(PropertyName = "ErrorCode")]
             [AliasAs("ErrorCode")]
             public string ErrorCode { get; set; }
@@ -46,6 +29,14 @@ namespace myTNB_Android.Src.myTNBMenu.Models
             [JsonProperty(PropertyName = "RefreshBtnText")]
             [AliasAs("RefreshBtnText")]
             public string RefreshBtnText { get; set; }
+
+            [JsonProperty(PropertyName = "IsMonthlyTariffBlocksDisabled")]
+            [AliasAs("IsMonthlyTariffBlocksDisabled")]
+            public bool IsMonthlyTariffBlocksDisabled { get; set; }
+
+            [JsonProperty(PropertyName = "IsMonthlyTariffBlocksUnavailable")]
+            [AliasAs("IsMonthlyTariffBlocksUnavailable")]
+            public bool IsMonthlyTariffBlocksUnavailable { get; set; }
 
             [JsonProperty(PropertyName = "ErrorMessage")]
             [AliasAs("ErrorMessage")]

@@ -25,7 +25,6 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
         private BarChart barChart;
 
         // Lin Siong TODO: Change UsageHistoryData to SMUsageHistoryData
-        public UsageHistoryData selectedHistoryData { get; set; }
         public SMUsageHistoryData selectedSMHistoryData { get; set; }
 
         public Context currentContext { get; set; }
@@ -648,10 +647,10 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
                     if (lastMonthIndex != -1 && bufferItems.Length > 0)
                     {
-                        // Lin Siong Note: Draw Ring on Last bar
+                        // Lin Siong Note: Draw Ring on Last bar, Hide Now as requirement changed
                         // Lin Siong Note: Draw Text On Lasg bar
-                        canvas.DrawPath(GenerateRoundRectangleWithNoSpace(lastMonthLeftPoint + offsetValue, lastMonthTopPoint + offsetValue, lastMonthRightPoint - offsetValue, lastMonthBottomPoint - offsetValue, mRadius, mRadius, true, true, true, true), MBarBorderPaint);
-                        DrawTextOnCanvas(canvas, lastMonthTopPoint, lastMonthLeftPoint, lastMonthRightPoint, selectedHistoryData.ByMonth.Months[selectedHistoryData.ByMonth.Months.Count - 1].Currency, selectedHistoryData.ByMonth.Months[selectedHistoryData.ByMonth.Months.Count - 1].AmountTotal, selectedHistoryData.ByMonth.Months[selectedHistoryData.ByMonth.Months.Count - 1].UsageUnit, selectedHistoryData.ByMonth.Months[selectedHistoryData.ByMonth.Months.Count - 1].UsageTotal);
+                        // canvas.DrawPath(GenerateRoundRectangleWithNoSpace(lastMonthLeftPoint + offsetValue, lastMonthTopPoint + offsetValue, lastMonthRightPoint - offsetValue, lastMonthBottomPoint - offsetValue, mRadius, mRadius, true, true, true, true), MBarBorderPaint);
+                        DrawTextOnCanvas(canvas, lastMonthTopPoint, lastMonthLeftPoint, lastMonthRightPoint, selectedSMHistoryData.ByMonth.Months[selectedSMHistoryData.ByMonth.Months.Count - 1].Currency, selectedSMHistoryData.ByMonth.Months[selectedSMHistoryData.ByMonth.Months.Count - 1].AmountTotal, selectedSMHistoryData.ByMonth.Months[selectedSMHistoryData.ByMonth.Months.Count - 1].UsageUnit, selectedSMHistoryData.ByMonth.Months[selectedSMHistoryData.ByMonth.Months.Count - 1].UsageTotal);
                     }
                 }
             }

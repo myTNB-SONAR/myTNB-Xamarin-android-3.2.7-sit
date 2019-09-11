@@ -3,17 +3,16 @@ using MikePhil.Charting.Components;
 using MikePhil.Charting.Formatter;
 using myTNB_Android.Src.myTNBMenu.Models;
 using System;
-using System.Collections.Generic;
 
 namespace myTNB_Android.Src.myTNBMenu.Charts.Formatter
 {
-    public class SMChartsMonthFormatter : Java.Lang.Object, IAxisValueFormatter
+    public class SMChartsKWhFormatter : Java.Lang.Object, IAxisValueFormatter
     {
 
         private SMUsageHistoryData.ByMonthData byMonthData;
-        private BarChart chart;
+        private BarLineChartBase chart;
 
-        public SMChartsMonthFormatter(SMUsageHistoryData.ByMonthData byMonthData, BarChart chart)
+        public SMChartsKWhFormatter(SMUsageHistoryData.ByMonthData byMonthData, BarLineChartBase chart)
         {
             this.byMonthData = byMonthData;
             this.chart = chart;
