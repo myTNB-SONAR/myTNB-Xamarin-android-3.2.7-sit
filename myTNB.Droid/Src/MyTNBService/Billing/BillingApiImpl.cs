@@ -18,7 +18,7 @@ namespace myTNB_Android.Src.MyTNBService.Billing
             httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
             api = RestService.For<IBillingAPI>(httpClient);
 #else
-            api = RestService.For<ItemisedBillingAPI>(Constants.SERVER_URL.END_POINT);
+            api = RestService.For<IBillingAPI>(Constants.SERVER_URL.END_POINT);
 #endif
         }
 
