@@ -67,17 +67,42 @@ namespace myTNB
                 && response.d.IsSuccess && response.d.data != null)
             {
                 AccountUsageSmartDataModel data = response.d.data.DeepClone();
+                RefreshDataModel = response.d.DeepClone();
                 TariffLegendList = data.TariffBlocksLegend;
                 ByMonthDateRange = data.ByMonth.Range;
                 ByMonthUsage = data.ByMonth.Months;
                 UsageMetrics = data.OtherUsageMetrics;
                 Tooltips = data.ToolTips;
 
-                SaveToCache(accountNumber, data);
+                SaveToCache(accountNumber, RefreshDataModel);
             }
             else
             {
                 RefreshDataModel = response?.d ?? new AccountUsageSmartResponseDataModel();
+            }
+        }
+
+        public static bool IsMonthlyTariffDisable
+        {
+            get
+            {
+                if (RefreshDataModel != null)
+                {
+                    return RefreshDataModel.IsMonthlyTariffBlocksDisabled;
+                }
+                return true;
+            }
+        }
+
+        public static bool IsMonthlyTariffUnavailable
+        {
+            get
+            {
+                if (RefreshDataModel != null)
+                {
+                    return RefreshDataModel.IsMonthlyTariffBlocksUnavailable;
+                }
+                return true;
             }
         }
 
@@ -113,7 +138,7 @@ namespace myTNB
         private static readonly string TimeStampPrefix = "AccountUsageSmartTimeStampCache_{0}";
         private static readonly string DateFormat = "yyyy-MM-dd";
         #region Smart Meter
-        public static void SaveToCache(string accountNumber, AccountUsageSmartDataModel data)
+        public static void SaveToCache(string accountNumber, AccountUsageSmartResponseDataModel data)
         {
             string jsonData = JsonConvert.SerializeObject(data);
             if (!string.IsNullOrEmpty(accountNumber) && !string.IsNullOrWhiteSpace(accountNumber)
@@ -131,7 +156,7 @@ namespace myTNB
             }
         }
 
-        public static AccountUsageSmartDataModel GetCachedData(string accountNumber)
+        public static AccountUsageSmartResponseDataModel GetCachedData(string accountNumber)
         {
             if (!string.IsNullOrEmpty(accountNumber) && !string.IsNullOrWhiteSpace(accountNumber))
             {
@@ -140,19 +165,20 @@ namespace myTNB
                 string jsonData = userDefaults.StringForKey(key);
                 if (!string.IsNullOrEmpty(jsonData) && !string.IsNullOrWhiteSpace(jsonData))
                 {
-                    AccountUsageSmartDataModel data = JsonConvert.DeserializeObject<AccountUsageSmartDataModel>(jsonData);
-                    if (data != null)
+                    AccountUsageSmartResponseDataModel d = JsonConvert.DeserializeObject<AccountUsageSmartResponseDataModel>(jsonData);
+                    if (d != null && d.data != null)
                     {
-                        TariffLegendList = data.TariffBlocksLegend;
-                        ByMonthDateRange = data.ByMonth.Range;
-                        ByMonthUsage = data.ByMonth.Months;
-                        UsageMetrics = data.OtherUsageMetrics;
-                        Tooltips = data.ToolTips;
-                        return data;
+                        RefreshDataModel = d;
+                        TariffLegendList = d.data.TariffBlocksLegend;
+                        ByMonthDateRange = d.data.ByMonth.Range;
+                        ByMonthUsage = d.data.ByMonth.Months;
+                        UsageMetrics = d.data.OtherUsageMetrics;
+                        Tooltips = d.data.ToolTips;
+                        return d;
                     }
                 }
             }
-            return new AccountUsageSmartDataModel();
+            return new AccountUsageSmartResponseDataModel();
         }
 
         public static bool IsRefreshNeeded(string accountNumber)
@@ -165,8 +191,8 @@ namespace myTNB
                 if (!string.IsNullOrEmpty(timeStamp) && !string.IsNullOrWhiteSpace(timeStamp))
                 {
                     bool newDay = IsNewDay(timeStamp);
-                    AccountUsageSmartDataModel cachedData = GetCachedData(accountNumber);
-                    return newDay && cachedData.ByMonth != null;
+                    AccountUsageSmartResponseDataModel cachedData = GetCachedData(accountNumber);
+                    return newDay && cachedData.data != null && cachedData.data.ByMonth != null;
                 }
             }
 
