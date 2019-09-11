@@ -314,7 +314,7 @@
 
     "PushNotificationDetails": {
         "contactTNB": "Contact TNB",
-        "viewBill": "View Bill",
+        "viewBill": "View Details",
         "payNow": "Pay Now",
         "viewMyUsage": "View My Usage",
         "submitMeterReading": "Submit Meter Reading",

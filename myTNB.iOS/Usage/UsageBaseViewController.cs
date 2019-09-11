@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using CoreGraphics;
-using Force.DeepCloner;
 using myTNB.Home.Components;
 using myTNB.Model;
 using myTNB.Model.Usage;
@@ -158,7 +156,6 @@ namespace myTNB
             };
             viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                //DismissViewController(true, null);
                 NavigationController.PopViewController(true);
             }));
             viewBack.AddSubview(imgViewBack);
@@ -213,7 +210,11 @@ namespace myTNB
 
         private void AddScrollView()
         {
-            nfloat height = UIScreen.MainScreen.Bounds.Height - _navbarContainer.Frame.Height - TabBarController.TabBar.Frame.Height - GetScaledHeight(8F);
+            nfloat height = UIScreen.MainScreen.Bounds.Height - _navbarContainer.Frame.Height - GetScaledHeight(8F);
+            if (TabBarController != null && TabBarController.TabBar != null)
+            {
+                height -= TabBarController.TabBar.Frame.Height;
+            }
             _scrollViewContent = new UIScrollView(new CGRect(0, GetYLocationFromFrame(_navbarContainer.Frame, 8F), ViewWidth, height))
             {
                 BackgroundColor = UIColor.Clear,

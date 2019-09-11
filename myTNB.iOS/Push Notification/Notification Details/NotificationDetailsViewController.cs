@@ -358,7 +358,7 @@ namespace myTNB
                     }
                     else
                     {
-                        OnViewBill();
+                        OnViewDetails();
                     }
                 }));
                 _btnSecondary = new CustomUIButtonV2
@@ -496,7 +496,7 @@ namespace myTNB
             });
         }
 
-        private void OnViewBill()
+        private void OnViewDetails()
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -505,7 +505,16 @@ namespace myTNB
                     if (NetworkUtility.isReachable)
                     {
                         DataManager.DataManager.SharedInstance.SelectAccount(NotificationInfo.AccountNum);
-                        ViewHelper.DismissControllersAndSelectTab(this, 1, true);
+                        UIStoryboard storyBoard = UIStoryboard.FromName("BillDetails", null);
+                        BillDetailsViewController viewController =
+                            storyBoard.InstantiateViewController("BillDetailsView") as BillDetailsViewController;
+                        if (viewController != null)
+                        {
+                            viewController.AccountNumber = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
+                            viewController.IsFreshCall = true;
+                            viewController.IsRoot = true;
+                            NavigationController.PushViewController(viewController, true);
+                        }
                     }
                     else
                     {
@@ -528,8 +537,7 @@ namespace myTNB
                         UsageViewController viewController = stroryboard.InstantiateViewController("UsageViewController") as UsageViewController;
                         if (viewController != null)
                         {
-                            UINavigationController navController = new UINavigationController(viewController);
-                            PresentViewController(navController, true, null);
+                            NavigationController.PushViewController(viewController, true);
                         }
                     }
                     else
