@@ -327,13 +327,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 };
                 ((DashboardHomeActivity)Activity).SetStatusBarBackground();
 
-                ((DashboardHomeActivity)Activity).ShowBottomNavigationBar();
-
                 this.presenter.GetSmartMeterReadingWalkthroughtTimeStamp();
 
                 this.presenter.GetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
 
-                this.presenter.GetEnergySavingTipsTimeStamp();
+                // Lin Siong TODO: Check Energy Saving Tips Enable Disable
+                // this.presenter.GetEnergySavingTipsTimeStamp();
                 SetRefreshLayoutParams();
 
                 ((DashboardHomeActivity)Activity).EnableDropDown(false);

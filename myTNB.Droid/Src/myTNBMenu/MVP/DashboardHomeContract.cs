@@ -79,11 +79,13 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             /// <param name="stringResourceId">integer</param>
             void SetToolbarTitle(int stringResourceId);
 
-			/// <summary>
-			/// Enable dropdown
-			/// </summary>
-			/// <param name="enable">Boolean</param>
-			void EnableDropDown(Boolean enable);
+            void SetAccountToolbarTitle(string accountName);
+
+            /// <summary>
+            /// Enable dropdown
+            /// </summary>
+            /// <param name="enable">Boolean</param>
+            void EnableDropDown(Boolean enable);
 
 			/// <summary>
 			/// Shows the leaf account icon in drop down

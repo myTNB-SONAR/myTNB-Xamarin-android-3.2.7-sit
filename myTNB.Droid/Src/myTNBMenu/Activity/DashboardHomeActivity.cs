@@ -93,6 +93,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public static bool GO_TO_INNER_DASHBOARD = false;
 
+        private bool isSetToolbarClick = false;
+
         public bool IsActive()
         {
             return Window.DecorView.RootView.IsShown && !IsFinishing;
@@ -161,6 +163,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
 
             this.userActionsListener?.OnNotificationCount();
+
+            this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).Click += DashboardHomeActivity_Click;
 
         }
 
@@ -296,7 +300,55 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void SetToolbarTitle(int stringResourceId)
         {
-            this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).Text = GetString(stringResourceId);
+            try
+            {
+                this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).Text = GetString(stringResourceId);
+                this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).SetPadding(0, 0, 0, 0);
+                this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).CompoundDrawablePadding = 0;
+                this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).SetCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                isSetToolbarClick = false;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void SetAccountToolbarTitle(string accountName)
+        {
+            try
+            {
+                this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).Text = accountName;
+                int padding = (int)DPUtils.ConvertDPToPx(3f);
+                this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).SetPadding(padding, padding, padding, padding);
+                this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).CompoundDrawablePadding = padding;
+                List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
+                bool enableDropDown = accountList.Count > 0 ? true : false;
+                if (enableDropDown)
+                {
+                    Drawable dropdown = ContextCompat.GetDrawable(this, Resource.Drawable.ic_spinner_dropdown);
+                    Drawable transparentDropDown = ContextCompat.GetDrawable(this, Resource.Drawable.ic_action_dropdown);
+                    transparentDropDown.Alpha = 0;
+                    this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).SetCompoundDrawablesWithIntrinsicBounds(transparentDropDown, null, dropdown, null);
+                }
+                else
+                {
+                    this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).SetCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                }
+                isSetToolbarClick = true;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void DashboardHomeActivity_Click(object sender, EventArgs e)
+        {
+            if (isSetToolbarClick)
+            {
+                this.userActionsListener.SelectSupplyAccount();
+            }
         }
 
         public void BillsMenuRefresh(AccountData accountData)
@@ -818,7 +870,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                 ViewGroup.MarginLayoutParams lp3 = (ViewGroup.MarginLayoutParams)contentLayout.LayoutParameters;
 
-                lp3.BottomMargin = (int)DPUtils.ConvertDPToPx(41f);
+                lp3.BottomMargin = (int)DPUtils.ConvertDPToPx(48f);
 
                 contentLayout.LayoutParameters = lp3;
 

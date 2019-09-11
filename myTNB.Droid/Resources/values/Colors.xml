@@ -9,6 +9,7 @@
 
   <color name="bg_gradientTopFill">#2a97fb</color>
   <color name="bg_gradientBottomFill">#7730d3</color>
+  <color name="bg_gradientNewBottomFill">#634add</color>
 
 
   <color name="loginBtnColor">#20bd4c</color>

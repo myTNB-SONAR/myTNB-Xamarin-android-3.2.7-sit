@@ -36,7 +36,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/content_layout"
-            android:layout_marginBottom="41dp" />
+            android:layout_marginBottom="48dp" />
     </LinearLayout>
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/bottom_navigation"

@@ -693,6 +693,13 @@
         segmentedgroup:layout_behavior="@string/bottom_sheet_behavior"
         segmentedgroup:behavior_hideable="true"
         segmentedgroup:behavior_peekHeight="100dp">
+        <ImageView
+            android:id="@+id/shadow_layout"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:visibility="visible"
+            android:scaleType="fitXY"
+            android:background="@drawable/scroll_indicator" />
         <LinearLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent"

@@ -289,6 +289,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.virtualHeight)]
         LinearLayout virtualHeight;
 
+        [BindView(Resource.Id.shadow_layout)]
+        ImageView shadowLayout;
+
         TariffBlockLegendAdapter tariffBlockLegendAdapter;
 
         private DashboardChartContract.IUserActionsListener userActionsListener;
@@ -327,6 +330,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         static bool isPaymentDown = false;
 
         static bool isUsageLoadedNeeded = true;
+
+        private bool isChangeBackgroundNeeded = true;
+
+        private bool isScrollIndicatorShowNeed = false;
+
+        private bool isSMR = false;
 
         bool isSMDown = false;
 
@@ -568,6 +577,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                 }
 
+                try
+                {
+                    ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                    ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+
                 if (selectedAccount != null)
                 {
                     txtAddress.Text = selectedAccount.AddStreet;
@@ -584,7 +603,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         txtTotalPayableTitle.Text = GetString(Resource.String.title_payment_advice_amount);
                         graphToggleSelection.Visibility = ViewStates.Gone;
                         SetVirtualHeightParams(6f);
-                        
+                        isChangeBackgroundNeeded = true;
+                        isSMR = false;
                     }
                     else if (! selectedAccount.SmartMeterCode.Equals("0"))
                     {
@@ -596,6 +616,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
                         graphToggleSelection.Visibility = ViewStates.Visible;
                         energyTipsView.Visibility = ViewStates.Visible;
+                        isChangeBackgroundNeeded = true;
+                        isSMR = false;
                         // Lin Siong TODO: Statistic View, on DashboardNewChartView also
                         // Lin Siong TODO: Api change call to Smart Meter Usage, currently still using the normal meter api, also the variable 
                         // Lin Siong TODO: Last bar tap event to day view
@@ -606,7 +628,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                     else
                     {
-                        SetVirtualHeightParams(80f);
+                        isSMR = this.mPresenter.IsOwnedSMR(selectedAccount.AccountNum);
+                        if (isSMR)
+                        {
+                            SetVirtualHeightParams(80f);
+                            isChangeBackgroundNeeded = true;
+                        }
+                        else
+                        {
+                            rootView.SetBackgroundResource(0);
+                            scrollViewContent.SetBackgroundResource(0);
+                            SetVirtualHeightParams(50f);
+                            try
+                            {
+                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
+                                ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                            }
+                            catch (System.Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
+                            isChangeBackgroundNeeded = false;
+                        }
                         isREAccount = false;
                         reContainer.Visibility = ViewStates.Gone;
                         btnPay.Visibility = ViewStates.Visible;
@@ -658,7 +701,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else
                 {
-                    SetVirtualHeightParams(80f);
+                    rootView.SetBackgroundResource(0);
+                    scrollViewContent.SetBackgroundResource(0);
+                    SetVirtualHeightParams(6f);
+                    try
+                    {
+                        ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
+                        ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                    isChangeBackgroundNeeded = false;
+                    isSMR = false;
                     energyTipsView.Visibility = ViewStates.Gone;
                     try
                     {
@@ -702,6 +758,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 else
                 {
                     ((DashboardHomeActivity)Activity).HideAccountName();
+                    // Lin Siong Note: Enable it when design confirm
+                    // dashboardAccountName.Visibility = ViewStates.Gone;
                     dashboardAccountName.Visibility = ViewStates.Visible;
                     dashboardAccountName.Text = selectedAccount.AccountNickName;
                     List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
@@ -721,6 +779,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                     LinearLayoutManager linearTariffBlockLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Vertical, false);
                     tariffBlockLegendRecyclerView.SetLayoutManager(linearTariffBlockLayoutManager);
+
+                    // Lin Siong TODO: Energy Tips Disable Flag
+                    energyTipsView.Visibility = ViewStates.Gone;
+                    energyTipsShimmerView.Visibility = ViewStates.Gone;
 
                     LinearLayoutManager linearEnergyTipLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
                     energyTipsList.SetLayoutManager(linearEnergyTipLayoutManager);
@@ -772,7 +834,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         if (!selectedAccount.AccountCategoryId.Equals("2"))
                         {
-                            OnGetEnergyTipsItems();
+                            // Lin Siong TODO: Energy Tips Disable Flag
+                            // OnGetEnergyTipsItems();
                         }
                     }                  
 
@@ -838,9 +901,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
 
                 };
-
-                // Hide Bottom Navigation Bar
-                ((DashboardHomeActivity)Activity).HideBottomNavigationBar();
 
             }
             catch (System.Exception e)
@@ -2121,8 +2181,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     activity = context as DashboardHomeActivity;
                     // SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
-                    activity.SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
-                    activity.SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 }
             }
             catch (ClassCastException e)
@@ -2284,7 +2342,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     txtTarifToggle.Text = "Show Tariff";
                     isToggleTariff = false;
                     tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
-                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                    if (isChangeBackgroundNeeded)
+                    {
+                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                    }
+                    else
+                    {
+                        SetVirtualHeightParams(70f);
+                    }
                 }
                 else
                 {
@@ -2304,7 +2369,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     tariffBlockLegendRecyclerView.LayoutAnimation = controller;
                     tariffBlockLegendRecyclerView.GetAdapter().NotifyDataSetChanged();
                     tariffBlockLegendRecyclerView.ScheduleLayoutAnimation();
-                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_extended_bg);
+                    if (isChangeBackgroundNeeded)
+                    {
+                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_extended_bg);
+                    }
+                    else
+                    {
+                        SetVirtualHeightParams(120f);
+                    }
                 }
 
                 mChart.Clear();
@@ -2411,6 +2483,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
                         ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.bg_smr);
+                        rootView.SetBackgroundColor(Resources.GetColor(Resource.Color.greyBackground));
                         scrollViewContent.SetBackgroundResource(Resource.Drawable.dasbord_chart_refresh_bg);
 
 
@@ -2593,7 +2666,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public override void OnResume()
         {
             base.OnResume();
-            this.Activity.InvalidateOptionsMenu();
 
             var act = this.Activity as AppCompatActivity;
 
@@ -3130,25 +3202,32 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         void NMRESMDashboardScrollViewListener.OnScrollChanged(NMRESMDashboardScrollView v, int l, int t, int oldl, int oldt)
         {
-            View view = (View)scrollView.GetChildAt(scrollView.ChildCount - 1);
-            int scrollPosition = t - oldt;
-            // if diff is zero, then the bottom has been reached
-            if (!isREAccount)
+            try
             {
-                if (scrollPosition > 0)
+                View view = (View)scrollView.GetChildAt(scrollView.ChildCount - 1);
+                int scrollPosition = t - oldt;
+                // if diff is zero, then the bottom has been reached
+                if (!isREAccount)
                 {
-                    requireScroll = true;
-                    bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
-                }
-                else if (scrollPosition < 0)
-                {
-                    bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
-                }
+                    if (scrollPosition > 0)
+                    {
+                        requireScroll = true;
+                        bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
+                    }
+                    else if (scrollPosition < 0)
+                    {
+                        bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                    }
 
-                if (t == 0)
-                {
-                    requireScroll = false;
+                    if (t == 0)
+                    {
+                        requireScroll = false;
+                    }
                 }
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
             }
         }
 
@@ -3161,16 +3240,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             public override void OnStateChanged(View bottomSheet, int newState)
             {
-                if (isREAccount)
+                try
                 {
-                    bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
-                }
-                else if (!requireScroll)
-                {
-                    if (newState == BottomSheetBehavior.StateHidden)
+                    if (isREAccount)
                     {
-                        bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                        bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
                     }
+                    else if (!requireScroll)
+                    {
+                        if (newState == BottomSheetBehavior.StateHidden)
+                        {
+                            bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                        }
+                    }
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
                 }
             }
         }
@@ -3291,6 +3377,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 scrollView.setOnScrollViewListener(this);
                 scrollView.OverScrollMode = OverScrollMode.Always;
+
+                int childHeight = scrollViewContent.Height;
+                isScrollIndicatorShowNeed = scrollView.Height < (childHeight + scrollView.PaddingTop + scrollView.PaddingBottom);
+                if (isScrollIndicatorShowNeed)
+                {
+                    shadowLayout.SetBackgroundResource(Resource.Drawable.scroll_indicator);
+                }
+                else
+                {
+                    shadowLayout.SetBackgroundResource(Resource.Drawable.scroll_shadow);
+                }
+                bottomSheet.RequestLayout();
             }
             catch (System.Exception e)
             {

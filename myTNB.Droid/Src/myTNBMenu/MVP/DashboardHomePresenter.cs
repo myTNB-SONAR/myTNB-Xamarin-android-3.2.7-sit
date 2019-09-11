@@ -95,6 +95,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 						if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
 						{
+                            // Lin Siong Note: Enable it when design confirm
                             if (selectedAccount.AccountCategoryId.Equals("2"))
                             {
                                 this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_re_activity_title);
@@ -103,6 +104,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                             {
                                 this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
                             }
+                            // this.mView.SetAccountToolbarTitle(selectedAccount.AccDesc);
                             this.mView.HideAccountName();
                             if (selectedAccount != null && selectedAccount.SmartMeterCode != null && selectedAccount.SmartMeterCode.Equals("0"))
 							{
@@ -441,6 +443,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             try
             {
                 this.mView.HideAccountName();
+                // Lin Siong Note: Enable it when design confirm
                 if (accountSelected.AccountCategoryId.Equals("2"))
                 {
                     this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_re_activity_title);
@@ -449,6 +452,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 {
                     this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
                 }
+
+                // this.mView.SetAccountToolbarTitle(accountSelected.AccDesc);
 
                 if (smDataError)
                 {
@@ -464,6 +469,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             catch (System.Exception e)
             {
                 this.mView.HideAccountName();
+                // Lin Siong Note: Enable it when design confirm
                 if (accountSelected.AccountCategoryId.Equals("2"))
                 {
                     this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_re_activity_title);
@@ -472,6 +478,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 {
                     this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
                 }
+
+                // this.mView.SetAccountToolbarTitle(accountSelected.AccDesc);
 
                 if (smDataError)
                 {
@@ -501,7 +509,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             try
             {
                 this.mView.HideAccountName();
+                // Lin Siong Note: Enable it when design confirm
                 this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
+
+                //this.mView.SetAccountToolbarTitle(accountSelected.AccDesc);
 
                 this.mView.ShowSMChart(smUsageHistoryResponse, AccountData.Copy(accountSelected, true));
                 smUsageHistoryResponse = null;
