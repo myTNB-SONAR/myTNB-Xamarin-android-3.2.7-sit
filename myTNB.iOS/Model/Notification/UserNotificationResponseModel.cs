@@ -11,12 +11,12 @@ namespace myTNB.Model
 
     public class UserNotificationModel : BaseModelRefresh
     {
-        public UserNotifications data { set; get; } = new UserNotifications();
+        public UserNotificationsDataModel data { set; get; } = new UserNotificationsDataModel();
     }
 
-    public class UserNotifications
+    public class UserNotificationsDataModel
     {
-        public List<UserNotificationDataModel> userNotifications { set; get; } = new List<UserNotificationDataModel>();
+        public List<UserNotificationDataModel> UserNotifications { set; get; } = new List<UserNotificationDataModel>();
     }
 
     public class UserNotificationDataModel

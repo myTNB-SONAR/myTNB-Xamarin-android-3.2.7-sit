@@ -2,7 +2,7 @@
     "d": {
         "__type": "mytnb.lib.models.NoticationDetailsStatus",
         "data": {
-            "userNotification": {
+            "UserNotification": {
                 "NotificationType": "ODN",
                 "Id": "1003",
                 "Email": "",

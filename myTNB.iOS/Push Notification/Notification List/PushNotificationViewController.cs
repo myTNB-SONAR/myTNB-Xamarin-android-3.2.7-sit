@@ -95,7 +95,7 @@ namespace myTNB.PushNotification
         {
             userNotificationResponse = DataManager.DataManager.SharedInstance.UserNotificationResponse;
             if (userNotificationResponse != null && userNotificationResponse?.d != null && userNotificationResponse.d.IsSuccess
-                && userNotificationResponse.d.data != null && userNotificationResponse.d.data.userNotifications != null)
+                && userNotificationResponse.d.data != null && userNotificationResponse.d.data.UserNotifications != null)
             {
                 UpdateNotificationDisplay();
             }
@@ -435,7 +435,7 @@ namespace myTNB.PushNotification
                                 if (_detailedInfo != null && _detailedInfo?.d != null
                                     && _detailedInfo.d.IsSuccess
                                     && _detailedInfo?.d?.data != null
-                                    && _detailedInfo?.d?.data.userNotification != null)
+                                    && _detailedInfo?.d?.data.UserNotification != null)
                                 {
                                     DataManager.DataManager.SharedInstance.NotificationNeedsUpdate = false;
                                     UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
@@ -448,10 +448,10 @@ namespace myTNB.PushNotification
                                         DataManager.DataManager.SharedInstance.UserNotifications[index].IsRead = @"true";
                                         notificationTitle = DataManager.DataManager.SharedInstance.UserNotifications[index]?.Title;
                                     }
-                                    _detailedInfo.d.data.userNotification.NotificationTitle = notificationTitle;
+                                    _detailedInfo.d.data.UserNotification.NotificationTitle = notificationTitle;
                                     if (viewController != null)
                                     {
-                                        viewController.NotificationInfo = _detailedInfo?.d?.data?.userNotification;
+                                        viewController.NotificationInfo = _detailedInfo?.d?.data?.UserNotification;
                                         NavigationController?.PushViewController(viewController, true);
                                     }
                                     UpdateNotificationDisplay();

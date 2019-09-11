@@ -12,6 +12,6 @@
 
     public class NotificationDetailedInfoData
     {
-        public UserNotificationDataModel userNotification { set; get; } = new UserNotificationDataModel();
+        public UserNotificationDataModel UserNotification { set; get; } = new UserNotificationDataModel();
     }
 }
