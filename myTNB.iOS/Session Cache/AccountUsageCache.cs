@@ -47,15 +47,40 @@ namespace myTNB
                 && response.d.IsSuccess && response.d.data != null)
             {
                 AccountUsageDataModel data = response.d.data.DeepClone();
+                RefreshDataModel = response.d.DeepClone();
                 TariffLegendList = data.TariffBlocksLegend;
                 ByMonthDateRange = data.ByMonth.Range;
                 ByMonthUsage = data.ByMonth.Months;
 
-                SaveToCache(accountNumber, data);
+                SaveToCache(accountNumber, RefreshDataModel);
             }
             else
             {
                 RefreshDataModel = response?.d ?? new AccountUsageResponseDataModel();
+            }
+        }
+
+        public static bool IsMonthlyTariffDisable
+        {
+            get
+            {
+                if (RefreshDataModel != null)
+                {
+                    return RefreshDataModel.IsMonthlyTariffBlocksDisabled;
+                }
+                return true;
+            }
+        }
+
+        public static bool IsMonthlyTariffUnavailable
+        {
+            get
+            {
+                if (RefreshDataModel != null)
+                {
+                    return RefreshDataModel.IsMonthlyTariffBlocksUnavailable;
+                }
+                return true;
             }
         }
 
@@ -91,7 +116,7 @@ namespace myTNB
         private static readonly string TimeStampPrefix = "AccountUsageTimeStampCache_{0}";
         private static readonly string DateFormat = "yyyy-MM-dd";
         #region Normal and RE
-        public static void SaveToCache(string accountNumber, AccountUsageDataModel data)
+        public static void SaveToCache(string accountNumber, AccountUsageResponseDataModel data)
         {
             string jsonData = JsonConvert.SerializeObject(data);
             if (!string.IsNullOrEmpty(accountNumber) && !string.IsNullOrWhiteSpace(accountNumber)
@@ -109,7 +134,7 @@ namespace myTNB
             }
         }
 
-        public static AccountUsageDataModel GetCachedData(string accountNumber)
+        public static AccountUsageResponseDataModel GetCachedData(string accountNumber)
         {
             if (!string.IsNullOrEmpty(accountNumber) && !string.IsNullOrWhiteSpace(accountNumber))
             {
@@ -118,17 +143,18 @@ namespace myTNB
                 string jsonData = userDefaults.StringForKey(key);
                 if (!string.IsNullOrEmpty(jsonData) && !string.IsNullOrWhiteSpace(jsonData))
                 {
-                    AccountUsageDataModel data = JsonConvert.DeserializeObject<AccountUsageDataModel>(jsonData);
-                    if (data != null)
+                    AccountUsageResponseDataModel d = JsonConvert.DeserializeObject<AccountUsageResponseDataModel>(jsonData);
+                    if (d != null && d.data != null)
                     {
-                        TariffLegendList = data.TariffBlocksLegend;
-                        ByMonthDateRange = data.ByMonth.Range;
-                        ByMonthUsage = data.ByMonth.Months;
-                        return data;
+                        RefreshDataModel = d;
+                        TariffLegendList = d.data.TariffBlocksLegend;
+                        ByMonthDateRange = d.data.ByMonth.Range;
+                        ByMonthUsage = d.data.ByMonth.Months;
+                        return d;
                     }
                 }
             }
-            return new AccountUsageDataModel();
+            return new AccountUsageResponseDataModel();
         }
 
         public static bool IsRefreshNeeded(string accountNumber)
@@ -141,8 +167,8 @@ namespace myTNB
                 if (!string.IsNullOrEmpty(timeStamp) && !string.IsNullOrWhiteSpace(timeStamp))
                 {
                     bool newDay = IsNewDay(timeStamp);
-                    AccountUsageDataModel cachedData = GetCachedData(accountNumber);
-                    return newDay && cachedData.ByMonth != null;
+                    AccountUsageResponseDataModel cachedData = GetCachedData(accountNumber);
+                    return newDay && cachedData.data != null && cachedData.data.ByMonth != null;
                 }
             }
 

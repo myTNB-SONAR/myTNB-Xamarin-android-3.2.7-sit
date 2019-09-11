@@ -9,14 +9,14 @@ namespace myTNB
         private static readonly Lazy<AppLaunchMasterCache> lazy = new Lazy<AppLaunchMasterCache>(() => new AppLaunchMasterCache());
         public static AppLaunchMasterCache Instance { get { return lazy.Value; } }
 
-        private static AppLaunchMasterDataModel d = new AppLaunchMasterDataModel();
+        private static AppLaunchMasterDataModel dataModel = new AppLaunchMasterDataModel();
         private static MasterDataModel masterData = new MasterDataModel();
 
         public static void AddAppLaunchResponseData(AppLaunchResponseModel response)
         {
-            if (d == null)
+            if (dataModel == null)
             {
-                d = new AppLaunchMasterDataModel();
+                dataModel = new AppLaunchMasterDataModel();
             }
             if (masterData == null)
             {
@@ -26,7 +26,7 @@ namespace myTNB
                 response.d != null &&
                 response.d.data != null)
             {
-                d = response.d;
+                dataModel = response.d;
                 masterData = response.d.data;
 
                 DataManager.DataManager.SharedInstance.LatestAppVersion = masterData?.ForceUpdateInfo?.iOSLatestVersion;
@@ -80,9 +80,9 @@ namespace myTNB
         {
             get
             {
-                if (d != null)
+                if (dataModel != null)
                 {
-                    return d.IsSMRApplyDisabled;
+                    return dataModel.IsSMRApplyDisabled;
                 }
                 return true;
             }
@@ -92,9 +92,9 @@ namespace myTNB
         {
             get
             {
-                if (d != null)
+                if (dataModel != null)
                 {
-                    return d.IsEnergyTipsDisabled;
+                    return dataModel.IsEnergyTipsDisabled;
                 }
                 return true;
             }
@@ -104,9 +104,9 @@ namespace myTNB
         {
             get
             {
-                if (d != null)
+                if (dataModel != null)
                 {
-                    return d.IsOCRDown;
+                    return dataModel.IsOCRDown;
                 }
                 return true;
             }
