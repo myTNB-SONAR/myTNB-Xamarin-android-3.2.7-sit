@@ -2426,6 +2426,8 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\notification_reconnection.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\notification_settings.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\notification_smr.png" />
+    <Compile Include="Src\MyTNBService\Request\UserNotificationDetailsRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\UserNotificationDetailsResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -92,38 +92,43 @@ namespace myTNB_Android.Src.Notifications.Adapter
                 //03 Dunning Disconnection Notice
                 //04 Disconnection
                 //05 Reconnection
+                //06 SMR
 
                 if (notificationData.BCRMNotificationTypeId.Equals("01"))
                 {
-                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_billing));
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_new_bill));
                 }
                 else if (notificationData.BCRMNotificationTypeId.Equals("02"))
                 {
-                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_billing_due));
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_bill_due));
                 }
                 else if (notificationData.BCRMNotificationTypeId.Equals("03"))
                 {
-                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_power));
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_dunning_disconnection));
                 }
                 else if (notificationData.BCRMNotificationTypeId.Equals("04"))
                 {
-                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_connection));
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_disconnection));
                 }
                 else if (notificationData.BCRMNotificationTypeId.Equals("05"))
                 {
-                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_connection));
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_reconnection));
                 }
-                else if (notificationData.BCRMNotificationTypeId.Equals("97"))
+                else if (notificationData.BCRMNotificationTypeId.Equals("06"))
                 {
-                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_promo));
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_smr));
                 }
-                else if (notificationData.BCRMNotificationTypeId.Equals("98"))
-                {
-                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_news));
-                }
+                //else if (notificationData.BCRMNotificationTypeId.Equals("97"))
+                //{
+                //    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_promo));
+                //}
+                //else if (notificationData.BCRMNotificationTypeId.Equals("98"))
+                //{
+                //    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_news));
+                //}
                 else if (notificationData.BCRMNotificationTypeId.Equals("99"))
                 {
-                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_maintenance));
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_settings));
                 }
 
                 //if (notificationData.Code.Equals(Constants.NOTIFICATION_CODE_BP))

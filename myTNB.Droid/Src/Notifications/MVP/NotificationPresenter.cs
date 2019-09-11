@@ -23,6 +23,9 @@ using static Android.Widget.CompoundButton;
 using myTNB_Android.Src.NotificationDetails.Requests;
 using System.Threading.Tasks;
 using myTNB_Android.Src.Notifications.Api;
+using myTNB_Android.Src.MyTNBService.Notification;
+using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.Request;
 
 namespace myTNB_Android.Src.Notifications.MVP
 {
@@ -37,10 +40,12 @@ namespace myTNB_Android.Src.Notifications.MVP
         NotificationContract.IApiNotification notificationApi;
         CancellationTokenSource cts;
         List<UserNotificationData> selectedNotificationList;
+        NotificationApiImpl notificationAPI;
         public NotificationPresenter(NotificationContract.IView mView)
         {
             this.mView = mView;
             this.mView.SetPresenter(this);
+            notificationAPI = new NotificationApiImpl();
         }
 
         private async Task InvokeNotificationApi(API_ACTION apiAction)
@@ -150,6 +155,58 @@ namespace myTNB_Android.Src.Notifications.MVP
             }
             catch (Exception e)
             {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public async void OnShowNotificationDetails(UserNotificationData userNotification, int position)
+        {
+            try
+            {
+                this.mView.ShowProgress();
+                UserNotificationDetailsRequest request = new UserNotificationDetailsRequest(userNotification.NotificationTypeId, userNotification.NotificationType);
+                UserNotificationDetailsResponse response = await notificationAPI.GetNotificationDetailedInfo<UserNotificationDetailsResponse>(request);
+                if (response.Data.ErrorCode == "7200")
+                {
+                    UserNotificationEntity.UpdateIsRead(response.Data.ResponseData.UserNotificationDetail.Id, true);
+                    this.mView.ShowDetails(response.Data.ResponseData.UserNotificationDetail, userNotification, position);
+                    //NotificationTypesEntity entity = NotificationTypesEntity.GetById(userNotification.NotificationTypeId);
+
+                    //if (entity != null)
+                    //{
+                    //    this.mView.ShowDetails(response.Data.ResponseData.UserNotificationDetail, userNotification, position);
+                    //}
+                }
+                this.mView.HideProgress();
+            }
+            catch (System.OperationCanceledException e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgress();
+                }
+                // ADD OPERATION CANCELLED HERE
+                this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgress();
+                }
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgress();
+                }
+                // ADD UNKNOWN EXCEPTION HERE
+                this.mView.ShowRetryOptionsUnknownException(e);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -285,7 +342,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                             try
                             {
                                 UserEntity loggedUser = UserEntity.GetActive();
-                                var userNotificationResponse = await api.GetUserNotifications(new UserNotificationRequest()
+                                var userNotificationResponse = await api.GetUserNotifications(new AppLaunch.Requests.UserNotificationRequest()
                                 {
                                     ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
                                     Email = loggedUser.Email,
@@ -417,7 +474,7 @@ namespace myTNB_Android.Src.Notifications.MVP
             try
             {
                 UserEntity loggedUser = UserEntity.GetActive();
-                var userNotificationResponse = await api.GetUserNotifications(new UserNotificationRequest()
+                var userNotificationResponse = await api.GetUserNotifications(new AppLaunch.Requests.UserNotificationRequest()
                 {
                     ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
                     Email = loggedUser.Email,
@@ -536,6 +593,102 @@ namespace myTNB_Android.Src.Notifications.MVP
 
                     }
                 }
+
+                //if (notificationData.BCRMNotificationTypeId.Equals("01"))
+                //{
+                //    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_new_bill));
+                //}
+                //else if (notificationData.BCRMNotificationTypeId.Equals("02"))
+                //{
+                //    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_bill_due));
+                //}
+                //else if (notificationData.BCRMNotificationTypeId.Equals("03"))
+                //{
+                //    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_dunning_disconnection));
+                //}
+                //else if (notificationData.BCRMNotificationTypeId.Equals("04"))
+                //{
+                //    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_disconnection));
+                //}
+                //else if (notificationData.BCRMNotificationTypeId.Equals("05"))
+                //{
+                //    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_reconnection));
+                //}
+                //else if (notificationData.BCRMNotificationTypeId.Equals("06"))
+                //{
+                //    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_smr));
+                //}
+                ////else if (notificationData.BCRMNotificationTypeId.Equals("97"))
+                ////{
+                ////    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_promo));
+                ////}
+                ////else if (notificationData.BCRMNotificationTypeId.Equals("98"))
+                ////{
+                ////    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_news));
+                ////}
+                //else if (notificationData.BCRMNotificationTypeId.Equals("99"))
+                //{
+                //    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_settings));
+                //}
+
+                listOfNotifications.Clear();
+                UserNotificationData data = new UserNotificationData();
+                data.BCRMNotificationTypeId = "01";
+                data.CreatedDate = "9/1/2019 5:00:00 PM";
+                data.IsRead = false;
+                data.Title = "Title";
+                data.Message = "Message";
+                listOfNotifications.Add(data);
+
+                data = new UserNotificationData();
+                data.BCRMNotificationTypeId = "02";
+                data.CreatedDate = "9/1/2019 5:00:00 PM";
+                data.IsRead = false;
+                data.Title = "Title";
+                data.Message = "Message";
+                listOfNotifications.Add(data);
+
+                data = new UserNotificationData();
+                data.BCRMNotificationTypeId = "03";
+                data.CreatedDate = "9/1/2019 5:00:00 PM";
+                data.IsRead = false;
+                data.Title = "Title";
+                data.Message = "Message";
+                listOfNotifications.Add(data);
+
+                data = new UserNotificationData();
+                data.BCRMNotificationTypeId = "04";
+                data.CreatedDate = "9/1/2019 5:00:00 PM";
+                data.IsRead = false;
+                data.Title = "Title";
+                data.Message = "Message";
+                listOfNotifications.Add(data);
+
+                data = new UserNotificationData();
+                data.BCRMNotificationTypeId = "05";
+                data.CreatedDate = "9/1/2019 5:00:00 PM";
+                data.IsRead = false;
+                data.Title = "Title";
+                data.Message = "Message";
+                listOfNotifications.Add(data);
+
+                data = new UserNotificationData();
+                data.BCRMNotificationTypeId = "06";
+                data.CreatedDate = "9/1/2019 5:00:00 PM";
+                data.IsRead = false;
+                data.Title = "Title";
+                data.Message = "Message";
+                listOfNotifications.Add(data);
+
+                data = new UserNotificationData();
+                data.BCRMNotificationTypeId = "99";
+                data.CreatedDate = "9/1/2019 5:00:00 PM";
+                data.IsRead = false;
+                data.Title = "Title";
+                data.Message = "Message";
+                data.NotificationType = "1000011";
+                data.NotificationTypeId = "1001";
+                listOfNotifications.Add(data);
 
                 this.mView.ShowNotificationsList(listOfNotifications);
             }

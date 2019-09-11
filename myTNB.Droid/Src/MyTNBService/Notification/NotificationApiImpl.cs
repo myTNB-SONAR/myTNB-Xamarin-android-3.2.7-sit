@@ -29,7 +29,7 @@ namespace myTNB_Android.Src.MyTNBService.Notification
 
         public Task<T> GetNotificationDetailedInfo<T>([Body] APIBaseRequest request)
         {
-            throw new NotImplementedException();
+            return api.GetNotificationDetailedInfo<T>(request);
         }
 
         public Task<T> GetUserNotifications<T>([Body] APIBaseRequest request)

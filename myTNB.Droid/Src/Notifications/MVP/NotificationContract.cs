@@ -193,6 +193,8 @@ namespace myTNB_Android.Src.Notifications.MVP
             void ReadAllSelectedNotifications();
 
             void ShowFilteredList();
+
+            void OnShowNotificationDetails(UserNotificationData userNotification, int position);
         }
 
         public interface IApiNotification

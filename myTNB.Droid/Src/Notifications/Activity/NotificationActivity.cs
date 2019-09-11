@@ -1009,7 +1009,8 @@ namespace myTNB_Android.Src.Notifications.Activity
         public void ShowNotificationDetails(int itemPosition)
 		{
 			UserNotificationData userNotificationData = notificationRecyclerAdapter.GetAllNotifications()[itemPosition];
-			mPresenter.OnSelectedNotificationItem(userNotificationData, itemPosition);
+            //mPresenter.OnSelectedNotificationItem(userNotificationData, itemPosition);
+            mPresenter.OnShowNotificationDetails(userNotificationData, itemPosition);
 		}
 	}
 }
