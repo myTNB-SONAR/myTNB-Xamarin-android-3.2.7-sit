@@ -507,8 +507,7 @@ namespace myTNB.PushNotification
                             {
                                 ReadNotificationResponseModel readNotificationResponse = _readNotificationResponse;
                                 if (readNotificationResponse != null && readNotificationResponse?.d != null
-                                    && readNotificationResponse?.d?.status?.ToLower() == "success"
-                                    && readNotificationResponse?.d?.didSucceed == true)
+                                    && readNotificationResponse.d.IsSuccess)
                                 {
                                     UpdateNotifications(updateNotificationList, isMultiple, indexPath, true);
                                     UpdateNotificationDisplay();
@@ -530,7 +529,7 @@ namespace myTNB.PushNotification
                                 }
                                 else
                                 {
-                                    DisplayToast(readNotificationResponse?.d?.message ?? "Error_DefaultMessage".Translate());
+                                    DisplayToast(readNotificationResponse?.d?.ErrorMessage ?? "Error_DefaultMessage".Translate());
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -559,8 +558,7 @@ namespace myTNB.PushNotification
                             {
                                 DeleteNotificationResponseModel deleteNotifResponse = _deleteNotificationResponse;
                                 if (deleteNotifResponse != null && deleteNotifResponse?.d != null
-                                    && deleteNotifResponse?.d?.status?.ToLower() == "success"
-                                    && deleteNotifResponse?.d?.didSucceed == true)
+                                    && deleteNotifResponse.d.IsSuccess)
                                 {
                                     UpdateNotifications(updateNotificationList, isMultiple, indexPath);
                                     pushNotificationTableView.ReloadData();
@@ -572,7 +570,7 @@ namespace myTNB.PushNotification
                                 }
                                 else
                                 {
-                                    DisplayToast(deleteNotifResponse?.d?.message ?? "Error_DefaultMessage".Translate());
+                                    DisplayToast(deleteNotifResponse?.d?.ErrorMessage ?? "Error_DefaultMessage".Translate());
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -664,13 +662,10 @@ namespace myTNB.PushNotification
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    ApiKeyID = TNBGlobal.API_KEY_ID,
-                    UpdatedNotifications = deleteNotificationList,
-                    Email = user?.email,
-                    DeviceId = DataManager.DataManager.SharedInstance.UDID,
-                    SSPUserId = user?.userID
+                    serviceManager.usrInf,
+                    updatedNotifications = deleteNotificationList,
                 };
-                _deleteNotificationResponse = serviceManager.OnExecuteAPI<DeleteNotificationResponseModel>("DeleteUserNotification_V3", requestParameter);
+                _deleteNotificationResponse = serviceManager.OnExecuteAPIV6<DeleteNotificationResponseModel>(PushNotificationConstants.Service_DeleteNotification, requestParameter);
             });
         }
 
@@ -684,13 +679,10 @@ namespace myTNB.PushNotification
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    ApiKeyID = TNBGlobal.API_KEY_ID,
-                    UpdatedNotifications = readNotificationList,
-                    Email = user?.email,
-                    DeviceId = DataManager.DataManager.SharedInstance.UDID,
-                    SSPUserId = user?.userID
+                    serviceManager.usrInf,
+                    updatedNotifications = readNotificationList
                 };
-                _readNotificationResponse = serviceManager.OnExecuteAPI<ReadNotificationResponseModel>("ReadUserNotification", requestParameter);
+                _readNotificationResponse = serviceManager.OnExecuteAPIV6<ReadNotificationResponseModel>(PushNotificationConstants.Service_ReadUserNotification, requestParameter);
             });
         }
 

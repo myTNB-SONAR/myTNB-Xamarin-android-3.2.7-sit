@@ -10,7 +10,8 @@ namespace myTNB.PushNotification
         public static string Pagename_PushNotificationDetails = "PushNotificationDetails";
 
         //Service
-        public static string Service_DeleteNotification = "DeleteUserNotification_V3";
+        public static string Service_DeleteNotification = "DeleteUserNotification";
+        public static string Service_ReadUserNotification = "ReadUserNotification";
         public static string Service_GetSMRAccountActivityInfo = "GetSMRAccountActivityInfo";
 
         //Image

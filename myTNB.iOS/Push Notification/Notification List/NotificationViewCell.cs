@@ -40,11 +40,15 @@ namespace myTNB.PushNotification
             imgIcon = new UIImageView(new CGRect(ScaleUtility.GetScaledWidth(16)
                 , (cellHeight - icnWidth) / 2, icnWidth, icnWidth));
 
+            nfloat titleWidth = cellWidth - imgIcon.Frame.GetMaxX() - ScaleUtility.GetPercentWidthValue(20F) - ScaleUtility.GetScaledWidth(44);
+
             lblTitle = new UILabel(new CGRect(imgIcon.Frame.GetMaxX() + ScaleUtility.GetScaledWidth(8), ScaleUtility.GetScaledHeight(16)
-                , ScaleUtility.GetPercentWidthValue(50F), ScaleUtility.GetScaledHeight(20)))
+                , titleWidth, ScaleUtility.GetScaledHeight(20)))
             {
                 TextColor = MyTNBColor.CharcoalGrey,
-                Font = TNBFont.MuseoSans_14_500
+                Font = TNBFont.MuseoSans_14_500,
+                Lines = 1,
+                LineBreakMode = UILineBreakMode.TailTruncation
             };
 
             lblDate = new UILabel(new CGRect(cellWidth - ScaleUtility.GetPercentWidthValue(20F) - ScaleUtility.GetScaledWidth(36)
@@ -118,11 +122,14 @@ namespace myTNB.PushNotification
 
             if (isSelectionMode)
             {
+                lblTitle.Frame = new CGRect(lblTitle.Frame.Location, new CGSize(ScaleUtility.GetPercentWidthValue(50F), lblTitle.Frame.Height));
                 lblDetails.Frame = new CGRect(lblDetails.Frame.X, lblDetails.Frame.Y
                     , cellWidth - (48 + lblDate.Frame.Width + 34 + 12 + 40), lblDetails.Frame.Height);
             }
             else
             {
+                nfloat titleWidth = cellWidth - imgIcon.Frame.GetMaxX() - ScaleUtility.GetPercentWidthValue(20F) - ScaleUtility.GetScaledWidth(44);
+                lblTitle.Frame = new CGRect(lblTitle.Frame.Location, new CGSize(titleWidth, lblTitle.Frame.Height));
                 lblDetails.Frame = new CGRect(lblDetails.Frame.X, lblDetails.Frame.Y
                     , cellWidth - (48 + lblDate.Frame.Width + 34 + 12), lblDetails.Frame.Height);
             }

@@ -2,6 +2,6 @@
 {
     public class ReadNotificationResponseModel
     {
-        public BaseModel d { set; get; }
+        public BaseModelV2 d { set; get; }
     }
 }

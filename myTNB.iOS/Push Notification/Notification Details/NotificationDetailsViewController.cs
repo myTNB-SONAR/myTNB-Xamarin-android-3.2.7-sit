@@ -656,7 +656,7 @@ namespace myTNB
                         }
                         else
                         {
-                            DisplayServiceError(_deleteNotificationResponse?.d?.message);
+                            DisplayServiceError(_deleteNotificationResponse?.d?.ErrorMessage ?? string.Empty);
                         }
                         ActivityIndicator.Hide();
                     }
@@ -694,19 +694,16 @@ namespace myTNB
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    ApiKeyID = TNBGlobal.API_KEY_ID,
-                    UpdatedNotifications = new List<UpdateNotificationModel>(){
+                    serviceManager.usrInf,
+                    updatedNotifications = new List<UpdateNotificationModel>(){
                         new UpdateNotificationModel()
                         {
                             NotificationType = NotificationInfo.NotificationType,
                             NotificationId = id
                         }
-                    },
-                    Email = user?.email,
-                    DeviceId = DataManager.DataManager.SharedInstance.UDID,
-                    SSPUserId = user?.userID
+                    }
                 };
-                _deleteNotificationResponse = serviceManager.OnExecuteAPI<DeleteNotificationResponseModel>(PushNotificationConstants.Service_DeleteNotification, requestParameter);
+                _deleteNotificationResponse = serviceManager.OnExecuteAPIV6<DeleteNotificationResponseModel>(PushNotificationConstants.Service_DeleteNotification, requestParameter);
             });
         }
         #endregion

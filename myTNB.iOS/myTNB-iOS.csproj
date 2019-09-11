@@ -407,8 +407,6 @@
     <ImageAsset Include="Assets.xcassets\Notification-Unread.imageset\icon_notification_unread%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Unread.imageset\icon_notification_unread%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\ic_header_delete%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\ic_header_delete%403x.png" />
     <ImageAsset Include="Assets.xcassets\Checkbox-Active.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Checkbox-Active.imageset\ic_action_checkbox_active.png" />
     <ImageAsset Include="Assets.xcassets\Checkbox-Active.imageset\ic_action_checkbox_active%402x.png" />
@@ -1189,6 +1187,8 @@
     <ImageAsset Include="Assets.xcassets\Notification-Banner-SSMR-Remainder.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-SSMR-Remainder.imageset\group6%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-SSMR-Remainder.imageset\group6%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\delete%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\delete%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1435,7 +1435,6 @@
     <Folder Include="Assets.xcassets\IC-Header-Cancel.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Select.imageset\" />
     <Folder Include="Assets.xcassets\Maintenance-Image.imageset\" />
-    <Folder Include="Model\Modify Notification\" />
     <Folder Include="Assets.xcassets\Notification-Error.imageset\" />
     <Folder Include="Assets.xcassets\Refresh-Error-Normal.imageset\" />
     <Folder Include="Assets.xcassets\Refresh-Error-White.imageset\" />
@@ -2183,8 +2182,6 @@
     <Compile Include="Home\Feedback\Feedback Image\UIImageHelper.cs" />
     <Compile Include="Home\More\Language\LanguageSettings.cs" />
     <Compile Include="Model\UpdateNotification\UpdateNotificationModel.cs" />
-    <Compile Include="Model\Modify Notification\DeleteNotificationResponseModel.cs" />
-    <Compile Include="Model\Modify Notification\ReadNotificationResponseModel.cs" />
     <Compile Include="Customs\CustomUIButton.cs" />
     <Compile Include="Customs\CustomUILabel.cs" />
     <Compile Include="Home\Components\RefreshViewComponent.cs" />
@@ -2431,6 +2428,8 @@
     <Compile Include="Model\GetAppLaunchMasterData\AppLaunchResponseModel.cs" />
     <Compile Include="Session Cache\AppLaunchMasterCache.cs" />
     <Compile Include="Onboarding\AppLaunchConstants.cs" />
+    <Compile Include="Model\Notification\DeleteNotificationResponseModel.cs" />
+    <Compile Include="Model\Notification\ReadNotificationResponseModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

@@ -37,6 +37,9 @@
     <None Remove="Resources\Notification\NotificationInfo_1004.json" />
     <None Remove="Resources\Notification\NotificationInfo_1005.json" />
     <None Remove="Resources\Notification\NotificationInfo_1099.json" />
+    <None Remove="Resources\Notification\NotificationInfo_10009 %28copy%29.json" />
+    <None Remove="Resources\Notification\NotificationInfo_10050 %28copy%29.json" />
+    <None Remove="Resources\Notification\NotificationInfo_10051 %28copy%29.json" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Resources\Notification\NotificationInfo_1005.json" />
@@ -60,5 +63,9 @@
     <EmbeddedResource Include="Resources\Notification\NotificationInfo_1004.json" />
     <EmbeddedResource Include="Resources\Notification\NotificationInfo_1005.json" />
     <EmbeddedResource Include="Resources\Notification\NotificationInfo_1099.json" />
+    <EmbeddedResource Include="Resources\Notification\NotificationInfo_10051.json" />
+    <EmbeddedResource Include="Resources\Notification\NotificationInfo_10050.json" />
+    <EmbeddedResource Include="Resources\Notification\NotificationInfo_10052.json" />
+    <EmbeddedResource Include="Resources\Notification\NotificationInfo_10053.json" />
   </ItemGroup>
 </Project>
