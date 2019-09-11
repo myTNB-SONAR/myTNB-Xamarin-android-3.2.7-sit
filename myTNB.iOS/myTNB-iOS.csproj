@@ -1839,14 +1839,11 @@
     <Compile Include="Model\GetBillingAccountDetails\BillingAccountDetailsDataModel.cs" />
     <Compile Include="Model\GetBillingAccountDetails\BillingAccountDetailsResponseModel.cs" />
     <Compile Include="Model\Notification\NotificationChannelResponseModel.cs" />
-    <Compile Include="Model\Notification\NotificationDetailedInfoModel.cs" />
     <Compile Include="Model\Notification\NotificationDetailedInfoResponseModel.cs" />
     <Compile Include="Model\Notification\NotificationPreferenceModel.cs" />
     <Compile Include="Model\Notification\NotificationPreferenceUpdateResponseModel.cs" />
     <Compile Include="Model\Notification\NotificationTypeModel.cs" />
     <Compile Include="Model\Notification\NotificationTypeResponseModel.cs" />
-    <Compile Include="Model\Notification\UserNotificationDataModel.cs" />
-    <Compile Include="Model\Notification\UserNotificationModel.cs" />
     <Compile Include="Model\Notification\UserNotificationResponseModel.cs" />
     <Compile Include="Model\GetAccountUsageHistoryForGraph\ByDayModel.cs" />
     <Compile Include="Model\GetAccountUsageHistoryForGraph\ByMonthModel.cs" />

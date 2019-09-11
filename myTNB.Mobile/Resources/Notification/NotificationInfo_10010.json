@@ -2,23 +2,27 @@
     "d": {
         "__type": "mytnb.lib.models.NoticationDetailsStatus",
         "data": {
-            "NotificationType": "ODN",
-            "Id": "10010",
-            "Email": "",
-            "DeviceId": "",
-            "AccountNum": "220937712010",
-            "Title": "Reminder: Time To Submit Your Meter Reading!",
-            "Message": "Hello, it looks like you haven't submitted your meter reading for #accountNickname# yet! Don't worry, you've got till 2 days to do it.",
-            "IsRead": "true",
-            "IsDeleted": "false",
-            "NotificationTypeId": "1000010",
-            "BCRMNotificationTypeId": "0010",
-            "Target": "",
-            "CreatedDate": "9/1/2019 5:35:04 PM",
-            "AccountDetails": null
+            "userNotification": {
+                "NotificationType": "ODN",
+                "Id": "10010",
+                "Email": "",
+                "DeviceId": "",
+                "AccountNum": "220937712010",
+                "Title": "Reminder: Time To Submit Your Meter Reading!",
+                "Message": "Hello, it looks like you haven't submitted your meter reading for #accountNickname# yet! Don't worry, you've got till 2 days to do it.",
+                "IsRead": "true",
+                "IsDeleted": "false",
+                "NotificationTypeId": "1000010",
+                "BCRMNotificationTypeId": "0010",
+                "Target": "",
+                "CreatedDate": "9/1/2019 5:35:04 PM",
+                "AccountDetails": null
+            }
         },
-        "status": "success",
-        "isError": "false",
-        "message": "Successful"
+        "ErrorCode": "7200",
+        "ErrorMessage": "Successful!",
+        "DisplayMessage": "Successful!",
+        "DisplayType": "",
+        "DisplayTitle": ""
     }
 }

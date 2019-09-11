@@ -94,10 +94,12 @@ namespace myTNB.PushNotification
         private void ValidateResponse()
         {
             userNotificationResponse = DataManager.DataManager.SharedInstance.UserNotificationResponse;
-            if (userNotificationResponse == null
-                || userNotificationResponse?.d == null
-                || userNotificationResponse?.d?.didSucceed == false
-                || userNotificationResponse?.d?.status?.ToLower() == "failed")
+            if (userNotificationResponse != null && userNotificationResponse?.d != null && userNotificationResponse.d.IsSuccess
+                && userNotificationResponse.d.data != null && userNotificationResponse.d.data.userNotifications != null)
+            {
+                UpdateNotificationDisplay();
+            }
+            else
             {
                 string msg = !string.IsNullOrWhiteSpace(userNotificationResponse?.d?.RefreshMessage)
                     ? userNotificationResponse?.d?.RefreshMessage : "Error_RefreshMessage".Translate();
@@ -107,10 +109,6 @@ namespace myTNB.PushNotification
                 _titleBarComponent.SetPrimaryVisibility(true);
                 _titleBarComponent.SetSecondaryVisibility(true);
                 pushNotificationTableView.Hidden = true;
-            }
-            else
-            {
-                UpdateNotificationDisplay();
             }
         }
 
@@ -435,9 +433,9 @@ namespace myTNB.PushNotification
                             InvokeOnMainThread(() =>
                             {
                                 if (_detailedInfo != null && _detailedInfo?.d != null
-                                    && _detailedInfo?.d?.didSucceed == true
-                                    && _detailedInfo?.d?.status.ToLower() == "success"
-                                    && _detailedInfo?.d?.data != null)
+                                    && _detailedInfo.d.IsSuccess
+                                    && _detailedInfo?.d?.data != null
+                                    && _detailedInfo?.d?.data.userNotification != null)
                                 {
                                     DataManager.DataManager.SharedInstance.NotificationNeedsUpdate = false;
                                     UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
@@ -450,14 +448,17 @@ namespace myTNB.PushNotification
                                         DataManager.DataManager.SharedInstance.UserNotifications[index].IsRead = @"true";
                                         notificationTitle = DataManager.DataManager.SharedInstance.UserNotifications[index]?.Title;
                                     }
-                                    _detailedInfo.d.data.NotificationTitle = notificationTitle;
-                                    viewController.NotificationInfo = _detailedInfo?.d?.data;
-                                    NavigationController?.PushViewController(viewController, true);
+                                    _detailedInfo.d.data.userNotification.NotificationTitle = notificationTitle;
+                                    if (viewController != null)
+                                    {
+                                        viewController.NotificationInfo = _detailedInfo?.d?.data?.userNotification;
+                                        NavigationController?.PushViewController(viewController, true);
+                                    }
                                     UpdateNotificationDisplay();
                                 }
                                 else
                                 {
-                                    DisplayServiceError(_detailedInfo?.d?.message);
+                                    DisplayServiceError(_detailedInfo?.d?.ErrorMessage ?? string.Empty);
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -474,30 +475,19 @@ namespace myTNB.PushNotification
 
         internal Task GetNotificationDetailedInfo(UserNotificationDataModel dataModel)
         {
-            string emailAddress = string.Empty;
-            string userId = string.Empty;
-            if (DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
-            {
-                emailAddress = DataManager.DataManager.SharedInstance.UserEntity[0]?.email;
-                userId = DataManager.DataManager.SharedInstance.UserEntity[0]?.userID;
-            }
-
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    ApiKeyID = TNBGlobal.API_KEY_ID,
+                    serviceManager.usrInf,
                     NotificationId = dataModel.Id,
-                    NotificationType = dataModel.NotificationType,
-                    Email = emailAddress,
-                    DeviceId = DataManager.DataManager.SharedInstance.UDID,
-                    SSPUserId = userId
+                    dataModel.NotificationType
                 };
 #if DEBUG
                 _detailedInfo = Newtonsoft.Json.JsonConvert.DeserializeObject<NotificationDetailedInfoResponseModel>(UserNotificationManager.GetInfo(dataModel.Id));
 #else
-                _detailedInfo = serviceManager.OnExecuteAPI<NotificationDetailedInfoResponseModel>("GetNotificationDetailedInfo_V2", requestParameter);
+                _detailedInfo = serviceManager.OnExecuteAPIV6<NotificationDetailedInfoResponseModel>("GetNotificationDetailedInfo", requestParameter);
 #endif
             });
         }

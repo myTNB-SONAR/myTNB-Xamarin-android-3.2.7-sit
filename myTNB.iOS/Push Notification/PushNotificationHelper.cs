@@ -112,10 +112,10 @@ namespace myTNB
             DataManager.DataManager.SharedInstance.UserNotificationResponse = _userNotifications;
             res = _userNotifications?.d?.didSucceed == true;
 
-            if (_userNotifications != null && _userNotifications?.d != null
-                && _userNotifications?.d?.didSucceed == true && _userNotifications?.d?.status?.ToLower() == "success")
+            if (_userNotifications != null && _userNotifications?.d != null && _userNotifications.d.IsSuccess
+                && _userNotifications.d.data != null && _userNotifications.d.data.userNotifications != null)
             {
-                DataManager.DataManager.SharedInstance.UserNotifications = _userNotifications.d.data;
+                DataManager.DataManager.SharedInstance.UserNotifications = _userNotifications.d.data.userNotifications;
                 DataManager.DataManager.SharedInstance.NotificationNeedsUpdate = false;
             }
             else
@@ -167,15 +167,13 @@ namespace myTNB
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
-                    deviceId = DataManager.DataManager.SharedInstance.UDID
+                    serviceManager.usrInf
                 };
 #if DEBUG
                 UserNotificationManager.SetData();
                 _userNotifications = Newtonsoft.Json.JsonConvert.DeserializeObject<UserNotificationResponseModel>(UserNotificationManager.GetData());
 #else
-                _userNotifications = serviceManager.OnExecuteAPI<UserNotificationResponseModel>("GetUserNotifications", requestParameter);
+                _userNotifications = serviceManager.OnExecuteAPIV6<UserNotificationResponseModel>("GetUserNotifications", requestParameter);
 #endif
             });
         }
