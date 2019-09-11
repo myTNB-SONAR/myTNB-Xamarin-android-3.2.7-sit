@@ -153,30 +153,36 @@ namespace myTNB
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                InvokeOnMainThread(async () =>
+                InvokeOnMainThread(() =>
                 {
                     if (NetworkUtility.isReachable)
                     {
                         if (AccountUsageCache.IsRefreshNeeded(DataManager.DataManager.SharedInstance.SelectedAccount.accNum))
                         {
                             AccountUsageCache.ClearTariffLegendList();
-                            AccountUsageResponseModel accountUsageResponse = await UsageServiceCall.GetAccountUsage(DataManager.DataManager.SharedInstance.SelectedAccount);
-                            AccountUsageCache.SetData(DataManager.DataManager.SharedInstance.SelectedAccount.accNum, accountUsageResponse);
-                            if (AccountUsageCache.IsSuccess)
+                            InvokeInBackground(async () =>
                             {
-                                SetTariffButtonState();
-                                SetTariffLegendComponent();
-                                SetChartView(false);
-                            }
-                            else
-                            {
-                                SetRefreshScreen();
-                                if (isREAccount)
+                                AccountUsageResponseModel accountUsageResponse = await UsageServiceCall.GetAccountUsage(DataManager.DataManager.SharedInstance.SelectedAccount);
+                                InvokeOnMainThread(() =>
                                 {
-                                    SetREAmountViewForRefresh();
-                                }
-                                CallGetSMRAccountActivityInfo(true);
-                            }
+                                    AccountUsageCache.SetData(DataManager.DataManager.SharedInstance.SelectedAccount.accNum, accountUsageResponse);
+                                    if (AccountUsageCache.IsSuccess)
+                                    {
+                                        SetTariffButtonState();
+                                        SetTariffLegendComponent();
+                                        SetChartView(false);
+                                    }
+                                    else
+                                    {
+                                        SetRefreshScreen();
+                                        if (isREAccount)
+                                        {
+                                            SetREAmountViewForRefresh();
+                                        }
+                                        CallGetSMRAccountActivityInfo(true);
+                                    }
+                                });
+                            });
                         }
                         else
                         {
@@ -198,7 +204,7 @@ namespace myTNB
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                InvokeOnMainThread(async () =>
+                InvokeOnMainThread(() =>
                 {
                     if (NetworkUtility.isReachable)
                     {
@@ -206,20 +212,26 @@ namespace myTNB
                         {
                             SetSmartMeterComponent(true);
                             AccountUsageSmartCache.ClearTariffLegendList();
-                            AccountUsageSmartResponseModel accountUsageSmartResponse = await UsageServiceCall.GetAccountUsageSmart(DataManager.DataManager.SharedInstance.SelectedAccount);
-                            AccountUsageSmartCache.SetData(DataManager.DataManager.SharedInstance.SelectedAccount.accNum, accountUsageSmartResponse);
-                            if (AccountUsageSmartCache.IsSuccess)
+                            InvokeInBackground(async () =>
                             {
-                                OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
-                                SetSmartMeterComponent(false, model.Cost);
-                                SetTariffButtonState();
-                                SetTariffLegendComponent();
-                                SetChartView(false);
-                            }
-                            else
-                            {
-                                SetRefreshScreen();
-                            }
+                                AccountUsageSmartResponseModel accountUsageSmartResponse = await UsageServiceCall.GetAccountUsageSmart(DataManager.DataManager.SharedInstance.SelectedAccount);
+                                InvokeOnMainThread(() =>
+                                {
+                                    AccountUsageSmartCache.SetData(DataManager.DataManager.SharedInstance.SelectedAccount.accNum, accountUsageSmartResponse);
+                                    if (AccountUsageSmartCache.IsSuccess)
+                                    {
+                                        OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
+                                        SetSmartMeterComponent(false, model.Cost);
+                                        SetTariffButtonState();
+                                        SetTariffLegendComponent();
+                                        SetChartView(false);
+                                    }
+                                    else
+                                    {
+                                        SetRefreshScreen();
+                                    }
+                                });
+                            });
                         }
                         else
                         {
@@ -243,7 +255,7 @@ namespace myTNB
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                InvokeOnMainThread(async () =>
+                InvokeOnMainThread(() =>
                 {
                     if (NetworkUtility.isReachable)
                     {
@@ -256,46 +268,52 @@ namespace myTNB
                             UpdateFooterUI(true);
                         }
                         var account = DataManager.DataManager.SharedInstance.SelectedAccount;
-                        DueAmountResponseModel dueAmountResponse = await UsageServiceCall.GetAccountDueAmount(account);
-                        if (accNum == DataManager.DataManager.SharedInstance.SelectedAccount.accNum)
+                        InvokeInBackground(async () =>
                         {
-                            if (dueAmountResponse != null &&
-                            dueAmountResponse.d != null &&
-                            dueAmountResponse.d.didSucceed &&
-                            dueAmountResponse.d.data != null)
+                            DueAmountResponseModel dueAmountResponse = await UsageServiceCall.GetAccountDueAmount(account);
+                            InvokeOnMainThread(() =>
                             {
-                                var model = dueAmountResponse.d.data;
-                                var item = new DueAmountDataModel
+                                if (accNum == DataManager.DataManager.SharedInstance.SelectedAccount.accNum)
                                 {
-                                    accNum = account.accNum,
-                                    accNickName = account.accountNickName,
-                                    IsReAccount = account.IsREAccount,
-                                    amountDue = model.amountDue,
-                                    billDueDate = model.billDueDate,
-                                    IncrementREDueDateByDays = model.IncrementREDueDateByDays
-                                };
-                                AmountDueCache.SaveDues(item);
-                                if (isREAccount)
-                                {
-                                    UpdateREAmountViewUI(false);
+                                    if (dueAmountResponse != null &&
+                                    dueAmountResponse.d != null &&
+                                    dueAmountResponse.d.didSucceed &&
+                                    dueAmountResponse.d.data != null)
+                                    {
+                                        var model = dueAmountResponse.d.data;
+                                        var item = new DueAmountDataModel
+                                        {
+                                            accNum = account.accNum,
+                                            accNickName = account.accountNickName,
+                                            IsReAccount = account.IsREAccount,
+                                            amountDue = model.amountDue,
+                                            billDueDate = model.billDueDate,
+                                            IncrementREDueDateByDays = model.IncrementREDueDateByDays
+                                        };
+                                        AmountDueCache.SaveDues(item);
+                                        if (isREAccount)
+                                        {
+                                            UpdateREAmountViewUI(false);
+                                        }
+                                        else
+                                        {
+                                            UpdateFooterUI(false);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (isREAccount)
+                                        {
+                                            UpdateREAmountViewForRefreshState();
+                                        }
+                                        else
+                                        {
+                                            UpdateFooterForRefreshState();
+                                        }
+                                    }
                                 }
-                                else
-                                {
-                                    UpdateFooterUI(false);
-                                }
-                            }
-                            else
-                            {
-                                if (isREAccount)
-                                {
-                                    UpdateREAmountViewForRefreshState();
-                                }
-                                else
-                                {
-                                    UpdateFooterForRefreshState();
-                                }
-                            }
-                        }
+                            });
+                        });
                     }
                     else
                     {
@@ -308,24 +326,30 @@ namespace myTNB
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                InvokeOnMainThread(async () =>
+                InvokeOnMainThread(() =>
                 {
                     if (NetworkUtility.isReachable)
                     {
                         SetDisconnectionComponent(true);
                         AccountStatusCache.ClearAccountStatusData();
 
-                        AccountStatusResponseModel accountStatusResponse = await UsageServiceCall.GetAccountStatus(DataManager.DataManager.SharedInstance.SelectedAccount);
-                        AccountStatusCache.AddAccountStatusData(accountStatusResponse);
-                        SetDisconnectionComponent(false);
-
-                        if (AccountStatusCache.AccountStatusIsAvailable())
+                        InvokeInBackground(async () =>
                         {
-                            if (!isREAccount && accountIsSSMR)
+                            AccountStatusResponseModel accountStatusResponse = await UsageServiceCall.GetAccountStatus(DataManager.DataManager.SharedInstance.SelectedAccount);
+                            InvokeOnMainThread(() =>
                             {
-                                CallGetSMRAccountActivityInfo();
-                            }
-                        }
+                                AccountStatusCache.AddAccountStatusData(accountStatusResponse);
+                                SetDisconnectionComponent(false);
+
+                                if (AccountStatusCache.AccountStatusIsAvailable())
+                                {
+                                    if (!isREAccount && accountIsSSMR)
+                                    {
+                                        CallGetSMRAccountActivityInfo();
+                                    }
+                                }
+                            });
+                        });
                     }
                     else
                     {
@@ -338,25 +362,31 @@ namespace myTNB
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                InvokeOnMainThread(async () =>
+                InvokeOnMainThread(() =>
                 {
                     if (NetworkUtility.isReachable)
                     {
                         SetSSMRComponent(true, isForRefreshScreen);
-                        SMRAccountActivityInfoResponseModel ssmrInfoResponse = await UsageServiceCall.GetSMRAccountActivityInfo(DataManager.DataManager.SharedInstance.SelectedAccount);
-                        if (ssmrInfoResponse != null &&
-                            ssmrInfoResponse.d != null &&
-                            ssmrInfoResponse.d.data != null &&
-                            ssmrInfoResponse.d.IsSuccess)
+                        InvokeInBackground(async () =>
                         {
-                            SSMRActivityInfoCache.SetDashboardCache(ssmrInfoResponse, DataManager.DataManager.SharedInstance.SelectedAccount);
-                            SSMRActivityInfoCache.SetReadingHistoryCache(ssmrInfoResponse, DataManager.DataManager.SharedInstance.SelectedAccount);
-                            SetSSMRComponent(false, isForRefreshScreen);
-                        }
-                        else
-                        {
-                            HideSSMRView();
-                        }
+                            SMRAccountActivityInfoResponseModel ssmrInfoResponse = await UsageServiceCall.GetSMRAccountActivityInfo(DataManager.DataManager.SharedInstance.SelectedAccount);
+                            InvokeOnMainThread(() =>
+                            {
+                                if (ssmrInfoResponse != null &&
+                                    ssmrInfoResponse.d != null &&
+                                    ssmrInfoResponse.d.data != null &&
+                                    ssmrInfoResponse.d.IsSuccess)
+                                {
+                                    SSMRActivityInfoCache.SetDashboardCache(ssmrInfoResponse, DataManager.DataManager.SharedInstance.SelectedAccount);
+                                    SSMRActivityInfoCache.SetReadingHistoryCache(ssmrInfoResponse, DataManager.DataManager.SharedInstance.SelectedAccount);
+                                    SetSSMRComponent(false, isForRefreshScreen);
+                                }
+                                else
+                                {
+                                    HideSSMRView();
+                                }
+                            });
+                        });
                     }
                     else
                     {
