@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using CoreGraphics;
+using myTNB.Enums;
 using Force.DeepCloner;
 using myTNB.Home.Components;
 using myTNB.Model;
@@ -26,9 +27,12 @@ namespace myTNB
             , _chart, _tips, _RE, _RERefresh, _status, _sm, _ssmr, _ssmrRefresh, _tariff, _legend, _refresh;
         internal UILabel _lblAddress, _RMLabel, _kWhLabel;
         internal UIImageView _bgImageView;
+        internal UIView _smOverlayParentView;
 
         internal bool _rmkWhFlag, _tariffIsVisible;
         internal RMkWhEnum _rMkWhEnum;
+        internal SmartMeterViewEnum _smViewEnum;
+        internal nfloat _lastContentOffset;
         internal bool isBcrmAvailable, isNormalChart, isREAccount, isSmartMeterAccount, accountIsSSMR;
         internal bool _legendIsVisible;
 
@@ -58,6 +62,7 @@ namespace myTNB
             if (!DataManager.DataManager.SharedInstance.IsSameAccount)
             {
                 ResetViews();
+                //ShowPinchOverlay();
             }
         }
 
@@ -69,6 +74,29 @@ namespace myTNB
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
+        }
+
+        private void ShowPinchOverlay()
+        {
+            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+            nfloat widthMargin = GetScaledWidth(18f);
+            nfloat width = currentWindow.Frame.Width;
+            nfloat height = currentWindow.Frame.Height;
+            if (_smOverlayParentView != null)
+            {
+                _smOverlayParentView.RemoveFromSuperview();
+            }
+            _smOverlayParentView = new UIView(new CGRect(0, 0, ViewWidth, height))
+            {
+                BackgroundColor = MyTNBColor.Black60
+            };
+            currentWindow.AddSubview(_smOverlayParentView);
+            SmartMeterOverlayComponent overlay = new SmartMeterOverlayComponent(_smOverlayParentView, _viewChart.Frame.GetMinY());
+            _smOverlayParentView.AddSubview(overlay.GetUI());
+            overlay.SetGestureForButton(new UITapGestureRecognizer(() =>
+            {
+                _smOverlayParentView.RemoveFromSuperview();
+            }));
         }
 
         private void PrepareRefreshView()
@@ -120,6 +148,7 @@ namespace myTNB
             _rmkWhFlag = false;
             _tariffIsVisible = false;
             _rMkWhEnum = RMkWhEnum.RM;
+            UpdateRMkWhSelectionColour(_rMkWhEnum);
             HideTariffLegend();
             if (!accountIsSSMR)
             {
@@ -707,6 +736,22 @@ namespace myTNB
             SetContentView();
         }
 
+        private void ShowHideTariffLegend()
+        {
+            List<LegendItemModel> tariffList = new List<LegendItemModel>(isSmartMeterAccount ? AccountUsageSmartCache.GetTariffLegendList() : AccountUsageCache.GetTariffLegendList());
+            if (tariffList != null && tariffList.Count > 0)
+            {
+                if (_rmKwhDropDownView != null)
+                {
+                    _rmKwhDropDownView.Hidden = true;
+                }
+                _tariffIsVisible = !_tariffIsVisible;
+                _tariffSelectionComponent.UpdateTariffButton(_tariffIsVisible);
+                ShowHideTariffLegends(_tariffIsVisible);
+                _chartView.ToggleTariffView(_tariffIsVisible);
+            }
+        }
+
         private void CreateRMKwhDropdown()
         {
             nfloat dropDownXPos = GetScaledWidth(16f);
@@ -741,15 +786,7 @@ namespace myTNB
                 ShowHideRMKwHDropDown();
                 _tariffSelectionComponent.SetRMkWhLabel(_rMkWhEnum);
                 UpdateRMkWhSelectionColour(_rMkWhEnum);
-                _chartView.ToggleRMKWHValues(_rMkWhEnum);
-                if (isSmartMeterAccount)
-                {
-                    OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
-                    if (model != null)
-                    {
-                        SetSmartMeterComponent(false, model.Usage);
-                    }
-                }
+                ToggleRMkWh();
             }));
             _rmKwhDropDownView.AddSubview(kWhView);
 
@@ -776,15 +813,7 @@ namespace myTNB
                 ShowHideRMKwHDropDown();
                 _tariffSelectionComponent.SetRMkWhLabel(_rMkWhEnum);
                 UpdateRMkWhSelectionColour(_rMkWhEnum);
-                _chartView.ToggleRMKWHValues(_rMkWhEnum);
-                if (isSmartMeterAccount)
-                {
-                    OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
-                    if (model != null)
-                    {
-                        SetSmartMeterComponent(false, model.Cost);
-                    }
-                }
+                ToggleRMkWh();
             }));
             _rmKwhDropDownView.AddSubview(rMView);
 
@@ -812,16 +841,32 @@ namespace myTNB
 
         private void UpdateRMkWhSelectionColour(RMkWhEnum rMkWhEnum)
         {
-            switch (rMkWhEnum)
+            if (_kWhLabel != null & _RMLabel != null)
             {
-                case RMkWhEnum.RM:
-                    _kWhLabel.TextColor = MyTNBColor.WarmGrey;
-                    _RMLabel.TextColor = MyTNBColor.WaterBlue;
-                    break;
-                case RMkWhEnum.kWh:
-                    _kWhLabel.TextColor = MyTNBColor.WaterBlue;
-                    _RMLabel.TextColor = MyTNBColor.WarmGrey;
-                    break;
+                switch (rMkWhEnum)
+                {
+                    case RMkWhEnum.RM:
+                        _kWhLabel.TextColor = MyTNBColor.WarmGrey;
+                        _RMLabel.TextColor = MyTNBColor.WaterBlue;
+                        break;
+                    case RMkWhEnum.kWh:
+                        _kWhLabel.TextColor = MyTNBColor.WaterBlue;
+                        _RMLabel.TextColor = MyTNBColor.WarmGrey;
+                        break;
+                }
+            }
+        }
+
+        private void ToggleRMkWh()
+        {
+            OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
+            if (model != null && (model.Cost != null || model.Usage != null))
+            {
+                _chartView.ToggleRMKWHValues(_rMkWhEnum);
+                if (isSmartMeterAccount)
+                {
+                    SetSmartMeterComponent(false, (_rMkWhEnum == RMkWhEnum.RM) ? model.Cost : model.Usage);
+                }
             }
         }
         #endregion
