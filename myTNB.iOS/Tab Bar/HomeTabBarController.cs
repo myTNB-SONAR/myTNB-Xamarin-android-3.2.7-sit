@@ -25,7 +25,6 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            //Debug.WriteLine("HOME DID LOAD");
             I18NDictionary = LanguageManager.Instance.GetValuesByPage("Tabbar");
             NSNotificationCenter.DefaultCenter.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
             NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.DidBecomeActiveNotification, HandleAppDidBecomeActive);
@@ -49,7 +48,6 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            //Debug.WriteLine("HOME WILL APPEAR");
             UITabBarItem[] tabbarItem = TabBar.Items;
             tabbarItem[1].Enabled = ServiceCall.HasAccountList();
             UpdatePromotionTabBarIcon();
@@ -99,6 +97,12 @@ namespace myTNB
             tabbarItem[3].SetTitleTextAttributes(attrSelected, UIControlState.Selected);
             tabbarItem[4].SetTitleTextAttributes(attrSelected, UIControlState.Selected);
 
+            tabbarItem[0].Tag = 0;
+            tabbarItem[1].Tag = 1;
+            tabbarItem[2].Tag = 2;
+            tabbarItem[3].Tag = 3;
+            tabbarItem[4].Tag = 4;
+
             foreach (UITabBarItem item in tabbarItem)
             {
                 UIImage imgUnselected = item.Image.ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
@@ -117,10 +121,14 @@ namespace myTNB
             return string.Empty;
         }
 
-
         public override void ItemSelected(UITabBar tabbar, UITabBarItem item)
         {
-
+            if (tabbar.SelectedItem.Tag == 1)
+            {
+                UINavigationController navigationController = ChildViewControllers[1] as UINavigationController;
+                BillViewController viewController = navigationController.ViewControllers[0] as BillViewController;
+                viewController.NeedsUpdate = true;
+            }
         }
 
         public bool ShouldSelectTab(UITabBarController tabBarController, UIViewController viewController)
@@ -252,7 +260,6 @@ namespace myTNB
         /// <param name="promo">Promo.</param>
         private bool IsPromoWithinCampaignPeriod(PromotionsModelV2 promo)
         {
-            //return true;
             var res = false;
             var now = DateTime.Today.Date;
             var startDate = DateHelper.GetDateWithoutSeparator(promo.PromoStartDate);
@@ -295,14 +302,13 @@ namespace myTNB
             return promotionList;
         }
 
-        bool HasUnreadPromotion(List<PromotionsModelV2> promotionList)
+        private bool HasUnreadPromotion(List<PromotionsModelV2> promotionList)
         {
             int index = promotionList.FindIndex(x => x.IsRead == false);
-            //Debug.WriteLine("HasUnreadPromotion: " + (index > -1).ToString());
             return index > -1;
         }
 
-        void UpdatePromotions()
+        private void UpdatePromotions()
         {
             _imageSize = DeviceHelper.GetImageSize((int)View.Frame.Width);
 
@@ -324,7 +330,6 @@ namespace myTNB
                 });
             });
         }
-
 
         private void UpdatePromotionTabBarIcon()
         {
@@ -377,7 +382,6 @@ namespace myTNB
                 if (isValidTimeStamp)
                 {
                     string promotionsItems = iService.GetPromotionsItem();
-                    //Debug.WriteLine("debug: promo items: " + promotionsItems);
                     PromotionsV2ResponseModel promotionResponse = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(promotionsItems);
                     if (promotionResponse != null && promotionResponse.Status.Equals("Success")
                         && promotionResponse.Data != null && promotionResponse.Data.Count > 0)

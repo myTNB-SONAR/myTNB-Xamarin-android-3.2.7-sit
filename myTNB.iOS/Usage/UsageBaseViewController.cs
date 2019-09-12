@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using CoreGraphics;
+using myTNB.Enums;
+using Force.DeepCloner;
 using myTNB.Home.Components;
 using myTNB.Model;
 using myTNB.Model.Usage;
@@ -25,12 +27,14 @@ namespace myTNB
             , _chart, _tips, _RE, _RERefresh, _status, _sm, _ssmr, _ssmrRefresh, _tariff, _legend, _refresh;
         internal UILabel _lblAddress, _RMLabel, _kWhLabel;
         internal UIImageView _bgImageView;
+        internal UIView _smOverlayParentView;
 
         internal bool _rmkWhFlag, _tariffIsVisible;
         internal RMkWhEnum _rMkWhEnum;
+        internal SmartMeterViewEnum _smViewEnum;
         internal nfloat _lastContentOffset;
         internal bool isBcrmAvailable, isNormalChart, isREAccount, isSmartMeterAccount, accountIsSSMR;
-        internal bool _legendIsVisible, _acctSelectorIsTapped;
+        internal bool _legendIsVisible;
 
         internal CGRect _origViewFrame;
 
@@ -54,11 +58,11 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            _acctSelectorIsTapped = false;
             NavigationController.SetNavigationBarHidden(true, true);
             if (!DataManager.DataManager.SharedInstance.IsSameAccount)
             {
                 ResetViews();
+                //ShowPinchOverlay();
             }
         }
 
@@ -70,10 +74,29 @@ namespace myTNB
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
-            if (_acctSelectorIsTapped)
+        }
+
+        private void ShowPinchOverlay()
+        {
+            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+            nfloat widthMargin = GetScaledWidth(18f);
+            nfloat width = currentWindow.Frame.Width;
+            nfloat height = currentWindow.Frame.Height;
+            if (_smOverlayParentView != null)
             {
-                NavigationController.SetNavigationBarHidden(false, true);
+                _smOverlayParentView.RemoveFromSuperview();
             }
+            _smOverlayParentView = new UIView(new CGRect(0, 0, ViewWidth, height))
+            {
+                BackgroundColor = MyTNBColor.Black60
+            };
+            currentWindow.AddSubview(_smOverlayParentView);
+            SmartMeterOverlayComponent overlay = new SmartMeterOverlayComponent(_smOverlayParentView, _viewChart.Frame.GetMinY());
+            _smOverlayParentView.AddSubview(overlay.GetUI());
+            overlay.SetGestureForButton(new UITapGestureRecognizer(() =>
+            {
+                _smOverlayParentView.RemoveFromSuperview();
+            }));
         }
 
         private void PrepareRefreshView()
@@ -125,6 +148,7 @@ namespace myTNB
             _rmkWhFlag = false;
             _tariffIsVisible = false;
             _rMkWhEnum = RMkWhEnum.RM;
+            UpdateRMkWhSelectionColour(_rMkWhEnum);
             HideTariffLegend();
             if (!accountIsSSMR)
             {
@@ -163,7 +187,8 @@ namespace myTNB
             };
             viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                DismissViewController(true, null);
+                //DismissViewController(true, null);
+                NavigationController.PopViewController(true);
             }));
             viewBack.AddSubview(imgViewBack);
             viewTitleBar.AddSubview(viewBack);
@@ -171,9 +196,29 @@ namespace myTNB
             View.AddSubview(_navbarContainer);
         }
 
+        private nfloat GetBGImageHeight(bool isNormalBg)
+        {
+            nfloat height = 514f;
+
+            if (isNormalChart || accountIsSSMR)
+            {
+                height = isNormalBg ? 514f : 700f;
+            }
+            else if (isREAccount)
+            {
+                height = 479f;
+            }
+            else if (isSmartMeterAccount)
+            {
+                height = isNormalBg ? 570f : 700f;
+            }
+
+            return GetScaledHeight(height);
+        }
+
         private void AddBackgroundImage()
         {
-            nfloat height = GetScaledHeight(543f);
+            nfloat height = GetBGImageHeight(true);
             _bgImageView = new UIImageView(new CGRect(0, 0, ViewWidth, height))
             {
                 Image = UIImage.FromBundle(UsageConstants.IMG_BGNormal)
@@ -183,7 +228,7 @@ namespace myTNB
 
         private void UpdateBackgroundImage(bool isLegendVisible = false)
         {
-            nfloat height = isLegendVisible ? GetScaledHeight(691f) : GetScaledHeight(543f);
+            nfloat height = GetBGImageHeight(!isLegendVisible);
             ViewHelper.AdjustFrameSetHeight(_bgImageView, height);
             _bgImageView.Image = UIImage.FromBundle(isLegendVisible ? UsageConstants.IMG_BGLong : UsageConstants.IMG_BGNormal);
         }
@@ -197,15 +242,11 @@ namespace myTNB
 
         private void AddScrollView()
         {
-            nfloat height = UIScreen.MainScreen.Bounds.Height - _navbarContainer.Frame.GetMaxY() - GetScaledHeight(8F);
-            if (DeviceHelper.IsIphoneXUpResolution())
-            {
-                height -= 20f;
-            }
+            nfloat height = UIScreen.MainScreen.Bounds.Height - _navbarContainer.Frame.Height - TabBarController.TabBar.Frame.Height - GetScaledHeight(8F);
             _scrollViewContent = new UIScrollView(new CGRect(0, GetYLocationFromFrame(_navbarContainer.Frame, 8F), ViewWidth, height))
             {
                 BackgroundColor = UIColor.Clear,
-                Bounces = false,
+                Bounces = true,
                 CanCancelContentTouches = false,
                 DelaysContentTouches = true
             };
@@ -317,7 +358,10 @@ namespace myTNB
             SetChartView(true);
             SetTariffSelectionComponent();
             SetSmartMeterComponent(true);
-            SetEnergyTipsComponent();
+            if (!AppLaunchMasterCache.IsEnergyTipsDisabled)
+            {
+                SetEnergyTipsComponent();
+            }
             SetFooterView();
             SetREAmountView();
         }
@@ -340,13 +384,13 @@ namespace myTNB
                     _rmKwhDropDownView.Hidden = true;
                 }
                 DataManager.DataManager.SharedInstance.IsSameAccount = true;
-                _acctSelectorIsTapped = true;
                 UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                 SelectAccountTableViewController viewController =
                     storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
-                viewController.IsRoot = true;
+                viewController.IsRoot = false;
                 viewController.IsFromUsage = true;
-                NavigationController.PushViewController(viewController, true);
+                var navController = new UINavigationController(viewController);
+                PresentViewController(navController, true, null);
             }));
 
             _accountSelector.Title = DataManager.DataManager.SharedInstance.SelectedAccount.accountNickName;//AccountManager.Instance.Nickname;
@@ -606,8 +650,6 @@ namespace myTNB
             List<LegendItemModel> tariffList = new List<LegendItemModel>(isSmartMeterAccount ? AccountUsageSmartCache.GetTariffLegendList() : AccountUsageCache.GetTariffLegendList());
             if (tariffList != null && tariffList.Count > 0)
             {
-                UpdateBackgroundImage(isVisible);
-
                 UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseIn
                     , () =>
                     {
@@ -618,12 +660,33 @@ namespace myTNB
                     , () =>
                     {
                         _viewLegend.Hidden = !isVisible;
+                        UpdateBackgroundImage(isVisible);
                     }
                 );
             }
         }
         #endregion
         #region RM/KWH & TARIFF Methods
+        public void SetTariffButtonState()
+        {
+            if (_tariffSelectionComponent != null)
+            {
+                List<LegendItemModel> tariffList;
+                bool isDisable;
+                if (isSmartMeterAccount)
+                {
+                    tariffList = new List<LegendItemModel>(AccountUsageSmartCache.GetTariffLegendList());
+                    isDisable = AccountUsageSmartCache.IsMonthlyTariffDisable || AccountUsageSmartCache.IsMonthlyTariffUnavailable || tariffList == null || tariffList.Count == 0;
+                }
+                else
+                {
+                    tariffList = new List<LegendItemModel>(AccountUsageCache.GetTariffLegendList());
+                    isDisable = AccountUsageCache.IsMonthlyTariffDisable || AccountUsageCache.IsMonthlyTariffUnavailable || tariffList == null || tariffList.Count == 0;
+                }
+                _tariffSelectionComponent.SetTariffButtonDisable(isDisable);
+            }
+        }
+
         private void SetTariffSelectionComponent()
         {
             if (!isREAccount)
@@ -647,14 +710,17 @@ namespace myTNB
                 }));
                 _tariffSelectionComponent.SetGestureRecognizerForTariff(new UITapGestureRecognizer(() =>
                 {
-                    if (_rmKwhDropDownView != null)
+                    if (!_tariffSelectionComponent.isTariffDisabled)
                     {
-                        _rmKwhDropDownView.Hidden = true;
+                        if (_rmKwhDropDownView != null)
+                        {
+                            _rmKwhDropDownView.Hidden = true;
+                        }
+                        _tariffIsVisible = !_tariffIsVisible;
+                        _tariffSelectionComponent.UpdateTariffButton(_tariffIsVisible);
+                        ShowHideTariffLegends(_tariffIsVisible);
+                        _chartView.ToggleTariffView(_tariffIsVisible);
                     }
-                    _tariffIsVisible = !_tariffIsVisible;
-                    _tariffSelectionComponent.UpdateTariffButton(_tariffIsVisible);
-                    ShowHideTariffLegends(_tariffIsVisible);
-                    _chartView.ToggleTariffView(_tariffIsVisible);
                 }));
 
                 if (_rmKwhDropDownView == null)
@@ -668,6 +734,22 @@ namespace myTNB
                 _viewToggle.Hidden = true;
             }
             SetContentView();
+        }
+
+        private void ShowHideTariffLegend()
+        {
+            List<LegendItemModel> tariffList = new List<LegendItemModel>(isSmartMeterAccount ? AccountUsageSmartCache.GetTariffLegendList() : AccountUsageCache.GetTariffLegendList());
+            if (tariffList != null && tariffList.Count > 0)
+            {
+                if (_rmKwhDropDownView != null)
+                {
+                    _rmKwhDropDownView.Hidden = true;
+                }
+                _tariffIsVisible = !_tariffIsVisible;
+                _tariffSelectionComponent.UpdateTariffButton(_tariffIsVisible);
+                ShowHideTariffLegends(_tariffIsVisible);
+                _chartView.ToggleTariffView(_tariffIsVisible);
+            }
         }
 
         private void CreateRMKwhDropdown()
@@ -704,15 +786,7 @@ namespace myTNB
                 ShowHideRMKwHDropDown();
                 _tariffSelectionComponent.SetRMkWhLabel(_rMkWhEnum);
                 UpdateRMkWhSelectionColour(_rMkWhEnum);
-                _chartView.ToggleRMKWHValues(_rMkWhEnum);
-                if (isSmartMeterAccount)
-                {
-                    OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
-                    if (model != null)
-                    {
-                        SetSmartMeterComponent(false, model.Usage);
-                    }
-                }
+                ToggleRMkWh();
             }));
             _rmKwhDropDownView.AddSubview(kWhView);
 
@@ -739,15 +813,7 @@ namespace myTNB
                 ShowHideRMKwHDropDown();
                 _tariffSelectionComponent.SetRMkWhLabel(_rMkWhEnum);
                 UpdateRMkWhSelectionColour(_rMkWhEnum);
-                _chartView.ToggleRMKWHValues(_rMkWhEnum);
-                if (isSmartMeterAccount)
-                {
-                    OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
-                    if (model != null)
-                    {
-                        SetSmartMeterComponent(false, model.Cost);
-                    }
-                }
+                ToggleRMkWh();
             }));
             _rmKwhDropDownView.AddSubview(rMView);
 
@@ -775,16 +841,32 @@ namespace myTNB
 
         private void UpdateRMkWhSelectionColour(RMkWhEnum rMkWhEnum)
         {
-            switch (rMkWhEnum)
+            if (_kWhLabel != null & _RMLabel != null)
             {
-                case RMkWhEnum.RM:
-                    _kWhLabel.TextColor = MyTNBColor.WarmGrey;
-                    _RMLabel.TextColor = MyTNBColor.WaterBlue;
-                    break;
-                case RMkWhEnum.kWh:
-                    _kWhLabel.TextColor = MyTNBColor.WaterBlue;
-                    _RMLabel.TextColor = MyTNBColor.WarmGrey;
-                    break;
+                switch (rMkWhEnum)
+                {
+                    case RMkWhEnum.RM:
+                        _kWhLabel.TextColor = MyTNBColor.WarmGrey;
+                        _RMLabel.TextColor = MyTNBColor.WaterBlue;
+                        break;
+                    case RMkWhEnum.kWh:
+                        _kWhLabel.TextColor = MyTNBColor.WaterBlue;
+                        _RMLabel.TextColor = MyTNBColor.WarmGrey;
+                        break;
+                }
+            }
+        }
+
+        private void ToggleRMkWh()
+        {
+            OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
+            if (model != null && (model.Cost != null || model.Usage != null))
+            {
+                _chartView.ToggleRMKWHValues(_rMkWhEnum);
+                if (isSmartMeterAccount)
+                {
+                    SetSmartMeterComponent(false, (_rMkWhEnum == RMkWhEnum.RM) ? model.Cost : model.Usage);
+                }
             }
         }
         #endregion
@@ -935,16 +1017,11 @@ namespace myTNB
                 {
                     _viewFooter.RemoveFromSuperview();
                 }
-                nfloat footerRatio = 136.0f / 320.0f;
-                nfloat footerHeight = ViewWidth * footerRatio;
-                nfloat footerYPos = UIScreen.MainScreen.Bounds.Height - footerHeight;
-                if (DeviceHelper.IsIphoneXUpResolution())
-                {
-                    footerYPos -= 20f;
-                }
+                nfloat footerHeight = GetScaledHeight(136);
+                nfloat footerYPos = _scrollViewContent.Frame.GetMaxY() - footerHeight;
                 _viewFooter = new CustomUIView(new CGRect(0, footerYPos, ViewWidth, footerHeight))
                 {
-                    BackgroundColor = UIColor.White
+                    BackgroundColor = UIColor.Clear
                 };
                 _origViewFrame = _viewFooter.Frame;
                 AddFooterShadow(ref _viewFooter);
@@ -953,7 +1030,7 @@ namespace myTNB
                 _viewFooter.AddSubview(_footerViewComponent.GetUI());
                 _footerViewComponent._btnViewBill.TouchUpInside += (sender, e) =>
                 {
-                    OnCurrentBillButtonTap();
+                    OnViewDetailsButtonTap();
                 };
                 _footerViewComponent._btnPay.TouchUpInside += (sender, e) =>
                 {
@@ -1005,6 +1082,8 @@ namespace myTNB
             }
         }
 
+        internal virtual void OnViewDetailsButtonTap() { }
+
         internal virtual void OnCurrentBillButtonTap() { }
 
         internal virtual void OnPayButtonTap(double amountDue) { }
@@ -1014,15 +1093,23 @@ namespace myTNB
             UIScrollView scrollView = sender as UIScrollView;
             if (scrollView != null)
             {
-                if (_lastContentOffset < 0 || _lastContentOffset < scrollView.ContentOffset.Y)
-                {
-                    AnimateFooterToHideAndShow(true);
-                }
-                else if (_lastContentOffset > scrollView.ContentOffset.Y)
+                nfloat scrollViewHeight = scrollView.Frame.Size.Height;
+                nfloat scrollContentSizeHeight = scrollView.ContentSize.Height;
+                nfloat scrollOffset = scrollView.ContentOffset.Y;
+
+                if (scrollOffset <= 0)
                 {
                     AnimateFooterToHideAndShow(false);
                 }
-                _lastContentOffset = scrollView.ContentOffset.Y;
+                else if ((scrollOffset + scrollViewHeight) >= scrollContentSizeHeight)
+                {
+                    AnimateFooterToHideAndShow(true);
+                }
+
+                if (scrollView.ContentOffset.Y > 3)
+                {
+                    ViewHelper.AdjustFrameSetY(_bgImageView, scrollView.ContentOffset.Y * -1);
+                }
             }
         }
 
@@ -1037,12 +1124,13 @@ namespace myTNB
                     {
                         var temp = _origViewFrame;
                         temp.Y = _scrollViewContent.Frame.GetMaxY();
-
                         _viewFooter.Frame = temp;
+                        _viewFooter.Layer.ShadowColor = UIColor.Clear.CGColor;
                     }
                     else
                     {
                         _viewFooter.Frame = _origViewFrame;
+                        _viewFooter.Layer.ShadowColor = MyTNBColor.BabyBlue35.CGColor;
                     }
                 }
                 , () => { }
@@ -1054,7 +1142,7 @@ namespace myTNB
         {
             view.Layer.MasksToBounds = false;
             view.Layer.ShadowColor = MyTNBColor.BabyBlue35.CGColor;
-            view.Layer.ShadowOpacity = .16f;
+            view.Layer.ShadowOpacity = 1f;
             view.Layer.ShadowOffset = new CGSize(0, -8);
             view.Layer.ShadowRadius = 8;
             view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;

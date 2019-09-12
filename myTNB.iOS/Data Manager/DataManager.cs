@@ -119,7 +119,6 @@ namespace myTNB.DataManager
         public bool IsPromotionFirstLoad = false;
 
         //Payment
-        public bool IsPaymentDone = false;
         private List<string> AccountNumbersForPaymentList;
 
         //Account Related

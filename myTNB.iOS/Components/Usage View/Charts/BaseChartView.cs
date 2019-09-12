@@ -66,23 +66,27 @@ namespace myTNB
         protected virtual double GetMaxValue(RMkWhEnum view, List<string> value)
         {
             double maxValue = 0;
-            switch (view)
+            if (value != null &&
+               value.Count > 0)
             {
-                case RMkWhEnum.kWh:
-                    {
-                        maxValue = value.Max(x => Math.Abs(TextHelper.ParseStringToDouble(x)));
-                        break;
-                    }
-                case RMkWhEnum.RM:
-                    {
-                        maxValue = value.Max(x => Math.Abs(TextHelper.ParseStringToDouble(x)));
-                        break;
-                    }
-                default:
-                    {
-                        maxValue = 0;
-                        break;
-                    }
+                switch (view)
+                {
+                    case RMkWhEnum.kWh:
+                        {
+                            maxValue = value.Max(x => Math.Abs(TextHelper.ParseStringToDouble(x)));
+                            break;
+                        }
+                    case RMkWhEnum.RM:
+                        {
+                            maxValue = value.Max(x => Math.Abs(TextHelper.ParseStringToDouble(x)));
+                            break;
+                        }
+                    default:
+                        {
+                            maxValue = 0;
+                            break;
+                        }
+                }
             }
             return maxValue;
         }

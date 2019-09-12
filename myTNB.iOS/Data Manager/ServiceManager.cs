@@ -95,7 +95,7 @@ namespace myTNB
 #if DEBUG
             env = APIEnvironment.DEV;
 #endif
-            return baseService.GetFormattedURL(suffix, requestParams, APIVersion.V5, env);
+            return baseService.GetFormattedURL(suffix, requestParams, APIVersion.V6, env);
         }
 
         /// <summary>
@@ -119,8 +119,9 @@ namespace myTNB
             get
             {
                 string email = DataManager.DataManager.SharedInstance.User.Email ?? string.Empty;
-                if (string.IsNullOrEmpty(email) && DataManager.DataManager.SharedInstance.UserEntity != null
-                    && DataManager.DataManager.SharedInstance.UserEntity[0] != null)
+                if (string.IsNullOrEmpty(email) && DataManager.DataManager.SharedInstance.UserEntity != null &&
+                    DataManager.DataManager.SharedInstance.UserEntity.Count > 0 &&
+                    DataManager.DataManager.SharedInstance.UserEntity[0] != null)
                 {
                     email = DataManager.DataManager.SharedInstance.UserEntity[0].email ?? string.Empty;
                 }

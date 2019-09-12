@@ -45,6 +45,8 @@ using UIKit;  namespace myTNB {
         readonly static UIColor _babyBlue35 = new UIColor(red: 0.61f, green: 0.82f, blue: 1.00f, alpha: 0.35f);
         readonly static UIColor _paleGrey = new UIColor(red: 0.95f, green: 0.96f, blue: 0.98f, alpha: 1.0f);
         readonly static UIColor _brownishGrey = new UIColor(red: 0.45f, green: 0.44f, blue: 0.44f, alpha: 1.0f);
+        readonly static UIColor _silverChalice10 = new UIColor(red: 0.65f, green: 0.65f, blue: 0.65f, alpha: 0.1f);
+        readonly static UIColor _darkPeriwinkle = new UIColor(red: 0.34f, green: 0.36f, blue: 0.89f, alpha: 1.0f);
 
         /// <summary>         /// A color with RGBA of (0.47, 0.19, 0.83, 1).         /// </summary>         public static UIColor GradientPurpleDarkElement
         {
@@ -382,5 +384,15 @@ using UIKit;  namespace myTNB {
         public static UIColor BrownishGrey
         {
             get { return _brownishGrey; }
+        }
+
+        public static UIColor SilverChalice10
+        {
+            get { return _silverChalice10; }
+        }
+
+        public static UIColor DarkPeriwinkle
+        {
+            get { return _darkPeriwinkle; }
         }
     } }

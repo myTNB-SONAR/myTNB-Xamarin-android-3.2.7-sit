@@ -98,7 +98,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="389" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1200.8" y="-939.5802"/>
+            <point key="canvasLocation" x="609.8" y="-942.5802"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="829">
@@ -128,10 +128,10 @@
                     <connections>
                         <outlet property="optionsTabBar" destination="2039" id="name-outlet-2039"/>
                         <segue destination="76W-3G-VcO" kind="relationship" relationship="viewControllers" id="2104"/>
-                        <segue destination="3082" kind="relationship" relationship="viewControllers" id="3177"/>
-                        <segue destination="3096" kind="relationship" relationship="viewControllers" id="18630"/>
-                        <segue id="29658" destination="28995" kind="relationship" relationship="viewControllers"/>
-                        <segue id="29709" destination="3103" kind="relationship" relationship="viewControllers"/>
+                        <segue id="30972" destination="17420" kind="relationship" relationship="viewControllers"/>
+                        <segue id="31158" destination="31088" kind="relationship" relationship="viewControllers"/>
+                        <segue id="31321" destination="31238" kind="relationship" relationship="viewControllers"/>
+                        <segue id="31391" destination="31247" kind="relationship" relationship="viewControllers"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2040" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -149,143 +149,17 @@
                     <view key="view" contentMode="scaleToFill" id="3083">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5749">
-                                <rect key="frame" x="1" y="89" width="412" height="596"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
-                                <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="billCell" rowHeight="62" id="5750" customClass="BillTableViewCell">
-                                        <rect key="frame" x="0.0" y="28" width="412" height="62"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="5750" id="5751">
-                                            <rect key="frame" x="0.0" y="0.0" width="412" height="61.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NoDataViewCell" rowHeight="44" id="19356" customClass="NoDataViewCell">
-                                        <rect key="frame" x="0.0" y="90" width="412" height="44"/>
-                                        <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="19356" id="19357">
-                                            <rect key="frame" x="0.0" y="0.0" width="412" height="43.5"/>
-                                            <autoresizingMask key="autoresizingMask"/>
-                                        </tableViewCellContentView>
-                                    </tableViewCell>
-                                </prototypes>
-                                <variation key="heightClass=regular-widthClass=compact" preservesSuperviewLayoutMargins="YES"/>
-                            </tableView>
-                            <view hidden="YES" tag="100" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="27216">
-                                <rect key="frame" x="18" y="52" width="378" height="64"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" tag="102" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Our systems are currently undergoing a maintenance activity. Please see FAQs section for other payment options." textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="27217">
-                                        <rect key="frame" x="16" y="16" width="346" height="32"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="32" id="27222"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                        <nil key="textColor"/>
-                                        <nil key="highlightedColor"/>
-                                        <variation key="default">
-                                            <mask key="constraints">
-                                                <exclude reference="27222"/>
-                                            </mask>
-                                        </variation>
-                                        <variation key="heightClass=regular-widthClass=compact">
-                                            <mask key="constraints">
-                                                <include reference="27222"/>
-                                            </mask>
-                                        </variation>
-                                    </label>
-                                </subviews>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="64" id="27218"/>
-                                    <constraint firstItem="27217" firstAttribute="top" secondItem="27216" secondAttribute="top" constant="14" id="27219">
-                                        <variation key="heightClass=regular-widthClass=compact" constant="16"/>
-                                    </constraint>
-                                    <constraint firstItem="27217" firstAttribute="leading" secondItem="27216" secondAttribute="leading" constant="8" id="27220">
-                                        <variation key="heightClass=regular-widthClass=compact" constant="16"/>
-                                    </constraint>
-                                    <constraint firstAttribute="trailing" secondItem="27217" secondAttribute="trailing" constant="8" id="27221">
-                                        <variation key="heightClass=regular-widthClass=compact" constant="16"/>
-                                    </constraint>
-                                </constraints>
-                                <variation key="default">
-                                    <mask key="subviews">
-                                        <exclude reference="27217"/>
-                                    </mask>
-                                    <mask key="constraints">
-                                        <exclude reference="27218"/>
-                                        <exclude reference="27219"/>
-                                        <exclude reference="27220"/>
-                                        <exclude reference="27221"/>
-                                    </mask>
-                                </variation>
-                                <variation key="heightClass=regular-widthClass=compact">
-                                    <color key="backgroundColor" red="0.98823529409999999" green="0.76078431369999999" blue="0.17254901959999999" alpha="1" colorSpace="calibratedRGB"/>
-                                    <mask key="subviews">
-                                        <include reference="27217"/>
-                                    </mask>
-                                    <mask key="constraints">
-                                        <include reference="27218"/>
-                                        <include reference="27219"/>
-                                        <include reference="27220"/>
-                                        <include reference="27221"/>
-                                    </mask>
-                                </variation>
-                            </view>
-                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="5749" firstAttribute="top" secondItem="3079" secondAttribute="bottom" constant="69" id="13609"/>
-                            <constraint firstItem="5749" firstAttribute="trailing" secondItem="3083" secondAttribute="trailingMargin" constant="16" id="13610">
-                                <variation key="heightClass=regular-widthClass=compact" constant="19"/>
-                            </constraint>
-                            <constraint firstAttribute="leadingMargin" secondItem="5749" secondAttribute="leading" constant="16" id="13611">
-                                <variation key="heightClass=regular-widthClass=compact" constant="19"/>
-                            </constraint>
-                            <constraint firstItem="3080" firstAttribute="top" secondItem="5749" secondAttribute="bottom" constant="1" id="13612"/>
-                            <constraint firstItem="27216" firstAttribute="top" secondItem="3083" secondAttribute="top" constant="52" id="95P-8W-xgS"/>
-                            <constraint firstItem="27216" firstAttribute="leading" secondItem="3083" secondAttribute="leading" constant="18" id="9mb-cN-8kc"/>
-                            <constraint firstItem="27216" firstAttribute="centerX" secondItem="3083" secondAttribute="centerX" id="Ri1-OJ-kZF"/>
-                            <constraint firstAttribute="trailing" secondItem="27216" secondAttribute="trailing" constant="18" id="hb5-gw-2nC"/>
-                        </constraints>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="5749"/>
-                            </mask>
-                            <mask key="constraints">
-                                <exclude reference="13612"/>
-                                <exclude reference="13609"/>
-                                <exclude reference="13610"/>
-                                <exclude reference="13611"/>
-                            </mask>
-                        </variation>
                         <variation key="heightClass=regular-widthClass=compact">
                             <color key="backgroundColor" red="0.87058823529411766" green="0.87058823529411766" blue="0.87058823529411766" alpha="1" colorSpace="calibratedRGB"/>
-                            <mask key="subviews">
-                                <include reference="5749"/>
-                            </mask>
-                            <mask key="constraints">
-                                <include reference="13612"/>
-                                <include reference="13609"/>
-                                <include reference="13610"/>
-                                <include reference="13611"/>
-                            </mask>
                         </variation>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="1" title="Bills" image="Tab-Bill" id="3176" selectedImage="Tab-Bill-Selected"/>
                     <navigationItem key="navigationItem" title="Title" id="17750"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
-                    <connections>
-                        <outlet property="billTableView" destination="5749" id="name-outlet-5749"/>
-                        <outlet property="toastMessage" destination="27217" id="name-outlet-27217"/>
-                        <outlet property="toastView" destination="27216" id="name-outlet-27216"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3084" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1788" y="-890.1049"/>
+            <point key="canvasLocation" x="1787" y="-1745.105"/>
         </scene>
         <!--Feedback-->
         <scene sceneID="3088">
@@ -357,15 +231,15 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="2" title="Promotions" image="Tab-Promotions" id="3258"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="promotionsTableView" destination="21327" id="name-outlet-21327"/>
                     </connections>
+                    <navigationItem title="Title" id="31233" key="navigationItem"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3098" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2386.4" y="-296.4018"/>
+            <point key="canvasLocation" x="2345.4" y="-298.4018"/>
         </scene>
         <!--More-->
         <scene sceneID="3102">
@@ -397,15 +271,15 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" tag="4" title="More" id="3394" image="Tab-Profile" selectedImage="Tab-Profile-Selected"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="moreTableView" destination="16511" id="name-outlet-16511"/>
                     </connections>
+                    <navigationItem title="Title" id="31613" key="navigationItem"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3105" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="254" y="368"/>
+            <point key="canvasLocation" x="251" y="1203"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="17419">
@@ -418,10 +292,12 @@
                     <connections>
                         <segue destination="3082" kind="relationship" relationship="rootViewController" id="17751"/>
                     </connections>
+                    <tabBarItem key="tabBarItem" title="Bills" id="30971" image="Tab-Bill" selectedImage="Tab-Bill-Selected"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="17423" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="854" y="-1709"/>
+            <point key="canvasLocation" x="1210" y="-1748"/>
         </scene>
         <!--Title-->
         <scene sceneID="20723">
@@ -648,7 +524,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lyc-AY-B9Q" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="261.6" y="-939.5802"/>
+            <point key="canvasLocation" x="38.60001" y="-939.5802"/>
         </scene>
         <scene sceneID="28994">
             <objects>
@@ -662,12 +538,12 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="29657" selectedImage="Tab-Rewards-Selected" image="Tab-Rewards"/>
                     <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <navigationItem title="Title" id="31508" key="navigationItem"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="28997" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="919" y="183"/>
+            <point key="canvasLocation" x="938" y="1186"/>
         </scene>
         <scene sceneID="30312">
             <objects>
@@ -686,6 +562,74 @@
             </objects>
             <point key="canvasLocation" x="259" y="-1743"/>
         </scene>
+        <scene sceneID="31087">
+            <objects>
+                <navigationController id="31088" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="31091">
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <tabBarItem key="tabBarItem" title="Promotions" id="31157" image="Tab-Promotions"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <segue id="31234" destination="3096" kind="relationship" relationship="rootViewController"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="31092" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1718" y="-297"/>
+        </scene>
+        <scene sceneID="31237">
+            <objects>
+                <navigationController id="31238" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="31241">
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <tabBarItem key="tabBarItem" title="Rewards" id="31320" selectedImage="Tab-Rewards-Selected" image="Tab-Rewards"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <segue id="31509" destination="28995" kind="relationship" relationship="rootViewController"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="31242" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="939" y="213"/>
+        </scene>
+        <scene sceneID="31246">
+            <objects>
+                <navigationController id="31247" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="31250">
+                        <rect key="frame" x="0.0" y="20" width="414" height="50"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <tabBarItem key="tabBarItem" title="Profile" id="31390" selectedImage="Tab-Profile-Selected" image="Tab-Profile"/>
+                    <simulatedTabBarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <segue id="31614" destination="3103" kind="relationship" relationship="rootViewController"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="31251" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="245.3999" y="223"/>
+        </scene>
+        <scene sceneID="32197">
+            <objects>
+                <viewController id="32198" sceneMemberID="viewController" customClass="BillFilterViewController" storyboardIdentifier="BillFilterViewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="32195"/>
+                        <viewControllerLayoutGuide type="bottom" id="32196"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="32199">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="32200" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2264" y="-1747"/>
+        </scene>
     </scenes>
     <resources>
         <image name="IC-RE-Leaf-Green" width="24" height="24"/>
@@ -700,7 +644,4 @@
         <image name="Tab-Rewards-Selected" width="28" height="28"/>
         <image name="Tab-Home" width="28" height="28"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="3177"/>
-    </inferredMetricsTieBreakers>
 </document>

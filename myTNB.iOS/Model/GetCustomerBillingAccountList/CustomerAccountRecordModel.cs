@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using myTNB.DataManager;
+﻿using myTNB.DataManager;
 using Newtonsoft.Json;
 
 namespace myTNB.Model

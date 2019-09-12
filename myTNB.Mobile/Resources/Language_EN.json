@@ -37,7 +37,7 @@
         "refreshDescription": "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!",
         "refreshNow": "Refresh Now",
         "bcrmMessage": "BRCM will be down for maintenance purpose",
-        "currentBill": "Current Bill",
+        "viewDetails": "View Details",
         "pay": "Pay",
         "disconnectionMsg": "Your electricity is currently disconnected.",
         "myEarnings": "My Earnings",
@@ -48,7 +48,13 @@
         "needToPay": "I need to pay",
         "paidExtra": "I've paid extra",
         "clearedAllBills": "I've cleared all bills",
-        "viewReadHistory": "View Reading History"
+        "viewReadHistory": "View Reading History",
+        "months": "Months",
+        "days": "Days",
+        "viewBill": "View Bill",
+        "all": "All",
+        "maintenanceTitle": "We're fine-tuning!",
+        "maintenanceMsg": "System is under maintenance. Please try again later. We apologize for the inconvenience. Thank you."
     },
     "Hint": {
         "mobileNumber": "Please include the country code of your phone number.",
@@ -244,5 +250,67 @@
         "disconnectionMsg": "<strong>What does this mean?</strong><br><br>Your electricity has been disconnected and is unavailable. This was not caused by a power outage.<br><br>If you’ve made a payment, please give us some time for this to be reflected.",
         "projectedCostMsg": "<strong>My bill amount so far:</strong><br><br>Your bill amount so far is the amount you have used up until yesterday.<br><br><strong> My bill may reach:</strong><br><br>This is calculated based on your average daily consumption for the past one (1) month, your actual bill may differ. To find out more, please visit our <strong><a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">FAQ page.</a></strong><br><br>Note: The amount shown is before applicable taxes / additional charges.",
         "projectedCostTitle": "What are these?"
+    },
+
+    "Bills": {
+        "navTitle": "Bills",
+        "clearedBills": "I’ve cleared all bills",
+        "viewMore": "View Details",
+        "paidExtra": "I’ve paid extra",
+        "needToPay": "I need to pay",
+        "by": "by",
+        "getBy": "get by",
+        "myEarnings": "My earnings",
+        "myHistory": "My History",
+        "beenPaidExtra": "I’ve been paid extra",
+        "noHistoryData": "Looks like you have no bills yet! Once you do, your bills and payment history will appear here.",
+        "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while."
+    },
+
+    "Bills_selector": {
+        "MandatoryChargesPopUpDetails": [
+            {
+                "Title": "This account has a minimum amount to be paid.",
+                "Description": "Your <b>service charges</b> like Security Deposit, Processing Fee, Stamp Duty and Meter Cost are required to be cleared first and will be your account’s minimum payment.",
+                "CTA": "Got It!",
+                "Type": "MandatoryCharges"
+            },
+            {
+                "Title": "This account has a minimum amount to be paid.",
+                "Description": "You are required to clear <b>{0}</b> from your service charges first.<br><br>You may view a breakdown in your bill details.",
+                "CTA": "View Details,Got It!",
+                "Type": "MandatoryPayment"
+            }
+        ]
+    },
+
+    "BillDetails": {
+        "navTitle": "Bill Details",
+        "billDetails": "My Bill Details",
+        "outstandingCharges": "My outstanding charges",
+        "billThisMonth": "My bill this month",
+        "needToPay": "I need to pay",
+        "by": "by",
+        "paidExtra": "I’ve paid extra",
+        "clearedBills": "I’ve cleared all bills",
+        "minimumChargeDescription": "This account has a minimum charge.",
+        "applicationCharges": "My service charges",
+        "tooltiptitle1": "Items from your paper/PDF bill",
+        "tooltiptitle2": "Items from your demand letter",
+        "tooltipdesc1": "I need to pay|My outstanding charges|My bill this month (electricity usage only)",
+        "tooltipdesc2": "Security Deposit|Stamp Duty|Processing Fee|Meter Fee"
+    },
+
+    "BillFilter": {
+        "navTitle": "Filter Views",
+        "description": "View your invoiced bills, payment receipts or both.",
+        "filterBy": "Filter By",
+        "applyFilter": "Apply Filter",
+        "selectFilter": "Select Filter"
+    },
+
+    "SelectBills": {
+        "minimumMandatoryPayment": "Minimum amount must be at least {0}",
+        "minimumPayAmount": "Minimum amount cannot be lower than RM1.00"
     }
 }

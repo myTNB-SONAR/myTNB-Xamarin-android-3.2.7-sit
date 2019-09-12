@@ -17,6 +17,14 @@ namespace myTNB.Model
             }
         }
         [JsonIgnore]
+        public bool IsMaintenance
+        {
+            get
+            {
+                return ErrorCode == "7000";
+            }
+        }
+        [JsonIgnore]
         public bool didSucceed
         {
             get

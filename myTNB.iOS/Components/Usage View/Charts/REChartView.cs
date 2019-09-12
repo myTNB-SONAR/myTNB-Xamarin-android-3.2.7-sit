@@ -97,7 +97,7 @@ namespace myTNB
                 {
                     TextAlignment = UITextAlignment.Center,
                     Font = TNBFont.MuseoSans_10_300,
-                    TextColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
+                    TextColor = UIColor.White,
                     Text = string.Format(Format_Value, item.UsageTotal, item.UsageUnit),
                     Hidden = isSelected,
                     Tag = 1002
@@ -111,7 +111,7 @@ namespace myTNB
                 {
                     TextAlignment = UITextAlignment.Center,
                     Font = TNBFont.MuseoSans_10_500,
-                    TextColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
+                    TextColor = UIColor.White,
                     Text = item.AmountTotal.FormatAmountString(item.Currency),
                     Hidden = isSelected,
                     Tag = 1003
@@ -123,8 +123,8 @@ namespace myTNB
                     , GetWidthByScreenSize(40), lblHeight))
                 {
                     TextAlignment = UITextAlignment.Center,
-                    Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300,
-                    TextColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
+                    Font = isSelected ? TNBFont.MuseoSans_10_300 : TNBFont.MuseoSans_10_500,
+                    TextColor = UIColor.White,
                     Text = string.IsNullOrEmpty(item.Year) ? item.Month : string.Format(Format_Value, item.Month, item.Year),
                     Tag = 1004
                 };
@@ -184,19 +184,16 @@ namespace myTNB
                 UILabel usage = segmentView.ViewWithTag(1002) as UILabel;
                 if (usage != null)
                 {
-                    usage.TextColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F);
                     usage.Hidden = !isSelected;
                 }
                 UILabel amt = segmentView.ViewWithTag(1003) as UILabel;
                 if (amt != null)
                 {
-                    amt.TextColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F);
                     amt.Hidden = !isSelected;
                 }
                 UILabel date = segmentView.ViewWithTag(1004) as UILabel;
                 if (date != null)
                 {
-                    date.TextColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F);
                     date.Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300;
                 }
             }

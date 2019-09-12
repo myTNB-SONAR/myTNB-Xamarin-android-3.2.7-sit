@@ -10,6 +10,8 @@ namespace myTNB.Model.Usage
     public class AccountUsageResponseDataModel : BaseModelRefresh
     {
         public AccountUsageDataModel data { set; get; }
+        public bool IsMonthlyTariffBlocksDisabled { get; set; }
+        public bool IsMonthlyTariffBlocksUnavailable { get; set; }
     }
 
     public class AccountUsageDataModel
