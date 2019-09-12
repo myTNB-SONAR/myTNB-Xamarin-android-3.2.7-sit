@@ -207,6 +207,7 @@ namespace myTNB
                         TariffLegendList = d.data.TariffBlocksLegend;
                         ByMonthDateRange = d.data.ByMonth.Range;
                         ByMonthUsage = d.data.ByMonth.Months;
+                        ByDayUsage = d.data.ByDay;
                         UsageMetrics = d.data.OtherUsageMetrics;
                         Tooltips = d.data.ToolTips;
                         return d;

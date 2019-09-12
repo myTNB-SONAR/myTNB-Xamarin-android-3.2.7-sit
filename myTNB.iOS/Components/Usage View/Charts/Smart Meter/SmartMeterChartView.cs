@@ -138,9 +138,10 @@ namespace myTNB
 
             BaseSmartMeterView test2 = new SmartMeterDayView()
             {
+                ReferenceWidget = _lblDateRange.Frame,
                 AddTariffBlocks = AddTariffBlocks
             };
-            test.CreateSegment(ref _segmentContainer);
+            test2.CreateSegment(ref _segmentContainer);
 
             /*
             _segmentContainer = new CustomUIView(new CGRect(0, GetYLocationFromFrameScreenSize(_lblDateRange.Frame, 16)
