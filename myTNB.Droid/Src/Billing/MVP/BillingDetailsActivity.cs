@@ -93,25 +93,9 @@ namespace myTNB_Android.Src.Billing.MVP
         [OnClick(Resource.Id.btnViewBill)]
         void OnViewBill(object sender, EventArgs eventArgs)
         {
-            if (billingHistoryData.HistoryType.ToUpper() == "PAYMENT")
-            {
-                Intent viewReceipt = new Intent(this, typeof(ViewReceiptMultiAccountNewDesignActivty));
-                viewReceipt.PutExtra("SELECTED_ACCOUNT_NUMBER", selectedAccountData.AccountNum);
-                viewReceipt.PutExtra("DETAILED_INFO_NUMBER", billingHistoryData.DetailedInfoNumber);
-                viewReceipt.PutExtra("IS_OWNED_ACCOUNT", true);
-                viewReceipt.PutExtra("IS_SHOW_ALL_RECEIPT", false);
-                StartActivity(viewReceipt);
-            }
-            else
-            {
-                BillHistoryV5 selectedBill = new BillHistoryV5();
-                selectedBill.DtBill = billPdfDateFormatter.Format((billPdfDateParser.Parse(billingHistoryData.PaidVia)));
-                selectedBill.NrBill = billingHistoryData.DetailedInfoNumber;
-                Intent viewBill = new Intent(this, typeof(ViewBillActivity));
-                viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
-                viewBill.PutExtra(Constants.SELECTED_BILL, JsonConvert.SerializeObject(selectedBill));
-                StartActivity(viewBill);
-            }
+            Intent viewBill = new Intent(this, typeof(ViewBillActivity));
+            viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
+            StartActivity(viewBill);
         }
 
         [OnClick(Resource.Id.btnPayBill)]
@@ -151,14 +135,6 @@ namespace myTNB_Android.Src.Billing.MVP
             if (extras.ContainsKey("LATEST_BILL_HISTORY"))
             {
                 billingHistoryData = JsonConvert.DeserializeObject<BillingHistoryData>(extras.GetString("LATEST_BILL_HISTORY"));
-                if (billingHistoryData.DetailedInfoNumber != "")
-                {
-                    EnableShowBillButtons(true);
-                }
-                else
-                {
-                    EnableShowBillButtons(false);
-                }
             }
             SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
