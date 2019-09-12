@@ -820,11 +820,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                     {
                                         smUsageHistoryResponse = storedSMData;
                                     }
-                                    // Lin Siong TODO: Check Whether have atleast one month data on Smart Meter Cache
-                                    /*else if (!IsCheckHaveByMonthData(usageHistoryResponse.Data.UsageHistoryData))
-                                    {
-                                        usageHistoryResponse = null;
-                                    }*/
+
                                     LoadSMUsageHistory(selected);
                                 }
                                 else

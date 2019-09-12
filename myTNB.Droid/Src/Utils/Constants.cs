@@ -113,6 +113,8 @@ namespace myTNB_Android.Src.Utils
 #if DEBUG || STUB
             internal static readonly string END_POINT = "http://10.215.128.191:89";
             internal static readonly string FPX_PAYMENT = "http://10.215.128.191:89/v5/PayRedirect.aspx?Param1=3&Param2=";
+            // internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
+            // internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
 #elif DEVELOP || SIT
             internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
             internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
@@ -242,6 +244,14 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string SELECTED_SM_ACCOUNT_USAGE_RESPONSE = ".selectedSMAccountUsageResponse";
 
         internal static readonly string IS_BILLING_AVAILABLE_KEY = ".isBillingAvailable";
+
+        internal static readonly string PROJECTED_COST_KEY = "PROJECTEDCOST";
+
+        internal static readonly string CURRENT_COST_KEY = "CURRENTCOST";
+
+        internal static readonly string AVERAGE_USAGE_KEY = "AVERAGEUSAGE";
+
+        internal static readonly string CURRENT_USAGE_KEY = "CURRENTUSAGE";
 
         public enum GREETING
         {

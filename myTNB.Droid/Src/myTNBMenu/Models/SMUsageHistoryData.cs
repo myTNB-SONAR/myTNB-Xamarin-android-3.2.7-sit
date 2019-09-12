@@ -6,7 +6,6 @@ using System.Collections.Generic;
 
 namespace myTNB_Android.Src.myTNBMenu.Models
 {
-    // Lin Siong TODO: To update the SMUsageHistoryData to the latest one
     public class SMUsageHistoryData
     {
         [JsonProperty(PropertyName = "OtherUsageMetrics")]

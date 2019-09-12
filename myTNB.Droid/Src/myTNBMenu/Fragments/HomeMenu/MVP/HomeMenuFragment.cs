@@ -332,7 +332,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 this.presenter.GetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
 
                 // Lin Siong TODO: Check Energy Saving Tips Enable Disable
-                // this.presenter.GetEnergySavingTipsTimeStamp();
+                this.presenter.GetEnergySavingTipsTimeStamp();
                 SetRefreshLayoutParams();
 
                 ((DashboardHomeActivity)Activity).EnableDropDown(false);

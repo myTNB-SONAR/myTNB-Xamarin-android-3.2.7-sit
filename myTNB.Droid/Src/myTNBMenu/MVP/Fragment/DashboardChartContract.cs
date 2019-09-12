@@ -124,6 +124,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void SetISSMDown(bool flag);
 
             bool GetIsSMAccount();
+
+            void ShowSMStatisticCard();
         }
 
         public interface IUserActionsListener : IBasePresenter

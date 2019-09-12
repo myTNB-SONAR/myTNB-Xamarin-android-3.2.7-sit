@@ -24,12 +24,13 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
     {
         private BarChart barChart;
 
-        // Lin Siong TODO: Change UsageHistoryData to SMUsageHistoryData
         public SMUsageHistoryData selectedSMHistoryData { get; set; }
 
         public Context currentContext { get; set; }
 
         public ChartType currentChartType { get; set; }
+
+        public ChartDataType currentChartDataType { get; set; }
 
         public float[] bufferItems { get; set; }
 
@@ -645,12 +646,16 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
                     }
 
-                    if (lastMonthIndex != -1 && bufferItems.Length > 0)
+
+                    if (currentChartType == ChartType.Month)
                     {
-                        // Lin Siong Note: Draw Ring on Last bar, Hide Now as requirement changed
-                        // Lin Siong Note: Draw Text On Lasg bar
-                        // canvas.DrawPath(GenerateRoundRectangleWithNoSpace(lastMonthLeftPoint + offsetValue, lastMonthTopPoint + offsetValue, lastMonthRightPoint - offsetValue, lastMonthBottomPoint - offsetValue, mRadius, mRadius, true, true, true, true), MBarBorderPaint);
-                        DrawTextOnCanvas(canvas, lastMonthTopPoint, lastMonthLeftPoint, lastMonthRightPoint, selectedSMHistoryData.ByMonth.Months[selectedSMHistoryData.ByMonth.Months.Count - 1].Currency, selectedSMHistoryData.ByMonth.Months[selectedSMHistoryData.ByMonth.Months.Count - 1].AmountTotal, selectedSMHistoryData.ByMonth.Months[selectedSMHistoryData.ByMonth.Months.Count - 1].UsageUnit, selectedSMHistoryData.ByMonth.Months[selectedSMHistoryData.ByMonth.Months.Count - 1].UsageTotal);
+                        if (lastMonthIndex != -1 && bufferItems.Length > 0)
+                        {
+                            // Lin Siong Note: Draw Ring on Last bar, Hide Now as requirement changed
+                            // Lin Siong Note: Draw Text On Lasg bar
+                            // canvas.DrawPath(GenerateRoundRectangleWithNoSpace(lastMonthLeftPoint + offsetValue, lastMonthTopPoint + offsetValue, lastMonthRightPoint - offsetValue, lastMonthBottomPoint - offsetValue, mRadius, mRadius, true, true, true, true), MBarBorderPaint);
+                            DrawTextOnCanvas(canvas, lastMonthTopPoint, lastMonthLeftPoint, lastMonthRightPoint, selectedSMHistoryData.ByMonth.Months[selectedSMHistoryData.ByMonth.Months.Count - 1].Currency, selectedSMHistoryData.ByMonth.Months[selectedSMHistoryData.ByMonth.Months.Count - 1].AmountTotal, selectedSMHistoryData.ByMonth.Months[selectedSMHistoryData.ByMonth.Months.Count - 1].UsageUnit, selectedSMHistoryData.ByMonth.Months[selectedSMHistoryData.ByMonth.Months.Count - 1].UsageTotal);
+                        }
                     }
                 }
             }
@@ -690,17 +695,20 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                 float y = top - DPUtils.ConvertDPToPx(7f);
 
                 // Lin Siong Note: to show either RM or kWh
-                if (currentChartType == ChartType.RM)
+                if (currentChartType == ChartType.Month)
                 {
-                    float val = (float)amount;
-                    string txt = currencyUnitTxt + " " + decimalFormat.Format(val);
-                    c.DrawText(txt, x, y, MRenderPaint);
-                }
-                else if (currentChartType == ChartType.kWh)
-                {
-                    float valKwh = (float)usage;
-                    string txt = kwhFormat.Format(Math.Abs(valKwh)) + " " + usageUnitTxt;
-                    c.DrawText(txt, x, y, MRenderPaint);
+                    if (currentChartDataType == ChartDataType.RM)
+                    {
+                        float val = (float)amount;
+                        string txt = currencyUnitTxt + " " + decimalFormat.Format(val);
+                        c.DrawText(txt, x, y, MRenderPaint);
+                    }
+                    else if (currentChartDataType == ChartDataType.kWh)
+                    {
+                        float valKwh = (float)usage;
+                        string txt = kwhFormat.Format(Math.Abs(valKwh)) + " " + usageUnitTxt;
+                        c.DrawText(txt, x, y, MRenderPaint);
+                    }
                 }
             }
             catch (System.Exception e)

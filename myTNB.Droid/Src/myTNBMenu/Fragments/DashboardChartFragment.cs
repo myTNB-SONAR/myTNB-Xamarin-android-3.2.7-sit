@@ -11,6 +11,7 @@ using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Android.Text;
 using Android.Text.Method;
+using Android.Text.Style;
 using Android.Util;
 using Android.Views;
 using Android.Views.Animations;
@@ -78,7 +79,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         AccountData selectedAccount;
 
-        ChartType ChartType = ChartType.RM;
+        ChartType ChartType = ChartType.Month;
+        ChartDataType ChartDataType = ChartDataType.RM;
 
         [BindView(Resource.Id.bar_chart)]
         BarChart mChart;
@@ -291,6 +293,108 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         [BindView(Resource.Id.shadow_layout)]
         ImageView shadowLayout;
+
+        [BindView(Resource.Id.smStatisticContainer)]
+        LinearLayout smStatisticContainer;
+
+        [BindView(Resource.Id.sm_statistic_bill)]
+        LinearLayout smStatisticBillMainLayout;
+
+        [BindView(Resource.Id.shimmerSMStatisticBillImg)]
+        ShimmerFrameLayout shimmerSMStatisticBillImg;
+
+        [BindView(Resource.Id.shimmerSMStatisticBillLayout)]
+        RelativeLayout shimmerSMStatisticBillLayout;
+
+        [BindView(Resource.Id.shimmrtSMStatisticBillTitle)]
+        ShimmerFrameLayout shimmrtSMStatisticBillTitle;
+
+        [BindView(Resource.Id.shimmrtSMStatisticBill)]
+        ShimmerFrameLayout shimmrtSMStatisticBill;
+
+        [BindView(Resource.Id.shimmrtSMStatisticBillDueDate)]
+        ShimmerFrameLayout shimmrtSMStatisticBillDueDate;
+
+        [BindView(Resource.Id.sm_statistic_bill_img)]
+        ImageView smStatisticBillImg;
+
+        [BindView(Resource.Id.smStatisticBillLayout)]
+        RelativeLayout smStatisticBillLayout;
+
+        [BindView(Resource.Id.sm_statistic_predict)]
+        LinearLayout smStatisticPredictMainLayout;
+
+        [BindView(Resource.Id.shimmerSMStatisticPredictImg)]
+        ShimmerFrameLayout shimmerSMStatisticPredictImg;
+
+        [BindView(Resource.Id.shimmerSMStatisticPredictLayout)]
+        RelativeLayout shimmerSMStatisticPredictLayout;
+
+        [BindView(Resource.Id.shimmrtSMStatisticPredictTitle)]
+        ShimmerFrameLayout shimmrtSMStatisticPredictTitle;
+
+        [BindView(Resource.Id.shimmrtSMStatisticPredict)]
+        ShimmerFrameLayout shimmrtSMStatisticPredict;
+
+        [BindView(Resource.Id.shimmrtSMStatisticPredictDueDate)]
+        ShimmerFrameLayout shimmrtSMStatisticPredictDueDate;
+
+        [BindView(Resource.Id.shimmrtSmStatisticTooltip)]
+        ShimmerFrameLayout shimmrtSmStatisticTooltip;
+
+        [BindView(Resource.Id.sm_statistic_predict_img)]
+        ImageView smStatisticPredictImg;
+
+        [BindView(Resource.Id.smStatisticPredictLayout)]
+        RelativeLayout smStatisticPredictLayout;
+
+        [BindView(Resource.Id.smStatisticTooltip)]
+        LinearLayout smStatisticTooltip;
+
+        [BindView(Resource.Id.sm_statistic_trend)]
+        LinearLayout smStatisticTrendMainLayout;
+
+        [BindView(Resource.Id.smStatisticBillTitle)]
+        TextView smStatisticBillTitle;
+
+        [BindView(Resource.Id.smStatisticBillSubTitle)]
+        TextView smStatisticBillSubTitle;
+
+        [BindView(Resource.Id.smStatisticBill)]
+        TextView smStatisticBill;
+
+        [BindView(Resource.Id.smStatisticBillCurrency)]
+        TextView smStatisticBillCurrency;
+
+        [BindView(Resource.Id.smStatisticBillKwhUnit)]
+        TextView smStatisticBillKwhUnit;
+
+        [BindView(Resource.Id.smStatisticBillKwh)]
+        TextView smStatisticBillKwh;
+
+        [BindView(Resource.Id.smStatisticPredictTitle)]
+        TextView smStatisticPredictTitle;
+
+        [BindView(Resource.Id.smStatisticPredictSubTitle)]
+        TextView smStatisticPredictSubTitle;
+
+        [BindView(Resource.Id.smStatisticPredict)]
+        TextView smStatisticPredict;
+
+        [BindView(Resource.Id.smStatisticPredictCurrency)]
+        TextView smStatisticPredictCurrency;
+
+        [BindView(Resource.Id.txtSmStatisticTooltip)]
+        TextView txtSmStatisticTooltip;
+
+        [BindView(Resource.Id.smStatisticTrendTitle)]
+        TextView smStatisticTrendTitle;
+
+        [BindView(Resource.Id.smStatisticTrendSubTitle)]
+        TextView smStatisticTrendSubTitle;
+
+        [BindView(Resource.Id.smStatisticTrend)]
+        TextView smStatisticTrend;
 
         TariffBlockLegendAdapter tariffBlockLegendAdapter;
 
@@ -547,6 +651,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnNewRefresh, rmKwhLabel, kwhLabel, rmLabel, dashboardAccountName, btnTxtSsmrViewHistory, btnReadingHistory, txtEnergyDisconnection);
                 TextViewUtils.SetMuseoSans300Typeface(reTotalPayable, reTotalPayableCurrency, reDueDate, txtNoPayable);
                 TextViewUtils.SetMuseoSans500Typeface(reTotalPayableTitle, btnReView, txtTarifToggle, txtNoPayableTitle, txtNoPayableCurrency);
+                TextViewUtils.SetMuseoSans300Typeface(smStatisticBillSubTitle, smStatisticBill, smStatisticBillCurrency, smStatisticBillKwhUnit, smStatisticBillKwh, smStatisticPredictSubTitle, smStatisticPredict, smStatisticPredictCurrency, smStatisticTrendSubTitle, smStatisticTrend);
+                TextViewUtils.SetMuseoSans500Typeface(smStatisticBillTitle, smStatisticPredictTitle, txtSmStatisticTooltip, smStatisticTrendTitle);
 
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
@@ -611,7 +717,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         isChangeBackgroundNeeded = true;
                         isSMR = false;
                     }
-                    else if (! selectedAccount.SmartMeterCode.Equals("0"))
+                    else if (isSMAccount)
                     {
                         // Smart Meter
                         SetVirtualHeightParams(80f);
@@ -621,10 +727,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
                         graphToggleSelection.Visibility = ViewStates.Visible;
                         energyTipsView.Visibility = ViewStates.Visible;
+                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
                         isChangeBackgroundNeeded = true;
                         isSMR = false;
-                        // Lin Siong TODO: Statistic View, on DashboardNewChartView also
-                        // Lin Siong TODO: Api change call to Smart Meter Usage, currently still using the normal meter api, also the variable 
                         // Lin Siong TODO: Last bar tap event to day view
                         // Lin Siong TODO: Stripped bar background implementation
                         // Lin Siong TODO: Estimated Reading Handling & Display
@@ -832,6 +937,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                     StartAmountDueShimmer();
 
+                    StartSMStatisticShimmer();
+
                     energyDisconnectionButton.Visibility = ViewStates.Gone;
 
                     // Lin Siong Note: Energy Saving Tip On Start Shimmer and get data
@@ -840,7 +947,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         if (!selectedAccount.AccountCategoryId.Equals("2"))
                         {
                             // Lin Siong TODO: Energy Tips Disable Flag
-                            // OnGetEnergyTipsItems();
+                            OnGetEnergyTipsItems();
                         }
                     }                  
 
@@ -927,59 +1034,125 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+        class ClickSpan : ClickableSpan
+        {
+            public Action<View> Click;
+            public override void OnClick(View widget)
+            {
+                if (Click != null)
+                {
+                    Click(widget);
+                }
+            }
 
-        /*[OnClick(Resource.Id.txtWhyThisAmt)]
-        void OnWhyThisAmtClick(object sender, EventArgs eventArgs)
+            public override void UpdateDrawState(TextPaint ds)
+            {
+                base.UpdateDrawState(ds);
+                ds.UnderlineText = false;
+            }
+        }
+
+        [OnClick(Resource.Id.smStatisticTooltip)]
+        void OnSMStatisticTooltipClick(object sender, EventArgs eventArgs)
         {
             try
             {
-                mWhyThisAmtCardDialog = new MaterialDialog.Builder(Activity)
-                    .CustomView(Resource.Layout.CustomDialogDoubleButtonLayout, false)
-                    .Cancelable(false)
-                    .CanceledOnTouchOutside(false)
-                    .Build();
+                string textMessage = Activity.GetString(Resource.String.tooltip_sm_what_are_these_message);
+                string btnLabel = Activity.GetString(Resource.String.tooltip_btnLabel);
 
-                View dialogView = mWhyThisAmtCardDialog.Window.DecorView;
-                dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
+                if (selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.ToolTips != null && selectedSMHistoryData.ToolTips.Count > 0)
+                {
+                    textMessage = "";
+                    foreach (SMUsageHistoryData.SmartMeterToolTips costValue in selectedSMHistoryData.ToolTips)
+                    {
+                        if (costValue.Type == Constants.PROJECTED_COST_KEY)
+                        {
+                            if (costValue.Message != null && costValue.Message.Count > 0)
+                            {
+                                foreach (string stringValue in costValue.Message)
+                                {
+                                    textMessage += stringValue;
+                                }
+                            }
 
-                TextView txtItemizedTitle = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtTitle);
-                TextView txtItemizedMessage = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtMessage);
-                TextView btnGotIt = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtBtnSecond);
-                TextView btnBringMeThere = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtBtnFirst);
-                txtItemizedMessage.MovementMethod = new ScrollingMovementMethod();
-                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
-                {
-                    txtItemizedMessage.TextFormatted = string.IsNullOrEmpty(accountDueAmountData.WhyThisAmountMessage) ? Html.FromHtml(Activity.GetString(Resource.String.itemized_bill_message), FromHtmlOptions.ModeLegacy) : Html.FromHtml(accountDueAmountData.WhyThisAmountMessage, FromHtmlOptions.ModeLegacy);
+                            btnLabel = costValue.SMBtnText ?? Activity.GetString(Resource.String.tooltip_btnLabel);
+                        }
+                    }
                 }
-                else
+
+                MaterialDialog materialDialog = new MaterialDialog.Builder(Activity)
+                        .CustomView(Resource.Layout.WhatIsThisDialogView, false)
+                        .Cancelable(false)
+                        .Build();
+
+                View view = materialDialog.View;
+                TextView dialogDetailsText = view.FindViewById<TextView>(Resource.Id.txtDialogMessage);
+                TextView dialogBtnLabel = view.FindViewById<TextView>(Resource.Id.txtBtnLabel);
+                if (btnLabel != "")
                 {
-                    txtItemizedMessage.TextFormatted = string.IsNullOrEmpty(accountDueAmountData.WhyThisAmountMessage) ? Html.FromHtml(Activity.GetString(Resource.String.itemized_bill_message)) : Html.FromHtml(accountDueAmountData.WhyThisAmountMessage);
+                    dialogBtnLabel.Text = btnLabel;
                 }
-                txtItemizedTitle.Text = string.IsNullOrEmpty(accountDueAmountData.WhyThisAmountTitle) ? Activity.GetString(Resource.String.itemized_bill_title) : accountDueAmountData.WhyThisAmountTitle;
-                btnGotIt.Text = string.IsNullOrEmpty(accountDueAmountData.WhyThisAmountSecButtonText) ? Activity.GetString(Resource.String.itemized_bill_got_it) : accountDueAmountData.WhyThisAmountSecButtonText;
-                btnBringMeThere.Text = string.IsNullOrEmpty(accountDueAmountData.WhyThisAmountPriButtonText) ? Activity.GetString(Resource.String.itemized_bill_bring_me_there) : accountDueAmountData.WhyThisAmountPriButtonText;
-                TextViewUtils.SetMuseoSans500Typeface(txtItemizedTitle, btnGotIt, btnBringMeThere);
-                TextViewUtils.SetMuseoSans300Typeface(txtItemizedMessage);
-                btnGotIt.Click += delegate
+                dialogBtnLabel.Click += delegate
                 {
-                    mWhyThisAmtCardDialog.Dismiss();
+                    materialDialog.Dismiss();
                 };
-                btnBringMeThere.Click += delegate
-                {
-                    ((DashboardHomeActivity)Activity).BillsMenuAccess();
-                    mWhyThisAmtCardDialog.Dismiss();
-                };
 
-                if (IsActive())
+                if (textMessage != "")
                 {
-                    mWhyThisAmtCardDialog.Show();
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                    {
+                        dialogDetailsText.TextFormatted = Html.FromHtml(textMessage, FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        dialogDetailsText.TextFormatted = Html.FromHtml(textMessage);
+                    }
                 }
+
+                if (dialogDetailsText != null)
+                {
+                    TextViewUtils.SetMuseoSans300Typeface(dialogDetailsText);
+                }
+                if (dialogBtnLabel != null)
+                {
+                    TextViewUtils.SetMuseoSans500Typeface(dialogBtnLabel);
+                }
+                SpannableString s = new SpannableString(dialogDetailsText.TextFormatted);
+                var clickableSpan = new ClickSpan();
+                clickableSpan.Click += v =>
+                {
+                    if (textMessage != null && textMessage.Contains("faq"))
+                    {
+                        //Lauch FAQ
+                        int startIndex = textMessage.LastIndexOf("=") + 1;
+                        int lastIndex = textMessage.LastIndexOf("}");
+                        int lengthOfId = (lastIndex - startIndex) + 1;
+                        if (lengthOfId < textMessage.Length)
+                        {
+                            string faqid = textMessage.Substring(startIndex, lengthOfId);
+                            if (!string.IsNullOrEmpty(faqid))
+                            {
+                                Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
+                                faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+                                Activity.StartActivity(faqIntent);
+                            }
+                        }
+                    }
+                };
+                var urlSpans = s.GetSpans(0, s.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
+                int startFAQLink = s.GetSpanStart(urlSpans[0]);
+                int endFAQLink = s.GetSpanEnd(urlSpans[0]);
+                s.RemoveSpan(urlSpans[0]);
+                s.SetSpan(clickableSpan, startFAQLink, endFAQLink, SpanTypes.ExclusiveExclusive);
+                dialogDetailsText.TextFormatted = s;
+                dialogDetailsText.MovementMethod = new LinkMovementMethod();
+                materialDialog.Show();
             }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
-        }*/
+        }
 
         [OnClick(Resource.Id.btnTxtSsmrViewHistory)]
         void OnSsmrViewHistory(object sender, EventArgs eventArgs)
@@ -1077,6 +1250,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
             }
 
+            ShowSMStatisticCard();
+
             if (isTariffAvailable)
             {
                 tarifToggle.Enabled = true;
@@ -1164,92 +1339,98 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             if (isSMAccount)
             {
-                if (ChartType == ChartType.RM)
+                if (ChartType == ChartType.Month)
                 {
+                    if (ChartDataType == ChartDataType.RM)
+                    {
 
-                    txtRange.Text = selectedSMHistoryData.ByMonth.Range;
+                        txtRange.Text = selectedSMHistoryData.ByMonth.Range;
 
-                    // SETUP XAXIS
+                        // SETUP XAXIS
 
-                    SetUpXAxis();
+                        SetUpXAxis();
 
-                    // SETUP YAXIS
+                        // SETUP YAXIS
 
-                    SetUpYAxis();
+                        SetUpYAxis();
 
-                    // ADD DATA
+                        // ADD DATA
 
-                    SetData(selectedSMHistoryData.ByMonth.Months.Count);
+                        SetData(selectedSMHistoryData.ByMonth.Months.Count);
 
 
-                    // SETUP MARKER VIEW
+                        // SETUP MARKER VIEW
 
-                    SetUpMarkerRMView();
+                        SetUpMarkerRMView();
 
-                }
-                else
-                {
+                    }
+                    else
+                    {
 
-                    txtRange.Text = selectedSMHistoryData.ByMonth.Range;
-                    // SETUP XAXIS
+                        txtRange.Text = selectedSMHistoryData.ByMonth.Range;
+                        // SETUP XAXIS
 
-                    SetUpXAxiskWh();
+                        SetUpXAxiskWh();
 
-                    // SETUP YAXIS
+                        // SETUP YAXIS
 
-                    SetUpYAxisKwh();
+                        SetUpYAxisKwh();
 
-                    // ADD DATA
-                    SetKWhData(selectedSMHistoryData.ByMonth.Months.Count);
+                        // ADD DATA
+                        SetKWhData(selectedSMHistoryData.ByMonth.Months.Count);
 
-                    // SETUP MARKER VIEW
+                        // SETUP MARKER VIEW
 
-                    SetUpMarkerKWhView();
+                        SetUpMarkerKWhView();
+                    }
                 }
             }
             else
             {
-                if (ChartType == ChartType.RM)
+                if (ChartType == ChartType.Month)
                 {
+                    if (ChartDataType == ChartDataType.RM)
+                    {
 
-                    txtRange.Text = selectedHistoryData.ByMonth.Range;
+                        txtRange.Text = selectedHistoryData.ByMonth.Range;
 
-                    // SETUP XAXIS
+                        // SETUP XAXIS
 
-                    SetUpXAxis();
+                        SetUpXAxis();
 
-                    // SETUP YAXIS
+                        // SETUP YAXIS
 
-                    SetUpYAxis();
+                        SetUpYAxis();
 
-                    // ADD DATA
+                        // ADD DATA
 
-                    SetData(selectedHistoryData.ByMonth.Months.Count);
+                        SetData(selectedHistoryData.ByMonth.Months.Count);
 
 
-                    // SETUP MARKER VIEW
+                        // SETUP MARKER VIEW
 
-                    SetUpMarkerRMView();
+                        SetUpMarkerRMView();
 
-                }
-                else
-                {
+                    }
+                    else
+                    {
 
-                    txtRange.Text = selectedHistoryData.ByMonth.Range;
-                    // SETUP XAXIS
+                        txtRange.Text = selectedHistoryData.ByMonth.Range;
+                        // SETUP XAXIS
 
-                    SetUpXAxiskWh();
+                        SetUpXAxiskWh();
 
-                    // SETUP YAXIS
+                        // SETUP YAXIS
 
-                    SetUpYAxisKwh();
+                        SetUpYAxisKwh();
 
-                    // ADD DATA
-                    SetKWhData(selectedHistoryData.ByMonth.Months.Count);
+                        // ADD DATA
+                        SetKWhData(selectedHistoryData.ByMonth.Months.Count);
 
-                    // SETUP MARKER VIEW
+                        // SETUP MARKER VIEW
 
-                    SetUpMarkerKWhView();
+                        SetUpMarkerKWhView();
+                    }
                 }
             }
 
@@ -1423,7 +1604,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 SMSelectedMarkerView markerView = new SMSelectedMarkerView(Activity)
                 {
                     UsageHistoryData = selectedSMHistoryData,
-                    ChartType = ChartType.RM,
+                    ChartType = ChartType,
+                    ChartDataType = ChartDataType,
                     AccountType = selectedAccount.AccountCategoryId
                 };
 
@@ -1435,7 +1617,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 SelectedMarkerView markerView = new SelectedMarkerView(Activity)
                 {
                     UsageHistoryData = selectedHistoryData,
-                    ChartType = ChartType.RM,
+                    ChartType = ChartType,
+                    ChartDataType = ChartDataType,
                     AccountType = selectedAccount.AccountCategoryId
                 };
 
@@ -1453,7 +1636,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 SMSelectedMarkerView markerView = new SMSelectedMarkerView(Activity)
                 {
                     UsageHistoryData = selectedSMHistoryData,
-                    ChartType = ChartType.kWh,
+                    ChartType = ChartType,
+                    ChartDataType = ChartDataType,
                     AccountType = selectedAccount.AccountCategoryId
                 };
 
@@ -1465,7 +1649,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 SelectedMarkerView markerView = new SelectedMarkerView(Activity)
                 {
                     UsageHistoryData = selectedHistoryData,
-                    ChartType = ChartType.kWh,
+                    ChartType = ChartType,
+                    ChartDataType = ChartDataType,
                     AccountType = selectedAccount.AccountCategoryId
                 };
                 markerView.ChartView = mChart;
@@ -2277,7 +2462,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         // Lin Siong Note: Show by kWh graph
         public void ShowByKwh()
         {
-            ChartType = ChartType.kWh;
+            ChartDataType = ChartDataType.kWh;
 
             mChart.Visibility = ViewStates.Visible;
 
@@ -2291,7 +2476,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         // Lin Siong Note: Show by RM graph
         public void ShowByRM()
         {
-            ChartType = ChartType.RM;
+            ChartDataType = ChartDataType.RM;
 
             mChart.Visibility = ViewStates.Visible;
 
@@ -2474,7 +2659,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                     if (isChangeBackgroundNeeded)
                     {
-                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                        if (isSMAccount)
+                        {
+                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                        }
+                        else
+                        {
+                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                        }
                     }
                     else
                     {
@@ -2627,6 +2819,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                         refreshLayout.Visibility = ViewStates.Visible;
                         allGraphLayout.Visibility = ViewStates.Gone;
+                        smStatisticContainer.Visibility = ViewStates.Gone;
                         if (isBCRMDown)
                         {
                             refresh_image.SetImageResource(Resource.Drawable.maintenance_new);
@@ -2641,6 +2834,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             StopAddressShimmer();
                             StopRangeShimmer();
                             StopGraphShimmer();
+                            StopSMStatisticShimmer();
                             btnNewRefresh.Visibility = ViewStates.Visible;
                             energyTipsView.Visibility = ViewStates.Gone;
                             if (string.IsNullOrEmpty(buttonTxt))
@@ -3997,6 +4191,255 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         shimmrtDueDate.StopShimmer();
                     }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void StartSMStatisticShimmer()
+        {
+            try
+            {
+                if (isSMAccount)
+                {
+                    var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+                    if (shimmerBuilder != null)
+                    {
+                        shimmerSMStatisticBillImg.SetShimmer(shimmerBuilder?.Build());
+                        shimmrtSMStatisticBillTitle.SetShimmer(shimmerBuilder?.Build());
+                        shimmrtSMStatisticBill.SetShimmer(shimmerBuilder?.Build());
+                        shimmrtSMStatisticBillDueDate.SetShimmer(shimmerBuilder?.Build());
+                        shimmerSMStatisticPredictImg.SetShimmer(shimmerBuilder?.Build());
+                        shimmrtSMStatisticPredictTitle.SetShimmer(shimmerBuilder?.Build());
+                        shimmrtSMStatisticPredict.SetShimmer(shimmerBuilder?.Build());
+                        shimmrtSMStatisticPredictDueDate.SetShimmer(shimmerBuilder?.Build());
+                        shimmrtSmStatisticTooltip.SetShimmer(shimmerBuilder?.Build());
+                    }
+
+                    shimmerSMStatisticBillImg.StartShimmer();
+                    shimmrtSMStatisticBillTitle.StartShimmer();
+                    shimmrtSMStatisticBill.StartShimmer();
+                    shimmrtSMStatisticBillDueDate.StartShimmer();
+                    shimmerSMStatisticPredictImg.StartShimmer();
+                    shimmrtSMStatisticPredictTitle.StartShimmer();
+                    shimmrtSMStatisticPredict.StartShimmer();
+                    shimmrtSMStatisticPredictDueDate.StartShimmer();
+                    shimmrtSmStatisticTooltip.StartShimmer();
+
+                    smStatisticContainer.Visibility = ViewStates.Visible;
+                    smStatisticBillMainLayout.Visibility = ViewStates.Visible;
+                    smStatisticPredictMainLayout.Visibility = ViewStates.Visible;
+                    shimmerSMStatisticPredictImg.Visibility = ViewStates.Visible;
+                    shimmerSMStatisticPredictLayout.Visibility = ViewStates.Visible;
+                    shimmerSMStatisticBillImg.Visibility = ViewStates.Visible;
+                    shimmerSMStatisticBillLayout.Visibility = ViewStates.Visible;
+                    shimmrtSmStatisticTooltip.Visibility = ViewStates.Visible;
+                    smStatisticBillLayout.Visibility = ViewStates.Gone;
+                    smStatisticBillImg.Visibility = ViewStates.Gone;
+                    smStatisticPredictImg.Visibility = ViewStates.Gone;
+                    smStatisticPredictLayout.Visibility = ViewStates.Gone;
+                    smStatisticTrendMainLayout.Visibility = ViewStates.Gone;
+                    smStatisticTooltip.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+                    smStatisticContainer.Visibility = ViewStates.Gone;
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void StopSMStatisticShimmer()
+        {
+            try
+            {
+                if (isSMAccount)
+                {
+                    smStatisticBillMainLayout.Visibility = ViewStates.Visible;
+                    smStatisticPredictMainLayout.Visibility = ViewStates.Visible;
+                    smStatisticTrendMainLayout.Visibility = ViewStates.Gone;
+                    shimmerSMStatisticPredictImg.Visibility = ViewStates.Gone;
+                    shimmerSMStatisticPredictLayout.Visibility = ViewStates.Gone;
+                    shimmerSMStatisticBillImg.Visibility = ViewStates.Gone;
+                    shimmerSMStatisticBillLayout.Visibility = ViewStates.Gone;
+                    shimmrtSmStatisticTooltip.Visibility = ViewStates.Gone;
+                    smStatisticBillLayout.Visibility = ViewStates.Visible;
+                    smStatisticBillImg.Visibility = ViewStates.Visible;
+                    smStatisticPredictImg.Visibility = ViewStates.Visible;
+                    smStatisticPredictLayout.Visibility = ViewStates.Visible;
+                    smStatisticTooltip.Visibility = ViewStates.Visible;
+
+                    if (shimmerSMStatisticBillImg.IsShimmerStarted)
+                    {
+                        shimmerSMStatisticBillImg.StopShimmer();
+                    }
+                    if (shimmrtSMStatisticBillTitle.IsShimmerStarted)
+                    {
+                        shimmrtSMStatisticBillTitle.StopShimmer();
+                    }
+                    if (shimmrtSMStatisticBill.IsShimmerStarted)
+                    {
+                        shimmrtSMStatisticBill.StopShimmer();
+                    }
+                    if (shimmrtSMStatisticBillDueDate.IsShimmerStarted)
+                    {
+                        shimmrtSMStatisticBillDueDate.StopShimmer();
+                    }
+                    if (shimmerSMStatisticPredictImg.IsShimmerStarted)
+                    {
+                        shimmerSMStatisticPredictImg.StopShimmer();
+                    }
+                    if (shimmrtSMStatisticPredictTitle.IsShimmerStarted)
+                    {
+                        shimmrtSMStatisticPredictTitle.StopShimmer();
+                    }
+                    if (shimmrtSMStatisticPredict.IsShimmerStarted)
+                    {
+                        shimmrtSMStatisticPredict.StopShimmer();
+                    }
+                    if (shimmrtSMStatisticPredictDueDate.IsShimmerStarted)
+                    {
+                        shimmrtSMStatisticPredictDueDate.StopShimmer();
+                    }
+                    if (shimmrtSmStatisticTooltip.IsShimmerStarted)
+                    {
+                        shimmrtSmStatisticTooltip.StopShimmer();
+                    }
+
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowSMStatisticCard()
+        {
+            try
+            {
+                if (isSMAccount)
+                {
+                    smStatisticContainer.Visibility = ViewStates.Visible;
+                    StopSMStatisticShimmer();
+                    if (ChartDataType == ChartDataType.RM)
+                    {
+                        smStatisticTooltip.Visibility = ViewStates.Visible;
+                        smStatisticPredictMainLayout.Visibility = ViewStates.Visible;
+                        smStatisticTrendMainLayout.Visibility = ViewStates.Gone;
+                        smStatisticBill.Visibility = ViewStates.Visible;
+                        smStatisticBillCurrency.Visibility = ViewStates.Visible;
+                        smStatisticBillKwhUnit.Visibility = ViewStates.Gone;
+                        smStatisticBillKwh.Visibility = ViewStates.Gone;
+                        smStatisticBillTitle.Text = "My bill amount so far";
+                        smStatisticBillSubTitle.Text = "- -";
+                        smStatisticBill.Text = "- -";
+                        smStatisticPredictTitle.Text = "My bill may reach";
+                        smStatisticPredictSubTitle.Text = "- -";
+                        smStatisticPredict.Text = "- -";
+                        txtSmStatisticTooltip.Text = "What are these?";
+                        if (selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.CostData != null)
+                        {
+                            foreach (SMUsageHistoryData.Stats costValue in selectedSMHistoryData.OtherUsageMetrics.CostData)
+                            {
+                                if (costValue.Key == Constants.CURRENT_COST_KEY)
+                                {
+                                    smStatisticBillTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My bill amount so far" : costValue.Title;
+                                    smStatisticBillSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
+                                    smStatisticBill.Text = string.IsNullOrEmpty(costValue.Value) ?  "- -" : costValue.Value;
+                                    smStatisticBillCurrency.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "RM" : costValue.ValueUnit;
+                                }
+                                else if (costValue.Key == Constants.PROJECTED_COST_KEY)
+                                {
+                                    smStatisticPredictTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My bill amount so far" : costValue.Title;
+                                    smStatisticPredictSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
+                                    smStatisticPredict.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : costValue.Value;
+                                    smStatisticPredictCurrency.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "RM" : costValue.ValueUnit;
+                                }
+                            }
+                        }
+
+                        if (selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.ToolTips != null && selectedSMHistoryData.ToolTips.Count > 0)
+                        {
+                            foreach (SMUsageHistoryData.SmartMeterToolTips costValue in selectedSMHistoryData.ToolTips)
+                            {
+                                if (costValue.Type == Constants.PROJECTED_COST_KEY)
+                                {
+                                    txtSmStatisticTooltip.Text = string.IsNullOrEmpty(costValue.SMLink) ? "What are these?" : costValue.SMLink;
+                                }
+                            }
+                        }
+                    }
+                    else if (ChartDataType == ChartDataType.kWh)
+                    {
+                        smStatisticTooltip.Visibility = ViewStates.Gone;
+                        smStatisticPredictMainLayout.Visibility = ViewStates.Gone;
+                        smStatisticTrendMainLayout.Visibility = ViewStates.Visible;
+                        smStatisticBill.Visibility = ViewStates.Gone;
+                        smStatisticBillCurrency.Visibility = ViewStates.Gone;
+                        smStatisticBillKwhUnit.Visibility = ViewStates.Visible;
+                        smStatisticBillKwh.Visibility = ViewStates.Visible;
+                        smStatisticBillTitle.Text = "My current usage";
+                        smStatisticBillSubTitle.Text = "- -";
+                        smStatisticBillKwh.Text = "- -";
+                        smStatisticTrendTitle.Text = "My current usage trend is";
+                        smStatisticTrendSubTitle.Text = "- -";
+                        smStatisticTrend.Text = "- -%";
+                        if (selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.UsageData != null && selectedSMHistoryData.OtherUsageMetrics.UsageData.Count > 0)
+                        {
+                            foreach (SMUsageHistoryData.Stats costValue in selectedSMHistoryData.OtherUsageMetrics.UsageData)
+                            {
+                                if (costValue.Key == Constants.CURRENT_USAGE_KEY)
+                                {
+                                    smStatisticBillTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My bill amount so far" : costValue.Title;
+                                    smStatisticBillSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
+                                    smStatisticBillKwh.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : costValue.Value;
+                                    smStatisticBillKwhUnit.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "kWh" : costValue.ValueUnit;
+                                }
+                                else if (costValue.Key == Constants.AVERAGE_USAGE_KEY)
+                                {
+                                    smStatisticTrendTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My current usage trend is" : costValue.Title;
+                                    smStatisticTrendSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
+                                    string trendString = "- -%";
+                                    if (!string.IsNullOrEmpty(costValue.Value))
+                                    {
+                                        if (!string.IsNullOrEmpty(costValue.ValueIndicator) && costValue.ValueIndicator.Equals("+"))
+                                        {
+                                            trendString = GetString(Resource.String.avg_electric_usage_up) + costValue.Value;
+                                        }
+                                        else if (!string.IsNullOrEmpty(costValue.ValueIndicator) && costValue.ValueIndicator.Equals("-"))
+                                        {
+                                            trendString = GetString(Resource.String.avg_electric_usage_down) + costValue.Value;
+                                        }
+                                        else
+                                        {
+                                            trendString = costValue.Value;
+                                        }
+                                    }
+
+                                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                                    {
+
+                                        smStatisticTrend.TextFormatted = Html.FromHtml(trendString, Html.FromHtmlModeLegacy);
+                                    }
+                                    else
+                                    {
+                                        smStatisticTrend.TextFormatted = Html.FromHtml(trendString);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    smStatisticContainer.Visibility = ViewStates.Gone;
                 }
             }
             catch (System.Exception e)
