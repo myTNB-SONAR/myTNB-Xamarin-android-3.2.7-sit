@@ -10,7 +10,6 @@ namespace myTNB
         UIView _parentView, _contentView;
         CustomUIView _btnView;
         UILabel _title, _description;
-        UIImageView _imageView;
         nfloat _yPos;
         public SmartMeterOverlayComponent(UIView parentView, nfloat yPos)
         {
@@ -25,13 +24,12 @@ namespace myTNB
             {
                 BackgroundColor = UIColor.Clear
             };
-            ViewHelper.AdjustFrameSetY(_contentView, _yPos);
-            _title = new UILabel(new CGRect(0, GetScaledHeight(148F), width, GetScaledHeight(20F)))
+            _title = new UILabel(new CGRect(0, _yPos, width, GetScaledHeight(20F)))
             {
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = UIColor.White,
                 TextAlignment = UITextAlignment.Center,
-                Text = "How do I view my daily usage?"
+                Text = LanguageUtility.GetCommonI18NValue(Constants.I18N_SMOverlayTitle)
             };
             _contentView.AddSubview(_title);
             nfloat animationWidth = GetScaledWidth(76F);
@@ -42,22 +40,13 @@ namespace myTNB
             pinchAnimation.LoopAnimation = true;             pinchAnimation.Play();
             _contentView.AddSubview(pinchAnimation);
 
-            //nfloat imageWidth = GetScaledWidth(76F);
-            //nfloat imageHeight = GetScaledWidth(76F);
-            //nfloat imageXPos = GetXLocationToCenterObject(imageWidth, _contentView);
-            //_imageView = new UIImageView(new CGRect(imageXPos, _title.Frame.GetMaxY() + GetScaledHeight(32F), imageWidth, imageHeight))
-            //{
-            //    Image = UIImage.FromBundle("Pinch-Icon")
-            //};
-            //_contentView.AddSubview(_imageView);
-
             nfloat descWidth = width - (GetScaledWidth(34F) * 2);
             _description = new UILabel(new CGRect(GetScaledWidth(34F), pinchAnimation.Frame.GetMaxY() + GetScaledHeight(24F), descWidth, 0))
             {
                 Font = TNBFont.MuseoSans_14_300,
                 TextColor = UIColor.White,
                 TextAlignment = UITextAlignment.Center,
-                Text = "Pinch to zoom in or out! Zoom in to view your daily breakdown.",
+                Text = LanguageUtility.GetCommonI18NValue(Constants.I18N_SMOverlayMsg),
                 Lines = 0
             };
             _contentView.AddSubview(_description);
@@ -73,7 +62,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
                 TextAlignment = UITextAlignment.Center,
-                Text = "Got It!"
+                Text = LanguageUtility.GetCommonI18NValue(Constants.I18N_SMOverlayBtnTxt)
             };
             _btnView.AddSubview(btnLabel);
             _contentView.AddSubview(_btnView);

@@ -16,6 +16,8 @@ namespace myTNB
             ShimmerHeight = GetHeightByScreenSize(229);
         }
 
+        private BaseSmartMeterView _baseSmartMeterView;
+
         protected override void CreatUI()
         {
             _width = UIScreen.MainScreen.Bounds.Width;
@@ -65,8 +67,8 @@ namespace myTNB
             attrSelected.TextColor = MyTNBColor.DarkPeriwinkle;
 
             UISegmentedControl toggleBar = new UISegmentedControl(new CGRect(GetXLocationToCenterObject(toggleWidth, parentView), 1, toggleWidth, toggleHeight));
-            toggleBar.InsertSegment("Common_Day".Translate(), 0, false);
-            toggleBar.InsertSegment("Common_Month".Translate(), 1, false);
+            toggleBar.InsertSegment(LanguageUtility.GetCommonI18NValue(Constants.I18N_Day), 0, false);
+            toggleBar.InsertSegment(LanguageUtility.GetCommonI18NValue(Constants.I18N_Month), 1, false);
             toggleBar.TintColor = UIColor.White;
             toggleBar.SetTitleTextAttributes(attr, UIControlState.Normal);
             toggleBar.SetTitleTextAttributes(attrSelected, UIControlState.Selected);
@@ -82,11 +84,16 @@ namespace myTNB
             toggleView.AddSubview(toggleBar);
             nfloat iconWidth = GetScaledWidth(24);
             nfloat iconHeight = GetScaledHeight(24);
-            UIImageView iconView = new UIImageView(new CGRect(toggleBar.Frame.GetMaxX() + GetScaledWidth(59), 0, iconWidth, iconHeight))
+            UIImageView pinchIcon = new UIImageView(new CGRect(toggleBar.Frame.GetMaxX() + GetScaledWidth(59), 0, iconWidth, iconHeight))
             {
-                Image = UIImage.FromBundle("Info-White-Icon")
+                Image = UIImage.FromBundle("Pinch-Icon"),
+                UserInteractionEnabled = true
             };
-            toggleView.AddSubview(iconView);
+            pinchIcon.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                Debug.WriteLine("pinchIcon..");
+            }));
+            toggleView.AddSubview(pinchIcon);
             return toggleView;
         }
 
@@ -127,137 +134,14 @@ namespace myTNB
 
         protected override void CreateSegment()
         {
-            BaseSmartMeterView test = new SmartMeterMonthView()
+            _baseSmartMeterView = new SmartMeterMonthView()
             {
                 ReferenceWidget = _lblDateRange.Frame,
                 AddTariffBlocks = AddTariffBlocks,
                 OnSegmentTap = OnSegmentTap,
                 PinchAction = PinchAction
             };
-            //test.CreateSegment(ref _segmentContainer);
-
-            BaseSmartMeterView test2 = new SmartMeterDayView()
-            {
-                ReferenceWidget = _lblDateRange.Frame,
-                AddTariffBlocks = AddTariffBlocks
-            };
-            test2.CreateSegment(ref _segmentContainer);
-
-            /*
-            _segmentContainer = new CustomUIView(new CGRect(0, GetYLocationFromFrameScreenSize(_lblDateRange.Frame, 16)
-               , _width, GetHeightByScreenSize(157)));
-
-            _segmentContainer.AddGestureRecognizer(new UIPinchGestureRecognizer((obj) =>
-            {
-                PinchAction(obj);
-            }));
-
-            nfloat height = _segmentContainer.Frame.Height;
-            nfloat width = GetWidthByScreenSize(12);
-            nfloat segmentMargin = GetWidthByScreenSize(18);
-            nfloat baseMargin = GetWidthByScreenSize(25);
-            nfloat xLoc = baseMargin;
-            nfloat lblHeight = GetHeightByScreenSize(14);
-            nfloat maxBarHeight = GetHeightByScreenSize(108);
-            nfloat amountBarMargin = GetHeightByScreenSize(4);
-            nfloat segmentWidth = GetWidthByScreenSize(30);
-            nfloat barMargin = GetWidthByScreenSize(7);
-
-            List<MonthItemModel> usageData = AccountUsageSmartCache.ByMonthUsage;
-            List<string> valueList = usageData.Select(x => x.UsageTotal).ToList();
-            double maxValue = GetMaxValue(RMkWhEnum.RM, valueList);
-            double divisor = maxBarHeight / maxValue;
-
-            for (int i = 0; i < usageData.Count; i++)
-            {
-                int index = i;
-                bool isLatestBar = false;// index == usageData.Count - 1;
-                bool isSelected = index < usageData.Count - 1;
-                MonthItemModel item = usageData[index];
-                CustomUIView segment = new CustomUIView(new CGRect(xLoc, 0, segmentWidth, height))
-                {
-                    Tag = index,
-                    PageName = "InnerDashboard",
-                    EventName = "OnTapSmartMeterMonthBar"
-                };
-                _segmentContainer.AddSubview(segment);
-                xLoc += segmentWidth + segmentMargin;
-
-                double.TryParse(item.UsageTotal, out double value);
-                nfloat barHeight = (nfloat)(divisor * value);
-                nfloat yLoc = lblHeight + amountBarMargin + (maxBarHeight - barHeight);
-
-                nfloat barWidth = isLatestBar ? GetWidthByScreenSize(18) : width;
-                nfloat barXLoc = isLatestBar ? barMargin - GetWidthByScreenSize(2) : barMargin;
-                CustomUIView viewBar = new CustomUIView(new CGRect(barXLoc
-                    , segment.Frame.Height - lblHeight - GetHeightByScreenSize(17), barWidth, 0))
-                {
-                    BackgroundColor = UIColor.Clear,
-                    Tag = 1001,
-                    ClipsToBounds = true
-                };
-                viewBar.Layer.CornerRadius = barWidth / 2;
-                if (isLatestBar)
-                {
-                    viewBar.Layer.BorderWidth = GetWidthByScreenSize(1);
-                    viewBar.Layer.BorderColor = (isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White).CGColor;
-                }
-
-                nfloat coverWidth = isLatestBar ? viewBar.Frame.Width - GetWidthByScreenSize(6) : viewBar.Frame.Width;
-                nfloat coverXLoc = isLatestBar ? GetWidthByScreenSize(3) : 0;
-                nfloat coverHeight = isLatestBar ? barHeight - GetHeightByScreenSize(6) : barHeight;
-                nfloat coverYLoc = isLatestBar ? GetHeightByScreenSize(3) : 0;
-
-                UIView viewCover = new UIView(new CGRect(new CGPoint(coverXLoc, coverYLoc), new CGSize(coverWidth, coverHeight)))
-                {
-                    BackgroundColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
-                    Tag = 2001,
-                    Hidden = false
-                };
-                if (isLatestBar) { viewCover.Layer.CornerRadius = coverWidth / 2; }
-                viewBar.AddSubview(viewCover);
-
-                AddTariffBlocks(viewBar, item.tariffBlocks, value, index == usageData.Count - 1, viewCover.Frame.Size, isLatestBar);
-
-                nfloat amtYLoc = yLoc - amountBarMargin - lblHeight;
-                UILabel lblAmount = new UILabel(new CGRect(0, viewBar.Frame.GetMinY() - amountBarMargin - lblHeight
-                    , GetWidthByScreenSize(100), lblHeight))
-                {
-                    TextAlignment = UITextAlignment.Center,
-                    Font = TNBFont.MuseoSans_10_300,
-                    TextColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
-                    Text = item.AmountTotal.FormatAmountString(item.Currency),
-                    Hidden = isSelected,
-                    Tag = 1002
-                };
-                nfloat lblAmountWidth = lblAmount.GetLabelWidth(GetWidthByScreenSize(100));
-                lblAmount.Frame = new CGRect((segmentWidth - lblAmountWidth) / 2, lblAmount.Frame.Y, lblAmountWidth, lblAmount.Frame.Height);
-
-                UILabel lblDate = new UILabel(new CGRect((segmentWidth - GetWidthByScreenSize(40)) / 2, segment.Frame.Height - lblHeight
-                    , GetWidthByScreenSize(40), lblHeight))
-                {
-                    TextAlignment = UITextAlignment.Center,
-                    Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300,
-                    TextColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
-                    Text = string.IsNullOrEmpty(item.Year) ? item.Month : string.Format(Format_Value, item.Month, item.Year),
-                    Tag = 1003
-                };
-                segment.AddSubviews(new UIView[] { lblAmount, viewBar, lblDate });
-
-                segment.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-                {
-                    OnSegmentTap(index);
-                }));
-
-                UIView.Animate(1, 0.3, UIViewAnimationOptions.CurveEaseOut
-                    , () =>
-                    {
-                        viewBar.Frame = new CGRect(viewBar.Frame.X, yLoc, viewBar.Frame.Width, barHeight);
-                        lblAmount.Frame = new CGRect(lblAmount.Frame.X, amtYLoc, lblAmount.Frame.Width, lblAmount.Frame.Height);
-                    }
-                    , () => { }
-                );
-            }*/
+            _baseSmartMeterView.CreateSegment(ref _segmentContainer);
             _mainView.AddSubview(_segmentContainer);
         }
 

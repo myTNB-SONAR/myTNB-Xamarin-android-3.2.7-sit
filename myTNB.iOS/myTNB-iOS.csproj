@@ -1186,8 +1186,6 @@
     <ImageAsset Include="Assets.xcassets\Arrow-Left-Blue.imageset\Arrow-Left-Blue%402x.png" />
     <ImageAsset Include="Assets.xcassets\Arrow-Left-Blue.imageset\Arrow-Left-Blue%403x.png" />
     <ImageAsset Include="Assets.xcassets\Pinch-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Pinch-Icon.imageset\Pinch-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Pinch-Icon.imageset\Pinch-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill%402x-1.png" />
@@ -1211,6 +1209,8 @@
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Pinch-Icon.imageset\Pinch-Icon%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Pinch-Icon.imageset\Pinch-Icon%403x-1.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />

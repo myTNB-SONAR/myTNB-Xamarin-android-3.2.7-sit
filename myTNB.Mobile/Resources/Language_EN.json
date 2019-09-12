@@ -54,7 +54,12 @@
         "viewBill": "View Bill",
         "all": "All",
         "maintenanceTitle": "We're fine-tuning!",
-        "maintenanceMsg": "System is under maintenance. Please try again later. We apologize for the inconvenience. Thank you."
+        "maintenanceMsg": "System is under maintenance. Please try again later. We apologize for the inconvenience. Thank you.",
+        "SMOverlayTitle": "How do I view my daily usage?",
+        "SMOverlayMsg": "Pinch to zoom in or out! Zoom in to view your daily breakdown.",
+        "SMOverlayBtnTxt": "Got It!",
+        "day": "Day",
+        "month": "Month"
     },
     "Hint": {
         "mobileNumber": "Please include the country code of your phone number.",
