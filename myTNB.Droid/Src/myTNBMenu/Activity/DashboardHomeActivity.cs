@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime;
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
@@ -28,6 +29,7 @@ using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
 using myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.MVP;
+using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.PreLogin.Activity;
 using myTNB_Android.Src.Promotions.Fragments;
 using myTNB_Android.Src.Rating.Activity;
@@ -160,9 +162,33 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 bottomNavigationView.Menu.FindItem(Resource.Id.menu_promotion).SetChecked(true);
                 this.userActionsListener?.OnMenuSelect(Resource.Id.menu_promotion);
             }
-
+            Task.Factory.StartNew(() =>
+            {
+                GetNotifications();
+            });
             this.userActionsListener?.OnNotificationCount();
 
+        }
+
+        public async void GetNotifications()
+        {
+            try
+            {
+                NotificationApiImpl api = new NotificationApiImpl();
+                MyTNBService.Response.UserNotificationResponse response = await api.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
+                if (response.Data.ErrorCode == "7200")
+                {
+                    foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
+                    {
+                        // tODO : SAVE ALL NOTIFICATIONs
+                        int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowBackButton(bool flag)

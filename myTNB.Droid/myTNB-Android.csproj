@@ -2435,6 +2435,11 @@
     <AndroidResource Include="Resources\drawable-xhdpi\notification_new_bill_banner.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\notification_new_bill_banner.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\notification_new_bill_banner.png" />
+    <Compile Include="Src\NotificationDetails\MVP\UserNotificationDetailPresenter.cs" />
+    <Compile Include="Src\NotificationDetails\Models\NotificationDetailModel.cs" />
+    <Compile Include="Src\CompoundView\NotificationDetailCTAComponent.cs" />
+    <AndroidResource Include="Resources\layout\NotificationDetailCTALayout.axml" />
+    <Compile Include="Src\NotificationDetails\MVP\UserNotificationDetailContract.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

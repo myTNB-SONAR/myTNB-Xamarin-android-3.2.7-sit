@@ -10,8 +10,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <LinearLayout
-            android:id="@+id/bottomLayout"
+        <myTNB_Android.Src.CompoundView.NotificationDetailCTAComponent
+            android:id="@+id/notificationCTAComponent"
             android:layout_height="wrap_content"
             android:layout_width="match_parent"
             android:orientation="horizontal"
@@ -20,32 +20,13 @@
             android:paddingBottom="8dp"
             android:layout_alignParentBottom="true"
             android:background="@color/white"
-            android:paddingTop="8dp">
-            <Button
-                android:id="@+id/btnViewBill"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:layout_weight=".5"
-                android:text="View Bill"
-                android:textAllCaps="false"
-                android:textSize="16dp"
-                style="@style/LightButtonWithIcon"/>
-            <Button
-                android:id="@+id/btnPayBill"
-                android:layout_height="wrap_content"
-                android:layout_width="0dp"
-                android:layout_weight=".5"
-                android:text="Pay"
-                android:textSize="16dp"
-                android:textAllCaps="false"
-                style="@style/DarkButton1"/>
-        </LinearLayout>
+            android:paddingTop="8dp"/>
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fillViewport="true"
             android:overScrollMode="never"
-            android:layout_above="@+id/bottomLayout"
+            android:layout_above="@+id/notificationCTAComponent"
             android:background="@color/lightGrey">
             <LinearLayout
                 android:layout_width="match_parent"
