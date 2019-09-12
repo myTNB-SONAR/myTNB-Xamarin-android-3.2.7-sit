@@ -45,11 +45,6 @@ namespace myTNB.Payment.SelectBills
             {
                 cell._txtFieldAmount.Text = _accounts[indexPath.Row].Amount.ToString("N2", CultureInfo.InvariantCulture);
             }
-            else if (hasMandatoryCharges)
-            {
-                MandatoryChargesModel mandatoryCharges = AccountChargesCache.GetMandatoryCharges(_accounts[indexPath.Row].accNum);
-                cell._txtFieldAmount.Text = mandatoryCharges.TotalAmount.ToString("N2", CultureInfo.InvariantCulture);
-            }
             cell._viewCheckBox.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 if (_accounts[indexPath.Row].Amount >= TNBGlobal.PaymentMinAmnt || hasMandatoryCharges)
