@@ -933,10 +933,6 @@
     <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\SMR-Medium-Icon.png" />
     <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\SMR-Medium-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\SMR-Icon%403x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMRPrimaryIcon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SSMRPrimaryIcon.imageset\SSMRPrimaryIcon.png" />
-    <ImageAsset Include="Assets.xcassets\SSMRPrimaryIcon.imageset\SSMRPrimaryIcon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMRPrimaryIcon.imageset\SSMRPrimaryIcon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\oval.png" />
     <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\oval%402x.png" />
@@ -1034,7 +1030,6 @@
     <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group%403x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-Reading-History-Banner.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SSMR-Reading-History-Banner.imageset\group6.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-Reading-History-Banner.imageset\group6%402x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-Reading-History-Banner.imageset\group6%403x.png" />
     <ImageAsset Include="Assets.xcassets\Camera-Icon-Green.imageset\Contents.json" />
@@ -1065,7 +1060,6 @@
     <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon.png" />
     <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon%403x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-Refresh.imageset\Contents.json" />
