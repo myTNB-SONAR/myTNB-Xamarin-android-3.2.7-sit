@@ -33,7 +33,7 @@
                 <ImageView
                 android:id="@+id/itemisedBillingHeaderImage"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="212dp"
                 android:layout_marginTop="-35dp"
                 android:foregroundGravity="center_horizontal|center"
                 android:layout_gravity="bottom"
@@ -313,7 +313,7 @@
                     android:layout_gravity="center"
                     android:text="My House"
                     android:textColor="@color/white"
-                    android:textSize="16dp"/>
+                    android:textSize="16sp"/>
             </LinearLayout>
             </RelativeLayout>
             <LinearLayout

@@ -356,7 +356,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                         content.IsPayment(data.HistoryType.ToUpper() == "PAYMENT");
                         content.SetDateHistoryType(data.DateAndHistoryType);
                         content.SetPaidVia(data.PaidVia);
-                        content.SetAmount(data.Amount);
+                        content.SetAmount("RM " + data.Amount);
                         if (data.DetailedInfoNumber != "")
                         {
                             content.SetShowBillingDetailsListener(new OnShowBillingDetailsListener(this, data));
@@ -390,7 +390,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                             content.IsPayment(data.HistoryType.ToUpper() == "PAYMENT");
                             content.SetDateHistoryType(data.DateAndHistoryType);
                             content.SetPaidVia(data.PaidVia);
-                            content.SetAmount(data.Amount);
+                            content.SetAmount("RM " + data.Amount);
                             if (data.DetailedInfoNumber != "")
                             {
                                 content.SetShowBillingDetailsListener(new OnShowBillingDetailsListener(this, data));

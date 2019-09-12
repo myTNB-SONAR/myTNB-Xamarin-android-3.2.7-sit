@@ -5,6 +5,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.CompoundView
 {
@@ -36,6 +37,8 @@ namespace myTNB_Android.Src.CompoundView
         public void Init(Context context)
         {
             Inflate(context,Resource.Layout.ItemisedBillingHistoryGroupingLayout,this);
+            TextView monthYearLabel = FindViewById<TextView>(Resource.Id.itemisedBillingGroupLabel);
+            TextViewUtils.SetMuseoSans500Typeface(monthYearLabel);
         }
 
         public void AddContent(LinearLayout contentLayout)
