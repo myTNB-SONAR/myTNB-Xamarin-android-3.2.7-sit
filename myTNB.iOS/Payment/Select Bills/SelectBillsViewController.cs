@@ -233,6 +233,14 @@ namespace myTNB
                     {
                         hasInvalidSelection = true;
                     }
+                    if (AccountChargesCache.HasMandatory(item.accNum))
+                    {
+                        MandatoryChargesModel mandatoryCharges = AccountChargesCache.GetMandatoryCharges(item.accNum);
+                        if (item.Amount < mandatoryCharges.TotalAmount)
+                        {
+                            hasInvalidSelection = true;
+                        }
+                    }
 
                     totalAmount += item.Amount;
                 }
