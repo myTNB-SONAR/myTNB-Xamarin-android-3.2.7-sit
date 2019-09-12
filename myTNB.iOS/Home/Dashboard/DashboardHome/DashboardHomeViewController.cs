@@ -467,10 +467,11 @@ namespace myTNB
         {
             if (_usageStoryBoard != null)
             {
-                var viewController = _usageStoryBoard.InstantiateViewController("UsageViewController") as UsageViewController;
-                //var navController = new UINavigationController(viewController);
-                //PresentViewController(navController, true, null);
-                NavigationController.PushViewController(viewController, true);
+                UsageViewController viewController = _usageStoryBoard.InstantiateViewController("UsageViewController") as UsageViewController;
+                if (viewController != null)
+                {
+                    NavigationController.PushViewController(viewController, true);
+                }
             }
             ActivityIndicator.Hide();
         }

@@ -520,6 +520,7 @@
 
 /*Select Bill*/
 "SelectBill_OtherCharges"="OTHER CHARGES (RM)";
+"SelectBill_IAmPaying"="I AM PAYING (RM)";
 
 /*Tabbar*/
 "Tabbar_Bills"="Bills";

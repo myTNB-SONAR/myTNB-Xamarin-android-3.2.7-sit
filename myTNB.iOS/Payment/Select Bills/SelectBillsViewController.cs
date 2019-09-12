@@ -277,9 +277,11 @@ namespace myTNB
                 storyBoard.InstantiateViewController("BillDetailsView") as BillDetailsViewController;
             if (viewController != null)
             {
+                viewController.IsRoot = true;
                 viewController.AccountNumber = _selectedAccountNumber;
-                var navController = new UINavigationController(viewController);
-                PresentViewController(navController, true, null);
+                NavigationController.PushViewController(viewController, true);
+                //var navController = new UINavigationController(viewController);
+                //PresentViewController(navController, true, null);
             }
         }
 
@@ -448,7 +450,7 @@ namespace myTNB
         {
             View.EndEditing(true);
             ResetValues();
-            ViewHelper.DismissControllersAndSelectTab(this, 1, true);
+            DismissViewController(true, null);
         }
 
         private async Task<GetAccountsChargesResponseModel> GetAccountsCharges(List<string> accountList)

@@ -119,5 +119,10 @@ namespace myTNB
         {
             return frame.Height * (percentage / 100);
         }
+
+        public static nfloat GetPercentWidthValue(nfloat percentage)
+        {
+            return UIScreen.MainScreen.Bounds.Width * (percentage / 100);
+        }
     }
 }

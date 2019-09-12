@@ -28,9 +28,12 @@ namespace myTNB
         private nfloat titleBarHeight = ScaleUtility.GetScaledHeight(24f);
         private int _currentIndex = -1;
         private bool _isFromSelection;
+        private bool _rootNavigation;
 
         public bool IsFromHome;
+        public bool IsFromNotification;
         public bool FromStatusPage;
+        public bool IsRoot;
         public SSMRReadingHistoryViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
@@ -49,6 +52,7 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            _rootNavigation = false;
             NavigationController.SetNavigationBarHidden(true, true);
             SetNoSSMR();
             string accName;
@@ -67,7 +71,7 @@ namespace myTNB
             }
             else
             {
-                if (IsFromHome)
+                if (IsFromHome || IsFromNotification)
                 {
                     if (SSMRAccounts.HasSSMRAccount)
                     {
@@ -94,7 +98,15 @@ namespace myTNB
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
-            NavigationController.SetNavigationBarHidden(false, true);
+            if (IsFromNotification && !_rootNavigation)
+            {
+                NavigationController.SetNavigationBarHidden(true, true);
+            }
+            else
+            {
+                NavigationController.SetNavigationBarHidden(false, true);
+            }
+           // NavigationController.SetNavigationBarHidden(false, true);
         }
 
         private void EvaluateEntry()
@@ -181,14 +193,13 @@ namespace myTNB
             lblTitle.TextColor = UIColor.White;
             viewTitleBar.AddSubview(lblTitle);
 
-            UIImageView imgViewRightBtn = new UIImageView(new CGRect(0, 0, 24, titleBarHeight))
-            {
-                Image = UIImage.FromBundle(SSMRConstants.IMG_PrimaryIcon)
-            };
-
             viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                if (IsFromHome)
+                if (IsRoot)
+                {
+                    NavigationController.PopViewController(true);
+                }
+                else if (IsFromHome)
                 {
                     ViewHelper.DismissControllersAndSelectTab(this, 0, true);
                 }
@@ -305,9 +316,9 @@ namespace myTNB
 
         private void UpdateTable()
         {
-            _meterReadingHistory = IsFromHome || _isFromSelection || FromStatusPage
+            _meterReadingHistory = IsFromHome || IsFromNotification || _isFromSelection || FromStatusPage
                 ? SSMRActivityInfoCache.ViewMeterReadingHistory : SSMRActivityInfoCache.DashboardMeterReadingHistory;
-            _readingHistoryList = IsFromHome || _isFromSelection || FromStatusPage
+            _readingHistoryList = IsFromHome || IsFromNotification || _isFromSelection || FromStatusPage
                 ? SSMRActivityInfoCache.ViewReadingHistoryList : SSMRActivityInfoCache.DashboardReadingHistoryList;
 
             _ssmrHeaderComponent.SetSubmitButtonHidden(_meterReadingHistory);
@@ -344,6 +355,7 @@ namespace myTNB
             SSMRReadMeterViewController viewController =
                 storyBoard.InstantiateViewController("SSMRReadMeterViewController") as SSMRReadMeterViewController;
             viewController.IsRoot = true;
+            _rootNavigation = true;
             NavigationController.PushViewController(viewController, true);
         }
 
@@ -362,6 +374,7 @@ namespace myTNB
                             && _eligibilityAccount.d.data.accountEligibilities != null)
                         {
                             SSMRAccounts.SetData(_eligibilityAccount.d);
+                            _rootNavigation = true;
                             if (SSMRAccounts.GetEligibleAccountList().Count > 0)
                             {
                                 UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
@@ -421,13 +434,17 @@ namespace myTNB
                         if (_contactDetails != null && _contactDetails.d != null
                         && _contactDetails.d.IsSuccess && _contactDetails.d.data != null)
                         {
+                            _rootNavigation = true;
                             UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
                             SSMRApplicationViewController viewController =
                                 storyBoard.InstantiateViewController("SSMRApplicationViewController") as SSMRApplicationViewController;
-                            viewController.IsApplication = isEnable;
-                            viewController.SelectedAccount = _currAcc;
-                            viewController.ContactDetails = _contactDetails;
-                            NavigationController.PushViewController(viewController, true);
+                            if (viewController != null)
+                            {
+                                viewController.IsApplication = isEnable;
+                                viewController.SelectedAccount = _currAcc;
+                                viewController.ContactDetails = _contactDetails;
+                                NavigationController.PushViewController(viewController, true);
+                            }
                         }
                         else
                         {

@@ -36,7 +36,7 @@ namespace myTNB
         private const string COMMON = "Common";
         private const string Hint = "Hint";
         private const string Error = "Error";
-        private const string LANGUAGE_RESOURCE_PATH = "myTNB.Mobile.Resources.Language_{0}.json";
+        private const string LANGUAGE_RESOURCE_PATH = "myTNB.Mobile.Resources.Language.Language_{0}.json";
 
         /// <summary>
         /// Sets the language to be used by the app.
