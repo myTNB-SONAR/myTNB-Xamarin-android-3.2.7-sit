@@ -820,8 +820,6 @@
     <ImageAsset Include="Assets.xcassets\Notification-MarkAsReadDisabled.imageset\icHeaderMarkreadDisabled%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-MarkAsReadDisabled.imageset\icHeaderMarkreadDisabled%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\icHeaderDeleteDisabled%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\icHeaderDeleteDisabled%403x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Generic.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Feedback-Generic.imageset\icTileFeedback2.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Generic.imageset\icTileFeedback2%403x.png" />
@@ -1191,6 +1189,14 @@
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Pinch-Icon.imageset\Pinch-Icon%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Pinch-Icon.imageset\Pinch-Icon%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\deleteDisabled%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\deleteDisabled%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Generic.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Generic.imageset\genericNotification%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Generic.imageset\genericNotification%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Generic.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Generic.imageset\generic%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Generic.imageset\generic%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1603,6 +1609,8 @@
     <Folder Include="Assets.xcassets\Info-White-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Banner-SSMR-Remainder.imageset\" />
     <Folder Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Banner-Generic.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Generic.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

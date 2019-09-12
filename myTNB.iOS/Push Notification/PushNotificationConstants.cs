@@ -40,6 +40,7 @@ namespace myTNB.PushNotification
             , { BCRMNotificationEnum.Reconnection, "Notification-Banner-Reconnection" }
             , { BCRMNotificationEnum.Maintenance, "Notification-Banner-Maintenance" }
             , { BCRMNotificationEnum.SSMR, "SSMR-Reading-History-Banner" }
+            , { BCRMNotificationEnum.None, "Notification-Banner-Generic" }
         };
 
         //SSMR Banner Dictionary
@@ -60,10 +61,9 @@ namespace myTNB.PushNotification
             , { BCRMNotificationEnum.Dunning, "Notification-Dunning" }
             , { BCRMNotificationEnum.Disconnection, "Notification-Disconnection" }
             , { BCRMNotificationEnum.Reconnection, "Notification-Reconnection" }
-            , { BCRMNotificationEnum.Promotion, "Notification-Promotion" }
-            , { BCRMNotificationEnum.News, "Notification-News" }
             , { BCRMNotificationEnum.Maintenance, "Notification-Maintenance" }
             , { BCRMNotificationEnum.SSMR, "Notification-SSMR" }
+            , { BCRMNotificationEnum.None, "Notification-Generic" }
         };
 
         //I18N

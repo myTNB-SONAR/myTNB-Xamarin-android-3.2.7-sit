@@ -81,12 +81,12 @@ namespace myTNB.Model
                         case "05":
                             notificationType = BCRMNotificationEnum.Reconnection;
                             break;
-                        case "97":
+                        /*case "97":
                             notificationType = BCRMNotificationEnum.Promotion;
                             break;
                         case "98":
                             notificationType = BCRMNotificationEnum.News;
-                            break;
+                            break;*/
                         case "99":
                             notificationType = BCRMNotificationEnum.Maintenance;
                             break;
