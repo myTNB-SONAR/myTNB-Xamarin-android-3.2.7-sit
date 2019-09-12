@@ -772,6 +772,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         {
             CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountChargeModel.ContractAccount);
             AccountData selectedAccountData = new AccountData();
+            selectedAccountData.AccountNum = accountChargeModel.ContractAccount;
             selectedAccountData.AccountNickName = customerBillingAccount.AccDesc;
             selectedAccountData.AddStreet = customerBillingAccount.AccountStAddress;
 
