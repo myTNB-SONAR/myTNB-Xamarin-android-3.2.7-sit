@@ -16,8 +16,8 @@ namespace myTNB_Android.Src.AppLaunch.Models
             [JsonProperty("status")]
             public string Status { get; set; }
 
-            [JsonProperty("isError")]
-            public bool IsError { get; set; }
+            [JsonProperty("ErrorCode")]
+            public bool ErrorCode { get; set; }
 
             [JsonProperty("message")]
             public string Message { get; set; }
