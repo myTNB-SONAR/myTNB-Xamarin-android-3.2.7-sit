@@ -110,6 +110,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                     }
                 };
                 vh.SelectAccountView.Checked = item.isSelected;
+                if (vh.SelectAccountView.Checked)
+                {
+                    ValidateHolder(item, position, vh, false);
+                }
             }
             catch (System.Exception e)
             {
