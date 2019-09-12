@@ -786,7 +786,7 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         public void ShowDetails(NotificationDetails.Models.NotificationDetails details, UserNotificationData notificationData, int position)
         {
-            Intent notificationDetails = new Intent(this, typeof(NotificationDetailActivity));
+            Intent notificationDetails = new Intent(this, typeof(UserNotificationDetailActivity));
             notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_LIST_ITEM, JsonConvert.SerializeObject(notificationData));
             notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
             notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_ITEM_POSITION, position);

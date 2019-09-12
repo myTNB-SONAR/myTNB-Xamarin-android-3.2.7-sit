@@ -2428,6 +2428,13 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\notification_smr.png" />
     <Compile Include="Src\MyTNBService\Request\UserNotificationDetailsRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\UserNotificationDetailsResponse.cs" />
+    <Compile Include="Src\NotificationDetails\Activity\UserNotificationDetailActivity.cs" />
+    <AndroidResource Include="Resources\layout\UserNotificationDetailLayout.axml" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_new_bill_banner.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\notification_new_bill_banner.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\notification_new_bill_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notification_new_bill_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\notification_new_bill_banner.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
