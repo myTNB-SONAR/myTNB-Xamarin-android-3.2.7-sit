@@ -42,5 +42,10 @@
         public static string I18N_ViewReadHistory = "viewReadHistory";
         public static string I18N_Months = "months";
         public static string I18N_Days = "days";
+        public static string I18N_SMOverlayTitle = "SMOverlayTitle";
+        public static string I18N_SMOverlayMsg = "SMOverlayMsg";
+        public static string I18N_SMOverlayBtnTxt = "SMOverlayBtnTxt";
+        public static string I18N_Day = "day";
+        public static string I18N_Month = "month";
     }
 }
