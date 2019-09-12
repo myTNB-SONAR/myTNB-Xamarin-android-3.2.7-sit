@@ -139,10 +139,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
             intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(mSelectedAccountData));
             intent.PutExtra("SELECTED_BILL_DETAILS", JsonConvert.SerializeObject(selectedAccountChargesModelList[0]));
-            if (selectedBillingHistoryModelList.Count > 0 && selectedBillingHistoryModelList[0].BillingHistoryDataList.Count > 0)
-            {
-                intent.PutExtra("LATEST_BILL_HISTORY", JsonConvert.SerializeObject(selectedBillingHistoryModelList[0].BillingHistoryDataList[0]));
-            }
             StartActivity(intent);
         }
 
@@ -464,13 +460,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         public void PopulateBillingHistoryList(List<AccountBillPayHistoryModel> billingHistoryModelList)
         {
             itemisedBillingListShimmer.Visibility = ViewStates.Gone;
-            emptyItemisedBillingList.Visibility = ViewStates.Gone;
-            itemisedBillingList.Visibility = ViewStates.Visible;
-            selectedBillingHistoryModelList = new List<AccountBillPayHistoryModel>();
-            selectedBillingHistoryModelList = billingHistoryModelList;
-            itemFilterList = new List<Item>();
-            EnableActionButtons(true);
-            RenderBillingHistoryList(false, "All");
+            
+            if (billingHistoryModelList.Count > 0)
+            {
+                selectedBillingHistoryModelList = new List<AccountBillPayHistoryModel>();
+                selectedBillingHistoryModelList = billingHistoryModelList;
+                emptyItemisedBillingList.Visibility = ViewStates.Gone;
+                itemisedBillingList.Visibility = ViewStates.Visible;
+                billFilterIcon.Enabled = true;
+                itemFilterList = new List<Item>();
+                EnableActionButtons(true);
+                RenderBillingHistoryList(false, "All");
+            }
+            else
+            {
+                emptyItemisedBillingList.Visibility = ViewStates.Visible;
+                itemisedBillingList.Visibility = ViewStates.Gone;
+                billFilterIcon.Enabled = false;
+            }
         }
 
         public void PopulateAccountCharge(List<AccountChargeModel> accountChargesModelList)

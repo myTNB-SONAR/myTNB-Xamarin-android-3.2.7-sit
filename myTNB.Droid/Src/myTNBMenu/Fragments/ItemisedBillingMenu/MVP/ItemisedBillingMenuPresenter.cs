@@ -93,16 +93,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     }
                     else
                     {
-                        if (billingHistoryList.Count > 0)
-                        {
-                            mView.PopulateAccountCharge(accountChargeModelList);
-                            mView.PopulateBillingHistoryList(billingHistoryList);
-                            OnGetBillTooltipContent();
-                        }
-                        else
-                        {
-                            mView.ShowEmptyState();
-                        }
+                        mView.PopulateAccountCharge(accountChargeModelList);
+                        mView.PopulateBillingHistoryList(billingHistoryList);
+                        OnGetBillTooltipContent();
                     }
                 }
 
