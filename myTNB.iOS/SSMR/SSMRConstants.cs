@@ -74,7 +74,6 @@ namespace myTNB.SSMR
         public static string IMG_Email = "Email";
         public static string IMG_SMRMediumIcon = "SMR-Medium-Icon";
         public static string IMG_BackIcon = "Back-White";
-        public static string IMG_PrimaryIcon = "SSMRPrimaryIcon";
         public static string IMG_Info = "IC-Info";
         public static string IMG_OCRReading = "OCR-Reading";
         public static string IMG_CameraThumb = "Camera-Thumb";

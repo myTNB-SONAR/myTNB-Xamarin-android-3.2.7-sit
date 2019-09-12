@@ -350,7 +350,6 @@
     <ImageAsset Include="Assets.xcassets\Logo-Title.imageset\ Logo-Title.png" />
     <ImageAsset Include="Assets.xcassets\Tagline.imageset\ Tagline%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification.imageset\notifications.png" />
     <ImageAsset Include="Assets.xcassets\Notification.imageset\notifications%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification.imageset\notifications%403x.png" />
     <ImageAsset Include="Assets.xcassets\Dropdown.imageset\Contents.json" />
@@ -405,13 +404,9 @@
     <ImageAsset Include="Assets.xcassets\Empty-Dashboard.imageset\icEmptyAccountDashboard%402x.png" />
     <ImageAsset Include="Assets.xcassets\Empty-Dashboard.imageset\icEmptyAccountDashboard%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Unread.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Unread.imageset\icon_notification_unread.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Unread.imageset\icon_notification_unread%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Unread.imageset\icon_notification_unread%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\ic_header_delete.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\ic_header_delete%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\ic_header_delete%403x.png" />
     <ImageAsset Include="Assets.xcassets\Checkbox-Active.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Checkbox-Active.imageset\ic_action_checkbox_active.png" />
     <ImageAsset Include="Assets.xcassets\Checkbox-Active.imageset\ic_action_checkbox_active%402x.png" />
@@ -570,21 +565,6 @@
     <ImageAsset Include="Assets.xcassets\Notification-Reconnection.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Notification-Disconnection.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Notification-Dunning.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-New-Bill.imageset\ic_notification_billing.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-New-Bill.imageset\ic_notification_billing%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-New-Bill.imageset\ic_notification_billing%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Bill-Due.imageset\ic_notification_billing due.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Bill-Due.imageset\ic_notification_billing due%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Bill-Due.imageset\ic_notification_billing due%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Reconnection.imageset\ic_notification_connection.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Reconnection.imageset\ic_notification_connection%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Reconnection.imageset\ic_notification_connection%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Disconnection.imageset\ic_notification_connection.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Disconnection.imageset\ic_notification_connection%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Disconnection.imageset\ic_notification_connection%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Dunning.imageset\ic_notification_power.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Dunning.imageset\ic_notification_power%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Dunning.imageset\ic_notification_power%403x.png" />
     <ImageAsset Include="Assets.xcassets\Password-Old.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Password-Old.imageset\Password.png" />
     <ImageAsset Include="Assets.xcassets\Password-Old.imageset\Password%402x.png" />
@@ -660,29 +640,13 @@
     <ImageAsset Include="Assets.xcassets\IC-Empty-Promotion.imageset\icEmptyPromotions%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Empty-Promotion.imageset\icEmptyPromotions%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Promo.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Promo.imageset\ic_notification_promo.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Promo.imageset\ic_notification_promo%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Promo.imageset\ic_notification_promo%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-Bill-Due.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Bill-Due.imageset\img_notifications_bill due.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Bill-Due.imageset\img_notifications_bill due%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Bill-Due.imageset\img_notifications_bill due%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-New-Bill.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-New-Bill.imageset\img_notifications_new bill.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-New-Bill.imageset\img_notifications_new bill%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-New-Bill.imageset\img_notifications_new bill%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-Disconnection.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Disconnection.imageset\img_notifications_disconnection.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Disconnection.imageset\img_notifications_disconnection%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Disconnection.imageset\img_notifications_disconnection%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-Dunning.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Dunning.imageset\img_notifications_dunning.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Dunning.imageset\img_notifications_dunning%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Dunning.imageset\img_notifications_dunning%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-Reconnection.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Reconnection.imageset\img_notifications_reconnection.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Reconnection.imageset\img_notifications_reconnection%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Reconnection.imageset\img_notifications_reconnection%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-Green.imageset\Contents.json" />
@@ -767,26 +731,16 @@
     <ImageAsset Include="Assets.xcassets\Down-BCRM.imageset\icSummarydashboardBcrmDown%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Maintenance.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Notification-Promotion.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Maintenance.imageset\icNotificationMaintenance.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Maintenance.imageset\icNotificationMaintenance%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Maintenance.imageset\icNotificationMaintenance%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Promotion.imageset\icMenuPromoToggled.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Promotion.imageset\icMenuPromoToggled%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Promotion.imageset\icMenuPromoToggled%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-News.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-News.imageset\icNotificationNews2.png" />
     <ImageAsset Include="Assets.xcassets\Notification-News.imageset\icNotificationNews2%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-News.imageset\icNotificationNews2%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-Promotion.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-News.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\illustrationMaintenance.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\illustrationMaintenance%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\illustrationMaintenance%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Promotion.imageset\illustrationPromotions.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-Promotion.imageset\illustrationPromotions%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-Promotion.imageset\illustrationPromotions%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-News.imageset\illustrationNews.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-News.imageset\illustrationNews%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-News.imageset\illustrationNews%403x.png" />
     <ImageAsset Include="Assets.xcassets\Receipt-Header.imageset\Contents.json" />
@@ -841,7 +795,6 @@
     <ImageAsset Include="Assets.xcassets\LogOut.imageset\LogOut%402x.png" />
     <ImageAsset Include="Assets.xcassets\LogOut.imageset\LogOut%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-MarkAsRead.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-MarkAsRead.imageset\icHeaderMarkread.png" />
     <ImageAsset Include="Assets.xcassets\Notification-MarkAsRead.imageset\icHeaderMarkread%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-MarkAsRead.imageset\icHeaderMarkread%403x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Header-Cancel.imageset\Contents.json" />
@@ -861,17 +814,12 @@
     <ImageAsset Include="Assets.xcassets\Refresh-Error-White.imageset\Refresh-Error-White.png" />
     <ImageAsset Include="Assets.xcassets\Refresh-Error-White.imageset\Refresh-Error-White%402x.png" />
     <ImageAsset Include="Assets.xcassets\Refresh-Error-White.imageset\Refresh-Error-White%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\Notification-Empty.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\Notification-Empty%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\Notification-Empty%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-MarkAsReadDisabled.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-MarkAsReadDisabled.imageset\icHeaderMarkreadDisabled.png" />
     <ImageAsset Include="Assets.xcassets\Notification-MarkAsReadDisabled.imageset\icHeaderMarkreadDisabled%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-MarkAsReadDisabled.imageset\icHeaderMarkreadDisabled%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\icHeaderDeleteDisabled.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\icHeaderDeleteDisabled%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\icHeaderDeleteDisabled%403x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Generic.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Feedback-Generic.imageset\icTileFeedback2.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Generic.imageset\icTileFeedback2%403x.png" />
@@ -896,7 +844,6 @@
     <ImageAsset Include="Assets.xcassets\Services-ApplyAutoPay.imageset\applyAutopay.png" />
     <ImageAsset Include="Assets.xcassets\Services-ApplyAutoPay.imageset\applyAutopay%402x.png" />
     <ImageAsset Include="Assets.xcassets\Services-ApplyAutoPay.imageset\applyAutopay%403x-1.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\icHeaderNotificationUnread.png" />
     <ImageAsset Include="Assets.xcassets\Notification-New.imageset\icHeaderNotificationUnread%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-New.imageset\icHeaderNotificationUnread%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Home-Selected.imageset\Contents.json" />
@@ -960,7 +907,6 @@
     <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\icDisplaySmartMeter.png" />
     <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\icDisplaySmartMeter%402x.png" />
     <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\icDisplaySmartMeter%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll-1.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\Search-Icon.imageset\Contents.json" />
@@ -985,10 +931,6 @@
     <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\SMR-Medium-Icon.png" />
     <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\SMR-Medium-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\SMR-Icon%403x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMRPrimaryIcon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SSMRPrimaryIcon.imageset\SSMRPrimaryIcon.png" />
-    <ImageAsset Include="Assets.xcassets\SSMRPrimaryIcon.imageset\SSMRPrimaryIcon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMRPrimaryIcon.imageset\SSMRPrimaryIcon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\oval.png" />
     <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\oval%402x.png" />
@@ -1086,7 +1028,6 @@
     <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group%403x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-Reading-History-Banner.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SSMR-Reading-History-Banner.imageset\group6.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-Reading-History-Banner.imageset\group6%402x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-Reading-History-Banner.imageset\group6%403x.png" />
     <ImageAsset Include="Assets.xcassets\Camera-Icon-Green.imageset\Contents.json" />
@@ -1117,7 +1058,6 @@
     <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon.png" />
     <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon%403x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-Refresh.imageset\Contents.json" />
@@ -1182,6 +1122,25 @@
     <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\smrOnboarding1%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\group2%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Dunning.imageset\group7%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Dunning.imageset\group7%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Disconnection.imageset\group7%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Disconnection.imageset\group7%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Reconnection.imageset\headerReconnected%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Reconnection.imageset\headerReconnected%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\group7%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\group7%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Reconnection.imageset\icConnection%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Reconnection.imageset\icConnection%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Disconnection.imageset\disconnection%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Disconnection.imageset\disconnection%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Dunning.imageset\icDunningDisconnection%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Dunning.imageset\icDunningDisconnection%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Maintenance.imageset\settings%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Maintenance.imageset\settings%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-SSMR.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-SSMR.imageset\icNotificationSmr%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-SSMR.imageset\icNotificationSmr%403x.png" />
     <ImageAsset Include="Assets.xcassets\Arrow-Left-Blue.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Arrow-Left-Blue.imageset\Arrow-Left-Blue%402x.png" />
     <ImageAsset Include="Assets.xcassets\Arrow-Left-Blue.imageset\Arrow-Left-Blue%403x.png" />
@@ -1199,9 +1158,28 @@
     <ImageAsset Include="Assets.xcassets\Bill-Loading-Banner.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Bill-Loading-Banner.imageset\loading%402x.png" />
     <ImageAsset Include="Assets.xcassets\Bill-Loading-Banner.imageset\loading%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-New-Bill.imageset\group7%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-New-Bill.imageset\group7%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Bill-Due.imageset\group7%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Bill-Due.imageset\group7%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Bill-Due.imageset\billDue%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Bill-Due.imageset\billDue%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-New-Bill.imageset\newBill%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-New-Bill.imageset\newBill%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-SSMR-Open.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-SSMR-Open.imageset\group7%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-SSMR-Open.imageset\group7%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-SSMR-Missed.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-SSMR-Missed.imageset\group9%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-SSMR-Missed.imageset\group9%403x.png" />
     <ImageAsset Include="Assets.xcassets\Info-White-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Info-White-Icon.imageset\Info-White-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Info-White-Icon.imageset\Info-White-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-SSMR-Remainder.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-SSMR-Remainder.imageset\group6%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-SSMR-Remainder.imageset\group6%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\delete%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\delete%403x.png" />
     <ImageAsset Include="Assets.xcassets\Usage-Bg-Normal.imageset\Usage-Bg-Normal%402x.png" />
     <ImageAsset Include="Assets.xcassets\Usage-Bg-Normal.imageset\Usage-Bg-Normal%403x.png" />
     <ImageAsset Include="Assets.xcassets\Usage-Bg-Long.imageset\Usage-Bg-Long%402x.png" />
@@ -1211,6 +1189,14 @@
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Pinch-Icon.imageset\Pinch-Icon%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Pinch-Icon.imageset\Pinch-Icon%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\deleteDisabled%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\deleteDisabled%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Generic.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Generic.imageset\genericNotification%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Generic.imageset\genericNotification%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Generic.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Notification-Generic.imageset\generic%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Generic.imageset\generic%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1457,7 +1443,6 @@
     <Folder Include="Assets.xcassets\IC-Header-Cancel.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Select.imageset\" />
     <Folder Include="Assets.xcassets\Maintenance-Image.imageset\" />
-    <Folder Include="Model\Modify Notification\" />
     <Folder Include="Assets.xcassets\Notification-Error.imageset\" />
     <Folder Include="Assets.xcassets\Refresh-Error-Normal.imageset\" />
     <Folder Include="Assets.xcassets\Refresh-Error-White.imageset\" />
@@ -1608,6 +1593,7 @@
     <Folder Include="Assets.xcassets\Trend-Down-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Trend-Up-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Trend-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-SSMR.imageset\" />
     <Folder Include="Assets.xcassets\Arrow-Left-Blue.imageset\" />
     <Folder Include="Assets.xcassets\Pinch-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Bills-No-History-Data.imageset\" />
@@ -1617,8 +1603,14 @@
     <Folder Include="Assets.xcassets\Bill-Loading-Banner.imageset\" />
     <Folder Include="Model\GetPaymentTransactionId\" />
     <Folder Include="Model\GetPaymentReceipt\" />
+    <Folder Include="Home\Bill\Bill Filter\" />
+    <Folder Include="Assets.xcassets\Notification-Banner-SSMR-Open.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Banner-SSMR-Missed.imageset\" />
     <Folder Include="Assets.xcassets\Info-White-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Banner-SSMR-Remainder.imageset\" />
     <Folder Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Banner-Generic.imageset\" />
+    <Folder Include="Assets.xcassets\Notification-Generic.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1855,19 +1847,15 @@
     <Compile Include="Push Notification\Notification List\NotificationViewCell.designer.cs">
       <DependentUpon>NotificationViewCell.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\AccountDetailsModel.cs" />
     <Compile Include="Model\GetBillingAccountDetails\BillingAccountDetailsModel.cs" />
     <Compile Include="Model\GetBillingAccountDetails\BillingAccountDetailsDataModel.cs" />
     <Compile Include="Model\GetBillingAccountDetails\BillingAccountDetailsResponseModel.cs" />
     <Compile Include="Model\Notification\NotificationChannelResponseModel.cs" />
-    <Compile Include="Model\Notification\NotificationDetailedInfoModel.cs" />
     <Compile Include="Model\Notification\NotificationDetailedInfoResponseModel.cs" />
     <Compile Include="Model\Notification\NotificationPreferenceModel.cs" />
     <Compile Include="Model\Notification\NotificationPreferenceUpdateResponseModel.cs" />
     <Compile Include="Model\Notification\NotificationTypeModel.cs" />
     <Compile Include="Model\Notification\NotificationTypeResponseModel.cs" />
-    <Compile Include="Model\Notification\UserNotificationDataModel.cs" />
-    <Compile Include="Model\Notification\UserNotificationModel.cs" />
     <Compile Include="Model\Notification\UserNotificationResponseModel.cs" />
     <Compile Include="Model\GetAccountUsageHistoryForGraph\ByDayModel.cs" />
     <Compile Include="Model\GetAccountUsageHistoryForGraph\ByMonthModel.cs" />
@@ -2207,9 +2195,6 @@
     <Compile Include="Home\Feedback\Feedback Image\UIImageHelper.cs" />
     <Compile Include="Home\More\Language\LanguageSettings.cs" />
     <Compile Include="Model\UpdateNotification\UpdateNotificationModel.cs" />
-    <Compile Include="Model\Modify Notification\DeleteNotificationResponseModel.cs" />
-    <Compile Include="Model\Modify Notification\ReadNotificationResponseModel.cs" />
-    <Compile Include="Customs\Bill\CustomBillUIViewController.cs" />
     <Compile Include="Customs\CustomUIButton.cs" />
     <Compile Include="Customs\CustomUILabel.cs" />
     <Compile Include="Home\Components\RefreshViewComponent.cs" />
@@ -2448,17 +2433,20 @@
     <Compile Include="Home\Bill\Bills\BillHistoryShimmerViewCell.cs" />
     <Compile Include="Model\GetPaymentTransactionId\GetPaymentTransactionIdResponseModel.cs" />
     <Compile Include="Session Cache\AccountChargesCache.cs" />
-    <Compile Include="Home\Bill\Bills\BillFilterViewController.cs" />
-    <Compile Include="Home\Bill\Bills\BillFilterViewController.designer.cs">
-      <DependentUpon>BillFilterViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Payment\PaymentConstants.cs" />
     <Compile Include="Model\GetPaymentReceipt\GetPaymentReceiptResponseModel.cs" />
+    <Compile Include="Push Notification\PushNotificationConstants.cs" />
+    <Compile Include="Home\Bill\Bill Filter\BillFilterViewController.cs" />
+    <Compile Include="Home\Bill\Bill Filter\BillFilterViewController.designer.cs">
+      <DependentUpon>BillFilterViewController.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\GetAppLaunchMasterData\AppLaunchResponseModel.cs" />
     <Compile Include="Session Cache\AppLaunchMasterCache.cs" />
     <Compile Include="Onboarding\AppLaunchConstants.cs" />
     <Compile Include="Components\Usage View\Charts\Smart Meter\BaseSmartMeterView.cs" />
     <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterMonthView.cs" />
+    <Compile Include="Model\Notification\DeleteNotificationResponseModel.cs" />
+    <Compile Include="Model\Notification\ReadNotificationResponseModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

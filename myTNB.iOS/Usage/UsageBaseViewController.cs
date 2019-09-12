@@ -240,7 +240,11 @@ namespace myTNB
 
         private void AddScrollView()
         {
-            nfloat height = UIScreen.MainScreen.Bounds.Height - _navbarContainer.Frame.Height - TabBarController.TabBar.Frame.Height - GetScaledHeight(8F);
+            nfloat height = UIScreen.MainScreen.Bounds.Height - _navbarContainer.Frame.Height - GetScaledHeight(8F);
+            if (TabBarController != null && TabBarController.TabBar != null)
+            {
+                height -= TabBarController.TabBar.Frame.Height;
+            }
             _scrollViewContent = new UIScrollView(new CGRect(0, GetYLocationFromFrame(_navbarContainer.Frame, 8F), ViewWidth, height))
             {
                 BackgroundColor = UIColor.Clear,

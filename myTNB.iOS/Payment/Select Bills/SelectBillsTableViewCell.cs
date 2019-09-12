@@ -67,7 +67,7 @@ namespace myTNB
             _lblAmountTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewAmount.Frame.Width, 12),
-                AttributedText = new NSAttributedString("Common_Amount(RM)".Translate().ToUpper(),
+                AttributedText = new NSAttributedString("SelectBill_IAmPaying".Translate().ToUpper(),
                    font: MyTNBFont.MuseoSans9_300,
                    foregroundColor: MyTNBColor.SilverChalice,
                    strokeWidth: 0),

@@ -1,440 +1,700 @@
 using System;
 using UIKit;
-using myTNB.Dashboard.DashboardComponents;
 using myTNB.Model;
 using CoreGraphics;
 using System.Threading.Tasks;
-using myTNB.SQLite.SQLiteDataManager;
-using myTNB.SitecoreCMS.Model;
+using myTNB.PushNotification;
+using CoreAnimation;
+using Foundation;
 using System.Collections.Generic;
+using myTNB.SQLite.SQLiteDataManager;
+using System.Text.RegularExpressions;
 
 namespace myTNB
 {
     public partial class NotificationDetailsViewController : CustomUIViewController
     {
-        public NotificationDetailsViewController(IntPtr handle) : base(handle)
-        {
-        }
-        TitleBarComponent _titleBarComponent;
-        UIView _viewCTA;
+        public NotificationDetailsViewController(IntPtr handle) : base(handle) { }
+        private UILabel _lblTitle;
+        private UIView _navbarView, _viewCTA;
+        private UITextView _txtViewDetails;
+        private CAGradientLayer _gradientLayer;
+        private UIScrollView _scrollView;
+        private UIImageView _bgImageView;
+        private CustomUIButtonV2 _btnPrimary, _btnSecondary;
 
-        DueAmountResponseModel _dueAmount = new DueAmountResponseModel();
-        BillingAccountDetailsResponseModel _billingAccountDetailsList = new BillingAccountDetailsResponseModel();
-        DeleteNotificationResponseModel _deleteNotificationResponse = new DeleteNotificationResponseModel();
+        private nfloat _navBarHeight, _previousScrollOffset;
+        private nfloat titleBarHeight = ScaleUtility.GetScaledHeight(24f);
+        private bool _isViewDidload;
 
-        public UserNotificationDataModel NotificationInfo = new UserNotificationDataModel();
+        private DeleteNotificationResponseModel _deleteNotificationResponse;
+        private SMRAccountActivityInfoResponseModel _smrActivityInfoResponse;
+        public UserNotificationDataModel NotificationInfo { set; private get; } = new UserNotificationDataModel();
 
         public override void ViewDidLoad()
         {
+            PageName = PushNotificationConstants.Pagename_PushNotificationDetails;
+            NavigationController.NavigationBarHidden = false;
             base.ViewDidLoad();
-            SetNavigationBar();
-            if (_titleBarComponent != null)
-            {
-                _titleBarComponent.SetTitle(NotificationInfo.NotificationTitle);
-            }
+            _isViewDidload = true;
+            AddSubview();
+            SetNavigation();
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            SetSubViews();
-            RenderButtons();
+            NavigationController.SetNavigationBarHidden(true, true);
             int unreadCount = PushNotificationHelper.GetNotificationCount();
             UIApplication.SharedApplication.ApplicationIconBadgeNumber = unreadCount == 0 ? 0 : unreadCount - 1;
         }
-        /// <summary>
-        /// Renders the buttons based on BCRMNotificationType
-        /// </summary>
-        internal void RenderButtons()
-        {
-            if (NotificationInfo.BCRMNotificationType != Enums.BCRMNotificationEnum.Maintenance
-                && NotificationInfo.BCRMNotificationType != Enums.BCRMNotificationEnum.News)
-            {
-                if (NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.Promotion)
-                {
-                    SetSubViewForPromotionNotification();
-                }
-                else
-                {
-                    ActivityIndicator.Show();
-                    GetAccountDueAmount().ContinueWith(task =>
-                    {
-                        InvokeOnMainThread(() =>
-                        {
-                            SetSubViewsForNormalNotification();
-                            ActivityIndicator.Hide();
-                        });
-                    });
-                }
-            }
-        }
 
-        internal void SetNavigationBar()
+        #region Navigation
+        private void SetNavigation()
         {
-            NavigationController?.SetNavigationBarHidden(true, false);
-            GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 64, true);
-            UIView headerView = gradientViewComponent.GetUI();
-            _titleBarComponent = new TitleBarComponent(headerView);
-            UIView titleBarView = _titleBarComponent.GetUI();
-            _titleBarComponent.SetTitle(NotificationInfo.Title);
-            _titleBarComponent.SetPrimaryVisibility(false);
-            _titleBarComponent.SetPrimaryImage("Notification-Delete");
-            _titleBarComponent.SetPrimaryAction(new UITapGestureRecognizer(() =>
+            if (NavigationController != null && NavigationController.NavigationBar != null)
             {
-                var alert = UIAlertController.Create("PushNotification_DeleteTitle".Translate()
-                    , "PushNotification_DeleteMessage".Translate(), UIAlertControllerStyle.Alert);
-                alert.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Default, (obj) =>
-                {
-                    NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
-                    {
-                        InvokeOnMainThread(async () =>
-                        {
-                            if (NetworkUtility.isReachable)
-                            {
-                                ActivityIndicator.Show();
-                                await DeleteUserNotification(NotificationInfo?.Id);
-                                if (_deleteNotificationResponse != null && _deleteNotificationResponse?.d != null
-                                    && _deleteNotificationResponse?.d?.status?.ToLower() == "success"
-                                    && _deleteNotificationResponse?.d?.didSucceed == true)
-                                {
-                                    DataManager.DataManager.SharedInstance.IsNotificationDeleted = true;
-                                    var index = DataManager.DataManager.SharedInstance.UserNotifications.FindIndex(x => x.Id == NotificationInfo?.Id);
-                                    if (index > -1)
-                                    {
-                                        DataManager.DataManager.SharedInstance.UserNotifications.RemoveAt(index);
-                                    }
-                                    NavigationController?.PopViewController(true);
-                                }
-                                else
-                                {
-                                    DisplayServiceError(_deleteNotificationResponse?.d?.message);
-                                }
-                            }
-                            else
-                            {
-                                DisplayNoDataAlert();
-                            }
-                            ActivityIndicator.Hide();
-                        });
-                    });
-                }));
-                alert.AddAction(UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, (obj) => { }));
-                PresentViewController(alert, animated: true, completionHandler: null);
+                NavigationController.NavigationBar.Hidden = true;
+                _navBarHeight = NavigationController.NavigationBar.Frame.Height;
+            }
+
+            _navbarView = new UIView(new CGRect(0, 0, ViewWidth, DeviceHelper.GetStatusBarHeight() + _navBarHeight))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+
+            UIView viewTitleBar = new UIView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + GetScaledHeight(8f)
+                , _navbarView.Frame.Width, titleBarHeight));
+
+            UIView viewBack = new UIView(new CGRect(BaseMarginWidth16, 0, GetScaledWidth(24F), titleBarHeight));
+            UIImageView imgViewBack = new UIImageView(new CGRect(0, 0, GetScaledWidth(24F), titleBarHeight))
+            {
+                Image = UIImage.FromBundle(Constants.IMG_Back)
+            };
+            viewBack.AddSubview(imgViewBack);
+            viewTitleBar.AddSubview(viewBack);
+
+            UILabel lblTitle = new UILabel(new CGRect(GetScaledWidth(56F), 0, _navbarView.Frame.Width - (GetScaledWidth(56F) * 2), titleBarHeight))
+            {
+                Font = TNBFont.MuseoSans_16_500,
+                Text = NotificationInfo.NotificationTitle ?? string.Empty
+            };
+
+            lblTitle.TextAlignment = UITextAlignment.Center;
+            lblTitle.TextColor = UIColor.White;
+            viewTitleBar.AddSubview(lblTitle);
+
+            CustomUIView viewDelete = new CustomUIView(new CGRect(ViewWidth - GetScaledWidth(40), 0, GetScaledWidth(24F), titleBarHeight));
+            viewDelete.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                OnDeleteNotification();
             }));
-            _titleBarComponent.SetBackVisibility(false);
-            _titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
+            viewDelete.AddSubview(new UIImageView(new CGRect(0, 0, GetScaledWidth(24F), titleBarHeight))
             {
-                NavigationController?.PopViewController(true);
-            }));
-            headerView.AddSubview(titleBarView);
+                Image = UIImage.FromBundle(PushNotificationConstants.IMG_Delete)
+            });
+            viewTitleBar.AddSubview(viewDelete);
 
-            View.AddSubview(headerView);
+            viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                NavigationController.PopViewController(true);
+            }));
+
+            _navbarView.AddSubview(viewTitleBar);
+
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
+            _gradientLayer = new CAGradientLayer
+            {
+                Colors = new[] { startColor.CGColor, endColor.CGColor }
+            };
+            _gradientLayer.StartPoint = new CGPoint(x: 0.0, y: 0.5);
+            _gradientLayer.EndPoint = new CGPoint(x: 1.0, y: 0.5);
+
+            _gradientLayer.Frame = _navbarView.Bounds;
+            _gradientLayer.Opacity = 0f;
+            _navbarView.Layer.InsertSublayer(_gradientLayer, 0);
+            View.AddSubview(_navbarView);
         }
 
-        internal void OnCTAClick(string actionString)
+        private void AddViewWithOpacity(float opacity)
         {
-            if (DataManager.DataManager.SharedInstance.AccountRecordsList != null && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null)
+            var startColor = MyTNBColor.GradientPurpleDarkElement;
+            var endColor = MyTNBColor.GradientPurpleLightElement;
+            var gradientLayer = new CAGradientLayer
             {
-                int index = 4;// DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindIndex(x => x.accNum == NotificationInfo.AccountNum);
-                if (index > -1)
-                {
-                    ActivityIndicator.Show();
-                    var selected = DataManager.DataManager.SharedInstance.AccountRecordsList.d[(int)index];
-                    DataManager.DataManager.SharedInstance.SelectAccount(selected.accNum);
+                Colors = new[] { startColor.CGColor, endColor.CGColor }
+            };
+            gradientLayer.StartPoint = new CGPoint(x: 0.0, y: 0.5);
+            gradientLayer.EndPoint = new CGPoint(x: 1.0, y: 0.5);
 
-                    NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
-                    {
-                        InvokeOnMainThread(() =>
-                        {
-                            if (NetworkUtility.isReachable)
-                            {
-                                Task[] taskList = new Task[] { GetBillingAccountDetails() };
-                                Task.WaitAll(taskList);
-                                if (_billingAccountDetailsList != null && _billingAccountDetailsList?.d != null
-                                    && _billingAccountDetailsList?.d?.data != null && _billingAccountDetailsList?.d?.didSucceed == true)
-                                {
-                                    DataManager.DataManager.SharedInstance.BillingAccountDetails = _billingAccountDetailsList.d.data;
-                                    if (!DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount)
-                                    {
-                                        DataManager.DataManager.SharedInstance.SaveToBillingAccounts(DataManager.DataManager.SharedInstance.BillingAccountDetails
-                                            , DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
-                                    }
-                                    string storyboardID = actionString == "BillViewController" ? "Dashboard" : "Payment";
-                                    DisplayPage(storyboardID, actionString);
-                                }
-                                else
-                                {
-                                    DataManager.DataManager.SharedInstance.IsSameAccount = true;
-                                    DataManager.DataManager.SharedInstance.BillingAccountDetails = new BillingAccountDetailsDataModel();
-                                    DisplayServiceError(_billingAccountDetailsList?.d?.message);
-                                }
-                            }
-                            else
-                            {
-                                DisplayNoDataAlert();
-                            }
-                            ActivityIndicator.Hide();
-                        });
-                    });
+            gradientLayer.Frame = _navbarView.Bounds;
+            gradientLayer.Opacity = opacity;
+            _navbarView.Layer.ReplaceSublayer(_gradientLayer, gradientLayer);
+            _gradientLayer = gradientLayer;
+        }
+
+        private void OnTableViewScrolled(object sender, EventArgs e)
+        {
+            nfloat safeInset = UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Top;
+            _previousScrollOffset = _scrollView.ContentOffset.Y;
+            if (!_isViewDidload)
+            {
+                CGRect frame = _bgImageView.Frame;
+                if ((nfloat)Math.Abs(frame.Y) == frame.Height) { return; }
+
+                nfloat newYLoc = 0 - _previousScrollOffset - safeInset;
+                frame.Y = newYLoc;
+                _bgImageView.Frame = frame;
+            }
+            var opac = _previousScrollOffset / _navbarView.Frame.Height;
+            float absOpacity = Math.Abs((float)opac);
+            if (_isViewDidload || Math.Abs(_previousScrollOffset) == safeInset)
+            {
+                absOpacity = 0;
+                _isViewDidload = false;
+            }
+            AddViewWithOpacity(absOpacity);
+        }
+        #endregion
+        private string BannerImage
+        {
+            get
+            {
+                if (NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.SSMR
+                    && PushNotificationConstants.SSMRBannerImageDictionary.ContainsKey(NotificationInfo.SSMRNotificationType))
+                {
+                    return PushNotificationConstants.SSMRBannerImageDictionary[NotificationInfo.SSMRNotificationType];
+                }
+                if (PushNotificationConstants.BannerImageDictionary.ContainsKey(NotificationInfo.BCRMNotificationType))
+                {
+                    return PushNotificationConstants.BannerImageDictionary[NotificationInfo.BCRMNotificationType];
+                }
+                return string.Empty;
+            }
+        }
+
+        private void AddSubview()
+        {
+            SetCTA();
+            _scrollView = new UIScrollView(new CGRect(0, 0, ViewWidth
+                , View.Frame.Height - _viewCTA.Frame.Height))
+            { BackgroundColor = UIColor.Clear };
+            _scrollView.Bounces = false;
+            _scrollView.Scrolled += OnTableViewScrolled;
+            _scrollView.ShowsVerticalScrollIndicator = false;
+
+            _bgImageView = new UIImageView(new CGRect(0, 0, ViewWidth, ViewWidth * 0.70F))
+            {
+                Image = UIImage.FromBundle(BannerImage),
+                BackgroundColor = UIColor.White
+            };
+
+            View.Add(_bgImageView);
+            AddTitle();
+            AddDetails();
+            View.AddSubview(_scrollView);
+            _scrollView.ContentSize = new CGSize(ViewWidth, _txtViewDetails.Frame.GetMaxY());
+        }
+
+        private void AddTitle()
+        {
+            _lblTitle = new UILabel(new CGRect(BaseMargin, GetYLocationFromFrame(_bgImageView.Frame, 24)
+               , BaseMarginedWidth, GetScaledHeight(48)))
+            {
+                TextAlignment = UITextAlignment.Left,
+                TextColor = MyTNBColor.WaterBlue,
+                Font = TNBFont.MuseoSans_16_500,
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap,
+                Text = NotificationInfo.Title ?? string.Empty
+            };
+            nfloat lblHeight = _lblTitle.GetLabelHeight(ViewHeight / 2);
+            _lblTitle.Frame = new CGRect(_lblTitle.Frame.X, _lblTitle.Frame.Y, _lblTitle.Frame.Width, lblHeight);
+            _scrollView.Add(_lblTitle);
+        }
+
+        private void AddDetails()
+        {
+            // HTML / Plain text for UITextView
+            NSError htmlBodyError = null;
+            UIStringAttributes linkAttributes = new UIStringAttributes
+            {
+                ForegroundColor = MyTNBColor.WaterBlue,
+                Font = TNBFont.MuseoSans_14_500,
+                UnderlineStyle = NSUnderlineStyle.None,
+                UnderlineColor = UIColor.Clear
+            };
+            string message = string.Empty;
+            if (NotificationInfo != null && !string.IsNullOrEmpty(NotificationInfo.Message) && !string.IsNullOrWhiteSpace(NotificationInfo.Message)
+                && DataManager.DataManager.SharedInstance != null && DataManager.DataManager.SharedInstance.AccountRecordsList != null
+                && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null && DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count > 0)
+            {
+                int accountIndex = DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindIndex(x => x.accNum == NotificationInfo.AccountNum);
+                if (accountIndex > -1)
+                {
+                    string accountNickname = DataManager.DataManager.SharedInstance.AccountRecordsList.d[accountIndex].accountNickName ?? string.Empty;
+                    message = Regex.Replace(NotificationInfo.Message, "#accountNickname#", accountNickname);
                 }
             }
-        }
 
-        internal Task GetBillingAccountDetails()
-        {
-            return Task.Factory.StartNew(() =>
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(message ?? string.Empty
+                , ref htmlBodyError, MyTNBFont.FONTNAME_300, (float)GetScaledHeight(14));
+            NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
+            mutableHTMLBody.AddAttributes(new UIStringAttributes
             {
-                ServiceManager serviceManager = new ServiceManager();
-                object requestParameter = new
-                {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    CANum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum
-                };
-                _billingAccountDetailsList = serviceManager.OnExecuteAPI<BillingAccountDetailsResponseModel>("GetBillingAccountDetails", requestParameter);
-            });
-        }
+                ForegroundColor = MyTNBColor.CharcoalGrey
+            }, new NSRange(0, htmlBody.Length));
 
-        internal Task GetAccountDueAmount()
-        {
-            return Task.Factory.StartNew(() =>
+            _txtViewDetails = new UITextView
             {
-                ServiceManager serviceManager = new ServiceManager();
-                object requestParameter = new
-                {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum
-                };
-                _dueAmount = serviceManager.OnExecuteAPI<DueAmountResponseModel>("GetAccountDueAmount", requestParameter);
-            });
-        }
-        /// <summary>
-        /// Sets the sub views for the default content
-        /// </summary>
-        internal void SetSubViews()
-        {
-            UIImageView imgViewHeader = new UIImageView(new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 88 : 64
-                , View.Frame.Width, DeviceHelper.GetScaledSizeByHeight(25.5f)));
-
-            imgViewHeader.Image = UIImage.FromBundle(GetBannerImage());
-            UILabel lblTitle = new UILabel(new CGRect(18, DeviceHelper.GetScaledSizeByHeight(40.5f)
-                , View.Frame.Width - 36, 36));
-
-            lblTitle.Text = NotificationInfo.Title;
-            lblTitle.Font = MyTNBFont.MuseoSans16_500;
-            lblTitle.Lines = 0;
-            lblTitle.LineBreakMode = UILineBreakMode.WordWrap;
-            lblTitle.TextColor = MyTNBColor.PowerBlue;
-
-            CGSize newTitleSize = GetLabelSize(lblTitle, lblTitle.Frame.Width, 100f);
-            lblTitle.Frame = new CGRect(lblTitle.Frame.X, lblTitle.Frame.Y, lblTitle.Frame.Width, newTitleSize.Height);
-
-            var lblDetailsHeight = 0f;
-            if (NotificationInfo.BCRMNotificationType != Enums.BCRMNotificationEnum.Maintenance
-                && NotificationInfo.BCRMNotificationType != Enums.BCRMNotificationEnum.News)
-            {
-                lblDetailsHeight = DeviceHelper.GetScaledHeight(240) - 48;
-            }
-            else
-            {
-                lblDetailsHeight = DeviceHelper.GetScaledHeight(270);
-            }
-            UITextView txtDetails = new UITextView(new CGRect(18
-                , DeviceHelper.GetScaledSizeByHeight(4.2f) + lblTitle.Frame.Y + lblTitle.Frame.Height
-                , View.Frame.Width - 36, lblDetailsHeight))
-            {
-
-                Text = NotificationInfo.Message,
-                Font = MyTNBFont.MuseoSans14_300,
                 Editable = false,
                 ScrollEnabled = true,
-                TextColor = MyTNBColor.TunaGrey()
+                AttributedText = mutableHTMLBody,
+                WeakLinkTextAttributes = linkAttributes.Dictionary
             };
+            _txtViewDetails.ScrollIndicatorInsets = UIEdgeInsets.Zero;
 
-            View.AddSubviews(new UIView[] { imgViewHeader, lblTitle, txtDetails });
+            //Resize
+            CGSize size = _txtViewDetails.SizeThatFits(new CGSize(BaseMarginedWidth, ViewHeight));
+            _txtViewDetails.Frame = new CGRect(BaseMargin, GetYLocationFromFrame(_lblTitle.Frame, 16), BaseMarginedWidth, size.Height);
+            _txtViewDetails.TextAlignment = UITextAlignment.Left;
+            Action<NSUrl> action = new Action<NSUrl>(RedirectAlert);
+            _txtViewDetails.Delegate = new TextViewDelegate(action);
+            _scrollView.Add(_txtViewDetails);
         }
 
-        /// <summary>
-        /// Sets the sub views for normal notification.
-        /// </summary>
-        internal void SetSubViewsForNormalNotification()
+        private void RedirectAlert(NSUrl url)
         {
-            _viewCTA = new UIView(new CGRect(0, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution()
-                ? 106 : DeviceHelper.GetScaledHeight(82)), View.Frame.Width, DeviceHelper.GetScaledHeight(82)));
-
-            nfloat buttonWidth = (_viewCTA.Frame.Width / 2) - 20;
-            //Create CTA
-            UIButton btnViewDetails = new UIButton(UIButtonType.Custom);
-            btnViewDetails.Frame = new CGRect(18, 17, buttonWidth, 48);
-            btnViewDetails.Layer.BorderWidth = 1.0f;
-            btnViewDetails.Layer.CornerRadius = 4;
-            btnViewDetails.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
-            btnViewDetails.SetTitle("PushNotification_ViewDetails".Translate(), UIControlState.Normal);
-            btnViewDetails.Font = MyTNBFont.MuseoSans16_500;
-            btnViewDetails.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
-
-            btnViewDetails.TouchUpInside += (sender, e) =>
+            string absURL = url?.AbsoluteString;
+            if (!string.IsNullOrEmpty(absURL))
             {
-                UpdateAccountCache();
-                OnCTAClick("BillViewController");
-            };
-            bool isEnabled = false;
-            if (_dueAmount != null && _dueAmount?.d != null
-                && _dueAmount?.d?.data != null
-                && _dueAmount?.d?.didSucceed == true)
-            {
-                isEnabled = _dueAmount.d.data.amountDue > 0;
-            }
-            UIButton btnPay = new UIButton(UIButtonType.Custom);
-            btnPay.Frame = new CGRect((_viewCTA.Frame.Width / 2 + 2), 17, buttonWidth, 48);
-            btnPay.Layer.CornerRadius = 4;
-            btnPay.Layer.BackgroundColor = isEnabled ? MyTNBColor.FreshGreen.CGColor : MyTNBColor.SilverChalice.CGColor;
-            btnPay.Layer.BorderColor = isEnabled ? MyTNBColor.FreshGreen.CGColor : MyTNBColor.SilverChalice.CGColor;
-            btnPay.Layer.BorderWidth = 1;
-            btnPay.SetTitle("Common_Pay".Translate(), UIControlState.Normal);
-            btnPay.Font = MyTNBFont.MuseoSans16_500;
-            btnPay.Enabled = isEnabled;
-            btnPay.TouchUpInside += (sender, e) =>
-            {
-                OnCTAClick("SelectPaymentMethodViewController");
-            };
-
-            _viewCTA.AddSubviews(new UIView[] { btnViewDetails, btnPay });
-            View.AddSubview(_viewCTA);
-        }
-        /// <summary>
-        /// Sets the sub view for promotion notification.
-        /// </summary>
-        internal void SetSubViewForPromotionNotification()
-        {
-            _viewCTA = new UIView(new CGRect(0, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution()
-                ? 106 : DeviceHelper.GetScaledHeight(82)), View.Frame.Width, DeviceHelper.GetScaledHeight(82)));
-
-            nfloat buttonWidth = _viewCTA.Frame.Width - 36;
-            //Create CTA
-            UIButton btnViewPromotion = new UIButton(UIButtonType.Custom);
-            btnViewPromotion.Frame = new CGRect(18, 17, buttonWidth, DeviceHelper.GetScaledHeight(48));
-            btnViewPromotion.Layer.BorderWidth = 1.0f;
-            btnViewPromotion.Layer.CornerRadius = 4;
-            btnViewPromotion.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
-            btnViewPromotion.SetTitle("PushNotification_ViewPromotion".Translate(), UIControlState.Normal);
-            btnViewPromotion.Font = MyTNBFont.MuseoSans16_500;
-            btnViewPromotion.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
-
-            btnViewPromotion.TouchUpInside += (sender, e) =>
-            {
-                if (!string.IsNullOrEmpty(NotificationInfo.Target))
+                int whileCount = 0;
+                bool isContained = false;
+                while (!isContained && whileCount < AlertHandler.RedirectTypeList.Count)
                 {
-                    var entity = PromotionsEntity.GetItem(NotificationInfo.Target);
-                    if (entity != null)
+                    isContained = absURL.Contains(AlertHandler.RedirectTypeList[whileCount]);
+                    if (isContained) { break; }
+                    whileCount++;
+                }
+
+                if (isContained)
+                {
+                    if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[0])
                     {
-                        NavigateToPromotionDetail(entity);
+                        string key = absURL.Split(AlertHandler.RedirectTypeList[0])[1];
+                        key = key.Replace("%7B", "{").Replace("%7D", "}");
+                        ViewHelper.GoToFAQScreenWithId(key);
+                    }
+                    else if (AlertHandler.RedirectTypeList[whileCount] == AlertHandler.RedirectTypeList[1])
+                    {
+                        string urlString = absURL.Split(AlertHandler.RedirectTypeList[1])[1];
+                        var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                        var topVc = AppDelegate.GetTopViewController(baseRootVc);
+                        if (topVc != null)
+                        {
+                            UIStoryboard storyBoard = UIStoryboard.FromName("Browser", null);
+                            BrowserViewController viewController =
+                                storyBoard.InstantiateViewController("BrowserViewController") as BrowserViewController;
+                            if (viewController != null)
+                            {
+                                viewController.URL = urlString;
+                                viewController.IsDelegateNeeded = false;
+                                var navController = new UINavigationController(viewController);
+                                topVc.PresentViewController(navController, true, null);
+                            }
+                        }
                     }
                     else
                     {
-                        NavigateToPromotionTab();
+                        string urlString = absURL.Split(AlertHandler.RedirectTypeList[2])[1];
+                        UIApplication.SharedApplication.OpenUrl(new NSUrl(string.Format(urlString)));
                     }
                 }
-                else
-                {
-                    NavigateToPromotionTab();
-                }
-            };
-
-            _viewCTA.AddSubview(btnViewPromotion);
-            View.AddSubview(_viewCTA);
-        }
-        /// <summary>
-        /// Method to navigates to promotion detail when tapping View Promotion button
-        /// </summary>
-        /// <param name="promotion">Promotion.</param>
-        internal void NavigateToPromotionDetail(PromotionsModelV2 promotion)
-        {
-            UIStoryboard storyBoard = UIStoryboard.FromName("PromotionDetails", null);
-            PromotionDetailsViewController viewController =
-                storyBoard.InstantiateViewController("PromotionDetailsViewController") as PromotionDetailsViewController;
-            if (viewController != null)
-            {
-                viewController.Promotion = promotion;
-                var navController = new UINavigationController(viewController);
-                PresentViewController(navController, true, null);
-            }
-        }
-        /// <summary>
-        /// Method to navigate to promotion tab
-        /// </summary>
-        internal void NavigateToPromotionTab()
-        {
-            var vc = this.PresentingViewController;
-            if (vc is HomeTabBarController tabBar)
-            {
-                tabBar.SelectedIndex = 2;
-                tabBar.DismissViewController(true, null);
             }
         }
 
-        string GetBannerImage()
+        private void SetCTA()
         {
-            if (NotificationInfo.BCRMNotificationTypeId.Equals("01"))
+            if (NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.Maintenance
+                || NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.None)
             {
-                return "Notification-Banner-New-Bill";
-            }
-            else if (NotificationInfo.BCRMNotificationTypeId.Equals("02"))
-            {
-                return "Notification-Banner-Bill-Due";
-            }
-            else if (NotificationInfo.BCRMNotificationTypeId.Equals("03"))
-            {
-                return "Notification-Banner-Dunning";
-            }
-            else if (NotificationInfo.BCRMNotificationTypeId.Equals("04"))
-            {
-                return "Notification-Banner-Disconnection";
-            }
-            else if (NotificationInfo.BCRMNotificationTypeId.Equals("05"))
-            {
-                return "Notification-Banner-Reconnection";
-            }
-            else if (NotificationInfo.BCRMNotificationTypeId.Equals("97"))
-            {
-                return "Notification-Banner-Promotion";
-            }
-            else if (NotificationInfo.BCRMNotificationTypeId.Equals("98"))
-            {
-                return "Notification-Banner-News";
-            }
-            else if (NotificationInfo.BCRMNotificationTypeId.Equals("99"))
-            {
-                return "Notification-Banner-Maintenance";
+                _viewCTA = new UIView();
             }
             else
             {
-                return string.Empty;
+                nfloat height = GetScaledHeight(80) + UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Bottom;
+                _viewCTA = new UIView(new CGRect(0, View.Frame.Height - height, ViewWidth, height))
+                {
+                    BackgroundColor = UIColor.White
+                };
+                UIView viewLine = new UIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(1))) { BackgroundColor = MyTNBColor.LightGrayBG };
+                _viewCTA.AddSubview(viewLine);
+                EvaluateCTA();
             }
-
+            View.AddSubview(_viewCTA);
         }
 
-        /// <summary>
-        /// Updates the account cache.
-        /// </summary>
-        private void UpdateAccountCache()
+        private void EvaluateCTA()
         {
-            if (NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.NewBill)
+            nfloat btnWidth = (ViewWidth - GetScaledWidth(36)) / 2;
+            if (NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.BillDue
+                || NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.Dunning
+                || NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.NewBill
+                || NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.Disconnection)
             {
-                DataManager.DataManager.SharedInstance.SetChartRefreshStatus(NotificationInfo.AccountNum, true);
-                DataManager.DataManager.SharedInstance.SetBillHistoryRefreshStatus(NotificationInfo.AccountNum, true);
-                var index = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindIndex(x => x.accNum == NotificationInfo.AccountNum);
+                _btnPrimary = new CustomUIButtonV2
+                {
+                    Frame = new CGRect(BaseMargin, GetScaledHeight(16), btnWidth, GetScaledHeight(48))
+                };
+                UpdateCTA(ref _btnPrimary, false);
+                _btnPrimary.SetTitle(GetI18NValue(NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.Disconnection
+                    ? PushNotificationConstants.I18N_ContactTNB : PushNotificationConstants.I18N_ViewBill), UIControlState.Normal);
+                _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    if (NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.Disconnection)
+                    {
+                        OnContact();
+                    }
+                    else
+                    {
+                        OnViewDetails();
+                    }
+                }));
+                _btnSecondary = new CustomUIButtonV2
+                {
+                    Frame = new CGRect(_btnPrimary.Frame.GetMaxX() + GetScaledWidth(4), GetScaledHeight(16), btnWidth, GetScaledHeight(48))
+                };
+                UpdateCTA(ref _btnSecondary);
+                _btnSecondary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_Paynow), UIControlState.Normal);
+                _btnSecondary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    OnPay();
+                }));
+                _viewCTA.AddSubviews(new UIView[] { _btnPrimary, _btnSecondary });
+            }
+            else if (NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.Reconnection)
+            {
+                _btnPrimary = new CustomUIButtonV2
+                {
+                    Frame = new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(48))
+                };
+                UpdateCTA(ref _btnPrimary, false);
+                _btnPrimary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_ViewMyUsage), UIControlState.Normal);
+                _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    OnViewUsage();
+                }));
+                _viewCTA.AddSubview(_btnPrimary);
+            }
+            else if (NotificationInfo.BCRMNotificationType == Enums.BCRMNotificationEnum.SSMR)
+            {
+                EvaluateSSMRCTA();
+            }
+        }
+
+        private void EvaluateSSMRCTA()
+        {
+            _btnPrimary = new CustomUIButtonV2
+            {
+                Frame = new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(48))
+            };
+            if (NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.OpenMeterReadingPeriod
+                || NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.NoSubmissionReminder)
+            {
+                UpdateCTA(ref _btnPrimary);
+                _btnPrimary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_SubmitMeterReading), UIControlState.Normal);
+                _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    OnSubmitMeterReading();
+                }));
+            }
+            else if (NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.MissedSubmission)
+            {
+                UpdateCTA(ref _btnPrimary, false);
+                _btnPrimary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_ViewReadingHistory), UIControlState.Normal);
+                _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    OnViewMeterReadingHistory();
+                }));
+            }
+            else if (NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.TerminationCompleted)
+            {
+                UpdateCTA(ref _btnPrimary);
+                _btnPrimary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_ReenableSSMR), UIControlState.Normal);
+                _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    OnViewMeterReadingHistory();
+                }));
+            }
+            else if (NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.RegistrationCompleted)
+            {
+                UpdateCTA(ref _btnPrimary);
+                _btnPrimary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_ViewMyUsage), UIControlState.Normal);
+                _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    OnViewUsage();
+                }));
+            }
+            else if (NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.RegistrationCancelled
+                || NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.TerminationCancelled)
+            {
+                UpdateCTA(ref _btnPrimary, false);
+                _btnPrimary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_ContactTNB), UIControlState.Normal);
+                _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    OnContact();
+                }));
+            }
+            _viewCTA.AddSubview(_btnPrimary);
+        }
+
+        private void UpdateCTA(ref CustomUIButtonV2 btn, bool isSolidBg = true)
+        {
+            if (isSolidBg)
+            {
+                btn.BackgroundColor = MyTNBColor.FreshGreen;
+                btn.SetTitleColor(UIColor.White, UIControlState.Normal);
+            }
+            else
+            {
+                btn.BackgroundColor = UIColor.White;
+                btn.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
+                btn.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
+                btn.Layer.BorderWidth = 1;
+            }
+        }
+
+        private bool IsValidWeblinks
+        {
+            get { return DataManager.DataManager.SharedInstance.WebLinks != null; }
+        }
+
+        #region CTA Events
+        private void OnPay()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        UIStoryboard storyBoard = UIStoryboard.FromName("Payment", null);
+                        SelectBillsViewController viewController = storyBoard.InstantiateViewController("SelectBillsViewController") as SelectBillsViewController;
+                        if (viewController != null)
+                        {
+                            DataManager.DataManager.SharedInstance.SelectAccount(NotificationInfo.AccountNum);
+                            var navController = new UINavigationController(viewController);
+                            PresentViewController(navController, true, null);
+                        }
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
+        private void OnViewDetails()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        DataManager.DataManager.SharedInstance.SelectAccount(NotificationInfo.AccountNum);
+                        UIStoryboard storyBoard = UIStoryboard.FromName("BillDetails", null);
+                        BillDetailsViewController viewController =
+                            storyBoard.InstantiateViewController("BillDetailsView") as BillDetailsViewController;
+                        if (viewController != null)
+                        {
+                            viewController.AccountNumber = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
+                            viewController.IsFreshCall = true;
+                            viewController.IsRoot = true;
+                            NavigationController.PushViewController(viewController, true);
+                        }
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
+        private void OnViewUsage()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        DataManager.DataManager.SharedInstance.SelectAccount(NotificationInfo.AccountNum);
+                        UIStoryboard stroryboard = UIStoryboard.FromName("Usage", null);
+                        UsageViewController viewController = stroryboard.InstantiateViewController("UsageViewController") as UsageViewController;
+                        if (viewController != null)
+                        {
+                            NavigationController.PushViewController(viewController, true);
+                        }
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
+        private void OnContact()
+        {
+            if (IsValidWeblinks)
+            {
+                int index = DataManager.DataManager.SharedInstance.WebLinks.FindIndex(x => x.Code.ToLower().Equals("tnbcle"));
                 if (index > -1)
                 {
-                    var acct = DataManager.DataManager.SharedInstance.AccountRecordsList.d[(int)index];
-                    if (!acct.IsREAccount)
+                    string number = DataManager.DataManager.SharedInstance.WebLinks[index].Url;
+                    if (!string.IsNullOrEmpty(number) && !string.IsNullOrWhiteSpace(number))
                     {
-                        DataManager.DataManager.SharedInstance.SetBillingRefreshStatus(NotificationInfo.AccountNum, true);
+                        NSUrl url = new NSUrl(new Uri("tel:" + number).AbsoluteUri);
+                        UIApplication.SharedApplication.OpenUrl(url);
+                        return;
                     }
                 }
             }
+            DisplayServiceError(string.Empty);
         }
 
-        internal Task DeleteUserNotification(string id)
+        private void OnViewMeterReadingHistory()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        DataManager.DataManager.SharedInstance.SelectAccount(NotificationInfo.AccountNum);
+                        UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+                        SSMRReadingHistoryViewController viewController =
+                            storyBoard.InstantiateViewController("SSMRReadingHistoryViewController") as SSMRReadingHistoryViewController;
+                        if (viewController != null)
+                        {
+                            viewController.IsFromNotification = true;
+                            viewController.IsRoot = true;
+                            NavigationController.PushViewController(viewController, true);
+                        }
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
+        private void OnSubmitMeterReading()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        ActivityIndicator.Show();
+                        DataManager.DataManager.SharedInstance.SelectAccount(NotificationInfo.AccountNum);
+                        await GetSMRAccountActivityInfo(DataManager.DataManager.SharedInstance.SelectedAccount).ContinueWith(task =>
+                        {
+                            InvokeOnMainThread(() =>
+                            {
+                                if (_smrActivityInfoResponse != null &&
+                                    _smrActivityInfoResponse.d != null &&
+                                    _smrActivityInfoResponse.d.data != null &&
+                                    _smrActivityInfoResponse.d.IsSuccess)
+                                {
+                                    SSMRActivityInfoCache.SetReadingHistoryCache(_smrActivityInfoResponse
+                                        , DataManager.DataManager.SharedInstance.SelectedAccount);
+                                    UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+                                    SSMRReadMeterViewController viewController =
+                                        storyBoard.InstantiateViewController("SSMRReadMeterViewController") as SSMRReadMeterViewController;
+                                    if (viewController != null)
+                                    {
+                                        viewController.IsRoot = true;
+                                        NavigationController.PushViewController(viewController, true);
+                                    }
+                                }
+                                else
+                                {
+                                    DisplayServiceError(_smrActivityInfoResponse?.d?.ErrorMessage ?? string.Empty);
+                                }
+                                ActivityIndicator.Hide();
+                            });
+                        });
+
+
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
+        private void OnDeleteNotification()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        ActivityIndicator.Show();
+                        await DeleteUserNotification(NotificationInfo?.Id);
+                        if (_deleteNotificationResponse != null && _deleteNotificationResponse?.d != null
+                            && _deleteNotificationResponse?.d?.didSucceed == true)
+                        {
+                            DataManager.DataManager.SharedInstance.IsNotificationDeleted = true;
+                            var index = DataManager.DataManager.SharedInstance.UserNotifications.FindIndex(x => x.Id == NotificationInfo?.Id);
+                            if (index > -1)
+                            {
+                                DataManager.DataManager.SharedInstance.UserNotifications.RemoveAt(index);
+                            }
+                            NavigationController?.PopViewController(true);
+                        }
+                        else
+                        {
+                            DisplayServiceError(_deleteNotificationResponse?.d?.ErrorMessage ?? string.Empty);
+                        }
+                        ActivityIndicator.Hide();
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+        #endregion
+
+        #region Service Call
+        private Task GetSMRAccountActivityInfo(CustomerAccountRecordModel account)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                ServiceManager serviceManager = new ServiceManager();
+                object request = new
+                {
+                    contractAccount = account.accNum,
+                    isOwnedAccount = account.isOwned,
+                    serviceManager.usrInf
+                };
+                _smrActivityInfoResponse = serviceManager.OnExecuteAPIV6<SMRAccountActivityInfoResponseModel>(PushNotificationConstants.Service_GetSMRAccountActivityInfo, request);
+            });
+        }
+
+        private Task DeleteUserNotification(string id)
         {
             var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
                 ? DataManager.DataManager.SharedInstance.UserEntity[0] : new UserEntity();
@@ -443,41 +703,18 @@ namespace myTNB
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    ApiKeyID = TNBGlobal.API_KEY_ID,
-                    UpdatedNotifications = new List<UpdateNotificationModel>(){
+                    serviceManager.usrInf,
+                    updatedNotifications = new List<UpdateNotificationModel>(){
                         new UpdateNotificationModel()
                         {
                             NotificationType = NotificationInfo.NotificationType,
                             NotificationId = id
                         }
-                    },
-                    Email = user?.email,
-                    DeviceId = DataManager.DataManager.SharedInstance.UDID,
-                    SSPUserId = user?.userID
+                    }
                 };
-                _deleteNotificationResponse = serviceManager.OnExecuteAPI<DeleteNotificationResponseModel>("DeleteUserNotification_V3", requestParameter);
+                _deleteNotificationResponse = serviceManager.OnExecuteAPIV6<DeleteNotificationResponseModel>(PushNotificationConstants.Service_DeleteNotification, requestParameter);
             });
         }
-
-        internal void DisplayPage(string storyboardID, string vc)
-        {
-            UIStoryboard storyBoard = UIStoryboard.FromName(storyboardID, null);
-            if (vc == "BillViewController")
-            {
-                ViewHelper.DismissControllersAndSelectTab(this, 1, true);
-            }
-            else
-            {
-                SelectBillsViewController selectBillsVC =
-                    storyBoard.InstantiateViewController("SelectBillsViewController") as SelectBillsViewController;
-                if (selectBillsVC != null)
-                {
-                    selectBillsVC.SelectedAccountDueAmount = (double)(_dueAmount != null && _dueAmount?.d != null
-                        && _dueAmount?.d?.data != null && _dueAmount?.d?.didSucceed == true ? _dueAmount?.d?.data.amountDue : 0);
-                    var navController = new UINavigationController(selectBillsVC);
-                    PresentViewController(navController, true, null);
-                }
-            }
-        }
+        #endregion
     }
 }

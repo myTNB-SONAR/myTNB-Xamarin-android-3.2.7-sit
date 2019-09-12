@@ -1,7 +1,6 @@
 using myTNB.Model;
 using myTNB.Model.Usage;
 using System;
-using System.Diagnostics;
 using UIKit;
 
 namespace myTNB
