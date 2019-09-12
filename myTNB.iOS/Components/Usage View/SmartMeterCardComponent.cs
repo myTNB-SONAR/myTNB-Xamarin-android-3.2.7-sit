@@ -31,14 +31,19 @@ namespace myTNB
                 BackgroundColor = UIColor.White
             };
             _containerView.Layer.CornerRadius = GetScaledHeight(5F);
-            _containerView.AddSubview(ItemDetailView(_containerView, 0, Constants.IMG_CalendarIcon, _usageCostModel[0]));
+            if (_usageCostModel != null && _usageCostModel.Count > 0)
+            {
+                _containerView.AddSubview(ItemDetailView(_containerView, 0, Constants.IMG_CalendarIcon, _usageCostModel[0]));
+            }
             UIView line = new UIView(new CGRect(BaseMarginWidth16, GetScaledHeight(64F), width - (BaseMarginHeight16 * 2), GetScaledHeight(1F)))
             {
                 BackgroundColor = MyTNBColor.VeryLightPinkThree
             };
             _containerView.AddSubview(line);
-            _containerView.AddSubview(ItemDetailView(_containerView, line.Frame.GetMaxY(), Constants.IMG_PredictIcon, _usageCostModel[1]));
-
+            if (_usageCostModel != null && _usageCostModel.Count > 0)
+            {
+                _containerView.AddSubview(ItemDetailView(_containerView, line.Frame.GetMaxY(), Constants.IMG_PredictIcon, _usageCostModel[1]));
+            }
             if (_RMkWh == RMkWhEnum.RM)
             {
                 _toolTipView = new CustomUIView(new CGRect(BaseMarginWidth16, GetScaledHeight(64F * 2) + GetScaledHeight(1F), width - (BaseMarginHeight16 * 2), GetScaledHeight(24F)))

@@ -62,7 +62,6 @@ namespace myTNB
             if (!DataManager.DataManager.SharedInstance.IsSameAccount)
             {
                 ResetViews();
-                //ShowPinchOverlay();
             }
         }
 
@@ -91,7 +90,7 @@ namespace myTNB
                 BackgroundColor = MyTNBColor.Black60
             };
             currentWindow.AddSubview(_smOverlayParentView);
-            SmartMeterOverlayComponent overlay = new SmartMeterOverlayComponent(_smOverlayParentView, _viewChart.Frame.GetMinY());
+            SmartMeterOverlayComponent overlay = new SmartMeterOverlayComponent(_smOverlayParentView, GetYLocationFromFrame(_navbarContainer.Frame, 8F) + _viewChart.Frame.Y);
             _smOverlayParentView.AddSubview(overlay.GetUI());
             overlay.SetGestureForButton(new UITapGestureRecognizer(() =>
             {
@@ -187,7 +186,6 @@ namespace myTNB
             };
             viewBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                //DismissViewController(true, null);
                 NavigationController.PopViewController(true);
             }));
             viewBack.AddSubview(imgViewBack);
@@ -429,6 +427,10 @@ namespace myTNB
             _chart = isUpdating ? _chartView.GetShimmerUI() : _chartView.GetUI();
             _viewChart.AddSubview(_chart);
             ViewHelper.AdjustFrameSetHeight(_viewChart, _chart.Frame.Height);
+            if (!isUpdating && isSmartMeterAccount)
+            {
+                ShowPinchOverlay();
+            }
         }
 
         #region SMART METER Methods
@@ -460,10 +462,24 @@ namespace myTNB
                     {
                         toolTipItem = toolTips.Find(x => x.UsageCostType == usageCostModel[1].UsageCostType);
                     }
-                    var toolTipMsg = toolTipItem?.Message[0] ?? GetI18NValue(UsageConstants.I18N_ProjectedCostMessage);
-                    var toolTipBtnTitle = toolTipItem?.SMBtnText ?? GetI18NValue(UsageConstants.I18N_GotIt);
+                    var toolTipMsg = GetI18NValue(UsageConstants.I18N_ProjectedCostMessage);
+                    var toolTipBtnTitle = GetI18NValue(UsageConstants.I18N_GotIt);
+                    var toolTipProjCostTitle = GetI18NValue(UsageConstants.I18N_ProjectCostTitle);
+
+                    if (toolTipItem != null)
+                    {
+                        if (toolTipItem.Message != null)
+                        {
+                            if (toolTipItem.Message.Count > 0)
+                            {
+                                toolTipMsg = toolTipItem.Message[0];
+                            }
+                        }
+                        toolTipBtnTitle = toolTipItem.SMBtnText;
+                        toolTipProjCostTitle = toolTipItem.SMLink;
+                    }
                     _sm = smartMeterComponent.GetUI();
-                    smartMeterComponent.SetTooltipText(toolTipItem?.SMLink ?? GetI18NValue(UsageConstants.I18N_ProjectCostTitle));
+                    smartMeterComponent.SetTooltipText(toolTipProjCostTitle);
                     smartMeterComponent.SetTooltipTapRecognizer(new UITapGestureRecognizer(() =>
                     {
                         DisplayCustomAlert(string.Empty, toolTipMsg, toolTipBtnTitle, null);
@@ -660,11 +676,14 @@ namespace myTNB
                         nfloat height = isVisible ? tariffList.Count * GetScaledHeight(25f) : 0;
                         ViewHelper.AdjustFrameSetHeight(_viewLegend, height);
                         SetContentView();
+                        if (!isVisible)
+                            _viewLegend.Hidden = !isVisible;
+                        UpdateBackgroundImage(isVisible);
                     }
                     , () =>
                     {
-                        _viewLegend.Hidden = !isVisible;
-                        UpdateBackgroundImage(isVisible);
+                        if (isVisible)
+                            _viewLegend.Hidden = !isVisible;
                     }
                 );
             }
