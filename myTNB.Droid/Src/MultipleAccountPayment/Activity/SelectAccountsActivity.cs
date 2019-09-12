@@ -775,6 +775,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             selectedAccountData.AccountNum = accountChargeModel.ContractAccount;
             selectedAccountData.AccountNickName = customerBillingAccount.AccDesc;
             selectedAccountData.AddStreet = customerBillingAccount.AccountStAddress;
+            selectedAccountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
 
             Intent intent = new Intent(this, typeof(BillingDetailsActivity));
             intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(selectedAccountData));
