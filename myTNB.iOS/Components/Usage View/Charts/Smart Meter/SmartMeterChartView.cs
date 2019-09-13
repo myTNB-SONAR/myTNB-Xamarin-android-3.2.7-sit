@@ -207,7 +207,7 @@ namespace myTNB
         protected override void AddTariffBlocks(CustomUIView viewBar, List<TariffItemModel> tariffList
             , double baseValue, bool isSelected, CGSize size, bool isLatestBar)
         {
-            if (viewBar == null || tariffList == null || tariffList.Count == 0) { return; }
+            if (viewBar == null || tariffList == null || tariffList.Count == 0 || baseValue == 0) { return; }
             nfloat baseHeigt = size.Height;
             nfloat barMaxY = size.Height;
             nfloat xLoc = isLatestBar ? GetWidthByScreenSize(3) : 0;
@@ -222,8 +222,10 @@ namespace myTNB
             for (int i = 0; i < tariffList.Count; i++)
             {
                 TariffItemModel item = tariffList[i];
-                double.TryParse(item.Usage, out double val);
-                nfloat percentage = (nfloat)(val / baseValue);
+                double val = item.Usage;
+                if (val == 0) { continue; }
+                //double.TryParse(item.Usage, out double val);
+                nfloat percentage = (nfloat)(val / baseValue); // if 0/0
                 nfloat blockHeight = baseHeigt * percentage;
                 barMaxY -= blockHeight;
                 UIView viewTariffBlock = new UIView(new CGRect(0, barMaxY, size.Width, blockHeight))

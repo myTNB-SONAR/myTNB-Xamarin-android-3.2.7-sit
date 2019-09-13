@@ -25,8 +25,8 @@ namespace myTNB.Model.Usage
     public class TariffItemModel
     {
         public string BlockId { set; get; }
-        public string Amount { set; get; }
-        public string Usage { set; get; }
-        public string BlockPrice { set; get; }
+        public double Amount { set; get; }
+        public double Usage { set; get; }
+        //public string BlockPrice { set; get; }
     }
 }

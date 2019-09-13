@@ -59,7 +59,7 @@ namespace myTNB.SmartMeterView
                 viewBar.Layer.CornerRadius = segmentWidth / 2;
 
                 UIImageView imgMissingReading = null;
-                if (item.IsMissingReading || index == 20)//For Testing
+                if (item.IsEstimatedReading || index == 20)//For Testing
                 {
                     imgMissingReading = new UIImageView(new CGRect(0, maxBarHeight - missingReadingBarMargin, segmentWidth, segmentWidth))
                     {

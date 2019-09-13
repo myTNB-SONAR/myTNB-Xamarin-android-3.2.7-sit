@@ -151,7 +151,8 @@ namespace myTNB
             for (int i = 0; i < tariffList.Count; i++)
             {
                 TariffItemModel item = tariffList[i];
-                double.TryParse(item.Usage, out double val);
+                double val = item.Usage;
+                //double.TryParse(item.Usage, out double val);
                 nfloat percentage = (nfloat)(val / baseValue);
                 nfloat blockHeight = baseHeigt * percentage;
                 barMaxY -= blockHeight;
