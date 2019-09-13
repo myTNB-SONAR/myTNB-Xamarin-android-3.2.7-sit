@@ -97,18 +97,22 @@ namespace myTNB.SmartMeterView
                     AddTariffBlocks.Invoke(viewBar, item.tariffBlocks, value, index == usageData.Count - 1, viewCover.Frame.Size, isLatestBar);
                 }
                 nfloat amtYLoc = yLoc - amountBarMargin - lblHeight;
-                UILabel lblAmount = new UILabel(new CGRect(0, viewBar.Frame.GetMinY() - amountBarMargin - lblHeight
+
+                string displayText = ConsumptionState == RMkWhEnum.RM ? item.AmountTotal.FormatAmountString(item.Currency) :
+                    string.Format(Format_Value, item.UsageTotal, item.UsageUnit);
+
+                UILabel lblConsumption = new UILabel(new CGRect(0, viewBar.Frame.GetMinY() - amountBarMargin - lblHeight
                     , GetWidthByScreenSize(100), lblHeight))
                 {
                     TextAlignment = UITextAlignment.Center,
                     Font = TNBFont.MuseoSans_10_300,
                     TextColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
-                    Text = item.AmountTotal.FormatAmountString(item.Currency),
+                    Text = displayText,
                     Hidden = isSelected,
                     Tag = 1002
                 };
-                nfloat lblAmountWidth = lblAmount.GetLabelWidth(GetWidthByScreenSize(100));
-                lblAmount.Frame = new CGRect((segmentWidth - lblAmountWidth) / 2, lblAmount.Frame.Y, lblAmountWidth, lblAmount.Frame.Height);
+                nfloat lblAmountWidth = lblConsumption.GetLabelWidth(GetWidthByScreenSize(100));
+                lblConsumption.Frame = new CGRect((segmentWidth - lblAmountWidth) / 2, lblConsumption.Frame.Y, lblAmountWidth, lblConsumption.Frame.Height);
 
                 UILabel lblDate = new UILabel(new CGRect((segmentWidth - GetWidthByScreenSize(40)) / 2, segment.Frame.Height - lblHeight
                     , GetWidthByScreenSize(40), lblHeight))
@@ -119,7 +123,7 @@ namespace myTNB.SmartMeterView
                     Text = string.IsNullOrEmpty(item.Year) ? item.Month : string.Format(Format_Value, item.Month, item.Year),
                     Tag = 1003
                 };
-                segment.AddSubviews(new UIView[] { lblAmount, viewBar, lblDate });
+                segment.AddSubviews(new UIView[] { lblConsumption, viewBar, lblDate });
 
                 segment.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
@@ -133,7 +137,7 @@ namespace myTNB.SmartMeterView
                     , () =>
                     {
                         viewBar.Frame = new CGRect(viewBar.Frame.X, yLoc, viewBar.Frame.Width, barHeight);
-                        lblAmount.Frame = new CGRect(lblAmount.Frame.X, amtYLoc, lblAmount.Frame.Width, lblAmount.Frame.Height);
+                        lblConsumption.Frame = new CGRect(lblConsumption.Frame.X, amtYLoc, lblConsumption.Frame.Width, lblConsumption.Frame.Height);
                     }
                     , () => { }
                 );

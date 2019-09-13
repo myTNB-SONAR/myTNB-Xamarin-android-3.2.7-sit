@@ -14,6 +14,7 @@ namespace myTNB.SmartMeterView
         public CGRect ReferenceWidget { set; protected get; }
         public Action<CustomUIView, List<TariffItemModel>, double, bool, CGSize, bool> AddTariffBlocks { set; protected get; }
         public bool IsTariffView { set; protected get; } = false;
+        public RMkWhEnum ConsumptionState { set; protected get; } = RMkWhEnum.kWh;
 
         protected virtual double GetMaxValue(RMkWhEnum view, List<string> value)
         {

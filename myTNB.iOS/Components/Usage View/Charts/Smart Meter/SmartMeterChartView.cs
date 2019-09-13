@@ -18,6 +18,7 @@ namespace myTNB
 
         private BaseSmartMeterView _baseSmartMeterView;
         private bool _isTariffView;
+        private RMkWhEnum _consumptionState;
 
         protected override void CreatUI()
         {
@@ -164,6 +165,7 @@ namespace myTNB
             _baseSmartMeterView.IsTariffView = _isTariffView;
             _baseSmartMeterView.ReferenceWidget = _lblDateRange.Frame;
             _baseSmartMeterView.AddTariffBlocks = AddTariffBlocks;
+            _baseSmartMeterView.ConsumptionState = _consumptionState;
             _baseSmartMeterView.CreateSegment(ref _segmentContainer);
             _mainView.AddSubview(_segmentContainer);
         }
@@ -314,6 +316,7 @@ namespace myTNB
 
         public override void ToggleRMKWHValues(RMkWhEnum state)
         {
+            _consumptionState = state;
             List<MonthItemModel> usageData = AccountUsageSmartCache.ByMonthUsage;
             for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
             {
