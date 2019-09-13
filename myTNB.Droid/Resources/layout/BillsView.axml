@@ -16,7 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-            <LinearLayout 
+            <LinearLayout
 			    android:id="@+id/layout_api_refresh"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -24,7 +24,7 @@
                 android:gravity="center"
                 android:background="@color/white"
                 android:visibility="gone">
-                <LinearLayout 
+                <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -445,7 +445,7 @@
                             android:layout_alignParentTop="true"
                             android:text="@string/total_amount_due_bill"
                             android:textColor="@color/tunaGrey"
-                            android:textSize="16sp" />
+                            android:textSize="16dp" />
                         <TextView
                             android:id="@+id/txtTotalDueContent"
                             android:layout_width="wrap_content"
@@ -455,7 +455,7 @@
                             android:layout_alignParentTop="true"
                             android:text="0.00"
                             android:textColor="@color/tunaGrey"
-                            android:textSize="24sp" />
+                            android:textSize="24dp" />
                         <TextView
                             android:id="@+id/txtCurrency"
                             android:layout_width="wrap_content"
@@ -466,7 +466,7 @@
                             android:layout_toStartOf="@+id/txtTotalDueContent"
                             android:text="RM"
                             android:textColor="@color/tunaGrey"
-                            android:textSize="14sp" />
+                            android:textSize="14dp" />
                         <TextView
                             android:id="@+id/txtDueDate"
                             android:layout_width="wrap_content"

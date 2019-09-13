@@ -309,7 +309,7 @@
 
   <!-- Reset Password Dialog -->
   <string name="reset_password_alert_dialog_title">Resetting Password...</string>
-  <string name="reset_password_alert_dialog_message">Resetting Password...</string>
+  <string name="reset_password_alert_dialog_message">Please wait...</string>
   <string name="reset_password_alert_dialog_negative_button">Cancel</string>
   <!-- End Reset Password Dialog -->
 
@@ -1006,8 +1006,8 @@ You acknowledge that you have been provided with and have read and understood th
   <string name="bill_related_fullname_hint">Full name</string>
   <string name="bill_related_mobile_no_hint">Mobile No.</string>
   <string name="bill_related_email_hint">Email</string>
-  <string name="bill_related_account_no_hint">Account No.</string>
-  <string name="bill_related_feedback">Feedback</string>
+  <string name="bill_related_account_no_hint">ACCOUNT NO.</string>
+  <string name="bill_related_feedback">FEEDBACK</string>
   <string name="bill_related_screenshot_title">Attach Photo / Screenshot (Optional)</string>
   <string name="bill_related_screenshot_detailed_title">Photo / Screenshot</string>
   <string name="bill_related_btn_submit">Submit</string>
@@ -1325,10 +1325,14 @@ Please try again later.]]>
   <string name="dashboard_smart_meter_what_is_this_title">What are estimated charges?</string>
   <string name="dashboard_smart_meter_what_is_this_message">We estimate this amount by multiplying your average daily usage for your current bill period by the total number of days in the period.
     That is only an estimate, your final bill might differ.</string>
-
   <string name="loading_text">We’ll be there in a flash…</string>
-
-  <!-- Dashboard promotion -->
+  <string name="tooltip_sm_what_are_these_link">What are these costs?</string>
+  <string name="tooltip_sm_what_are_these_message"><![CDATA[<strong>My bill amount so far:</strong><br><br>Your bill amount so far is the amount you have used up until yesterday.<br><br><strong>My bill may reach:</strong><br><br>This is calculated based on your average daily consumption for the past one (1) month, your actual bill may differ. To find out more, please visit our <strong> <a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\" >FAQ page.</a></strong><br><br>Note: The amount shown is before applicable taxes / additional charges.]]></string>
+  <string name="tooltip_btnLabel">Got It!</string>
+  <string name="tooltip_what_does_this_link">What does this mean?</string>
+  <string name="tooltip_what_does_this_message"><![CDATA[<strong>What does this mean?</strong><br><br>Your electricity has been disconnected and is unavailable. This was not caused by a power outage.<br><br>If you’ve made a payment, please give us some time for this to be reflected.]]></string>
+  <string name="chart_electricity_status_message"><![CDATA[Electricity Connection: <strong>Unavailable</strong>]]></string>
+    <!-- Dashboard promotion -->
   <string name="btn_skip">Skip</string>
   <string name="btn_details">Details</string>
 

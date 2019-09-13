@@ -99,12 +99,14 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
         [BindView(Resource.Id.rootView)]
         FrameLayout rootView;
 
+
+
         public override int ResourceId()
         {
             return Resource.Layout.FeedbackPreLogInBillRelatedView;
         }
 
-        public override bool ShowCustomToolbarTitle()
+        public override Boolean ShowCustomToolbarTitle()
         {
             return true;
         }
@@ -114,6 +116,8 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
             base.OnCreate(savedInstanceState);
             try
             {
+                Intent intent = Intent;
+                SetToolBarTitle(Intent.GetStringExtra("TITLE"));
 
                 // Create your application here
                 submitDialog = new MaterialDialog.Builder(this)

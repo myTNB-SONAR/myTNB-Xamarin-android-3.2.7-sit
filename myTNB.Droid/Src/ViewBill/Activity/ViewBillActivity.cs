@@ -56,6 +56,8 @@ namespace myTNB_Android.Src.ViewBill.Activity
         private string getPDFUrl = "";
         private string filePath = null;
         private bool downloadClicked = false;
+        private bool isLoadedDocument = false;
+
 
         CancellationTokenSource cts;
 
@@ -361,6 +363,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
                         using (Stream PdfStream = File.Open(file.AbsolutePath, FileMode.Open))
                         {
                             pdfViewer.LoadDocument(PdfStream);
+                            isLoadedDocument = true;
                         }
                         //Stream PdfStream = File.Open(file.AbsolutePath, FileMode.Open);//Assets.Open(path);
                         //pdfViewer.LoadDocument(PdfStream);
@@ -491,6 +494,11 @@ namespace myTNB_Android.Src.ViewBill.Activity
             if (cts != null && cts.Token.CanBeCanceled)
             {
                 cts.Cancel();
+            }
+            if (isLoadedDocument)
+            {
+                pdfViewer.Unload();
+                isLoadedDocument = false;
             }
 
             base.OnDestroy();

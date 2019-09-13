@@ -153,6 +153,11 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
             try
             {
+                if(Intent.HasExtra("TITLE") && !string.IsNullOrEmpty(Intent.GetStringExtra("TITLE")))
+                {
+                    SetToolBarTitle(Intent.GetStringExtra("TITLE"));
+                }
+
                 // Create your application here
                 string selectedFeedback = UserSessions.GetSelectedFeedback(PreferenceManager.GetDefaultSharedPreferences(this));
                 submittedFeedback = JsonConvert.DeserializeObject<SubmittedFeedbackDetails>(selectedFeedback);

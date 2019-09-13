@@ -42,6 +42,11 @@ namespace myTNB_Android.Src.Notifications.MVP
             SetIconsLayout();
         }
 
+        public void SetInitialState(){
+          swipeBack = false;
+          buttonShowedState = ButtonState.GONE;
+        }
+
         private void SetIconsLayout()
         {
             intrinsicDeleteWidth = mDeleteIcon.IntrinsicWidth;
@@ -81,22 +86,17 @@ namespace myTNB_Android.Src.Notifications.MVP
             }
         }
 
-        //public override int ConvertToAbsoluteDirection(int flags, int layoutDirection)
-        //{
-        //    if (swipeBack)
-        //    {
-        //        swipeBack = buttonShowedState != ButtonState.GONE;
-        //        if (buttonShowedState == ButtonState.LEFT_VISIBLE)
-        //        {
-        //            return 0;
-        //        }
-        //    }
-        //    return base.ConvertToAbsoluteDirection(flags, layoutDirection);
-        //}
-
-        private void DrawOptionIcon(int left, int top, int right, int bottom)
+        public override int ConvertToAbsoluteDirection(int flags, int layoutDirection)
         {
-
+            if (swipeBack)
+            {
+                swipeBack = buttonShowedState != ButtonState.GONE;
+                if (buttonShowedState == ButtonState.LEFT_VISIBLE || buttonShowedState == ButtonState.RIGHT_VISIBLE)
+                {
+                    return 0;
+                }
+            }
+            return base.ConvertToAbsoluteDirection(flags, layoutDirection);
         }
 
         public override void OnChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, bool isCurrentlyActive)

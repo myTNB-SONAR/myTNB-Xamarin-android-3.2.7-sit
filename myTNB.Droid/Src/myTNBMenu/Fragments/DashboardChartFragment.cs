@@ -293,7 +293,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             return chartFragment;
         }
 
-        internal static DashboardChartFragment NewInstance(bool hasNoInternet, bool amountDueFailed, string contentTxt, string btnTxt)
+        internal static DashboardChartFragment NewInstance(bool hasNoInternet, bool amountDueFailed, string contentTxt, string btnTxt, AccountData accountData)
         {
             DashboardChartFragment chartFragment = new DashboardChartFragment();
             Bundle bundle = new Bundle();
@@ -313,6 +313,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 bundle.PutString(Constants.REFRESH_BTN_MSG, btnTxt);
             }
+            if(accountData != null)
+            {
+                bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+            }
             chartFragment.Arguments = bundle;
             return chartFragment;
         }
@@ -331,7 +335,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtNewRefreshMessage);
                 TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnLearnMore, txtTitleNoData, txtWhyThisAmt, btnNewRefresh);
 
-                if(amountDueFailed)
+                if (amountDueFailed)
                 {
                     txtWhyThisAmt.Visibility = ViewStates.Gone;
                     ShowNoInternetWithWord(txtRefreshMsg, txtBtnRefreshTitle);
@@ -350,7 +354,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
 
                 this.userActionsListener?.Start();
-
+                
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
                 DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
@@ -419,9 +423,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 downtimeSnackBar.Show();
                             }
                         }
-                        this.userActionsListener.GetAccountStatus(selectedAccount.AccountNum);
                         if (!amountDueFailed)
                         {
+                            this.userActionsListener.GetAccountStatus(selectedAccount.AccountNum);
                             this.userActionsListener.OnLoadAmount(selectedAccount.AccountNum);
                         }
                     }
@@ -1672,20 +1676,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             if (accountStatusData.DisconnectionStatus != "Available")
             {
                 SetAccountStatusVisibility(ViewStates.Visible);
+                string accountStatusMessage = accountStatusData?.AccountStatusMessage ?? Activity.GetString(Resource.String.chart_electricity_status_message);
+                string whatDoesThisMeanLabel = accountStatusData?.AccountStatusModalTitle ?? Activity.GetString(Resource.String.tooltip_what_does_this_link);
+                string whatDoesThisToolTipMessage = accountStatusData?.AccountStatusModalMessage ?? Activity.GetString(Resource.String.tooltip_what_does_this_message);
+                string whatDoesThisToolTipBtnLabel = accountStatusData?.AccountStatusModalBtnText ?? Activity.GetString(Resource.String.tooltip_btnLabel);
                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
                 {
-                    txtAccountStatus.TextFormatted = Html.FromHtml(accountStatusData.AccountStatusMessage, FromHtmlOptions.ModeLegacy);
+                    txtAccountStatus.TextFormatted = Html.FromHtml(accountStatusMessage, FromHtmlOptions.ModeLegacy);
                 }
                 else
                 {
-                    txtAccountStatus.TextFormatted = Html.FromHtml(accountStatusData.AccountStatusMessage);
+                    txtAccountStatus.TextFormatted = Html.FromHtml(accountStatusMessage);
                 }
-                txtWhatAccountStatus.Text = accountStatusData.AccountStatusModalTitle;
-                TextViewUtils.SetMuseoSans500Typeface(txtAccountStatus);
-                TextViewUtils.SetMuseoSans500Typeface(txtWhatAccountStatus);
+                txtWhatAccountStatus.Text = whatDoesThisMeanLabel;
                 txtWhatAccountStatus.Click += delegate
                 {
-                    OnWhatIsThisAccountStatusTap(accountStatusData.AccountStatusModalMessage, accountStatusData.AccountStatusModalBtnText);
+                    OnWhatIsThisAccountStatusTap(whatDoesThisToolTipMessage, whatDoesThisToolTipBtnLabel);
                 };
             }
             else

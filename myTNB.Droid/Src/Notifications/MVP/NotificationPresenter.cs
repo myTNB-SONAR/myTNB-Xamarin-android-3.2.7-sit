@@ -142,29 +142,10 @@ namespace myTNB_Android.Src.Notifications.MVP
         {
             try
             {
-                if (requestCode == Constants.NOTIFICATION_DETAILS_REQUEST_CODE)
+                if (resultCode == Result.Ok)
                 {
-                    if (resultCode == Result.Ok)
-                    {
-                        int position = data.Extras.GetInt(Constants.SELECTED_NOTIFICATION_ITEM_POSITION, -1);
-
-                        this.mView.UpdateIsReadNotificationItem(position, true);
-
-                        bool isDeleted = data.Extras.GetBoolean(Constants.ACTION_IS_DELETE, false);
-                        if (isDeleted)
-                        {
-                            this.mView.UpdateIsDeleteNotificationItem(position, true);
-                            this.mView.ShowNotificationRemoved();
-                        }
-                    }
-                }
-                else if (requestCode == Constants.NOTIFICATION_FILTER_REQUEST_CODE)
-                {
-                    if (resultCode == Result.Ok)
-                    {
-                        this.mView.ClearAdapter();
-                        this.ShowFilteredList();
-                    }
+                    this.mView.ClearAdapter();
+                    this.ShowFilteredList();
                 }
             }
             catch (Exception e)

@@ -31,6 +31,10 @@ namespace myTNB_Android.Src.AppLaunch.Models
         [AliasAs("FeedbackCategory")]
         public List<FeedbackCategory> FeedbackCategorys { get; set; }
 
+        [JsonProperty(PropertyName = "FeedbackCategory_v2")]
+        [AliasAs("FeedbackCategory_v2")]
+        public List<FeedbackCategory> FeedbackCategorysV2 { get; set; }
+
         [JsonProperty(PropertyName = "FeedbackType")]
         [AliasAs("FeedbackType")]
         public List<FeedbackType> FeedbackTypes { get; set; }

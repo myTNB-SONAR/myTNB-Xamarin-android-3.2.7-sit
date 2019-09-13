@@ -122,6 +122,11 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
 
         FeedbackState currentFeedbackState;
 
+        public override Boolean ShowCustomToolbarTitle()
+        {
+            return true;
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -129,6 +134,8 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
             try
             {
                 // Create your application here
+                Intent intent = Intent;
+                SetToolBarTitle(Intent.GetStringExtra("TITLE"));
                 submitDialog = new MaterialDialog.Builder(this)
                     .Title(Resource.String.feedback_submit_dialog_title)
                     .Content(Resource.String.feedback_submit_dialog_message)
@@ -785,12 +792,6 @@ namespace myTNB_Android.Src.Feedback_PreLogin_FaultyStreetLamps.Activity
             StartActivityForResult(Intent.CreateChooser(galleryIntent, GetString(Resource.String.bill_related_feedback_select_images)), Constants.RUNTIME_PERMISSION_GALLERY_REQUEST_CODE);
 
         }
-        public override bool ShowCustomToolbarTitle()
-        {
-            return true;
-        }
-
-
 
         public void ShowSuccess(string date, string feedbackId, int imageCount)
         {
