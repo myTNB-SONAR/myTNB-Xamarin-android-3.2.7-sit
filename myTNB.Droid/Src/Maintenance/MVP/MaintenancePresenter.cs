@@ -78,11 +78,14 @@ namespace myTNB_Android.Src.Maintenance.MVP
                     usrInf = currentUsrInf
                 }, cts.Token);
 
-                if (!masterDataResponse.Data.IsError && !masterDataResponse.Data.Status.ToUpper().Equals(Constants.MAINTENANCE_MODE))
+                if (masterDataResponse != null && masterDataResponse.Data != null)
+                {
+
+                if (masterDataResponse.Data.ErrorCode != "7000" && masterDataResponse.Data.ErrorCode == "7200")
                 {
                     this.mView.ShowLaunchViewActivity();
                 }
-                else if (masterDataResponse.Data.Status.ToUpper().Equals(Constants.MAINTENANCE_MODE))
+                else if (masterDataResponse.Data.ErrorCode == "7000")
                 {
 
                 }
@@ -92,6 +95,14 @@ namespace myTNB_Android.Src.Maintenance.MVP
                     // TODO : SHOW ERROR
                     this.mView.ShowRetryOptionApiException(null);
                 }
+                }
+                else
+                {
+                    Console.WriteLine("Excution time enters else");
+                    // TODO : SHOW ERROR
+                    this.mView.ShowRetryOptionApiException(null);
+                }
+
 
 
 
