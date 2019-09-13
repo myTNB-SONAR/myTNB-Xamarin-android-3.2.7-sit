@@ -998,6 +998,7 @@
     <Compile Include="Src\Utils\Custom\Charts\MyAxisValueFormatter.cs" />
     <Compile Include="Src\Utils\Custom\Charts\XYMarkerView.cs" />
     <Compile Include="Src\Utils\Custom\MarkerTextView\TitleView.cs" />
+    <Compile Include="Src\Utils\DayZoomOutPinchUtil.cs" />
     <Compile Include="Src\Utils\DeviceIdUtils.cs" />
     <Compile Include="Src\Utils\DPUtils.cs" />
     <Compile Include="Src\Utils\EditTextUtils.cs" />
