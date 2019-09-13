@@ -225,7 +225,7 @@ namespace myTNB
                 UnderlineStyle = NSUnderlineStyle.None,
                 UnderlineColor = UIColor.Clear
             };
-            string message = string.Empty;
+            string message = NotificationInfo.Message;
             if (NotificationInfo != null && !string.IsNullOrEmpty(NotificationInfo.Message) && !string.IsNullOrWhiteSpace(NotificationInfo.Message)
                 && DataManager.DataManager.SharedInstance != null && DataManager.DataManager.SharedInstance.AccountRecordsList != null
                 && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null && DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count > 0)
@@ -234,7 +234,7 @@ namespace myTNB
                 if (accountIndex > -1)
                 {
                     string accountNickname = DataManager.DataManager.SharedInstance.AccountRecordsList.d[accountIndex].accountNickName ?? string.Empty;
-                    message = Regex.Replace(NotificationInfo.Message, "#accountNickname#", accountNickname);
+                    message = Regex.Replace(message, "#accountNickname#", accountNickname);
                 }
             }
 
@@ -251,7 +251,8 @@ namespace myTNB
                 Editable = false,
                 ScrollEnabled = true,
                 AttributedText = mutableHTMLBody,
-                WeakLinkTextAttributes = linkAttributes.Dictionary
+                WeakLinkTextAttributes = linkAttributes.Dictionary,
+                ContentInset = new UIEdgeInsets(0, -5, 0, -5)
             };
             _txtViewDetails.ScrollIndicatorInsets = UIEdgeInsets.Zero;
 
