@@ -19,6 +19,7 @@ namespace myTNB
         private BaseSmartMeterView _baseSmartMeterView;
         private bool _isTariffView;
         private RMkWhEnum _consumptionState;
+        private SmartMeterConstants.SmartMeterViewType _viewType;
 
         protected override void CreatUI()
         {
@@ -50,6 +51,15 @@ namespace myTNB
         {
             Debug.WriteLine("PinchAction");
             Debug.WriteLine("obj.Scale=== " + obj.Scale);
+            nfloat pinchScale = obj.Scale;
+            if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZOut && pinchScale > 1)
+            {
+                CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZIn);
+            }
+            else if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZIn && pinchScale < 1)
+            {
+                CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZOut);
+            }
         }
 
         private UIView GetToggleView(CustomUIView parentView)
@@ -146,6 +156,7 @@ namespace myTNB
 
         protected override void CreateSegment(SmartMeterConstants.SmartMeterViewType viewType)
         {
+            _viewType = viewType;
             if (_segmentContainer != null)
             {
                 _segmentContainer.RemoveFromSuperview();
@@ -158,9 +169,13 @@ namespace myTNB
                     PinchAction = PinchAction,
                 };
             }
+            else if (viewType == SmartMeterConstants.SmartMeterViewType.DayZOut)
+            {
+                _baseSmartMeterView = new SmartMeterDayZOutView();
+            }
             else
             {
-                _baseSmartMeterView = new SmartMeterDayView();
+                _baseSmartMeterView = new SmartMeterDayZInView();
             }
             _baseSmartMeterView.IsTariffView = _isTariffView;
             _baseSmartMeterView.ReferenceWidget = _lblDateRange.Frame;

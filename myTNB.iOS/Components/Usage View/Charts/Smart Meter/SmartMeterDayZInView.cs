@@ -7,7 +7,7 @@ using UIKit;
 
 namespace myTNB.SmartMeterView
 {
-    public class SmartMeterDayZOutView : BaseSmartMeterView
+    public class SmartMeterDayZInView : BaseSmartMeterView
     {
         private nfloat _width = UIScreen.MainScreen.Bounds.Width;
 
@@ -15,6 +15,9 @@ namespace myTNB.SmartMeterView
         {
             view = new CustomUIView(new CGRect(0, GetYLocationFromFrameScreenSize(ReferenceWidget, 24)
                , _width, GetHeightByScreenSize(149)));
+
+            view.Layer.BorderColor = UIColor.Red.CGColor;
+            view.Layer.BorderWidth = 1;
 
             nfloat height = view.Frame.Height;
             nfloat width = GetWidthByScreenSize(12);

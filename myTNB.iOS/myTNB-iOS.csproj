@@ -2448,6 +2448,7 @@
     <Compile Include="Model\Notification\DeleteNotificationResponseModel.cs" />
     <Compile Include="Model\Notification\ReadNotificationResponseModel.cs" />
     <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterConstants.cs" />
+    <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterDayZInView.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
