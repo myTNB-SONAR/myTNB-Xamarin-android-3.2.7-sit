@@ -33,6 +33,10 @@ using System.Collections.Generic;
 using System.Runtime;
 using myTNB_Android.Src.Maintenance.Activity;
 using Android.Text;
+using myTNB.SitecoreCMS.Model;
+using System.Threading;
+using System.Globalization;
+using Android.Graphics.Drawables;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -53,11 +57,20 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         private string savedTimeStamp = "0000000";
 
+        private string savedAppLaunchTimeStamp = "0000000";
+
         bool hasBeenCalled = false;
 
         MaterialDialog appUpdateDialog;
 
         public static bool MAKE_INITIAL_CALL = true;
+
+        private bool isAppLaunchSiteCoreDone = false;
+        private bool isAppLaunchLoadSuccessful = false;
+
+        private MasterDataResponse cacheResponse = null;
+
+        private AppLaunchNavigation currentNavigation = AppLaunchNavigation.Nothing;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -112,7 +125,10 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         {
             try
             {
-                userActionsListener.GetSavedTimeStamp();
+                if (isAppLaunchSiteCoreDone)
+                {
+                    userActionsListener.GetSavedTimeStamp();
+                }
             }
             catch (Exception e)
             {
@@ -186,24 +202,33 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         public void ShowDashboard()
         {
-            Intent DashboardIntent = new Intent(this, typeof(DashboardActivity));
-            DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-            StartActivity(DashboardIntent);
+            if (isAppLaunchSiteCoreDone)
+            {
+                Intent DashboardIntent = new Intent(this, typeof(DashboardActivity));
+                DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                StartActivity(DashboardIntent);
+            }
         }
 
         public void ShowPreLogin()
         {
-            Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
-            PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-            StartActivity(PreLoginIntent);
+            if (isAppLaunchSiteCoreDone)
+            {
+                Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
+                PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                StartActivity(PreLoginIntent);
+            }
         }
 
         public void ShowResetPassword()
         {
-            Intent ResetPasswordIntent = new Intent(this, typeof(ResetPasswordActivity));
-            ResetPasswordIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-            ResetPasswordIntent.PutExtra(Constants.FROM_ACTIVITY, LaunchViewActivity.TAG);
-            StartActivity(ResetPasswordIntent);
+            if (isAppLaunchSiteCoreDone)
+            {
+                Intent ResetPasswordIntent = new Intent(this, typeof(ResetPasswordActivity));
+                ResetPasswordIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                ResetPasswordIntent.PutExtra(Constants.FROM_ACTIVITY, LaunchViewActivity.TAG);
+                StartActivity(ResetPasswordIntent);
+            }
         }
 
         public string GetDeviceId()
@@ -296,6 +321,18 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
             try
             {
+                try
+                {
+                    RunOnUiThread(() =>
+                    {
+                        rootView.SetBackgroundResource(Resource.Drawable.AppLanchGradientBackground);
+                    });
+                }
+                catch (Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
+
                 if (ConnectionUtils.HasInternetConnection(this))
                 {
                     mPresenter = new AppLaunchPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
@@ -319,6 +356,20 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 {
                     ShowNoInternetSnackbar();
                 }
+
+                if (AppLaunchUtils.GetAppLaunch() != null)
+                {
+                    isAppLaunchSiteCoreDone = false;
+                    SetCustomAppLaunchImage(AppLaunchUtils.GetAppLaunch());
+                }
+                else
+                {
+                    isAppLaunchSiteCoreDone = false;
+                    if (!isAppLaunchSiteCoreDone)
+                    {
+                        this.userActionsListener.GetSavedAppLaunchTimeStamp();
+                    }
+                }
             }
             catch (Exception e)
             {
@@ -328,9 +379,12 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         public void ShowNotification()
         {
-            Intent notificationIntent = new Intent(this, typeof(NotificationActivity));
-            notificationIntent.PutExtra(Constants.HAS_NOTIFICATION, true);
-            StartActivity(notificationIntent);
+            if (isAppLaunchSiteCoreDone)
+            {
+                Intent notificationIntent = new Intent(this, typeof(NotificationActivity));
+                notificationIntent.PutExtra(Constants.HAS_NOTIFICATION, true);
+                StartActivity(notificationIntent);
+            }
         }
 
         public void ShowNotificationCount(int count)
@@ -368,6 +422,54 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             }
         }
 
+        public void OnSavedAppLaunchTimeStampRecievd(string timestamp)
+        {
+            try
+            {
+                if (timestamp != null)
+                {
+                    savedAppLaunchTimeStamp = timestamp;
+                }
+                this.userActionsListener.OnGetAppLaunchTimeStamp();
+            }
+            catch (Exception e)
+            {
+                SetDefaultAppLaunchImage();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnGoAppLaunchEvent()
+        {
+            if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful)
+            {
+                if (currentNavigation == AppLaunchNavigation.Notification)
+                {
+                    ShowNotification();
+                }
+                else if (currentNavigation == AppLaunchNavigation.Logout)
+                {
+                    ShowLogout();
+                }
+                else if (currentNavigation == AppLaunchNavigation.Dashboard)
+                {
+                    ShowDashboard();
+                }
+                else if (currentNavigation == AppLaunchNavigation.PreLogin)
+                {
+                    ShowPreLogin();
+                }
+                else if (currentNavigation == AppLaunchNavigation.Walkthrough)
+                {
+                    ShowWalkThrough();
+                }
+                else if (currentNavigation == AppLaunchNavigation.Maintenance)
+                {
+                    ShowMaintenance(cacheResponse);
+                }
+            }
+        }
+
         public void OnTimeStampRecieved(string timestamp)
         {
             try
@@ -391,6 +493,33 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             }
             catch (Exception e)
             {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnAppLaunchTimeStampRecieved(string timestamp)
+        {
+            try
+            {
+                if (timestamp != null)
+                {
+                    if (timestamp.Equals(savedAppLaunchTimeStamp))
+                    {
+                        this.userActionsListener.OnGetAppLaunchCache();
+                    }
+                    else
+                    {
+                        this.userActionsListener.OnGetAppLaunchItem();
+                    }
+                }
+                else
+                {
+                    this.userActionsListener.OnGetAppLaunchCache();
+                }
+            }
+            catch (Exception e)
+            {
+                this.userActionsListener.OnGetAppLaunchCache();
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -475,9 +604,12 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         {
             try
             {
-                ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
-                Intent logout = new Intent(this, typeof(LoginActivity));
-                StartActivity(logout);
+                if (isAppLaunchSiteCoreDone)
+                {
+                    ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
+                    Intent logout = new Intent(this, typeof(LoginActivity));
+                    StartActivity(logout);
+                }
             }
             catch (Exception e)
             {
@@ -566,10 +698,14 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         {
             try
             {
-                Intent maintenanceScreen = new Intent(this, typeof(MaintenanceActivity));
-                maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, masterDataResponse.Data.MasterData.MaintainanceTitle);
-                maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, masterDataResponse.Data.MasterData.MaintainanceMessage);
-                StartActivity(maintenanceScreen);
+                cacheResponse = masterDataResponse;
+                if (isAppLaunchSiteCoreDone)
+                {
+                    Intent maintenanceScreen = new Intent(this, typeof(MaintenanceActivity));
+                    maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, masterDataResponse.Data.MasterData.MaintainanceTitle);
+                    maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, masterDataResponse.Data.MasterData.MaintainanceMessage);
+                    StartActivity(maintenanceScreen);
+                }
             }
             catch (Exception e)
             {
@@ -619,6 +755,116 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             }
             );
             mNoInternetSnackbar.Show();
+        }
+
+        public void SetAppLaunchSuccessfulFlag(bool flag, AppLaunchNavigation navigationWay)
+        {
+            isAppLaunchLoadSuccessful = flag;
+            currentNavigation = navigationWay;
+        }
+
+        public void SetAppLaunchSiteCoreDoneFlag(bool flag)
+        {
+            isAppLaunchSiteCoreDone = flag;
+        }
+
+        public bool GetAppLaunchSiteCoreDoneFlag()
+        {
+            return isAppLaunchSiteCoreDone;
+        }
+
+        public void SetDefaultAppLaunchImage()
+        {
+            try
+            {
+                if (!isAppLaunchSiteCoreDone)
+                {
+                    isAppLaunchSiteCoreDone = true;
+                    try
+                    {
+                        RunOnUiThread(() =>
+                        {
+                            rootView.SetBackgroundResource(Resource.Drawable.launch_screen);
+                        });
+                    }
+                    catch (Exception ne)
+                    {
+                        Utility.LoggingNonFatalError(ne);
+                    }
+
+                    this.userActionsListener.OnWaitSplashScreenDisplay(500);
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void SetCustomAppLaunchImage(AppLaunchModel item)
+        {
+            try
+            {
+                if (!isAppLaunchSiteCoreDone)
+                {
+                    isAppLaunchSiteCoreDone = true;
+                    try
+                    {
+                        if (item.ImageBitmap != null)
+                        {
+                            DateTime startDateTime = DateTime.ParseExact(item.StartDateTime, "yyyyMMddTHHmmss",
+                                CultureInfo.InvariantCulture, DateTimeStyles.None);
+                            DateTime stopDateTime = DateTime.ParseExact(item.EndDateTime, "yyyyMMddTHHmmss",
+                                CultureInfo.InvariantCulture, DateTimeStyles.None);
+                            DateTime nowDateTime = DateTime.Now;
+                            int startResult = DateTime.Compare(nowDateTime, startDateTime);
+                            int endResult = DateTime.Compare(nowDateTime, stopDateTime);
+                            if (startResult >= 0 && endResult <= 0)
+                            {
+                                try
+                                {
+                                    int secondMilli = Int32.Parse(item.ShowForSeconds) * 1000;
+                                    var bitmapDrawable = new BitmapDrawable(item.ImageBitmap);
+                                    RunOnUiThread(() =>
+                                    {
+                                        rootView.SetBackgroundDrawable(bitmapDrawable);
+                                    });
+
+                                    this.userActionsListener.OnWaitSplashScreenDisplay(secondMilli);
+                                }
+                                catch (Exception ne)
+                                {
+                                    isAppLaunchSiteCoreDone = false;
+                                    SetDefaultAppLaunchImage();
+                                    Utility.LoggingNonFatalError(ne);
+                                }
+                            }
+                            else
+                            {
+                                isAppLaunchSiteCoreDone = false;
+                                SetDefaultAppLaunchImage();
+                            }
+                        }
+                        else
+                        {
+                            isAppLaunchSiteCoreDone = false;
+                            SetDefaultAppLaunchImage();
+                        }
+                    }
+                    catch (Exception ne)
+                    {
+                        isAppLaunchSiteCoreDone = false;
+                        SetDefaultAppLaunchImage();
+                        Utility.LoggingNonFatalError(ne);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                isAppLaunchSiteCoreDone = false;
+                SetDefaultAppLaunchImage();
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

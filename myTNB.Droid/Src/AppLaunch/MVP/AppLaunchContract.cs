@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.Runtime;
+using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base.MVP;
 using Refit;
@@ -96,6 +97,10 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             void OnSiteCoreServiceFailed(string message);
 
 
+            void OnSavedAppLaunchTimeStampRecievd(string timestamp);
+
+            void OnAppLaunchTimeStampRecieved(string timestamp);
+
             /// <summary>
             /// Action to show request SMS Permission
             /// </summary>
@@ -142,6 +147,16 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             /// Show Maintenance Screen
             ///</summary>
             void ShowMaintenance(MasterDataResponse masterDataResponse);
+
+            void SetAppLaunchSuccessfulFlag(bool flag, AppLaunchNavigation navigationWay);
+
+            bool GetAppLaunchSiteCoreDoneFlag();
+
+            void SetDefaultAppLaunchImage();
+
+            void SetCustomAppLaunchImage(AppLaunchModel item);
+
+            void OnGoAppLaunchEvent();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -164,7 +179,13 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             /// </summary>
             void NavigateNotification();
 
+            void GetSavedAppLaunchTimeStamp();
+
             Task OnGetTimeStamp();
+
+            void OnGetAppLaunchTimeStamp();
+
+            void OnGetAppLaunchItem();
 
             void GetSavedTimeStamp();
 
@@ -185,6 +206,10 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             /// Lgout function created to update device id after removing persmissin
             ///</summary>
             void OnUpdateApp();
+
+            Task OnGetAppLaunchCache();
+
+            Task OnWaitSplashScreenDisplay(int millisecondDelay);
         }
     }
 }

@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.Gms.Common;
+using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
 using Android.Util;
@@ -20,6 +21,7 @@ using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -36,6 +38,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         CancellationTokenSource cts;
 
         private string savedPromoTimeStamp = "0000000";
+
+        private int AppLaunchTimeOutMillisecond = 2000;
 
         public AppLaunchPresenter(AppLaunchContract.IView mView, ISharedPreferences sharedPreferences)
         {
@@ -102,6 +106,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
         private async void LoadAccounts()
         {
+            this.mView.SetAppLaunchSuccessfulFlag(false, AppLaunchNavigation.Nothing);
             cts = new CancellationTokenSource();
 #if DEBUG
             var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
@@ -241,6 +246,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         "ALL_MYTNB_USERS".Equals(UserSessions.GetUserEmailNotification(mSharedPref))))
                                     {
                                         UserSessions.RemoveNotificationSession(mSharedPref);
+                                        this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Notification);
                                         this.mView.ShowNotification();
                                     }
                                     else
@@ -263,12 +269,14 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                             SelectBillsEntity.RemoveAll();
                                             UserSessions.UpdateDeviceId(mSharedPref);
                                             UserSessions.SaveDeviceId(mSharedPref, this.mView.GetDeviceId());
+                                            this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Logout);
                                             this.mView.ShowLogout();
 
                                         }
                                         else
                                         {
                                             this.mView.ShowNotificationCount(UserNotificationEntity.Count());
+                                            this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Dashboard);
                                             this.mView.ShowDashboard();
                                         }
                                     }
@@ -283,6 +291,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                     UserSessions.UpdateDeviceId(mSharedPref);
                                     UserSessions.SaveDeviceId(mSharedPref, this.mView.GetDeviceId());
                                 }
+                                this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.PreLogin);
                                 mView.ShowPreLogin();
                             }
                             else
@@ -292,6 +301,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                     UserSessions.UpdateDeviceId(mSharedPref);
                                     UserSessions.SaveDeviceId(mSharedPref, this.mView.GetDeviceId());
                                 }
+                                this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Walkthrough);
                                 mView.ShowWalkThrough();
                             }
                         }
@@ -305,6 +315,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     if (masterDataResponse.Data.MasterData.MaintainanceMessage != null && masterDataResponse.Data.MasterData.MaintainanceTitle != null)
                     {
+                        this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Maintenance);
                         this.mView.ShowMaintenance(masterDataResponse);
                     }
                     else
@@ -314,7 +325,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 }
                 else
                 {
-                    Console.WriteLine("Excution time enters else");
                     this.mView.ShowRetryOptionApiException(null);
                 }
 
@@ -437,6 +447,212 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             }
         }
 
+        public void OnGetAppLaunchItem()
+        {
+            bool isDoneGetTimeStamp = false;
+            CancellationTokenSource token = new CancellationTokenSource();
+            Stopwatch sw = Stopwatch.StartNew();
+            _ = Task.Run(() =>
+            {
+                try
+                {
+                    string density = DPUtils.GetDeviceDensity(Application.Context);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    AppLaunchResponseModel responseModel = getItemsService.GetAppLaunchItem();
+                    sw.Stop();
+                    Log.Debug("Current OnGetAppLaunchItem DateTime Used Time", sw.ElapsedMilliseconds.ToString());
+                    if (!isDoneGetTimeStamp)
+                    {
+                        isDoneGetTimeStamp = true;
+                        if (responseModel.Status.Equals("Success"))
+                        {
+                            AppLaunchEntity wtManager = new AppLaunchEntity();
+                            wtManager.DeleteTable();
+                            wtManager.CreateTable();
+                            wtManager.InsertListOfItems(responseModel.Data);
+                            OnGetAppLaunchCache();
+                        }
+                        else
+                        {
+                            OnGetAppLaunchCache();
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    if (!isDoneGetTimeStamp)
+                    {
+                        isDoneGetTimeStamp = true;
+                        OnGetAppLaunchCache();
+                    }
+                    Utility.LoggingNonFatalError(e);
+                }
+            }, token.Token);
+
+            _ = Task.Delay(AppLaunchTimeOutMillisecond).ContinueWith(_ =>
+            {
+                if (!isDoneGetTimeStamp)
+                {
+                    isDoneGetTimeStamp = true;
+                    this.mView.SetDefaultAppLaunchImage();
+                }
+            });
+        }
+
+        public Task OnGetAppLaunchCache()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    AppLaunchEntity wtManager = new AppLaunchEntity();
+                    List<AppLaunchEntity> appLaunchList = wtManager.GetAllItems();
+                    if (appLaunchList.Count > 0)
+                    {
+                        AppLaunchModel item = new AppLaunchModel()
+                        {
+                            Image = appLaunchList[0].Image,
+                            Title = appLaunchList[0].Title,
+                            Description = appLaunchList[0].Description,
+                            StartDateTime = appLaunchList[0].StartDateTime,
+                            EndDateTime = appLaunchList[0].EndDateTime,
+                            ShowForSeconds = appLaunchList[0].ShowForSeconds,
+                            ImageBitmap = null
+                        };
+                        _ = OnProcessAppLaunchItem(item);
+                    }
+                    else
+                    {
+                        this.mView.SetDefaultAppLaunchImage();
+                    }
+                }
+                catch (Exception e)
+                {
+                    this.mView.SetDefaultAppLaunchImage();
+                    Utility.LoggingNonFatalError(e);
+                }
+            }).ContinueWith((Task previous) =>
+            {
+            }, new CancellationTokenSource().Token);
+        }
+
+        private async Task OnProcessAppLaunchItem(AppLaunchModel item)
+        {
+            try
+            {
+                Bitmap imageCache = await GetPhoto(item.Image);
+                if (imageCache != null)
+                {
+                    item.ImageBitmap = imageCache;
+                    AppLaunchUtils.SetAppLaunchBitmap(item);
+                    this.mView.SetCustomAppLaunchImage(item);
+                }
+                else
+                {
+                    this.mView.SetDefaultAppLaunchImage();
+                }
+            }
+            catch (Exception e)
+            {
+                this.mView.SetDefaultAppLaunchImage();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public async Task OnWaitSplashScreenDisplay(int millisecondDelay)
+        {
+            try
+            {
+                await Task.Delay(millisecondDelay);
+                this.mView.OnGoAppLaunchEvent();
+            }
+            catch (Exception e)
+            {
+                this.mView.OnGoAppLaunchEvent();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+
+
+        public void OnGetAppLaunchTimeStamp()
+        {
+            bool isDoneGetTimeStamp = false;
+            CancellationTokenSource token = new CancellationTokenSource();
+            Stopwatch sw = Stopwatch.StartNew();
+            _ = Task.Run(() =>
+            {
+                try
+                {
+                    string density = DPUtils.GetDeviceDensity(Application.Context);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    AppLaunchTimeStampResponseModel responseModel = getItemsService.GetAppLaunchTimestampItem();
+                    sw.Stop();
+                    Log.Debug("Current OnGetAppLaunchTimeStamp DateTime Used Time", sw.ElapsedMilliseconds.ToString());
+                    if (!isDoneGetTimeStamp)
+                    {
+                        isDoneGetTimeStamp = true;
+                        if (responseModel.Status.Equals("Success"))
+                        {
+                            AppLaunchParentEntity wtManager = new AppLaunchParentEntity();
+                            wtManager.DeleteTable();
+                            wtManager.CreateTable();
+                            wtManager.InsertListOfItems(responseModel.Data);
+                            mView.OnAppLaunchTimeStampRecieved(responseModel.Data[0].Timestamp);
+                        }
+                        else
+                        {
+                            mView.OnAppLaunchTimeStampRecieved(null);
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    if (!isDoneGetTimeStamp)
+                    {
+                        isDoneGetTimeStamp = true;
+                        mView.OnAppLaunchTimeStampRecieved(null);
+                    }
+                    Utility.LoggingNonFatalError(e);
+                }
+            }, token.Token);
+
+            _ = Task.Delay(AppLaunchTimeOutMillisecond).ContinueWith(_ =>
+            {
+                if (!isDoneGetTimeStamp)
+                {
+                    isDoneGetTimeStamp = true;
+                    this.mView.SetDefaultAppLaunchImage();
+                }
+            });
+        }
+
+        public void GetSavedAppLaunchTimeStamp()
+        {
+            try
+            {
+                AppLaunchParentEntity wtManager = new AppLaunchParentEntity();
+                List<AppLaunchParentEntity> items = wtManager.GetAllItems();
+                if (items != null && items.Count != 0)
+                {
+                    foreach (AppLaunchParentEntity obj in items)
+                    {
+                        this.mView.OnSavedAppLaunchTimeStampRecievd(obj.Timestamp);
+                    }
+                }
+                else
+                {
+                    this.mView.OnSavedAppLaunchTimeStampRecievd(null);
+                }
+
+            }
+            catch (Exception e)
+            {
+                this.mView.OnSavedAppLaunchTimeStampRecievd(null);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
             try
@@ -464,6 +680,26 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         public void OnUpdateApp()
         {
             this.mView.OnAppUpdateClick();
+        }
+
+        private async Task<Bitmap> GetPhoto(string imageUrl)
+        {
+            CancellationTokenSource cts = new CancellationTokenSource();
+            cts.CancelAfter(AppLaunchTimeOutMillisecond);
+            Bitmap imageBitmap = null;
+            try
+            {
+                await Task.Run(() =>
+                {
+                    imageBitmap = ImageUtils.GetImageBitmapFromUrl(imageUrl);
+                }, cts.Token);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return imageBitmap;
         }
 
     }

@@ -11,6 +11,8 @@
   <color name="bg_gradientBottomFill">#7730d3</color>
 
 
+  <color name="bg_gradientSplashBottomFill">#634add</color>
+
   <color name="loginBtnColor">#20bd4c</color>
   <color name="resendBtnColor">#20bd4c</color>
 

@@ -1,7 +1,9 @@
 ﻿using myTNB.SitecoreCM.Services;
 using myTNB.SitecoreCMS.Model;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace myTNB.SitecoreCMS.Services
@@ -109,6 +111,44 @@ namespace myTNB.SitecoreCMS.Services
             var listData = AddDataToList(data);
             var resp = CheckData(listData);
             return JsonConvert.SerializeObject(resp);
+        }
+
+
+        public AppLaunchResponseModel GetAppLaunchItem()
+        {
+            AppLaunchResponseModel respModel = new AppLaunchResponseModel();
+            try
+            {
+                AppLaunchService service = new AppLaunchService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<AppLaunchResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetEnergySavingTipsItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public AppLaunchTimeStampResponseModel GetAppLaunchTimestampItem()
+        {
+            AppLaunchTimeStampResponseModel respModel = new AppLaunchTimeStampResponseModel();
+            try
+            {
+                AppLaunchService service = new AppLaunchService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<AppLaunchTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetEnergySavingTipsTimestampItem: " + e.Message);
+            }
+            return respModel;
         }
 
         private BaseModel CheckData(List<object> data)
