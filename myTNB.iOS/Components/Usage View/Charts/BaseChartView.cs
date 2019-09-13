@@ -63,6 +63,8 @@ namespace myTNB
 
         protected virtual void CreateSegment() { }
 
+        protected virtual void CreateSegment(SmartMeterView.SmartMeterConstants.SmartMeterViewType viewType) { }
+
         protected virtual double GetMaxValue(RMkWhEnum view, List<string> value)
         {
             double maxValue = 0;

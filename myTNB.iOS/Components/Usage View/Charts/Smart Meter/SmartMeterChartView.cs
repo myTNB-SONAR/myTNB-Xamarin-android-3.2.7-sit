@@ -41,7 +41,7 @@ namespace myTNB
             { BackgroundColor = UIColor.FromWhiteAlpha(1, 0.30F) };
 
             _mainView.AddSubviews(new UIView[] { _lblDateRange, viewLine });
-            CreateSegment();
+            CreateSegment(SmartMeterConstants.SmartMeterViewType.Month);
         }
 
         protected void PinchAction(UIPinchGestureRecognizer obj)
@@ -80,6 +80,16 @@ namespace myTNB
             toggleBar.ValueChanged += (sender, e) =>
             {
                 Debug.WriteLine("toggleBar.SelectedSegment: " + toggleBar.SelectedSegment);
+                SmartMeterConstants.SmartMeterViewType smartMeterViewType = default;
+                if (toggleBar.SelectedSegment == 0)
+                {
+                    smartMeterViewType = SmartMeterConstants.SmartMeterViewType.DayZOut;
+                }
+                else
+                {
+                    smartMeterViewType = SmartMeterConstants.SmartMeterViewType.Month;
+                }
+                CreateSegment(smartMeterViewType);
             };
             toggleView.AddSubview(toggleBar);
             nfloat iconWidth = GetScaledWidth(24);
@@ -132,15 +142,30 @@ namespace myTNB
             return parentView;
         }
 
-        protected override void CreateSegment()
+        protected override void CreateSegment(SmartMeterConstants.SmartMeterViewType viewType)
         {
-            _baseSmartMeterView = new SmartMeterMonthView()
+            if (_segmentContainer != null)
             {
-                ReferenceWidget = _lblDateRange.Frame,
-                AddTariffBlocks = AddTariffBlocks,
-                OnSegmentTap = OnSegmentTap,
-                PinchAction = PinchAction
-            };
+                _segmentContainer.RemoveFromSuperview();
+            }
+            if (viewType == SmartMeterConstants.SmartMeterViewType.Month)
+            {
+                _baseSmartMeterView = new SmartMeterMonthView()
+                {
+                    ReferenceWidget = _lblDateRange.Frame,
+                    AddTariffBlocks = AddTariffBlocks,
+                    OnSegmentTap = OnSegmentTap,
+                    PinchAction = PinchAction
+                };
+            }
+            else
+            {
+                _baseSmartMeterView = new SmartMeterDayView()
+                {
+                    ReferenceWidget = _lblDateRange.Frame,
+                    AddTariffBlocks = AddTariffBlocks
+                };
+            }
             _baseSmartMeterView.CreateSegment(ref _segmentContainer);
             _mainView.AddSubview(_segmentContainer);
         }
