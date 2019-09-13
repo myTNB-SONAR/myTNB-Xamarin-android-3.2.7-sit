@@ -8,5 +8,8 @@
             DayZOut,
             DayZIn
         }
+
+        //Images
+        public static string IMG_MissingReading = "Usage-MissingReading";
     }
 }

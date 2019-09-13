@@ -11,8 +11,6 @@ namespace myTNB.SmartMeterView
     {
         private nfloat _width = UIScreen.MainScreen.Bounds.Width;
 
-        public CGRect ReferenceWidget { set; private get; }
-        public Action<CustomUIView, List<TariffItemModel>, double, bool, CGSize, bool> AddTariffBlocks { set; private get; }
         public Action<int> OnSegmentTap { set; private get; }
         public Action<UIPinchGestureRecognizer> PinchAction { set; private get; }
 
@@ -90,7 +88,7 @@ namespace myTNB.SmartMeterView
                 {
                     BackgroundColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
                     Tag = 2001,
-                    Hidden = false
+                    Hidden = IsTariffView
                 };
                 if (isLatestBar) { viewCover.Layer.CornerRadius = coverWidth / 2; }
                 viewBar.AddSubview(viewCover);
@@ -98,7 +96,6 @@ namespace myTNB.SmartMeterView
                 {
                     AddTariffBlocks.Invoke(viewBar, item.tariffBlocks, value, index == usageData.Count - 1, viewCover.Frame.Size, isLatestBar);
                 }
-
                 nfloat amtYLoc = yLoc - amountBarMargin - lblHeight;
                 UILabel lblAmount = new UILabel(new CGRect(0, viewBar.Frame.GetMinY() - amountBarMargin - lblHeight
                     , GetWidthByScreenSize(100), lblHeight))

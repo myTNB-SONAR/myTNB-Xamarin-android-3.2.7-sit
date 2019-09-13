@@ -18,6 +18,19 @@ namespace myTNB.Model.Usage
         public string Consumption { set; get; }
         public string Amount { set; get; }
         public string CO2 { set; get; }
+        public string IsEstimatedReading { set; get; }
         public List<TariffItemModel> tariffBlocks { set; get; }
+
+        public bool IsMissingReading
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(IsEstimatedReading) && !string.IsNullOrWhiteSpace(IsEstimatedReading))
+                {
+                    return IsEstimatedReading.ToUpper() == "TRUE";
+                }
+                return false;
+            }
+        }
     }
 }

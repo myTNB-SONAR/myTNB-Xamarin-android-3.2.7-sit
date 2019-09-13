@@ -17,6 +17,7 @@ namespace myTNB
         }
 
         private BaseSmartMeterView _baseSmartMeterView;
+        private bool _isTariffView;
 
         protected override void CreatUI()
         {
@@ -152,20 +153,17 @@ namespace myTNB
             {
                 _baseSmartMeterView = new SmartMeterMonthView()
                 {
-                    ReferenceWidget = _lblDateRange.Frame,
-                    AddTariffBlocks = AddTariffBlocks,
                     OnSegmentTap = OnSegmentTap,
-                    PinchAction = PinchAction
+                    PinchAction = PinchAction,
                 };
             }
             else
             {
-                _baseSmartMeterView = new SmartMeterDayView()
-                {
-                    ReferenceWidget = _lblDateRange.Frame,
-                    AddTariffBlocks = AddTariffBlocks
-                };
+                _baseSmartMeterView = new SmartMeterDayView();
             }
+            _baseSmartMeterView.IsTariffView = _isTariffView;
+            _baseSmartMeterView.ReferenceWidget = _lblDateRange.Frame;
+            _baseSmartMeterView.AddTariffBlocks = AddTariffBlocks;
             _baseSmartMeterView.CreateSegment(ref _segmentContainer);
             _mainView.AddSubview(_segmentContainer);
         }
@@ -181,7 +179,7 @@ namespace myTNB
             UIView viewTariffContainer = new UIView(new CGRect(xLoc, yLoc, size.Width, size.Height))
             {
                 Tag = 2002,
-                Hidden = true,
+                Hidden = !_isTariffView,
                 ClipsToBounds = true
             };
             if (isLatestBar) { viewTariffContainer.Layer.CornerRadius = size.Width / 2; }
@@ -260,18 +258,31 @@ namespace myTNB
 
         public override void ToggleTariffView(bool isTariffView)
         {
+            _isTariffView = isTariffView;
             nfloat amountBarMargin = GetHeightByScreenSize(4);
             for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
             {
                 CustomUIView segmentView = _segmentContainer.Subviews[i] as CustomUIView;
                 if (segmentView == null) { continue; }
+
                 CustomUIView bar = segmentView.ViewWithTag(1001) as CustomUIView;
                 if (bar == null) { continue; }
+
                 CGRect barOriginalFrame = bar.Frame;
                 bar.Frame = new CGRect(bar.Frame.X, bar.Frame.GetMaxY(), bar.Frame.Width, 0);
 
+                UIImageView imgMissingReading = segmentView.ViewWithTag(3001) as UIImageView;
+                CGRect imgMissingReadingOriginalFrame = new CGRect();
+                if (imgMissingReading != null)
+                {
+                    imgMissingReadingOriginalFrame = imgMissingReading.Frame;
+                    imgMissingReading.Frame = new CGRect(new CGPoint(imgMissingReading.Frame.X
+                        , bar.Frame.GetMidY() - GetHeightByScreenSize(10)), imgMissingReading.Frame.Size);
+                }
+
                 UIView viewCover = bar.ViewWithTag(2001);
                 if (viewCover != null) { viewCover.Hidden = isTariffView; }
+
                 UIView viewTariff = bar.ViewWithTag(2002);
                 if (viewTariff != null) { viewTariff.Hidden = !isTariffView; }
 
@@ -290,6 +301,10 @@ namespace myTNB
                        if (value != null)
                        {
                            value.Frame = valueOriginalFrame;
+                       }
+                       if (imgMissingReading != null)
+                       {
+                           imgMissingReading.Frame = imgMissingReadingOriginalFrame;
                        }
                    }
                    , () => { }

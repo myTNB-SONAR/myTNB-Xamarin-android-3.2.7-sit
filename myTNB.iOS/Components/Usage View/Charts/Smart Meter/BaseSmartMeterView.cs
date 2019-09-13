@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using CoreGraphics;
+using myTNB.Model.Usage;
 
 namespace myTNB.SmartMeterView
 {
@@ -10,6 +11,9 @@ namespace myTNB.SmartMeterView
         protected string Format_Value = "{0} {1}";
 
         public virtual void CreateSegment(ref CustomUIView view) { }
+        public CGRect ReferenceWidget { set; protected get; }
+        public Action<CustomUIView, List<TariffItemModel>, double, bool, CGSize, bool> AddTariffBlocks { set; protected get; }
+        public bool IsTariffView { set; protected get; } = false;
 
         protected virtual double GetMaxValue(RMkWhEnum view, List<string> value)
         {
