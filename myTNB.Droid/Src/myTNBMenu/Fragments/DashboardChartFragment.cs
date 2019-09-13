@@ -1281,7 +1281,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             selectedSMHistoryData = selectedSMHistoryData,
                             currentContext = Activity,
                             isStacked = true,
-                            currentChartType = ChartType
+                            currentChartType = ChartType,
+                            currentChartDataType = ChartDataType
                         };
                         mChart.Renderer = smRenderer;
                     }
@@ -1292,7 +1293,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             selectedSMHistoryData = selectedSMHistoryData,
                             currentContext = Activity,
                             isStacked = false,
-                            currentChartType = ChartType
+                            currentChartType = ChartType,
+                            currentChartDataType = ChartDataType
                         };
                         mChart.Renderer = smRenderer;
                     }
