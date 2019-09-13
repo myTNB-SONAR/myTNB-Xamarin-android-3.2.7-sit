@@ -396,6 +396,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.smStatisticTrend)]
         TextView smStatisticTrend;
 
+        [BindView(Resource.Id.layoutSegmentGroup)]
+        RelativeLayout layoutSMSegmentGroup;
+
+        [BindView(Resource.Id.btnToggleDay)]
+        RadioButton btnToggleDay;
+
+        [BindView(Resource.Id.btnToggleMonth)]
+        RadioButton btnToggleMonth;
+
         TariffBlockLegendAdapter tariffBlockLegendAdapter;
 
         private DashboardChartContract.IUserActionsListener userActionsListener;
@@ -653,6 +662,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextViewUtils.SetMuseoSans500Typeface(reTotalPayableTitle, btnReView, txtTarifToggle, txtNoPayableTitle, txtNoPayableCurrency);
                 TextViewUtils.SetMuseoSans300Typeface(smStatisticBillSubTitle, smStatisticBill, smStatisticBillCurrency, smStatisticBillKwhUnit, smStatisticBillKwh, smStatisticPredictSubTitle, smStatisticPredict, smStatisticPredictCurrency, smStatisticTrendSubTitle, smStatisticTrend);
                 TextViewUtils.SetMuseoSans500Typeface(smStatisticBillTitle, smStatisticPredictTitle, txtSmStatisticTooltip, smStatisticTrendTitle);
+                TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth);
 
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
@@ -715,6 +725,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         graphToggleSelection.Visibility = ViewStates.Gone;
                         SetVirtualHeightParams(6f);
                         isChangeBackgroundNeeded = true;
+                        layoutSMSegmentGroup.Visibility = ViewStates.Gone;
                         isSMR = false;
                     }
                     else if (isSMAccount)
@@ -729,6 +740,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         energyTipsView.Visibility = ViewStates.Visible;
                         scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
                         isChangeBackgroundNeeded = true;
+                        layoutSMSegmentGroup.Visibility = ViewStates.Visible;
                         isSMR = false;
                         // Lin Siong TODO: Last bar tap event to day view
                         // Lin Siong TODO: Stripped bar background implementation
@@ -763,6 +775,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         isREAccount = false;
                         reContainer.Visibility = ViewStates.Gone;
                         btnPay.Visibility = ViewStates.Visible;
+                        layoutSMSegmentGroup.Visibility = ViewStates.Gone;
                         btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
                         graphToggleSelection.Visibility = ViewStates.Visible;
                         energyTipsView.Visibility = ViewStates.Visible;
