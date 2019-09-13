@@ -1,4 +1,10 @@
 Sprint 2 SIT Build
 
-* [US] 752: As a customer, I can see the breakdown of all my open charges, including consumption and non-consumption
-* [BUG] 2221: iOS - Normal Meter: Misalignment in Flow, Spacing, Copy, Icons, Font
+* [US] 2078: As a myTNB User, I can view all my notifications at one glance and take further action
+* [BUG] 2333: Itemised Billing_iOS : Total Amount is not showing correct amount while selecting multiple account for payment
+* [BUG] 2330: Itemised Billing : Validation for minimum amount on Select Bills page is varying as per selection of account from given payable account list.
+* [BUG] 2327: Itemized Billing : Account that have other charges and no outstanding/current bill (RM0) does not automatically fill the 'i am paying' with minimum amount
+* [BUG] 2326: Itemised Billing : User is able to pay amount which is lesser than to his mandatory minimum amount displays on popup. 
+
+Note:
+Please test using correct test data.
