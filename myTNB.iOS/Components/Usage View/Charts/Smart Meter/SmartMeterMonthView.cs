@@ -12,21 +12,12 @@ namespace myTNB.SmartMeterView
         private nfloat _width = UIScreen.MainScreen.Bounds.Width;
 
         public Action<int> OnSegmentTap { set; private get; }
-        public Action<UIPinchGestureRecognizer> PinchAction { set; private get; }
 
         public override void CreateSegment(ref CustomUIView view)
         {
             base.CreateSegment(ref view);
-            view = new CustomUIView(new CGRect(0, GetYLocationFromFrameScreenSize(ReferenceWidget, 16)
+            view = new CustomUIView(new CGRect(0, GetYLocationFromFrameScreenSize(ReferenceWidget, 6)
                , _width, GetHeightByScreenSize(157)));
-
-            view.AddGestureRecognizer(new UIPinchGestureRecognizer((obj) =>
-            {
-                if (PinchAction != null)
-                {
-                    PinchAction.Invoke(obj);
-                }
-            }));
 
             nfloat height = view.Frame.Height;
             nfloat width = GetWidthByScreenSize(12);

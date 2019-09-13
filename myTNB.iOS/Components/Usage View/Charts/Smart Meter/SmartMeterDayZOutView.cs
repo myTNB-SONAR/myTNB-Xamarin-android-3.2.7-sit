@@ -13,9 +13,8 @@ namespace myTNB.SmartMeterView
 
         public override void CreateSegment(ref CustomUIView view)
         {
-            view = new CustomUIView(new CGRect(0, GetYLocationFromFrameScreenSize(ReferenceWidget, 24)
-               , _width, GetHeightByScreenSize(149)));
-
+            view = new CustomUIView(new CGRect(0, GetYLocationFromFrameScreenSize(ReferenceWidget, 6)
+               , _width, GetHeightByScreenSize(157)));
             nfloat height = view.Frame.Height;
             nfloat width = GetWidthByScreenSize(12);
             nfloat segmentMargin = GetWidthByScreenSize(4);
@@ -45,9 +44,9 @@ namespace myTNB.SmartMeterView
 
                 double.TryParse(item.Amount, out double value);
                 nfloat barHeight = (nfloat)(divisor * value);
-                nfloat yLoc = maxBarHeight - barHeight;
+                nfloat yLoc = maxBarHeight - barHeight + missingReadingBarMargin;
 
-                CustomUIView viewBar = new CustomUIView(new CGRect(0, maxBarHeight, segmentWidth, 0))
+                CustomUIView viewBar = new CustomUIView(new CGRect(0, maxBarHeight + missingReadingBarMargin, segmentWidth, 0))
                 {
                     BackgroundColor = UIColor.Clear,
                     Tag = 1001,

@@ -39,7 +39,7 @@ namespace myTNB
                 Text = AccountUsageSmartCache.ByMonthDateRange
             };
 
-            CustomUIView viewLine = new CustomUIView(new CGRect(_baseMargin, GetYLocationFromFrameScreenSize(_lblDateRange.Frame, 150)
+            CustomUIView viewLine = new CustomUIView(new CGRect(_baseMargin, GetYLocationFromFrameScreenSize(_lblDateRange.Frame, 141)
                 , _baseMarginedWidth, GetHeightByScreenSize(1)))
             { BackgroundColor = UIColor.FromWhiteAlpha(1, 0.30F) };
 
@@ -49,16 +49,25 @@ namespace myTNB
 
         protected void PinchAction(UIPinchGestureRecognizer obj)
         {
-            Debug.WriteLine("PinchAction");
-            Debug.WriteLine("obj.Scale=== " + obj.Scale);
-            nfloat pinchScale = obj.Scale;
-            if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZOut && pinchScale > 1)
+            if (_viewType != SmartMeterConstants.SmartMeterViewType.Month)
             {
-                CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZIn);
+                Debug.WriteLine("PinchAction");
+                Debug.WriteLine("obj.Scale=== " + obj.Scale);
+                nfloat pinchScale = obj.Scale;
+                if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZOut && pinchScale > 1)
+                {
+                    CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZIn);
+                    Debug.WriteLine("ZOUT");
+                }
+                else if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZIn && pinchScale < 1)
+                {
+                    CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZOut);
+                    Debug.WriteLine("ZIN");
+                }
             }
-            else if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZIn && pinchScale < 1)
+            else
             {
-                CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZOut);
+                Debug.WriteLine("Month View: " + obj.Scale);
             }
         }
 
@@ -166,7 +175,6 @@ namespace myTNB
                 _baseSmartMeterView = new SmartMeterMonthView()
                 {
                     OnSegmentTap = OnSegmentTap,
-                    PinchAction = PinchAction,
                 };
             }
             else if (viewType == SmartMeterConstants.SmartMeterViewType.DayZOut)
@@ -177,11 +185,22 @@ namespace myTNB
             {
                 _baseSmartMeterView = new SmartMeterDayZInView();
             }
+            _baseSmartMeterView.PinchAction = PinchAction;
             _baseSmartMeterView.IsTariffView = _isTariffView;
             _baseSmartMeterView.ReferenceWidget = _lblDateRange.Frame;
             _baseSmartMeterView.AddTariffBlocks = AddTariffBlocks;
             _baseSmartMeterView.ConsumptionState = _consumptionState;
             _baseSmartMeterView.CreateSegment(ref _segmentContainer);
+
+            _segmentContainer.AddGestureRecognizer(new UIPinchGestureRecognizer((obj) =>
+            {
+                PinchAction(obj);
+            }));
+
+
+            _segmentContainer.Layer.BorderColor = UIColor.Cyan.CGColor;
+            _segmentContainer.Layer.BorderWidth = 1;
+
             _mainView.AddSubview(_segmentContainer);
         }
 
