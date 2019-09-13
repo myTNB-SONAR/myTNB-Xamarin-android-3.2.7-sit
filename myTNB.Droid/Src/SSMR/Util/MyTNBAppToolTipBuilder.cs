@@ -8,6 +8,7 @@ using Android.Text;
 using myTNB_Android.Src.Utils;
 using Android.Text.Style;
 using Android.Text.Method;
+using Android.Support.V7.Widget;
 
 namespace myTNB_Android.Src.SSMR.Util
 {
@@ -16,7 +17,9 @@ namespace myTNB_Android.Src.SSMR.Util
         public enum ToolTipType
         {
             IMAGE_HEADER,
-            NORMAL_WITH_HEADER
+            NORMAL_WITH_HEADER,
+            NORMAL_WITH_HEADER_TWO_BUTTON,
+            LISTVIEW_WITH_INDICATOR_AND_HEADER
         }
 
         private ToolTipType toolTipType;
@@ -24,9 +27,13 @@ namespace myTNB_Android.Src.SSMR.Util
         private string title;
         private string message;
         private string ctaLabel;
+        private string secondaryCTALabel;
+        private RecyclerView.Adapter adapter;
         private Action ctaAction;
+        private Action secondaryCTAAction;
         private MaterialDialog dialog;
         private ClickableSpan clickableSpan;
+        private Context mContext;
 
         private MyTNBAppToolTipBuilder()
         {
@@ -44,6 +51,12 @@ namespace myTNB_Android.Src.SSMR.Util
             }else if (mToolTipType == ToolTipType.NORMAL_WITH_HEADER)
             {
                 layoutResource = Resource.Layout.CustomToolTipWithHeaderLayout;
+            }else if (mToolTipType == ToolTipType.LISTVIEW_WITH_INDICATOR_AND_HEADER)
+            {
+                layoutResource = Resource.Layout.CustomDialogWithListViewLayout;
+            }else if (mToolTipType == ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+            {
+                layoutResource = Resource.Layout.CustomToolTipWithHeaderTwoButtonLayout;
             }
             tooltipBuilder.dialog = new MaterialDialog.Builder(context)
                 .CustomView(layoutResource, false)
@@ -86,6 +99,24 @@ namespace myTNB_Android.Src.SSMR.Util
             return this;
         }
 
+        public MyTNBAppToolTipBuilder SetSecondaryCTALabel(string secondaryCTALabel)
+        {
+            this.secondaryCTALabel = secondaryCTALabel;
+            return this;
+        }
+
+        public MyTNBAppToolTipBuilder SetContext(Context context)
+        {
+            this.mContext = context;
+            return this;
+        }
+
+        public MyTNBAppToolTipBuilder SetAdapter(RecyclerView.Adapter adapter)
+        {
+            this.adapter = adapter;
+            return this;
+        }
+
         public MyTNBAppToolTipBuilder SetCTAaction(Action ctaFunc)
         {
             this.ctaAction = ctaFunc;
@@ -95,6 +126,12 @@ namespace myTNB_Android.Src.SSMR.Util
         public MyTNBAppToolTipBuilder SetClickableSpan(ClickableSpan clickSpan)
         {
             this.clickableSpan = clickSpan;
+            return this;
+        }
+
+        public MyTNBAppToolTipBuilder SetSecondaryCTAaction(Action ctaFunc)
+        {
+            this.secondaryCTAAction = ctaFunc;
             return this;
         }
 
@@ -165,6 +202,92 @@ namespace myTNB_Android.Src.SSMR.Util
                 TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
                 TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipCTA);
             }
+            else if (this.toolTipType == ToolTipType.LISTVIEW_WITH_INDICATOR_AND_HEADER)
+            {
+                RecyclerView recyclerView = this.dialog.FindViewById<RecyclerView>(Resource.Id.dialogRecyclerView);
+                TextView tooltipCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipCTA);
+                LinearLayout indicatorContainer = this.dialog.FindViewById<LinearLayout>(Resource.Id.dialoagListViewIndicatorContainer);
+
+                LinearLayoutManager layoutManager = new LinearLayoutManager(this.mContext, LinearLayoutManager.Horizontal, false);
+                recyclerView.SetLayoutManager(layoutManager);
+                recyclerView.SetAdapter(this.adapter);
+                recyclerView.AddOnScrollListener(new ToolTipRecyclerViewOnScrollListener(layoutManager, indicatorContainer));
+
+                try
+                {
+                    for (int i = 0; i < this.adapter.ItemCount; i++)
+                    {
+                        ImageView image = new ImageView(this.mContext);
+                        image.Id = i;
+                        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+                        layoutParams.RightMargin = 8;
+                        layoutParams.LeftMargin = 8;
+                        image.LayoutParameters = layoutParams;
+                        if (i == 0)
+                        {
+                            image.SetImageResource(Resource.Drawable.onboarding_circle_active);
+                        }
+                        else
+                        {
+                            image.SetImageResource(Resource.Drawable.onboarding_circle_inactive);
+                        }
+                        indicatorContainer.AddView(image, i);
+                    }
+                }
+                catch (Exception e)
+                {
+
+                }
+
+                tooltipCTA.Click += delegate
+                {
+                    this.dialog.Dismiss();
+                    if (this.ctaAction != null)
+                    {
+                        this.ctaAction();
+                    }
+                };
+            }
+            else if (this.toolTipType == ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+            {
+                TextView tooltipTitle = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipTitle);
+                TextView tooltipMessage = this.dialog.FindViewById<TextView>(Resource.Id.txtToolTipMessage);
+                TextView tooltipPrimaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnPrimary);
+                TextView tooltipSecondaryCTA = this.dialog.FindViewById<TextView>(Resource.Id.txtBtnSecondary);
+
+                tooltipPrimaryCTA.Click += delegate
+                {
+                    this.dialog.Dismiss();
+                    if (ctaAction != null)
+                    {
+                        this.ctaAction();
+                    }
+                };
+
+                tooltipSecondaryCTA.Click += delegate
+                {
+                    this.dialog.Dismiss();
+                    if (secondaryCTAAction != null)
+                    {
+                        this.secondaryCTAAction();
+                    }
+                };
+
+                tooltipTitle.Text = this.title;
+                if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                {
+                    tooltipMessage.TextFormatted = Html.FromHtml(this.message, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    tooltipMessage.TextFormatted = Html.FromHtml(this.message);
+                }
+                tooltipPrimaryCTA.Text = this.ctaLabel;
+                tooltipSecondaryCTA.Text = this.secondaryCTALabel;
+
+                TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
+                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipPrimaryCTA, tooltipSecondaryCTA);
+            }
             return this;
         }
 
@@ -188,6 +311,38 @@ namespace myTNB_Android.Src.SSMR.Util
             {
                 base.UpdateDrawState(ds);
                 ds.UnderlineText = false;
+            }
+        }
+
+        public class ToolTipRecyclerViewOnScrollListener : RecyclerView.OnScrollListener
+        {
+            private LinearLayoutManager mLinearLayoutManager;
+            private LinearLayout mIndicatorContainer;
+            public ToolTipRecyclerViewOnScrollListener(LinearLayoutManager layoutManager, LinearLayout indicatorContainer)
+            {
+                mLinearLayoutManager = layoutManager;
+                mIndicatorContainer = indicatorContainer;
+            }
+            public override void OnScrolled(RecyclerView recyclerView, int dx, int dy)
+            {
+                base.OnScrolled(recyclerView, dx, dy);
+                int currentPosition = mLinearLayoutManager.FindFirstCompletelyVisibleItemPosition();
+                if (currentPosition >= 0)
+                {
+                    ImageView imageView;
+                    for (int i = 0; i < mIndicatorContainer.ChildCount; i++)
+                    {
+                        imageView = (ImageView)mIndicatorContainer.GetChildAt(i);
+                        if (i == currentPosition)
+                        {
+                            imageView.SetImageResource(Resource.Drawable.circle_active);
+                        }
+                        else
+                        {
+                            imageView.SetImageResource(Resource.Drawable.circle);
+                        }
+                    }
+                }
             }
         }
     }
