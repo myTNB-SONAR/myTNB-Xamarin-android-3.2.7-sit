@@ -2440,6 +2440,36 @@
     <Compile Include="Src\CompoundView\NotificationDetailCTAComponent.cs" />
     <AndroidResource Include="Resources\layout\NotificationDetailCTALayout.axml" />
     <Compile Include="Src\NotificationDetails\MVP\UserNotificationDetailContract.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_bill_due_banner.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_disconnect_notice_banner.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_disconnected_banner.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_generic.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_maintenance_banner.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_reconnected_banner.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\notification_bill_due_banner.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\notification_disconnect_notice_banner.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\notification_disconnected_banner.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\notification_generic.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\notification_maintenance_banner.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\notification_reconnected_banner.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\notification_bill_due_banner.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\notification_disconnect_notice_banner.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\notification_disconnected_banner.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\notification_generic.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\notification_maintenance_banner.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\notification_reconnected_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notification_bill_due_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notification_disconnect_notice_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notification_disconnected_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notification_generic.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notification_maintenance_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notification_reconnected_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\notification_bill_due_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\notification_disconnect_notice_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\notification_disconnected_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\notification_generic.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\notification_maintenance_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\notification_reconnected_banner.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
