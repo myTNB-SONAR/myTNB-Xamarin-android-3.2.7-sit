@@ -114,7 +114,10 @@ namespace myTNB_Android.Src.Notifications.Adapter
                 {
                     viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_reconnection));
                 }
-                else if (notificationData.BCRMNotificationTypeId.Equals("06"))
+                else if (notificationData.BCRMNotificationTypeId.Equals("0009") || notificationData.BCRMNotificationTypeId.Equals("0010") ||
+                    notificationData.BCRMNotificationTypeId.Equals("0011") || notificationData.BCRMNotificationTypeId.Equals("50") ||
+                    notificationData.BCRMNotificationTypeId.Equals("51") || notificationData.BCRMNotificationTypeId.Equals("52") ||
+                    notificationData.BCRMNotificationTypeId.Equals("53"))
                 {
                     viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_smr));
                 }

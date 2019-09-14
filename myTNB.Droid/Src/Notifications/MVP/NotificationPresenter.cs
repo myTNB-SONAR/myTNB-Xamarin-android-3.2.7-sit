@@ -164,19 +164,21 @@ namespace myTNB_Android.Src.Notifications.MVP
             try
             {
                 this.mView.ShowProgress();
-                UserNotificationDetailsRequest request = new UserNotificationDetailsRequest(userNotification.NotificationTypeId, userNotification.NotificationType);
-                UserNotificationDetailsResponse response = await notificationAPI.GetNotificationDetailedInfo<UserNotificationDetailsResponse>(request);
-                if (response.Data.ErrorCode == "7200")
-                {
-                    UserNotificationEntity.UpdateIsRead(response.Data.ResponseData.UserNotificationDetail.Id, true);
-                    this.mView.ShowDetails(response.Data.ResponseData.UserNotificationDetail, userNotification, position);
-                    //NotificationTypesEntity entity = NotificationTypesEntity.GetById(userNotification.NotificationTypeId);
+                //UserNotificationDetailsRequest request = new UserNotificationDetailsRequest(userNotification.NotificationTypeId, userNotification.NotificationType);
+                //UserNotificationDetailsResponse response = await notificationAPI.GetNotificationDetailedInfo<UserNotificationDetailsResponse>(request);
+                //if (response.Data.ErrorCode == "7200")
+                //{
+                //    UserNotificationEntity.UpdateIsRead(response.Data.ResponseData.UserNotificationDetail.Id, true);
+                //    this.mView.ShowDetails(response.Data.ResponseData.UserNotificationDetail, userNotification, position);
+                //    //NotificationTypesEntity entity = NotificationTypesEntity.GetById(userNotification.NotificationTypeId);
 
-                    //if (entity != null)
-                    //{
-                    //    this.mView.ShowDetails(response.Data.ResponseData.UserNotificationDetail, userNotification, position);
-                    //}
-                }
+                //    //if (entity != null)
+                //    //{
+                //    //    this.mView.ShowDetails(response.Data.ResponseData.UserNotificationDetail, userNotification, position);
+                //    //}
+                //}
+
+                this.mView.ShowDetails(GetMockDetails(userNotification.BCRMNotificationTypeId), userNotification, position);
                 this.mView.HideProgress();
             }
             catch (System.OperationCanceledException e)
@@ -636,56 +638,56 @@ namespace myTNB_Android.Src.Notifications.MVP
                 data.BCRMNotificationTypeId = "01";
                 data.CreatedDate = "9/1/2019 5:00:00 PM";
                 data.IsRead = false;
-                data.Title = "Title";
-                data.Message = "Message";
+                data.Title = "New Bill";
+                data.Message = "Dear customer, your TNB bill RM5…";
                 listOfNotifications.Add(data);
 
                 data = new UserNotificationData();
                 data.BCRMNotificationTypeId = "02";
                 data.CreatedDate = "9/1/2019 5:00:00 PM";
                 data.IsRead = false;
-                data.Title = "Title";
-                data.Message = "Message";
+                data.Title = "Bill Due";
+                data.Message = "Dear customer, your Sep 2017 bill… ";
                 listOfNotifications.Add(data);
 
                 data = new UserNotificationData();
                 data.BCRMNotificationTypeId = "03";
                 data.CreatedDate = "9/1/2019 5:00:00 PM";
                 data.IsRead = false;
-                data.Title = "Title";
-                data.Message = "Message";
+                data.Title = "Disconnection Notice";
+                data.Message = "Dear customer, enjoy special promo…";
                 listOfNotifications.Add(data);
 
                 data = new UserNotificationData();
                 data.BCRMNotificationTypeId = "04";
                 data.CreatedDate = "9/1/2019 5:00:00 PM";
                 data.IsRead = false;
-                data.Title = "Title";
-                data.Message = "Message";
+                data.Title = "Disconnection";
+                data.Message = "Dear customer, your connection…";
                 listOfNotifications.Add(data);
 
                 data = new UserNotificationData();
                 data.BCRMNotificationTypeId = "05";
                 data.CreatedDate = "9/1/2019 5:00:00 PM";
                 data.IsRead = false;
-                data.Title = "Title";
-                data.Message = "Message";
+                data.Title = "Reconnection";
+                data.Message = "Dear customer, your connection…";
                 listOfNotifications.Add(data);
 
                 data = new UserNotificationData();
-                data.BCRMNotificationTypeId = "06";
+                data.BCRMNotificationTypeId = "0009";
                 data.CreatedDate = "9/1/2019 5:00:00 PM";
                 data.IsRead = false;
-                data.Title = "Title";
-                data.Message = "Message";
+                data.Title = "Self Meter Reading";
+                data.Message = "Dear customer, submit your meter…";
                 listOfNotifications.Add(data);
 
                 data = new UserNotificationData();
                 data.BCRMNotificationTypeId = "99";
                 data.CreatedDate = "9/1/2019 5:00:00 PM";
                 data.IsRead = false;
-                data.Title = "Title";
-                data.Message = "Message";
+                data.Title = "Maintenance";
+                data.Message = "Dear customer, kindly be informed…";
                 data.NotificationType = "1000011";
                 data.NotificationTypeId = "1001";
                 listOfNotifications.Add(data);
@@ -696,6 +698,15 @@ namespace myTNB_Android.Src.Notifications.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public NotificationDetails.Models.NotificationDetails GetMockDetails(string bcrmType)
+        {
+            NotificationDetails.Models.NotificationDetails data = new NotificationDetails.Models.NotificationDetails();
+            data.BCRMNotificationTypeId = bcrmType;
+            data.Title = "Testing of Reseed validation";
+            data.Message = "Message for Testing of Reseed validation";
+            return data;
         }
     }
 }

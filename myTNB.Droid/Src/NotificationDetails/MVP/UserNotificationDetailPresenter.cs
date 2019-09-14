@@ -170,7 +170,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             break;
                         }
                     default:
-                        imageResourceBanner = Resource.Drawable.notification_generic;
+                        imageResourceBanner = Resource.Drawable.notification_generic_banner;
                         break;
                 }
 
