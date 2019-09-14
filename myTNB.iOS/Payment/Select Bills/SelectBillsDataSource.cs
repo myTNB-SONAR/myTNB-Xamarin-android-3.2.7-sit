@@ -194,7 +194,7 @@ namespace myTNB.Payment.SelectBills
             {
                 MandatoryChargesModel mandatoryCharges = AccountChargesCache.GetMandatoryCharges(_accounts[index].accNum);
                 double mandatoryAmount = mandatoryCharges.TotalAmount;
-                double enteredAmt = double.Parse(cell._txtFieldAmount.Text);
+                double.TryParse(cell._txtFieldAmount.Text, out double enteredAmt);
                 isValid = enteredAmt >= mandatoryAmount;
                 cell._lblAmountError.Hidden = isValid;
                 cell._lblAmountError.Text = string.Format(GetI18NValue(PaymentConstants.I18N_MinimumMandatoryPayment)
