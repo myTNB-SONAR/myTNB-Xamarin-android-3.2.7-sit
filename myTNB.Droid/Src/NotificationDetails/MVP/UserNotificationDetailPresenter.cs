@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using myTNB_Android.Src.NotificationDetails.Models;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.NotificationDetails.MVP
 {
@@ -23,15 +24,154 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 int imageResourceBanner = 0;
                 ctaList = new List<NotificationDetailModel.NotificationCTA>();
 
-                if (notificationDetails.BCRMNotificationTypeId == "99")
+                switch (notificationDetails.BCRMNotificationTypeId)
                 {
-                    primaryCTA = new NotificationDetailModel.NotificationCTA("View Bill", delegate () { mView.ViewBill(); });
-                    ctaList.Add(primaryCTA);
+                    case Constants.BCRM_NOTIFICATION_NEW_BILL_ID:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Bill", delegate () { mView.ViewBill(); });
+                            ctaList.Add(primaryCTA);
 
-                    secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { mView.PayNow(); });
-                    ctaList.Add(secondaryCTA);
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { mView.PayNow(); });
+                            ctaList.Add(secondaryCTA);
 
-                    imageResourceBanner = Resource.Drawable.notification_new_bill_banner;
+                            imageResourceBanner = Resource.Drawable.notification_new_bill_banner;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_BILL_DUE_ID:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Bill", delegate () { mView.ViewBill(); });
+                            ctaList.Add(primaryCTA);
+
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { mView.PayNow(); });
+                            ctaList.Add(secondaryCTA);
+
+                            imageResourceBanner = Resource.Drawable.notification_bill_due_banner;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_DISCONNECT_NOTICE_ID:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Bill", delegate () { mView.ViewBill(); });
+                            ctaList.Add(primaryCTA);
+
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { mView.PayNow(); });
+                            ctaList.Add(secondaryCTA);
+
+                            imageResourceBanner = Resource.Drawable.notification_disconnect_notice_banner;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_DISCONNECTED_ID:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Bill", delegate () { mView.ViewBill(); });
+                            ctaList.Add(primaryCTA);
+
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { mView.PayNow(); });
+                            ctaList.Add(secondaryCTA);
+
+                            imageResourceBanner = Resource.Drawable.notification_disconnected_banner;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_RECONNECTED_ID:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Bill", delegate () { mView.ViewBill(); });
+                            ctaList.Add(primaryCTA);
+
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { mView.PayNow(); });
+                            ctaList.Add(secondaryCTA);
+
+                            imageResourceBanner = Resource.Drawable.notification_reconnected_banner;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_MAINTENANCE_ID:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Bill", delegate () { mView.ViewBill(); });
+                            ctaList.Add(primaryCTA);
+
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { mView.PayNow(); });
+                            ctaList.Add(secondaryCTA);
+
+                            imageResourceBanner = Resource.Drawable.notification_maintenance_banner;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_METER_READING_OPEN_ID:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Bill", delegate () { mView.ViewBill(); });
+                            ctaList.Add(primaryCTA);
+
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { mView.PayNow(); });
+                            ctaList.Add(secondaryCTA);
+
+                            imageResourceBanner = Resource.Drawable.notification_new_bill_banner;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_METER_READING_REMIND_ID:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Bill", delegate () { mView.ViewBill(); });
+                            ctaList.Add(primaryCTA);
+
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { mView.PayNow(); });
+                            ctaList.Add(secondaryCTA);
+
+                            imageResourceBanner = Resource.Drawable.notification_new_bill_banner;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_SMR_DISABLED_ID:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Bill", delegate () { mView.ViewBill(); });
+                            ctaList.Add(primaryCTA);
+
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { mView.PayNow(); });
+                            ctaList.Add(secondaryCTA);
+
+                            imageResourceBanner = Resource.Drawable.notification_new_bill_banner;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_SMR_APPLY_SUCCESS_ID:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Bill", delegate () { mView.ViewBill(); });
+                            ctaList.Add(primaryCTA);
+
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { mView.PayNow(); });
+                            ctaList.Add(secondaryCTA);
+
+                            imageResourceBanner = Resource.Drawable.notification_new_bill_banner;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_SMR_APPLY_FAILED_ID:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Bill", delegate () { mView.ViewBill(); });
+                            ctaList.Add(primaryCTA);
+
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { mView.PayNow(); });
+                            ctaList.Add(secondaryCTA);
+
+                            imageResourceBanner = Resource.Drawable.notification_new_bill_banner;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_SMR_DISABLED_SUCCESS_ID:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Bill", delegate () { mView.ViewBill(); });
+                            ctaList.Add(primaryCTA);
+
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { mView.PayNow(); });
+                            ctaList.Add(secondaryCTA);
+
+                            imageResourceBanner = Resource.Drawable.notification_new_bill_banner;
+                            break;
+                        }
+                    case Constants.BCRM_NOTIFICATION_SMR_DISABLED_FAILED_ID:
+                        {
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Bill", delegate () { mView.ViewBill(); });
+                            ctaList.Add(primaryCTA);
+
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { mView.PayNow(); });
+                            ctaList.Add(secondaryCTA);
+
+                            imageResourceBanner = Resource.Drawable.notification_new_bill_banner;
+                            break;
+                        }
+                    default:
+                        imageResourceBanner = Resource.Drawable.notification_generic;
+                        break;
                 }
 
                 notificationDetailModel = new NotificationDetailModel(imageResourceBanner, notificationDetails.Title,
