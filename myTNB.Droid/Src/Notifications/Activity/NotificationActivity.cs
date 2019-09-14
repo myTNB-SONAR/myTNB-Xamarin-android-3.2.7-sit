@@ -155,7 +155,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             MenuInflater.Inflate(Resource.Menu.NotificationToolbarMenu, menu);
             notificationMenu = menu;
             notificationMenu.FindItem(Resource.Id.action_notification_read).SetIcon(GetDrawable(Resource.Drawable.ic_header_markread)).SetVisible(false);
-            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.ic_action_select_all)).SetVisible(true);
+            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(true);
             int count = UserNotificationEntity.Count();
             if (hasNotification)
             {
@@ -183,7 +183,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                     if (editState == EditNotificationStates.HIDE)
                     {
                         notificationMenu.FindItem(Resource.Id.action_notification_read).SetIcon(Resource.Drawable.ic_header_markread_disabled).SetVisible(true).SetEnabled(false);
-                        notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_header_delete_disabled).SetVisible(true).SetEnabled(false);
+                        notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.notification_delete_disabled).SetVisible(true).SetEnabled(false);
                         ShowSelectAllOption(ViewStates.Visible);
                         notificationRecyclerAdapter.ShowSelectButtons(true);
                         editState = EditNotificationStates.SHOW;
@@ -202,7 +202,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                             }
                             else
                             {
-                                notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_action_select_all);
+                                notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.notification_select_all);
                                 ShowSelectAllOption(ViewStates.Gone);
                                 notificationRecyclerAdapter.ShowSelectButtons(false);
                                 editState = EditNotificationStates.HIDE;
@@ -226,7 +226,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                         if (editState == EditNotificationStates.SHOW)
                         {
                             editState = EditNotificationStates.HIDE;
-                            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_action_select_all).SetEnabled(true);
+                            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.notification_select_all).SetEnabled(true);
                             notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
                             ShowSelectAllOption(ViewStates.Gone);
                             notificationRecyclerAdapter.ShowSelectButtons(false);
@@ -454,7 +454,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             notificationRecyclerView.SetAdapter(notificationRecyclerAdapter);
             //NotificationSimpleCallback notificationSimpleCallback = new NotificationSimpleCallback(notificationRecyclerAdapter,0, ItemTouchHelper.Left);
 
-            notificationSwipeDelete = new NotificationSwipeDeleteCallback(this, GetDrawable(Resource.Drawable.ic_header_delete), GetDrawable(Resource.Drawable.ic_header_markread));
+            notificationSwipeDelete = new NotificationSwipeDeleteCallback(this, GetDrawable(Resource.Drawable.notification_delete_active), GetDrawable(Resource.Drawable.ic_header_markread));
 			notificationSwipeDelete.SetInitialState();
 			itemTouchHelper = new ItemTouchHelper(notificationSwipeDelete);
             itemTouchHelper.AttachToRecyclerView(notificationRecyclerView);
@@ -524,7 +524,7 @@ namespace myTNB_Android.Src.Notifications.Activity
         {
             this.userActionsListener.ShowFilteredList();
             ShowSelectAllOption(ViewStates.Visible);
-            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_header_delete);
+            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.notification_delete_active);
             notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetVisible(false);
             notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(true);
             refreshLayout.Visibility = ViewStates.Gone;
@@ -593,7 +593,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
             notificationRecyclerAdapter.NotifyDataSetChanged();
             editState = EditNotificationStates.HIDE;
-            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_action_select_all).SetEnabled(true);
+            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.notification_select_all).SetEnabled(true);
             notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
             ShowSelectAllOption(ViewStates.Gone);
             notificationRecyclerAdapter.ShowSelectButtons(false);
@@ -611,7 +611,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             notificationRecyclerAdapter.GetAllNotifications().RemoveAll(notification => notification.IsSelected == true);
             notificationRecyclerAdapter.NotifyDataSetChanged();
             editState = EditNotificationStates.HIDE;
-            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_action_select_all).SetEnabled(true);
+            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.notification_select_all).SetEnabled(true);
             notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
             ShowSelectAllOption(ViewStates.Gone);
             notificationRecyclerAdapter.ShowSelectButtons(false);
@@ -766,7 +766,7 @@ namespace myTNB_Android.Src.Notifications.Activity
         {
             SetInitialNotificationState();
             notificationMenu.FindItem(Resource.Id.action_notification_read).SetIcon(GetDrawable(Resource.Drawable.ic_header_markread)).SetVisible(false);
-            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.ic_action_select_all)).SetVisible(true).SetEnabled(true);
+            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(true).SetEnabled(true);
             notificationRecyclerAdapter.ClearAll();
             SetToolBarTitle(GetString(Resource.String.notification_activity_title));
         }
@@ -894,7 +894,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             {
                 if (show)
                 {
-                    notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_header_delete);
+                    notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.notification_delete_active);
                     notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetEnabled(true);
                     if (IsValidReadNotifications())
                     {
@@ -911,7 +911,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                 else
                 {
                     notificationMenu.FindItem(Resource.Id.action_notification_read).SetIcon(Resource.Drawable.ic_header_markread_disabled);
-                    notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_header_delete_disabled);
+                    notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.notification_delete_disabled);
                     notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetEnabled(false);
                     notificationMenu.FindItem(Resource.Id.action_notification_read).SetEnabled(false);
                     enableNotificationState = EnableNotificationState.DISABLED;

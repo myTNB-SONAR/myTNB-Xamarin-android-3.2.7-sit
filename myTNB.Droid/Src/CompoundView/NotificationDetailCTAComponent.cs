@@ -42,6 +42,7 @@ namespace myTNB_Android.Src.CompoundView
                 LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)primaryBtn.LayoutParameters;
                 layoutParams.Weight = 1f;
                 primaryBtn.LayoutParameters = layoutParams;
+                primaryBtn.Text = ctaList[0].label;
 
                 primaryBtn.Click += delegate
                 {
@@ -54,6 +55,7 @@ namespace myTNB_Android.Src.CompoundView
                 LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams)primaryBtn.LayoutParameters;
                 layoutParams.Weight = 0.5f;
                 primaryBtn.LayoutParameters = layoutParams;
+                primaryBtn.Text = ctaList[0].label;
 
                 primaryBtn.Click += delegate
                 {
@@ -64,6 +66,7 @@ namespace myTNB_Android.Src.CompoundView
                 layoutParams = (LinearLayout.LayoutParams)secondaryBtn.LayoutParameters;
                 layoutParams.Weight = 0.5f;
                 secondaryBtn.LayoutParameters = layoutParams;
+                secondaryBtn.Text = ctaList[1].label;
 
                 secondaryBtn.Click += delegate
                 {

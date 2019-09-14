@@ -2475,6 +2475,21 @@
     <AndroidResource Include="Resources\drawable-xhdpi\notification_generic_banner.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\notification_generic_banner.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\notification_generic_banner.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_select_all.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\notification_select_all.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\notification_select_all.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notification_select_all.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\notification_select_all.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_delete_active.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_delete_disabled.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\notification_delete_active.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\notification_delete_disabled.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\notification_delete_active.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\notification_delete_disabled.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notification_delete_active.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notification_delete_disabled.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\notification_delete_active.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\notification_delete_disabled.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

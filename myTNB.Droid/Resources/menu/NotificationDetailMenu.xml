@@ -6,7 +6,7 @@
   <item android:id="@+id/action_delete_notification"
          android:showAsAction="always"
          android:text="@string/ic_delete_notification_title"
-         android:icon="@drawable/ic_header_delete"
+         android:icon="@drawable/notification_delete_active"
          app:showAsAction="always"/>
 
 </menu>

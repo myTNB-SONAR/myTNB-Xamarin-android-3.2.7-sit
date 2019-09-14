@@ -28,7 +28,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 {
                     case Constants.BCRM_NOTIFICATION_NEW_BILL_ID:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Bill", delegate () { mView.ViewBill(); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Details", delegate () { mView.ViewBill(); });
                             ctaList.Add(primaryCTA);
 
                             secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { mView.PayNow(); });
@@ -39,7 +39,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_BILL_DUE_ID:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Bill", delegate () { mView.ViewBill(); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Details", delegate () { mView.ViewBill(); });
                             ctaList.Add(primaryCTA);
 
                             secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { mView.PayNow(); });
@@ -50,7 +50,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_DISCONNECT_NOTICE_ID:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Bill", delegate () { mView.ViewBill(); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Details", delegate () { mView.ViewBill(); });
                             ctaList.Add(primaryCTA);
 
                             secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { mView.PayNow(); });
@@ -61,7 +61,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_DISCONNECTED_ID:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Bill", delegate () { mView.ViewBill(); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("Contact TNB", delegate () { mView.ViewBill(); });
                             ctaList.Add(primaryCTA);
 
                             secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { mView.PayNow(); });
@@ -72,23 +72,14 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_RECONNECTED_ID:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Bill", delegate () { mView.ViewBill(); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("View My Usage", delegate () { mView.ViewBill(); });
                             ctaList.Add(primaryCTA);
-
-                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { mView.PayNow(); });
-                            ctaList.Add(secondaryCTA);
 
                             imageResourceBanner = Resource.Drawable.notification_reconnected_banner;
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_MAINTENANCE_ID:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Bill", delegate () { mView.ViewBill(); });
-                            ctaList.Add(primaryCTA);
-
-                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { mView.PayNow(); });
-                            ctaList.Add(secondaryCTA);
-
                             imageResourceBanner = Resource.Drawable.notification_maintenance_banner;
                             break;
                         }

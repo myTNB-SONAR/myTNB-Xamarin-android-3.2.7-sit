@@ -120,6 +120,14 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 notificationDetailTitle.Text = detailModel.title;
                 notificationDetailMessage.TextFormatted = GetFormattedText(detailModel.message);
                 NotificationDetailCTAComponent ctaComponent = FindViewById<NotificationDetailCTAComponent>(Resource.Id.notificationCTAComponent);
+                if (detailModel.ctaList.Count > 0)
+                {
+                    ctaComponent.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    ctaComponent.Visibility = ViewStates.Gone;
+                }
                 ctaComponent.SetCTAButton(detailModel.ctaList);
             }
             catch(Exception e)
