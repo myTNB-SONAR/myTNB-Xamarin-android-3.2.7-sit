@@ -20,6 +20,7 @@ namespace myTNB.SitecoreCMS.Model
 		public string Title { set; get; }
 		public string Description { set; get; }
 		public string Image { set; get; }
+        public string ImageB64 { set; get; }
         public string StartDateTime { set; get; }
         public string EndDateTime { set; get; }
         public string ShowForSeconds { set; get; }

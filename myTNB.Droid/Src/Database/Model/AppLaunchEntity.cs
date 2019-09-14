@@ -22,6 +22,9 @@ namespace myTNB_Android.Src.Database.Model
 		[Column("Image")]
 		public string Image { set; get; }
 
+        [Column("ImageB64")]
+        public string ImageB64 { set; get; }
+
         [Column("StartDateTime")]
         public string StartDateTime { set; get; }
 
@@ -69,7 +72,8 @@ namespace myTNB_Android.Src.Database.Model
                     AppLaunchEntity item = new AppLaunchEntity();
 					item.ID = obj.ID;
 					item.Image = obj.Image.Replace(" ", "%20");
-					item.Title = obj.Title;
+                    item.ImageB64 = string.IsNullOrEmpty(obj.ImageB64) ? "" : obj.ImageB64;
+                    item.Title = obj.Title;
 					item.Description = obj.Description;
                     item.StartDateTime = obj.StartDateTime;
                     item.EndDateTime = obj.EndDateTime;
@@ -86,6 +90,10 @@ namespace myTNB_Android.Src.Database.Model
 			{
 				var db = DBHelper.GetSQLiteConnection();
 				itemList = db.Query<AppLaunchEntity>("select * from AppLaunchEntity");
+                if (itemList == null)
+                {
+                    itemList = new List<AppLaunchEntity>();
+                }
 			}
 			catch (Exception e)
 			{

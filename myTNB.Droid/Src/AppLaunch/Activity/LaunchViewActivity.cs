@@ -125,7 +125,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         {
             try
             {
-                if (isAppLaunchSiteCoreDone)
+                if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful)
                 {
                     userActionsListener.GetSavedTimeStamp();
                 }
@@ -202,7 +202,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         public void ShowDashboard()
         {
-            if (isAppLaunchSiteCoreDone)
+            if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful)
             {
                 Intent DashboardIntent = new Intent(this, typeof(DashboardActivity));
                 DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
@@ -212,7 +212,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         public void ShowPreLogin()
         {
-            if (isAppLaunchSiteCoreDone)
+            if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful)
             {
                 Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
                 PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
@@ -222,7 +222,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         public void ShowResetPassword()
         {
-            if (isAppLaunchSiteCoreDone)
+            if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful)
             {
                 Intent ResetPasswordIntent = new Intent(this, typeof(ResetPasswordActivity));
                 ResetPasswordIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
@@ -379,7 +379,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         public void ShowNotification()
         {
-            if (isAppLaunchSiteCoreDone)
+            if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful)
             {
                 Intent notificationIntent = new Intent(this, typeof(NotificationActivity));
                 notificationIntent.PutExtra(Constants.HAS_NOTIFICATION, true);
@@ -434,7 +434,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             }
             catch (Exception e)
             {
-                SetDefaultAppLaunchImage();
+                this.userActionsListener.OnGetAppLaunchCache();
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -604,7 +604,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         {
             try
             {
-                if (isAppLaunchSiteCoreDone)
+                if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful)
                 {
                     ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
                     Intent logout = new Intent(this, typeof(LoginActivity));
@@ -699,7 +699,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             try
             {
                 cacheResponse = masterDataResponse;
-                if (isAppLaunchSiteCoreDone)
+                if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful)
                 {
                     Intent maintenanceScreen = new Intent(this, typeof(MaintenanceActivity));
                     maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, masterDataResponse.Data.MasterData.MaintainanceTitle);
@@ -792,7 +792,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         Utility.LoggingNonFatalError(ne);
                     }
 
-                    this.userActionsListener.OnWaitSplashScreenDisplay(500);
+                    this.userActionsListener.OnWaitSplashScreenDisplay(300);
                 }
             }
             catch (Exception e)
@@ -819,8 +819,12 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                             DateTime nowDateTime = DateTime.Now;
                             int startResult = DateTime.Compare(nowDateTime, startDateTime);
                             int endResult = DateTime.Compare(nowDateTime, stopDateTime);
+                            Log.Debug("Now DateTime", nowDateTime.ToString());
+                            Log.Debug("Start DateTime", startDateTime.ToString());
+                            Log.Debug("Stop DateTime", stopDateTime.ToString());
                             if (startResult >= 0 && endResult <= 0)
                             {
+                                Log.Debug("Within Period", "Yes");
                                 try
                                 {
                                     int secondMilli = Int32.Parse(item.ShowForSeconds) * 1000;
@@ -841,6 +845,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                             }
                             else
                             {
+                                Log.Debug("Within Period", "No");
                                 isAppLaunchSiteCoreDone = false;
                                 SetDefaultAppLaunchImage();
                             }

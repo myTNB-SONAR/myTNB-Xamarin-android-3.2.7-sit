@@ -6,6 +6,7 @@ using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
 using Android.Util;
+using System.IO;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
@@ -451,6 +452,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         {
             bool isDoneGetTimeStamp = false;
             CancellationTokenSource token = new CancellationTokenSource();
+            Log.Debug("Current OnGetAppLaunchItem Start DateTime", DateTime.Now.ToString());
             Stopwatch sw = Stopwatch.StartNew();
             _ = Task.Run(() =>
             {
@@ -460,20 +462,25 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
                     AppLaunchResponseModel responseModel = getItemsService.GetAppLaunchItem();
                     sw.Stop();
+                    Log.Debug("Current OnGetAppLaunchItem End DateTime", DateTime.Now.ToString());
                     Log.Debug("Current OnGetAppLaunchItem DateTime Used Time", sw.ElapsedMilliseconds.ToString());
-                    if (!isDoneGetTimeStamp)
+                    if (responseModel.Status.Equals("Success"))
                     {
-                        isDoneGetTimeStamp = true;
-                        if (responseModel.Status.Equals("Success"))
+                        AppLaunchEntity wtManager = new AppLaunchEntity();
+                        wtManager.DeleteTable();
+                        wtManager.CreateTable();
+                        wtManager.InsertListOfItems(responseModel.Data);
+                        if (!isDoneGetTimeStamp)
                         {
-                            AppLaunchEntity wtManager = new AppLaunchEntity();
-                            wtManager.DeleteTable();
-                            wtManager.CreateTable();
-                            wtManager.InsertListOfItems(responseModel.Data);
+                            isDoneGetTimeStamp = true;
                             OnGetAppLaunchCache();
                         }
-                        else
+                    }
+                    else
+                    {
+                        if (!isDoneGetTimeStamp)
                         {
+                            isDoneGetTimeStamp = true;
                             OnGetAppLaunchCache();
                         }
                     }
@@ -494,14 +501,15 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 if (!isDoneGetTimeStamp)
                 {
                     isDoneGetTimeStamp = true;
-                    this.mView.SetDefaultAppLaunchImage();
+                    OnGetAppLaunchCache();
                 }
             });
         }
 
         public Task OnGetAppLaunchCache()
         {
-            return Task.Factory.StartNew(() =>
+            CancellationTokenSource token = new CancellationTokenSource();
+            return Task.Run(() =>
             {
                 try
                 {
@@ -511,7 +519,9 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     {
                         AppLaunchModel item = new AppLaunchModel()
                         {
+                            ID = appLaunchList[0].ID,
                             Image = appLaunchList[0].Image,
+                            ImageB64 = appLaunchList[0].ImageB64,
                             Title = appLaunchList[0].Title,
                             Description = appLaunchList[0].Description,
                             StartDateTime = appLaunchList[0].StartDateTime,
@@ -531,25 +541,82 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     this.mView.SetDefaultAppLaunchImage();
                     Utility.LoggingNonFatalError(e);
                 }
-            }).ContinueWith((Task previous) =>
-            {
-            }, new CancellationTokenSource().Token);
+            }, token.Token);
         }
 
         private async Task OnProcessAppLaunchItem(AppLaunchModel item)
         {
             try
             {
-                Bitmap imageCache = await GetPhoto(item.Image);
-                if (imageCache != null)
+                if (!string.IsNullOrEmpty(item.ImageB64))
                 {
-                    item.ImageBitmap = imageCache;
-                    AppLaunchUtils.SetAppLaunchBitmap(item);
-                    this.mView.SetCustomAppLaunchImage(item);
+                    Bitmap convertedImageCache = Base64ToBitmap(item.ImageB64);
+                    if (convertedImageCache != null)
+                    {
+                        item.ImageBitmap = convertedImageCache;
+                        AppLaunchUtils.SetAppLaunchBitmap(item);
+                        this.mView.SetCustomAppLaunchImage(item);
+                    }
+                    else
+                    {
+                        Bitmap imageCache = await GetPhoto(item.Image);
+                        if (imageCache != null)
+                        {
+                            item.ImageBitmap = imageCache;
+                            item.ImageB64 = BitmapToBase64(imageCache);
+                            AppLaunchEntity wtManager = new AppLaunchEntity();
+                            wtManager.DeleteTable();
+                            wtManager.CreateTable();
+                            AppLaunchEntity newItem = new AppLaunchEntity()
+                            {
+                                ID = item.ID,
+                                Image = item.Image,
+                                ImageB64 = item.ImageB64,
+                                Title = item.Title,
+                                Description = item.Description,
+                                StartDateTime = item.StartDateTime,
+                                EndDateTime = item.EndDateTime,
+                                ShowForSeconds = item.ShowForSeconds
+                            };
+                            wtManager.InsertItem(newItem);
+                            AppLaunchUtils.SetAppLaunchBitmap(item);
+                            this.mView.SetCustomAppLaunchImage(item);
+                        }
+                        else
+                        {
+                            this.mView.SetDefaultAppLaunchImage();
+                        }
+                    }
                 }
                 else
                 {
-                    this.mView.SetDefaultAppLaunchImage();
+                    Bitmap imageCache = await GetPhoto(item.Image);
+                    if (imageCache != null)
+                    {
+                        item.ImageBitmap = imageCache;
+                        item.ImageB64 = BitmapToBase64(imageCache);
+                        AppLaunchEntity wtManager = new AppLaunchEntity();
+                        wtManager.DeleteTable();
+                        wtManager.CreateTable();
+                        AppLaunchEntity newItem = new AppLaunchEntity()
+                        {
+                            ID = item.ID,
+                            Image = item.Image,
+                            ImageB64 = item.ImageB64,
+                            Title = item.Title,
+                            Description = item.Description,
+                            StartDateTime = item.StartDateTime,
+                            EndDateTime = item.EndDateTime,
+                            ShowForSeconds = item.ShowForSeconds
+                        };
+                        wtManager.InsertItem(newItem);
+                        AppLaunchUtils.SetAppLaunchBitmap(item);
+                        this.mView.SetCustomAppLaunchImage(item);
+                    }
+                    else
+                    {
+                        this.mView.SetDefaultAppLaunchImage();
+                    }
                 }
             }
             catch (Exception e)
@@ -557,6 +624,42 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 this.mView.SetDefaultAppLaunchImage();
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public string BitmapToBase64(Bitmap bitmap)
+        {
+            string B64Output = "";
+            try
+            {
+                MemoryStream byteArrayOutputStream = new MemoryStream();
+                bitmap.Compress(Bitmap.CompressFormat.Png, 100, byteArrayOutputStream);
+                byte[] byteArray = byteArrayOutputStream.ToArray();
+                B64Output = Base64.EncodeToString(byteArray, Base64Flags.Default);
+            }
+            catch (Exception e)
+            {
+                B64Output = "";
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return B64Output;
+        }
+
+        public Bitmap Base64ToBitmap(string base64String)
+        {
+            Bitmap convertedBitmap = null;
+            try
+            {
+                byte[] imageAsBytes = Base64.Decode(base64String, Base64Flags.Default);
+                convertedBitmap = BitmapFactory.DecodeByteArray(imageAsBytes, 0, imageAsBytes.Length);
+            }
+            catch (Exception e)
+            {
+                convertedBitmap = null;
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return convertedBitmap;
         }
 
         public async Task OnWaitSplashScreenDisplay(int millisecondDelay)
@@ -579,6 +682,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         {
             bool isDoneGetTimeStamp = false;
             CancellationTokenSource token = new CancellationTokenSource();
+            Log.Debug("Current OnGetAppLaunchTimeStamp Start DateTime", DateTime.Now.ToString());
             Stopwatch sw = Stopwatch.StartNew();
             _ = Task.Run(() =>
             {
@@ -588,6 +692,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
                     AppLaunchTimeStampResponseModel responseModel = getItemsService.GetAppLaunchTimestampItem();
                     sw.Stop();
+                    Log.Debug("Current OnGetAppLaunchTimeStamp End DateTime", DateTime.Now.ToString());
                     Log.Debug("Current OnGetAppLaunchTimeStamp DateTime Used Time", sw.ElapsedMilliseconds.ToString());
                     if (!isDoneGetTimeStamp)
                     {
@@ -622,7 +727,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 if (!isDoneGetTimeStamp)
                 {
                     isDoneGetTimeStamp = true;
-                    this.mView.SetDefaultAppLaunchImage();
+                    OnGetAppLaunchCache();
                 }
             });
         }
@@ -685,14 +790,18 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         private async Task<Bitmap> GetPhoto(string imageUrl)
         {
             CancellationTokenSource cts = new CancellationTokenSource();
-            cts.CancelAfter(AppLaunchTimeOutMillisecond);
             Bitmap imageBitmap = null;
             try
             {
+                Log.Debug("Current GetBitmap Start DateTime", DateTime.Now.ToString());
+                Stopwatch sw = Stopwatch.StartNew();
                 await Task.Run(() =>
                 {
                     imageBitmap = ImageUtils.GetImageBitmapFromUrl(imageUrl);
                 }, cts.Token);
+                sw.Stop();
+                Log.Debug("Current GetBitmap End DateTime", DateTime.Now.ToString());
+                Log.Debug("Current GetBitmap DateTime Used Time", sw.ElapsedMilliseconds.ToString());
             }
             catch (Exception e)
             {
