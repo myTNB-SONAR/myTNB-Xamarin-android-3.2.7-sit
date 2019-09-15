@@ -98,7 +98,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             notificationDetailTitle = "Your Supply May Be Disconnected";
                             notificationDetailMessage = "Urgent notice, Mohd Zulkifli. Your electricity supply may be disconnected between 22 and 31 May if you haven't already paid the bill. No worries, just pay before 21 May on the myTNB app and all will be well! <br/><br/> " +
                                 "Account: #name#<br/><br/>" +
-                                "PS: Alternatively, you can pay via other methods too but it’s quicker and easier on the app!​";
+                                "PS: Alternatively, you can pay via <a href=\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">other methods</a> too but it’s quicker and easier on the app!​";
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_DISCONNECTED_ID:

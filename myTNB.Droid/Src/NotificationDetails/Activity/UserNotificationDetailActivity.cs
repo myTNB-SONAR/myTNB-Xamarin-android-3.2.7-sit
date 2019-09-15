@@ -5,6 +5,9 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using Android.Support.Design.Widget;
+using Android.Text;
+using Android.Text.Method;
+using Android.Text.Style;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -13,6 +16,7 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.FAQ.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
@@ -51,6 +55,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         UserNotificationDetailPresenter mPresenter;
         AlertDialog removeDialog;
         private LoadingOverlay loadingOverlay;
+        ClickSpan clickableSpan;
 
         public override int ResourceId()
         {
@@ -93,11 +98,49 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             return base.OnOptionsItemSelected(item);
         }
 
+        public void OnClickSpan(string textMessage)
+        {
+            if (textMessage != null && textMessage.Contains("http"))
+            {
+                //Launch webview
+                int startIndex = textMessage.LastIndexOf("=") + 2;
+                int lastIndex = textMessage.LastIndexOf("\"");
+                int lengthOfId = (lastIndex - startIndex);
+                if (lengthOfId < textMessage.Length)
+                {
+                    string url = textMessage.Substring(startIndex, lengthOfId);
+                    if (!string.IsNullOrEmpty(url))
+                    {
+                        Intent intent = new Intent(Intent.ActionView);
+                        intent.SetData(Android.Net.Uri.Parse(url));
+                        StartActivity(intent);
+                    }
+                }
+            }else if(textMessage != null && textMessage.Contains("faq"))
+            {
+                //Lauch FAQ
+                int startIndex = textMessage.LastIndexOf("=") + 1;
+                int lastIndex = textMessage.LastIndexOf("}");
+                int lengthOfId = (lastIndex - startIndex) + 1;
+                if (lengthOfId < textMessage.Length)
+                {
+                    string faqid = textMessage.Substring(startIndex, lengthOfId);
+                    if (!string.IsNullOrEmpty(faqid))
+                    {
+                        Intent faqIntent = new Intent(this, typeof(FAQListActivity));
+                        faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+                        StartActivity(faqIntent);
+                    }
+                }
+            }
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             try
             {
                 mPresenter = new UserNotificationDetailPresenter(this);
+                clickableSpan = new ClickSpan();
                 base.OnCreate(savedInstanceState);
                 Bundle extras = Intent.Extras;
                 if (extras != null)
@@ -135,6 +178,14 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 notificationDetailBannerImg.SetImageResource(detailModel.imageResourceBanner);
                 notificationDetailTitle.Text = detailModel.title;
                 notificationDetailMessage.TextFormatted = GetFormattedText(detailModel.message);
+
+                clickableSpan.Click += delegate
+                {
+                    OnClickSpan(detailModel.message);
+                };
+                notificationDetailMessage.TextFormatted = Utility.GetFormattedURLString(clickableSpan, notificationDetailMessage.TextFormatted);
+                notificationDetailMessage.MovementMethod = new LinkMovementMethod();
+
                 NotificationDetailCTAComponent ctaComponent = FindViewById<NotificationDetailCTAComponent>(Resource.Id.notificationCTAComponent);
                 if (detailModel.ctaList.Count > 0)
                 {
@@ -299,6 +350,24 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             SSMRTerminateActivity.PutExtra("SMR_CONTACT_DETAILS", JsonConvert.SerializeObject(contactDetailsModel));
             SSMRTerminateActivity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
             StartActivity(SSMRTerminateActivity);
+        }
+
+        class ClickSpan : ClickableSpan
+        {
+            public Action<View> Click;
+            public override void OnClick(View widget)
+            {
+                if (Click != null)
+                {
+                    Click(widget);
+                }
+            }
+
+            public override void UpdateDrawState(TextPaint ds)
+            {
+                base.UpdateDrawState(ds);
+                ds.UnderlineText = false;
+            }
         }
     }
 }
