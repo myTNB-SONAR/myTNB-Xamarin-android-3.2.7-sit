@@ -141,6 +141,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             imageResourceBanner = Resource.Drawable.notification_new_bill_banner;
 
                             primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Meter Reading", delegate () { SubmitMeterReading(notificationDetails); });
+                            primaryCTA.SetSolidCTA(true);
                             ctaList.Add(primaryCTA);
 
                             break;
@@ -148,6 +149,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_METER_READING_REMIND_ID:
                         {
                             primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Meter Reading", delegate () { SubmitMeterReading(notificationDetails); });
+                            primaryCTA.SetSolidCTA(true);
                             ctaList.Add(primaryCTA);
 
                             imageResourceBanner = Resource.Drawable.notification_smr_generic_banner;
@@ -155,7 +157,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_SMR_DISABLED_ID:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Re-enable Self Meter Reading", delegate () { SubmitMeterReading(notificationDetails); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("Re-enable Self Meter Reading", delegate () { EnableSelfMeterReading(notificationDetails); });
                             ctaList.Add(primaryCTA);
 
                             imageResourceBanner = Resource.Drawable.notification_new_bill_banner;
@@ -163,7 +165,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_SMR_APPLY_SUCCESS_ID:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Usage", delegate () { SubmitMeterReading(notificationDetails); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Usage", delegate () { ViewMyUsage(notificationDetails); });
                             ctaList.Add(primaryCTA);
 
                             imageResourceBanner = Resource.Drawable.notification_smr_generic_banner;
@@ -181,7 +183,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         {
                             imageResourceBanner = Resource.Drawable.notification_smr_generic_banner;
 
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Re-enable Self Meter Reading", delegate () { SubmitMeterReading(notificationDetails); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("Re-enable Self Meter Reading", delegate () { EnableSelfMeterReading(notificationDetails); });
                             ctaList.Add(primaryCTA);
                             break;
                         }
@@ -377,20 +379,12 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             }
         }
 
-        public async void EnableSelfMeterReading(AccountData selectedAccount)
+        public async void EnableSelfMeterReading(Models.NotificationDetails notificationDetails)
         {
             try
             {
-                CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
+                CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(notificationDetails.AccountNum);
                 ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-
-                //AccountData accountData = new AccountData();
-                //SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
-                //accountData.AccountNum = selectedAccountNumber;
-                //accountData.AddStreet = eligibleAccount.accountAddress;
-                //accountData.AccountNickName = eligibleAccount.accountName;
-                //SMR_ACTION_KEY = Constants.SMR_ENABLE_FLAG;
-                //this.mPresenter.GetCARegisteredContactInfoAsync(accountData);
 
                 UserInterface currentUsrInf = new UserInterface()
                 {
@@ -407,7 +401,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
 
                 CARegisteredContactInfoResponse response = await this.terminationApi.GetCARegisteredContactInfo(new GetRegisteredContactInfoRequest()
                 {
-                    AccountNumber = selectedAccount.AccountNum,
+                    AccountNumber = notificationDetails.AccountNum,
                     IsOwnedAccount = "true",
                     ICNumber = account.ICNum,
                     usrInf = currentUsrInf
@@ -421,7 +415,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     contactDetailsModel.isAllowEdit = response.Data.AccountDetailsData.isAllowEdit;
 
                     AccountData accountData = new AccountData();
-                    accountData.AccountNum = selectedAccount.AccountNum;
+                    accountData.AccountNum = notificationDetails.AccountNum;
                     accountData.AddStreet = account.AccountStAddress;
                     accountData.AccountNickName = account.AccDesc;
 

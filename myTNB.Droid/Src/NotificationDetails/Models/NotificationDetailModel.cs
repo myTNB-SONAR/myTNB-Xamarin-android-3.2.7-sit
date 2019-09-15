@@ -21,11 +21,17 @@ namespace myTNB_Android.Src.NotificationDetails.Models
         {
             public string label;
             public Action action;
+            public bool isSolidBackground;
 
             public NotificationCTA(string btnLabel, Action ctaAction)
             {
                 label = btnLabel;
                 action = ctaAction;
+            }
+
+            public void SetSolidCTA(bool isSolid)
+            {
+                isSolidBackground = isSolid;
             }
 
         }
