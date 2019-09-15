@@ -321,18 +321,8 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
             try
             {
-                try
-                {
-                    RunOnUiThread(() =>
-                    {
-                        rootView.SetBackgroundResource(Resource.Drawable.AppLanchGradientBackground);
-                    });
-                }
-                catch (Exception ne)
-                {
-                    Utility.LoggingNonFatalError(ne);
-                }
-
+                isAppLaunchLoadSuccessful = false;
+                currentNavigation = AppLaunchNavigation.Nothing;
                 if (ConnectionUtils.HasInternetConnection(this))
                 {
                     mPresenter = new AppLaunchPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
@@ -357,6 +347,14 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     ShowNoInternetSnackbar();
                 }
 
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
                 if (AppLaunchUtils.GetAppLaunch() != null)
                 {
                     isAppLaunchSiteCoreDone = false;
@@ -365,15 +363,26 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 else
                 {
                     isAppLaunchSiteCoreDone = false;
+                    try
+                    {
+                        RunOnUiThread(() =>
+                        {
+                            rootView.SetBackgroundResource(Resource.Drawable.AppLanchGradientBackground);
+                        });
+                    }
+                    catch (Exception ne)
+                    {
+                        Utility.LoggingNonFatalError(ne);
+                    }
                     if (!isAppLaunchSiteCoreDone)
                     {
                         this.userActionsListener.GetSavedAppLaunchTimeStamp();
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception ne)
             {
-                Utility.LoggingNonFatalError(e);
+                Utility.LoggingNonFatalError(ne);
             }
         }
 
