@@ -218,7 +218,9 @@ namespace myTNB
                             AccountUsageSmartCache.ClearTariffLegendList();
                             InvokeInBackground(async () =>
                             {
-                                AccountUsageSmartResponseModel accountUsageSmartResponse = await UsageServiceCall.GetAccountUsageSmart(DataManager.DataManager.SharedInstance.SelectedAccount);
+                                //AccountUsageSmartResponseModel accountUsageSmartResponse = await UsageServiceCall.GetAccountUsageSmart(DataManager.DataManager.SharedInstance.SelectedAccount);
+                                AccountUsageSmartResponseModel accountUsageSmartResponse = Newtonsoft.Json.JsonConvert.DeserializeObject<AccountUsageSmartResponseModel>(AccountUsageManager.GetData());
+
                                 InvokeOnMainThread(() =>
                                 {
                                     if (accNum == DataManager.DataManager.SharedInstance.SelectedAccount.accNum)

@@ -9,15 +9,15 @@ namespace myTNB.SmartMeterView
 {
     public class SmartMeterDayZInView : BaseSmartMeterView
     {
+        private UIScrollView _segmentScrollView;
         private nfloat _width = UIScreen.MainScreen.Bounds.Width;
 
         public override void CreateSegment(ref CustomUIView view)
         {
-            view = new CustomUIView(new CGRect(0, GetYLocationFromFrameScreenSize(ReferenceWidget, 24)
-               , _width, GetHeightByScreenSize(149)));
-
-            view.Layer.BorderColor = UIColor.Red.CGColor;
-            view.Layer.BorderWidth = 1;
+            _segmentScrollView = new UIScrollView(new CGRect(0, 0, _width, GetHeightByScreenSize(169)));
+            view = new CustomUIView(new CGRect(0, GetYLocationFromFrameScreenSize(ReferenceWidget, 6)
+               , _width, GetHeightByScreenSize(169)));
+            view.AddSubview(_segmentScrollView);
 
             nfloat height = view.Frame.Height;
             nfloat width = GetWidthByScreenSize(12);
@@ -43,7 +43,7 @@ namespace myTNB.SmartMeterView
                     PageName = "InnerDashboard",
                     EventName = "OnTapNormalBar"
                 };
-                view.AddSubview(segment);
+                _segmentScrollView.AddSubview(segment);
                 xLoc += segmentWidth + segmentMargin;
 
                 double.TryParse(item.Amount, out double value);
@@ -95,47 +95,6 @@ namespace myTNB.SmartMeterView
                     , () => { }
                 );
             }
-
-            AddDateGuide(ref view);
-        }
-
-        private void AddDateGuide(ref CustomUIView view)
-        {
-            nfloat height = view.Frame.Height;
-            nfloat lblHeight = GetHeightByScreenSize(14);
-
-            UILabel lblStartDate = new UILabel(new CGRect(GetWidthByScreenSize(16), height - lblHeight, 0, lblHeight))
-            {
-                TextAlignment = UITextAlignment.Center,
-                Font = TNBFont.MuseoSans_10_300,
-                TextColor = UIColor.White,
-                Text = "22 Jul"
-            };
-            nfloat lblStartDateWidth = lblStartDate.GetLabelWidth(GetWidthByScreenSize(100));
-            lblStartDate.Frame = new CGRect(lblStartDate.Frame.Location, new CGSize(lblStartDateWidth, lblHeight));
-
-            UILabel lblMidDate = new UILabel(new CGRect(GetWidthByScreenSize(16), height - lblHeight, 0, lblHeight))
-            {
-                TextAlignment = UITextAlignment.Center,
-                Font = TNBFont.MuseoSans_10_300,
-                TextColor = UIColor.White,
-                Text = "10 Aug"
-            };
-            nfloat lblMidDateWidth = lblMidDate.GetLabelWidth(GetWidthByScreenSize(100));
-            lblMidDate.Frame = new CGRect(new CGPoint((_width - lblMidDateWidth) / 2, lblMidDate.Frame.Y), new CGSize(lblMidDateWidth, lblHeight));
-
-            UILabel lblEndDate = new UILabel(new CGRect(GetWidthByScreenSize(16), height - lblHeight, 0, lblHeight))
-            {
-                TextAlignment = UITextAlignment.Center,
-                Font = TNBFont.MuseoSans_10_300,
-                TextColor = UIColor.White,
-                Text = "21 Aug"
-            };
-            nfloat lblEndDateWidth = lblEndDate.GetLabelWidth(GetWidthByScreenSize(100));
-            lblEndDate.Frame = new CGRect(new CGPoint(_width - GetWidthByScreenSize(16) - lblEndDateWidth
-                , lblEndDate.Frame.Y), new CGSize(lblEndDateWidth, lblHeight));
-
-            view.AddSubviews(new UIView[] { lblStartDate, lblMidDate, lblEndDate });
         }
     }
 }
