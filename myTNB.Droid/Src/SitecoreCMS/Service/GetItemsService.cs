@@ -127,7 +127,7 @@ namespace myTNB.SitecoreCMS.Services
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Exception in GetItemsService/GetEnergySavingTipsItem: " + e.Message);
+                Debug.WriteLine("Exception in GetItemsService/GetAppLaunchItem: " + e.Message);
             }
             return respModel;
         }
@@ -146,7 +146,7 @@ namespace myTNB.SitecoreCMS.Services
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Exception in GetItemsService/GetEnergySavingTipsTimestampItem: " + e.Message);
+                Debug.WriteLine("Exception in GetItemsService/GetAppLaunchTimestampItem: " + e.Message);
             }
             return respModel;
         }

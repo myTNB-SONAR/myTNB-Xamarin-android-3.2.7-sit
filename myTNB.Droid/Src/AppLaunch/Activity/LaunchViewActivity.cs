@@ -801,7 +801,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                         Utility.LoggingNonFatalError(ne);
                     }
 
-                    this.userActionsListener.OnWaitSplashScreenDisplay(300);
+                    this.userActionsListener.OnWaitSplashScreenDisplay(0);
                 }
             }
             catch (Exception e)

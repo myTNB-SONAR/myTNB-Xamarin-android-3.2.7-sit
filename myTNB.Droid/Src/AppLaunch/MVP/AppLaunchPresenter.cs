@@ -695,7 +695,10 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         {
             try
             {
-                await Task.Delay(millisecondDelay);
+                if (millisecondDelay > 0)
+                {
+                    await Task.Delay(millisecondDelay);
+                }
                 this.mView.OnGoAppLaunchEvent();
             }
             catch (Exception e)
