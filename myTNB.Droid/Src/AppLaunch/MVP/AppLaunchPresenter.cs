@@ -452,10 +452,10 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         public void OnGetAppLaunchItem()
         {
             CancellationTokenSource token = new CancellationTokenSource();
+            Log.Debug("Current OnGetAppLaunchItem Start DateTime", DateTime.Now.ToString());
+            Stopwatch sw = Stopwatch.StartNew();
             _ = Task.Run(() =>
             {
-                Log.Debug("Current OnGetAppLaunchItem Start DateTime", DateTime.Now.ToString());
-                Stopwatch sw = Stopwatch.StartNew();
                 try
                 {
                     string density = DPUtils.GetDeviceDensity(Application.Context);
@@ -582,10 +582,10 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         {
             Bitmap imageCache = null;
             CancellationTokenSource token = new CancellationTokenSource();
+            Log.Debug("Current OnGetPhoto Start DateTime", DateTime.Now.ToString());
+            Stopwatch sw = Stopwatch.StartNew();
             _ = Task.Run(async () =>
             {
-                Log.Debug("Current OnGetPhoto Start DateTime", DateTime.Now.ToString());
-                Stopwatch sw = Stopwatch.StartNew();
                 try
                 {
                     await Task.Run(() =>
@@ -710,10 +710,10 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         public void OnGetAppLaunchTimeStamp()
         {
             CancellationTokenSource token = new CancellationTokenSource();
+            Log.Debug("Current OnGetAppLaunchTimeStamp Start DateTime", DateTime.Now.ToString());
+            Stopwatch sw = Stopwatch.StartNew();
             _ = Task.Run(() =>
             {
-                Log.Debug("Current OnGetAppLaunchTimeStamp Start DateTime", DateTime.Now.ToString());
-                Stopwatch sw = Stopwatch.StartNew();
                 try
                 {
                     string density = DPUtils.GetDeviceDensity(Application.Context);
