@@ -100,7 +100,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         {
                             imageResourceBanner = Resource.Drawable.notification_disconnected_banner;
 
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Contact TNB", delegate () { ViewBillDetails(notificationDetails); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("Contact TNB", delegate () { CallUs(); });
                             ctaList.Add(primaryCTA);
 
                             secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
@@ -171,7 +171,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_SMR_APPLY_FAILED_ID:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Contact TNB", delegate () { mView.ViewBill(); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("Contact TNB", delegate () { CallUs(); });
                             ctaList.Add(primaryCTA);
 
                             imageResourceBanner = Resource.Drawable.notification_new_bill_banner;
@@ -189,7 +189,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         {
                             imageResourceBanner = Resource.Drawable.notification_new_bill_banner;
 
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Contact TNB", delegate () { mView.ViewBill(); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("Contact TNB", delegate () { CallUs(); });
                             ctaList.Add(primaryCTA);
                             break;
                         }
@@ -277,6 +277,14 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             else
             {
                 this.mView.ShowRetryOptionsApiException(null);
+            }
+        }
+
+        private void CallUs()
+        {
+            if (WeblinkEntity.HasRecord("TNBCLE"))
+            {
+                this.mView.ContactUs(WeblinkEntity.GetByCode("TNBCLE"));
             }
         }
 

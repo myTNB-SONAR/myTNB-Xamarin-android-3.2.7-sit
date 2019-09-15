@@ -1,4 +1,5 @@
 ﻿using System;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
 using Refit;
@@ -11,7 +12,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         {
             void ViewBill();
             void PayNow(AccountData mSelectedAccountData);
-            void ContactUs();
+            void ContactUs(WeblinkEntity entity);
             void ViewUsage();
             void ViewDetails(AccountData mSelectedAccountData, AccountChargeModel accountChargeModel);
             void ShowLoadingScreen();

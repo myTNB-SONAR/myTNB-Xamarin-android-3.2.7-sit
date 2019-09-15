@@ -12,6 +12,7 @@ using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.CompoundView;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
@@ -251,9 +252,14 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             StartActivity(payment_activity);
         }
 
-        public void ContactUs()
+        public void ContactUs(WeblinkEntity entity)
         {
-            
+            if (entity.OpenWith.Equals("PHONE"))
+            {
+                var uri = Android.Net.Uri.Parse("tel:" + entity.Url);
+                var intent = new Intent(Intent.ActionDial, uri);
+                StartActivity(intent);
+            }
         }
 
         public void ViewUsage()
