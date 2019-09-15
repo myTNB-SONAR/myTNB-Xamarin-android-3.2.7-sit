@@ -101,6 +101,22 @@ namespace myTNB.SitecoreCMS.Services
             return JsonConvert.SerializeObject(resp);
         }
 
+        public string GetAppLaunchImageItem()
+        {
+            AppLaunchImageService service = new AppLaunchImageService();
+            var data = service.GetAppLaunchImageService(OS, ImageSize, WebsiteUrl, Language);
+            var resp = CheckData(data.ToList<object>());
+            return JsonConvert.SerializeObject(resp);
+        }
+        public string GetAppLaunchImageTimestampItem()
+        {
+            AppLaunchImageService service = new AppLaunchImageService();
+            var data = service.GetTimestamp(WebsiteUrl, Language);
+            var listData = AddDataToList(data);
+            var resp = CheckData(listData);
+            return JsonConvert.SerializeObject(resp);
+        }
+
         public string GetTimestampItem()
         {
             TimestampService service = new TimestampService();
@@ -110,10 +126,12 @@ namespace myTNB.SitecoreCMS.Services
             return JsonConvert.SerializeObject(resp);
         }
 
-        BaseModel CheckData(List<object> data){
+        BaseModel CheckData(List<object> data)
+        {
             BaseModel bm = new BaseModel();
             bool isAnyIdNull = true;
-            foreach(var item in data){
+            foreach (var item in data)
+            {
                 var type = item.GetType();
                 var prop = type.GetProperty("ID");
                 var field = type.GetField("ID");

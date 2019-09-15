@@ -321,7 +321,6 @@
     <ImageAsset Include="Assets.xcassets\Payment.imageset\Payment.png" />
     <ImageAsset Include="Assets.xcassets\Payment.imageset\Payment%402x.png" />
     <ImageAsset Include="Assets.xcassets\Payment.imageset\Payment%403x.png" />
-    <ImageAsset Include="Assets.xcassets\App-Launch-Gradient.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Logo.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Logo.imageset\Logo%403x.png" />
     <ImageAsset Include="Assets.xcassets\Delete.imageset\Contents.json" />
@@ -638,9 +637,6 @@
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Streetlamp.imageset\ic_feedback_submitted_streetlamp.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Streetlamp.imageset\ic_feedback_submitted_streetlamp%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Streetlamp.imageset\ic_feedback_submitted_streetlamp%403x.png" />
-    <ImageAsset Include="Assets.xcassets\App-Launch-Gradient.imageset\img_splash.png" />
-    <ImageAsset Include="Assets.xcassets\App-Launch-Gradient.imageset\img_splash%402x.png" />
-    <ImageAsset Include="Assets.xcassets\App-Launch-Gradient.imageset\img_splash%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\ic_menu_feedback.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\ic_menu_feedback%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\ic_menu_feedback%403x.png" />
@@ -898,6 +894,12 @@
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll-1.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppLaunch.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\AppLaunch.imageset\img_splash_bg%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SplashImageDefault.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SplashImageDefault.imageset\img_splash.png" />
+    <ImageAsset Include="Assets.xcassets\AppLaunch.imageset\img_splash_bg%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SplashImageDefault.imageset\img_splash%402x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1162,6 +1164,8 @@
     <Folder Include="Assets.xcassets\Notification-DeleteDisabled.imageset\" />
     <Folder Include="Assets.xcassets\Feedback-Generic.imageset\" />
     <Folder Include="Assets.xcassets\Feedback-Submitted-Generic.imageset\" />
+    <Folder Include="Assets.xcassets\AppLaunch.imageset\" />
+    <Folder Include="Assets.xcassets\SplashImageDefault.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1862,6 +1866,9 @@
     </Compile>
     <Compile Include="Session Cache\AmoutDueCache.cs" />
     <Compile Include="SQLite\SQLite Data Manager\DueEntity.cs" />
+    <Compile Include="Sitecore CMS\Model\AppLaunchImageResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Service\AppLaunchImageService.cs" />
+    <Compile Include="SQLite\SQLite Data Manager\AppLaunchImageEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
