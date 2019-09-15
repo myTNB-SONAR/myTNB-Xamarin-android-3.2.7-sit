@@ -49,7 +49,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             primaryCTA = new NotificationDetailModel.NotificationCTA("View Details", delegate () { ViewBillDetails(notificationDetails); });
                             ctaList.Add(primaryCTA);
 
-                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { mView.PayNow(); });
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
                             ctaList.Add(secondaryCTA);
 
                             notificationDetailTitle = "Your {0} Bill Is Ready";
@@ -67,7 +67,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             primaryCTA = new NotificationDetailModel.NotificationCTA("View Details", delegate () { ViewBillDetails(notificationDetails); });
                             ctaList.Add(primaryCTA);
 
-                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { mView.PayNow(); });
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
                             ctaList.Add(secondaryCTA);
 
                             notificationDetailTitle = "Your {0} Bill Is Due";
@@ -85,7 +85,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             primaryCTA = new NotificationDetailModel.NotificationCTA("View Details", delegate () { ViewBillDetails(notificationDetails); });
                             ctaList.Add(primaryCTA);
 
-                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { mView.PayNow(); });
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
                             ctaList.Add(secondaryCTA);
 
                             notificationDetailTitle = "Your Supply May Be Disconnected";
@@ -103,7 +103,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             primaryCTA = new NotificationDetailModel.NotificationCTA("Contact TNB", delegate () { ViewBillDetails(notificationDetails); });
                             ctaList.Add(primaryCTA);
 
-                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { mView.PayNow(); });
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
                             ctaList.Add(secondaryCTA);
 
                             notificationDetailTitle = "Your Supply Has Been Disconnected";
@@ -155,7 +155,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             primaryCTA = new NotificationDetailModel.NotificationCTA("View Bill", delegate () { mView.ViewBill(); });
                             ctaList.Add(primaryCTA);
 
-                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { mView.PayNow(); });
+                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
                             ctaList.Add(secondaryCTA);
 
                             imageResourceBanner = Resource.Drawable.notification_new_bill_banner;
@@ -233,6 +233,10 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         accountData.AddStreet = account.AccountStAddress;
                         mView.ViewDetails(accountData, accountChargeModelList[0]);
                     }
+                    else
+                    {
+                        this.mView.ShowRetryOptionsApiException(null);
+                    }
                 }
                 else
                 {
@@ -256,6 +260,23 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 // ADD UNKNOWN EXCEPTION HERE
                 this.mView.ShowRetryOptionsUnknownException(e);
                 Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void PayNow(Models.NotificationDetails notificationDetails)
+        {
+            AccountData accountData = new AccountData();
+            CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(notificationDetails.AccountNum);
+            if (account != null)
+            {
+                accountData.AccountNum = account.AccNum;
+                accountData.AccountNickName = account.AccDesc;
+                accountData.AddStreet = account.AccountStAddress;
+                this.mView.PayNow(accountData);
+            }
+            else
+            {
+                this.mView.ShowRetryOptionsApiException(null);
             }
         }
 

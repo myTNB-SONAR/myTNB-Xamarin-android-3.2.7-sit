@@ -10,7 +10,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         public interface IView
         {
             void ViewBill();
-            void PayNow();
+            void PayNow(AccountData mSelectedAccountData);
             void ContactUs();
             void ViewUsage();
             void ViewDetails(AccountData mSelectedAccountData, AccountChargeModel accountChargeModel);
