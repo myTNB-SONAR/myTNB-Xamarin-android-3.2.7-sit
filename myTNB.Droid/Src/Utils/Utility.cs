@@ -73,5 +73,14 @@ namespace myTNB_Android.Src.Utils
             s.SetSpan(clickableSpan, startFAQLink, endFAQLink, SpanTypes.ExclusiveExclusive);
             return s;
         }
+
+        public static string ReplaceValueByPattern(Regex pattern, string stringValue, string replaceValue)
+        {
+            return pattern.Replace(stringValue, match =>
+            {
+                string newMatch = match.Groups[1].Value;
+                return replaceValue;
+            });
+        }
     }
 }

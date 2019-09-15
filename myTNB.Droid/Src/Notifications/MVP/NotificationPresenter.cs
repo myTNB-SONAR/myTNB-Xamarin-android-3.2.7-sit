@@ -675,14 +675,6 @@ namespace myTNB_Android.Src.Notifications.MVP
                 listOfNotifications.Add(data);
 
                 data = new UserNotificationData();
-                data.BCRMNotificationTypeId = "0009";
-                data.CreatedDate = "9/1/2019 5:00:00 PM";
-                data.IsRead = false;
-                data.Title = "Self Meter Reading";
-                data.Message = "Dear customer, submit your meter…";
-                listOfNotifications.Add(data);
-
-                data = new UserNotificationData();
                 data.BCRMNotificationTypeId = "99";
                 data.CreatedDate = "9/1/2019 5:00:00 PM";
                 data.IsRead = false;
@@ -690,6 +682,70 @@ namespace myTNB_Android.Src.Notifications.MVP
                 data.Message = "Dear customer, kindly be informed…";
                 data.NotificationType = "1000011";
                 data.NotificationTypeId = "1001";
+                listOfNotifications.Add(data);
+
+                //        public const string BCRM_NOTIFICATION_METER_READING_OPEN_ID = "0009";
+                //public const string BCRM_NOTIFICATION_METER_READING_REMIND_ID = "0010";
+                //public const string BCRM_NOTIFICATION_SMR_DISABLED_ID = "0011";
+                //public const string BCRM_NOTIFICATION_SMR_APPLY_SUCCESS_ID = "50";
+                //public const string BCRM_NOTIFICATION_SMR_APPLY_FAILED_ID = "51";
+                //public const string BCRM_NOTIFICATION_SMR_DISABLED_SUCCESS_ID = "52";
+                //public const string BCRM_NOTIFICATION_SMR_DISABLED_FAILED_ID = "53";
+
+                data = new UserNotificationData();
+                data.BCRMNotificationTypeId = "0009";
+                data.CreatedDate = "9/1/2019 5:00:00 PM";
+                data.IsRead = false;
+                data.Title = "Self Meter Reading Open";
+                data.Message = "Dear customer, submit your meter…";
+                listOfNotifications.Add(data);
+
+                data = new UserNotificationData();
+                data.BCRMNotificationTypeId = "0010";
+                data.CreatedDate = "9/1/2019 5:00:00 PM";
+                data.IsRead = false;
+                data.Title = "Self Meter Reading Remind";
+                data.Message = "Dear customer, submit your meter…";
+                listOfNotifications.Add(data);
+
+                data = new UserNotificationData();
+                data.BCRMNotificationTypeId = "0011";
+                data.CreatedDate = "9/1/2019 5:00:00 PM";
+                data.IsRead = false;
+                data.Title = "Self Meter Reading Disabled";
+                data.Message = "Dear customer, submit your meter…";
+                listOfNotifications.Add(data);
+
+                data = new UserNotificationData();
+                data.BCRMNotificationTypeId = "50";
+                data.CreatedDate = "9/1/2019 5:00:00 PM";
+                data.IsRead = false;
+                data.Title = "Self Meter Reading Application Success";
+                data.Message = "Dear customer, submit your meter…";
+                listOfNotifications.Add(data);
+
+                data = new UserNotificationData();
+                data.BCRMNotificationTypeId = "51";
+                data.CreatedDate = "9/1/2019 5:00:00 PM";
+                data.IsRead = false;
+                data.Title = "Self Meter Reading Application Failed";
+                data.Message = "Dear customer, submit your meter…";
+                listOfNotifications.Add(data);
+
+                data = new UserNotificationData();
+                data.BCRMNotificationTypeId = "52";
+                data.CreatedDate = "9/1/2019 5:00:00 PM";
+                data.IsRead = false;
+                data.Title = "Self Meter Reading Disabled Success";
+                data.Message = "Dear customer, submit your meter…";
+                listOfNotifications.Add(data);
+
+                data = new UserNotificationData();
+                data.BCRMNotificationTypeId = "53";
+                data.CreatedDate = "9/1/2019 5:00:00 PM";
+                data.IsRead = false;
+                data.Title = "Self Meter Reading Disabled Failed";
+                data.Message = "Dear customer, submit your meter…";
                 listOfNotifications.Add(data);
 
                 this.mView.ShowNotificationsList(listOfNotifications);
@@ -703,9 +759,10 @@ namespace myTNB_Android.Src.Notifications.MVP
         public NotificationDetails.Models.NotificationDetails GetMockDetails(string bcrmType)
         {
             NotificationDetails.Models.NotificationDetails data = new NotificationDetails.Models.NotificationDetails();
+            data.AccountNum = "220914778610";
             data.BCRMNotificationTypeId = bcrmType;
             data.Title = "Testing of Reseed validation";
-            data.Message = "Message for Testing of Reseed validation";
+            data.Message = "Your bill is {0}. Got a minute? Make a quick and easy payment on the myTNB app now. <br/><br/>Account: #accountName#";
             return data;
         }
     }

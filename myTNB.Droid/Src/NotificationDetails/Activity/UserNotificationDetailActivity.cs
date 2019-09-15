@@ -1,20 +1,27 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Support.Design.Widget;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
+using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
+using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.NotificationDetails.Models;
 using myTNB_Android.Src.NotificationDetails.MVP;
 using myTNB_Android.Src.Notifications.Models;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
+using Refit;
 
 namespace myTNB_Android.Src.NotificationDetails.Activity
 {
@@ -30,12 +37,15 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         [BindView(Resource.Id.notificationDetailMessage)]
         TextView notificationDetailMessage;
 
+        [BindView(Resource.Id.rootView)]
+        ViewGroup rootView;
+
         Models.NotificationDetails notificationDetails;
         UserNotificationData userNotificationData;
         int position;
         UserNotificationDetailPresenter mPresenter;
         AlertDialog removeDialog;
-
+        private LoadingOverlay loadingOverlay;
 
         public override int ResourceId()
         {
@@ -101,7 +111,8 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                 }
                 SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
                 //SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
-
+                TextViewUtils.SetMuseoSans500Typeface(notificationDetailTitle);
+                TextViewUtils.SetMuseoSans300Typeface(notificationDetailMessage);
                 mPresenter.EvaluateDetail(notificationDetails);
                 RenderUI();
             }
@@ -136,9 +147,101 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
         }
 
+        private Snackbar mCancelledExceptionSnackBar;
+        public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
+        {
+            if (mCancelledExceptionSnackBar != null && mCancelledExceptionSnackBar.IsShown)
+            {
+                mCancelledExceptionSnackBar.Dismiss();
+            }
+
+            mCancelledExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_detail_cancelled_exception_error), Snackbar.LengthIndefinite)
+            .SetAction(GetString(Resource.String.notification_detail_cancelled_exception_btn_close), delegate
+            {
+
+                mCancelledExceptionSnackBar.Dismiss();
+
+            }
+            );
+            mCancelledExceptionSnackBar.Show();
+
+        }
+
+        private Snackbar mApiExcecptionSnackBar;
+        public void ShowRetryOptionsApiException(ApiException apiException)
+        {
+            if (mApiExcecptionSnackBar != null && mApiExcecptionSnackBar.IsShown)
+            {
+                mApiExcecptionSnackBar.Dismiss();
+            }
+
+            mApiExcecptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_detail_api_exception_error), Snackbar.LengthIndefinite)
+            .SetAction(GetString(Resource.String.notification_detail_api_exception_btn_close), delegate
+            {
+
+                mApiExcecptionSnackBar.Dismiss();
+
+            }
+            );
+            mApiExcecptionSnackBar.Show();
+
+        }
+        private Snackbar mUknownExceptionSnackBar;
+        public void ShowRetryOptionsUnknownException(Exception exception)
+        {
+            if (mUknownExceptionSnackBar != null && mUknownExceptionSnackBar.IsShown)
+            {
+                mUknownExceptionSnackBar.Dismiss();
+
+            }
+
+            mUknownExceptionSnackBar = Snackbar.Make(rootView, GetString(Resource.String.notification_detail_unknown_exception_error), Snackbar.LengthIndefinite)
+            .SetAction(GetString(Resource.String.notification_detail_unknown_exception_btn_close), delegate
+            {
+
+                mUknownExceptionSnackBar.Dismiss();
+
+            }
+            );
+            mUknownExceptionSnackBar.Show();
+
+        }
+
+        public void ShowLoadingScreen()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideLoadingScreen()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void ViewBill()
         {
-            
         }
 
         public void PayNow()
@@ -154,6 +257,14 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         public void ViewUsage()
         {
             
+        }
+
+        public void ViewDetails(AccountData mSelectedAccountData, AccountChargeModel accountChargeModel)
+        {
+            Intent intent = new Intent(this, typeof(BillingDetailsActivity));
+            intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(mSelectedAccountData));
+            intent.PutExtra("SELECTED_BILL_DETAILS", JsonConvert.SerializeObject(accountChargeModel));
+            StartActivity(intent);
         }
     }
 }

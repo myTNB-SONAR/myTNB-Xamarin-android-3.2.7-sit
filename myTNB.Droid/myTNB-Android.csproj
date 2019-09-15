@@ -2490,6 +2490,14 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\notification_delete_disabled.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\notification_delete_active.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\notification_delete_disabled.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_smr_check_banner.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_smr_generic_banner.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\notification_smr_check_banner.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\notification_smr_generic_banner.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\notification_smr_check_banner.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\notification_smr_generic_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notification_smr_check_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notification_smr_generic_banner.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
