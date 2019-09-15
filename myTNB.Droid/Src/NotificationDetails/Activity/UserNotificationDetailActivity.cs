@@ -14,10 +14,12 @@ using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
+using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.NotificationDetails.Models;
 using myTNB_Android.Src.NotificationDetails.MVP;
+using myTNB_Android.Src.NotificationNewBill.Activity;
 using myTNB_Android.Src.Notifications.Models;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
@@ -241,10 +243,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
         }
 
-        public void ViewBill()
-        {
-        }
-
         public void PayNow(AccountData mSelectedAccountData)
         {
             Intent payment_activity = new Intent(this, typeof(SelectAccountsActivity));
@@ -262,9 +260,18 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
         }
 
-        public void ViewUsage()
+        public void ViewUsage(AccountData mSelectedAccountData)
         {
-            
+            //Intent payment_activity = new Intent(this, typeof(NotificationNewBillViewDetailsActivity));
+            //payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
+            //StartActivity(payment_activity);
+            CustomerBillingAccount.RemoveSelected();
+            CustomerBillingAccount.SetSelected(mSelectedAccountData.AccountNum);
+
+            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+            //DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            DashboardIntent.PutExtra("FROM_NOTIFICATION",true);
+            StartActivity(DashboardIntent);
         }
 
         public void ViewDetails(AccountData mSelectedAccountData, AccountChargeModel accountChargeModel)

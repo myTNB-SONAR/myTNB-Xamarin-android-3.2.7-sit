@@ -88,6 +88,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         private bool isBackButtonVisible = false;
 
+        private bool isFromNotification = false;
+
         private LoadingOverlay loadingOverlay;
 
         private string savedTimeStamp = "0000000";
@@ -162,6 +164,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 bottomNavigationView.Menu.FindItem(Resource.Id.menu_promotion).SetChecked(true);
                 this.userActionsListener?.OnMenuSelect(Resource.Id.menu_promotion);
             }
+
+            if (extras != null && extras.ContainsKey("FROM_NOTIFICATION"))
+            {
+                mPresenter.OnAccountSelectDashBoard();
+                isFromNotification = true;
+                alreadyStarted = true;
+            }
             Task.Factory.StartNew(() =>
             {
                 GetNotifications();
@@ -205,7 +214,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     currentFragment.GetType() == typeof(DashboardSmartMeterFragment) ||
                     currentFragment.GetType() == typeof(FeedbackMenuFragment))
                 {
-                    ShowHomeDashBoard();
+                    if (isFromNotification)
+                    {
+                        this.Finish();
+                    }
+                    else
+                    {
+                        ShowHomeDashBoard();
+                    }
                 }
                 else
                 {

@@ -116,7 +116,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                     case Constants.BCRM_NOTIFICATION_RECONNECTED_ID:
                         {
                             imageResourceBanner = Resource.Drawable.notification_reconnected_banner;
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("View My Usage", delegate () { mView.ViewBill(); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("View My Usage", delegate () { ViewMyUsage(notificationDetails); });
                             ctaList.Add(primaryCTA);
 
                             notificationDetailTitle = "Your Supply Has Been Reconnected";
@@ -137,14 +137,14 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         {
                             imageResourceBanner = Resource.Drawable.notification_new_bill_banner;
 
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Meter Reading", delegate () { mView.ViewBill(); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Meter Reading", delegate () { ViewBillDetails(notificationDetails); });
                             ctaList.Add(primaryCTA);
 
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_METER_READING_REMIND_ID:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Meter Reading", delegate () { mView.ViewBill(); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Meter Reading", delegate () { ViewBillDetails(notificationDetails); });
                             ctaList.Add(primaryCTA);
 
                             imageResourceBanner = Resource.Drawable.notification_smr_generic_banner;
@@ -152,7 +152,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_SMR_DISABLED_ID:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Bill", delegate () { mView.ViewBill(); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Bill", delegate () { ViewBillDetails(notificationDetails); });
                             ctaList.Add(primaryCTA);
 
                             secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
@@ -163,7 +163,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_SMR_APPLY_SUCCESS_ID:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Usage", delegate () { mView.ViewBill(); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Usage", delegate () { ViewMyUsage(notificationDetails); });
                             ctaList.Add(primaryCTA);
 
                             imageResourceBanner = Resource.Drawable.notification_smr_generic_banner;
@@ -181,7 +181,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         {
                             imageResourceBanner = Resource.Drawable.notification_smr_generic_banner;
 
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Re-enable Self Meter Reading", delegate () { mView.ViewBill(); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("Re-enable Self Meter Reading", delegate () { ViewBillDetails(notificationDetails); });
                             ctaList.Add(primaryCTA);
                             break;
                         }
@@ -285,6 +285,26 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             if (WeblinkEntity.HasRecord("TNBCLE"))
             {
                 this.mView.ContactUs(WeblinkEntity.GetByCode("TNBCLE"));
+            }
+        }
+
+        private void ViewMyUsage(Models.NotificationDetails notificationDetails)
+        {
+            AccountData accountData = new AccountData();
+            CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(notificationDetails.AccountNum);
+            CustomerBillingAccount.RemoveSelected();
+            CustomerBillingAccount.SetSelected(notificationDetails.AccountNum);
+
+            if (account != null)
+            {
+                accountData.AccountNum = account.AccNum;
+                accountData.AccountNickName = account.AccDesc;
+                accountData.AddStreet = account.AccountStAddress;
+                this.mView.ViewUsage(accountData);
+            }
+            else
+            {
+                this.mView.ShowRetryOptionsApiException(null);
             }
         }
 
