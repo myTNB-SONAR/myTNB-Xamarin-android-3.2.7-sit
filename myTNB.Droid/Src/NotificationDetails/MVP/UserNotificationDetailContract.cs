@@ -2,6 +2,7 @@
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using Refit;
 
 namespace myTNB_Android.Src.NotificationDetails.MVP
@@ -14,6 +15,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             void ContactUs(WeblinkEntity entity);
             void ViewUsage(AccountData mSelectedAccountData);
             void ViewDetails(AccountData mSelectedAccountData, AccountChargeModel accountChargeModel);
+            void SubmitMeterReading(AccountData mSelectedAccountData, SMRActivityInfoResponse SMRAccountActivityInfoResponse);
+            void EnableSelfMeterReading(AccountData mSelectedAccountData, CAContactDetailsModel contactDetailsModel);
             void ShowLoadingScreen();
             void HideLoadingScreen();
 

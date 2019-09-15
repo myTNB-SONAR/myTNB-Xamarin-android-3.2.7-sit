@@ -21,6 +21,8 @@ using myTNB_Android.Src.NotificationDetails.Models;
 using myTNB_Android.Src.NotificationDetails.MVP;
 using myTNB_Android.Src.NotificationNewBill.Activity;
 using myTNB_Android.Src.Notifications.Models;
+using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
+using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
@@ -280,6 +282,23 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(mSelectedAccountData));
             intent.PutExtra("SELECTED_BILL_DETAILS", JsonConvert.SerializeObject(accountChargeModel));
             StartActivity(intent);
+        }
+
+        public void SubmitMeterReading(AccountData mSelectedAccountData, SMRActivityInfoResponse SMRAccountActivityInfoResponse)
+        {
+            Intent ssmr_submit_meter_activity = new Intent(this, typeof(SubmitMeterReadingActivity));
+            ssmr_submit_meter_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
+            ssmr_submit_meter_activity.PutExtra(Constants.SMR_RESPONSE_KEY, JsonConvert.SerializeObject(SMRAccountActivityInfoResponse));
+            StartActivity(ssmr_submit_meter_activity);
+        }
+
+        public void EnableSelfMeterReading(AccountData mSelectedAccountData, CAContactDetailsModel contactDetailsModel)
+        {
+            Intent SSMRTerminateActivity = new Intent(this, typeof(myTNB_Android.Src.SSMRTerminate.MVP.SSMRTerminateActivity));
+            SSMRTerminateActivity.PutExtra("SMR_ACTION", Constants.SMR_ENABLE_FLAG);
+            SSMRTerminateActivity.PutExtra("SMR_CONTACT_DETAILS", JsonConvert.SerializeObject(contactDetailsModel));
+            SSMRTerminateActivity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
+            StartActivity(SSMRTerminateActivity);
         }
     }
 }

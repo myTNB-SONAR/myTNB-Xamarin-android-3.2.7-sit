@@ -1,13 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Threading;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Billing;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.NotificationDetails.Models;
+using myTNB_Android.Src.SSMR.SMRApplication.Api;
+using myTNB_Android.Src.SSMRMeterHistory.MVP;
+using myTNB_Android.Src.SSMRTerminate.Api;
 using myTNB_Android.Src.Utils;
 using Refit;
 using static myTNB_Android.Src.MyTNBService.Response.AccountChargesResponse;
@@ -20,6 +28,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         public NotificationDetailModel notificationDetailModel;
         List<NotificationDetailModel.NotificationCTA> ctaList;
         BillingApiImpl api;
+        SSMRTerminateImpl terminationApi;
         AccountData mSelectedAccountData;
         private static readonly Regex accountNamePattern = new Regex("#(.+?)#", RegexOptions.Compiled);
 
@@ -27,6 +36,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
         {
             mView = view;
             api = new BillingApiImpl();
+            terminationApi = new SSMRTerminateImpl();
         }
 
         public void EvaluateDetail(Models.NotificationDetails notificationDetails)
@@ -38,6 +48,8 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 int imageResourceBanner = 0;
                 string notificationDetailTitle = notificationDetails.Title;
                 string notificationDetailMessage = notificationDetails.Message;
+                CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(notificationDetails.AccountNum);
+
                 ctaList = new List<NotificationDetailModel.NotificationCTA>();
 
                 switch (notificationDetails.BCRMNotificationTypeId)
@@ -52,12 +64,9 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
                             ctaList.Add(secondaryCTA);
 
-                            notificationDetailTitle = "Your {0} Bill Is Ready";
-                            notificationDetailMessage = "Your bill is <b>{0}</b>. Got a minute? Make a quick and easy payment on the myTNB app now. <br/><br/>" +
-                                "Account: #name#";
-                            notificationDetailTitle = string.Format(notificationDetailTitle, "May 2019");
-                            string formatMessageString = string.Format(notificationDetailMessage, "RM 123.45");
-                            notificationDetailMessage = Utility.ReplaceValueByPattern(accountNamePattern, formatMessageString, "AccountNameValue");
+                            notificationDetailTitle = "Your May 2019 Bill Is Ready";
+                            notificationDetailMessage = "Your bill is RM 234.25. Got a minute? Make a quick and easy payment on the myTNB app now. <br/><br/>" +
+                                "Account: #accountName#";
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_BILL_DUE_ID:
@@ -70,12 +79,10 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
                             ctaList.Add(secondaryCTA);
 
-                            notificationDetailTitle = "Your {0} Bill Is Due";
-                            notificationDetailMessage = "Hi, Mohd Zulkifli! On <b>{0}</b>, your Apr 2019 TNB bill amounting to <b>{1}</b> will be due.<br/><br/>" +
-                                "No time to queue at TNB? No problem!Pay now on the myTNB app.Please disregard if paid.<br/><br/>Account: #name#";
-                            notificationDetailTitle = string.Format(notificationDetailTitle, "April 2019");
-                            string formatString = string.Format(notificationDetailMessage, "15 May", "RM 123.45");
-                            notificationDetailMessage = Utility.ReplaceValueByPattern(accountNamePattern, formatString, "AccountNameValue");
+                            notificationDetailTitle = "Your Apr 2019 Bill Is Due";
+                            notificationDetailMessage = "Hi, Mohd Zulkifli! On 15 May, your Apr 2019 TNB bill amounting to RM 76.65 will be due. <br/><br/>" +
+                                "No time to queue at TNB? No problem!Pay now on the myTNB app.Please disregard if paid.<br/><br/>" +
+                                "Account: #accountName#";
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_DISCONNECT_NOTICE_ID:
@@ -89,11 +96,9 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             ctaList.Add(secondaryCTA);
 
                             notificationDetailTitle = "Your Supply May Be Disconnected";
-                            notificationDetailMessage = "Urgent notice, Mohd Zulkifli. Your electricity supply may be disconnected between <b>{0}</b> if you haven't already paid the bill. No worries, just pay before <b>{1}</b> on the myTNB app and all will be well! <br/><br/> " +
+                            notificationDetailMessage = "Urgent notice, Mohd Zulkifli. Your electricity supply may be disconnected between 22 and 31 May if you haven't already paid the bill. No worries, just pay before 21 May on the myTNB app and all will be well! <br/><br/> " +
                                 "Account: #name#<br/><br/>" +
                                 "PS: Alternatively, you can pay via other methods too but it’s quicker and easier on the app!​";
-                            string formatString = string.Format(notificationDetailMessage, "22 and 31 May", "21 May");
-                            notificationDetailMessage = Utility.ReplaceValueByPattern(accountNamePattern, formatString, "AccountNameValue");
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_DISCONNECTED_ID:
@@ -110,7 +115,6 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             notificationDetailMessage = "Don't panic, you can make a full payment on the myTNB app and you'll see the light again!<br/><br/>" +
                                 "Account: #name#<br/><br/>" +
                                 "PS: Alternatively, you can pay via other methods too but it’s quicker and easier on the app!​";
-                            notificationDetailMessage = Utility.ReplaceValueByPattern(accountNamePattern, notificationDetailMessage, "AccountNameValue");
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_RECONNECTED_ID:
@@ -122,7 +126,6 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             notificationDetailTitle = "Your Supply Has Been Reconnected";
                             notificationDetailMessage = "Hooray, the lights are back on! Your account has been reconnected. Stay on top of your monthly payments and your usage with the myTNB app.<br/><br/>" +
                                 "Account: #name#";
-                            notificationDetailMessage = Utility.ReplaceValueByPattern(accountNamePattern, notificationDetailMessage, "AccountNameValue");
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_MAINTENANCE_ID:
@@ -137,14 +140,14 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         {
                             imageResourceBanner = Resource.Drawable.notification_new_bill_banner;
 
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Meter Reading", delegate () { ViewBillDetails(notificationDetails); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Meter Reading", delegate () { SubmitMeterReading(notificationDetails); });
                             ctaList.Add(primaryCTA);
 
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_METER_READING_REMIND_ID:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Meter Reading", delegate () { ViewBillDetails(notificationDetails); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Meter Reading", delegate () { SubmitMeterReading(notificationDetails); });
                             ctaList.Add(primaryCTA);
 
                             imageResourceBanner = Resource.Drawable.notification_smr_generic_banner;
@@ -152,18 +155,15 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_SMR_DISABLED_ID:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Bill", delegate () { ViewBillDetails(notificationDetails); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("Re-enable Self Meter Reading", delegate () { SubmitMeterReading(notificationDetails); });
                             ctaList.Add(primaryCTA);
-
-                            secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
-                            ctaList.Add(secondaryCTA);
 
                             imageResourceBanner = Resource.Drawable.notification_new_bill_banner;
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_SMR_APPLY_SUCCESS_ID:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Usage", delegate () { ViewMyUsage(notificationDetails); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("View Usage", delegate () { SubmitMeterReading(notificationDetails); });
                             ctaList.Add(primaryCTA);
 
                             imageResourceBanner = Resource.Drawable.notification_smr_generic_banner;
@@ -181,7 +181,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         {
                             imageResourceBanner = Resource.Drawable.notification_smr_generic_banner;
 
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Re-enable Self Meter Reading", delegate () { ViewBillDetails(notificationDetails); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("Re-enable Self Meter Reading", delegate () { SubmitMeterReading(notificationDetails); });
                             ctaList.Add(primaryCTA);
                             break;
                         }
@@ -197,7 +197,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         imageResourceBanner = Resource.Drawable.notification_generic_banner;
                         break;
                 }
-
+                notificationDetailMessage = Utility.ReplaceValueByPattern(accountNamePattern, notificationDetailMessage, customerBillingAccount.AccDesc);
                 notificationDetailModel = new NotificationDetailModel(imageResourceBanner, notificationDetailTitle,
                     notificationDetailMessage, ctaList);
             }
@@ -305,6 +305,150 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             else
             {
                 this.mView.ShowRetryOptionsApiException(null);
+            }
+        }
+
+        private async void SubmitMeterReading(Models.NotificationDetails notificationDetails)
+        {
+            try
+            {
+                CancellationTokenSource cts = new CancellationTokenSource();
+                CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(notificationDetails.AccountNum);
+                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = UserEntity.GetActive().Email,
+                    sspuid = UserEntity.GetActive().UserID,
+                    did = "",
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+
+#if DEBUG
+                var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
+                var ssmrAccountAPI = RestService.For<ISMRAccountActivityInfoApi>(httpClient);
+
+#else
+            var ssmrAccountAPI = RestService.For<ISMRAccountActivityInfoApi>(Constants.SERVER_URL.END_POINT);
+#endif 
+
+                SMRActivityInfoResponse SMRAccountActivityInfoResponse = await ssmrAccountAPI.GetSMRAccountActivityInfo(new myTNB_Android.Src.myTNBMenu.Requests.SMRAccountActivityInfoRequest()
+                {
+                    AccountNumber = customerBillingAccount.AccNum,
+                    IsOwnedAccount = customerBillingAccount.isOwned ? "true" : "false",
+                    userInterface = currentUsrInf
+                }, cts.Token);
+
+
+                if (SMRAccountActivityInfoResponse != null && SMRAccountActivityInfoResponse.Response != null && SMRAccountActivityInfoResponse.Response.ErrorCode == "7200")
+                {
+                    SMRPopUpUtils.OnSetSMRActivityInfoResponse(SMRAccountActivityInfoResponse);
+                    AccountData accountData = new AccountData();
+                    accountData.AccountNum = notificationDetails.AccountNum;
+                    this.mView.SubmitMeterReading(accountData, SMRAccountActivityInfoResponse);
+                }
+                else
+                {
+                    this.mView.ShowRetryOptionsApiException(null);
+                }
+            }
+            catch (System.OperationCanceledException e)
+            {
+                // ADD OPERATION CANCELLED HERE
+                this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                // ADD UNKNOWN EXCEPTION HERE
+                this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public async void EnableSelfMeterReading(AccountData selectedAccount)
+        {
+            try
+            {
+                CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
+                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+
+                //AccountData accountData = new AccountData();
+                //SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
+                //accountData.AccountNum = selectedAccountNumber;
+                //accountData.AddStreet = eligibleAccount.accountAddress;
+                //accountData.AccountNickName = eligibleAccount.accountName;
+                //SMR_ACTION_KEY = Constants.SMR_ENABLE_FLAG;
+                //this.mPresenter.GetCARegisteredContactInfoAsync(accountData);
+
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = UserEntity.GetActive().Email,
+                    sspuid = UserEntity.GetActive().UserID,
+                    did = "",
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+
+                CARegisteredContactInfoResponse response = await this.terminationApi.GetCARegisteredContactInfo(new GetRegisteredContactInfoRequest()
+                {
+                    AccountNumber = selectedAccount.AccountNum,
+                    IsOwnedAccount = "true",
+                    ICNumber = account.ICNum,
+                    usrInf = currentUsrInf
+                });
+
+                if (response.Data.ErrorCode == "7200")
+                {
+                    CAContactDetailsModel contactDetailsModel = new CAContactDetailsModel();
+                    contactDetailsModel.email = response.Data.AccountDetailsData.Email;
+                    contactDetailsModel.mobile = response.Data.AccountDetailsData.Mobile;
+                    contactDetailsModel.isAllowEdit = response.Data.AccountDetailsData.isAllowEdit;
+
+                    AccountData accountData = new AccountData();
+                    accountData.AccountNum = selectedAccount.AccountNum;
+                    accountData.AddStreet = account.AccountStAddress;
+                    accountData.AccountNickName = account.AccDesc;
+
+                    this.mView.EnableSelfMeterReading(accountData, contactDetailsModel);
+                }
+                else
+                {
+                    this.mView.ShowRetryOptionsApiException(null);
+                }
+            }
+            catch (System.OperationCanceledException e)
+            {
+                // ADD OPERATION CANCELLED HERE
+                this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                // ADD UNKNOWN EXCEPTION HERE
+                this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
             }
         }
 
