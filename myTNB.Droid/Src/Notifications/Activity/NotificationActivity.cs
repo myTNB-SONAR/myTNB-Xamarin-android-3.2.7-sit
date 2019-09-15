@@ -140,7 +140,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                 Bundle extras = Intent.Extras;
                 if (extras != null && extras.ContainsKey(Constants.HAS_NOTIFICATION) && extras.GetBoolean(Constants.HAS_NOTIFICATION))
                 {
-                    hasNotification = true;
+                    this.userActionsListener.QueryOnLoad(this.DeviceId());
                 }
             }
             catch (Exception e)
@@ -157,21 +157,21 @@ namespace myTNB_Android.Src.Notifications.Activity
             notificationMenu.FindItem(Resource.Id.action_notification_read).SetIcon(GetDrawable(Resource.Drawable.ic_header_markread)).SetVisible(false);
             notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(true);
             int count = UserNotificationEntity.Count();
-            if (hasNotification)
-            {
-                this.userActionsListener.QueryOnLoad(this.DeviceId());
-            }
-            else if (count == 0)
-            {
-                ShowQueryProgress();
-                this.userActionsListener.QueryOnLoad(this.DeviceId());
-                ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
-            }
-            else
-            {
-                ShowQueryProgress();
-                this.userActionsListener.QueryNotifications(this.DeviceId());
-            }
+            //if (hasNotification)
+            //{
+            //    this.userActionsListener.QueryOnLoad(this.DeviceId());
+            //}
+            //else if (count == 0)
+            //{
+            //    ShowQueryProgress();
+            //    this.userActionsListener.QueryOnLoad(this.DeviceId());
+            //    ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
+            //}
+            //else
+            //{
+            //    ShowQueryProgress();
+            //    this.userActionsListener.QueryNotifications(this.DeviceId());
+            //}
             return base.OnCreateOptionsMenu(menu);
         }
 
@@ -522,7 +522,6 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         public void ShowView()
         {
-            this.userActionsListener.ShowFilteredList();
             ShowSelectAllOption(ViewStates.Visible);
             notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.notification_delete_active);
             notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetVisible(false);

@@ -24,7 +24,7 @@ namespace myTNB_Android.Src.MyTNBService.Notification
         }
         public Task<T> DeleteUserNotification<T>([Body] APIBaseRequest request)
         {
-            throw new NotImplementedException();
+            return api.DeleteUserNotification<T>(request);
         }
 
         public Task<T> GetNotificationDetailedInfo<T>([Body] APIBaseRequest request)
@@ -39,7 +39,7 @@ namespace myTNB_Android.Src.MyTNBService.Notification
 
         public Task<T> ReadUserNotification<T>([Body] APIBaseRequest request)
         {
-            throw new NotImplementedException();
+            return api.ReadUserNotification<T>(request);
         }
     }
 }

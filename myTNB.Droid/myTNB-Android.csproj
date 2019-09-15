@@ -2498,6 +2498,10 @@
     <AndroidResource Include="Resources\drawable-xhdpi\notification_smr_generic_banner.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\notification_smr_check_banner.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\notification_smr_generic_banner.png" />
+    <Compile Include="Src\MyTNBService\Request\UserNotificationDeleteRequest.cs" />
+    <Compile Include="Src\MyTNBService\Request\UserNotificationReadRequest.cs" />
+    <Compile Include="Src\MyTNBService\Response\UserNotificationDeleteResponse.cs" />
+    <Compile Include="Src\MyTNBService\Response\UserNotificationReadResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

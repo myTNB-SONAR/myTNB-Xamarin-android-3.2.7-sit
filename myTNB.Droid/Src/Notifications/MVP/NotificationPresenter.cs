@@ -51,6 +51,9 @@ namespace myTNB_Android.Src.Notifications.MVP
         private async Task InvokeNotificationApi(API_ACTION apiAction)
         {
             NotificationApiResponse notificationApiResponse = null;
+            UserNotificationDeleteResponse notificationDeleteResponse = null;
+            UserNotificationReadResponse notificationReadResponse = null;
+
             selectedNotificationList = new List<UserNotificationData>();
             foreach (UserNotificationData notification in this.mView.GetNotificationList())
             {
@@ -65,8 +68,8 @@ namespace myTNB_Android.Src.Notifications.MVP
                 switch (apiAction)
                 {
                     case API_ACTION.DELETE:
-                        notificationApiResponse = await notificationApi.DeleteUserNotification(this.mView.GetDeviceId(), selectedNotificationList);
-                        if (!notificationApiResponse.Data.IsError)
+                        notificationDeleteResponse = await notificationAPI.DeleteUserNotification<UserNotificationDeleteResponse>(new UserNotificationDeleteRequest(selectedNotificationList));
+                        if (notificationDeleteResponse.Data.ErrorCode == "7200")
                         {
                             foreach (UserNotificationData userNotificationData in selectedNotificationList)
                             {
@@ -74,10 +77,15 @@ namespace myTNB_Android.Src.Notifications.MVP
                             }
                             this.mView.UpdateDeleteNotifications();
                         }
+                        else
+                        {
+                            this.mView.ShowFailedErrorMessage(notificationDeleteResponse.Data.ErrorMessage);
+                            this.mView.OnFailedNotificationAction();
+                        }
                         break;
                     case API_ACTION.READ:
-                        notificationApiResponse = await notificationApi.ReadUserNotification(this.mView.GetDeviceId(), selectedNotificationList);
-                        if (!notificationApiResponse.Data.IsError)
+                        notificationReadResponse = await notificationAPI.ReadUserNotification<UserNotificationReadResponse>(new UserNotificationReadRequest(selectedNotificationList));
+                        if (notificationReadResponse.Data.ErrorCode == "7200")
                         {
                             foreach(UserNotificationData userNotificationData in selectedNotificationList)
                             {
@@ -85,12 +93,12 @@ namespace myTNB_Android.Src.Notifications.MVP
                             }
                             this.mView.UpdateReadNotifications();
                         }
+                        else
+                        {
+                            this.mView.ShowFailedErrorMessage(notificationReadResponse.Data.ErrorMessage);
+                            this.mView.OnFailedNotificationAction();
+                        }
                         break;
-                }
-                if (notificationApiResponse.Data.IsError)
-                {
-                    this.mView.ShowFailedErrorMessage(notificationApiResponse.Data.Message);
-                    this.mView.OnFailedNotificationAction();
                 }
             }
             catch (System.OperationCanceledException e)
@@ -164,21 +172,19 @@ namespace myTNB_Android.Src.Notifications.MVP
             try
             {
                 this.mView.ShowProgress();
-                //UserNotificationDetailsRequest request = new UserNotificationDetailsRequest(userNotification.NotificationTypeId, userNotification.NotificationType);
-                //UserNotificationDetailsResponse response = await notificationAPI.GetNotificationDetailedInfo<UserNotificationDetailsResponse>(request);
-                //if (response.Data.ErrorCode == "7200")
-                //{
-                //    UserNotificationEntity.UpdateIsRead(response.Data.ResponseData.UserNotificationDetail.Id, true);
-                //    this.mView.ShowDetails(response.Data.ResponseData.UserNotificationDetail, userNotification, position);
-                //    //NotificationTypesEntity entity = NotificationTypesEntity.GetById(userNotification.NotificationTypeId);
+                UserNotificationDetailsRequest request = new UserNotificationDetailsRequest(userNotification.Id, userNotification.NotificationTypeId);
+                UserNotificationDetailsResponse response = await notificationAPI.GetNotificationDetailedInfo<UserNotificationDetailsResponse>(request);
+                if (response.Data.ErrorCode == "7200")
+                {
+                    UserNotificationEntity.UpdateIsRead(response.Data.ResponseData.UserNotificationDetail.Id, true);
+                    this.mView.ShowDetails(response.Data.ResponseData.UserNotificationDetail, userNotification, position);
+                }
+                else
+                {
+                    this.mView.ShowRetryOptionsCancelledException(null);
+                }
 
-                //    //if (entity != null)
-                //    //{
-                //    //    this.mView.ShowDetails(response.Data.ResponseData.UserNotificationDetail, userNotification, position);
-                //    //}
-                //}
-
-                this.mView.ShowDetails(GetMockDetails(userNotification.BCRMNotificationTypeId), userNotification, position);
+                //this.mView.ShowDetails(GetMockDetails(userNotification.BCRMNotificationTypeId), userNotification, position);
                 this.mView.HideProgress();
             }
             catch (System.OperationCanceledException e)
@@ -343,41 +349,14 @@ namespace myTNB_Android.Src.Notifications.MVP
                         {
                             try
                             {
-                                UserEntity loggedUser = UserEntity.GetActive();
-                                var userNotificationResponse = await api.GetUserNotifications(new AppLaunch.Requests.UserNotificationRequest()
+                                NotificationApiImpl notificationAPI = new NotificationApiImpl();
+                                MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
+                                if (response.Data.ErrorCode == "7200")
                                 {
-                                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                                    Email = loggedUser.Email,
-                                    DeviceId = deviceId
-
-                                }, cts.Token);
-
-                                if (mView.IsActive())
-                                {
-                                    this.mView.HideQueryProgress();
-                                }
-
-                                if (userNotificationResponse != null && userNotificationResponse.Data != null && userNotificationResponse.Data.Status.ToUpper() == Constants.REFRESH_MODE)
-                                {
-                                    this.mView.ShowRefreshView(userNotificationResponse.Data.RefreshMessage, userNotificationResponse.Data.RefreshBtnText);
-                                }
-                                else if (userNotificationResponse != null && userNotificationResponse.Data != null && !userNotificationResponse.Data.IsError)
-                                {
-                                    if (userNotificationResponse.Data.Data.Count() > 0)
-                                    {
-                                        try
-                                        {
-                                            UserNotificationEntity.RemoveAll();
-                                        }
-                                        catch (System.Exception ne)
-                                        {
-                                            Utility.LoggingNonFatalError(ne);
-                                        }
-                                    }
-                                    foreach (UserNotification userNotification in userNotificationResponse.Data.Data)
+                                    foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
                                     {
                                         // tODO : SAVE ALL NOTIFICATIONs
-                                        UserNotificationEntity.InsertOrReplace(userNotification);
+                                        int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
                                     }
                                     this.mView.ShowView();
                                     this.mView.ClearAdapter();
@@ -385,7 +364,12 @@ namespace myTNB_Android.Src.Notifications.MVP
                                 }
                                 else
                                 {
-                                    this.mView.ShowRefreshView(null, null);
+                                    this.mView.ShowRefreshView(response.Data.RefreshMessage, response.Data.RefreshBtnText);
+                                }
+
+                                if (mView.IsActive())
+                                {
+                                    this.mView.HideQueryProgress();
                                 }
                             }
                             catch (ApiException apiException)
@@ -596,157 +580,113 @@ namespace myTNB_Android.Src.Notifications.MVP
                     }
                 }
 
-                //if (notificationData.BCRMNotificationTypeId.Equals("01"))
-                //{
-                //    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_new_bill));
-                //}
-                //else if (notificationData.BCRMNotificationTypeId.Equals("02"))
-                //{
-                //    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_bill_due));
-                //}
-                //else if (notificationData.BCRMNotificationTypeId.Equals("03"))
-                //{
-                //    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_dunning_disconnection));
-                //}
-                //else if (notificationData.BCRMNotificationTypeId.Equals("04"))
-                //{
-                //    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_disconnection));
-                //}
-                //else if (notificationData.BCRMNotificationTypeId.Equals("05"))
-                //{
-                //    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_reconnection));
-                //}
-                //else if (notificationData.BCRMNotificationTypeId.Equals("06"))
-                //{
-                //    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_smr));
-                //}
-                ////else if (notificationData.BCRMNotificationTypeId.Equals("97"))
-                ////{
-                ////    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_promo));
-                ////}
-                ////else if (notificationData.BCRMNotificationTypeId.Equals("98"))
-                ////{
-                ////    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_news));
-                ////}
-                //else if (notificationData.BCRMNotificationTypeId.Equals("99"))
-                //{
-                //    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_settings));
-                //}
+                ////MOCK DATA
+                //listOfNotifications.Clear();
+                //UserNotificationData data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "01";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "New Bill";
+                //data.Message = "Dear customer, your TNB bill RM5…";
+                //listOfNotifications.Add(data);
 
-                listOfNotifications.Clear();
-                UserNotificationData data = new UserNotificationData();
-                data.BCRMNotificationTypeId = "01";
-                data.CreatedDate = "9/1/2019 5:00:00 PM";
-                data.IsRead = false;
-                data.Title = "New Bill";
-                data.Message = "Dear customer, your TNB bill RM5…";
-                listOfNotifications.Add(data);
+                //data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "02";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "Bill Due";
+                //data.Message = "Dear customer, your Sep 2017 bill… ";
+                //listOfNotifications.Add(data);
 
-                data = new UserNotificationData();
-                data.BCRMNotificationTypeId = "02";
-                data.CreatedDate = "9/1/2019 5:00:00 PM";
-                data.IsRead = false;
-                data.Title = "Bill Due";
-                data.Message = "Dear customer, your Sep 2017 bill… ";
-                listOfNotifications.Add(data);
+                //data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "03";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "Disconnection Notice";
+                //data.Message = "Dear customer, enjoy special promo…";
+                //listOfNotifications.Add(data);
 
-                data = new UserNotificationData();
-                data.BCRMNotificationTypeId = "03";
-                data.CreatedDate = "9/1/2019 5:00:00 PM";
-                data.IsRead = false;
-                data.Title = "Disconnection Notice";
-                data.Message = "Dear customer, enjoy special promo…";
-                listOfNotifications.Add(data);
+                //data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "04";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "Disconnection";
+                //data.Message = "Dear customer, your connection…";
+                //listOfNotifications.Add(data);
 
-                data = new UserNotificationData();
-                data.BCRMNotificationTypeId = "04";
-                data.CreatedDate = "9/1/2019 5:00:00 PM";
-                data.IsRead = false;
-                data.Title = "Disconnection";
-                data.Message = "Dear customer, your connection…";
-                listOfNotifications.Add(data);
+                //data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "05";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "Reconnection";
+                //data.Message = "Dear customer, your connection…";
+                //listOfNotifications.Add(data);
 
-                data = new UserNotificationData();
-                data.BCRMNotificationTypeId = "05";
-                data.CreatedDate = "9/1/2019 5:00:00 PM";
-                data.IsRead = false;
-                data.Title = "Reconnection";
-                data.Message = "Dear customer, your connection…";
-                listOfNotifications.Add(data);
+                //data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "99";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "Maintenance";
+                //data.Message = "Dear customer, kindly be informed…";
+                //data.NotificationType = "1000011";
+                //data.NotificationTypeId = "1001";
+                //listOfNotifications.Add(data);
 
-                data = new UserNotificationData();
-                data.BCRMNotificationTypeId = "99";
-                data.CreatedDate = "9/1/2019 5:00:00 PM";
-                data.IsRead = false;
-                data.Title = "Maintenance";
-                data.Message = "Dear customer, kindly be informed…";
-                data.NotificationType = "1000011";
-                data.NotificationTypeId = "1001";
-                listOfNotifications.Add(data);
+                //data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "0009";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "Self Meter Reading Open";
+                //data.Message = "Dear customer, submit your meter…";
+                //listOfNotifications.Add(data);
 
-                //        public const string BCRM_NOTIFICATION_METER_READING_OPEN_ID = "0009";
-                //public const string BCRM_NOTIFICATION_METER_READING_REMIND_ID = "0010";
-                //public const string BCRM_NOTIFICATION_SMR_DISABLED_ID = "0011";
-                //public const string BCRM_NOTIFICATION_SMR_APPLY_SUCCESS_ID = "50";
-                //public const string BCRM_NOTIFICATION_SMR_APPLY_FAILED_ID = "51";
-                //public const string BCRM_NOTIFICATION_SMR_DISABLED_SUCCESS_ID = "52";
-                //public const string BCRM_NOTIFICATION_SMR_DISABLED_FAILED_ID = "53";
+                //data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "0010";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "Self Meter Reading Remind";
+                //data.Message = "Dear customer, submit your meter…";
+                //listOfNotifications.Add(data);
 
-                data = new UserNotificationData();
-                data.BCRMNotificationTypeId = "0009";
-                data.CreatedDate = "9/1/2019 5:00:00 PM";
-                data.IsRead = false;
-                data.Title = "Self Meter Reading Open";
-                data.Message = "Dear customer, submit your meter…";
-                listOfNotifications.Add(data);
+                //data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "0011";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "Self Meter Reading Disabled";
+                //data.Message = "Dear customer, submit your meter…";
+                //listOfNotifications.Add(data);
 
-                data = new UserNotificationData();
-                data.BCRMNotificationTypeId = "0010";
-                data.CreatedDate = "9/1/2019 5:00:00 PM";
-                data.IsRead = false;
-                data.Title = "Self Meter Reading Remind";
-                data.Message = "Dear customer, submit your meter…";
-                listOfNotifications.Add(data);
+                //data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "50";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "Self Meter Reading Application Success";
+                //data.Message = "Dear customer, submit your meter…";
+                //listOfNotifications.Add(data);
 
-                data = new UserNotificationData();
-                data.BCRMNotificationTypeId = "0011";
-                data.CreatedDate = "9/1/2019 5:00:00 PM";
-                data.IsRead = false;
-                data.Title = "Self Meter Reading Disabled";
-                data.Message = "Dear customer, submit your meter…";
-                listOfNotifications.Add(data);
+                //data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "51";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "Self Meter Reading Application Failed";
+                //data.Message = "Dear customer, submit your meter…";
+                //listOfNotifications.Add(data);
 
-                data = new UserNotificationData();
-                data.BCRMNotificationTypeId = "50";
-                data.CreatedDate = "9/1/2019 5:00:00 PM";
-                data.IsRead = false;
-                data.Title = "Self Meter Reading Application Success";
-                data.Message = "Dear customer, submit your meter…";
-                listOfNotifications.Add(data);
+                //data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "52";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "Self Meter Reading Disabled Success";
+                //data.Message = "Dear customer, submit your meter…";
+                //listOfNotifications.Add(data);
 
-                data = new UserNotificationData();
-                data.BCRMNotificationTypeId = "51";
-                data.CreatedDate = "9/1/2019 5:00:00 PM";
-                data.IsRead = false;
-                data.Title = "Self Meter Reading Application Failed";
-                data.Message = "Dear customer, submit your meter…";
-                listOfNotifications.Add(data);
-
-                data = new UserNotificationData();
-                data.BCRMNotificationTypeId = "52";
-                data.CreatedDate = "9/1/2019 5:00:00 PM";
-                data.IsRead = false;
-                data.Title = "Self Meter Reading Disabled Success";
-                data.Message = "Dear customer, submit your meter…";
-                listOfNotifications.Add(data);
-
-                data = new UserNotificationData();
-                data.BCRMNotificationTypeId = "53";
-                data.CreatedDate = "9/1/2019 5:00:00 PM";
-                data.IsRead = false;
-                data.Title = "Self Meter Reading Disabled Failed";
-                data.Message = "Dear customer, submit your meter…";
-                listOfNotifications.Add(data);
+                //data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "53";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "Self Meter Reading Disabled Failed";
+                //data.Message = "Dear customer, submit your meter…";
+                //listOfNotifications.Add(data);
 
                 this.mView.ShowNotificationsList(listOfNotifications);
             }

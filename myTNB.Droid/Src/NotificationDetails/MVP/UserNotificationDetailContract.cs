@@ -37,6 +37,11 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             /// </summary>
             /// <param name="exception"></param>
             void ShowRetryOptionsUnknownException(Exception exception);
+
+            /// <summary>
+            /// Show notification list as deleted
+            /// </summary>
+            void ShowNotificationListAsDeleted();
         }
     }
 }

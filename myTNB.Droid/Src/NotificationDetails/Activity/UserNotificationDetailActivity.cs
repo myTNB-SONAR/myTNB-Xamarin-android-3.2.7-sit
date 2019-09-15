@@ -90,7 +90,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                         .SetPositiveButton(Resource.String.notification_detail_remove_notification_positive_btn,
                         delegate
                         {
-                            //this.userActionsListener.OnRemoveNotification(notificationDetails);
+                            mPresenter.DeleteNotificationDetail(notificationDetails);
                         })
                         .Show();
                     return true;
@@ -158,7 +158,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     position = extras.GetInt(Constants.SELECTED_NOTIFICATION_ITEM_POSITION);
                 }
                 SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
-                //SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 TextViewUtils.SetMuseoSans500Typeface(notificationDetailTitle);
                 TextViewUtils.SetMuseoSans300Typeface(notificationDetailMessage);
                 mPresenter.EvaluateDetail(notificationDetails);
@@ -175,32 +174,55 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             try
             {
                 NotificationDetailModel detailModel = mPresenter.GetNotificationDetailModel();
-                notificationDetailBannerImg.SetImageResource(detailModel.imageResourceBanner);
-                notificationDetailTitle.Text = detailModel.title;
-                notificationDetailMessage.TextFormatted = GetFormattedText(detailModel.message);
-
-                clickableSpan.Click += delegate
-                {
-                    OnClickSpan(detailModel.message);
-                };
-                notificationDetailMessage.TextFormatted = Utility.GetFormattedURLString(clickableSpan, notificationDetailMessage.TextFormatted);
-                notificationDetailMessage.MovementMethod = new LinkMovementMethod();
-
                 NotificationDetailCTAComponent ctaComponent = FindViewById<NotificationDetailCTAComponent>(Resource.Id.notificationCTAComponent);
-                if (detailModel.ctaList.Count > 0)
+                if (detailModel != null)
                 {
+                    notificationDetailBannerImg.Visibility = ViewStates.Visible;
+                    notificationDetailTitle.Visibility = ViewStates.Visible;
+                    notificationDetailMessage.Visibility = ViewStates.Visible;
                     ctaComponent.Visibility = ViewStates.Visible;
+
+                    notificationDetailBannerImg.SetImageResource(detailModel.imageResourceBanner);
+                    notificationDetailTitle.Text = detailModel.title;
+                    notificationDetailMessage.TextFormatted = GetFormattedText(detailModel.message);
+
+                    clickableSpan.Click += delegate
+                    {
+                        OnClickSpan(detailModel.message);
+                    };
+                    notificationDetailMessage.TextFormatted = Utility.GetFormattedURLString(clickableSpan, notificationDetailMessage.TextFormatted);
+                    notificationDetailMessage.MovementMethod = new LinkMovementMethod();
+
+                    if (detailModel.ctaList.Count > 0)
+                    {
+                        ctaComponent.Visibility = ViewStates.Visible;
+                        ctaComponent.SetCTAButton(detailModel.ctaList);
+                    }
+                    else
+                    {
+                        ctaComponent.Visibility = ViewStates.Gone;
+                    }
                 }
                 else
                 {
+                    notificationDetailTitle.Visibility = ViewStates.Gone;
+                    notificationDetailMessage.Visibility = ViewStates.Gone;
                     ctaComponent.Visibility = ViewStates.Gone;
                 }
-                ctaComponent.SetCTAButton(detailModel.ctaList);
             }
             catch(Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void ShowNotificationListAsDeleted()
+        {
+            Intent result = new Intent();
+            result.PutExtra(Constants.SELECTED_NOTIFICATION_ITEM_POSITION, position);
+            result.PutExtra(Constants.ACTION_IS_DELETE, true);
+            SetResult(Result.Ok, result);
+            Finish();
         }
 
         private Snackbar mCancelledExceptionSnackBar;
@@ -315,14 +337,10 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
 
         public void ViewUsage(AccountData mSelectedAccountData)
         {
-            //Intent payment_activity = new Intent(this, typeof(NotificationNewBillViewDetailsActivity));
-            //payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
-            //StartActivity(payment_activity);
             CustomerBillingAccount.RemoveSelected();
             CustomerBillingAccount.SetSelected(mSelectedAccountData.AccountNum);
 
             Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
-            //DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             DashboardIntent.PutExtra("FROM_NOTIFICATION",true);
             StartActivity(DashboardIntent);
         }

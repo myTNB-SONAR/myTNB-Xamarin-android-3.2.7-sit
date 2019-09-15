@@ -10,6 +10,7 @@ using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Billing;
 using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.NotificationDetails.Models;
@@ -18,6 +19,7 @@ using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.SSMRTerminate.Api;
 using myTNB_Android.Src.Utils;
 using Refit;
+using static myTNB_Android.Src.AppLaunch.Models.UserNotificationResponse;
 using static myTNB_Android.Src.MyTNBService.Response.AccountChargesResponse;
 
 namespace myTNB_Android.Src.NotificationDetails.MVP
@@ -64,9 +66,9 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
                             ctaList.Add(secondaryCTA);
 
-                            notificationDetailTitle = "Your May 2019 Bill Is Ready";
-                            notificationDetailMessage = "Your bill is RM 234.25. Got a minute? Make a quick and easy payment on the myTNB app now. <br/><br/>" +
-                                "Account: #accountName#";
+                            //notificationDetailTitle = "Your May 2019 Bill Is Ready";
+                            //notificationDetailMessage = "Your bill is RM 234.25. Got a minute? Make a quick and easy payment on the myTNB app now. <br/><br/>" +
+                            //    "Account: #accountName#";
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_BILL_DUE_ID:
@@ -79,10 +81,10 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
                             ctaList.Add(secondaryCTA);
 
-                            notificationDetailTitle = "Your Apr 2019 Bill Is Due";
-                            notificationDetailMessage = "Hi, Mohd Zulkifli! On 15 May, your Apr 2019 TNB bill amounting to RM 76.65 will be due. <br/><br/>" +
-                                "No time to queue at TNB? No problem!Pay now on the myTNB app.Please disregard if paid.<br/><br/>" +
-                                "Account: #accountName#";
+                            //notificationDetailTitle = "Your Apr 2019 Bill Is Due";
+                            //notificationDetailMessage = "Hi, Mohd Zulkifli! On 15 May, your Apr 2019 TNB bill amounting to RM 76.65 will be due. <br/><br/>" +
+                            //    "No time to queue at TNB? No problem!Pay now on the myTNB app.Please disregard if paid.<br/><br/>" +
+                            //    "Account: #accountName#";
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_DISCONNECT_NOTICE_ID:
@@ -95,10 +97,10 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
                             ctaList.Add(secondaryCTA);
 
-                            notificationDetailTitle = "Your Supply May Be Disconnected";
-                            notificationDetailMessage = "Urgent notice, Mohd Zulkifli. Your electricity supply may be disconnected between 22 and 31 May if you haven't already paid the bill. No worries, just pay before 21 May on the myTNB app and all will be well! <br/><br/> " +
-                                "Account: #name#<br/><br/>" +
-                                "PS: Alternatively, you can pay via <a href=\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">other methods</a> too but it’s quicker and easier on the app!​";
+                            //notificationDetailTitle = "Your Supply May Be Disconnected";
+                            //notificationDetailMessage = "Urgent notice, Mohd Zulkifli. Your electricity supply may be disconnected between 22 and 31 May if you haven't already paid the bill. No worries, just pay before 21 May on the myTNB app and all will be well! <br/><br/> " +
+                            //    "Account: #name#<br/><br/>" +
+                            //    "PS: Alternatively, you can pay via <a href=\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">other methods</a> too but it’s quicker and easier on the app!​";
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_DISCONNECTED_ID:
@@ -111,10 +113,10 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             secondaryCTA = new NotificationDetailModel.NotificationCTA("Pay Now", delegate () { PayNow(notificationDetails); });
                             ctaList.Add(secondaryCTA);
 
-                            notificationDetailTitle = "Your Supply Has Been Disconnected";
-                            notificationDetailMessage = "Don't panic, you can make a full payment on the myTNB app and you'll see the light again!<br/><br/>" +
-                                "Account: #name#<br/><br/>" +
-                                "PS: Alternatively, you can pay via other methods too but it’s quicker and easier on the app!​";
+                            //notificationDetailTitle = "Your Supply Has Been Disconnected";
+                            //notificationDetailMessage = "Don't panic, you can make a full payment on the myTNB app and you'll see the light again!<br/><br/>" +
+                            //    "Account: #name#<br/><br/>" +
+                            //    "PS: Alternatively, you can pay via other methods too but it’s quicker and easier on the app!​";
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_RECONNECTED_ID:
@@ -123,17 +125,17 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             primaryCTA = new NotificationDetailModel.NotificationCTA("View My Usage", delegate () { ViewMyUsage(notificationDetails); });
                             ctaList.Add(primaryCTA);
 
-                            notificationDetailTitle = "Your Supply Has Been Reconnected";
-                            notificationDetailMessage = "Hooray, the lights are back on! Your account has been reconnected. Stay on top of your monthly payments and your usage with the myTNB app.<br/><br/>" +
-                                "Account: #name#";
+                            //notificationDetailTitle = "Your Supply Has Been Reconnected";
+                            //notificationDetailMessage = "Hooray, the lights are back on! Your account has been reconnected. Stay on top of your monthly payments and your usage with the myTNB app.<br/><br/>" +
+                            //    "Account: #name#";
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_MAINTENANCE_ID:
                         {
                             imageResourceBanner = Resource.Drawable.notification_maintenance_banner;
 
-                            notificationDetailTitle = "Down For Maintenance from 4PM to 8PM on 31 Aug 2019";
-                            notificationDetailMessage = "Don't worry, we'll be up and running quickly and better than before! We apologize for any inconvenience.";
+                            //notificationDetailTitle = "Down For Maintenance from 4PM to 8PM on 31 Aug 2019";
+                            //notificationDetailMessage = "Don't worry, we'll be up and running quickly and better than before! We apologize for any inconvenience.";
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_METER_READING_OPEN_ID:
@@ -205,7 +207,51 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
             }
             catch (Exception e)
             {
+                this.mView.ShowRetryOptionsApiException(null);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
+        public async void DeleteNotificationDetail(Models.NotificationDetails notificationDetails)
+        {
+            this.mView.ShowLoadingScreen();
+            try
+            {
+                NotificationApiImpl notificationAPI = new NotificationApiImpl();
+                List<Notifications.Models.UserNotificationData> selectedNotificationList = new List<Notifications.Models.UserNotificationData>();
+                Notifications.Models.UserNotificationData data = new Notifications.Models.UserNotificationData();
+                data.NotificationTypeId = notificationDetails.NotificationTypeId;
+                data.NotificationType = notificationDetails.NotificationType;
+                selectedNotificationList.Add(data);
+                UserNotificationDeleteResponse notificationDeleteResponse = await notificationAPI.DeleteUserNotification<UserNotificationDeleteResponse>(new UserNotificationDeleteRequest(selectedNotificationList));
+                if (notificationDeleteResponse.Data.ErrorCode == "7200")
+                {
+                    UserNotificationEntity.UpdateIsDeleted(notificationDetails.Id, true);
+                    this.mView.ShowNotificationListAsDeleted();
+                }
+                else
+                {
+                    this.mView.ShowRetryOptionsCancelledException(null);
+                }
+
+            }
+            catch (System.OperationCanceledException e)
+            {
+                // ADD OPERATION CANCELLED HERE
+                this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                // ADD UNKNOWN EXCEPTION HERE
+                this.mView.ShowRetryOptionsUnknownException(e);
+                Utility.LoggingNonFatalError(e);
             }
         }
 
