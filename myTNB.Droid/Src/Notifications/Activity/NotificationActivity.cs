@@ -133,6 +133,8 @@ namespace myTNB_Android.Src.Notifications.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtNotificationsContent);
 
                 selectAllCheckboxButton.SetOnCheckedChangeListener(this);
+                SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 this.mPresenter = new NotificationPresenter(this);
                 SetNotificationRecyclerView();
                 SetInitialNotificationState();

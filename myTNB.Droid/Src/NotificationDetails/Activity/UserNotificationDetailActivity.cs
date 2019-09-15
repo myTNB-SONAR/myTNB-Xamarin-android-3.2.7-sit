@@ -174,6 +174,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             try
             {
                 NotificationDetailModel detailModel = mPresenter.GetNotificationDetailModel();
+                SetToolBarTitle(detailModel.detailPageTitle);
                 NotificationDetailCTAComponent ctaComponent = FindViewById<NotificationDetailCTAComponent>(Resource.Id.notificationCTAComponent);
                 if (detailModel != null)
                 {
