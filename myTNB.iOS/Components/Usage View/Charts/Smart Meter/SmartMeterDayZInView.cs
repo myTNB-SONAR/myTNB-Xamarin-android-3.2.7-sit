@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using CoreGraphics;
 using myTNB.Model.Usage;
@@ -11,6 +12,8 @@ namespace myTNB.SmartMeterView
     {
         private UIScrollView _segmentScrollView;
         private nfloat _width = UIScreen.MainScreen.Bounds.Width;
+        private nfloat _contentWidth;
+        private CGPoint _currentPoint;
 
         private void AddIndicator(ref CustomUIView view)
         {
@@ -26,10 +29,52 @@ namespace myTNB.SmartMeterView
         private void AddScrollView(ref CustomUIView view)
         {
             _segmentScrollView = new UIScrollView(new CGRect(0, 0, _width, view.Frame.Height - GetWidthByScreenSize(10))) { Tag = 4000 };
+            _segmentScrollView.Scrolled += OnBarScroll;
+
             view.AddSubview(_segmentScrollView);
 
             _segmentScrollView.Layer.BorderColor = UIColor.Red.CGColor;
             _segmentScrollView.Layer.BorderWidth = 1;
+        }
+
+        private void OnBarScroll(object sender, EventArgs e)
+        {
+            nfloat baseMargin = (_width / 2) - GetWidthByScreenSize(6);
+            nfloat xOffset = _segmentScrollView.ContentOffset.X;
+            if (xOffset > _contentWidth - (baseMargin * 2) - GetWidthByScreenSize(12))
+            {
+                //Snap to last?
+                Debug.WriteLine("xOffset >");
+                return;
+            }
+            if (xOffset < 0)
+            {
+                //Snap to first?
+                Debug.WriteLine("xOffset <");
+                return;
+            }
+
+            Debug.WriteLine("xOffset: " + xOffset);
+            Debug.WriteLine("_currentPoint.X: " + _currentPoint.X);
+
+            nfloat barDelta = GetWidthByScreenSize(30);
+            nfloat delta = xOffset - _currentPoint.X;
+            Debug.WriteLine("delta: " + delta);
+            return;
+            if (delta > GetWidthByScreenSize(6))
+            {
+                Debug.WriteLine("Right");
+                _currentPoint = new CGPoint(_currentPoint.X + barDelta, _currentPoint.Y);
+                _segmentScrollView.SetContentOffset(_currentPoint, true);
+            }
+            else if (delta < -GetWidthByScreenSize(6))
+            {
+                Debug.WriteLine("Left");
+                _currentPoint = new CGPoint(_currentPoint.X - barDelta, _currentPoint.Y);
+                _segmentScrollView.SetContentOffset(_currentPoint, true);
+            }
+
+
         }
 
         public override void CreateSegment(ref CustomUIView view)
@@ -55,6 +100,7 @@ namespace myTNB.SmartMeterView
             List<string> valueList = usageData.Select(x => x.Amount).ToList();
             double maxValue = GetMaxValue(RMkWhEnum.RM, valueList);
             double divisor = maxBarHeight / maxValue;
+            CGPoint lastSegment = new CGPoint();
             for (int i = 0; i < usageData.Count; i++)
             {
                 int index = i;
@@ -65,6 +111,11 @@ namespace myTNB.SmartMeterView
                     PageName = "InnerDashboard",
                     EventName = "OnTapNormalBar"
                 };
+
+                if (index == usageData.Count - 1)
+                {
+                    lastSegment = segment.Frame.Location;
+                }
 
                 segment.Layer.BorderColor = UIColor.Yellow.CGColor;
                 segment.Layer.BorderWidth = 1;
@@ -163,9 +214,10 @@ namespace myTNB.SmartMeterView
                 );
             }
 
-            nfloat contentWidth = (usageData.Count * GetWidthByScreenSize(12)) + ((usageData.Count - 1) * GetWidthByScreenSize(24)) + (baseMargin * 2);
-
-            _segmentScrollView.ContentSize = new CGSize(contentWidth, _segmentScrollView.Frame.Height);
+            _contentWidth = (usageData.Count * GetWidthByScreenSize(12)) + ((usageData.Count - 1) * GetWidthByScreenSize(24)) + (baseMargin * 2);
+            _segmentScrollView.ContentSize = new CGSize(_contentWidth, _segmentScrollView.Frame.Height);
+            _currentPoint = new CGPoint(_contentWidth - (baseMargin * 2) - GetWidthByScreenSize(12), lastSegment.Y);
+            _segmentScrollView.SetContentOffset(_currentPoint, true);
         }
     }
 }
