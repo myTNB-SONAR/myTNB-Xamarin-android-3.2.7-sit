@@ -10,23 +10,47 @@ namespace myTNB.SmartMeterView
     public class SmartMeterDayZInView : BaseSmartMeterView
     {
         private UIScrollView _segmentScrollView;
+        private UIView _viewSegmentContainer;
         private nfloat _width = UIScreen.MainScreen.Bounds.Width;
+
+        private void AddIndicator(ref CustomUIView view)
+        {
+            nfloat width = GetWidthByScreenSize(12);
+            nfloat height = width / 2;
+            UIImageView imgIndicator = new UIImageView(new CGRect((_width - width) / 2, view.Frame.Height - height, width, height))
+            {
+                Image = UIImage.FromBundle("Usage-Chart-Indicator")
+            };
+            view.AddSubview(imgIndicator);
+        }
+
+        private void AddScrollView(ref CustomUIView view)
+        {
+            _segmentScrollView = new UIScrollView(new CGRect(0, 0, _width, view.Frame.Height - GetWidthByScreenSize(6))) { Tag = 4000};
+            view.AddSubview(_segmentScrollView);
+
+            _viewSegmentContainer = new UIView(new CGRect(0, 0, _width, view.Frame.Height - GetWidthByScreenSize(6)));
+            //_segmentScrollView.AddSubview(_viewSegmentContainer);
+
+            _segmentScrollView.Layer.BorderColor = UIColor.Red.CGColor;
+            _segmentScrollView.Layer.BorderWidth = 1;
+        }
 
         public override void CreateSegment(ref CustomUIView view)
         {
-            _segmentScrollView = new UIScrollView(new CGRect(0, 0, _width, GetHeightByScreenSize(169)));
             view = new CustomUIView(new CGRect(0, GetYLocationFromFrameScreenSize(ReferenceWidget, 6)
                , _width, GetHeightByScreenSize(169)));
-            view.AddSubview(_segmentScrollView);
+            AddScrollView(ref view);
+            AddIndicator(ref view);
 
             nfloat height = view.Frame.Height;
-            nfloat width = GetWidthByScreenSize(12);
-            nfloat segmentMargin = GetWidthByScreenSize(4);
-            nfloat baseMargin = GetWidthByScreenSize(25);
-            nfloat xLoc = baseMargin;
-            nfloat maxBarHeight = GetHeightByScreenSize(117);
-            nfloat segmentWidth = GetWidthByScreenSize(5);
-            nfloat barMargin = GetWidthByScreenSize(5);
+            //nfloat width = GetWidthByScreenSize(12);
+            nfloat segmentMargin = GetWidthByScreenSize(24);//4
+            //nfloat baseMargin = GetWidthByScreenSize(25);
+            nfloat xLoc = 0;// baseMargin;
+            nfloat maxBarHeight = GetHeightByScreenSize(96);
+            nfloat segmentWidth = GetWidthByScreenSize(12);
+            //nfloat barMargin = GetWidthByScreenSize(5);
             nfloat missingReadingBarMargin = GetHeightByScreenSize(10);
 
             List<DayItemModel> usageData = AccountUsageSmartCache.FlatDays;
@@ -43,14 +67,18 @@ namespace myTNB.SmartMeterView
                     PageName = "InnerDashboard",
                     EventName = "OnTapNormalBar"
                 };
+
+                segment.Layer.BorderColor = UIColor.Yellow.CGColor;
+                segment.Layer.BorderWidth = 1;
+
                 _segmentScrollView.AddSubview(segment);
                 xLoc += segmentWidth + segmentMargin;
 
                 double.TryParse(item.Amount, out double value);
                 nfloat barHeight = (nfloat)(divisor * value);
-                nfloat yLoc = maxBarHeight - barHeight;
+                nfloat yLoc = GetHeightByScreenSize(44) + maxBarHeight - barHeight;
 
-                CustomUIView viewBar = new CustomUIView(new CGRect(0, maxBarHeight, segmentWidth, 0))
+                CustomUIView viewBar = new CustomUIView(new CGRect(0, GetHeightByScreenSize(44) + maxBarHeight, segmentWidth, 0))
                 {
                     BackgroundColor = UIColor.Clear,
                     Tag = 1001,
@@ -95,6 +123,9 @@ namespace myTNB.SmartMeterView
                     , () => { }
                 );
             }
+
+            nfloat contentWidth = usageData.Count * (GetWidthByScreenSize(12) + GetWidthByScreenSize(24));
+            _segmentScrollView.ContentSize = new CGSize(contentWidth, _segmentScrollView.Frame.Height);
         }
     }
 }
