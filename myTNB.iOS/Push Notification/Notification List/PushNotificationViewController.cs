@@ -95,7 +95,7 @@ namespace myTNB.PushNotification
         {
             userNotificationResponse = DataManager.DataManager.SharedInstance.UserNotificationResponse;
             if (userNotificationResponse != null && userNotificationResponse?.d != null && userNotificationResponse.d.IsSuccess
-                && userNotificationResponse.d.data != null && userNotificationResponse.d.data.UserNotifications != null)
+                && userNotificationResponse.d.data != null && userNotificationResponse.d.data.UserNotificationList != null)
             {
                 UpdateNotificationDisplay();
             }

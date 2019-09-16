@@ -113,9 +113,9 @@ namespace myTNB
             res = _userNotifications?.d?.didSucceed == true;
 
             if (_userNotifications != null && _userNotifications?.d != null && _userNotifications.d.IsSuccess
-                && _userNotifications.d.data != null && _userNotifications.d.data.UserNotifications != null)
+                && _userNotifications.d.data != null && _userNotifications.d.data.UserNotificationList != null)
             {
-                DataManager.DataManager.SharedInstance.UserNotifications = _userNotifications.d.data.UserNotifications;
+                DataManager.DataManager.SharedInstance.UserNotifications = _userNotifications.d.data.UserNotificationList;
                 DataManager.DataManager.SharedInstance.NotificationNeedsUpdate = false;
             }
             else

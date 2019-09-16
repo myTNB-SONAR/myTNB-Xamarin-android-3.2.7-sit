@@ -177,7 +177,7 @@ namespace myTNB
                     OnSegmentTap = OnSegmentTap,
                 };
             }
-            else if (viewType == SmartMeterConstants.SmartMeterViewType.DayZOut)
+            else if (viewType == SmartMeterConstants.SmartMeterViewType.DayZIn)
             {
                 _baseSmartMeterView = new SmartMeterDayZOutView();
             }
