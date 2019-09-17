@@ -65,6 +65,7 @@
         //Image
         public static string IMG_NeedToPay = "Bills-NeedToPay-Banner";
         public static string IMG_Cleared = "Bills-Cleared-Banner";
+        public static string IMG_RE = "Bills-RE-Banner";
         public static string IMG_ArrowDown = "Arrow-Expand-Down";
         public static string IMG_ArrowUp = "Arrow-Collapse-Up";
         public static string IMG_InfoBlue = "IC-Info-Blue";

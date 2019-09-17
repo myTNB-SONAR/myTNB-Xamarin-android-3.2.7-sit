@@ -16,7 +16,7 @@ namespace myTNB.Model
 
     public class UserNotificationsDataModel
     {
-        public List<UserNotificationDataModel> UserNotifications { set; get; } = new List<UserNotificationDataModel>();
+        public List<UserNotificationDataModel> UserNotificationList { set; get; } = new List<UserNotificationDataModel>();
     }
 
     public class UserNotificationDataModel
