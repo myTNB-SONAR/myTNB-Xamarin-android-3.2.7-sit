@@ -6880,7 +6880,7 @@ namespace myTNB_Android
 			public const int ic_action_Select = 2130837699;
 			
 			// aapt resource value: 0x7f0200c4
-			public const int ic_action_select_all = 2130837700;
+			public const int ic_action_select_all_1 = 2130837700;
 			
 			// aapt resource value: 0x7f0200c5
 			public const int ic_action_show_password = 2130837701;
