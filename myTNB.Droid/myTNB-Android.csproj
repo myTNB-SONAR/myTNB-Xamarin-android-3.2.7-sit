@@ -1094,7 +1094,6 @@
     <Compile Include="Src\Notifications\Api\NotificationReadRequest.cs" />
     <Compile Include="Src\Notifications\Models\NotificationData.cs" />
     <AndroidResource Include="Resources\menu\NotificationToolbarMenu.xml" />
-    <AndroidResource Include="Resources\layout\NotificationEmptyView.axml" />
     <AndroidResource Include="Resources\drawable-hdpi\empty_state_notification.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_select_all.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_header_markread.png" />
@@ -1120,6 +1119,16 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_header_markread_disabled.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_delete_disabled.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_markread_disabled.png" />
+    <Compile Include="Src\SitecoreCMS\Service\AppLaunchService.cs" />
+    <Compile Include="Src\SitecoreCMS\Model\AppLaunchModel.cs" />
+    <Compile Include="Src\Database\Model\AppLaunchParentEntity.cs" />
+    <Compile Include="Src\Database\Model\AppLaunchEntity.cs" />
+    <AndroidResource Include="Resources\drawable\AppLanchGradientBackground.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\AppLaunch\Models\AppLaunchNavigation.cs" />
+    <Compile Include="Src\Utils\AppLaunchUtils.cs" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_select_all_1.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_select_all_1.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_action_select_all_1.png" />
@@ -1339,7 +1348,6 @@
     <AndroidResource Include="Resources\layout\WeblinkWebView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable\HorizontalGradientBackground.axml" />
     <AndroidResource Include="Resources\layout\FIndUsView.axml" />
     <AndroidResource Include="Resources\layout\GoogleMapView.axml" />
     <AndroidResource Include="Resources\layout\LocationDetailsView.axml" />
@@ -2249,9 +2257,6 @@
     <AndroidResource Include="Resources\values\SelectSupplyAccountStyle.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\HorizontalGradientBackground.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\values\TncStyle.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -2333,9 +2338,6 @@
     <AndroidResource Include="Resources\values\BarcodeStyle.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\HorizontalGradientBackground.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\green_button_background.xml" />

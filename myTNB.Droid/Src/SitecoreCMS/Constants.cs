@@ -80,6 +80,17 @@
                 {
                     public const string TimestampField = "Timestamp";
                 }
+
+
+                public struct AppLaunch
+                {
+                    public const string Title = "Title";
+                    public const string Description = "Description";
+                    public const string Image = "Image";
+                    public const string StartDateTime = "StartDateTime";
+                    public const string EndDateTime = "EndDateTime";
+                    public const string ShowForSeconds = "ShowForSeconds";
+                }
             }
 
             public struct ItemID
@@ -103,6 +114,9 @@
                 public const string Timestamp = "/sitecore/content/myTNBapp/Timestamp";
                 public const string WalkthroughScreens = "/sitecore/content/myTNBapp/Contents/Walkthrough Screens";
                 public const string FullRTEPages = "/sitecore/content/myTNBapp/Contents/Full RTE Pages/Terms Condition";
+
+
+                public const string AppLaunch = "/sitecore/content/myTNBapp/Contents/App Launch Image";
 
             }
         }
