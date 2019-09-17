@@ -2502,6 +2502,10 @@
     <Compile Include="Src\MyTNBService\Request\UserNotificationReadRequest.cs" />
     <Compile Include="Src\MyTNBService\Response\UserNotificationDeleteResponse.cs" />
     <Compile Include="Src\MyTNBService\Response\UserNotificationReadResponse.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\notification_smr_fail_banner.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\notification_smr_fail_banner.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\notification_smr_fail_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\notification_smr_fail_banner.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

@@ -143,7 +143,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_METER_READING_OPEN_ID:
                         {
-                            imageResourceBanner = Resource.Drawable.notification_new_bill_banner;
+                            imageResourceBanner = Resource.Drawable.notification_smr_check_banner;
                             pageTitle = "Smart Meter Reading";
                             primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Meter Reading", delegate () { SubmitMeterReading(notificationDetails); });
                             primaryCTA.SetSolidCTA(true);
@@ -165,7 +165,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             primaryCTA = new NotificationDetailModel.NotificationCTA("Re-enable Self Meter Reading", delegate () { EnableSelfMeterReading(notificationDetails); });
                             ctaList.Add(primaryCTA);
                             pageTitle = "Smart Meter Reading";
-                            imageResourceBanner = Resource.Drawable.notification_new_bill_banner;
+                            imageResourceBanner = Resource.Drawable.notification_smr_fail_banner;
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_SMR_APPLY_SUCCESS_ID:
@@ -181,7 +181,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             primaryCTA = new NotificationDetailModel.NotificationCTA("Contact TNB", delegate () { CallUs(); });
                             ctaList.Add(primaryCTA);
                             pageTitle = "Smart Meter Reading";
-                            imageResourceBanner = Resource.Drawable.notification_new_bill_banner;
+                            imageResourceBanner = Resource.Drawable.notification_smr_fail_banner;
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_SMR_DISABLED_SUCCESS_ID:
@@ -194,7 +194,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_SMR_DISABLED_FAILED_ID:
                         {
-                            imageResourceBanner = Resource.Drawable.notification_new_bill_banner;
+                            imageResourceBanner = Resource.Drawable.notification_smr_fail_banner;
                             pageTitle = "Smart Meter Reading";
                             primaryCTA = new NotificationDetailModel.NotificationCTA("Contact TNB", delegate () { CallUs(); });
                             ctaList.Add(primaryCTA);
