@@ -1,4 +1,6 @@
 ﻿using Android.Util;
+using myTNB_Android.Src.Base;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.MultipleAccountPayment.Api;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
@@ -60,6 +62,22 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             }
         }
 
+        private List<BillMandatoryChargesTooltipModel> GetMandatoryChargesTooltipModelList(List<MandatoryChargesPopUpDetail> mandatoryChargesPopUpDetailList)
+        {
+            List<BillMandatoryChargesTooltipModel> billMandatoryChargesTooltipModelList = new List<BillMandatoryChargesTooltipModel>();
+            BillMandatoryChargesTooltipModel model;
+            mandatoryChargesPopUpDetailList.ForEach(popupDetail =>
+            {
+                model = new BillMandatoryChargesTooltipModel();
+                model.Title = popupDetail.Title;
+                model.Description = popupDetail.Description;
+                model.Type = popupDetail.Type;
+                model.CTA = popupDetail.CTA;
+                billMandatoryChargesTooltipModelList.Add(model);
+            });
+            return billMandatoryChargesTooltipModelList;
+        }
+
         public async void GetAccountsCharges(List<string> accountList, string preSelectedAccount)
         {
             try
@@ -72,6 +90,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                 AccountChargesResponse accountChargeseResponse = await api.GetAccountsCharges<AccountChargesResponse>(accountChargeseRequest);
                 if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "7200")
                 {
+                    MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
                     accountChargeModelList.AddRange(GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges));
                     List<MPAccount> newAccountList = new List<MPAccount>();
                     accountChargeseResponse.Data.ResponseData.AccountCharges.ForEach(accountCharge =>
