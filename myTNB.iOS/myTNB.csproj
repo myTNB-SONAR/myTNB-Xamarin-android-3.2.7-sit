@@ -91,8 +91,10 @@
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
     <PlatformTarget>x86</PlatformTarget>
     <MtouchVerbosity>2</MtouchVerbosity>
-    <OnDemandResourcesInitialInstallTags></OnDemandResourcesInitialInstallTags>
-    <OnDemandResourcesPrefetchOrder></OnDemandResourcesPrefetchOrder>
+    <OnDemandResourcesInitialInstallTags>
+    </OnDemandResourcesInitialInstallTags>
+    <OnDemandResourcesPrefetchOrder>
+    </OnDemandResourcesPrefetchOrder>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Master|iPhoneSimulator' ">
     <Optimize>true</Optimize>
@@ -110,12 +112,14 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'SIT|AnyCPU' ">
     <Optimize>false</Optimize>
     <OutputPath>bin\SIT</OutputPath>
-    <DefineConstants></DefineConstants>
+    <DefineConstants>
+    </DefineConstants>
     <WarningLevel>4</WarningLevel>
     <CodesignKey>iPhone Developer</CodesignKey>
     <MtouchNoSymbolStrip>true</MtouchNoSymbolStrip>
     <MtouchHttpClientHandler>NSUrlSessionHandler</MtouchHttpClientHandler>
-    <MtouchVerbosity></MtouchVerbosity>
+    <MtouchVerbosity>
+    </MtouchVerbosity>
     <MtouchLink>SdkOnly</MtouchLink>
   </PropertyGroup>
   <ItemGroup>
@@ -249,626 +253,1866 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\app_logo.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\email_white.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\email_white.imageset\Email-white.png" />
-    <ImageAsset Include="Assets.xcassets\email_white.imageset\Email-white%402x.png" />
-    <ImageAsset Include="Assets.xcassets\email_white.imageset\Email-white%403x.png" />
-    <ImageAsset Include="Assets.xcassets\password_white.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Back-White.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Back-White.imageset\Back-White.png" />
-    <ImageAsset Include="Assets.xcassets\Back-White.imageset\Back-White%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Back-White.imageset\Back-White%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Cancel-White.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Cancel-White.imageset\Cancel-White.png" />
-    <ImageAsset Include="Assets.xcassets\Cancel-White.imageset\Cancel-White%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Cancel-White.imageset\Cancel-White%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Next-White.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Next-White.imageset\Next-White.png" />
-    <ImageAsset Include="Assets.xcassets\Next-White.imageset\Next-White%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Next-White.imageset\Next-White%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Calculator.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Calculator.imageset\Calculator.png" />
-    <ImageAsset Include="Assets.xcassets\Calculator.imageset\Calculator%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Calculator.imageset\Calculator%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Supply.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Supply.imageset\Supply.png" />
-    <ImageAsset Include="Assets.xcassets\Supply.imageset\Supply%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Supply.imageset\Supply%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Feedback.imageset\Feedback.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback.imageset\Feedback%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback.imageset\Feedback%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Loaded.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Loaded.imageset\Loaded.png" />
-    <ImageAsset Include="Assets.xcassets\Loaded.imageset\Loaded%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Loaded.imageset\Loaded%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Loading.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Loading.imageset\Loading.png" />
-    <ImageAsset Include="Assets.xcassets\Loading.imageset\Loading%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Loading.imageset\Loading%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Email.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Email.imageset\Email.png" />
-    <ImageAsset Include="Assets.xcassets\Email.imageset\Email%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Email.imageset\Email%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Account-Number.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Account-Number.imageset\Account no. Copy.png" />
-    <ImageAsset Include="Assets.xcassets\Account-Number.imageset\Account no. Copy%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Account-Number.imageset\Account no. Copy%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC.imageset\IC.png" />
-    <ImageAsset Include="Assets.xcassets\IC.imageset\IC%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC.imageset\IC%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Label.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Label.imageset\Label.png" />
-    <ImageAsset Include="Assets.xcassets\Label.imageset\Label%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Label.imageset\Label%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Mobile-White.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Mobile-White.imageset\Mobile-white.png" />
-    <ImageAsset Include="Assets.xcassets\Mobile-White.imageset\Mobile-white%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Mobile-White.imageset\Mobile-white%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Mobile.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Mobile.imageset\Mobile.png" />
-    <ImageAsset Include="Assets.xcassets\Mobile.imageset\Mobile%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Mobile.imageset\Mobile%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Name-White.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Name-White.imageset\Name-white.png" />
-    <ImageAsset Include="Assets.xcassets\Name-White.imageset\Name-white%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Name-White.imageset\Name-white%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Name.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Name.imageset\Name.png" />
-    <ImageAsset Include="Assets.xcassets\Name.imageset\Name%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Name.imageset\Name%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Billing.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Dashboard.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Payment.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Billing.imageset\Billing.png" />
-    <ImageAsset Include="Assets.xcassets\Billing.imageset\Billing%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Billing.imageset\Billing%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Dashboard.imageset\Dashboard.png" />
-    <ImageAsset Include="Assets.xcassets\Dashboard.imageset\Dashboard%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Payment.imageset\Payment.png" />
-    <ImageAsset Include="Assets.xcassets\Payment.imageset\Payment%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Payment.imageset\Payment%403x.png" />
-    <ImageAsset Include="Assets.xcassets\App-Launch-Gradient.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Logo.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Logo.imageset\Logo%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Delete.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Delete.imageset\delete.png" />
-    <ImageAsset Include="Assets.xcassets\Delete.imageset\delete%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Delete.imageset\delete%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Check-Green.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Check-Green.imageset\Check-Green.png" />
-    <ImageAsset Include="Assets.xcassets\X-Red.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\X-Red.imageset\X-Red.png" />
-    <ImageAsset Include="Assets.xcassets\Scan.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Scan.imageset\scan.png" />
-    <ImageAsset Include="Assets.xcassets\Scan.imageset\scan%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Scan.imageset\scan%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Circle-With-Check-Green.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Circle-With-Check-Green.imageset\Circle-With-Check-Green.png" />
-    <ImageAsset Include="Assets.xcassets\Arrow-Left.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Arrow-Right.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Logo-Title.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tagline.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Logo-Title.imageset\ Logo-Title.png" />
-    <ImageAsset Include="Assets.xcassets\Tagline.imageset\ Tagline%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification.imageset\notifications.png" />
-    <ImageAsset Include="Assets.xcassets\Notification.imageset\notifications%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification.imageset\notifications%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Dropdown.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-Dashboard.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-More.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Download.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Download.imageset\save.png" />
-    <ImageAsset Include="Assets.xcassets\Download.imageset\save%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Download.imageset\save%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Table-Tick.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Table-Tick.imageset\tick.png" />
-    <ImageAsset Include="Assets.xcassets\Table-Tick.imageset\tick%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Table-Tick.imageset\tick%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Arrow-Left.imageset\ic_slider_left.png" />
-    <ImageAsset Include="Assets.xcassets\Arrow-Left.imageset\ic_slider_left%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Arrow-Left.imageset\ic_slider_left%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Arrow-Right.imageset\ic_slider_right.png" />
-    <ImageAsset Include="Assets.xcassets\Arrow-Right.imageset\ic_slider_right%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Arrow-Right.imageset\ic_slider_right%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Empty-Dashboard.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Arrow-Right-Black.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Arrow-Right-Black.imageset\Arrow-Right-Black.pdf" />
-    <ImageAsset Include="Assets.xcassets\Arrow-Right-Black.imageset\Arrow-Right-Black.png" />
-    <ImageAsset Include="Assets.xcassets\Arrow-Right-Black.imageset\Arrow-Right-Black%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Arrow-Right-Black.imageset\Arrow-Right-Black%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Camera.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Camera.imageset\camera.png" />
-    <ImageAsset Include="Assets.xcassets\Camera.imageset\camera%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Camera.imageset\camera%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Card-Expiry.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Card-Number.imageset\cardNo.png" />
-    <ImageAsset Include="Assets.xcassets\Card-Number.imageset\cardNo%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Card-Number.imageset\cardNo%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Card-Number.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Card-CVV.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Card-Expiry.imageset\cardExpiry.png" />
-    <ImageAsset Include="Assets.xcassets\Card-Expiry.imageset\cardExpiry%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Card-Expiry.imageset\cardExpiry%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Card-CVV.imageset\cardCvv.png" />
-    <ImageAsset Include="Assets.xcassets\Card-CVV.imageset\cardCvv%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Card-CVV.imageset\cardCvv%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Dropdown.imageset\ic_header_dropdown.png" />
-    <ImageAsset Include="Assets.xcassets\Dropdown.imageset\ic_header_dropdown%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Dropdown.imageset\ic_header_dropdown%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Get-Access.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Get-Access.imageset\ic_empty_dashboard.png" />
-    <ImageAsset Include="Assets.xcassets\Get-Access.imageset\ic_empty_dashboard%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Get-Access.imageset\ic_empty_dashboard%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Empty-Dashboard.imageset\icEmptyAccountDashboard.png" />
-    <ImageAsset Include="Assets.xcassets\Empty-Dashboard.imageset\icEmptyAccountDashboard%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Empty-Dashboard.imageset\icEmptyAccountDashboard%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Unread.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Unread.imageset\icon_notification_unread.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Unread.imageset\icon_notification_unread%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Unread.imageset\icon_notification_unread%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\ic_header_delete.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\ic_header_delete%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\ic_header_delete%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Checkbox-Active.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Checkbox-Active.imageset\ic_action_checkbox_active.png" />
-    <ImageAsset Include="Assets.xcassets\Checkbox-Active.imageset\ic_action_checkbox_active%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Checkbox-Active.imageset\ic_action_checkbox_active%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Checkbox-Inactive.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Checkbox-Inactive.imageset\ic_action_checkbox_inactive.png" />
-    <ImageAsset Include="Assets.xcassets\Checkbox-Inactive.imageset\ic_action_checkbox_inactive%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Checkbox-Inactive.imageset\ic_action_checkbox_inactive%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Add-Card.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Add-Card.imageset\ic_action_add_card.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Add-Card.imageset\ic_action_add_card%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Add-Card.imageset\ic_action_add_card%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Checkbox-Active.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Checkbox-Active.imageset\ic_action_checkbox_active.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Checkbox-Active.imageset\ic_action_checkbox_active%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Checkbox-Active.imageset\ic_action_checkbox_active%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Checkbox-InActive.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Checkbox-InActive.imageset\ic_action_checkbox_inactive.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Checkbox-InActive.imageset\ic_action_checkbox_inactive%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Checkbox-InActive.imageset\ic_action_checkbox_inactive%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Expand.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Expand.imageset\ic_action_expand.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Expand.imageset\ic_action_expand%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Expand.imageset\ic_action_expand%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Tick.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Tick.imageset\ic_action_tick.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Tick.imageset\ic_action_tick%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Tick.imageset\ic_action_tick%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Edit.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Edit.imageset\ic_action_edit.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Edit.imageset\ic_action_edit%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Edit.imageset\ic_action_edit%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Delete.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Delete.imageset\ic_action_delete.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Delete.imageset\ic_action_delete%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Delete.imageset\ic_action_delete%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Mastercard.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Mastercard.imageset\ic_payment_card_master.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Mastercard.imageset\ic_payment_card_master%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Mastercard.imageset\ic_payment_card_master%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Visa.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Visa.imageset\ic_payment_card_visa.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Visa.imageset\ic_payment_card_visa%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Visa.imageset\ic_payment_card_visa%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Payment-FPX.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Payment-FPX.imageset\ic_payment_fpx.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Payment-FPX.imageset\ic_payment_fpx%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Payment-FPX.imageset\ic_payment_fpx%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\ic_header_notification_unread.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\ic_header_notification_unread%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\ic_header_notification_unread%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Call.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Call.imageset\ic_display_call.png" />
-    <ImageAsset Include="Assets.xcassets\Call.imageset\ic_display_call%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Call.imageset\ic_display_call%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Logout-Logo.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Active.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Inactive.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Active.imageset\icActionRatingsActive.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Active.imageset\icActionRatingsActive%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Active.imageset\icActionRatingsActive%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Inactive.imageset\icActionRatingsInactive.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Inactive.imageset\icActionRatingsInactive%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Inactive.imageset\icActionRatingsInactive%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Field-Search.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Field-Search.imageset\icFieldSearch.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Field-Search.imageset\icFieldSearch%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Field-Search.imageset\icFieldSearch%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Button-Map-Center.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Button-Map-Center.imageset\icButtonMapCenter.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Button-Map-Center.imageset\icButtonMapCenter%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Button-Map-Center.imageset\icButtonMapCenter%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Header-Share.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Header-Share.imageset\ic_header_share.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Header-Share.imageset\ic_header_share%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Header-Share.imageset\ic_header_share%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Dropdown.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Dropdown.imageset\ic_action_dropdown.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Dropdown.imageset\ic_action_dropdown%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Dropdown.imageset\ic_action_dropdown%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Map-Kedai-Tenaga.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Map-Convenient-Store.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Map-Kedai-Tenaga.imageset\ic_button_map_pin_kedai_tenaga.png" />
-    <ImageAsset Include="Assets.xcassets\Map-Kedai-Tenaga.imageset\ic_button_map_pin_kedai_tenaga%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Map-Kedai-Tenaga.imageset\ic_button_map_pin_kedai_tenaga%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Map-Convenient-Store.imageset\ic_button_map_pin_convenient_store.png" />
-    <ImageAsset Include="Assets.xcassets\Map-Convenient-Store.imageset\ic_button_map_pin_convenient_store%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Map-Convenient-Store.imageset\ic_button_map_pin_convenient_store%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Find_Account_Number.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-76.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-76%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Direction.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Direction.imageset\ic_button_direction.png" />
-    <ImageAsset Include="Assets.xcassets\Direction.imageset\ic_button_direction%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Direction.imageset\ic_button_direction%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\icEmptyNotification.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\icEmptyNotification%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\icEmptyNotification%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\icEmptyCreditcards.png" />
-    <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\icEmptyCreditcards%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\icEmptyCreditcards%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Feedback.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Feedback.imageset\icFieldText.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Feedback.imageset\icFieldText%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Feedback.imageset\icFieldText%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-FieldCoordinates.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-FieldCoordinates.imageset\icFieldCoordinates.png" />
-    <ImageAsset Include="Assets.xcassets\IC-FieldCoordinates.imageset\icFieldCoordinates%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-FieldCoordinates.imageset\icFieldCoordinates%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Location.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Location.imageset\icActionLocation.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Location.imageset\icActionLocation%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Location.imageset\icActionLocation%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-FieldFeedback.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-FieldFeedback.imageset\icFieldFeedback.png" />
-    <ImageAsset Include="Assets.xcassets\IC-FieldFeedback.imageset\icFieldFeedback%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-FieldFeedback.imageset\icFieldFeedback%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Faulty-TNB-Lamp.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Faulty-TNB-Lamp.imageset\img_feedback_streetlamp.png" />
-    <ImageAsset Include="Assets.xcassets\Faulty-TNB-Lamp.imageset\img_feedback_streetlamp%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Faulty-TNB-Lamp.imageset\img_feedback_streetlamp%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Locate-Blue.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Locate-Blue.imageset\Locate.png" />
-    <ImageAsset Include="Assets.xcassets\Locate-Blue.imageset\Locate%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Locate-Blue.imageset\Locate%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Locate-Blue.imageset\icButtonLocate.png" />
-    <ImageAsset Include="Assets.xcassets\Locate-Blue.imageset\icButtonLocate%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Locate-Blue.imageset\icButtonLocate%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Blue.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Blue.imageset\icButtonFeedback.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Blue.imageset\icButtonFeedback%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Blue.imageset\icButtonFeedback%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Field-Text.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Field-Text.imageset\icFieldText.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Field-Text.imageset\icFieldText%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Field-Text.imageset\icFieldText%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\Red-Cross.png" />
-    <ImageAsset Include="Assets.xcassets\Loading-Circle.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Loading-Circle.imageset\loadingCircle.png" />
-    <ImageAsset Include="Assets.xcassets\Loading-Circle.imageset\loadingCircle%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Loading-Circle.imageset\loadingCircle%403x.png" />
-    <ImageAsset Include="Assets.xcassets\No-Internet-Connection.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\No-Internet-Connection.imageset\icEmptyError.pdf" />
-    <ImageAsset Include="Assets.xcassets\No-Internet-Connection.imageset\icEmptyError.png" />
-    <ImageAsset Include="Assets.xcassets\No-Internet-Connection.imageset\icEmptyError%402x.png" />
-    <ImageAsset Include="Assets.xcassets\No-Internet-Connection.imageset\icEmptyError%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Empty-Current-Bill.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Empty-Current-Bill.imageset\icEmptyCurrentBill.pdf" />
-    <ImageAsset Include="Assets.xcassets\Empty-Current-Bill.imageset\icEmptyCurrentBill.png" />
-    <ImageAsset Include="Assets.xcassets\Empty-Current-Bill.imageset\icEmptyCurrentBill%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Empty-Current-Bill.imageset\icEmptyCurrentBill%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Empty-Bill-Payment.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Empty-Bill-Payment.imageset\icEmptyBillPayment.pdf" />
-    <ImageAsset Include="Assets.xcassets\Empty-Bill-Payment.imageset\icEmptyBillPayment.png" />
-    <ImageAsset Include="Assets.xcassets\Empty-Bill-Payment.imageset\icEmptyBillPayment%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Empty-Bill-Payment.imageset\icEmptyBillPayment%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-New-Bill.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Bill-Due.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Reconnection.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Disconnection.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Dunning.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-New-Bill.imageset\ic_notification_billing.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-New-Bill.imageset\ic_notification_billing%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-New-Bill.imageset\ic_notification_billing%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Bill-Due.imageset\ic_notification_billing due.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Bill-Due.imageset\ic_notification_billing due%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Bill-Due.imageset\ic_notification_billing due%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Reconnection.imageset\ic_notification_connection.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Reconnection.imageset\ic_notification_connection%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Reconnection.imageset\ic_notification_connection%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Disconnection.imageset\ic_notification_connection.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Disconnection.imageset\ic_notification_connection%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Disconnection.imageset\ic_notification_connection%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Dunning.imageset\ic_notification_power.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Dunning.imageset\ic_notification_power%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Dunning.imageset\ic_notification_power%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Password-Old.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Password-Old.imageset\Password.png" />
-    <ImageAsset Include="Assets.xcassets\Password-Old.imageset\Password%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Password-Old.imageset\Password%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Password.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Password.imageset\icFieldPassword.png" />
-    <ImageAsset Include="Assets.xcassets\Password.imageset\icFieldPassword%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Password.imageset\icFieldPassword%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Password.imageset\icFieldPassword.pdf" />
-    <ImageAsset Include="Assets.xcassets\password_white.imageset\icFieldPasswordWhite.png" />
-    <ImageAsset Include="Assets.xcassets\password_white.imageset\icFieldPasswordWhite%402x.png" />
-    <ImageAsset Include="Assets.xcassets\password_white.imageset\icFieldPasswordWhite%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Show-Password.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Display-Prelogin.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Display-Prelogin.imageset\icDisplayPrelogin.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Display-Prelogin.imageset\icDisplayPrelogin%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Display-Prelogin.imageset\icDisplayPrelogin%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Bill.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Bill.imageset\icTileFeedbackBill.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Bill.imageset\icTileFeedbackBill%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Bill.imageset\icTileFeedbackBill%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Bill.imageset\icTileFeedbackBill.pdf" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Streetlamp.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Others.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Header.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Header.imageset\img_feedback.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Header.imageset\img_feedback%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Header.imageset\img_feedback%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Others.imageset\icTileFeedbackOthers.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Others.imageset\icTileFeedbackOthers%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Others.imageset\icTileFeedbackOthers%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Others.imageset\icTileFeedbackOthers.pdf" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Streetlamp.imageset\icTileFeedbackStreetlamp.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Streetlamp.imageset\icTileFeedbackStreetlamp%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Streetlamp.imageset\icTileFeedbackStreetlamp%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Streetlamp.imageset\icTileFeedbackStreetlamp.pdf" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted.imageset\ic_feedback_submitted.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted.imageset\ic_feedback_submitted%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted.imageset\ic_feedback_submitted%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted.imageset\icTileFeedbackSubmitted.pdf" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Bill.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Bill.imageset\ic_feedback_submitted_billing.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Bill.imageset\ic_feedback_submitted_billing%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Bill.imageset\ic_feedback_submitted_billing%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Streetlamp.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Others.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Others.imageset\ic_feedback_submitted_others.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Others.imageset\ic_feedback_submitted_others%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Others.imageset\ic_feedback_submitted_others%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Streetlamp.imageset\ic_feedback_submitted_streetlamp.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Streetlamp.imageset\ic_feedback_submitted_streetlamp%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Streetlamp.imageset\ic_feedback_submitted_streetlamp%403x.png" />
-    <ImageAsset Include="Assets.xcassets\App-Launch-Gradient.imageset\img_splash.png" />
-    <ImageAsset Include="Assets.xcassets\App-Launch-Gradient.imageset\img_splash%402x.png" />
-    <ImageAsset Include="Assets.xcassets\App-Launch-Gradient.imageset\img_splash%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\ic_menu_feedback.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\ic_menu_feedback%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\ic_menu_feedback%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\ic_menu_promo.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\ic_menu_promo%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\ic_menu_promo%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Dashboard.imageset\ic_menu_dashboard.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Dashboard.imageset\ic_menu_dashboard%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Dashboard.imageset\ic_menu_dashboard%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-More.imageset\ic_menu_more.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-More.imageset\ic_menu_more%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-More.imageset\ic_menu_more%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Active.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Inactive.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Active.imageset\ic_action_checkbox_active.png" />
-    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Active.imageset\ic_action_checkbox_active%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Active.imageset\ic_action_checkbox_active%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\ic_menu_bill.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\ic_menu_bill%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\ic_menu_bill%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Show-Password.imageset\icActionShowPassword.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Show-Password.imageset\icActionShowPassword%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Show-Password.imageset\icActionShowPassword%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Empty-Promotion.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Empty-Promotion.imageset\icEmptyPromotions.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Empty-Promotion.imageset\icEmptyPromotions%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Empty-Promotion.imageset\icEmptyPromotions%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Promo.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Promo.imageset\ic_notification_promo.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Promo.imageset\ic_notification_promo%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Promo.imageset\ic_notification_promo%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Bill-Due.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Bill-Due.imageset\img_notifications_bill due.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Bill-Due.imageset\img_notifications_bill due%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Bill-Due.imageset\img_notifications_bill due%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-New-Bill.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-New-Bill.imageset\img_notifications_new bill.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-New-Bill.imageset\img_notifications_new bill%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-New-Bill.imageset\img_notifications_new bill%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Disconnection.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Disconnection.imageset\img_notifications_disconnection.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Disconnection.imageset\img_notifications_disconnection%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Disconnection.imageset\img_notifications_disconnection%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Dunning.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Dunning.imageset\img_notifications_dunning.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Dunning.imageset\img_notifications_dunning%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Dunning.imageset\img_notifications_dunning%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Reconnection.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Reconnection.imageset\img_notifications_reconnection.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Reconnection.imageset\img_notifications_reconnection%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Reconnection.imageset\img_notifications_reconnection%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\ic_menu_promo_unread.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\ic_menu_promo_unread%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\ic_menu_promo_unread%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\ic_menu_promo_toggled_unread.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\ic_menu_promo_toggled_unread%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\ic_menu_promo_toggled_unread%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-Green.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-White.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-White.imageset\icDisplayReDashboard.png" />
-    <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-White.imageset\icDisplayReDashboard%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-White.imageset\icDisplayReDashboard%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-Green.imageset\icDisplayREleaf.png" />
-    <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-Green.imageset\icDisplayREleaf%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-Green.imageset\icDisplayREleaf%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Amex.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Amex.imageset\ic_payment_card_amex.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Amex.imageset\ic_payment_card_amex%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Amex.imageset\ic_payment_card_amex%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Show-PasswordWhite.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Show-PasswordWhite.imageset\ic_action_show password_white.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Show-PasswordWhite.imageset\ic_action_show password_white%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Show-PasswordWhite.imageset\ic_action_show password_white%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Empty.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Empty.imageset\ic_empty_archived_message.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Empty.imageset\ic_empty_archived_message%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Feedback-Empty.imageset\ic_empty_archived_message%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Charges.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Charges.imageset\rm.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Charges.imageset\rm%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Charges.imageset\rm%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Cost.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Cost.imageset\estimatedCost.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Cost.imageset\estimatedCost%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Cost.imageset\estimatedCost%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Energy-Usage.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Energy-Usage.imageset\energyUsage.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Energy-Usage.imageset\energyUsage%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Energy-Usage.imageset\energyUsage%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Avg-Elec-Usage.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Avg-Elec-Usage.imageset\avgelectricusage.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Avg-Elec-Usage.imageset\avgelectricusage%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Avg-Elec-Usage.imageset\avgelectricusage%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Arrow-Up.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Arrow-Up.imageset\up.png" />
-    <ImageAsset Include="Assets.xcassets\Arrow-Up.imageset\up%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Arrow-Up.imageset\up%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Arrow-Down.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Arrow-Down.imageset\down.png" />
-    <ImageAsset Include="Assets.xcassets\Arrow-Down.imageset\down%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Arrow-Down.imageset\down%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Emission.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Emission.imageset\co2.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Emission.imageset\co2%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Emission.imageset\co2%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-CO2.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-CO2.imageset\co2.png" />
-    <ImageAsset Include="Assets.xcassets\IC-CO2.imageset\co2%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-CO2.imageset\co2%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Mask-View.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Mask-View.imageset\Mask.png" />
-    <ImageAsset Include="Assets.xcassets\Mask-View.imageset\Mask%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Mask-View.imageset\Mask%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Empty-Chart-Data.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Empty-Chart-Data.imageset\bcrm-down.png" />
-    <ImageAsset Include="Assets.xcassets\Empty-Chart-Data.imageset\bcrm-down%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Empty-Chart-Data.imageset\bcrm-down%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-X-Gray.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-X-Gray.imageset\Promotions-Cancel.png" />
-    <ImageAsset Include="Assets.xcassets\IC-X-Gray.imageset\Promotions-Cancel%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-X-Gray.imageset\Promotions-Cancel%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Greeting-Morning.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Greeting-Morning.imageset\illustrationMorning.png" />
-    <ImageAsset Include="Assets.xcassets\Greeting-Morning.imageset\illustrationMorning%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Greeting-Morning.imageset\illustrationMorning%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Greeting-Afternoon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Greeting-Afternoon.imageset\illustrationAfternoon.png" />
-    <ImageAsset Include="Assets.xcassets\Greeting-Afternoon.imageset\illustrationAfternoon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Greeting-Afternoon.imageset\illustrationAfternoon%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Greeting-Evening.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Greeting-Evening.imageset\illustrationEvening.png" />
-    <ImageAsset Include="Assets.xcassets\Greeting-Evening.imageset\illustrationEvening%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Greeting-Evening.imageset\illustrationEvening%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Down-BCRM.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Down-BCRM.imageset\icSummarydashboardBcrmDown.png" />
-    <ImageAsset Include="Assets.xcassets\Down-BCRM.imageset\icSummarydashboardBcrmDown%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Down-BCRM.imageset\icSummarydashboardBcrmDown%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Maintenance.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Promotion.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Maintenance.imageset\icNotificationMaintenance.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Maintenance.imageset\icNotificationMaintenance%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Maintenance.imageset\icNotificationMaintenance%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Promotion.imageset\icMenuPromoToggled.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Promotion.imageset\icMenuPromoToggled%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Promotion.imageset\icMenuPromoToggled%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-News.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-News.imageset\icNotificationNews2.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-News.imageset\icNotificationNews2%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-News.imageset\icNotificationNews2%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Promotion.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-News.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\illustrationMaintenance.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\illustrationMaintenance%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\illustrationMaintenance%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Promotion.imageset\illustrationPromotions.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Promotion.imageset\illustrationPromotions%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-Promotion.imageset\illustrationPromotions%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-News.imageset\illustrationNews.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-News.imageset\illustrationNews%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Banner-News.imageset\illustrationNews%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Receipt-Header.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Receipt-Header.imageset\TNB_Receipt_Logo-Header.png" />
-    <ImageAsset Include="Assets.xcassets\Receipt-Header.imageset\TNB_Receipt_Logo-Header%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Receipt-Header.imageset\TNB_Receipt_Logo-Header%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-PasswordWhite.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-PasswordWhite.imageset\ic_action_hide password_white.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-PasswordWhite.imageset\ic_action_hide password_white%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-PasswordWhite.imageset\ic_action_hide password_white%403x.png" />
-    <ImageAsset Include="Assets.xcassets\app_logo.imageset\Logo.png" />
-    <ImageAsset Include="Assets.xcassets\app_logo.imageset\Logo%402x.png" />
-    <ImageAsset Include="Assets.xcassets\app_logo.imageset\Logo%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-Password.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-Password.imageset\ic_action_hide password_dark.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-Password.imageset\ic_action_hide password_dark%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-Password.imageset\ic_action_hide password_dark%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Logout-Logo.imageset\ic_logout_logo.png" />
-    <ImageAsset Include="Assets.xcassets\Logout-Logo.imageset\ic_logout_logo%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Logout-Logo.imageset\ic_logout_logo%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Logo-Combined.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Logo-Combined.imageset\TNB Logo_White.png" />
-    <ImageAsset Include="Assets.xcassets\Logo-Combined.imageset\TNB Logo_White%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Logo-Combined.imageset\TNB Logo_White%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-20%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-60.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-29%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-29%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-80.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-120.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-180.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-20.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-29.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-167.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-1024.png" />
-    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Inactive.imageset\icActionCheckboxInactive.png" />
-    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Inactive.imageset\icActionCheckboxInactive%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Inactive.imageset\icActionCheckboxInactive%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\icActionCheckboxInactiveWhite.png" />
-    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\icActionCheckboxInactiveWhite%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\icActionCheckboxInactiveWhite%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Find_Account_Number.imageset\new-bill copy.png" />
-    <ImageAsset Include="Assets.xcassets\Find_Account_Number.imageset\new-bill copy%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Find_Account_Number.imageset\new-bill copy%403x.png" />
-    <ImageAsset Include="Assets.xcassets\New-Launch-Logo.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\New-Launch-Logo.imageset\New_Logo_SplashScreen%401x.png" />
-    <ImageAsset Include="Assets.xcassets\New-Launch-Logo.imageset\New_Logo_SplashScreen%402x.png" />
-    <ImageAsset Include="Assets.xcassets\New-Launch-Logo.imageset\New_Logo_SplashScreen%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image-1.png" />
-    <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%402x-1.png" />
-    <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\app_logo.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\email_white.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\email_white.imageset\Email-white.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\email_white.imageset\Email-white%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\email_white.imageset\Email-white%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\password_white.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Back-White.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Back-White.imageset\Back-White.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Back-White.imageset\Back-White%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Back-White.imageset\Back-White%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Cancel-White.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Cancel-White.imageset\Cancel-White.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Cancel-White.imageset\Cancel-White%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Cancel-White.imageset\Cancel-White%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Next-White.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Next-White.imageset\Next-White.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Next-White.imageset\Next-White%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Next-White.imageset\Next-White%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Calculator.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Calculator.imageset\Calculator.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Calculator.imageset\Calculator%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Calculator.imageset\Calculator%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Supply.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Supply.imageset\Supply.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Supply.imageset\Supply%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Supply.imageset\Supply%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback.imageset\Feedback.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback.imageset\Feedback%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback.imageset\Feedback%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Loaded.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Loaded.imageset\Loaded.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Loaded.imageset\Loaded%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Loaded.imageset\Loaded%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Loading.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Loading.imageset\Loading.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Loading.imageset\Loading%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Loading.imageset\Loading%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Email.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Email.imageset\Email.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Email.imageset\Email%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Email.imageset\Email%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Account-Number.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Account-Number.imageset\Account no. Copy.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Account-Number.imageset\Account no. Copy%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Account-Number.imageset\Account no. Copy%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC.imageset\IC.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC.imageset\IC%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC.imageset\IC%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Label.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Label.imageset\Label.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Label.imageset\Label%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Label.imageset\Label%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Mobile-White.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Mobile-White.imageset\Mobile-white.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Mobile-White.imageset\Mobile-white%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Mobile-White.imageset\Mobile-white%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Mobile.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Mobile.imageset\Mobile.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Mobile.imageset\Mobile%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Mobile.imageset\Mobile%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Name-White.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Name-White.imageset\Name-white.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Name-White.imageset\Name-white%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Name-White.imageset\Name-white%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Name.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Name.imageset\Name.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Name.imageset\Name%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Name.imageset\Name%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Billing.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Dashboard.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Payment.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Billing.imageset\Billing.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Billing.imageset\Billing%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Billing.imageset\Billing%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Dashboard.imageset\Dashboard.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Dashboard.imageset\Dashboard%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Payment.imageset\Payment.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Payment.imageset\Payment%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Payment.imageset\Payment%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\App-Launch-Gradient.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Logo.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Logo.imageset\Logo%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Delete.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Delete.imageset\delete.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Delete.imageset\delete%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Delete.imageset\delete%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Check-Green.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Check-Green.imageset\Check-Green.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\X-Red.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\X-Red.imageset\X-Red.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Scan.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Scan.imageset\scan.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Scan.imageset\scan%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Scan.imageset\scan%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Circle-With-Check-Green.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Circle-With-Check-Green.imageset\Circle-With-Check-Green.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Arrow-Left.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Arrow-Right.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Logo-Title.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tagline.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Logo-Title.imageset\ Logo-Title.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tagline.imageset\ Tagline%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification.imageset\notifications.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification.imageset\notifications%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification.imageset\notifications%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Dropdown.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-Dashboard.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-More.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Download.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Download.imageset\save.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Download.imageset\save%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Download.imageset\save%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Table-Tick.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Table-Tick.imageset\tick.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Table-Tick.imageset\tick%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Table-Tick.imageset\tick%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Arrow-Left.imageset\ic_slider_left.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Arrow-Left.imageset\ic_slider_left%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Arrow-Left.imageset\ic_slider_left%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Arrow-Right.imageset\ic_slider_right.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Arrow-Right.imageset\ic_slider_right%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Arrow-Right.imageset\ic_slider_right%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Empty-Dashboard.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Arrow-Right-Black.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Arrow-Right-Black.imageset\Arrow-Right-Black.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Arrow-Right-Black.imageset\Arrow-Right-Black.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Arrow-Right-Black.imageset\Arrow-Right-Black%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Arrow-Right-Black.imageset\Arrow-Right-Black%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Camera.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Camera.imageset\camera.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Camera.imageset\camera%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Camera.imageset\camera%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Card-Expiry.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Card-Number.imageset\cardNo.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Card-Number.imageset\cardNo%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Card-Number.imageset\cardNo%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Card-Number.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Card-CVV.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Card-Expiry.imageset\cardExpiry.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Card-Expiry.imageset\cardExpiry%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Card-Expiry.imageset\cardExpiry%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Card-CVV.imageset\cardCvv.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Card-CVV.imageset\cardCvv%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Card-CVV.imageset\cardCvv%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Dropdown.imageset\ic_header_dropdown.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Dropdown.imageset\ic_header_dropdown%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Dropdown.imageset\ic_header_dropdown%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Get-Access.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Get-Access.imageset\ic_empty_dashboard.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Get-Access.imageset\ic_empty_dashboard%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Get-Access.imageset\ic_empty_dashboard%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Empty-Dashboard.imageset\icEmptyAccountDashboard.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Empty-Dashboard.imageset\icEmptyAccountDashboard%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Empty-Dashboard.imageset\icEmptyAccountDashboard%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Unread.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Unread.imageset\icon_notification_unread.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Unread.imageset\icon_notification_unread%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Unread.imageset\icon_notification_unread%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\ic_header_delete.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\ic_header_delete%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\ic_header_delete%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Checkbox-Active.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Checkbox-Active.imageset\ic_action_checkbox_active.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Checkbox-Active.imageset\ic_action_checkbox_active%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Checkbox-Active.imageset\ic_action_checkbox_active%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Checkbox-Inactive.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Checkbox-Inactive.imageset\ic_action_checkbox_inactive.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Checkbox-Inactive.imageset\ic_action_checkbox_inactive%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Checkbox-Inactive.imageset\ic_action_checkbox_inactive%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Add-Card.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Add-Card.imageset\ic_action_add_card.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Add-Card.imageset\ic_action_add_card%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Add-Card.imageset\ic_action_add_card%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Checkbox-Active.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Checkbox-Active.imageset\ic_action_checkbox_active.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Checkbox-Active.imageset\ic_action_checkbox_active%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Checkbox-Active.imageset\ic_action_checkbox_active%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Checkbox-InActive.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Checkbox-InActive.imageset\ic_action_checkbox_inactive.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Checkbox-InActive.imageset\ic_action_checkbox_inactive%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Checkbox-InActive.imageset\ic_action_checkbox_inactive%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Expand.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Expand.imageset\ic_action_expand.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Expand.imageset\ic_action_expand%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Expand.imageset\ic_action_expand%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Tick.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Tick.imageset\ic_action_tick.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Tick.imageset\ic_action_tick%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Tick.imageset\ic_action_tick%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Edit.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Edit.imageset\ic_action_edit.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Edit.imageset\ic_action_edit%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Edit.imageset\ic_action_edit%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Delete.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Delete.imageset\ic_action_delete.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Delete.imageset\ic_action_delete%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Delete.imageset\ic_action_delete%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Mastercard.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Mastercard.imageset\ic_payment_card_master.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Mastercard.imageset\ic_payment_card_master%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Mastercard.imageset\ic_payment_card_master%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Visa.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Visa.imageset\ic_payment_card_visa.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Visa.imageset\ic_payment_card_visa%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Visa.imageset\ic_payment_card_visa%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Payment-FPX.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Payment-FPX.imageset\ic_payment_fpx.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Payment-FPX.imageset\ic_payment_fpx%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Payment-FPX.imageset\ic_payment_fpx%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\ic_header_notification_unread.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\ic_header_notification_unread%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-New.imageset\ic_header_notification_unread%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Call.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Call.imageset\ic_display_call.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Call.imageset\ic_display_call%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Call.imageset\ic_display_call%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Logout-Logo.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Active.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Inactive.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Active.imageset\icActionRatingsActive.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Active.imageset\icActionRatingsActive%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Active.imageset\icActionRatingsActive%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Inactive.imageset\icActionRatingsInactive.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Inactive.imageset\icActionRatingsInactive%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Rating-Inactive.imageset\icActionRatingsInactive%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Field-Search.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Field-Search.imageset\icFieldSearch.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Field-Search.imageset\icFieldSearch%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Field-Search.imageset\icFieldSearch%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Button-Map-Center.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Button-Map-Center.imageset\icButtonMapCenter.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Button-Map-Center.imageset\icButtonMapCenter%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Button-Map-Center.imageset\icButtonMapCenter%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Header-Share.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Header-Share.imageset\ic_header_share.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Header-Share.imageset\ic_header_share%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Header-Share.imageset\ic_header_share%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Dropdown.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Dropdown.imageset\ic_action_dropdown.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Dropdown.imageset\ic_action_dropdown%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Dropdown.imageset\ic_action_dropdown%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Map-Kedai-Tenaga.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Map-Convenient-Store.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Map-Kedai-Tenaga.imageset\ic_button_map_pin_kedai_tenaga.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Map-Kedai-Tenaga.imageset\ic_button_map_pin_kedai_tenaga%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Map-Kedai-Tenaga.imageset\ic_button_map_pin_kedai_tenaga%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Map-Convenient-Store.imageset\ic_button_map_pin_convenient_store.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Map-Convenient-Store.imageset\ic_button_map_pin_convenient_store%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Map-Convenient-Store.imageset\ic_button_map_pin_convenient_store%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Find_Account_Number.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-76.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-76%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Direction.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Direction.imageset\ic_button_direction.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Direction.imageset\ic_button_direction%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Direction.imageset\ic_button_direction%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\icEmptyNotification.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\icEmptyNotification%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\icEmptyNotification%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\icEmptyCreditcards.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\icEmptyCreditcards%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\icEmptyCreditcards%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Feedback.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Feedback.imageset\icFieldText.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Feedback.imageset\icFieldText%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Feedback.imageset\icFieldText%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-FieldCoordinates.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-FieldCoordinates.imageset\icFieldCoordinates.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-FieldCoordinates.imageset\icFieldCoordinates%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-FieldCoordinates.imageset\icFieldCoordinates%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Location.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Location.imageset\icActionLocation.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Location.imageset\icActionLocation%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Location.imageset\icActionLocation%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-FieldFeedback.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-FieldFeedback.imageset\icFieldFeedback.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-FieldFeedback.imageset\icFieldFeedback%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-FieldFeedback.imageset\icFieldFeedback%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Faulty-TNB-Lamp.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Faulty-TNB-Lamp.imageset\img_feedback_streetlamp.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Faulty-TNB-Lamp.imageset\img_feedback_streetlamp%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Faulty-TNB-Lamp.imageset\img_feedback_streetlamp%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Locate-Blue.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Locate-Blue.imageset\Locate.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Locate-Blue.imageset\Locate%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Locate-Blue.imageset\Locate%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Locate-Blue.imageset\icButtonLocate.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Locate-Blue.imageset\icButtonLocate%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Locate-Blue.imageset\icButtonLocate%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Blue.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Blue.imageset\icButtonFeedback.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Blue.imageset\icButtonFeedback%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Blue.imageset\icButtonFeedback%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Field-Text.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Field-Text.imageset\icFieldText.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Field-Text.imageset\icFieldText%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Field-Text.imageset\icFieldText%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\Red-Cross.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Loading-Circle.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Loading-Circle.imageset\loadingCircle.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Loading-Circle.imageset\loadingCircle%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Loading-Circle.imageset\loadingCircle%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\No-Internet-Connection.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\No-Internet-Connection.imageset\icEmptyError.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\No-Internet-Connection.imageset\icEmptyError.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\No-Internet-Connection.imageset\icEmptyError%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\No-Internet-Connection.imageset\icEmptyError%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Empty-Current-Bill.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Empty-Current-Bill.imageset\icEmptyCurrentBill.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Empty-Current-Bill.imageset\icEmptyCurrentBill.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Empty-Current-Bill.imageset\icEmptyCurrentBill%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Empty-Current-Bill.imageset\icEmptyCurrentBill%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Empty-Bill-Payment.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Empty-Bill-Payment.imageset\icEmptyBillPayment.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Empty-Bill-Payment.imageset\icEmptyBillPayment.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Empty-Bill-Payment.imageset\icEmptyBillPayment%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Empty-Bill-Payment.imageset\icEmptyBillPayment%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-New-Bill.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Bill-Due.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Reconnection.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Disconnection.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Dunning.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-New-Bill.imageset\ic_notification_billing.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-New-Bill.imageset\ic_notification_billing%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-New-Bill.imageset\ic_notification_billing%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Bill-Due.imageset\ic_notification_billing due.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Bill-Due.imageset\ic_notification_billing due%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Bill-Due.imageset\ic_notification_billing due%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Reconnection.imageset\ic_notification_connection.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Reconnection.imageset\ic_notification_connection%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Reconnection.imageset\ic_notification_connection%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Disconnection.imageset\ic_notification_connection.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Disconnection.imageset\ic_notification_connection%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Disconnection.imageset\ic_notification_connection%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Dunning.imageset\ic_notification_power.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Dunning.imageset\ic_notification_power%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Dunning.imageset\ic_notification_power%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Password-Old.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Password-Old.imageset\Password.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Password-Old.imageset\Password%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Password-Old.imageset\Password%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Password.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Password.imageset\icFieldPassword.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Password.imageset\icFieldPassword%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Password.imageset\icFieldPassword%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Password.imageset\icFieldPassword.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\password_white.imageset\icFieldPasswordWhite.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\password_white.imageset\icFieldPasswordWhite%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\password_white.imageset\icFieldPasswordWhite%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Show-Password.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Display-Prelogin.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Display-Prelogin.imageset\icDisplayPrelogin.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Display-Prelogin.imageset\icDisplayPrelogin%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Display-Prelogin.imageset\icDisplayPrelogin%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Bill.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Bill.imageset\icTileFeedbackBill.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Bill.imageset\icTileFeedbackBill%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Bill.imageset\icTileFeedbackBill%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Bill.imageset\icTileFeedbackBill.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Streetlamp.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Others.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Header.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Header.imageset\img_feedback.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Header.imageset\img_feedback%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Header.imageset\img_feedback%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Others.imageset\icTileFeedbackOthers.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Others.imageset\icTileFeedbackOthers%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Others.imageset\icTileFeedbackOthers%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Others.imageset\icTileFeedbackOthers.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Streetlamp.imageset\icTileFeedbackStreetlamp.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Streetlamp.imageset\icTileFeedbackStreetlamp%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Streetlamp.imageset\icTileFeedbackStreetlamp%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Streetlamp.imageset\icTileFeedbackStreetlamp.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted.imageset\ic_feedback_submitted.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted.imageset\ic_feedback_submitted%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted.imageset\ic_feedback_submitted%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted.imageset\icTileFeedbackSubmitted.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Bill.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Bill.imageset\ic_feedback_submitted_billing.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Bill.imageset\ic_feedback_submitted_billing%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Bill.imageset\ic_feedback_submitted_billing%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Streetlamp.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Others.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Others.imageset\ic_feedback_submitted_others.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Others.imageset\ic_feedback_submitted_others%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Others.imageset\ic_feedback_submitted_others%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Streetlamp.imageset\ic_feedback_submitted_streetlamp.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Streetlamp.imageset\ic_feedback_submitted_streetlamp%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Streetlamp.imageset\ic_feedback_submitted_streetlamp%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\App-Launch-Gradient.imageset\img_splash.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\App-Launch-Gradient.imageset\img_splash%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\App-Launch-Gradient.imageset\img_splash%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\ic_menu_feedback.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\ic_menu_feedback%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\ic_menu_feedback%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\ic_menu_promo.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\ic_menu_promo%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions.imageset\ic_menu_promo%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-Dashboard.imageset\ic_menu_dashboard.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-Dashboard.imageset\ic_menu_dashboard%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-Dashboard.imageset\ic_menu_dashboard%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-More.imageset\ic_menu_more.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-More.imageset\ic_menu_more%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-More.imageset\ic_menu_more%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Active.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Inactive.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Active.imageset\ic_action_checkbox_active.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Active.imageset\ic_action_checkbox_active%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Active.imageset\ic_action_checkbox_active%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\ic_menu_bill.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\ic_menu_bill%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\ic_menu_bill%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Show-Password.imageset\icActionShowPassword.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Show-Password.imageset\icActionShowPassword%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Show-Password.imageset\icActionShowPassword%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Empty-Promotion.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Empty-Promotion.imageset\icEmptyPromotions.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Empty-Promotion.imageset\icEmptyPromotions%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Empty-Promotion.imageset\icEmptyPromotions%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Promo.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Promo.imageset\ic_notification_promo.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Promo.imageset\ic_notification_promo%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Promo.imageset\ic_notification_promo%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Bill-Due.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Bill-Due.imageset\img_notifications_bill due.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Bill-Due.imageset\img_notifications_bill due%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Bill-Due.imageset\img_notifications_bill due%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-New-Bill.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-New-Bill.imageset\img_notifications_new bill.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-New-Bill.imageset\img_notifications_new bill%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-New-Bill.imageset\img_notifications_new bill%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Disconnection.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Disconnection.imageset\img_notifications_disconnection.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Disconnection.imageset\img_notifications_disconnection%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Disconnection.imageset\img_notifications_disconnection%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Dunning.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Dunning.imageset\img_notifications_dunning.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Dunning.imageset\img_notifications_dunning%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Dunning.imageset\img_notifications_dunning%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Reconnection.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Reconnection.imageset\img_notifications_reconnection.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Reconnection.imageset\img_notifications_reconnection%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Reconnection.imageset\img_notifications_reconnection%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\ic_menu_promo_unread.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\ic_menu_promo_unread%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\ic_menu_promo_unread%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\ic_menu_promo_toggled_unread.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\ic_menu_promo_toggled_unread%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\ic_menu_promo_toggled_unread%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-Green.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-White.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-White.imageset\icDisplayReDashboard.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-White.imageset\icDisplayReDashboard%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-White.imageset\icDisplayReDashboard%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-Green.imageset\icDisplayREleaf.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-Green.imageset\icDisplayREleaf%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-RE-Leaf-Green.imageset\icDisplayREleaf%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Amex.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Amex.imageset\ic_payment_card_amex.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Amex.imageset\ic_payment_card_amex%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Amex.imageset\ic_payment_card_amex%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Show-PasswordWhite.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Show-PasswordWhite.imageset\ic_action_show password_white.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Show-PasswordWhite.imageset\ic_action_show password_white%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Show-PasswordWhite.imageset\ic_action_show password_white%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Empty.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Empty.imageset\ic_empty_archived_message.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Empty.imageset\ic_empty_archived_message%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Feedback-Empty.imageset\ic_empty_archived_message%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Charges.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Charges.imageset\rm.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Charges.imageset\rm%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Charges.imageset\rm%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Cost.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Cost.imageset\estimatedCost.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Cost.imageset\estimatedCost%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Cost.imageset\estimatedCost%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Energy-Usage.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Energy-Usage.imageset\energyUsage.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Energy-Usage.imageset\energyUsage%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Energy-Usage.imageset\energyUsage%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Avg-Elec-Usage.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Avg-Elec-Usage.imageset\avgelectricusage.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Avg-Elec-Usage.imageset\avgelectricusage%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Avg-Elec-Usage.imageset\avgelectricusage%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Arrow-Up.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Arrow-Up.imageset\up.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Arrow-Up.imageset\up%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Arrow-Up.imageset\up%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Arrow-Down.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Arrow-Down.imageset\down.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Arrow-Down.imageset\down%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Arrow-Down.imageset\down%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Emission.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Emission.imageset\co2.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Emission.imageset\co2%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Emission.imageset\co2%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-CO2.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-CO2.imageset\co2.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-CO2.imageset\co2%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-CO2.imageset\co2%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Mask-View.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Mask-View.imageset\Mask.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Mask-View.imageset\Mask%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Mask-View.imageset\Mask%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Empty-Chart-Data.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Empty-Chart-Data.imageset\bcrm-down.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Empty-Chart-Data.imageset\bcrm-down%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Empty-Chart-Data.imageset\bcrm-down%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-X-Gray.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-X-Gray.imageset\Promotions-Cancel.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-X-Gray.imageset\Promotions-Cancel%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-X-Gray.imageset\Promotions-Cancel%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Greeting-Morning.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Greeting-Morning.imageset\illustrationMorning.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Greeting-Morning.imageset\illustrationMorning%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Greeting-Morning.imageset\illustrationMorning%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Greeting-Afternoon.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Greeting-Afternoon.imageset\illustrationAfternoon.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Greeting-Afternoon.imageset\illustrationAfternoon%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Greeting-Afternoon.imageset\illustrationAfternoon%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Greeting-Evening.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Greeting-Evening.imageset\illustrationEvening.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Greeting-Evening.imageset\illustrationEvening%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Greeting-Evening.imageset\illustrationEvening%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Down-BCRM.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Down-BCRM.imageset\icSummarydashboardBcrmDown.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Down-BCRM.imageset\icSummarydashboardBcrmDown%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Down-BCRM.imageset\icSummarydashboardBcrmDown%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Maintenance.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Promotion.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Maintenance.imageset\icNotificationMaintenance.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Maintenance.imageset\icNotificationMaintenance%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Maintenance.imageset\icNotificationMaintenance%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Promotion.imageset\icMenuPromoToggled.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Promotion.imageset\icMenuPromoToggled%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Promotion.imageset\icMenuPromoToggled%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-News.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-News.imageset\icNotificationNews2.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-News.imageset\icNotificationNews2%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-News.imageset\icNotificationNews2%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Promotion.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-News.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\illustrationMaintenance.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\illustrationMaintenance%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Maintenance.imageset\illustrationMaintenance%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Promotion.imageset\illustrationPromotions.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Promotion.imageset\illustrationPromotions%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-Promotion.imageset\illustrationPromotions%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-News.imageset\illustrationNews.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-News.imageset\illustrationNews%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Notification-Banner-News.imageset\illustrationNews%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Receipt-Header.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Receipt-Header.imageset\TNB_Receipt_Logo-Header.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Receipt-Header.imageset\TNB_Receipt_Logo-Header%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Receipt-Header.imageset\TNB_Receipt_Logo-Header%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-PasswordWhite.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-PasswordWhite.imageset\ic_action_hide password_white.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-PasswordWhite.imageset\ic_action_hide password_white%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-PasswordWhite.imageset\ic_action_hide password_white%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\app_logo.imageset\Logo.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\app_logo.imageset\Logo%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\app_logo.imageset\Logo%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-Password.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-Password.imageset\ic_action_hide password_dark.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-Password.imageset\ic_action_hide password_dark%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-Password.imageset\ic_action_hide password_dark%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Logout-Logo.imageset\ic_logout_logo.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Logout-Logo.imageset\ic_logout_logo%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Logout-Logo.imageset\ic_logout_logo%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Logo-Combined.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Logo-Combined.imageset\TNB Logo_White.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Logo-Combined.imageset\TNB Logo_White%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Logo-Combined.imageset\TNB Logo_White%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-20%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-60.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-29%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-29%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-80.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-120.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-180.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-20.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-29.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-167.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-1024.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Inactive.imageset\icActionCheckboxInactive.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Inactive.imageset\icActionCheckboxInactive%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-Inactive.imageset\icActionCheckboxInactive%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\icActionCheckboxInactiveWhite.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\icActionCheckboxInactiveWhite%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\icActionCheckboxInactiveWhite%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Find_Account_Number.imageset\new-bill copy.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Find_Account_Number.imageset\new-bill copy%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Find_Account_Number.imageset\new-bill copy%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\New-Launch-Logo.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\New-Launch-Logo.imageset\New_Logo_SplashScreen%401x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\New-Launch-Logo.imageset\New_Logo_SplashScreen%402x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\New-Launch-Logo.imageset\New_Logo_SplashScreen%403x.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image-1.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%402x-1.png">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\Maintenance-Image.imageset\Maintenance-Image%403x-1.png">
+      <Visible>false</Visible>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
