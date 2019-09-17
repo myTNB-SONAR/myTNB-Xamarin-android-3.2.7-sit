@@ -39,11 +39,10 @@ namespace myTNB.SmartMeterView
         {
             _segmentScrollView = new UIScrollView(new CGRect(0, 0, _width, view.Frame.Height - GetWidthByScreenSize(18))) { Tag = 4000 };
             _segmentScrollView.Delegate = new BarScrollDelegate(this);
-            _segmentScrollView.ShowsVerticalScrollIndicator = false;
-            // _segmentScrollView.Bounces = false;
+            _segmentScrollView.ShowsHorizontalScrollIndicator = false;
             view.AddSubview(_segmentScrollView);
 
-            _lblMonth = new UILabel(new CGRect(0, _segmentScrollView.Frame.GetMaxY() - GetHeightByScreenSize(6), _width, GetHeightByScreenSize(12)))
+            _lblMonth = new UILabel(new CGRect(0, _segmentScrollView.Frame.GetMaxY() - GetHeightByScreenSize(3), _width, GetHeightByScreenSize(12)))
             {
                 TextAlignment = UITextAlignment.Center,
                 Font = TNBFont.MuseoSans_10_300,
@@ -141,9 +140,9 @@ namespace myTNB.SmartMeterView
                     Hidden = isSelected,
                     Tag = 1002
                 };
-                nfloat lblAmountWidth = lblConsumption.GetLabelWidth(GetWidthByScreenSize(100));
-                lblConsumption.Frame = new CGRect((segmentWidth - lblAmountWidth) / 2
-                    , lblConsumption.Frame.Y, lblAmountWidth, lblConsumption.Frame.Height);
+                nfloat lblConsumptionWidth = lblConsumption.GetLabelWidth(GetWidthByScreenSize(100));
+                lblConsumption.Frame = new CGRect((segmentWidth - lblConsumptionWidth) / 2
+                    , lblConsumption.Frame.Y, lblConsumptionWidth, lblConsumption.Frame.Height);
                 segment.AddSubview(lblConsumption);
 
                 UIImageView imgMissingReading = null;
@@ -174,6 +173,11 @@ namespace myTNB.SmartMeterView
                     _lblMonth.Text = item.Month ?? string.Empty;
                 }
 
+                segment.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    OnBarTapped(index);
+                }));
+
                 UIView.Animate(1, 0.3, UIViewAnimationOptions.CurveEaseOut
                     , () =>
                     {
@@ -197,20 +201,37 @@ namespace myTNB.SmartMeterView
             _segmentScrollView.SetContentOffset(_currentPoint, true);
         }
 
+        private void OnBarTapped(int tag)
+        {
+            if (_locationDictionary.ContainsKey(tag))
+            {
+                CGPoint point = _locationDictionary[tag];
+                nfloat baseMargin = (_width / 2) - GetWidthByScreenSize(6);
+
+                point.X = point.X - baseMargin;
+                _segmentScrollView.SetContentOffset(point, true);
+
+                UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Heavy);
+                selectionFeedback.Prepare();
+                selectionFeedback.ImpactOccurred();
+
+                if (tag != _currentBar)
+                {
+                    UpdateBarsOnScroll(tag);
+                }
+            }
+        }
+
         internal void UpdateBarsOnScroll(nint key)
         {
-            Debug.WriteLine("key 1: {0}", key);
-
             SetBar(key, true);
             SetBar(_currentBar, false);
-
             _currentBar = key;
-
             string month = _usageData[(int)key].Month ?? string.Empty;
             _lblMonth.Text = month;
         }
 
-        internal void SetBar(nint key, bool isActive)
+        private void SetBar(nint key, bool isActive)
         {
             CustomUIView view = _segmentScrollView.ViewWithTag(key) as CustomUIView;
             if (view == null) { return; }
@@ -244,33 +265,21 @@ namespace myTNB.SmartMeterView
         }
         public override void Scrolled(UIScrollView scrollView)
         {
-            //_segmentScrollView.ScrollEnabled = false;
             nfloat baseMargin = (_controller._width / 2) - _controller.GetWidthByScreenSize(6);
             nfloat xOffset = _controller._segmentScrollView.ContentOffset.X;
             if (xOffset < 0 || xOffset > _controller._contentWidth - (baseMargin * 2) - _controller.GetWidthByScreenSize(12))
             {
-                //Snap to last?
-                //Debug.WriteLine("xOffset >");
-                //_segmentScrollView.ScrollEnabled = true;
                 return;
             }
         }
 
         public override void DraggingEnded(UIScrollView scrollView, bool willDecelerate)
         {
-            if (willDecelerate)
+            if (!willDecelerate)
             {
-                Debug.WriteLine("NOT DraggingEnded");
-                return;
+                Debug.WriteLine("DraggingEnded Decelerate");
+                SetContentOffset();
             }
-            SetContentOffset();
-            Debug.WriteLine("DraggingEnded");
-        }
-
-        public override void DecelerationStarted(UIScrollView scrollView)
-        {
-            SetContentOffset();
-            Debug.WriteLine("DecelerationStarted");
         }
 
         public override void DecelerationEnded(UIScrollView scrollView)
@@ -283,24 +292,19 @@ namespace myTNB.SmartMeterView
         {
             nfloat baseMargin = (_controller._width / 2) - _controller.GetWidthByScreenSize(6);
             nfloat xOffset = _controller._segmentScrollView.ContentOffset.X + baseMargin + _controller.GetWidthByScreenSize(6);
-            Debug.WriteLine("xOffset: {0}", xOffset);
             List<CGPoint> values = _controller._locationDictionary.Values.ToList();
 
             CGPoint closest = values.OrderBy(v => Math.Abs((nfloat)v.X - xOffset)).First();
-            Debug.WriteLine("closest.X: {0}", closest.X);
 
             nint key = _controller._locationDictionary.FirstOrDefault(x => x.Value == closest).Key;
-            Debug.WriteLine("key 0: {0}", key);
-
 
             nfloat barDelta = _controller.GetWidthByScreenSize(30);
-            closest.X = closest.X - baseMargin;// + _controller.GetWidthByScreenSize(24);
+            closest.X = closest.X - baseMargin;
             _controller._segmentScrollView.SetContentOffset(closest, true);
 
             UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Heavy);
             selectionFeedback.Prepare();
             selectionFeedback.ImpactOccurred();
-
 
             if (key != _controller._currentBar)
             {

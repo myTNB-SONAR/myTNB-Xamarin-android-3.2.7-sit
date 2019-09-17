@@ -177,7 +177,7 @@ namespace myTNB
                     OnSegmentTap = OnSegmentTap,
                 };
             }
-            else if (viewType == SmartMeterConstants.SmartMeterViewType.DayZIn)
+            else if (viewType == SmartMeterConstants.SmartMeterViewType.DayZOut)
             {
                 _baseSmartMeterView = new SmartMeterDayZOutView();
             }
@@ -283,84 +283,124 @@ namespace myTNB
                     date.TextColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F);
                     date.Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300;
                 }
-                if (isLatestBar)
-                {
-                    Debug.WriteLine("Todo: Go to day view.");
-                }
             }
         }
 
         public override void ToggleTariffView(bool isTariffView)
         {
             _isTariffView = isTariffView;
-            nfloat amountBarMargin = GetHeightByScreenSize(4);
-            for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
+            if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZIn)
             {
-                CustomUIView segmentView = _segmentContainer.Subviews[i] as CustomUIView;
-                if (segmentView == null) { continue; }
-
-                CustomUIView bar = segmentView.ViewWithTag(1001) as CustomUIView;
-                if (bar == null) { continue; }
-
-                CGRect barOriginalFrame = bar.Frame;
-                bar.Frame = new CGRect(bar.Frame.X, bar.Frame.GetMaxY(), bar.Frame.Width, 0);
-
-                UIImageView imgMissingReading = segmentView.ViewWithTag(3001) as UIImageView;
-                CGRect imgMissingReadingOriginalFrame = new CGRect();
-                if (imgMissingReading != null)
+                UIScrollView scrollview = _segmentContainer.ViewWithTag(4000) as UIScrollView;
+                if (scrollview == null) { return; }
+                for (int i = 0; i < scrollview.Subviews.Count(); i++)
                 {
-                    imgMissingReadingOriginalFrame = imgMissingReading.Frame;
-                    imgMissingReading.Frame = new CGRect(new CGPoint(imgMissingReading.Frame.X
-                        , bar.Frame.GetMidY() - GetHeightByScreenSize(10)), imgMissingReading.Frame.Size);
+                    CustomUIView segmentView = scrollview.Subviews[i] as CustomUIView;
+                    if (segmentView == null) { continue; }
+                    UpdateTariffView(segmentView);
                 }
-
-                UIView viewCover = bar.ViewWithTag(2001);
-                if (viewCover != null) { viewCover.Hidden = isTariffView; }
-
-                UIView viewTariff = bar.ViewWithTag(2002);
-                if (viewTariff != null) { viewTariff.Hidden = !isTariffView; }
-
-                UILabel value = segmentView.ViewWithTag(1002) as UILabel;
-                CGRect valueOriginalFrame = new CGRect();
-                if (value != null)
-                {
-                    valueOriginalFrame = value.Frame;
-                    value.Frame = new CGRect(value.Frame.X, bar.Frame.GetMinY() - amountBarMargin - value.Frame.Height
-                        , value.Frame.Width, value.Frame.Height);
-                }
-                UIView.Animate(1, 0.3, UIViewAnimationOptions.CurveEaseOut
-                   , () =>
-                   {
-                       bar.Frame = barOriginalFrame;
-                       if (value != null)
-                       {
-                           value.Frame = valueOriginalFrame;
-                       }
-                       if (imgMissingReading != null)
-                       {
-                           imgMissingReading.Frame = imgMissingReadingOriginalFrame;
-                       }
-                   }
-                   , () => { }
-               );
             }
+            else
+            {
+                for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
+                {
+                    CustomUIView segmentView = _segmentContainer.Subviews[i] as CustomUIView;
+                    if (segmentView == null) { continue; }
+                    UpdateTariffView(segmentView);
+                }
+            }
+        }
+
+        private void UpdateTariffView(CustomUIView segmentView)
+        {
+            nfloat amountBarMargin = GetHeightByScreenSize(4);
+            CustomUIView bar = segmentView.ViewWithTag(1001) as CustomUIView;
+            if (bar == null) { return; }
+
+            CGRect barOriginalFrame = bar.Frame;
+            bar.Frame = new CGRect(bar.Frame.X, bar.Frame.GetMaxY(), bar.Frame.Width, 0);
+
+            UIImageView imgMissingReading = segmentView.ViewWithTag(3001) as UIImageView;
+            CGRect imgMissingReadingOriginalFrame = new CGRect();
+            if (imgMissingReading != null)
+            {
+                imgMissingReadingOriginalFrame = imgMissingReading.Frame;
+                imgMissingReading.Frame = new CGRect(new CGPoint(imgMissingReading.Frame.X
+                    , bar.Frame.GetMidY() - GetHeightByScreenSize(10)), imgMissingReading.Frame.Size);
+            }
+
+            UIView viewCover = bar.ViewWithTag(2001);
+            if (viewCover != null) { viewCover.Hidden = _isTariffView; }
+
+            UIView viewTariff = bar.ViewWithTag(2002);
+            if (viewTariff != null) { viewTariff.Hidden = !_isTariffView; }
+
+            UILabel value = segmentView.ViewWithTag(1002) as UILabel;
+            CGRect valueOriginalFrame = new CGRect();
+            if (value != null)
+            {
+                valueOriginalFrame = value.Frame;
+                value.Frame = new CGRect(value.Frame.X, bar.Frame.GetMinY() - amountBarMargin - value.Frame.Height
+                    , value.Frame.Width, value.Frame.Height);
+            }
+            UIView.Animate(1, 0.3, UIViewAnimationOptions.CurveEaseOut
+               , () =>
+               {
+                   bar.Frame = barOriginalFrame;
+                   if (value != null)
+                   {
+                       value.Frame = valueOriginalFrame;
+                   }
+                   if (imgMissingReading != null)
+                   {
+                       imgMissingReading.Frame = imgMissingReadingOriginalFrame;
+                   }
+               }
+               , () => { }
+           );
         }
 
         public override void ToggleRMKWHValues(RMkWhEnum state)
         {
             _consumptionState = state;
-            List<MonthItemModel> usageData = AccountUsageSmartCache.ByMonthUsage;
-            for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
+            if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZIn)
             {
-                CustomUIView segmentView = _segmentContainer.Subviews[i] as CustomUIView;
-                if (segmentView == null) { continue; }
-                UILabel value = segmentView.ViewWithTag(1002) as UILabel;
-                if (value == null) { continue; }
-                value.Text = state == RMkWhEnum.RM ? usageData[i].AmountTotal.FormatAmountString(usageData[i].Currency)
-                    : string.Format(Format_Value, usageData[i].UsageTotal, usageData[i].UsageUnit);
-                nfloat lblAmountWidth = value.GetLabelWidth(GetWidthByScreenSize(200));
-                value.Frame = new CGRect((GetWidthByScreenSize(30) - lblAmountWidth) / 2, value.Frame.Y, lblAmountWidth, value.Frame.Height);
+                UIScrollView scrollview = _segmentContainer.ViewWithTag(4000) as UIScrollView;
+                if (scrollview == null) { return; }
+                List<DayItemModel> usageData = AccountUsageSmartCache.FlatDays;
+                for (int i = 0; i < scrollview.Subviews.Count(); i++)
+                {
+                    int index = i;
+                    CustomUIView segmentView = scrollview.Subviews[index] as CustomUIView;
+                    if (segmentView == null || index >= usageData.Count) { continue; }
+                    string usageText = _consumptionState == RMkWhEnum.RM ? usageData[index].Amount.FormatAmountString(TNBGlobal.UNIT_CURRENCY)
+                        : string.Format(Format_Value, usageData[index].Consumption, TNBGlobal.UNITENERGY);
+                    UpdateRMKWHValues(segmentView, usageText);
+                }
             }
+            else if (_viewType == SmartMeterConstants.SmartMeterViewType.Month)
+            {
+                List<MonthItemModel> usageData = AccountUsageSmartCache.ByMonthUsage;
+                for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
+                {
+                    int index = i;
+                    CustomUIView segmentView = _segmentContainer.Subviews[index] as CustomUIView;
+                    if (segmentView == null || index >= usageData.Count) { continue; }
+                    string usageText = _consumptionState == RMkWhEnum.RM ? usageData[index].AmountTotal.FormatAmountString(usageData[index].Currency)
+                        : string.Format(Format_Value, usageData[index].UsageTotal, usageData[index].UsageUnit);
+                    UpdateRMKWHValues(segmentView, usageText);
+                }
+            }
+        }
+
+        private void UpdateRMKWHValues(CustomUIView segmentView, string usageText)
+        {
+            UILabel value = segmentView.ViewWithTag(1002) as UILabel;
+            if (value == null) { return; }
+            value.Text = usageText;
+            nfloat lblAmountWidth = value.GetLabelWidth(GetWidthByScreenSize(200));
+            nfloat baseX = GetWidthByScreenSize(_viewType == SmartMeterConstants.SmartMeterViewType.DayZIn ? 12 : 30);
+            value.Frame = new CGRect((baseX - lblAmountWidth) / 2, value.Frame.Y, lblAmountWidth, value.Frame.Height);
         }
     }
 }
