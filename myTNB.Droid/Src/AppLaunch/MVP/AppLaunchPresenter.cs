@@ -42,6 +42,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
         private static int AppLaunchDefaultTimeOutMillisecond = 2000;
         private int AppLaunchTimeOutMillisecond = AppLaunchDefaultTimeOutMillisecond;
+        private bool IsOnGetPhotoRunning = false;
 
         public AppLaunchPresenter(AppLaunchContract.IView mView, ISharedPreferences sharedPreferences)
         {
@@ -482,6 +483,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
                     if (responseModel.Status.Equals("Success"))
                     {
+                        IsOnGetPhotoRunning = false;
                         AppLaunchEntity wtManager = new AppLaunchEntity();
                         wtManager.DeleteTable();
                         wtManager.CreateTable();
@@ -580,78 +582,82 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
         public void OnGetPhoto(AppLaunchModel item)
         {
-            Bitmap imageCache = null;
-            CancellationTokenSource token = new CancellationTokenSource();
-            Log.Debug("Current OnGetPhoto Start DateTime", DateTime.Now.ToString());
-            Stopwatch sw = Stopwatch.StartNew();
-            _ = Task.Run(async () =>
+            if (!IsOnGetPhotoRunning)
             {
-                try
+                IsOnGetPhotoRunning = true;
+                Bitmap imageCache = null;
+                CancellationTokenSource token = new CancellationTokenSource();
+                Log.Debug("Current OnGetPhoto Start DateTime", DateTime.Now.ToString());
+                Stopwatch sw = Stopwatch.StartNew();
+                _ = Task.Run(async () =>
                 {
-                    await Task.Run(() =>
-                    {
-                        imageCache = ImageUtils.GetImageBitmapFromUrl(item.Image);
-                    }, new CancellationTokenSource().Token);
-                    sw.Stop();
-                    Log.Debug("Current OnGetPhoto End DateTime", DateTime.Now.ToString());
-                    Log.Debug("Current OnGetPhoto DateTime Used Time", sw.ElapsedMilliseconds.ToString());
                     try
                     {
-                        if (AppLaunchTimeOutMillisecond > 0)
+                        await Task.Run(() =>
                         {
-                            AppLaunchTimeOutMillisecond = AppLaunchTimeOutMillisecond - (int)sw.ElapsedMilliseconds;
-                            if (AppLaunchTimeOutMillisecond <= 0)
+                            imageCache = ImageUtils.GetImageBitmapFromUrl(item.Image);
+                        }, new CancellationTokenSource().Token);
+                        sw.Stop();
+                        Log.Debug("Current OnGetPhoto End DateTime", DateTime.Now.ToString());
+                        Log.Debug("Current OnGetPhoto DateTime Used Time", sw.ElapsedMilliseconds.ToString());
+                        try
+                        {
+                            if (AppLaunchTimeOutMillisecond > 0)
                             {
-                                AppLaunchTimeOutMillisecond = 0;
+                                AppLaunchTimeOutMillisecond = AppLaunchTimeOutMillisecond - (int)sw.ElapsedMilliseconds;
+                                if (AppLaunchTimeOutMillisecond <= 0)
+                                {
+                                    AppLaunchTimeOutMillisecond = 0;
+                                }
                             }
+                        }
+                        catch (Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+
+                        if (imageCache != null)
+                        {
+                            item.ImageBitmap = imageCache;
+                            item.ImageB64 = BitmapToBase64(imageCache);
+                            AppLaunchEntity wtManager = new AppLaunchEntity();
+                            wtManager.DeleteTable();
+                            wtManager.CreateTable();
+                            AppLaunchEntity newItem = new AppLaunchEntity()
+                            {
+                                ID = item.ID,
+                                Image = item.Image,
+                                ImageB64 = item.ImageB64,
+                                Title = item.Title,
+                                Description = item.Description,
+                                StartDateTime = item.StartDateTime,
+                                EndDateTime = item.EndDateTime,
+                                ShowForSeconds = item.ShowForSeconds
+                            };
+                            wtManager.InsertItem(newItem);
+                            AppLaunchUtils.SetAppLaunchBitmap(item);
+                            this.mView.SetCustomAppLaunchImage(item);
+                        }
+                        else
+                        {
+                            this.mView.SetDefaultAppLaunchImage();
                         }
                     }
                     catch (Exception e)
                     {
+                        this.mView.SetDefaultAppLaunchImage();
                         Utility.LoggingNonFatalError(e);
                     }
+                }, token.Token);
 
-                    if (imageCache != null)
+                if (AppLaunchTimeOutMillisecond > 0)
+                {
+                    _ = Task.Delay(AppLaunchTimeOutMillisecond).ContinueWith(_ =>
                     {
-                        item.ImageBitmap = imageCache;
-                        item.ImageB64 = BitmapToBase64(imageCache);
-                        AppLaunchEntity wtManager = new AppLaunchEntity();
-                        wtManager.DeleteTable();
-                        wtManager.CreateTable();
-                        AppLaunchEntity newItem = new AppLaunchEntity()
-                        {
-                            ID = item.ID,
-                            Image = item.Image,
-                            ImageB64 = item.ImageB64,
-                            Title = item.Title,
-                            Description = item.Description,
-                            StartDateTime = item.StartDateTime,
-                            EndDateTime = item.EndDateTime,
-                            ShowForSeconds = item.ShowForSeconds
-                        };
-                        wtManager.InsertItem(newItem);
-                        AppLaunchUtils.SetAppLaunchBitmap(item);
-                        this.mView.SetCustomAppLaunchImage(item);
-                    }
-                    else
-                    {
+                        AppLaunchTimeOutMillisecond = 0;
                         this.mView.SetDefaultAppLaunchImage();
-                    }
+                    });
                 }
-                catch (Exception e)
-                {
-                    this.mView.SetDefaultAppLaunchImage();
-                    Utility.LoggingNonFatalError(e);
-                }
-            }, token.Token);
-
-            if (AppLaunchTimeOutMillisecond > 0)
-            {
-                _ = Task.Delay(AppLaunchTimeOutMillisecond).ContinueWith(_ =>
-                {
-                    AppLaunchTimeOutMillisecond = 0;
-                    this.mView.SetDefaultAppLaunchImage();
-                });
             }
         }
 
