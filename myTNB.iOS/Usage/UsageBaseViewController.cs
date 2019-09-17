@@ -284,12 +284,6 @@ namespace myTNB
                 Hidden = true
             };
 
-            _viewChart.Layer.BorderColor = UIColor.Brown.CGColor;
-            _viewChart.Layer.BorderWidth = 1;
-
-            _viewToggle.Layer.BorderColor = UIColor.Green.CGColor;
-            _viewToggle.Layer.BorderWidth = 1;
-
             _viewSmartMeter = new CustomUIView(new CGRect(0, 0, ViewWidth, 0))
             {
                 Hidden = true

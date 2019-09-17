@@ -46,17 +46,17 @@ namespace myTNB.SmartMeterView
             return maxValue;
         }
 
-        protected nfloat GetWidthByScreenSize(nfloat value)
+        public nfloat GetWidthByScreenSize(nfloat value)
         {
             return ScaleUtility.GetWidthByScreenSize(value);
         }
 
-        protected nfloat GetHeightByScreenSize(nfloat value)
+        public nfloat GetHeightByScreenSize(nfloat value)
         {
             return ScaleUtility.GetHeightByScreenSize(value);
         }
 
-        protected nfloat GetYLocationFromFrameScreenSize(CGRect frame, nfloat yValue)
+        public nfloat GetYLocationFromFrameScreenSize(CGRect frame, nfloat yValue)
         {
             return ScaleUtility.GetYLocationFromFrameScreenSize(frame, yValue);
         }

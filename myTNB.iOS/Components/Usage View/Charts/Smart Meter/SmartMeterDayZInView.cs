@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using CoreGraphics;
+using Force.DeepCloner;
 using myTNB.Model.Usage;
 using UIKit;
 
@@ -10,10 +11,18 @@ namespace myTNB.SmartMeterView
 {
     public class SmartMeterDayZInView : BaseSmartMeterView
     {
-        private UIScrollView _segmentScrollView;
-        private nfloat _width = UIScreen.MainScreen.Bounds.Width;
-        private nfloat _contentWidth;
-        private CGPoint _currentPoint;
+        internal UIScrollView _segmentScrollView;
+        internal nfloat _width = UIScreen.MainScreen.Bounds.Width;
+        internal nfloat _contentWidth;
+        internal CGPoint _currentPoint;
+        internal CGPoint _refPoint;
+        internal CGPoint _lastSegment;
+        internal nfloat _lastXContentOffset;
+        internal Dictionary<nint, CGPoint> _locationDictionary = new Dictionary<nint, CGPoint>();
+        internal nint _currentBar;
+
+        private UILabel _lblMonth;
+        private List<DayItemModel> _usageData = new List<DayItemModel>();
 
         private void AddIndicator(ref CustomUIView view)
         {
@@ -28,52 +37,19 @@ namespace myTNB.SmartMeterView
 
         private void AddScrollView(ref CustomUIView view)
         {
-            _segmentScrollView = new UIScrollView(new CGRect(0, 0, _width, view.Frame.Height - GetWidthByScreenSize(10))) { Tag = 4000 };
-            _segmentScrollView.Scrolled += OnBarScroll;
-
+            _segmentScrollView = new UIScrollView(new CGRect(0, 0, _width, view.Frame.Height - GetWidthByScreenSize(18))) { Tag = 4000 };
+            _segmentScrollView.Delegate = new BarScrollDelegate(this);
+            _segmentScrollView.ShowsVerticalScrollIndicator = false;
+            // _segmentScrollView.Bounces = false;
             view.AddSubview(_segmentScrollView);
 
-            _segmentScrollView.Layer.BorderColor = UIColor.Red.CGColor;
-            _segmentScrollView.Layer.BorderWidth = 1;
-        }
-
-        private void OnBarScroll(object sender, EventArgs e)
-        {
-            nfloat baseMargin = (_width / 2) - GetWidthByScreenSize(6);
-            nfloat xOffset = _segmentScrollView.ContentOffset.X;
-            if (xOffset > _contentWidth - (baseMargin * 2) - GetWidthByScreenSize(12))
+            _lblMonth = new UILabel(new CGRect(0, _segmentScrollView.Frame.GetMaxY() - GetHeightByScreenSize(6), _width, GetHeightByScreenSize(12)))
             {
-                //Snap to last?
-                Debug.WriteLine("xOffset >");
-                return;
-            }
-            if (xOffset < 0)
-            {
-                //Snap to first?
-                Debug.WriteLine("xOffset <");
-                return;
-            }
-
-            Debug.WriteLine("xOffset: " + xOffset);
-            Debug.WriteLine("_currentPoint.X: " + _currentPoint.X);
-
-            nfloat barDelta = GetWidthByScreenSize(30);
-            nfloat delta = xOffset - _currentPoint.X;
-            Debug.WriteLine("delta: " + delta);
-            return;
-            if (delta > GetWidthByScreenSize(6))
-            {
-                Debug.WriteLine("Right");
-                _currentPoint = new CGPoint(_currentPoint.X + barDelta, _currentPoint.Y);
-                _segmentScrollView.SetContentOffset(_currentPoint, true);
-            }
-            else if (delta < -GetWidthByScreenSize(6))
-            {
-                Debug.WriteLine("Left");
-                _currentPoint = new CGPoint(_currentPoint.X - barDelta, _currentPoint.Y);
-                _segmentScrollView.SetContentOffset(_currentPoint, true);
-            }
-
+                TextAlignment = UITextAlignment.Center,
+                Font = TNBFont.MuseoSans_10_300,
+                TextColor = UIColor.White
+            };
+            view.AddSubview(_lblMonth);
 
         }
 
@@ -96,29 +72,33 @@ namespace myTNB.SmartMeterView
             nfloat lblHeight = GetHeightByScreenSize(10);
             nfloat amountBarMargin = GetHeightByScreenSize(4);
 
-            List<DayItemModel> usageData = AccountUsageSmartCache.FlatDays;
-            List<string> valueList = usageData.Select(x => x.Amount).ToList();
+            _usageData = AccountUsageSmartCache.FlatDays;
+            List<string> valueList = _usageData.Select(x => x.Amount).ToList();
             double maxValue = GetMaxValue(RMkWhEnum.RM, valueList);
             double divisor = maxBarHeight / maxValue;
-            CGPoint lastSegment = new CGPoint();
-            for (int i = 0; i < usageData.Count; i++)
+            _lastSegment = new CGPoint();
+            _locationDictionary.Clear();
+            for (int i = 0; i < _usageData.Count; i++)
             {
                 int index = i;
-                DayItemModel item = usageData[index];
+                bool isSelected = index < _usageData.Count - 1;
+                DayItemModel item = _usageData[index];
                 CustomUIView segment = new CustomUIView(new CGRect(xLoc, 0, segmentWidth, height))
                 {
                     Tag = index,
                     PageName = "InnerDashboard",
                     EventName = "OnTapNormalBar"
                 };
-
-                if (index == usageData.Count - 1)
+                _currentBar = segment.Tag;
+                if (!_locationDictionary.ContainsKey(segment.Tag))
                 {
-                    lastSegment = segment.Frame.Location;
+                    _locationDictionary.Add(segment.Tag, segment.Frame.Location);
                 }
 
-                segment.Layer.BorderColor = UIColor.Yellow.CGColor;
-                segment.Layer.BorderWidth = 1;
+                if (index == _usageData.Count - 1)
+                {
+                    _lastSegment = segment.Frame.Location;
+                }
 
                 _segmentScrollView.AddSubview(segment);
                 xLoc += segmentWidth + segmentMargin;
@@ -137,7 +117,7 @@ namespace myTNB.SmartMeterView
 
                 UIView viewCover = new UIView(new CGRect(new CGPoint(0, 0), new CGSize(viewBar.Frame.Width, barHeight)))
                 {
-                    BackgroundColor = UIColor.White,
+                    BackgroundColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
                     Tag = 2001,
                     Hidden = IsTariffView
                 };
@@ -158,7 +138,7 @@ namespace myTNB.SmartMeterView
                     Font = TNBFont.MuseoSans_10_300,
                     TextColor = UIColor.White,
                     Text = displayText,
-                    Hidden = false,
+                    Hidden = isSelected,
                     Tag = 1002
                 };
                 nfloat lblAmountWidth = lblConsumption.GetLabelWidth(GetWidthByScreenSize(100));
@@ -178,26 +158,21 @@ namespace myTNB.SmartMeterView
                     segment.AddSubview(imgMissingReading);
                 }
 
-                UILabel lblDay = new UILabel(new CGRect((segmentWidth - GetWidthByScreenSize(40)) / 2, height - (lblHeight * 3)
+                UILabel lblDay = new UILabel(new CGRect((segmentWidth - GetWidthByScreenSize(40)) / 2, height - ((lblHeight * 2) + GetHeightByScreenSize(12))
                   , GetWidthByScreenSize(40), lblHeight))
                 {
                     TextAlignment = UITextAlignment.Center,
                     Font = TNBFont.MuseoSans_10_300,
-                    TextColor = UIColor.White,
+                    TextColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
                     Text = item.Day,
                     Tag = 1003
                 };
                 segment.AddSubview(lblDay);
 
-                UILabel lblMonth = new UILabel(new CGRect((segmentWidth - GetWidthByScreenSize(40)) / 2, height - (lblHeight * 2)
-                 , GetWidthByScreenSize(40), lblHeight))
+                if (isSelected)
                 {
-                    TextAlignment = UITextAlignment.Center,
-                    Font = TNBFont.MuseoSans_10_300,
-                    TextColor = UIColor.White,
-                    Text = item.Month
-                };
-                segment.AddSubview(lblMonth);
+                    _lblMonth.Text = item.Month ?? string.Empty;
+                }
 
                 UIView.Animate(1, 0.3, UIViewAnimationOptions.CurveEaseOut
                     , () =>
@@ -214,10 +189,123 @@ namespace myTNB.SmartMeterView
                 );
             }
 
-            _contentWidth = (usageData.Count * GetWidthByScreenSize(12)) + ((usageData.Count - 1) * GetWidthByScreenSize(24)) + (baseMargin * 2);
+            _contentWidth = (_usageData.Count * GetWidthByScreenSize(12)) + ((_usageData.Count - 1) * GetWidthByScreenSize(24)) + (baseMargin * 2);
             _segmentScrollView.ContentSize = new CGSize(_contentWidth, _segmentScrollView.Frame.Height);
-            _currentPoint = new CGPoint(_contentWidth - (baseMargin * 2) - GetWidthByScreenSize(12), lastSegment.Y);
+            _currentPoint = new CGPoint(_contentWidth - (baseMargin * 2) - GetWidthByScreenSize(12), _lastSegment.Y);
+            _refPoint = _currentPoint;
+            _lastXContentOffset = _currentPoint.X;
             _segmentScrollView.SetContentOffset(_currentPoint, true);
+        }
+
+        internal void UpdateBarsOnScroll(nint key)
+        {
+            Debug.WriteLine("key 1: {0}", key);
+
+            SetBar(key, true);
+            SetBar(_currentBar, false);
+
+            _currentBar = key;
+
+            string month = _usageData[(int)key].Month ?? string.Empty;
+            _lblMonth.Text = month;
+        }
+
+        internal void SetBar(nint key, bool isActive)
+        {
+            CustomUIView view = _segmentScrollView.ViewWithTag(key) as CustomUIView;
+            if (view == null) { return; }
+
+            UIView viewCover = view.ViewWithTag(2001) as UIView;
+            if (viewCover != null)
+            {
+                viewCover.BackgroundColor = isActive ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F);
+            }
+
+            UILabel lblConsumption = view.ViewWithTag(1002) as UILabel;
+            if (lblConsumption != null)
+            {
+                lblConsumption.Hidden = !isActive;
+            }
+
+            UILabel lblDay = view.ViewWithTag(1003) as UILabel;
+            if (lblDay != null)
+            {
+                lblDay.TextColor = isActive ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F);
+            }
+        }
+    }
+
+    public class BarScrollDelegate : UIScrollViewDelegate
+    {
+        private SmartMeterDayZInView _controller;
+        public BarScrollDelegate(SmartMeterDayZInView controller)
+        {
+            _controller = controller;
+        }
+        public override void Scrolled(UIScrollView scrollView)
+        {
+            //_segmentScrollView.ScrollEnabled = false;
+            nfloat baseMargin = (_controller._width / 2) - _controller.GetWidthByScreenSize(6);
+            nfloat xOffset = _controller._segmentScrollView.ContentOffset.X;
+            if (xOffset < 0 || xOffset > _controller._contentWidth - (baseMargin * 2) - _controller.GetWidthByScreenSize(12))
+            {
+                //Snap to last?
+                //Debug.WriteLine("xOffset >");
+                //_segmentScrollView.ScrollEnabled = true;
+                return;
+            }
+        }
+
+        public override void DraggingEnded(UIScrollView scrollView, bool willDecelerate)
+        {
+            if (willDecelerate)
+            {
+                Debug.WriteLine("NOT DraggingEnded");
+                return;
+            }
+            SetContentOffset();
+            Debug.WriteLine("DraggingEnded");
+        }
+
+        public override void DecelerationStarted(UIScrollView scrollView)
+        {
+            SetContentOffset();
+            Debug.WriteLine("DecelerationStarted");
+        }
+
+        public override void DecelerationEnded(UIScrollView scrollView)
+        {
+            Debug.WriteLine("DecelerationEnded");
+            SetContentOffset();
+        }
+
+        private void SetContentOffset()
+        {
+            nfloat baseMargin = (_controller._width / 2) - _controller.GetWidthByScreenSize(6);
+            nfloat xOffset = _controller._segmentScrollView.ContentOffset.X + baseMargin + _controller.GetWidthByScreenSize(6);
+            Debug.WriteLine("xOffset: {0}", xOffset);
+            List<CGPoint> values = _controller._locationDictionary.Values.ToList();
+
+            CGPoint closest = values.OrderBy(v => Math.Abs((nfloat)v.X - xOffset)).First();
+            Debug.WriteLine("closest.X: {0}", closest.X);
+
+            nint key = _controller._locationDictionary.FirstOrDefault(x => x.Value == closest).Key;
+            Debug.WriteLine("key 0: {0}", key);
+
+
+            nfloat barDelta = _controller.GetWidthByScreenSize(30);
+            closest.X = closest.X - baseMargin;// + _controller.GetWidthByScreenSize(24);
+            _controller._segmentScrollView.SetContentOffset(closest, true);
+
+            UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Heavy);
+            selectionFeedback.Prepare();
+            selectionFeedback.ImpactOccurred();
+
+
+            if (key != _controller._currentBar)
+            {
+                _controller.UpdateBarsOnScroll(key);
+            }
         }
     }
 }

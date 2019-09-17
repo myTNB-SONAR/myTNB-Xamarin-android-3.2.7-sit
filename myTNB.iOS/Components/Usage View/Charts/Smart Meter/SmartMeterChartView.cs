@@ -197,9 +197,6 @@ namespace myTNB
                 PinchAction(obj);
             }));
 
-            _segmentContainer.Layer.BorderColor = UIColor.Cyan.CGColor;
-            _segmentContainer.Layer.BorderWidth = 1;
-
             _mainView.AddSubview(_segmentContainer);
         }
 
