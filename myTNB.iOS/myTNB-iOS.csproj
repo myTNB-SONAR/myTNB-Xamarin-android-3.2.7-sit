@@ -1197,6 +1197,9 @@
     <ImageAsset Include="Assets.xcassets\Notification-Generic.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Notification-Generic.imageset\generic%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Generic.imageset\generic%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-RE-Banner.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Bills-RE-Banner.imageset\re%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-RE-Banner.imageset\re%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1611,6 +1614,7 @@
     <Folder Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Banner-Generic.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Generic.imageset\" />
+    <Folder Include="Assets.xcassets\Bills-RE-Banner.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
