@@ -67,6 +67,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         private bool isAppLaunchSiteCoreDone = false;
         private bool isAppLaunchLoadSuccessful = false;
+        private bool isAppLaunchDone = false;
 
         private MasterDataResponse cacheResponse = null;
 
@@ -126,8 +127,9 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         {
             try
             {
-                if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful)
+                if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
                 {
+                    isAppLaunchDone = true;
                     userActionsListener.GetSavedTimeStamp();
                 }
             }
@@ -203,8 +205,9 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         public void ShowDashboard()
         {
-            if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful)
+            if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
             {
+                isAppLaunchDone = true;
                 Intent DashboardIntent = new Intent(this, typeof(DashboardActivity));
                 DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                 StartActivity(DashboardIntent);
@@ -213,8 +216,9 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         public void ShowPreLogin()
         {
-            if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful)
+            if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
             {
+                isAppLaunchDone = true;
                 Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
                 PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                 StartActivity(PreLoginIntent);
@@ -223,8 +227,9 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         public void ShowResetPassword()
         {
-            if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful)
+            if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
             {
+                isAppLaunchDone = true;
                 Intent ResetPasswordIntent = new Intent(this, typeof(ResetPasswordActivity));
                 ResetPasswordIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                 ResetPasswordIntent.PutExtra(Constants.FROM_ACTIVITY, LaunchViewActivity.TAG);
@@ -320,6 +325,10 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         {
             base.OnStart();
 
+            isAppLaunchDone = false;
+            isAppLaunchSiteCoreDone = false;
+            isAppLaunchLoadSuccessful = false;
+
             try
             {
                 mPresenter = new AppLaunchPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
@@ -333,12 +342,10 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             {
                 if (AppLaunchUtils.GetAppLaunch() != null)
                 {
-                    isAppLaunchSiteCoreDone = false;
                     SetCustomAppLaunchImage(AppLaunchUtils.GetAppLaunch());
                 }
                 else
                 {
-                    isAppLaunchSiteCoreDone = false;
                     if (!isAppLaunchSiteCoreDone)
                     {
                         this.userActionsListener.GetSavedAppLaunchTimeStamp();
@@ -352,7 +359,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
             try
             {
-                isAppLaunchLoadSuccessful = false;
                 currentNavigation = AppLaunchNavigation.Nothing;
                 if (ConnectionUtils.HasInternetConnection(this))
                 {
@@ -386,8 +392,9 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
         public void ShowNotification()
         {
-            if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful)
+            if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
             {
+                isAppLaunchDone = true;
                 Intent notificationIntent = new Intent(this, typeof(NotificationActivity));
                 notificationIntent.PutExtra(Constants.HAS_NOTIFICATION, true);
                 StartActivity(notificationIntent);
@@ -611,8 +618,9 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         {
             try
             {
-                if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful)
+                if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
                 {
+                    isAppLaunchDone = true;
                     ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
                     Intent logout = new Intent(this, typeof(LoginActivity));
                     StartActivity(logout);
@@ -706,8 +714,9 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             try
             {
                 cacheResponse = masterDataResponse;
-                if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful)
+                if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
                 {
+                    isAppLaunchDone = true;
                     Intent maintenanceScreen = new Intent(this, typeof(MaintenanceActivity));
                     maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, masterDataResponse.Data.MasterData.MaintainanceTitle);
                     maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, masterDataResponse.Data.MasterData.MaintainanceMessage);
