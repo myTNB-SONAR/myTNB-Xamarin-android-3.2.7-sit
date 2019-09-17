@@ -509,7 +509,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     if (AppLaunchTimeOutMillisecond > 0)
                     {
                         AppLaunchTimeOutMillisecond = 0;
-                        this.mView.SetDefaultAppLaunchImage();
+                        OnGetAppLaunchCache();
                     }
                 });
             }
@@ -671,6 +671,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             catch (Exception e)
             {
                 B64Output = "";
+                Log.Debug("BitmapToBase64 Error", e.Message);
                 Utility.LoggingNonFatalError(e);
             }
 
@@ -688,6 +689,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             catch (Exception e)
             {
                 convertedBitmap = null;
+                Log.Debug("Base64ToBitmap Error", e.Message);
                 Utility.LoggingNonFatalError(e);
             }
 
@@ -702,6 +704,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     await Task.Delay(millisecondDelay);
                 }
+                this.mView.SetAppLaunchSiteCoreDoneFlag(true);
                 this.mView.OnGoAppLaunchEvent();
             }
             catch (Exception e)
@@ -771,7 +774,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     if (AppLaunchTimeOutMillisecond > 0)
                     {
                         AppLaunchTimeOutMillisecond = 0;
-                        this.mView.SetDefaultAppLaunchImage();
+                        OnGetAppLaunchCache();
                     }
                 });
             }

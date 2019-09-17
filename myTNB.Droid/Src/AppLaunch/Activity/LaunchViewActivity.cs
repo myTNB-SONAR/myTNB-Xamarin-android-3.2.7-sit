@@ -788,7 +788,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             {
                 if (!isAppLaunchSiteCoreDone)
                 {
-                    isAppLaunchSiteCoreDone = true;
+                    Log.Debug("Load Default Splash Screen", "Yes");
                     try
                     {
                         RunOnUiThread(() =>
@@ -816,7 +816,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             {
                 if (!isAppLaunchSiteCoreDone)
                 {
-                    isAppLaunchSiteCoreDone = true;
                     try
                     {
                         if (item.ImageBitmap != null)
@@ -833,6 +832,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                             Log.Debug("Stop DateTime", stopDateTime.ToString());
                             if (startResult >= 0 && endResult <= 0)
                             {
+                                Log.Debug("Load Default Splash Screen", "No");
                                 Log.Debug("Within Period", "Yes");
                                 try
                                 {
@@ -847,7 +847,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                                 }
                                 catch (Exception ne)
                                 {
-                                    isAppLaunchSiteCoreDone = false;
                                     SetDefaultAppLaunchImage();
                                     Utility.LoggingNonFatalError(ne);
                                 }
@@ -855,19 +854,16 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                             else
                             {
                                 Log.Debug("Within Period", "No");
-                                isAppLaunchSiteCoreDone = false;
                                 SetDefaultAppLaunchImage();
                             }
                         }
                         else
                         {
-                            isAppLaunchSiteCoreDone = false;
                             SetDefaultAppLaunchImage();
                         }
                     }
                     catch (Exception ne)
                     {
-                        isAppLaunchSiteCoreDone = false;
                         SetDefaultAppLaunchImage();
                         Utility.LoggingNonFatalError(ne);
                     }
@@ -875,7 +871,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             }
             catch (Exception e)
             {
-                isAppLaunchSiteCoreDone = false;
                 SetDefaultAppLaunchImage();
                 Utility.LoggingNonFatalError(e);
             }

@@ -157,6 +157,8 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             void SetCustomAppLaunchImage(AppLaunchModel item);
 
             void OnGoAppLaunchEvent();
+
+            void SetAppLaunchSiteCoreDoneFlag(bool flag);
         }
 
         public interface IUserActionsListener : IBasePresenter
