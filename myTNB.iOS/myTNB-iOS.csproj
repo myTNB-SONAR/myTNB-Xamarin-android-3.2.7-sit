@@ -1868,7 +1868,6 @@
     <Compile Include="SQLite\SQLite Data Manager\DueEntity.cs" />
     <Compile Include="Sitecore CMS\Model\AppLaunchImageResponseModel.cs" />
     <Compile Include="Sitecore CMS\Service\AppLaunchImageService.cs" />
-    <Compile Include="SQLite\SQLite Data Manager\AppLaunchImageEntity.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

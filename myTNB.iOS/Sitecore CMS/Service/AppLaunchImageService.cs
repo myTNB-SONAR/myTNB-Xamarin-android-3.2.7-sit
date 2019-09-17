@@ -41,8 +41,8 @@ namespace myTNB.SitecoreCMS.Service
                     Title = item.GetValueFromField(Constants.Sitecore.Fields.Shared.Title),
                     Description = item.GetValueFromField(Constants.Sitecore.Fields.AppLaunchImage.Description),
                     Image = item.GetImageUrlFromItemWithSize(Constants.Sitecore.Fields.Shared.Image, OS, imageSize, websiteUrl, language),
-                    StartDateTime = item.GetDateValueFromField(Constants.Sitecore.Fields.AppLaunchImage.StartDateTime),
-                    EndDateTime = item.GetDateValueFromField(Constants.Sitecore.Fields.AppLaunchImage.EndDateTime),
+                    StartDateTime = item.GetValueFromField(Constants.Sitecore.Fields.AppLaunchImage.StartDateTime),
+                    EndDateTime = item.GetValueFromField(Constants.Sitecore.Fields.AppLaunchImage.EndDateTime),
                     ShowForSeconds = item.GetValueFromField(Constants.Sitecore.Fields.AppLaunchImage.ShowForSeconds)
                 };
                 Debug.WriteLine("debug: insert success");
