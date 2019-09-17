@@ -1,6 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using myTNB.SitecoreCMS.Model;
+using myTNB_Android.Src.Base.Models;
+using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
+using myTNB_Android.Src.Utils;
+using Newtonsoft.Json;
 using static myTNB_Android.Src.myTNBMenu.Models.SMRActivityInfoResponse;
 using static myTNB_Android.Src.SSMR.SMRApplication.Api.GetAccountsSMREligibilityResponse;
 
@@ -11,6 +18,7 @@ namespace myTNB_Android.Src.Base
         
         static SMRActivityInfo sMRActivityInfo;
         private List<SMREligibiltyPopUpDetails> mSMREligibilityPopupDetailList = new List<SMREligibiltyPopUpDetails>();
+        private List<BillMandatoryChargesTooltipModel> mBillMandatoryChargesTooltipModelList = new List<BillMandatoryChargesTooltipModel>();
         private static MyTNBAppToolTipData Instance;
 
         private MyTNBAppToolTipData(){}
@@ -34,6 +42,10 @@ namespace myTNB_Android.Src.Base
             mSMREligibilityPopupDetailList = smrEligibilityPopupDetailList;
         }
 
+        public void SetBillMandatoryChargesTooltipModelList(List<BillMandatoryChargesTooltipModel> billMandatoryChargesTooltipModelList)
+        {
+            mBillMandatoryChargesTooltipModelList = billMandatoryChargesTooltipModelList;
+        }
 
         public static SMRPhotoPopUpDetailsModel GetTakePhotoToolTipData(bool isSinglePhase, bool isOneMissing, string firstParam, string secondParam)
         {
@@ -157,6 +169,58 @@ namespace myTNB_Android.Src.Base
             return eligibiltyPopUpDetails;
         }
 
+        public static List<UnderstandTooltipModel> GetUnderstandBillTooltipData()
+        {
+            List<UnderstandTooltipModel> tooltipModelDataList = new List<UnderstandTooltipModel>();
+            List<SitecoreCmsEntity> entryList = SitecoreCmsEntity.GetItemById("BILL_TOOLTIP");
+            if (entryList.Count > 0)
+            {
+                List<BillsTooltipModelEntity> billTooltipDataList = JsonConvert.DeserializeObject<List<BillsTooltipModelEntity>>(entryList[0].jsonStringData);
+                UnderstandTooltipModel tooltipModel;
+                billTooltipDataList.ForEach(data =>
+                {
+                    tooltipModel = new UnderstandTooltipModel();
+                    tooltipModel.Title = data.Title;
+                    tooltipModel.ItemList = data.Description.Split('|').ToList();
+                    tooltipModel.TooltipImage = ImageUtils.GetImageBitmapFromUrl(data.Image);
+                    tooltipModelDataList.Add(tooltipModel);
+                });
+            }
+            else
+            {
+                UnderstandTooltipModel newModel = new UnderstandTooltipModel();
+                newModel.TooltipImage = null;
+                newModel.Title = "Title 1";
+                List<string> itemList = "Security Deposit|Stamp Duty|Processing Fee|Meter Fee".Split('|').ToList();
+                newModel.ItemList = itemList;
+                tooltipModelDataList.Add(newModel);
+
+                newModel = new UnderstandTooltipModel();
+                newModel.TooltipImage = null;
+                newModel.Title = "Title 2";
+                itemList = "Security Deposit|Stamp Duty|Processing Fee|Meter Fee".Split('|').ToList();
+                newModel.ItemList = itemList;
+                tooltipModelDataList.Add(newModel);
+            }
+            return tooltipModelDataList;
+        }
+
+        public BillMandatoryChargesTooltipModel GetMandatoryChargesTooltipData()
+        {
+            return mBillMandatoryChargesTooltipModelList.Find(model =>
+            {
+                return model.Type == "MandatoryCharges";
+            });
+        }
+
+        public BillMandatoryChargesTooltipModel GetMandatoryPaymentTooltipData()
+        {
+            return mBillMandatoryChargesTooltipModelList.Find(model =>
+            {
+                return model.Type == "MandatoryPayment";
+            });
+        }
+
 
         public class SMREligibiltyPopUpDetailData
         {
@@ -164,6 +228,5 @@ namespace myTNB_Android.Src.Base
             public string description { set; get; }
             public string cta { set; get; }
         }
-
     }
 }

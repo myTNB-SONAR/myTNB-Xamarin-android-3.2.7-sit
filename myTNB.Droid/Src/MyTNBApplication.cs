@@ -9,7 +9,7 @@ using Xamarin.Facebook;
 namespace myTNB_Android.Src
 {
     //The Android Manifest contains the android:debuggable attribute, which controls whether or not the application may be debugged.
-    //It is considered a good practice to set the android:debuggable attribute to false. 
+    //It is considered a good practice to set the android:debuggable attribute to false.
     //The simplest way to do this is by adding a conditional compile statement in AssemblyInfo.cs:
 #if DEBUG
     [Application(Debuggable = true, LargeHeap = true)]
@@ -33,9 +33,9 @@ namespace myTNB_Android.Src
             Fabric.Fabric.With(Context, new Crashlytics.Crashlytics());
             Crashlytics.Crashlytics.HandleManagedExceptions();
             FacebookSdk.SdkInitialize(ApplicationContext);
-            //# if DEBUG 
+            //# if DEBUG
             //Stetho.InitializeWithDefaults(this);
-            //#endif 
+            //#endif
             AccountTypeEntity.CreateTable();
             UserEntity.CreateTable();
             UserRegister.CreateTable();
@@ -63,6 +63,7 @@ namespace myTNB_Android.Src
             SummaryDashBoardAccountEntity.CreateTable();
             SelectBillsEntity.CreateTable();
             MyServiceEntity.CreateTable();
+            SitecoreCmsEntity.CreateTable();
         }
     }
 }

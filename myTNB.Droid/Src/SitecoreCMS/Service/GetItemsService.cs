@@ -1,5 +1,6 @@
 ﻿using myTNB.SitecoreCM.Services;
 using myTNB.SitecoreCMS.Model;
+using myTNB.SitecoreCMS.Service;
 using myTNB_Android.Src.SitecoreCMS.Model;
 using Newtonsoft.Json;
 using System;
@@ -295,6 +296,43 @@ namespace myTNB.SitecoreCMS.Services
             catch (Exception e)
             {
                 Debug.WriteLine("Exception in GetItemsService/GetEnergySavingTipsTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public BillDetailsTooltipResponseModel GetBillDetailsTooltipItem()
+        {
+            BillDetailsTooltipResponseModel respModel = new BillDetailsTooltipResponseModel();
+            try
+            {
+                BillDetailsTooltipService service = new BillDetailsTooltipService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<BillDetailsTooltipResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetBillDetailsTooltipItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public BillDetailsTooltipTimeStampResponseModel GetBillDetailsTooltipTimestampItem()
+        {
+            BillDetailsTooltipTimeStampResponseModel respModel = new BillDetailsTooltipTimeStampResponseModel();
+            try
+            {
+                BillDetailsTooltipService service = new BillDetailsTooltipService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<BillDetailsTooltipTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetBillDetailsTooltipTimestampItem: " + e.Message);
             }
             return respModel;
         }
