@@ -191,23 +191,32 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                         }
 						else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
 						{
-                            PreNavigateBllMenu(selectedAccount);
+                            //PreNavigateBllMenu(selectedAccount);
                             this.mView.SetAccountName(selectedAccount.AccDesc);
-                            if (selectedAccount != null)
-                            {
-                                List<CustomerBillingAccount> list = CustomerBillingAccount.List();
-                                bool enableDropDown = list.Count > 0 ? true : false;
+                            //if (selectedAccount != null)
+                            //{
+                            //    List<CustomerBillingAccount> list = CustomerBillingAccount.List();
+                            //    bool enableDropDown = list.Count > 0 ? true : false;
 
-                                if (selectedAccount.AccountCategoryId.Equals("2"))
-                                {
-                                    this.mView.ShowREAccount(enableDropDown);
-                                }
-                                else
-                                {
-                                    this.mView.EnableDropDown(enableDropDown);
-                                }
-                            }
-                            LoadBills(selectedAccount);
+                            //    if (selectedAccount.AccountCategoryId.Equals("2"))
+                            //    {
+                            //        this.mView.ShowREAccount(enableDropDown);
+                            //    }
+                            //    else
+                            //    {
+                            //        this.mView.EnableDropDown(enableDropDown);
+                            //    }
+                            //}
+                            //LoadBills(selectedAccount);
+                            AccountData accountData = new AccountData();
+                            CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccNum);
+                            accountData.AccountNickName = selectedAccount.AccDesc;
+                            accountData.AccountName = selectedAccount.OwnerName;
+                            accountData.AccountNum = selectedAccount.AccNum;
+                            accountData.AddStreet = selectedAccount.AccountStAddress;
+                            accountData.IsOwner = customerBillingAccount.isOwned;
+                            accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
+                            this.mView.ShowBillMenu(accountData);
                         }
 					}
 					// NO INTERNET RESPONSE
@@ -313,8 +322,19 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                 this.mView.EnableDropDown(enableDropDown);
                             }
                         }
-                        LoadBills(selected);
+                        //LoadBills(selected);
+                        this.mView.ShowHideActionBar(true);
+                        this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
 
+                        AccountData accountData = new AccountData();
+                        CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(selected.AccNum);
+                        accountData.AccountNickName = selected.AccDesc;
+                        accountData.AccountName = selected.OwnerName;
+                        accountData.AddStreet = selected.AccountStAddress;
+                        accountData.IsOwner = customerBillingAccount.isOwned;
+                        accountData.AccountNum = selected.AccNum;
+                        accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
+                        this.mView.ShowBillMenu(accountData);
                     }
 					else
 					{
@@ -721,7 +741,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 					accountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
 					this.mView.ShowBillMenu(accountData);
 				}
-				this.mView.ShowAccountName();
+				//this.mView.ShowAccountName();
                 this.mView.ShowHideActionBar(true);
                 this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
 				currentBottomNavigationMenu = Resource.Id.menu_bill;

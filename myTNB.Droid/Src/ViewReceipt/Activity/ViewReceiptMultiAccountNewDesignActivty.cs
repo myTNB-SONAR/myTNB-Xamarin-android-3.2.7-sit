@@ -18,15 +18,17 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
-using myTNB_Android.Src.ViewReceipt.Model;
 using myTNB_Android.Src.ViewReceipt.MVP;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime;
+using static myTNB_Android.Src.MyTNBService.Response.AccountReceiptResponse;
 
 namespace myTNB_Android.Src.ViewReceipt.Activity
 {
@@ -36,7 +38,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
     public class ViewReceiptMultiAccountNewDesignActivty : BaseToolbarAppCompatActivity, ViewReceiptMultiAccountNewDesignContract.IView
     {
         private string TAG = "View Receipt Activity";
-        private string RECEPT_NO = "101010010";
+        private string RECEPT_NO;
 
         [BindView(Resource.Id.progressBar)]
         ProgressBar mProgressBar;
@@ -103,7 +105,9 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
 
         AccountData selectedAccount;
         BillHistory selectedBill;
-        GetMultiReceiptByTransIdResponse response = null;
+        AccountReceiptResponse response = null;
+        string selectedAccountNumber, detailedInfoNumber;
+        bool isOwnedAccount, showAllReceipt;
 
         private LoadingOverlay loadingOverlay;
 
@@ -142,12 +146,27 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                   .SetCancelable(false)
                   .Create();
 
+                Bundle extras = Intent.Extras;
 
-                string apiKeyID = Constants.APP_CONFIG.API_KEY_ID;
-                string merchantTransId = Intent.Extras.GetString("merchantTransId");
+                if (extras.ContainsKey("SELECTED_ACCOUNT_NUMBER"))
+                {
+                    selectedAccountNumber = extras.GetString("SELECTED_ACCOUNT_NUMBER");
+                }
+                if (extras.ContainsKey("DETAILED_INFO_NUMBER"))
+                {
+                    detailedInfoNumber = extras.GetString("DETAILED_INFO_NUMBER");
+                }
+                if (extras.ContainsKey("IS_OWNED_ACCOUNT"))
+                {
+                    isOwnedAccount = extras.GetBoolean("IS_OWNED_ACCOUNT");
+                }
+                if (extras.ContainsKey("IS_SHOW_ALL_RECEIPT"))
+                {
+                    showAllReceipt = extras.GetBoolean("IS_SHOW_ALL_RECEIPT");
+                }
                 if (ConnectionUtils.HasInternetConnection(this))
                 {
-                    this.iPresenter.GetReceiptDetails(apiKeyID, merchantTransId);
+                    this.iPresenter.GetReceiptDetails(selectedAccountNumber, detailedInfoNumber, isOwnedAccount, showAllReceipt);
                 }
                 else
                 {
@@ -212,13 +231,13 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             }
         }
 
-        public void createPDF(GetMultiReceiptByTransIdResponse response)
+        public void createPDF(AccountReceiptResponse response)
         {
             if (downloadClicked)
             {
                 if (response != null)
                 {
-                    if (response.receipt.Status.Equals("success"))
+                    if (!response.receipt.IsError)
                     {
                         mProgressBar.Visibility = ViewStates.Gone;
                         ShowGetReceiptDialog();
@@ -520,7 +539,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             return Window.DecorView.RootView.IsShown && !IsFinishing;
         }
 
-        public void OnShowReceiptDetails(GetMultiReceiptByTransIdResponse response)
+        public void OnShowReceiptDetails(AccountReceiptResponse response)
         {
             baseView.Visibility = ViewStates.Visible;
             try
@@ -528,7 +547,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                 this.response = response;
                 if (response != null)
                 {
-                    if (response.receipt.Status.Equals("success"))
+                    if (!response.receipt.IsError)
                     {
                         Log.Debug(TAG, "Receipt :" + response.receipt.receiptDetails);
                         MultiReceiptDetails receiiptDetails = response.receipt.receiptDetails;

@@ -1437,4 +1437,9 @@ Please try again later.]]>
   <!--Smart Meter Reading History-->
   <string name="ssmr_reading_history_tooltip_title">Why are some of my accounts not here?</string>
   <string name="ssmr_readint_history_tooltip_message"><![CDATA[We took the liberty to only show you electricity accounts that are eligble for the Self Meter Reading service. <font color="#1c79ca">Click here</font> to learn more about its eligibility.]]></string> 
+  
+ <!--App Unavailable-->
+ <string name="unavailable_refresh_message">Uh oh, looks like this page is unplugged. Refresh to stay plugged in!</string>
+ <string name="unavailable_downtime_message">Looks like your page can’t be loaded at the moment. Come back in a while.</string>
+ <!--End App Unavailable-->
 </resources>

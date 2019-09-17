@@ -4,7 +4,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.OS;
 using myTNB_Android.Src.Base.Activity;
-using myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu;
+using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 
@@ -42,7 +42,7 @@ namespace myTNB_Android.Src.NotificationNewBill.Activity
             // Create your application here
 
             FragmentManager.BeginTransaction()
-                .Replace(Resource.Id.content_layout, BillsMenuFragment.NewInstance(selectedAccount))
+                .Replace(Resource.Id.content_layout, ItemisedBillingMenuFragment.NewInstance(selectedAccount))
                 .CommitAllowingStateLoss();
         }
     }
