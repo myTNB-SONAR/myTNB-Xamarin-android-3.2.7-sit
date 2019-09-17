@@ -181,7 +181,7 @@ namespace myTNB
             _lblAmount = new UILabel(new CGRect(0, 0, GetScaledWidth(100), GetScaledHeight(36)))
             {
                 TextColor = MyTNBColor.CharcoalGrey,
-                Font = TNBFont.MuseoSans_36_500,
+                Font = TNBFont.MuseoSans_36_300,
                 TextAlignment = UITextAlignment.Left,
                 Text = string.Empty
             };
