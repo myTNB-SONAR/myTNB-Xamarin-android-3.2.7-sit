@@ -1,6 +1,7 @@
 ﻿using Android.Content;
 using Android.OS;
 using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
 using System;
@@ -26,8 +27,10 @@ namespace myTNB_Android.Src.AppLaunch.Async
             Console.WriteLine("========= 0000 MasterApiDBOperation started");
             if (masterDataResponse != null && masterDataResponse.Data != null)
             {
-                if (!masterDataResponse.Data.IsError && !masterDataResponse.Data.Status.ToUpper().Equals(Constants.MAINTENANCE_MODE))
+                if (masterDataResponse.Data.ErrorCode == "7200" && masterDataResponse.Data.ErrorCode != "7000")
                 {
+                    MyTNBAccountManagement.GetInstance().SetCurentMasterData(masterDataResponse);
+
                     foreach (Weblink web in masterDataResponse.Data.MasterData.WebLinks)
                     {
                         int newRecord = WeblinkEntity.InsertOrReplace(web);

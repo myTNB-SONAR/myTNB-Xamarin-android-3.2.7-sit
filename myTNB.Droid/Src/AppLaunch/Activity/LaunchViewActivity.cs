@@ -580,8 +580,8 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             try
             {
                 Intent maintenanceScreen = new Intent(this, typeof(MaintenanceActivity));
-                maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, masterDataResponse.Data.MasterData.MaintainanceTitle);
-                maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, masterDataResponse.Data.MasterData.MaintainanceMessage);
+                maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, masterDataResponse.Data.DisplayTitle);
+                maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, masterDataResponse.Data.DisplayMessage);
                 StartActivity(maintenanceScreen);
             }
             catch (Exception e)
