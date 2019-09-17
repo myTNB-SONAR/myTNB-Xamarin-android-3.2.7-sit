@@ -40,7 +40,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
         private string savedPromoTimeStamp = "0000000";
 
-        private static int AppLaunchDefaultTimeOutMillisecond = 3000;
+        private static int AppLaunchDefaultTimeOutMillisecond = 1000;
         private int AppLaunchTimeOutMillisecond = AppLaunchDefaultTimeOutMillisecond;
         private bool IsOnGetPhotoRunning = false;
 
@@ -453,7 +453,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         public void OnGetAppLaunchItem()
         {
             CancellationTokenSource token = new CancellationTokenSource();
-            Log.Debug("Current OnGetAppLaunchItem Start DateTime", DateTime.Now.ToString());
             Stopwatch sw = Stopwatch.StartNew();
             _ = Task.Run(() =>
             {
@@ -463,8 +462,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
                     AppLaunchResponseModel responseModel = getItemsService.GetAppLaunchItem();
                     sw.Stop();
-                    Log.Debug("Current OnGetAppLaunchItem End DateTime", DateTime.Now.ToString());
-                    Log.Debug("Current OnGetAppLaunchItem DateTime Used Time", sw.ElapsedMilliseconds.ToString());
                     try
                     {
                         if (AppLaunchTimeOutMillisecond > 0)
@@ -538,24 +535,30 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                             ShowForSeconds = appLaunchList[0].ShowForSeconds,
                             ImageBitmap = null
                         };
-                        _ = OnProcessAppLaunchItem(item);
+                        OnProcessAppLaunchItem(item);
                     }
                     else
                     {
                         AppLaunchTimeOutMillisecond = 0;
-                        this.mView.SetDefaultAppLaunchImage();
+                        if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                        {
+                            this.mView.SetDefaultAppLaunchImage();
+                        }
                     }
                 }
                 catch (Exception e)
                 {
                     AppLaunchTimeOutMillisecond = 0;
-                    this.mView.SetDefaultAppLaunchImage();
+                    if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                    {
+                        this.mView.SetDefaultAppLaunchImage();
+                    }
                     Utility.LoggingNonFatalError(e);
                 }
             }, token.Token);
         }
 
-        private async Task OnProcessAppLaunchItem(AppLaunchModel item)
+        private void OnProcessAppLaunchItem(AppLaunchModel item)
         {
             try
             {
@@ -567,7 +570,10 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         AppLaunchTimeOutMillisecond = 0;
                         item.ImageBitmap = convertedImageCache;
                         AppLaunchUtils.SetAppLaunchBitmap(item);
-                        this.mView.SetCustomAppLaunchImage(item);
+                        if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                        {
+                            this.mView.SetCustomAppLaunchImage(item);
+                        }
                     }
                     else
                     {
@@ -582,7 +588,10 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             catch (Exception e)
             {
                 AppLaunchTimeOutMillisecond = 0;
-                this.mView.SetDefaultAppLaunchImage();
+                if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                {
+                    this.mView.SetDefaultAppLaunchImage();
+                }
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -592,21 +601,15 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             if (!IsOnGetPhotoRunning)
             {
                 IsOnGetPhotoRunning = true;
-                Bitmap imageCache = null;
                 CancellationTokenSource token = new CancellationTokenSource();
-                Log.Debug("Current OnGetPhoto Start DateTime", DateTime.Now.ToString());
+                Bitmap imageCache = null;
                 Stopwatch sw = Stopwatch.StartNew();
-                _ = Task.Run(async () =>
+                _ = Task.Run(() =>
                 {
                     try
                     {
-                        await Task.Run(() =>
-                        {
-                            imageCache = ImageUtils.GetImageBitmapFromUrl(item.Image);
-                        }, new CancellationTokenSource().Token);
+                        imageCache = ImageUtils.GetImageBitmapFromUrl(item.Image);
                         sw.Stop();
-                        Log.Debug("Current OnGetPhoto End DateTime", DateTime.Now.ToString());
-                        Log.Debug("Current OnGetPhoto DateTime Used Time", sw.ElapsedMilliseconds.ToString());
                         AppLaunchTimeOutMillisecond = 0;
 
                         if (imageCache != null)
@@ -629,17 +632,26 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                             };
                             wtManager.InsertItem(newItem);
                             AppLaunchUtils.SetAppLaunchBitmap(item);
-                            this.mView.SetCustomAppLaunchImage(item);
+                            if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                            {
+                                this.mView.SetCustomAppLaunchImage(item);
+                            }
                         }
                         else
                         {
-                            this.mView.SetDefaultAppLaunchImage();
+                            if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                            {
+                                this.mView.SetDefaultAppLaunchImage();
+                            }
                         }
                     }
                     catch (Exception e)
                     {
                         AppLaunchTimeOutMillisecond = 0;
-                        this.mView.SetDefaultAppLaunchImage();
+                        if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                        {
+                            this.mView.SetDefaultAppLaunchImage();
+                        }
                         Utility.LoggingNonFatalError(e);
                     }
                 }, token.Token);
@@ -651,7 +663,10 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         if (AppLaunchTimeOutMillisecond > 0)
                         {
                             AppLaunchTimeOutMillisecond = 0;
-                            this.mView.SetDefaultAppLaunchImage();
+                            if (!this.mView.GetAppLaunchSiteCoreDoneFlag())
+                            {
+                                this.mView.SetDefaultAppLaunchImage();
+                            }
                         }
                     });
                 }
@@ -671,7 +686,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             catch (Exception e)
             {
                 B64Output = "";
-                Log.Debug("BitmapToBase64 Error", e.Message);
                 Utility.LoggingNonFatalError(e);
             }
 
@@ -689,7 +703,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             catch (Exception e)
             {
                 convertedBitmap = null;
-                Log.Debug("Base64ToBitmap Error", e.Message);
                 Utility.LoggingNonFatalError(e);
             }
 
@@ -709,6 +722,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             }
             catch (Exception e)
             {
+                this.mView.SetAppLaunchSiteCoreDoneFlag(true);
                 this.mView.OnGoAppLaunchEvent();
                 Utility.LoggingNonFatalError(e);
             }
@@ -719,7 +733,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         public void OnGetAppLaunchTimeStamp()
         {
             CancellationTokenSource token = new CancellationTokenSource();
-            Log.Debug("Current OnGetAppLaunchTimeStamp Start DateTime", DateTime.Now.ToString());
             Stopwatch sw = Stopwatch.StartNew();
             _ = Task.Run(() =>
             {
@@ -729,8 +742,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
                     AppLaunchTimeStampResponseModel responseModel = getItemsService.GetAppLaunchTimestampItem();
                     sw.Stop();
-                    Log.Debug("Current OnGetAppLaunchTimeStamp End DateTime", DateTime.Now.ToString());
-                    Log.Debug("Current OnGetAppLaunchTimeStamp DateTime Used Time", sw.ElapsedMilliseconds.ToString());
                     try
                     {
                         if (AppLaunchTimeOutMillisecond > 0)

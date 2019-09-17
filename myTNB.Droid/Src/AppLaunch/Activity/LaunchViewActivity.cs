@@ -89,6 +89,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+
         }
 
 
@@ -321,36 +322,11 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
             try
             {
-                isAppLaunchLoadSuccessful = false;
-                currentNavigation = AppLaunchNavigation.Nothing;
-                if (ConnectionUtils.HasInternetConnection(this))
-                {
-                    mPresenter = new AppLaunchPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
-                    Log.Debug(TAG, "InstanceID token: " + FirebaseInstanceId.Instance.Token);
-                    if (FirebaseTokenEntity.HasLatest())
-                    {
-                        var tokenEntity = FirebaseTokenEntity.GetLatest();
-                        if (tokenEntity != null)
-                        {
-                            Log.Debug(TAG, "Refresh token: " + tokenEntity.FBToken);
-                        }
-                    }
-
-                    if (!hasBeenCalled)
-                    {
-                        userActionsListener.Start();
-                        hasBeenCalled = true;
-                    }
-                }
-                else
-                {
-                    ShowNoInternetSnackbar();
-                }
-
+                mPresenter = new AppLaunchPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
             }
-            catch (Exception e)
+            catch (Exception ne)
             {
-                Utility.LoggingNonFatalError(e);
+                Utility.LoggingNonFatalError(ne);
             }
 
             try
@@ -383,6 +359,39 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             catch (Exception ne)
             {
                 Utility.LoggingNonFatalError(ne);
+            }
+
+            try
+            {
+                isAppLaunchLoadSuccessful = false;
+                currentNavigation = AppLaunchNavigation.Nothing;
+                if (ConnectionUtils.HasInternetConnection(this))
+                {
+                    Log.Debug(TAG, "InstanceID token: " + FirebaseInstanceId.Instance.Token);
+                    if (FirebaseTokenEntity.HasLatest())
+                    {
+                        var tokenEntity = FirebaseTokenEntity.GetLatest();
+                        if (tokenEntity != null)
+                        {
+                            Log.Debug(TAG, "Refresh token: " + tokenEntity.FBToken);
+                        }
+                    }
+
+                    if (!hasBeenCalled)
+                    {
+                        userActionsListener.Start();
+                        hasBeenCalled = true;
+                    }
+                }
+                else
+                {
+                    ShowNoInternetSnackbar();
+                }
+
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
         }
 
@@ -788,7 +797,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             {
                 if (!isAppLaunchSiteCoreDone)
                 {
-                    Log.Debug("Load Default Splash Screen", "Yes");
                     try
                     {
                         RunOnUiThread(() =>
@@ -827,13 +835,8 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                             DateTime nowDateTime = DateTime.Now;
                             int startResult = DateTime.Compare(nowDateTime, startDateTime);
                             int endResult = DateTime.Compare(nowDateTime, stopDateTime);
-                            Log.Debug("Now DateTime", nowDateTime.ToString());
-                            Log.Debug("Start DateTime", startDateTime.ToString());
-                            Log.Debug("Stop DateTime", stopDateTime.ToString());
                             if (startResult >= 0 && endResult <= 0)
                             {
-                                Log.Debug("Load Default Splash Screen", "No");
-                                Log.Debug("Within Period", "Yes");
                                 try
                                 {
                                     int secondMilli = Int32.Parse(item.ShowForSeconds) * 1000;
@@ -853,7 +856,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                             }
                             else
                             {
-                                Log.Debug("Within Period", "No");
                                 SetDefaultAppLaunchImage();
                             }
                         }
