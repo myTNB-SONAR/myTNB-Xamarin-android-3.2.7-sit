@@ -4,6 +4,7 @@ using Android.Runtime;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Fragments;
+using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Adapter.BillsMenu;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
@@ -136,6 +137,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                     {
                         Intent viewReceipt = new Intent(this.Activity, typeof(ViewReceiptMultiAccountNewDesignActivty));
                         viewReceipt.PutExtra("merchantTransId", selectedPayment?.MechantTransId);
+                        viewReceipt.PutExtra("contractAccount", selectedAccount.AccountNum);
+                        viewReceipt.PutExtra("email", "");
                         StartActivity(viewReceipt);
                     }
                 }

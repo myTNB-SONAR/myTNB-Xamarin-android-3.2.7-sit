@@ -19,10 +19,10 @@ namespace myTNB_Android.Src.ViewReceipt.MVP
             this.mView.SetPresenter(this);
         }
 
-        public void GetReceiptDetails(string apiKeyId, string merchantTransId)
+        public void GetReceiptDetails(string apiKeyId, string merchantTransId, string contractAccount, string email)
         {
             ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
-            GetReceiptDetailsAsync(apiKeyId, merchantTransId);
+            GetReceiptDetailsAsync(apiKeyId, merchantTransId, contractAccount, email);
         }
 
         public void NevigateToNextScreen()
@@ -36,13 +36,14 @@ namespace myTNB_Android.Src.ViewReceipt.MVP
         }
 
 
-        public async void GetReceiptDetailsAsync(string apiKeyId, string merchantTransId)
+        public async void GetReceiptDetailsAsync(string apiKeyId, string merchantTransId, string contractAccount, string email)
         {
             this.mView.ShowGetReceiptDialog();
             var api = RestService.For<GetMultiReceiptByTransId>(Constants.SERVER_URL.END_POINT);
             try
             {
-                GetMultiReceiptByTransIdResponse result = await api.GetMultiReceiptByTransId(new GetReceiptRequest(apiKeyId, merchantTransId));
+                GetMultiReceiptByTransIdResponse result = await api.GetMultiReceiptByTransId(new GetReceiptRequest(apiKeyId, merchantTransId,
+                    contractAccount, email));
                 this.mView.HideGetReceiptDialog();
                 this.mView.OnShowReceiptDetails(result);
             }

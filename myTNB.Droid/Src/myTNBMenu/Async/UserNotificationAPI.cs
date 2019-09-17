@@ -59,7 +59,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                 {
                     if (!userNotificationResponse.Result.Data.IsError)
                     {
-                        if (userNotificationResponse.Result.Data.Data.Count > 0)
+                        if (userNotificationResponse.Result.Data.Data.Count > 0) 
                         {
                             try
                             {
