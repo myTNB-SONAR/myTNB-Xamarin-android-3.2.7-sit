@@ -40,7 +40,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
         private string savedPromoTimeStamp = "0000000";
 
-        private static int AppLaunchDefaultTimeOutMillisecond = 2000;
+        private static int AppLaunchDefaultTimeOutMillisecond = 3000;
         private int AppLaunchTimeOutMillisecond = AppLaunchDefaultTimeOutMillisecond;
         private bool IsOnGetPhotoRunning = false;
 
@@ -506,8 +506,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             {
                 _ = Task.Delay(AppLaunchTimeOutMillisecond).ContinueWith(_ =>
                 {
-                    AppLaunchTimeOutMillisecond = 0;
-                    OnGetAppLaunchCache();
+                    if (AppLaunchTimeOutMillisecond > 0)
+                    {
+                        AppLaunchTimeOutMillisecond = 0;
+                        this.mView.SetDefaultAppLaunchImage();
+                    }
                 });
             }
         }
@@ -539,11 +542,13 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     }
                     else
                     {
+                        AppLaunchTimeOutMillisecond = 0;
                         this.mView.SetDefaultAppLaunchImage();
                     }
                 }
                 catch (Exception e)
                 {
+                    AppLaunchTimeOutMillisecond = 0;
                     this.mView.SetDefaultAppLaunchImage();
                     Utility.LoggingNonFatalError(e);
                 }
@@ -559,6 +564,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     Bitmap convertedImageCache = Base64ToBitmap(item.ImageB64);
                     if (convertedImageCache != null)
                     {
+                        AppLaunchTimeOutMillisecond = 0;
                         item.ImageBitmap = convertedImageCache;
                         AppLaunchUtils.SetAppLaunchBitmap(item);
                         this.mView.SetCustomAppLaunchImage(item);
@@ -575,6 +581,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             }
             catch (Exception e)
             {
+                AppLaunchTimeOutMillisecond = 0;
                 this.mView.SetDefaultAppLaunchImage();
                 Utility.LoggingNonFatalError(e);
             }
@@ -600,21 +607,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         sw.Stop();
                         Log.Debug("Current OnGetPhoto End DateTime", DateTime.Now.ToString());
                         Log.Debug("Current OnGetPhoto DateTime Used Time", sw.ElapsedMilliseconds.ToString());
-                        try
-                        {
-                            if (AppLaunchTimeOutMillisecond > 0)
-                            {
-                                AppLaunchTimeOutMillisecond = AppLaunchTimeOutMillisecond - (int)sw.ElapsedMilliseconds;
-                                if (AppLaunchTimeOutMillisecond <= 0)
-                                {
-                                    AppLaunchTimeOutMillisecond = 0;
-                                }
-                            }
-                        }
-                        catch (Exception e)
-                        {
-                            Utility.LoggingNonFatalError(e);
-                        }
+                        AppLaunchTimeOutMillisecond = 0;
 
                         if (imageCache != null)
                         {
@@ -645,6 +638,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     }
                     catch (Exception e)
                     {
+                        AppLaunchTimeOutMillisecond = 0;
                         this.mView.SetDefaultAppLaunchImage();
                         Utility.LoggingNonFatalError(e);
                     }
@@ -654,8 +648,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     _ = Task.Delay(AppLaunchTimeOutMillisecond).ContinueWith(_ =>
                     {
-                        AppLaunchTimeOutMillisecond = 0;
-                        this.mView.SetDefaultAppLaunchImage();
+                        if (AppLaunchTimeOutMillisecond > 0)
+                        {
+                            AppLaunchTimeOutMillisecond = 0;
+                            this.mView.SetDefaultAppLaunchImage();
+                        }
                     });
                 }
             }
@@ -771,8 +768,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             {
                 _ = Task.Delay(AppLaunchTimeOutMillisecond).ContinueWith(_ =>
                 {
-                    AppLaunchTimeOutMillisecond = 0;
-                    OnGetAppLaunchCache();
+                    if (AppLaunchTimeOutMillisecond > 0)
+                    {
+                        AppLaunchTimeOutMillisecond = 0;
+                        this.mView.SetDefaultAppLaunchImage();
+                    }
                 });
             }
         }
