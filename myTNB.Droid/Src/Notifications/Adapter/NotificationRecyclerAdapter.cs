@@ -221,8 +221,29 @@ namespace myTNB_Android.Src.Notifications.Adapter
             {
                 TextViewUtils.SetMuseoSans300Typeface(txtNotificationTitle);
                 TextViewUtils.SetMuseoSans300Typeface(txtNotificationContent, txtNotificationDate);
+                itemView.SetOnLongClickListener(new NotificationLongItemClickListener(this, adapter));
                 itemView.SetOnClickListener(new NotificationItemClickListener(this, adapter));
                 selectItemCheckbox.SetOnCheckedChangeListener(new NotificationItemSelectedListener(this, adapter));
+            }
+        }
+
+        class NotificationLongItemClickListener : Java.Lang.Object, View.IOnLongClickListener
+        {
+            NotificationRecyclerViewHolder mViewHolder;
+            NotificationRecyclerAdapter mAdapter;
+            public NotificationLongItemClickListener(NotificationRecyclerViewHolder viewHolder, NotificationRecyclerAdapter adapter)
+            {
+                mViewHolder = viewHolder;
+                mAdapter = adapter;
+            }
+
+            public bool OnLongClick(View v)
+            {
+                if (isClickable)
+                {
+                    mNotificatonListener.ShowEditMode();
+                }
+                return true;
             }
         }
 

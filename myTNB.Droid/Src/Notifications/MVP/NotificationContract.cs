@@ -145,6 +145,10 @@ namespace myTNB_Android.Src.Notifications.MVP
             void UpdateDeleteNotifications();
 
             void UpdateReadNotifications();
+
+            void ShowEditMode();
+
+            void SetNotificationItemClickable(bool isClickable);
         }
 
         public interface IUserActionsListener : IBasePresenter

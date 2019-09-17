@@ -149,7 +149,6 @@ namespace myTNB_Android.Src.Notifications.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
-
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -157,8 +156,15 @@ namespace myTNB_Android.Src.Notifications.Activity
             MenuInflater.Inflate(Resource.Menu.NotificationToolbarMenu, menu);
             notificationMenu = menu;
             notificationMenu.FindItem(Resource.Id.action_notification_read).SetIcon(GetDrawable(Resource.Drawable.ic_header_markread)).SetVisible(false);
-            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(true);
             int count = UserNotificationEntity.Count();
+            if (count == 0)
+            {
+                notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(false);
+            }
+            else
+            {
+                notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(true);
+            }
             //if (hasNotification)
             //{
             //    this.userActionsListener.QueryOnLoad(this.DeviceId());
@@ -1013,5 +1019,22 @@ namespace myTNB_Android.Src.Notifications.Activity
             //mPresenter.OnSelectedNotificationItem(userNotificationData, itemPosition);
             mPresenter.OnShowNotificationDetails(userNotificationData, itemPosition);
 		}
-	}
+
+        public void ShowEditMode()
+        {
+            notificationMenu.FindItem(Resource.Id.action_notification_read).SetIcon(Resource.Drawable.ic_header_markread_disabled).SetVisible(true).SetEnabled(false);
+            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.notification_delete_disabled).SetVisible(true).SetEnabled(false);
+            ShowSelectAllOption(ViewStates.Visible);
+            notificationRecyclerAdapter.ShowSelectButtons(true);
+            editState = EditNotificationStates.SHOW;
+            //itemTouchHelper.AttachToRecyclerView(null);
+            notificationRecyclerAdapter.SetClickable(false);
+            SetToolBarTitle(GetString(Resource.String.Notification_Select));
+        }
+
+        public void SetNotificationItemClickable(bool isClickable)
+        {
+            notificationRecyclerAdapter.SetClickable(isClickable);
+        }
+    }
 }

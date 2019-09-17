@@ -294,30 +294,29 @@ namespace myTNB_Android.Src.Login.MVP
 
                             NotificationApiImpl notificationAPI = new NotificationApiImpl();
                             MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
-                            if (response.Data.ErrorCode == "7200")
+                            if (response.Data != null && response.Data.ErrorCode == "7200")
                             {
-                                foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
+                                if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null &&
+                                    response.Data.ResponseData.UserNotificationList.Count > 0)
                                 {
-                                    // tODO : SAVE ALL NOTIFICATIONs
-                                    int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
+                                    foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
+                                    {
+                                        // tODO : SAVE ALL NOTIFICATIONs
+                                        int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
+                                    }
+                                }
+                                else
+                                {
+                                    try
+                                    {
+                                        UserNotificationEntity.RemoveAll();
+                                    }
+                                    catch (System.Exception ne)
+                                    {
+                                        Utility.LoggingNonFatalError(ne);
+                                    }
                                 }
                             }
-                            //var userNotificationResponse = await notificationsApi.GetUserNotifications(new UserNotificationRequest()
-                            //{
-                            //    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                            //    Email = userResponse.Data.User.Email,
-                            //    DeviceId = this.mView.GetDeviceId()
-
-                            //}, cts.Token);
-
-                            //if (!userNotificationResponse.Data.IsError)
-                            //{
-                            //    foreach (UserNotification userNotification in userNotificationResponse.Data.Data)
-                            //    {
-                            //        // tODO : SAVE ALL NOTIFICATIONs
-                            //        int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
-                            //    }
-                            //}
 
                             // Save promotions
                             try

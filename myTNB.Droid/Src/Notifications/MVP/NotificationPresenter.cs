@@ -172,7 +172,7 @@ namespace myTNB_Android.Src.Notifications.MVP
             try
             {
                 this.mView.ShowProgress();
-                UserNotificationDetailsRequest request = new UserNotificationDetailsRequest(userNotification.Id, userNotification.NotificationTypeId);
+                UserNotificationDetailsRequest request = new UserNotificationDetailsRequest(userNotification.Id, userNotification.NotificationType);
                 UserNotificationDetailsResponse response = await notificationAPI.GetNotificationDetailedInfo<UserNotificationDetailsResponse>(request);
                 if (response.Data.ErrorCode == "7200")
                 {

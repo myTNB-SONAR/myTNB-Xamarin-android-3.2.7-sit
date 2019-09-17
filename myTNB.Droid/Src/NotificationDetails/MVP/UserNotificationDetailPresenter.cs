@@ -51,8 +51,9 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 string pageTitle = "Notification";
                 string notificationDetailTitle = notificationDetails.Title;
                 string notificationDetailMessage = notificationDetails.Message;
+                
                 CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(notificationDetails.AccountNum);
-
+                string accountName = (customerBillingAccount != null) ? customerBillingAccount.AccDesc : "";
                 ctaList = new List<NotificationDetailModel.NotificationCTA>();
 
                 switch (notificationDetails.BCRMNotificationTypeId)
@@ -203,7 +204,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         imageResourceBanner = Resource.Drawable.notification_generic_banner;
                         break;
                 }
-                notificationDetailMessage = Utility.ReplaceValueByPattern(accountNamePattern, notificationDetailMessage, customerBillingAccount.AccDesc);
+                notificationDetailMessage = Utility.ReplaceValueByPattern(accountNamePattern, notificationDetailMessage, accountName);
                 notificationDetailModel = new NotificationDetailModel(imageResourceBanner, pageTitle, notificationDetailTitle,
                     notificationDetailMessage, ctaList);
             }
@@ -222,7 +223,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                 NotificationApiImpl notificationAPI = new NotificationApiImpl();
                 List<Notifications.Models.UserNotificationData> selectedNotificationList = new List<Notifications.Models.UserNotificationData>();
                 Notifications.Models.UserNotificationData data = new Notifications.Models.UserNotificationData();
-                data.NotificationTypeId = notificationDetails.NotificationTypeId;
+                data.Id = notificationDetails.Id;
                 data.NotificationType = notificationDetails.NotificationType;
                 selectedNotificationList.Add(data);
                 UserNotificationDeleteResponse notificationDeleteResponse = await notificationAPI.DeleteUserNotification<UserNotificationDeleteResponse>(new UserNotificationDeleteRequest(selectedNotificationList));

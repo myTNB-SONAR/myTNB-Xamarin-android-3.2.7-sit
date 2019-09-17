@@ -28,7 +28,7 @@ namespace myTNB_Android.Src.MyTNBService.Response
 
         public class UserNotificationResponseData
         {
-            [JsonProperty(PropertyName = "userNotifications")]
+            [JsonProperty(PropertyName = "UserNotificationList")]
             public List<UserNotification> UserNotificationList { get; set; }
         }
     }

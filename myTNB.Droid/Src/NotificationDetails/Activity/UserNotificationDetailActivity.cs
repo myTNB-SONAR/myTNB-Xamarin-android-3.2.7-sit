@@ -98,6 +98,15 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             return base.OnOptionsItemSelected(item);
         }
 
+        public override void OnBackPressed()
+        {
+            Intent result = new Intent();
+            result.PutExtra(Constants.SELECTED_NOTIFICATION_ITEM_POSITION, position);
+            result.PutExtra(Constants.ACTION_IS_READ, true);
+            SetResult(Result.Ok, result);
+            base.OnBackPressed();
+        }
+
         public void OnClickSpan(string textMessage)
         {
             if (textMessage != null && textMessage.Contains("http"))
