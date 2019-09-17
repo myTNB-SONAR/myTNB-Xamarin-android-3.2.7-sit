@@ -339,17 +339,6 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 else
                 {
                     isAppLaunchSiteCoreDone = false;
-                    try
-                    {
-                        RunOnUiThread(() =>
-                        {
-                            rootView.SetBackgroundResource(Resource.Drawable.AppLanchGradientBackground);
-                        });
-                    }
-                    catch (Exception ne)
-                    {
-                        Utility.LoggingNonFatalError(ne);
-                    }
                     if (!isAppLaunchSiteCoreDone)
                     {
                         this.userActionsListener.GetSavedAppLaunchTimeStamp();
