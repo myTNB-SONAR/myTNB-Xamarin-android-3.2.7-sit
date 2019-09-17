@@ -11185,11 +11185,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0d0146
 			public const int txtDueDate = 2131558726;
 			
-			// aapt resource value: 0x7f0d0100
-			public const int txtEditingNote = 2131558656;
+			// aapt resource value: 0x7f0d022e
+			public const int txtFaq12Content = 2131558958;
 			
-			// aapt resource value: 0x7f0d00fd
-			public const int txtEmail = 2131558653;
+			// aapt resource value: 0x7f0d022d
+			public const int txtFaq12Title = 2131558957;
 			
 			// aapt resource value: 0x7f0d02c1
 			public const int txtEmailLinkInfo = 2131559105;
@@ -16441,8 +16441,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f09018d
 			public const int Animation_Design_BottomSheetDialog = 2131296653;
 			
-			// aapt resource value: 0x7f09020c
-			public const int App_BaseTheme = 2131296780;
+			// aapt resource value: 0x7f09020d
+			public const int App_BaseTheme = 2131296781;
 			
 			// aapt resource value: 0x7f0901dd
 			public const int App_FullScreenTheme = 2131296733;
@@ -16453,8 +16453,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f09020b
 			public const int AppSearchView = 2131296779;
 			
-			// aapt resource value: 0x7f09020e
-			public const int App_EditTextStyle = 2131296782;
+			// aapt resource value: 0x7f09020f
+			public const int App_EditTextStyle = 2131296783;
 			
 			// aapt resource value: 0x7f0900c6
 			public const int Base_AlertDialog_AppCompat = 2131296454;
@@ -16990,8 +16990,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f090202
 			public const int LightButtonWithIcon = 2131296770;
 			
-			// aapt resource value: 0x7f09020d
-			public const int LoadingOverlyDialogStyle = 2131296781;
+			// aapt resource value: 0x7f09020e
+			public const int LoadingOverlyDialogStyle = 2131296782;
 			
 			// aapt resource value: 0x7f0901b4
 			public const int MD_ActionButton = 2131296692;
@@ -17653,26 +17653,29 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0901eb
 			public const int Theme_SubmitMeterReading = 2131296747;
 			
-			// aapt resource value: 0x7f09020f
-			public const int Theme_TnC = 2131296783;
+			// aapt resource value: 0x7f090210
+			public const int Theme_TnC = 2131296784;
+			
+			// aapt resource value: 0x7f09020c
+			public const int Theme_TooltipButton = 2131296780;
 			
 			// aapt resource value: 0x7f0901ed
 			public const int Theme_TryAgainButton = 2131296749;
 			
-			// aapt resource value: 0x7f090210
-			public const int Theme_UpdateMobile = 2131296784;
-			
 			// aapt resource value: 0x7f090211
-			public const int Theme_UpdateNickName = 2131296785;
+			public const int Theme_UpdateMobile = 2131296785;
 			
 			// aapt resource value: 0x7f090212
-			public const int Theme_UpdatePassword = 2131296786;
+			public const int Theme_UpdateNickName = 2131296786;
+			
+			// aapt resource value: 0x7f090213
+			public const int Theme_UpdatePassword = 2131296787;
 			
 			// aapt resource value: 0x7f0901e8
 			public const int Theme_ViewBill = 2131296744;
 			
-			// aapt resource value: 0x7f090213
-			public const int Theme_Weblink = 2131296787;
+			// aapt resource value: 0x7f090214
+			public const int Theme_Weblink = 2131296788;
 			
 			// aapt resource value: 0x7f090135
 			public const int ThemeOverlay_AppCompat = 2131296565;
