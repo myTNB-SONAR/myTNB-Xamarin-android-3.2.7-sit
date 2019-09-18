@@ -1200,6 +1200,9 @@
     <ImageAsset Include="Assets.xcassets\Usage-Chart-Indicator.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Usage-Chart-Indicator.imageset\dashboardIndicator%402x.png" />
     <ImageAsset Include="Assets.xcassets\Usage-Chart-Indicator.imageset\dashboardIndicator%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-RE-Banner.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Bills-RE-Banner.imageset\re%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Bills-RE-Banner.imageset\re%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1615,6 +1618,7 @@
     <Folder Include="Assets.xcassets\Notification-Banner-Generic.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Generic.imageset\" />
     <Folder Include="Assets.xcassets\Usage-Chart-Indicator.imageset\" />
+    <Folder Include="Assets.xcassets\Bills-RE-Banner.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

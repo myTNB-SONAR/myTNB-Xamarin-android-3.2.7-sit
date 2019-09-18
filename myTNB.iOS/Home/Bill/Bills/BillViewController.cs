@@ -568,7 +568,7 @@ namespace myTNB
             _lblAmount.Text = Math.Abs(data.AmountDue).ToString("N2", CultureInfo.InvariantCulture);
             CGRect ctaFrame = _viewCTA.Frame;
 
-            _bgImageView.Image = isRe ? UIImage.FromBundle(BillConstants.IMG_Cleared)
+            _bgImageView.Image = isRe ? UIImage.FromBundle(BillConstants.IMG_RE)
                 : UIImage.FromBundle(data.AmountDue > 0 ? BillConstants.IMG_NeedToPay : BillConstants.IMG_Cleared);
 
             if (data.AmountDue > 0)

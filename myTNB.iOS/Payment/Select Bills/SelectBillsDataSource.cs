@@ -47,7 +47,7 @@ namespace myTNB.Payment.SelectBills
             }
             cell._viewCheckBox.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                if (_accounts[indexPath.Row].Amount >= TNBGlobal.PaymentMinAmnt || hasMandatoryCharges)
+                if (_accounts[indexPath.Row].Amount >= TNBGlobal.PaymentMinAmnt)
                 {
                     if (hasMandatoryCharges && !_accounts[indexPath.Row].IsAccountSelected)
                     {
@@ -59,6 +59,15 @@ namespace myTNB.Payment.SelectBills
                 else
                 {
                     cell._lblAmountError.Text = "Invalid_PayAmount".Translate();
+                    if (AccountChargesCache.HasMandatory(_accounts[indexPath.Row].accNum))
+                    {
+                        MandatoryChargesModel mandatoryCharges = AccountChargesCache.GetMandatoryCharges(_accounts[indexPath.Row].accNum);
+                        double mandatoryAmount = mandatoryCharges.TotalAmount;
+                        double.TryParse(cell._txtFieldAmount.Text, out double enteredAmt);
+
+                        cell._lblAmountError.Text = string.Format(GetI18NValue(PaymentConstants.I18N_MinimumMandatoryPayment)
+                            , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, mandatoryAmount.ToString("N2", CultureInfo.InvariantCulture)));
+                    }
                     cell._lblAmountError.Hidden = false;
                     UpdateUIForInputError(true, cell);
                 }
@@ -194,7 +203,7 @@ namespace myTNB.Payment.SelectBills
             {
                 MandatoryChargesModel mandatoryCharges = AccountChargesCache.GetMandatoryCharges(_accounts[index].accNum);
                 double mandatoryAmount = mandatoryCharges.TotalAmount;
-                double enteredAmt = double.Parse(cell._txtFieldAmount.Text);
+                double.TryParse(cell._txtFieldAmount.Text, out double enteredAmt);
                 isValid = enteredAmt >= mandatoryAmount;
                 cell._lblAmountError.Hidden = isValid;
                 cell._lblAmountError.Text = string.Format(GetI18NValue(PaymentConstants.I18N_MinimumMandatoryPayment)
