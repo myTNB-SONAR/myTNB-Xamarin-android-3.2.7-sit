@@ -1,3 +1,4 @@
 Sprint 1 + Dynamic Splash Screen (SIT Build)
 
-[US] 2343: As a myTNB customer, when I launch the apps for the first time, I am able to see an introductory splash screen.
+- Updated Launch images with TNB logo
+- Increased sitecore call timeout from 1s to 2.5s
