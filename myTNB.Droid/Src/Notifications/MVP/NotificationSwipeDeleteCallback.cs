@@ -37,8 +37,8 @@ namespace myTNB_Android.Src.Notifications.MVP
         public NotificationSwipeDeleteCallback(NotificationContract.IView listener, Drawable deleteIcon, Drawable readIcon)
         {
             notificationViewListener = listener;
-            mDeleteIcon = deleteIcon;// ContextCompat.GetDrawable(mContext,Resource.Drawable.ic_header_delete);
-            mReadIcon = readIcon;// ContextCompat.GetDrawable(mContext,Resource.Drawable.ic_header_mark_read);
+            mDeleteIcon = deleteIcon;
+            mReadIcon = readIcon;
             SetIconsLayout();
         }
 
@@ -232,6 +232,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                     for (int i = 0; i < recyclerView.ChildCount; ++i)
                     {
                         recyclerView.GetChildAt(i).Clickable = false;
+                        recyclerView.GetChildAt(i).LongClickable = false;
                     }
                 }
                 return false;
@@ -299,6 +300,7 @@ namespace myTNB_Android.Src.Notifications.MVP
                     for (int i = 0; i < recyclerView.ChildCount; ++i)
                     {
                         recyclerView.GetChildAt(i).Clickable = true;
+                        recyclerView.GetChildAt(i).LongClickable = true;
                     }
                     swipeBack = false;
                     if (buttonInstance != null && buttonInstance.Contains(e.GetX(), e.GetY()))
