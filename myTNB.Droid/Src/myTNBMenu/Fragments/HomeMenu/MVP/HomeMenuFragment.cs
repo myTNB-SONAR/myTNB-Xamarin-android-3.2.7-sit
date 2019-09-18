@@ -331,8 +331,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 this.presenter.GetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
 
-                // Lin Siong TODO: Check Energy Saving Tips Enable Disable
-                this.presenter.GetEnergySavingTipsTimeStamp();
+                bool isGetEnergyTipsDisabled = false;
+                if (MyTNBAccountManagement.GetInstance() != null && MyTNBAccountManagement.GetInstance().GetCurrentMasterData() != null && MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data != null && MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data.IsEnergyTipsDisabled)
+                {
+                    isGetEnergyTipsDisabled = true;
+                }
+
+                if (!isGetEnergyTipsDisabled)
+                {
+                    this.presenter.GetEnergySavingTipsTimeStamp();
+                }
+
                 SetRefreshLayoutParams();
 
                 ((DashboardHomeActivity)Activity).EnableDropDown(false);

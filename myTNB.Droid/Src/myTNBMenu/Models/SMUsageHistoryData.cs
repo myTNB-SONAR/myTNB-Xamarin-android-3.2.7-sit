@@ -20,6 +20,21 @@ namespace myTNB_Android.Src.myTNBMenu.Models
         [AliasAs("ByDay")]
         public List<ByDayData> ByDay { get; set; }
 
+        [JsonProperty(PropertyName = "CurrentCycle")]
+        [AliasAs("CurrentCycle")]
+        public string CurrentCycle { get; set; }
+
+        [JsonProperty(PropertyName = "StarttDate")]
+        [AliasAs("StarttDate")]
+        public string StarttDate { get; set; }
+
+        [AliasAs("MidDate")]
+        public string MidDate { get; set; }
+
+        [JsonProperty(PropertyName = "EndDate")]
+        [AliasAs("EndDate")]
+        public string EndDate { get; set; }
+
         [JsonProperty(PropertyName = "ToolTips")]
         [AliasAs("ToolTips")]
         public List<SmartMeterToolTips> ToolTips { get; set; }
@@ -254,11 +269,11 @@ namespace myTNB_Android.Src.myTNBMenu.Models
 
                 [JsonProperty(PropertyName = "Amount")]
                 [AliasAs("Amount")]
-                public string Amount { get; set; }
+                public double Amount { get; set; }
 
                 [JsonProperty(PropertyName = "Consumption")]
                 [AliasAs("Consumption")]
-                public string Consumption { get; set; }
+                public double Consumption { get; set; }
 
                 [JsonProperty(PropertyName = "CO2")]
                 [AliasAs("CO2")]
@@ -287,8 +302,43 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                     public string BlockPrice { get; set; }
                 }
 
+                class DoubleDataAmountConverter : JsonConverter
+                {
+                    public override bool CanConvert(Type objectType)
+                    {
+                        return (objectType == typeof(Double) || objectType == typeof(String));
+                    }
+
+                    public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
+                    {
+                        double parseAmount = 0.00;
+                        JToken jtoken = JToken.Load(reader);
+                        if (jtoken.Type == JTokenType.String)
+                        {
+                            string val = jtoken.ToObject<String>();
+
+                            if (double.TryParse(val, out parseAmount))
+                            {
+                                parseAmount = Double.Parse(val);
+                            }
+                            else
+                            {
+                                return parseAmount;
+                            }
+                        }
+
+                        return parseAmount;
+                    }
+
+                    public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
+                    {
+                        serializer.Serialize(writer, value);
+                    }
+                }
+
             }
         }
+
 
         public class SmartMeterToolTips
         {

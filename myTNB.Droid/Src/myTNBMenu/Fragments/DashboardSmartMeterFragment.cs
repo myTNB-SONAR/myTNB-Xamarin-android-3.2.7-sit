@@ -1103,7 +1103,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 for (int i = 0; i < barLength; i++)
                 {
                     float val = 0;
-                    if (ChartDataType == ChartDataType.RM)
+                    /*if (ChartDataType == ChartDataType.RM)
                     {
                         val = float.Parse(selectedHistoryData.ByDay[parentIndex].Days[i].Amount == null ? "0.00" : selectedHistoryData.ByDay[parentIndex].Days[i].Amount);
                     }
@@ -1114,7 +1114,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     else
                     {
                         val = float.Parse(selectedHistoryData.ByDay[parentIndex].Days[i].CO2 == null ? "0.00" : selectedHistoryData.ByDay[parentIndex].Days[i].CO2);
-                    }
+                    }*/
                     if (float.IsPositiveInfinity(val))
                     {
                         val = float.PositiveInfinity;
@@ -1826,10 +1826,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         foreach (SMUsageHistoryData.ByDayData.DayData dayData in ByDay.Days)
                         {
-                            if (Math.Abs(float.Parse(dayData.Amount == null ? "0.00" : dayData.Amount)) > val)
+                            /*if (Math.Abs(float.Parse(dayData.Amount == null ? "0.00" : dayData.Amount)) > val)
                             {
                                 val = Math.Abs(float.Parse(dayData.Amount == null ? "0.00" : dayData.Amount));
-                            }
+                            }*/
                         }
                     }
                 }
@@ -1839,10 +1839,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         foreach (SMUsageHistoryData.ByDayData.DayData dayData in ByDay.Days)
                         {
-                            if (Math.Abs(float.Parse(dayData.Consumption == null ? "0.00" : dayData.Consumption)) > val)
+                            /*if (Math.Abs(float.Parse(dayData.Consumption == null ? "0.00" : dayData.Consumption)) > val)
                             {
                                 val = Math.Abs(float.Parse(dayData.Consumption == null ? "0.00" : dayData.Consumption));
-                            }
+                            }*/
                         }
                     }
                 }
@@ -1929,10 +1929,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     foreach (SMUsageHistoryData.ByDayData.DayData dayData in ByDay.Days)
                     {
-                        if (Math.Abs(float.Parse(dayData.Amount == null ? "0.00" : dayData.Amount)) > val)
+                        /*if (Math.Abs(float.Parse(dayData.Amount == null ? "0.00" : dayData.Amount)) > val)
                         {
                             val = Math.Abs(float.Parse(dayData.Amount == null ? "0.00" : dayData.Amount));
-                        }
+                        }*/
                     }
                 }
 

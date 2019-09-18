@@ -16,6 +16,16 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         public interface IView : IBaseView<IUserActionsListener>
         {
             /// <summary>
+            /// Show by Month chart
+            /// </summary>
+            void ShowByMonth();
+
+            /// <summary>
+            /// Show by Day chart
+            /// </summary>
+            void ShowByDay();
+
+            /// <summary>
             /// Show by kWh chart
             /// </summary>
             void ShowByKwh();
@@ -126,6 +136,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             bool GetIsSMAccount();
 
             void ShowSMStatisticCard();
+
+            void OnSetBackendTariffDisabled(bool flag);
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -173,6 +185,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
 
             List<EnergySavingTipsModel> OnLoadEnergySavingTipsShimmerList(int count);
+
+            void OnByDay();
+
+            void OnByMonth();
         }
     }
 }

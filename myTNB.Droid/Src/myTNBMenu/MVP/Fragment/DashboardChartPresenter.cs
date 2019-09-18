@@ -34,6 +34,31 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             this.mView.SetPresenter(this);
         }
 
+        public void OnByDay()
+        {
+            try
+            {
+                this.mView.ShowByMonth();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+        }
+
+        public void OnByMonth()
+        {
+            try
+            {
+                this.mView.ShowByDay();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void OnByKwh()
         {
             try
@@ -388,6 +413,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     }
 
                     this.mView.SetUsageData(usageHistoryResponse.Data.UsageHistoryData);
+                    if (!usageHistoryResponse.Data.IsMonthlyTariffBlocksDisabled && !usageHistoryResponse.Data.IsMonthlyTariffBlocksUnavailable)
+                    {
+                        this.mView.OnSetBackendTariffDisabled(false);
+                    }
+                    else
+                    {
+                        this.mView.OnSetBackendTariffDisabled(true);
+                    }
                     OnByRM();
                 }
                 else
@@ -460,7 +493,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         smUsageModel.AccountNo = this.mView.GetSelectedAccount().AccountNum;
                         SMUsageHistoryEntity.InsertItem(smUsageModel);
                     }
-
+                    if (!usageHistoryResponse.Data.IsMonthlyTariffBlocksDisabled && !usageHistoryResponse.Data.IsMonthlyTariffBlocksUnavailable)
+                    {
+                        this.mView.OnSetBackendTariffDisabled(false);
+                    }
+                    else
+                    {
+                        this.mView.OnSetBackendTariffDisabled(true);
+                    }
                     this.mView.SetSMUsageData(usageHistoryResponse.Data.SMUsageHistoryData);
                     OnByRM();
                 }

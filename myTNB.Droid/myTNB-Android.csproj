@@ -2977,6 +2977,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\myTNBMenu\Charts\Formatter\SMChartsZoomInDayFormatter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

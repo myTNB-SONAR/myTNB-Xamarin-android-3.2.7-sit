@@ -1258,7 +1258,7 @@
         <ImageView
             android:id="@+id/shadow_layout"
             android:layout_width="match_parent"
-            android:layout_height="72dp"
+            android:layout_height="48dp"
             android:visibility="visible"
             android:scaleType="fitXY"
             android:background="@drawable/scroll_indicator" />
