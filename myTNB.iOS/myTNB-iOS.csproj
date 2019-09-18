@@ -1055,9 +1055,6 @@
     <ImageAsset Include="Assets.xcassets\RmKwh-Dropdown-Icon.imageset\RmKwh-Dropdown-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\RmKwh-Dropdown-Icon.imageset\RmKwh-Dropdown-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon.png" />
-    <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-Refresh.imageset\Contents.json" />
@@ -1200,6 +1197,11 @@
     <ImageAsset Include="Assets.xcassets\Bills-RE-Banner.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Bills-RE-Banner.imageset\re%402x.png" />
     <ImageAsset Include="Assets.xcassets\Bills-RE-Banner.imageset\re%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Scroll-Indicator.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Scroll-Indicator.imageset\Scroll-Indicator%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Scroll-Indicator.imageset\Scroll-Indicator%403x-1.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1615,6 +1617,7 @@
     <Folder Include="Assets.xcassets\Notification-Banner-Generic.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Generic.imageset\" />
     <Folder Include="Assets.xcassets\Bills-RE-Banner.imageset\" />
+    <Folder Include="Assets.xcassets\Scroll-Indicator.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
