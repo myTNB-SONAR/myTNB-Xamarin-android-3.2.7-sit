@@ -16,12 +16,15 @@ namespace myTNB
             ShimmerHeight = GetHeightByScreenSize(229);
         }
 
+        public Action PinchOverlayAction { set; private get; }
+
         private BaseSmartMeterView _baseSmartMeterView;
         private bool _isTariffView;
         private RMkWhEnum _consumptionState;
         private SmartMeterConstants.SmartMeterViewType _viewType;
         private CustomUIView _viewLine;
         private UIImageView _pinchIcon;
+        private bool _isOverlayDisplayed;
 
         protected override void CreatUI()
         {
@@ -99,6 +102,11 @@ namespace myTNB
                 SmartMeterConstants.SmartMeterViewType smartMeterViewType = default;
                 if (toggleBar.SelectedSegment == 0)
                 {
+                    if (PinchOverlayAction != null && !_isOverlayDisplayed)
+                    {
+                        PinchOverlayAction?.Invoke();
+                        _isOverlayDisplayed = true;
+                    }
                     smartMeterViewType = SmartMeterConstants.SmartMeterViewType.DayZOut;
                 }
                 else
