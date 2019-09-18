@@ -209,35 +209,21 @@ namespace myTNB.SmartMeterView
 
                 point.X -= baseMargin;
                 _segmentScrollView.SetContentOffset(point, true);
-
-#pragma warning disable XI0003 // Notifies you when using a deprecated, obsolete or unavailable Apple API
-                UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Light);
-                selectionFeedback.Prepare();
-                selectionFeedback.ImpactOccurred();
-#pragma warning restore XI0003 // Notifies you when using a deprecated, obsolete or unavailable Apple API
-
-                if (tag != _currentBar)
-                {
-                    UpdateBarsOnScroll(tag, false);
-                }
             }
         }
 
-        internal void UpdateBarsOnScroll(nint key, bool isHapticNeeded = true)
+        internal void UpdateBarsOnScroll(nint key)
         {
             SetBar(key, true);
             SetBar(_currentBar, false);
             _currentBar = key;
             string month = _usageData[(int)key].Month ?? string.Empty;
             _lblMonth.Text = month;
-            if (isHapticNeeded)
-            {
 #pragma warning disable XI0003 // Notifies you when using a deprecated, obsolete or unavailable Apple API
-                UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Medium);
-                selectionFeedback.Prepare();
-                selectionFeedback.ImpactOccurred();
+            UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Medium);
+            selectionFeedback.Prepare();
+            selectionFeedback.ImpactOccurred();
 #pragma warning restore XI0003 // Notifies you when using a deprecated, obsolete or unavailable Apple API
-            }
         }
 
         private void SetBar(nint key, bool isActive)
@@ -313,7 +299,6 @@ namespace myTNB.SmartMeterView
 
         public override void Scrolled(UIScrollView scrollView)
         {
-            Debug.WriteLine("Scrolling");
             nfloat xOffset = _controller._segmentScrollView.ContentOffset.X;
             if (xOffset < 0 || xOffset > _controller._contentWidth - (_controller._baseMargin * 2) - _controller.GetWidthByScreenSize(12))
             {
@@ -327,14 +312,12 @@ namespace myTNB.SmartMeterView
         {
             if (!willDecelerate)
             {
-                Debug.WriteLine("DraggingEnded Decelerate");
                 SetContentOffset();
             }
         }
 
         public override void DecelerationEnded(UIScrollView scrollView)
         {
-            Debug.WriteLine("DecelerationEnded");
             SetContentOffset();
         }
 

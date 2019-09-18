@@ -51,26 +51,20 @@ namespace myTNB
 
         protected void PinchAction(UIPinchGestureRecognizer obj)
         {
+#pragma warning disable XI0003 // Notifies you when using a deprecated, obsolete or unavailable Apple API
             if (_viewType != SmartMeterConstants.SmartMeterViewType.Month)
             {
-                Debug.WriteLine("PinchAction");
-                Debug.WriteLine("obj.Scale=== " + obj.Scale);
                 nfloat pinchScale = obj.Scale;
                 if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZOut && pinchScale > 1)
                 {
                     CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZIn);
-                    Debug.WriteLine("ZOUT");
                 }
                 else if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZIn && pinchScale < 1)
                 {
                     CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZOut);
-                    Debug.WriteLine("ZIN");
                 }
             }
-            else
-            {
-                Debug.WriteLine("Month View: " + obj.Scale);
-            }
+#pragma warning restore XI0003 // Notifies you when using a deprecated, obsolete or unavailable Apple API
         }
 
         private UIView GetToggleView(CustomUIView parentView)
@@ -102,7 +96,6 @@ namespace myTNB
             toggleBar.SelectedSegment = 1;
             toggleBar.ValueChanged += (sender, e) =>
             {
-                Debug.WriteLine("toggleBar.SelectedSegment: " + toggleBar.SelectedSegment);
                 SmartMeterConstants.SmartMeterViewType smartMeterViewType = default;
                 if (toggleBar.SelectedSegment == 0)
                 {
@@ -124,19 +117,15 @@ namespace myTNB
             };
             _pinchIcon.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                Debug.WriteLine("pinchIcon..");
                 if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZOut)
                 {
                     CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZIn);
                     _pinchIcon.Image = UIImage.FromBundle(UsageConstants.IMG_PinchIn);
-                    Debug.WriteLine("ZOUT");
-
                 }
                 else if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZIn)
                 {
                     CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZOut);
                     _pinchIcon.Image = UIImage.FromBundle(UsageConstants.IMG_PinchOut);
-                    Debug.WriteLine("ZIN");
                 }
             }));
             toggleView.AddSubview(_pinchIcon);
