@@ -15,14 +15,30 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using CoreGraphics;
 using myTNB.Dashboard.DashboardComponents;
+using System.IO;
+using System.Net;
 
 namespace myTNB
 {
     public partial class AppLaunchViewController : UIViewController
     {
         UIImageView imgViewAppLaunch;
+        UIImage _imgSplash;
         string _imageSize = string.Empty;
+        string _imageFilePath;
         bool isMaintenance;
+        bool isValidSplashTimestamp;
+        string _imgUrl = string.Empty;
+        string _startDateStr = string.Empty;
+        string _endDateStr = string.Empty;
+        bool _splashIsShown;
+        int _delay;
+        bool _isGetDynamicDone;
+        bool _isTaskDelayDone;
+        bool _isLoadMasterDataDone;
+        bool _isTimeOut;
+        int timeOut = 1000;
+        MasterDataResponseModel _masterDataResponse = new MasterDataResponseModel();
         UIView maintenanceView;
         public AppLaunchViewController(IntPtr handle) : base(handle)
         {
@@ -31,26 +47,19 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            imgViewAppLaunch = new UIImageView(UIImage.FromBundle("App-Launch-Gradient"));
-            var imgViewLogo = new UIImageView(UIImage.FromBundle("New-Launch-Logo"));
 
+            imgViewAppLaunch = new UIImageView(UIImage.FromBundle("AppLaunch"));
             View.AddSubview(imgViewAppLaunch);
-            View.AddSubview(imgViewLogo);
 
             View.SubviewsDoNotTranslateAutoresizingMaskIntoConstraints();
-            var heightMargin = ((float)UIScreen.MainScreen.Bounds.Height / 2) - (DeviceHelper.GetScaledHeight(220) / 2);
 
             View.AddConstraints(
                 imgViewAppLaunch.AtTopOf(View, 0),
                 imgViewAppLaunch.AtBottomOf(View, 0),
                 imgViewAppLaunch.AtLeftOf(View, 0),
-                imgViewAppLaunch.AtRightOf(View, 0),
-
-                imgViewLogo.AtTopOf(View, heightMargin),
-                imgViewLogo.WithSameCenterX(View),
-                imgViewLogo.Height().EqualTo(DeviceHelper.GetScaledHeight(220)),
-                imgViewLogo.Width().EqualTo(DeviceHelper.GetScaledHeight(220))
+                imgViewAppLaunch.AtRightOf(View, 0)
             );
+
             //Create DB
             SQLiteHelper.CreateDB();
             CreateCacheTables();
@@ -83,10 +92,10 @@ namespace myTNB
                             {
                                 GetUserEntity();
                                 await LoadMasterData();
+                                ProcessMasterData();
                             }
                             else
                             {
-                                Debug.WriteLine("No Network");
                                 AlertHandler.DisplayNoDataAlert(this);
                             }
                         });
@@ -155,9 +164,57 @@ namespace myTNB
             gradientLayer.Opaque = false;
         }
 
+        public async Task DelayTask()
+        {
+            await Task.Delay(timeOut);
+            _isTaskDelayDone = true;
+        }
+
+        private void TasksCompletion()
+        {
+            InvokeOnMainThread(() =>
+            {
+                if (_isGetDynamicDone && !_splashIsShown) // GetDynamicSplash has finished loading but the image is still downloading
+                {
+                    ShowDefaultSplashImage(true);
+                }
+                else if (!_isGetDynamicDone) // GetAppLaunchTimestamp didn't respond within set timeout = 1s
+                {
+                    _isTimeOut = true;
+                    GetDynamicSplashData();
+                    if (File.Exists(_imageFilePath))
+                    {
+                        _imgSplash = UIImage.FromFile(_imageFilePath);
+                        UIView.Animate(3, 0, UIViewAnimationOptions.TransitionCrossDissolve
+                            , () =>
+                            {
+                                _splashIsShown = true;
+                                _imgSplash.ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+                                imgViewAppLaunch.Image = _imgSplash;
+                                imgViewAppLaunch.ContentMode = UIViewContentMode.ScaleAspectFill;
+                            }
+                            , () =>
+                            {
+                                ProceedToNextScreen(_delay);
+                            }
+                        );
+                    }
+                    else
+                    {
+                        ShowDefaultSplashImage(true);
+                    }
+                }
+                else
+                {
+                    ProceedToNextScreen(_delay);
+                }
+            });
+        }
+
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
+            GetUserEntity();
             UIApplication.SharedApplication.NetworkActivityIndicatorVisible = true;
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -165,12 +222,243 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        GetUserEntity();
-                        await LoadMasterData();
+                        _imageSize = DeviceHelper.GetImageSize((int)View.Frame.Width);
+                        string splashFileName = "SplashImage.png";
+                        string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Resources);
+                        _imageFilePath = Path.Combine(documentsPath, splashFileName);
+
+                        InvokeInBackground(async () =>
+                        {
+                            _isGetDynamicDone = await GetDynamicSplash();
+                            InvokeOnMainThread(() =>
+                            {
+                                PrepareDynamicSplash(!_isTaskDelayDone && !_isTimeOut);
+                            });
+                        });
+
+                        var tasks = new List<Task>
+                        {
+                            Task.Run(() => DelayTask()),
+                            Task.Run(() => LoadMasterData())
+                        };
+                        await Task.WhenAll(tasks);
+                        TasksCompletion();
+                    }
+
+                    else
+                    {
+                        AlertHandler.DisplayNoDataAlert(this);
+                    }
+                });
+            });
+        }
+
+        private void GetDynamicSplashData()
+        {
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            string cachedData = sharedPreference.StringForKey("AppLaunchImageData");
+            AppLaunchImageResponseModel model;
+            List<AppLaunchImageModel> appLaunchData = new List<AppLaunchImageModel>();
+            if (!string.IsNullOrEmpty(cachedData) && !string.IsNullOrWhiteSpace(cachedData))
+            {
+                model = JsonConvert.DeserializeObject<AppLaunchImageResponseModel>(cachedData);
+                if (model != null)
+                {
+                    foreach (AppLaunchImageModel obj in model.Data)
+                    {
+                        AppLaunchImageModel item = new AppLaunchImageModel
+                        {
+                            Title = obj.Title,
+                            Description = obj.Description,
+                            Image = obj.Image,
+                            StartDateTime = obj.StartDateTime,
+                            EndDateTime = obj.EndDateTime,
+                            ShowForSeconds = obj.ShowForSeconds
+                        };
+                        appLaunchData.Add(item);
+                    }
+                    _imgUrl = appLaunchData[0].Image;
+                    _startDateStr = appLaunchData[0].StartDateTime;
+                    _endDateStr = appLaunchData[0].EndDateTime;
+                    _delay = int.Parse(appLaunchData[0].ShowForSeconds);
+                }
+            }
+        }
+
+        private void PrepareDynamicSplash(bool toProceed)
+        {
+            GetDynamicSplashData();
+            if (isValidSplashTimestamp)
+            {
+                if (!string.IsNullOrEmpty(_startDateStr) && !string.IsNullOrEmpty(_endDateStr))
+                {
+                    if (IsValidDate(_startDateStr, _endDateStr))
+                    {
+                        if (!string.IsNullOrEmpty(_imgUrl) && !string.IsNullOrWhiteSpace(_imgUrl))
+                        {
+                            DownloadSplashImage(_imgUrl, _delay, toProceed);
+                        }
+                        else
+                        {
+                            ShowDefaultSplashImage(toProceed);
+                        }
                     }
                     else
                     {
-                        Debug.WriteLine("No Network");
+                        ShowDefaultSplashImage(toProceed);
+                    }
+                }
+                else
+                {
+                    ShowDefaultSplashImage(toProceed);
+                }
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(_startDateStr) && !string.IsNullOrEmpty(_endDateStr))
+                {
+                    if (IsValidDate(_startDateStr, _endDateStr))
+                    {
+                        if (File.Exists(_imageFilePath))
+                        {
+                            if (toProceed)
+                            {
+                                _imgSplash = UIImage.FromFile(_imageFilePath);
+                                UIView.Animate(3, 0, UIViewAnimationOptions.TransitionCrossDissolve
+                                    , () =>
+                                    {
+                                        _splashIsShown = true;
+                                        _imgSplash.ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+                                        imgViewAppLaunch.Image = _imgSplash;
+                                        imgViewAppLaunch.ContentMode = UIViewContentMode.ScaleAspectFill;
+                                    }
+                                    , () => { }
+                                );
+                            }
+                        }
+                        else
+                        {
+                            if (!string.IsNullOrEmpty(_imgUrl) && !string.IsNullOrWhiteSpace(_imgUrl))
+                            {
+                                DownloadSplashImage(_imgUrl, _delay, toProceed);
+                            }
+                            else
+                            {
+                                ShowDefaultSplashImage(toProceed);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        ShowDefaultSplashImage(toProceed);
+                    }
+                }
+                else
+                {
+                    ShowDefaultSplashImage(toProceed);
+                }
+            }
+        }
+
+        private bool IsValidDate(string startDateStr, string endDateStr)
+        {
+            bool res = false;
+            try
+            {
+                DateTime startDate = DateTime.ParseExact(startDateStr, "yyyyMMddTHHmmss", System.Globalization.CultureInfo.InvariantCulture);
+                DateTime endDate = DateTime.ParseExact(endDateStr, "yyyyMMddTHHmmss", System.Globalization.CultureInfo.InvariantCulture);
+
+                int svalue = DateTime.Compare(DateTime.Now, startDate);
+                int evalue = DateTime.Compare(DateTime.Now, endDate);
+
+                res = svalue >= 0 && evalue <= 0;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Parse Error: " + e.Message);
+            }
+            return res;
+        }
+
+        private void DownloadSplashImage(string url, int delay, bool toProceed)
+        {
+            try
+            {
+                var webClient = new WebClient();
+                webClient.DownloadDataCompleted += (s, args) =>
+                {
+                    var data = args?.Result;
+                    if (data != null)
+                    {
+                        File.WriteAllBytes(_imageFilePath, data);
+                        InvokeOnMainThread(() =>
+                        {
+                            if (toProceed && !_splashIsShown)
+                            {
+                                _splashIsShown = true;
+                                _imgSplash = UIImage.FromFile(_imageFilePath);
+                                _imgSplash.ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+                                imgViewAppLaunch.Image = _imgSplash;
+                                imgViewAppLaunch.ContentMode = UIViewContentMode.ScaleAspectFill;
+                            }
+                        });
+                    }
+                    else
+                    {
+                        ShowDefaultSplashImage(toProceed);
+                    }
+                };
+
+                bool result = Uri.TryCreate(url, UriKind.Absolute, out Uri uriResult)
+                    && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+                if (result)
+                {
+                    webClient.DownloadDataAsync(new Uri(url));
+                }
+                else
+                {
+                    ShowDefaultSplashImage(toProceed);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Image load Error: " + e.Message);
+                ShowDefaultSplashImage(toProceed);
+            }
+        }
+
+        private void ShowDefaultSplashImage(bool toProceed)
+        {
+            if (toProceed)
+            {
+                _splashIsShown = true;
+                _imgSplash = UIImage.FromBundle("SplashImageDefault");
+                _imgSplash.ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+                imgViewAppLaunch.Image = _imgSplash;
+                imgViewAppLaunch.ContentMode = UIViewContentMode.ScaleAspectFill;
+                ProceedToNextScreen();
+            }
+        }
+
+        private void ProceedToNextScreen(int delay = 0)
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        if (delay > 0)
+                        {
+                            await Task.Delay(delay * 1000);
+                        }
+                        if (_isLoadMasterDataDone)
+                        {
+                            ProcessMasterData();
+                        }
+                    }
+                    else
+                    {
                         AlertHandler.DisplayNoDataAlert(this);
                     }
                 });
@@ -194,13 +482,9 @@ namespace myTNB
             return false;
         }
 
-        /// <summary>
-        /// Loads the master data.
-        /// </summary>
-        /// <returns>The master data.</returns>
-        private async Task LoadMasterData()
+        private void ProcessMasterData()
         {
-            var response = await ServiceCall.GetAppLaunchMasterData();
+            var response = _masterDataResponse;
             if ((bool)response?.didSucceed)
             {
                 if ((bool)response?.status.ToUpper().Equals("MAINTENANCE"))
@@ -319,6 +603,16 @@ namespace myTNB
             {
                 AlertHandler.DisplayServiceError(this, response?.message);
             }
+        }
+
+        /// <summary>
+        /// Loads the master data.
+        /// </summary>
+        /// <returns>The master data.</returns>
+        private async Task LoadMasterData()
+        {
+            _masterDataResponse = await ServiceCall.GetAppLaunchMasterData();
+            _isLoadMasterDataDone = true;
         }
 
         private void OpenUpdateLink()
@@ -483,6 +777,61 @@ namespace myTNB
                     }
                 }
             });
+        }
+
+        internal async Task<bool> GetDynamicSplash()
+        {
+            bool result = false;
+            await Task.Run(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS, _imageSize, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
+                bool isValidTimeStamp = false;
+                string appLaunchImageTS = iService.GetAppLaunchImageTimestampItem();
+                TimestampResponseModel timestamp = JsonConvert.DeserializeObject<TimestampResponseModel>(appLaunchImageTS);
+                if (timestamp != null && timestamp.Status.Equals("Success")
+                    && timestamp.Data != null && timestamp.Data.Count > 0
+                    && timestamp.Data[0] != null)
+                {
+                    var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                    string currentTS = sharedPreference.StringForKey("AppLaunchImageTimeStamp");
+                    if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
+                    {
+                        sharedPreference.SetString(timestamp.Data[0].Timestamp, "AppLaunchImageTimeStamp");
+                        sharedPreference.Synchronize();
+                        isValidTimeStamp = true;
+                    }
+                    else
+                    {
+                        if (currentTS.Equals(timestamp.Data[0].Timestamp))
+                        {
+                            isValidTimeStamp = false;
+                        }
+                        else
+                        {
+                            sharedPreference.SetString(timestamp.Data[0].Timestamp, "AppLaunchImageTimeStamp");
+                            sharedPreference.Synchronize();
+                            isValidTimeStamp = true;
+                        }
+                    }
+                }
+                isValidSplashTimestamp = isValidTimeStamp;
+                if (isValidTimeStamp)
+                {
+                    string items = iService.GetAppLaunchImageItem();
+                    AppLaunchImageResponseModel response = JsonConvert.DeserializeObject<AppLaunchImageResponseModel>(items);
+                    if (response != null && response.Status.Equals("Success")
+                        && response.Data != null && response.Data.Count > 0)
+                    {
+                        var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                        var jsonStr = JsonConvert.SerializeObject(response);
+                        sharedPreference.SetString(jsonStr, "AppLaunchImageData");
+                        sharedPreference.Synchronize();
+                    }
+                }
+                result = true;
+            });
+
+            return result;
         }
 
         internal void ExecuteGetCutomerRecordsCall()

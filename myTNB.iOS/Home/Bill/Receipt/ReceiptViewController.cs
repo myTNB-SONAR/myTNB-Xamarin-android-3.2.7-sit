@@ -1,4 +1,4 @@
-﻿using Foundation;
+using Foundation;
 using System;
 using UIKit;
 using myTNB.Dashboard.DashboardComponents;
@@ -10,6 +10,7 @@ using myTNB.Model;
 using System.Drawing;
 using System.Threading.Tasks;
 using myTNB.Home.Bill.Receipt;
+using Font = iTextSharp.text.Font;
 
 namespace myTNB
 {
@@ -36,6 +37,7 @@ namespace myTNB
         string _pdfFilePath = string.Empty;
 
         public string MerchatTransactionID = string.Empty;
+        public bool isFromBills;
         public bool isCCFlow = false;
         string paymentMethod = String.Empty;
 
@@ -395,15 +397,22 @@ namespace myTNB
 
         internal Task GetReceipt()
         {
+            var emailAddress = string.Empty;
+            if (DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
+            {
+                emailAddress = DataManager.DataManager.SharedInstance.UserEntity[0]?.email;
+            }
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
                     apiKeyID = TNBGlobal.API_KEY_ID,
-                    merchant_transId = MerchatTransactionID
+                    merchant_transId = MerchatTransactionID,
+                    contractAccount = isFromBills ? DataManager.DataManager.SharedInstance.SelectedAccount.accNum : string.Empty,
+                    email = !isFromBills ? emailAddress : string.Empty
                 };
-                _receipt = serviceManager.GetReceipt("GetMultiReceiptByTransId", requestParameter);
+                _receipt = serviceManager.GetReceipt("GetMultiReceiptByTransId_V2", requestParameter);
             });
         }
     }
