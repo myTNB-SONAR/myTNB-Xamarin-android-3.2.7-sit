@@ -11,6 +11,8 @@
         public static string IMG_BGLong = "Usage-Bg-Long";
         public static string IMG_BGRefresh = "Usage-Refresh-Bg";
         public static string IMG_ChartIndicator = "Usage-Chart-Indicator";
+        public static string IMG_PinchIn = "Usage-Pinch-In-Icon";
+        public static string IMG_PinchOut = "Usage-Pinch-Out-Icon";
 
         //PageName
         public static string PageName = "UsageView";

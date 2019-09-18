@@ -20,6 +20,8 @@ namespace myTNB
         private bool _isTariffView;
         private RMkWhEnum _consumptionState;
         private SmartMeterConstants.SmartMeterViewType _viewType;
+        private CustomUIView _viewLine;
+        private UIImageView _pinchIcon;
 
         protected override void CreatUI()
         {
@@ -39,11 +41,11 @@ namespace myTNB
                 Text = AccountUsageSmartCache.ByMonthDateRange
             };
 
-            CustomUIView viewLine = new CustomUIView(new CGRect(_baseMargin, GetYLocationFromFrameScreenSize(_lblDateRange.Frame, 141)
-                , _baseMarginedWidth, GetHeightByScreenSize(1)))
+            _viewLine = new CustomUIView(new CGRect(_baseMargin, GetYLocationFromFrameScreenSize(_lblDateRange.Frame, 141)
+               , _baseMarginedWidth, GetHeightByScreenSize(1)))
             { BackgroundColor = UIColor.FromWhiteAlpha(1, 0.30F) };
 
-            _mainView.AddSubviews(new UIView[] { _lblDateRange, viewLine });
+            _mainView.AddSubviews(new UIView[] { _lblDateRange, _viewLine });
             CreateSegment(SmartMeterConstants.SmartMeterViewType.Month);
         }
 
@@ -115,16 +117,29 @@ namespace myTNB
             toggleView.AddSubview(toggleBar);
             nfloat iconWidth = GetScaledWidth(24);
             nfloat iconHeight = GetScaledHeight(24);
-            UIImageView pinchIcon = new UIImageView(new CGRect(toggleBar.Frame.GetMaxX() + GetScaledWidth(59), 0, iconWidth, iconHeight))
+            _pinchIcon = new UIImageView(new CGRect(toggleBar.Frame.GetMaxX() + GetScaledWidth(59), 0, iconWidth, iconHeight))
             {
-                Image = UIImage.FromBundle("Pinch-Icon"),
+                Image = UIImage.FromBundle(UsageConstants.IMG_PinchOut),
                 UserInteractionEnabled = true
             };
-            pinchIcon.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            _pinchIcon.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 Debug.WriteLine("pinchIcon..");
+                if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZOut)
+                {
+                    CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZIn);
+                    _pinchIcon.Image = UIImage.FromBundle(UsageConstants.IMG_PinchIn);
+                    Debug.WriteLine("ZOUT");
+
+                }
+                else if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZIn)
+                {
+                    CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZOut);
+                    _pinchIcon.Image = UIImage.FromBundle(UsageConstants.IMG_PinchOut);
+                    Debug.WriteLine("ZIN");
+                }
             }));
-            toggleView.AddSubview(pinchIcon);
+            toggleView.AddSubview(_pinchIcon);
             return toggleView;
         }
 
@@ -159,13 +174,23 @@ namespace myTNB
             shimmeringView.ContentView = viewShimmerContent;
             shimmeringView.Shimmering = true;
             shimmeringView.SetValues();
-
             return parentView;
         }
 
         protected override void CreateSegment(SmartMeterConstants.SmartMeterViewType viewType)
         {
             _viewType = viewType;
+            if (_pinchIcon != null)
+            {
+                _pinchIcon.Hidden = _viewType == SmartMeterConstants.SmartMeterViewType.Month;
+            }
+            if (_viewLine != null)
+            {
+                CGRect lineFrame = _viewLine.Frame;
+                lineFrame.Width = _viewType == SmartMeterConstants.SmartMeterViewType.DayZIn ? _width : _baseMarginedWidth;
+                lineFrame.X = _viewType == SmartMeterConstants.SmartMeterViewType.DayZIn ? 0 : _baseMargin;
+                _viewLine.Frame = lineFrame;
+            }
             if (_segmentContainer != null)
             {
                 _segmentContainer.RemoveFromSuperview();
@@ -220,7 +245,6 @@ namespace myTNB
                 TariffItemModel item = tariffList[i];
                 double val = item.Usage;
                 if (val == 0) { continue; }
-                //double.TryParse(item.Usage, out double val);
                 nfloat percentage = (nfloat)(val / baseValue); // if 0/0
                 nfloat blockHeight = baseHeigt * percentage;
                 barMaxY -= blockHeight;
@@ -236,9 +260,12 @@ namespace myTNB
 
         protected override void OnSegmentTap(int index)
         {
-            UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Heavy);
+#pragma warning disable XI0003 // Notifies you when using a deprecated, obsolete or unavailable Apple API
+            UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Light);
             selectionFeedback.Prepare();
             selectionFeedback.ImpactOccurred();
+#pragma warning restore XI0003 // Notifies you when using a deprecated, obsolete or unavailable Apple API
+
             for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
             {
                 bool isLatestBar = i == _segmentContainer.Subviews.Count() - 1;

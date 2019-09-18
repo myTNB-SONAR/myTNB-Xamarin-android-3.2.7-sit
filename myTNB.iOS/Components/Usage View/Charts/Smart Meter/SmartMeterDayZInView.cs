@@ -18,7 +18,6 @@ namespace myTNB.SmartMeterView
         internal nint _currentBar;
         internal nfloat _baseMargin;
 
-
         private UILabel _lblMonth;
         private List<DayItemModel> _usageData = new List<DayItemModel>();
 
@@ -196,6 +195,9 @@ namespace myTNB.SmartMeterView
             _segmentScrollView.ContentSize = new CGSize(_contentWidth, _segmentScrollView.Frame.Height);
             _currentPoint = new CGPoint(_contentWidth - (_baseMargin * 2) - GetWidthByScreenSize(12), lastSegment.Y);
             _segmentScrollView.SetContentOffset(_currentPoint, true);
+            nfloat zoomScale = _segmentScrollView.ZoomScale;
+            _segmentScrollView.ZoomScale = 0.1F;
+            nfloat zoomScale2 = _segmentScrollView.ZoomScale;
         }
 
         private void OnBarTapped(int tag)
@@ -209,25 +211,33 @@ namespace myTNB.SmartMeterView
                 _segmentScrollView.SetContentOffset(point, true);
 
 #pragma warning disable XI0003 // Notifies you when using a deprecated, obsolete or unavailable Apple API
-                UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Medium);
+                UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Light);
                 selectionFeedback.Prepare();
                 selectionFeedback.ImpactOccurred();
 #pragma warning restore XI0003 // Notifies you when using a deprecated, obsolete or unavailable Apple API
 
                 if (tag != _currentBar)
                 {
-                    UpdateBarsOnScroll(tag);
+                    UpdateBarsOnScroll(tag, false);
                 }
             }
         }
 
-        internal void UpdateBarsOnScroll(nint key)
+        internal void UpdateBarsOnScroll(nint key, bool isHapticNeeded = true)
         {
             SetBar(key, true);
             SetBar(_currentBar, false);
             _currentBar = key;
             string month = _usageData[(int)key].Month ?? string.Empty;
             _lblMonth.Text = month;
+            if (isHapticNeeded)
+            {
+#pragma warning disable XI0003 // Notifies you when using a deprecated, obsolete or unavailable Apple API
+                UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Medium);
+                selectionFeedback.Prepare();
+                selectionFeedback.ImpactOccurred();
+#pragma warning restore XI0003 // Notifies you when using a deprecated, obsolete or unavailable Apple API
+            }
         }
 
         private void SetBar(nint key, bool isActive)
@@ -300,13 +310,17 @@ namespace myTNB.SmartMeterView
         {
             _controller = controller;
         }
+
         public override void Scrolled(UIScrollView scrollView)
         {
+            Debug.WriteLine("Scrolling");
             nfloat xOffset = _controller._segmentScrollView.ContentOffset.X;
             if (xOffset < 0 || xOffset > _controller._contentWidth - (_controller._baseMargin * 2) - _controller.GetWidthByScreenSize(12))
             {
                 return;
             }
+
+            SetContentOffset(true);
         }
 
         public override void DraggingEnded(UIScrollView scrollView, bool willDecelerate)
@@ -324,7 +338,7 @@ namespace myTNB.SmartMeterView
             SetContentOffset();
         }
 
-        private void SetContentOffset()
+        private void SetContentOffset(bool isScrolling = false)
         {
             nfloat xOffset = _controller._segmentScrollView.ContentOffset.X + _controller._baseMargin + _controller.GetWidthByScreenSize(6);
             List<CGPoint> values = _controller._locationDictionary.Values.ToList();
@@ -333,15 +347,11 @@ namespace myTNB.SmartMeterView
 
             nint key = _controller._locationDictionary.FirstOrDefault(x => x.Value == closest).Key;
 
-            nfloat barDelta = _controller.GetWidthByScreenSize(30);
             closest.X -= _controller._baseMargin;
-            _controller._segmentScrollView.SetContentOffset(closest, true);
-
-#pragma warning disable XI0003 // Notifies you when using a deprecated, obsolete or unavailable Apple API
-            UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Medium);
-            selectionFeedback.Prepare();
-            selectionFeedback.ImpactOccurred();
-#pragma warning restore XI0003 // Notifies you when using a deprecated, obsolete or unavailable Apple API
+            if (!isScrolling)
+            {
+                _controller._segmentScrollView.SetContentOffset(closest, true);
+            }
 
             if (key != _controller._currentBar)
             {

@@ -151,7 +151,7 @@ namespace myTNB
 
         protected override void OnSegmentTap(int index)
         {
-            UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Heavy);
+            UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Light);
             selectionFeedback.Prepare();
             selectionFeedback.ImpactOccurred();
             for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
