@@ -543,6 +543,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             ShowAccountName();
             SetToolbarTitle(Resource.String.bill_menu_activity_title);
             ShowBillMenu(accountData);
+            CustomerBillingAccount currentAccount = CustomerBillingAccount.FindByAccNum(accountData.AccountNum);
+            SetAccountName(currentAccount.AccDesc);
         }
         public void EnableDropDown(bool enable)
         {
@@ -772,6 +774,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             CustomerBillingAccount.RemoveSelected();
             CustomerBillingAccount.SetSelected(selectedAccount.AccountNum);
             ShowBillMenu(selectedAccount);
+            CustomerBillingAccount currentAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
+            SetAccountName(currentAccount.AccDesc);
             this.userActionsListener?.OnMenuSelect(Resource.Id.menu_bill);
         }
 

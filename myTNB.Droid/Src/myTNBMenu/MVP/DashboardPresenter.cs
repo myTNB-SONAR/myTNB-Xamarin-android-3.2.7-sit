@@ -912,7 +912,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             try
             {
                 AccountData accountData = AccountData.Copy(selectedAccount, true);
-                this.mView.SetAccountName(selectedAccount.AccDesc);
                 if (hasError)
                 {
                     if (response != null && response.Data != null && !string.IsNullOrEmpty(response.Data.RefreshMessage) && !string.IsNullOrEmpty(response.Data.RefreshBtnText))
@@ -941,6 +940,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                 this.mView.ShowAccountName();
                 this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
                 currentBottomNavigationMenu = Resource.Id.menu_bill;
+                this.mView.SetAccountName(selectedAccount.AccDesc);
             }
             catch (System.Exception e)
             {
