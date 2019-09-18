@@ -23,6 +23,11 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.Formatter
         {
             int invertedIndex = (int)value;
 
+            if (invertedIndex >= byDayData.Count)
+            {
+                invertedIndex = byDayData.Count - 1;
+            }
+
             return byDayData[Math.Abs(invertedIndex)];
         }
     }

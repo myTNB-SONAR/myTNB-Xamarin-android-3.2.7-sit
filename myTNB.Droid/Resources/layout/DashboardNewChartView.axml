@@ -167,38 +167,59 @@
                             android:id="@+id/layoutSegmentGroup"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="99dp"
-                            android:layout_marginRight="99dp"
-                            android:gravity="center"
                             android:layout_marginBottom="24dp"
+                            android:layout_marginLeft="16dp"
+						    android:layout_marginRight="16dp"
                             android:visibility="visible">
-                            <info.hoang8f.android.segmented.SegmentedGroup
-                                android:id="@+id/segmented2"
-                                android:layout_width="@dimen/_122sdp"
+                            <RelativeLayout
+                                android:id="@+id/layoutSubSegmentGroup"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:orientation="horizontal"
-                                segmentedgroup:sc_checked_text_color="@color/dark_periwinkle"
-                                segmentedgroup:sc_corner_radius="100dp"
-                                segmentedgroup:sc_tint_color="@color/white">
-                                <RadioButton
-                                    android:id="@+id/btnToggleDay"
-                                    style="@style/RadioButton"
-                                    android:layout_width="0dp"
+                                android:layout_marginLeft="99dp"
+                                android:layout_marginRight="99dp"
+                                android:gravity="center">
+                                <info.hoang8f.android.segmented.SegmentedGroup
+                                    android:id="@+id/segmented2"
+                                    android:layout_width="@dimen/_122sdp"
                                     android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:text="@string/dashboard_chartview_day"
-                                    android:textSize="13dp" />
-                                <RadioButton
-                                    android:id="@+id/btnToggleMonth"
-                                    style="@style/RadioButton"
-                                    android:layout_width="0dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_weight="1"
-                                    android:checked="true"
-                                    android:text="@string/dashboard_chartview_month"
-                                    android:textColor="@color/dark_periwinkle"
-                                    android:textSize="13dp" />
-                            </info.hoang8f.android.segmented.SegmentedGroup>
+                                    android:orientation="horizontal"
+                                    segmentedgroup:sc_checked_text_color="@color/dark_periwinkle"
+                                    segmentedgroup:sc_corner_radius="100dp"
+                                    segmentedgroup:sc_tint_color="@color/white">
+                                    <RadioButton
+                                        android:id="@+id/btnToggleDay"
+                                        style="@style/RadioButton"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="@string/dashboard_chartview_day"
+                                        android:textSize="13dp" />
+                                    <RadioButton
+                                        android:id="@+id/btnToggleMonth"
+                                        style="@style/RadioButton"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:checked="true"
+                                        android:text="@string/dashboard_chartview_month"
+                                        android:textColor="@color/dark_periwinkle"
+                                        android:textSize="13dp" />
+                                </info.hoang8f.android.segmented.SegmentedGroup>
+                            </RelativeLayout>
+                            <LinearLayout
+                            android:id="@+id/smGraphZoomToggleLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:layout_centerInParent="true"
+                            android:clickable="true">
+                                <ImageView
+                                android:layout_width="24dp"
+                                android:layout_height="24dp"
+                                android:layout_gravity="center"
+                                android:src="@drawable/dashboard_zoom_tooltip"
+                                android:id="@+id/smGraphZoomToggle"/>
+                            </LinearLayout>
                         </RelativeLayout>
                         <LinearLayout
                             android:id="@+id/energyDisconnectionButton"

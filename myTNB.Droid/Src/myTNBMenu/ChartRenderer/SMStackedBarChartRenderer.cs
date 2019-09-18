@@ -32,6 +32,8 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
         public ChartDataType currentChartDataType { get; set; }
 
+        public bool isZoomIn { get; set; }
+
         public float[] bufferItems { get; set; }
 
         private float mRadius = 100f;
@@ -425,6 +427,11 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                 }
                             }
 
+                            if (currentChartType == ChartType.Day && !isZoomIn)
+                            {
+                                MRenderPaint.Alpha = 255;
+                            }
+
                             if (nextIndex >= buffer.Size())
                             {
                                 if (mRadius > 0)
@@ -529,6 +536,11 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                         MBarBorderPaint.Color = new Color(255, 255, 255, 50);
                                     }
                                 }
+                            }
+
+                            if (currentChartType == ChartType.Day && !isZoomIn)
+                            {
+                                MRenderPaint.Alpha = 255;
                             }
 
                             if (nextIndex >= buffer.Size())
@@ -654,12 +666,64 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                             // Lin Siong Note: Draw Ring on Last bar, Hide Now as requirement changed
                             // Lin Siong Note: Draw Text On Lasg bar
                             // canvas.DrawPath(GenerateRoundRectangleWithNoSpace(lastMonthLeftPoint + offsetValue, lastMonthTopPoint + offsetValue, lastMonthRightPoint - offsetValue, lastMonthBottomPoint - offsetValue, mRadius, mRadius, true, true, true, true), MBarBorderPaint);
-                            DrawTextOnCanvas(canvas, lastMonthTopPoint, lastMonthLeftPoint, lastMonthRightPoint, selectedSMHistoryData.ByMonth.Months[selectedSMHistoryData.ByMonth.Months.Count - 1].Currency, selectedSMHistoryData.ByMonth.Months[selectedSMHistoryData.ByMonth.Months.Count - 1].AmountTotal, selectedSMHistoryData.ByMonth.Months[selectedSMHistoryData.ByMonth.Months.Count - 1].UsageUnit, selectedSMHistoryData.ByMonth.Months[selectedSMHistoryData.ByMonth.Months.Count - 1].UsageTotal);
+                            // DrawTextOnCanvas(canvas, lastMonthTopPoint, lastMonthLeftPoint, lastMonthRightPoint, selectedSMHistoryData.ByMonth.Months[selectedSMHistoryData.ByMonth.Months.Count - 1].Currency, selectedSMHistoryData.ByMonth.Months[selectedSMHistoryData.ByMonth.Months.Count - 1].AmountTotal, selectedSMHistoryData.ByMonth.Months[selectedSMHistoryData.ByMonth.Months.Count - 1].UsageUnit, selectedSMHistoryData.ByMonth.Months[selectedSMHistoryData.ByMonth.Months.Count - 1].UsageTotal);
                         }
                     }
                 }
             }
             catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        // Lin Siong TODO: Add for draw question (missing note)
+        private void DrawQuestionOnCanvas(Canvas c, float top, float left, float right, string currencyUnitTxt, double amount, string usageUnitTxt, double usage)
+        {
+            try
+            {
+                // Lin Siong Note: Set Render Paint to white with alpha 50
+                // Lin Siong Note: Set Render Text to 10dp
+                // Lin Siong Note: Set text to align center
+                MRenderPaint.Color = new Color(255, 255, 255, 50);
+                MRenderPaint.TextSize = DPUtils.ConvertDPToPx(10f);
+                MRenderPaint.TextAlign = Paint.Align.Center;
+
+                // Lin Siong Note: Set the typeface to MuseoSans500
+                try
+                {
+                    Typeface plain = Typeface.CreateFromAsset(currentContext.Assets, "fonts/" + TextViewUtils.MuseoSans500);
+                    MRenderPaint.SetTypeface(plain);
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+
+                // Lin Siong Note: calculate the point that need the text to write on
+                // Lin Siong Note: the x is on left point with offset which consist with right point - left point and divided by two
+                // Lin Siong Note: the y is top point + 7dp 
+                float x = left + ((right - left) / 2);
+                float y = top - DPUtils.ConvertDPToPx(7f);
+
+                // Lin Siong Note: to show either RM or kWh
+                if (currentChartType == ChartType.Month)
+                {
+                    if (currentChartDataType == ChartDataType.RM)
+                    {
+                        float val = (float)amount;
+                        string txt = currencyUnitTxt + " " + decimalFormat.Format(val);
+                        c.DrawText(txt, x, y, MRenderPaint);
+                    }
+                    else if (currentChartDataType == ChartDataType.kWh)
+                    {
+                        float valKwh = (float)usage;
+                        string txt = kwhFormat.Format(Math.Abs(valKwh)) + " " + usageUnitTxt;
+                        c.DrawText(txt, x, y, MRenderPaint);
+                    }
+                }
+            }
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }

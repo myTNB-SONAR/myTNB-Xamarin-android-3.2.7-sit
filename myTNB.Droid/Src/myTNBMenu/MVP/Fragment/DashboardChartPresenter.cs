@@ -38,7 +38,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         {
             try
             {
-                this.mView.ShowByMonth();
+                this.mView.ShowByDay();
             }
             catch (Exception e)
             {
@@ -51,7 +51,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         {
             try
             {
-                this.mView.ShowByDay();
+                this.mView.ShowByMonth();
             }
             catch (Exception e)
             {

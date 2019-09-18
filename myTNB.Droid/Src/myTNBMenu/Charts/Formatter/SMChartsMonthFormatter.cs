@@ -22,6 +22,10 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.Formatter
         public string GetFormattedValue(float value, AxisBase axis)
         {
             int invertedIndex = (int)value;
+            if (invertedIndex >= byMonthData.Months.Count)
+            {
+                invertedIndex = byMonthData.Months.Count - 1;
+            }
 
             return byMonthData.Months[Math.Abs(invertedIndex)].Month;
         }
