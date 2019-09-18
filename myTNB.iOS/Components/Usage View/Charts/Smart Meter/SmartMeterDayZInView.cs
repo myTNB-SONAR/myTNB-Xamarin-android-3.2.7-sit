@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using CoreGraphics;
-using Force.DeepCloner;
 using myTNB.Model.Usage;
 using UIKit;
 
@@ -15,11 +14,10 @@ namespace myTNB.SmartMeterView
         internal nfloat _width = UIScreen.MainScreen.Bounds.Width;
         internal nfloat _contentWidth;
         internal CGPoint _currentPoint;
-        internal CGPoint _refPoint;
-        internal CGPoint _lastSegment;
-        internal nfloat _lastXContentOffset;
         internal Dictionary<nint, CGPoint> _locationDictionary = new Dictionary<nint, CGPoint>();
         internal nint _currentBar;
+        internal nfloat _baseMargin;
+
 
         private UILabel _lblMonth;
         private List<DayItemModel> _usageData = new List<DayItemModel>();
@@ -30,7 +28,7 @@ namespace myTNB.SmartMeterView
             nfloat height = width / 2;
             UIImageView imgIndicator = new UIImageView(new CGRect((_width - width) / 2, view.Frame.Height - height, width, height))
             {
-                Image = UIImage.FromBundle("Usage-Chart-Indicator")
+                Image = UIImage.FromBundle(UsageConstants.IMG_ChartIndicator)
             };
             view.AddSubview(imgIndicator);
         }
@@ -49,24 +47,21 @@ namespace myTNB.SmartMeterView
                 TextColor = UIColor.White
             };
             view.AddSubview(_lblMonth);
-
         }
 
         public override void CreateSegment(ref CustomUIView view)
         {
+            _baseMargin = (_width / 2) - GetWidthByScreenSize(6);
             view = new CustomUIView(new CGRect(0, GetYLocationFromFrameScreenSize(ReferenceWidget, 6)
                , _width, GetHeightByScreenSize(169)));
             AddScrollView(ref view);
             AddIndicator(ref view);
 
             nfloat height = view.Frame.Height;
-            //nfloat width = GetWidthByScreenSize(12);
-            nfloat segmentMargin = GetWidthByScreenSize(24);//4
-            nfloat baseMargin = (_width / 2) - GetWidthByScreenSize(6);
-            nfloat xLoc = baseMargin;
+            nfloat segmentMargin = GetWidthByScreenSize(24);
+            nfloat xLoc = _baseMargin;
             nfloat maxBarHeight = GetHeightByScreenSize(96);
             nfloat segmentWidth = GetWidthByScreenSize(12);
-            //nfloat barMargin = GetWidthByScreenSize(5);
             nfloat missingReadingBarMargin = GetHeightByScreenSize(10);
             nfloat lblHeight = GetHeightByScreenSize(10);
             nfloat amountBarMargin = GetHeightByScreenSize(4);
@@ -75,18 +70,18 @@ namespace myTNB.SmartMeterView
             List<string> valueList = _usageData.Select(x => x.Amount).ToList();
             double maxValue = GetMaxValue(RMkWhEnum.RM, valueList);
             double divisor = maxBarHeight / maxValue;
-            _lastSegment = new CGPoint();
+            CGPoint lastSegment = new CGPoint();
             _locationDictionary.Clear();
             for (int i = 0; i < _usageData.Count; i++)
             {
                 int index = i;
-                bool isSelected = index < _usageData.Count - 1;
+                bool isSelected = index == _usageData.Count - 1;
                 DayItemModel item = _usageData[index];
                 CustomUIView segment = new CustomUIView(new CGRect(xLoc, 0, segmentWidth, height))
                 {
                     Tag = index,
                     PageName = "InnerDashboard",
-                    EventName = "OnTapNormalBar"
+                    EventName = "OnTapSmartMeterDayBar"
                 };
                 _currentBar = segment.Tag;
                 if (!_locationDictionary.ContainsKey(segment.Tag))
@@ -96,7 +91,7 @@ namespace myTNB.SmartMeterView
 
                 if (index == _usageData.Count - 1)
                 {
-                    _lastSegment = segment.Frame.Location;
+                    lastSegment = segment.Frame.Location;
                 }
 
                 _segmentScrollView.AddSubview(segment);
@@ -116,14 +111,14 @@ namespace myTNB.SmartMeterView
 
                 UIView viewCover = new UIView(new CGRect(new CGPoint(0, 0), new CGSize(viewBar.Frame.Width, barHeight)))
                 {
-                    BackgroundColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
+                    BackgroundColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F),
                     Tag = 2001,
                     Hidden = IsTariffView
                 };
                 viewBar.AddSubview(viewCover);
                 if (AddTariffBlocks != null)
                 {
-                    AddTariffBlocks.Invoke(viewBar, item.tariffBlocks, value, true, viewCover.Frame.Size, false);
+                    AddTariffBlocks.Invoke(viewBar, item.tariffBlocks, value, isSelected, viewCover.Frame.Size, false);
                 }
                 segment.AddSubview(viewBar);
 
@@ -137,7 +132,7 @@ namespace myTNB.SmartMeterView
                     Font = TNBFont.MuseoSans_10_300,
                     TextColor = UIColor.White,
                     Text = displayText,
-                    Hidden = isSelected,
+                    Hidden = !isSelected,
                     Tag = 1002
                 };
                 nfloat lblConsumptionWidth = lblConsumption.GetLabelWidth(GetWidthByScreenSize(100));
@@ -146,23 +141,25 @@ namespace myTNB.SmartMeterView
                 segment.AddSubview(lblConsumption);
 
                 UIImageView imgMissingReading = null;
-                if (item.IsEstimatedReading || index == 3)//For Testing
+                if (item.IsEstimatedReading || index == 29 || index == 27)//For Testing
                 {
+                    nfloat imgYLoc = (isSelected ? lblConsumption.Frame.GetMinY() : viewBar.Frame.GetMinY()) - segmentWidth - amountBarMargin;
                     imgMissingReading = new UIImageView(new CGRect(0
-                        , lblConsumption.Frame.GetMinY() - segmentWidth - amountBarMargin, segmentWidth, segmentWidth))
+                        , imgYLoc, segmentWidth, segmentWidth))
                     {
                         Image = UIImage.FromBundle(SmartMeterConstants.IMG_MissingReading),
-                        Tag = 3001
+                        Tag = 3001,
+                        Alpha = isSelected ? 1 : 0.5F
                     };
                     segment.AddSubview(imgMissingReading);
                 }
 
-                UILabel lblDay = new UILabel(new CGRect((segmentWidth - GetWidthByScreenSize(40)) / 2, height - ((lblHeight * 2) + GetHeightByScreenSize(12))
-                  , GetWidthByScreenSize(40), lblHeight))
+                UILabel lblDay = new UILabel(new CGRect((segmentWidth - GetWidthByScreenSize(40)) / 2
+                    , height - ((lblHeight * 2) + GetHeightByScreenSize(12)), GetWidthByScreenSize(40), lblHeight))
                 {
                     TextAlignment = UITextAlignment.Center,
                     Font = TNBFont.MuseoSans_10_300,
-                    TextColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
+                    TextColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F),
                     Text = item.Day,
                     Tag = 1003
                 };
@@ -182,10 +179,12 @@ namespace myTNB.SmartMeterView
                     , () =>
                     {
                         viewBar.Frame = new CGRect(viewBar.Frame.X, yLoc, viewBar.Frame.Width, barHeight);
-                        lblConsumption.Frame = new CGRect(lblConsumption.Frame.X, consumptionYLoc, lblConsumption.Frame.Width, lblConsumption.Frame.Height);
+                        lblConsumption.Frame = new CGRect(lblConsumption.Frame.X, consumptionYLoc
+                            , lblConsumption.Frame.Width, lblConsumption.Frame.Height);
                         if (imgMissingReading != null)
                         {
-                            imgMissingReading.Frame = new CGRect(new CGPoint(imgMissingReading.Frame.X, lblConsumption.Frame.GetMinY() - segmentWidth - amountBarMargin)
+                            nfloat imgYLoc = (isSelected ? lblConsumption.Frame.GetMinY() : viewBar.Frame.GetMinY()) - segmentWidth - amountBarMargin;
+                            imgMissingReading.Frame = new CGRect(new CGPoint(imgMissingReading.Frame.X, imgYLoc)
                                 , imgMissingReading.Frame.Size);
                         }
                     }
@@ -193,11 +192,9 @@ namespace myTNB.SmartMeterView
                 );
             }
 
-            _contentWidth = (_usageData.Count * GetWidthByScreenSize(12)) + ((_usageData.Count - 1) * GetWidthByScreenSize(24)) + (baseMargin * 2);
+            _contentWidth = (_usageData.Count * GetWidthByScreenSize(12)) + ((_usageData.Count - 1) * GetWidthByScreenSize(24)) + (_baseMargin * 2);
             _segmentScrollView.ContentSize = new CGSize(_contentWidth, _segmentScrollView.Frame.Height);
-            _currentPoint = new CGPoint(_contentWidth - (baseMargin * 2) - GetWidthByScreenSize(12), _lastSegment.Y);
-            _refPoint = _currentPoint;
-            _lastXContentOffset = _currentPoint.X;
+            _currentPoint = new CGPoint(_contentWidth - (_baseMargin * 2) - GetWidthByScreenSize(12), lastSegment.Y);
             _segmentScrollView.SetContentOffset(_currentPoint, true);
         }
 
@@ -208,12 +205,14 @@ namespace myTNB.SmartMeterView
                 CGPoint point = _locationDictionary[tag];
                 nfloat baseMargin = (_width / 2) - GetWidthByScreenSize(6);
 
-                point.X = point.X - baseMargin;
+                point.X -= baseMargin;
                 _segmentScrollView.SetContentOffset(point, true);
 
-                UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Heavy);
+#pragma warning disable XI0003 // Notifies you when using a deprecated, obsolete or unavailable Apple API
+                UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Medium);
                 selectionFeedback.Prepare();
                 selectionFeedback.ImpactOccurred();
+#pragma warning restore XI0003 // Notifies you when using a deprecated, obsolete or unavailable Apple API
 
                 if (tag != _currentBar)
                 {
@@ -253,21 +252,58 @@ namespace myTNB.SmartMeterView
             {
                 lblDay.TextColor = isActive ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F);
             }
+
+            CustomUIView viewBar = view.ViewWithTag(1001) as CustomUIView;
+
+            UIImageView imgMissing = view.ViewWithTag(3001) as UIImageView;
+            if (imgMissing != null)
+            {
+                nfloat segmentWidth = GetWidthByScreenSize(12);
+                nfloat amountBarMargin = GetHeightByScreenSize(4);
+                nfloat minY = 0;
+                if (viewBar != null)
+                {
+                    minY = viewBar.Frame.GetMinY();
+                }
+                nfloat imgYLoc = (isActive ? lblConsumption.Frame.GetMinY() : minY) - segmentWidth - amountBarMargin;
+                CGRect frame = imgMissing.Frame;
+                frame.Y = imgYLoc;
+                imgMissing.Frame = frame;
+                imgMissing.Alpha = isActive ? 1 : 0.5F;
+            }
+            if (viewBar != null)
+            {
+                UIView viewTariff = viewBar.ViewWithTag(2002);
+                if (viewTariff != null)
+                {
+                    for (int j = 0; j < viewTariff.Subviews.Count(); j++)
+                    {
+                        UIView tBlock = viewTariff.Subviews[j];
+                        UIColor tColor = tBlock.BackgroundColor;
+                        nint componentCount = tColor.CGColor.NumberOfComponents;
+                        if (componentCount == 4)
+                        {
+                            nfloat[] components = tColor.CGColor.Components;
+                            nfloat alpha = isActive ? 1F : 0.5F;
+                            tBlock.BackgroundColor = new UIColor(components[0], components[1], components[2], alpha);
+                        }
+                    }
+                }
+            }
         }
     }
 
     public class BarScrollDelegate : UIScrollViewDelegate
     {
-        private SmartMeterDayZInView _controller;
+        private readonly SmartMeterDayZInView _controller;
         public BarScrollDelegate(SmartMeterDayZInView controller)
         {
             _controller = controller;
         }
         public override void Scrolled(UIScrollView scrollView)
         {
-            nfloat baseMargin = (_controller._width / 2) - _controller.GetWidthByScreenSize(6);
             nfloat xOffset = _controller._segmentScrollView.ContentOffset.X;
-            if (xOffset < 0 || xOffset > _controller._contentWidth - (baseMargin * 2) - _controller.GetWidthByScreenSize(12))
+            if (xOffset < 0 || xOffset > _controller._contentWidth - (_controller._baseMargin * 2) - _controller.GetWidthByScreenSize(12))
             {
                 return;
             }
@@ -290,8 +326,7 @@ namespace myTNB.SmartMeterView
 
         private void SetContentOffset()
         {
-            nfloat baseMargin = (_controller._width / 2) - _controller.GetWidthByScreenSize(6);
-            nfloat xOffset = _controller._segmentScrollView.ContentOffset.X + baseMargin + _controller.GetWidthByScreenSize(6);
+            nfloat xOffset = _controller._segmentScrollView.ContentOffset.X + _controller._baseMargin + _controller.GetWidthByScreenSize(6);
             List<CGPoint> values = _controller._locationDictionary.Values.ToList();
 
             CGPoint closest = values.OrderBy(v => Math.Abs((nfloat)v.X - xOffset)).First();
@@ -299,12 +334,14 @@ namespace myTNB.SmartMeterView
             nint key = _controller._locationDictionary.FirstOrDefault(x => x.Value == closest).Key;
 
             nfloat barDelta = _controller.GetWidthByScreenSize(30);
-            closest.X = closest.X - baseMargin;
+            closest.X -= _controller._baseMargin;
             _controller._segmentScrollView.SetContentOffset(closest, true);
 
-            UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Heavy);
+#pragma warning disable XI0003 // Notifies you when using a deprecated, obsolete or unavailable Apple API
+            UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Medium);
             selectionFeedback.Prepare();
             selectionFeedback.ImpactOccurred();
+#pragma warning restore XI0003 // Notifies you when using a deprecated, obsolete or unavailable Apple API
 
             if (key != _controller._currentBar)
             {

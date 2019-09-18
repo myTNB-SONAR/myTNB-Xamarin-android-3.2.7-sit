@@ -35,9 +35,7 @@ namespace myTNB.SmartMeterView
                 DayItemModel item = usageData[index];
                 CustomUIView segment = new CustomUIView(new CGRect(xLoc, 0, segmentWidth, height))
                 {
-                    Tag = index,
-                    PageName = "InnerDashboard",
-                    EventName = "OnTapNormalBar"
+                    Tag = index
                 };
                 view.AddSubview(segment);
                 xLoc += segmentWidth + segmentMargin;

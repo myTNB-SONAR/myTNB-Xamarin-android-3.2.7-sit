@@ -320,15 +320,6 @@ namespace myTNB
             CGRect barOriginalFrame = bar.Frame;
             bar.Frame = new CGRect(bar.Frame.X, bar.Frame.GetMaxY(), bar.Frame.Width, 0);
 
-            UIImageView imgMissingReading = segmentView.ViewWithTag(3001) as UIImageView;
-            CGRect imgMissingReadingOriginalFrame = new CGRect();
-            if (imgMissingReading != null)
-            {
-                imgMissingReadingOriginalFrame = imgMissingReading.Frame;
-                imgMissingReading.Frame = new CGRect(new CGPoint(imgMissingReading.Frame.X
-                    , bar.Frame.GetMidY() - GetHeightByScreenSize(10)), imgMissingReading.Frame.Size);
-            }
-
             UIView viewCover = bar.ViewWithTag(2001);
             if (viewCover != null) { viewCover.Hidden = _isTariffView; }
 
@@ -343,6 +334,20 @@ namespace myTNB
                 value.Frame = new CGRect(value.Frame.X, bar.Frame.GetMinY() - amountBarMargin - value.Frame.Height
                     , value.Frame.Width, value.Frame.Height);
             }
+
+            UIImageView imgMissingReading = segmentView.ViewWithTag(3001) as UIImageView;
+            CGRect imgMissingReadingOriginalFrame = new CGRect();
+            if (imgMissingReading != null)
+            {
+                imgMissingReadingOriginalFrame = imgMissingReading.Frame;
+                nfloat yRef = bar.Frame.GetMinY() - GetHeightByScreenSize(10);
+                if (value != null && !value.Hidden)
+                {
+                    yRef = value.Frame.GetMinY() - GetHeightByScreenSize(10);
+                }
+                imgMissingReading.Frame = new CGRect(new CGPoint(imgMissingReading.Frame.X, yRef), imgMissingReading.Frame.Size);
+            }
+
             UIView.Animate(1, 0.3, UIViewAnimationOptions.CurveEaseOut
                , () =>
                {
