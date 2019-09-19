@@ -227,13 +227,6 @@ namespace myTNB
                     }
                     ProcessMasterData();
                 }
-                else
-                {
-                    if (_splashIsShown)
-                    {
-                        ProcessMasterData();
-                    }
-                }
             });
         }
 
