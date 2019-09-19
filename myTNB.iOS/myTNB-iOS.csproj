@@ -896,10 +896,10 @@
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\AppLaunch.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SplashImageDefault.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\AppLaunch.imageset\AppLaunch%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppLaunch.imageset\AppLaunch%402x.png" />
     <ImageAsset Include="Assets.xcassets\SplashImageDefault.imageset\SplashImageDefault%403x.png" />
     <ImageAsset Include="Assets.xcassets\SplashImageDefault.imageset\SplashImageDefault%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppLaunch.imageset\img_splash_bg%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppLaunch.imageset\img_splash_bg%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
