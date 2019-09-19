@@ -218,7 +218,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 {
                     AccountNumber = selectedAccount.AccountNum,
                     IsOwnedAccount = "true",
-                    ICNumber = account.ICNum,
+                    ICNumber = UserEntity.GetActive().IdentificationNo,
                     usrInf = currentUsrInf
                 });
 
