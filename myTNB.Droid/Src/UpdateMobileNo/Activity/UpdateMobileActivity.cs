@@ -7,6 +7,7 @@ using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Views;
+using Android.Views.InputMethods;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Activity;
@@ -19,6 +20,7 @@ using Newtonsoft.Json;
 using Refit;
 using System;
 using System.Runtime;
+
 
 namespace myTNB_Android.Src.UpdateMobileNo.Activity
 {
@@ -54,9 +56,19 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
 
         private bool fromAppLaunch = false;
 
+       
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+
+            // try hide the keyboard 
+            InputMethodManager imm = (InputMethodManager)GetSystemService(Context.InputMethodService);
+            imm.HideSoftInputFromInputMethod(txtMobileNo.WindowToken, 0);
+
+
+            // try hide the keyboard 
+            Window.SetSoftInputMode(SoftInput.StateHidden);
 
             try
             {
@@ -101,6 +113,9 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
 
                 mPresenter = new UpdateMobilePresenter(this);
                 userActionsListener.Start();
+
+              
+
 
                 //txtMobileNo.FocusChange += (object sender, View.FocusChangeEventArgs e) =>
                 //{
@@ -164,6 +179,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
         private void TxtMobileNo_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
             this.userActionsListener.OnVerifyMobile(e.Text.ToString(), forceUpdatePhoneNo);
+
         }
 
         [OnClick(Resource.Id.btnSave)]
@@ -174,6 +190,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
             this.userActionsListener.OnUpdatePhoneNo(newMobile, loginRequest);
         }
 
+    
         public void HideProgress()
         {
             //if (progress != null && progress.IsShowing)
@@ -417,4 +434,6 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
             }
         }
     }
+
+
 }
