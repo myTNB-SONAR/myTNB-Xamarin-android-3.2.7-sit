@@ -267,8 +267,8 @@ namespace myTNB
             {
                 TariffItemModel item = tariffList[i];
                 double.TryParse(item.Usage, out double val);
-                nfloat percentage = (nfloat)(val / baseValue);
-                nfloat blockHeight = baseHeigt * percentage;
+                double percentage = (baseValue > 0) ? (nfloat)(val / baseValue) : 0;
+                nfloat blockHeight = (nfloat)(baseHeigt * percentage);
                 barMaxY -= blockHeight;
                 UIView viewTariffBlock = new UIView(new CGRect(0, barMaxY, size.Width, blockHeight))
                 {
