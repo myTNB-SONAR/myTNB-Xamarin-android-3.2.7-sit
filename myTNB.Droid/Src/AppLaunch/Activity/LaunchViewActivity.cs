@@ -837,7 +837,28 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                             {
                                 try
                                 {
-                                    int secondMilli = Int32.Parse(item.ShowForSeconds) * 1000;
+                                    int secondMilli = 0;
+                                    try
+                                    {
+                                        secondMilli = (int) (float.Parse(item.ShowForSeconds, CultureInfo.InvariantCulture.NumberFormat) * 1000); 
+                                    }
+                                    catch (Exception nea)
+                                    {
+                                        Utility.LoggingNonFatalError(nea);
+                                    }
+
+                                    if (secondMilli == 0)
+                                    {
+                                        try
+                                        {
+                                            secondMilli = Int32.Parse(item.ShowForSeconds) * 1000;
+                                        }
+                                        catch (Exception nea)
+                                        {
+                                            Utility.LoggingNonFatalError(nea);
+                                        }
+                                    }
+
                                     var bitmapDrawable = new BitmapDrawable(item.ImageBitmap);
                                     RunOnUiThread(() =>
                                     {

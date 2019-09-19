@@ -1095,19 +1095,14 @@
     <Compile Include="Src\Notifications\Models\NotificationData.cs" />
     <AndroidResource Include="Resources\menu\NotificationToolbarMenu.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\empty_state_notification.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\ic_action_select_all.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_header_markread.png" />
     <AndroidResource Include="Resources\drawable-mdpi\empty_state_notification.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\ic_action_select_all.png" />
     <AndroidResource Include="Resources\drawable-mdpi\ic_header_markread.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\empty_state_notification.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_select_all.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_header_markread.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\empty_state_notification.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_select_all.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_header_markread.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\empty_state_notification.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_select_all.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_markread.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_header_delete_disabled.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_header_markread_disabled.png" />
@@ -1134,6 +1129,30 @@
     <AndroidResource Include="Resources\drawable-xhdpi\ic_action_select_all_1.png" />
     <AndroidResource Include="Resources\drawable-mdpi\ic_action_select_all_1.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_action_select_all_1.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\img_splash_bg.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\img_splash_bg.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\img_splash_bg.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\img_splash_bg.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\img_splash_bg.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\launch_screen_base.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
