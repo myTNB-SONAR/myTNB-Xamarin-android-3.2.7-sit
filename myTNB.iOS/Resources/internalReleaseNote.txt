@@ -1,5 +1,3 @@
 Sprint 1 + Dynamic Splash Screen (SIT Build)
 
-- Updated Launch images with TNB logo
-- Increased sitecore call timeout from 1s to 2.5s
-- defect fix where delay is not performed on cached image
+[BUG] 2355 Sprint1_Regression - Splash Screen (Duration, Expired date image, Change Image without kill the app)
