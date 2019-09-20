@@ -23,6 +23,11 @@ namespace myTNB.Model.Usage
         public List<ByDayModel> ByDay { set; get; }
         public List<LegendItemModel> TariffBlocksLegend { set; get; }
         public List<ToolTipItemModel> ToolTips;
+
+        public string CurrentCycle { set; get; }
+        public string StartDate { set; get; }
+        public string MidDate { set; get; }
+        public string EndDate { set; get; }
     }
 
     public class OtherUsageMetricsModel

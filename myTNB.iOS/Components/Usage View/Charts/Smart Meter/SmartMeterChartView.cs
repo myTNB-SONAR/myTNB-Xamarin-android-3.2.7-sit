@@ -121,7 +121,8 @@ namespace myTNB
             _pinchIcon = new UIImageView(new CGRect(toggleBar.Frame.GetMaxX() + GetScaledWidth(59), 0, iconWidth, iconHeight))
             {
                 Image = UIImage.FromBundle(UsageConstants.IMG_PinchOut),
-                UserInteractionEnabled = true
+                UserInteractionEnabled = true,
+                Hidden = true
             };
             _pinchIcon.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
@@ -218,7 +219,6 @@ namespace myTNB
             {
                 PinchAction(obj);
             }));
-
             _mainView.AddSubview(_segmentContainer);
         }
 

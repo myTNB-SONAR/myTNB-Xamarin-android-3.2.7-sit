@@ -114,6 +114,9 @@ namespace myTNB.SmartMeterView
                     Text = string.IsNullOrEmpty(item.Year) ? item.Month : string.Format(Format_Value, item.Month, item.Year),
                     Tag = 1003
                 };
+                nfloat lblDateWidth = lblDate.GetLabelWidth(GetWidthByScreenSize(100));
+                lblDate.Frame = new CGRect((segmentWidth - lblDateWidth) / 2, lblDate.Frame.Y, lblAmountWidth, lblDate.Frame.Height);
+
                 segment.AddSubviews(new UIView[] { lblConsumption, viewBar, lblDate });
 
                 segment.AddGestureRecognizer(new UITapGestureRecognizer(() =>

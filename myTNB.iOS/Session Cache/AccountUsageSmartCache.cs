@@ -15,9 +15,9 @@ namespace myTNB
         private static List<LegendItemModel> TariffLegendList = new List<LegendItemModel>();
         private static OtherUsageMetricsModel UsageMetrics = new OtherUsageMetricsModel();
         private static List<ToolTipItemModel> Tooltips = new List<ToolTipItemModel>();
-        public static AccountUsageSmartResponseDataModel RefreshDataModel;
+        private static AccountUsageSmartResponseDataModel RefreshDataModel;
 
-        public static bool IsSuccess;
+        public static bool IsSuccess { private set; get; }
 
         public static void ClearTariffLegendList()
         {
@@ -75,6 +75,11 @@ namespace myTNB
                 UsageMetrics = data.OtherUsageMetrics;
                 Tooltips = data.ToolTips;
 
+                CurrentCycle = data?.CurrentCycle;
+                StartDate = data?.StartDate ?? string.Empty;
+                MidDate = data?.MidDate ?? string.Empty;
+                EndDate = data?.EndDate ?? string.Empty;
+
                 SaveToCache(accountNumber, RefreshDataModel);
             }
             else
@@ -82,6 +87,53 @@ namespace myTNB
                 RefreshDataModel = response?.d ?? new AccountUsageSmartResponseDataModel();
             }
         }
+
+        #region Dates
+        private static string _currentCycle;
+        private static string _startDate;
+        private static string _midDate;
+        private static string _endDate;
+
+        public static string CurrentCycle
+        {
+            private set
+            {
+                if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value)) { value = string.Empty; }
+                _currentCycle = value;
+            }
+            get { return _currentCycle ?? string.Empty; }
+        }
+
+        public static string StartDate
+        {
+            private set
+            {
+                if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value)) { value = string.Empty; }
+                _startDate = value;
+            }
+            get { return _startDate ?? string.Empty; }
+        }
+
+        public static string MidDate
+        {
+            private set
+            {
+                if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value)) { value = string.Empty; }
+                _midDate = value;
+            }
+            get { return _midDate ?? string.Empty; }
+        }
+
+        public static string EndDate
+        {
+            private set
+            {
+                if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value)) { value = string.Empty; }
+                _endDate = value;
+            }
+            get { return _endDate ?? string.Empty; }
+        }
+        #endregion
 
         public static bool IsMonthlyTariffDisable
         {
@@ -132,6 +184,7 @@ namespace myTNB
             }
             get { return _byMonthUsage != null ? _byMonthUsage : new List<MonthItemModel>(); }
         }
+
         private static List<ByDayModel> _byDayUsage = new List<ByDayModel>();
         public static List<ByDayModel> ByDayUsage
         {
@@ -210,6 +263,10 @@ namespace myTNB
                         ByDayUsage = d.data.ByDay;
                         UsageMetrics = d.data.OtherUsageMetrics;
                         Tooltips = d.data.ToolTips;
+                        CurrentCycle = d?.data?.CurrentCycle;
+                        StartDate = d?.data?.StartDate ?? string.Empty;
+                        MidDate = d?.data?.MidDate ?? string.Empty;
+                        EndDate = d?.data?.EndDate ?? string.Empty;
                         return d;
                     }
                 }
@@ -239,7 +296,7 @@ namespace myTNB
         {
             DateTime currentDate = DateTime.Now;
             DateTime cachedDate = DateTime.Parse(date);
-            return cachedDate.Date.AddDays(1) == currentDate.Date;
+            return true;// cachedDate.Date.AddDays(1) == currentDate.Date;
         }
         #endregion
 

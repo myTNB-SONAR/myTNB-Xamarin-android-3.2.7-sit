@@ -128,7 +128,8 @@ namespace myTNB
                     Text = string.IsNullOrEmpty(item.Year) ? item.Month : string.Format(Format_Value, item.Month, item.Year),
                     Tag = 1004
                 };
-
+                nfloat lblDateWidth = lblDate.GetLabelWidth(GetWidthByScreenSize(100));
+                lblDate.Frame = new CGRect((segmentWidth - lblDateWidth) / 2, lblDate.Frame.Y, lblAmountWidth, lblDate.Frame.Height);
                 segment.AddSubviews(new UIView[] { lblUsage, lblAmount, viewBar, lblDate });
 
                 segment.AddGestureRecognizer(new UITapGestureRecognizer(() =>

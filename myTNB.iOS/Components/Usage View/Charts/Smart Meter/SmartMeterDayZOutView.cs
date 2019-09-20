@@ -28,7 +28,7 @@ namespace myTNB.SmartMeterView
             List<DayItemModel> usageData = AccountUsageSmartCache.FlatDays;
             List<string> valueList = usageData.Select(x => x.Amount).ToList();
             double maxValue = GetMaxValue(RMkWhEnum.RM, valueList);
-            double divisor = maxBarHeight / maxValue;
+            double divisor = maxValue == 0 ? 0 : maxBarHeight / maxValue;
             for (int i = 0; i < usageData.Count; i++)
             {
                 int index = i;
@@ -53,7 +53,7 @@ namespace myTNB.SmartMeterView
                 viewBar.Layer.CornerRadius = segmentWidth / 2;
 
                 UIImageView imgMissingReading = null;
-                if (item.IsEstimatedReading || index == 29 || index == 27)//For Testing
+                if (item.IsMissingReading)
                 {
                     imgMissingReading = new UIImageView(new CGRect(0, maxBarHeight - missingReadingBarMargin, segmentWidth, segmentWidth))
                     {
@@ -102,7 +102,7 @@ namespace myTNB.SmartMeterView
                 TextAlignment = UITextAlignment.Center,
                 Font = TNBFont.MuseoSans_10_300,
                 TextColor = UIColor.White,
-                Text = "22 Jul"
+                Text = AccountUsageSmartCache.StartDate
             };
             nfloat lblStartDateWidth = lblStartDate.GetLabelWidth(GetWidthByScreenSize(100));
             lblStartDate.Frame = new CGRect(lblStartDate.Frame.Location, new CGSize(lblStartDateWidth, lblHeight));
@@ -112,7 +112,7 @@ namespace myTNB.SmartMeterView
                 TextAlignment = UITextAlignment.Center,
                 Font = TNBFont.MuseoSans_10_300,
                 TextColor = UIColor.White,
-                Text = "10 Aug"
+                Text = AccountUsageSmartCache.MidDate
             };
             nfloat lblMidDateWidth = lblMidDate.GetLabelWidth(GetWidthByScreenSize(100));
             lblMidDate.Frame = new CGRect(new CGPoint((_width - lblMidDateWidth) / 2, lblMidDate.Frame.Y), new CGSize(lblMidDateWidth, lblHeight));
@@ -122,7 +122,7 @@ namespace myTNB.SmartMeterView
                 TextAlignment = UITextAlignment.Center,
                 Font = TNBFont.MuseoSans_10_300,
                 TextColor = UIColor.White,
-                Text = "21 Aug"
+                Text = AccountUsageSmartCache.EndDate
             };
             nfloat lblEndDateWidth = lblEndDate.GetLabelWidth(GetWidthByScreenSize(100));
             lblEndDate.Frame = new CGRect(new CGPoint(_width - GetWidthByScreenSize(16) - lblEndDateWidth

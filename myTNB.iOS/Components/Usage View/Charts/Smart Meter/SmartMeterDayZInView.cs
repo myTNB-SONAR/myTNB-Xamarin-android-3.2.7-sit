@@ -68,7 +68,7 @@ namespace myTNB.SmartMeterView
             _usageData = AccountUsageSmartCache.FlatDays;
             List<string> valueList = _usageData.Select(x => x.Amount).ToList();
             double maxValue = GetMaxValue(RMkWhEnum.RM, valueList);
-            double divisor = maxBarHeight / maxValue;
+            double divisor = maxValue == 0 ? 0 : maxBarHeight / maxValue;
             CGPoint lastSegment = new CGPoint();
             _locationDictionary.Clear();
             for (int i = 0; i < _usageData.Count; i++)
@@ -140,7 +140,7 @@ namespace myTNB.SmartMeterView
                 segment.AddSubview(lblConsumption);
 
                 UIImageView imgMissingReading = null;
-                if (item.IsEstimatedReading || index == 29 || index == 27)//For Testing
+                if (item.IsMissingReading)
                 {
                     nfloat imgYLoc = (isSelected ? lblConsumption.Frame.GetMinY() : viewBar.Frame.GetMinY()) - segmentWidth - amountBarMargin;
                     imgMissingReading = new UIImageView(new CGRect(0
