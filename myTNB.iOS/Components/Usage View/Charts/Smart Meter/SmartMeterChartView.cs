@@ -170,80 +170,127 @@ namespace myTNB
                 _segmentContainer.AddSubview(segment);
                 xLoc += segmentWidth + segmentMargin;
 
-                double.TryParse(item.UsageTotal, out double value);
-                nfloat barHeight = (nfloat)(divisor * value);
-                nfloat yLoc = lblHeight + amountBarMargin + (maxBarHeight - barHeight);
-
-                nfloat barWidth = isLatestBar ? GetWidthByScreenSize(18) : width;
-                nfloat barXLoc = isLatestBar ? barMargin - GetWidthByScreenSize(2) : barMargin;
-                CustomUIView viewBar = new CustomUIView(new CGRect(barXLoc
-                    , segment.Frame.Height - lblHeight - GetHeightByScreenSize(17), barWidth, 0))
-                {
-                    BackgroundColor = UIColor.Clear,
-                    Tag = 1001,
-                    ClipsToBounds = true
-                };
-                viewBar.Layer.CornerRadius = barWidth / 2;
                 if (isLatestBar)
                 {
-                    viewBar.Layer.BorderWidth = GetWidthByScreenSize(1);
-                    viewBar.Layer.BorderColor = (isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White).CGColor;
+                    item.IsCurrentlyUnavailable = true;
                 }
 
-                nfloat coverWidth = isLatestBar ? viewBar.Frame.Width - GetWidthByScreenSize(6) : viewBar.Frame.Width;
-                nfloat coverXLoc = isLatestBar ? GetWidthByScreenSize(3) : 0;
-                nfloat coverHeight = isLatestBar ? barHeight - GetHeightByScreenSize(6) : barHeight;
-                nfloat coverYLoc = isLatestBar ? GetHeightByScreenSize(3) : 0;
-
-                UIView viewCover = new UIView(new CGRect(new CGPoint(coverXLoc, coverYLoc), new CGSize(coverWidth, coverHeight)))
+                if (!isLatestBar || (isLatestBar && !item.IsCurrentlyUnavailable))
                 {
-                    BackgroundColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
-                    Tag = 2001,
-                    Hidden = false
-                };
-                if (isLatestBar) { viewCover.Layer.CornerRadius = coverWidth / 2; }
-                viewBar.AddSubview(viewCover);
+                    double.TryParse(item.UsageTotal, out double value);
+                    nfloat barHeight = (nfloat)(divisor * value);
+                    nfloat yLoc = lblHeight + amountBarMargin + (maxBarHeight - barHeight);
 
-                AddTariffBlocks(viewBar, item.tariffBlocks, value, index == usageData.Count - 1, viewCover.Frame.Size, isLatestBar);
-
-                nfloat amtYLoc = yLoc - amountBarMargin - lblHeight;
-                UILabel lblAmount = new UILabel(new CGRect(0, viewBar.Frame.GetMinY() - amountBarMargin - lblHeight
-                    , GetWidthByScreenSize(100), lblHeight))
-                {
-                    TextAlignment = UITextAlignment.Center,
-                    Font = TNBFont.MuseoSans_10_300,
-                    TextColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
-                    Text = item.AmountTotal.FormatAmountString(item.Currency),
-                    Hidden = isSelected,
-                    Tag = 1002
-                };
-                nfloat lblAmountWidth = lblAmount.GetLabelWidth(GetWidthByScreenSize(100));
-                lblAmount.Frame = new CGRect((segmentWidth - lblAmountWidth) / 2, lblAmount.Frame.Y, lblAmountWidth, lblAmount.Frame.Height);
-
-                UILabel lblDate = new UILabel(new CGRect((segmentWidth - GetWidthByScreenSize(40)) / 2, segment.Frame.Height - lblHeight
-                    , GetWidthByScreenSize(40), lblHeight))
-                {
-                    TextAlignment = UITextAlignment.Center,
-                    Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300,
-                    TextColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
-                    Text = string.IsNullOrEmpty(item.Year) ? item.Month : string.Format(Format_Value, item.Month, item.Year),
-                    Tag = 1003
-                };
-                segment.AddSubviews(new UIView[] { lblAmount, viewBar, lblDate });
-
-                segment.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-                {
-                    OnSegmentTap(index);
-                }));
-
-                UIView.Animate(1, 0.3, UIViewAnimationOptions.CurveEaseOut
-                    , () =>
+                    nfloat barWidth = isLatestBar ? GetWidthByScreenSize(18) : width;
+                    nfloat barXLoc = isLatestBar ? barMargin - GetWidthByScreenSize(2) : barMargin;
+                    CustomUIView viewBar = new CustomUIView(new CGRect(barXLoc
+                        , segment.Frame.Height - lblHeight - GetHeightByScreenSize(17), barWidth, 0))
                     {
-                        viewBar.Frame = new CGRect(viewBar.Frame.X, yLoc, viewBar.Frame.Width, barHeight);
-                        lblAmount.Frame = new CGRect(lblAmount.Frame.X, amtYLoc, lblAmount.Frame.Width, lblAmount.Frame.Height);
+                        BackgroundColor = UIColor.Clear,
+                        Tag = 1001,
+                        ClipsToBounds = true
+                    };
+                    viewBar.Layer.CornerRadius = barWidth / 2;
+                    if (isLatestBar)
+                    {
+                        viewBar.Layer.BorderWidth = GetWidthByScreenSize(1);
+                        viewBar.Layer.BorderColor = (isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White).CGColor;
                     }
-                    , () => { }
-                );
+
+                    nfloat coverWidth = isLatestBar ? viewBar.Frame.Width - GetWidthByScreenSize(6) : viewBar.Frame.Width;
+                    nfloat coverXLoc = isLatestBar ? GetWidthByScreenSize(3) : 0;
+                    nfloat coverHeight = isLatestBar ? barHeight - GetHeightByScreenSize(6) : barHeight;
+                    nfloat coverYLoc = isLatestBar ? GetHeightByScreenSize(3) : 0;
+
+                    UIView viewCover = new UIView(new CGRect(new CGPoint(coverXLoc, coverYLoc), new CGSize(coverWidth, coverHeight)))
+                    {
+                        BackgroundColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
+                        Tag = 2001,
+                        Hidden = false
+                    };
+                    if (isLatestBar) { viewCover.Layer.CornerRadius = coverWidth / 2; }
+                    viewBar.AddSubview(viewCover);
+
+                    AddTariffBlocks(viewBar, item.tariffBlocks, value, index == usageData.Count - 1, viewCover.Frame.Size, isLatestBar);
+
+                    nfloat amtYLoc = yLoc - amountBarMargin - lblHeight;
+                    UILabel lblAmount = new UILabel(new CGRect(0, viewBar.Frame.GetMinY() - amountBarMargin - lblHeight
+                        , GetWidthByScreenSize(100), lblHeight))
+                    {
+                        TextAlignment = UITextAlignment.Center,
+                        Font = TNBFont.MuseoSans_10_500,
+                        TextColor = UIColor.White,
+                        Text = item.AmountTotal.FormatAmountString(item.Currency),
+                        Hidden = isSelected,
+                        Tag = 1002
+                    };
+                    nfloat lblAmountWidth = lblAmount.GetLabelWidth(GetWidthByScreenSize(100));
+                    lblAmount.Frame = new CGRect((segmentWidth - lblAmountWidth) / 2, lblAmount.Frame.Y, lblAmountWidth, lblAmount.Frame.Height);
+
+                    UILabel lblDate = new UILabel(new CGRect((segmentWidth - GetWidthByScreenSize(40)) / 2, segment.Frame.Height - lblHeight
+                        , GetWidthByScreenSize(40), lblHeight))
+                    {
+                        TextAlignment = UITextAlignment.Center,
+                        Font = isSelected ? TNBFont.MuseoSans_10_300 : TNBFont.MuseoSans_10_500,
+                        TextColor = UIColor.White,
+                        Text = string.IsNullOrEmpty(item.Year) ? item.Month : string.Format(Format_Value, item.Month, item.Year),
+                        Tag = 1003
+                    };
+                    segment.AddSubviews(new UIView[] { lblAmount, viewBar, lblDate });
+
+                    segment.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                    {
+                        OnSegmentTap(index);
+                    }));
+
+                    UIView.Animate(1, 0.3, UIViewAnimationOptions.CurveEaseOut
+                        , () =>
+                        {
+                            viewBar.Frame = new CGRect(viewBar.Frame.X, yLoc, viewBar.Frame.Width, barHeight);
+                            lblAmount.Frame = new CGRect(lblAmount.Frame.X, amtYLoc, lblAmount.Frame.Width, lblAmount.Frame.Height);
+                        }
+                        , () => { }
+                    );
+                }
+                else
+                {
+                    UILabel lblDate = new UILabel(new CGRect((segmentWidth - GetWidthByScreenSize(40)) / 2, segment.Frame.Height - lblHeight
+                        , GetWidthByScreenSize(40), lblHeight))
+                    {
+                        TextAlignment = UITextAlignment.Center,
+                        Font = isSelected ? TNBFont.MuseoSans_10_300 : TNBFont.MuseoSans_10_500,
+                        TextColor = UIColor.White,
+                        Text = string.IsNullOrEmpty(item.Year) ? item.Month : string.Format(Format_Value, item.Month, item.Year),
+                        Tag = 1003
+                    };
+
+                    UIImageView unavailableIcon = new UIImageView(new CGRect(0, segment.Frame.Height - lblHeight - GetScaledHeight(20) - GetHeightByScreenSize(17), GetScaledWidth(20), GetScaledHeight(20)))
+                    {
+                        Image = UIImage.FromBundle("MDMS-Down-Icon")
+                    };
+                    ViewHelper.AdjustFrameSetX(unavailableIcon, GetXLocationToCenterObject(GetScaledWidth(20), segment));
+
+                    nfloat lblIndicatorHeight = GetScaledHeight(28);
+                    UILabel lblIndicator = new UILabel(new CGRect(0, unavailableIcon.Frame.GetMinY() - GetScaledHeight(8) - lblIndicatorHeight, GetScaledWidth(54), lblIndicatorHeight))
+                    {
+                        TextAlignment = UITextAlignment.Center,
+                        Font = isSelected ? TNBFont.MuseoSans_10_300 : TNBFont.MuseoSans_10_500,
+                        TextColor = UIColor.White,
+                        Lines = 0,
+                        Text = "Currently Unavailable",
+                        Tag = 1004
+                    };
+                    nfloat lblWidth = lblIndicator.GetLabelWidth(GetScaledWidth(54));
+                    ViewHelper.AdjustFrameSetWidth(lblIndicator, lblWidth);
+                    ViewHelper.AdjustFrameSetX(lblIndicator, GetXLocationToCenterObject(lblWidth, segment));
+
+                    segment.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                    {
+                        OnSegmentTap(index);
+                    }));
+
+                    segment.AddSubviews(new UIView[] { unavailableIcon, lblIndicator, lblDate });
+                }
             }
             _mainView.AddSubview(_segmentContainer);
         }
@@ -294,7 +341,15 @@ namespace myTNB
                 CustomUIView bar = segmentView.ViewWithTag(1001) as CustomUIView;
                 if (isLatestBar)
                 {
-                    bar.Layer.BorderColor = (isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F)).CGColor;
+                    if (bar != null)
+                    {
+                        bar.Layer.BorderColor = (isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F)).CGColor;
+                    }
+                    UILabel indicatorLabel = segmentView.ViewWithTag(1004) as UILabel;
+                    if (indicatorLabel != null)
+                    {
+                        indicatorLabel.Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300;
+                    }
                 }
                 if (bar != null)
                 {
@@ -320,13 +375,11 @@ namespace myTNB
                 UILabel value = segmentView.ViewWithTag(1002) as UILabel;
                 if (value != null)
                 {
-                    value.TextColor = isLatestBar || isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F);
                     value.Hidden = isLatestBar ? false : !isSelected;
                 }
                 UILabel date = segmentView.ViewWithTag(1003) as UILabel;
                 if (date != null)
                 {
-                    date.TextColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F);
                     date.Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300;
                 }
                 if (isLatestBar)

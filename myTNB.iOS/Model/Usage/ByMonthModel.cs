@@ -15,11 +15,12 @@ namespace myTNB.Model.Usage
         public string Month { set; get; }
         public string Day { set; get; }
         public string AmountTotal { set; get; }
-        public string IsEstimatedReading { set; get; }
+        public bool IsEstimatedReading { set; get; }
         public string UsageTotal { set; get; }
         public string Currency { set; get; }
         public string UsageUnit { set; get; }
         public List<TariffItemModel> tariffBlocks { set; get; }
+        public bool IsCurrentlyUnavailable { set; get; }
     }
 
     public class TariffItemModel
