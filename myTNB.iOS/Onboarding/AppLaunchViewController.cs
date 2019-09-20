@@ -32,7 +32,7 @@ namespace myTNB
         string _startDateStr = string.Empty;
         string _endDateStr = string.Empty;
         double _delay;
-        bool _isGetDynamicDone, _isTaskDelayDone, _isLoadMasterDataDone, _splashIsShown, _hasProceeded;
+        bool _isGetDynamicDone, _isTaskDelayDone, _isLoadMasterDataDone, _splashIsShown, _hasProceeded, _splashDelayIsDone;
         int _timeOut = 2500;
         MasterDataResponseModel _masterDataResponse = new MasterDataResponseModel();
         UIView maintenanceView;
@@ -186,7 +186,7 @@ namespace myTNB
                             _imgSplash = UIImage.FromFile(_imageFilePath);
                             _splashIsShown = true;
                             imgViewAppLaunch.ContentMode = UIViewContentMode.ScaleAspectFill;
-                            UIView.Transition(imgViewAppLaunch, 0.0,
+                            UIView.Transition(imgViewAppLaunch, 0.5,
                                 UIViewAnimationOptions.TransitionCrossDissolve,
                                 () => { imgViewAppLaunch.Image = _imgSplash; },
                                 () =>
@@ -207,7 +207,11 @@ namespace myTNB
                     {
                         ShowDefaultSplashImage();
                     }
-                    if (!_hasProceeded)
+                    else if (!_splashDelayIsDone)
+                    {
+                        ShowSplashScreenWithDelay(_delay);
+                    }
+                    else if (!_hasProceeded && _splashDelayIsDone)
                     {
                         ProcessMasterData();
                     }
@@ -225,7 +229,13 @@ namespace myTNB
                     {
                         ShowDefaultSplashImage();
                     }
-                    ProcessMasterData();
+                    else
+                    {
+                        if (!_hasProceeded && _splashDelayIsDone)
+                        {
+                            ProcessMasterData();
+                        }
+                    }
                 }
             });
         }
@@ -251,7 +261,7 @@ namespace myTNB
                             _isGetDynamicDone = await GetDynamicSplash();
                             InvokeOnMainThread(() =>
                             {
-                                PrepareDynamicSplash(_isTaskDelayDone);
+                                PrepareDynamicSplash();
                             });
                         });
 
@@ -303,7 +313,7 @@ namespace myTNB
             }
         }
 
-        private void PrepareDynamicSplash(bool timeOut)
+        private void PrepareDynamicSplash()
         {
             GetDynamicSplashData();
             if (isValidSplashTimestamp)
@@ -316,7 +326,19 @@ namespace myTNB
                         {
                             DownloadSplashImage(_imgUrl);
                         }
+                        else
+                        {
+                            ShowDefaultSplashImage();
+                        }
                     }
+                    else
+                    {
+                        ShowDefaultSplashImage();
+                    }
+                }
+                else
+                {
+                    ShowDefaultSplashImage();
                 }
             }
             else
@@ -332,7 +354,7 @@ namespace myTNB
                                 _imgSplash = UIImage.FromFile(_imageFilePath);
                                 _splashIsShown = true;
                                 imgViewAppLaunch.ContentMode = UIViewContentMode.ScaleAspectFill;
-                                UIView.Transition(imgViewAppLaunch, 0.0,
+                                UIView.Transition(imgViewAppLaunch, 0.5,
                                     UIViewAnimationOptions.TransitionCrossDissolve,
                                     () => { imgViewAppLaunch.Image = _imgSplash; },
                                     () =>
@@ -351,8 +373,20 @@ namespace myTNB
                             {
                                 DownloadSplashImage(_imgUrl);
                             }
+                            else
+                            {
+                                ShowDefaultSplashImage();
+                            }
                         }
                     }
+                    else
+                    {
+                        ShowDefaultSplashImage();
+                    }
+                }
+                else
+                {
+                    ShowDefaultSplashImage();
                 }
             }
         }
@@ -395,7 +429,7 @@ namespace myTNB
                                 _splashIsShown = true;
                                 _imgSplash = UIImage.FromFile(_imageFilePath);
                                 imgViewAppLaunch.ContentMode = UIViewContentMode.ScaleAspectFill;
-                                UIView.Transition(imgViewAppLaunch, 0.0,
+                                UIView.Transition(imgViewAppLaunch, 0.5,
                                     UIViewAnimationOptions.TransitionCrossDissolve,
                                     () => { imgViewAppLaunch.Image = _imgSplash; },
                                     () =>
@@ -408,6 +442,10 @@ namespace myTNB
                                 );
                             }
                         });
+                    }
+                    else
+                    {
+                        ShowDefaultSplashImage();
                     }
                 };
 
@@ -431,15 +469,18 @@ namespace myTNB
                 _splashIsShown = true;
                 _imgSplash = UIImage.FromBundle("SplashImageDefault");
                 imgViewAppLaunch.ContentMode = UIViewContentMode.ScaleAspectFill;
-                UIView.Transition(imgViewAppLaunch, 0.0,
+                UIView.Transition(imgViewAppLaunch, 0.5,
                     UIViewAnimationOptions.TransitionCrossDissolve,
                     () => { imgViewAppLaunch.Image = _imgSplash; },
-                    () => { }
+                    () =>
+                    {
+                        ShowSplashScreenWithDelay(1);
+                    }
                 );
             }
         }
 
-        private void ShowSplashScreenWithDelay(double delay = 0)
+        private void ShowSplashScreenWithDelay(double delay = 1)
         {
             InvokeOnMainThread(async () =>
             {
@@ -447,6 +488,7 @@ namespace myTNB
                 {
                     int d = (int)(delay * 1000);
                     await Task.Delay(d);
+                    _splashDelayIsDone = true;
                     if (!_hasProceeded && _isLoadMasterDataDone)
                     {
                         ProcessMasterData();
