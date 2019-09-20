@@ -10,6 +10,7 @@ using myTNB.Model.RequestPayBill;
 using Foundation;
 using System.Globalization;
 using System.Diagnostics;
+using myTNB.Payment;
 
 namespace myTNB
 {
@@ -173,8 +174,8 @@ namespace myTNB
             UITapGestureRecognizer tapScan = new UITapGestureRecognizer(() =>
             {
                 UIStoryboard storyBoard = UIStoryboard.FromName("AddCard", null);
-                UIViewController viewController =
-                    storyBoard.InstantiateViewController("CreditCardScannerViewController") as UIViewController;
+                CreditCardScannerViewController viewController =
+                    storyBoard.InstantiateViewController("CreditCardScannerViewController") as CreditCardScannerViewController;
                 NavigationController.PushViewController(viewController, true);
             });
             viewScanner.AddGestureRecognizer(tapScan);
