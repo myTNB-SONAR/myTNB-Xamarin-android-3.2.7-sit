@@ -1,46 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"  
     android:orientation="vertical"
     android:layout_gravity="center"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-  <LinearLayout
-      android:orientation="vertical"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:id="@+id/rootView">
-   <TextView
-  android:id="@+id/day_zoomout_pinch_txtTitle"
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
-  android:layout_gravity="center"
-  android:gravity="center"
-  android:textSize="14sp"
-  android:textColor="@color/white"
-  android:lineSpacingExtra="6sp"
-  android:text="How do I view my daily usage?"/>
-
-          <ImageView
-           android:id="@+id/pinch_image"
-           android:layout_height="76dp"
-           android:layout_width="76dp"
-           android:layout_marginTop="32dp"
-           android:layout_marginBottom="24dp"
-           android:layout_gravity="center_horizontal"
-           android:src="@drawable/pinch"/>
-<TextView
-  android:id="@+id/day_zoomout_pinch_txtMsg"
-  android:layout_width="wrap_content"
-  android:layout_height="wrap_content"
-  android:textSize="14sp"
-  android:layout_marginLeft="34dp"
-  android:layout_marginRight="34dp"
-  android:textColor="@color/white"
-  android:lineSpacingExtra="6sp"
-  android:gravity="center_horizontal"
-  android:text="Pinch to zoom in or out! Zoom in to view your daily breakdown."
-/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/rootView">
+       <TextView
+          android:id="@+id/day_zoomout_pinch_txtTitle"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:gravity="center"
+          android:textSize="14sp"
+          android:textColor="@color/white"
+          android:lineSpacingExtra="6sp"
+          android:text="How do I view my daily usage?"/>
+        <FrameLayout  
+            android:layout_height="76dp"
+            android:layout_width="76dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="32dp"
+            android:layout_marginBottom="24dp">
+            <com.airbnb.lottie.LottieAnimationView
+	        android:id="@+id/pinch_image"
+            android:layout_width="match_parent"  
+            android:layout_height="match_parent" 
+            android:layout_gravity="center"
+	        app:lottie_fileName="dashboard_zoom_lottie.json"
+	        app:lottie_loop="true" />
+        </FrameLayout> 
+        <TextView
+          android:id="@+id/day_zoomout_pinch_txtMsg"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:textSize="14sp"
+          android:layout_marginLeft="34dp"
+          android:layout_marginRight="34dp"
+          android:textColor="@color/white"
+          android:lineSpacingExtra="6sp"
+          android:gravity="center_horizontal"
+          android:text="Pinch to zoom in or out! Zoom in to view your daily breakdown."/>
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -50,5 +55,5 @@
             android:text="@string/tooltip_btnLabel"
             android:id="@+id/day_zoomout_pinch_button"
             style="@style/Theme.TooltipButton" />
-  </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

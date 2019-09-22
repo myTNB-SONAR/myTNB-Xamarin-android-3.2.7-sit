@@ -116,7 +116,7 @@
                                 <TextView
 						            android:layout_height="wrap_content"
 						            android:layout_width="match_parent"
-						            android:textSize="14dp"
+						            android:textSize="13dp"
 						            android:layout_gravity="center"
                                     android:gravity="center"
 						            android:textColor="@color/shimmer_color_second"
@@ -133,7 +133,7 @@
                                 <TextView
 						            android:layout_height="wrap_content"
 						            android:layout_width="match_parent"
-						            android:textSize="14dp"
+						            android:textSize="13dp"
 						            android:layout_gravity="center"
                                     android:gravity="center"
 						            android:textColor="@color/shimmer_color_second"
@@ -143,12 +143,12 @@
 					    <TextView
 						    android:layout_height="wrap_content"
 						    android:layout_width="match_parent"
-						    android:textSize="12dp"
+						    android:textSize="11dp"
 						    android:lineSpacingExtra="2dp"
 						    android:textStyle="bold"
                             android:paddingLeft="32dp"
                             android:paddingRight="32dp"
-                            android:paddingBottom="18dp"
+                            android:paddingBottom="12dp"
 						    android:layout_gravity="center"
                             android:gravity="center"
 						    android:textColor="@color/white"
@@ -162,12 +162,12 @@
 						    android:layout_marginLeft="16dp"
 						    android:layout_marginRight="16dp"
 						    android:background="#4cffffff"
-						    android:visibility="visible"/>
+						    android:visibility="gone"/>
                         <RelativeLayout
                             android:id="@+id/layoutSegmentGroup"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginBottom="24dp"
+                            android:layout_marginBottom="12dp"
                             android:layout_marginLeft="16dp"
 						    android:layout_marginRight="16dp"
                             android:visibility="visible">
@@ -228,6 +228,7 @@
                             android:background="@drawable/rectangle_yellow_button_bg"
                             android:paddingLeft="6dp"
                             android:paddingRight="6dp"
+                            android:layout_marginTop="2dp"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
                             android:layout_marginBottom="16dp"
@@ -268,7 +269,7 @@
                                 <TextView
 						        android:layout_height="wrap_content"
 						        android:layout_width="match_parent"
-						        android:textSize="14dp"
+						        android:textSize="13dp"
                                 android:layout_gravity="center"
 						        android:gravity="center"
 						        android:textColor="@color/shimmer_color_second"
@@ -278,7 +279,7 @@
 					    <TextView
 						    android:layout_height="wrap_content"
 						    android:layout_width="wrap_content"
-						    android:textSize="14dp"
+						    android:textSize="13dp"
 						    android:textStyle="bold"
                             android:layout_gravity="center"
 						    android:gravity="center"
@@ -491,7 +492,7 @@
                                 </com.facebook.shimmer.ShimmerFrameLayout>
                                 <ImageView
                                     android:id="@+id/re_img"
-                                    android:src="@drawable/ic_display_r_eleaf"
+                                    android:src="@drawable/re_meter_dashboard"
                                     android:layout_width="28dp"
                                     android:layout_height="28dp"
                                     android:layout_marginLeft="2dp"
@@ -664,7 +665,7 @@
                                         android:paddingBottom="3dp"
                                         android:paddingTop="5dp"
                                         android:layout_marginRight="7dp"
-                                        android:src="@drawable/smr_48_x_48"
+                                        android:src="@drawable/smr_meter_dashboard"
                                         android:layout_centerVertical="true"
                                         android:scaleType="fitCenter"
                                         android:visibility="visible" />

@@ -442,6 +442,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         bool isToggleTariff = false;
 
+        bool isDayViewToggle = false;
+
         static bool isBCRMDown = false;
 
         static bool isPaymentDown = false;
@@ -765,11 +767,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         isChangeBackgroundNeeded = true;
                         layoutSMSegmentGroup.Visibility = ViewStates.Visible;
                         isSMR = false;
-                        // Lin Siong TODO: Last bar tap event to day view
                         // Lin Siong TODO: Stripped bar background implementation
                         // Lin Siong TODO: Estimated Reading Handling & Display
-                        // Lin Siong TODO: Graph Explanatory ToolTip
                         // Lin Siong TODO: Fallback for Error from MDMS service
+                        /*if (!isDayViewToggle)
+                        {
+                            isDayViewToggle = true;
+                            try
+                            {
+                                MaterialDialog dayViewZoomTooltip =  DayZoomOutPinchUtil.OnBuildZoomOutPinchTooltip(this.Activity);
+                                dayViewZoomTooltip.Show();
+                            }
+                            catch (System.Exception ne)
+                            {
+                                Utility.LoggingNonFatalError(ne);
+                            }
+                        }*/
                     }
                     else
                     {
@@ -904,9 +917,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 else
                 {
                     ((DashboardHomeActivity)Activity).HideAccountName();
-                    // Lin Siong Note: Enable it when design confirm
-                    // dashboardAccountName.Visibility = ViewStates.Gone;
-                    dashboardAccountName.Visibility = ViewStates.Visible;
+                    dashboardAccountName.Visibility = ViewStates.Gone;
                     dashboardAccountName.Text = selectedAccount.AccountNickName;
                     List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
                     bool enableDropDown = accountList.Count > 0 ? true : false;
@@ -4601,7 +4612,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         // Lin Siong Note: Handle the chart select event
         // Lin Siong Note: Will have vibration effect when selected
         // Lin Siong Note: if isToggleTariff = true then it will force the entry to be hightlighted to most upper one
-        // Lin Siong TODO: Select last bar trigger to day view
         void IOnChartValueSelectedListenerSupport.OnValueSelected(Entry e, Highlight h)
         {
             try
