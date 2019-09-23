@@ -335,6 +335,7 @@ namespace myTNB.Login.ForgotPassword
                 OnShowLogin();
             });
             this.NavigationItem.LeftBarButtonItem = btnBack;
+            Title = "Reset Password";
         }
 
         internal void OnShowLogin()
