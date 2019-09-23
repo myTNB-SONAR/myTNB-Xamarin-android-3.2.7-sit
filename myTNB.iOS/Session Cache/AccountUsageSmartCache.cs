@@ -79,6 +79,7 @@ namespace myTNB
                 StartDate = data?.StartDate ?? string.Empty;
                 MidDate = data?.MidDate ?? string.Empty;
                 EndDate = data?.EndDate ?? string.Empty;
+                DateRange = data?.DateRange ?? string.Empty;
 
                 SaveToCache(accountNumber, RefreshDataModel);
             }
@@ -93,6 +94,7 @@ namespace myTNB
         private static string _startDate;
         private static string _midDate;
         private static string _endDate;
+        private static string _dateRange;
 
         public static string CurrentCycle
         {
@@ -132,6 +134,16 @@ namespace myTNB
                 _endDate = value;
             }
             get { return _endDate ?? string.Empty; }
+        }
+
+        public static string DateRange
+        {
+            private set
+            {
+                if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value)) { value = string.Empty; }
+                _dateRange = value;
+            }
+            get { return _dateRange ?? string.Empty; }
         }
         #endregion
 
@@ -267,6 +279,7 @@ namespace myTNB
                         StartDate = d?.data?.StartDate ?? string.Empty;
                         MidDate = d?.data?.MidDate ?? string.Empty;
                         EndDate = d?.data?.EndDate ?? string.Empty;
+                        DateRange = d?.data?.DateRange ?? string.Empty;
                         return d;
                     }
                 }

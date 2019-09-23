@@ -28,6 +28,7 @@ namespace myTNB.Model.Usage
         public string StartDate { set; get; }
         public string MidDate { set; get; }
         public string EndDate { set; get; }
+        public string DateRange { set; get; }
     }
 
     public class OtherUsageMetricsModel

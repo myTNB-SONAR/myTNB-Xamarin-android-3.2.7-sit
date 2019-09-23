@@ -7,8 +7,8 @@
                     {
                         "Key": "CURRENTUSAGE",
                         "Title": "My current usage",
-                        "SubTitle": "for 01 Aug - 30 Aug",
-                        "Value": "310",
+                        "SubTitle": "for 13 Sep - 18 Aug",
+                        "Value": "0.00",
                         "ValueUnit": "kWh",
                         "ValueIndicator": ""
                     },
@@ -16,7 +16,7 @@
                         "Key": "AVERAGEUSAGE",
                         "Title": "My current usage trend is",
                         "SubTitle": "more than the last bill period",
-                        "Value": "20%",
+                        "Value": "0.00%",
                         "ValueUnit": "",
                         "ValueIndicator": "+"
                     }
@@ -25,32 +25,32 @@
                     {
                         "Key": "CURRENTCOST",
                         "Title": "My bill amount so far",
-                        "SubTitle": "for 01 Aug - 30 Aug",
-                        "Value": "120.00",
+                        "SubTitle": "for 18 Aug - 13 Sep",
+                        "Value": "19",
                         "ValueUnit": "RM",
                         "ValueIndicator": ""
                     },
                     {
                         "Key": "PROJECTEDCOST",
                         "Title": "My bill may reach",
-                        "SubTitle": "for 01 Aug - 30 Aug",
-                        "Value": "121.50",
+                        "SubTitle": "for 18 Aug - 13 Sep",
+                        "Value": "27",
                         "ValueUnit": "RM",
-                        "ValueIndicator": ""
+                        "ValueIndicator": "+"
                     }
                 ],
-                "CurrentCycleStartDate": "01/10/2019"
+                "CurrentCycleStartDate": "18/08/2019"
             },
             "ByMonth": {
-                "Range": "Apr 2019 - Sep 2019",
+                "Range": "Feb 2019 - Aug 2019",
                 "Months": [
                     {
-                        "Date": "12/4/2019",
+                        "Date": "16/02/2019",
                         "Year": "",
-                        "Month": "Apr",
+                        "Month": "Feb",
                         "Day": "",
                         "AmountTotal": "407.02",
-                        "IsEstimatedReading": "false",
+                        "IsEstimatedReading": true,
                         "UsageTotal": "920",
                         "Currency": "RM",
                         "UsageUnit": "kWh",
@@ -58,43 +58,38 @@
                             {
                                 "BlockId": "BLK1",
                                 "Amount": 43.6,
-                                "Usage": 200,
-                                "BlockPrice": "RM 0.218 / kWh"
+                                "Usage": 200
                             },
                             {
                                 "BlockId": "BLK2",
                                 "Amount": 33.4,
-                                "Usage": 100,
-                                "BlockPrice": "RM 0.334 / kWh"
+                                "Usage": 100
                             },
                             {
                                 "BlockId": "BLK3",
                                 "Amount": 154.8,
-                                "Usage": 300,
-                                "BlockPrice": "RM 0.516 / kWh"
+                                "Usage": 300
                             },
                             {
                                 "BlockId": "BLK4",
                                 "Amount": 163.8,
-                                "Usage": 300,
-                                "BlockPrice": "RM 0.546 / kWh"
+                                "Usage": 300
                             },
                             {
                                 "BlockId": "BLK5",
                                 "Amount": 11.42,
-                                "Usage": 20,
-                                "BlockPrice": "RM 0.571 / kWh"
+                                "Usage": 20
                             }
                         ],
                         "isCurrentlyUnavailable": false
                     },
                     {
-                        "Date": "12/5/2019",
+                        "Date": "16/03/2019",
                         "Year": "",
-                        "Month": "May",
+                        "Month": "Mar",
                         "Day": "",
                         "AmountTotal": "368.3",
-                        "IsEstimatedReading": "false",
+                        "IsEstimatedReading": true,
                         "UsageTotal": "850",
                         "Currency": "RM",
                         "UsageUnit": "kWh",
@@ -102,37 +97,33 @@
                             {
                                 "BlockId": "BLK1",
                                 "Amount": 43.6,
-                                "Usage": 200,
-                                "BlockPrice": "RM 0.218 / kWh"
+                                "Usage": 200
                             },
                             {
                                 "BlockId": "BLK2",
                                 "Amount": 33.4,
-                                "Usage": 100,
-                                "BlockPrice": "RM 0.334 / kWh"
+                                "Usage": 100
                             },
                             {
                                 "BlockId": "BLK3",
                                 "Amount": 154.8,
-                                "Usage": 300,
-                                "BlockPrice": "RM 0.516 / kWh"
+                                "Usage": 300
                             },
                             {
                                 "BlockId": "BLK4",
                                 "Amount": 136.5,
-                                "Usage": 250,
-                                "BlockPrice": "RM 0.546 / kWh"
+                                "Usage": 250
                             }
                         ],
                         "isCurrentlyUnavailable": false
                     },
                     {
-                        "Date": "12/6/2019",
+                        "Date": "16/04/2019",
                         "Year": "",
-                        "Month": "Jun",
+                        "Month": "Apr",
                         "Day": "",
                         "AmountTotal": "203.42",
-                        "IsEstimatedReading": "false",
+                        "IsEstimatedReading": true,
                         "UsageTotal": "545",
                         "Currency": "RM",
                         "UsageUnit": "kWh",
@@ -140,31 +131,28 @@
                             {
                                 "BlockId": "BLK1",
                                 "Amount": 43.6,
-                                "Usage": 200,
-                                "BlockPrice": "RM 0.218 / kWh"
+                                "Usage": 200
                             },
                             {
                                 "BlockId": "BLK2",
                                 "Amount": 33.4,
-                                "Usage": 100,
-                                "BlockPrice": "RM 0.334 / kWh"
+                                "Usage": 100
                             },
                             {
                                 "BlockId": "BLK3",
                                 "Amount": 126.42,
-                                "Usage": 245,
-                                "BlockPrice": "RM 0.516 / kWh"
+                                "Usage": 245
                             }
                         ],
                         "isCurrentlyUnavailable": false
                     },
                     {
-                        "Date": "12/7/2019",
+                        "Date": "16/05/2019",
                         "Year": "",
-                        "Month": "Jul",
+                        "Month": "May",
                         "Day": "",
                         "AmountTotal": "75.33",
-                        "IsEstimatedReading": "false",
+                        "IsEstimatedReading": true,
                         "UsageTotal": "295",
                         "Currency": "RM",
                         "UsageUnit": "kWh",
@@ -172,25 +160,23 @@
                             {
                                 "BlockId": "BLK1",
                                 "Amount": 43.6,
-                                "Usage": 200,
-                                "BlockPrice": "RM 0.218 / kWh"
+                                "Usage": 200
                             },
                             {
                                 "BlockId": "BLK2",
                                 "Amount": 31.73,
-                                "Usage": 95,
-                                "BlockPrice": "RM 0.334 / kWh"
+                                "Usage": 95
                             }
                         ],
                         "isCurrentlyUnavailable": false
                     },
                     {
-                        "Date": "12/8/2019",
+                        "Date": "16/06/2019",
                         "Year": "",
-                        "Month": "Aug",
+                        "Month": "Jun",
                         "Day": "",
                         "AmountTotal": "41.42",
-                        "IsEstimatedReading": "false",
+                        "IsEstimatedReading": true,
                         "UsageTotal": "190",
                         "Currency": "RM",
                         "UsageUnit": "kWh",
@@ -198,52 +184,26 @@
                             {
                                 "BlockId": "BLK1",
                                 "Amount": 41.42,
-                                "Usage": 190,
-                                "BlockPrice": "RM 0.218 / kWh"
+                                "Usage": 190
                             }
                         ],
                         "isCurrentlyUnavailable": false
                     },
                     {
-                        "Date": "12/09/2019",
-                        "Year": "",
-                        "Month": "Sep",
-                        "Day": "",
-                        "AmountTotal": "424.15",
-                        "IsEstimatedReading": "false",
-                        "UsageTotal": "950",
+                        "Date": "18/08/2019",
+                        "Year": "2019",
+                        "Month": "Aug",
+                        "Day": "18",
+                        "AmountTotal": "18.68",
+                        "IsEstimatedReading": false,
+                        "UsageTotal": "85.70",
                         "Currency": "RM",
                         "UsageUnit": "kWh",
                         "tariffBlocks": [
                             {
                                 "BlockId": "BLK1",
-                                "Amount": 43.6,
-                                "Usage": 200,
-                                "BlockPrice": "RM 0.218 / kWh"
-                            },
-                            {
-                                "BlockId": "BLK2",
-                                "Amount": 33.4,
-                                "Usage": 100,
-                                "BlockPrice": "RM 0.334 / kWh"
-                            },
-                            {
-                                "BlockId": "BLK3",
-                                "Amount": 154.8,
-                                "Usage": 300,
-                                "BlockPrice": "RM 0.516 / kWh"
-                            },
-                            {
-                                "BlockId": "BLK4",
-                                "Amount": 163.8,
-                                "Usage": 300,
-                                "BlockPrice": "RM 0.546 / kWh"
-                            },
-                            {
-                                "BlockId": "BLK5",
-                                "Amount": 28.55,
-                                "Usage": 50,
-                                "BlockPrice": "RM 0.571 / kWh"
+                                "Amount": 18.68,
+                                "Usage": 85.7
                             }
                         ],
                         "isCurrentlyUnavailable": false
@@ -251,557 +211,556 @@
                 ],
                 "Index": 0
             },
+            "CurrentCycle": "18 Aug",
+            "StarttDate": "14 Aug",
+            "MidDate": "29 Aug",
+            "EndDate": "13 Sep",
             "ByDay": [
                 {
-                    "Range": "24 Aug - 30 Aug",
-                    "CurrentCycle": "8/15/2019 12:00:00 AM",
+                    "Range": "19 Aug - 13 Sep",
                     "Days": [
-                        {
-                            "Year": "2019",
-                            "Date": "08/24/2019",
-                            "Month": "Sep",
-                            "Day": "24",
-                            "Consumption": "23",
-                            "Amount": "11.87",
-                            "CO2": null,
-                            "tariffBlocks": [
-                                {
-                                    "BlockId": "BLK1",
-                                    "Amount": 11.87,
-                                    "Usage": 23,
-                                    "BlockPrice": "RM 0.218 / kWh"
-                                }
-                            ]
-                        },
-                        {
-                            "Year": "2019",
-                            "Date": "08/25/2019",
-                            "Month": "Sep",
-                            "Day": "25",
-                            "Consumption": "21",
-                            "Amount": "10.84",
-                            "CO2": null,
-                            "tariffBlocks": [
-                                {
-                                    "BlockId": "BLK1",
-                                    "Amount": 10.84,
-                                    "Usage": 21,
-                                    "BlockPrice": "RM 0.218 / kWh"
-                                }
-                            ]
-                        },
-                        {
-                            "Year": "2019",
-                            "Date": "08/26/2019",
-                            "Month": "Aug",
-                            "Day": "26",
-                            "Consumption": "22",
-                            "Amount": "11.35",
-                            "CO2": null,
-                            "tariffBlocks": [
-                                {
-                                    "BlockId": "BLK1",
-                                    "Amount": 11.35,
-                                    "Usage": 22,
-                                    "BlockPrice": "RM 0.218 / kWh"
-                                }
-                            ]
-                        },
-                        {
-                            "Year": "2019",
-                            "Date": "08/27/2019",
-                            "Month": "Aug",
-                            "Day": "27",
-                            "Consumption": "26",
-                            "Amount": "21.06",
-                            "CO2": null,
-                            "tariffBlocks": [
-                                {
-                                    "BlockId": "BLK1",
-                                    "Amount": 21.06,
-                                    "Usage": 26,
-                                    "BlockPrice": "RM 0.218 / kWh"
-                                }
-                            ]
-                        },
-                        {
-                            "Year": "2019",
-                            "Date": "08/28/2019",
-                            "Month": "Aug",
-                            "Day": "28",
-                            "Consumption": "24",
-                            "Amount": "13.10",
-                            "CO2": null,
-                            "tariffBlocks": [
-                                {
-                                    "BlockId": "BLK1",
-                                    "Amount": 13.1,
-                                    "Usage": 24,
-                                    "BlockPrice": "RM 0.218 / kWh"
-                                }
-                            ]
-                        },
-                        {
-                            "Year": "2019",
-                            "Date": "08/29/2019",
-                            "Month": "Aug",
-                            "Day": "29",
-                            "Consumption": "23",
-                            "Amount": "12.56",
-                            "CO2": null,
-                            "tariffBlocks": [
-                                {
-                                    "BlockId": "BLK1",
-                                    "Amount": 12.56,
-                                    "Usage": 23,
-                                    "BlockPrice": "RM 0.218 / kWh"
-                                }
-                            ]
-                        },
-                        {
-                            "Year": "2019",
-                            "Date": "08/30/2019",
-                            "Month": "Aug",
-                            "Day": "30",
-                            "Consumption": "21",
-                            "Amount": "4.58",
-                            "CO2": null,
-                            "tariffBlocks": [
-                                {
-                                    "BlockId": "BLK1",
-                                    "Amount": 4.58,
-                                    "Usage": 21,
-                                    "BlockPrice": "RM 0.218 / kWh"
-                                }
-                            ]
-                        }
-                    ],
-                    "Index": 1
-                },
-                {
-                    "Range": "17 Aug - 23 Aug",
-                    "CurrentCycle": "8/15/2019 12:00:00 AM",
-                    "Days": [
-                        {
-                            "Year": "2019",
-                            "Date": "08/17/2019",
-                            "Month": "Aug",
-                            "Day": "17",
-                            "Consumption": "27",
-                            "Amount": "13.93",
-                            "CO2": null,
-                            "tariffBlocks": [
-                                {
-                                    "BlockId": "BLK1",
-                                    "Amount": 13.93,
-                                    "Usage": 27,
-                                    "BlockPrice": "RM 0.218 / kWh"
-                                }
-                            ]
-                        },
-                        {
-                            "Year": "2019",
-                            "Date": "08/18/2019",
-                            "Month": "Aug",
-                            "Day": "18",
-                            "Consumption": "15",
-                            "Amount": "7.74",
-                            "CO2": null,
-                            "tariffBlocks": [
-                                {
-                                    "BlockId": "BLK1",
-                                    "Amount": 7.74,
-                                    "Usage": 15,
-                                    "BlockPrice": "RM 0.218 / kWh"
-                                }
-                            ]
-                        },
                         {
                             "Year": "2019",
                             "Date": "08/19/2019",
                             "Month": "Aug",
                             "Day": "19",
-                            "Consumption": "13",
-                            "Amount": "6.71",
-                            "CO2": null,
+                            "Consumption": "28.29",
+                            "IsEstimatedReading": false,
+                            "Amount": "6.17",
+                            "CO2": "18.95",
                             "tariffBlocks": [
                                 {
                                     "BlockId": "BLK1",
-                                    "Amount": 6.71,
-                                    "Usage": 13,
-                                    "BlockPrice": "RM 0.218 / kWh"
+                                    "Amount": 6.17,
+                                    "Usage": 28.29
                                 }
-                            ]
+                            ],
+                            "IsCurrentBillCycle": false
                         },
                         {
                             "Year": "2019",
                             "Date": "08/20/2019",
                             "Month": "Aug",
                             "Day": "20",
-                            "Consumption": "14",
-                            "Amount": "7.22",
-                            "CO2": null,
+                            "Consumption": "27.84",
+                            "IsEstimatedReading": false,
+                            "Amount": "6.07",
+                            "CO2": "18.66",
                             "tariffBlocks": [
                                 {
                                     "BlockId": "BLK1",
-                                    "Amount": 7.22,
-                                    "Usage": 14,
-                                    "BlockPrice": "RM 0.218 / kWh"
+                                    "Amount": 6.07,
+                                    "Usage": 27.84
                                 }
-                            ]
+                            ],
+                            "IsCurrentBillCycle": false
                         },
                         {
                             "Year": "2019",
                             "Date": "08/21/2019",
                             "Month": "Aug",
                             "Day": "21",
-                            "Consumption": "17",
-                            "Amount": "8.77",
-                            "CO2": null,
+                            "Consumption": "0.00",
+                            "IsEstimatedReading": false,
+                            "Amount": "0.00",
+                            "CO2": "0.00",
                             "tariffBlocks": [
                                 {
                                     "BlockId": "BLK1",
-                                    "Amount": 8.77,
-                                    "Usage": 17,
-                                    "BlockPrice": "RM 0.218 / kWh"
+                                    "Amount": 0,
+                                    "Usage": 0
                                 }
-                            ]
+                            ],
+                            "IsCurrentBillCycle": false
                         },
                         {
                             "Year": "2019",
                             "Date": "08/22/2019",
                             "Month": "Aug",
                             "Day": "22",
-                            "Consumption": "18",
-                            "Amount": "9.29",
-                            "CO2": null,
+                            "Consumption": "0.00",
+                            "IsEstimatedReading": false,
+                            "Amount": "0.00",
+                            "CO2": "0.00",
                             "tariffBlocks": [
                                 {
                                     "BlockId": "BLK1",
-                                    "Amount": 9.29,
-                                    "Usage": 18,
-                                    "BlockPrice": "RM 0.218 / kWh"
+                                    "Amount": 0,
+                                    "Usage": 0
                                 }
-                            ]
+                            ],
+                            "IsCurrentBillCycle": false
                         },
                         {
                             "Year": "2019",
                             "Date": "08/23/2019",
                             "Month": "Aug",
                             "Day": "23",
-                            "Consumption": "15",
-                            "Amount": "7.74",
-                            "CO2": null,
+                            "Consumption": "0.00",
+                            "IsEstimatedReading": false,
+                            "Amount": "0.00",
+                            "CO2": "0.00",
                             "tariffBlocks": [
                                 {
                                     "BlockId": "BLK1",
-                                    "Amount": 7.74,
-                                    "Usage": 15,
-                                    "BlockPrice": "RM 0.218 / kWh"
+                                    "Amount": 0,
+                                    "Usage": 0
                                 }
-                            ]
+                            ],
+                            "IsCurrentBillCycle": false
+                        },
+                        {
+                            "Year": "2019",
+                            "Date": "08/24/2019",
+                            "Month": "Aug",
+                            "Day": "24",
+                            "Consumption": "0.00",
+                            "IsEstimatedReading": false,
+                            "Amount": "0.00",
+                            "CO2": "0.00",
+                            "tariffBlocks": [
+                                {
+                                    "BlockId": "BLK1",
+                                    "Amount": 0,
+                                    "Usage": 0
+                                }
+                            ],
+                            "IsCurrentBillCycle": false
+                        },
+                        {
+                            "Year": "2019",
+                            "Date": "08/25/2019",
+                            "Month": "Aug",
+                            "Day": "25",
+                            "Consumption": "0.00",
+                            "IsEstimatedReading": false,
+                            "Amount": "0.00",
+                            "CO2": "0.00",
+                            "tariffBlocks": [
+                                {
+                                    "BlockId": "BLK1",
+                                    "Amount": 0,
+                                    "Usage": 0
+                                }
+                            ],
+                            "IsCurrentBillCycle": false
+                        },
+                        {
+                            "Year": "2019",
+                            "Date": "08/26/2019",
+                            "Month": "Aug",
+                            "Day": "26",
+                            "Consumption": "0.00",
+                            "IsEstimatedReading": false,
+                            "Amount": "0.00",
+                            "CO2": "0.00",
+                            "tariffBlocks": [
+                                {
+                                    "BlockId": "BLK1",
+                                    "Amount": 0,
+                                    "Usage": 0
+                                }
+                            ],
+                            "IsCurrentBillCycle": false
+                        },
+                        {
+                            "Year": "2019",
+                            "Date": "08/27/2019",
+                            "Month": "Aug",
+                            "Day": "27",
+                            "Consumption": "0.00",
+                            "IsEstimatedReading": false,
+                            "Amount": "0.00",
+                            "CO2": "0.00",
+                            "tariffBlocks": [
+                                {
+                                    "BlockId": "BLK1",
+                                    "Amount": 0,
+                                    "Usage": 0
+                                }
+                            ],
+                            "IsCurrentBillCycle": false
+                        },
+                        {
+                            "Year": "2019",
+                            "Date": "08/28/2019",
+                            "Month": "Aug",
+                            "Day": "28",
+                            "Consumption": "0.00",
+                            "IsEstimatedReading": false,
+                            "Amount": "0.00",
+                            "CO2": "0.00",
+                            "tariffBlocks": [
+                                {
+                                    "BlockId": "BLK1",
+                                    "Amount": 0,
+                                    "Usage": 0
+                                }
+                            ],
+                            "IsCurrentBillCycle": false
+                        },
+                        {
+                            "Year": "2019",
+                            "Date": "08/29/2019",
+                            "Month": "Aug",
+                            "Day": "29",
+                            "Consumption": "0.00",
+                            "IsEstimatedReading": false,
+                            "Amount": "0.00",
+                            "CO2": "0.00",
+                            "tariffBlocks": [
+                                {
+                                    "BlockId": "BLK1",
+                                    "Amount": 0,
+                                    "Usage": 0
+                                }
+                            ],
+                            "IsCurrentBillCycle": false
+                        },
+                        {
+                            "Year": "2019",
+                            "Date": "08/30/2019",
+                            "Month": "Aug",
+                            "Day": "30",
+                            "Consumption": "0.00",
+                            "IsEstimatedReading": false,
+                            "Amount": "0.00",
+                            "CO2": "0.00",
+                            "tariffBlocks": [
+                                {
+                                    "BlockId": "BLK1",
+                                    "Amount": 0,
+                                    "Usage": 0
+                                }
+                            ],
+                            "IsCurrentBillCycle": false
+                        },
+                        {
+                            "Year": "2019",
+                            "Date": "08/31/2019",
+                            "Month": "Aug",
+                            "Day": "31",
+                            "Consumption": "0.00",
+                            "IsEstimatedReading": false,
+                            "Amount": "0.00",
+                            "CO2": "0.00",
+                            "tariffBlocks": [
+                                {
+                                    "BlockId": "BLK1",
+                                    "Amount": 0,
+                                    "Usage": 0
+                                }
+                            ],
+                            "IsCurrentBillCycle": false
+                        },
+                        {
+                            "Year": "2019",
+                            "Date": "09/01/2019",
+                            "Month": "Sep",
+                            "Day": "01",
+                            "Consumption": "0.00",
+                            "IsEstimatedReading": false,
+                            "Amount": "0.00",
+                            "CO2": "0.00",
+                            "tariffBlocks": [
+                                {
+                                    "BlockId": "BLK1",
+                                    "Amount": 0,
+                                    "Usage": 0
+                                }
+                            ],
+                            "IsCurrentBillCycle": false
+                        },
+                        {
+                            "Year": "2019",
+                            "Date": "09/02/2019",
+                            "Month": "Sep",
+                            "Day": "02",
+                            "Consumption": "0.00",
+                            "IsEstimatedReading": false,
+                            "Amount": "0.00",
+                            "CO2": "0.00",
+                            "tariffBlocks": [
+                                {
+                                    "BlockId": "BLK1",
+                                    "Amount": 0,
+                                    "Usage": 0
+                                }
+                            ],
+                            "IsCurrentBillCycle": false
+                        },
+                        {
+                            "Year": "2019",
+                            "Date": "09/03/2019",
+                            "Month": "Sep",
+                            "Day": "03",
+                            "Consumption": "0.00",
+                            "IsEstimatedReading": false,
+                            "Amount": "0.00",
+                            "CO2": "0.00",
+                            "tariffBlocks": [
+                                {
+                                    "BlockId": "BLK1",
+                                    "Amount": 0,
+                                    "Usage": 0
+                                }
+                            ],
+                            "IsCurrentBillCycle": false
+                        },
+                        {
+                            "Year": "2019",
+                            "Date": "09/04/2019",
+                            "Month": "Sep",
+                            "Day": "04",
+                            "Consumption": "0.00",
+                            "IsEstimatedReading": false,
+                            "Amount": "0.00",
+                            "CO2": "0.00",
+                            "tariffBlocks": [
+                                {
+                                    "BlockId": "BLK1",
+                                    "Amount": 0,
+                                    "Usage": 0
+                                }
+                            ],
+                            "IsCurrentBillCycle": false
+                        },
+                        {
+                            "Year": "2019",
+                            "Date": "09/05/2019",
+                            "Month": "Sep",
+                            "Day": "05",
+                            "Consumption": "0.00",
+                            "IsEstimatedReading": false,
+                            "Amount": "0.00",
+                            "CO2": "0.00",
+                            "tariffBlocks": [
+                                {
+                                    "BlockId": "BLK1",
+                                    "Amount": 0,
+                                    "Usage": 0
+                                }
+                            ],
+                            "IsCurrentBillCycle": false
+                        },
+                        {
+                            "Year": "2019",
+                            "Date": "09/06/2019",
+                            "Month": "Sep",
+                            "Day": "06",
+                            "Consumption": "0.00",
+                            "IsEstimatedReading": false,
+                            "Amount": "0.00",
+                            "CO2": "0.00",
+                            "tariffBlocks": [
+                                {
+                                    "BlockId": "BLK1",
+                                    "Amount": 0,
+                                    "Usage": 0
+                                }
+                            ],
+                            "IsCurrentBillCycle": false
+                        },
+                        {
+                            "Year": "2019",
+                            "Date": "09/07/2019",
+                            "Month": "Sep",
+                            "Day": "07",
+                            "Consumption": "0.00",
+                            "IsEstimatedReading": false,
+                            "Amount": "0.00",
+                            "CO2": "0.00",
+                            "tariffBlocks": [
+                                {
+                                    "BlockId": "BLK1",
+                                    "Amount": 0,
+                                    "Usage": 0
+                                }
+                            ],
+                            "IsCurrentBillCycle": false
+                        },
+                        {
+                            "Year": "2019",
+                            "Date": "09/08/2019",
+                            "Month": "Sep",
+                            "Day": "08",
+                            "Consumption": "0.00",
+                            "IsEstimatedReading": false,
+                            "Amount": "0.00",
+                            "CO2": "0.00",
+                            "tariffBlocks": [
+                                {
+                                    "BlockId": "BLK1",
+                                    "Amount": 0,
+                                    "Usage": 0
+                                }
+                            ],
+                            "IsCurrentBillCycle": false
+                        },
+                        {
+                            "Year": "2019",
+                            "Date": "09/09/2019",
+                            "Month": "Sep",
+                            "Day": "09",
+                            "Consumption": "0.00",
+                            "IsEstimatedReading": false,
+                            "Amount": "0.00",
+                            "CO2": "0.00",
+                            "tariffBlocks": [
+                                {
+                                    "BlockId": "BLK1",
+                                    "Amount": 0,
+                                    "Usage": 0
+                                }
+                            ],
+                            "IsCurrentBillCycle": false
+                        },
+                        {
+                            "Year": "2019",
+                            "Date": "09/10/2019",
+                            "Month": "Sep",
+                            "Day": "10",
+                            "Consumption": "0.00",
+                            "IsEstimatedReading": false,
+                            "Amount": "0.00",
+                            "CO2": "0.00",
+                            "tariffBlocks": [
+                                {
+                                    "BlockId": "BLK1",
+                                    "Amount": 0,
+                                    "Usage": 0
+                                }
+                            ],
+                            "IsCurrentBillCycle": false
+                        },
+                        {
+                            "Year": "2019",
+                            "Date": "09/11/2019",
+                            "Month": "Sep",
+                            "Day": "11",
+                            "Consumption": "0.00",
+                            "IsEstimatedReading": false,
+                            "Amount": "0.00",
+                            "CO2": "0.00",
+                            "tariffBlocks": [
+                                {
+                                    "BlockId": "BLK1",
+                                    "Amount": 0,
+                                    "Usage": 0
+                                }
+                            ],
+                            "IsCurrentBillCycle": false
+                        },
+                        {
+                            "Year": "2019",
+                            "Date": "09/12/2019",
+                            "Month": "Sep",
+                            "Day": "12",
+                            "Consumption": "0.00",
+                            "IsEstimatedReading": false,
+                            "Amount": "0.00",
+                            "CO2": "0.00",
+                            "tariffBlocks": [
+                                {
+                                    "BlockId": "BLK1",
+                                    "Amount": 0,
+                                    "Usage": 0
+                                }
+                            ],
+                            "IsCurrentBillCycle": false
+                        },
+                        {
+                            "Year": "2019",
+                            "Date": "09/13/2019",
+                            "Month": "Sep",
+                            "Day": "13",
+                            "Consumption": "0.00",
+                            "IsEstimatedReading": false,
+                            "Amount": "0.00",
+                            "CO2": "0.00",
+                            "tariffBlocks": [
+                                {
+                                    "BlockId": "BLK1",
+                                    "Amount": 0,
+                                    "Usage": 0
+                                }
+                            ],
+                            "IsCurrentBillCycle": false
                         }
                     ],
-                    "Index": 2
+                    "Index": 1
                 },
                 {
-                    "Range": "10 Aug - 16 Aug",
-                    "CurrentCycle": "8/15/2019 12:00:00 AM",
+                    "Range": "14 Aug - 17 Aug",
                     "Days": [
                         {
-                            "Year": "2019",
-                            "Date": "08/10/2019",
-                            "Month": "Aug",
-                            "Day": "10",
-                            "Consumption": "20",
-                            "Amount": "6.68",
-                            "CO2": null,
-                            "tariffBlocks": [
-                                {
-                                    "BlockId": "BLK1",
-                                    "Amount": 6.68,
-                                    "Usage": 20,
-                                    "BlockPrice": "RM 0.218 / kWh"
-                                }
-                            ]
-                        },
-                        {
-                            "Year": "2019",
-                            "Date": "08/11/2019",
-                            "Month": "Aug",
-                            "Day": "11",
-                            "Consumption": "18",
-                            "Amount": "6.01",
-                            "CO2": null,
-                            "tariffBlocks": [
-                                {
-                                    "BlockId": "BLK1",
-                                    "Amount": 6.01,
-                                    "Usage": 18,
-                                    "BlockPrice": "RM 0.218 / kWh"
-                                }
-                            ]
-                        },
-                        {
-                            "Year": "2019",
-                            "Date": "08/12/2019",
-                            "Month": "Aug",
-                            "Day": "12",
-                            "Consumption": "21",
-                            "Amount": "7.01",
-                            "CO2": null,
-                            "tariffBlocks": [
-                                {
-                                    "BlockId": "BLK1",
-                                    "Amount": 7.01,
-                                    "Usage": 21,
-                                    "BlockPrice": "RM 0.218 / kWh"
-                                }
-                            ]
-                        },
-                        {
-                            "Year": "2019",
-                            "Date": "08/13/2019",
-                            "Month": "Aug",
-                            "Day": "13",
-                            "Consumption": "22",
-                            "Amount": "8.38",
-                            "CO2": null,
-                            "tariffBlocks": [
-                                {
-                                    "BlockId": "BLK1",
-                                    "Amount": 8.38,
-                                    "Usage": 22,
-                                    "BlockPrice": "RM 0.218 / kWh"
-                                }
-                            ]
-                        },
-                        {
-                            "Year": "2019",
+                            "Year": "0.00",
                             "Date": "08/14/2019",
                             "Month": "Aug",
                             "Day": "14",
-                            "Consumption": "27",
-                            "Amount": "13.93",
-                            "CO2": null,
-                            "tariffBlocks": [
-                                {
-                                    "BlockId": "BLK1",
-                                    "Amount": 13.93,
-                                    "Usage": 27,
-                                    "BlockPrice": "RM 0.218 / kWh"
-                                }
-                            ]
+                            "Consumption": "0.00",
+                            "IsEstimatedReading": false,
+                            "Amount": "0.00",
+                            "CO2": "0.00",
+                            "tariffBlocks": [],
+                            "IsCurrentBillCycle": false
                         },
                         {
                             "Year": "2019",
                             "Date": "08/15/2019",
                             "Month": "Aug",
                             "Day": "15",
-                            "Consumption": "29",
-                            "Amount": "14.96",
-                            "CO2": null,
+                            "Consumption": "27.99",
+                            "IsEstimatedReading": false,
+                            "Amount": "15.28",
+                            "CO2": "18.75",
                             "tariffBlocks": [
                                 {
-                                    "BlockId": "BLK1",
-                                    "Amount": 14.96,
-                                    "Usage": 29,
-                                    "BlockPrice": "RM 0.218 / kWh"
+                                    "BlockId": "BLK4",
+                                    "Amount": 15.28,
+                                    "Usage": 27.99
                                 }
-                            ]
+                            ],
+                            "IsCurrentBillCycle": false
                         },
                         {
                             "Year": "2019",
                             "Date": "08/16/2019",
                             "Month": "Aug",
                             "Day": "16",
-                            "Consumption": "31",
-                            "Amount": "16",
-                            "CO2": null,
+                            "Consumption": "29.06",
+                            "IsEstimatedReading": false,
+                            "Amount": "15.87",
+                            "CO2": "19.47",
                             "tariffBlocks": [
                                 {
-                                    "BlockId": "BLK1",
-                                    "Amount": 16,
-                                    "Usage": 31,
-                                    "BlockPrice": "RM 0.218 / kWh"
+                                    "BlockId": "BLK4",
+                                    "Amount": 15.87,
+                                    "Usage": 29.06
                                 }
-                            ]
+                            ],
+                            "IsCurrentBillCycle": false
+                        },
+                        {
+                            "Year": "2019",
+                            "Date": "08/17/2019",
+                            "Month": "Aug",
+                            "Day": "17",
+                            "Consumption": "27.90",
+                            "IsEstimatedReading": false,
+                            "Amount": "15.23",
+                            "CO2": "18.69",
+                            "tariffBlocks": [
+                                {
+                                    "BlockId": "BLK4",
+                                    "Amount": 15.23,
+                                    "Usage": 27.9
+                                }
+                            ],
+                            "IsCurrentBillCycle": false
                         }
                     ],
-                    "Index": 3
-                },
-                {
-                    "Range": "03 Aug - 09 Aug",
-                    "CurrentCycle": "8/15/2019 12:00:00 AM",
-                    "Days": [
-                        {
-                            "Year": "2019",
-                            "Date": "08/03/2019",
-                            "Month": "Aug",
-                            "Day": "03",
-                            "Consumption": "17",
-                            "Amount": "3.71",
-                            "CO2": null,
-                            "tariffBlocks": [
-                                {
-                                    "BlockId": "BLK1",
-                                    "Amount": 3.71,
-                                    "Usage": 17,
-                                    "BlockPrice": "RM 0.218 / kWh"
-                                }
-                            ]
-                        },
-                        {
-                            "Year": "2019",
-                            "Date": "08/04/2019",
-                            "Month": "Aug",
-                            "Day": "04",
-                            "Consumption": "27",
-                            "Amount": "5.89",
-                            "CO2": null,
-                            "tariffBlocks": [
-                                {
-                                    "BlockId": "BLK1",
-                                    "Amount": 5.89,
-                                    "Usage": 27,
-                                    "BlockPrice": "RM 0.218 / kWh"
-                                }
-                            ]
-                        },
-                        {
-                            "Year": "2019",
-                            "Date": "08/05/2019",
-                            "Month": "Aug",
-                            "Day": "05",
-                            "Consumption": "34",
-                            "Amount": "7.41",
-                            "CO2": null,
-                            "tariffBlocks": [
-                                {
-                                    "BlockId": "BLK1",
-                                    "Amount": 7.41,
-                                    "Usage": 34,
-                                    "BlockPrice": "RM 0.218 / kWh"
-                                }
-                            ]
-                        },
-                        {
-                            "Year": "2019",
-                            "Date": "08/06/2019",
-                            "Month": "Aug",
-                            "Day": "06",
-                            "Consumption": "41",
-                            "Amount": "8.94",
-                            "CO2": null,
-                            "tariffBlocks": [
-                                {
-                                    "BlockId": "BLK1",
-                                    "Amount": 8.94,
-                                    "Usage": 41,
-                                    "BlockPrice": "RM 0.218 / kWh"
-                                }
-                            ]
-                        },
-                        {
-                            "Year": "2019",
-                            "Date": "08/07/2019",
-                            "Month": "Aug",
-                            "Day": "07",
-                            "Consumption": "12",
-                            "Amount": "2.62",
-                            "CO2": null,
-                            "tariffBlocks": [
-                                {
-                                    "BlockId": "BLK1",
-                                    "Amount": 2.62,
-                                    "Usage": 12,
-                                    "BlockPrice": "RM 0.218 / kWh"
-                                }
-                            ]
-                        },
-                        {
-                            "Year": "2019",
-                            "Date": "08/08/2019",
-                            "Month": "Aug",
-                            "Day": "08",
-                            "Consumption": "2",
-                            "Amount": "0.44",
-                            "CO2": null,
-                            "tariffBlocks": [
-                                {
-                                    "BlockId": "BLK1",
-                                    "Amount": 0.44,
-                                    "Usage": 2,
-                                    "BlockPrice": "RM 0.218 / kWh"
-                                }
-                            ]
-                        },
-                        {
-                            "Year": "2019",
-                            "Date": "08/09/2019",
-                            "Month": "Aug",
-                            "Day": "09",
-                            "Consumption": "26",
-                            "Amount": "12.01",
-                            "CO2": null,
-                            "tariffBlocks": [
-                                {
-                                    "BlockId": "BLK1",
-                                    "Amount": 6.01,
-                                    "Usage": 13,
-                                    "BlockPrice": "RM 0.218 / kWh"
-                                },
-                                {
-                                    "BlockId": "BLK2",
-                                    "Amount": 6,
-                                    "Usage": 13,
-                                    "BlockPrice": "RM 0.218 / kWh"
-                                }
-                            ]
-                        }
-                    ],
-                    "Index": 4
-                },
-                {
-                    "Range": "01 Aug - 02 Aug",
-                    "CurrentCycle": "8/15/2019 12:00:00 AM",
-                    "Days": [
-                        {
-                            "Year": "2019",
-                            "Date": "08/01/2019",
-                            "Month": "Aug",
-                            "Day": "03",
-                            "Consumption": "17",
-                            "Amount": "3.71",
-                            "CO2": null,
-                            "tariffBlocks": [
-                                {
-                                    "BlockId": "BLK1",
-                                    "Amount": 3.71,
-                                    "Usage": 17,
-                                    "BlockPrice": "RM 0.218 / kWh"
-                                }
-                            ]
-                        },
-                        {
-                            "Year": "2019",
-                            "Date": "08/02/2019",
-                            "Month": "Aug",
-                            "Day": "04",
-                            "Consumption": "27",
-                            "Amount": "5.89",
-                            "CO2": null,
-                            "tariffBlocks": [
-                                {
-                                    "BlockId": "BLK1",
-                                    "Amount": 5.89,
-                                    "Usage": 27,
-                                    "BlockPrice": "RM 0.218 / kWh"
-                                }
-                            ]
-                        }
-                    ],
-                    "Index": 5
+                    "Index": 2
                 }
             ],
             "TariffBlocksLegend": [

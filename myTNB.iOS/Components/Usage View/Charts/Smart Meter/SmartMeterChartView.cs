@@ -25,6 +25,7 @@ namespace myTNB
         private CustomUIView _viewLine;
         private UIImageView _pinchIcon;
         private bool _isOverlayDisplayed;
+        private bool _isDataReceived;
 
         protected override void CreatUI()
         {
@@ -99,21 +100,24 @@ namespace myTNB
             toggleBar.SelectedSegment = 1;
             toggleBar.ValueChanged += (sender, e) =>
             {
-                SmartMeterConstants.SmartMeterViewType smartMeterViewType = default;
-                if (toggleBar.SelectedSegment == 0)
+                if (_isDataReceived)
                 {
-                    if (PinchOverlayAction != null && !_isOverlayDisplayed)
+                    SmartMeterConstants.SmartMeterViewType smartMeterViewType = default;
+                    if (toggleBar.SelectedSegment == 0)
                     {
-                        PinchOverlayAction?.Invoke();
-                        _isOverlayDisplayed = true;
+                        if (PinchOverlayAction != null && !_isOverlayDisplayed)
+                        {
+                            PinchOverlayAction?.Invoke();
+                            _isOverlayDisplayed = true;
+                        }
+                        smartMeterViewType = SmartMeterConstants.SmartMeterViewType.DayZOut;
                     }
-                    smartMeterViewType = SmartMeterConstants.SmartMeterViewType.DayZOut;
+                    else
+                    {
+                        smartMeterViewType = SmartMeterConstants.SmartMeterViewType.Month;
+                    }
+                    CreateSegment(smartMeterViewType);
                 }
-                else
-                {
-                    smartMeterViewType = SmartMeterConstants.SmartMeterViewType.Month;
-                }
-                CreateSegment(smartMeterViewType);
             };
             toggleView.AddSubview(toggleBar);
             nfloat iconWidth = GetScaledWidth(24);
@@ -175,9 +179,23 @@ namespace myTNB
             return parentView;
         }
 
+        private void SetDateRange(SmartMeterConstants.SmartMeterViewType viewType)
+        {
+            if (viewType == SmartMeterConstants.SmartMeterViewType.Month)
+            {
+                _lblDateRange.Text = AccountUsageSmartCache.ByMonthDateRange ?? string.Empty;
+            }
+            else
+            {
+                _lblDateRange.Text = AccountUsageSmartCache.DateRange ?? string.Empty;
+            }
+        }
+
         protected override void CreateSegment(SmartMeterConstants.SmartMeterViewType viewType)
         {
             _viewType = viewType;
+            _isDataReceived = true;
+            SetDateRange(_viewType);
             if (_pinchIcon != null)
             {
                 _pinchIcon.Hidden = _viewType == SmartMeterConstants.SmartMeterViewType.Month;
