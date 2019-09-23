@@ -151,7 +151,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
 
             bottomNavigationView.SetShiftMode(false, false);
-            bottomNavigationView.SetImageSize(28, 3);
+            bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
             bottomNavigationView.ItemIconTintList = null;
 
             bottomNavigationView.NavigationItemSelected += BottomNavigationView_NavigationItemSelected;
@@ -603,7 +603,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 if (promotionMenuItem != null)
                 {
                     promotionMenuItem.SetIcon(Resource.Drawable.ic_menu_promotions_unread_selector);
-                    bottomNavigationView.SetImageSize(28, 3);
+                    bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
             }
         }
@@ -618,7 +618,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 if (promotionMenuItem != null)
                 {
                     promotionMenuItem.SetIcon(Resource.Drawable.ic_menu_promotions_selector);
-                    bottomNavigationView.SetImageSize(28, 3);
+                    bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
             }
         }

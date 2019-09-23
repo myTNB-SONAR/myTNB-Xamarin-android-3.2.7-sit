@@ -405,6 +405,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.btnToggleMonth)]
         RadioButton btnToggleMonth;
 
+        [BindView(Resource.Id.smGraphZoomToggleLayout)]
+        LinearLayout smGraphZoomToggleLayout;
+
         private bool isZoomIn = false;
 
         TariffBlockLegendAdapter tariffBlockLegendAdapter;
@@ -767,10 +770,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         isChangeBackgroundNeeded = true;
                         layoutSMSegmentGroup.Visibility = ViewStates.Visible;
                         isSMR = false;
+                        smGraphZoomToggleLayout.Visibility = ViewStates.Gone;
                         // Lin Siong TODO: Stripped bar background implementation
                         // Lin Siong TODO: Estimated Reading Handling & Display
                         // Lin Siong TODO: Fallback for Error from MDMS service
-                        /*if (!isDayViewToggle)
+                        if (!isDayViewToggle)
                         {
                             isDayViewToggle = true;
                             try
@@ -782,7 +786,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 Utility.LoggingNonFatalError(ne);
                             }
-                        }*/
+                        }
                     }
                     else
                     {
@@ -965,6 +969,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         rmKwhSelection.Enabled = false;
                         tarifToggle.Enabled = false;
+                        btnToggleDay.Enabled = false;
+                        btnToggleMonth.Enabled = false;
                         txtRange.Visibility = ViewStates.Gone;
                         StartRangeShimmer();
                         mChart.Visibility = ViewStates.Gone;
@@ -974,6 +980,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         rmKwhSelection.Enabled = true;
                         tarifToggle.Enabled = true;
+                        btnToggleDay.Enabled = true;
+                        btnToggleMonth.Enabled = true;
                     }
 
                     re_img.Visibility = ViewStates.Gone;
@@ -1244,12 +1252,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [OnClick(Resource.Id.btnToggleDay)]
         internal void OnToggleDay(object sender, EventArgs e)
         {
+            smGraphZoomToggleLayout.Visibility = ViewStates.Visible;
             this.userActionsListener.OnByDay();
         }
 
         [OnClick(Resource.Id.btnToggleMonth)]
         internal void OnToggleMonth(object sender, EventArgs e)
         {
+            smGraphZoomToggleLayout.Visibility = ViewStates.Gone;
             this.userActionsListener.OnByMonth();
         }
 
@@ -3123,6 +3133,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             rmKwhSelection.Enabled = true;
             tarifToggle.Enabled = true;
+            btnToggleDay.Enabled = true;
+            btnToggleMonth.Enabled = true;
 
             mChart.Clear();
             SetUp();
@@ -3137,6 +3149,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             rmKwhSelection.Enabled = true;
             tarifToggle.Enabled = true;
+            btnToggleDay.Enabled = true;
+            btnToggleMonth.Enabled = true;
 
             mChart.Clear();
             SetUp();
@@ -3151,6 +3165,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             rmKwhSelection.Enabled = true;
             tarifToggle.Enabled = true;
+            btnToggleDay.Enabled = true;
+            btnToggleMonth.Enabled = true;
 
             DayViewkWhData = new List<double>();
             DayViewRMData = new List<double>();
@@ -3167,6 +3183,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             rmKwhSelection.Enabled = true;
             tarifToggle.Enabled = true;
+            btnToggleDay.Enabled = true;
+            btnToggleMonth.Enabled = true;
 
             mChart.Clear();
             SetUp();
@@ -3387,7 +3405,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     tariffBlockLegendRecyclerView.ScheduleLayoutAnimation();
                     if (isChangeBackgroundNeeded)
                     {
-                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_extended_bg);
+                        if (isSMR)
+                        {
+                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_extended_smr_fluid_background);
+                        }
+                        else
+                        {
+                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_extended_bg);
+                        }
                     }
                     else
                     {

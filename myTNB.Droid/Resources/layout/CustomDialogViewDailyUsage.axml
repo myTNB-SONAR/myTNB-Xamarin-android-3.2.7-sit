@@ -32,7 +32,7 @@
             android:layout_width="match_parent"  
             android:layout_height="match_parent" 
             android:layout_gravity="center"
-	        app:lottie_fileName="dashboard_zoom_lottie.json"
+            app:lottie_fileName="dashboard_zoom_lottie.json"
 	        app:lottie_loop="true" />
         </FrameLayout> 
         <TextView
