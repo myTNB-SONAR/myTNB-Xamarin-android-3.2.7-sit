@@ -3,6 +3,7 @@ using Android.Support.Design.Internal;
 using Android.Support.Design.Widget;
 using Android.Util;
 using Android.Views;
+using Android.Widget;
 using System;
 
 namespace myTNB_Android.Src.Utils
@@ -33,8 +34,8 @@ namespace myTNB_Android.Src.Utils
                 shiftMode.Accessible = false;
                 shiftMode.Dispose();
 
-
-                for (int i = 0; i < menuView.ChildCount; i++)
+                // Lin Siong Note: Disable due to SDK 28 Update
+                /*for (int i = 0; i < menuView.ChildCount; i++)
                 {
                     var item = menuView.GetChildAt(i) as BottomNavigationItemView;
                     if (item == null)
@@ -43,7 +44,7 @@ namespace myTNB_Android.Src.Utils
                     item.SetShiftingMode(enableItemShiftMode);
                     item.SetChecked(item.ItemData.IsChecked);
 
-                }
+                }*/
 
                 menuView.UpdateMenuView();
             }
@@ -73,6 +74,17 @@ namespace myTNB_Android.Src.Utils
                 iconView.SetPadding(0, paddingTop, 0, 0);
                 layoutParams.Height = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, sizeInDp, displayMetrics);
                 layoutParams.Width = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, sizeInDp, displayMetrics);
+
+                try
+                {
+                    TextView labelView = bottomNavigationMenuView.GetChildAt(i).FindViewById<TextView>(Resource.Id.largeLabel);
+                    labelView.TextSize = 10f;
+                    labelView.SetLineSpacing(0f, 4f);
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
             }
         }
     }

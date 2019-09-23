@@ -15,7 +15,7 @@
     <item name="colorControlNormal">@color/powerBlue</item>
     <item name="colorControlActivated">@color/powerBlue</item>
     <item name="colorControlNormal">@color/powerBlue</item>
-    <item name="textColorError">@color/errorColor</item>
+    <item name="colorError">@color/errorColor</item>
 
     <item name="android:colorAccent">@color/tunaGrey</item>
     <item name="android:colorControlNormal">@color/silverChalice</item>

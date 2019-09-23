@@ -150,7 +150,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 urlSchemaData = data;
             }
 
-            bottomNavigationView.SetShiftMode(false, false);
+            // Lin Siong Note: Disabled due to no use in SDK 28 anymore
+            // bottomNavigationView.SetShiftMode(false, false);
             bottomNavigationView.SetImageSize(28, 3);
             bottomNavigationView.ItemIconTintList = null;
 
