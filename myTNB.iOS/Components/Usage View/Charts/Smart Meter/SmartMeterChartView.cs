@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using CoreGraphics;
 using myTNB.Model.Usage;
+using myTNB.SmartMeterView;
 using UIKit;
 
 namespace myTNB
@@ -14,6 +15,17 @@ namespace myTNB
         {
             ShimmerHeight = GetHeightByScreenSize(229);
         }
+
+        public Action PinchOverlayAction { set; private get; }
+
+        private BaseSmartMeterView _baseSmartMeterView;
+        private bool _isTariffView;
+        private RMkWhEnum _consumptionState;
+        private SmartMeterConstants.SmartMeterViewType _viewType;
+        private CustomUIView _viewLine;
+        private UIImageView _pinchIcon;
+        private bool _isOverlayDisplayed;
+        private bool _isDataReceived;
 
         protected override void CreatUI()
         {
@@ -33,18 +45,30 @@ namespace myTNB
                 Text = AccountUsageSmartCache.ByMonthDateRange
             };
 
-            CustomUIView viewLine = new CustomUIView(new CGRect(_baseMargin, GetYLocationFromFrameScreenSize(_lblDateRange.Frame, 150)
-                , _baseMarginedWidth, GetHeightByScreenSize(1)))
+            _viewLine = new CustomUIView(new CGRect(_baseMargin, GetYLocationFromFrameScreenSize(_lblDateRange.Frame, 141)
+               , _baseMarginedWidth, GetHeightByScreenSize(1)))
             { BackgroundColor = UIColor.FromWhiteAlpha(1, 0.30F) };
 
-            _mainView.AddSubviews(new UIView[] { _lblDateRange, viewLine });
-            CreateSegment();
+            _mainView.AddSubviews(new UIView[] { _lblDateRange, _viewLine });
+            CreateSegment(SmartMeterConstants.SmartMeterViewType.Month);
         }
 
         protected void PinchAction(UIPinchGestureRecognizer obj)
         {
-            Debug.WriteLine("PinchAction");
-            Debug.WriteLine("obj.Scale=== " + obj.Scale);
+#pragma warning disable XI0003 // Notifies you when using a deprecated, obsolete or unavailable Apple API
+            if (_viewType != SmartMeterConstants.SmartMeterViewType.Month)
+            {
+                nfloat pinchScale = obj.Scale;
+                if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZOut && pinchScale > 1)
+                {
+                    CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZIn);
+                }
+                else if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZIn && pinchScale < 1)
+                {
+                    CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZOut);
+                }
+            }
+#pragma warning restore XI0003 // Notifies you when using a deprecated, obsolete or unavailable Apple API
         }
 
         private UIView GetToggleView(CustomUIView parentView)
@@ -76,21 +100,48 @@ namespace myTNB
             toggleBar.SelectedSegment = 1;
             toggleBar.ValueChanged += (sender, e) =>
             {
-                Debug.WriteLine("toggleBar.SelectedSegment: " + toggleBar.SelectedSegment);
+                if (_isDataReceived)
+                {
+                    SmartMeterConstants.SmartMeterViewType smartMeterViewType = default;
+                    if (toggleBar.SelectedSegment == 0)
+                    {
+                        if (PinchOverlayAction != null && !_isOverlayDisplayed)
+                        {
+                            PinchOverlayAction?.Invoke();
+                            _isOverlayDisplayed = true;
+                        }
+                        smartMeterViewType = SmartMeterConstants.SmartMeterViewType.DayZOut;
+                    }
+                    else
+                    {
+                        smartMeterViewType = SmartMeterConstants.SmartMeterViewType.Month;
+                    }
+                    CreateSegment(smartMeterViewType);
+                }
             };
             toggleView.AddSubview(toggleBar);
             nfloat iconWidth = GetScaledWidth(24);
             nfloat iconHeight = GetScaledHeight(24);
-            UIImageView pinchIcon = new UIImageView(new CGRect(toggleBar.Frame.GetMaxX() + GetScaledWidth(59), 0, iconWidth, iconHeight))
+            _pinchIcon = new UIImageView(new CGRect(toggleBar.Frame.GetMaxX() + GetScaledWidth(59), 0, iconWidth, iconHeight))
             {
-                Image = UIImage.FromBundle("Pinch-Icon"),
-                UserInteractionEnabled = true
+                Image = UIImage.FromBundle(UsageConstants.IMG_PinchOut),
+                UserInteractionEnabled = true,
+                Hidden = true
             };
-            pinchIcon.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            _pinchIcon.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                Debug.WriteLine("pinchIcon..");
+                if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZOut)
+                {
+                    CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZIn);
+                    _pinchIcon.Image = UIImage.FromBundle(UsageConstants.IMG_PinchIn);
+                }
+                else if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZIn)
+                {
+                    CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZOut);
+                    _pinchIcon.Image = UIImage.FromBundle(UsageConstants.IMG_PinchOut);
+                }
             }));
-            toggleView.AddSubview(pinchIcon);
+            toggleView.AddSubview(_pinchIcon);
             return toggleView;
         }
 
@@ -125,175 +176,74 @@ namespace myTNB
             shimmeringView.ContentView = viewShimmerContent;
             shimmeringView.Shimmering = true;
             shimmeringView.SetValues();
-
             return parentView;
         }
 
-        protected override void CreateSegment()
+        private void SetDateRange(SmartMeterConstants.SmartMeterViewType viewType)
         {
-            _segmentContainer = new CustomUIView(new CGRect(0, GetYLocationFromFrameScreenSize(_lblDateRange.Frame, 16)
-               , _width, GetHeightByScreenSize(157)));
+            if (viewType == SmartMeterConstants.SmartMeterViewType.Month)
+            {
+                _lblDateRange.Text = AccountUsageSmartCache.ByMonthDateRange ?? string.Empty;
+            }
+            else
+            {
+                _lblDateRange.Text = AccountUsageSmartCache.DateRange ?? string.Empty;
+            }
+        }
+
+        protected override void CreateSegment(SmartMeterConstants.SmartMeterViewType viewType)
+        {
+            _viewType = viewType;
+            _isDataReceived = true;
+            SetDateRange(_viewType);
+            if (_pinchIcon != null)
+            {
+                _pinchIcon.Hidden = _viewType == SmartMeterConstants.SmartMeterViewType.Month;
+            }
+            if (_viewLine != null)
+            {
+                CGRect lineFrame = _viewLine.Frame;
+                lineFrame.Width = _viewType == SmartMeterConstants.SmartMeterViewType.DayZIn ? _width : _baseMarginedWidth;
+                lineFrame.X = _viewType == SmartMeterConstants.SmartMeterViewType.DayZIn ? 0 : _baseMargin;
+                _viewLine.Frame = lineFrame;
+            }
+            if (_segmentContainer != null)
+            {
+                _segmentContainer.RemoveFromSuperview();
+            }
+            if (viewType == SmartMeterConstants.SmartMeterViewType.Month)
+            {
+                _baseSmartMeterView = new SmartMeterMonthView()
+                {
+                    OnSegmentTap = OnSegmentTap,
+                };
+            }
+            else if (viewType == SmartMeterConstants.SmartMeterViewType.DayZOut)
+            {
+                _baseSmartMeterView = new SmartMeterDayZOutView();
+            }
+            else
+            {
+                _baseSmartMeterView = new SmartMeterDayZInView();
+            }
+            _baseSmartMeterView.PinchAction = PinchAction;
+            _baseSmartMeterView.IsTariffView = _isTariffView;
+            _baseSmartMeterView.ReferenceWidget = _lblDateRange.Frame;
+            _baseSmartMeterView.AddTariffBlocks = AddTariffBlocks;
+            _baseSmartMeterView.ConsumptionState = _consumptionState;
+            _baseSmartMeterView.CreateSegment(ref _segmentContainer);
 
             _segmentContainer.AddGestureRecognizer(new UIPinchGestureRecognizer((obj) =>
             {
                 PinchAction(obj);
             }));
-
-            nfloat height = _segmentContainer.Frame.Height;
-            nfloat width = GetWidthByScreenSize(12);
-            nfloat segmentMargin = GetWidthByScreenSize(18);
-            nfloat baseMargin = GetWidthByScreenSize(25);
-            nfloat xLoc = baseMargin;
-            nfloat lblHeight = GetHeightByScreenSize(14);
-            nfloat maxBarHeight = GetHeightByScreenSize(108);
-            nfloat amountBarMargin = GetHeightByScreenSize(4);
-            nfloat segmentWidth = GetWidthByScreenSize(30);
-            nfloat barMargin = GetWidthByScreenSize(7);
-
-            List<MonthItemModel> usageData = AccountUsageSmartCache.ByMonthUsage;
-            List<string> valueList = usageData.Select(x => x.UsageTotal).ToList();
-            double maxValue = GetMaxValue(RMkWhEnum.RM, valueList);
-            double divisor = maxBarHeight / maxValue;
-
-            for (int i = 0; i < usageData.Count; i++)
-            {
-                int index = i;
-                bool isLatestBar = index == usageData.Count - 1;
-                bool isSelected = index < usageData.Count - 1;
-                MonthItemModel item = usageData[index];
-                CustomUIView segment = new CustomUIView(new CGRect(xLoc, 0, segmentWidth, height))
-                {
-                    Tag = index,
-                    PageName = "InnerDashboard",
-                    EventName = "OnTapSmartMeterMonthBar"
-                };
-                _segmentContainer.AddSubview(segment);
-                xLoc += segmentWidth + segmentMargin;
-
-                if (!isLatestBar || (isLatestBar && !item.IsCurrentlyUnavailable))
-                {
-                    double.TryParse(item.UsageTotal, out double value);
-                    nfloat barHeight = (nfloat)(divisor * value);
-                    nfloat yLoc = lblHeight + amountBarMargin + (maxBarHeight - barHeight);
-
-                    nfloat barWidth = isLatestBar ? GetWidthByScreenSize(18) : width;
-                    nfloat barXLoc = isLatestBar ? barMargin - GetWidthByScreenSize(2) : barMargin;
-                    CustomUIView viewBar = new CustomUIView(new CGRect(barXLoc
-                        , segment.Frame.Height - lblHeight - GetHeightByScreenSize(17), barWidth, 0))
-                    {
-                        BackgroundColor = UIColor.Clear,
-                        Tag = 1001,
-                        ClipsToBounds = true
-                    };
-                    viewBar.Layer.CornerRadius = barWidth / 2;
-                    if (isLatestBar)
-                    {
-                        viewBar.Layer.BorderWidth = GetWidthByScreenSize(1);
-                        viewBar.Layer.BorderColor = (isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White).CGColor;
-                    }
-
-                    nfloat coverWidth = isLatestBar ? viewBar.Frame.Width - GetWidthByScreenSize(6) : viewBar.Frame.Width;
-                    nfloat coverXLoc = isLatestBar ? GetWidthByScreenSize(3) : 0;
-                    nfloat coverHeight = isLatestBar ? barHeight - GetHeightByScreenSize(6) : barHeight;
-                    nfloat coverYLoc = isLatestBar ? GetHeightByScreenSize(3) : 0;
-
-                    UIView viewCover = new UIView(new CGRect(new CGPoint(coverXLoc, coverYLoc), new CGSize(coverWidth, coverHeight)))
-                    {
-                        BackgroundColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
-                        Tag = 2001,
-                        Hidden = false
-                    };
-                    if (isLatestBar) { viewCover.Layer.CornerRadius = coverWidth / 2; }
-                    viewBar.AddSubview(viewCover);
-
-                    AddTariffBlocks(viewBar, item.tariffBlocks, value, index == usageData.Count - 1, viewCover.Frame.Size, isLatestBar);
-
-                    nfloat amtYLoc = yLoc - amountBarMargin - lblHeight;
-                    UILabel lblAmount = new UILabel(new CGRect(0, viewBar.Frame.GetMinY() - amountBarMargin - lblHeight
-                        , GetWidthByScreenSize(100), lblHeight))
-                    {
-                        TextAlignment = UITextAlignment.Center,
-                        Font = TNBFont.MuseoSans_10_500,
-                        TextColor = UIColor.White,
-                        Text = item.AmountTotal.FormatAmountString(item.Currency),
-                        Hidden = isSelected,
-                        Tag = 1002
-                    };
-                    nfloat lblAmountWidth = lblAmount.GetLabelWidth(GetWidthByScreenSize(100));
-                    lblAmount.Frame = new CGRect((segmentWidth - lblAmountWidth) / 2, lblAmount.Frame.Y, lblAmountWidth, lblAmount.Frame.Height);
-
-                    UILabel lblDate = new UILabel(new CGRect((segmentWidth - GetWidthByScreenSize(40)) / 2, segment.Frame.Height - lblHeight
-                        , GetWidthByScreenSize(40), lblHeight))
-                    {
-                        TextAlignment = UITextAlignment.Center,
-                        Font = isSelected ? TNBFont.MuseoSans_10_300 : TNBFont.MuseoSans_10_500,
-                        TextColor = UIColor.White,
-                        Text = string.IsNullOrEmpty(item.Year) ? item.Month : string.Format(Format_Value, item.Month, item.Year),
-                        Tag = 1003
-                    };
-                    segment.AddSubviews(new UIView[] { lblAmount, viewBar, lblDate });
-
-                    segment.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-                    {
-                        OnSegmentTap(index);
-                    }));
-
-                    UIView.Animate(1, 0.3, UIViewAnimationOptions.CurveEaseOut
-                        , () =>
-                        {
-                            viewBar.Frame = new CGRect(viewBar.Frame.X, yLoc, viewBar.Frame.Width, barHeight);
-                            lblAmount.Frame = new CGRect(lblAmount.Frame.X, amtYLoc, lblAmount.Frame.Width, lblAmount.Frame.Height);
-                        }
-                        , () => { }
-                    );
-                }
-                else
-                {
-                    UILabel lblDate = new UILabel(new CGRect((segmentWidth - GetWidthByScreenSize(40)) / 2, segment.Frame.Height - lblHeight
-                        , GetWidthByScreenSize(40), lblHeight))
-                    {
-                        TextAlignment = UITextAlignment.Center,
-                        Font = isSelected ? TNBFont.MuseoSans_10_300 : TNBFont.MuseoSans_10_500,
-                        TextColor = UIColor.White,
-                        Text = string.IsNullOrEmpty(item.Year) ? item.Month : string.Format(Format_Value, item.Month, item.Year),
-                        Tag = 1003
-                    };
-
-                    UIImageView unavailableIcon = new UIImageView(new CGRect(0, segment.Frame.Height - lblHeight - GetScaledHeight(20) - GetHeightByScreenSize(17), GetScaledWidth(20), GetScaledHeight(20)))
-                    {
-                        Image = UIImage.FromBundle(Constants.IMG_MDMSDownIcon)
-                    };
-                    ViewHelper.AdjustFrameSetX(unavailableIcon, GetXLocationToCenterObject(GetScaledWidth(20), segment));
-
-                    nfloat lblIndicatorHeight = GetScaledHeight(28);
-                    UILabel lblIndicator = new UILabel(new CGRect(0, unavailableIcon.Frame.GetMinY() - GetScaledHeight(8) - lblIndicatorHeight, GetScaledWidth(54), lblIndicatorHeight))
-                    {
-                        TextAlignment = UITextAlignment.Center,
-                        Font = isSelected ? TNBFont.MuseoSans_10_300 : TNBFont.MuseoSans_10_500,
-                        TextColor = UIColor.White,
-                        Lines = 0,
-                        Text = LanguageUtility.GetCommonI18NValue(Constants.I18N_MDMSUnavailable),
-                        Tag = 1004
-                    };
-                    nfloat lblWidth = lblIndicator.GetLabelWidth(GetScaledWidth(54));
-                    ViewHelper.AdjustFrameSetWidth(lblIndicator, lblWidth);
-                    ViewHelper.AdjustFrameSetX(lblIndicator, GetXLocationToCenterObject(lblWidth, segment));
-
-                    segment.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-                    {
-                        OnSegmentTap(index);
-                    }));
-
-                    segment.AddSubviews(new UIView[] { unavailableIcon, lblIndicator, lblDate });
-                }
-            }
             _mainView.AddSubview(_segmentContainer);
         }
 
         protected override void AddTariffBlocks(CustomUIView viewBar, List<TariffItemModel> tariffList
             , double baseValue, bool isSelected, CGSize size, bool isLatestBar)
         {
-            if (viewBar == null || tariffList == null || tariffList.Count == 0) { return; }
+            if (viewBar == null || tariffList == null || tariffList.Count == 0 || baseValue == 0) { return; }
             nfloat baseHeigt = size.Height;
             nfloat barMaxY = size.Height;
             nfloat xLoc = isLatestBar ? GetWidthByScreenSize(3) : 0;
@@ -301,16 +251,18 @@ namespace myTNB
             UIView viewTariffContainer = new UIView(new CGRect(xLoc, yLoc, size.Width, size.Height))
             {
                 Tag = 2002,
-                Hidden = true,
+                Hidden = !_isTariffView,
                 ClipsToBounds = true
             };
             if (isLatestBar) { viewTariffContainer.Layer.CornerRadius = size.Width / 2; }
+
             for (int i = 0; i < tariffList.Count; i++)
             {
                 TariffItemModel item = tariffList[i];
-                double.TryParse(item.Usage, out double val);
+                double val = item.Usage;
                 double percentage = (baseValue > 0) ? (nfloat)(val / baseValue) : 0;
                 nfloat blockHeight = (nfloat)(baseHeigt * percentage);
+
                 barMaxY -= blockHeight;
                 UIView viewTariffBlock = new UIView(new CGRect(0, barMaxY, size.Width, blockHeight))
                 {
@@ -324,9 +276,12 @@ namespace myTNB
 
         protected override void OnSegmentTap(int index)
         {
-            UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Heavy);
+#pragma warning disable XI0003 // Notifies you when using a deprecated, obsolete or unavailable Apple API
+            UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Light);
             selectionFeedback.Prepare();
             selectionFeedback.ImpactOccurred();
+#pragma warning restore XI0003 // Notifies you when using a deprecated, obsolete or unavailable Apple API
+
             for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
             {
                 bool isLatestBar = i == _segmentContainer.Subviews.Count() - 1;
@@ -376,67 +331,132 @@ namespace myTNB
                 if (date != null)
                 {
                     date.Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300;
-                }
-                if (isLatestBar)
-                {
-                    Debug.WriteLine("Todo: Go to day view.");
+                    nfloat lblDateWidth = date.GetLabelWidth(GetWidthByScreenSize(100));
+                    date.Frame = new CGRect((segmentView.Frame.Width - lblDateWidth) / 2, date.Frame.Y, lblDateWidth, date.Frame.Height);
                 }
             }
         }
 
         public override void ToggleTariffView(bool isTariffView)
         {
-            nfloat amountBarMargin = GetHeightByScreenSize(4);
-            for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
+            _isTariffView = isTariffView;
+            if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZIn)
             {
-                CustomUIView segmentView = _segmentContainer.Subviews[i] as CustomUIView;
-                if (segmentView == null) { continue; }
-                CustomUIView bar = segmentView.ViewWithTag(1001) as CustomUIView;
-                if (bar == null) { continue; }
-                CGRect barOriginalFrame = bar.Frame;
-                bar.Frame = new CGRect(bar.Frame.X, bar.Frame.GetMaxY(), bar.Frame.Width, 0);
-
-                UIView viewCover = bar.ViewWithTag(2001);
-                if (viewCover != null) { viewCover.Hidden = isTariffView; }
-                UIView viewTariff = bar.ViewWithTag(2002);
-                if (viewTariff != null) { viewTariff.Hidden = !isTariffView; }
-
-                UILabel value = segmentView.ViewWithTag(1002) as UILabel;
-                CGRect valueOriginalFrame = new CGRect();
-                if (value != null)
+                UIScrollView scrollview = _segmentContainer.ViewWithTag(4000) as UIScrollView;
+                if (scrollview == null) { return; }
+                for (int i = 0; i < scrollview.Subviews.Count(); i++)
                 {
-                    valueOriginalFrame = value.Frame;
-                    value.Frame = new CGRect(value.Frame.X, bar.Frame.GetMinY() - amountBarMargin - value.Frame.Height
-                        , value.Frame.Width, value.Frame.Height);
+                    CustomUIView segmentView = scrollview.Subviews[i] as CustomUIView;
+                    if (segmentView == null) { continue; }
+                    UpdateTariffView(segmentView);
                 }
-                UIView.Animate(1, 0.3, UIViewAnimationOptions.CurveEaseOut
-                   , () =>
-                   {
-                       bar.Frame = barOriginalFrame;
-                       if (value != null)
-                       {
-                           value.Frame = valueOriginalFrame;
-                       }
-                   }
-                   , () => { }
-               );
             }
+            else
+            {
+                for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
+                {
+                    CustomUIView segmentView = _segmentContainer.Subviews[i] as CustomUIView;
+                    if (segmentView == null) { continue; }
+                    UpdateTariffView(segmentView);
+                }
+            }
+        }
+
+        private void UpdateTariffView(CustomUIView segmentView)
+        {
+            nfloat amountBarMargin = GetHeightByScreenSize(4);
+            CustomUIView bar = segmentView.ViewWithTag(1001) as CustomUIView;
+            if (bar == null) { return; }
+
+            CGRect barOriginalFrame = bar.Frame;
+            bar.Frame = new CGRect(bar.Frame.X, bar.Frame.GetMaxY(), bar.Frame.Width, 0);
+
+            UIView viewCover = bar.ViewWithTag(2001);
+            if (viewCover != null) { viewCover.Hidden = _isTariffView; }
+
+            UIView viewTariff = bar.ViewWithTag(2002);
+            if (viewTariff != null) { viewTariff.Hidden = !_isTariffView; }
+
+            UILabel value = segmentView.ViewWithTag(1002) as UILabel;
+            CGRect valueOriginalFrame = new CGRect();
+            if (value != null)
+            {
+                valueOriginalFrame = value.Frame;
+                value.Frame = new CGRect(value.Frame.X, bar.Frame.GetMinY() - amountBarMargin - value.Frame.Height
+                    , value.Frame.Width, value.Frame.Height);
+            }
+
+            UIImageView imgMissingReading = segmentView.ViewWithTag(3001) as UIImageView;
+            CGRect imgMissingReadingOriginalFrame = new CGRect();
+            if (imgMissingReading != null)
+            {
+                imgMissingReadingOriginalFrame = imgMissingReading.Frame;
+                nfloat yRef = bar.Frame.GetMinY() - GetHeightByScreenSize(10);
+                if (value != null && !value.Hidden)
+                {
+                    yRef = value.Frame.GetMinY() - GetHeightByScreenSize(10);
+                }
+                imgMissingReading.Frame = new CGRect(new CGPoint(imgMissingReading.Frame.X, yRef), imgMissingReading.Frame.Size);
+            }
+
+            UIView.Animate(1, 0.3, UIViewAnimationOptions.CurveEaseOut
+               , () =>
+               {
+                   bar.Frame = barOriginalFrame;
+                   if (value != null)
+                   {
+                       value.Frame = valueOriginalFrame;
+                   }
+                   if (imgMissingReading != null)
+                   {
+                       imgMissingReading.Frame = imgMissingReadingOriginalFrame;
+                   }
+               }
+               , () => { }
+           );
         }
 
         public override void ToggleRMKWHValues(RMkWhEnum state)
         {
-            List<MonthItemModel> usageData = AccountUsageSmartCache.ByMonthUsage;
-            for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
+            _consumptionState = state;
+            if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZIn)
             {
-                CustomUIView segmentView = _segmentContainer.Subviews[i] as CustomUIView;
-                if (segmentView == null) { continue; }
-                UILabel value = segmentView.ViewWithTag(1002) as UILabel;
-                if (value == null) { continue; }
-                value.Text = state == RMkWhEnum.RM ? usageData[i].AmountTotal.FormatAmountString(usageData[i].Currency)
-                    : string.Format(Format_Value, usageData[i].UsageTotal, usageData[i].UsageUnit);
-                nfloat lblAmountWidth = value.GetLabelWidth(GetWidthByScreenSize(200));
-                value.Frame = new CGRect((GetWidthByScreenSize(30) - lblAmountWidth) / 2, value.Frame.Y, lblAmountWidth, value.Frame.Height);
+                UIScrollView scrollview = _segmentContainer.ViewWithTag(4000) as UIScrollView;
+                if (scrollview == null) { return; }
+                List<DayItemModel> usageData = AccountUsageSmartCache.FlatDays;
+                for (int i = 0; i < scrollview.Subviews.Count(); i++)
+                {
+                    int index = i;
+                    CustomUIView segmentView = scrollview.Subviews[index] as CustomUIView;
+                    if (segmentView == null || index >= usageData.Count) { continue; }
+                    string usageText = _consumptionState == RMkWhEnum.RM ? usageData[index].Amount.FormatAmountString(TNBGlobal.UNIT_CURRENCY)
+                        : string.Format(Format_Value, usageData[index].Consumption, TNBGlobal.UNITENERGY);
+                    UpdateRMKWHValues(segmentView, usageText);
+                }
             }
+            else if (_viewType == SmartMeterConstants.SmartMeterViewType.Month)
+            {
+                List<MonthItemModel> usageData = AccountUsageSmartCache.ByMonthUsage;
+                for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
+                {
+                    int index = i;
+                    CustomUIView segmentView = _segmentContainer.Subviews[index] as CustomUIView;
+                    if (segmentView == null || index >= usageData.Count) { continue; }
+                    string usageText = _consumptionState == RMkWhEnum.RM ? usageData[index].AmountTotal.FormatAmountString(usageData[index].Currency)
+                        : string.Format(Format_Value, usageData[index].UsageTotal, usageData[index].UsageUnit);
+                    UpdateRMKWHValues(segmentView, usageText);
+                }
+            }
+        }
+
+        private void UpdateRMKWHValues(CustomUIView segmentView, string usageText)
+        {
+            UILabel value = segmentView.ViewWithTag(1002) as UILabel;
+            if (value == null) { return; }
+            value.Text = usageText;
+            nfloat lblAmountWidth = value.GetLabelWidth(GetWidthByScreenSize(200));
+            nfloat baseX = GetWidthByScreenSize(_viewType == SmartMeterConstants.SmartMeterViewType.DayZIn ? 12 : 30);
+            value.Frame = new CGRect((baseX - lblAmountWidth) / 2, value.Frame.Y, lblAmountWidth, value.Frame.Height);
         }
     }
 }

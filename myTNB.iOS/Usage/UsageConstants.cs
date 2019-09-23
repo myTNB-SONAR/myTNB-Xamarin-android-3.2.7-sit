@@ -10,6 +10,9 @@
         public static string IMG_BGNormal = "Usage-Bg-Normal";
         public static string IMG_BGLong = "Usage-Bg-Long";
         public static string IMG_BGRefresh = "Usage-Refresh-Bg";
+        public static string IMG_ChartIndicator = "Usage-Chart-Indicator";
+        public static string IMG_PinchIn = "Usage-Pinch-In-Icon";
+        public static string IMG_PinchOut = "Usage-Pinch-Out-Icon";
         public static string IMG_ScrollIndicator = "Scroll-Indicator";
 
         //PageName

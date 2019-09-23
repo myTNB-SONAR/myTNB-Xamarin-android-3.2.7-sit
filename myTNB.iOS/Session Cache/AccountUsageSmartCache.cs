@@ -15,9 +15,9 @@ namespace myTNB
         private static List<LegendItemModel> TariffLegendList = new List<LegendItemModel>();
         private static OtherUsageMetricsModel UsageMetrics = new OtherUsageMetricsModel();
         private static List<ToolTipItemModel> Tooltips = new List<ToolTipItemModel>();
-        public static AccountUsageSmartResponseDataModel RefreshDataModel;
+        private static AccountUsageSmartResponseDataModel RefreshDataModel;
 
-        public static bool IsSuccess;
+        public static bool IsSuccess { private set; get; }
 
         public static void ClearTariffLegendList()
         {
@@ -71,8 +71,15 @@ namespace myTNB
                 TariffLegendList = data.TariffBlocksLegend;
                 ByMonthDateRange = data.ByMonth.Range;
                 ByMonthUsage = data.ByMonth.Months;
+                ByDayUsage = data.ByDay;
                 UsageMetrics = data.OtherUsageMetrics;
                 Tooltips = data.ToolTips;
+
+                CurrentCycle = data?.CurrentCycle;
+                StartDate = data?.StartDate ?? string.Empty;
+                MidDate = data?.MidDate ?? string.Empty;
+                EndDate = data?.EndDate ?? string.Empty;
+                DateRange = data?.DateRange ?? string.Empty;
 
                 SaveToCache(accountNumber, RefreshDataModel);
             }
@@ -81,6 +88,64 @@ namespace myTNB
                 RefreshDataModel = response?.d ?? new AccountUsageSmartResponseDataModel();
             }
         }
+
+        #region Dates
+        private static string _currentCycle;
+        private static string _startDate;
+        private static string _midDate;
+        private static string _endDate;
+        private static string _dateRange;
+
+        public static string CurrentCycle
+        {
+            private set
+            {
+                if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value)) { value = string.Empty; }
+                _currentCycle = value;
+            }
+            get { return _currentCycle ?? string.Empty; }
+        }
+
+        public static string StartDate
+        {
+            private set
+            {
+                if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value)) { value = string.Empty; }
+                _startDate = value;
+            }
+            get { return _startDate ?? string.Empty; }
+        }
+
+        public static string MidDate
+        {
+            private set
+            {
+                if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value)) { value = string.Empty; }
+                _midDate = value;
+            }
+            get { return _midDate ?? string.Empty; }
+        }
+
+        public static string EndDate
+        {
+            private set
+            {
+                if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value)) { value = string.Empty; }
+                _endDate = value;
+            }
+            get { return _endDate ?? string.Empty; }
+        }
+
+        public static string DateRange
+        {
+            private set
+            {
+                if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value)) { value = string.Empty; }
+                _dateRange = value;
+            }
+            get { return _dateRange ?? string.Empty; }
+        }
+        #endregion
 
         public static bool IsMonthlyTariffDisable
         {
@@ -131,6 +196,41 @@ namespace myTNB
             }
             get { return _byMonthUsage != null ? _byMonthUsage : new List<MonthItemModel>(); }
         }
+
+        private static List<ByDayModel> _byDayUsage = new List<ByDayModel>();
+        public static List<ByDayModel> ByDayUsage
+        {
+            private set
+            {
+                if (value == null)
+                {
+                    value = new List<ByDayModel>();
+                }
+                _byDayUsage = value;
+            }
+            get { return _byDayUsage != null ? _byDayUsage : new List<ByDayModel>(); }
+        }
+
+        public static List<DayItemModel> FlatDays
+        {
+            get
+            {
+                if (ByDayUsage != null && ByDayUsage.Count > 0)
+                {
+                    List<DayItemModel> dayList = new List<DayItemModel>();
+                    foreach (ByDayModel item in ByDayUsage)
+                    {
+                        if (item != null && item.Days != null)
+                        {
+                            dayList.AddRange(item.Days.DeepClone());
+                        }
+                    }
+                    return dayList;
+                }
+                return new List<DayItemModel>();
+            }
+        }
+
         #endregion
 
         #region User Defaults
@@ -172,8 +272,14 @@ namespace myTNB
                         TariffLegendList = d.data.TariffBlocksLegend;
                         ByMonthDateRange = d.data.ByMonth.Range;
                         ByMonthUsage = d.data.ByMonth.Months;
+                        ByDayUsage = d.data.ByDay;
                         UsageMetrics = d.data.OtherUsageMetrics;
                         Tooltips = d.data.ToolTips;
+                        CurrentCycle = d?.data?.CurrentCycle;
+                        StartDate = d?.data?.StartDate ?? string.Empty;
+                        MidDate = d?.data?.MidDate ?? string.Empty;
+                        EndDate = d?.data?.EndDate ?? string.Empty;
+                        DateRange = d?.data?.DateRange ?? string.Empty;
                         return d;
                     }
                 }

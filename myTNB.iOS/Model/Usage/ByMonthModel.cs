@@ -6,6 +6,7 @@ namespace myTNB.Model.Usage
     {
         public string Range { set; get; }
         public List<MonthItemModel> Months { set; get; }
+        public int Index { set; get; }
     }
 
     public class MonthItemModel
@@ -26,8 +27,7 @@ namespace myTNB.Model.Usage
     public class TariffItemModel
     {
         public string BlockId { set; get; }
-        public string Amount { set; get; }
-        public string Usage { set; get; }
-        public string BlockPrice { set; get; }
+        public double Amount { set; get; }
+        public double Usage { set; get; }
     }
 }

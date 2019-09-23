@@ -1141,7 +1141,6 @@
     <ImageAsset Include="Assets.xcassets\Arrow-Left-Blue.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Arrow-Left-Blue.imageset\Arrow-Left-Blue%402x.png" />
     <ImageAsset Include="Assets.xcassets\Arrow-Left-Blue.imageset\Arrow-Left-Blue%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Pinch-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Bill-Selected.imageset\billSelected%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Bill.imageset\bill%402x-1.png" />
@@ -1184,8 +1183,6 @@
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Pinch-Icon.imageset\Pinch-Icon%402x-1.png" />
-    <ImageAsset Include="Assets.xcassets\Pinch-Icon.imageset\Pinch-Icon%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\deleteDisabled%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\deleteDisabled%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-Generic.imageset\Contents.json" />
@@ -1194,9 +1191,18 @@
     <ImageAsset Include="Assets.xcassets\Notification-Generic.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Notification-Generic.imageset\generic%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Generic.imageset\generic%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Usage-Chart-Indicator.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Usage-Chart-Indicator.imageset\dashboardIndicator%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Usage-Chart-Indicator.imageset\dashboardIndicator%403x.png" />
     <ImageAsset Include="Assets.xcassets\Bills-RE-Banner.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Bills-RE-Banner.imageset\re%402x.png" />
     <ImageAsset Include="Assets.xcassets\Bills-RE-Banner.imageset\re%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Usage-Pinch-Out-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Usage-Pinch-Out-Icon.imageset\Pinch-Icon%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Usage-Pinch-Out-Icon.imageset\Pinch-Icon%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Usage-Pinch-In-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Usage-Pinch-In-Icon.imageset\zoomOut%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Usage-Pinch-In-Icon.imageset\zoomOut%403x.png" />
     <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Scroll-Indicator.imageset\Contents.json" />
@@ -1603,7 +1609,6 @@
     <Folder Include="Assets.xcassets\Trend-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Notification-SSMR.imageset\" />
     <Folder Include="Assets.xcassets\Arrow-Left-Blue.imageset\" />
-    <Folder Include="Assets.xcassets\Pinch-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Bills-No-History-Data.imageset\" />
     <Folder Include="Model\GetAccountBillPayHistory\" />
     <Folder Include="Sitecore CMS\Model\Bill Details\" />
@@ -1619,7 +1624,10 @@
     <Folder Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Banner-Generic.imageset\" />
     <Folder Include="Assets.xcassets\Notification-Generic.imageset\" />
+    <Folder Include="Assets.xcassets\Usage-Chart-Indicator.imageset\" />
     <Folder Include="Assets.xcassets\Bills-RE-Banner.imageset\" />
+    <Folder Include="Assets.xcassets\Usage-Pinch-Out-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Usage-Pinch-In-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Scroll-Indicator.imageset\" />
     <Folder Include="Assets.xcassets\MDMS-Down-Icon.imageset\" />
   </ItemGroup>
@@ -2433,7 +2441,7 @@
     <Compile Include="Model\Usage\ByMonthModel.cs" />
     <Compile Include="Model\Usage\LegendItemModel.cs" />
     <Compile Include="Session Cache\AccountUsageSmartCache.cs" />
-    <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterZOut.cs" />
+    <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterDayZOutView.cs" />
     <Compile Include="Enums\SmartMeterViewEnum.cs" />
     <Compile Include="Components\Usage View\SmartMeterOverlayComponent.cs" />
     <Compile Include="Home\Bill\Bills\NoDataViewCell.cs" />
@@ -2454,8 +2462,12 @@
     <Compile Include="Model\GetAppLaunchMasterData\AppLaunchResponseModel.cs" />
     <Compile Include="Session Cache\AppLaunchMasterCache.cs" />
     <Compile Include="Onboarding\AppLaunchConstants.cs" />
+    <Compile Include="Components\Usage View\Charts\Smart Meter\BaseSmartMeterView.cs" />
+    <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterMonthView.cs" />
     <Compile Include="Model\Notification\DeleteNotificationResponseModel.cs" />
     <Compile Include="Model\Notification\ReadNotificationResponseModel.cs" />
+    <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterConstants.cs" />
+    <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterDayZInView.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

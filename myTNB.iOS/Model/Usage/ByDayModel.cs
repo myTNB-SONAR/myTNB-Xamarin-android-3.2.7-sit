@@ -5,8 +5,8 @@ namespace myTNB.Model.Usage
     public class ByDayModel
     {
         public string Range { set; get; }
-        public string CurrentCycle { set; get; }
         public List<DayItemModel> Days { set; get; }
+        public int Index { set; get; }
     }
 
     public class DayItemModel
@@ -18,6 +18,9 @@ namespace myTNB.Model.Usage
         public string Consumption { set; get; }
         public string Amount { set; get; }
         public string CO2 { set; get; }
+        public bool IsEstimatedReading { set; get; }
+        public bool IsMissingReading { set; get; }
         public List<TariffItemModel> tariffBlocks { set; get; }
+        public bool IsCurrentBillCycle { set; get; }
     }
 }

@@ -289,6 +289,7 @@ namespace myTNB
             {
                 Hidden = true
             };
+
             _viewSmartMeter = new CustomUIView(new CGRect(0, 0, ViewWidth, 0))
             {
                 Hidden = true
@@ -421,7 +422,10 @@ namespace myTNB
             }
             else
             {
-                _chartView = new SmartMeterChartView();
+                _chartView = new SmartMeterChartView()
+                {
+                    PinchOverlayAction = ShowPinchOverlay
+                };
             }
 
             if (_chart != null)
@@ -431,10 +435,6 @@ namespace myTNB
             _chart = isUpdating ? _chartView.GetShimmerUI() : _chartView.GetUI();
             _viewChart.AddSubview(_chart);
             ViewHelper.AdjustFrameSetHeight(_viewChart, _chart.Frame.Height);
-            if (!isUpdating && isSmartMeterAccount)
-            {
-                ShowPinchOverlay();
-            }
         }
 
         #region SMART METER Methods

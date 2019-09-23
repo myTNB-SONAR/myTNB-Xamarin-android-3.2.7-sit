@@ -48,6 +48,6 @@
         public static string I18N_SMOverlayBtnTxt = "SMOverlayBtnTxt";
         public static string I18N_Day = "day";
         public static string I18N_Month = "month";
-        public static string I18N_MDMSUnavailable = "Currently Unavailable";
+        public static string I18N_MDMSUnavailable = "mdmsUnavailable";
     }
 }

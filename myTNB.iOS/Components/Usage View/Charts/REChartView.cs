@@ -56,12 +56,12 @@ namespace myTNB
             List<MonthItemModel> usageData = AccountUsageCache.ByMonthUsage;
             List<string> valueList = usageData.Select(x => x.UsageTotal).ToList();
             double maxValue = GetMaxValue(RMkWhEnum.RM, valueList);
-            double divisor = maxBarHeight / maxValue;
+            double divisor = maxValue > 0 ? maxBarHeight / maxValue : 0;
 
             for (int i = 0; i < usageData.Count; i++)
             {
                 int index = i;
-                bool isSelected = index < usageData.Count - 1;
+                bool isSelected = index == usageData.Count - 1;
                 MonthItemModel item = usageData[index];
                 CustomUIView segment = new CustomUIView(new CGRect(xLoc, 0, segmentWidth, height))
                 {
@@ -86,7 +86,7 @@ namespace myTNB
 
                 UIView viewCover = new UIView(new CGRect(new CGPoint(0, 0), new CGSize(viewBar.Frame.Width, barHeight)))
                 {
-                    BackgroundColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
+                    BackgroundColor = isSelected ?  UIColor.White: UIColor.FromWhiteAlpha(1, 0.50F),
                     Tag = 2001,
                     Hidden = false
                 };
@@ -99,7 +99,7 @@ namespace myTNB
                     Font = TNBFont.MuseoSans_10_300,
                     TextColor = UIColor.White,
                     Text = string.Format(Format_Value, item.UsageTotal, item.UsageUnit),
-                    Hidden = isSelected,
+                    Hidden = !isSelected,
                     Tag = 1002
                 };
                 nfloat lblUsageWidth = lblUsage.GetLabelWidth(GetWidthByScreenSize(100));
@@ -113,7 +113,7 @@ namespace myTNB
                     Font = TNBFont.MuseoSans_10_500,
                     TextColor = UIColor.White,
                     Text = item.AmountTotal.FormatAmountString(item.Currency),
-                    Hidden = isSelected,
+                    Hidden = !isSelected,
                     Tag = 1003
                 };
                 nfloat lblAmountWidth = lblAmount.GetLabelWidth(GetWidthByScreenSize(100));
@@ -123,12 +123,13 @@ namespace myTNB
                     , GetWidthByScreenSize(40), lblHeight))
                 {
                     TextAlignment = UITextAlignment.Center,
-                    Font = isSelected ? TNBFont.MuseoSans_10_300 : TNBFont.MuseoSans_10_500,
+                    Font = isSelected ?  TNBFont.MuseoSans_10_500: TNBFont.MuseoSans_10_300 ,
                     TextColor = UIColor.White,
-                    Text = string.IsNullOrEmpty(item.Year) ? item.Month : string.Format(Format_Value, item.Month, item.Year),
+                    Text = item.Month,
                     Tag = 1004
                 };
-
+                nfloat lblDateWidth = lblDate.GetLabelWidth(GetWidthByScreenSize(100));
+                lblDate.Frame = new CGRect((segmentWidth - lblDateWidth) / 2, lblDate.Frame.Y, lblDateWidth, lblDate.Frame.Height);
                 segment.AddSubviews(new UIView[] { lblUsage, lblAmount, viewBar, lblDate });
 
                 segment.AddGestureRecognizer(new UITapGestureRecognizer(() =>
@@ -151,7 +152,7 @@ namespace myTNB
 
         protected override void OnSegmentTap(int index)
         {
-            UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Heavy);
+            UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Light);
             selectionFeedback.Prepare();
             selectionFeedback.ImpactOccurred();
             for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
@@ -195,6 +196,8 @@ namespace myTNB
                 if (date != null)
                 {
                     date.Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300;
+                    nfloat lblDateWidth = date.GetLabelWidth(GetWidthByScreenSize(100));
+                    date.Frame = new CGRect((segmentView.Frame.Width - lblDateWidth) / 2, date.Frame.Y, lblDateWidth, date.Frame.Height);
                 }
             }
         }
