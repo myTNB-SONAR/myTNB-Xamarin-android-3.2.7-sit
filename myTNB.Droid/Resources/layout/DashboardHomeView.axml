@@ -45,6 +45,5 @@
         android:layout_gravity="bottom"
         android:background="@android:color/white"
         app:itemTextColor="@drawable/bottommenuselector"
-        app:labelVisibilityMode="labeled"
         app:menu="@menu/dashboardnewbottonmenu" /> 
 </android.support.design.widget.CoordinatorLayout>

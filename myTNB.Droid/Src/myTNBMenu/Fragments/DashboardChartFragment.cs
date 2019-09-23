@@ -405,9 +405,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.btnToggleMonth)]
         RadioButton btnToggleMonth;
 
-        [BindView(Resource.Id.smGraphZoomToggleLayout)]
-        LinearLayout smGraphZoomToggleLayout;
-
         private bool isZoomIn = false;
 
         TariffBlockLegendAdapter tariffBlockLegendAdapter;
@@ -770,7 +767,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         isChangeBackgroundNeeded = true;
                         layoutSMSegmentGroup.Visibility = ViewStates.Visible;
                         isSMR = false;
-                        smGraphZoomToggleLayout.Visibility = ViewStates.Gone;
                         // Lin Siong TODO: Stripped bar background implementation
                         // Lin Siong TODO: Estimated Reading Handling & Display
                         // Lin Siong TODO: Fallback for Error from MDMS service
@@ -1248,14 +1244,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [OnClick(Resource.Id.btnToggleDay)]
         internal void OnToggleDay(object sender, EventArgs e)
         {
-            smGraphZoomToggleLayout.Visibility = ViewStates.Visible;
             this.userActionsListener.OnByDay();
         }
 
         [OnClick(Resource.Id.btnToggleMonth)]
         internal void OnToggleMonth(object sender, EventArgs e)
         {
-            smGraphZoomToggleLayout.Visibility = ViewStates.Gone;
             this.userActionsListener.OnByMonth();
         }
 
