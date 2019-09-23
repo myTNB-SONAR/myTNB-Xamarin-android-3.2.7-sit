@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using CoreGraphics;
 using myTNB.Model.Usage;
@@ -86,7 +87,7 @@ namespace myTNB
 
                 UIView viewCover = new UIView(new CGRect(new CGPoint(0, 0), new CGSize(viewBar.Frame.Width, barHeight)))
                 {
-                    BackgroundColor = isSelected ?  UIColor.White: UIColor.FromWhiteAlpha(1, 0.50F),
+                    BackgroundColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F),
                     Tag = 2001,
                     Hidden = false
                 };
@@ -105,6 +106,8 @@ namespace myTNB
                 nfloat lblUsageWidth = lblUsage.GetLabelWidth(GetWidthByScreenSize(100));
                 lblUsage.Frame = new CGRect((segmentWidth - lblUsageWidth) / 2, lblUsage.Frame.Y, lblUsageWidth, lblUsage.Frame.Height);
 
+                double consumptionValue;
+                double.TryParse(item.UsageTotal, out consumptionValue);
                 nfloat amtYLoc = usageYLoc - lblHeight;
                 UILabel lblAmount = new UILabel(new CGRect(0, lblUsage.Frame.GetMinY() - lblHeight
                    , GetWidthByScreenSize(100), lblHeight))
@@ -112,7 +115,7 @@ namespace myTNB
                     TextAlignment = UITextAlignment.Center,
                     Font = TNBFont.MuseoSans_10_500,
                     TextColor = UIColor.White,
-                    Text = item.AmountTotal.FormatAmountString(item.Currency),
+                    Text = Math.Abs(consumptionValue).ToString("N2", CultureInfo.InvariantCulture).FormatAmountString(item.Currency),
                     Hidden = !isSelected,
                     Tag = 1003
                 };
@@ -123,7 +126,7 @@ namespace myTNB
                     , GetWidthByScreenSize(40), lblHeight))
                 {
                     TextAlignment = UITextAlignment.Center,
-                    Font = isSelected ?  TNBFont.MuseoSans_10_500: TNBFont.MuseoSans_10_300 ,
+                    Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300,
                     TextColor = UIColor.White,
                     Text = item.Month,
                     Tag = 1004
