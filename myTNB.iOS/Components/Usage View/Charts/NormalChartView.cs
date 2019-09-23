@@ -56,7 +56,7 @@ namespace myTNB
             List<MonthItemModel> usageData = AccountUsageCache.ByMonthUsage;
             List<string> valueList = usageData.Select(x => x.UsageTotal).ToList();
             double maxValue = GetMaxValue(RMkWhEnum.RM, valueList);
-            double divisor = maxBarHeight / maxValue;
+            double divisor = maxValue > 0 ? maxBarHeight / maxValue : 0;
 
             for (int i = 0; i < usageData.Count; i++)
             {
