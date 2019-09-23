@@ -111,11 +111,11 @@ namespace myTNB.SmartMeterView
                     TextAlignment = UITextAlignment.Center,
                     Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300,
                     TextColor = isSelected ? UIColor.FromWhiteAlpha(1, 0.50F) : UIColor.White,
-                    Text = string.IsNullOrEmpty(item.Year) ? item.Month : string.Format(Format_Value, item.Month, item.Year),
+                    Text = item.Month,
                     Tag = 1003
                 };
                 nfloat lblDateWidth = lblDate.GetLabelWidth(GetWidthByScreenSize(100));
-                lblDate.Frame = new CGRect((segmentWidth - lblDateWidth) / 2, lblDate.Frame.Y, lblAmountWidth, lblDate.Frame.Height);
+                lblDate.Frame = new CGRect((segmentWidth - lblDateWidth) / 2, lblDate.Frame.Y, lblDateWidth, lblDate.Frame.Height);
 
                 segment.AddSubviews(new UIView[] { lblConsumption, viewBar, lblDate });
 

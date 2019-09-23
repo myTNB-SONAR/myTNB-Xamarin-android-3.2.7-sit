@@ -125,11 +125,11 @@ namespace myTNB
                     TextAlignment = UITextAlignment.Center,
                     Font = isSelected ? TNBFont.MuseoSans_10_300 : TNBFont.MuseoSans_10_500,
                     TextColor = UIColor.White,
-                    Text = string.IsNullOrEmpty(item.Year) ? item.Month : string.Format(Format_Value, item.Month, item.Year),
+                    Text = item.Month,
                     Tag = 1004
                 };
                 nfloat lblDateWidth = lblDate.GetLabelWidth(GetWidthByScreenSize(100));
-                lblDate.Frame = new CGRect((segmentWidth - lblDateWidth) / 2, lblDate.Frame.Y, lblAmountWidth, lblDate.Frame.Height);
+                lblDate.Frame = new CGRect((segmentWidth - lblDateWidth) / 2, lblDate.Frame.Y, lblDateWidth, lblDate.Frame.Height);
                 segment.AddSubviews(new UIView[] { lblUsage, lblAmount, viewBar, lblDate });
 
                 segment.AddGestureRecognizer(new UITapGestureRecognizer(() =>
@@ -196,6 +196,8 @@ namespace myTNB
                 if (date != null)
                 {
                     date.Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300;
+                    nfloat lblDateWidth = date.GetLabelWidth(GetWidthByScreenSize(100));
+                    date.Frame = new CGRect((segmentView.Frame.Width - lblDateWidth) / 2, date.Frame.Y, lblDateWidth, date.Frame.Height);
                 }
             }
         }

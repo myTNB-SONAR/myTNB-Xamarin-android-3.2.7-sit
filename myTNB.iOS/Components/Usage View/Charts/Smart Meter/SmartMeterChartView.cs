@@ -306,6 +306,8 @@ namespace myTNB
                 {
                     date.TextColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F);
                     date.Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300;
+                    nfloat lblDateWidth = date.GetLabelWidth(GetWidthByScreenSize(100));
+                    date.Frame = new CGRect((segmentView.Frame.Width - lblDateWidth) / 2, date.Frame.Y, lblDateWidth, date.Frame.Height);
                 }
             }
         }
