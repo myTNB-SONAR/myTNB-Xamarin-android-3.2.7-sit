@@ -286,7 +286,7 @@ namespace myTNB
 
         private void AddAccountSelector()
         {
-            _accountSelector = new AccountSelector();
+            _accountSelector = new AccountSelector(_accountSelectorContainer);
             _viewAccountSelector = _accountSelector.GetUI();
             _accountSelector.SetAction(() =>
             {
