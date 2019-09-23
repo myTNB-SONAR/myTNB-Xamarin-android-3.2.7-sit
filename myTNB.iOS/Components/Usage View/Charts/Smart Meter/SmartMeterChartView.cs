@@ -170,11 +170,6 @@ namespace myTNB
                 _segmentContainer.AddSubview(segment);
                 xLoc += segmentWidth + segmentMargin;
 
-                if (isLatestBar)
-                {
-                    item.IsCurrentlyUnavailable = true;
-                }
-
                 if (!isLatestBar || (isLatestBar && !item.IsCurrentlyUnavailable))
                 {
                     double.TryParse(item.UsageTotal, out double value);
