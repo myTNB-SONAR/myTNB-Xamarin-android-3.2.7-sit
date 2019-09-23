@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>CFBundleShortVersionString</key>
-	<string>1.2.0</string>
+	<string>2.0.0</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MinimumOSVersion</key>
@@ -100,6 +100,6 @@ to find Kedai Tenaga nearby.</string>
 	<key>CFBundleDisplayName</key>
 	<string>myTNB</string>
 	<key>CFBundleVersion</key>
-	<string>23</string>
+	<string>1</string>
 </dict>
 </plist>
