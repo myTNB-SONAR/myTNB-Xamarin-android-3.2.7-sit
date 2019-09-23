@@ -29,7 +29,7 @@ namespace myTNB
         {
             return Task.Factory.StartNew(() =>
             {
-                isReachable = Reachability.IsHostReachable("http://google.com");
+                isReachable = Reachability.IsHostReachable("https://mobiletestingws.tnb.com.my/v6/mytnbappws.asmx");
             });
         }
     }

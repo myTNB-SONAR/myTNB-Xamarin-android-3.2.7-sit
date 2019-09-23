@@ -1055,9 +1055,6 @@
     <ImageAsset Include="Assets.xcassets\RmKwh-Dropdown-Icon.imageset\RmKwh-Dropdown-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\RmKwh-Dropdown-Icon.imageset\RmKwh-Dropdown-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon.png" />
-    <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-NoData.imageset\noEliglibleAcc%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-Refresh.imageset\Contents.json" />
@@ -1206,6 +1203,14 @@
     <ImageAsset Include="Assets.xcassets\Usage-Pinch-In-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Usage-Pinch-In-Icon.imageset\zoomOut%402x.png" />
     <ImageAsset Include="Assets.xcassets\Usage-Pinch-In-Icon.imageset\zoomOut%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Info-Black-Icon.imageset\Info-Black-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Scroll-Indicator.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Scroll-Indicator.imageset\Scroll-Indicator%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Scroll-Indicator.imageset\Scroll-Indicator%403x-1.png" />
+    <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\MDMS-Down-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\MDMS-Down-Icon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1623,6 +1628,8 @@
     <Folder Include="Assets.xcassets\Bills-RE-Banner.imageset\" />
     <Folder Include="Assets.xcassets\Usage-Pinch-Out-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Usage-Pinch-In-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Scroll-Indicator.imageset\" />
+    <Folder Include="Assets.xcassets\MDMS-Down-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

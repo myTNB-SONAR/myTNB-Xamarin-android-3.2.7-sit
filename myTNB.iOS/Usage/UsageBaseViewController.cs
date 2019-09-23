@@ -26,7 +26,7 @@ namespace myTNB
             , _viewChart, _viewRE, _viewLegend, _viewToggle, _viewSSMR, _viewSmartMeter, _viewTips, _viewFooter, _rmKwhDropDownView, _viewRefresh
             , _chart, _tips, _RE, _RERefresh, _status, _sm, _ssmr, _ssmrRefresh, _tariff, _legend, _refresh;
         internal UILabel _lblAddress, _RMLabel, _kWhLabel;
-        internal UIImageView _bgImageView;
+        internal UIImageView _bgImageView, _scrollIndicatorView;
         internal UIView _smOverlayParentView;
 
         internal bool _rmkWhFlag, _tariffIsVisible;
@@ -143,6 +143,16 @@ namespace myTNB
 
         private void ResetViews()
         {
+            if (_refreshScrollView != null)
+            {
+                _refreshScrollView.Hidden = true;
+            }
+
+            if (_scrollViewContent != null)
+            {
+                _scrollViewContent.Hidden = false;
+            }
+
             InitializeValues();
             _rmkWhFlag = false;
             _tariffIsVisible = false;
@@ -154,6 +164,7 @@ namespace myTNB
                 HideSSMRView();
             }
             UpdateBackgroundImage(false);
+            SetFooterView();
             AddSubviews();
             SetContentView();
         }
@@ -168,16 +179,6 @@ namespace myTNB
             };
             UIView viewTitleBar = new UIView(new CGRect(0, DeviceHelper.GetStatusBarHeight() + GetScaledHeight(8f), _navbarContainer.Frame.Width, GetScaledHeight(24f)));
 
-            UILabel lblTitle = new UILabel(new CGRect(GetScaledWidth(56f), 0, viewTitleBar.Frame.Width - (GetScaledWidth(56) * 2), GetScaledHeight(24f)))
-            {
-                Font = TNBFont.MuseoSans_16_500,
-                Text = GetI18NValue(UsageConstants.I18N_Usage)
-            };
-
-            lblTitle.TextAlignment = UITextAlignment.Center;
-            lblTitle.TextColor = UIColor.White;
-            viewTitleBar.AddSubview(lblTitle);
-
             nfloat imageWidth = GetScaledWidth(24f);
             UIView viewBack = new UIView(new CGRect(BaseMarginWidth16, 0, imageWidth, imageWidth));
             UIImageView imgViewBack = new UIImageView(new CGRect(0, 0, imageWidth, imageWidth))
@@ -190,6 +191,12 @@ namespace myTNB
             }));
             viewBack.AddSubview(imgViewBack);
             viewTitleBar.AddSubview(viewBack);
+
+            nfloat xPos = viewBack.Frame.GetMaxX() + GetScaledWidth(5);
+            _accountSelectorContainer = new CustomUIView(new CGRect(xPos, 0, ViewWidth - xPos - BaseMarginWidth16, GetScaledHeight(24)));
+            AddAccountSelector();
+            viewTitleBar.AddSubview(_accountSelectorContainer);
+
             _navbarContainer.AddSubview(viewTitleBar);
             View.AddSubview(_navbarContainer);
         }
@@ -255,7 +262,6 @@ namespace myTNB
             _scrollViewContent.Scrolled += OnScroll;
             View.AddSubview(_scrollViewContent);
 
-            _accountSelectorContainer = new CustomUIView(new CGRect(0, 0, ViewWidth, GetScaledHeight(24)));
             _lblAddress = new UILabel(new CGRect(BaseMargin, 0, BaseMarginedWidth, 0))
             {
                 LineBreakMode = UILineBreakMode.WordWrap,
@@ -297,13 +303,12 @@ namespace myTNB
                 Hidden = true
             };
 
-            _scrollViewContent.AddSubviews(new UIView[] { _accountSelectorContainer
-                , _lblAddress, _viewSeparator, _viewStatus, _viewChart, _viewSmartMeter, _viewRE, _viewLegend, _viewToggle, _viewSSMR, _viewTips });
+            _scrollViewContent.AddSubviews(new UIView[] { _lblAddress, _viewSeparator, _viewStatus, _viewChart, _viewSmartMeter, _viewRE, _viewLegend, _viewToggle, _viewSSMR, _viewTips });
         }
 
         private void SetContentView()
         {
-            _lblAddress.Frame = new CGRect(new CGPoint(BaseMargin, GetYLocationFromFrame(_accountSelectorContainer.Frame, 8F)), _lblAddress.Frame.Size);
+            _lblAddress.Frame = new CGRect(new CGPoint(BaseMargin, 0), _lblAddress.Frame.Size);
             _viewSeparator.Frame = new CGRect(new CGPoint(BaseMargin, GetYLocationFromFrame(_lblAddress.Frame, 16F)), _viewSeparator.Frame.Size);
 
             if (!AccountStatusCache.AccountStatusIsAvailable() && !_viewStatus.Hidden)
@@ -365,7 +370,6 @@ namespace myTNB
             {
                 SetEnergyTipsComponent();
             }
-            SetFooterView();
             SetREAmountView();
         }
 
@@ -376,7 +380,7 @@ namespace myTNB
                 _viewAccountSelector.RemoveFromSuperview();
             }
 
-            _accountSelector = new AccountSelector();
+            _accountSelector = new AccountSelector(_accountSelectorContainer);
             _viewAccountSelector = _accountSelector.GetUI();
             _accountSelector.SetAction(null);
             _accountSelectorContainer.AddSubview(_viewAccountSelector);
@@ -1032,7 +1036,7 @@ namespace myTNB
         }
         #endregion
         #region FOOTER Methods
-        internal void SetFooterView()
+        internal void SetFooterView(bool isRefreshScreen = false)
         {
             if (!isREAccount)
             {
@@ -1040,16 +1044,17 @@ namespace myTNB
                 {
                     _viewFooter.RemoveFromSuperview();
                 }
-                nfloat footerHeight = GetScaledHeight(136);
+                nfloat componentHeight = GetScaledHeight(136);
+                nfloat indicatorHeight = isRefreshScreen ? 0 : GetScaledHeight(48);
+                nfloat footerHeight = indicatorHeight + componentHeight;
                 nfloat footerYPos = _scrollViewContent.Frame.GetMaxY() - footerHeight;
                 _viewFooter = new CustomUIView(new CGRect(0, footerYPos, ViewWidth, footerHeight))
                 {
                     BackgroundColor = UIColor.Clear
                 };
                 _origViewFrame = _viewFooter.Frame;
-                AddFooterShadow(ref _viewFooter);
                 View.AddSubview(_viewFooter);
-                _footerViewComponent = new UsageFooterViewComponent(View, footerHeight);
+                _footerViewComponent = new UsageFooterViewComponent(View, footerHeight, indicatorHeight);
                 _viewFooter.AddSubview(_footerViewComponent.GetUI());
                 _footerViewComponent._btnViewBill.TouchUpInside += (sender, e) =>
                 {
@@ -1060,6 +1065,27 @@ namespace myTNB
                     DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
                     OnPayButtonTap(dueData.amountDue);
                 };
+                if (!isRefreshScreen)
+                {
+                    if (_scrollIndicatorView != null)
+                    {
+                        _scrollIndicatorView.RemoveFromSuperview();
+                    }
+                    _scrollIndicatorView = new UIImageView(new CGRect(0, 0, ViewWidth, GetScaledHeight(48)))
+                    {
+                        UserInteractionEnabled = true
+                    };
+                    _scrollIndicatorView.Image = UIImage.FromBundle(UsageConstants.IMG_ScrollIndicator);
+                    _scrollIndicatorView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                    {
+                        AnimateFooterToHideAndShow(true);
+                    }));
+                    _viewFooter.AddSubview(_scrollIndicatorView);
+                }
+                else
+                {
+                    UpdateFooterUI(false);
+                }
             }
             else
             {
@@ -1160,20 +1186,11 @@ namespace myTNB
             );
             }
         }
-
-        private void AddFooterShadow(ref CustomUIView view)
-        {
-            view.Layer.MasksToBounds = false;
-            view.Layer.ShadowColor = MyTNBColor.BabyBlue35.CGColor;
-            view.Layer.ShadowOpacity = 1f;
-            view.Layer.ShadowOffset = new CGSize(0, -8);
-            view.Layer.ShadowRadius = 8;
-            view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
-        }
         #endregion
         #region Refresh Methods
         internal void SetRefreshScreen()
         {
+            SetFooterView(true);
             _scrollViewContent.Hidden = true;
             _refreshScrollView.Hidden = false;
             UpdateBGForRefresh();
@@ -1200,8 +1217,6 @@ namespace myTNB
         }
         internal virtual void RefreshButtonOnTap()
         {
-            _refreshScrollView.Hidden = true;
-            _scrollViewContent.Hidden = false;
             if (!isREAccount && accountIsSSMR)
             {
                 _viewSSMR.AddSubview(_ssmr);

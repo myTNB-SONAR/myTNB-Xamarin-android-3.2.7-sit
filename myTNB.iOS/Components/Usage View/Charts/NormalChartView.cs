@@ -114,11 +114,9 @@ namespace myTNB
                     TextAlignment = UITextAlignment.Center,
                     Font = isSelected ? TNBFont.MuseoSans_10_300 : TNBFont.MuseoSans_10_500,
                     TextColor = UIColor.White,
-                    Text = item.Month,
+                    Text = string.IsNullOrEmpty(item.Year) ? item.Month : string.Format(Format_Value, item.Month, item.Year),
                     Tag = 1003
                 };
-                nfloat lblDateWidth = lblDate.GetLabelWidth(GetWidthByScreenSize(100));
-                lblDate.Frame = new CGRect((segmentWidth - lblDateWidth) / 2, lblDate.Frame.Y, lblDateWidth, lblDate.Frame.Height);
 
                 segment.AddSubviews(new UIView[] { lblAmount, viewBar, lblDate });
 
@@ -154,9 +152,8 @@ namespace myTNB
             {
                 TariffItemModel item = tariffList[i];
                 double val = item.Usage;
-                //double.TryParse(item.Usage, out double val);
-                nfloat percentage = (nfloat)(val / baseValue);
-                nfloat blockHeight = baseHeigt * percentage;
+                double percentage = (baseValue > 0) ? (nfloat)(val / baseValue) : 0;
+                nfloat blockHeight = (nfloat)(baseHeigt * percentage);
                 barMaxY -= blockHeight;
                 UIView viewTariffBlock = new UIView(new CGRect(0, barMaxY, size.Width, blockHeight))
                 {
@@ -170,7 +167,7 @@ namespace myTNB
 
         protected override void OnSegmentTap(int index)
         {
-            UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Light);
+            UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Heavy);
             selectionFeedback.Prepare();
             selectionFeedback.ImpactOccurred();
             for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
@@ -209,15 +206,12 @@ namespace myTNB
                 if (date != null)
                 {
                     date.Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300;
-                    nfloat lblDateWidth = date.GetLabelWidth(GetWidthByScreenSize(100));
-                    date.Frame = new CGRect((segmentView.Frame.Width - lblDateWidth) / 2, date.Frame.Y, lblDateWidth, date.Frame.Height);
                 }
             }
         }
 
         public override void ToggleTariffView(bool isTariffView)
         {
-            if (_segmentContainer == null) { return; }
             nfloat amountBarMargin = GetHeightByScreenSize(4);
             for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
             {
@@ -257,7 +251,6 @@ namespace myTNB
 
         public override void ToggleRMKWHValues(RMkWhEnum state)
         {
-            if (_segmentContainer == null) { return; }
             List<MonthItemModel> usageData = AccountUsageCache.ByMonthUsage;
             for (int i = 0; i < _segmentContainer.Subviews.Count(); i++)
             {

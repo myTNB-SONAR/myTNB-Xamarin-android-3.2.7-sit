@@ -10,19 +10,19 @@ namespace myTNB
         UIView _parentView, _containerView, _shimmerParent, _shimmerContent, _viewTitle, _viewAmount, _viewDate;
         public UIButton _btnViewBill, _btnPay;
         UILabel _lblPaymentTitle, _lblAmount, _lblDate, _lblCommon;
-        nfloat _width;
-        nfloat _viewHeight;
+        nfloat _width, _viewHeight, _yPos;
 
-        public UsageFooterViewComponent(UIView view, nfloat viewHeight)
+        public UsageFooterViewComponent(UIView view, nfloat viewHeight, nfloat yPos)
         {
             _parentView = view;
             _width = _parentView.Frame.Width;
             _viewHeight = viewHeight;
+            _yPos = yPos;
         }
 
         private void CreateComponent()
         {
-            _containerView = new UIView(new CGRect(0, 0, _width, _viewHeight))
+            _containerView = new UIView(new CGRect(0, _yPos, _width, _viewHeight))
             {
                 BackgroundColor = UIColor.White
             };

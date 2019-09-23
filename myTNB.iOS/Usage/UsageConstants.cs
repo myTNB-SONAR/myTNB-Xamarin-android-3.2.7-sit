@@ -13,6 +13,7 @@
         public static string IMG_ChartIndicator = "Usage-Chart-Indicator";
         public static string IMG_PinchIn = "Usage-Pinch-In-Icon";
         public static string IMG_PinchOut = "Usage-Pinch-Out-Icon";
+        public static string IMG_ScrollIndicator = "Scroll-Indicator";
 
         //PageName
         public static string PageName = "UsageView";

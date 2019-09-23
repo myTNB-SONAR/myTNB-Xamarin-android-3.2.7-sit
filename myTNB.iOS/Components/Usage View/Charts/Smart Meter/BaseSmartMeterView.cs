@@ -60,5 +60,20 @@ namespace myTNB.SmartMeterView
         {
             return ScaleUtility.GetYLocationFromFrameScreenSize(frame, yValue);
         }
+
+        public nfloat GetScaledWidth(nfloat value)
+        {
+            return ScaleUtility.GetScaledWidth(value);
+        }
+
+        public nfloat GetScaledHeight(nfloat value)
+        {
+            return ScaleUtility.GetScaledHeight(value);
+        }
+
+        public nfloat GetXLocationToCenterObject(nfloat width, UIView view = null)
+        {
+            return ScaleUtility.GetXLocationToCenterObject(width, view);
+        }
     }
 }

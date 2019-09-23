@@ -21,6 +21,7 @@
         public static string IMG_TrendUpIcon = "Trend-Up-Icon";
         public static string IMG_TrendDownIcon = "Trend-Down-Icon";
         public static string IMG_ArrowLeftBlueIcon = "Arrow-Left-Blue";
+        public static string IMG_MDMSDownIcon = "MDMS-Down-Icon";
 
         //I18N Keys
         public static string I18N_BCRMMessage = "bcrmMessage";
@@ -47,5 +48,6 @@
         public static string I18N_SMOverlayBtnTxt = "SMOverlayBtnTxt";
         public static string I18N_Day = "day";
         public static string I18N_Month = "month";
+        public static string I18N_MDMSUnavailable = "mdmsUnavailable";
     }
 }

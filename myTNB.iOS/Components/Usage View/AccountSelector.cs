@@ -7,16 +7,19 @@ namespace myTNB
 {
     public class AccountSelector : BaseComponent
     {
-        public AccountSelector() { }
+        public AccountSelector(CustomUIView parentView)
+        {
+            _parentView = parentView;
+        }
 
-        private CustomUIView _mainView, _viewContainer;
+        private CustomUIView _parentView, _mainView, _viewContainer;
         private UILabel _lblTitle;
         private UIImageView _imgDropDown;
         private nfloat _width;
 
         private void CreateUI()
         {
-            _width = UIScreen.MainScreen.Bounds.Width;
+            _width = _parentView.Frame.Width;
             nfloat height = GetScaledHeight(24);
             _mainView = new CustomUIView(new CGRect(0, 0, _width, height));
             _viewContainer = new CustomUIView(new CGRect(0, 0, _width, height));

@@ -59,7 +59,8 @@
         "SMOverlayMsg": "Pinch to zoom in or out! Zoom in to view your daily breakdown.",
         "SMOverlayBtnTxt": "Got It!",
         "day": "Day",
-        "month": "Month"
+        "month": "Month",
+        "mdmsUnavailable": "Currently Unavailable"
     },
     "Hint": {
         "mobileNumber": "Please include the country code of your phone number.",

@@ -237,13 +237,14 @@ namespace myTNB
                 ClipsToBounds = true
             };
             if (isLatestBar) { viewTariffContainer.Layer.CornerRadius = size.Width / 2; }
+
             for (int i = 0; i < tariffList.Count; i++)
             {
                 TariffItemModel item = tariffList[i];
                 double val = item.Usage;
-                if (val == 0) { continue; }
-                nfloat percentage = (nfloat)(val / baseValue); // if 0/0
-                nfloat blockHeight = baseHeigt * percentage;
+                double percentage = (baseValue > 0) ? (nfloat)(val / baseValue) : 0;
+                nfloat blockHeight = (nfloat)(baseHeigt * percentage);
+
                 barMaxY -= blockHeight;
                 UIView viewTariffBlock = new UIView(new CGRect(0, barMaxY, size.Width, blockHeight))
                 {
@@ -272,7 +273,15 @@ namespace myTNB
                 CustomUIView bar = segmentView.ViewWithTag(1001) as CustomUIView;
                 if (isLatestBar)
                 {
-                    bar.Layer.BorderColor = (isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F)).CGColor;
+                    if (bar != null)
+                    {
+                        bar.Layer.BorderColor = (isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F)).CGColor;
+                    }
+                    UILabel indicatorLabel = segmentView.ViewWithTag(1004) as UILabel;
+                    if (indicatorLabel != null)
+                    {
+                        indicatorLabel.Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300;
+                    }
                 }
                 if (bar != null)
                 {
@@ -298,13 +307,11 @@ namespace myTNB
                 UILabel value = segmentView.ViewWithTag(1002) as UILabel;
                 if (value != null)
                 {
-                    value.TextColor = isLatestBar || isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F);
                     value.Hidden = isLatestBar ? false : !isSelected;
                 }
                 UILabel date = segmentView.ViewWithTag(1003) as UILabel;
                 if (date != null)
                 {
-                    date.TextColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F);
                     date.Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300;
                     nfloat lblDateWidth = date.GetLabelWidth(GetWidthByScreenSize(100));
                     date.Frame = new CGRect((segmentView.Frame.Width - lblDateWidth) / 2, date.Frame.Y, lblDateWidth, date.Frame.Height);
