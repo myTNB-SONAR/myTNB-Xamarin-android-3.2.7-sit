@@ -493,8 +493,8 @@
                                 <ImageView
                                     android:id="@+id/re_img"
                                     android:src="@drawable/re_meter_dashboard"
-                                    android:layout_width="28dp"
-                                    android:layout_height="28dp"
+                                    android:layout_width="32dp"
+                                    android:layout_height="32dp"
                                     android:layout_marginLeft="2dp"
                                     android:layout_marginRight="12dp"
                                     android:layout_gravity="center"
