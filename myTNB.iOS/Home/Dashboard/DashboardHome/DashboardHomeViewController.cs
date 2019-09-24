@@ -260,6 +260,7 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
             PushNotificationViewController viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
             UINavigationController navController = new UINavigationController(viewController);
+            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(navController, true, null);
         }
 
@@ -269,7 +270,8 @@ namespace myTNB
             var viewController = storyBoard.InstantiateViewController("AccountsViewController") as AccountsViewController;
             viewController.isDashboardFlow = true;
             viewController._needsUpdate = true;
-            var navController = new UINavigationController(viewController);
+            UINavigationController navController = new UINavigationController(viewController);
+            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(navController, true, null);
         }
 

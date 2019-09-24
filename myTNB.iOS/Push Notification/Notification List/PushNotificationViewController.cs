@@ -327,6 +327,7 @@ namespace myTNB.PushNotification
                             }
                         }));
                         deleteAlert.AddAction(UIAlertAction.Create("Common_No".Translate(), UIAlertActionStyle.Cancel, null));
+                        deleteAlert.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                         PresentViewController(deleteAlert, animated: true, completionHandler: null);
                     }
                 }
@@ -367,6 +368,7 @@ namespace myTNB.PushNotification
                 viewController.OnSelect = OnSelectAction;
                 viewController.SelectedIndex = DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex;
                 UINavigationController navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(navController, true, null);
             }));
             _headerView.AddSubview(accountSelectionView);

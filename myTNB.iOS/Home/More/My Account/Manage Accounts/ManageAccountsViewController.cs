@@ -78,7 +78,8 @@ namespace myTNB
             if (viewController != null)
             {
                 viewController.CustomerRecord = CustomerRecord;
-                var navController = new UINavigationController(viewController);
+                UINavigationController navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(navController, true, null);
             }
         }
@@ -122,7 +123,7 @@ namespace myTNB
 
         internal void OnRemoveAccount()
         {
-            var alert = UIAlertController.Create("Manage_RemoveAccount".Translate()
+            UIAlertController alert = UIAlertController.Create("Manage_RemoveAccount".Translate()
                 , string.Format("Manage_RemoveAccountMessage".Translate(), CustomerRecord.accDesc, CustomerRecord.accNum)
                 , UIAlertControllerStyle.Alert);
             alert.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Default, (obj) =>
@@ -150,6 +151,7 @@ namespace myTNB
             {
 
             }));
+            alert.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(alert, animated: true, completionHandler: null);
         }
 

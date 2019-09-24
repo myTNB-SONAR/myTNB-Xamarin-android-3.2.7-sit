@@ -52,6 +52,7 @@ namespace myTNB
             message = message ?? "Error_DefaultMessage".Translate();
             var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
             alert.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Cancel, handler));
+            alert.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             controller.PresentViewController(alert, animated: true, completionHandler: null);
         }
 
@@ -129,15 +130,18 @@ namespace myTNB
                 Editable = false,
                 ScrollEnabled = true,
                 AttributedText = mutableHTMLBody,
-                WeakLinkTextAttributes = linkAttributes.Dictionary
+                WeakLinkTextAttributes = linkAttributes.Dictionary,
+                ContentInset = new UIEdgeInsets(-5, -5, -5, -5)
             };
             txtViewDetails.ScrollIndicatorInsets = UIEdgeInsets.Zero;
 
             //Resize
             CGSize size = txtViewDetails.SizeThatFits(new CGSize(width - 24, maxDescriptionHeight));
             nfloat txtViewHeight = size.Height > maxDescriptionHeight ? maxDescriptionHeight : size.Height;
-            txtViewDetails.Frame = new CGRect(12, txtViewY, width - 24, txtViewHeight);
+            txtViewDetails.Frame = new CGRect(12, txtViewY, width - 24, txtViewHeight +15);
             txtViewDetails.TextAlignment = descriptionAlignment;
+            txtViewDetails.Layer.BorderColor = UIColor.Red.CGColor;
+            txtViewDetails.Layer.BorderWidth = 1;
             UIView viewline = new UIView(new CGRect(0, txtViewDetails.Frame.GetMaxY(), width, 1))
             {
                 BackgroundColor = MyTNBColor.LightGrayBG
@@ -242,6 +246,7 @@ namespace myTNB
                                 viewController.URL = urlString;
                                 viewController.IsDelegateNeeded = false;
                                 var navController = new UINavigationController(viewController);
+                                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                                 topVc.PresentViewController(navController, true, null);
                             }
                         }

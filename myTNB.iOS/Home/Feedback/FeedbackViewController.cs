@@ -143,7 +143,8 @@ namespace myTNB
                 {
                     submittedFeedbackVC.SubmittedFeedback = _submittedFeedback;
                     submittedFeedbackVC.Title = title;
-                    var navController = new UINavigationController(submittedFeedbackVC);
+                    UINavigationController navController = new UINavigationController(submittedFeedbackVC);
+                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                     PresentViewController(navController, true, null);
                 }
             }
@@ -159,7 +160,8 @@ namespace myTNB
                  storyBoard.InstantiateViewController("FeedbackEntryViewController") as FeedbackEntryViewController;
                 feedbackEntryViewController.FeedbackID = id;
                 feedbackEntryViewController.IsLoggedIn = DataManager.DataManager.SharedInstance.IsLoggedIn();//!isFromPreLogin;
-                var navController = new UINavigationController(feedbackEntryViewController);
+                UINavigationController navController = new UINavigationController(feedbackEntryViewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(navController, true, null);
             }
         }

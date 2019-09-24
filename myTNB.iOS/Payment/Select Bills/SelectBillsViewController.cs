@@ -387,6 +387,7 @@ namespace myTNB
                 viewController.AccountsForPayment = _accountsForPayment;
                 viewController.TotalAmount = totalAmount;
                 var navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(navController, true, null);
             };
 

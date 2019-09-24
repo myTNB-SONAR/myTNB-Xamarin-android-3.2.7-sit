@@ -124,6 +124,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 viewController.OnSelect = OnSelectAction;
                 viewController.SelectedIndex = DataManager.DataManager.SharedInstance.CurrentSelectedFeedAccountNoIndex;
                 var navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 _controller.PresentViewController(navController, true, null);
             }));
         }

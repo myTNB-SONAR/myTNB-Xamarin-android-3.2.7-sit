@@ -494,7 +494,8 @@ namespace myTNB.Dashboard
                         UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                         SelectAccountTableViewController viewController =
                             storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
-                        var navController = new UINavigationController(viewController);
+                        UINavigationController navController = new UINavigationController(viewController);
+                        navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                         PresentViewController(navController, true, null);
                     });
                     _dashboardMainComponent._accountSelectionComponent.SetSelectAccountEvent(accountSelectionGesture);
@@ -640,7 +641,8 @@ namespace myTNB.Dashboard
                                 if (selectBillsVC != null)
                                 {
                                     selectBillsVC.SelectedAccountDueAmount = _amountDue;
-                                    var navController = new UINavigationController(selectBillsVC);
+                                    UINavigationController navController = new UINavigationController(selectBillsVC);
+                                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                                     PresentViewController(navController, true, null);
                                 }
                             }
@@ -667,7 +669,8 @@ namespace myTNB.Dashboard
                                 if (viewController != null)
                                 {
                                     viewController.OnDone = OnViewDone;
-                                    var navController = new UINavigationController(viewController);
+                                    UINavigationController navController = new UINavigationController(viewController);
+                                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                                     PresentViewController(navController, true, null);
                                 }
                             }
@@ -696,7 +699,8 @@ namespace myTNB.Dashboard
                     {
                         viewController.isDashboardFlow = true;
                         viewController._needsUpdate = true;
-                        var navController = new UINavigationController(viewController);
+                        UINavigationController navController = new UINavigationController(viewController);
+                        navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                         PresentViewController(navController, true, null);
                     }
                 };
@@ -721,7 +725,8 @@ namespace myTNB.Dashboard
                     DataManager.DataManager.SharedInstance.IsSameAccount = true;
                     UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
                     PushNotificationViewController viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
-                    var navController = new UINavigationController(viewController);
+                    UINavigationController navController = new UINavigationController(viewController);
+                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                     PresentViewController(navController, true, null);
                 });
                 _dashboardMainComponent._titleBarComponent.SetPrimaryAction(notificationTap);
@@ -775,7 +780,8 @@ namespace myTNB.Dashboard
                 storyBoard.InstantiateViewController("SSMRReadingHistoryViewController") as SSMRReadingHistoryViewController;
             if (viewController != null)
             {
-                var navController = new UINavigationController(viewController);
+                UINavigationController navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(navController, true, null);
             }
         }
@@ -788,7 +794,8 @@ namespace myTNB.Dashboard
             if (viewController != null)
             {
                 viewController.IsFromDashboard = true;
-                var navController = new UINavigationController(viewController);
+                UINavigationController navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(navController, true, null);
             }
         }
@@ -833,7 +840,8 @@ namespace myTNB.Dashboard
                     UIStoryboard storyBoard = UIStoryboard.FromName("GetAccess", null);
                     GetAccessViewController viewController =
                         storyBoard.InstantiateViewController("GetAccessViewController") as GetAccessViewController;
-                    var navController = new UINavigationController(viewController);
+                    UINavigationController navController = new UINavigationController(viewController);
+                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                     PresentViewController(navController, true, null);
                 };
             }

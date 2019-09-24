@@ -515,6 +515,7 @@ namespace myTNB.Registration
             {
                 ValidateFields(_isKeyboardDismissed);
             }));
+            alert.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(alert, animated: true, completionHandler: null);
         }
 
@@ -749,6 +750,7 @@ namespace myTNB.Registration
                         {
                             UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                             UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
+                            loginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                             PresentViewController(loginVC, true, null);
                             ActivityIndicator.Hide();
                         }
@@ -760,6 +762,7 @@ namespace myTNB.Registration
 
                         UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                         UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
+                        loginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                         PresentViewController(loginVC, true, null);
                         ActivityIndicator.Hide();
                     }
@@ -781,6 +784,7 @@ namespace myTNB.Registration
                         DataManager.DataManager.SharedInstance.BillingAccountDetails = _billingAccountDetailsList?.d?.data;
                         UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                         UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
+                        loginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                         PresentViewController(loginVC, true, null);
                         ActivityIndicator.Hide();
                     }

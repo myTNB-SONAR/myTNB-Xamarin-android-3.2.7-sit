@@ -667,6 +667,7 @@ namespace myTNB
                 Delegate = pickerDelegate,
                 SourceType = UIImagePickerControllerSourceType.PhotoLibrary
             };
+            imgPicker.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(imgPicker, true, null);
         }
 

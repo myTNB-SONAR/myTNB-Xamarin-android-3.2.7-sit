@@ -71,6 +71,7 @@ namespace myTNB
             var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
             alert.AddAction(UIAlertAction.Create(string.IsNullOrEmpty(actionTitle) ? "Common_Ok".Translate() : actionTitle
                 , UIAlertActionStyle.Cancel, handler));
+            alert.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             view.PresentViewController(alert, animated: true, completionHandler: null);
         }
     }

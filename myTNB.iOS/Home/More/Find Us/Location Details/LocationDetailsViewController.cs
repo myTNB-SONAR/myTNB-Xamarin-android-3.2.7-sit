@@ -205,8 +205,9 @@ namespace myTNB
                     });
                     mapAlert.AddAction(action);
                 }
-                var cancelAction = UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, null);
+                UIAlertAction cancelAction = UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, null);
                 mapAlert.AddAction(cancelAction);
+                mapAlert.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(mapAlert, animated: true, completionHandler: null);
             }
             else

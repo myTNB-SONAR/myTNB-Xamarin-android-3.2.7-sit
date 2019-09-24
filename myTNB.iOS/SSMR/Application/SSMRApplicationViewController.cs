@@ -187,6 +187,7 @@ namespace myTNB
                 {
                     viewController.isPresentedVC = true;
                     UINavigationController navController = new UINavigationController(viewController);
+                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                     PresentViewController(navController, true, null);
                 }
             }));

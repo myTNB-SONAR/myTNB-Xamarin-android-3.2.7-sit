@@ -208,7 +208,8 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName("FindUs", null);
             FindUsViewController viewController =
                 storyBoard.InstantiateViewController("FindUsViewController") as FindUsViewController;
-            var navController = new UINavigationController(viewController);
+            UINavigationController navController = new UINavigationController(viewController);
+            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(navController, true, null);
         }
 
@@ -227,7 +228,8 @@ namespace myTNB
             {
                 UIStoryboard storyBoard = UIStoryboard.FromName("NotificationSettings", null);
                 NotificationSettingsViewController viewController = storyBoard.InstantiateViewController("NotificationSettingsViewController") as NotificationSettingsViewController;
-                var navController = new UINavigationController(viewController);
+                UINavigationController navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(navController, true, null);
                 ActivityIndicator.Hide();
             }
@@ -258,7 +260,8 @@ namespace myTNB
             viewController.Items = LanguageSettings.SupportedLanguage;
             viewController.OnSelect = LanguageSettings.OnSelect;
             viewController.SelectedIndex = LanguageSettings.SelectedLangugageIndex;
-            var navController = new UINavigationController(viewController);
+            UINavigationController navController = new UINavigationController(viewController);
+            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(navController, true, null);
         }
 
@@ -272,7 +275,8 @@ namespace myTNB
                     UIStoryboard storyBoard = UIStoryboard.FromName("MyAccount", null);
                     MyAccountViewController viewController =
                         storyBoard.InstantiateViewController("MyAccountViewController") as MyAccountViewController;
-                    var navController = new UINavigationController(viewController);
+                    UINavigationController navController = new UINavigationController(viewController);
+                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                     PresentViewController(navController, true, null);
                     ActivityIndicator.Hide();
                 });
@@ -287,7 +291,8 @@ namespace myTNB
             if (viewController != null)
             {
                 viewController.isPresentedVC = true;
-                var navController = new UINavigationController(viewController);
+                UINavigationController navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(navController, true, null);
             }
         }
@@ -297,7 +302,8 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName("FAQ", null);
             FAQViewController viewController =
                 storyBoard.InstantiateViewController("FAQViewController") as FAQViewController;
-            var navController = new UINavigationController(viewController);
+            UINavigationController navController = new UINavigationController(viewController);
+            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(navController, true, null);
         }
 
@@ -323,7 +329,8 @@ namespace myTNB
                         viewController.NavigationTitle = title;
                         viewController.URL = url;
                         viewController.IsDelegateNeeded = false;
-                        var navController = new UINavigationController(viewController);
+                        UINavigationController navController = new UINavigationController(viewController);
+                        navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                         PresentViewController(navController, true, null);
                     }
                     return;
@@ -383,6 +390,7 @@ namespace myTNB
                     UIActivity[] applicationActivities = null;
                     var activityController = new UIActivityViewController(activityItems, applicationActivities);
                     UIBarButtonItem.AppearanceWhenContainedIn(new[] { typeof(UINavigationBar) }).TintColor = UIColor.White;
+                    activityController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                     PresentViewController(activityController, true, null);
                     return;
                 }

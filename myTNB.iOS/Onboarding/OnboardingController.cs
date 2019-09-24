@@ -160,6 +160,7 @@ namespace myTNB
             UIStoryboard loginStoryboard = UIStoryboard.FromName("Login", null);
             UIViewController preLoginVC = (UIViewController)loginStoryboard.InstantiateViewController("PreloginViewController");
             preLoginVC.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
+            preLoginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             that.PresentViewController(preLoginVC, true, null);
         }
     }

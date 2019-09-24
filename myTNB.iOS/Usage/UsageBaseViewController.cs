@@ -396,7 +396,8 @@ namespace myTNB
                     storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
                 viewController.IsRoot = false;
                 viewController.IsFromUsage = true;
-                var navController = new UINavigationController(viewController);
+                UINavigationController navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(navController, true, null);
             }));
 
