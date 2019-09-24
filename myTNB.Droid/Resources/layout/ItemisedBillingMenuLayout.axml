@@ -296,7 +296,7 @@
                         android:textSize="14dp"
                         android:layout_marginLeft="32dp"
                         android:layout_marginRight="32dp"
-                        android:lineSpacingExtra="3dp"
+                        android:lineSpacingExtra="6dp"
                         android:id="@+id/emptyBillingHistoryMessage"
                         android:text="Looks like you have no bills yet! Once you do, your bills and payment history will appear here."/>
             </LinearLayout>
