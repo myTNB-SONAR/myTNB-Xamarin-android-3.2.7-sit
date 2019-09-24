@@ -1,3 +1,8 @@
-Sprint 1 + Dynamic Splash Screen (SIT Build)
+Thank you for using myTNB. In this update, you’ll get to enjoy an even more seamless experience. Here’s what to expect:
 
-[BUG] 2355 Sprint1_Regression - Splash Screen (Duration, Expired date image, Change Image without kill the app)
+View how much your bill may reach and your usage trend for the current billing period (if you’re a Smart Meter user)
+Seamlessly manage multiple notifications
+View if your electricity supply is ‘Disconnected’ on the Dashboard page
+Refresh pages if the information does not appear
+
+Update now to the latest version so you can enjoy the new experience!

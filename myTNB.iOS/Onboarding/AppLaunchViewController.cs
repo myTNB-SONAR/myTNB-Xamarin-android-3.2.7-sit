@@ -33,7 +33,7 @@ namespace myTNB
         string _endDateStr = string.Empty;
         double _delay;
         bool _isGetDynamicDone, _isTaskDelayDone, _isLoadMasterDataDone, _splashIsShown, _hasProceeded, _splashDelayIsDone;
-        int _timeOut = 2500;
+        int _timeOut = 4000;
         MasterDataResponseModel _masterDataResponse = new MasterDataResponseModel();
         UIView maintenanceView;
         public AppLaunchViewController(IntPtr handle) : base(handle)
