@@ -40,7 +40,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
 
         private string savedPromoTimeStamp = "0000000";
 
-        private static int AppLaunchDefaultTimeOutMillisecond = 2500;
+        private static int AppLaunchDefaultTimeOutMillisecond = 4000;
         private int AppLaunchTimeOutMillisecond = AppLaunchDefaultTimeOutMillisecond;
         private bool IsOnGetPhotoRunning = false;
 
