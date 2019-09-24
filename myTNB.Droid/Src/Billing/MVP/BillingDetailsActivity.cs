@@ -93,8 +93,11 @@ namespace myTNB_Android.Src.Billing.MVP
         [OnClick(Resource.Id.btnViewBill)]
         void OnViewBill(object sender, EventArgs eventArgs)
         {
+            BillHistoryV5 selectedBill = new BillHistoryV5();
+            selectedBill.DtBill = billPdfDateFormatter.Format((billPdfDateParser.Parse(selectedAccountChargeModel.DueDate)));
             Intent viewBill = new Intent(this, typeof(ViewBillActivity));
             viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
+            viewBill.PutExtra(Constants.SELECTED_BILL, JsonConvert.SerializeObject(selectedBill));
             StartActivity(viewBill);
         }
 

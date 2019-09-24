@@ -1,3 +1,6 @@
-SIT Build - 09/11
-– Itemised Billing
+SIT Build - 09/23
+Sprint 2:
+- Itemised Billing
+- Notification Redesign
+- Bug Fixes
 
