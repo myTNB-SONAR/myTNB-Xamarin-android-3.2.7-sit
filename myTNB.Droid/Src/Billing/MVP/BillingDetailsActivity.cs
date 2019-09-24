@@ -83,7 +83,7 @@ namespace myTNB_Android.Src.Billing.MVP
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
 
-        SimpleDateFormat billPdfDateParser = new SimpleDateFormat("dd MMM yyyy");
+        SimpleDateFormat billPdfDateParser = new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat billPdfDateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 
         AccountChargeModel selectedAccountChargeModel;
@@ -195,7 +195,7 @@ namespace myTNB_Android.Src.Billing.MVP
                 accountPayAmountLabel.Visibility = ViewStates.Visible;
                 accountPayAmountLabel.Text = "I need to pay";
                 accountPayAmountDate.Visibility = ViewStates.Visible;
-                accountPayAmountDate.Text = "by " + selectedAccountChargeModel.DueDate;
+                accountPayAmountDate.Text = "by " + dateFormatter.Format(dateParser.Parse(selectedAccountChargeModel.DueDate));
 
                 accountPayAmountCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
                 accountPayAmountValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));

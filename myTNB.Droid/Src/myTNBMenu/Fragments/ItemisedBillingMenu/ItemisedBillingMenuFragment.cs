@@ -519,8 +519,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#49494a"));
 
                 itemisedBillingInfoDate.Visibility = ViewStates.Visible;
-                accountChargeModel.DueDate = dateFormatter.Format(dateParser.Parse(accountChargeModel.DueDate));
-                itemisedBillingInfoDate.Text = "by " + accountChargeModel.DueDate;
+                itemisedBillingInfoDate.Text = "by " + dateFormatter.Format(dateParser.Parse(accountChargeModel.DueDate));
             }
             EnableActionButtons(true);
             itemisedBillingHeaderImage.SetImageResource(imageResource);
