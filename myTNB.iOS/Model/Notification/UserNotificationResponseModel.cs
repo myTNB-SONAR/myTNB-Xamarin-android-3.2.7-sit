@@ -61,7 +61,7 @@ namespace myTNB.Model
         {
             get
             {
-                BCRMNotificationEnum notificationType = default;
+                BCRMNotificationEnum notificationType = BCRMNotificationEnum.None;
                 if (!string.IsNullOrEmpty(BCRMNotificationTypeId))
                 {
                     switch (BCRMNotificationTypeId)
@@ -111,7 +111,7 @@ namespace myTNB.Model
         {
             get
             {
-                SSMRNotificationEnum ssmrType = default;
+                SSMRNotificationEnum ssmrType = SSMRNotificationEnum.None;
                 if (BCRMNotificationType == BCRMNotificationEnum.SSMR)
                 {
                     switch (BCRMNotificationTypeId)
