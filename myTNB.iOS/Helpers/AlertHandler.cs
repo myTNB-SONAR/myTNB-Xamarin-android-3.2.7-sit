@@ -91,7 +91,7 @@ namespace myTNB
                 UnderlineColor = UIColor.Clear
             };
 
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(message
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(message + "<br>"
                 , ref htmlBodyError, MyTNBFont.FONTNAME_300, 14f);
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
@@ -138,10 +138,9 @@ namespace myTNB
             //Resize
             CGSize size = txtViewDetails.SizeThatFits(new CGSize(width - 24, maxDescriptionHeight));
             nfloat txtViewHeight = size.Height > maxDescriptionHeight ? maxDescriptionHeight : size.Height;
-            txtViewDetails.Frame = new CGRect(12, txtViewY, width - 24, txtViewHeight +15);
+            txtViewDetails.Frame = new CGRect(12, txtViewY, width - 24, txtViewHeight);
             txtViewDetails.TextAlignment = descriptionAlignment;
-            txtViewDetails.Layer.BorderColor = UIColor.Red.CGColor;
-            txtViewDetails.Layer.BorderWidth = 1;
+
             UIView viewline = new UIView(new CGRect(0, txtViewDetails.Frame.GetMaxY(), width, 1))
             {
                 BackgroundColor = MyTNBColor.LightGrayBG
