@@ -216,6 +216,7 @@ namespace myTNB
                 _baseSmartMeterView = new SmartMeterMonthView()
                 {
                     OnSegmentTap = OnSegmentTap,
+                    PrepareTariffLegend = OnBarSelected
                 };
             }
             else if (viewType == SmartMeterConstants.SmartMeterViewType.DayZOut)
@@ -334,6 +335,15 @@ namespace myTNB
                     nfloat lblDateWidth = date.GetLabelWidth(GetWidthByScreenSize(100));
                     date.Frame = new CGRect((segmentView.Frame.Width - lblDateWidth) / 2, date.Frame.Y, lblDateWidth, date.Frame.Height);
                 }
+            }
+            OnBarSelected(index);
+        }
+
+        private void OnBarSelected(int index)
+        {
+            if (PrepareTariffLegend != null)
+            {
+                PrepareTariffLegend.Invoke(index);
             }
         }
 

@@ -41,6 +41,7 @@ namespace myTNB
         protected AccountSelector _accountSelector;
         protected CustomUIView _viewAccountSelector;
         protected BaseChartView _chartView;
+        protected List<LegendItemModel> _tariffList;
 
         public override void ViewDidLoad()
         {
@@ -419,12 +420,14 @@ namespace myTNB
             else if (isNormalChart)
             {
                 _chartView = new NormalChartView();
+                _chartView.PrepareTariffLegend = PrepareTariffLegend;
             }
             else
             {
                 _chartView = new SmartMeterChartView()
                 {
-                    PinchOverlayAction = ShowPinchOverlay
+                    PinchOverlayAction = ShowPinchOverlay,
+                    PrepareTariffLegend = PrepareTariffLegend
                 };
             }
 
@@ -642,16 +645,19 @@ namespace myTNB
         }
         #endregion
         #region TARIFF LEGEND Methods
-        public void SetTariffLegendComponent()
+        public void SetTariffLegendComponent(List<LegendItemModel> tariffList = null)
         {
             if (!isREAccount)
             {
-                List<LegendItemModel> tariffList = new List<LegendItemModel>(isSmartMeterAccount ? AccountUsageSmartCache.GetTariffLegendList() : AccountUsageCache.GetTariffLegendList());
+                if (tariffList == null || tariffList.Count == 0)
+                {
+                    tariffList = new List<LegendItemModel>(isSmartMeterAccount ? AccountUsageSmartCache.GetTariffLegendList() : AccountUsageCache.GetTariffLegendList());
+                }
+
                 if (tariffList != null && tariffList.Count > 0)
                 {
                     ViewHelper.AdjustFrameSetHeight(_viewLegend, 0);
                     _viewLegend.BackgroundColor = UIColor.Clear;
-                    _viewLegend.Hidden = true;
                     if (_legend != null)
                     {
                         _legend.RemoveFromSuperview();
@@ -671,13 +677,12 @@ namespace myTNB
         private void ShowHideTariffLegends(bool isVisible)
         {
             _legendIsVisible = isVisible;
-            List<LegendItemModel> tariffList = new List<LegendItemModel>(isSmartMeterAccount ? AccountUsageSmartCache.GetTariffLegendList() : AccountUsageCache.GetTariffLegendList());
-            if (tariffList != null && tariffList.Count > 0)
+            if (_tariffList != null && _tariffList.Count > 0)
             {
                 UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseIn
                     , () =>
                     {
-                        nfloat height = isVisible ? tariffList.Count * GetScaledHeight(25f) : 0;
+                        nfloat height = isVisible ? _tariffList.Count * GetScaledHeight(25f) : 0;
                         ViewHelper.AdjustFrameSetHeight(_viewLegend, height);
                         SetContentView();
                         if (!isVisible)
@@ -690,6 +695,49 @@ namespace myTNB
                             _viewLegend.Hidden = !isVisible;
                     }
                 );
+            }
+        }
+        private void PrepareTariffLegend(int index)
+        {
+            List<MonthItemModel> usageData = isSmartMeterAccount ? AccountUsageSmartCache.ByMonthUsage : AccountUsageCache.ByMonthUsage;
+            if (usageData != null && usageData.Count > 0)
+            {
+                if (index < usageData.Count)
+                {
+                    MonthItemModel item = usageData[index];
+                    if (item != null)
+                    {
+                        if (item.tariffBlocks != null &&
+                            item.tariffBlocks.Count > 0)
+                        {
+                            List<LegendItemModel> tariffLegend = new List<LegendItemModel>(isSmartMeterAccount ? AccountUsageSmartCache.GetTariffLegendList() : AccountUsageCache.GetTariffLegendList());
+                            if (tariffLegend != null && tariffLegend.Count > 0)
+                            {
+                                _tariffList = new List<LegendItemModel>();
+                                foreach (var legend in tariffLegend)
+                                {
+                                    var res = false;
+                                    foreach (var tBlock in item.tariffBlocks)
+                                    {
+                                        if (tBlock.BlockId.Equals(legend.BlockId))
+                                        {
+                                            res = true;
+                                            break;
+                                        }
+                                    }
+                                    if (res)
+                                    {
+                                        _tariffList.Add(legend);
+                                    }
+                                }
+                                SetTariffLegendComponent(_tariffList);
+                                nfloat height = _tariffList.Count * GetScaledHeight(25f);
+                                ViewHelper.AdjustFrameSetHeight(_viewLegend, height);
+                                SetContentView();
+                            }
+                        }
+                    }
+                }
             }
         }
         #endregion
@@ -739,14 +787,7 @@ namespace myTNB
                 {
                     if (!_tariffSelectionComponent.isTariffDisabled)
                     {
-                        if (_rmKwhDropDownView != null)
-                        {
-                            _rmKwhDropDownView.Hidden = true;
-                        }
-                        _tariffIsVisible = !_tariffIsVisible;
-                        _tariffSelectionComponent.UpdateTariffButton(_tariffIsVisible);
-                        ShowHideTariffLegends(_tariffIsVisible);
-                        _chartView.ToggleTariffView(_tariffIsVisible);
+                        ValidateTariffLegend();
                     }
                 }));
 
@@ -763,7 +804,7 @@ namespace myTNB
             SetContentView();
         }
 
-        private void ShowHideTariffLegend()
+        private void ValidateTariffLegend()
         {
             List<LegendItemModel> tariffList = new List<LegendItemModel>(isSmartMeterAccount ? AccountUsageSmartCache.GetTariffLegendList() : AccountUsageCache.GetTariffLegendList());
             if (tariffList != null && tariffList.Count > 0)

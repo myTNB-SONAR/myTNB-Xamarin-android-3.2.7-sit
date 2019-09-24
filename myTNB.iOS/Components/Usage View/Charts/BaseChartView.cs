@@ -20,6 +20,7 @@ namespace myTNB
         public virtual void ToggleTariffView(bool isTariffView) { }
 
         public virtual void ToggleRMKWHValues(RMkWhEnum state) { }
+        public Action<int> PrepareTariffLegend;
 
         public virtual CustomUIView GetUI()
         {
