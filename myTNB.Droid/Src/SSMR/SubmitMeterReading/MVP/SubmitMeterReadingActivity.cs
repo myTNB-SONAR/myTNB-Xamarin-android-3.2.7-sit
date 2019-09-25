@@ -435,24 +435,30 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         {
             foreach (GetMeterReadingOCRResponseDetails ocrResponse in ocrMeterReadingList)
             {
-                LinearLayout linearLayoutContainer;
-                string type = ocrResponse.OCRUnit.ToLower();
-                if (type == "kwh")
+                int foundIndex = meterReadingModelList.FindIndex(meterReadingModel => {
+                    return meterReadingModel.meterReadingUnit.ToUpper() == ocrResponse.OCRUnit.ToUpper();});
+                if (foundIndex != -1)
                 {
-                    linearLayoutContainer = FindViewById(Resource.Id.kwhCard) as LinearLayout;
-                    UpdateCurrentValues(linearLayoutContainer, ocrResponse);
-                    ValidateMeterInput(linearLayoutContainer, ocrResponse);
-                }else if (type == "kvarh" || type == "kvar")
-                {
-                    linearLayoutContainer = FindViewById(Resource.Id.kVARhCard) as LinearLayout;
-                    UpdateCurrentValues(linearLayoutContainer, ocrResponse);
-                    ValidateMeterInput(linearLayoutContainer, ocrResponse);
-                }
-                else if (type == "kw")
-                {
-                    linearLayoutContainer = FindViewById(Resource.Id.kwCard) as LinearLayout;
-                    UpdateCurrentValues(linearLayoutContainer, ocrResponse);
-                    ValidateMeterInput(linearLayoutContainer, ocrResponse);
+                    LinearLayout linearLayoutContainer;
+                    string type = ocrResponse.OCRUnit.ToUpper();
+                    if (type == Constants.SMR_METER_UNIT_KWH)
+                    {
+                        linearLayoutContainer = FindViewById(Resource.Id.kwhCard) as LinearLayout;
+                        UpdateCurrentValues(linearLayoutContainer, ocrResponse);
+                        ValidateMeterInput(linearLayoutContainer, ocrResponse);
+                    }
+                    else if (type == Constants.SMR_METER_UNIT_KVAR)
+                    {
+                        linearLayoutContainer = FindViewById(Resource.Id.kVARhCard) as LinearLayout;
+                        UpdateCurrentValues(linearLayoutContainer, ocrResponse);
+                        ValidateMeterInput(linearLayoutContainer, ocrResponse);
+                    }
+                    else if (type == Constants.SMR_METER_UNIT_KW)
+                    {
+                        linearLayoutContainer = FindViewById(Resource.Id.kwCard) as LinearLayout;
+                        UpdateCurrentValues(linearLayoutContainer, ocrResponse);
+                        ValidateMeterInput(linearLayoutContainer, ocrResponse);
+                    }
                 }
             }
 

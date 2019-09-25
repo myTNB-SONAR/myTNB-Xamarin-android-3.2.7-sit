@@ -234,7 +234,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string SMR_DISABLE_FLAG = "DISABLE_SMR";
 
         internal static readonly string SMR_METER_UNIT_KWH = "KWH";
-        internal static readonly string SMR_METER_UNIT_KVAR = "KVAR";
+        internal static readonly string SMR_METER_UNIT_KVAR = "KVARH";
         internal static readonly string SMR_METER_UNIT_KW = "KW";
 
         internal static readonly string AMOUNT_DUE_RESPONSE_KEY = ".amountDueResponse";
@@ -249,5 +249,20 @@ namespace myTNB_Android.Src.Utils
             AFTERNOON,
             EVENING
         }
-    }
+
+        //User Notification BCRM IDs
+		public const string BCRM_NOTIFICATION_NEW_BILL_ID = "01";
+		public const string BCRM_NOTIFICATION_BILL_DUE_ID = "02";
+		public const string BCRM_NOTIFICATION_DISCONNECT_NOTICE_ID = "03";
+		public const string BCRM_NOTIFICATION_DISCONNECTED_ID = "04";
+		public const string BCRM_NOTIFICATION_RECONNECTED_ID = "05";
+		public const string BCRM_NOTIFICATION_MAINTENANCE_ID = "99";
+        public const string BCRM_NOTIFICATION_METER_READING_OPEN_ID = "0009";
+        public const string BCRM_NOTIFICATION_METER_READING_REMIND_ID = "0010";
+        public const string BCRM_NOTIFICATION_SMR_DISABLED_ID = "0011";
+        public const string BCRM_NOTIFICATION_SMR_APPLY_SUCCESS_ID = "50";
+        public const string BCRM_NOTIFICATION_SMR_APPLY_FAILED_ID = "51";
+        public const string BCRM_NOTIFICATION_SMR_DISABLED_SUCCESS_ID = "52";
+        public const string BCRM_NOTIFICATION_SMR_DISABLED_FAILED_ID = "53";
+	}
 }

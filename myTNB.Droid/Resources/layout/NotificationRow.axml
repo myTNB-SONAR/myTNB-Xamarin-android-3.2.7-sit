@@ -55,9 +55,9 @@
         android:textSize="9sp"
         android:textColor="@color/silverChalice"
         android:layout_marginLeft="5dp"
-				android:layout_marginRight="16dp"
+				android:layout_marginRight="6dp"
 				android:gravity="center"
-				app:layout_goneMarginEnd="26dp"
+				app:layout_goneMarginEnd="16dp"
 				app:layout_constraintEnd_toStartOf="@+id/selectItemCheckBox"
 				app:layout_constraintTop_toTopOf="@+id/txtNotificationTitle"
 				app:layout_constraintBottom_toBottomOf="@+id/txtNotificationContent"/>

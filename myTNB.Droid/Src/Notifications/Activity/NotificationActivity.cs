@@ -133,6 +133,8 @@ namespace myTNB_Android.Src.Notifications.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtNotificationsContent);
 
                 selectAllCheckboxButton.SetOnCheckedChangeListener(this);
+                SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 this.mPresenter = new NotificationPresenter(this);
                 SetNotificationRecyclerView();
                 SetInitialNotificationState();
@@ -140,14 +142,13 @@ namespace myTNB_Android.Src.Notifications.Activity
                 Bundle extras = Intent.Extras;
                 if (extras != null && extras.ContainsKey(Constants.HAS_NOTIFICATION) && extras.GetBoolean(Constants.HAS_NOTIFICATION))
                 {
-                    hasNotification = true;
+                    this.userActionsListener.QueryOnLoad(this.DeviceId());
                 }
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
-
         }
 
         public override bool OnCreateOptionsMenu(IMenu menu)
@@ -155,23 +156,30 @@ namespace myTNB_Android.Src.Notifications.Activity
             MenuInflater.Inflate(Resource.Menu.NotificationToolbarMenu, menu);
             notificationMenu = menu;
             notificationMenu.FindItem(Resource.Id.action_notification_read).SetIcon(GetDrawable(Resource.Drawable.ic_header_markread)).SetVisible(false);
-            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.ic_action_select_all)).SetVisible(true);
             int count = UserNotificationEntity.Count();
-            if (hasNotification)
+            if (count == 0)
             {
-                this.userActionsListener.QueryOnLoad(this.DeviceId());
-            }
-            else if (count == 0)
-            {
-                ShowQueryProgress();
-                this.userActionsListener.QueryOnLoad(this.DeviceId());
-                ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
+                notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(false);
             }
             else
             {
-                ShowQueryProgress();
-                this.userActionsListener.QueryNotifications(this.DeviceId());
+                notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(true);
             }
+            //if (hasNotification)
+            //{
+            //    this.userActionsListener.QueryOnLoad(this.DeviceId());
+            //}
+            //else if (count == 0)
+            //{
+            //    ShowQueryProgress();
+            //    this.userActionsListener.QueryOnLoad(this.DeviceId());
+            //    ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
+            //}
+            //else
+            //{
+            //    ShowQueryProgress();
+            //    this.userActionsListener.QueryNotifications(this.DeviceId());
+            //}
             return base.OnCreateOptionsMenu(menu);
         }
 
@@ -183,7 +191,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                     if (editState == EditNotificationStates.HIDE)
                     {
                         notificationMenu.FindItem(Resource.Id.action_notification_read).SetIcon(Resource.Drawable.ic_header_markread_disabled).SetVisible(true).SetEnabled(false);
-                        notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_header_delete_disabled).SetVisible(true).SetEnabled(false);
+                        notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.notification_delete_disabled).SetVisible(true).SetEnabled(false);
                         ShowSelectAllOption(ViewStates.Visible);
                         notificationRecyclerAdapter.ShowSelectButtons(true);
                         editState = EditNotificationStates.SHOW;
@@ -202,7 +210,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                             }
                             else
                             {
-                                notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_action_select_all);
+                                notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.notification_select_all);
                                 ShowSelectAllOption(ViewStates.Gone);
                                 notificationRecyclerAdapter.ShowSelectButtons(false);
                                 editState = EditNotificationStates.HIDE;
@@ -226,7 +234,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                         if (editState == EditNotificationStates.SHOW)
                         {
                             editState = EditNotificationStates.HIDE;
-                            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_action_select_all).SetEnabled(true);
+                            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.notification_select_all).SetEnabled(true);
                             notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
                             ShowSelectAllOption(ViewStates.Gone);
                             notificationRecyclerAdapter.ShowSelectButtons(false);
@@ -454,7 +462,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             notificationRecyclerView.SetAdapter(notificationRecyclerAdapter);
             //NotificationSimpleCallback notificationSimpleCallback = new NotificationSimpleCallback(notificationRecyclerAdapter,0, ItemTouchHelper.Left);
 
-            notificationSwipeDelete = new NotificationSwipeDeleteCallback(this, GetDrawable(Resource.Drawable.ic_header_delete), GetDrawable(Resource.Drawable.ic_header_markread));
+            notificationSwipeDelete = new NotificationSwipeDeleteCallback(this, GetDrawable(Resource.Drawable.notification_delete_active), GetDrawable(Resource.Drawable.ic_header_markread));
 			notificationSwipeDelete.SetInitialState();
 			itemTouchHelper = new ItemTouchHelper(notificationSwipeDelete);
             itemTouchHelper.AttachToRecyclerView(notificationRecyclerView);
@@ -522,9 +530,8 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         public void ShowView()
         {
-            this.userActionsListener.ShowFilteredList();
             ShowSelectAllOption(ViewStates.Visible);
-            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_header_delete);
+            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.notification_delete_active);
             notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetVisible(false);
             notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(true);
             refreshLayout.Visibility = ViewStates.Gone;
@@ -593,7 +600,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
             notificationRecyclerAdapter.NotifyDataSetChanged();
             editState = EditNotificationStates.HIDE;
-            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_action_select_all).SetEnabled(true);
+            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.notification_select_all).SetEnabled(true);
             notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
             ShowSelectAllOption(ViewStates.Gone);
             notificationRecyclerAdapter.ShowSelectButtons(false);
@@ -611,7 +618,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             notificationRecyclerAdapter.GetAllNotifications().RemoveAll(notification => notification.IsSelected == true);
             notificationRecyclerAdapter.NotifyDataSetChanged();
             editState = EditNotificationStates.HIDE;
-            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_action_select_all).SetEnabled(true);
+            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.notification_select_all).SetEnabled(true);
             notificationMenu.FindItem(Resource.Id.action_notification_read).SetVisible(false);
             ShowSelectAllOption(ViewStates.Gone);
             notificationRecyclerAdapter.ShowSelectButtons(false);
@@ -766,7 +773,7 @@ namespace myTNB_Android.Src.Notifications.Activity
         {
             SetInitialNotificationState();
             notificationMenu.FindItem(Resource.Id.action_notification_read).SetIcon(GetDrawable(Resource.Drawable.ic_header_markread)).SetVisible(false);
-            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.ic_action_select_all)).SetVisible(true).SetEnabled(true);
+            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(true).SetEnabled(true);
             notificationRecyclerAdapter.ClearAll();
             SetToolBarTitle(GetString(Resource.String.notification_activity_title));
         }
@@ -786,7 +793,7 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         public void ShowDetails(NotificationDetails.Models.NotificationDetails details, UserNotificationData notificationData, int position)
         {
-            Intent notificationDetails = new Intent(this, typeof(NotificationDetailActivity));
+            Intent notificationDetails = new Intent(this, typeof(UserNotificationDetailActivity));
             notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_LIST_ITEM, JsonConvert.SerializeObject(notificationData));
             notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
             notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_ITEM_POSITION, position);
@@ -894,7 +901,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             {
                 if (show)
                 {
-                    notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_header_delete);
+                    notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.notification_delete_active);
                     notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetEnabled(true);
                     if (IsValidReadNotifications())
                     {
@@ -911,7 +918,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                 else
                 {
                     notificationMenu.FindItem(Resource.Id.action_notification_read).SetIcon(Resource.Drawable.ic_header_markread_disabled);
-                    notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.ic_header_delete_disabled);
+                    notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.notification_delete_disabled);
                     notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetEnabled(false);
                     notificationMenu.FindItem(Resource.Id.action_notification_read).SetEnabled(false);
                     enableNotificationState = EnableNotificationState.DISABLED;
@@ -1009,7 +1016,25 @@ namespace myTNB_Android.Src.Notifications.Activity
         public void ShowNotificationDetails(int itemPosition)
 		{
 			UserNotificationData userNotificationData = notificationRecyclerAdapter.GetAllNotifications()[itemPosition];
-			mPresenter.OnSelectedNotificationItem(userNotificationData, itemPosition);
+            //mPresenter.OnSelectedNotificationItem(userNotificationData, itemPosition);
+            mPresenter.OnShowNotificationDetails(userNotificationData, itemPosition);
 		}
-	}
+
+        public void ShowEditMode()
+        {
+            notificationMenu.FindItem(Resource.Id.action_notification_read).SetIcon(Resource.Drawable.ic_header_markread_disabled).SetVisible(true).SetEnabled(false);
+            notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(Resource.Drawable.notification_delete_disabled).SetVisible(true).SetEnabled(false);
+            ShowSelectAllOption(ViewStates.Visible);
+            notificationRecyclerAdapter.ShowSelectButtons(true);
+            editState = EditNotificationStates.SHOW;
+            //itemTouchHelper.AttachToRecyclerView(null);
+            notificationRecyclerAdapter.SetClickable(false);
+            SetToolBarTitle(GetString(Resource.String.Notification_Select));
+        }
+
+        public void SetNotificationItemClickable(bool isClickable)
+        {
+            notificationRecyclerAdapter.SetClickable(isClickable);
+        }
+    }
 }

@@ -23,6 +23,9 @@ using static Android.Widget.CompoundButton;
 using myTNB_Android.Src.NotificationDetails.Requests;
 using System.Threading.Tasks;
 using myTNB_Android.Src.Notifications.Api;
+using myTNB_Android.Src.MyTNBService.Notification;
+using myTNB_Android.Src.MyTNBService.Response;
+using myTNB_Android.Src.MyTNBService.Request;
 
 namespace myTNB_Android.Src.Notifications.MVP
 {
@@ -37,15 +40,20 @@ namespace myTNB_Android.Src.Notifications.MVP
         NotificationContract.IApiNotification notificationApi;
         CancellationTokenSource cts;
         List<UserNotificationData> selectedNotificationList;
+        NotificationApiImpl notificationAPI;
         public NotificationPresenter(NotificationContract.IView mView)
         {
             this.mView = mView;
             this.mView.SetPresenter(this);
+            notificationAPI = new NotificationApiImpl();
         }
 
         private async Task InvokeNotificationApi(API_ACTION apiAction)
         {
             NotificationApiResponse notificationApiResponse = null;
+            UserNotificationDeleteResponse notificationDeleteResponse = null;
+            UserNotificationReadResponse notificationReadResponse = null;
+
             selectedNotificationList = new List<UserNotificationData>();
             foreach (UserNotificationData notification in this.mView.GetNotificationList())
             {
@@ -60,8 +68,8 @@ namespace myTNB_Android.Src.Notifications.MVP
                 switch (apiAction)
                 {
                     case API_ACTION.DELETE:
-                        notificationApiResponse = await notificationApi.DeleteUserNotification(this.mView.GetDeviceId(), selectedNotificationList);
-                        if (!notificationApiResponse.Data.IsError)
+                        notificationDeleteResponse = await notificationAPI.DeleteUserNotification<UserNotificationDeleteResponse>(new UserNotificationDeleteRequest(selectedNotificationList));
+                        if (notificationDeleteResponse.Data.ErrorCode == "7200")
                         {
                             foreach (UserNotificationData userNotificationData in selectedNotificationList)
                             {
@@ -69,10 +77,15 @@ namespace myTNB_Android.Src.Notifications.MVP
                             }
                             this.mView.UpdateDeleteNotifications();
                         }
+                        else
+                        {
+                            this.mView.ShowFailedErrorMessage(notificationDeleteResponse.Data.ErrorMessage);
+                            this.mView.OnFailedNotificationAction();
+                        }
                         break;
                     case API_ACTION.READ:
-                        notificationApiResponse = await notificationApi.ReadUserNotification(this.mView.GetDeviceId(), selectedNotificationList);
-                        if (!notificationApiResponse.Data.IsError)
+                        notificationReadResponse = await notificationAPI.ReadUserNotification<UserNotificationReadResponse>(new UserNotificationReadRequest(selectedNotificationList));
+                        if (notificationReadResponse.Data.ErrorCode == "7200")
                         {
                             foreach(UserNotificationData userNotificationData in selectedNotificationList)
                             {
@@ -80,12 +93,12 @@ namespace myTNB_Android.Src.Notifications.MVP
                             }
                             this.mView.UpdateReadNotifications();
                         }
+                        else
+                        {
+                            this.mView.ShowFailedErrorMessage(notificationReadResponse.Data.ErrorMessage);
+                            this.mView.OnFailedNotificationAction();
+                        }
                         break;
-                }
-                if (notificationApiResponse.Data.IsError)
-                {
-                    this.mView.ShowFailedErrorMessage(notificationApiResponse.Data.Message);
-                    this.mView.OnFailedNotificationAction();
                 }
             }
             catch (System.OperationCanceledException e)
@@ -150,6 +163,58 @@ namespace myTNB_Android.Src.Notifications.MVP
             }
             catch (Exception e)
             {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public async void OnShowNotificationDetails(UserNotificationData userNotification, int position)
+        {
+            try
+            {
+                this.mView.ShowProgress();
+                UserNotificationDetailsRequest request = new UserNotificationDetailsRequest(userNotification.Id, userNotification.NotificationType);
+                UserNotificationDetailsResponse response = await notificationAPI.GetNotificationDetailedInfo<UserNotificationDetailsResponse>(request);
+                if (response.Data.ErrorCode == "7200")
+                {
+                    UserNotificationEntity.UpdateIsRead(response.Data.ResponseData.UserNotificationDetail.Id, true);
+                    this.mView.ShowDetails(response.Data.ResponseData.UserNotificationDetail, userNotification, position);
+                }
+                else
+                {
+                    this.mView.ShowRetryOptionsCancelledException(null);
+                }
+
+                //this.mView.ShowDetails(GetMockDetails(userNotification.BCRMNotificationTypeId), userNotification, position);
+                this.mView.HideProgress();
+            }
+            catch (System.OperationCanceledException e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgress();
+                }
+                // ADD OPERATION CANCELLED HERE
+                this.mView.ShowRetryOptionsCancelledException(e);
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgress();
+                }
+                // ADD HTTP CONNECTION EXCEPTION HERE
+                this.mView.ShowRetryOptionsApiException(apiException);
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                if (mView.IsActive())
+                {
+                    this.mView.HideProgress();
+                }
+                // ADD UNKNOWN EXCEPTION HERE
+                this.mView.ShowRetryOptionsUnknownException(e);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -284,41 +349,14 @@ namespace myTNB_Android.Src.Notifications.MVP
                         {
                             try
                             {
-                                UserEntity loggedUser = UserEntity.GetActive();
-                                var userNotificationResponse = await api.GetUserNotifications(new UserNotificationRequest()
+                                NotificationApiImpl notificationAPI = new NotificationApiImpl();
+                                MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
+                                if (response.Data.ErrorCode == "7200")
                                 {
-                                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                                    Email = loggedUser.Email,
-                                    DeviceId = deviceId
-
-                                }, cts.Token);
-
-                                if (mView.IsActive())
-                                {
-                                    this.mView.HideQueryProgress();
-                                }
-
-                                if (userNotificationResponse != null && userNotificationResponse.Data != null && userNotificationResponse.Data.Status.ToUpper() == Constants.REFRESH_MODE)
-                                {
-                                    this.mView.ShowRefreshView(userNotificationResponse.Data.RefreshMessage, userNotificationResponse.Data.RefreshBtnText);
-                                }
-                                else if (userNotificationResponse != null && userNotificationResponse.Data != null && !userNotificationResponse.Data.IsError)
-                                {
-                                    if (userNotificationResponse.Data.Data.Count() > 0)
-                                    {
-                                        try
-                                        {
-                                            UserNotificationEntity.RemoveAll();
-                                        }
-                                        catch (System.Exception ne)
-                                        {
-                                            Utility.LoggingNonFatalError(ne);
-                                        }
-                                    }
-                                    foreach (UserNotification userNotification in userNotificationResponse.Data.Data)
+                                    foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
                                     {
                                         // tODO : SAVE ALL NOTIFICATIONs
-                                        UserNotificationEntity.InsertOrReplace(userNotification);
+                                        int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
                                     }
                                     this.mView.ShowView();
                                     this.mView.ClearAdapter();
@@ -326,7 +364,12 @@ namespace myTNB_Android.Src.Notifications.MVP
                                 }
                                 else
                                 {
-                                    this.mView.ShowRefreshView(null, null);
+                                    this.mView.ShowRefreshView(response.Data.RefreshMessage, response.Data.RefreshBtnText);
+                                }
+
+                                if (mView.IsActive())
+                                {
+                                    this.mView.HideQueryProgress();
                                 }
                             }
                             catch (ApiException apiException)
@@ -417,7 +460,7 @@ namespace myTNB_Android.Src.Notifications.MVP
             try
             {
                 UserEntity loggedUser = UserEntity.GetActive();
-                var userNotificationResponse = await api.GetUserNotifications(new UserNotificationRequest()
+                var userNotificationResponse = await api.GetUserNotifications(new AppLaunch.Requests.UserNotificationRequest()
                 {
                     ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
                     Email = loggedUser.Email,
@@ -537,12 +580,130 @@ namespace myTNB_Android.Src.Notifications.MVP
                     }
                 }
 
+                ////MOCK DATA
+                //listOfNotifications.Clear();
+                //UserNotificationData data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "01";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "New Bill";
+                //data.Message = "Dear customer, your TNB bill RM5…";
+                //listOfNotifications.Add(data);
+
+                //data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "02";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "Bill Due";
+                //data.Message = "Dear customer, your Sep 2017 bill… ";
+                //listOfNotifications.Add(data);
+
+                //data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "03";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "Disconnection Notice";
+                //data.Message = "Dear customer, enjoy special promo…";
+                //listOfNotifications.Add(data);
+
+                //data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "04";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "Disconnection";
+                //data.Message = "Dear customer, your connection…";
+                //listOfNotifications.Add(data);
+
+                //data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "05";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "Reconnection";
+                //data.Message = "Dear customer, your connection…";
+                //listOfNotifications.Add(data);
+
+                //data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "99";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "Maintenance";
+                //data.Message = "Dear customer, kindly be informed…";
+                //data.NotificationType = "1000011";
+                //data.NotificationTypeId = "1001";
+                //listOfNotifications.Add(data);
+
+                //data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "0009";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "Self Meter Reading Open";
+                //data.Message = "Dear customer, submit your meter…";
+                //listOfNotifications.Add(data);
+
+                //data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "0010";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "Self Meter Reading Remind";
+                //data.Message = "Dear customer, submit your meter…";
+                //listOfNotifications.Add(data);
+
+                //data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "0011";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "Self Meter Reading Disabled";
+                //data.Message = "Dear customer, submit your meter…";
+                //listOfNotifications.Add(data);
+
+                //data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "50";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "Self Meter Reading Application Success";
+                //data.Message = "Dear customer, submit your meter…";
+                //listOfNotifications.Add(data);
+
+                //data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "51";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "Self Meter Reading Application Failed";
+                //data.Message = "Dear customer, submit your meter…";
+                //listOfNotifications.Add(data);
+
+                //data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "52";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "Self Meter Reading Disabled Success";
+                //data.Message = "Dear customer, submit your meter…";
+                //listOfNotifications.Add(data);
+
+                //data = new UserNotificationData();
+                //data.BCRMNotificationTypeId = "53";
+                //data.CreatedDate = "9/1/2019 5:00:00 PM";
+                //data.IsRead = false;
+                //data.Title = "Self Meter Reading Disabled Failed";
+                //data.Message = "Dear customer, submit your meter…";
+                //listOfNotifications.Add(data);
+
                 this.mView.ShowNotificationsList(listOfNotifications);
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public NotificationDetails.Models.NotificationDetails GetMockDetails(string bcrmType)
+        {
+            NotificationDetails.Models.NotificationDetails data = new NotificationDetails.Models.NotificationDetails();
+            data.AccountNum = "220914778610";
+            data.BCRMNotificationTypeId = bcrmType;
+            data.Title = "Testing of Reseed validation";
+            data.Message = "Your bill is {0}. Got a minute? Make a quick and easy payment on the myTNB app now. <br/><br/>Account: #accountName#";
+            return data;
         }
     }
 }

@@ -16,6 +16,7 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Login.Api;
 using myTNB_Android.Src.Login.Requests;
 using myTNB_Android.Src.LogoutRate.Api;
+using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -291,20 +292,29 @@ namespace myTNB_Android.Src.Login.MVP
                                 }
                             }
 
-                            var userNotificationResponse = await notificationsApi.GetUserNotifications(new UserNotificationRequest()
+                            NotificationApiImpl notificationAPI = new NotificationApiImpl();
+                            MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
+                            if (response.Data != null && response.Data.ErrorCode == "7200")
                             {
-                                ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                                Email = userResponse.Data.User.Email,
-                                DeviceId = this.mView.GetDeviceId()
-
-                            }, cts.Token);
-
-                            if (!userNotificationResponse.Data.IsError)
-                            {
-                                foreach (UserNotification userNotification in userNotificationResponse.Data.Data)
+                                if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null &&
+                                    response.Data.ResponseData.UserNotificationList.Count > 0)
                                 {
-                                    // tODO : SAVE ALL NOTIFICATIONs
-                                    int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
+                                    foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
+                                    {
+                                        // tODO : SAVE ALL NOTIFICATIONs
+                                        int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
+                                    }
+                                }
+                                else
+                                {
+                                    try
+                                    {
+                                        UserNotificationEntity.RemoveAll();
+                                    }
+                                    catch (System.Exception ne)
+                                    {
+                                        Utility.LoggingNonFatalError(ne);
+                                    }
                                 }
                             }
 
