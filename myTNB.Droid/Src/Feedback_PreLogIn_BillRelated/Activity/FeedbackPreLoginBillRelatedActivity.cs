@@ -748,12 +748,12 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
                     DisableSubmitButton();
                     return;
                 }
-                else if (TextUtils.IsEmpty(feedback))
-                {
-                    ShowEmptyFeedbackError();
-                    DisableSubmitButton();
-                    return;
-                }
+                //else if (TextUtils.IsEmpty(feedback))
+                //{
+                //    ShowEmptyFeedbackError();
+                //    DisableSubmitButton();
+                //    return;
+                //}
                 else
                 {
                     ClearErrors();

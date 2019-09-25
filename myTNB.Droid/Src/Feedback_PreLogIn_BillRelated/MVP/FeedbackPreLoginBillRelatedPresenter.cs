@@ -311,12 +311,12 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
                 {
                     mobileNo = "+60";
                     this.mView.ClearErrors();
-                    this.mView.DisableSaveButton();
+                    //this.mView.DisableSubmitButton();
                 }
                 else if (mobileNo == "+60")
                 {
                     this.mView.ClearErrors();
-                    this.mView.DisableSaveButton();
+                    //this.mView.DisableSubmitButton();
                 }
                 else if (mobileNo.Contains("+60") && mobileNo.IndexOf("+60") > 0)
                 {
@@ -324,17 +324,17 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
                     if (mobileNo == "+60")
                     {
                         this.mView.ClearErrors();
-                        this.mView.DisableSaveButton();
+                        //this.mView.DisableSubmitButton();
                     }
                     else if (!Utility.IsValidMobileNumber(mobileNo))
                     {
                         this.mView.ShowInvalidMobileNoError();
-                        this.mView.DisableSaveButton();
+                        //this.mView.DisableSubmitButton();
                     }
                     else
                     {
                         this.mView.ClearErrors();
-                        this.mView.EnableSaveButton();
+                        //this.mView.EnableSubmitButton();
                     }
                 }
                 else
@@ -342,12 +342,12 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
                     if (!Utility.IsValidMobileNumber(mobileNo))
                     {
                         this.mView.ShowInvalidMobileNoError();
-                        this.mView.DisableSaveButton();
+                        //this.mView.DisableSubmitButton();
                     }
                     else
                     {
                         this.mView.ClearErrors();
-                        this.mView.EnableSaveButton();
+                        //this.mView.EnableSubmitButton();
                     }
                 }
 
@@ -446,10 +446,10 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
                     isError = true;
                 }
 
-                //if (TextUtils.IsEmpty(feedback) && feedback.Equals(" "))
-                //{
-                //    isError = true;
-                //}
+                if (TextUtils.IsEmpty(feedback) || feedback.Equals(" "))
+                {
+                    isError = true;
+                }
 
                 if ( isError)
                 {
