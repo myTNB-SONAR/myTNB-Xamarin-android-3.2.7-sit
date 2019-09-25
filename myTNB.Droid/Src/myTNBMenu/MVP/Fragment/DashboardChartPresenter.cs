@@ -412,6 +412,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         UsageHistoryEntity.InsertItem(smUsageModel);
                     }
 
+                    if (!IsCheckDataReadyData(usageHistoryResponse.Data.UsageHistoryData))
+                    {
+                        // Lin Siong TODO: To set the data not ready view
+                    }
+
                     this.mView.SetUsageData(usageHistoryResponse.Data.UsageHistoryData);
                     if (!usageHistoryResponse.Data.IsMonthlyTariffBlocksDisabled && !usageHistoryResponse.Data.IsMonthlyTariffBlocksUnavailable)
                     {
@@ -485,15 +490,19 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 }
                 else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7204")
                 {
+                    if (!IsCheckDataReadyData(usageHistoryResponse.Data.SMUsageHistoryData))
+                    {
+                        // Lin Siong TODO: To set the data not ready view
+                    }
+
                     this.mView.SetISMDMSDown(true);
                     this.mView.OnSetBackendTariffDisabled(true);
-
                     this.mView.SetSMUsageData(usageHistoryResponse.Data.SMUsageHistoryData);
                     OnByRM();
                 }
                 else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7200" )
                 {
-                    if (!usageHistoryResponse.Data.IsMDMSCurrentlyUnavailable && IsCheckHaveByMonthData(usageHistoryResponse.Data.SMUsageHistoryData))
+                    if (IsCheckHaveByMonthData(usageHistoryResponse.Data.SMUsageHistoryData))
                     {
                         SMUsageHistoryEntity smUsageModel = new SMUsageHistoryEntity();
                         smUsageModel.Timestamp = DateTime.Now.ToLocalTime();
@@ -501,6 +510,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         smUsageModel.AccountNo = this.mView.GetSelectedAccount().AccountNum;
                         SMUsageHistoryEntity.InsertItem(smUsageModel);
                     }
+
+                    if (!IsCheckDataReadyData(usageHistoryResponse.Data.SMUsageHistoryData))
+                    {
+                        // Lin Siong TODO: To set the data not ready view
+                    }
+
                     if (!usageHistoryResponse.Data.IsMonthlyTariffBlocksDisabled && !usageHistoryResponse.Data.IsMonthlyTariffBlocksUnavailable)
                     {
                         this.mView.OnSetBackendTariffDisabled(false);
@@ -509,17 +524,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     {
                         this.mView.OnSetBackendTariffDisabled(true);
                     }
-
-                    if (!usageHistoryResponse.Data.IsMDMSCurrentlyUnavailable)
-                    {
-                        this.mView.SetISMDMSDown(false);
-                    }
-                    else
-                    {
-                        this.mView.SetISMDMSDown(true);
-                        this.mView.OnSetBackendTariffDisabled(true);
-                    }
-
+                    this.mView.SetISMDMSDown(false);
                     this.mView.SetSMUsageData(usageHistoryResponse.Data.SMUsageHistoryData);
                     OnByRM();
                 }
@@ -730,6 +735,30 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         break;
                     }
                 }
+            }
+
+            return isHaveData;
+        }
+
+        private bool IsCheckDataReadyData(UsageHistoryData data)
+        {
+            bool isHaveData = true;
+
+            if (data == null || (data != null && data.ByMonth == null) || (data != null && data.ByMonth != null && data.ByMonth.Months == null) || (data != null && data.ByMonth != null && data.ByMonth.Months != null && data.ByMonth.Months.Count == 0))
+            {
+                isHaveData = false;
+            }
+
+            return isHaveData;
+        }
+
+        private bool IsCheckDataReadyData(SMUsageHistoryData data)
+        {
+            bool isHaveData = true;
+
+            if (data == null || (data != null && data.ByMonth == null) || (data != null && data.ByMonth != null && data.ByMonth.Months == null) || (data != null && data.ByMonth != null && data.ByMonth.Months != null && data.ByMonth.Months.Count == 0))
+            {
+                isHaveData = false;
             }
 
             return isHaveData;

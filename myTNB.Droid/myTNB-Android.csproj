@@ -757,8 +757,6 @@
     <Compile Include="Src\myTNBMenu\Models\UserNotificationTypeResponse.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\BillsPaymentFragmentContract.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\BillsPaymentFragmentPresenter.cs" />
-    <Compile Include="Src\myTNBMenu\MVP\Fragment\DashboardSmartMeterContract.cs" />
-    <Compile Include="Src\myTNBMenu\MVP\Fragment\DashboardSmartMeterPresenter.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\FeedbackMenuContract.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\FeedbackMenuPresenter.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\MoreFragmentContract.cs" />

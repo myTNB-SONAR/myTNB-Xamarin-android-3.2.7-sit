@@ -62,7 +62,7 @@ using static myTNB_Android.Src.myTNBMenu.Models.GetInstallationDetailsResponse;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
-    public class DashboardChartFragment : BaseFragment, DashboardChartContract.IView, NMRESMDashboardScrollViewListener, ViewTreeObserver.IOnGlobalLayoutListener, MikePhil.Charting.Listener.IOnChartValueSelectedListenerSupport
+    public class DashboardChartFragment : BaseFragment, DashboardChartContract.IView, NMRESMDashboardScrollViewListener, ViewTreeObserver.IOnGlobalLayoutListener, MikePhil.Charting.Listener.IOnChartValueSelectedListenerSupport, View.IOnTouchListener
     {
 
         [BindView(Resource.Id.totalPayableLayout)]
@@ -480,6 +480,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private List<double> DayViewRMData = new List<double>();
         private List<double> DayViewkWhData = new List<double>();
+
+        ScaleGestureDetector mScaleDetector;
 
         public override int ResourceId()
         {
@@ -1004,7 +1006,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 OnGetEnergyTipsItems();
                             }
                         }
-                    }                  
+                    }
 
                     this.userActionsListener?.Start();
 
@@ -1396,6 +1398,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 // Lin Siong TODO: To Add day view chart view render on smart meter
                 // 
 
+                List<bool> missingReadingList = new List<bool>();
+                if (selectedSMHistoryData != null && selectedSMHistoryData.ByDay != null && selectedSMHistoryData.ByDay.Count > 0)
+                {
+                    foreach (SMUsageHistoryData.ByDayData DayData in selectedSMHistoryData.ByDay)
+                    {
+                        foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
+                        {
+                            missingReadingList.Add(IndividualDayData.IsMissingReading);
+                        }
+                    }
+                }
+
                 if (isToggleTariff)
                 {
                     smRenderer = new SMStackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
@@ -1406,6 +1420,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         isZoomIn = isZoomIn,
                         currentChartType = ChartType,
                         currentChartDataType = ChartDataType,
+                        missingReadingList = missingReadingList,
                         isMDMSDown = isMDMSDown
                     };
                     mChart.Renderer = smRenderer;
@@ -1420,6 +1435,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         isZoomIn = isZoomIn,
                         currentChartType = ChartType,
                         currentChartDataType = ChartDataType,
+                        missingReadingList = missingReadingList,
                         isMDMSDown = isMDMSDown
                     };
                     mChart.Renderer = smRenderer;
@@ -1541,7 +1557,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
                                     {
-                                        DayViewRMData.Add(IndividualDayData.Amount);
+                                        // DayViewRMData.Add(IndividualDayData.Amount);
+                                        DayViewRMData.Add(0.7);
                                     }
                                 }
                             }
@@ -1652,11 +1669,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             if (selectedAccount.AccountCategoryId.Equals("2"))
             {
                 graphTopPadding = 40;
-                mChart.LayoutParameters.Height = (int) DPUtils.ConvertDPToPx(240f);
+                mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(240f);
             }
             mChart.SetExtraOffsets(graphLeftRightPadding, graphTopPadding, graphLeftRightPadding, graphBottomPadding);
 
             mChart.SetOnChartValueSelectedListener(this);
+            mScaleDetector = new ScaleGestureDetector(this.Activity, new BarGraphPinchListener(ChartType));
+            mChart.SetOnTouchListener(this);
         }
         #region SETUP AXIS RM
         internal void SetUpXAxis()
@@ -1695,7 +1714,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 DayViewLabel.Add("");
                             }
                         }
-                        else if (i == (int) ((DayViewRMData.Count - 1) / 2))
+                        else if (i == (int)((DayViewRMData.Count - 1) / 2))
                         {
                             if (!string.IsNullOrEmpty(selectedSMHistoryData.MidDate))
                             {
@@ -3711,7 +3730,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             float val = 0;
             try
             {
-                if(!isSMAccount)
+                if (!isSMAccount)
                 {
                     if (isToggleTariff)
                     {
@@ -4746,7 +4765,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 stackedIndex = selectedHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList.Count - 1;
                             }
-                        
+
                             Highlight stackedHigh = new Highlight((int)e.GetX(), 0, stackedIndex);
                             mChart.HighlightValue(stackedHigh, false);
                         }
@@ -4766,7 +4785,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                     }
 
-                    if (e!= null)
+                    if (e != null)
                     {
                         OnGenerateTariffLegendValue((int)e.GetX(), isToggleTariff);
                     }
@@ -5256,7 +5275,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         smStatisticPredictSubTitle.Text = "- -";
                         smStatisticPredict.Text = "- -";
                         txtSmStatisticTooltip.Text = "What are these?";
-                        if (!isMDMSDown && (selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.CostData != null))
+                        if ((selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.CostData != null))
                         {
                             foreach (SMUsageHistoryData.Stats costValue in selectedSMHistoryData.OtherUsageMetrics.CostData)
                             {
@@ -5264,8 +5283,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     smStatisticBillTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My bill amount so far" : costValue.Title;
                                     smStatisticBillSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
-                                    smStatisticBill.Text = string.IsNullOrEmpty(costValue.Value) ?  "- -" : costValue.Value;
+                                    smStatisticBill.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : costValue.Value;
                                     smStatisticBillCurrency.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "RM" : costValue.ValueUnit;
+                                    if (isMDMSDown)
+                                    {
+                                        smStatisticBillSubTitle.Text = "- -";
+                                        smStatisticBill.Text = "- -";
+                                    }
                                 }
                                 else if (costValue.Key == Constants.PROJECTED_COST_KEY)
                                 {
@@ -5273,6 +5297,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     smStatisticPredictSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
                                     smStatisticPredict.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : costValue.Value;
                                     smStatisticPredictCurrency.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "RM" : costValue.ValueUnit;
+                                    if (isMDMSDown)
+                                    {
+                                        smStatisticPredictSubTitle.Text = "- -";
+                                        smStatisticPredict.Text = "- -";
+                                    }
                                 }
                             }
                         }
@@ -5303,7 +5332,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         smStatisticTrendTitle.Text = "My current usage trend is";
                         smStatisticTrendSubTitle.Text = "- -";
                         smStatisticTrend.Text = "- -%";
-                        if (!isMDMSDown && (selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.UsageData != null && selectedSMHistoryData.OtherUsageMetrics.UsageData.Count > 0))
+                        if ((selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.UsageData != null && selectedSMHistoryData.OtherUsageMetrics.UsageData.Count > 0))
                         {
                             foreach (SMUsageHistoryData.Stats costValue in selectedSMHistoryData.OtherUsageMetrics.UsageData)
                             {
@@ -5313,6 +5342,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     smStatisticBillSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
                                     smStatisticBillKwh.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : costValue.Value;
                                     smStatisticBillKwhUnit.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "kWh" : costValue.ValueUnit;
+                                    if (isMDMSDown)
+                                    {
+                                        smStatisticBillSubTitle.Text = "- -";
+                                        smStatisticBillKwh.Text = "- -";
+                                    }
                                 }
                                 else if (costValue.Key == Constants.AVERAGE_USAGE_KEY)
                                 {
@@ -5343,6 +5377,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     else
                                     {
                                         smStatisticTrend.TextFormatted = Html.FromHtml(trendString);
+                                    }
+
+                                    if (isMDMSDown)
+                                    {
+                                        smStatisticTrendSubTitle.Text = "- -";
+                                        smStatisticTrend.Text = "- -%";
                                     }
                                 }
                             }
@@ -5446,6 +5486,38 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public void OnSetBackendTariffDisabled(bool flag)
         {
             isBackendTariffDisabled = flag;
+        }
+
+        bool View.IOnTouchListener.OnTouch(View v, MotionEvent e)
+        {
+            mScaleDetector.OnTouchEvent(e);
+            return true;
+        }
+
+        private class BarGraphPinchListener : ScaleGestureDetector.SimpleOnScaleGestureListener
+        {
+            ChartType currentChartType;
+
+            public BarGraphPinchListener(ChartType mType)
+            {
+                this.currentChartType = mType;
+            }
+
+            public override bool OnScale(ScaleGestureDetector detector)
+            {
+                if (currentChartType == ChartType.Day)
+                {
+                    if (detector.CurrentSpan > detector.PreviousSpan)
+                    {
+                        Log.Debug("Zoom ", "Yes");
+                    }
+                    else if (detector.CurrentSpan < detector.PreviousSpan)
+                    {
+                        Log.Debug("Zoom ", "Yes");
+                    }
+                }
+                return base.OnScale(detector);
+            }
         }
     }
 }

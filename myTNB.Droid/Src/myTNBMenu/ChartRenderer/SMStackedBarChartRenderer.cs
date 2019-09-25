@@ -32,6 +32,8 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
         public ChartDataType currentChartDataType { get; set; }
 
+        public List<bool> missingReadingList { get; set; }
+
         public bool isMDMSDown { get; set; }
 
         public bool isZoomIn { get; set; }
@@ -67,6 +69,8 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
         private DecimalFormat decimalFormat = new DecimalFormat("#,###,##0.00");
         private DecimalFormat kwhFormat = new DecimalFormat("#,###,##0");
+        private Bitmap mdmsBitmap = null;
+        private Bitmap missingBitmap = null;
 
         // Lin Siong Note: this is for use of tariff block on smart meter inner dashboard
         // Lin Siong Note: Smart Meter Chart Renderer support isStacked Flag, to determine whether wanna have spacing between bar or not
@@ -79,6 +83,19 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
         public SMStackedBarChartRenderer(BarChart chart, ChartAnimator animator, ViewPortHandler viewPortHandler) : base(chart, animator, viewPortHandler)
         {
             barChart = chart;
+
+            BitmapFactory.Options opt = new BitmapFactory.Options();
+            opt.InMutable = true;
+            mdmsBitmap = BitmapFactory.DecodeResource(barChart.Context.Resources, Resource.Drawable.mdms_down, opt);
+            missingBitmap = BitmapFactory.DecodeResource(barChart.Context.Resources, Resource.Drawable.dashboard_missing_copy, opt);
+            if (!isZoomIn)
+            {
+                missingBitmap = Bitmap.CreateScaledBitmap(missingBitmap, (int)DPUtils.ConvertDPToPx(5f), (int)DPUtils.ConvertDPToPx(5f), false);
+            }
+            else
+            {
+                missingBitmap = Bitmap.CreateScaledBitmap(missingBitmap, (int)DPUtils.ConvertDPToPx(12f), (int)DPUtils.ConvertDPToPx(12f), false);
+            }
         }
 
         public void setmRadius(float mRadius)
@@ -368,12 +385,15 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                         currentSelectedDrawX = -1;
                     }
 
+                    int currentRow = 0;
+
                     for (int j = 0; j < buffer.Size(); j += 4)
                     {
                         float left = bufferItems[j];
                         float top = bufferItems[j + 1];
                         float right = bufferItems[j + 2];
                         float bottom = bufferItems[j + 3];
+                        bool isCurrentSelected = false;
 
                         if (!MViewPortHandler.IsInBoundsLeft(right))
                             continue;
@@ -403,6 +423,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                 if (Math.Abs(currentSelectedDrawX - currentItem) < 0.0001)
                                 {
                                     MRenderPaint.Alpha = 255;
+                                    isCurrentSelected = true;
                                 }
                                 else
                                 {
@@ -436,55 +457,34 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
                             if (nextIndex >= buffer.Size())
                             {
-                                if (mRadius > 0)
+                                if (isStacked)
                                 {
-                                    if (isStacked)
-                                    {
-                                        canvas.DrawPath(GenerateRoundRectangle(left, top, right, bottom, mRadius, mRadius, true, true, true, true), MRenderPaint);
-                                    }
-                                    else
-                                    {
-                                        canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, true, true, true, true), MRenderPaint);
-                                    }
+                                    canvas.DrawPath(GenerateRoundRectangle(left, top, right, bottom, mRadius, mRadius, true, true, true, true), MRenderPaint);
                                 }
                                 else
                                 {
-                                    if (isStacked)
-                                    {
-                                        canvas.DrawPath(GenerateRoundRectangle(left, top, right, bottom, mRadius, mRadius, false, false, false, false), MRenderPaint);
-                                    }
-                                    else
-                                    {
-                                        canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, false, false, false, false), MRenderPaint);
-                                    }
+                                    canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, true, true, true, true), MRenderPaint);
                                 }
+
+                                if (currentChartType == ChartType.Day && missingReadingList[currentRow])
+                                {
+                                    DrawMissingReadingDownOnCanvas(canvas, top, left, right, isZoomIn, isCurrentSelected);
+                                }
+
+                                currentRow++;
                             }
                             else
                             {
                                 if (Math.Abs(currentItem - bufferItems[nextIndex]) < 0.001)
                                 {
                                     count++;
-                                    if (mRadius > 0)
+                                    if (isStacked)
                                     {
-                                        if (isStacked)
-                                        {
-                                            canvas.DrawPath(GenerateRoundRectangle(left, top, right, bottom, mRadius, mRadius, false, false, true, true), MRenderPaint);
-                                        }
-                                        else
-                                        {
-                                            canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, false, false, true, true), MRenderPaint);
-                                        }
+                                        canvas.DrawPath(GenerateRoundRectangle(left, top, right, bottom, mRadius, mRadius, false, false, true, true), MRenderPaint);
                                     }
                                     else
                                     {
-                                        if (isStacked)
-                                        {
-                                            canvas.DrawPath(GenerateRoundRectangle(left, top, right, bottom, mRadius, mRadius, false, false, false, false), MRenderPaint);
-                                        }
-                                        else
-                                        {
-                                            canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, false, false, false, false), MRenderPaint);
-                                        }
+                                        canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, false, false, true, true), MRenderPaint);
                                     }
                                 }
                                 else
@@ -498,6 +498,13 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                     {
                                         canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, true, true, true, true), MRenderPaint);
                                     }
+
+                                    if (currentChartType == ChartType.Day && missingReadingList[currentRow])
+                                    {
+                                        DrawMissingReadingDownOnCanvas(canvas, top, left, right, isZoomIn, isCurrentSelected);
+                                    }
+
+                                    currentRow++;
                                 }
                             }
                         }
@@ -514,6 +521,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                 if (Math.Abs(currentSelectedDrawX - currentItem) < 0.0001)
                                 {
                                     MRenderPaint.Alpha = 255;
+                                    isCurrentSelected = true;
                                 }
                                 else
                                 {
@@ -547,57 +555,34 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
                             if (nextIndex >= buffer.Size())
                             {
-
                                 if (count == 0)
                                 {
-                                    if (mRadius > 0)
+                                    if (isStacked)
                                     {
-                                        if (isStacked)
-                                        {
-                                            canvas.DrawPath(GenerateRoundRectangle(left, top, bottom, bottom, mRadius, mRadius, true, true, true, true), MRenderPaint);
-                                        }
-                                        else
-                                        {
-                                            canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, true, true, true, true), MRenderPaint);
-                                        }
+                                        canvas.DrawPath(GenerateRoundRectangle(left, top, bottom, bottom, mRadius, mRadius, true, true, true, true), MRenderPaint);
                                     }
                                     else
                                     {
-                                        if (isStacked)
-                                        {
-                                            canvas.DrawPath(GenerateRoundRectangle(left, top, right, bottom, mRadius, mRadius, false, false, false, false), MRenderPaint);
-                                        }
-                                        else
-                                        {
-                                            canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, false, false, false, false), MRenderPaint);
-                                        }
+                                        canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, true, true, true, true), MRenderPaint);
                                     }
                                 }
                                 else
                                 {
-                                    if (mRadius > 0)
+                                    if (isStacked)
                                     {
-                                        if (isStacked)
-                                        {
-                                            canvas.DrawPath(GenerateRoundRectangle(left, top, right, bottom, mRadius, mRadius, true, true, false, false), MRenderPaint);
-                                        }
-                                        else
-                                        {
-                                            canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, true, true, false, false), MRenderPaint);
-                                        }
+                                        canvas.DrawPath(GenerateRoundRectangle(left, top, right, bottom, mRadius, mRadius, true, true, false, false), MRenderPaint);
                                     }
                                     else
                                     {
-                                        if (isStacked)
-                                        {
-                                            canvas.DrawPath(GenerateRoundRectangle(left, top, right, bottom, mRadius, mRadius, false, false, false, false), MRenderPaint);
-                                        }
-                                        else
-                                        {
-                                            canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, false, false, false, false), MRenderPaint);
-                                        }
+                                        canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, true, true, false, false), MRenderPaint);
                                     }
                                 }
+
+                                if (currentChartType == ChartType.Day && missingReadingList[currentRow])
+                                {
+                                    DrawMissingReadingDownOnCanvas(canvas, top, left, right, isZoomIn, isCurrentSelected);
+                                }
+                                currentRow++;
                             }
                             else
                             {
@@ -626,6 +611,11 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                         {
                                             canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, true, true, true, true), MRenderPaint);
                                         }
+                                        if (currentChartType == ChartType.Day && missingReadingList[currentRow])
+                                        {
+                                            DrawMissingReadingDownOnCanvas(canvas, top, left, right, isZoomIn, isCurrentSelected);
+                                        }
+                                        currentRow++;
                                     }
                                 }
                                 else
@@ -653,6 +643,12 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                                         {
                                             canvas.DrawPath(GenerateRoundRectangleWithNoSpace(left, top, right, bottom, mRadius, mRadius, true, true, false, false), MRenderPaint);
                                         }
+
+                                        if (currentChartType == ChartType.Day && missingReadingList[currentRow])
+                                        {
+                                            DrawMissingReadingDownOnCanvas(canvas, top, left, right, isZoomIn, isCurrentSelected);
+                                        }
+                                        currentRow++;
                                     }
                                 }
                             }
@@ -694,7 +690,6 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
             }
         }
 
-        // Lin Siong TODO: Add for draw MDMS Down
         private void DrawMDMSDownOnCanvas(Canvas c, float top, float left, float right, bool isSelected)
         {
             try
@@ -722,8 +717,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
                 if (currentChartType == ChartType.Month)
                 {
-                    Bitmap myBitmap = BitmapFactory.DecodeResource(currentContext.Resources, Resource.Drawable.mdms_down);
-                    c.DrawBitmap(myBitmap, x, y, MRenderPaint);
+                    c.DrawBitmap(mdmsBitmap, x, y, MRenderPaint);
 
                     if (isSelected)
                     {
@@ -741,6 +735,35 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                     string secondTxt = "Currently";
                     textY = top - DPUtils.ConvertDPToPx(41f);
                     c.DrawText(secondTxt, textX, textY, MRenderPaint);
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void DrawMissingReadingDownOnCanvas(Canvas c, float top, float left, float right, bool isZoom, bool isSelected)
+        {
+            try
+            {
+                if (!isZoom || (isZoom && !isSelected))
+                {
+                    if (!isZoom)
+                    {
+                        MRenderPaint.Color = new Color(255, 255, 255, 255);
+                    }
+                    else
+                    {
+                        MRenderPaint.Color = new Color(255, 255, 255, 50);
+                    }
+
+                    MRenderPaint.TextAlign = Paint.Align.Center;
+
+                    float x = left + ((right - left) / 2) - DPUtils.ConvertDPToPx(2.5f);
+                    float y = top - DPUtils.ConvertDPToPx(7f);
+
+                    c.DrawBitmap(missingBitmap, x, y, MRenderPaint);
                 }
             }
             catch (System.Exception e)
