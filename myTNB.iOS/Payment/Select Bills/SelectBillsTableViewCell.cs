@@ -111,6 +111,7 @@ namespace myTNB
             };
 
             AddSubviews(_lblName, _lblAccountNo, _txtViewAddress, _viewCheckBox, _viewAmount, _viewSeparator);
+            UserInteractionEnabled = true;
         }
     }
 }
