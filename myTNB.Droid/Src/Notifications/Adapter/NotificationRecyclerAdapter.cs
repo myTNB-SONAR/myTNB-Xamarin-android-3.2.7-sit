@@ -87,67 +87,44 @@ namespace myTNB_Android.Src.Notifications.Adapter
 
                 }
 
-                //01 New Bill
-                //02 Bill Due
-                //03 Dunning Disconnection Notice
-                //04 Disconnection
-                //05 Reconnection
-
-                if (notificationData.BCRMNotificationTypeId.Equals("01"))
+                if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_NEW_BILL_ID))
                 {
-                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_billing));
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_new_bill));
                 }
-                else if (notificationData.BCRMNotificationTypeId.Equals("02"))
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_BILL_DUE_ID))
                 {
-                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_billing_due));
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_bill_due));
                 }
-                else if (notificationData.BCRMNotificationTypeId.Equals("03"))
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_DISCONNECT_NOTICE_ID))
                 {
-                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_power));
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_dunning_disconnection));
                 }
-                else if (notificationData.BCRMNotificationTypeId.Equals("04"))
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_DISCONNECTED_ID))
                 {
-                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_connection));
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_disconnection));
                 }
-                else if (notificationData.BCRMNotificationTypeId.Equals("05"))
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_RECONNECTED_ID))
                 {
-                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_connection));
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_reconnection));
                 }
-                else if (notificationData.BCRMNotificationTypeId.Equals("97"))
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_METER_READING_OPEN_ID) ||
+                    notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_METER_READING_REMIND_ID) ||
+                    notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SMR_DISABLED_ID) ||
+                    notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SMR_APPLY_SUCCESS_ID) ||
+                    notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SMR_APPLY_FAILED_ID) ||
+                    notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SMR_DISABLED_SUCCESS_ID) ||
+                    notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_SMR_DISABLED_FAILED_ID))
                 {
-                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_promo));
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_smr));
                 }
-                else if (notificationData.BCRMNotificationTypeId.Equals("98"))
+                else if (notificationData.BCRMNotificationTypeId.Equals(Constants.BCRM_NOTIFICATION_MAINTENANCE_ID))
                 {
-                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_news));
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_settings));
                 }
-                else if (notificationData.BCRMNotificationTypeId.Equals("99"))
+                else
                 {
-                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.ic_notification_maintenance));
+                    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(notifyContext, Resource.Drawable.notification_generic));
                 }
-
-                //if (notificationData.Code.Equals(Constants.NOTIFICATION_CODE_BP))
-                //{
-                //    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(context , Resource.Drawable.ic_notification_billing));
-                //}
-                //else if (notificationData.Code.Equals(Constants.NOTIFICATION_CODE_ACC))
-                //{
-                //    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_notification_power));
-                //}
-                //else if (notificationData.Code.Equals(Constants.NOTIFICATION_CODE_PO))
-                //{
-                //    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_notification_power));
-                //}
-                //else if (notificationData.Code.Equals(Constants.NOTIFICATION_CODE_PRO))
-                //{
-                //    viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_notification_promo));
-
-                //}
-                //else if (notificationData.Code.Equals(Constants.NOTIFICATION_CODE_REW))
-                //{
-                //    //viewHolder.notificationIcon.SetImageDrawable(ContextCompat.GetDrawable(context, Resource.Drawable.ic_notification_rew));
-
-                //}
 
                 viewHolder.txtNotificationTitle.Text = notificationData.Title;
 
@@ -244,8 +221,29 @@ namespace myTNB_Android.Src.Notifications.Adapter
             {
                 TextViewUtils.SetMuseoSans300Typeface(txtNotificationTitle);
                 TextViewUtils.SetMuseoSans300Typeface(txtNotificationContent, txtNotificationDate);
+                itemView.SetOnLongClickListener(new NotificationLongItemClickListener(this, adapter));
                 itemView.SetOnClickListener(new NotificationItemClickListener(this, adapter));
                 selectItemCheckbox.SetOnCheckedChangeListener(new NotificationItemSelectedListener(this, adapter));
+            }
+        }
+
+        class NotificationLongItemClickListener : Java.Lang.Object, View.IOnLongClickListener
+        {
+            NotificationRecyclerViewHolder mViewHolder;
+            NotificationRecyclerAdapter mAdapter;
+            public NotificationLongItemClickListener(NotificationRecyclerViewHolder viewHolder, NotificationRecyclerAdapter adapter)
+            {
+                mViewHolder = viewHolder;
+                mAdapter = adapter;
+            }
+
+            public bool OnLongClick(View v)
+            {
+                if (isClickable)
+                {
+                    mNotificatonListener.ShowEditMode();
+                }
+                return true;
             }
         }
 

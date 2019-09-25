@@ -275,12 +275,34 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             SetPhotoBoxClickable();
         }
 
+        private int FixOrientation(Bitmap bitmap)
+        {
+            if (bitmap.Width > bitmap.Height)
+            {
+                return 90;
+            }
+            return 0;
+        }
+
+        private Bitmap FixRotatedBitmap(Bitmap sourceBitmap, int rotation)
+        {
+            Matrix matrix = new Matrix();
+            matrix.PostRotate(rotation);
+            return Bitmap.CreateBitmap(sourceBitmap,0,0,sourceBitmap.Width,sourceBitmap.Height,matrix,true);
+        }
+
         public void AddCapturedImage(Bitmap capturedImage)
         {
+            int rotation = FixOrientation(capturedImage);
+            Bitmap checkedCapturedImage = capturedImage;
+            if (rotation == 90)
+            {
+                checkedCapturedImage = FixRotatedBitmap(capturedImage,rotation);
+            }
             if (!isSinglePhase)
             {
                 PhotoContainerBox photoContainerBox = photoContainerBoxes.Find(box => { return box.mIsActive; });
-                photoContainerBox.SetPhotoImage(capturedImage);
+                photoContainerBox.SetPhotoImage(checkedCapturedImage);
                 UpdateAllPhotoBoxes();
                 SetPhotoBoxClickable();
 				takePhotoFragment.ResetZoom();
@@ -289,10 +311,10 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 ScaledImageView previewImage = FindViewById<ScaledImageView>(Resource.Id.adjust_photo_preview);
                 previewImage.SetScaleType(ImageView.ScaleType.CenterCrop);
-                previewImage.SetImageBitmap(capturedImage);
+                previewImage.SetImageBitmap(checkedCapturedImage);
                 ShowImagePreView(true);
                 isFromSingleCapture = true;
-                singlePhaseImageData = capturedImage;
+                singlePhaseImageData = checkedCapturedImage;
             }
 
             UpdateTakePhotoNote();

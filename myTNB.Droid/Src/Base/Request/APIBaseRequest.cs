@@ -21,7 +21,7 @@ namespace myTNB_Android.Src.Base.Request
             UserEntity user = UserEntity.GetActive();
             eid = user.UserName;
             sspuid = user.UserID;
-            did = "";
+            did = "test";
             ft = FirebaseTokenEntity.GetLatest().FBToken;
             lang = "EN";
             sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID;

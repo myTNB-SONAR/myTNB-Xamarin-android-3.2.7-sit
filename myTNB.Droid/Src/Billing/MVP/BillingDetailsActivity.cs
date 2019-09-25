@@ -9,6 +9,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
+using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Views;
 using Android.Widget;
@@ -25,6 +26,7 @@ using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
+using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using myTNB_Android.Src.ViewBill.Activity;
 using myTNB_Android.Src.ViewReceipt.Activity;
 using Newtonsoft.Json;
@@ -33,7 +35,7 @@ using static myTNB_Android.Src.MyTNBService.Model.AccountBillPayHistoryModel;
 namespace myTNB_Android.Src.Billing.MVP
 {
     [Activity(Label = "Bill Details", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
-    public class BillingDetailsActivity : BaseToolbarAppCompatActivity
+    public class BillingDetailsActivity : BaseToolbarAppCompatActivity, BillingDetailsContract.IView
     {
         [BindView(Resource.Id.accountName)]
         TextView accountName;
@@ -77,25 +79,36 @@ namespace myTNB_Android.Src.Billing.MVP
         [BindView(Resource.Id.accountMinChargeLabelContainer)]
         LinearLayout accountMinChargeLabelContainer;
 
+        [BindView(Resource.Id.rootView)]
+        CoordinatorLayout rootView;
+
         [BindView(Resource.Id.btnViewBill)]
         Button btnViewBill;
 
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
 
-        SimpleDateFormat billPdfDateParser = new SimpleDateFormat("dd MMM yyyy");
+        SimpleDateFormat billPdfDateParser = new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat billPdfDateFormatter = new SimpleDateFormat("dd/MM/yyyy");
 
         AccountChargeModel selectedAccountChargeModel;
         BillingHistoryData billingHistoryData;
         AccountData selectedAccountData;
+        BillingDetailsContract.IPresenter billingDetailsPresenter;
+        private LoadingOverlay loadingOverlay;
 
         [OnClick(Resource.Id.btnViewBill)]
         void OnViewBill(object sender, EventArgs eventArgs)
         {
-            Intent viewBill = new Intent(this, typeof(ViewBillActivity));
-            viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
-            StartActivity(viewBill);
+            billingDetailsPresenter.GetBillHistory(selectedAccountData);
+            try
+            {
+                FirebaseAnalyticsUtils.LogClickEvent(this, "View Bill Button Click");
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
         [OnClick(Resource.Id.btnPayBill)]
@@ -104,6 +117,14 @@ namespace myTNB_Android.Src.Billing.MVP
             Intent payment_activity = new Intent(this, typeof(SelectAccountsActivity));
             payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
             StartActivity(payment_activity);
+            try
+            {
+                FirebaseAnalyticsUtils.LogClickEvent(this, "Pay Bill Button Click");
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
         public override int ResourceId()
@@ -122,7 +143,7 @@ namespace myTNB_Android.Src.Billing.MVP
             TextViewUtils.SetMuseoSans300Typeface(accountAddress, accountPayAmountDate, accountPayAmountValue);
             TextViewUtils.SetMuseoSans500Typeface(accountName, myBillDetailsLabel, accountChargeLabel, accountChargeValue,
                 accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel, accountPayAmountCurrency, accountMinChargeLabel);
-
+            billingDetailsPresenter = new BillingDetailsPresenter(this);
             Bundle extras = Intent.Extras;
             if (extras.ContainsKey("SELECTED_ACCOUNT"))
             {
@@ -192,7 +213,7 @@ namespace myTNB_Android.Src.Billing.MVP
                 accountPayAmountLabel.Visibility = ViewStates.Visible;
                 accountPayAmountLabel.Text = "I need to pay";
                 accountPayAmountDate.Visibility = ViewStates.Visible;
-                accountPayAmountDate.Text = "by " + selectedAccountChargeModel.DueDate;
+                accountPayAmountDate.Text = "by " + dateFormatter.Format(dateParser.Parse(selectedAccountChargeModel.DueDate));
 
                 accountPayAmountCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
                 accountPayAmountValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
@@ -260,6 +281,76 @@ namespace myTNB_Android.Src.Billing.MVP
                 .SetMessage(mandatoryTooltipModel.Description)
                 .SetCTALabel(mandatoryTooltipModel.CTA)
                 .Build().Show();
+        }
+
+        public void ShowBillPDF(BillHistoryV5 selectedBill)
+        {
+            if (selectedBill != null && selectedBill.NrBill != null)
+            {
+                selectedBill.NrBill = null;
+            }
+
+            Intent viewBill = new Intent(this, typeof(ViewBillActivity));
+            viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
+            viewBill.PutExtra(Constants.SELECTED_BILL, JsonConvert.SerializeObject(selectedBill));
+            StartActivity(viewBill);
+        }
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private Snackbar mLoadBillSnackBar;
+        public void ShowBillErrorSnackBar()
+        {
+            try
+            {
+                if (mLoadBillSnackBar != null && mLoadBillSnackBar.IsShown)
+                {
+                    mLoadBillSnackBar.Dismiss();
+                }
+
+                mLoadBillSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
+                .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate
+                {
+                    mLoadBillSnackBar.Dismiss();
+                }
+                );
+                mLoadBillSnackBar.Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }
