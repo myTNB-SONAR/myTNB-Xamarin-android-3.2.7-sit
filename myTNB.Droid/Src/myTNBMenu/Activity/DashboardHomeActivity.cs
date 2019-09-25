@@ -171,34 +171,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 isFromNotification = true;
                 alreadyStarted = true;
             }
-            //Task.Factory.StartNew(() =>
-            //{
-            //    GetNotifications();
-            //});
-            this.userActionsListener?.OnNotificationCount();
-
         }
-
-        //public async void GetNotifications()
-        //{
-        //    try
-        //    {
-        //        NotificationApiImpl api = new NotificationApiImpl();
-        //        MyTNBService.Response.UserNotificationResponse response = await api.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
-        //        if (response.Data.ErrorCode == "7200")
-        //        {
-        //            foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
-        //            {
-        //                // tODO : SAVE ALL NOTIFICATIONs
-        //                int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
-        //            }
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Utility.LoggingNonFatalError(e);
-        //    }
-        //}
 
         public void ShowBackButton(bool flag)
         {
@@ -247,6 +220,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         protected override void OnResume()
         {
             base.OnResume();
+            this.userActionsListener?.GetUserNotifications();
             if (this.mPresenter != null)
             {
                 this.mPresenter.OnValidateData();

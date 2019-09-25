@@ -15,7 +15,7 @@ namespace myTNB_Android.Src.MyTNBService.Request
             selectedNotificationList.ForEach(data =>
             {
                 notificationData = new NotificationData();
-                notificationData.NotificationId = data.NotificationTypeId;
+                notificationData.NotificationId = data.Id;
                 notificationData.NotificationType = data.NotificationType;
                 updatedNotifications.Add(notificationData);
             });
