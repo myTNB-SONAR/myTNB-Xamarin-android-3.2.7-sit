@@ -34,7 +34,7 @@ namespace myTNB.SmartMeterView
             List<MonthItemModel> usageData = AccountUsageSmartCache.ByMonthUsage;
             List<string> valueList = usageData.Select(x => x.UsageTotal).ToList();
             double maxValue = GetMaxValue(RMkWhEnum.RM, valueList);
-            double divisor = maxBarHeight / maxValue;
+            double divisor = maxValue > 0 ? maxBarHeight / maxValue : 0;
 
             for (int i = 0; i < usageData.Count; i++)
             {
@@ -51,7 +51,7 @@ namespace myTNB.SmartMeterView
                 view.AddSubview(segment);
                 xLoc += segmentWidth + segmentMargin;
 
-                if (item.IsCurrentlyUnavailable)
+                if (index == usageData.Count - 1 && AccountUsageSmartCache.IsMDMSDown)
                 {
                     UILabel lblDate = new UILabel(new CGRect((segmentWidth - GetWidthByScreenSize(40)) / 2, segment.Frame.Height - lblHeight
                         , GetWidthByScreenSize(40), lblHeight))

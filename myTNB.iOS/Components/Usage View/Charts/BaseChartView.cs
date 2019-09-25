@@ -13,6 +13,7 @@ namespace myTNB
         protected CustomUIView _mainView, _segmentContainer, _zoomView;
         protected nfloat _width, _baseMargin, _baseMarginedWidth;
         protected UILabel _lblDateRange;
+        protected UISegmentedControl _toggleBar;
 
         protected string Format_Value = "{0} {1}";
         protected nfloat ShimmerHeight;

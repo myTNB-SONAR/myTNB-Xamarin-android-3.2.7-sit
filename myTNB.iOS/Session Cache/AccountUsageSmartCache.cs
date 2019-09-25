@@ -18,6 +18,7 @@ namespace myTNB
         private static AccountUsageSmartResponseDataModel RefreshDataModel;
 
         public static bool IsSuccess { private set; get; }
+        public static bool IsMDMSDown { set; get; }
 
         public static void ClearTariffLegendList()
         {
@@ -63,8 +64,10 @@ namespace myTNB
         public static void SetData(string accountNumber, AccountUsageSmartResponseModel response)
         {
             IsSuccess = response?.d?.IsSuccess ?? false;
+            IsMDMSDown = response?.d?.IsMDMSDown ?? false;
             if (response != null && response.d != null
-                && response.d.IsSuccess && response.d.data != null)
+                && (response.d.IsSuccess || response.d.IsMDMSDown)
+                && response.d.data != null)
             {
                 AccountUsageSmartDataModel data = response.d.data.DeepClone();
                 RefreshDataModel = response.d.DeepClone();
@@ -81,7 +84,10 @@ namespace myTNB
                 EndDate = data?.EndDate ?? string.Empty;
                 DateRange = data?.DateRange ?? string.Empty;
 
-                SaveToCache(accountNumber, RefreshDataModel);
+                if (IsSuccess)
+                {
+                    SaveToCache(accountNumber, RefreshDataModel);
+                }
             }
             else
             {

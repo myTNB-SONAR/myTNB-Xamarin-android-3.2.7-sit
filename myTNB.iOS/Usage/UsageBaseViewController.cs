@@ -751,7 +751,7 @@ namespace myTNB
                 if (isSmartMeterAccount)
                 {
                     tariffList = new List<LegendItemModel>(AccountUsageSmartCache.GetTariffLegendList());
-                    isDisable = AccountUsageSmartCache.IsMonthlyTariffDisable || AccountUsageSmartCache.IsMonthlyTariffUnavailable || tariffList == null || tariffList.Count == 0;
+                    isDisable = AccountUsageSmartCache.IsMDMSDown || AccountUsageSmartCache.IsMonthlyTariffDisable || AccountUsageSmartCache.IsMonthlyTariffUnavailable || tariffList == null || tariffList.Count == 0;
                 }
                 else
                 {
@@ -1117,6 +1117,7 @@ namespace myTNB
                         UserInteractionEnabled = true
                     };
                     _scrollIndicatorView.Image = UIImage.FromBundle(UsageConstants.IMG_ScrollIndicator);
+                    _scrollIndicatorView.ContentMode = UIViewContentMode.ScaleAspectFill;
                     _scrollIndicatorView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                     {
                         AnimateFooterToHideAndShow(true);

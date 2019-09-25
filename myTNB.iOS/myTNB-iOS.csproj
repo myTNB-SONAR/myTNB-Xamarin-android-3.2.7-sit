@@ -1211,6 +1211,9 @@
     <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\MDMS-Down-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\MDMS-Down.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\MDMS-Down.imageset\MDMS-Down%402x.png" />
+    <ImageAsset Include="Assets.xcassets\MDMS-Down.imageset\MDMS-Down%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1630,6 +1633,7 @@
     <Folder Include="Assets.xcassets\Usage-Pinch-In-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Scroll-Indicator.imageset\" />
     <Folder Include="Assets.xcassets\MDMS-Down-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\MDMS-Down.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2468,6 +2472,7 @@
     <Compile Include="Model\Notification\ReadNotificationResponseModel.cs" />
     <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterConstants.cs" />
     <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterDayZInView.cs" />
+    <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterMDMSDownView.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

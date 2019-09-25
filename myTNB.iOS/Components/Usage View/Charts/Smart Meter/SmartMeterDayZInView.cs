@@ -68,7 +68,7 @@ namespace myTNB.SmartMeterView
             _usageData = AccountUsageSmartCache.FlatDays;
             List<string> valueList = _usageData.Select(x => x.Amount).ToList();
             double maxValue = GetMaxValue(RMkWhEnum.RM, valueList);
-            double divisor = maxValue == 0 ? 0 : maxBarHeight / maxValue;
+            double divisor = maxValue > 0 ? maxBarHeight / maxValue : 0;
             CGPoint lastSegment = new CGPoint();
             _locationDictionary.Clear();
             for (int i = 0; i < _usageData.Count; i++)
