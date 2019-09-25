@@ -387,10 +387,10 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
                     isError = true;
                 }
 
-                if (TextUtils.IsEmpty(feedback) && feedback.Equals(" "))
-                {
-                    //isError = true;
-                }
+                //if (TextUtils.IsEmpty(feedback) && feedback.Equals(" "))
+                //{
+                //    isError = true;
+                //}
 
                 if ( isError)
                 {
