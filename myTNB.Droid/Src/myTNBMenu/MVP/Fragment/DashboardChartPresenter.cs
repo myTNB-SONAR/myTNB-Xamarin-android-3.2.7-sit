@@ -479,13 +479,21 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     userInterface = currentUsrInf
                 }, cts.Token);
 
-                if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode != "7200")
+                if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode != "7200" && usageHistoryResponse.Data.ErrorCode != "7204")
                 {
                     this.mView.ShowNoInternet(usageHistoryResponse.Data.RefreshMessage, usageHistoryResponse.Data.RefreshBtnText);
                 }
-                else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7200")
+                else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7204")
                 {
-                    if (IsCheckHaveByMonthData(usageHistoryResponse.Data.SMUsageHistoryData))
+                    this.mView.SetISMDMSDown(true);
+                    this.mView.OnSetBackendTariffDisabled(true);
+
+                    this.mView.SetSMUsageData(usageHistoryResponse.Data.SMUsageHistoryData);
+                    OnByRM();
+                }
+                else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7200" )
+                {
+                    if (!usageHistoryResponse.Data.IsMDMSCurrentlyUnavailable && IsCheckHaveByMonthData(usageHistoryResponse.Data.SMUsageHistoryData))
                     {
                         SMUsageHistoryEntity smUsageModel = new SMUsageHistoryEntity();
                         smUsageModel.Timestamp = DateTime.Now.ToLocalTime();
@@ -501,6 +509,17 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     {
                         this.mView.OnSetBackendTariffDisabled(true);
                     }
+
+                    if (!usageHistoryResponse.Data.IsMDMSCurrentlyUnavailable)
+                    {
+                        this.mView.SetISMDMSDown(false);
+                    }
+                    else
+                    {
+                        this.mView.SetISMDMSDown(true);
+                        this.mView.OnSetBackendTariffDisabled(true);
+                    }
+
                     this.mView.SetSMUsageData(usageHistoryResponse.Data.SMUsageHistoryData);
                     OnByRM();
                 }
@@ -666,7 +685,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         {
             bool isHaveData = true;
 
-            if (data == null || (data != null && data.ByMonth == null) || (data != null && data.ByMonth != null && data.ByMonth.Months.Count == 0))
+            if (data == null || (data != null && data.ByMonth == null) || (data != null && data.ByMonth != null && data.ByMonth.Months == null) || (data != null && data.ByMonth != null && data.ByMonth.Months != null && data.ByMonth.Months.Count == 0))
             {
                 isHaveData = false;
             }
@@ -693,7 +712,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         {
             bool isHaveData = true;
 
-            if (data == null || (data != null && data.ByMonth == null) || (data != null && data.ByMonth != null && data.ByMonth.Months.Count == 0))
+            if (data == null || (data != null && data.ByMonth == null) || (data != null && data.ByMonth != null && data.ByMonth.Months == null) || (data != null && data.ByMonth != null && data.ByMonth.Months != null && data.ByMonth.Months.Count == 0))
             {
                 isHaveData = false;
             }

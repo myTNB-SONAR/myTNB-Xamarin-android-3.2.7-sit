@@ -13,7 +13,7 @@ namespace myTNB_Android.Src.Base
         private List<CustomerBillingAccount> masterCustomerBillingAccountList = new List<CustomerBillingAccount>();
         private bool HasLoaded = false;
         private bool IsNeeUpdate = false;
-        private MasterDataResponse currentMasterDataRes = null;
+        private static MasterDataResponse currentMasterDataRes = null;
         private List<string> UpdatedAccountNumberList = new List<string>();
         private MyTNBAccountManagement()
         {

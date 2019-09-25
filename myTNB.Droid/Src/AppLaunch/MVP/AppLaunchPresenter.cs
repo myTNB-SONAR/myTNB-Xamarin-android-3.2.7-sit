@@ -134,7 +134,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     eid = "",
                     sspuid = "",
                     did = this.mView.GetDeviceId(),
-                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    ft = "",
                     lang = Constants.DEFAULT_LANG.ToUpper(),
                     sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
                     sec_auth_k2 = "",

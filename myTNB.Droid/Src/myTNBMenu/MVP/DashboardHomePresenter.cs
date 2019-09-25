@@ -123,6 +123,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                         {
                                             usageHistoryResponse = null;
                                         }
+                                        else if ((usageHistoryResponse != null && usageHistoryResponse.Data == null) || (usageHistoryResponse == null))
+                                        {
+                                            usageHistoryResponse = null;
+                                        }
                                         else if (!IsCheckHaveByMonthData(usageHistoryResponse.Data.UsageHistoryData))
                                         {
                                             usageHistoryResponse = null;
@@ -166,7 +170,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                         {
                                             smUsageHistoryResponse = null;
                                         }
-                                        else if (!IsCheckHaveByMonthData(storedSMData.Data.SMUsageHistoryData))
+                                        else if ((storedSMData != null && storedSMData.Data == null) || (storedSMData == null))
+                                        {
+                                            smUsageHistoryResponse = null;
+                                        }
+                                        else if (storedSMData.Data.IsMDMSCurrentlyUnavailable || !IsCheckHaveByMonthData(storedSMData.Data.SMUsageHistoryData))
                                         {
                                             smUsageHistoryResponse = null;
                                         }
@@ -281,8 +289,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			{
 				case Resource.Id.menu_dashboard:
 					if (DashboardHomeActivity.currentFragment != null && (DashboardHomeActivity.currentFragment.GetType() == typeof(HomeMenuFragment) ||
-						DashboardHomeActivity.currentFragment.GetType() == typeof(DashboardChartFragment) ||
-						DashboardHomeActivity.currentFragment.GetType() == typeof(DashboardSmartMeterFragment)))
+						DashboardHomeActivity.currentFragment.GetType() == typeof(DashboardChartFragment)))
 					{
 						mView.ShowBackButton(false);
 						DoLoadHomeDashBoardFragment();
@@ -832,6 +839,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                     {
                                         smUsageHistoryResponse = null;
                                     }
+                                    else if (storedSMData.Data.IsMDMSCurrentlyUnavailable || !IsCheckHaveByMonthData(storedSMData.Data.SMUsageHistoryData))
+                                    {
+                                        smUsageHistoryResponse = null;
+                                    }
                                     else
                                     {
                                         smUsageHistoryResponse = storedSMData;
@@ -863,6 +874,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 										{
 											usageHistoryResponse = null;
 										}
+                                        else if ((usageHistoryResponse != null && usageHistoryResponse.Data == null) || (usageHistoryResponse == null))
+                                        {
+                                            usageHistoryResponse = null;
+                                        }
                                         else if (!IsCheckHaveByMonthData(usageHistoryResponse.Data.UsageHistoryData))
                                         {
                                             usageHistoryResponse = null;
@@ -999,7 +1014,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         {
             bool isHaveData = true;
 
-            if (data == null || (data != null && data.ByMonth == null) || (data != null && data.ByMonth != null && data.ByMonth.Months.Count == 0))
+            if (data == null || (data != null && data.ByMonth == null) || (data != null && data.ByMonth != null && data.ByMonth.Months == null) || (data != null && data.ByMonth != null && data.ByMonth.Months != null && data.ByMonth.Months.Count == 0))
             {
                 isHaveData = false;
             }
@@ -1026,7 +1041,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         {
             bool isHaveData = true;
 
-            if (data == null || (data != null && data.ByMonth == null) || (data != null && data.ByMonth != null && data.ByMonth.Months.Count == 0))
+            if (data == null || (data != null && data.ByMonth == null) || (data != null && data.ByMonth != null && data.ByMonth.Months == null) || (data != null && data.ByMonth != null && data.ByMonth.Months != null && data.ByMonth.Months.Count == 0))
             {
                 isHaveData = false;
             }

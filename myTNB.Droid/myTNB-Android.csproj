@@ -728,7 +728,6 @@
     <Compile Include="Src\myTNBMenu\Fragments\BillsMenu\BillingPaymentNoInternetConnection.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\BillsMenu\BillsMenuFragment.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\BillsMenu\PaymentListFragment.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\DashboardSmartMeterFragment.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\FeedbackMenu\FeedbackMenuFragment.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\MoreMenu\MoreMenuFragment.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\PromotionsMenu\PromotionsMenuFragment.cs" />
@@ -1586,12 +1585,6 @@
       <Generator>
       </Generator>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\CustomDialogWithImgOneButtonLayout.axml">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
     <Compile Include="Src\SitecoreCMS\Service\SSMRMeterReadingThreePhaseWalkthroughService.cs" />
     <Compile Include="Src\SitecoreCMS\Model\SSMRMeterReadingWalkthroughModel.cs" />
     <Compile Include="Src\Database\Model\SSMRMeterReadingScreensEntity.cs" />
@@ -1632,96 +1625,6 @@
       </Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-hdpi\three_phase.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\k_va_rh.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\k_w.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\k_wh.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\k_va_rh.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\k_w.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xxhdpi\k_wh.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\k_va_rh.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\k_w.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-xhdpi\k_wh.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\k_va_rh.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\k_w.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-mdpi\k_wh.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\k_va_rh.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\k_w.png">
-      <SubType>
-      </SubType>
-      <Generator>
-      </Generator>
-    </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\k_wh.png">
       <SubType>
       </SubType>
       <Generator>
@@ -3054,6 +2957,26 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\mdms_down_dayview.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\mdms_down_dayview.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\mdms_down_dayview.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\mdms_down_dayview.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\mdms_down_dayview.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -3110,9 +3033,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\MarkerView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\DashboardChartView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ChartHouseSpinnerRow.axml">
@@ -3360,7 +3280,6 @@
     <AndroidResource Include="Resources\layout\SelectAccountListItemView.axml" />
     <AndroidResource Include="Resources\layout\SelectMultipleAccountsView.axml" />
     <AndroidResource Include="Resources\layout\AppUpdateDialog.axml" />
-    <AndroidResource Include="Resources\layout\DashboardSmartMeterView.axml" />
     <AndroidResource Include="Resources\layout\LoadingOverlayView.axml" />
     <AndroidResource Include="Resources\layout\promotion_dialog.axml" />
     <AndroidResource Include="Resources\layout\promotion_pager_item.axml" />
@@ -5789,9 +5708,6 @@
     <AndroidResource Include="Resources\drawable\selector_password_right_icon.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\shadow_effect.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\silver_chalice_button_outline.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -5891,12 +5807,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_rm.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\img_bcrm_down.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\img_bcrm_down_summary.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\img_notification_maintenance.png" />
   </ItemGroup>
   <ItemGroup>
@@ -5907,9 +5817,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\logo_white.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\shadow_effect.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\tnb_receipt_logo_header.png" />
@@ -5957,12 +5864,6 @@
     <AndroidResource Include="Resources\drawable-mdpi\ic_rm.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\img_bcrm_down.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\img_bcrm_down_summary.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\img_notification_maintenance.png" />
   </ItemGroup>
   <ItemGroup>
@@ -5973,9 +5874,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\logo_white.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\shadow_effect.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\tnb_receipt_logo_header.png" />
@@ -6023,12 +5921,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\ic_rm.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\img_bcrm_down_summary.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\img_bcrm_down.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\img_notification_maintenance.png" />
   </ItemGroup>
   <ItemGroup>
@@ -6039,9 +5931,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\logo_white.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\shadow_effect.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\tnb_receipt_logo_header.png" />
@@ -6089,12 +5978,6 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_rm.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\img_bcrm_down.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\img_bcrm_down_summary.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\img_notification_maintenance.png" />
   </ItemGroup>
   <ItemGroup>
@@ -6105,9 +5988,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\logo_white.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\shadow_effect.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\tnb_receipt_logo_header.png" />
@@ -6155,12 +6035,6 @@
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_rm.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\img_bcrm_down.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\img_bcrm_down_summary.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\img_notification_maintenance.png" />
   </ItemGroup>
   <ItemGroup>
@@ -6171,9 +6045,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\logo_white.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\shadow_effect.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\tnb_receipt_logo_header.png" />
@@ -6222,31 +6093,18 @@
     <AndroidResource Include="Resources\layout\CustomDialogOneButtonLayout.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable-hdpi\refresh_on_bg.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\refresh.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\refresh_on_bg.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\refresh.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\refresh_on_bg.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\refresh.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\refresh_on_bg.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\refresh.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\refresh_on_bg.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\refresh.png" />
@@ -6256,21 +6114,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\CustomDialogViewDailyUsage.axml" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\pinch.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\pinch.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\pinch.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\pinch.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\pinch.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

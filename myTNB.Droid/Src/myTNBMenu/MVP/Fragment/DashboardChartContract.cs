@@ -129,9 +129,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
             void ShowEnergyTipsView(List<EnergySavingTipsModel> list);
 
-            bool GetIsSMDown();
+            bool GetIsMDMSDown();
 
-            void SetISSMDown(bool flag);
+            void SetISMDMSDown(bool flag);
 
             bool GetIsSMAccount();
 

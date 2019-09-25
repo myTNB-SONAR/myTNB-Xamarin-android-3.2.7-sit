@@ -180,7 +180,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             try
             {
                 if (currentFragment.GetType() == typeof(DashboardChartFragment) ||
-                    currentFragment.GetType() == typeof(DashboardSmartMeterFragment) ||
                     currentFragment.GetType() == typeof(FeedbackMenuFragment))
                 {
                     ShowHomeDashBoard();
@@ -221,30 +220,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             FragmentManager.BeginTransaction()
                    .Replace(Resource.Id.content_layout, new BillingMenuNoTNBAccount())
                    .CommitAllowingStateLoss();
-        }
-
-        public void ShowSMChart(SMUsageHistoryData data, AccountData selectedAccount)
-        {
-            this.SelectedAccountData = selectedAccount;
-            txtAccountName.Text = SelectedAccountData.AccountName;
-            currentFragment = new DashboardSmartMeterFragment();
-            FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, DashboardSmartMeterFragment.NewInstance(data, SelectedAccountData),
-                                    typeof(DashboardSmartMeterFragment).Name)
-                           .CommitAllowingStateLoss();
-            ShowBackButton(true);
-        }
-
-        public void ShowSMChartWithError(SMUsageHistoryData data, AccountData selectedAccount, bool noSMData)
-        {
-            this.SelectedAccountData = selectedAccount;
-            txtAccountName.Text = SelectedAccountData.AccountName;
-            currentFragment = new DashboardSmartMeterFragment();
-            FragmentManager.BeginTransaction()
-                .Replace(Resource.Id.content_layout, DashboardSmartMeterFragment.NewInstance(data, SelectedAccountData, noSMData),
-                         typeof(DashboardSmartMeterFragment).Name)
-                           .CommitAllowingStateLoss();
-            ShowBackButton(true);
         }
 
         [OnClick(Resource.Id.txt_account_name)]

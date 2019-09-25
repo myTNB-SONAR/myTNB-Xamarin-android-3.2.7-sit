@@ -16,20 +16,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 		public interface IView : IBaseView<IUserActionsListener>
 		{
 			/// <summary>
-			/// Show the bar charts
-			/// </summary>
-			/// <param name="data">UsageHistoryData</param>
-			/// <param name="selectedAccount">AccountData</param>
-			void ShowSMChart(SMUsageHistoryData data, AccountData selectedAccount);
-
-			/// <summary>
-			/// Show the bar charts
-			/// </summary>
-			/// <param name="data">UsageHistoryData</param>
-			/// <param name="selectedAccount">AccountData</param>
-			void ShowSMChartWithError(SMUsageHistoryData data, AccountData selectedAccount, bool noSMData);
-
-			/// <summary>
 			/// Shows the bill menu
 			/// </summary>
 			/// <param name="selectedAccount">AccountData</param>

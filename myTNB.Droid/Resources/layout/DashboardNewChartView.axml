@@ -208,14 +208,15 @@
                             </RelativeLayout>
                             <LinearLayout
                             android:id="@+id/smGraphZoomToggleLayout"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
                             android:gravity="right"
+                            android:layout_alignParentRight="true"
                             android:layout_centerInParent="true"
                             android:clickable="true">
                                 <ImageView
-                                android:layout_width="24dp"
-                                android:layout_height="24dp"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
                                 android:layout_gravity="center"
                                 android:src="@drawable/dashboard_zoom_tooltip"
                                 android:id="@+id/smGraphZoomToggle"/>
@@ -311,6 +312,34 @@
                                         android:background="@drawable/shimmer_round_rectangle" >
                                     </LinearLayout>
                                 </com.facebook.shimmer.ShimmerFrameLayout>
+                            </LinearLayout>
+                            <LinearLayout
+					            android:id="@+id/mdmsDayViewDownLayout"
+					            android:layout_width="match_parent"
+					            android:layout_height="wrap_content"
+					            android:orientation="vertical"
+                                android:visibility="gone"
+                                android:layout_marginTop="24dp"
+                                android:layout_marginBottom="18dp">
+                                <ImageView
+                                    android:layout_width="61dp"
+                                    android:layout_height="67dp"
+                                    android:src="@drawable/mdms_down_dayview"
+                                    android:id="@+id/imgMdmsDayViewDown"
+                                    android:layout_gravity="center"/>
+                                <TextView
+                                    android:id="@+id/txtMdmsDayViewDown"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_marginLeft="32dp"
+                                    android:layout_marginRight="32dp"
+                                    android:lineSpacingExtra="3dp"
+                                    android:textSize="14dp"
+                                    android:textColor="@color/white"
+                                    android:text="@string/dayview_mdms_down"
+                                    android:layout_gravity="center"/>
                             </LinearLayout>
 					        <com.github.mikephil.charting.charts.BarChart
 						        android:id="@+id/bar_chart"
@@ -1280,7 +1309,7 @@
         <ImageView
             android:id="@+id/shadow_layout"
             android:layout_width="match_parent"
-            android:layout_height="48dp"
+            android:layout_height="33dp"
             android:visibility="visible"
             android:scaleType="fitXY"
             android:background="@drawable/scroll_indicator" />

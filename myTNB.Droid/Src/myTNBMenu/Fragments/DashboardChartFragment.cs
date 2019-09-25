@@ -56,6 +56,7 @@ using System;
 using System.Collections.Generic;
 using static MikePhil.Charting.Components.XAxis;
 using static MikePhil.Charting.Components.YAxis;
+using static myTNB_Android.Src.AppLaunch.Models.MasterDataResponse;
 using static myTNB_Android.Src.myTNBMenu.Listener.NMRESMDashboardScrollView;
 using static myTNB_Android.Src.myTNBMenu.Models.GetInstallationDetailsResponse;
 
@@ -408,6 +409,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.smGraphZoomToggleLayout)]
         LinearLayout smGraphZoomToggleLayout;
 
+        [BindView(Resource.Id.mdmsDayViewDownLayout)]
+        LinearLayout mdmsDayViewDownLayout;
+
+        [BindView(Resource.Id.txtMdmsDayViewDown)]
+        TextView txtMdmsDayViewDown;
+
         private bool isZoomIn = false;
 
         TariffBlockLegendAdapter tariffBlockLegendAdapter;
@@ -459,7 +466,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private bool isSMR = false;
 
-        bool isSMDown = false;
+        bool isMDMSDown = false;
 
         bool isSMAccount = false;
 
@@ -690,7 +697,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextViewUtils.SetMuseoSans500Typeface(reTotalPayableTitle, btnReView, txtTarifToggle, txtNoPayableTitle, txtNoPayableCurrency);
                 TextViewUtils.SetMuseoSans300Typeface(smStatisticBillSubTitle, smStatisticBill, smStatisticBillCurrency, smStatisticBillKwhUnit, smStatisticBillKwh, smStatisticPredictSubTitle, smStatisticPredict, smStatisticPredictCurrency, smStatisticTrendSubTitle, smStatisticTrend);
                 TextViewUtils.SetMuseoSans500Typeface(smStatisticBillTitle, smStatisticPredictTitle, txtSmStatisticTooltip, smStatisticTrendTitle);
-                TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth);
+                TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtMdmsDayViewDown);
 
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
@@ -771,22 +778,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         layoutSMSegmentGroup.Visibility = ViewStates.Visible;
                         isSMR = false;
                         smGraphZoomToggleLayout.Visibility = ViewStates.Gone;
-                        // Lin Siong TODO: Stripped bar background implementation
                         // Lin Siong TODO: Estimated Reading Handling & Display
-                        // Lin Siong TODO: Fallback for Error from MDMS service
-                        if (!isDayViewToggle)
-                        {
-                            isDayViewToggle = true;
-                            try
-                            {
-                                MaterialDialog dayViewZoomTooltip =  DayZoomOutPinchUtil.OnBuildZoomOutPinchTooltip(this.Activity);
-                                dayViewZoomTooltip.Show();
-                            }
-                            catch (System.Exception ne)
-                            {
-                                Utility.LoggingNonFatalError(ne);
-                            }
-                        }
                     }
                     else
                     {
@@ -1001,7 +993,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         if (!selectedAccount.AccountCategoryId.Equals("2"))
                         {
                             bool isGetEnergyTipsDisabled = false;
-                            if (MyTNBAccountManagement.GetInstance() != null && MyTNBAccountManagement.GetInstance().GetCurrentMasterData() != null && MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data != null && MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data.IsEnergyTipsDisabled)
+                            MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
+                            if (currentMasterData.IsEnergyTipsDisabled)
                             {
                                 isGetEnergyTipsDisabled = true;
                             }
@@ -1254,6 +1247,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             smGraphZoomToggleLayout.Visibility = ViewStates.Visible;
             this.userActionsListener.OnByDay();
+            if (!isDayViewToggle && !isMDMSDown)
+            {
+                isDayViewToggle = true;
+                try
+                {
+                    MaterialDialog dayViewZoomTooltip = DayZoomOutPinchUtil.OnBuildZoomOutPinchTooltip(this.Activity);
+                    dayViewZoomTooltip.Show();
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
+            }
         }
 
         [OnClick(Resource.Id.btnToggleMonth)]
@@ -1292,8 +1298,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             mChart.Visibility = ViewStates.Visible;
 
-            // Lin Siong TODO: This part to determine if tariff is available or not, soon will replace by flag
-            // Lin Siong TODO: And also UI handling for this
             bool isTariffAvailable = true;
             if (isBackendTariffDisabled)
             {
@@ -1362,11 +1366,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye_hide);
                     txtTarifToggle.Text = "Hide Tariff";
                 }
+
+                if (!isSMAccount)
+                {
+                    OnGenerateTariffLegendValue(selectedHistoryData.ByMonth.Months.Count - 1, isToggleTariff);
+                }
+                else
+                {
+                    OnGenerateTariffLegendValue(selectedSMHistoryData.ByMonth.Months.Count - 1, isToggleTariff);
+                }
             }
             else
             {
                 tarifToggle.Enabled = false;
                 isToggleTariff = false;
+                OnGenerateTariffLegendValue(0, isToggleTariff);
                 imgTarifToggle.SetImageResource(Resource.Drawable.eye_disable);
                 txtTarifToggle.Text = "Show Tariff";
                 txtTarifToggle.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
@@ -1382,40 +1396,33 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 // Lin Siong TODO: To Add day view chart view render on smart meter
                 // 
 
-                if (!isSMDown)
+                if (isToggleTariff)
                 {
-                    if (isToggleTariff)
+                    smRenderer = new SMStackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
                     {
-                        smRenderer = new SMStackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
-                        {
-                            selectedSMHistoryData = selectedSMHistoryData,
-                            currentContext = Activity,
-                            isStacked = true,
-                            isZoomIn = isZoomIn,
-                            currentChartType = ChartType,
-                            currentChartDataType = ChartDataType
-                        };
-                        mChart.Renderer = smRenderer;
-                    }
-                    else
-                    {
-                        smRenderer = new SMStackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
-                        {
-                            selectedSMHistoryData = selectedSMHistoryData,
-                            currentContext = Activity,
-                            isStacked = false,
-                            isZoomIn = isZoomIn,
-                            currentChartType = ChartType,
-                            currentChartDataType = ChartDataType
-                        };
-                        mChart.Renderer = smRenderer;
-                    }
+                        selectedSMHistoryData = selectedSMHistoryData,
+                        currentContext = Activity,
+                        isStacked = true,
+                        isZoomIn = isZoomIn,
+                        currentChartType = ChartType,
+                        currentChartDataType = ChartDataType,
+                        isMDMSDown = isMDMSDown
+                    };
+                    mChart.Renderer = smRenderer;
                 }
                 else
                 {
-                    // Lin Siong TODO: SM Downtime Handling
-                    // Lin Siong TODO: To use back the SMStackedBarChartRenderer with new flag inside like isDowntime = true
-                    // Lin Siong TODO: Then draw the unavialble things out
+                    smRenderer = new SMStackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
+                    {
+                        selectedSMHistoryData = selectedSMHistoryData,
+                        currentContext = Activity,
+                        isStacked = false,
+                        isZoomIn = isZoomIn,
+                        currentChartType = ChartType,
+                        currentChartDataType = ChartDataType,
+                        isMDMSDown = isMDMSDown
+                    };
+                    mChart.Renderer = smRenderer;
                 }
             }
             else
@@ -1466,6 +1473,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             // Lin Siong TODO: Estimated Reading Handling & Display on graph X Axis on Smart Meter
 
+            mdmsDayViewDownLayout.Visibility = ViewStates.Gone;
+            mChart.Visibility = ViewStates.Visible;
+
             if (isSMAccount)
             {
                 if (ChartType == ChartType.Month)
@@ -1515,68 +1525,75 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else if (ChartType == ChartType.Day)
                 {
-                    if (ChartDataType == ChartDataType.RM)
+                    if (isMDMSDown)
                     {
-                        DayViewRMData = new List<double>();
-                        if (selectedSMHistoryData != null && selectedSMHistoryData.ByDay != null && selectedSMHistoryData.ByDay.Count > 0)
-                        {
-                            foreach (SMUsageHistoryData.ByDayData DayData in selectedSMHistoryData.ByDay)
-                            {
-                                foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
-                                {
-                                    DayViewRMData.Add(IndividualDayData.Amount);
-                                }
-                            }
-                        }
-
-                        // Lin Siong TODO: txtRange date update from day view
-                        txtRange.Text = selectedSMHistoryData.ByMonth.Range;
-
-                        // SETUP XAXIS
-
-                        SetUpXAxis();
-
-                        // SETUP YAXIS
-
-                        SetUpYAxis();
-
-                        // ADD DATA
-                        SetData(DayViewRMData.Count);
-
-                        // SETUP MARKER VIEW
-
-                        SetUpMarkerRMView();
-
+                        mdmsDayViewDownLayout.Visibility = ViewStates.Visible;
+                        mChart.Visibility = ViewStates.Gone;
                     }
                     else
                     {
-                        DayViewkWhData = new List<double>();
-                        if (selectedSMHistoryData != null && selectedSMHistoryData.ByDay != null && selectedSMHistoryData.ByDay.Count > 0)
+                        if (ChartDataType == ChartDataType.RM)
                         {
-                            foreach (SMUsageHistoryData.ByDayData DayData in selectedSMHistoryData.ByDay)
+                            DayViewRMData = new List<double>();
+                            if (selectedSMHistoryData != null && selectedSMHistoryData.ByDay != null && selectedSMHistoryData.ByDay.Count > 0)
                             {
-                                foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
+                                foreach (SMUsageHistoryData.ByDayData DayData in selectedSMHistoryData.ByDay)
                                 {
-                                    DayViewkWhData.Add(IndividualDayData.Consumption);
+                                    foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
+                                    {
+                                        DayViewRMData.Add(IndividualDayData.Amount);
+                                    }
                                 }
                             }
+
+                            txtRange.Text = selectedSMHistoryData.DateRange;
+
+                            // SETUP XAXIS
+
+                            SetUpXAxis();
+
+                            // SETUP YAXIS
+
+                            SetUpYAxis();
+
+                            // ADD DATA
+                            SetData(DayViewRMData.Count);
+
+                            // SETUP MARKER VIEW
+
+                            SetUpMarkerRMView();
+
                         }
+                        else
+                        {
+                            DayViewkWhData = new List<double>();
+                            if (selectedSMHistoryData != null && selectedSMHistoryData.ByDay != null && selectedSMHistoryData.ByDay.Count > 0)
+                            {
+                                foreach (SMUsageHistoryData.ByDayData DayData in selectedSMHistoryData.ByDay)
+                                {
+                                    foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
+                                    {
+                                        DayViewkWhData.Add(IndividualDayData.Consumption);
+                                    }
+                                }
+                            }
 
-                        txtRange.Text = selectedSMHistoryData.ByMonth.Range;
-                        // SETUP XAXIS
+                            txtRange.Text = selectedSMHistoryData.DateRange;
+                            // SETUP XAXIS
 
-                        SetUpXAxiskWh();
+                            SetUpXAxiskWh();
 
-                        // SETUP YAXIS
+                            // SETUP YAXIS
 
-                        SetUpYAxisKwh();
+                            SetUpYAxisKwh();
 
-                        // ADD DATA
-                        SetKWhData(DayViewkWhData.Count);
+                            // ADD DATA
+                            SetKWhData(DayViewkWhData.Count);
 
-                        // SETUP MARKER VIEW
+                            // SETUP MARKER VIEW
 
-                        SetUpMarkerKWhView();
+                            SetUpMarkerKWhView();
+                        }
                     }
                 }
             }
@@ -1630,13 +1647,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
 
             int graphTopPadding = 30;
+            int graphLeftRightPadding = 0;
             int graphBottomPadding = 10;
             if (selectedAccount.AccountCategoryId.Equals("2"))
             {
                 graphTopPadding = 40;
                 mChart.LayoutParameters.Height = (int) DPUtils.ConvertDPToPx(240f);
             }
-            mChart.SetExtraOffsets(0, graphTopPadding, 0, graphBottomPadding);
+            mChart.SetExtraOffsets(graphLeftRightPadding, graphTopPadding, graphLeftRightPadding, graphBottomPadding);
 
             mChart.SetOnChartValueSelectedListener(this);
         }
@@ -1657,9 +1675,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         if (i == 0)
                         {
-                            if (!string.IsNullOrEmpty(selectedSMHistoryData.StarttDate))
+                            if (!string.IsNullOrEmpty(selectedSMHistoryData.StartDate))
                             {
-                                DayViewLabel.Add(selectedSMHistoryData.StarttDate);
+                                DayViewLabel.Add(selectedSMHistoryData.StartDate);
                             }
                             else
                             {
@@ -1761,9 +1779,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         if (i == 0)
                         {
-                            if (!string.IsNullOrEmpty(selectedSMHistoryData.StarttDate))
+                            if (!string.IsNullOrEmpty(selectedSMHistoryData.StartDate))
                             {
-                                DayViewLabel.Add(selectedSMHistoryData.StarttDate);
+                                DayViewLabel.Add(selectedSMHistoryData.StartDate);
                             }
                             else
                             {
@@ -1914,6 +1932,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     UsageHistoryData = selectedSMHistoryData,
                     ChartType = ChartType,
                     ChartDataType = ChartDataType,
+                    isMDMSDown = isMDMSDown,
                     AccountType = selectedAccount.AccountCategoryId
                 };
 
@@ -1946,6 +1965,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     UsageHistoryData = selectedSMHistoryData,
                     ChartType = ChartType,
                     ChartDataType = ChartDataType,
+                    isMDMSDown = isMDMSDown,
                     AccountType = selectedAccount.AccountCategoryId
                 };
 
@@ -3360,7 +3380,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye);
                     txtTarifToggle.Text = "Show Tariff";
                     isToggleTariff = false;
-                    tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                     if (isChangeBackgroundNeeded)
                     {
                         if (isSMAccount)
@@ -3382,32 +3401,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye_hide);
                     txtTarifToggle.Text = "Hide Tariff";
                     isToggleTariff = true;
-                    tariffBlockLegendRecyclerView.Visibility = ViewStates.Visible;
-                    if (tariffBlockLegendAdapter == null)
-                    {
-                        if (!isSMAccount)
-                        {
-                            tariffBlockLegendAdapter = new TariffBlockLegendAdapter(selectedHistoryData.TariffBlocksLegend, this.Activity);
-                            tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
-                        }
-                        else
-                        {
-                            tariffBlockLegendAdapter = new TariffBlockLegendAdapter(selectedSMHistoryData.TariffBlocksLegend, this.Activity);
-                            tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
-                        }
-                    }
-                    Context context = tariffBlockLegendRecyclerView.Context;
-                    LayoutAnimationController controller =
-                            AnimationUtils.LoadLayoutAnimation(context, Resource.Animation.layout_animation_fall_down);
 
-                    tariffBlockLegendRecyclerView.LayoutAnimation = controller;
-                    tariffBlockLegendRecyclerView.GetAdapter().NotifyDataSetChanged();
-                    tariffBlockLegendRecyclerView.ScheduleLayoutAnimation();
                     if (isChangeBackgroundNeeded)
                     {
                         if (isSMR)
                         {
-                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_extended_smr_fluid_background);
+                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_bg);
                         }
                         else
                         {
@@ -3427,6 +3426,100 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             catch (System.Exception ne)
             {
                 Utility.LoggingNonFatalError(ne);
+            }
+        }
+
+        private void OnGenerateTariffLegendValue(int index, bool isShow)
+        {
+            if (!isShow)
+            {
+                tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
+            }
+            else
+            {
+                int startCount = -1;
+                bool isFound = false;
+                tariffBlockLegendRecyclerView.Visibility = ViewStates.Visible;
+                List<TariffBlocksLegendData> newTariffList = new List<TariffBlocksLegendData>();
+                if (index == -1)
+                {
+                    tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
+                }
+                else if (!isSMAccount)
+                {
+                    if (selectedHistoryData.ByMonth.Months[index].TariffBlocksList != null)
+                    {
+                        startCount = selectedHistoryData.ByMonth.Months[index].TariffBlocksList.Count - 1;
+                    }
+                    if (startCount == -1)
+                    {
+                        tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
+                    }
+                    else
+                    {
+                        for (int i = 0; i < selectedHistoryData.TariffBlocksLegend.Count; i++)
+                        {
+                            for (int j = 0; j < selectedHistoryData.ByMonth.Months[index].TariffBlocksList.Count; j++)
+                            {
+                                if ((selectedHistoryData.TariffBlocksLegend[i].BlockId == selectedHistoryData.ByMonth.Months[index].TariffBlocksList[j].BlockId))
+                                {
+                                    if ((ChartDataType == ChartDataType.RM && System.Math.Abs(selectedHistoryData.ByMonth.Months[index].TariffBlocksList[j].Amount) > 0.00) || (ChartDataType == ChartDataType.kWh && System.Math.Abs(selectedHistoryData.ByMonth.Months[index].TariffBlocksList[j].Usage) > 0.00))
+                                    {
+                                        isFound = true;
+                                        newTariffList.Add(selectedHistoryData.TariffBlocksLegend[i]);
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    if (selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList != null)
+                    {
+                        startCount = selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList.Count - 1;
+                    }
+                    if (startCount == -1)
+                    {
+                        tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
+                    }
+                    else
+                    {
+                        for (int i = 0; i < selectedSMHistoryData.TariffBlocksLegend.Count; i++)
+                        {
+                            for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList.Count; j++)
+                            {
+                                if (selectedSMHistoryData.TariffBlocksLegend[i].BlockId == selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList[j].BlockId)
+                                {
+                                    if ((ChartDataType == ChartDataType.RM && System.Math.Abs(selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList[j].Amount) > 0.00) || (ChartDataType == ChartDataType.kWh && System.Math.Abs(selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList[j].Usage) > 0.00))
+                                    {
+                                        isFound = true;
+                                        newTariffList.Add(selectedSMHistoryData.TariffBlocksLegend[i]);
+                                    }
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (startCount > -1 && isFound)
+                {
+                    tariffBlockLegendAdapter = new TariffBlockLegendAdapter(newTariffList, this.Activity);
+                    tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
+
+                    Context context = tariffBlockLegendRecyclerView.Context;
+                    LayoutAnimationController controller =
+                            AnimationUtils.LoadLayoutAnimation(context, Resource.Animation.layout_animation_fall_down);
+
+                    tariffBlockLegendRecyclerView.LayoutAnimation = controller;
+                    tariffBlockLegendRecyclerView.GetAdapter().NotifyDataSetChanged();
+                    tariffBlockLegendRecyclerView.ScheduleLayoutAnimation();
+                }
+                else
+                {
+                    tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
+                }
             }
         }
 
@@ -4626,6 +4719,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             CurrentParentIndex = -1;
             try
             {
+                OnGenerateTariffLegendValue(-1, isToggleTariff);
                 FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Graph Hightlight Deselected");
             }
             catch (System.Exception err)
@@ -4652,7 +4746,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 stackedIndex = selectedHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList.Count - 1;
                             }
-
+                        
                             Highlight stackedHigh = new Highlight((int)e.GetX(), 0, stackedIndex);
                             mChart.HighlightValue(stackedHigh, false);
                         }
@@ -4670,6 +4764,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             Highlight stackedHigh = new Highlight((int)e.GetX(), 0, stackedIndex);
                             mChart.HighlightValue(stackedHigh, false);
                         }
+                    }
+
+                    if (e!= null)
+                    {
+                        OnGenerateTariffLegendValue((int)e.GetX(), isToggleTariff);
                     }
                 }
                 else if (ChartType == ChartType.Day)
@@ -5157,7 +5256,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         smStatisticPredictSubTitle.Text = "- -";
                         smStatisticPredict.Text = "- -";
                         txtSmStatisticTooltip.Text = "What are these?";
-                        if (selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.CostData != null)
+                        if (!isMDMSDown && (selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.CostData != null))
                         {
                             foreach (SMUsageHistoryData.Stats costValue in selectedSMHistoryData.OtherUsageMetrics.CostData)
                             {
@@ -5204,7 +5303,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         smStatisticTrendTitle.Text = "My current usage trend is";
                         smStatisticTrendSubTitle.Text = "- -";
                         smStatisticTrend.Text = "- -%";
-                        if (selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.UsageData != null && selectedSMHistoryData.OtherUsageMetrics.UsageData.Count > 0)
+                        if (!isMDMSDown && (selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.UsageData != null && selectedSMHistoryData.OtherUsageMetrics.UsageData.Count > 0))
                         {
                             foreach (SMUsageHistoryData.Stats costValue in selectedSMHistoryData.OtherUsageMetrics.UsageData)
                             {
@@ -5310,16 +5409,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
-        // To get isSMDown flag
-        public bool GetIsSMDown()
+        // To get isMDMSDown flag
+        public bool GetIsMDMSDown()
         {
-            return isSMDown;
+            return isMDMSDown;
         }
 
-        // To set isSMDown flag
-        public void SetISSMDown(bool flag)
+        // To set isMDMSDown flag
+        public void SetISMDMSDown(bool flag)
         {
-            isSMDown = flag;
+            isMDMSDown = flag;
         }
 
         public bool GetIsSMAccount()

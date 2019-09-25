@@ -24,16 +24,21 @@ namespace myTNB_Android.Src.myTNBMenu.Models
         [AliasAs("CurrentCycle")]
         public string CurrentCycle { get; set; }
 
-        [JsonProperty(PropertyName = "StarttDate")]
-        [AliasAs("StarttDate")]
-        public string StarttDate { get; set; }
+        [JsonProperty(PropertyName = "StartDate")]
+        [AliasAs("StartDate")]
+        public string StartDate { get; set; }
 
+        [JsonProperty(PropertyName = "MidDate")]
         [AliasAs("MidDate")]
         public string MidDate { get; set; }
 
         [JsonProperty(PropertyName = "EndDate")]
         [AliasAs("EndDate")]
         public string EndDate { get; set; }
+
+        [JsonProperty(PropertyName = "DateRange")]
+        [AliasAs("DateRange")]
+        public string DateRange { get; set; }
 
         [JsonProperty(PropertyName = "ToolTips")]
         [AliasAs("ToolTips")]
@@ -278,6 +283,10 @@ namespace myTNB_Android.Src.myTNBMenu.Models
                 [JsonProperty(PropertyName = "CO2")]
                 [AliasAs("CO2")]
                 public string CO2 { get; set; }
+
+                [JsonProperty(PropertyName = "IsMissingReading")]
+                [AliasAs("IsMissingReading")]
+                public bool IsMissingReading { get; set; }
 
                 [JsonProperty(PropertyName = "tariffBlocks")]
                 [AliasAs("tariffBlocks")]

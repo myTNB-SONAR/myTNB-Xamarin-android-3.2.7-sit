@@ -36,6 +36,7 @@ using Android.Text;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using Android.Runtime;
 using Android.Util;
+using static myTNB_Android.Src.AppLaunch.Models.MasterDataResponse;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -332,7 +333,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 this.presenter.GetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
 
                 bool isGetEnergyTipsDisabled = false;
-                if (MyTNBAccountManagement.GetInstance() != null && MyTNBAccountManagement.GetInstance().GetCurrentMasterData() != null && MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data != null && MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data.IsEnergyTipsDisabled)
+                MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
+                if (currentMasterData.IsEnergyTipsDisabled)
                 {
                     isGetEnergyTipsDisabled = true;
                 }

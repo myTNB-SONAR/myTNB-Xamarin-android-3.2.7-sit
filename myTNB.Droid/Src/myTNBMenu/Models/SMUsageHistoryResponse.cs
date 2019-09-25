@@ -38,6 +38,10 @@ namespace myTNB_Android.Src.myTNBMenu.Models
             [AliasAs("IsMonthlyTariffBlocksUnavailable")]
             public bool IsMonthlyTariffBlocksUnavailable { get; set; }
 
+            [JsonProperty(PropertyName = "IsMDMSCurrentlyUnavailable")]
+            [AliasAs("IsMDMSCurrentlyUnavailable")]
+            public bool IsMDMSCurrentlyUnavailable { get; set; }
+
             [JsonProperty(PropertyName = "ErrorMessage")]
             [AliasAs("ErrorMessage")]
             public string ErrorMessage { get; set; }
