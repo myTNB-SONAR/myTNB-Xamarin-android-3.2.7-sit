@@ -87,7 +87,7 @@ namespace myTNB
                 UnderlineColor = UIColor.Clear
             };
 
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(message
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(message + "<br>"
                 , ref htmlBodyError, MyTNBFont.FONTNAME_300, 14f);
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
