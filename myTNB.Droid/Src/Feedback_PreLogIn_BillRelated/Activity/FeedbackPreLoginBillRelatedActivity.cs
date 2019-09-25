@@ -293,6 +293,13 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
         {
             try
             {
+
+                string checkedPhoneNumber = this.userActionsListener.OnVerfiyCellularCode(e.Text.ToString());
+
+                if (checkedPhoneNumber != txtMobileNo.Text)
+                {
+                    txtMobileNo.Text = checkedPhoneNumber;
+                }
                 string fullname = txtFullName.Text.Trim();
                 string mobile_no = txtMobileNo.Text.Trim();
                 string email = txtEmail.Text.Trim();
