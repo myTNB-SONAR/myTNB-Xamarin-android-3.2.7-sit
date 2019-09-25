@@ -302,6 +302,65 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
 
         }
 
+        public string OnVerfiyCellularCode(string mobileNo)
+        {
+
+            try
+            {
+                if (TextUtils.IsEmpty(mobileNo) || mobileNo.Length < 3 || !mobileNo.Contains("+60"))
+                {
+                    mobileNo = "+60";
+                    this.mView.ClearErrors();
+                    this.mView.DisableSaveButton();
+                }
+                else if (mobileNo == "+60")
+                {
+                    this.mView.ClearErrors();
+                    this.mView.DisableSaveButton();
+                }
+                else if (mobileNo.Contains("+60") && mobileNo.IndexOf("+60") > 0)
+                {
+                    mobileNo = mobileNo.Substring(mobileNo.IndexOf("+60"));
+                    if (mobileNo == "+60")
+                    {
+                        this.mView.ClearErrors();
+                        this.mView.DisableSaveButton();
+                    }
+                    else if (!Utility.IsValidMobileNumber(mobileNo))
+                    {
+                        this.mView.ShowInvalidMobileNoError();
+                        this.mView.DisableSaveButton();
+                    }
+                    else
+                    {
+                        this.mView.ClearErrors();
+                        this.mView.EnableSaveButton();
+                    }
+                }
+                else
+                {
+                    if (!Utility.IsValidMobileNumber(mobileNo))
+                    {
+                        this.mView.ShowInvalidMobileNoError();
+                        this.mView.DisableSaveButton();
+                    }
+                    else
+                    {
+                        this.mView.ClearErrors();
+                        this.mView.EnableSaveButton();
+                    }
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            return mobileNo;
+        }
+
+
         public void CheckRequiredFields(string fullname, string mobile_no, string email, string account_no, string feedback)
         {
             try
