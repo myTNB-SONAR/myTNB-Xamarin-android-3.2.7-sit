@@ -183,17 +183,31 @@ namespace myTNB
                     {
                         if (File.Exists(_imageFilePath))
                         {
-                            _imgSplash = UIImage.FromFile(_imageFilePath);
-                            _splashIsShown = true;
-                            imgViewAppLaunch.ContentMode = UIViewContentMode.ScaleAspectFill;
-                            UIView.Transition(imgViewAppLaunch, 0.5,
-                                UIViewAnimationOptions.TransitionCrossDissolve,
-                                () => { imgViewAppLaunch.Image = _imgSplash; },
-                                () =>
+                            if (!string.IsNullOrEmpty(_startDateStr) && !string.IsNullOrEmpty(_endDateStr))
+                            {
+                                if (IsValidDate(_startDateStr, _endDateStr))
                                 {
-                                    ShowSplashScreenWithDelay(_delay);
+                                    _imgSplash = UIImage.FromFile(_imageFilePath);
+                                    _splashIsShown = true;
+                                    imgViewAppLaunch.ContentMode = UIViewContentMode.ScaleAspectFill;
+                                    UIView.Transition(imgViewAppLaunch, 0.5,
+                                        UIViewAnimationOptions.TransitionCrossDissolve,
+                                        () => { imgViewAppLaunch.Image = _imgSplash; },
+                                        () =>
+                                        {
+                                            ShowSplashScreenWithDelay(_delay);
+                                        }
+                                    );
                                 }
-                            );
+                                else
+                                {
+                                    ShowDefaultSplashImage();
+                                }
+                            }
+                            else
+                            {
+                                ShowDefaultSplashImage();
+                            }
                         }
                         else
                         {
