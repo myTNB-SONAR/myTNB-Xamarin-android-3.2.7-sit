@@ -1,4 +1,5 @@
-﻿using CoreGraphics;
+﻿using System;
+using CoreGraphics;
 using UIKit;
 
 namespace myTNB.Dashboard.DashboardComponents
@@ -65,6 +66,27 @@ namespace myTNB.Dashboard.DashboardComponents
             };
 
             ValuePairIcon = new UIImageView(new CGRect(_parentView.Frame.Width - 51, topMargin + 9, 7, 13));
+        }
+
+        public string SubtitleText
+        {
+            set
+            {
+                if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value))
+                {
+                    SubTitleLabel.Text = string.Empty;
+                    SubTitleLabel.Hidden = true;
+                    nfloat yLoc = (_baseView.Frame.Height - TitleLabel.Frame.Height)/ 2;
+                    TitleLabel.Frame = new CGRect(new CGPoint(TitleLabel.Frame.X, yLoc), TitleLabel.Frame.Size);
+                }
+                else
+                {
+                    int topMargin = 12;
+                    SubTitleLabel.Text = value;
+                    SubTitleLabel.Hidden = false;
+                    TitleLabel.Frame = new CGRect(new CGPoint(TitleLabel.Frame.X, topMargin), TitleLabel.Frame.Size);
+                }
+            }
         }
 
         /// <summary>
