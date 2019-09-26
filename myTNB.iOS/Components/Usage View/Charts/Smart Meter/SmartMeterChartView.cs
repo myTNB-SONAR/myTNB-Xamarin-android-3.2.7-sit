@@ -27,6 +27,7 @@ namespace myTNB
         private UIImageView _pinchIcon;
         private bool _isOverlayDisplayed;
         private bool _isDataReceived;
+        private List<string> _availableTariffBlockIDList = new List<string>();
 
         protected override void CreatUI()
         {
@@ -277,6 +278,7 @@ namespace myTNB
             for (int i = 0; i < tariffList.Count; i++)
             {
                 TariffItemModel item = tariffList[i];
+                UpdateAvailableTariffList(item);
                 double val = item.Usage;
                 double percentage = (baseValue > 0) ? (nfloat)(val / baseValue) : 0;
                 nfloat blockHeight = (nfloat)(baseHeigt * percentage);
@@ -484,6 +486,28 @@ namespace myTNB
             nfloat lblAmountWidth = value.GetLabelWidth(GetWidthByScreenSize(200));
             nfloat baseX = GetWidthByScreenSize(_viewType == SmartMeterConstants.SmartMeterViewType.DayZIn ? 12 : 30);
             value.Frame = new CGRect((baseX - lblAmountWidth) / 2, value.Frame.Y, lblAmountWidth, value.Frame.Height);
+        }
+
+        private void UpdateAvailableTariffList(TariffItemModel tariff)
+        {
+            if (_viewType != SmartMeterConstants.SmartMeterViewType.DayZOut) { return; }
+            int index = _availableTariffBlockIDList.FindIndex(x => x == tariff.BlockId);
+            if (index < 0)
+            {
+                _availableTariffBlockIDList.Add(tariff.BlockId);
+            }
+        }
+
+        public override List<string> AvailableTariffBlockIDList
+        {
+            get
+            {
+                if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZOut)
+                {
+                    return _availableTariffBlockIDList;
+                }
+                return new List<string>();
+            }
         }
     }
 }
