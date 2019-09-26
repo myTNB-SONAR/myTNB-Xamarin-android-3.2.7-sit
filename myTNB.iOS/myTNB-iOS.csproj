@@ -2496,9 +2496,6 @@
     <BundleResource Include="Resources\Base.lproj\Localizable.strings" />
     <BundleResource Include="Resources\tnbReceiptLogoHeader.jpg" />
     <BundleResource Include="Resources\Base.lproj\InfoPlist.strings" />
-    <BundleResource Include="Resources\OCR Reading.json" />
-    <BundleResource Include="Resources\dashboardzoom.json" />
-    <BundleResource Include="Resources\GeneralLoadingR1.json" />
     <BundleResource Include="Resources\Dashboard Zoom.json" />
   </ItemGroup>
   <ItemGroup>
