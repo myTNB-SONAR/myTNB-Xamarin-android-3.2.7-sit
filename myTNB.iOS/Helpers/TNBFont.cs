@@ -68,6 +68,5 @@ namespace myTNB
         public static UIFont MuseoSans_22_500 { get { return _m500_22; } }
         public static UIFont MuseoSans_24_500 { get { return _m500_24; } }
         public static UIFont MuseoSans_26_500 { get { return _m500_26; } }
-        public static UIFont MuseoSans_36_300 { get { return _m300_36; } }
     }
 }
