@@ -3477,80 +3477,109 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
             else
             {
-                int startCount = -1;
-                bool isFound = false;
-                tariffBlockLegendRecyclerView.Visibility = ViewStates.Visible;
-                List<TariffBlocksLegendData> newTariffList = new List<TariffBlocksLegendData>();
-                if (index == -1)
+                if (ChartType == ChartType.Month)
                 {
-                    tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
-                }
-                else if (!isSMAccount)
-                {
-                    if (selectedHistoryData.ByMonth.Months[index].TariffBlocksList != null)
-                    {
-                        startCount = selectedHistoryData.ByMonth.Months[index].TariffBlocksList.Count - 1;
-                    }
-                    if (startCount == -1)
+                    int startCount = -1;
+                    bool isFound = false;
+                    tariffBlockLegendRecyclerView.Visibility = ViewStates.Visible;
+                    List<TariffBlocksLegendData> newTariffList = new List<TariffBlocksLegendData>();
+                    if (index == -1)
                     {
                         tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                     }
-                    else
+                    else if (!isSMAccount)
                     {
-                        for (int i = 0; i < selectedHistoryData.TariffBlocksLegend.Count; i++)
+                        if (selectedHistoryData.ByMonth.Months[index].TariffBlocksList != null)
                         {
-                            for (int j = 0; j < selectedHistoryData.ByMonth.Months[index].TariffBlocksList.Count; j++)
+                            startCount = selectedHistoryData.ByMonth.Months[index].TariffBlocksList.Count - 1;
+                        }
+                        if (startCount == -1)
+                        {
+                            tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < selectedHistoryData.TariffBlocksLegend.Count; i++)
                             {
-                                if ((selectedHistoryData.TariffBlocksLegend[i].BlockId == selectedHistoryData.ByMonth.Months[index].TariffBlocksList[j].BlockId))
+                                for (int j = 0; j < selectedHistoryData.ByMonth.Months[index].TariffBlocksList.Count; j++)
                                 {
-                                    if ((ChartDataType == ChartDataType.RM && System.Math.Abs(selectedHistoryData.ByMonth.Months[index].TariffBlocksList[j].Amount) > 0.00) || (ChartDataType == ChartDataType.kWh && System.Math.Abs(selectedHistoryData.ByMonth.Months[index].TariffBlocksList[j].Usage) > 0.00))
+                                    if ((selectedHistoryData.TariffBlocksLegend[i].BlockId == selectedHistoryData.ByMonth.Months[index].TariffBlocksList[j].BlockId))
                                     {
-                                        isFound = true;
-                                        newTariffList.Add(selectedHistoryData.TariffBlocksLegend[i]);
+                                        if ((ChartDataType == ChartDataType.RM && System.Math.Abs(selectedHistoryData.ByMonth.Months[index].TariffBlocksList[j].Amount) > 0.00) || (ChartDataType == ChartDataType.kWh && System.Math.Abs(selectedHistoryData.ByMonth.Months[index].TariffBlocksList[j].Usage) > 0.00))
+                                        {
+                                            isFound = true;
+                                            newTariffList.Add(selectedHistoryData.TariffBlocksLegend[i]);
+                                        }
+                                        break;
                                     }
-                                    break;
                                 }
                             }
                         }
                     }
-                }
-                else
-                {
-                    if (index == selectedSMHistoryData.ByMonth.Months.Count - 1)
+                    else
                     {
-                        isHighlightNeed = true;
+                        if (index == selectedSMHistoryData.ByMonth.Months.Count - 1)
+                        {
+                            isHighlightNeed = true;
+                        }
+
+                        if (selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList != null)
+                        {
+                            startCount = selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList.Count - 1;
+                        }
+                        if (startCount == -1)
+                        {
+                            tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < selectedSMHistoryData.TariffBlocksLegend.Count; i++)
+                            {
+                                for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList.Count; j++)
+                                {
+                                    if (selectedSMHistoryData.TariffBlocksLegend[i].BlockId == selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList[j].BlockId)
+                                    {
+                                        if ((ChartDataType == ChartDataType.RM && System.Math.Abs(selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList[j].Amount) > 0.00) || (ChartDataType == ChartDataType.kWh && System.Math.Abs(selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList[j].Usage) > 0.00))
+                                        {
+                                            isFound = true;
+                                            newTariffList.Add(selectedSMHistoryData.TariffBlocksLegend[i]);
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (startCount > -1 && isFound)
+                    {
+                        tariffBlockLegendAdapter = new TariffBlockLegendAdapter(newTariffList, this.Activity, isHighlightNeed);
+                        tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
+
+                        Context context = tariffBlockLegendRecyclerView.Context;
+                        LayoutAnimationController controller =
+                                AnimationUtils.LoadLayoutAnimation(context, Resource.Animation.layout_animation_fall_down);
+
+                        tariffBlockLegendRecyclerView.LayoutAnimation = controller;
+                        tariffBlockLegendRecyclerView.GetAdapter().NotifyDataSetChanged();
+                        tariffBlockLegendRecyclerView.ScheduleLayoutAnimation();
+                    }
+                    else
+                    {
+                        tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
+                    }
+                }
+                else if (ChartType == ChartType.Day)
+                {
+                    tariffBlockLegendRecyclerView.Visibility = ViewStates.Visible;
+                    if (isSMAccount)
+                    {
+                        tariffBlockLegendAdapter = new TariffBlockLegendAdapter(selectedSMHistoryData.TariffBlocksLegend, this.Activity, false);
+                    }
+                    else
+                    {
+                        tariffBlockLegendAdapter = new TariffBlockLegendAdapter(selectedHistoryData.TariffBlocksLegend, this.Activity, false);
                     }
 
-                    if (selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList != null)
-                    {
-                        startCount = selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList.Count - 1;
-                    }
-                    if (startCount == -1)
-                    {
-                        tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
-                    }
-                    else
-                    {
-                        for (int i = 0; i < selectedSMHistoryData.TariffBlocksLegend.Count; i++)
-                        {
-                            for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList.Count; j++)
-                            {
-                                if (selectedSMHistoryData.TariffBlocksLegend[i].BlockId == selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList[j].BlockId)
-                                {
-                                    if ((ChartDataType == ChartDataType.RM && System.Math.Abs(selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList[j].Amount) > 0.00) || (ChartDataType == ChartDataType.kWh && System.Math.Abs(selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList[j].Usage) > 0.00))
-                                    {
-                                        isFound = true;
-                                        newTariffList.Add(selectedSMHistoryData.TariffBlocksLegend[i]);
-                                    }
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-                if (startCount > -1 && isFound)
-                {
-                    tariffBlockLegendAdapter = new TariffBlockLegendAdapter(newTariffList, this.Activity, isHighlightNeed);
                     tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
 
                     Context context = tariffBlockLegendRecyclerView.Context;
@@ -3560,10 +3589,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     tariffBlockLegendRecyclerView.LayoutAnimation = controller;
                     tariffBlockLegendRecyclerView.GetAdapter().NotifyDataSetChanged();
                     tariffBlockLegendRecyclerView.ScheduleLayoutAnimation();
-                }
-                else
-                {
-                    tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                 }
             }
         }
@@ -4764,7 +4789,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             CurrentParentIndex = -1;
             try
             {
-                OnGenerateTariffLegendValue(-1, isToggleTariff);
+                if (ChartType == ChartType.Month)
+                {
+                    OnGenerateTariffLegendValue(-1, isToggleTariff);
+                }
                 FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Graph Hightlight Deselected");
             }
             catch (System.Exception err)
@@ -5538,11 +5566,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     if ((currentScaleFactor - detector.ScaleFactor) > 0.005)
                     {
                         currentScaleFactor = detector.ScaleFactor;
+                        if (isZoomIn)
+                        {
+                            isZoomIn = false;
+                        }
                         Log.Debug("Zoom Small", "Yes");
                     }
                     else if ((detector.ScaleFactor - currentScaleFactor) > 0.005)
                     {
                         currentScaleFactor = detector.ScaleFactor;
+                        if (!isZoomIn)
+                        {
+                            isZoomIn = true;
+                        }
                         Log.Debug("Zoom Big", "Yes");
                     }
                 }
