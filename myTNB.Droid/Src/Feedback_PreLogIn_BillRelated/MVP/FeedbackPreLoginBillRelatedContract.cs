@@ -223,7 +223,6 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
             /// <param name="account_no">string</param>
             /// <param name="feedback">string</param>
             void CheckRequiredFields(string fullname, string mobile_no, string email, string account_no, string feedback);
-            string OnVerfiyCellularCode(string mobile_no);
         }
     }
 }

@@ -302,65 +302,6 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
 
         }
 
-        public string OnVerfiyCellularCode(string mobileNo)
-        {
-
-            try
-            {
-                if (TextUtils.IsEmpty(mobileNo) || mobileNo.Length < 3 || !mobileNo.Contains("+60"))
-                {
-                    mobileNo = "+60";
-                    this.mView.ClearErrors();
-                    //this.mView.DisableSubmitButton();
-                }
-                else if (mobileNo == "+60")
-                {
-                    this.mView.ClearErrors();
-                    //this.mView.DisableSubmitButton();
-                }
-                else if (mobileNo.Contains("+60") && mobileNo.IndexOf("+60") > 0)
-                {
-                    mobileNo = mobileNo.Substring(mobileNo.IndexOf("+60"));
-                    if (mobileNo == "+60")
-                    {
-                        this.mView.ClearErrors();
-                        //this.mView.DisableSubmitButton();
-                    }
-                    else if (!Utility.IsValidMobileNumber(mobileNo))
-                    {
-                        this.mView.ShowInvalidMobileNoError();
-                        //this.mView.DisableSubmitButton();
-                    }
-                    else
-                    {
-                        this.mView.ClearErrors();
-                        //this.mView.EnableSubmitButton();
-                    }
-                }
-                else
-                {
-                    if (!Utility.IsValidMobileNumber(mobileNo))
-                    {
-                        this.mView.ShowInvalidMobileNoError();
-                        //this.mView.DisableSubmitButton();
-                    }
-                    else
-                    {
-                        this.mView.ClearErrors();
-                        //this.mView.EnableSubmitButton();
-                    }
-                }
-
-
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-            return mobileNo;
-        }
-
-
         public void CheckRequiredFields(string fullname, string mobile_no, string email, string account_no, string feedback)
         {
             try
@@ -368,41 +309,44 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
                 //if (!TextUtils.IsEmpty(fullname) && !TextUtils.IsEmpty(mobile_no) && !TextUtils.IsEmpty(email) && !TextUtils.IsEmpty(account_no) && !TextUtils.IsEmpty(feedback))
                 //{
                 this.mView.ClearErrors();
-                bool isError = false;
                 if (!TextUtils.IsEmpty(fullname))
                 {
                     if (!Utility.isAlphaNumeric(fullname))
                     {
-                        isError = true;
+                        this.mView.DisableSubmitButton();
                         this.mView.ShowNameError();
-                        
+                        return;
                     }
                 }
                 else
                 {
                     this.mView.ShowEmptyFullnameError();
-                    isError = true;
+                    this.mView.DisableSubmitButton();
+                    return;
                 }
 
 
-                if (!TextUtils.IsEmpty(mobile_no) && mobile_no != "+60")
+                if (!TextUtils.IsEmpty(mobile_no))
                 {
                     if (!Android.Util.Patterns.Phone.Matcher(mobile_no).Matches())
                     {
                         this.mView.ShowInvalidMobileNoError();
-                        isError = true;
+                        this.mView.DisableSubmitButton();
+                        return;
                     }
 
                     if (!Utility.IsValidMobileNumber(mobile_no))
                     {
                         this.mView.ShowInvalidMobileNoError();
-                        isError = true;
+                        this.mView.DisableSubmitButton();
+                        return;
                     }
                 }
                 else
                 {
-                    //this.mView.ShowEmptyMobileNoError();
-                    isError = true;
+                    this.mView.ShowEmptyMobileNoError();
+                    this.mView.DisableSubmitButton();
+                    return;
                 }
 
 
@@ -411,15 +355,16 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
                 {
                     if (!Android.Util.Patterns.EmailAddress.Matcher(email).Matches())
                     {
-                        
+                        this.mView.DisableSubmitButton();
                         this.mView.ShowInvalidEmailError();
-                        isError = true;
+                        return;
                     }
                 }
                 else
                 {
-                    //this.mView.ShowEmptyEmaiError();
-                    isError = true;
+                    this.mView.ShowEmptyEmaiError();
+                    this.mView.DisableSubmitButton();
+                    return;
                 }
 
 
@@ -431,35 +376,31 @@ namespace myTNB_Android.Src.Feedback_PreLogIn_BillRelated.MVP
                     if (!TextUtils.IsDigitsOnly(account_no))
                     {
                         this.mView.ShowInvalidAccountNoError();
-                        isError = true;
+                        this.mView.DisableSubmitButton();
+                        return;
                     }
 
                     if (!Utility.AccountNumberValidation(account_no.Length))
                     {
                         this.mView.ShowInvalidAccountNoError();
-                        isError = true;
+                        this.mView.DisableSubmitButton();
+                        return;
                     }
                 }
                 else
                 {
-                    //this.mView.ShowEmptyAccountNoError();
-                    isError = true;
+                    this.mView.ShowEmptyAccountNoError();
+                    this.mView.DisableSubmitButton();
+                    return;
                 }
 
-                if (TextUtils.IsEmpty(feedback) || feedback.Equals(" "))
-                {
-                    isError = true;
-                }
-
-                if ( isError)
+                if (TextUtils.IsEmpty(feedback) && feedback.Equals(" "))
                 {
                     this.mView.DisableSubmitButton();
+                    //this.mView.ShowEmptyFeedbackError();
+                    return;
                 }
-                else
-                {
                 this.mView.EnableSubmitButton();
-
-                }
             }
             catch (System.Exception e)
             {
