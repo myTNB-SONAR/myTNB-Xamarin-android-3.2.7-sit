@@ -106,7 +106,7 @@ namespace myTNB
             {
                 NavigationController.SetNavigationBarHidden(false, true);
             }
-           // NavigationController.SetNavigationBarHidden(false, true);
+            // NavigationController.SetNavigationBarHidden(false, true);
         }
 
         private void EvaluateEntry()
@@ -361,54 +361,66 @@ namespace myTNB
 
         private void OnTapDropDown()
         {
-            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            if (SSMRAccounts.FilteredListCount > 0)
             {
-                InvokeOnMainThread(async () =>
+                NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                 {
-                    if (NetworkUtility.isReachable)
+                    InvokeOnMainThread(async () =>
                     {
-                        ActivityIndicator.Show();
-                        await GetEligibility();
-                        if (_eligibilityAccount != null && _eligibilityAccount.d != null
-                            && _eligibilityAccount.d.didSucceed && _eligibilityAccount.d.data != null
-                            && _eligibilityAccount.d.data.accountEligibilities != null)
+                        if (NetworkUtility.isReachable)
                         {
-                            SSMRAccounts.SetData(_eligibilityAccount.d);
-                            _rootNavigation = true;
-                            if (SSMRAccounts.GetEligibleAccountList().Count > 0)
+                            ActivityIndicator.Show();
+                            await GetEligibility();
+                            if (_eligibilityAccount != null && _eligibilityAccount.d != null
+                                && _eligibilityAccount.d.didSucceed && _eligibilityAccount.d.data != null
+                                && _eligibilityAccount.d.data.accountEligibilities != null)
                             {
-                                UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
-                                SelectAccountTableViewController viewController = storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
-                                viewController.IsFromSSMR = true;
-                                viewController.IsRoot = true;
-                                viewController.CurrentSelectedIndex = _currentIndex;
-                                viewController.OnSelect = OnSelectAccount;
-                                NavigationController.PushViewController(viewController, true);
+                                SSMRAccounts.SetData(_eligibilityAccount.d);
+                                _rootNavigation = true;
+                                if (SSMRAccounts.GetEligibleAccountList().Count > 0)
+                                {
+                                    UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+                                    SelectAccountTableViewController viewController = storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
+                                    viewController.IsFromSSMR = true;
+                                    viewController.IsRoot = true;
+                                    viewController.CurrentSelectedIndex = _currentIndex;
+                                    viewController.OnSelect = OnSelectAccount;
+                                    NavigationController.PushViewController(viewController, true);
+                                }
+                                else
+                                {
+                                    DisplayNoData();
+                                }
                             }
                             else
                             {
-                                UIStoryboard storyBoard = UIStoryboard.FromName("GenericNoData", null);
-                                GenericNodataViewController viewController = (GenericNodataViewController)storyBoard
-                                    .InstantiateViewController("GenericNoData");
-                                viewController.NavTitle = GetI18NValue(SSMRConstants.I18N_SelectAccountNavTitle);
-                                viewController.IsRootPage = true;
-                                viewController.Image = SSMRConstants.IMG_NoData;
-                                viewController.Message = GetI18NValue(SSMRConstants.I18N_NoEligibleAccount);
-                                NavigationController.PushViewController(viewController, true);
+                                DisplayServiceError(_eligibilityAccount?.d?.ErrorMessage);
                             }
+                            ActivityIndicator.Hide();
                         }
                         else
                         {
-                            DisplayServiceError(_eligibilityAccount?.d?.ErrorMessage);
+                            DisplayNoDataAlert();
                         }
-                        ActivityIndicator.Hide();
-                    }
-                    else
-                    {
-                        DisplayNoDataAlert();
-                    }
+                    });
                 });
-            });
+            }
+            else
+            {
+                DisplayNoData();
+            }
+        }
+
+        private void DisplayNoData()
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("GenericNoData", null);
+            GenericNodataViewController viewController = (GenericNodataViewController)storyBoard
+                .InstantiateViewController("GenericNoData");
+            viewController.NavTitle = GetI18NValue(SSMRConstants.I18N_SelectAccountNavTitle);
+            viewController.IsRootPage = true;
+            viewController.Image = SSMRConstants.IMG_NoData;
+            viewController.Message = GetI18NValue(SSMRConstants.I18N_NoEligibleAccount);
+            NavigationController.PushViewController(viewController, true);
         }
 
         private void OnEnableSSMR()

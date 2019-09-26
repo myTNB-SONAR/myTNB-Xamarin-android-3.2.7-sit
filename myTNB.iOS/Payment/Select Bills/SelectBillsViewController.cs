@@ -26,7 +26,7 @@ namespace myTNB
         private List<PaymentRecordModel> _accountsForDisplay = new List<PaymentRecordModel>();
         private CustomerAccountRecordModel _selectedAccount = new CustomerAccountRecordModel();
         private GetAccountsChargesResponseModel _accountChargesResponse = new GetAccountsChargesResponseModel();
-
+        private Dictionary<string, bool> _mandatoryPopupState = new Dictionary<string, bool>();
         private UIView _viewAmount, _viewFooter;
         private UILabel _lblTotalAmountValue, _lblCurrency;
         private string _selectedAccountNumber = string.Empty;
@@ -356,9 +356,17 @@ namespace myTNB
 
             if (_accountsForDisplay != null && _accountsForDisplay.Count > 0 && _accountsForDisplay[0] != null)
             {
-                if (AccountChargesCache.HasMandatory(_accountsForDisplay[0].accNum))
+                if (AccountChargesCache.HasMandatory(_accountsForDisplay[0].accNum) && !_mandatoryPopupState.ContainsKey(_accountsForDisplay[0].accNum))
                 {
                     OnShowItemisedTooltip(_accountsForDisplay[0].accNum);
+                    if (_mandatoryPopupState.ContainsKey(_accountsForDisplay[0].accNum))
+                    {
+                        _mandatoryPopupState[_accountsForDisplay[0].accNum] = true;
+                    }
+                    else
+                    {
+                        _mandatoryPopupState.Add(_accountsForDisplay[0].accNum, true);
+                    }
                 }
             }
         }
