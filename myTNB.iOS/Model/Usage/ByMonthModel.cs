@@ -21,7 +21,6 @@ namespace myTNB.Model.Usage
         public string Currency { set; get; }
         public string UsageUnit { set; get; }
         public List<TariffItemModel> tariffBlocks { set; get; }
-        public bool IsCurrentlyUnavailable { set; get; }
     }
 
     public class TariffItemModel

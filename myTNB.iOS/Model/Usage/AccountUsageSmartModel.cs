@@ -13,6 +13,14 @@ namespace myTNB.Model.Usage
         public AccountUsageSmartDataModel data { set; get; }
         public bool IsMonthlyTariffBlocksDisabled { get; set; }
         public bool IsMonthlyTariffBlocksUnavailable { get; set; }
+        public bool IsMDMSCurrentlyUnavailable { get; set; }
+        public bool IsMDMSDown
+        {
+            get
+            {
+                return ErrorCode == "7204";
+            }
+        }
     }
 
     public class AccountUsageSmartDataModel

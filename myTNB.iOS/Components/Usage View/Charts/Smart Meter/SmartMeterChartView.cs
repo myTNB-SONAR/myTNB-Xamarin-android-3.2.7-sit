@@ -17,6 +17,7 @@ namespace myTNB
         }
 
         public Action PinchOverlayAction { set; private get; }
+        public Action<List<LegendItemModel>> SetTariffLegendComponent { set; private get; }
 
         private BaseSmartMeterView _baseSmartMeterView;
         private bool _isTariffView;
@@ -87,28 +88,32 @@ namespace myTNB
             attrSelected.Font = TNBFont.MuseoSans_12_300;
             attrSelected.TextColor = MyTNBColor.DarkPeriwinkle;
 
-            UISegmentedControl toggleBar = new UISegmentedControl(new CGRect(GetXLocationToCenterObject(toggleWidth, parentView), 1, toggleWidth, toggleHeight));
-            toggleBar.InsertSegment(LanguageUtility.GetCommonI18NValue(Constants.I18N_Day), 0, false);
-            toggleBar.InsertSegment(LanguageUtility.GetCommonI18NValue(Constants.I18N_Month), 1, false);
-            toggleBar.TintColor = UIColor.White;
-            toggleBar.SetTitleTextAttributes(attr, UIControlState.Normal);
-            toggleBar.SetTitleTextAttributes(attrSelected, UIControlState.Selected);
-            toggleBar.Layer.CornerRadius = toggleHeight / 2;
-            toggleBar.Layer.BorderColor = UIColor.White.CGColor;
-            toggleBar.Layer.BorderWidth = GetScaledHeight(1);
-            toggleBar.Layer.MasksToBounds = true;
-            toggleBar.SelectedSegment = 1;
-            toggleBar.ValueChanged += (sender, e) =>
+            _toggleBar = new UISegmentedControl(new CGRect(GetXLocationToCenterObject(toggleWidth, parentView), 1, toggleWidth, toggleHeight));
+            _toggleBar.InsertSegment(LanguageUtility.GetCommonI18NValue(Constants.I18N_Day), 0, false);
+            _toggleBar.InsertSegment(LanguageUtility.GetCommonI18NValue(Constants.I18N_Month), 1, false);
+            _toggleBar.TintColor = UIColor.White;
+            _toggleBar.SetTitleTextAttributes(attr, UIControlState.Normal);
+            _toggleBar.SetTitleTextAttributes(attrSelected, UIControlState.Selected);
+            _toggleBar.Layer.CornerRadius = toggleHeight / 2;
+            _toggleBar.Layer.BorderColor = UIColor.White.CGColor;
+            _toggleBar.Layer.BorderWidth = GetScaledHeight(1);
+            _toggleBar.Layer.MasksToBounds = true;
+            _toggleBar.SelectedSegment = 1;
+            _toggleBar.ValueChanged += (sender, e) =>
             {
                 if (_isDataReceived)
                 {
                     SmartMeterConstants.SmartMeterViewType smartMeterViewType;
-                    if (toggleBar.SelectedSegment == 0)
+                    if (_toggleBar.SelectedSegment == 0)
                     {
-                        if (PinchOverlayAction != null && !_isOverlayDisplayed)
+                        if (PinchOverlayAction != null && !_isOverlayDisplayed && !AccountUsageSmartCache.IsMDMSDown)
                         {
                             PinchOverlayAction?.Invoke();
                             _isOverlayDisplayed = true;
+                        }
+                        if (SetTariffLegendComponent != null)
+                        {
+                            SetTariffLegendComponent.Invoke(null);
                         }
                         smartMeterViewType = SmartMeterConstants.SmartMeterViewType.DayZOut;
                     }
@@ -119,10 +124,10 @@ namespace myTNB
                     CreateSegment(smartMeterViewType);
                 }
             };
-            toggleView.AddSubview(toggleBar);
+            toggleView.AddSubview(_toggleBar);
             nfloat iconWidth = GetScaledWidth(24);
             nfloat iconHeight = GetScaledHeight(24);
-            _pinchIcon = new UIImageView(new CGRect(toggleBar.Frame.GetMaxX() + GetScaledWidth(59), 0, iconWidth, iconHeight))
+            _pinchIcon = new UIImageView(new CGRect(_toggleBar.Frame.GetMaxX() + GetScaledWidth(59), 0, iconWidth, iconHeight))
             {
                 Image = UIImage.FromBundle(UsageConstants.IMG_PinchOut),
                 UserInteractionEnabled = true,
@@ -130,15 +135,18 @@ namespace myTNB
             };
             _pinchIcon.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZOut)
+                if (!AccountUsageSmartCache.IsMDMSDown)
                 {
-                    CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZIn);
-                    _pinchIcon.Image = UIImage.FromBundle(UsageConstants.IMG_PinchIn);
-                }
-                else if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZIn)
-                {
-                    CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZOut);
-                    _pinchIcon.Image = UIImage.FromBundle(UsageConstants.IMG_PinchOut);
+                    if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZOut)
+                    {
+                        CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZIn);
+                        _pinchIcon.Image = UIImage.FromBundle(UsageConstants.IMG_PinchIn);
+                    }
+                    else if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZIn)
+                    {
+                        CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZOut);
+                        _pinchIcon.Image = UIImage.FromBundle(UsageConstants.IMG_PinchOut);
+                    }
                 }
             }));
             toggleView.AddSubview(_pinchIcon);
@@ -216,7 +224,12 @@ namespace myTNB
                 _baseSmartMeterView = new SmartMeterMonthView()
                 {
                     OnSegmentTap = OnSegmentTap,
+                    PrepareTariffLegend = OnBarSelected
                 };
+            }
+            else if (AccountUsageSmartCache.IsMDMSDown)
+            {
+                _baseSmartMeterView = new SmartMeterMDMSDownView();
             }
             else if (viewType == SmartMeterConstants.SmartMeterViewType.DayZOut)
             {
@@ -226,6 +239,7 @@ namespace myTNB
             {
                 _baseSmartMeterView = new SmartMeterDayZInView();
             }
+            _viewLine.Hidden = viewType != SmartMeterConstants.SmartMeterViewType.Month && AccountUsageSmartCache.IsMDMSDown;
             _baseSmartMeterView.PinchAction = PinchAction;
             _baseSmartMeterView.IsTariffView = _isTariffView;
             _baseSmartMeterView.ReferenceWidget = _lblDateRange.Frame;
@@ -233,10 +247,14 @@ namespace myTNB
             _baseSmartMeterView.ConsumptionState = _consumptionState;
             _baseSmartMeterView.CreateSegment(ref _segmentContainer);
 
-            _segmentContainer.AddGestureRecognizer(new UIPinchGestureRecognizer((obj) =>
+            if (!AccountUsageSmartCache.IsMDMSDown)
             {
-                PinchAction(obj);
-            }));
+                _segmentContainer.AddGestureRecognizer(new UIPinchGestureRecognizer((obj) =>
+                {
+                    PinchAction(obj);
+                }));
+            }
+
             _mainView.AddSubview(_segmentContainer);
         }
 
@@ -334,6 +352,15 @@ namespace myTNB
                     nfloat lblDateWidth = date.GetLabelWidth(GetWidthByScreenSize(100));
                     date.Frame = new CGRect((segmentView.Frame.Width - lblDateWidth) / 2, date.Frame.Y, lblDateWidth, date.Frame.Height);
                 }
+            }
+            OnBarSelected(index);
+        }
+
+        private void OnBarSelected(int index)
+        {
+            if (PrepareTariffLegend != null)
+            {
+                PrepareTariffLegend.Invoke(index);
             }
         }
 
