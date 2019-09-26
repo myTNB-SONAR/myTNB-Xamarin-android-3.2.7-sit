@@ -135,14 +135,14 @@ namespace myTNB.Dashboard.DashboardComponents
             _metricCmp1 = new InfoComponent(_baseView, new CGRect(0, _chartModeView.Frame.GetMaxY() + 24, _baseView.Frame.Width, 58));
             _metricCmp1.Icon.Image = UIImage.FromBundle("IC-Charges");
             _metricCmp1.TitleLabel.Text = MyCostSoFar;
-            _metricCmp1.SubTitleLabel.Text = For;
+            _metricCmp1.SubtitleText = For;
             _metricCmp1.ValueLabel.Text = "RM 0";
             _metricView1 = _metricCmp1.GetUI();
 
             _metricCmp2 = new InfoComponent(_baseView, new CGRect(0, _metricView1.Frame.Y + _metricView1.Frame.Height + 1, _baseView.Frame.Width, 58));
             _metricCmp2.Icon.Image = UIImage.FromBundle("IC-Cost");
             _metricCmp2.TitleLabel.Text = MyCostLikelyToBe;
-            _metricCmp2.SubTitleLabel.Text = For;
+            _metricCmp2.SubtitleText = For;
             _metricCmp2.ValueLabel.Text = "RM 0";
             _metricView2 = _metricCmp2.GetUI();
 
@@ -244,7 +244,7 @@ namespace myTNB.Dashboard.DashboardComponents
                     {
                         _metricCmp1.Icon.Image = UIImage.FromBundle("IC-Charges");
                         _metricCmp1.TitleLabel.Text = MyCostSoFar;
-                        _metricCmp1.SubTitleLabel.Text = GetDateRange(For, _usageMetrics?.FromCycleDate, _usageMetrics?.StatsByCost?.AsOf);
+                        _metricCmp1.SubtitleText = GetDateRange(For, _usageMetrics?.FromCycleDate, _usageMetrics?.StatsByCost?.AsOf);
                         var currCharges = _usageMetrics?.StatsByCost?.CurrentCharges ?? "0";
                         if (!string.IsNullOrEmpty(currCharges))
                         {
@@ -253,7 +253,7 @@ namespace myTNB.Dashboard.DashboardComponents
                         }
                         _metricCmp2.Icon.Image = UIImage.FromBundle("IC-Cost");
                         _metricCmp2.TitleLabel.Text = MyCostLikelyToBe;
-                        _metricCmp2.SubTitleLabel.Text = GetDateRange(For, _usageMetrics?.FromCycleDate, _usageMetrics?.StatsByCost?.ProjectedCostAsOf);
+                        _metricCmp2.SubtitleText = string.Empty;
                         var prjctdCost = _usageMetrics?.StatsByCost?.ProjectedCost ?? "0";
                         if (!string.IsNullOrEmpty(prjctdCost))
                         {
@@ -267,7 +267,7 @@ namespace myTNB.Dashboard.DashboardComponents
                     {
                         _metricCmp1.Icon.Image = UIImage.FromBundle("IC-Energy-Usage");
                         _metricCmp1.TitleLabel.Text = MyCurrentUsage;
-                        _metricCmp1.SubTitleLabel.Text = GetDateRange(For, _usageMetrics?.FromCycleDate, _usageMetrics?.StatsByUsage?.AsOf);
+                        _metricCmp1.SubtitleText = GetDateRange(For, _usageMetrics?.FromCycleDate, _usageMetrics?.StatsByUsage?.AsOf);
                         var currUsageKWH = _usageMetrics?.StatsByUsage?.CurrentUsageKWH ?? "0";
                         if (!string.IsNullOrEmpty(currUsageKWH))
                         {
@@ -291,7 +291,7 @@ namespace myTNB.Dashboard.DashboardComponents
                         {
                             compareText = isUp ? More : Less;
                         }
-                        _metricCmp2.SubTitleLabel.Text = compareText;
+                        _metricCmp2.SubtitleText = compareText;
                         AdjustArrowFrames();
                     }
                     break;
@@ -299,7 +299,7 @@ namespace myTNB.Dashboard.DashboardComponents
                     {
                         _metricCmp1.Icon.Image = UIImage.FromBundle("IC-CO2");
                         _metricCmp1.TitleLabel.Text = TxtCurrentEmission;
-                        _metricCmp1.SubTitleLabel.Text = GetDateRange(For, _usageMetrics?.FromCycleDate, _usageMetrics?.StatsByCo2?.First()?.AsOf);
+                        _metricCmp1.SubtitleText = GetDateRange(For, _usageMetrics?.FromCycleDate, _usageMetrics?.StatsByCo2?.First()?.AsOf);
                         string value = _usageMetrics?.StatsByCo2?.Count > 0 ?
                                                      _usageMetrics?.StatsByCo2?.Sum(item => TextHelper.ParseStringToDouble(item.Quantity)).ToString() : "0";
                         _metricCmp1.ValueLabel.AttributedText = TextHelper.CreateValuePairString(value, " " + TNBGlobal.UNITEMISSION, false
