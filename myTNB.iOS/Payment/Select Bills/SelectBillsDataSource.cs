@@ -14,20 +14,12 @@ namespace myTNB.Payment.SelectBills
         private SelectBillsViewController _controller;
         private List<PaymentRecordModel> _accounts = new List<PaymentRecordModel>();
         private TextFieldHelper _textFieldHelper = new TextFieldHelper();
-        //private Dictionary<string, bool> _amountStatus = new Dictionary<string, bool>();
         private Dictionary<string, bool> _mandatoryPopupState = new Dictionary<string, bool>();
 
         public SelectBillsDataSource(SelectBillsViewController controller, List<PaymentRecordModel> accounts)
         {
             _controller = controller;
             _accounts = accounts;
-            if (_accounts != null)
-            {
-                /*foreach (var obj in _accounts)
-                {
-                    _amountStatus.Add(obj.accNum, true);
-                }*/
-            }
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
@@ -38,7 +30,6 @@ namespace myTNB.Payment.SelectBills
             SelectBillsTableViewCell cell = tableView.DequeueReusableCell(CELLIDENTIFIER, indexPath) as SelectBillsTableViewCell;
 
             cell._lblName.Text = _accounts[indexPath.Row].accountNickName;
-            cell._lblAccountNo.Text = acctNumber;
             cell._txtViewAddress.Text = _accounts[indexPath.Row].accountStAddress;
             cell._imgViewCheckBox.Image = UIImage.FromBundle(_accounts[indexPath.Row].IsAccountSelected
                 ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
@@ -51,7 +42,7 @@ namespace myTNB.Payment.SelectBills
                 UpdateInlineError(cell, indexPath.Row);
             }));
 
-            SetTextField(cell);
+            SetTextField(cell, indexPath.Row);
             ShowErrorMessage(indexPath.Row, cell, true);
             return cell;
         }
@@ -73,7 +64,7 @@ namespace myTNB.Payment.SelectBills
                         _mandatoryPopupState.Add(_accounts[index].accNum, true);
                     }
                 }
-                UpdateCheckBox(cell);
+                UpdateCheckBox(cell, index);
                 UpdateUIForInputError(false, cell);
             }
             else
@@ -100,13 +91,12 @@ namespace myTNB.Payment.SelectBills
 
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
         {
-            return 205;
+            return 187;
         }
 
         #region UpdateCheckBox
-        private void UpdateCheckBox(SelectBillsTableViewCell cell)
+        private void UpdateCheckBox(SelectBillsTableViewCell cell, int index)
         {
-            int index = _accounts.FindIndex(x => x.accNum.Equals(cell._lblAccountNo.Text));
             if (index > -1)
             {
                 bool isAccountSelected = _accounts[index].IsAccountSelected;
@@ -126,7 +116,7 @@ namespace myTNB.Payment.SelectBills
         }
         #endregion
         #region SetTextField
-        private void SetTextField(SelectBillsTableViewCell cell)
+        private void SetTextField(SelectBillsTableViewCell cell, int index)
         {
             cell._txtFieldAmount.ShouldReturn = (sender) =>
             {
@@ -137,7 +127,6 @@ namespace myTNB.Payment.SelectBills
             {
                 cell._lblAmountError.Hidden = true;
                 UpdateUIForInputError(false, cell);
-                int index = _accounts.FindIndex(x => x.accNum.Equals(cell._lblAccountNo.Text));
                 if (index > -1)
                 {
                     double parsedAmount = TextHelper.ParseStringToDouble(cell._txtFieldAmount.Text);
@@ -147,7 +136,6 @@ namespace myTNB.Payment.SelectBills
             };
             cell._txtFieldAmount.ShouldEndEditing = (sender) =>
             {
-                int index = _accounts.FindIndex(x => x.accNum.Equals(cell._lblAccountNo.Text));
                 ShowErrorMessage(index, cell);
                 _controller.UpDateTotalAmount();
                 return true;
@@ -233,7 +221,8 @@ namespace myTNB.Payment.SelectBills
             }
             else if (isInitialLoad)
             {
-                if (cell._lblAmountError.Hidden) {
+                if (cell._lblAmountError.Hidden)
+                {
                     cell._lblAmountError.Hidden = true;
                     isValid = true;
                 }
@@ -253,15 +242,6 @@ namespace myTNB.Payment.SelectBills
         #region UpdateUIForInputError
         private void UpdateUIForInputError(bool isError, SelectBillsTableViewCell cell, bool endEditing = false)
         {
-            string acctNumber = cell._lblAccountNo.Text;
-            /*if (!string.IsNullOrEmpty(acctNumber))
-            {
-                if (_amountStatus.ContainsKey(acctNumber))
-                {
-                    _amountStatus[acctNumber] = !isError;
-                }
-            }*/
-
             UIView viewLine = cell.ViewWithTag(0).ViewWithTag(1) as UIView;
             if (isError)
             {

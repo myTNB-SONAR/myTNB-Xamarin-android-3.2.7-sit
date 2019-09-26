@@ -235,7 +235,7 @@ namespace myTNB
             {
                 TextAlignment = UITextAlignment.Left,
                 TextColor = MyTNBColor.CharcoalGrey,
-                Font = TNBFont.MuseoSans_12_500,
+                Font = TNBFont.MuseoSans_12_300,
                 LineBreakMode = UILineBreakMode.WordWrap,
                 Lines = 0,
                 Text = DataManager.DataManager.SharedInstance.SelectedAccount.accountStAddress
@@ -342,7 +342,7 @@ namespace myTNB
             {
                 TextAlignment = UITextAlignment.Left,
                 Font = TNBFont.MuseoSans_14_500,
-                TextColor = MyTNBColor.CharcoalGrey,
+                TextColor = MyTNBColor.GreyishBrown,
                 Text = GetI18NValue(statusString)
             };
             nfloat statusWidth = lblStatus.GetLabelWidth(ViewWidth);
@@ -357,8 +357,8 @@ namespace myTNB
             UILabel lblDue = new UILabel(new CGRect(BaseMargin, lblStatus.Frame.GetMaxY(), BaseMarginedWidth / 2, GetScaledHeight(16)))
             {
                 TextAlignment = UITextAlignment.Left,
-                Font = TNBFont.MuseoSans_14_500,
-                TextColor = MyTNBColor.CharcoalGrey,
+                Font = TNBFont.MuseoSans_14_300,
+                TextColor = MyTNBColor.GreyishBrown,
                 Text = string.Format(BillConstants.Format_Default, GetI18NValue(BillConstants.I18N_By), result),
                 Hidden = isOverPaid
             };
