@@ -395,11 +395,11 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                         float bottom = bufferItems[j + 3];
                         bool isCurrentSelected = false;
 
-                        if (!MViewPortHandler.IsInBoundsLeft(right))
+                        /*if (!MViewPortHandler.IsInBoundsLeft(right))
                             continue;
 
                         if (!MViewPortHandler.IsInBoundsRight(left))
-                            break;
+                            break;*/
 
                         int size = dataSet.StackSize;
                         MRenderPaint.Color = new Color(dataSet.GetColor(j / 4));

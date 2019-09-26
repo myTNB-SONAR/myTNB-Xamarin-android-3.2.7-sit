@@ -138,6 +138,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void ShowSMStatisticCard();
 
             void OnSetBackendTariffDisabled(bool flag);
+
+            void ByZoomDayView();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -189,6 +191,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void OnByDay();
 
             void OnByMonth();
+
+            void OnByZoom();
         }
     }
 }

@@ -887,6 +887,16 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             return energyList;
         }
 
-
+        public void OnByZoom()
+        {
+            try
+            {
+                this.mView.ByZoomDayView();
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
     }
 }
