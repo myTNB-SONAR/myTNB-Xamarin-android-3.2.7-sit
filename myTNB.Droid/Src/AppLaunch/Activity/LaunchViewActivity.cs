@@ -799,7 +799,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     {
                         RunOnUiThread(() =>
                         {
-                            rootView.SetBackgroundResource(Resource.Drawable.launch_screen);
+                            this.Window.SetBackgroundDrawableResource(Resource.Drawable.launch_screen);
                         });
                     }
                     catch (Exception ne)
@@ -862,7 +862,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                                     var bitmapDrawable = new BitmapDrawable(item.ImageBitmap);
                                     RunOnUiThread(() =>
                                     {
-                                        rootView.SetBackgroundDrawable(bitmapDrawable);
+                                        this.Window.SetBackgroundDrawable(bitmapDrawable);
                                     });
 
                                     this.userActionsListener.OnWaitSplashScreenDisplay(secondMilli);
