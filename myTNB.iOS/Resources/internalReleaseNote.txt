@@ -1,5 +1,8 @@
-This Build is pointing to SIT.
+Thank you for using myTNB. In this update, you’ll get to enjoy an even more seamless experience. Here’s what to expect:
 
-[Bug] 2399: Regression_Sprint1 : User is not able to deselect checkbox on Select
-[Bug] 2398: Regression_Sprint1 : "My bill amount so far" and "My bill may reach" are showing incorrect date range for Smart meter account
-[Bug] Deepavali Image Intermitently Showing
+View how much your bill may reach and your usage trend for the current billing period (if you’re a Smart Meter user)
+Seamlessly manage multiple notifications
+View if your electricity supply is ‘Disconnected’ on the Dashboard page
+Refresh pages if the information does not appear
+
+Update now to the latest version so you can enjoy the new experience!
