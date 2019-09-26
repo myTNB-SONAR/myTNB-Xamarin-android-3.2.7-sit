@@ -67,5 +67,7 @@ namespace myTNB.Model
             get;
             set;
         }
+
+        public string ProjectedCostAsOf { set; get; }
     }
 }
