@@ -256,6 +256,7 @@ namespace myTNB_Android.Src.Base.Activity
 
         }
 
+        [Obsolete]
         public void ShowRationale(int rationaleTitle, int rationaleContent, int requestCode, int positiveStringButton, EventHandler<DialogClickEventArgs> positiveButtonEvent, int negativeStringButton, EventHandler<DialogClickEventArgs> negativeButtonEvent)
         {
             if (rationaleDialog != null && rationaleDialog.IsShowing)
