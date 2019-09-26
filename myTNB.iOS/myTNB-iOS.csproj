@@ -1181,8 +1181,6 @@
     <ImageAsset Include="Assets.xcassets\Usage-Bg-Long.imageset\Usage-Bg-Long%402x.png" />
     <ImageAsset Include="Assets.xcassets\Usage-Bg-Long.imageset\Usage-Bg-Long%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\deleteDisabled%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\deleteDisabled%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-Generic.imageset\Contents.json" />
@@ -1211,6 +1209,11 @@
     <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\MDMS-Down-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\MDMS-Down-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\MDMS-Down.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\MDMS-Down.imageset\MDMS-Down%402x.png" />
+    <ImageAsset Include="Assets.xcassets\MDMS-Down.imageset\MDMS-Down%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1630,6 +1633,7 @@
     <Folder Include="Assets.xcassets\Usage-Pinch-In-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Scroll-Indicator.imageset\" />
     <Folder Include="Assets.xcassets\MDMS-Down-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\MDMS-Down.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2468,6 +2472,7 @@
     <Compile Include="Model\Notification\ReadNotificationResponseModel.cs" />
     <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterConstants.cs" />
     <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterDayZInView.cs" />
+    <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterMDMSDownView.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
@@ -2491,9 +2496,6 @@
     <BundleResource Include="Resources\Base.lproj\Localizable.strings" />
     <BundleResource Include="Resources\tnbReceiptLogoHeader.jpg" />
     <BundleResource Include="Resources\Base.lproj\InfoPlist.strings" />
-    <BundleResource Include="Resources\OCR Reading.json" />
-    <BundleResource Include="Resources\dashboardzoom.json" />
-    <BundleResource Include="Resources\GeneralLoadingR1.json" />
     <BundleResource Include="Resources\Dashboard Zoom.json" />
   </ItemGroup>
   <ItemGroup>

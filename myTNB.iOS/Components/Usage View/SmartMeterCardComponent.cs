@@ -35,6 +35,10 @@ namespace myTNB
             {
                 _containerView.AddSubview(ItemDetailView(_containerView, 0, Constants.IMG_CalendarIcon, _usageCostModel[0]));
             }
+            else
+            {
+                _containerView.AddSubview(ItemDetailView(_containerView, 0, Constants.IMG_CalendarIcon));
+            }
             UIView line = new UIView(new CGRect(BaseMarginWidth16, GetScaledHeight(64F), width - (BaseMarginHeight16 * 2), GetScaledHeight(1F)))
             {
                 BackgroundColor = MyTNBColor.VeryLightPinkThree
@@ -43,6 +47,10 @@ namespace myTNB
             if (_usageCostModel != null && _usageCostModel.Count > 0)
             {
                 _containerView.AddSubview(ItemDetailView(_containerView, line.Frame.GetMaxY(), Constants.IMG_PredictIcon, _usageCostModel[1]));
+            }
+            else
+            {
+                _containerView.AddSubview(ItemDetailView(_containerView, line.Frame.GetMaxY(), Constants.IMG_PredictIcon));
             }
             if (_RMkWh == RMkWhEnum.RM)
             {
@@ -72,7 +80,7 @@ namespace myTNB
             return _containerView;
         }
 
-        private UIView ItemDetailView(UIView parentView, nfloat yPos, string imageName, UsageCostItemModel model)
+        private UIView ItemDetailView(UIView parentView, nfloat yPos, string imageName, UsageCostItemModel model = null)
         {
             UIImageView icon;
             UILabel title, dateRange, amount;
@@ -80,8 +88,8 @@ namespace myTNB
             nfloat height = GetScaledHeight(64F);
             nfloat iconWidth = GetScaledWidth(28F);
             nfloat iconHeight = GetScaledHeight(28F);
-            bool isCurrentUsage = model.UsageCostType == UsageCostEnum.CURRENTUSAGE && _RMkWh == RMkWhEnum.kWh;
-            bool isAverageUsage = model.UsageCostType == UsageCostEnum.AVERAGEUSAGE && _RMkWh == RMkWhEnum.kWh;
+            bool isCurrentUsage = model?.UsageCostType == UsageCostEnum.CURRENTUSAGE && _RMkWh == RMkWhEnum.kWh;
+            bool isAverageUsage = model?.UsageCostType == UsageCostEnum.AVERAGEUSAGE && _RMkWh == RMkWhEnum.kWh;
 
             UIView itemView = new UIView(new CGRect(0, yPos, width, height))
             {
@@ -113,7 +121,7 @@ namespace myTNB
             };
             if (isAverageUsage)
             {
-                amount.Text = model.Value;
+                amount.Text = (model != null) ? model.Value : "--";
                 CGSize size = amount.SizeThatFits(new CGSize(width, 1000f));
                 ViewHelper.AdjustFrameSetWidth(amount, size.Width);
                 ViewHelper.AdjustFrameSetX(amount, width - size.Width - BaseMarginWidth16);
@@ -121,8 +129,10 @@ namespace myTNB
             }
             else
             {
-                amount.AttributedText = TextHelper.CreateValuePairString(model.Value + " "
-                        , model.ValueUnit + " ", !isCurrentUsage, TNBFont.MuseoSans_16_300
+                string amountStr = (model != null) ? model.Value : "--";
+                string valueUnitStr = (model != null) ? model.ValueUnit : "RM";
+                amount.AttributedText = TextHelper.CreateValuePairString(amountStr + " "
+                        , valueUnitStr + " ", !isCurrentUsage, TNBFont.MuseoSans_16_300
                         , MyTNBColor.GreyishBrownTwo, TNBFont.MuseoSans_10_300, MyTNBColor.GreyishBrownTwo);
                 CGSize size = amount.SizeThatFits(new CGSize(width, 1000f));
                 ViewHelper.AdjustFrameSetWidth(amount, size.Width);

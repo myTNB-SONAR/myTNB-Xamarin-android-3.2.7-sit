@@ -125,6 +125,10 @@ namespace myTNB
                 segment.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
                     OnSegmentTap(index);
+                    if (PrepareTariffLegend != null)
+                    {
+                        PrepareTariffLegend.Invoke(index);
+                    }
                 }));
 
                 UIView.Animate(1, 0.3, UIViewAnimationOptions.CurveEaseOut
@@ -135,6 +139,13 @@ namespace myTNB
                     }
                     , () => { }
                 );
+            }
+            if (PrepareTariffLegend != null)
+            {
+                if (usageData != null && usageData.Count > 0)
+                {
+                    PrepareTariffLegend.Invoke(usageData.Count - 1);
+                }
             }
             _mainView.AddSubview(_segmentContainer);
         }
