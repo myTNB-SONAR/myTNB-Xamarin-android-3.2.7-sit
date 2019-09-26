@@ -12,7 +12,7 @@ namespace myTNB.SmartMeterView
         private nfloat _width = UIScreen.MainScreen.Bounds.Width;
 
         public Action<int> OnSegmentTap { set; private get; }
-        public Action<int> PrepareTariffLegend { set; private get; }
+        public Action<int> LoadTariffLegendWithIndex { set; private get; }
 
         public override void CreateSegment(ref CustomUIView view)
         {
@@ -180,9 +180,9 @@ namespace myTNB.SmartMeterView
                     );
                 }
             }
-            if (PrepareTariffLegend != null)
+            if (LoadTariffLegendWithIndex != null)
             {
-                PrepareTariffLegend.Invoke(usageData.Count - 1);
+                LoadTariffLegendWithIndex.Invoke(usageData.Count - 1);
             }
         }
     }

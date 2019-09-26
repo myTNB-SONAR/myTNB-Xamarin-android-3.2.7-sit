@@ -17,7 +17,7 @@ namespace myTNB
         }
 
         public Action PinchOverlayAction { set; private get; }
-        public Action<List<LegendItemModel>> SetTariffLegendComponent { set; private get; }
+        public Action<List<String>> LoadTariffLegendWithBlockIds { set; private get; }
 
         private BaseSmartMeterView _baseSmartMeterView;
         private bool _isTariffView;
@@ -112,10 +112,7 @@ namespace myTNB
                             PinchOverlayAction?.Invoke();
                             _isOverlayDisplayed = true;
                         }
-                        if (SetTariffLegendComponent != null)
-                        {
-                            SetTariffLegendComponent.Invoke(null);
-                        }
+
                         smartMeterViewType = SmartMeterConstants.SmartMeterViewType.DayZOut;
                     }
                     else
@@ -123,8 +120,13 @@ namespace myTNB
                         smartMeterViewType = SmartMeterConstants.SmartMeterViewType.Month;
                     }
                     CreateSegment(smartMeterViewType);
-                    //For Testing
-                    var test = AvailableTariffBlockIDList;
+                    if (_toggleBar.SelectedSegment == 0)
+                    {
+                        if (LoadTariffLegendWithBlockIds != null)
+                        {
+                            LoadTariffLegendWithBlockIds.Invoke(AvailableTariffBlockIDList);
+                        }
+                    }
                 }
             };
             toggleView.AddSubview(_toggleBar);
@@ -227,7 +229,7 @@ namespace myTNB
                 _baseSmartMeterView = new SmartMeterMonthView()
                 {
                     OnSegmentTap = OnSegmentTap,
-                    PrepareTariffLegend = OnBarSelected
+                    LoadTariffLegendWithIndex = OnBarSelected
                 };
             }
             else if (AccountUsageSmartCache.IsMDMSDown)
@@ -362,9 +364,9 @@ namespace myTNB
 
         private void OnBarSelected(int index)
         {
-            if (PrepareTariffLegend != null)
+            if (LoadTariffLegendWithIndex != null)
             {
-                PrepareTariffLegend.Invoke(index);
+                LoadTariffLegendWithIndex.Invoke(index);
             }
         }
 

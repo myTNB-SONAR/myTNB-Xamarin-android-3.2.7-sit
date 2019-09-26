@@ -420,15 +420,15 @@ namespace myTNB
             else if (isNormalChart)
             {
                 _chartView = new NormalChartView();
-                _chartView.PrepareTariffLegend = PrepareTariffLegend;
+                _chartView.LoadTariffLegendWithIndex = LoadTariffLegendWithIndex;
             }
             else
             {
                 _chartView = new SmartMeterChartView()
                 {
                     PinchOverlayAction = ShowPinchOverlay,
-                    PrepareTariffLegend = PrepareTariffLegend,
-                    SetTariffLegendComponent = SetTariffLegendComponent
+                    LoadTariffLegendWithIndex = LoadTariffLegendWithIndex,
+                    LoadTariffLegendWithBlockIds = LoadTariffLegendWithBlockIds
                 };
             }
 
@@ -684,25 +684,23 @@ namespace myTNB
             _legendIsVisible = isVisible;
             if (_tariffList != null && _tariffList.Count > 0)
             {
+                _viewLegend.Hidden = true;
                 UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseIn
                     , () =>
                     {
                         nfloat height = isVisible ? _tariffList.Count * GetScaledHeight(25f) : 0;
                         ViewHelper.AdjustFrameSetHeight(_viewLegend, height);
                         SetContentView();
-                        if (!isVisible)
-                            _viewLegend.Hidden = !isVisible;
                         UpdateBackgroundImage(isVisible);
                     }
                     , () =>
                     {
-                        if (isVisible)
-                            _viewLegend.Hidden = !isVisible;
+                        _viewLegend.Hidden = !isVisible;
                     }
                 );
             }
         }
-        private void PrepareTariffLegend(int index)
+        private void LoadTariffLegendWithIndex(int index)
         {
             List<MonthItemModel> usageData = isSmartMeterAccount ? AccountUsageSmartCache.ByMonthUsage : AccountUsageCache.ByMonthUsage;
             if (usageData != null && usageData.Count > 0)
@@ -736,12 +734,37 @@ namespace myTNB
                                     }
                                 }
                                 SetTariffLegendComponent(_tariffList);
-                                nfloat height = _tariffList.Count * GetScaledHeight(25f);
-                                ViewHelper.AdjustFrameSetHeight(_viewLegend, height);
-                                SetContentView();
                             }
                         }
                     }
+                }
+            }
+        }
+        public void LoadTariffLegendWithBlockIds(List<String> blockIdList = null)
+        {
+            if (blockIdList != null && blockIdList.Count > 0)
+            {
+                List<LegendItemModel> tariffLegend = new List<LegendItemModel>(isSmartMeterAccount ? AccountUsageSmartCache.GetTariffLegendList() : AccountUsageCache.GetTariffLegendList());
+                if (tariffLegend != null && tariffLegend.Count > 0)
+                {
+                    _tariffList = new List<LegendItemModel>();
+                    foreach (var legend in tariffLegend)
+                    {
+                        var res = false;
+                        foreach (var blockId in blockIdList)
+                        {
+                            if (blockId.Equals(legend.BlockId))
+                            {
+                                res = true;
+                                break;
+                            }
+                        }
+                        if (res)
+                        {
+                            _tariffList.Add(legend);
+                        }
+                    }
+                    SetTariffLegendComponent(_tariffList);
                 }
             }
         }
