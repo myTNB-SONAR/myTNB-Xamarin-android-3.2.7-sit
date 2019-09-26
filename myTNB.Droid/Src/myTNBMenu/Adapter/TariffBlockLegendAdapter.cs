@@ -17,7 +17,9 @@ namespace myTNB_Android.Src.myTNBMenu.Adapter
 
         private Android.App.Activity mActivity;
 
-        public TariffBlockLegendAdapter(List<TariffBlocksLegendData> data, Android.App.Activity Activity)
+        private bool isLastListHighlighted = false;
+
+        public TariffBlockLegendAdapter(List<TariffBlocksLegendData> data, Android.App.Activity Activity, bool flag)
         {
             if (data == null)
             {
@@ -28,6 +30,8 @@ namespace myTNB_Android.Src.myTNBMenu.Adapter
                 this.tariffList = data;
             }
             this.mActivity = Activity;
+
+            this.isLastListHighlighted = flag;
         }
 
         public override int ItemCount => tariffList.Count;
@@ -45,6 +49,17 @@ namespace myTNB_Android.Src.myTNBMenu.Adapter
 
                 GradientDrawable shape = (GradientDrawable)vh.ImgTariff.Drawable;
                 shape.SetColor(Color.Rgb(model.Color.RedColor, model.Color.GreenColor, model.Color.BlueData));
+
+                if (isLastListHighlighted && (position == 0))
+                {
+                    vh.TariffBlockName.SetTextColor(mActivity.Resources.GetColor(Resource.Color.sunGlow));
+                    vh.TariffBlockUnit.SetTextColor(mActivity.Resources.GetColor(Resource.Color.sunGlow));
+                }
+                else
+                {
+                    vh.TariffBlockName.SetTextColor(mActivity.Resources.GetColor(Resource.Color.white));
+                    vh.TariffBlockUnit.SetTextColor(mActivity.Resources.GetColor(Resource.Color.white));
+                }
             }
             catch (Exception e)
             {

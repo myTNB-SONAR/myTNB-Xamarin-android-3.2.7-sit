@@ -415,7 +415,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.txtMdmsDayViewDown)]
         TextView txtMdmsDayViewDown;
 
-        private bool isZoomIn = false;
+        private static bool isZoomIn = false;
 
         TariffBlockLegendAdapter tariffBlockLegendAdapter;
 
@@ -704,6 +704,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
                 DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
+
+                isZoomIn = false;
 
                 if (bcrmEntity != null && bcrmEntity.IsDown)
                 {
@@ -1543,11 +1545,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     if (isMDMSDown)
                     {
+                        txtRange.Visibility = ViewStates.Gone;
                         mdmsDayViewDownLayout.Visibility = ViewStates.Visible;
                         mChart.Visibility = ViewStates.Gone;
+                        smGraphZoomToggleLayout.Enabled = false;
                     }
                     else
                     {
+                        smGraphZoomToggleLayout.Enabled = true;
                         if (ChartDataType == ChartDataType.RM)
                         {
                             DayViewRMData = new List<double>();
@@ -1557,8 +1562,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 {
                                     foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
                                     {
-                                        // DayViewRMData.Add(IndividualDayData.Amount);
-                                        DayViewRMData.Add(0.7);
+                                        DayViewRMData.Add(IndividualDayData.Amount);
                                     }
                                 }
                             }
@@ -1664,13 +1668,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
 
             int graphTopPadding = 30;
-            int graphLeftRightPadding = 0;
+            int graphLeftRightPadding = (int) DPUtils.ConvertDPToPx(4f);
             int graphBottomPadding = 10;
             if (selectedAccount.AccountCategoryId.Equals("2"))
             {
                 graphTopPadding = 40;
                 mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(240f);
             }
+
+
             mChart.SetExtraOffsets(graphLeftRightPadding, graphTopPadding, graphLeftRightPadding, graphBottomPadding);
 
             mChart.SetOnChartValueSelectedListener(this);
@@ -1690,44 +1696,47 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else if (ChartType == ChartType.Day)
                 {
-                    for (int i = 0; i < DayViewRMData.Count; i++)
+                    if (!isZoomIn)
                     {
-                        if (i == 0)
+                        for (int i = 0; i < DayViewRMData.Count; i++)
                         {
-                            if (!string.IsNullOrEmpty(selectedSMHistoryData.StartDate))
+                            if (i == 1)
                             {
-                                DayViewLabel.Add(selectedSMHistoryData.StartDate);
+                                if (!string.IsNullOrEmpty(selectedSMHistoryData.StartDate))
+                                {
+                                    DayViewLabel.Add(selectedSMHistoryData.StartDate);
+                                }
+                                else
+                                {
+                                    DayViewLabel.Add("");
+                                }
+                            }
+                            else if (i == DayViewRMData.Count - 2)
+                            {
+                                if (!string.IsNullOrEmpty(selectedSMHistoryData.EndDate))
+                                {
+                                    DayViewLabel.Add(selectedSMHistoryData.EndDate);
+                                }
+                                else
+                                {
+                                    DayViewLabel.Add("");
+                                }
+                            }
+                            else if (i == (int)((DayViewRMData.Count - 1) / 2))
+                            {
+                                if (!string.IsNullOrEmpty(selectedSMHistoryData.MidDate))
+                                {
+                                    DayViewLabel.Add(selectedSMHistoryData.MidDate);
+                                }
+                                else
+                                {
+                                    DayViewLabel.Add("");
+                                }
                             }
                             else
                             {
                                 DayViewLabel.Add("");
                             }
-                        }
-                        else if (i == DayViewRMData.Count - 1)
-                        {
-                            if (!string.IsNullOrEmpty(selectedSMHistoryData.EndDate))
-                            {
-                                DayViewLabel.Add(selectedSMHistoryData.EndDate);
-                            }
-                            else
-                            {
-                                DayViewLabel.Add("");
-                            }
-                        }
-                        else if (i == (int)((DayViewRMData.Count - 1) / 2))
-                        {
-                            if (!string.IsNullOrEmpty(selectedSMHistoryData.MidDate))
-                            {
-                                DayViewLabel.Add(selectedSMHistoryData.MidDate);
-                            }
-                            else
-                            {
-                                DayViewLabel.Add("");
-                            }
-                        }
-                        else
-                        {
-                            DayViewLabel.Add("");
                         }
                     }
 
@@ -1768,7 +1777,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else if (ChartType == ChartType.Day)
                 {
-                    xAxis.LabelCount = DayViewLabel.Count;
+                    if (!isZoomIn)
+                    {
+                        xAxis.LabelCount = DayViewLabel.Count;
+                    }
                 }
             }
             else
@@ -1794,44 +1806,47 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else if (ChartType == ChartType.Day)
                 {
-                    for (int i = 0; i < DayViewkWhData.Count; i++)
+                    if (!isZoomIn)
                     {
-                        if (i == 0)
+                        for (int i = 0; i < DayViewkWhData.Count; i++)
                         {
-                            if (!string.IsNullOrEmpty(selectedSMHistoryData.StartDate))
+                            if (i == 1)
                             {
-                                DayViewLabel.Add(selectedSMHistoryData.StartDate);
+                                if (!string.IsNullOrEmpty(selectedSMHistoryData.StartDate))
+                                {
+                                    DayViewLabel.Add(selectedSMHistoryData.StartDate);
+                                }
+                                else
+                                {
+                                    DayViewLabel.Add("");
+                                }
+                            }
+                            else if (i == DayViewkWhData.Count - 2)
+                            {
+                                if (!string.IsNullOrEmpty(selectedSMHistoryData.EndDate))
+                                {
+                                    DayViewLabel.Add(selectedSMHistoryData.EndDate);
+                                }
+                                else
+                                {
+                                    DayViewLabel.Add("");
+                                }
+                            }
+                            else if (i == (int)((DayViewkWhData.Count - 1) / 2))
+                            {
+                                if (!string.IsNullOrEmpty(selectedSMHistoryData.MidDate))
+                                {
+                                    DayViewLabel.Add(selectedSMHistoryData.MidDate);
+                                }
+                                else
+                                {
+                                    DayViewLabel.Add("");
+                                }
                             }
                             else
                             {
                                 DayViewLabel.Add("");
                             }
-                        }
-                        else if (i == DayViewkWhData.Count - 1)
-                        {
-                            if (!string.IsNullOrEmpty(selectedSMHistoryData.EndDate))
-                            {
-                                DayViewLabel.Add(selectedSMHistoryData.EndDate);
-                            }
-                            else
-                            {
-                                DayViewLabel.Add("");
-                            }
-                        }
-                        else if (i == (int)((DayViewkWhData.Count - 1) / 2))
-                        {
-                            if (!string.IsNullOrEmpty(selectedSMHistoryData.MidDate))
-                            {
-                                DayViewLabel.Add(selectedSMHistoryData.MidDate);
-                            }
-                            else
-                            {
-                                DayViewLabel.Add("");
-                            }
-                        }
-                        else
-                        {
-                            DayViewLabel.Add("");
                         }
                     }
 
@@ -1863,6 +1878,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
 
             xAxis.Granularity = 1f; // only intervals of 1 day
+            
             if (isSMAccount)
             {
                 if (ChartType == ChartType.Month)
@@ -1871,7 +1887,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else if (ChartType == ChartType.Day)
                 {
-                    xAxis.LabelCount = DayViewLabel.Count;
+                    if (!isZoomIn)
+                    {
+                        xAxis.LabelCount = DayViewLabel.Count;
+                    }
                 }
             }
             else
@@ -3450,6 +3469,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private void OnGenerateTariffLegendValue(int index, bool isShow)
         {
+            bool isHighlightNeed = false;
+
             if (!isShow)
             {
                 tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
@@ -3495,6 +3516,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else
                 {
+                    if (index == selectedSMHistoryData.ByMonth.Months.Count - 1)
+                    {
+                        isHighlightNeed = true;
+                    }
+
                     if (selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList != null)
                     {
                         startCount = selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList.Count - 1;
@@ -3524,7 +3550,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 if (startCount > -1 && isFound)
                 {
-                    tariffBlockLegendAdapter = new TariffBlockLegendAdapter(newTariffList, this.Activity);
+                    tariffBlockLegendAdapter = new TariffBlockLegendAdapter(newTariffList, this.Activity, isHighlightNeed);
                     tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
 
                     Context context = tariffBlockLegendRecyclerView.Context;
@@ -5491,32 +5517,35 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         bool View.IOnTouchListener.OnTouch(View v, MotionEvent e)
         {
             mScaleDetector.OnTouchEvent(e);
-            return true;
+            return false;
         }
 
         private class BarGraphPinchListener : ScaleGestureDetector.SimpleOnScaleGestureListener
         {
             ChartType currentChartType;
+            float currentScaleFactor = 1.00f;
 
             public BarGraphPinchListener(ChartType mType)
             {
                 this.currentChartType = mType;
+                currentScaleFactor = 1.00f;
             }
 
-            public override bool OnScale(ScaleGestureDetector detector)
+            public override void OnScaleEnd(ScaleGestureDetector detector)
             {
                 if (currentChartType == ChartType.Day)
                 {
-                    if (detector.CurrentSpan > detector.PreviousSpan)
+                    if ((currentScaleFactor - detector.ScaleFactor) > 0.005)
                     {
-                        Log.Debug("Zoom ", "Yes");
+                        currentScaleFactor = detector.ScaleFactor;
+                        Log.Debug("Zoom Small", "Yes");
                     }
-                    else if (detector.CurrentSpan < detector.PreviousSpan)
+                    else if ((detector.ScaleFactor - currentScaleFactor) > 0.005)
                     {
-                        Log.Debug("Zoom ", "Yes");
+                        currentScaleFactor = detector.ScaleFactor;
+                        Log.Debug("Zoom Big", "Yes");
                     }
                 }
-                return base.OnScale(detector);
             }
         }
     }

@@ -286,6 +286,7 @@
 						    android:gravity="center"
 						    android:textColor="@color/sunGlow"
 						    android:text="@string/dashboard_chartview_range_example"
+                            android:visibility="visible"
 						    android:id="@+id/txtRange" />
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -295,8 +296,7 @@
 					            android:layout_width="match_parent"
 					            android:layout_height="190dp"
 					            android:orientation="vertical"
-                                android:visibility="gone"
-                                android:layout_marginBottom="5dp">
+                                android:visibility="gone">
                                 <com.facebook.shimmer.ShimmerFrameLayout
                                     android:id="@+id/shimmrtGraph"
                                     android:layout_width="match_parent"
@@ -316,14 +316,13 @@
                             <LinearLayout
 					            android:id="@+id/mdmsDayViewDownLayout"
 					            android:layout_width="match_parent"
-					            android:layout_height="wrap_content"
+					            android:layout_height="234.5dp"
 					            android:orientation="vertical"
-                                android:visibility="gone"
-                                android:layout_marginTop="24dp"
-                                android:layout_marginBottom="18dp">
+                                android:gravity="center"
+                                android:visibility="gone">
                                 <ImageView
-                                    android:layout_width="61dp"
-                                    android:layout_height="67dp"
+                                    android:layout_width="65dp"
+                                    android:layout_height="72dp"
                                     android:src="@drawable/mdms_down_dayview"
                                     android:id="@+id/imgMdmsDayViewDown"
                                     android:layout_gravity="center"/>
@@ -332,11 +331,11 @@
                                     android:gravity="center"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="8dp"
+                                    android:layout_marginTop="10dp"
                                     android:layout_marginLeft="32dp"
                                     android:layout_marginRight="32dp"
                                     android:lineSpacingExtra="3dp"
-                                    android:textSize="14dp"
+                                    android:textSize="15dp"
                                     android:textColor="@color/white"
                                     android:text="@string/dayview_mdms_down"
                                     android:layout_gravity="center"/>

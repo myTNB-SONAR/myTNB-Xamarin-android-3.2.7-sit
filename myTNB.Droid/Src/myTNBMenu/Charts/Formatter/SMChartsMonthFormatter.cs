@@ -27,7 +27,14 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.Formatter
                 invertedIndex = byMonthData.Months.Count - 1;
             }
 
-            return byMonthData.Months[Math.Abs(invertedIndex)].Month;
+            if (invertedIndex == -1)
+            {
+                return "";
+            }
+            else
+            {
+                return byMonthData.Months[Math.Abs(invertedIndex)].Month;
+            }
         }
     }
 }

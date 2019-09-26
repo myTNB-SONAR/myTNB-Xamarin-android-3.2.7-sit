@@ -28,7 +28,14 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.Formatter
                 invertedIndex = byDayData.Count - 1;
             }
 
-            return byDayData[Math.Abs(invertedIndex)];
+            if (invertedIndex == -1)
+            {
+                return "";
+            }
+            else
+            {
+                return byDayData[Math.Abs(invertedIndex)];
+            }
         }
     }
 }
