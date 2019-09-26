@@ -21,6 +21,8 @@ namespace myTNB.SmartMeterView
         private UILabel _lblMonth;
         private List<DayItemModel> _usageData = new List<DayItemModel>();
 
+        public Action OnHighlightedBarTap { set; private get; }
+
         private void AddIndicator(ref CustomUIView view)
         {
             nfloat width = GetWidthByScreenSize(12);
@@ -209,6 +211,20 @@ namespace myTNB.SmartMeterView
 
                 point.X -= baseMargin;
                 _segmentScrollView.SetContentOffset(point, true);
+
+                if (tag == _currentBar)
+                {
+                    if (tag > -1 && tag < _usageData.Count)
+                    {
+                        if (_usageData[tag].IsMissingReading)
+                        {
+                            if (OnHighlightedBarTap != null)
+                            {
+                                OnHighlightedBarTap.Invoke();
+                            }
+                        }
+                    }
+                }
             }
         }
 

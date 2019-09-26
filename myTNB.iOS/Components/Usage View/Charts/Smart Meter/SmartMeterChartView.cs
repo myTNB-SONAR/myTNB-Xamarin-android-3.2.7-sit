@@ -242,7 +242,10 @@ namespace myTNB
             }
             else
             {
-                _baseSmartMeterView = new SmartMeterDayZInView();
+                _baseSmartMeterView = new SmartMeterDayZInView()
+                {
+                    OnHighlightedBarTap = OnZoomInHighligtedBarTap
+                };
             }
             _viewLine.Hidden = viewType != SmartMeterConstants.SmartMeterViewType.Month && AccountUsageSmartCache.IsMDMSDown;
             _baseSmartMeterView.PinchAction = PinchAction;
@@ -367,6 +370,14 @@ namespace myTNB
             if (LoadTariffLegendWithIndex != null)
             {
                 LoadTariffLegendWithIndex.Invoke(index);
+            }
+        }
+
+        private void OnZoomInHighligtedBarTap()
+        {
+            if (ShowMissedReadToolTip != null)
+            {
+                ShowMissedReadToolTip.Invoke();
             }
         }
 

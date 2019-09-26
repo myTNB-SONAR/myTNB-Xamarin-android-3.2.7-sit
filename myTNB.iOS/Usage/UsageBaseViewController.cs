@@ -428,7 +428,8 @@ namespace myTNB
                 {
                     PinchOverlayAction = ShowPinchOverlay,
                     LoadTariffLegendWithIndex = LoadTariffLegendWithIndex,
-                    LoadTariffLegendWithBlockIds = LoadTariffLegendWithBlockIds
+                    LoadTariffLegendWithBlockIds = LoadTariffLegendWithBlockIds,
+                    ShowMissedReadToolTip = ShowMissedReadTooltip
                 };
             }
 
@@ -520,6 +521,30 @@ namespace myTNB
             view.Layer.ShadowOffset = new CGSize(0, 8);
             view.Layer.ShadowRadius = 8;
             view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
+        }
+
+        private void ShowMissedReadTooltip()
+        {
+            List<ToolTipItemModel> toolTips = AccountUsageSmartCache.GetTooltips();
+            ToolTipItemModel toolTipItem = toolTips.Find(x => x.Type.Equals(UsageConstants.STR_MissingReading));
+
+            var toolTipMsg = GetI18NValue(UsageConstants.I18N_MissedReadMessage);
+            var toolTipBtnTitle = GetI18NValue(UsageConstants.I18N_GotIt);
+            var toolTipTitle = GetI18NValue(UsageConstants.I18N_MissedReadTitle);
+
+            if (toolTipItem != null)
+            {
+                if (toolTipItem.Message != null)
+                {
+                    if (toolTipItem.Message.Count > 0)
+                    {
+                        toolTipMsg = toolTipItem.Message[0];
+                    }
+                }
+                toolTipBtnTitle = toolTipItem.SMBtnText;
+                toolTipTitle = toolTipItem.Title;
+                DisplayCustomAlert(toolTipTitle, toolTipMsg, toolTipBtnTitle, null);
+            }
         }
         #endregion
         #region SSMR Methods
