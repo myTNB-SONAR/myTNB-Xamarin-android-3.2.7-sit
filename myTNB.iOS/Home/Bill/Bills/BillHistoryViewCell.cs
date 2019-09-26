@@ -185,16 +185,6 @@ namespace myTNB.Home.Bill
                        , lineWidth, ScaleUtility.GetScaledHeight(1));
             }
         }
-        public UITapGestureRecognizer SetAction
-        {
-            set
-            {
-                if (value != null)
-                {
-                    _view.AddGestureRecognizer(value);
-                }
-            }
-        }
         public bool IsLineHidden
         {
             set

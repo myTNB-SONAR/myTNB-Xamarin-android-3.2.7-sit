@@ -126,6 +126,22 @@ namespace myTNB
             return new List<string>();
         }
 
+        public static int FilteredListCount
+        {
+            get
+            {
+                if (SSMRCombinedList != null && SSMRCombinedList.Count > 0)
+                {
+                    List<string> accountList = SSMRCombinedList.Select(x => x.accNum).ToList();
+                    if (accountList != null)
+                    {
+                        return accountList.Count;
+                    }
+                }
+                return 0;
+            }
+        }
+
         public static bool HasSSMREligibleAccount
         {
             get
