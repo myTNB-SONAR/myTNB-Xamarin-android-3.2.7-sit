@@ -103,7 +103,7 @@ namespace myTNB
             {
                 if (_isDataReceived)
                 {
-                    SmartMeterConstants.SmartMeterViewType smartMeterViewType = default;
+                    SmartMeterConstants.SmartMeterViewType smartMeterViewType;
                     if (_toggleBar.SelectedSegment == 0)
                     {
                         if (PinchOverlayAction != null && !_isOverlayDisplayed && !AccountUsageSmartCache.IsMDMSDown)

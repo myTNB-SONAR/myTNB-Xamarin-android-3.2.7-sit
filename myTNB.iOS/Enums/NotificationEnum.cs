@@ -16,7 +16,8 @@
 
     public enum SSMRNotificationEnum
     {
-        RegistrationCompleted = 0,
+        None = 0,
+        RegistrationCompleted,
         RegistrationCancelled,
         TerminationCompleted,
         TerminationCancelled,
