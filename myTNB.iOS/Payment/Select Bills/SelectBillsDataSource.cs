@@ -233,8 +233,14 @@ namespace myTNB.Payment.SelectBills
             }
             else if (isInitialLoad)
             {
-                cell._lblAmountError.Hidden = true;
-                isValid = true;
+                if (cell._lblAmountError.Hidden) {
+                    cell._lblAmountError.Hidden = true;
+                    isValid = true;
+                }
+                else
+                {
+                    isValid = false;
+                }
             }
             else
             {
