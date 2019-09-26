@@ -420,15 +420,16 @@ namespace myTNB
             else if (isNormalChart)
             {
                 _chartView = new NormalChartView();
-                _chartView.PrepareTariffLegend = PrepareTariffLegend;
+                _chartView.LoadTariffLegendWithIndex = LoadTariffLegendWithIndex;
             }
             else
             {
                 _chartView = new SmartMeterChartView()
                 {
                     PinchOverlayAction = ShowPinchOverlay,
-                    PrepareTariffLegend = PrepareTariffLegend,
-                    SetTariffLegendComponent = SetTariffLegendComponent
+                    LoadTariffLegendWithIndex = LoadTariffLegendWithIndex,
+                    LoadTariffLegendWithBlockIds = LoadTariffLegendWithBlockIds,
+                    ShowMissedReadToolTip = ShowMissedReadTooltip
                 };
             }
 
@@ -520,6 +521,30 @@ namespace myTNB
             view.Layer.ShadowOffset = new CGSize(0, 8);
             view.Layer.ShadowRadius = 8;
             view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
+        }
+
+        private void ShowMissedReadTooltip()
+        {
+            List<ToolTipItemModel> toolTips = AccountUsageSmartCache.GetTooltips();
+            ToolTipItemModel toolTipItem = toolTips.Find(x => x.Type.Equals(UsageConstants.STR_MissingReading));
+
+            var toolTipMsg = GetI18NValue(UsageConstants.I18N_MissedReadMessage);
+            var toolTipBtnTitle = GetI18NValue(UsageConstants.I18N_GotIt);
+            var toolTipTitle = GetI18NValue(UsageConstants.I18N_MissedReadTitle);
+
+            if (toolTipItem != null)
+            {
+                if (toolTipItem.Message != null)
+                {
+                    if (toolTipItem.Message.Count > 0)
+                    {
+                        toolTipMsg = toolTipItem.Message[0];
+                    }
+                }
+                toolTipBtnTitle = toolTipItem.SMBtnText;
+                toolTipTitle = toolTipItem.Title;
+                DisplayCustomAlert(toolTipTitle, toolTipMsg, toolTipBtnTitle, null);
+            }
         }
         #endregion
         #region SSMR Methods
@@ -684,25 +709,23 @@ namespace myTNB
             _legendIsVisible = isVisible;
             if (_tariffList != null && _tariffList.Count > 0)
             {
+                _viewLegend.Hidden = true;
                 UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseIn
                     , () =>
                     {
                         nfloat height = isVisible ? _tariffList.Count * GetScaledHeight(25f) : 0;
                         ViewHelper.AdjustFrameSetHeight(_viewLegend, height);
                         SetContentView();
-                        if (!isVisible)
-                            _viewLegend.Hidden = !isVisible;
                         UpdateBackgroundImage(isVisible);
                     }
                     , () =>
                     {
-                        if (isVisible)
-                            _viewLegend.Hidden = !isVisible;
+                        _viewLegend.Hidden = !isVisible;
                     }
                 );
             }
         }
-        private void PrepareTariffLegend(int index)
+        private void LoadTariffLegendWithIndex(int index)
         {
             List<MonthItemModel> usageData = isSmartMeterAccount ? AccountUsageSmartCache.ByMonthUsage : AccountUsageCache.ByMonthUsage;
             if (usageData != null && usageData.Count > 0)
@@ -736,12 +759,37 @@ namespace myTNB
                                     }
                                 }
                                 SetTariffLegendComponent(_tariffList);
-                                nfloat height = _tariffList.Count * GetScaledHeight(25f);
-                                ViewHelper.AdjustFrameSetHeight(_viewLegend, height);
-                                SetContentView();
                             }
                         }
                     }
+                }
+            }
+        }
+        public void LoadTariffLegendWithBlockIds(List<String> blockIdList = null)
+        {
+            if (blockIdList != null && blockIdList.Count > 0)
+            {
+                List<LegendItemModel> tariffLegend = new List<LegendItemModel>(isSmartMeterAccount ? AccountUsageSmartCache.GetTariffLegendList() : AccountUsageCache.GetTariffLegendList());
+                if (tariffLegend != null && tariffLegend.Count > 0)
+                {
+                    _tariffList = new List<LegendItemModel>();
+                    foreach (var legend in tariffLegend)
+                    {
+                        var res = false;
+                        foreach (var blockId in blockIdList)
+                        {
+                            if (blockId.Equals(legend.BlockId))
+                            {
+                                res = true;
+                                break;
+                            }
+                        }
+                        if (res)
+                        {
+                            _tariffList.Add(legend);
+                        }
+                    }
+                    SetTariffLegendComponent(_tariffList);
                 }
             }
         }

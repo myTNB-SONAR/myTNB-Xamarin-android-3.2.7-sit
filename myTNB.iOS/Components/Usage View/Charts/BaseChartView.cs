@@ -21,7 +21,8 @@ namespace myTNB
         public virtual void ToggleTariffView(bool isTariffView) { }
 
         public virtual void ToggleRMKWHValues(RMkWhEnum state) { }
-        public Action<int> PrepareTariffLegend;
+        public Action<int> LoadTariffLegendWithIndex;
+        public Action ShowMissedReadToolTip;
         public virtual List<string> AvailableTariffBlockIDList { get; } = new List<string>();
 
         public virtual CustomUIView GetUI()

@@ -2,6 +2,9 @@
 {
     public static class UsageConstants
     {
+        //String
+        public static string STR_MissingReading = "MISSINGREADING";
+
         //Energy Tips
         public static int MaxRandomTips = 3;
 
@@ -24,5 +27,7 @@
         public static string I18N_DisconnectionMessage = "disconnectionMsg";
         public static string I18N_ProjectedCostMessage = "projectedCostMsg";
         public static string I18N_ProjectCostTitle = "projectedCostTitle";
+        public static string I18N_MissedReadMessage = "missedReadMsg";
+        public static string I18N_MissedReadTitle = "missedReadTitle";
     }
 }
