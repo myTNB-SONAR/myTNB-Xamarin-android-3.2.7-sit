@@ -437,7 +437,6 @@ namespace myTNB
                 _chart.RemoveFromSuperview();
             }
             _chart = isUpdating ? _chartView.GetShimmerUI() : _chartView.GetUI();
-            var test = _chartView.AvailableTariffBlockIDList;
             _viewChart.AddSubview(_chart);
             ViewHelper.AdjustFrameSetHeight(_viewChart, _chart.Frame.Height);
         }

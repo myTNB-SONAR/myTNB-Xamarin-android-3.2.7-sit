@@ -123,6 +123,8 @@ namespace myTNB
                         smartMeterViewType = SmartMeterConstants.SmartMeterViewType.Month;
                     }
                     CreateSegment(smartMeterViewType);
+                    //For Testing
+                    var test = AvailableTariffBlockIDList;
                 }
             };
             toggleView.AddSubview(_toggleBar);
