@@ -17,6 +17,7 @@ namespace myTNB
         }
 
         public Action PinchOverlayAction { set; private get; }
+        public Action<List<LegendItemModel>> SetTariffLegendComponent { set; private get; }
 
         private BaseSmartMeterView _baseSmartMeterView;
         private bool _isTariffView;
@@ -110,6 +111,10 @@ namespace myTNB
                             PinchOverlayAction?.Invoke();
                             _isOverlayDisplayed = true;
                         }
+                        if (SetTariffLegendComponent != null)
+                        {
+                            SetTariffLegendComponent.Invoke(null);
+                        }
                         smartMeterViewType = SmartMeterConstants.SmartMeterViewType.DayZOut;
                     }
                     else
@@ -130,15 +135,18 @@ namespace myTNB
             };
             _pinchIcon.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZOut)
+                if (!AccountUsageSmartCache.IsMDMSDown)
                 {
-                    CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZIn);
-                    _pinchIcon.Image = UIImage.FromBundle(UsageConstants.IMG_PinchIn);
-                }
-                else if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZIn)
-                {
-                    CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZOut);
-                    _pinchIcon.Image = UIImage.FromBundle(UsageConstants.IMG_PinchOut);
+                    if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZOut)
+                    {
+                        CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZIn);
+                        _pinchIcon.Image = UIImage.FromBundle(UsageConstants.IMG_PinchIn);
+                    }
+                    else if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZIn)
+                    {
+                        CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZOut);
+                        _pinchIcon.Image = UIImage.FromBundle(UsageConstants.IMG_PinchOut);
+                    }
                 }
             }));
             toggleView.AddSubview(_pinchIcon);

@@ -427,7 +427,8 @@ namespace myTNB
                 _chartView = new SmartMeterChartView()
                 {
                     PinchOverlayAction = ShowPinchOverlay,
-                    PrepareTariffLegend = PrepareTariffLegend
+                    PrepareTariffLegend = PrepareTariffLegend,
+                    SetTariffLegendComponent = SetTariffLegendComponent
                 };
             }
 
@@ -651,10 +652,10 @@ namespace myTNB
             {
                 if (tariffList == null || tariffList.Count == 0)
                 {
-                    tariffList = new List<LegendItemModel>(isSmartMeterAccount ? AccountUsageSmartCache.GetTariffLegendList() : AccountUsageCache.GetTariffLegendList());
+                    _tariffList = new List<LegendItemModel>(isSmartMeterAccount ? AccountUsageSmartCache.GetTariffLegendList() : AccountUsageCache.GetTariffLegendList());
                 }
 
-                if (tariffList != null && tariffList.Count > 0)
+                if (_tariffList != null && _tariffList.Count > 0)
                 {
                     ViewHelper.AdjustFrameSetHeight(_viewLegend, 0);
                     _viewLegend.BackgroundColor = UIColor.Clear;
@@ -662,9 +663,13 @@ namespace myTNB
                     {
                         _legend.RemoveFromSuperview();
                     }
-                    TariffLegendComponent tariffLegendComponent = new TariffLegendComponent(View, tariffList);
+                    TariffLegendComponent tariffLegendComponent = new TariffLegendComponent(View, _tariffList);
                     _legend = tariffLegendComponent.GetUI();
                     _viewLegend.AddSubview(_legend);
+                    if (_legendIsVisible)
+                    {
+                        ShowHideTariffLegends(_legendIsVisible);
+                    }
                 }
             }
             else
