@@ -799,7 +799,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                     {
                         RunOnUiThread(() =>
                         {
-                            this.Window.SetBackgroundDrawableResource(Resource.Drawable.launch_screen);
+                            this.Window.SetBackgroundDrawable(GetDrawable(Resource.Drawable.launch_screen));
                         });
                     }
                     catch (Exception ne)
