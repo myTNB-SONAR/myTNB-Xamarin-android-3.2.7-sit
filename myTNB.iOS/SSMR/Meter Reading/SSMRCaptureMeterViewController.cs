@@ -144,7 +144,7 @@ namespace myTNB
                     for (int i = 0; i < ontoCount; i++)
                     {
                         missingReading += _ontoList[i];
-                        if (i != ontoCount - 1) { missingReading += ","; }
+                        if (i != ontoCount - 1) { missingReading += ", "; }
                     }
                     description = ontoCount > 1 ? string.Format(description, ontoCount, missingReading) : description;
                 }

@@ -265,7 +265,7 @@
 "Hint_Password"="Password must have at least 8 alphanumeric characters.";
 
 /*Invalid*/
-"Invalid_AccountLength"="Please enter a valid 12-digit or 14-digit account number";
+"Invalid_AccountLength"="Please enter a valid 12-digit or 14-digit account no.";
 "Invalid_AccountNickname"="Invalid account nickname";
 "Invalid_AccountNicknameInUse"="Nickname already used. Please create a new one.";
 "Invalid_AccountType"="Invalid Account Type";
@@ -281,7 +281,7 @@
 "Invalid_Feedback"="Invalid feedback";
 "Invalid_FeedbackType"="Invalid feedback type";
 "Invalid_Fullname"="Invalid full name";
-"Invalid_ICNo"="Invalid IC number";
+"Invalid_ICNo"="Invalid IC no.";
 "Invalid_ICROCPassportNumber"="Invalid IC, ROC or Passport No.";
 "Invalid_Location"="Invalid location / Street name";
 "Invalid_MaidenName"="Invalid maiden name";
