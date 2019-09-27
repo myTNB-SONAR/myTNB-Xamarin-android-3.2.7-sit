@@ -222,46 +222,56 @@ namespace myTNB
             return TNBGlobal.ACCOUNT_NAME_PATTERN;
         }
 
+        private bool IsEmpty(string value)
+        {
+            if (TextFieldType == Type.MobileNumber)
+            {
+                if (string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value)) { return true; }
+                int countryCodeIndex = value.IndexOf(@"+60", 0, StringComparison.CurrentCulture);
+                return countryCodeIndex > -1 && value.Length == 3;
+            }
+            return string.IsNullOrEmpty(value) || string.IsNullOrWhiteSpace(value);
+        }
+
         private void SetEvents()
         {
             TextField.EditingChanged += (sender, e) =>
             {
-                LblHint.Hidden = !LblError.Hidden || TextField.Text.Length == 0;
-                LblTitle.Hidden = TextField.Text.Length == 0;
+                string value = TextField.Text;
+                LblHint.Hidden = !IsEmpty(value) && !LblError.Hidden || value.Length == 0;
+                LblTitle.Hidden = TextFieldType != Type.MobileNumber || value.Length != 3 && IsEmpty(value) || value.Length == 0;
+                LblError.Hidden = true;
+                _viewLine.BackgroundColor = MyTNBColor.PlatinumGrey;
+                TextField.TextColor = TextColor;
                 if (TypingEndAction != null) { TypingEndAction.Invoke(); }
             };
             TextField.EditingDidBegin += (sender, e) =>
             {
-                if (TextFieldType == Type.MobileNumber)
-                {
-                    if (TextField.Text.Length == 0)
-                    {
-                        TextField.Text += TNBGlobal.MobileNoPrefix;
-                    }
-                }
-                LblHint.Hidden = !LblError.Hidden || TextField.Text.Length == 0;
-                LblTitle.Hidden = TextField.Text.Length == 0;
                 if (TextFieldType == Type.MobileNumber && TextField.Text.Length == 0)
                 {
                     TextField.Text += TNBGlobal.MobileNoPrefix;
                 }
+                string value = TextField.Text;
+                LblTitle.Hidden = TextFieldType != Type.MobileNumber || value.Length != 3 && IsEmpty(value) || value.Length == 0;
+                LblHint.Hidden = !IsEmpty(value) && !LblError.Hidden || value.Length == 0;
                 _viewLine.BackgroundColor = MyTNBColor.PowerBlue;
                 TextField.LeftViewMode = UITextFieldViewMode.Never;
                 if (TypingBeginAction != null) { TypingBeginAction.Invoke(); }
             };
             TextField.ShouldEndEditing = (sender) =>
             {
-                LblTitle.Hidden = TextField.Text.Length == 0;
-                _isFieldValid = _txtFieldHelper.ValidateTextField(TextField.Text, GetRegexPattern());
+                string value = TextField.Text;
+                LblTitle.Hidden = TextFieldType != Type.MobileNumber || value.Length != 3 && IsEmpty(value) || value.Length == 0;
+                _isFieldValid = _txtFieldHelper.ValidateTextField(value, GetRegexPattern());
                 if (TextFieldType == Type.MobileNumber)
                 {
-                    _isFieldValid = _isFieldValid && _txtFieldHelper.ValidateMobileNumberLength(TextField.Text);
+                    _isFieldValid = _isFieldValid && _txtFieldHelper.ValidateMobileNumberLength(value);
                 }
 
-                LblError.Hidden = _isFieldValid;
+                LblError.Hidden = IsEmpty(value) || _isFieldValid;
                 LblHint.Hidden = true;
-                _viewLine.BackgroundColor = _isFieldValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
-                TextField.TextColor = _isFieldValid ? TextColor : MyTNBColor.Tomato;
+                _viewLine.BackgroundColor = IsEmpty(value) || _isFieldValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
+                TextField.TextColor = IsEmpty(value) || _isFieldValid ? TextColor : MyTNBColor.Tomato;
                 if (TypingEndAction != null) { TypingEndAction.Invoke(); }
                 return true;
             };
@@ -289,7 +299,8 @@ namespace myTNB
             };
             TextField.EditingDidEnd += (sender, e) =>
             {
-                if (TextField.Text.Length == 0)
+                string value = TextField.Text;
+                if (value.Length == 0)
                 {
                     TextField.LeftViewMode = UITextFieldViewMode.UnlessEditing;
                 }
