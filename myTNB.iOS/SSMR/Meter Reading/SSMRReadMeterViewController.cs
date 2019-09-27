@@ -23,6 +23,7 @@ namespace myTNB
         List<SMRMROValidateRegisterDetailsInfoModel> _previousMeterList;
         List<MeterReadSSMRModel> _toolTipList;
         public List<SSMRMeterReadWalkthroughModel> pageData;
+        List<SSMRMeterReadWalkthroughModel> pageDefaultData;
 
         UIView _toolTipParentView, _takePhotoView, _takePhotoBtnView, _noteView;
         UIScrollView _meterReadScrollView;
@@ -111,6 +112,7 @@ namespace myTNB
         private void SetWalkthroughData()
         {
             pageData = new List<SSMRMeterReadWalkthroughModel>();
+            pageDefaultData = new List<SSMRMeterReadWalkthroughModel>();
             var item1 = new SSMRMeterReadWalkthroughModel
             {
                 Image = _isThreePhase ? SSMRConstants.IMG_BGToolTip1 : SSMRConstants.IMG_BGToolTip2,
@@ -118,7 +120,7 @@ namespace myTNB
                 Description = _isThreePhase ? GetI18NValue(SSMRConstants.I18N_ToolTipDesc1) : GetI18NValue(SSMRConstants.I18N_ToolTipDesc4)
             };
             pageData.Add(item1);
-
+            pageDefaultData.Add(item1);
             var item2 = new SSMRMeterReadWalkthroughModel
             {
                 Image = _isThreePhase ? SSMRConstants.IMG_BGToolTip2 : SSMRConstants.IMG_BGToolTip3,
@@ -126,7 +128,7 @@ namespace myTNB
                 Description = _isThreePhase ? GetI18NValue(SSMRConstants.I18N_ToolTipDesc2) : GetI18NValue(SSMRConstants.I18N_ToolTipDesc5)
             };
             pageData.Add(item2);
-
+            pageDefaultData.Add(item2);
             if (_isThreePhase)
             {
                 var item3 = new SSMRMeterReadWalkthroughModel
@@ -136,6 +138,7 @@ namespace myTNB
                     Description = GetI18NValue(SSMRConstants.I18N_ToolTipDesc3),
                 };
                 pageData.Add(item3);
+                pageDefaultData.Add(item3);
             }
         }
 
@@ -372,7 +375,7 @@ namespace myTNB
                 };
                 currentWindow.AddSubview(_toolTipParentView);
                 PaginatedTooltipComponent tooltipComponent = new PaginatedTooltipComponent(_toolTipParentView);
-                tooltipComponent.SetSSMRData(pageData);
+                tooltipComponent.SetSSMRData(pageData, pageDefaultData);
                 tooltipComponent.SetPreviousMeterData(_previousMeterList);
                 _toolTipParentView.AddSubview(tooltipComponent.GetSSMRTooltip());
                 tooltipComponent.SetGestureRecognizer(new UITapGestureRecognizer(() =>
