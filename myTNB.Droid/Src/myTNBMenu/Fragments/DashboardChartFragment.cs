@@ -410,6 +410,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.smGraphZoomToggleLayout)]
         LinearLayout smGraphZoomToggleLayout;
 
+        [BindView(Resource.Id.smGraphZoomToggle)]
+        ImageView smGraphZoomToggle;
+
         [BindView(Resource.Id.mdmsDayViewDownLayout)]
         LinearLayout mdmsDayViewDownLayout;
 
@@ -1274,6 +1277,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             this.userActionsListener.OnByMonth();
         }
 
+        [OnClick(Resource.Id.smGraphZoomToggleLayout)]
+        internal void OnToggleZoom(object sender, EventArgs e)
+        {
+            if (!isZoomIn)
+            {
+                isZoomIn = true;
+            }
+            else
+            {
+                isZoomIn = false;
+            }
+
+            this.userActionsListener.OnByZoom();
+        }
+
         private void StartSSMRMeterHistoryPage()
         {
             Intent ssmr_history_activity = new Intent(this.Activity, typeof(SSMRMeterHistoryActivity));
@@ -1411,6 +1429,29 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             missingReadingList.Add(IndividualDayData.IsMissingReading);
                         }
                     }
+                }
+
+                if (ChartType == ChartType.Day && isZoomIn)
+                {
+                    List<bool> newMissingReadingList = new List<bool>();
+
+                    for (int j = 0; j < 4; j++)
+                    {
+                        newMissingReadingList.Add(false);
+                    }
+
+                    for (int j = 0; j < missingReadingList.Count; j++)
+                    {
+                        newMissingReadingList.Add(missingReadingList[j]);
+                    }
+
+
+                    for (int j = 0; j < 4; j++)
+                    {
+                        newMissingReadingList.Add(false);
+                    }
+
+                    missingReadingList = newMissingReadingList;
                 }
 
                 if (isToggleTariff)
@@ -1718,7 +1759,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
 
             int graphTopPadding = 30;
-            int graphLeftRightPadding = (int) DPUtils.ConvertDPToPx(4f);
+            int graphLeftRightPadding = (int)DPUtils.ConvertDPToPx(4f);
             int graphBottomPadding = 10;
             if (selectedAccount.AccountCategoryId.Equals("2"))
             {
@@ -1732,15 +1773,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             mChart.SetOnChartValueSelectedListener(this);
             mScaleDetector = new ScaleGestureDetector(this.Activity, new BarGraphPinchListener(ChartType, this.userActionsListener));
             mChart.SetOnTouchListener(this);
-            if (ChartType == ChartType.Day && isZoomIn)
+            /*mChart.OnTouchListener = new DayViewBarChartTouchListener(mChart, mChart.Matrix, 3)
             {
-                mChart.OnTouchListener = new DayViewBarChartTouchListener(mChart, mChart.Matrix, 3);
-            }
-            else
-            {
-                mChart.OnTouchListener = null;
-            }
+                currentChartType = ChartType
+            };*/
 
+            mChart.OnChartGestureListener = new BarChartGeatureListner(ChartType, isZoomIn);
             mChart.Invalidate();
         }
         #region SETUP AXIS RM
@@ -2051,7 +2089,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
 
             xAxis.Granularity = 1f; // only intervals of 1 day
-            
+
             if (isSMAccount)
             {
                 if (ChartType == ChartType.Month)
@@ -3866,27 +3904,69 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                     }
                 }
-                else if (ChartType == ChartType.Day)
+                else if (ChartType == ChartType.Day && isSMAccount)
                 {
-                    tariffBlockLegendRecyclerView.Visibility = ViewStates.Visible;
-                    if (isSMAccount)
+                    bool isFound = false;
+                    bool isAlreadyExists = false;
+
+
+                    List<TariffBlocksLegendData> newTariffList = new List<TariffBlocksLegendData>();
+                    for (int i = 0; i < selectedSMHistoryData.TariffBlocksLegend.Count; i++)
                     {
-                        tariffBlockLegendAdapter = new TariffBlockLegendAdapter(selectedSMHistoryData.TariffBlocksLegend, this.Activity, false);
+                        isAlreadyExists = false;
+
+                        for (int j = 0; j < selectedSMHistoryData.ByDay.Count; j++)
+                        {
+                            for (int k = 0; k < selectedSMHistoryData.ByDay[j].Days.Count; k++)
+                            {
+                                for (int l = 0; l < selectedSMHistoryData.ByDay[j].Days[k].TariffBlocksList.Count; l++)
+                                {
+                                    if ((selectedSMHistoryData.TariffBlocksLegend[i].BlockId == selectedSMHistoryData.ByDay[j].Days[k].TariffBlocksList[l].BlockId))
+                                    {
+                                        if ((ChartDataType == ChartDataType.RM && System.Math.Abs(selectedSMHistoryData.ByDay[j].Days[k].TariffBlocksList[l].Amount) > 0.00) || (ChartDataType == ChartDataType.kWh && System.Math.Abs(selectedSMHistoryData.ByDay[j].Days[k].TariffBlocksList[l].Usage) > 0.00))
+                                        {
+                                            isFound = true;
+                                            isAlreadyExists = true;
+                                            newTariffList.Add(selectedHistoryData.TariffBlocksLegend[i]);
+                                        }
+                                        break;
+                                    }
+                                }
+
+                                if (isAlreadyExists)
+                                {
+                                    break;
+                                }
+                            }
+
+                            if (isAlreadyExists)
+                            {
+                                break;
+                            }
+                        }
+                    }
+
+                    if (isFound)
+                    {
+                        tariffBlockLegendAdapter = new TariffBlockLegendAdapter(newTariffList, this.Activity, false);
+                        tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
+
+                        Context context = tariffBlockLegendRecyclerView.Context;
+                        LayoutAnimationController controller =
+                                AnimationUtils.LoadLayoutAnimation(context, Resource.Animation.layout_animation_fall_down);
+
+                        tariffBlockLegendRecyclerView.LayoutAnimation = controller;
+                        tariffBlockLegendRecyclerView.GetAdapter().NotifyDataSetChanged();
+                        tariffBlockLegendRecyclerView.ScheduleLayoutAnimation();
                     }
                     else
                     {
-                        tariffBlockLegendAdapter = new TariffBlockLegendAdapter(selectedHistoryData.TariffBlocksLegend, this.Activity, false);
+                        tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                     }
-
-                    tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
-
-                    Context context = tariffBlockLegendRecyclerView.Context;
-                    LayoutAnimationController controller =
-                            AnimationUtils.LoadLayoutAnimation(context, Resource.Animation.layout_animation_fall_down);
-
-                    tariffBlockLegendRecyclerView.LayoutAnimation = controller;
-                    tariffBlockLegendRecyclerView.GetAdapter().NotifyDataSetChanged();
-                    tariffBlockLegendRecyclerView.ScheduleLayoutAnimation();
+                }
+                else
+                {
+                    tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                 }
             }
         }
@@ -5855,65 +5935,71 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             btnToggleDay.Enabled = true;
             btnToggleMonth.Enabled = true;
 
+            if (isZoomIn)
+            {
+                smGraphZoomToggle.SetImageResource(Resource.Drawable.zoom_out);
+            }
+            else
+            {
+                smGraphZoomToggle.SetImageResource(Resource.Drawable.dashboard_zoom_tooltip);
+            }
+
             mChart.Clear();
             SetUp();
         }
 
-        private class DayViewBarChartTouchListener : BarLineChartTouchListener, ValueAnimator.IAnimatorUpdateListener
+        private class BarChartGeatureListner : Java.Lang.Object, IOnChartGestureListenerSupport
         {
-            private BarChart barChart;
-            private Matrix currentMatrix;
-            private float currentDragTriggerDistance;
-            private static Matrix save;
-            private static float x;
-            private static int frames = 20;
+            private ChartType currentChartType;
+            private bool currentIsZoom;
 
-            public DayViewBarChartTouchListener(BarChart chart, Matrix matrix, float dragTriggerDistance) : base(chart, matrix, dragTriggerDistance)
+            public BarChartGeatureListner(ChartType chartType, bool isZoom)
             {
-                barChart = chart;
-                currentMatrix = matrix;
-                currentDragTriggerDistance = dragTriggerDistance;
+                currentChartType = chartType;
+                currentIsZoom = isZoom;
             }
 
-            protected DayViewBarChartTouchListener(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
+            void IOnChartGestureListenerSupport.OnChartDoubleTapped(MotionEvent p0)
             {
 
             }
 
-            public override void ComputeScroll()
+            void IOnChartGestureListenerSupport.OnChartFling(MotionEvent p0, MotionEvent p1, float p2, float p3)
             {
-                base.ComputeScroll();
-                AlignX();
+
             }
 
-            private void AlignX()
+            void IOnChartGestureListenerSupport.OnChartGestureEnd(MotionEvent p0, ChartTouchListener.ChartGesture p1)
             {
-                int xIndex = (int) this.barChart.LowestVisibleX + Java.Lang.Math.Round((this.barChart.HighestVisibleX - this.barChart.LowestVisibleX) / 2.0f);
-                float xsInView = 9;
-                Transformer mTrans = this.barChart.GetTransformer(YAxis.AxisDependency.Left);
-                float[] pts = { xIndex - xsInView / 2f, 0 };
-                mTrans.PointValuesToPixel(pts);
-                save = new Matrix();
-                save.Set(this.barChart.ViewPortHandler.MatrixTouch);
-                x = pts[0] - this.barChart.ViewPortHandler.OffsetLeft();
-                ValueAnimator valueAnimator = new ValueAnimator();
-                valueAnimator = ValueAnimator.OfInt(0, frames);
-                valueAnimator.SetDuration(500);
-                valueAnimator.AddUpdateListener(this);
-                valueAnimator.Start();
-            }
-
-            void ValueAnimator.IAnimatorUpdateListener.OnAnimationUpdate(ValueAnimator animation)
-            {
-                int prev = -1;
-
-                if ((int)animation.AnimatedValue > prev)
+                if (currentChartType == ChartType.Day && isZoomIn)
                 {
-                    save.PostTranslate(-x / (float)frames, 0);
-                    this.barChart.ViewPortHandler.Refresh(save, this.barChart, true);
+                    Log.Debug("Current Geature", p1.ToString());
                 }
+            }
 
-                prev = (int)animation.AnimatedValue;
+            void IOnChartGestureListenerSupport.OnChartGestureStart(MotionEvent p0, ChartTouchListener.ChartGesture p1)
+            {
+
+            }
+
+            void IOnChartGestureListenerSupport.OnChartLongPressed(MotionEvent p0)
+            {
+
+            }
+
+            void IOnChartGestureListenerSupport.OnChartScale(MotionEvent p0, float p1, float p2)
+            {
+
+            }
+
+            void IOnChartGestureListenerSupport.OnChartSingleTapped(MotionEvent p0)
+            {
+
+            }
+
+            void IOnChartGestureListenerSupport.OnChartTranslate(MotionEvent p0, float p1, float p2)
+            {
+
             }
         }
 
@@ -5943,7 +6029,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             isZoomIn = false;
                             this.userActionsListener.OnByZoom();
                         }
-                        Log.Debug("Zoom Small", "Yes");
                     }
                     else if ((detector.ScaleFactor - currentScaleFactor) > 0.005)
                     {
@@ -5953,7 +6038,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             isZoomIn = true;
                             this.userActionsListener.OnByZoom();
                         }
-                        Log.Debug("Zoom Big", "Yes");
                     }
                 }
             }

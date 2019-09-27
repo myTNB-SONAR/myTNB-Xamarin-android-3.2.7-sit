@@ -178,6 +178,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                         {
                                             smUsageHistoryResponse = null;
                                         }
+                                        else
+                                        {
+                                            smUsageHistoryResponse = storedSMData;
+                                        }
                                         LoadSMUsageHistory(selectedAccount);
                                     }
                                     else

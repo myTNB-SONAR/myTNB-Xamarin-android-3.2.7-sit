@@ -6735,26 +6735,26 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f020058
 			public const int avd_hide_password = 2130837592;
 			
-			// aapt resource value: 0x7f02031a
-			public const int avd_hide_password_1 = 2130838298;
-			
 			// aapt resource value: 0x7f02031b
-			public const int avd_hide_password_2 = 2130838299;
+			public const int avd_hide_password_1 = 2130838299;
 			
 			// aapt resource value: 0x7f02031c
-			public const int avd_hide_password_3 = 2130838300;
+			public const int avd_hide_password_2 = 2130838300;
+			
+			// aapt resource value: 0x7f02031d
+			public const int avd_hide_password_3 = 2130838301;
 			
 			// aapt resource value: 0x7f020059
 			public const int avd_show_password = 2130837593;
 			
-			// aapt resource value: 0x7f02031d
-			public const int avd_show_password_1 = 2130838301;
-			
 			// aapt resource value: 0x7f02031e
-			public const int avd_show_password_2 = 2130838302;
+			public const int avd_show_password_1 = 2130838302;
 			
 			// aapt resource value: 0x7f02031f
-			public const int avd_show_password_3 = 2130838303;
+			public const int avd_show_password_2 = 2130838303;
+			
+			// aapt resource value: 0x7f020320
+			public const int avd_show_password_3 = 2130838304;
 			
 			// aapt resource value: 0x7f02005a
 			public const int bg_application_status = 2130837594;
@@ -8508,11 +8508,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0202a1
 			public const int notification_smr_generic_banner = 2130838177;
 			
-			// aapt resource value: 0x7f020318
-			public const int notification_template_icon_bg = 2130838296;
-			
 			// aapt resource value: 0x7f020319
-			public const int notification_template_icon_low_bg = 2130838297;
+			public const int notification_template_icon_bg = 2130838297;
+			
+			// aapt resource value: 0x7f02031a
+			public const int notification_template_icon_low_bg = 2130838298;
 			
 			// aapt resource value: 0x7f0202a2
 			public const int notification_tile_bg = 2130838178;
@@ -8867,6 +8867,9 @@ namespace myTNB_Android
 			
 			// aapt resource value: 0x7f020317
 			public const int white_selector_pressable = 2130838295;
+			
+			// aapt resource value: 0x7f020318
+			public const int zoom_out = 2130838296;
 			
 			static Drawable()
 			{
