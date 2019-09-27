@@ -234,7 +234,7 @@ namespace myTNB
                 if (accountIndex > -1)
                 {
                     string accountNickname = DataManager.DataManager.SharedInstance.AccountRecordsList.d[accountIndex].accountNickName ?? string.Empty;
-                    message = Regex.Replace(message, "#accountNickname#", accountNickname);
+                    message = Regex.Replace(message, PushNotificationConstants.REGEX_AccountNickname, accountNickname);
                 }
             }
 

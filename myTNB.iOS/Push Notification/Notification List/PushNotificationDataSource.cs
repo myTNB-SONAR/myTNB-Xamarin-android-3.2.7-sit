@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 using CoreGraphics;
 using Foundation;
 using myTNB.Enums;
@@ -41,7 +42,15 @@ namespace myTNB.PushNotification
             cell.ClearsContextBeforeDrawing = true;
             cell.imgIcon.Image = UIImage.FromBundle(GetIcon(notification.BCRMNotificationType));
             cell.lblTitle.Text = notification.Title;
-            cell.lblDetails.Text = notification.Message;
+
+            string message = notification.Message;
+            int accountIndex = DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindIndex(x => x.accNum == notification.AccountNum);
+            if (accountIndex > -1)
+            {
+                string accountNickname = DataManager.DataManager.SharedInstance.AccountRecordsList.d[accountIndex].accountNickName ?? string.Empty;
+                message = Regex.Replace(message, PushNotificationConstants.REGEX_AccountNickname, accountNickname);
+            }
+            cell.lblDetails.Text = message;
             cell.lblDate.Text = GetDate(notification.CreatedDate);
             cell.IsRead = notification.IsReadNotification;
             cell.imgCheckbox.Image = UIImage.FromBundle(notification.IsSelected
