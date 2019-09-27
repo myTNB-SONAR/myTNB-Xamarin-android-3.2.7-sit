@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using CoreGraphics;
+using Foundation;
 using myTNB.SSMR;
 using UIKit;
 
@@ -152,7 +153,15 @@ namespace myTNB
 
         public void SetDescription(string text)
         {
-            _description.Text = text;
+            NSError htmlBodyError = null;
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(text
+                , ref htmlBodyError, MyTNBFont.FONTNAME_300, (float)GetScaledHeight(12F));
+            NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
+            mutableHTMLBody.AddAttributes(new UIStringAttributes
+            {
+                ForegroundColor = MyTNBColor.CharcoalGrey
+            }, new NSRange(0, htmlBody.Length));
+            _description.AttributedText = mutableHTMLBody;
             CGSize descNewSize = _description.SizeThatFits(new CGSize(_descWidth, 1000f));
             ViewHelper.AdjustFrameSetHeight(_description, descNewSize.Height);
 

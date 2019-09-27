@@ -17,6 +17,7 @@ namespace myTNB
         UILabel _proceedLabel;
         int _currentPageIndex;
         List<SSMRMeterReadWalkthroughModel> _ssmrData;
+        List<SSMRMeterReadWalkthroughModel> _ssmrDefaultData;
         List<BillsTooltipModel> _billsTooltipData;
         List<SMRMROValidateRegisterDetailsInfoModel> _previousMeterList;
         UIPageControl _pageControl;
@@ -37,7 +38,7 @@ namespace myTNB
                 BackgroundColor = UIColor.White,
                 ClipsToBounds = true
             };
-            _containerView.Layer.CornerRadius = 5f;
+            _containerView.Layer.CornerRadius = GetScaledHeight(6F);
             SetToolTipScrollView();
             SetSubViewsForSSMRTooltip();
         }
@@ -52,7 +53,7 @@ namespace myTNB
                 BackgroundColor = UIColor.White,
                 ClipsToBounds = true
             };
-            _containerView.Layer.CornerRadius = 5f;
+            _containerView.Layer.CornerRadius = GetScaledHeight(6F);
             SetToolTipScrollView();
             SetSubViewsForBillDetailsTooltip();
         }
@@ -263,8 +264,9 @@ namespace myTNB
             return _containerView;
         }
 
-        public void SetSSMRData(List<SSMRMeterReadWalkthroughModel> data)
+        public void SetSSMRData(List<SSMRMeterReadWalkthroughModel> data, List<SSMRMeterReadWalkthroughModel> defaultData)
         {
+            _ssmrDefaultData = defaultData;
             if (data != null)
             {
                 _ssmrData = data;
@@ -307,6 +309,13 @@ namespace myTNB
                         {
                             Debug.WriteLine("Image load Error: " + e.Message);
                             displayImage = UIImage.FromBundle(string.Empty);
+                            if (_ssmrDefaultData != null)
+                            {
+                                if (i > -1 && i < _ssmrDefaultData.Count)
+                                {
+                                    displayImage = UIImage.FromBundle(_ssmrDefaultData[i].Image);
+                                }
+                            }
                         }
                     }
                 }
