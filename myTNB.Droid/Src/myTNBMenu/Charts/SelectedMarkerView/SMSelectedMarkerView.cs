@@ -10,6 +10,7 @@ using MikePhil.Charting.Util;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.Utils;
 using System;
+using System.Collections.Generic;
 
 namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
 {
@@ -20,7 +21,14 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
         private DecimalFormat kwhFormat;
         private TextView titleMarker;
         private TextView titlekWhMarker;
+        private ImageView imgMissingCopy;
         public SMUsageHistoryData UsageHistoryData { get; set; }
+        public List<double> smDayViewCurrencyList { get; set; }
+        public List<double> smDayViewUsageList { get; set; }
+        public List<bool> smMissingList { get; set; }
+        public string smDayCurrencyUnit { get; set; }
+        public string smDayUsageUnit { get; set; }
+        public bool isZoomIn { get; set; }
         public ChartDataType ChartDataType { get; set; }
         public ChartType ChartType { get; set; }
         public bool isMDMSDown { get; set; }
@@ -32,11 +40,13 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
         {
             titleMarker = FindViewById<TextView>(Resource.Id.txtMarker);
             titlekWhMarker = FindViewById<TextView>(Resource.Id.txtkWhMarker);
+            imgMissingCopy = FindViewById<ImageView>(Resource.Id.imgMissingCopy);
             titleMarker.Gravity = GravityFlags.Center;
             titlekWhMarker.Gravity = GravityFlags.Center;
             TextViewUtils.SetMuseoSans500Typeface(titleMarker);
             TextViewUtils.SetMuseoSans300Typeface(titlekWhMarker);
             titlekWhMarker.Visibility = ViewStates.Gone;
+            imgMissingCopy.Visibility = ViewStates.Gone;
             decimalFormat = new DecimalFormat("#,###,##0.00");
             kwhFormat = new DecimalFormat("#,###,##0");
             currentContext = context;
@@ -51,6 +61,7 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
         {
             if (ChartType != null)
             {
+                imgMissingCopy.Visibility = ViewStates.Gone;
                 int index = (int)e.GetX();
                 bool isDisableWord = false;
                 if (isMDMSDown)
@@ -92,6 +103,31 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView
                         titleMarker.Visibility = ViewStates.Gone;
                         titlekWhMarker.Visibility = ViewStates.Gone;
                     }
+                }
+                else if (ChartType == ChartType.Day && isZoomIn)
+                {
+                    if (smMissingList[index])
+                    {
+                        imgMissingCopy.Visibility = ViewStates.Visible;
+                    }
+                    else
+                    {
+                        imgMissingCopy.Visibility = ViewStates.Gone;
+                    }
+
+                    if (ChartDataType == ChartDataType.RM)
+                    {
+                        titlekWhMarker.Visibility = ViewStates.Gone;
+                        float val = (float)smDayViewCurrencyList[index];
+                        titleMarker.Text = smDayCurrencyUnit + " " + decimalFormat.Format(val);
+                    }
+                    else if (ChartDataType == ChartDataType.kWh)
+                    {
+                        titlekWhMarker.Visibility = ViewStates.Gone;
+                        float valKwh = (float)smDayViewUsageList[index];
+                        titleMarker.Text = kwhFormat.Format(Math.Abs(valKwh)) + " " + smDayUsageUnit;
+                    }
+
                 }
             }
             else

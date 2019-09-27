@@ -69,8 +69,8 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
         private DecimalFormat decimalFormat = new DecimalFormat("#,###,##0.00");
         private DecimalFormat kwhFormat = new DecimalFormat("#,###,##0");
-        private Bitmap mdmsBitmap = null;
-        private Bitmap missingBitmap = null;
+        public Bitmap mdmsBitmap { get; set; }
+        public Bitmap missingBitmap { get; set; }
 
         // Lin Siong Note: this is for use of tariff block on smart meter inner dashboard
         // Lin Siong Note: Smart Meter Chart Renderer support isStacked Flag, to determine whether wanna have spacing between bar or not
@@ -83,19 +83,6 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
         public SMStackedBarChartRenderer(BarChart chart, ChartAnimator animator, ViewPortHandler viewPortHandler) : base(chart, animator, viewPortHandler)
         {
             barChart = chart;
-
-            BitmapFactory.Options opt = new BitmapFactory.Options();
-            opt.InMutable = true;
-            mdmsBitmap = BitmapFactory.DecodeResource(barChart.Context.Resources, Resource.Drawable.mdms_down, opt);
-            missingBitmap = BitmapFactory.DecodeResource(barChart.Context.Resources, Resource.Drawable.dashboard_missing_copy, opt);
-            if (!isZoomIn)
-            {
-                missingBitmap = Bitmap.CreateScaledBitmap(missingBitmap, (int)DPUtils.ConvertDPToPx(5f), (int)DPUtils.ConvertDPToPx(5f), false);
-            }
-            else
-            {
-                missingBitmap = Bitmap.CreateScaledBitmap(missingBitmap, (int)DPUtils.ConvertDPToPx(12f), (int)DPUtils.ConvertDPToPx(12f), false);
-            }
         }
 
         public void setmRadius(float mRadius)
@@ -762,6 +749,11 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
                     float x = left + ((right - left) / 2) - DPUtils.ConvertDPToPx(2.5f);
                     float y = top - DPUtils.ConvertDPToPx(7f);
+                    if (isZoom)
+                    {
+                        x = left + ((right - left) / 2) - DPUtils.ConvertDPToPx(6.5f);
+                        y = top - DPUtils.ConvertDPToPx(18f);
+                    }
 
                     c.DrawBitmap(missingBitmap, x, y, MRenderPaint);
                 }

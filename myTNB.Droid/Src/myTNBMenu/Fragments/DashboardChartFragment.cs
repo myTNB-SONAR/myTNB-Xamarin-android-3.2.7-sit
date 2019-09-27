@@ -484,6 +484,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private List<double> DayViewRMData = new List<double>();
         private List<double> DayViewkWhData = new List<double>();
+        private List<bool> missingReadingList = new List<bool>();
+
+        private Bitmap mdmsBitmap = null;
+        private Bitmap missingBitmap = null;
 
         ScaleGestureDetector mScaleDetector;
 
@@ -684,6 +688,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             base.OnViewCreated(view, savedInstanceState);
             try
             {
+                BitmapFactory.Options opt = new BitmapFactory.Options();
+                opt.InMutable = true;
+                mdmsBitmap = BitmapFactory.DecodeResource(this.Activity.Resources, Resource.Drawable.mdms_down, opt);
+                missingBitmap = BitmapFactory.DecodeResource(this.Activity.Resources, Resource.Drawable.dashboard_missing_copy, opt);
+
+
                 bottomSheetBehavior = BottomSheetBehavior.From(bottomSheet);
                 bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
                 bottomSheetBehavior.SetBottomSheetCallback(new DashboardBottomSheetCallBack());
@@ -1419,7 +1429,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 // Lin Siong TODO: To Add day view chart view render on smart meter
                 // 
 
-                List<bool> missingReadingList = new List<bool>();
+                missingReadingList = new List<bool>();
                 if (selectedSMHistoryData != null && selectedSMHistoryData.ByDay != null && selectedSMHistoryData.ByDay.Count > 0)
                 {
                     foreach (SMUsageHistoryData.ByDayData DayData in selectedSMHistoryData.ByDay)
@@ -1454,6 +1464,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     missingReadingList = newMissingReadingList;
                 }
 
+                if (!isZoomIn)
+                {
+                    missingBitmap = Bitmap.CreateScaledBitmap(missingBitmap, (int)DPUtils.ConvertDPToPx(5f), (int)DPUtils.ConvertDPToPx(5f), false);
+                }
+                else
+                {
+                    missingBitmap = Bitmap.CreateScaledBitmap(missingBitmap, (int)DPUtils.ConvertDPToPx(13f), (int)DPUtils.ConvertDPToPx(13f), false);
+                }
+
                 if (isToggleTariff)
                 {
                     smRenderer = new SMStackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
@@ -1465,7 +1484,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         currentChartType = ChartType,
                         currentChartDataType = ChartDataType,
                         missingReadingList = missingReadingList,
-                        isMDMSDown = isMDMSDown
+                        isMDMSDown = isMDMSDown,
+                        mdmsBitmap = mdmsBitmap,
+                        missingBitmap = missingBitmap
                     };
                     mChart.Renderer = smRenderer;
                 }
@@ -1480,7 +1501,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         currentChartType = ChartType,
                         currentChartDataType = ChartDataType,
                         missingReadingList = missingReadingList,
-                        isMDMSDown = isMDMSDown
+                        isMDMSDown = isMDMSDown,
+                        mdmsBitmap = mdmsBitmap,
+                        missingBitmap = missingBitmap
                     };
                     mChart.Renderer = smRenderer;
                 }
@@ -1645,7 +1668,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             SetData(DayViewRMData.Count);
 
                             // SETUP MARKER VIEW
-
+                            
                             SetUpMarkerRMView();
 
                             if (isZoomIn)
@@ -2173,12 +2196,43 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             if (isSMAccount)
             {
+                List<double> newDayViewCurrencyList = new List<double>();
+
+                if (ChartType == ChartType.Day && isZoomIn)
+                {
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        newDayViewCurrencyList.Add(0);
+                    }
+
+                    for (int i = 0; i < DayViewRMData.Count; i++)
+                    {
+                        newDayViewCurrencyList.Add(DayViewRMData[i]);
+                    }
+
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        newDayViewCurrencyList.Add(0);
+                    }
+                }
+                else
+                {
+                    newDayViewCurrencyList = DayViewRMData;
+                }
+
+
                 SMSelectedMarkerView markerView = new SMSelectedMarkerView(Activity)
                 {
                     UsageHistoryData = selectedSMHistoryData,
                     ChartType = ChartType,
                     ChartDataType = ChartDataType,
                     isMDMSDown = isMDMSDown,
+                    smDayViewCurrencyList = newDayViewCurrencyList,
+                    smDayCurrencyUnit = "RM",
+                    isZoomIn = isZoomIn,
+                    smMissingList = missingReadingList,
                     AccountType = selectedAccount.AccountCategoryId
                 };
 
@@ -2206,12 +2260,43 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             if (isSMAccount)
             {
+                List<double> newDayViewUsageList = new List<double>();
+
+                if (ChartType == ChartType.Day && isZoomIn)
+                {
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        newDayViewUsageList.Add(0);
+                    }
+
+                    for (int i = 0; i < DayViewkWhData.Count; i++)
+                    {
+                        newDayViewUsageList.Add(DayViewkWhData[i]);
+                    }
+
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        newDayViewUsageList.Add(0);
+                    }
+                }
+                else
+                {
+                    newDayViewUsageList = DayViewkWhData;
+                }
+
+
                 SMSelectedMarkerView markerView = new SMSelectedMarkerView(Activity)
                 {
                     UsageHistoryData = selectedSMHistoryData,
                     ChartType = ChartType,
                     ChartDataType = ChartDataType,
                     isMDMSDown = isMDMSDown,
+                    smDayViewUsageList = newDayViewUsageList,
+                    smDayUsageUnit = "kWh",
+                    isZoomIn = isZoomIn,
+                    smMissingList = missingReadingList,
                     AccountType = selectedAccount.AccountCategoryId
                 };
 
@@ -3225,6 +3310,33 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                     }
 
+                    if (ChartType == ChartType.Day && isZoomIn)
+                    {
+                        List<BarEntry> yValNew = new List<BarEntry>();
+
+                        for (int j = 0; j < 4; j++)
+                        {
+                            float[] valList = new float[1];
+                            valList[0] = 0f;
+                            yValNew.Add(new BarEntry(j, valList));
+                        }
+
+                        for (int j = 0; j < yVals1.Count; j++)
+                        {
+                            yValNew.Add(new BarEntry(j + 4, yVals1[j].GetYVals()));
+                        }
+
+
+                        for (int j = 0; j < 4; j++)
+                        {
+                            float[] valList = new float[1];
+                            valList[0] = 0f;
+                            yValNew.Add(new BarEntry(j + 4 + yVals1.Count, valList));
+                        }
+
+                        yVals1 = yValNew;
+                    }
+
                     BarDataSet set1;
 
                     if (mChart.Data != null && mChart.Data is BarData)
@@ -3345,6 +3457,29 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 listOfColor.Add(Color.Argb(50, 255, 255, 255));
                             }
+
+                            if (isZoomIn)
+                            {
+                                List<int> listOfColorNew = new List<int>();
+
+                                for (int i = 0; i < 4; i++)
+                                {
+                                    listOfColorNew.Add(Color.Argb(50, 255, 255, 255));
+                                }
+
+                                for (int i = 0; i < listOfColor.Count; i++)
+                                {
+                                    listOfColorNew.Add(listOfColor[i]);
+                                }
+
+
+                                for (int i = 0; i < 4; i++)
+                                {
+                                    listOfColorNew.Add(Color.Argb(50, 255, 255, 255));
+                                }
+
+                                listOfColor = listOfColorNew;
+                            }
                         }
 
 
@@ -3374,7 +3509,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             }
                             else
                             {
-                                data.BarWidth = 0.25f;
+                                data.BarWidth = 0.35f;
                             }
                         }
 
@@ -3430,6 +3565,33 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                     }
 
+                    if (ChartType == ChartType.Day && isZoomIn)
+                    {
+                        List<BarEntry> yValNew = new List<BarEntry>();
+
+                        for (int j = 0; j < 4; j++)
+                        {
+                            float[] valLis = new float[1];
+                            valLis[0] = 0f;
+                            yValNew.Add(new BarEntry(j, valLis));
+                        }
+
+                        for (int j = 0; j < yVals1.Count; j++)
+                        {
+                            yValNew.Add(new BarEntry(j + 4, yVals1[j].GetYVals()));
+                        }
+
+
+                        for (int j = 0; j < 4; j++)
+                        {
+                            float[] valLis = new float[1];
+                            valLis[0] = 0f;
+                            yValNew.Add(new BarEntry(j + 4 + yVals1.Count, valLis));
+                        }
+
+                        yVals1 = yValNew;
+                    }
+
                     BarDataSet set1;
 
                     if (mChart.Data != null && mChart.Data is BarData)
@@ -3463,6 +3625,29 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             }
                         }
 
+                        if (ChartType == ChartType.Day && isZoomIn)
+                        {
+                            List<int> listOfColorNew = new List<int>();
+
+                            for (int i = 0; i < 4; i++)
+                            {
+                                listOfColorNew.Add(Color.Argb(50, 255, 255, 255));
+                            }
+
+                            for (int i = 0; i < listOfColor.Count; i++)
+                            {
+                                listOfColorNew.Add(listOfColor[i]);
+                            }
+
+
+                            for (int i = 0; i < 4; i++)
+                            {
+                                listOfColorNew.Add(Color.Argb(50, 255, 255, 255));
+                            }
+
+                            listOfColor = listOfColorNew;
+                        }
+
                         int[] colorSet = new int[listOfColor.Count];
                         for (int z = 0; z < listOfColor.Count; z++)
                         {
@@ -3489,7 +3674,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             }
                             else
                             {
-                                data.BarWidth = 0.25f;
+                                data.BarWidth = 0.35f;
                             }
                         }
 
@@ -5971,7 +6156,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             void IOnChartGestureListenerSupport.OnChartGestureEnd(MotionEvent p0, ChartTouchListener.ChartGesture p1)
             {
-                if (currentChartType == ChartType.Day && isZoomIn)
+                if (currentChartType == ChartType.Day && isZoomIn && p1 == ChartTouchListener.ChartGesture.Drag)
                 {
                     Log.Debug("Current Geature", p1.ToString());
                 }
