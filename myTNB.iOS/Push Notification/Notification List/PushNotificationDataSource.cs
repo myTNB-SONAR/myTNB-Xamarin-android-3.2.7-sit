@@ -48,7 +48,16 @@ namespace myTNB.PushNotification
             if (accountIndex > -1)
             {
                 string accountNickname = DataManager.DataManager.SharedInstance.AccountRecordsList.d[accountIndex].accountNickName ?? string.Empty;
+                if (string.IsNullOrEmpty(accountNickname) || string.IsNullOrWhiteSpace(accountNickname))
+                {
+                    accountNickname = string.Format(_controller.GetCommonI18NValue(PushNotificationConstants.I18N_CustomerAccountNumber), notification.AccountNum);
+                }
                 message = Regex.Replace(message, PushNotificationConstants.REGEX_AccountNickname, accountNickname);
+            }
+            else
+            {
+                message = Regex.Replace(message, PushNotificationConstants.REGEX_AccountNickname
+                    , string.Format(_controller.GetCommonI18NValue(PushNotificationConstants.I18N_CustomerAccountNumber), notification.AccountNum));
             }
             cell.lblDetails.Text = message;
             cell.lblDate.Text = GetDate(notification.CreatedDate);
