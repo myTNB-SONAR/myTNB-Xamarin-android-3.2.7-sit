@@ -4,7 +4,6 @@ using CoreGraphics;
 using UIKit;
 using myTNB.Customs.GenericStatusPage;
 
-
 namespace myTNB
 {
     public partial class GenericStatusPageViewController : CustomUIViewController
@@ -273,7 +272,7 @@ namespace myTNB
             }
             else if (StatusDisplayType == StatusType.SSMRDiscontinue)
             {
-                GetCTA(ref btnSecondary, GetI18NValue(StatusPageConstants.I18N_SSMRBacktoUsage), false, _actions.BackToHome);
+                GetCTA(ref btnSecondary, GetCommonI18NValue(StatusPageConstants.I18N_BacktoHome), false, _actions.BackToHome);
                 if (IsSuccess)
                 {
                     GetCTA(ref btnPrimary, GetI18NValue(StatusPageConstants.I18N_SSMRTrackApplication), true, _actions.TrackApplication, true);
@@ -286,7 +285,6 @@ namespace myTNB
             }
             else if (StatusDisplayType == StatusType.SSMRReading)
             {
-                GetCTA(ref btnSecondary, GetI18NValue(StatusPageConstants.I18N_SSMRBacktoUsage), false, _actions.BackToHome);
                 if (IsSuccess)
                 {
                     GetCTA(ref btnPrimary, GetI18NValue(StatusPageConstants.I18N_SSMRViewReadHistory), true, _actions.ViewReadingHistory, true);

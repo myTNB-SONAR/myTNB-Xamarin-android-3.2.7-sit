@@ -82,6 +82,10 @@ namespace myTNB
         {
             get { return ScaleUtility.BaseMarginHeight16; }
         }
+        public nfloat GetWidthByScreenSize(nfloat width)
+        {
+           return ScaleUtility.GetWidthByScreenSize(width);
+        }
         #endregion
     }
 }
