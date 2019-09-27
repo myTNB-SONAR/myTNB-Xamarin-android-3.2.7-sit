@@ -23,9 +23,9 @@ namespace myTNB.PushNotification
         internal bool _isDeletionMode;
         private bool _isAllSelected;
 
-        private AccountSelectionComponent _notificationSelectionComponent;
+        private AccountSelectionComponentV2 _notificationSelectionComponent;
         private NotificationDetailedInfoResponseModel _detailedInfo = new NotificationDetailedInfoResponseModel();
-        private TitleBarComponent _titleBarComponent;
+        private TitleBarComponentV2 _titleBarComponent;
         private List<UserNotificationDataModel> _notifications;
         private List<UpdateNotificationModel> _notificationsForUpdate;
 
@@ -33,7 +33,7 @@ namespace myTNB.PushNotification
         private UILabel _lblTitle;
 
         private RefreshViewComponent _refreshViewComponent;
-        private UIView _headerView;
+        private UIView _headerView, _titleBarView;
 
         public override void ViewDidLoad()
         {
@@ -261,11 +261,11 @@ namespace myTNB.PushNotification
         private void SetNavigationBar()
         {
             NavigationController?.SetNavigationBarHidden(true, false);
-            GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 89, true);
+            GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, (float)GetScaledHeight(88), true);
             _headerView = gradientViewComponent.GetUI();
-            _titleBarComponent = new TitleBarComponent(_headerView);
+            _titleBarComponent = new TitleBarComponentV2(_headerView);
 
-            UIView titleBarView = _titleBarComponent.GetUI();
+            _titleBarView = _titleBarComponent.GetUI();
             _titleBarComponent.SetTitle("PushNotification_Title".Translate());
             _titleBarComponent.SetSecondaryImage(PushNotificationConstants.IMG_MarkAsRead);
             _titleBarComponent.SetSecondaryAction(new UITapGestureRecognizer((obj) =>
@@ -297,7 +297,7 @@ namespace myTNB.PushNotification
                     OnBack();
                 }
             }));
-            _headerView.AddSubview(titleBarView);
+            _headerView.AddSubview(_titleBarView);
             SetSelectorEvent();
         }
 
@@ -349,7 +349,7 @@ namespace myTNB.PushNotification
 
         private void SetSelectorEvent()
         {
-            _notificationSelectionComponent = new AccountSelectionComponent(_headerView);
+            _notificationSelectionComponent = new AccountSelectionComponentV2(_headerView, _titleBarView.Frame.GetMaxY() + GetScaledHeight(4));
             UIView accountSelectionView = _notificationSelectionComponent.GetUI();
 
             if (DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex
@@ -415,7 +415,8 @@ namespace myTNB.PushNotification
 
         internal void SetSubViews()
         {
-            pushNotificationTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 113 : 89, View.Frame.Width, View.Frame.Height - 89);
+            pushNotificationTableView.Frame = new CGRect(0, _headerView.Frame.GetMaxY(), View.Frame.Width
+                , View.Frame.Height - _headerView.Frame.GetMaxY());
             pushNotificationTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
         }
 

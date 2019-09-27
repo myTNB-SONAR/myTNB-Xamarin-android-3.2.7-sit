@@ -393,9 +393,6 @@
     <ImageAsset Include="Assets.xcassets\Card-CVV.imageset\cardCvv.png" />
     <ImageAsset Include="Assets.xcassets\Card-CVV.imageset\cardCvv%402x.png" />
     <ImageAsset Include="Assets.xcassets\Card-CVV.imageset\cardCvv%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Dropdown.imageset\ic_header_dropdown.png" />
-    <ImageAsset Include="Assets.xcassets\Dropdown.imageset\ic_header_dropdown%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Dropdown.imageset\ic_header_dropdown%403x.png" />
     <ImageAsset Include="Assets.xcassets\Get-Access.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Get-Access.imageset\ic_empty_dashboard.png" />
     <ImageAsset Include="Assets.xcassets\Get-Access.imageset\ic_empty_dashboard%402x.png" />
@@ -1214,6 +1211,8 @@
     <ImageAsset Include="Assets.xcassets\MDMS-Down.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\MDMS-Down.imageset\MDMS-Down%402x.png" />
     <ImageAsset Include="Assets.xcassets\MDMS-Down.imageset\MDMS-Down%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Dropdown.imageset\dropdownWhite12Px%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Dropdown.imageset\dropdownWhite12Px%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -2473,6 +2472,8 @@
     <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterConstants.cs" />
     <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterDayZInView.cs" />
     <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterMDMSDownView.cs" />
+    <Compile Include="Components\TitleBarComponentV2.cs" />
+    <Compile Include="Components\AccountSelectionComponentV2.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
