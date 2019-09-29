@@ -511,7 +511,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 intent.PutExtra("SUBMIT_RESULT", JsonConvert.SerializeObject(response));
             }
-            StartActivityForResult(intent, SSMR_SUBMIT_METER_ACTIVITY_CODE);
+            StartActivity(intent);
+            Finish();
         }
 
         public void OnRequestFailed(SMRSubmitResponseData response)
