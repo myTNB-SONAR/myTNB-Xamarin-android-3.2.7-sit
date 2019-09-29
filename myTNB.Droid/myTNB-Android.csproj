@@ -4360,7 +4360,7 @@
   </ItemGroup>
   <ItemGroup>
     <GoogleServicesJson Include="google-services-develop.json" Condition=" '$(Configuration)' == 'Develop' " />
-    <GoogleServicesJson Include="google-services-debug.json" Condition=" '$(Configuration)' == 'SIT' " />
+    <GoogleServicesJson Include="google-services-sit.json" Condition=" '$(Configuration)' == 'SIT' " />
     <GoogleServicesJson Include="google-services-debug.json" Condition=" '$(Configuration)' == 'Debug' " />
     <GoogleServicesJson Include="google-services-stub.json" Condition=" '$(Configuration)' == 'Stub' " />
     <GoogleServicesJson Include="google-services.json" Condition=" '$(Configuration)' == 'Release' " />
