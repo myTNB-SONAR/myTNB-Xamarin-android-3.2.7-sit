@@ -270,6 +270,15 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 else
                 {
                     List<MPAccount> list = adapter.GetSelectedAccounts();
+                    if (position >= 0)
+                    {
+                        MPAccount account = adapter.GetSelectedAccounts()[position];
+                        AccountChargeModel model = mPresenter.GetAccountChargeModel(account);
+                        if (account.tooltipPopUp)
+                        {
+                            ShowHasMinimumAmoutToPayTooltip(model);
+                        }
+                    }
                     Log.Debug("Selected Accounts", " List " + list);
                     UpdateTotal(list);
                 }
