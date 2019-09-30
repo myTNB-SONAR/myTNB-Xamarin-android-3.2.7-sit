@@ -8,8 +8,8 @@
     android:minHeight="25px">
     <ImageView
         android:id="@+id/imgMissingCopy"
-        android:layout_height="12dp"
-        android:layout_width="12dp"
+        android:layout_height="13dp"
+        android:layout_width="13dp"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/dashboard_missing_copy"
         android:visibility="gone"
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:id="@+id/txtMarker"
-        android:textSize="10dp"
+        android:textSize="11dp"
         android:lineSpacingExtra="2dp"
         android:textColor="@color/white" />
     <TextView
@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:id="@+id/txtkWhMarker"
-        android:textSize="10dp"
+        android:textSize="11dp"
         android:lineSpacingExtra="2dp"
         android:textColor="@color/white" />
 </LinearLayout>

@@ -489,6 +489,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private Bitmap mdmsBitmap = null;
         private Bitmap missingBitmap = null;
 
+        private static bool isDayViewFirstMove = false;
+
+        private static List<BarEntry> dayViewTariffList = new List<BarEntry>();
+
+        private static int minCurrentDayViewIndex = 4;
+        private static int maxCurrentDayViewIndex = 0;
+
+        private static float currentLowestVisibleX = -0.5f;
+        private static float trackingLowestVisibleX = -0.5f;
+        private static float minLowestVisibleX = -0.5f;
+        private static float maxLowestVisibleX = 0f;
+
+        private static int currentDayViewIndex = 0;
+
+        private static bool isShowLog = false;
+
+        private static float lowestVisibleX = -1f;
+
         ScaleGestureDetector mScaleDetector;
 
         public override int ResourceId()
@@ -705,6 +723,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
 
                 requireScroll = false;
+
+                isDayViewFirstMove = false;
+
+                currentDayViewIndex = 0;
+                dayViewTariffList = new List<BarEntry>();
 
                 TextViewUtils.SetMuseoSans300Typeface(txtAddress, txtTotalPayable, txtDueDate);
                 TextViewUtils.SetMuseoSans300Typeface(txtNewRefreshMessage, ssmrAccountStatusText);
@@ -1283,6 +1306,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [OnClick(Resource.Id.btnToggleMonth)]
         internal void OnToggleMonth(object sender, EventArgs e)
         {
+            isDayViewFirstMove = false;
+            currentDayViewIndex = 0;
             smGraphZoomToggleLayout.Visibility = ViewStates.Gone;
             this.userActionsListener.OnByMonth();
         }
@@ -1298,6 +1323,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 isZoomIn = false;
             }
+
+            isDayViewFirstMove = false;
+            currentDayViewIndex = 0;
 
             this.userActionsListener.OnByZoom();
         }
@@ -1452,7 +1480,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                     for (int j = 0; j < missingReadingList.Count; j++)
                     {
-                        newMissingReadingList.Add(missingReadingList[j]);
+                        // newMissingReadingList.Add(missingReadingList[j]);
+                        newMissingReadingList.Add(true);
                     }
 
 
@@ -1523,7 +1552,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else
                 {
-                    mChart.SetRoundedBarRadius(100f);
+                    renderer = new StackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
+                    {
+                        selectedHistoryData = selectedHistoryData,
+                        currentContext = Activity
+                    };
+                    mChart.Renderer = renderer;
                 }
             }
 
@@ -1559,8 +1593,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     mChart.SetDrawBarShadow(false);
                     mChart.SetDrawValueAboveBar(true);
                     mChart.Description.Enabled = false;
-                    mChart.SetMaxVisibleValueCount(40);
-                    mChart.SetVisibleXRangeMaximum(40);
+                    mChart.SetMaxVisibleValueCount(42);
+                    mChart.SetVisibleXRangeMaximum(42);
                     mChart.SetPinchZoom(false);
                     mChart.SetDrawGridBackground(false);
                     mChart.SetScaleEnabled(false);
@@ -1680,7 +1714,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 mChart.SetVisibleXRangeMinimum(DayViewRMData.Count);
                                 mChart.SetVisibleXRangeMaximum(DayViewRMData.Count);
-                                Log.Debug("Chart Visible XRange", mChart.VisibleXRange.ToString());
                             }
                         }
                         else
@@ -1796,12 +1829,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             mChart.SetOnChartValueSelectedListener(this);
             mScaleDetector = new ScaleGestureDetector(this.Activity, new BarGraphPinchListener(ChartType, this.userActionsListener));
             mChart.SetOnTouchListener(this);
-            /*mChart.OnTouchListener = new DayViewBarChartTouchListener(mChart, mChart.Matrix, 3)
-            {
-                currentChartType = ChartType
-            };*/
 
-            mChart.OnChartGestureListener = new BarChartGeatureListner(ChartType, isZoomIn);
+            mChart.OnTouchListener = new OnBarChartTouchLister(mChart, mChart.Matrix, 3)
+            {
+                currentChartType = ChartType,
+                currentChartDataType = ChartDataType,
+                currentDayViewkWhList = DayViewkWhData,
+                currentDayViewRMList = DayViewRMData,
+                currentIsZoomIn = isZoomIn
+            };
+
+            mChart.NestedScrollingEnabled = true;
+
             mChart.Invalidate();
         }
         #region SETUP AXIS RM
@@ -2137,8 +2176,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #region SETUP Y AXIS RM
         internal void SetUpYAxis()
         {
-            IAxisValueFormatter custom = new MyAxisValueFormatter();
-
             float maxVal = GetMaxRMValues();
             float lowestPossibleSpace = (5f / 100f) * -maxVal;
 
@@ -2167,7 +2204,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #region SETUP Y AXIS KWH
         internal void SetUpYAxisKwh()
         {
-            IAxisValueFormatter custom = new MyAxisValueFormatter();
             float maxVal = GetMaxKWhValues();
             float lowestPossibleSpace = (5f / 100f) * -maxVal;
 
@@ -2455,13 +2491,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     List<BarEntry> yVals1 = new List<BarEntry>();
                     for (int i = 0; i < barLength; i++)
                     {
+                        float[] valList = new float[1];
                         float val = (float)selectedHistoryData.ByMonth.Months[i].AmountTotal;
                         if (float.IsPositiveInfinity(val))
                         {
                             val = float.PositiveInfinity;
                         }
-
-                        yVals1.Add(new BarEntry(i, System.Math.Abs(val)));
+                        valList[0] = System.Math.Abs(val);
+                        yVals1.Add(new BarEntry(i, valList));
                     }
 
                     BarDataSet set1;
@@ -2483,12 +2520,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         set1 = new BarDataSet(yVals1, "");
                         set1.SetDrawIcons(false);
 
+                        List<int> listOfColor = new List<int>();
 
-                        set1.HighLightColor = Color.Argb(255, 255, 255, 255);
-                        set1.HighLightAlpha = 255;
+                        for (int i = 0; i < barLength; i++)
+                        {
+                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                        }
 
-                        int[] color = { Color.Argb(100, 255, 255, 255) };
-                        set1.SetColors(color);
+                        int[] colorSet = new int[listOfColor.Count];
+                        for (int z = 0; z < listOfColor.Count; z++)
+                        {
+                            colorSet[z] = listOfColor[z];
+                        }
+
+                        set1.SetColors(colorSet);
+
                         List<IBarDataSet> dataSets = new List<IBarDataSet>();
                         dataSets.Add(set1);
 
@@ -2496,6 +2542,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         BarData data = new BarData(dataSets);
 
                         data.BarWidth = 0.25f;
+
+                        set1.HighLightAlpha = 0;
 
                         data.HighlightEnabled = true;
                         data.SetValueTextSize(10f);
@@ -2644,6 +2692,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
 
                         yVals1 = yValNew;
+
+                        dayViewTariffList = yVals1;
                     }
 
                     BarDataSet set1;
@@ -2898,6 +2948,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
 
                         yVals1 = yValNew;
+
+                        dayViewTariffList = yVals1;
                     }
 
                     BarDataSet set1;
@@ -3335,6 +3387,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
 
                         yVals1 = yValNew;
+
+                        dayViewTariffList = yVals1;
                     }
 
                     BarDataSet set1;
@@ -3590,6 +3644,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
 
                         yVals1 = yValNew;
+
+                        dayViewTariffList = yVals1;
                     }
 
                     BarDataSet set1;
@@ -4112,7 +4168,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             isFound = true;
                                             isAlreadyExists = true;
-                                            newTariffList.Add(selectedHistoryData.TariffBlocksLegend[i]);
+                                            newTariffList.Add(selectedSMHistoryData.TariffBlocksLegend[i]);
                                         }
                                         break;
                                     }
@@ -4133,6 +4189,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                     if (isFound)
                     {
+                        tariffBlockLegendRecyclerView.Visibility = ViewStates.Visible;
                         tariffBlockLegendAdapter = new TariffBlockLegendAdapter(newTariffList, this.Activity, false);
                         tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
 
@@ -5355,8 +5412,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (ChartType == ChartType.Month)
                 {
                     OnGenerateTariffLegendValue(-1, isToggleTariff);
+                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Graph Hightlight Deselected");
                 }
-                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Graph Hightlight Deselected");
+                else if (ChartType == ChartType.Day && isZoomIn)
+                {
+                    BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
+                    Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
+                    mChart.HighlightValue(centerBar, false);
+                }
             }
             catch (System.Exception err)
             {
@@ -5409,7 +5472,69 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else if (ChartType == ChartType.Day)
                 {
-                    mChart.HighlightValue(null, false);
+                    if (isZoomIn)
+                    {
+                        int count = dayViewTariffList.Count - 1 - (int)e.GetX();
+
+                        if (((int)e.GetX() >= 0 && (int)e.GetX() < 4) || (count >= 0 && count < 4))
+                        {
+                            BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
+                            Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
+                            mChart.HighlightValue(centerBar, false);
+                        }
+                        else if (h != null)
+                        {
+                            int diff = currentDayViewIndex - (int)e.GetX();
+
+                            currentDayViewIndex = (int)e.GetX();
+                            BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
+                            Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
+                            mChart.HighlightValue(centerBar, false);
+
+                            if (diff > 0 || diff < 0)
+                            {
+                                isShowLog = true;
+                                currentLowestVisibleX = currentLowestVisibleX - diff;
+                                trackingLowestVisibleX = currentLowestVisibleX;
+                                lowestVisibleX = currentLowestVisibleX;
+
+                                float[] pts = { lowestVisibleX, 0f };
+                                mChart.GetTransformer(YAxis.AxisDependency.Left).PointValuesToPixel(pts);
+                                mChart.ViewPortHandler.Translate(pts, mChart.Matrix);
+
+                                mChart.MoveViewToX(currentLowestVisibleX);
+
+                                for (int i = 0; i < mChart.Jobs.Count; i++)
+                                {
+                                    Runnable job = mChart.Jobs[i] as Runnable;
+                                    job.Run();
+                                }
+                                mChart.Jobs.Clear();
+
+                                Vibrator vibrator = (Vibrator)this.Activity.GetSystemService(Context.VibratorService);
+                                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
+                                {
+                                    vibrator.Vibrate(VibrationEffect.CreateOneShot(200, 12));
+
+                                }
+                                else
+                                {
+                                    vibrator.Vibrate(200);
+
+                                }
+                            }
+                        }
+                        else
+                        {
+                            BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
+                            Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
+                            mChart.HighlightValue(centerBar, false);
+                        }
+                    }
+                    else
+                    {
+                        mChart.HighlightValue(null, false);
+                    }
                 }
             }
             catch (System.Exception err)
@@ -6110,7 +6235,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             mScaleDetector.OnTouchEvent(e);
             return false;
         }
-
+        
         public void ByZoomDayView()
         {
             mChart.Visibility = ViewStates.Visible;
@@ -6133,58 +6258,395 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             SetUp();
         }
 
-        private class BarChartGeatureListner : Java.Lang.Object, IOnChartGestureListenerSupport
+        private class OnBarChartTouchLister : BarLineChartTouchListener
         {
-            private ChartType currentChartType;
-            private bool currentIsZoom;
+            public ChartType currentChartType { get; set; }
+            public ChartDataType currentChartDataType { get; set; }
+            public bool currentIsZoomIn { get; set; }
+            private BarLineChartBase currentChart;
+            public List<double> currentDayViewRMList { get; set; }
+            public List<double> currentDayViewkWhList { get; set; }
+            private Context currentContext;
 
-            public BarChartGeatureListner(ChartType chartType, bool isZoom)
+            public OnBarChartTouchLister(BarLineChartBase mChart, Matrix mMatrix, float mDistance) : base(mChart, mMatrix, mDistance)
             {
-                currentChartType = chartType;
-                currentIsZoom = isZoom;
+                currentChart = mChart;
+                isShowLog = false;
+                currentContext = mChart.Context;
             }
 
-            void IOnChartGestureListenerSupport.OnChartDoubleTapped(MotionEvent p0)
+            protected OnBarChartTouchLister(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
             {
 
             }
 
-            void IOnChartGestureListenerSupport.OnChartFling(MotionEvent p0, MotionEvent p1, float p2, float p3)
+            public override void StopDeceleration()
             {
-
-            }
-
-            void IOnChartGestureListenerSupport.OnChartGestureEnd(MotionEvent p0, ChartTouchListener.ChartGesture p1)
-            {
-                if (currentChartType == ChartType.Day && isZoomIn && p1 == ChartTouchListener.ChartGesture.Drag)
+                base.StopDeceleration();
+                if (currentChartType == ChartType.Day && currentIsZoomIn)
                 {
-                    Log.Debug("Current Geature", p1.ToString());
+                    if (!isShowLog && isDayViewFirstMove)
+                    {
+                        isShowLog = true;
+
+                        int roundedLowestVisibleX = (int)lowestVisibleX;
+                        float resultLowestVisibleX = roundedLowestVisibleX;
+
+                        int checkPoint = (int)(lowestVisibleX * 100);
+                        checkPoint = checkPoint % 100;
+
+                        if (roundedLowestVisibleX == 0 && checkPoint <= -50)
+                        {
+                            resultLowestVisibleX = -0.5f;
+                        }
+                        else if (roundedLowestVisibleX == 0 && (checkPoint > -50 && checkPoint <= 0))
+                        {
+                            resultLowestVisibleX = roundedLowestVisibleX + 0.5f;
+                        }
+                        else if (roundedLowestVisibleX == 0 && (checkPoint > 0 && checkPoint <= 25))
+                        {
+                            resultLowestVisibleX = -0.5f;
+                        }
+                        else if (roundedLowestVisibleX == 0 && (checkPoint > 25 && checkPoint <= 50))
+                        {
+                            resultLowestVisibleX = 0.5f;
+                        }
+                        else if (roundedLowestVisibleX == 0 && (checkPoint > 50 && checkPoint <= 99))
+                        {
+                            resultLowestVisibleX = 1.5f;
+                        }
+                        else if (checkPoint >= 0 && checkPoint < 25)
+                        {
+                            resultLowestVisibleX = roundedLowestVisibleX - 0.5f;
+                        }
+                        else if (checkPoint >= 25 && checkPoint <= 50)
+                        {
+                            resultLowestVisibleX = roundedLowestVisibleX + 0.5f;
+                        }
+                        else
+                        {
+                            resultLowestVisibleX = roundedLowestVisibleX + 1.5f;
+                        }
+
+                        currentDayViewIndex = (int)(resultLowestVisibleX + 4.5f);
+
+                        if (roundedLowestVisibleX == 0 && (checkPoint <= -50 || (checkPoint > 0 && checkPoint <= 25)))
+                        {
+                            currentDayViewIndex = minCurrentDayViewIndex;
+                        }
+                        else if (currentDayViewIndex > maxCurrentDayViewIndex)
+                        {
+                            currentDayViewIndex = maxCurrentDayViewIndex;
+                        }
+
+                        if (resultLowestVisibleX <= minLowestVisibleX)
+                        {
+                            resultLowestVisibleX = minLowestVisibleX;
+                            currentDayViewIndex = minCurrentDayViewIndex;
+                        }
+                        else if (resultLowestVisibleX >= maxLowestVisibleX)
+                        {
+                            resultLowestVisibleX = maxLowestVisibleX;
+                            currentDayViewIndex = maxCurrentDayViewIndex;
+                        }
+
+                        currentChart.MoveViewToX(resultLowestVisibleX);
+                        lowestVisibleX = resultLowestVisibleX;
+                        currentLowestVisibleX = lowestVisibleX;
+                        trackingLowestVisibleX = currentLowestVisibleX;
+
+                        float[] pts = { lowestVisibleX, 0f };
+                        currentChart.GetTransformer(YAxis.AxisDependency.Left).PointValuesToPixel(pts);
+                        currentChart.ViewPortHandler.Translate(pts, currentChart.Matrix);
+
+                        for (int i = 0; i < currentChart.Jobs.Count; i++)
+                        {
+                            Runnable job = currentChart.Jobs[i] as Runnable;
+                            job.Run();
+                        }
+                        currentChart.Jobs.Clear();
+
+                        BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
+                        Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
+                        currentChart.HighlightValue(centerBar, false);
+                    }
                 }
             }
 
-            void IOnChartGestureListenerSupport.OnChartGestureStart(MotionEvent p0, ChartTouchListener.ChartGesture p1)
+            public override void EndAction(MotionEvent p0)
             {
+                base.EndAction(p0);
+                if (currentChartType == ChartType.Day && currentIsZoomIn)
+                {
+                    if (p0.Action == MotionEventActions.Up)
+                    {
+                        if (!isShowLog && isDayViewFirstMove)
+                        {
+                            isShowLog = true;
 
+                            int roundedLowestVisibleX = (int)lowestVisibleX;
+                            float resultLowestVisibleX = roundedLowestVisibleX;
+
+                            int checkPoint = (int)(lowestVisibleX * 100);
+                            checkPoint = checkPoint % 100;
+
+                            if (roundedLowestVisibleX == 0 && checkPoint <= -50)
+                            {
+                                resultLowestVisibleX = -0.5f;
+                            }
+                            else if (roundedLowestVisibleX == 0 && (checkPoint > -50 && checkPoint <= 0))
+                            {
+                                resultLowestVisibleX = roundedLowestVisibleX + 0.5f;
+                            }
+                            else if (roundedLowestVisibleX == 0 && (checkPoint > 0 && checkPoint <= 25))
+                            {
+                                resultLowestVisibleX = -0.5f;
+                            }
+                            else if (roundedLowestVisibleX == 0 && (checkPoint > 25 && checkPoint <= 50))
+                            {
+                                resultLowestVisibleX = 0.5f;
+                            }
+                            else if (roundedLowestVisibleX == 0 && (checkPoint > 50 && checkPoint <= 99))
+                            {
+                                resultLowestVisibleX = 1.5f;
+                            }
+                            else if (checkPoint >= 0 && checkPoint < 25)
+                            {
+                                resultLowestVisibleX = roundedLowestVisibleX - 0.5f;
+                            }
+                            else if (checkPoint >= 25 && checkPoint <= 50)
+                            {
+                                resultLowestVisibleX = roundedLowestVisibleX + 0.5f;
+                            }
+                            else
+                            {
+                                resultLowestVisibleX = roundedLowestVisibleX + 1.5f;
+                            }
+
+                            currentDayViewIndex = (int)(resultLowestVisibleX + 4.5f);
+
+                            if (roundedLowestVisibleX == 0 && (checkPoint <= -50 || (checkPoint > 0 && checkPoint <= 25)))
+                            {
+                                currentDayViewIndex = minCurrentDayViewIndex;
+                            }
+                            else if (currentDayViewIndex > maxCurrentDayViewIndex)
+                            {
+                                currentDayViewIndex = maxCurrentDayViewIndex;
+                            }
+
+                            if (resultLowestVisibleX <= minLowestVisibleX)
+                            {
+                                resultLowestVisibleX = minLowestVisibleX;
+                                currentDayViewIndex = minCurrentDayViewIndex;
+                            }
+                            else if (resultLowestVisibleX >= maxLowestVisibleX)
+                            {
+                                resultLowestVisibleX = maxLowestVisibleX;
+                                currentDayViewIndex = maxCurrentDayViewIndex;
+                            }
+
+                            currentChart.MoveViewToX(resultLowestVisibleX);
+                            lowestVisibleX = resultLowestVisibleX;
+                            currentLowestVisibleX = lowestVisibleX;
+                            trackingLowestVisibleX = currentLowestVisibleX;
+
+                            float[] pts = { lowestVisibleX, 0f };
+                            currentChart.GetTransformer(YAxis.AxisDependency.Left).PointValuesToPixel(pts);
+                            currentChart.ViewPortHandler.Translate(pts, currentChart.Matrix);
+
+                            for (int i = 0; i < currentChart.Jobs.Count; i++)
+                            {
+                                Runnable job = currentChart.Jobs[i] as Runnable;
+                                job.Run();
+                            }
+                            currentChart.Jobs.Clear();
+
+                            BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
+                            Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
+                            currentChart.HighlightValue(centerBar, false);
+                        }
+                    }
+                }
             }
 
-            void IOnChartGestureListenerSupport.OnChartLongPressed(MotionEvent p0)
+            public override void ComputeScroll()
             {
+                base.ComputeScroll();
 
-            }
+                if (currentChartType == ChartType.Day && currentIsZoomIn)
+                {
+                    if (!isDayViewFirstMove)
+                    {
+                        if (currentChartDataType == ChartDataType.RM)
+                        {
+                            currentChart.MoveViewToX(currentDayViewRMList.Count - 1 - 0.5f);
+                            lowestVisibleX = currentDayViewRMList.Count - 1 - 0.5f;
+                            currentDayViewIndex = currentDayViewRMList.Count - 1 + 4;
+                        }
+                        else
+                        {
+                            currentChart.MoveViewToX(currentDayViewkWhList.Count - 1 - 0.5f);
+                            lowestVisibleX = currentDayViewkWhList.Count - 1 - 0.5f;
+                            currentDayViewIndex = currentDayViewkWhList.Count - 1 + 4;
+                        }
+                        currentLowestVisibleX = lowestVisibleX;
+                        trackingLowestVisibleX = currentLowestVisibleX;
+                        maxLowestVisibleX = lowestVisibleX;
+                        float[] pts = { lowestVisibleX, 0f };
+                        currentChart.GetTransformer(YAxis.AxisDependency.Left).PointValuesToPixel(pts);
+                        currentChart.ViewPortHandler.Translate(pts, currentChart.Matrix);
+                        maxCurrentDayViewIndex = currentDayViewIndex;
 
-            void IOnChartGestureListenerSupport.OnChartScale(MotionEvent p0, float p1, float p2)
-            {
+                        for (int i = 0; i < currentChart.Jobs.Count; i++)
+                        {
+                            Runnable job = currentChart.Jobs[i] as Runnable;
+                            job.Run();
+                        }
+                        currentChart.Jobs.Clear();
 
-            }
+                        BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
+                        Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
+                        currentChart.HighlightValue(centerBar, false);
+                        isDayViewFirstMove = true;
+                        isShowLog = true;
+                    }
+                    else
+                    {
+                        if (!isShowLog && (System.Math.Abs(trackingLowestVisibleX - currentChart.LowestVisibleX) >= 1))
+                        {
+                            trackingLowestVisibleX = currentChart.LowestVisibleX;
 
-            void IOnChartGestureListenerSupport.OnChartSingleTapped(MotionEvent p0)
-            {
 
-            }
+                            int roundedLowestVisibleX = (int)trackingLowestVisibleX;
 
-            void IOnChartGestureListenerSupport.OnChartTranslate(MotionEvent p0, float p1, float p2)
-            {
+                            int checkPoint = (int)(trackingLowestVisibleX * 100);
+                            checkPoint = checkPoint % 100;
 
+                            int tempDayViewIndex = (int) trackingLowestVisibleX + 5;
+
+                            if (roundedLowestVisibleX == 0 && (checkPoint <= -50 || (checkPoint > 0 && checkPoint <= 25)))
+                            {
+                                tempDayViewIndex = minCurrentDayViewIndex;
+                            }
+                            else if (currentDayViewIndex > maxCurrentDayViewIndex)
+                            {
+                                tempDayViewIndex = maxCurrentDayViewIndex;
+                            }
+
+                            BarEntry dayViewTariff = dayViewTariffList[tempDayViewIndex];
+                            Highlight centerBar = new Highlight(tempDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
+                            currentChart.HighlightValue(centerBar, false);
+
+
+                            Vibrator vibrator = (Vibrator)currentContext.GetSystemService(Context.VibratorService);
+                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
+                            {
+                                vibrator.Vibrate(VibrationEffect.CreateOneShot(200, 12));
+
+                            }
+                            else
+                            {
+                                vibrator.Vibrate(200);
+
+                            }
+                        }
+
+                        if ((System.Math.Abs(lowestVisibleX - currentChart.LowestVisibleX) > 0.0000001))
+                        {
+                            isShowLog = false;
+
+                            lowestVisibleX = currentChart.LowestVisibleX;
+                        }
+                        else
+                        {
+                            if (!isShowLog && isDayViewFirstMove)
+                            {
+                                isShowLog = true;
+
+                                int roundedLowestVisibleX = (int)lowestVisibleX;
+                                float resultLowestVisibleX = roundedLowestVisibleX;
+
+                                int checkPoint = (int)(lowestVisibleX * 100);
+                                checkPoint = checkPoint % 100;
+
+                                if (roundedLowestVisibleX == 0 && checkPoint <= -50)
+                                {
+                                    resultLowestVisibleX = -0.5f;
+                                }
+                                else if (roundedLowestVisibleX == 0 && (checkPoint > -50 && checkPoint <= 0))
+                                {
+                                    resultLowestVisibleX = roundedLowestVisibleX + 0.5f;
+                                }
+                                else if (roundedLowestVisibleX == 0 && (checkPoint > 0 && checkPoint <= 25))
+                                {
+                                    resultLowestVisibleX = -0.5f;
+                                }
+                                else if (roundedLowestVisibleX == 0 && (checkPoint > 25 && checkPoint <= 50))
+                                {
+                                    resultLowestVisibleX = 0.5f;
+                                }
+                                else if (roundedLowestVisibleX == 0 && (checkPoint > 50 && checkPoint <= 99))
+                                {
+                                    resultLowestVisibleX = 1.5f;
+                                }
+                                else if (checkPoint >= 0 && checkPoint < 25)
+                                {
+                                    resultLowestVisibleX = roundedLowestVisibleX - 0.5f;
+                                }
+                                else if (checkPoint >= 25 && checkPoint <= 50)
+                                {
+                                    resultLowestVisibleX = roundedLowestVisibleX + 0.5f;
+                                }
+                                else
+                                {
+                                    resultLowestVisibleX = roundedLowestVisibleX + 1.5f;
+                                }
+
+                                currentDayViewIndex = (int) (resultLowestVisibleX + 4.5f);
+
+                                if (roundedLowestVisibleX == 0 && (checkPoint <= -50 || (checkPoint > 0 && checkPoint <= 25)))
+                                {
+                                    currentDayViewIndex = minCurrentDayViewIndex;
+                                }
+                                else if (currentDayViewIndex > maxCurrentDayViewIndex)
+                                {
+                                    currentDayViewIndex = maxCurrentDayViewIndex;
+                                }
+
+                                if (resultLowestVisibleX <= minLowestVisibleX)
+                                {
+                                    resultLowestVisibleX = minLowestVisibleX;
+                                    currentDayViewIndex = minCurrentDayViewIndex;
+                                }
+                                else if (resultLowestVisibleX >= maxLowestVisibleX)
+                                {
+                                    resultLowestVisibleX = maxLowestVisibleX;
+                                    currentDayViewIndex = maxCurrentDayViewIndex;
+                                }
+
+                                currentChart.MoveViewToX(resultLowestVisibleX);
+                                lowestVisibleX = resultLowestVisibleX;
+                                currentLowestVisibleX = lowestVisibleX;
+                                trackingLowestVisibleX = currentLowestVisibleX;
+
+                                float[] pts = { lowestVisibleX, 0f };
+                                currentChart.GetTransformer(YAxis.AxisDependency.Left).PointValuesToPixel(pts);
+                                currentChart.ViewPortHandler.Translate(pts, currentChart.Matrix);
+
+                                for (int i = 0; i < currentChart.Jobs.Count; i++)
+                                {
+                                    Runnable job = currentChart.Jobs[i] as Runnable;
+                                    job.Run();
+                                }
+                                currentChart.Jobs.Clear();
+
+                                BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
+                                Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
+                                currentChart.HighlightValue(centerBar, false);
+                            }
+                        }
+                    }
+                }
             }
         }
 
