@@ -2051,7 +2051,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     if (!isZoomIn)
                     {
-                        for (int i = 0; i < DayViewRMData.Count; i++)
+                        for (int i = 0; i < DayViewkWhData.Count; i++)
                         {
                             if (DayViewkWhData.Count > 20 && i == 1)
                             {
