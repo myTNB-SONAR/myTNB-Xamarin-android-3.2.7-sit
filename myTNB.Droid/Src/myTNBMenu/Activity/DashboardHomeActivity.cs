@@ -173,6 +173,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 isFromNotification = true;
                 alreadyStarted = true;
             }
+
+            this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).Click += DashboardHomeActivity_Click;
         }
 
         public void ShowBackButton(bool flag)
