@@ -36,6 +36,8 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
         private int currentArrayIndex = -1;
 
+        // Lin Siong Note: this is for use of tariff block on normal / RE inner dashboard
+
         public StackedBarChartRenderer(BarChart chart, ChartAnimator animator, ViewPortHandler viewPortHandler) : base(chart, animator, viewPortHandler)
         {
             barChart = chart;
@@ -53,7 +55,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
         public override void DrawExtras(Canvas canvas)
         {
-            // base.DrawExtras(canvas);
+            // Lin Siong Note: to get current hightlighted data entry
             try
             {
                 Highlight[] highlighted = barChart.GetHighlighted();
@@ -124,6 +126,12 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
         {
             try
             {
+                // Lin Siong Note:
+                // The concept of drawing the tariff block out with which bar need to be hightlighted:
+                // 1) First it will get the left point of the box that going to draw, also the next four index
+                // 2) i) if the next four index already out of buffer, direct draw the full rounded bar out
+                // 2) ii) if no, then determine if next index is same, if yes then draw lower rounded bar, else draw the full rounded bar out
+                // 2) iii) For next if is still same as previous and next, then will draw rectangle bar, else draw upper rounded bar
                 Transformer trans = barChart.GetTransformer(dataSet.AxisDependency);
 
                 MShadowPaint.Color = new Color(dataSet.BarShadowColor);
@@ -152,6 +160,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                     float currentItem = 0f;
                     int count = 0;
 
+                    // Lin Siong Note: to get current hightlighted data entry
                     Highlight[] highlighted = barChart.GetHighlighted();
                     if (highlighted != null && highlighted.Length > 0)
                     {
@@ -222,6 +231,9 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                             isFirstTime = false;
                             currentItem = bufferItems[j];
                             int nextIndex = j + 4;
+                            // Lin Siong Note: check if need to hightlight the entry
+                            // Lin Siong Note: if yes then set alpha to 255
+                            // Lin Siong Note: else get the default alpha, set to 50
                             if (Math.Abs(currentSelectedDrawX - -1f) < 0.0001)
                             {
                                 MRenderPaint.Color = new Color(dataSet.GetColor(j / 4));
@@ -273,6 +285,9 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                         {
                             currentItem = bufferItems[j];
                             int nextIndex = j + 4;
+                            // Lin Siong Note: check if need to hightlight the entry
+                            // Lin Siong Note: if yes then set alpha to 255
+                            // Lin Siong Note: else get the default alpha, set to 50
                             if (Math.Abs(currentSelectedDrawX - -1f) < 0.0001)
                             {
                                 MRenderPaint.Color = new Color(dataSet.GetColor(j / 4));

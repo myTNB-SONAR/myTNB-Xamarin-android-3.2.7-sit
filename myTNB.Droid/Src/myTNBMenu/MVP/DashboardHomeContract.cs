@@ -16,20 +16,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 		public interface IView : IBaseView<IUserActionsListener>
 		{
 			/// <summary>
-			/// Show the bar charts
-			/// </summary>
-			/// <param name="data">UsageHistoryData</param>
-			/// <param name="selectedAccount">AccountData</param>
-			void ShowSMChart(SMUsageHistoryData data, AccountData selectedAccount);
-
-			/// <summary>
-			/// Show the bar charts
-			/// </summary>
-			/// <param name="data">UsageHistoryData</param>
-			/// <param name="selectedAccount">AccountData</param>
-			void ShowSMChartWithError(SMUsageHistoryData data, AccountData selectedAccount, bool noSMData);
-
-			/// <summary>
 			/// Shows the bill menu
 			/// </summary>
 			/// <param name="selectedAccount">AccountData</param>
@@ -79,11 +65,13 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             /// <param name="stringResourceId">integer</param>
             void SetToolbarTitle(int stringResourceId);
 
-			/// <summary>
-			/// Enable dropdown
-			/// </summary>
-			/// <param name="enable">Boolean</param>
-			void EnableDropDown(Boolean enable);
+            void SetAccountToolbarTitle(string accountName);
+
+            /// <summary>
+            /// Enable dropdown
+            /// </summary>
+            /// <param name="enable">Boolean</param>
+            void EnableDropDown(Boolean enable);
 
 			/// <summary>
 			/// Shows the leaf account icon in drop down
@@ -185,9 +173,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
             void ShowNMREChart(UsageHistoryResponse response, AccountData selectedAccount, string errorCode, string errorMsg);
 
+            void ShowSMChart(SMUsageHistoryResponse response, AccountData selectedAccount);
         }
 
-		public interface IUserActionsListener : IBasePresenter
+        public interface IUserActionsListener : IBasePresenter
 		{
 			/// <summary>
 			/// Action to logout NOT USED

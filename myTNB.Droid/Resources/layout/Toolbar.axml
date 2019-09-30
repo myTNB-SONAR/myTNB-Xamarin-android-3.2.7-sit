@@ -13,6 +13,6 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:maxLines="1"
-        android:maxEms="15"
+        android:maxEms="10"
         android:ellipsize="end"/>
 </android.support.v7.widget.Toolbar>

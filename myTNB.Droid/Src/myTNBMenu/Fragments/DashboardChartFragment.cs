@@ -1,4 +1,5 @@
 ﻿using AFollestad.MaterialDialogs;
+using Android.Animation;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
@@ -11,6 +12,7 @@ using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Android.Text;
 using Android.Text.Method;
+using Android.Text.Style;
 using Android.Util;
 using Android.Views;
 using Android.Views.Animations;
@@ -55,12 +57,13 @@ using System;
 using System.Collections.Generic;
 using static MikePhil.Charting.Components.XAxis;
 using static MikePhil.Charting.Components.YAxis;
-using static myTNB_Android.Src.myTNBMenu.Listener.NMREDashboardScrollView;
+using static myTNB_Android.Src.AppLaunch.Models.MasterDataResponse;
+using static myTNB_Android.Src.myTNBMenu.Listener.NMRESMDashboardScrollView;
 using static myTNB_Android.Src.myTNBMenu.Models.GetInstallationDetailsResponse;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
-    public class DashboardChartFragment : BaseFragment, DashboardChartContract.IView, NMREDashboardScrollViewListener, ViewTreeObserver.IOnGlobalLayoutListener, MikePhil.Charting.Listener.IOnChartValueSelectedListenerSupport
+    public class DashboardChartFragment : BaseFragment, DashboardChartContract.IView, NMRESMDashboardScrollViewListener, ViewTreeObserver.IOnGlobalLayoutListener, MikePhil.Charting.Listener.IOnChartValueSelectedListenerSupport, View.IOnTouchListener
     {
 
         [BindView(Resource.Id.totalPayableLayout)]
@@ -74,9 +77,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         UsageHistoryData selectedHistoryData;
 
+        SMUsageHistoryData selectedSMHistoryData;
+
         AccountData selectedAccount;
 
-        ChartType ChartType = ChartType.RM;
+        ChartType ChartType = ChartType.Month;
+        ChartDataType ChartDataType = ChartDataType.RM;
 
         [BindView(Resource.Id.bar_chart)]
         BarChart mChart;
@@ -124,7 +130,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private static BottomSheetBehavior bottomSheetBehavior;
 
-        private NMREDashboardScrollView scrollView;
+        private NMRESMDashboardScrollView scrollView;
 
         [BindView(Resource.Id.bottom_sheet)]
         LinearLayout bottomSheet;
@@ -284,6 +290,143 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.re_img)]
         ImageView re_img;
 
+        [BindView(Resource.Id.virtualHeight)]
+        LinearLayout virtualHeight;
+
+        [BindView(Resource.Id.shadow_layout)]
+        ImageView shadowLayout;
+
+        [BindView(Resource.Id.smStatisticContainer)]
+        LinearLayout smStatisticContainer;
+
+        [BindView(Resource.Id.sm_statistic_bill)]
+        LinearLayout smStatisticBillMainLayout;
+
+        [BindView(Resource.Id.shimmerSMStatisticBillImg)]
+        ShimmerFrameLayout shimmerSMStatisticBillImg;
+
+        [BindView(Resource.Id.shimmerSMStatisticBillLayout)]
+        RelativeLayout shimmerSMStatisticBillLayout;
+
+        [BindView(Resource.Id.shimmrtSMStatisticBillTitle)]
+        ShimmerFrameLayout shimmrtSMStatisticBillTitle;
+
+        [BindView(Resource.Id.shimmrtSMStatisticBill)]
+        ShimmerFrameLayout shimmrtSMStatisticBill;
+
+        [BindView(Resource.Id.shimmrtSMStatisticBillDueDate)]
+        ShimmerFrameLayout shimmrtSMStatisticBillDueDate;
+
+        [BindView(Resource.Id.sm_statistic_bill_img)]
+        ImageView smStatisticBillImg;
+
+        [BindView(Resource.Id.smStatisticBillLayout)]
+        RelativeLayout smStatisticBillLayout;
+
+        [BindView(Resource.Id.sm_statistic_predict)]
+        LinearLayout smStatisticPredictMainLayout;
+
+        [BindView(Resource.Id.shimmerSMStatisticPredictImg)]
+        ShimmerFrameLayout shimmerSMStatisticPredictImg;
+
+        [BindView(Resource.Id.shimmerSMStatisticPredictLayout)]
+        RelativeLayout shimmerSMStatisticPredictLayout;
+
+        [BindView(Resource.Id.shimmrtSMStatisticPredictTitle)]
+        ShimmerFrameLayout shimmrtSMStatisticPredictTitle;
+
+        [BindView(Resource.Id.shimmrtSMStatisticPredict)]
+        ShimmerFrameLayout shimmrtSMStatisticPredict;
+
+        [BindView(Resource.Id.shimmrtSMStatisticPredictDueDate)]
+        ShimmerFrameLayout shimmrtSMStatisticPredictDueDate;
+
+        [BindView(Resource.Id.shimmrtSmStatisticTooltip)]
+        ShimmerFrameLayout shimmrtSmStatisticTooltip;
+
+        [BindView(Resource.Id.sm_statistic_predict_img)]
+        ImageView smStatisticPredictImg;
+
+        [BindView(Resource.Id.smStatisticPredictLayout)]
+        RelativeLayout smStatisticPredictLayout;
+
+        [BindView(Resource.Id.smStatisticTooltip)]
+        LinearLayout smStatisticTooltip;
+
+        [BindView(Resource.Id.sm_statistic_trend)]
+        LinearLayout smStatisticTrendMainLayout;
+
+        [BindView(Resource.Id.smStatisticBillTitle)]
+        TextView smStatisticBillTitle;
+
+        [BindView(Resource.Id.smStatisticBillSubTitle)]
+        TextView smStatisticBillSubTitle;
+
+        [BindView(Resource.Id.smStatisticBill)]
+        TextView smStatisticBill;
+
+        [BindView(Resource.Id.smStatisticBillCurrency)]
+        TextView smStatisticBillCurrency;
+
+        [BindView(Resource.Id.smStatisticBillKwhUnit)]
+        TextView smStatisticBillKwhUnit;
+
+        [BindView(Resource.Id.smStatisticBillKwh)]
+        TextView smStatisticBillKwh;
+
+        [BindView(Resource.Id.smStatisticPredictTitle)]
+        TextView smStatisticPredictTitle;
+
+        [BindView(Resource.Id.smStatisticPredictSubTitle)]
+        TextView smStatisticPredictSubTitle;
+
+        [BindView(Resource.Id.smStatisticPredict)]
+        TextView smStatisticPredict;
+
+        [BindView(Resource.Id.smStatisticPredictCurrency)]
+        TextView smStatisticPredictCurrency;
+
+        [BindView(Resource.Id.txtSmStatisticTooltip)]
+        TextView txtSmStatisticTooltip;
+
+        [BindView(Resource.Id.smStatisticTrendTitle)]
+        TextView smStatisticTrendTitle;
+
+        [BindView(Resource.Id.smStatisticTrendSubTitle)]
+        TextView smStatisticTrendSubTitle;
+
+        [BindView(Resource.Id.smStatisticTrend)]
+        TextView smStatisticTrend;
+
+        [BindView(Resource.Id.layoutSegmentGroup)]
+        RelativeLayout layoutSMSegmentGroup;
+
+        [BindView(Resource.Id.btnToggleDay)]
+        RadioButton btnToggleDay;
+
+        [BindView(Resource.Id.btnToggleMonth)]
+        RadioButton btnToggleMonth;
+
+        [BindView(Resource.Id.smGraphZoomToggleLayout)]
+        LinearLayout smGraphZoomToggleLayout;
+
+        [BindView(Resource.Id.smGraphZoomToggle)]
+        ImageView smGraphZoomToggle;
+
+        [BindView(Resource.Id.mdmsDayViewDownLayout)]
+        LinearLayout mdmsDayViewDownLayout;
+
+        [BindView(Resource.Id.txtMdmsDayViewDown)]
+        TextView txtMdmsDayViewDown;
+
+        [BindView(Resource.Id.smDayViewZoomInIndicatorLayout)]
+        LinearLayout smDayViewZoomInIndicatorLayout;
+
+        [BindView(Resource.Id.txtDayViewZoomInIndicator)]
+        TextView txtDayViewZoomInIndicator;
+
+        private static bool isZoomIn = false;
+
         TariffBlockLegendAdapter tariffBlockLegendAdapter;
 
         private DashboardChartContract.IUserActionsListener userActionsListener;
@@ -293,6 +436,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private string txtBtnRefreshTitle = "";
 
         private bool isSubmitMeter = false;
+
+        private bool isBackendTariffDisabled = false;
 
         private static bool isREAccount = false;
 
@@ -317,17 +462,61 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         bool isToggleTariff = false;
 
+        bool isDayViewToggle = false;
+
         static bool isBCRMDown = false;
 
         static bool isPaymentDown = false;
 
         static bool isUsageLoadedNeeded = true;
 
+        private bool isChangeBackgroundNeeded = true;
+
+        private bool isScrollIndicatorShowNeed = false;
+
+        private bool isSMR = false;
+
+        bool isMDMSDown = false;
+
+        bool isSMAccount = false;
+
         public StackedBarChartRenderer renderer;
+
+        public SMStackedBarChartRenderer smRenderer;
 
         static bool requireScroll;
 
         private int CurrentParentIndex = -1;
+
+        private List<double> DayViewRMData = new List<double>();
+        private List<double> DayViewkWhData = new List<double>();
+        private List<bool> missingReadingList = new List<bool>();
+        private static List<string> dayViewMonthList = new List<string>();
+
+        private Bitmap mdmsBitmap = null;
+        private Bitmap missingBitmap = null;
+
+        private static bool isDayViewFirstMove = false;
+
+        private static List<BarEntry> dayViewTariffList = new List<BarEntry>();
+
+        private static int minCurrentDayViewIndex = 4;
+        private static int maxCurrentDayViewIndex = 0;
+
+        private static float currentLowestVisibleX = -0.5f;
+        private static float trackingLowestVisibleX = -0.5f;
+        private static float minLowestVisibleX = -0.5f;
+        private static float maxLowestVisibleX = 0f;
+
+        private static int currentDayViewIndex = 0;
+
+        private static bool isShowLog = false;
+
+        private static float lowestVisibleX = -1f;
+
+        private 
+
+        ScaleGestureDetector mScaleDetector;
 
         public override int ResourceId()
         {
@@ -339,55 +528,131 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             base.OnCreate(savedInstanceState);
             Bundle extras = Arguments;
 
-            if (extras.ContainsKey(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE))
+            if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
             {
-                isUsageLoadedNeeded = false; 
-                var usageHistoryDataResponse = JsonConvert.DeserializeObject<UsageHistoryResponse>(extras.GetString(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE));
-                selectedHistoryData = usageHistoryDataResponse.Data.UsageHistoryData;
-                try
+                selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+            }
+
+            if (extras.ContainsKey(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE) || extras.ContainsKey(Constants.SELECTED_SM_ACCOUNT_USAGE_RESPONSE))
+            {
+                if (extras.ContainsKey(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE))
                 {
-                    if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshMessage != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshMessage))
+                    isSMAccount = false;
+                    isUsageLoadedNeeded = false;
+                    selectedSMHistoryData = null;
+                    var usageHistoryDataResponse = JsonConvert.DeserializeObject<UsageHistoryResponse>(extras.GetString(Constants.SELECTED_ACCOUNT_USAGE_RESPONSE));
+                    if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.UsageHistoryData != null)
                     {
-                        txtRefreshMsg = usageHistoryDataResponse.Data.RefreshMessage;
+                        selectedHistoryData = usageHistoryDataResponse.Data.UsageHistoryData;
+                        if (!usageHistoryDataResponse.Data.IsMonthlyTariffBlocksDisabled && !usageHistoryDataResponse.Data.IsMonthlyTariffBlocksUnavailable)
+                        {
+                            OnSetBackendTariffDisabled(false);
+                        }
+                        else
+                        {
+                            OnSetBackendTariffDisabled(true);
+                        }
                     }
-                    else
+                    try
+                    {
+                        if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshMessage != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshMessage))
+                        {
+                            txtRefreshMsg = usageHistoryDataResponse.Data.RefreshMessage;
+                        }
+                        else
+                        {
+                            txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
+                        }
+                    }
+                    catch (System.Exception e)
                     {
                         txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
+                        Utility.LoggingNonFatalError(e);
                     }
-                }
-                catch (System.Exception e)
-                {
-                    txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
-                    Utility.LoggingNonFatalError(e);
-                }
-                try
-                {
-                    if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshBtnText != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshBtnText))
+                    try
                     {
-                        txtBtnRefreshTitle = usageHistoryDataResponse.Data.RefreshBtnText;
+                        if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshBtnText != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshBtnText))
+                        {
+                            txtBtnRefreshTitle = usageHistoryDataResponse.Data.RefreshBtnText;
+                        }
+                        else
+                        {
+                            txtBtnRefreshTitle = "Reload Now";
+                        }
                     }
-                    else
+                    catch (System.Exception e)
                     {
                         txtBtnRefreshTitle = "Reload Now";
+                        Utility.LoggingNonFatalError(e);
                     }
                 }
-                catch (System.Exception e)
+                else
                 {
-                    txtBtnRefreshTitle = "Reload Now";
-                    Utility.LoggingNonFatalError(e);
+                    isSMAccount = true;
+                    isUsageLoadedNeeded = false;
+                    selectedHistoryData = null;
+                    var usageHistoryDataResponse = JsonConvert.DeserializeObject<SMUsageHistoryResponse>(extras.GetString(Constants.SELECTED_SM_ACCOUNT_USAGE_RESPONSE));
+                    if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.SMUsageHistoryData != null)
+                    {
+                        selectedSMHistoryData = usageHistoryDataResponse.Data.SMUsageHistoryData;
+                        if (!usageHistoryDataResponse.Data.IsMonthlyTariffBlocksDisabled && !usageHistoryDataResponse.Data.IsMonthlyTariffBlocksUnavailable)
+                        {
+                            OnSetBackendTariffDisabled(false);
+                        }
+                        else
+                        {
+                            OnSetBackendTariffDisabled(true);
+                        }
+                    }
+                    try
+                    {
+                        if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshMessage != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshMessage))
+                        {
+                            txtRefreshMsg = usageHistoryDataResponse.Data.RefreshMessage;
+                        }
+                        else
+                        {
+                            txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
+                        }
+                    }
+                    catch (System.Exception e)
+                    {
+                        txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
+                        Utility.LoggingNonFatalError(e);
+                    }
+                    try
+                    {
+                        if (usageHistoryDataResponse != null && usageHistoryDataResponse.Data != null && usageHistoryDataResponse.Data.RefreshBtnText != null && !string.IsNullOrEmpty(usageHistoryDataResponse.Data.RefreshBtnText))
+                        {
+                            txtBtnRefreshTitle = usageHistoryDataResponse.Data.RefreshBtnText;
+                        }
+                        else
+                        {
+                            txtBtnRefreshTitle = "Reload Now";
+                        }
+                    }
+                    catch (System.Exception e)
+                    {
+                        txtBtnRefreshTitle = "Reload Now";
+                        Utility.LoggingNonFatalError(e);
+                    }
                 }
             }
             else
             {
+                if (selectedAccount != null && !selectedAccount.SmartMeterCode.Equals("0"))
+                {
+                    isSMAccount = true;
+                }
+                else
+                {
+                    isSMAccount = false;
+                }
                 isUsageLoadedNeeded = true;
                 selectedHistoryData = null;
+                selectedSMHistoryData = null;
                 txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
                 txtBtnRefreshTitle = "Reload Now";
-            }
-
-            if (extras.ContainsKey(Constants.SELECTED_ACCOUNT))
-            {
-                selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
             }
 
             errorMSG = "";
@@ -428,16 +693,42 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             return chartFragment;
         }
 
+        internal static DashboardChartFragment NewInstance(SMUsageHistoryResponse usageHistoryResponse, AccountData accountData)
+        {
+            DashboardChartFragment chartFragment = new DashboardChartFragment();
+            Bundle bundle = new Bundle();
+            if (usageHistoryResponse != null)
+            {
+                bundle.PutString(Constants.SELECTED_SM_ACCOUNT_USAGE_RESPONSE, JsonConvert.SerializeObject(usageHistoryResponse));
+            }
+            if (accountData != null)
+            {
+                bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+            }
+
+            chartFragment.Arguments = bundle;
+            return chartFragment;
+        }
+
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
             base.OnViewCreated(view, savedInstanceState);
             try
             {
+
+                smDayViewZoomInIndicatorLayout.Visibility = ViewStates.Gone;
+
+                BitmapFactory.Options opt = new BitmapFactory.Options();
+                opt.InMutable = true;
+                mdmsBitmap = BitmapFactory.DecodeResource(this.Activity.Resources, Resource.Drawable.mdms_down, opt);
+                missingBitmap = BitmapFactory.DecodeResource(this.Activity.Resources, Resource.Drawable.dashboard_missing_copy, opt);
+
+
                 bottomSheetBehavior = BottomSheetBehavior.From(bottomSheet);
                 bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
                 bottomSheetBehavior.SetBottomSheetCallback(new DashboardBottomSheetCallBack());
 
-                scrollView = view.FindViewById<NMREDashboardScrollView>(Resource.Id.scroll_view);
+                scrollView = view.FindViewById<NMRESMDashboardScrollView>(Resource.Id.scroll_view);
                 ViewTreeObserver observer = scrollView.ViewTreeObserver;
                 observer.AddOnGlobalLayoutListener(this);
 
@@ -445,15 +736,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 requireScroll = false;
 
+                isDayViewFirstMove = false;
+
+                currentDayViewIndex = 0;
+                dayViewTariffList = new List<BarEntry>();
+
                 TextViewUtils.SetMuseoSans300Typeface(txtAddress, txtTotalPayable, txtDueDate);
                 TextViewUtils.SetMuseoSans300Typeface(txtNewRefreshMessage, ssmrAccountStatusText);
                 TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnNewRefresh, rmKwhLabel, kwhLabel, rmLabel, dashboardAccountName, btnTxtSsmrViewHistory, btnReadingHistory, txtEnergyDisconnection);
                 TextViewUtils.SetMuseoSans300Typeface(reTotalPayable, reTotalPayableCurrency, reDueDate, txtNoPayable);
                 TextViewUtils.SetMuseoSans500Typeface(reTotalPayableTitle, btnReView, txtTarifToggle, txtNoPayableTitle, txtNoPayableCurrency);
+                TextViewUtils.SetMuseoSans300Typeface(smStatisticBillSubTitle, smStatisticBill, smStatisticBillCurrency, smStatisticBillKwhUnit, smStatisticBillKwh, smStatisticPredictSubTitle, smStatisticPredict, smStatisticPredictCurrency, smStatisticTrendSubTitle, smStatisticTrend);
+                TextViewUtils.SetMuseoSans500Typeface(smStatisticBillTitle, smStatisticPredictTitle, txtSmStatisticTooltip, smStatisticTrendTitle);
+                TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtMdmsDayViewDown, txtDayViewZoomInIndicator);
 
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
                 DownTimeEntity pgFPXEntity = DownTimeEntity.GetByCode(Constants.PG_FPX_SYSTEM);
+
+                isZoomIn = false;
 
                 if (bcrmEntity != null && bcrmEntity.IsDown)
                 {
@@ -485,6 +786,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                 }
 
+                try
+                {
+                    ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+                    ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+
                 if (selectedAccount != null)
                 {
                     txtAddress.Text = selectedAccount.AddStreet;
@@ -500,12 +811,55 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         // txtUsageHistory.Visibility = ViewStates.Gone;
                         txtTotalPayableTitle.Text = GetString(Resource.String.title_payment_advice_amount);
                         graphToggleSelection.Visibility = ViewStates.Gone;
+                        SetVirtualHeightParams(6f);
+                        isChangeBackgroundNeeded = true;
+                        layoutSMSegmentGroup.Visibility = ViewStates.Gone;
+                        isSMR = false;
                     }
-                    else
+                    else if (isSMAccount)
                     {
+                        // Smart Meter
+                        SetVirtualHeightParams(80f);
                         isREAccount = false;
                         reContainer.Visibility = ViewStates.Gone;
                         btnPay.Visibility = ViewStates.Visible;
+                        btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
+                        graphToggleSelection.Visibility = ViewStates.Visible;
+                        energyTipsView.Visibility = ViewStates.Visible;
+                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                        isChangeBackgroundNeeded = true;
+                        layoutSMSegmentGroup.Visibility = ViewStates.Visible;
+                        isSMR = false;
+                        smGraphZoomToggleLayout.Visibility = ViewStates.Gone;
+                    }
+                    else
+                    {
+                        isSMR = this.mPresenter.IsOwnedSMR(selectedAccount.AccountNum);
+                        if (isSMR)
+                        {
+                            SetVirtualHeightParams(80f);
+                            isChangeBackgroundNeeded = true;
+                        }
+                        else
+                        {
+                            rootView.SetBackgroundResource(0);
+                            scrollViewContent.SetBackgroundResource(0);
+                            SetVirtualHeightParams(50f);
+                            try
+                            {
+                                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
+                                ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                            }
+                            catch (System.Exception e)
+                            {
+                                Utility.LoggingNonFatalError(e);
+                            }
+                            isChangeBackgroundNeeded = false;
+                        }
+                        isREAccount = false;
+                        reContainer.Visibility = ViewStates.Gone;
+                        btnPay.Visibility = ViewStates.Visible;
+                        layoutSMSegmentGroup.Visibility = ViewStates.Gone;
                         btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
                         graphToggleSelection.Visibility = ViewStates.Visible;
                         energyTipsView.Visibility = ViewStates.Visible;
@@ -516,6 +870,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         try
                         {
                             FirebaseAnalyticsUtils.SetFragmentScreenName(this, "RE Inner Dashboard");
+                        }
+                        catch (System.Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                    }
+                    else if (!selectedAccount.SmartMeterCode.Equals("0"))
+                    {
+                        try
+                        {
+                            FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Smart Meter Inner Dashboard");
                         }
                         catch (System.Exception e)
                         {
@@ -543,6 +908,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else
                 {
+                    rootView.SetBackgroundResource(0);
+                    scrollViewContent.SetBackgroundResource(0);
+                    SetVirtualHeightParams(6f);
+                    try
+                    {
+                        ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
+                        ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                    isChangeBackgroundNeeded = false;
+                    isSMR = false;
                     energyTipsView.Visibility = ViewStates.Gone;
                     try
                     {
@@ -586,7 +965,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 else
                 {
                     ((DashboardHomeActivity)Activity).HideAccountName();
-                    dashboardAccountName.Visibility = ViewStates.Visible;
+                    dashboardAccountName.Visibility = ViewStates.Gone;
                     dashboardAccountName.Text = selectedAccount.AccountNickName;
                     List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
                     bool enableDropDown = accountList.Count > 0 ? true : false;
@@ -605,6 +984,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                     LinearLayoutManager linearTariffBlockLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Vertical, false);
                     tariffBlockLegendRecyclerView.SetLayoutManager(linearTariffBlockLayoutManager);
+
+                    energyTipsView.Visibility = ViewStates.Gone;
+                    energyTipsShimmerView.Visibility = ViewStates.Gone;
 
                     LinearLayoutManager linearEnergyTipLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
                     energyTipsList.SetLayoutManager(linearEnergyTipLayoutManager);
@@ -631,6 +1013,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         rmKwhSelection.Enabled = false;
                         tarifToggle.Enabled = false;
+                        btnToggleDay.Enabled = false;
+                        btnToggleMonth.Enabled = false;
                         txtRange.Visibility = ViewStates.Gone;
                         StartRangeShimmer();
                         mChart.Visibility = ViewStates.Gone;
@@ -640,6 +1024,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         rmKwhSelection.Enabled = true;
                         tarifToggle.Enabled = true;
+                        btnToggleDay.Enabled = true;
+                        btnToggleMonth.Enabled = true;
                     }
 
                     re_img.Visibility = ViewStates.Gone;
@@ -649,15 +1035,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                     StartAmountDueShimmer();
 
+                    StartSMStatisticShimmer();
+
                     energyDisconnectionButton.Visibility = ViewStates.Gone;
 
+                    // Lin Siong Note: Energy Saving Tip On Start Shimmer and get data
                     if (selectedAccount != null)
                     {
                         if (!selectedAccount.AccountCategoryId.Equals("2"))
                         {
-                            OnGetEnergyTipsItems();
+                            bool isGetEnergyTipsDisabled = false;
+                            MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
+                            if (currentMasterData.IsEnergyTipsDisabled)
+                            {
+                                isGetEnergyTipsDisabled = true;
+                            }
+
+                            if (!isGetEnergyTipsDisabled)
+                            {
+                                OnGetEnergyTipsItems();
+                            }
                         }
-                    }                  
+                    }
 
                     this.userActionsListener?.Start();
 
@@ -722,8 +1121,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 };
 
-                ((DashboardHomeActivity)Activity).HideBottomNavigationBar();
-
             }
             catch (System.Exception e)
             {
@@ -744,59 +1141,125 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+        class ClickSpan : ClickableSpan
+        {
+            public Action<View> Click;
+            public override void OnClick(View widget)
+            {
+                if (Click != null)
+                {
+                    Click(widget);
+                }
+            }
 
-        /*[OnClick(Resource.Id.txtWhyThisAmt)]
-        void OnWhyThisAmtClick(object sender, EventArgs eventArgs)
+            public override void UpdateDrawState(TextPaint ds)
+            {
+                base.UpdateDrawState(ds);
+                ds.UnderlineText = false;
+            }
+        }
+
+        [OnClick(Resource.Id.smStatisticTooltip)]
+        void OnSMStatisticTooltipClick(object sender, EventArgs eventArgs)
         {
             try
             {
-                mWhyThisAmtCardDialog = new MaterialDialog.Builder(Activity)
-                    .CustomView(Resource.Layout.CustomDialogDoubleButtonLayout, false)
-                    .Cancelable(false)
-                    .CanceledOnTouchOutside(false)
-                    .Build();
+                string textMessage = Activity.GetString(Resource.String.tooltip_sm_what_are_these_message);
+                string btnLabel = Activity.GetString(Resource.String.tooltip_btnLabel);
 
-                View dialogView = mWhyThisAmtCardDialog.Window.DecorView;
-                dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
+                if (selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.ToolTips != null && selectedSMHistoryData.ToolTips.Count > 0)
+                {
+                    textMessage = "";
+                    foreach (SMUsageHistoryData.SmartMeterToolTips costValue in selectedSMHistoryData.ToolTips)
+                    {
+                        if (costValue.Type == Constants.PROJECTED_COST_KEY)
+                        {
+                            if (costValue.Message != null && costValue.Message.Count > 0)
+                            {
+                                foreach (string stringValue in costValue.Message)
+                                {
+                                    textMessage += stringValue;
+                                }
+                            }
 
-                TextView txtItemizedTitle = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtTitle);
-                TextView txtItemizedMessage = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtMessage);
-                TextView btnGotIt = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtBtnSecond);
-                TextView btnBringMeThere = mWhyThisAmtCardDialog.FindViewById<TextView>(Resource.Id.txtBtnFirst);
-                txtItemizedMessage.MovementMethod = new ScrollingMovementMethod();
-                if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
-                {
-                    txtItemizedMessage.TextFormatted = string.IsNullOrEmpty(accountDueAmountData.WhyThisAmountMessage) ? Html.FromHtml(Activity.GetString(Resource.String.itemized_bill_message), FromHtmlOptions.ModeLegacy) : Html.FromHtml(accountDueAmountData.WhyThisAmountMessage, FromHtmlOptions.ModeLegacy);
+                            btnLabel = costValue.SMBtnText ?? Activity.GetString(Resource.String.tooltip_btnLabel);
+                        }
+                    }
                 }
-                else
+
+                MaterialDialog materialDialog = new MaterialDialog.Builder(Activity)
+                        .CustomView(Resource.Layout.WhatIsThisDialogView, false)
+                        .Cancelable(false)
+                        .Build();
+
+                View view = materialDialog.View;
+                TextView dialogDetailsText = view.FindViewById<TextView>(Resource.Id.txtDialogMessage);
+                TextView dialogBtnLabel = view.FindViewById<TextView>(Resource.Id.txtBtnLabel);
+                if (btnLabel != "")
                 {
-                    txtItemizedMessage.TextFormatted = string.IsNullOrEmpty(accountDueAmountData.WhyThisAmountMessage) ? Html.FromHtml(Activity.GetString(Resource.String.itemized_bill_message)) : Html.FromHtml(accountDueAmountData.WhyThisAmountMessage);
+                    dialogBtnLabel.Text = btnLabel;
                 }
-                txtItemizedTitle.Text = string.IsNullOrEmpty(accountDueAmountData.WhyThisAmountTitle) ? Activity.GetString(Resource.String.itemized_bill_title) : accountDueAmountData.WhyThisAmountTitle;
-                btnGotIt.Text = string.IsNullOrEmpty(accountDueAmountData.WhyThisAmountSecButtonText) ? Activity.GetString(Resource.String.itemized_bill_got_it) : accountDueAmountData.WhyThisAmountSecButtonText;
-                btnBringMeThere.Text = string.IsNullOrEmpty(accountDueAmountData.WhyThisAmountPriButtonText) ? Activity.GetString(Resource.String.itemized_bill_bring_me_there) : accountDueAmountData.WhyThisAmountPriButtonText;
-                TextViewUtils.SetMuseoSans500Typeface(txtItemizedTitle, btnGotIt, btnBringMeThere);
-                TextViewUtils.SetMuseoSans300Typeface(txtItemizedMessage);
-                btnGotIt.Click += delegate
+                dialogBtnLabel.Click += delegate
                 {
-                    mWhyThisAmtCardDialog.Dismiss();
+                    materialDialog.Dismiss();
                 };
-                btnBringMeThere.Click += delegate
-                {
-                    ((DashboardHomeActivity)Activity).BillsMenuAccess();
-                    mWhyThisAmtCardDialog.Dismiss();
-                };
 
-                if (IsActive())
+                if (textMessage != "")
                 {
-                    mWhyThisAmtCardDialog.Show();
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                    {
+                        dialogDetailsText.TextFormatted = Html.FromHtml(textMessage, FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        dialogDetailsText.TextFormatted = Html.FromHtml(textMessage);
+                    }
                 }
+
+                if (dialogDetailsText != null)
+                {
+                    TextViewUtils.SetMuseoSans300Typeface(dialogDetailsText);
+                }
+                if (dialogBtnLabel != null)
+                {
+                    TextViewUtils.SetMuseoSans500Typeface(dialogBtnLabel);
+                }
+                SpannableString s = new SpannableString(dialogDetailsText.TextFormatted);
+                var clickableSpan = new ClickSpan();
+                clickableSpan.Click += v =>
+                {
+                    if (textMessage != null && textMessage.Contains("faq"))
+                    {
+                        //Lauch FAQ
+                        int startIndex = textMessage.LastIndexOf("=") + 1;
+                        int lastIndex = textMessage.LastIndexOf("}");
+                        int lengthOfId = (lastIndex - startIndex) + 1;
+                        if (lengthOfId < textMessage.Length)
+                        {
+                            string faqid = textMessage.Substring(startIndex, lengthOfId);
+                            if (!string.IsNullOrEmpty(faqid))
+                            {
+                                Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
+                                faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+                                Activity.StartActivity(faqIntent);
+                            }
+                        }
+                    }
+                };
+                var urlSpans = s.GetSpans(0, s.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
+                int startFAQLink = s.GetSpanStart(urlSpans[0]);
+                int endFAQLink = s.GetSpanEnd(urlSpans[0]);
+                s.RemoveSpan(urlSpans[0]);
+                s.SetSpan(clickableSpan, startFAQLink, endFAQLink, SpanTypes.ExclusiveExclusive);
+                dialogDetailsText.TextFormatted = s;
+                dialogDetailsText.MovementMethod = new LinkMovementMethod();
+                materialDialog.Show();
             }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
-        }*/
+        }
 
         [OnClick(Resource.Id.btnTxtSsmrViewHistory)]
         void OnSsmrViewHistory(object sender, EventArgs eventArgs)
@@ -831,6 +1294,53 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+        [OnClick(Resource.Id.btnToggleDay)]
+        internal void OnToggleDay(object sender, EventArgs e)
+        {
+            smGraphZoomToggleLayout.Visibility = ViewStates.Visible;
+            this.userActionsListener.OnByDay();
+            if (!isDayViewToggle && !isMDMSDown)
+            {
+                isDayViewToggle = true;
+                try
+                {
+                    MaterialDialog dayViewZoomTooltip = DayZoomOutPinchUtil.OnBuildZoomOutPinchTooltip(this.Activity);
+                    dayViewZoomTooltip.Show();
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
+            }
+        }
+
+        [OnClick(Resource.Id.btnToggleMonth)]
+        internal void OnToggleMonth(object sender, EventArgs e)
+        {
+            isDayViewFirstMove = false;
+            currentDayViewIndex = 0;
+            smGraphZoomToggleLayout.Visibility = ViewStates.Gone;
+            this.userActionsListener.OnByMonth();
+        }
+
+        [OnClick(Resource.Id.smGraphZoomToggleLayout)]
+        internal void OnToggleZoom(object sender, EventArgs e)
+        {
+            if (!isZoomIn)
+            {
+                isZoomIn = true;
+            }
+            else
+            {
+                isZoomIn = false;
+            }
+
+            isDayViewFirstMove = false;
+            currentDayViewIndex = 0;
+
+            this.userActionsListener.OnByZoom();
+        }
+
         private void StartSSMRMeterHistoryPage()
         {
             Intent ssmr_history_activity = new Intent(this.Activity, typeof(SSMRMeterHistoryActivity));
@@ -861,124 +1371,665 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             mChart.Visibility = ViewStates.Visible;
 
             bool isTariffAvailable = true;
-            for (int i = 0; i < selectedHistoryData.ByMonth.Months.Count; i++)
+            if (isBackendTariffDisabled)
             {
-                if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                isTariffAvailable = false;
+            }
+            else
+            {
+                if (isSMAccount)
                 {
-                    isTariffAvailable = true;
+                    if (selectedSMHistoryData != null && selectedSMHistoryData.ByMonth != null && selectedSMHistoryData.ByMonth.Months != null && selectedSMHistoryData.ByMonth.Months.Count > 0)
+                    {
+                        for (int i = 0; i < selectedSMHistoryData.ByMonth.Months.Count; i++)
+                        {
+                            if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                            {
+                                isTariffAvailable = true;
+                                break;
+                            }
+                            else
+                            {
+                                isTariffAvailable = false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        isTariffAvailable = false;
+                    }
                 }
                 else
                 {
-                    isTariffAvailable = false;
+                    if (selectedHistoryData != null && selectedHistoryData.ByMonth != null && selectedHistoryData.ByMonth.Months != null && selectedHistoryData.ByMonth.Months.Count > 0)
+                    {
+                        for (int i = 0; i < selectedHistoryData.ByMonth.Months.Count; i++)
+                        {
+                            if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                            {
+                                isTariffAvailable = true;
+                                break;
+                            }
+                            else
+                            {
+                                isTariffAvailable = false;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        isTariffAvailable = false;
+                    }
                 }
             }
+
+            ShowSMStatisticCard();
 
             if (isTariffAvailable)
             {
                 tarifToggle.Enabled = true;
+                if (!isToggleTariff)
+                {
+                    imgTarifToggle.SetImageResource(Resource.Drawable.eye);
+                    txtTarifToggle.Text = "Show Tariff";
+                }
+                else
+                {
+                    imgTarifToggle.SetImageResource(Resource.Drawable.eye_hide);
+                    txtTarifToggle.Text = "Hide Tariff";
+                }
+
+                if (!isSMAccount)
+                {
+                    OnGenerateTariffLegendValue(selectedHistoryData.ByMonth.Months.Count - 1, isToggleTariff);
+                }
+                else
+                {
+                    OnGenerateTariffLegendValue(selectedSMHistoryData.ByMonth.Months.Count - 1, isToggleTariff);
+                }
             }
             else
             {
                 tarifToggle.Enabled = false;
                 isToggleTariff = false;
+                OnGenerateTariffLegendValue(0, isToggleTariff);
+                imgTarifToggle.SetImageResource(Resource.Drawable.eye_disable);
+                txtTarifToggle.Text = "Show Tariff";
+                txtTarifToggle.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
             }
 
-            if (isToggleTariff)
+            if (isSMAccount)
             {
-                renderer = new StackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
+                // Lin Siong Note: this is for smart meter Inner Dashboard
+                // Lin Siong Note: the isStacked is to determine whether want to have spacing or not
+                // Lin Siong Note: isStacked = true -> have spacing
+                // Lin Siong Note: isStacked = false -> no spacing
+
+                missingReadingList = new List<bool>();
+                dayViewMonthList = new List<string>();
+                if (selectedSMHistoryData != null && selectedSMHistoryData.ByDay != null && selectedSMHistoryData.ByDay.Count > 0)
                 {
-                    selectedHistoryData = selectedHistoryData,
-                    currentContext = Activity
-                };
-                mChart.Renderer = renderer;
+                    foreach (SMUsageHistoryData.ByDayData DayData in selectedSMHistoryData.ByDay)
+                    {
+                        foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
+                        {
+                            missingReadingList.Add(IndividualDayData.IsMissingReading);
+                            dayViewMonthList.Add(IndividualDayData.Month);
+                        }
+                    }
+                }
+
+                if (ChartType == ChartType.Day && isZoomIn)
+                {
+                    List<bool> newMissingReadingList = new List<bool>();
+                    List<string> newDayViewMonthList = new List<string>();
+
+                    for (int j = 0; j < 4; j++)
+                    {
+                        newMissingReadingList.Add(false);
+                        newDayViewMonthList.Add("");
+                    }
+
+                    for (int j = 0; j < missingReadingList.Count; j++)
+                    {
+                        newMissingReadingList.Add(missingReadingList[j]);
+                        newDayViewMonthList.Add(dayViewMonthList[j]);
+                    }
+
+
+                    for (int j = 0; j < 4; j++)
+                    {
+                        newMissingReadingList.Add(false);
+                        newDayViewMonthList.Add("");
+                    }
+
+                    missingReadingList = newMissingReadingList;
+                    dayViewMonthList = newDayViewMonthList;
+                }
+
+                if (!isZoomIn)
+                {
+                    missingBitmap = Bitmap.CreateScaledBitmap(missingBitmap, (int)DPUtils.ConvertDPToPx(5f), (int)DPUtils.ConvertDPToPx(5f), false);
+                }
+                else
+                {
+                    missingBitmap = Bitmap.CreateScaledBitmap(missingBitmap, (int)DPUtils.ConvertDPToPx(13f), (int)DPUtils.ConvertDPToPx(13f), false);
+                }
+
+                if (isToggleTariff)
+                {
+                    smRenderer = new SMStackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
+                    {
+                        selectedSMHistoryData = selectedSMHistoryData,
+                        currentContext = Activity,
+                        isStacked = true,
+                        isZoomIn = isZoomIn,
+                        currentChartType = ChartType,
+                        currentChartDataType = ChartDataType,
+                        missingReadingList = missingReadingList,
+                        isMDMSDown = isMDMSDown,
+                        mdmsBitmap = mdmsBitmap,
+                        missingBitmap = missingBitmap
+                    };
+                    mChart.Renderer = smRenderer;
+                }
+                else
+                {
+                    smRenderer = new SMStackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
+                    {
+                        selectedSMHistoryData = selectedSMHistoryData,
+                        currentContext = Activity,
+                        isStacked = false,
+                        isZoomIn = isZoomIn,
+                        currentChartType = ChartType,
+                        currentChartDataType = ChartDataType,
+                        missingReadingList = missingReadingList,
+                        isMDMSDown = isMDMSDown,
+                        mdmsBitmap = mdmsBitmap,
+                        missingBitmap = missingBitmap
+                    };
+                    mChart.Renderer = smRenderer;
+                }
             }
             else
             {
-                mChart.SetRoundedBarRadius(100f);
+                // Lin Siong Note: this is for normal / RE Inner Dashboard
+                // Lin Siong Note: Only tariff is using the renderer as it's the only need
+                if (isToggleTariff)
+                {
+                    renderer = new StackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
+                    {
+                        selectedHistoryData = selectedHistoryData,
+                        currentContext = Activity
+                    };
+                    mChart.Renderer = renderer;
+                }
+                else
+                {
+                    renderer = new StackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
+                    {
+                        selectedHistoryData = selectedHistoryData,
+                        currentContext = Activity
+                    };
+                    mChart.Renderer = renderer;
+                }
             }
 
-            mChart.SetDrawBarShadow(false);
-            mChart.SetDrawValueAboveBar(true);
-            mChart.Description.Enabled = false;
-            mChart.SetMaxVisibleValueCount(7);
-            mChart.SetPinchZoom(false);
-            mChart.SetDrawGridBackground(false);
-            mChart.SetScaleEnabled(false);
-            mChart.Legend.Enabled = false;
-            mChart.AnimateY(1000);
+            if (ChartType == ChartType.Month)
+            {
+                mChart.SetDrawBarShadow(false);
+                mChart.SetDrawValueAboveBar(true);
+                mChart.Description.Enabled = false;
+                mChart.SetMaxVisibleValueCount(7);
+                mChart.SetPinchZoom(false);
+                mChart.SetDrawGridBackground(false);
+                mChart.SetScaleEnabled(false);
+                mChart.Legend.Enabled = false;
+                mChart.AnimateY(1000);
+            }
+            else if (ChartType == ChartType.Day)
+            {
+                if (!isZoomIn)
+                {
+                    mChart.SetDrawBarShadow(false);
+                    mChart.SetDrawValueAboveBar(true);
+                    mChart.Description.Enabled = false;
+                    mChart.SetMaxVisibleValueCount(32);
+                    mChart.SetVisibleXRangeMaximum(32);
+                    mChart.SetPinchZoom(false);
+                    mChart.SetDrawGridBackground(false);
+                    mChart.SetScaleEnabled(false);
+                    mChart.Legend.Enabled = false;
+                    mChart.AnimateY(1000);
+                }
+                else
+                {
+                    mChart.SetDrawBarShadow(false);
+                    mChart.SetDrawValueAboveBar(true);
+                    mChart.Description.Enabled = false;
+                    mChart.SetMaxVisibleValueCount(42);
+                    mChart.SetVisibleXRangeMaximum(42);
+                    mChart.SetPinchZoom(false);
+                    mChart.SetDrawGridBackground(false);
+                    mChart.SetScaleEnabled(false);
+                    mChart.Legend.Enabled = false;
+                    mChart.AnimateY(1000);
+                }
+            }
 
             txtAddress.Text = selectedAccount.AddStreet;
 
-            if (ChartType == ChartType.RM)
+            mdmsDayViewDownLayout.Visibility = ViewStates.Gone;
+            mChart.Visibility = ViewStates.Visible;
+            smDayViewZoomInIndicatorLayout.Visibility = ViewStates.Gone;
+
+            if (isSMAccount)
             {
+                if (ChartType == ChartType.Month)
+                {
+                    if (ChartDataType == ChartDataType.RM)
+                    {
 
-                txtRange.Text = selectedHistoryData.ByMonth.Range;
+                        txtRange.Text = selectedSMHistoryData.ByMonth.Range;
 
-                // SETUP XAXIS
+                        // SETUP XAXIS
 
-                SetUpXAxis();
+                        SetUpXAxis();
 
-                // SETUP YAXIS
+                        // SETUP YAXIS
 
-                SetUpYAxis();
+                        SetUpYAxis();
 
-                // ADD DATA
+                        // ADD DATA
 
-                SetData(selectedHistoryData.ByMonth.Months.Count);
+                        SetData(selectedSMHistoryData.ByMonth.Months.Count);
 
 
-                // SETUP MARKER VIEW
+                        // SETUP MARKER VIEW
 
-                SetUpMarkerRMView();
+                        SetUpMarkerRMView();
 
+                        mChart.SetVisibleXRangeMinimum(selectedSMHistoryData.ByMonth.Months.Count);
+                        mChart.SetVisibleXRangeMaximum(selectedSMHistoryData.ByMonth.Months.Count);
+                    }
+                    else
+                    {
+
+                        txtRange.Text = selectedSMHistoryData.ByMonth.Range;
+                        // SETUP XAXIS
+
+                        SetUpXAxiskWh();
+
+                        // SETUP YAXIS
+
+                        SetUpYAxisKwh();
+
+                        // ADD DATA
+                        SetKWhData(selectedSMHistoryData.ByMonth.Months.Count);
+
+                        // SETUP MARKER VIEW
+
+                        SetUpMarkerKWhView();
+
+                        mChart.SetVisibleXRangeMinimum(selectedSMHistoryData.ByMonth.Months.Count);
+                        mChart.SetVisibleXRangeMaximum(selectedSMHistoryData.ByMonth.Months.Count);
+                    }
+                }
+                else if (ChartType == ChartType.Day)
+                {
+                    if (isMDMSDown)
+                    {
+                        txtRange.Visibility = ViewStates.Gone;
+                        mdmsDayViewDownLayout.Visibility = ViewStates.Visible;
+                        mChart.Visibility = ViewStates.Gone;
+                        smGraphZoomToggleLayout.Enabled = false;
+                    }
+                    else
+                    {
+                        if (isZoomIn)
+                        {
+                            smDayViewZoomInIndicatorLayout.Visibility = ViewStates.Visible;
+                        }
+
+                        smGraphZoomToggleLayout.Enabled = true;
+                        if (ChartDataType == ChartDataType.RM)
+                        {
+                            DayViewRMData = new List<double>();
+                            if (selectedSMHistoryData != null && selectedSMHistoryData.ByDay != null && selectedSMHistoryData.ByDay.Count > 0)
+                            {
+                                foreach (SMUsageHistoryData.ByDayData DayData in selectedSMHistoryData.ByDay)
+                                {
+                                    foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
+                                    {
+                                        DayViewRMData.Add(IndividualDayData.Amount);
+                                    }
+                                }
+                            }
+
+                            txtRange.Text = selectedSMHistoryData.DateRange;
+
+                            // SETUP XAXIS
+
+                            SetUpXAxis();
+
+                            // SETUP YAXIS
+
+                            SetUpYAxis();
+
+                            // ADD DATA
+                            SetData(DayViewRMData.Count);
+
+                            // SETUP MARKER VIEW
+                            
+                            SetUpMarkerRMView();
+
+                            if (isZoomIn)
+                            {
+                                mChart.SetVisibleXRangeMinimum(9);
+                                mChart.SetVisibleXRangeMaximum(9);
+                            }
+                            else
+                            {
+                                mChart.SetVisibleXRangeMinimum(DayViewRMData.Count);
+                                mChart.SetVisibleXRangeMaximum(DayViewRMData.Count);
+                            }
+                        }
+                        else
+                        {
+                            DayViewkWhData = new List<double>();
+                            if (selectedSMHistoryData != null && selectedSMHistoryData.ByDay != null && selectedSMHistoryData.ByDay.Count > 0)
+                            {
+                                foreach (SMUsageHistoryData.ByDayData DayData in selectedSMHistoryData.ByDay)
+                                {
+                                    foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
+                                    {
+                                        DayViewkWhData.Add(IndividualDayData.Consumption);
+                                    }
+                                }
+                            }
+
+                            txtRange.Text = selectedSMHistoryData.DateRange;
+                            // SETUP XAXIS
+
+                            SetUpXAxiskWh();
+
+                            // SETUP YAXIS
+
+                            SetUpYAxisKwh();
+
+                            // ADD DATA
+                            SetKWhData(DayViewkWhData.Count);
+
+                            // SETUP MARKER VIEW
+
+                            SetUpMarkerKWhView();
+
+                            if (isZoomIn)
+                            {
+                                mChart.SetVisibleXRangeMinimum(9);
+                                mChart.SetVisibleXRangeMaximum(9);
+                            }
+                            else
+                            {
+                                mChart.SetVisibleXRangeMinimum(DayViewkWhData.Count);
+                                mChart.SetVisibleXRangeMaximum(DayViewkWhData.Count);
+                            }
+                        }
+                    }
+                }
             }
             else
             {
+                if (ChartType == ChartType.Month)
+                {
+                    if (ChartDataType == ChartDataType.RM)
+                    {
 
-                txtRange.Text = selectedHistoryData.ByMonth.Range;
-                // SETUP XAXIS
+                        txtRange.Text = selectedHistoryData.ByMonth.Range;
 
-                SetUpXAxiskWh();
+                        // SETUP XAXIS
 
-                // SETUP YAXIS
+                        SetUpXAxis();
 
-                SetUpYAxisKwh();
+                        // SETUP YAXIS
 
-                // ADD DATA
-                SetKWhData(selectedHistoryData.ByMonth.Months.Count);
+                        SetUpYAxis();
 
-                // SETUP MARKER VIEW
+                        // ADD DATA
 
-                SetUpMarkerKWhView();
+                        SetData(selectedHistoryData.ByMonth.Months.Count);
+
+
+                        // SETUP MARKER VIEW
+
+                        SetUpMarkerRMView();
+
+                        mChart.SetVisibleXRangeMinimum(selectedHistoryData.ByMonth.Months.Count);
+                        mChart.SetVisibleXRangeMaximum(selectedHistoryData.ByMonth.Months.Count);
+                    }
+                    else
+                    {
+
+                        txtRange.Text = selectedHistoryData.ByMonth.Range;
+                        // SETUP XAXIS
+
+                        SetUpXAxiskWh();
+
+                        // SETUP YAXIS
+
+                        SetUpYAxisKwh();
+
+                        // ADD DATA
+                        SetKWhData(selectedHistoryData.ByMonth.Months.Count);
+
+                        // SETUP MARKER VIEW
+
+                        SetUpMarkerKWhView();
+
+                        mChart.SetVisibleXRangeMinimum(selectedHistoryData.ByMonth.Months.Count);
+                        mChart.SetVisibleXRangeMaximum(selectedHistoryData.ByMonth.Months.Count);
+                    }
+                }
             }
 
             int graphTopPadding = 30;
+            int graphLeftRightPadding = (int)DPUtils.ConvertDPToPx(4f);
             int graphBottomPadding = 10;
             if (selectedAccount.AccountCategoryId.Equals("2"))
             {
                 graphTopPadding = 40;
-                mChart.LayoutParameters.Height = (int) DPUtils.ConvertDPToPx(240f);
+                mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(240f);
             }
-            mChart.SetExtraOffsets(0, graphTopPadding, 0, graphBottomPadding);
+            else if (ChartType == ChartType.Day && isZoomIn)
+            {
+                graphBottomPadding = 6;
+                mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(196f);
+            }
+            else
+            {
+                mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(220f);
+            }
+
+
+            mChart.SetExtraOffsets(graphLeftRightPadding, graphTopPadding, graphLeftRightPadding, graphBottomPadding);
 
             mChart.SetOnChartValueSelectedListener(this);
+            mScaleDetector = new ScaleGestureDetector(this.Activity, new BarGraphPinchListener(ChartType, this.userActionsListener));
+            mChart.SetOnTouchListener(this);
+
+            mChart.OnTouchListener = new OnBarChartTouchLister(mChart, mChart.Matrix, 3)
+            {
+                currentChartType = ChartType,
+                currentChartDataType = ChartDataType,
+                currentDayViewkWhList = DayViewkWhData,
+                currentDayViewRMList = DayViewRMData,
+                currentIsZoomIn = isZoomIn,
+                currentFragment = this
+            };
+
+            mChart.NestedScrollingEnabled = true;
+
+            mChart.Invalidate();
         }
         #region SETUP AXIS RM
         internal void SetUpXAxis()
         {
+            List<string> DayViewLabel = new List<string>();
 
-            XLabelsFormatter = new ChartsMonthFormatter(selectedHistoryData.ByMonth, mChart);
+            if (isSMAccount)
+            {
+                if (ChartType == ChartType.Month)
+                {
+                    XLabelsFormatter = new SMChartsMonthFormatter(selectedSMHistoryData.ByMonth, mChart);
+                }
+                else if (ChartType == ChartType.Day)
+                {
+                    if (!isZoomIn)
+                    {
+                        for (int i = 0; i < DayViewRMData.Count; i++)
+                        {
+                            if (DayViewRMData.Count > 20 && i == 1)
+                            {
+                                if (!string.IsNullOrEmpty(selectedSMHistoryData.StartDate))
+                                {
+                                    DayViewLabel.Add(selectedSMHistoryData.StartDate);
+                                }
+                                else
+                                {
+                                    DayViewLabel.Add("");
+                                }
+                            }
+                            else if (DayViewRMData.Count > 20 && (i == DayViewRMData.Count - 2))
+                            {
+                                if (!string.IsNullOrEmpty(selectedSMHistoryData.EndDate))
+                                {
+                                    DayViewLabel.Add(selectedSMHistoryData.EndDate);
+                                }
+                                else
+                                {
+                                    DayViewLabel.Add("");
+                                }
+                            }
+                            else if (DayViewRMData.Count <= 20 && i == 0)
+                            {
+                                if (!string.IsNullOrEmpty(selectedSMHistoryData.StartDate))
+                                {
+                                    DayViewLabel.Add(selectedSMHistoryData.StartDate);
+                                }
+                                else
+                                {
+                                    DayViewLabel.Add("");
+                                }
+                            }
+                            else if (DayViewRMData.Count <= 20 && (i == DayViewRMData.Count - 1))
+                            {
+                                if (!string.IsNullOrEmpty(selectedSMHistoryData.EndDate))
+                                {
+                                    DayViewLabel.Add(selectedSMHistoryData.EndDate);
+                                }
+                                else
+                                {
+                                    DayViewLabel.Add("");
+                                }
+                            }
+                            else if (i == (int)((DayViewRMData.Count - 1) / 2))
+                            {
+                                if (!string.IsNullOrEmpty(selectedSMHistoryData.MidDate))
+                                {
+                                    DayViewLabel.Add(selectedSMHistoryData.MidDate);
+                                }
+                                else
+                                {
+                                    DayViewLabel.Add("");
+                                }
+                            }
+                            else
+                            {
+                                DayViewLabel.Add("");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (selectedSMHistoryData != null && selectedSMHistoryData.ByDay != null && selectedSMHistoryData.ByDay.Count > 0)
+                        {
+                            foreach (SMUsageHistoryData.ByDayData DayData in selectedSMHistoryData.ByDay)
+                            {
+                                foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
+                                {
+                                    DayViewLabel.Add(IndividualDayData.Day);
+                                }
+                            }
+                        }
+
+                        if (isZoomIn)
+                        {
+                            List<string> NewDayViewLabel = new List<string>();
+
+                            for (int i = 0; i < 4; i++)
+                            {
+                                NewDayViewLabel.Add("");
+                            }
+
+                            for (int i = 0; i < DayViewLabel.Count; i++)
+                            {
+                                NewDayViewLabel.Add(DayViewLabel[i]);
+                            }
+
+
+                            for (int i = 0; i < 4; i++)
+                            {
+                                NewDayViewLabel.Add("");
+                            }
+
+                            DayViewLabel = NewDayViewLabel;
+                        }
+                    }
+
+                    XLabelsFormatter = new SMChartsZoomInDayFormatter(DayViewLabel, mChart);
+                }
+            }
+            else
+            {
+                XLabelsFormatter = new ChartsMonthFormatter(selectedHistoryData.ByMonth, mChart);
+            }
 
             XAxis xAxis = mChart.XAxis;
             xAxis.Position = XAxisPosition.Bottom;
             xAxis.TextColor = Color.ParseColor("#ffffff");
             xAxis.AxisLineWidth = 2f;
             xAxis.AxisLineColor = Color.ParseColor("#4cffffff");
+            xAxis.TextSize = 11f;
 
             xAxis.SetDrawGridLines(false);
 
+            try
+            {
+                Typeface plain = Typeface.CreateFromAsset(Context.Assets, "fonts/" + TextViewUtils.MuseoSans300);
+                xAxis.Typeface = plain;
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
             xAxis.Granularity = 1f; // only intervals of 1 day
-            xAxis.LabelCount = selectedHistoryData.ByMonth.Months.Count;
+
+            if (isSMAccount)
+            {
+                if (ChartType == ChartType.Month)
+                {
+                    xAxis.LabelCount = selectedSMHistoryData.ByMonth.Months.Count;
+                }
+                else if (ChartType == ChartType.Day)
+                {
+                    xAxis.LabelCount = DayViewLabel.Count;
+                }
+            }
+            else
+            {
+                xAxis.LabelCount = selectedHistoryData.ByMonth.Months.Count;
+            }
             xAxis.ValueFormatter = XLabelsFormatter;
 
 
@@ -988,18 +2039,162 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #region SETUP AXIS KWH
         internal void SetUpXAxiskWh()
         {
-            XLabelsFormatter = new ChartsKWhFormatter(selectedHistoryData.ByMonth, mChart);
+            List<string> DayViewLabel = new List<string>();
+
+            if (isSMAccount)
+            {
+                if (ChartType == ChartType.Month)
+                {
+                    XLabelsFormatter = new SMChartsMonthFormatter(selectedSMHistoryData.ByMonth, mChart);
+                }
+                else if (ChartType == ChartType.Day)
+                {
+                    if (!isZoomIn)
+                    {
+                        for (int i = 0; i < DayViewkWhData.Count; i++)
+                        {
+                            if (DayViewkWhData.Count > 20 && i == 1)
+                            {
+                                if (!string.IsNullOrEmpty(selectedSMHistoryData.StartDate))
+                                {
+                                    DayViewLabel.Add(selectedSMHistoryData.StartDate);
+                                }
+                                else
+                                {
+                                    DayViewLabel.Add("");
+                                }
+                            }
+                            else if (DayViewkWhData.Count > 20 && (i == DayViewkWhData.Count - 2))
+                            {
+                                if (!string.IsNullOrEmpty(selectedSMHistoryData.EndDate))
+                                {
+                                    DayViewLabel.Add(selectedSMHistoryData.EndDate);
+                                }
+                                else
+                                {
+                                    DayViewLabel.Add("");
+                                }
+                            }
+                            else if (DayViewkWhData.Count <= 20 && i == 0)
+                            {
+                                if (!string.IsNullOrEmpty(selectedSMHistoryData.StartDate))
+                                {
+                                    DayViewLabel.Add(selectedSMHistoryData.StartDate);
+                                }
+                                else
+                                {
+                                    DayViewLabel.Add("");
+                                }
+                            }
+                            else if (DayViewkWhData.Count <= 20 && (i == DayViewkWhData.Count - 1))
+                            {
+                                if (!string.IsNullOrEmpty(selectedSMHistoryData.EndDate))
+                                {
+                                    DayViewLabel.Add(selectedSMHistoryData.EndDate);
+                                }
+                                else
+                                {
+                                    DayViewLabel.Add("");
+                                }
+                            }
+                            else if (i == (int)((DayViewkWhData.Count - 1) / 2))
+                            {
+                                if (!string.IsNullOrEmpty(selectedSMHistoryData.MidDate))
+                                {
+                                    DayViewLabel.Add(selectedSMHistoryData.MidDate);
+                                }
+                                else
+                                {
+                                    DayViewLabel.Add("");
+                                }
+                            }
+                            else
+                            {
+                                DayViewLabel.Add("");
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (selectedSMHistoryData != null && selectedSMHistoryData.ByDay != null && selectedSMHistoryData.ByDay.Count > 0)
+                        {
+                            foreach (SMUsageHistoryData.ByDayData DayData in selectedSMHistoryData.ByDay)
+                            {
+                                foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
+                                {
+                                    DayViewLabel.Add(IndividualDayData.Day);
+                                }
+                            }
+                        }
+
+                        if (isZoomIn)
+                        {
+                            List<string> NewDayViewLabel = new List<string>();
+
+                            for (int i = 0; i < 4; i++)
+                            {
+                                NewDayViewLabel.Add("");
+                            }
+
+                            for (int i = 0; i < DayViewLabel.Count; i++)
+                            {
+                                NewDayViewLabel.Add(DayViewLabel[i]);
+                            }
+
+
+                            for (int i = 0; i < 4; i++)
+                            {
+                                NewDayViewLabel.Add("");
+                            }
+
+                            DayViewLabel = NewDayViewLabel;
+                        }
+                    }
+
+                    XLabelsFormatter = new SMChartsZoomInDayFormatter(DayViewLabel, mChart);
+                }
+            }
+            else
+            {
+                XLabelsFormatter = new ChartsKWhFormatter(selectedHistoryData.ByMonth, mChart);
+            }
 
             XAxis xAxis = mChart.XAxis;
             xAxis.Position = XAxisPosition.Bottom;
             xAxis.TextColor = Color.ParseColor("#ffffff");
             xAxis.AxisLineWidth = 2f;
             xAxis.AxisLineColor = Color.ParseColor("#4cffffff");
+            xAxis.TextSize = 11f;
 
             xAxis.SetDrawGridLines(false);
 
+            try
+            {
+                Typeface plain = Typeface.CreateFromAsset(Context.Assets, "fonts/" + TextViewUtils.MuseoSans300);
+                xAxis.Typeface = plain;
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
             xAxis.Granularity = 1f; // only intervals of 1 day
-            xAxis.LabelCount = selectedHistoryData.ByMonth.Months.Count;
+
+            if (isSMAccount)
+            {
+                if (ChartType == ChartType.Month)
+                {
+                    xAxis.LabelCount = selectedSMHistoryData.ByMonth.Months.Count;
+                }
+                else if (ChartType == ChartType.Day)
+                {
+                    xAxis.LabelCount = DayViewLabel.Count;
+                }
+            }
+            else
+            {
+                xAxis.LabelCount = selectedHistoryData.ByMonth.Months.Count;
+            }
             xAxis.ValueFormatter = XLabelsFormatter;
 
 
@@ -1009,8 +2204,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #region SETUP Y AXIS RM
         internal void SetUpYAxis()
         {
-            IAxisValueFormatter custom = new MyAxisValueFormatter();
-
             float maxVal = GetMaxRMValues();
             float lowestPossibleSpace = (5f / 100f) * -maxVal;
 
@@ -1021,6 +2214,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             leftAxis.SpaceTop = 10f;
             leftAxis.SpaceBottom = 10f;
             leftAxis.AxisMinimum = lowestPossibleSpace;
+            // Lin Siong Note: the 1.5f is important as it give the spacing for marker to render
             leftAxis.AxisMaximum = maxVal + 1.5f;
 
             YAxis rightAxis = mChart.AxisRight;
@@ -1029,6 +2223,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             rightAxis.SpaceTop = 10f;
             rightAxis.SpaceBottom = 10f;
             rightAxis.AxisMinimum = lowestPossibleSpace;
+            // Lin Siong Note: the 1.5f is important as it give the spacing for marker to render
             rightAxis.AxisMaximum = maxVal + 1.5f;
 
         }
@@ -1037,7 +2232,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #region SETUP Y AXIS KWH
         internal void SetUpYAxisKwh()
         {
-            IAxisValueFormatter custom = new MyAxisValueFormatter();
             float maxVal = GetMaxKWhValues();
             float lowestPossibleSpace = (5f / 100f) * -maxVal;
 
@@ -1064,109 +2258,529 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #region SETUP MARKERVIEW RM / HIGHLIGHT TEXT
         internal void SetUpMarkerRMView()
         {
-            SelectedMarkerView markerView = new SelectedMarkerView(Activity)
+            if (isSMAccount)
             {
-                UsageHistoryData = selectedHistoryData,
-                ChartType = ChartType.RM,
-                AccountType = selectedAccount.AccountCategoryId
-            };
-            markerView.ChartView = mChart;
-            mChart.Marker = markerView;
+                List<double> newDayViewCurrencyList = new List<double>();
+
+                if (ChartType == ChartType.Day && isZoomIn)
+                {
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        newDayViewCurrencyList.Add(0);
+                    }
+
+                    for (int i = 0; i < DayViewRMData.Count; i++)
+                    {
+                        newDayViewCurrencyList.Add(DayViewRMData[i]);
+                    }
+
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        newDayViewCurrencyList.Add(0);
+                    }
+                }
+                else
+                {
+                    newDayViewCurrencyList = DayViewRMData;
+                }
+
+
+                SMSelectedMarkerView markerView = new SMSelectedMarkerView(Activity)
+                {
+                    UsageHistoryData = selectedSMHistoryData,
+                    ChartType = ChartType,
+                    ChartDataType = ChartDataType,
+                    isMDMSDown = isMDMSDown,
+                    smDayViewCurrencyList = newDayViewCurrencyList,
+                    smDayCurrencyUnit = "RM",
+                    isZoomIn = isZoomIn,
+                    smMissingList = missingReadingList,
+                    AccountType = selectedAccount.AccountCategoryId
+                };
+
+                markerView.ChartView = mChart;
+                mChart.Marker = markerView;
+            }
+            else
+            {
+                SelectedMarkerView markerView = new SelectedMarkerView(Activity)
+                {
+                    UsageHistoryData = selectedHistoryData,
+                    ChartType = ChartType,
+                    ChartDataType = ChartDataType,
+                    AccountType = selectedAccount.AccountCategoryId
+                };
+
+                markerView.ChartView = mChart;
+                mChart.Marker = markerView;
+            }
         }
         #endregion
 
         #region SETUP MARKERVIEW KWH/ HIGHLIGHT TEXT
         internal void SetUpMarkerKWhView()
         {
-            SelectedMarkerView markerView = new SelectedMarkerView(Activity)
+            if (isSMAccount)
             {
-                UsageHistoryData = selectedHistoryData,
-                ChartType = ChartType.kWh,
-                AccountType = selectedAccount.AccountCategoryId
-            };
-            markerView.ChartView = mChart;
-            mChart.Marker = markerView;
+                List<double> newDayViewUsageList = new List<double>();
+
+                if (ChartType == ChartType.Day && isZoomIn)
+                {
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        newDayViewUsageList.Add(0);
+                    }
+
+                    for (int i = 0; i < DayViewkWhData.Count; i++)
+                    {
+                        newDayViewUsageList.Add(DayViewkWhData[i]);
+                    }
+
+
+                    for (int i = 0; i < 4; i++)
+                    {
+                        newDayViewUsageList.Add(0);
+                    }
+                }
+                else
+                {
+                    newDayViewUsageList = DayViewkWhData;
+                }
+
+
+                SMSelectedMarkerView markerView = new SMSelectedMarkerView(Activity)
+                {
+                    UsageHistoryData = selectedSMHistoryData,
+                    ChartType = ChartType,
+                    ChartDataType = ChartDataType,
+                    isMDMSDown = isMDMSDown,
+                    smDayViewUsageList = newDayViewUsageList,
+                    smDayUsageUnit = "kWh",
+                    isZoomIn = isZoomIn,
+                    smMissingList = missingReadingList,
+                    AccountType = selectedAccount.AccountCategoryId
+                };
+
+                markerView.ChartView = mChart;
+                mChart.Marker = markerView;
+            }
+            else
+            {
+                SelectedMarkerView markerView = new SelectedMarkerView(Activity)
+                {
+                    UsageHistoryData = selectedHistoryData,
+                    ChartType = ChartType,
+                    ChartDataType = ChartDataType,
+                    AccountType = selectedAccount.AccountCategoryId
+                };
+                markerView.ChartView = mChart;
+                mChart.Marker = markerView;
+            }
         }
         #endregion
 
         #region SETUP RM DATA
         internal void SetData(int barLength)
         {
-            if (isToggleTariff)
+            if (!isSMAccount)
             {
-                int stackIndex = 0;
-                List<BarEntry> yVals1 = new List<BarEntry>();
-                for (int i = 0; i < barLength; i++)
+                // Lin Siong Note: the tariff data entry handling
+                // Lin Siong Note: one row will contain stacked of data
+                if (isToggleTariff)
                 {
-                    if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
-                    {
-                        float[] valList = new float[selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count];
-                        for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
-                        {
-                            float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
-                            if (float.IsPositiveInfinity(val))
-                            {
-                                val = float.PositiveInfinity;
-                            }
-                            valList[j] = System.Math.Abs(val);
-                        }
-                        if (i == barLength - 1)
-                        {
-                            stackIndex = valList.Length - 1;
-                        }
-                        yVals1.Add(new BarEntry(i, valList));
-                    }
-                    else
-                    {
-                        yVals1.Add(new BarEntry(i, 0));
-                    }
-                }
-
-                BarDataSet set1;
-
-                if (mChart.Data != null && mChart.Data is BarData)
-                {
-                    var barData = mChart.Data as BarData;
-
-                    if (barData.DataSetCount > 0)
-                    {
-                        set1 = barData.GetDataSetByIndex(0) as BarDataSet;
-                        set1.Values = yVals1;
-                        barData.NotifyDataChanged();
-                        mChart.NotifyDataSetChanged();
-                    }
-                }
-                else
-                {
-                    set1 = new BarDataSet(yVals1, "");
-                    set1.SetDrawIcons(false);
-
-                    List<int> listOfColor = new List<int>();
-                   
+                    int stackIndex = 0;
+                    List<BarEntry> yVals1 = new List<BarEntry>();
                     for (int i = 0; i < barLength; i++)
                     {
                         if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
                         {
+                            float[] valList = new float[selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count];
                             for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
                             {
-                                if (selectedHistoryData.TariffBlocksLegend != null && selectedHistoryData.TariffBlocksLegend.Count > 0)
+                                float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
+                                if (float.IsPositiveInfinity(val))
                                 {
-                                    bool isFound = false;
-                                    for (int k = 0; k < selectedHistoryData.TariffBlocksLegend.Count; k++)
-                                    {
-                                        if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedHistoryData.TariffBlocksLegend[k].BlockId)
-                                        {
-                                            isFound = true;
-                                            listOfColor.Add(Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData));
-                                            break;
-                                        }
-                                    }
+                                    val = float.PositiveInfinity;
+                                }
+                                valList[j] = System.Math.Abs(val);
+                            }
+                            if (i == barLength - 1)
+                            {
+                                stackIndex = valList.Length - 1;
+                            }
+                            yVals1.Add(new BarEntry(i, valList));
+                        }
+                        else
+                        {
+                            float[] valList = new float[1];
+                            valList[0] = 0f;
+                            yVals1.Add(new BarEntry(i, valList));
+                        }
+                    }
 
-                                    if (!isFound)
+                    BarDataSet set1;
+
+                    if (mChart.Data != null && mChart.Data is BarData)
+                    {
+                        var barData = mChart.Data as BarData;
+
+                        if (barData.DataSetCount > 0)
+                        {
+                            set1 = barData.GetDataSetByIndex(0) as BarDataSet;
+                            set1.Values = yVals1;
+                            barData.NotifyDataChanged();
+                            mChart.NotifyDataSetChanged();
+                        }
+                    }
+                    else
+                    {
+                        set1 = new BarDataSet(yVals1, "");
+                        set1.SetDrawIcons(false);
+
+                        // Lin Siong Note: the tariff data entrycolor  handling
+                        // Lin Siong Note: it will track on which block it will use which color
+                        // Lin Siong Note: then fill the color inside the array
+                        // Lin Siong Note: then set the color array to chart
+                        List<int> listOfColor = new List<int>();
+
+                        for (int i = 0; i < barLength; i++)
+                        {
+                            if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                            {
+                                for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                                {
+                                    if (selectedHistoryData.TariffBlocksLegend != null && selectedHistoryData.TariffBlocksLegend.Count > 0)
+                                    {
+                                        bool isFound = false;
+                                        for (int k = 0; k < selectedHistoryData.TariffBlocksLegend.Count; k++)
+                                        {
+                                            if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedHistoryData.TariffBlocksLegend[k].BlockId)
+                                            {
+                                                isFound = true;
+                                                listOfColor.Add(Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData));
+                                                break;
+                                            }
+                                        }
+
+                                        if (!isFound)
+                                        {
+                                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                        }
+
+                                    }
+                                    else
                                     {
                                         listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                     }
+                                }
+                            }
+                            else
+                            {
+                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                            }
+                        }
 
+
+                        int[] colorSet = new int[listOfColor.Count];
+                        for (int z = 0; z < listOfColor.Count; z++)
+                        {
+                            colorSet[z] = listOfColor[z];
+                        }
+
+                        set1.SetColors(colorSet);
+
+                        List<IBarDataSet> dataSets = new List<IBarDataSet>();
+                        dataSets.Add(set1);
+
+
+                        BarData data = new BarData(dataSets);
+
+                        data.BarWidth = 0.25f;
+
+                        set1.HighLightAlpha = 0;
+
+                        data.HighlightEnabled = true;
+                        data.SetValueTextSize(10f);
+                        data.SetDrawValues(false);
+
+                        mChart.Data = data;
+                    }
+
+                    // HIGHLIGHT RIGHT MOST ITEM
+                    CurrentParentIndex = barLength - 1;
+                    Highlight rightMostBar = new Highlight(barLength - 1, 0, stackIndex);
+                    mChart.HighlightValues(new Highlight[] { rightMostBar });
+                }
+                else
+                {
+                    List<BarEntry> yVals1 = new List<BarEntry>();
+                    for (int i = 0; i < barLength; i++)
+                    {
+                        float[] valList = new float[1];
+                        float val = (float)selectedHistoryData.ByMonth.Months[i].AmountTotal;
+                        if (float.IsPositiveInfinity(val))
+                        {
+                            val = float.PositiveInfinity;
+                        }
+                        valList[0] = System.Math.Abs(val);
+                        yVals1.Add(new BarEntry(i, valList));
+                    }
+
+                    BarDataSet set1;
+
+                    if (mChart.Data != null && mChart.Data is BarData)
+                    {
+                        var barData = mChart.Data as BarData;
+
+                        if (barData.DataSetCount > 0)
+                        {
+                            set1 = barData.GetDataSetByIndex(0) as BarDataSet;
+                            set1.Values = yVals1;
+                            barData.NotifyDataChanged();
+                            mChart.NotifyDataSetChanged();
+                        }
+                    }
+                    else
+                    {
+                        set1 = new BarDataSet(yVals1, "");
+                        set1.SetDrawIcons(false);
+
+                        List<int> listOfColor = new List<int>();
+
+                        for (int i = 0; i < barLength; i++)
+                        {
+                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                        }
+
+                        int[] colorSet = new int[listOfColor.Count];
+                        for (int z = 0; z < listOfColor.Count; z++)
+                        {
+                            colorSet[z] = listOfColor[z];
+                        }
+
+                        set1.SetColors(colorSet);
+
+                        List<IBarDataSet> dataSets = new List<IBarDataSet>();
+                        dataSets.Add(set1);
+
+
+                        BarData data = new BarData(dataSets);
+
+                        data.BarWidth = 0.25f;
+
+                        set1.HighLightAlpha = 0;
+
+                        data.HighlightEnabled = true;
+                        data.SetValueTextSize(10f);
+                        data.SetDrawValues(false);
+
+                        mChart.Data = data;
+                    }
+
+                    // HIGHLIGHT RIGHT MOST ITEM
+                    CurrentParentIndex = barLength - 1;
+                    Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
+                    mChart.HighlightValues(new Highlight[] { rightMostBar });
+                }
+            }
+            else
+            {
+                if (isToggleTariff)
+                {
+                    // Lin Siong Note: the tariff data entry handling
+                    // Lin Siong Note: one row will contain stacked of data
+                    int stackIndex = 0;
+                    List<BarEntry> yVals1 = new List<BarEntry>();
+                    if (ChartType == ChartType.Month)
+                    {
+                        for (int i = 0; i < barLength; i++)
+                        {
+                            if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                            {
+                                float[] valList = new float[selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count];
+                                for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                                {
+                                    float val = (float)selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
+                                    if (float.IsPositiveInfinity(val))
+                                    {
+                                        val = float.PositiveInfinity;
+                                    }
+                                    valList[j] = System.Math.Abs(val);
+                                }
+                                if (i == barLength - 1)
+                                {
+                                    stackIndex = valList.Length - 1;
+                                }
+                                yVals1.Add(new BarEntry(i, valList));
+                            }
+                            else
+                            {
+                                float[] valList = new float[1];
+                                valList[0] = 0f;
+                                if (i == barLength - 1)
+                                {
+                                    stackIndex = valList.Length - 1;
+                                }
+                                yVals1.Add(new BarEntry(i, valList));
+                            }
+                        }
+                    }
+                    else if (ChartType == ChartType.Day)
+                    {
+                        int i = 0;
+                        if (selectedSMHistoryData != null && selectedSMHistoryData.ByDay != null && selectedSMHistoryData.ByDay.Count > 0)
+                        {
+                            foreach (SMUsageHistoryData.ByDayData DayData in selectedSMHistoryData.ByDay)
+                            {
+                                if (DayData.Days != null && DayData.Days.Count > 0)
+                                {
+                                    foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
+                                    {
+                                        if (IndividualDayData.TariffBlocksList != null && IndividualDayData.TariffBlocksList.Count > 0)
+                                        {
+                                            float[] valList = new float[IndividualDayData.TariffBlocksList.Count];
+                                            for (int j = 0; j < IndividualDayData.TariffBlocksList.Count; j++)
+                                            {
+                                                float val = (float)IndividualDayData.TariffBlocksList[j].Amount;
+                                                if (float.IsPositiveInfinity(val))
+                                                {
+                                                    val = float.PositiveInfinity;
+                                                }
+                                                valList[j] = System.Math.Abs(val);
+                                            }
+                                            yVals1.Add(new BarEntry(i, valList));
+                                            if (i == barLength - 1)
+                                            {
+                                                stackIndex = valList.Length - 1;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            float[] valList = new float[1];
+                                            valList[0] = 0f;
+                                            if (i == barLength - 1)
+                                            {
+                                                stackIndex = valList.Length - 1;
+                                            }
+                                            yVals1.Add(new BarEntry(i, valList));
+                                        }
+                                        i++;
+                                    }
+                                }
+                                else
+                                {
+                                    float[] valList = new float[1];
+                                    valList[0] = 0f;
+                                    if (i == barLength - 1)
+                                    {
+                                        stackIndex = valList.Length - 1;
+                                    }
+                                    yVals1.Add(new BarEntry(i, valList));
+                                    i++;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            float[] valList = new float[1];
+                            valList[0] = 0f;
+                            if (i == barLength - 1)
+                            {
+                                stackIndex = valList.Length - 1;
+                            }
+                            yVals1.Add(new BarEntry(i, valList));
+                        }
+                    }
+
+                    if (ChartType == ChartType.Day && isZoomIn)
+                    {
+                        List<BarEntry> yValNew = new List<BarEntry>();
+
+                        for (int j = 0; j < 4; j++)
+                        {
+                            float[] valList = new float[1];
+                            valList[0] = 0f;
+                            yValNew.Add(new BarEntry(j, valList));
+                        }
+
+                        for (int j = 0; j < yVals1.Count; j++)
+                        {
+                            yValNew.Add(new BarEntry(j + 4, yVals1[j].GetYVals()));
+                        }
+
+
+                        for (int j = 0; j < 4; j++)
+                        {
+                            float[] valList = new float[1];
+                            valList[0] = 0f;
+                            yValNew.Add(new BarEntry(j + 4 + yVals1.Count, valList));
+                        }
+
+                        yVals1 = yValNew;
+
+                        dayViewTariffList = yVals1;
+                    }
+
+                    BarDataSet set1;
+
+                    if (mChart.Data != null && mChart.Data is BarData)
+                    {
+                        var barData = mChart.Data as BarData;
+
+                        if (barData.DataSetCount > 0)
+                        {
+                            set1 = barData.GetDataSetByIndex(0) as BarDataSet;
+                            set1.Values = yVals1;
+                            barData.NotifyDataChanged();
+                            mChart.NotifyDataSetChanged();
+                        }
+                    }
+                    else
+                    {
+                        set1 = new BarDataSet(yVals1, "");
+                        set1.SetDrawIcons(false);
+
+                        List<int> listOfColor = new List<int>();
+
+                        // Lin Siong Note: the tariff data entrycolor  handling
+                        // Lin Siong Note: it will track on which block it will use which color
+                        // Lin Siong Note: then fill the color inside the array
+                        // Lin Siong Note: then set the color array to chart
+                        if (ChartType == ChartType.Month)
+                        {
+                            for (int i = 0; i < barLength; i++)
+                            {
+                                if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                                {
+                                    for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                                    {
+                                        if (selectedSMHistoryData.TariffBlocksLegend != null && selectedSMHistoryData.TariffBlocksLegend.Count > 0)
+                                        {
+                                            bool isFound = false;
+                                            for (int k = 0; k < selectedSMHistoryData.TariffBlocksLegend.Count; k++)
+                                            {
+                                                if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedSMHistoryData.TariffBlocksLegend[k].BlockId)
+                                                {
+                                                    isFound = true;
+                                                    listOfColor.Add(Color.Argb(50, selectedSMHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.BlueData));
+                                                    break;
+                                                }
+                                            }
+
+                                            if (!isFound)
+                                            {
+                                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                        }
+                                    }
                                 }
                                 else
                                 {
@@ -1174,103 +2788,306 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 }
                             }
                         }
-                        else
+                        else if (ChartType == ChartType.Day)
                         {
-                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                            if (selectedSMHistoryData != null && selectedSMHistoryData.ByDay != null && selectedSMHistoryData.ByDay.Count > 0)
+                            {
+                                foreach (SMUsageHistoryData.ByDayData DayData in selectedSMHistoryData.ByDay)
+                                {
+                                    if (DayData.Days != null && DayData.Days.Count > 0)
+                                    {
+                                        foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
+                                        {
+                                            if (IndividualDayData.TariffBlocksList != null && IndividualDayData.TariffBlocksList.Count > 0)
+                                            {
+                                                for (int j = 0; j < IndividualDayData.TariffBlocksList.Count; j++)
+                                                {
+                                                    if (selectedSMHistoryData.TariffBlocksLegend != null && selectedSMHistoryData.TariffBlocksLegend.Count > 0)
+                                                    {
+                                                        bool isFound = false;
+                                                        for (int k = 0; k < selectedSMHistoryData.TariffBlocksLegend.Count; k++)
+                                                        {
+                                                            if (IndividualDayData.TariffBlocksList[j].BlockId == selectedSMHistoryData.TariffBlocksLegend[k].BlockId)
+                                                            {
+                                                                isFound = true;
+                                                                listOfColor.Add(Color.Argb(50, selectedSMHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.BlueData));
+                                                                break;
+                                                            }
+                                                        }
+
+                                                        if (!isFound)
+                                                        {
+                                                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                                        }
+
+                                                    }
+                                                    else
+                                                    {
+                                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                            }
+
+                            if (isZoomIn)
+                            {
+                                List<int> listOfColorNew = new List<int>();
+
+                                for (int i = 0; i < 4; i++)
+                                {
+                                    listOfColorNew.Add(Color.Argb(50, 255, 255, 255));
+                                }
+
+                                for (int i = 0; i < listOfColor.Count; i++)
+                                {
+                                    listOfColorNew.Add(listOfColor[i]);
+                                }
+
+
+                                for (int i = 0; i < 4; i++)
+                                {
+                                    listOfColorNew.Add(Color.Argb(50, 255, 255, 255));
+                                }
+
+                                listOfColor = listOfColorNew;
+                            }
                         }
+
+
+                        int[] colorSet = new int[listOfColor.Count];
+                        for (int z = 0; z < listOfColor.Count; z++)
+                        {
+                            colorSet[z] = listOfColor[z];
+                        }
+
+                        set1.SetColors(colorSet);
+
+                        List<IBarDataSet> dataSets = new List<IBarDataSet>();
+                        dataSets.Add(set1);
+
+
+                        BarData data = new BarData(dataSets);
+
+                        if (ChartType == ChartType.Month)
+                        {
+                            data.BarWidth = 0.25f;
+                        }
+                        else if (ChartType == ChartType.Day)
+                        {
+                            if (!isZoomIn)
+                            {
+                                data.BarWidth = 0.60f;
+                            }
+                            else
+                            {
+                                data.BarWidth = 0.35f;
+                            }
+                        }
+
+                        set1.HighLightAlpha = 0;
+
+                        data.HighlightEnabled = true;
+                        data.SetValueTextSize(10f);
+                        data.SetDrawValues(false);
+
+                        mChart.Data = data;
                     }
 
-
-                    int[] colorSet = new int[listOfColor.Count];
-                    for (int z = 0; z < listOfColor.Count; z++)
+                    if (ChartType == ChartType.Month)
                     {
-                        colorSet[z] = listOfColor[z];
+                        // HIGHLIGHT RIGHT MOST ITEM
+                        CurrentParentIndex = barLength - 1;
+                        Highlight rightMostBar = new Highlight(barLength - 1, 0, stackIndex);
+                        mChart.HighlightValues(new Highlight[] { rightMostBar });
                     }
-
-                    set1.SetColors(colorSet);
-
-                    List<IBarDataSet> dataSets = new List<IBarDataSet>();
-                    dataSets.Add(set1);
-
-
-                    BarData data = new BarData(dataSets);
-
-                    data.BarWidth = 0.25f;
-
-                    set1.HighLightAlpha = 0;
-
-                    data.HighlightEnabled = true;
-                    data.SetValueTextSize(10f);
-                    data.SetDrawValues(false);
-
-                    mChart.Data = data;
-                }
-
-                // HIGHLIGHT RIGHT MOST ITEM
-                CurrentParentIndex = barLength - 1;
-                Highlight rightMostBar = new Highlight(barLength - 1, 0, stackIndex);
-                mChart.HighlightValues(new Highlight[] { rightMostBar });
-            }
-            else
-            {
-                List<BarEntry> yVals1 = new List<BarEntry>();
-                for (int i = 0; i < barLength; i++)
-                {
-                    float val = (float)selectedHistoryData.ByMonth.Months[i].AmountTotal;
-                    if (float.IsPositiveInfinity(val))
+                    else if (ChartType == ChartType.Day)
                     {
-                        val = float.PositiveInfinity;
-                    }
 
-                    yVals1.Add(new BarEntry(i, System.Math.Abs(val)));
-                }
-
-                BarDataSet set1;
-
-                if (mChart.Data != null && mChart.Data is BarData)
-                {
-                    var barData = mChart.Data as BarData;
-
-                    if (barData.DataSetCount > 0)
-                    {
-                        set1 = barData.GetDataSetByIndex(0) as BarDataSet;
-                        set1.Values = yVals1;
-                        barData.NotifyDataChanged();
-                        mChart.NotifyDataSetChanged();
                     }
                 }
                 else
                 {
-                    set1 = new BarDataSet(yVals1, "");
-                    set1.SetDrawIcons(false);
+                    // Lin Siong Note: the normal data entry handling for smart meter
+                    // Lin Siong Note: one row will contain stack of data, but only first is filleded
+                    List<BarEntry> yVals1 = new List<BarEntry>();
+                    for (int i = 0; i < barLength; i++)
+                    {
+                        if (ChartType == ChartType.Month)
+                        {
+                            float[] valList = new float[1];
+                            float val = (float)selectedSMHistoryData.ByMonth.Months[i].AmountTotal;
+                            if (float.IsPositiveInfinity(val))
+                            {
+                                val = float.PositiveInfinity;
+                            }
+                            valList[0] = System.Math.Abs(val);
+                            yVals1.Add(new BarEntry(i, valList));
+                        }
+                        else if (ChartType == ChartType.Day)
+                        {
+                            float[] valList = new float[1];
+                            float val = (float)DayViewRMData[i];
+                            if (float.IsPositiveInfinity(val))
+                            {
+                                val = float.PositiveInfinity;
+                            }
+                            valList[0] = System.Math.Abs(val);
+                            yVals1.Add(new BarEntry(i, valList));
+                        }
+                    }
+
+                    if (ChartType == ChartType.Day && isZoomIn)
+                    {
+                        List<BarEntry> yValNew = new List<BarEntry>();
+
+                        for (int j = 0; j < 4; j++)
+                        {
+                            float[] valLis = new float[1];
+                            valLis[0] = 0f;
+                            yValNew.Add(new BarEntry(j, valLis));
+                        }
+
+                        for (int j = 0; j < yVals1.Count; j++)
+                        {
+                            yValNew.Add(new BarEntry(j + 4, yVals1[j].GetYVals()));
+                        }
 
 
-                    set1.HighLightColor = Color.Argb(255, 255, 255, 255);
-                    set1.HighLightAlpha = 255;
+                        for (int j = 0; j < 4; j++)
+                        {
+                            float[] valLis = new float[1];
+                            valLis[0] = 0f;
+                            yValNew.Add(new BarEntry(j + 4 + yVals1.Count, valLis));
+                        }
 
-                    int[] color = { Color.Argb(100, 255, 255, 255) };
-                    set1.SetColors(color);
-                    List<IBarDataSet> dataSets = new List<IBarDataSet>();
-                    dataSets.Add(set1);
+                        yVals1 = yValNew;
+
+                        dayViewTariffList = yVals1;
+                    }
+
+                    BarDataSet set1;
+
+                    if (mChart.Data != null && mChart.Data is BarData)
+                    {
+                        var barData = mChart.Data as BarData;
+
+                        if (barData.DataSetCount > 0)
+                        {
+                            set1 = barData.GetDataSetByIndex(0) as BarDataSet;
+                            set1.Values = yVals1;
+                            barData.NotifyDataChanged();
+                            mChart.NotifyDataSetChanged();
+                        }
+                    }
+                    else
+                    {
+                        set1 = new BarDataSet(yVals1, "");
+                        set1.SetDrawIcons(false);
+
+                        List<int> listOfColor = new List<int>();
+
+                        for (int i = 0; i < barLength; i++)
+                        {
+                            if (ChartType == ChartType.Month)
+                            {
+                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                            }
+                            else if (ChartType == ChartType.Day)
+                            {
+                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                            }
+                        }
+
+                        if (ChartType == ChartType.Day && isZoomIn)
+                        {
+                            List<int> listOfColorNew = new List<int>();
+
+                            for (int i = 0; i < 4; i++)
+                            {
+                                listOfColorNew.Add(Color.Argb(50, 255, 255, 255));
+                            }
+
+                            for (int i = 0; i < listOfColor.Count; i++)
+                            {
+                                listOfColorNew.Add(listOfColor[i]);
+                            }
 
 
-                    BarData data = new BarData(dataSets);
+                            for (int i = 0; i < 4; i++)
+                            {
+                                listOfColorNew.Add(Color.Argb(50, 255, 255, 255));
+                            }
 
-                    data.BarWidth = 0.25f;
+                            listOfColor = listOfColorNew;
+                        }
 
-                    data.HighlightEnabled = true;
-                    data.SetValueTextSize(10f);
-                    data.SetDrawValues(false);
+                        int[] colorSet = new int[listOfColor.Count];
+                        for (int z = 0; z < listOfColor.Count; z++)
+                        {
+                            colorSet[z] = listOfColor[z];
+                        }
 
-                    mChart.Data = data;
+                        set1.SetColors(colorSet);
+
+                        List<IBarDataSet> dataSets = new List<IBarDataSet>();
+                        dataSets.Add(set1);
+
+
+                        BarData data = new BarData(dataSets);
+
+                        if (ChartType == ChartType.Month)
+                        {
+                            data.BarWidth = 0.25f;
+                        }
+                        else if (ChartType == ChartType.Day)
+                        {
+                            if (!isZoomIn)
+                            {
+                                data.BarWidth = 0.60f;
+                            }
+                            else
+                            {
+                                data.BarWidth = 0.35f;
+                            }
+                        }
+
+                        set1.HighLightAlpha = 0;
+
+                        data.HighlightEnabled = true;
+                        data.SetValueTextSize(10f);
+                        data.SetDrawValues(false);
+
+                        mChart.Data = data;
+                    }
+
+                    if (ChartType == ChartType.Month)
+                    {
+                        // HIGHLIGHT RIGHT MOST ITEM
+                        CurrentParentIndex = barLength - 1;
+                        Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
+                        mChart.HighlightValues(new Highlight[] { rightMostBar });
+                    }
+                    else if (ChartType == ChartType.Day)
+                    {
+
+                    }
                 }
-
-                // HIGHLIGHT RIGHT MOST ITEM
-                CurrentParentIndex = barLength - 1;
-                Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
-                mChart.HighlightValues(new Highlight[] { rightMostBar });
             }
-
 
         }
         #endregion
@@ -1278,81 +3095,400 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         #region SETUP KWH DATA
         internal void SetKWhData(int barLength)
         {
-            if (isToggleTariff)
+            if (!isSMAccount)
             {
-                int stackIndex = 0;
-                List<BarEntry> yVals1 = new List<BarEntry>();
-                for (int i = 0; i < barLength; i++)
+                if (isToggleTariff)
                 {
-                    if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
-                    {
-                        float[] valList = new float[selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count];
-                        for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
-                        {
-                            float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
-                            if (float.IsPositiveInfinity(val))
-                            {
-                                val = float.PositiveInfinity;
-                            }
-                            valList[j] = System.Math.Abs(val);
-                        }
-                        if (i == barLength - 1)
-                        {
-                            stackIndex = valList.Length - 1;
-                        }
-                        yVals1.Add(new BarEntry(i, valList));
-                    }
-                    else
-                    {
-                        yVals1.Add(new BarEntry(i, 0));
-                    }
-                }
-
-                BarDataSet set1;
-
-                if (mChart.Data != null && mChart.Data is BarData)
-                {
-                    var barData = mChart.Data as BarData;
-
-                    if (barData.DataSetCount > 0)
-                    {
-                        set1 = barData.GetDataSetByIndex(0) as BarDataSet;
-                        set1.Values = yVals1;
-                        barData.NotifyDataChanged();
-                        mChart.NotifyDataSetChanged();
-                    }
-                }
-                else
-                {
-                    set1 = new BarDataSet(yVals1, "");
-                    set1.SetDrawIcons(false);
-
-                    List<int> listOfColor = new List<int>();
-
+                    // Lin Siong Note: the tariff data entry handling
+                    // Lin Siong Note: one row will contain stacked of data
+                    int stackIndex = 0;
+                    List<BarEntry> yVals1 = new List<BarEntry>();
                     for (int i = 0; i < barLength; i++)
                     {
                         if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
                         {
+                            float[] valList = new float[selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count];
                             for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
                             {
-                                if (selectedHistoryData.TariffBlocksLegend != null && selectedHistoryData.TariffBlocksLegend.Count > 0)
+                                float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
+                                if (float.IsPositiveInfinity(val))
                                 {
-                                    bool isFound = false;
-                                    for (int k = 0; k < selectedHistoryData.TariffBlocksLegend.Count; k++)
-                                    {
-                                        if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedHistoryData.TariffBlocksLegend[k].BlockId)
-                                        {
-                                            isFound = true;
-                                            listOfColor.Add(Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData));
-                                            break;
-                                        }
-                                    }
+                                    val = float.PositiveInfinity;
+                                }
+                                valList[j] = System.Math.Abs(val);
+                            }
+                            if (i == barLength - 1)
+                            {
+                                stackIndex = valList.Length - 1;
+                            }
+                            yVals1.Add(new BarEntry(i, valList));
+                        }
+                        else
+                        {
+                            float[] valList = new float[1];
+                            valList[0] = 0f;
+                            yVals1.Add(new BarEntry(i, valList));
+                        }
+                    }
 
-                                    if (!isFound)
+                    BarDataSet set1;
+
+                    if (mChart.Data != null && mChart.Data is BarData)
+                    {
+                        var barData = mChart.Data as BarData;
+
+                        if (barData.DataSetCount > 0)
+                        {
+                            set1 = barData.GetDataSetByIndex(0) as BarDataSet;
+                            set1.Values = yVals1;
+                            barData.NotifyDataChanged();
+                            mChart.NotifyDataSetChanged();
+                        }
+                    }
+                    else
+                    {
+                        set1 = new BarDataSet(yVals1, "");
+                        set1.SetDrawIcons(false);
+
+                        // Lin Siong Note: the tariff data entrycolor  handling
+                        // Lin Siong Note: it will track on which block it will use which color
+                        // Lin Siong Note: then fill the color inside the array
+                        // Lin Siong Note: then set the color array to chart
+
+                        List<int> listOfColor = new List<int>();
+
+                        for (int i = 0; i < barLength; i++)
+                        {
+                            if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                            {
+                                for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                                {
+                                    if (selectedHistoryData.TariffBlocksLegend != null && selectedHistoryData.TariffBlocksLegend.Count > 0)
+                                    {
+                                        bool isFound = false;
+                                        for (int k = 0; k < selectedHistoryData.TariffBlocksLegend.Count; k++)
+                                        {
+                                            if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedHistoryData.TariffBlocksLegend[k].BlockId)
+                                            {
+                                                isFound = true;
+                                                listOfColor.Add(Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData));
+                                                break;
+                                            }
+                                        }
+
+                                        if (!isFound)
+                                        {
+                                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                        }
+
+                                    }
+                                    else
                                     {
                                         listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                     }
+                                }
+                            }
+                            else
+                            {
+                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                            }
+                        }
 
+
+                        int[] colorSet = new int[listOfColor.Count];
+                        for (int z = 0; z < listOfColor.Count; z++)
+                        {
+                            colorSet[z] = listOfColor[z];
+                        }
+
+                        set1.SetColors(colorSet);
+
+                        List<IBarDataSet> dataSets = new List<IBarDataSet>();
+                        dataSets.Add(set1);
+
+
+                        BarData data = new BarData(dataSets);
+
+                        data.BarWidth = 0.25f;
+
+                        set1.HighLightAlpha = 0;
+
+                        data.HighlightEnabled = true;
+                        data.SetValueTextSize(10f);
+                        data.SetDrawValues(false);
+
+                        mChart.Data = data;
+                    }
+
+                    // HIGHLIGHT RIGHT MOST ITEM
+                    CurrentParentIndex = barLength - 1;
+                    Highlight rightMostBar = new Highlight(barLength - 1, 0, stackIndex);
+                    mChart.HighlightValues(new Highlight[] { rightMostBar });
+                }
+                else
+                {
+
+                    List<BarEntry> yVals1 = new List<BarEntry>();
+                    for (int i = 0; i < barLength; i++)
+                    {
+                        float[] valList = new float[1];
+                        float val = (float)selectedHistoryData.ByMonth.Months[i].UsageTotal;
+                        if (float.IsPositiveInfinity(val))
+                        {
+                            val = float.PositiveInfinity;
+                        }
+                        valList[0] = System.Math.Abs(val);
+                        yVals1.Add(new BarEntry(i, valList));
+                    }
+
+                    BarDataSet set1;
+
+                    if (mChart.Data != null && mChart.Data is BarData)
+                    {
+                        var barData = mChart.Data as BarData;
+
+                        if (barData.DataSetCount > 0)
+                        {
+                            set1 = barData.GetDataSetByIndex(0) as BarDataSet;
+                            set1.Values = yVals1;
+                            barData.NotifyDataChanged();
+                            mChart.NotifyDataSetChanged();
+                        }
+                    }
+                    else
+                    {
+                        set1 = new BarDataSet(yVals1, "");
+                        set1.SetDrawIcons(false);
+
+                        List<int> listOfColor = new List<int>();
+
+                        for (int i = 0; i < barLength; i++)
+                        {
+                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                        }
+
+                        int[] colorSet = new int[listOfColor.Count];
+                        for (int z = 0; z < listOfColor.Count; z++)
+                        {
+                            colorSet[z] = listOfColor[z];
+                        }
+
+                        set1.SetColors(colorSet);
+
+                        List<IBarDataSet> dataSets = new List<IBarDataSet>();
+                        dataSets.Add(set1);
+
+
+                        BarData data = new BarData(dataSets);
+
+                        data.BarWidth = 0.25f;
+
+                        set1.HighLightAlpha = 0;
+
+                        data.HighlightEnabled = true;
+                        data.SetValueTextSize(10f);
+                        data.SetDrawValues(false);
+
+                        mChart.Data = data;
+                    }
+                    // HIGHLIGHT RIGHT MOST ITEM
+                    CurrentParentIndex = barLength - 1;
+                    Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
+                    mChart.HighlightValues(new Highlight[] { rightMostBar });
+                }
+            }
+            else
+            {
+                if (isToggleTariff)
+                {
+                    // Lin Siong Note: the tariff data entry handling
+                    // Lin Siong Note: one row will contain stacked of data
+                    int stackIndex = 0;
+                    List<BarEntry> yVals1 = new List<BarEntry>();
+                    if (ChartType == ChartType.Month)
+                    {
+                        for (int i = 0; i < barLength; i++)
+                        {
+                            if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                            {
+                                float[] valList = new float[selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count];
+                                for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                                {
+                                    float val = (float)selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
+                                    if (float.IsPositiveInfinity(val))
+                                    {
+                                        val = float.PositiveInfinity;
+                                    }
+                                    valList[j] = System.Math.Abs(val);
+                                }
+                                if (i == barLength - 1)
+                                {
+                                    stackIndex = valList.Length - 1;
+                                }
+                                yVals1.Add(new BarEntry(i, valList));
+                            }
+                            else
+                            {
+                                float[] valList = new float[1];
+                                valList[0] = 0f;
+                                yVals1.Add(new BarEntry(i, valList));
+                            }
+                        }
+                    }
+                    else if (ChartType == ChartType.Day)
+                    {
+                        int i = 0;
+                        if (selectedSMHistoryData != null && selectedSMHistoryData.ByDay != null && selectedSMHistoryData.ByDay.Count > 0)
+                        {
+                            foreach (SMUsageHistoryData.ByDayData DayData in selectedSMHistoryData.ByDay)
+                            {
+                                if (DayData.Days != null && DayData.Days.Count > 0)
+                                {
+                                    foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
+                                    {
+                                        if (IndividualDayData.TariffBlocksList != null && IndividualDayData.TariffBlocksList.Count > 0)
+                                        {
+                                            float[] valList = new float[IndividualDayData.TariffBlocksList.Count];
+                                            for (int j = 0; j < IndividualDayData.TariffBlocksList.Count; j++)
+                                            {
+                                                float val = (float)IndividualDayData.TariffBlocksList[j].Usage;
+                                                if (float.IsPositiveInfinity(val))
+                                                {
+                                                    val = float.PositiveInfinity;
+                                                }
+                                                valList[j] = System.Math.Abs(val);
+                                            }
+                                            yVals1.Add(new BarEntry(i, valList));
+                                            if (i == barLength - 1)
+                                            {
+                                                stackIndex = valList.Length - 1;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            float[] valList = new float[1];
+                                            valList[0] = 0f;
+                                            if (i == barLength - 1)
+                                            {
+                                                stackIndex = valList.Length - 1;
+                                            }
+                                            yVals1.Add(new BarEntry(i, valList));
+                                        }
+                                        i++;
+                                    }
+                                }
+                                else
+                                {
+                                    float[] valList = new float[1];
+                                    valList[0] = 0f;
+                                    if (i == barLength - 1)
+                                    {
+                                        stackIndex = valList.Length - 1;
+                                    }
+                                    yVals1.Add(new BarEntry(i, valList));
+                                    i++;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            float[] valList = new float[1];
+                            valList[0] = 0f;
+                            if (i == barLength - 1)
+                            {
+                                stackIndex = valList.Length - 1;
+                            }
+                            yVals1.Add(new BarEntry(i, valList));
+                        }
+                    }
+
+                    if (ChartType == ChartType.Day && isZoomIn)
+                    {
+                        List<BarEntry> yValNew = new List<BarEntry>();
+
+                        for (int j = 0; j < 4; j++)
+                        {
+                            float[] valList = new float[1];
+                            valList[0] = 0f;
+                            yValNew.Add(new BarEntry(j, valList));
+                        }
+
+                        for (int j = 0; j < yVals1.Count; j++)
+                        {
+                            yValNew.Add(new BarEntry(j + 4, yVals1[j].GetYVals()));
+                        }
+
+
+                        for (int j = 0; j < 4; j++)
+                        {
+                            float[] valList = new float[1];
+                            valList[0] = 0f;
+                            yValNew.Add(new BarEntry(j + 4 + yVals1.Count, valList));
+                        }
+
+                        yVals1 = yValNew;
+
+                        dayViewTariffList = yVals1;
+                    }
+
+                    BarDataSet set1;
+
+                    if (mChart.Data != null && mChart.Data is BarData)
+                    {
+                        var barData = mChart.Data as BarData;
+
+                        if (barData.DataSetCount > 0)
+                        {
+                            set1 = barData.GetDataSetByIndex(0) as BarDataSet;
+                            set1.Values = yVals1;
+                            barData.NotifyDataChanged();
+                            mChart.NotifyDataSetChanged();
+                        }
+                    }
+                    else
+                    {
+                        set1 = new BarDataSet(yVals1, "");
+                        set1.SetDrawIcons(false);
+
+                        // Lin Siong Note: the tariff data entrycolor  handling
+                        // Lin Siong Note: it will track on which block it will use which color
+                        // Lin Siong Note: then fill the color inside the array
+                        // Lin Siong Note: then set the color array to chart
+
+                        List<int> listOfColor = new List<int>();
+
+                        if (ChartType == ChartType.Month)
+                        {
+                            for (int i = 0; i < barLength; i++)
+                            {
+                                if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                                {
+                                    for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                                    {
+                                        if (selectedSMHistoryData.TariffBlocksLegend != null && selectedSMHistoryData.TariffBlocksLegend.Count > 0)
+                                        {
+                                            bool isFound = false;
+                                            for (int k = 0; k < selectedSMHistoryData.TariffBlocksLegend.Count; k++)
+                                            {
+                                                if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedSMHistoryData.TariffBlocksLegend[k].BlockId)
+                                                {
+                                                    isFound = true;
+                                                    listOfColor.Add(Color.Argb(50, selectedSMHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.BlueData));
+                                                    break;
+                                                }
+                                            }
+
+                                            if (!isFound)
+                                            {
+                                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                        }
+                                    }
                                 }
                                 else
                                 {
@@ -1360,130 +3496,375 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 }
                             }
                         }
-                        else
+                        else if (ChartType == ChartType.Day)
                         {
-                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                            if (selectedSMHistoryData != null && selectedSMHistoryData.ByDay != null && selectedSMHistoryData.ByDay.Count > 0)
+                            {
+                                foreach (SMUsageHistoryData.ByDayData DayData in selectedSMHistoryData.ByDay)
+                                {
+                                    if (DayData.Days != null && DayData.Days.Count > 0)
+                                    {
+                                        foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
+                                        {
+                                            if (IndividualDayData.TariffBlocksList != null && IndividualDayData.TariffBlocksList.Count > 0)
+                                            {
+                                                for (int j = 0; j < IndividualDayData.TariffBlocksList.Count; j++)
+                                                {
+                                                    if (selectedSMHistoryData.TariffBlocksLegend != null && selectedSMHistoryData.TariffBlocksLegend.Count > 0)
+                                                    {
+                                                        bool isFound = false;
+                                                        for (int k = 0; k < selectedSMHistoryData.TariffBlocksLegend.Count; k++)
+                                                        {
+                                                            if (IndividualDayData.TariffBlocksList[j].BlockId == selectedSMHistoryData.TariffBlocksLegend[k].BlockId)
+                                                            {
+                                                                isFound = true;
+                                                                listOfColor.Add(Color.Argb(50, selectedSMHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.BlueData));
+                                                                break;
+                                                            }
+                                                        }
+
+                                                        if (!isFound)
+                                                        {
+                                                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                                        }
+
+                                                    }
+                                                    else
+                                                    {
+                                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                                    }
+                                                }
+                                            }
+                                            else
+                                            {
+                                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                            }
+                                        }
+                                    }
+                                    else
+                                    {
+                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                            }
+
+                            if (isZoomIn)
+                            {
+                                List<int> listOfColorNew = new List<int>();
+
+                                for (int i = 0; i < 4; i++)
+                                {
+                                    listOfColorNew.Add(Color.Argb(50, 255, 255, 255));
+                                }
+
+                                for (int i = 0; i < listOfColor.Count; i++)
+                                {
+                                    listOfColorNew.Add(listOfColor[i]);
+                                }
+
+
+                                for (int i = 0; i < 4; i++)
+                                {
+                                    listOfColorNew.Add(Color.Argb(50, 255, 255, 255));
+                                }
+
+                                listOfColor = listOfColorNew;
+                            }
                         }
+
+
+                        int[] colorSet = new int[listOfColor.Count];
+                        for (int z = 0; z < listOfColor.Count; z++)
+                        {
+                            colorSet[z] = listOfColor[z];
+                        }
+
+                        set1.SetColors(colorSet);
+
+                        List<IBarDataSet> dataSets = new List<IBarDataSet>();
+                        dataSets.Add(set1);
+
+
+                        BarData data = new BarData(dataSets);
+
+                        if (ChartType == ChartType.Month)
+                        {
+                            data.BarWidth = 0.25f;
+                        }
+                        else if (ChartType == ChartType.Day)
+                        {
+                            if (!isZoomIn)
+                            {
+                                data.BarWidth = 0.60f;
+                            }
+                            else
+                            {
+                                data.BarWidth = 0.35f;
+                            }
+                        }
+
+                        set1.HighLightAlpha = 0;
+
+                        data.HighlightEnabled = true;
+                        data.SetValueTextSize(10f);
+                        data.SetDrawValues(false);
+
+                        mChart.Data = data;
                     }
 
-
-                    int[] colorSet = new int[listOfColor.Count];
-                    for (int z = 0; z < listOfColor.Count; z++)
+                    if (ChartType == ChartType.Month)
                     {
-                        colorSet[z] = listOfColor[z];
+                        // HIGHLIGHT RIGHT MOST ITEM
+                        CurrentParentIndex = barLength - 1;
+                        Highlight rightMostBar = new Highlight(barLength - 1, 0, stackIndex);
+                        mChart.HighlightValues(new Highlight[] { rightMostBar });
                     }
-
-                    set1.SetColors(colorSet);
-
-                    List<IBarDataSet> dataSets = new List<IBarDataSet>();
-                    dataSets.Add(set1);
-
-
-                    BarData data = new BarData(dataSets);
-
-                    data.BarWidth = 0.25f;
-
-                    set1.HighLightAlpha = 0;
-
-                    data.HighlightEnabled = true;
-                    data.SetValueTextSize(10f);
-                    data.SetDrawValues(false);
-
-                    mChart.Data = data;
-                }
-
-                // HIGHLIGHT RIGHT MOST ITEM
-                CurrentParentIndex = barLength - 1;
-                Highlight rightMostBar = new Highlight(barLength - 1, 0, stackIndex);
-                mChart.HighlightValues(new Highlight[] { rightMostBar });
-            }
-            else
-            {
-
-                List<BarEntry> yVals1 = new List<BarEntry>();
-                for (int i = 0; i < barLength; i++)
-                {
-                    float val = (float)selectedHistoryData.ByMonth.Months[i].UsageTotal;
-                    if (float.IsPositiveInfinity(val))
+                    else if (ChartType == ChartType.Day)
                     {
-                        val = float.PositiveInfinity;
-                    }
 
-                    yVals1.Add(new BarEntry(i, System.Math.Abs(val)));
-                }
-
-                BarDataSet set1;
-
-                if (mChart.Data != null && mChart.Data is BarData)
-                {
-                    var barData = mChart.Data as BarData;
-
-                    if (barData.DataSetCount > 0)
-                    {
-                        set1 = barData.GetDataSetByIndex(0) as BarDataSet;
-                        set1.Values = yVals1;
-                        barData.NotifyDataChanged();
-                        mChart.NotifyDataSetChanged();
                     }
                 }
                 else
                 {
-                    set1 = new BarDataSet(yVals1, "");
-                    set1.SetDrawIcons(false);
+                    // Lin Siong Note: the normal data entry handling for smart meter
+                    // Lin Siong Note: one row will contain stack of data, but only first is filleded
+                    List<BarEntry> yVals1 = new List<BarEntry>();
+                    for (int i = 0; i < barLength; i++)
+                    {
+                        if (ChartType == ChartType.Month)
+                        {
+                            float[] valList = new float[1];
+                            float val = (float)selectedSMHistoryData.ByMonth.Months[i].UsageTotal;
+                            if (float.IsPositiveInfinity(val))
+                            {
+                                val = float.PositiveInfinity;
+                            }
+                            valList[0] = System.Math.Abs(val);
+                            yVals1.Add(new BarEntry(i, valList));
+                        }
+                        else if (ChartType == ChartType.Day)
+                        {
+                            float[] valList = new float[1];
+                            float val = (float)DayViewkWhData[i];
+                            if (float.IsPositiveInfinity(val))
+                            {
+                                val = float.PositiveInfinity;
+                            }
+                            valList[0] = System.Math.Abs(val);
+                            yVals1.Add(new BarEntry(i, valList));
+                        }
+                    }
+
+                    if (ChartType == ChartType.Day && isZoomIn)
+                    {
+                        List<BarEntry> yValNew = new List<BarEntry>();
+
+                        for (int j = 0; j < 4; j++)
+                        {
+                            float[] valLis = new float[1];
+                            valLis[0] = 0f;
+                            yValNew.Add(new BarEntry(j, valLis));
+                        }
+
+                        for (int j = 0; j < yVals1.Count; j++)
+                        {
+                            yValNew.Add(new BarEntry(j + 4, yVals1[j].GetYVals()));
+                        }
 
 
-                    set1.HighLightColor = Color.Argb(255, 255, 255, 255);
-                    set1.HighLightAlpha = 255;
+                        for (int j = 0; j < 4; j++)
+                        {
+                            float[] valLis = new float[1];
+                            valLis[0] = 0f;
+                            yValNew.Add(new BarEntry(j + 4 + yVals1.Count, valLis));
+                        }
 
-                    int[] color = { Color.Argb(100, 255, 255, 255) };
-                    set1.SetColors(color);
-                    List<IBarDataSet> dataSets = new List<IBarDataSet>();
-                    dataSets.Add(set1);
+                        yVals1 = yValNew;
+
+                        dayViewTariffList = yVals1;
+                    }
+
+                    BarDataSet set1;
+
+                    if (mChart.Data != null && mChart.Data is BarData)
+                    {
+                        var barData = mChart.Data as BarData;
+
+                        if (barData.DataSetCount > 0)
+                        {
+                            set1 = barData.GetDataSetByIndex(0) as BarDataSet;
+                            set1.Values = yVals1;
+                            barData.NotifyDataChanged();
+                            mChart.NotifyDataSetChanged();
+                        }
+                    }
+                    else
+                    {
+                        set1 = new BarDataSet(yVals1, "");
+                        set1.SetDrawIcons(false);
+
+                        List<int> listOfColor = new List<int>();
+
+                        for (int i = 0; i < barLength; i++)
+                        {
+                            if (ChartType == ChartType.Month)
+                            {
+                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                            }
+                            else if (ChartType == ChartType.Day)
+                            {
+                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                            }
+                        }
+
+                        if (ChartType == ChartType.Day && isZoomIn)
+                        {
+                            List<int> listOfColorNew = new List<int>();
+
+                            for (int i = 0; i < 4; i++)
+                            {
+                                listOfColorNew.Add(Color.Argb(50, 255, 255, 255));
+                            }
+
+                            for (int i = 0; i < listOfColor.Count; i++)
+                            {
+                                listOfColorNew.Add(listOfColor[i]);
+                            }
 
 
-                    BarData data = new BarData(dataSets);
+                            for (int i = 0; i < 4; i++)
+                            {
+                                listOfColorNew.Add(Color.Argb(50, 255, 255, 255));
+                            }
 
-                    data.BarWidth = 0.25f;
+                            listOfColor = listOfColorNew;
+                        }
 
-                    data.HighlightEnabled = true;
-                    data.SetValueTextSize(10f);
-                    data.SetDrawValues(false);
+                        int[] colorSet = new int[listOfColor.Count];
+                        for (int z = 0; z < listOfColor.Count; z++)
+                        {
+                            colorSet[z] = listOfColor[z];
+                        }
 
-                    mChart.Data = data;
+                        set1.SetColors(colorSet);
+
+                        List<IBarDataSet> dataSets = new List<IBarDataSet>();
+                        dataSets.Add(set1);
+
+
+                        BarData data = new BarData(dataSets);
+
+                        if (ChartType == ChartType.Month)
+                        {
+                            data.BarWidth = 0.25f;
+                        }
+                        else if (ChartType == ChartType.Day)
+                        {
+                            if (!isZoomIn)
+                            {
+                                data.BarWidth = 0.60f;
+                            }
+                            else
+                            {
+                                data.BarWidth = 0.35f;
+                            }
+                        }
+
+                        set1.HighLightAlpha = 0;
+
+                        data.HighlightEnabled = true;
+                        data.SetValueTextSize(10f);
+                        data.SetDrawValues(false);
+
+                        mChart.Data = data;
+                    }
+
+                    if (ChartType == ChartType.Month)
+                    {
+                        // HIGHLIGHT RIGHT MOST ITEM
+                        CurrentParentIndex = barLength - 1;
+                        Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
+                        mChart.HighlightValues(new Highlight[] { rightMostBar });
+                    }
+                    else if (ChartType == ChartType.Day)
+                    {
+
+                    }
                 }
-                // HIGHLIGHT RIGHT MOST ITEM
-                CurrentParentIndex = barLength - 1;
-                Highlight rightMostBar = new Highlight(barLength - 1, 0, 0);
-                mChart.HighlightValues(new Highlight[] { rightMostBar });
             }
         }
         #endregion
 
+        // Lin Siong Note: Show by kWh graph
         public void ShowByKwh()
         {
-            ChartType = ChartType.kWh;
+            ChartDataType = ChartDataType.kWh;
 
             mChart.Visibility = ViewStates.Visible;
 
             rmKwhSelection.Enabled = true;
             tarifToggle.Enabled = true;
+            btnToggleDay.Enabled = true;
+            btnToggleMonth.Enabled = true;
 
             mChart.Clear();
             SetUp();
         }
 
+        // Lin Siong Note: Show by RM graph
         public void ShowByRM()
         {
-            ChartType = ChartType.RM;
+            ChartDataType = ChartDataType.RM;
 
             mChart.Visibility = ViewStates.Visible;
 
             rmKwhSelection.Enabled = true;
             tarifToggle.Enabled = true;
+            btnToggleDay.Enabled = true;
+            btnToggleMonth.Enabled = true;
 
             mChart.Clear();
             SetUp();
         }
+
+        // Lin Siong Note: Show by Day graph
+        public void ShowByDay()
+        {
+            ChartType = ChartType.Day;
+
+            mChart.Visibility = ViewStates.Visible;
+
+            rmKwhSelection.Enabled = true;
+            tarifToggle.Enabled = true;
+            btnToggleDay.Enabled = true;
+            btnToggleMonth.Enabled = true;
+
+            DayViewkWhData = new List<double>();
+            DayViewRMData = new List<double>();
+            mChart.Clear();
+            SetUp();
+        }
+
+        // Lin Siong Note: Show by Month graph
+        public void ShowByMonth()
+        {
+            ChartType = ChartType.Month;
+
+            mChart.Visibility = ViewStates.Visible;
+
+            rmKwhSelection.Enabled = true;
+            tarifToggle.Enabled = true;
+            btnToggleDay.Enabled = true;
+            btnToggleMonth.Enabled = true;
+
+            mChart.Clear();
+            SetUp();
+        }
+
         DashboardHomeActivity activity = null;
         public override void OnAttach(Context context)
         {
@@ -1494,8 +3875,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     activity = context as DashboardHomeActivity;
                     // SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
-                    activity.SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
-                    activity.SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
                 }
             }
             catch (ClassCastException e)
@@ -1623,6 +4002,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+        // Lin Siong Note: Switch between RM or kWh Graph
         [OnClick(Resource.Id.rmKwhSelection)]
         internal void OnRMKwhToogleSelection(object sender, EventArgs e)
         {
@@ -1644,6 +4024,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+        // Lin Siong Note: Toggle the tariff block graph
         [OnClick(Resource.Id.tarifToggle)]
         internal void OnTariffToggled(object sender, EventArgs e)
         {
@@ -1654,28 +4035,43 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye);
                     txtTarifToggle.Text = "Show Tariff";
                     isToggleTariff = false;
-                    tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
-                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                    if (isChangeBackgroundNeeded)
+                    {
+                        if (isSMAccount)
+                        {
+                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                        }
+                        else
+                        {
+                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                        }
+                    }
+                    else
+                    {
+                        SetVirtualHeightParams(70f);
+                    }
                 }
                 else
                 {
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye_hide);
                     txtTarifToggle.Text = "Hide Tariff";
                     isToggleTariff = true;
-                    tariffBlockLegendRecyclerView.Visibility = ViewStates.Visible;
-                    if (tariffBlockLegendAdapter == null)
-                    {
-                        tariffBlockLegendAdapter = new TariffBlockLegendAdapter(selectedHistoryData.TariffBlocksLegend, this.Activity);
-                        tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
-                    }
-                    Context context = tariffBlockLegendRecyclerView.Context;
-                    LayoutAnimationController controller =
-                            AnimationUtils.LoadLayoutAnimation(context, Resource.Animation.layout_animation_fall_down);
 
-                    tariffBlockLegendRecyclerView.LayoutAnimation = controller;
-                    tariffBlockLegendRecyclerView.GetAdapter().NotifyDataSetChanged();
-                    tariffBlockLegendRecyclerView.ScheduleLayoutAnimation();
-                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_extended_bg);
+                    if (isChangeBackgroundNeeded)
+                    {
+                        if (isSMR)
+                        {
+                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_bg);
+                        }
+                        else
+                        {
+                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_extended_bg);
+                        }
+                    }
+                    else
+                    {
+                        SetVirtualHeightParams(120f);
+                    }
                 }
 
                 mChart.Clear();
@@ -1685,6 +4081,175 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             catch (System.Exception ne)
             {
                 Utility.LoggingNonFatalError(ne);
+            }
+        }
+
+        private void OnGenerateTariffLegendValue(int index, bool isShow)
+        {
+            bool isHighlightNeed = false;
+
+            if (!isShow)
+            {
+                tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
+            }
+            else
+            {
+                if (ChartType == ChartType.Month)
+                {
+                    int startCount = -1;
+                    bool isFound = false;
+                    tariffBlockLegendRecyclerView.Visibility = ViewStates.Visible;
+                    List<TariffBlocksLegendData> newTariffList = new List<TariffBlocksLegendData>();
+                    if (index == -1)
+                    {
+                        tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
+                    }
+                    else if (!isSMAccount)
+                    {
+                        if (selectedHistoryData.ByMonth.Months[index].TariffBlocksList != null)
+                        {
+                            startCount = selectedHistoryData.ByMonth.Months[index].TariffBlocksList.Count - 1;
+                        }
+                        if (startCount == -1)
+                        {
+                            tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < selectedHistoryData.TariffBlocksLegend.Count; i++)
+                            {
+                                for (int j = 0; j < selectedHistoryData.ByMonth.Months[index].TariffBlocksList.Count; j++)
+                                {
+                                    if ((selectedHistoryData.TariffBlocksLegend[i].BlockId == selectedHistoryData.ByMonth.Months[index].TariffBlocksList[j].BlockId))
+                                    {
+                                        if ((ChartDataType == ChartDataType.RM && System.Math.Abs(selectedHistoryData.ByMonth.Months[index].TariffBlocksList[j].Amount) > 0.00) || (ChartDataType == ChartDataType.kWh && System.Math.Abs(selectedHistoryData.ByMonth.Months[index].TariffBlocksList[j].Usage) > 0.00))
+                                        {
+                                            isFound = true;
+                                            newTariffList.Add(selectedHistoryData.TariffBlocksLegend[i]);
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (index == selectedSMHistoryData.ByMonth.Months.Count - 1)
+                        {
+                            isHighlightNeed = true;
+                        }
+
+                        if (selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList != null)
+                        {
+                            startCount = selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList.Count - 1;
+                        }
+                        if (startCount == -1)
+                        {
+                            tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
+                        }
+                        else
+                        {
+                            for (int i = 0; i < selectedSMHistoryData.TariffBlocksLegend.Count; i++)
+                            {
+                                for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList.Count; j++)
+                                {
+                                    if (selectedSMHistoryData.TariffBlocksLegend[i].BlockId == selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList[j].BlockId)
+                                    {
+                                        if ((ChartDataType == ChartDataType.RM && System.Math.Abs(selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList[j].Amount) > 0.00) || (ChartDataType == ChartDataType.kWh && System.Math.Abs(selectedSMHistoryData.ByMonth.Months[index].TariffBlocksList[j].Usage) > 0.00))
+                                        {
+                                            isFound = true;
+                                            newTariffList.Add(selectedSMHistoryData.TariffBlocksLegend[i]);
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (startCount > -1 && isFound)
+                    {
+                        tariffBlockLegendAdapter = new TariffBlockLegendAdapter(newTariffList, this.Activity, isHighlightNeed);
+                        tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
+
+                        Context context = tariffBlockLegendRecyclerView.Context;
+                        LayoutAnimationController controller =
+                                AnimationUtils.LoadLayoutAnimation(context, Resource.Animation.layout_animation_fall_down);
+
+                        tariffBlockLegendRecyclerView.LayoutAnimation = controller;
+                        tariffBlockLegendRecyclerView.GetAdapter().NotifyDataSetChanged();
+                        tariffBlockLegendRecyclerView.ScheduleLayoutAnimation();
+                    }
+                    else
+                    {
+                        tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
+                    }
+                }
+                else if (ChartType == ChartType.Day && isSMAccount)
+                {
+                    bool isFound = false;
+                    bool isAlreadyExists = false;
+
+
+                    List<TariffBlocksLegendData> newTariffList = new List<TariffBlocksLegendData>();
+                    for (int i = 0; i < selectedSMHistoryData.TariffBlocksLegend.Count; i++)
+                    {
+                        isAlreadyExists = false;
+
+                        for (int j = 0; j < selectedSMHistoryData.ByDay.Count; j++)
+                        {
+                            for (int k = 0; k < selectedSMHistoryData.ByDay[j].Days.Count; k++)
+                            {
+                                for (int l = 0; l < selectedSMHistoryData.ByDay[j].Days[k].TariffBlocksList.Count; l++)
+                                {
+                                    if ((selectedSMHistoryData.TariffBlocksLegend[i].BlockId == selectedSMHistoryData.ByDay[j].Days[k].TariffBlocksList[l].BlockId))
+                                    {
+                                        if ((ChartDataType == ChartDataType.RM && System.Math.Abs(selectedSMHistoryData.ByDay[j].Days[k].TariffBlocksList[l].Amount) > 0.00) || (ChartDataType == ChartDataType.kWh && System.Math.Abs(selectedSMHistoryData.ByDay[j].Days[k].TariffBlocksList[l].Usage) > 0.00))
+                                        {
+                                            isFound = true;
+                                            isAlreadyExists = true;
+                                            newTariffList.Add(selectedSMHistoryData.TariffBlocksLegend[i]);
+                                        }
+                                        break;
+                                    }
+                                }
+
+                                if (isAlreadyExists)
+                                {
+                                    break;
+                                }
+                            }
+
+                            if (isAlreadyExists)
+                            {
+                                break;
+                            }
+                        }
+                    }
+
+                    if (isFound)
+                    {
+                        tariffBlockLegendRecyclerView.Visibility = ViewStates.Visible;
+                        tariffBlockLegendAdapter = new TariffBlockLegendAdapter(newTariffList, this.Activity, false);
+                        tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
+
+                        Context context = tariffBlockLegendRecyclerView.Context;
+                        LayoutAnimationController controller =
+                                AnimationUtils.LoadLayoutAnimation(context, Resource.Animation.layout_animation_fall_down);
+
+                        tariffBlockLegendRecyclerView.LayoutAnimation = controller;
+                        tariffBlockLegendRecyclerView.GetAdapter().NotifyDataSetChanged();
+                        tariffBlockLegendRecyclerView.ScheduleLayoutAnimation();
+                    }
+                    else
+                    {
+                        tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
+                    }
+                }
+                else
+                {
+                    tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
+                }
             }
         }
 
@@ -1776,61 +4341,74 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
-                ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
-                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.bg_smr);
-                scrollViewContent.SetBackgroundResource(Resource.Drawable.dasbord_chart_refresh_bg);
-
-
-                refreshLayout.Visibility = ViewStates.Visible;
-                allGraphLayout.Visibility = ViewStates.Gone;
-                if (isBCRMDown)
+                Activity.RunOnUiThread(() =>
                 {
-                    refresh_image.SetImageResource(Resource.Drawable.maintenance_new);
-                    SetMaintenanceLayoutParams();
-                    btnNewRefresh.Visibility = ViewStates.Gone;
+                    try
+                    {
+                        ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
+                        ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.bg_smr);
+                        rootView.SetBackgroundColor(Resources.GetColor(Resource.Color.greyBackground));
+                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dasbord_chart_refresh_bg);
 
-                }
-                else
-                {
-                    refresh_image.SetImageResource(Resource.Drawable.refresh_1);
-                    SetRefreshLayoutParams();
-                    StopAddressShimmer();
-                    StopRangeShimmer();
-                    StopGraphShimmer();
-                    btnNewRefresh.Visibility = ViewStates.Visible;
-                    energyTipsView.Visibility = ViewStates.Gone;
-                    if (string.IsNullOrEmpty(buttonTxt))
-                    {
-                        btnNewRefresh.Text = txtBtnRefreshTitle;
-                    }
-                    else
-                    {
-                        btnNewRefresh.Text = buttonTxt;
-                    }
 
-                    if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
-                    {
-                        if (string.IsNullOrEmpty(contentTxt))
+                        refreshLayout.Visibility = ViewStates.Visible;
+                        allGraphLayout.Visibility = ViewStates.Gone;
+                        smStatisticContainer.Visibility = ViewStates.Gone;
+                        if (isBCRMDown)
                         {
-                            txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg, FromHtmlOptions.ModeLegacy);
+                            refresh_image.SetImageResource(Resource.Drawable.maintenance_new);
+                            SetMaintenanceLayoutParams();
+                            btnNewRefresh.Visibility = ViewStates.Gone;
+
                         }
                         else
                         {
-                            txtNewRefreshMessage.TextFormatted = Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                            refresh_image.SetImageResource(Resource.Drawable.refresh_1);
+                            SetRefreshLayoutParams();
+                            StopAddressShimmer();
+                            StopRangeShimmer();
+                            StopGraphShimmer();
+                            StopSMStatisticShimmer();
+                            btnNewRefresh.Visibility = ViewStates.Visible;
+                            energyTipsView.Visibility = ViewStates.Gone;
+                            if (string.IsNullOrEmpty(buttonTxt))
+                            {
+                                btnNewRefresh.Text = txtBtnRefreshTitle;
+                            }
+                            else
+                            {
+                                btnNewRefresh.Text = buttonTxt;
+                            }
+
+                            if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                            {
+                                if (string.IsNullOrEmpty(contentTxt))
+                                {
+                                    txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg, FromHtmlOptions.ModeLegacy);
+                                }
+                                else
+                                {
+                                    txtNewRefreshMessage.TextFormatted = Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                                }
+                            }
+                            else
+                            {
+                                if (string.IsNullOrEmpty(contentTxt))
+                                {
+                                    txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg);
+                                }
+                                else
+                                {
+                                    txtNewRefreshMessage.TextFormatted = Html.FromHtml(contentTxt);
+                                }
+                            }
                         }
                     }
-                    else
+                    catch (System.Exception e)
                     {
-                        if (string.IsNullOrEmpty(contentTxt))
-                        {
-                            txtNewRefreshMessage.TextFormatted = Html.FromHtml(txtRefreshMsg);
-                        }
-                        else
-                        {
-                            txtNewRefreshMessage.TextFormatted = Html.FromHtml(contentTxt);
-                        }
+                        Utility.LoggingNonFatalError(e);
                     }
-                }
+                });
             }
             catch (System.Exception e)
             {
@@ -1858,45 +4436,196 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         }
 
+        public void OnMissingReadingClick()
+        {
+            try
+            {
+                MaterialDialog mDialog = new MaterialDialog.Builder(Activity)
+                    .CustomView(Resource.Layout.CustomDialogOneButtonLayout, false)
+                    .Cancelable(false)
+                    .CanceledOnTouchOutside(false)
+                    .Build();
+
+                View dialogView = mDialog.Window.DecorView;
+                dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
+
+                TextView txtTitle = mDialog.FindViewById<TextView>(Resource.Id.txtTitle);
+                TextView txtMessage = mDialog.FindViewById<TextView>(Resource.Id.txtMessage);
+                TextView btnGotIt = mDialog.FindViewById<TextView>(Resource.Id.txtBtnFirst);
+                txtMessage.MovementMethod = new ScrollingMovementMethod();
+
+                txtMessage.Text = "What does this mean?";
+                txtTitle.Text = "Your full usage for this particular day has not been retrieved yet. Check back in a while.";
+                btnGotIt.Text = "Got It!";
+
+
+                foreach (SMUsageHistoryData.SmartMeterToolTips costValue in selectedSMHistoryData.ToolTips)
+                {
+                    if (costValue.Type == Constants.MISSING_READING_KEY)
+                    {
+                        if (costValue.Message != null && costValue.Message.Count > 0)
+                        {
+                            string textMessage = "";
+                            foreach (string stringValue in costValue.Message)
+                            {
+                                textMessage += stringValue;
+                            }
+
+                            if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                            {
+                                txtMessage.TextFormatted = Html.FromHtml(textMessage, FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                txtMessage.TextFormatted = Html.FromHtml(textMessage);
+                            }
+                        }
+
+                        txtTitle.Text = costValue.Title;
+                        btnGotIt.Text = costValue.SMBtnText;
+                    }
+                }
+
+                TextViewUtils.SetMuseoSans500Typeface(txtTitle, btnGotIt);
+                TextViewUtils.SetMuseoSans300Typeface(txtMessage);
+                btnGotIt.Click += delegate
+                {
+                    mDialog.Dismiss();
+                };
+
+                if (IsActive())
+                {
+                    mDialog.Show();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         internal float GetMaxRMValues()
         {
             float val = 0;
             try
             {
-                if (isToggleTariff)
+                if (!isSMAccount)
                 {
-                    foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
+                    if (isToggleTariff)
                     {
-                        float valTotal = 0;
-                        for (int i = 0; i < MonthData.TariffBlocksList.Count; i++)
+                        foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
                         {
-                            valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Amount);
+                            float valTotal = 0;
+                            for (int i = 0; i < MonthData.TariffBlocksList.Count; i++)
+                            {
+                                valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Amount);
+                            }
+                            if (System.Math.Abs(valTotal) > val)
+                            {
+                                val = System.Math.Abs((float)valTotal);
+                            }
                         }
-                        if (System.Math.Abs(valTotal) > val)
+                        if (val == 0)
                         {
-                            val = System.Math.Abs((float)valTotal);
+                            val = 1;
                         }
                     }
-                    if (val == 0)
+                    else
                     {
-                        val = 1;
+                        foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
+                        {
+                            if (System.Math.Abs(MonthData.AmountTotal) > val)
+                            {
+                                val = System.Math.Abs((float)MonthData.AmountTotal);
+                            }
+                        }
+                        if (val == 0)
+                        {
+                            val = 1;
+                        }
                     }
                 }
                 else
                 {
-                    foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
+                    if (ChartType == ChartType.Month)
                     {
-                        if (System.Math.Abs(MonthData.AmountTotal) > val)
+                        if (isToggleTariff)
                         {
-                            val = System.Math.Abs((float)MonthData.AmountTotal);
+                            foreach (SMUsageHistoryData.ByMonthData.MonthData MonthData in selectedSMHistoryData.ByMonth.Months)
+                            {
+                                float valTotal = 0;
+                                for (int i = 0; i < MonthData.TariffBlocksList.Count; i++)
+                                {
+                                    valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Amount);
+                                }
+                                if (System.Math.Abs(valTotal) > val)
+                                {
+                                    val = System.Math.Abs((float)valTotal);
+                                }
+                            }
+                            if (val == 0)
+                            {
+                                val = 1;
+                            }
+                        }
+                        else
+                        {
+                            foreach (SMUsageHistoryData.ByMonthData.MonthData MonthData in selectedSMHistoryData.ByMonth.Months)
+                            {
+                                if (System.Math.Abs(MonthData.AmountTotal) > val)
+                                {
+                                    val = System.Math.Abs((float)MonthData.AmountTotal);
+                                }
+                            }
+                            if (val == 0)
+                            {
+                                val = 1;
+                            }
                         }
                     }
-                    if (val == 0)
+                    else if (ChartType == ChartType.Day)
                     {
-                        val = 1;
+                        if (isToggleTariff)
+                        {
+                            foreach (SMUsageHistoryData.ByDayData DayData in selectedSMHistoryData.ByDay)
+                            {
+                                foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
+                                {
+                                    float valTotal = 0;
+                                    for (int i = 0; i < IndividualDayData.TariffBlocksList.Count; i++)
+                                    {
+                                        valTotal += System.Math.Abs((float)IndividualDayData.TariffBlocksList[i].Amount);
+                                    }
+                                    if (System.Math.Abs(valTotal) > val)
+                                    {
+                                        val = System.Math.Abs((float)valTotal);
+                                    }
+                                }
+                            }
+                            if (val == 0)
+                            {
+                                val = 1;
+                            }
+                        }
+                        else
+                        {
+                            foreach (SMUsageHistoryData.ByDayData DayData in selectedSMHistoryData.ByDay)
+                            {
+                                foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
+                                {
+                                    if (System.Math.Abs(IndividualDayData.Amount) > val)
+                                    {
+                                        val = System.Math.Abs((float)IndividualDayData.Amount);
+                                    }
+                                }
+                            }
+                            if (val == 0)
+                            {
+                                val = 1;
+                            }
+                        }
                     }
                 }
-
             }
             catch (System.Exception e)
             {
@@ -1910,37 +4639,121 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             float val = 0;
             try
             {
-                if (isToggleTariff)
+                if (!isSMAccount)
                 {
-                    foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
+                    if (isToggleTariff)
                     {
-                        float valTotal = 0;
-                        for (int i = 0; i < MonthData.TariffBlocksList.Count; i++)
+                        foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
                         {
-                            valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Usage);
+                            float valTotal = 0;
+                            for (int i = 0; i < MonthData.TariffBlocksList.Count; i++)
+                            {
+                                valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Usage);
+                            }
+                            if (System.Math.Abs(valTotal) > val)
+                            {
+                                val = System.Math.Abs((float)valTotal);
+                            }
                         }
-                        if (System.Math.Abs(valTotal) > val)
+                        if (val == 0)
                         {
-                            val = System.Math.Abs((float)valTotal);
+                            val = 1;
                         }
                     }
-                    if (val == 0)
+                    else
                     {
-                        val = 1;
+                        foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
+                        {
+                            if (System.Math.Abs(MonthData.UsageTotal) > val)
+                            {
+                                val = System.Math.Abs((float)MonthData.UsageTotal);
+                            }
+                        }
+                        if (val == 0)
+                        {
+                            val = 1;
+                        }
                     }
                 }
                 else
                 {
-                    foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
+                    if (ChartType == ChartType.Month)
                     {
-                        if (System.Math.Abs(MonthData.UsageTotal) > val)
+                        if (isToggleTariff)
                         {
-                            val = System.Math.Abs((float)MonthData.UsageTotal);
+                            foreach (SMUsageHistoryData.ByMonthData.MonthData MonthData in selectedSMHistoryData.ByMonth.Months)
+                            {
+                                float valTotal = 0;
+                                for (int i = 0; i < MonthData.TariffBlocksList.Count; i++)
+                                {
+                                    valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Usage);
+                                }
+                                if (System.Math.Abs(valTotal) > val)
+                                {
+                                    val = System.Math.Abs((float)valTotal);
+                                }
+                            }
+                            if (val == 0)
+                            {
+                                val = 1;
+                            }
+                        }
+                        else
+                        {
+                            foreach (SMUsageHistoryData.ByMonthData.MonthData MonthData in selectedSMHistoryData.ByMonth.Months)
+                            {
+                                if (System.Math.Abs(MonthData.UsageTotal) > val)
+                                {
+                                    val = System.Math.Abs((float)MonthData.UsageTotal);
+                                }
+                            }
+                            if (val == 0)
+                            {
+                                val = 1;
+                            }
                         }
                     }
-                    if (val == 0)
+                    else if (ChartType == ChartType.Day)
                     {
-                        val = 1;
+                        if (isToggleTariff)
+                        {
+                            foreach (SMUsageHistoryData.ByDayData DayData in selectedSMHistoryData.ByDay)
+                            {
+                                foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
+                                {
+                                    float valTotal = 0;
+                                    for (int i = 0; i < IndividualDayData.TariffBlocksList.Count; i++)
+                                    {
+                                        valTotal += System.Math.Abs((float)IndividualDayData.TariffBlocksList[i].Usage);
+                                    }
+                                    if (System.Math.Abs(valTotal) > val)
+                                    {
+                                        val = System.Math.Abs((float)valTotal);
+                                    }
+                                }
+                            }
+                            if (val == 0)
+                            {
+                                val = 1;
+                            }
+                        }
+                        else
+                        {
+                            foreach (SMUsageHistoryData.ByDayData DayData in selectedSMHistoryData.ByDay)
+                            {
+                                foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
+                                {
+                                    if (System.Math.Abs(IndividualDayData.Consumption) > val)
+                                    {
+                                        val = System.Math.Abs((float)IndividualDayData.Consumption);
+                                    }
+                                }
+                            }
+                            if (val == 0)
+                            {
+                                val = 1;
+                            }
+                        }
                     }
                 }
             }
@@ -1954,7 +4767,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public override void OnResume()
         {
             base.OnResume();
-            this.Activity.InvalidateOptionsMenu();
 
             var act = this.Activity as AppCompatActivity;
 
@@ -2388,6 +5200,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+
+        // Lin Siong Note: SSMR Dashboard View Setup
         public void ShowSSMRDashboardView(SMRActivityInfoResponse response)
         {
             try
@@ -2487,27 +5301,34 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             return this.DeviceId();
         }
 
-        void NMREDashboardScrollViewListener.OnScrollChanged(NMREDashboardScrollView v, int l, int t, int oldl, int oldt)
+        void NMRESMDashboardScrollViewListener.OnScrollChanged(NMRESMDashboardScrollView v, int l, int t, int oldl, int oldt)
         {
-            View view = (View)scrollView.GetChildAt(scrollView.ChildCount - 1);
-            int scrollPosition = t - oldt;
-            // if diff is zero, then the bottom has been reached
-            if (!isREAccount)
+            try
             {
-                if (scrollPosition > 0)
+                View view = (View)scrollView.GetChildAt(scrollView.ChildCount - 1);
+                int scrollPosition = t - oldt;
+                // if diff is zero, then the bottom has been reached
+                if (!isREAccount)
                 {
-                    requireScroll = true;
-                    bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
-                }
-                else if (scrollPosition < 0)
-                {
-                    bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
-                }
+                    if (scrollPosition > 0)
+                    {
+                        requireScroll = true;
+                        bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
+                    }
+                    else if (scrollPosition < 0)
+                    {
+                        bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                    }
 
-                if (t == 0)
-                {
-                    requireScroll = false;
+                    if (t == 0)
+                    {
+                        requireScroll = false;
+                    }
                 }
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
             }
         }
 
@@ -2520,16 +5341,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             public override void OnStateChanged(View bottomSheet, int newState)
             {
-                if (isREAccount)
+                try
                 {
-                    bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
-                }
-                else if (!requireScroll)
-                {
-                    if (newState == BottomSheetBehavior.StateHidden)
+                    if (isREAccount)
                     {
-                        bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                        bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
                     }
+                    else if (!requireScroll)
+                    {
+                        if (newState == BottomSheetBehavior.StateHidden)
+                        {
+                            bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                        }
+                    }
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
                 }
             }
         }
@@ -2608,8 +5436,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             Activity.RunOnUiThread(() =>
             {
-                energyTipsShimmerView.Visibility = ViewStates.Gone;
-                OnSetEnergyTipsShimmerAdapter(null);
+                try
+                {
+                    energyTipsShimmerView.Visibility = ViewStates.Gone;
+                    OnSetEnergyTipsShimmerAdapter(null);
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
             });
         }
 
@@ -2641,18 +5476,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
-                int viewHeight = scrollView.MeasuredHeight;
-                int contentHeight = scrollView.GetChildAt(0).Height;
-                if (viewHeight - contentHeight < 0)
+                scrollView.setOnScrollViewListener(this);
+                scrollView.OverScrollMode = OverScrollMode.Always;
+
+                int childHeight = scrollViewContent.Height;
+                isScrollIndicatorShowNeed = scrollView.Height < (childHeight + scrollView.PaddingTop + scrollView.PaddingBottom);
+                if (isScrollIndicatorShowNeed)
                 {
-                    scrollView.SetScrollingEnabled(true);
-                    scrollView.SmoothScrollingEnabled = true;
-                    scrollView.setOnScrollViewListener(this);
+                    shadowLayout.SetBackgroundResource(Resource.Drawable.scroll_indicator);
                 }
                 else
                 {
-                    scrollView.SetScrollingEnabled(false);
+                    shadowLayout.SetBackgroundResource(Resource.Drawable.scroll_shadow);
                 }
+                bottomSheet.RequestLayout();
             }
             catch (System.Exception e)
             {
@@ -2680,7 +5517,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             CurrentParentIndex = -1;
             try
             {
-                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Graph Hightlight Deselected");
+                if (ChartType == ChartType.Month)
+                {
+                    OnGenerateTariffLegendValue(-1, isToggleTariff);
+                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Graph Hightlight Deselected");
+                }
+                else if (ChartType == ChartType.Day && isZoomIn)
+                {
+                    BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
+                    Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
+                    mChart.HighlightValue(centerBar, false);
+                }
             }
             catch (System.Exception err)
             {
@@ -2688,20 +5535,120 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+        // Lin Siong Note: Handle the chart select event
+        // Lin Siong Note: Will have vibration effect when selected
+        // Lin Siong Note: if isToggleTariff = true then it will force the entry to be hightlighted to most upper one
         void IOnChartValueSelectedListenerSupport.OnValueSelected(Entry e, Highlight h)
         {
             try
             {
-                if (isToggleTariff && h != null)
+                if (ChartType == ChartType.Month)
                 {
-                    int stackedIndex = 0;
-                    if (selectedHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList.Count > 0)
+                    if (!isSMAccount)
                     {
-                        stackedIndex = selectedHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList.Count - 1;
+                        if (isToggleTariff && h != null)
+                        {
+                            int stackedIndex = 0;
+                            if (selectedHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList.Count > 0)
+                            {
+                                stackedIndex = selectedHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList.Count - 1;
+                            }
+
+                            Highlight stackedHigh = new Highlight((int)e.GetX(), 0, stackedIndex);
+                            mChart.HighlightValue(stackedHigh, false);
+                        }
+                    }
+                    else
+                    {
+                        if (isToggleTariff && h != null)
+                        {
+                            int stackedIndex = 0;
+                            if (selectedSMHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList.Count > 0)
+                            {
+                                stackedIndex = selectedSMHistoryData.ByMonth.Months[(int)e.GetX()].TariffBlocksList.Count - 1;
+                            }
+
+                            Highlight stackedHigh = new Highlight((int)e.GetX(), 0, stackedIndex);
+                            mChart.HighlightValue(stackedHigh, false);
+                        }
                     }
 
-                    Highlight stackedHigh = new Highlight((int)e.GetX(), 0, stackedIndex);
-                    mChart.HighlightValue(stackedHigh, false);
+                    if (e != null)
+                    {
+                        OnGenerateTariffLegendValue((int)e.GetX(), isToggleTariff);
+                    }
+                }
+                else if (ChartType == ChartType.Day)
+                {
+                    if (isZoomIn)
+                    {
+                        int count = dayViewTariffList.Count - 1 - (int)e.GetX();
+
+                        if (((int)e.GetX() >= 0 && (int)e.GetX() < 4) || (count >= 0 && count < 4))
+                        {
+                            BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
+                            Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
+                            mChart.HighlightValue(centerBar, false);
+                        }
+                        else if (h != null)
+                        {
+                            int diff = currentDayViewIndex - (int)e.GetX();
+
+                            currentDayViewIndex = (int)e.GetX();
+
+                            if (diff > 0 || diff < 0)
+                            {
+                                isShowLog = true;
+                                currentLowestVisibleX = currentLowestVisibleX - diff;
+                                trackingLowestVisibleX = currentLowestVisibleX;
+                                lowestVisibleX = currentLowestVisibleX;
+
+                                float[] pts = { lowestVisibleX, 0f };
+                                mChart.GetTransformer(YAxis.AxisDependency.Left).PointValuesToPixel(pts);
+                                mChart.ViewPortHandler.Translate(pts, mChart.Matrix);
+
+                                mChart.MoveViewToX(currentLowestVisibleX);
+
+                                for (int i = 0; i < mChart.Jobs.Count; i++)
+                                {
+                                    Runnable job = mChart.Jobs[i] as Runnable;
+                                    job.Run();
+                                }
+                                mChart.Jobs.Clear();
+
+                                Vibrator vibrator = (Vibrator)this.Activity.GetSystemService(Context.VibratorService);
+                                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
+                                {
+                                    vibrator.Vibrate(VibrationEffect.CreateOneShot(200, 12));
+
+                                }
+                                else
+                                {
+                                    vibrator.Vibrate(200);
+
+                                }
+                            }
+
+                            BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
+                            Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
+                            mChart.HighlightValue(centerBar, false);
+
+                            if (missingReadingList[currentDayViewIndex])
+                            {
+                                OnMissingReadingClick();
+                            }
+                        }
+                        else
+                        {
+                            BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
+                            Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
+                            mChart.HighlightValue(centerBar, false);
+                        }
+                    }
+                    else
+                    {
+                        mChart.HighlightValue(null, false);
+                    }
                 }
             }
             catch (System.Exception err)
@@ -2711,28 +5658,31 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             try
             {
-                if (e != null)
+                if (ChartType == ChartType.Month)
                 {
-                    int index = (int)e.GetX();
-                    if (index != CurrentParentIndex)
+                    if (e != null)
                     {
-                        CurrentParentIndex = index;
-                        Vibrator vibrator = (Vibrator)this.Activity.GetSystemService(Context.VibratorService);
-                        if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
+                        int index = (int)e.GetX();
+                        if (index != CurrentParentIndex)
                         {
-                            vibrator.Vibrate(VibrationEffect.CreateOneShot(200, 12));
+                            CurrentParentIndex = index;
+                            Vibrator vibrator = (Vibrator)this.Activity.GetSystemService(Context.VibratorService);
+                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
+                            {
+                                vibrator.Vibrate(VibrationEffect.CreateOneShot(200, 12));
 
-                        }
-                        else
-                        {
-                            vibrator.Vibrate(200);
+                            }
+                            else
+                            {
+                                vibrator.Vibrate(200);
 
+                            }
                         }
                     }
-                }
-                else
-                {
-                    CurrentParentIndex = -1;
+                    else
+                    {
+                        CurrentParentIndex = -1;
+                    }
                 }
 
                 try
@@ -2776,6 +5726,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 isUsageLoadedNeeded = false;
                 selectedHistoryData = data;
+            }
+        }
+
+        public void SetSMUsageData(SMUsageHistoryData data)
+        {
+            if (data != null)
+            {
+                isUsageLoadedNeeded = false;
+                selectedSMHistoryData = data;
             }
         }
 
@@ -2890,6 +5849,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public UsageHistoryData GetUsageHistoryData()
         {
             return selectedHistoryData;
+        }
+
+        public SMUsageHistoryData GetSMUsageHistoryData()
+        {
+            return selectedSMHistoryData;
         }
 
         public void StartAmountDueShimmer()
@@ -3018,38 +5982,838 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
-        public void SetRefreshLayoutParams()
+        public void StartSMStatisticShimmer()
         {
-            LinearLayout.LayoutParams refreshImgParams = refresh_image.LayoutParameters as LinearLayout.LayoutParams;
+            try
+            {
+                if (isSMAccount)
+                {
+                    var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+                    if (shimmerBuilder != null)
+                    {
+                        shimmerSMStatisticBillImg.SetShimmer(shimmerBuilder?.Build());
+                        shimmrtSMStatisticBillTitle.SetShimmer(shimmerBuilder?.Build());
+                        shimmrtSMStatisticBill.SetShimmer(shimmerBuilder?.Build());
+                        shimmrtSMStatisticBillDueDate.SetShimmer(shimmerBuilder?.Build());
+                        shimmerSMStatisticPredictImg.SetShimmer(shimmerBuilder?.Build());
+                        shimmrtSMStatisticPredictTitle.SetShimmer(shimmerBuilder?.Build());
+                        shimmrtSMStatisticPredict.SetShimmer(shimmerBuilder?.Build());
+                        shimmrtSMStatisticPredictDueDate.SetShimmer(shimmerBuilder?.Build());
+                        shimmrtSmStatisticTooltip.SetShimmer(shimmerBuilder?.Build());
+                    }
 
-            refreshImgParams.Width = GetDeviceHorizontalScaleInPixel(0.431f);
-            refreshImgParams.Height = GetDeviceHorizontalScaleInPixel(0.431f);
-            refreshImgParams.TopMargin = (int)DPUtils.ConvertDPToPx(38f);
-            refresh_image.RequestLayout();
+                    shimmerSMStatisticBillImg.StartShimmer();
+                    shimmrtSMStatisticBillTitle.StartShimmer();
+                    shimmrtSMStatisticBill.StartShimmer();
+                    shimmrtSMStatisticBillDueDate.StartShimmer();
+                    shimmerSMStatisticPredictImg.StartShimmer();
+                    shimmrtSMStatisticPredictTitle.StartShimmer();
+                    shimmrtSMStatisticPredict.StartShimmer();
+                    shimmrtSMStatisticPredictDueDate.StartShimmer();
+                    shimmrtSmStatisticTooltip.StartShimmer();
 
-            LinearLayout.LayoutParams refreshTxtParams = txtNewRefreshMessage.LayoutParameters as LinearLayout.LayoutParams;
-            refreshTxtParams.TopMargin = (int)DPUtils.ConvertDPToPx(24f);
-            txtNewRefreshMessage.RequestLayout();
-
-            LinearLayout.LayoutParams refreshButtonParams = btnNewRefresh.LayoutParameters as LinearLayout.LayoutParams;
-            refreshButtonParams.TopMargin = (int)DPUtils.ConvertDPToPx(24f);
-            refreshButtonParams.BottomMargin = (int)DPUtils.ConvertDPToPx(21f);
-            btnNewRefresh.RequestLayout();
-            
+                    smStatisticContainer.Visibility = ViewStates.Visible;
+                    smStatisticBillMainLayout.Visibility = ViewStates.Visible;
+                    smStatisticPredictMainLayout.Visibility = ViewStates.Visible;
+                    shimmerSMStatisticPredictImg.Visibility = ViewStates.Visible;
+                    shimmerSMStatisticPredictLayout.Visibility = ViewStates.Visible;
+                    shimmerSMStatisticBillImg.Visibility = ViewStates.Visible;
+                    shimmerSMStatisticBillLayout.Visibility = ViewStates.Visible;
+                    shimmrtSmStatisticTooltip.Visibility = ViewStates.Visible;
+                    smStatisticBillLayout.Visibility = ViewStates.Gone;
+                    smStatisticBillImg.Visibility = ViewStates.Gone;
+                    smStatisticPredictImg.Visibility = ViewStates.Gone;
+                    smStatisticPredictLayout.Visibility = ViewStates.Gone;
+                    smStatisticTrendMainLayout.Visibility = ViewStates.Gone;
+                    smStatisticTooltip.Visibility = ViewStates.Gone;
+                }
+                else
+                {
+                    smStatisticContainer.Visibility = ViewStates.Gone;
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
+        public void StopSMStatisticShimmer()
+        {
+            try
+            {
+                if (isSMAccount)
+                {
+                    smStatisticBillMainLayout.Visibility = ViewStates.Visible;
+                    smStatisticPredictMainLayout.Visibility = ViewStates.Visible;
+                    smStatisticTrendMainLayout.Visibility = ViewStates.Gone;
+                    shimmerSMStatisticPredictImg.Visibility = ViewStates.Gone;
+                    shimmerSMStatisticPredictLayout.Visibility = ViewStates.Gone;
+                    shimmerSMStatisticBillImg.Visibility = ViewStates.Gone;
+                    shimmerSMStatisticBillLayout.Visibility = ViewStates.Gone;
+                    shimmrtSmStatisticTooltip.Visibility = ViewStates.Gone;
+                    smStatisticBillLayout.Visibility = ViewStates.Visible;
+                    smStatisticBillImg.Visibility = ViewStates.Visible;
+                    smStatisticPredictImg.Visibility = ViewStates.Visible;
+                    smStatisticPredictLayout.Visibility = ViewStates.Visible;
+                    smStatisticTooltip.Visibility = ViewStates.Visible;
+
+                    if (shimmerSMStatisticBillImg.IsShimmerStarted)
+                    {
+                        shimmerSMStatisticBillImg.StopShimmer();
+                    }
+                    if (shimmrtSMStatisticBillTitle.IsShimmerStarted)
+                    {
+                        shimmrtSMStatisticBillTitle.StopShimmer();
+                    }
+                    if (shimmrtSMStatisticBill.IsShimmerStarted)
+                    {
+                        shimmrtSMStatisticBill.StopShimmer();
+                    }
+                    if (shimmrtSMStatisticBillDueDate.IsShimmerStarted)
+                    {
+                        shimmrtSMStatisticBillDueDate.StopShimmer();
+                    }
+                    if (shimmerSMStatisticPredictImg.IsShimmerStarted)
+                    {
+                        shimmerSMStatisticPredictImg.StopShimmer();
+                    }
+                    if (shimmrtSMStatisticPredictTitle.IsShimmerStarted)
+                    {
+                        shimmrtSMStatisticPredictTitle.StopShimmer();
+                    }
+                    if (shimmrtSMStatisticPredict.IsShimmerStarted)
+                    {
+                        shimmrtSMStatisticPredict.StopShimmer();
+                    }
+                    if (shimmrtSMStatisticPredictDueDate.IsShimmerStarted)
+                    {
+                        shimmrtSMStatisticPredictDueDate.StopShimmer();
+                    }
+                    if (shimmrtSmStatisticTooltip.IsShimmerStarted)
+                    {
+                        shimmrtSmStatisticTooltip.StopShimmer();
+                    }
+
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowSMStatisticCard()
+        {
+            try
+            {
+                if (isSMAccount)
+                {
+                    smStatisticContainer.Visibility = ViewStates.Visible;
+                    StopSMStatisticShimmer();
+                    if (ChartDataType == ChartDataType.RM)
+                    {
+                        smStatisticTooltip.Visibility = ViewStates.Visible;
+                        smStatisticPredictMainLayout.Visibility = ViewStates.Visible;
+                        smStatisticTrendMainLayout.Visibility = ViewStates.Gone;
+                        smStatisticBill.Visibility = ViewStates.Visible;
+                        smStatisticBillCurrency.Visibility = ViewStates.Visible;
+                        smStatisticBillKwhUnit.Visibility = ViewStates.Gone;
+                        smStatisticBillKwh.Visibility = ViewStates.Gone;
+                        smStatisticBillTitle.Text = "My bill amount so far";
+                        smStatisticBillSubTitle.Text = "- -";
+                        smStatisticBill.Text = "- -";
+                        smStatisticPredictTitle.Text = "My bill may reach";
+                        smStatisticPredictSubTitle.Text = "- -";
+                        smStatisticPredict.Text = "- -";
+                        txtSmStatisticTooltip.Text = "What are these?";
+                        if ((selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.CostData != null))
+                        {
+                            foreach (SMUsageHistoryData.Stats costValue in selectedSMHistoryData.OtherUsageMetrics.CostData)
+                            {
+                                if (costValue.Key == Constants.CURRENT_COST_KEY)
+                                {
+                                    smStatisticBillTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My bill amount so far" : costValue.Title;
+                                    smStatisticBillSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
+                                    smStatisticBill.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : costValue.Value;
+                                    smStatisticBillCurrency.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "RM" : costValue.ValueUnit;
+                                    if (isMDMSDown)
+                                    {
+                                        smStatisticBillSubTitle.Text = "- -";
+                                        smStatisticBill.Text = "- -";
+                                    }
+                                }
+                                else if (costValue.Key == Constants.PROJECTED_COST_KEY)
+                                {
+                                    smStatisticPredictTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My bill amount so far" : costValue.Title;
+                                    smStatisticPredictSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
+                                    smStatisticPredict.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : costValue.Value;
+                                    smStatisticPredictCurrency.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "RM" : costValue.ValueUnit;
+                                    if (isMDMSDown)
+                                    {
+                                        smStatisticPredictSubTitle.Text = "- -";
+                                        smStatisticPredict.Text = "- -";
+                                    }
+                                }
+                            }
+                        }
+
+                        if (selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.ToolTips != null && selectedSMHistoryData.ToolTips.Count > 0)
+                        {
+                            foreach (SMUsageHistoryData.SmartMeterToolTips costValue in selectedSMHistoryData.ToolTips)
+                            {
+                                if (costValue.Type == Constants.PROJECTED_COST_KEY)
+                                {
+                                    txtSmStatisticTooltip.Text = string.IsNullOrEmpty(costValue.SMLink) ? "What are these?" : costValue.SMLink;
+                                }
+                            }
+                        }
+                    }
+                    else if (ChartDataType == ChartDataType.kWh)
+                    {
+                        smStatisticTooltip.Visibility = ViewStates.Gone;
+                        smStatisticPredictMainLayout.Visibility = ViewStates.Gone;
+                        smStatisticTrendMainLayout.Visibility = ViewStates.Visible;
+                        smStatisticBill.Visibility = ViewStates.Gone;
+                        smStatisticBillCurrency.Visibility = ViewStates.Gone;
+                        smStatisticBillKwhUnit.Visibility = ViewStates.Visible;
+                        smStatisticBillKwh.Visibility = ViewStates.Visible;
+                        smStatisticBillTitle.Text = "My current usage";
+                        smStatisticBillSubTitle.Text = "- -";
+                        smStatisticBillKwh.Text = "- -";
+                        smStatisticTrendTitle.Text = "My current usage trend is";
+                        smStatisticTrendSubTitle.Text = "- -";
+                        smStatisticTrend.Text = "- -%";
+                        if ((selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.UsageData != null && selectedSMHistoryData.OtherUsageMetrics.UsageData.Count > 0))
+                        {
+                            foreach (SMUsageHistoryData.Stats costValue in selectedSMHistoryData.OtherUsageMetrics.UsageData)
+                            {
+                                if (costValue.Key == Constants.CURRENT_USAGE_KEY)
+                                {
+                                    smStatisticBillTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My bill amount so far" : costValue.Title;
+                                    smStatisticBillSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
+                                    smStatisticBillKwh.Text = string.IsNullOrEmpty(costValue.Value) ? "- -" : costValue.Value;
+                                    smStatisticBillKwhUnit.Text = string.IsNullOrEmpty(costValue.ValueUnit) ? "kWh" : costValue.ValueUnit;
+                                    if (isMDMSDown)
+                                    {
+                                        smStatisticBillSubTitle.Text = "- -";
+                                        smStatisticBillKwh.Text = "- -";
+                                    }
+                                }
+                                else if (costValue.Key == Constants.AVERAGE_USAGE_KEY)
+                                {
+                                    smStatisticTrendTitle.Text = string.IsNullOrEmpty(costValue.Title) ? "My current usage trend is" : costValue.Title;
+                                    smStatisticTrendSubTitle.Text = string.IsNullOrEmpty(costValue.SubTitle) ? "- -" : costValue.SubTitle;
+                                    string trendString = "- -%";
+                                    if (!string.IsNullOrEmpty(costValue.Value))
+                                    {
+                                        if (!string.IsNullOrEmpty(costValue.ValueIndicator) && costValue.ValueIndicator.Equals("+"))
+                                        {
+                                            trendString = GetString(Resource.String.avg_electric_usage_up) + costValue.Value;
+                                        }
+                                        else if (!string.IsNullOrEmpty(costValue.ValueIndicator) && costValue.ValueIndicator.Equals("-"))
+                                        {
+                                            trendString = GetString(Resource.String.avg_electric_usage_down) + costValue.Value;
+                                        }
+                                        else
+                                        {
+                                            trendString = costValue.Value;
+                                        }
+                                    }
+
+                                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                                    {
+
+                                        smStatisticTrend.TextFormatted = Html.FromHtml(trendString, Html.FromHtmlModeLegacy);
+                                    }
+                                    else
+                                    {
+                                        smStatisticTrend.TextFormatted = Html.FromHtml(trendString);
+                                    }
+
+                                    if (isMDMSDown)
+                                    {
+                                        smStatisticTrendSubTitle.Text = "- -";
+                                        smStatisticTrend.Text = "- -%";
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    smStatisticContainer.Visibility = ViewStates.Gone;
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        // Lin Siong Note: Set Refresh Screen layout param
+        public void SetRefreshLayoutParams()
+        {
+            try
+            {
+                LinearLayout.LayoutParams refreshImgParams = refresh_image.LayoutParameters as LinearLayout.LayoutParams;
+
+                refreshImgParams.Width = GetDeviceHorizontalScaleInPixel(0.431f);
+                refreshImgParams.Height = GetDeviceHorizontalScaleInPixel(0.431f);
+                refreshImgParams.TopMargin = (int)DPUtils.ConvertDPToPx(38f);
+                refresh_image.RequestLayout();
+
+                LinearLayout.LayoutParams refreshTxtParams = txtNewRefreshMessage.LayoutParameters as LinearLayout.LayoutParams;
+                refreshTxtParams.TopMargin = (int)DPUtils.ConvertDPToPx(24f);
+                txtNewRefreshMessage.RequestLayout();
+
+                LinearLayout.LayoutParams refreshButtonParams = btnNewRefresh.LayoutParameters as LinearLayout.LayoutParams;
+                refreshButtonParams.TopMargin = (int)DPUtils.ConvertDPToPx(24f);
+                refreshButtonParams.BottomMargin = (int)DPUtils.ConvertDPToPx(21f);
+                btnNewRefresh.RequestLayout();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        // Lin Siong Note: Set Refresh Screen layout param
         public void SetMaintenanceLayoutParams()
         {
-            LinearLayout.LayoutParams refreshImgParams = refresh_image.LayoutParameters as LinearLayout.LayoutParams;
+            try
+            {
+                LinearLayout.LayoutParams refreshImgParams = refresh_image.LayoutParameters as LinearLayout.LayoutParams;
 
-            refreshImgParams.Width = GetDeviceHorizontalScaleInPixel(0.603f);
-            refreshImgParams.Height = GetDeviceHorizontalScaleInPixel(0.603f);
-            refreshImgParams.TopMargin = (int) DPUtils.ConvertDPToPx(8f);
-            refresh_image.RequestLayout();
+                refreshImgParams.Width = GetDeviceHorizontalScaleInPixel(0.603f);
+                refreshImgParams.Height = GetDeviceHorizontalScaleInPixel(0.603f);
+                refreshImgParams.TopMargin = (int)DPUtils.ConvertDPToPx(8f);
+                refresh_image.RequestLayout();
 
-            LinearLayout.LayoutParams refreshTxtParams = txtNewRefreshMessage.LayoutParameters as LinearLayout.LayoutParams;
-            refreshTxtParams.TopMargin = (int)DPUtils.ConvertDPToPx(6f);
-            txtNewRefreshMessage.RequestLayout();
+                LinearLayout.LayoutParams refreshTxtParams = txtNewRefreshMessage.LayoutParameters as LinearLayout.LayoutParams;
+                refreshTxtParams.TopMargin = (int)DPUtils.ConvertDPToPx(6f);
+                txtNewRefreshMessage.RequestLayout();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        // To get isMDMSDown flag
+        public bool GetIsMDMSDown()
+        {
+            return isMDMSDown;
+        }
+
+        // To set isMDMSDown flag
+        public void SetISMDMSDown(bool flag)
+        {
+            isMDMSDown = flag;
+        }
+
+        public bool GetIsSMAccount()
+        {
+            return isSMAccount;
+        }
+
+        // Lin Siong Note: Set virtual height layout param
+        // Lin Siong Note: To handle UI misalignment
+        public void SetVirtualHeightParams(float heightInDP)
+        {
+            try
+            {
+                LinearLayout.LayoutParams virtualHeightParams = virtualHeight.LayoutParameters as LinearLayout.LayoutParams;
+
+                virtualHeightParams.Height = (int)DPUtils.ConvertDPToPx(heightInDP);
+                virtualHeight.RequestLayout();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnSetBackendTariffDisabled(bool flag)
+        {
+            isBackendTariffDisabled = flag;
+        }
+
+        bool View.IOnTouchListener.OnTouch(View v, MotionEvent e)
+        {
+            mScaleDetector.OnTouchEvent(e);
+            return false;
+        }
+        
+        public void ByZoomDayView()
+        {
+            mChart.Visibility = ViewStates.Visible;
+
+            rmKwhSelection.Enabled = true;
+            tarifToggle.Enabled = true;
+            btnToggleDay.Enabled = true;
+            btnToggleMonth.Enabled = true;
+
+            if (isZoomIn)
+            {
+                smGraphZoomToggle.SetImageResource(Resource.Drawable.zoom_out);
+            }
+            else
+            {
+                smGraphZoomToggle.SetImageResource(Resource.Drawable.dashboard_zoom_tooltip);
+            }
+
+            mChart.Clear();
+            SetUp();
+        }
+
+        private void SetDayViewMonthText(string str)
+        {
+            txtDayViewZoomInIndicator.Text = str;
+        }
+
+        private class OnBarChartTouchLister : BarLineChartTouchListener
+        {
+            public ChartType currentChartType { get; set; }
+            public ChartDataType currentChartDataType { get; set; }
+            public bool currentIsZoomIn { get; set; }
+            private BarLineChartBase currentChart;
+            public List<double> currentDayViewRMList { get; set; }
+            public List<double> currentDayViewkWhList { get; set; }
+            public DashboardChartFragment currentFragment { get; set; }
+            private Context currentContext;
+
+            public OnBarChartTouchLister(BarLineChartBase mChart, Matrix mMatrix, float mDistance) : base(mChart, mMatrix, mDistance)
+            {
+                currentChart = mChart;
+                isShowLog = false;
+                currentContext = mChart.Context;
+            }
+
+            protected OnBarChartTouchLister(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
+            {
+
+            }
+
+            public override void StopDeceleration()
+            {
+                base.StopDeceleration();
+                if (currentChartType == ChartType.Day && currentIsZoomIn)
+                {
+                    if (!isShowLog && isDayViewFirstMove)
+                    {
+                        isShowLog = true;
+
+                        int roundedLowestVisibleX = (int)lowestVisibleX;
+                        float resultLowestVisibleX = roundedLowestVisibleX;
+
+                        int checkPoint = (int)(lowestVisibleX * 100);
+                        checkPoint = checkPoint % 100;
+
+                        if (roundedLowestVisibleX == 0 && checkPoint <= -50)
+                        {
+                            resultLowestVisibleX = -0.5f;
+                        }
+                        else if (roundedLowestVisibleX == 0 && (checkPoint > -50 && checkPoint <= 0))
+                        {
+                            resultLowestVisibleX = roundedLowestVisibleX + 0.5f;
+                        }
+                        else if (roundedLowestVisibleX == 0 && (checkPoint > 0 && checkPoint <= 25))
+                        {
+                            resultLowestVisibleX = -0.5f;
+                        }
+                        else if (roundedLowestVisibleX == 0 && (checkPoint > 25 && checkPoint <= 50))
+                        {
+                            resultLowestVisibleX = 0.5f;
+                        }
+                        else if (roundedLowestVisibleX == 0 && (checkPoint > 50 && checkPoint <= 99))
+                        {
+                            resultLowestVisibleX = 1.5f;
+                        }
+                        else if (checkPoint >= 0 && checkPoint < 25)
+                        {
+                            resultLowestVisibleX = roundedLowestVisibleX - 0.5f;
+                        }
+                        else if (checkPoint >= 25 && checkPoint <= 50)
+                        {
+                            resultLowestVisibleX = roundedLowestVisibleX + 0.5f;
+                        }
+                        else
+                        {
+                            resultLowestVisibleX = roundedLowestVisibleX + 1.5f;
+                        }
+
+                        currentDayViewIndex = (int)(resultLowestVisibleX + 4.5f);
+
+                        if (roundedLowestVisibleX == 0 && (checkPoint <= -50 || (checkPoint > 0 && checkPoint <= 25)))
+                        {
+                            currentDayViewIndex = minCurrentDayViewIndex;
+                        }
+                        else if (currentDayViewIndex > maxCurrentDayViewIndex)
+                        {
+                            currentDayViewIndex = maxCurrentDayViewIndex;
+                        }
+
+                        if (resultLowestVisibleX <= minLowestVisibleX)
+                        {
+                            resultLowestVisibleX = minLowestVisibleX;
+                            currentDayViewIndex = minCurrentDayViewIndex;
+                        }
+                        else if (resultLowestVisibleX >= maxLowestVisibleX)
+                        {
+                            resultLowestVisibleX = maxLowestVisibleX;
+                            currentDayViewIndex = maxCurrentDayViewIndex;
+                        }
+
+                        currentChart.MoveViewToX(resultLowestVisibleX);
+                        lowestVisibleX = resultLowestVisibleX;
+                        currentLowestVisibleX = lowestVisibleX;
+                        trackingLowestVisibleX = currentLowestVisibleX;
+
+                        float[] pts = { lowestVisibleX, 0f };
+                        currentChart.GetTransformer(YAxis.AxisDependency.Left).PointValuesToPixel(pts);
+                        currentChart.ViewPortHandler.Translate(pts, currentChart.Matrix);
+
+                        for (int i = 0; i < currentChart.Jobs.Count; i++)
+                        {
+                            Runnable job = currentChart.Jobs[i] as Runnable;
+                            job.Run();
+                        }
+                        currentChart.Jobs.Clear();
+
+                        BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
+                        Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
+                        currentChart.HighlightValue(centerBar, false);
+
+                        currentFragment.SetDayViewMonthText(dayViewMonthList[currentDayViewIndex]);
+
+                    }
+                }
+            }
+
+            public override void EndAction(MotionEvent p0)
+            {
+                base.EndAction(p0);
+                if (currentChartType == ChartType.Day && currentIsZoomIn)
+                {
+                    if (p0.Action == MotionEventActions.Up)
+                    {
+                        if (!isShowLog && isDayViewFirstMove)
+                        {
+                            isShowLog = true;
+
+                            int roundedLowestVisibleX = (int)lowestVisibleX;
+                            float resultLowestVisibleX = roundedLowestVisibleX;
+
+                            int checkPoint = (int)(lowestVisibleX * 100);
+                            checkPoint = checkPoint % 100;
+
+                            if (roundedLowestVisibleX == 0 && checkPoint <= -50)
+                            {
+                                resultLowestVisibleX = -0.5f;
+                            }
+                            else if (roundedLowestVisibleX == 0 && (checkPoint > -50 && checkPoint <= 0))
+                            {
+                                resultLowestVisibleX = roundedLowestVisibleX + 0.5f;
+                            }
+                            else if (roundedLowestVisibleX == 0 && (checkPoint > 0 && checkPoint <= 25))
+                            {
+                                resultLowestVisibleX = -0.5f;
+                            }
+                            else if (roundedLowestVisibleX == 0 && (checkPoint > 25 && checkPoint <= 50))
+                            {
+                                resultLowestVisibleX = 0.5f;
+                            }
+                            else if (roundedLowestVisibleX == 0 && (checkPoint > 50 && checkPoint <= 99))
+                            {
+                                resultLowestVisibleX = 1.5f;
+                            }
+                            else if (checkPoint >= 0 && checkPoint < 25)
+                            {
+                                resultLowestVisibleX = roundedLowestVisibleX - 0.5f;
+                            }
+                            else if (checkPoint >= 25 && checkPoint <= 50)
+                            {
+                                resultLowestVisibleX = roundedLowestVisibleX + 0.5f;
+                            }
+                            else
+                            {
+                                resultLowestVisibleX = roundedLowestVisibleX + 1.5f;
+                            }
+
+                            currentDayViewIndex = (int)(resultLowestVisibleX + 4.5f);
+
+                            if (roundedLowestVisibleX == 0 && (checkPoint <= -50 || (checkPoint > 0 && checkPoint <= 25)))
+                            {
+                                currentDayViewIndex = minCurrentDayViewIndex;
+                            }
+                            else if (currentDayViewIndex > maxCurrentDayViewIndex)
+                            {
+                                currentDayViewIndex = maxCurrentDayViewIndex;
+                            }
+
+                            if (resultLowestVisibleX <= minLowestVisibleX)
+                            {
+                                resultLowestVisibleX = minLowestVisibleX;
+                                currentDayViewIndex = minCurrentDayViewIndex;
+                            }
+                            else if (resultLowestVisibleX >= maxLowestVisibleX)
+                            {
+                                resultLowestVisibleX = maxLowestVisibleX;
+                                currentDayViewIndex = maxCurrentDayViewIndex;
+                            }
+
+                            currentChart.MoveViewToX(resultLowestVisibleX);
+                            lowestVisibleX = resultLowestVisibleX;
+                            currentLowestVisibleX = lowestVisibleX;
+                            trackingLowestVisibleX = currentLowestVisibleX;
+
+                            float[] pts = { lowestVisibleX, 0f };
+                            currentChart.GetTransformer(YAxis.AxisDependency.Left).PointValuesToPixel(pts);
+                            currentChart.ViewPortHandler.Translate(pts, currentChart.Matrix);
+
+                            for (int i = 0; i < currentChart.Jobs.Count; i++)
+                            {
+                                Runnable job = currentChart.Jobs[i] as Runnable;
+                                job.Run();
+                            }
+                            currentChart.Jobs.Clear();
+
+                            BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
+                            Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
+                            currentChart.HighlightValue(centerBar, false);
+
+                            currentFragment.SetDayViewMonthText(dayViewMonthList[currentDayViewIndex]);
+                        }
+                    }
+                }
+            }
+
+            public override void ComputeScroll()
+            {
+                base.ComputeScroll();
+
+                if (currentChartType == ChartType.Day && currentIsZoomIn)
+                {
+                    if (!isDayViewFirstMove)
+                    {
+                        if (currentChartDataType == ChartDataType.RM)
+                        {
+                            currentChart.MoveViewToX(currentDayViewRMList.Count - 1 - 0.5f);
+                            lowestVisibleX = currentDayViewRMList.Count - 1 - 0.5f;
+                            currentDayViewIndex = currentDayViewRMList.Count - 1 + 4;
+                        }
+                        else
+                        {
+                            currentChart.MoveViewToX(currentDayViewkWhList.Count - 1 - 0.5f);
+                            lowestVisibleX = currentDayViewkWhList.Count - 1 - 0.5f;
+                            currentDayViewIndex = currentDayViewkWhList.Count - 1 + 4;
+                        }
+                        currentLowestVisibleX = lowestVisibleX;
+                        trackingLowestVisibleX = currentLowestVisibleX;
+                        maxLowestVisibleX = lowestVisibleX;
+                        float[] pts = { lowestVisibleX, 0f };
+                        currentChart.GetTransformer(YAxis.AxisDependency.Left).PointValuesToPixel(pts);
+                        currentChart.ViewPortHandler.Translate(pts, currentChart.Matrix);
+                        maxCurrentDayViewIndex = currentDayViewIndex;
+
+                        for (int i = 0; i < currentChart.Jobs.Count; i++)
+                        {
+                            Runnable job = currentChart.Jobs[i] as Runnable;
+                            job.Run();
+                        }
+                        currentChart.Jobs.Clear();
+
+                        BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
+                        Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
+                        currentChart.HighlightValue(centerBar, false);
+                        isDayViewFirstMove = true;
+                        isShowLog = true;
+
+                        currentFragment.SetDayViewMonthText(dayViewMonthList[currentDayViewIndex]);
+                    }
+                    else
+                    {
+                        if (!isShowLog && (System.Math.Abs(trackingLowestVisibleX - currentChart.LowestVisibleX) >= 1))
+                        {
+                            trackingLowestVisibleX = currentChart.LowestVisibleX;
+
+
+                            int roundedLowestVisibleX = (int)trackingLowestVisibleX;
+
+                            int checkPoint = (int)(trackingLowestVisibleX * 100);
+                            checkPoint = checkPoint % 100;
+
+                            int tempDayViewIndex = (int) trackingLowestVisibleX + 5;
+
+                            if (roundedLowestVisibleX == 0 && (checkPoint <= -50 || (checkPoint > 0 && checkPoint <= 25)))
+                            {
+                                tempDayViewIndex = minCurrentDayViewIndex;
+                            }
+                            else if (currentDayViewIndex > maxCurrentDayViewIndex)
+                            {
+                                tempDayViewIndex = maxCurrentDayViewIndex;
+                            }
+
+                            BarEntry dayViewTariff = dayViewTariffList[tempDayViewIndex];
+                            Highlight centerBar = new Highlight(tempDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
+                            currentChart.HighlightValue(centerBar, false);
+
+                            currentFragment.SetDayViewMonthText(dayViewMonthList[tempDayViewIndex]);
+
+                            Vibrator vibrator = (Vibrator)currentContext.GetSystemService(Context.VibratorService);
+                            if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
+                            {
+                                vibrator.Vibrate(VibrationEffect.CreateOneShot(200, 12));
+
+                            }
+                            else
+                            {
+                                vibrator.Vibrate(200);
+
+                            }
+                        }
+
+                        if ((System.Math.Abs(lowestVisibleX - currentChart.LowestVisibleX) > 0.0000001))
+                        {
+                            isShowLog = false;
+
+                            lowestVisibleX = currentChart.LowestVisibleX;
+                        }
+                        else
+                        {
+                            if (!isShowLog && isDayViewFirstMove)
+                            {
+                                isShowLog = true;
+
+                                int roundedLowestVisibleX = (int)lowestVisibleX;
+                                float resultLowestVisibleX = roundedLowestVisibleX;
+
+                                int checkPoint = (int)(lowestVisibleX * 100);
+                                checkPoint = checkPoint % 100;
+
+                                if (roundedLowestVisibleX == 0 && checkPoint <= -50)
+                                {
+                                    resultLowestVisibleX = -0.5f;
+                                }
+                                else if (roundedLowestVisibleX == 0 && (checkPoint > -50 && checkPoint <= 0))
+                                {
+                                    resultLowestVisibleX = roundedLowestVisibleX + 0.5f;
+                                }
+                                else if (roundedLowestVisibleX == 0 && (checkPoint > 0 && checkPoint <= 25))
+                                {
+                                    resultLowestVisibleX = -0.5f;
+                                }
+                                else if (roundedLowestVisibleX == 0 && (checkPoint > 25 && checkPoint <= 50))
+                                {
+                                    resultLowestVisibleX = 0.5f;
+                                }
+                                else if (roundedLowestVisibleX == 0 && (checkPoint > 50 && checkPoint <= 99))
+                                {
+                                    resultLowestVisibleX = 1.5f;
+                                }
+                                else if (checkPoint >= 0 && checkPoint < 25)
+                                {
+                                    resultLowestVisibleX = roundedLowestVisibleX - 0.5f;
+                                }
+                                else if (checkPoint >= 25 && checkPoint <= 50)
+                                {
+                                    resultLowestVisibleX = roundedLowestVisibleX + 0.5f;
+                                }
+                                else
+                                {
+                                    resultLowestVisibleX = roundedLowestVisibleX + 1.5f;
+                                }
+
+                                currentDayViewIndex = (int) (resultLowestVisibleX + 4.5f);
+
+                                if (roundedLowestVisibleX == 0 && (checkPoint <= -50 || (checkPoint > 0 && checkPoint <= 25)))
+                                {
+                                    currentDayViewIndex = minCurrentDayViewIndex;
+                                }
+                                else if (currentDayViewIndex > maxCurrentDayViewIndex)
+                                {
+                                    currentDayViewIndex = maxCurrentDayViewIndex;
+                                }
+
+                                if (resultLowestVisibleX <= minLowestVisibleX)
+                                {
+                                    resultLowestVisibleX = minLowestVisibleX;
+                                    currentDayViewIndex = minCurrentDayViewIndex;
+                                }
+                                else if (resultLowestVisibleX >= maxLowestVisibleX)
+                                {
+                                    resultLowestVisibleX = maxLowestVisibleX;
+                                    currentDayViewIndex = maxCurrentDayViewIndex;
+                                }
+
+                                currentChart.MoveViewToX(resultLowestVisibleX);
+                                lowestVisibleX = resultLowestVisibleX;
+                                currentLowestVisibleX = lowestVisibleX;
+                                trackingLowestVisibleX = currentLowestVisibleX;
+
+                                float[] pts = { lowestVisibleX, 0f };
+                                currentChart.GetTransformer(YAxis.AxisDependency.Left).PointValuesToPixel(pts);
+                                currentChart.ViewPortHandler.Translate(pts, currentChart.Matrix);
+
+                                for (int i = 0; i < currentChart.Jobs.Count; i++)
+                                {
+                                    Runnable job = currentChart.Jobs[i] as Runnable;
+                                    job.Run();
+                                }
+                                currentChart.Jobs.Clear();
+
+                                BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
+                                Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
+                                currentChart.HighlightValue(centerBar, false);
+
+                                currentFragment.SetDayViewMonthText(dayViewMonthList[currentDayViewIndex]);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private class BarGraphPinchListener : ScaleGestureDetector.SimpleOnScaleGestureListener
+        {
+            ChartType currentChartType;
+            float currentScaleFactor = 1.00f;
+
+            DashboardChartContract.IUserActionsListener userActionsListener;
+
+            public BarGraphPinchListener(ChartType mType, DashboardChartContract.IUserActionsListener currentListener)
+            {
+                this.currentChartType = mType;
+                currentScaleFactor = 1.00f;
+                this.userActionsListener = currentListener;
+            }
+
+            public override void OnScaleEnd(ScaleGestureDetector detector)
+            {
+                if (currentChartType == ChartType.Day)
+                {
+                    if ((currentScaleFactor - detector.ScaleFactor) > 0.005)
+                    {
+                        currentScaleFactor = detector.ScaleFactor;
+                        if (isZoomIn)
+                        {
+                            isZoomIn = false;
+                            this.userActionsListener.OnByZoom();
+                        }
+                    }
+                    else if ((detector.ScaleFactor - currentScaleFactor) > 0.005)
+                    {
+                        currentScaleFactor = detector.ScaleFactor;
+                        if (!isZoomIn)
+                        {
+                            isZoomIn = true;
+                            this.userActionsListener.OnByZoom();
+                        }
+                    }
+                }
+            }
         }
     }
 }

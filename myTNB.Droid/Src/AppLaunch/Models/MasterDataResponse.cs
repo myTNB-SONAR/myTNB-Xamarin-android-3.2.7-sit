@@ -13,17 +13,29 @@ namespace myTNB_Android.Src.AppLaunch.Models
             [JsonProperty("__type")]
             public string Type { get; set; }
 
-            [JsonProperty("status")]
-            public string Status { get; set; }
-
-            [JsonProperty("isError")]
-            public bool IsError { get; set; }
+            [JsonProperty("ErrorCode")]
+            public string ErrorCode { get; set; }
 
             [JsonProperty("message")]
             public string Message { get; set; }
 
             [JsonProperty("data")]
             public MasterData MasterData { get; set; }
+
+            [JsonProperty("IsSMRApplyDisabled")]
+            public bool IsSMRApplyDisabled { get; set; }
+
+            [JsonProperty("IsEnergyTipsDisabled")]
+            public bool IsEnergyTipsDisabled { get; set; }
+
+            [JsonProperty("IsOCRDown")]
+            public bool IsOCRDown { get; set; }
+
+            [JsonProperty(PropertyName = "DisplayTitle")]
+            public string DisplayTitle { get; set; }
+
+            [JsonProperty(PropertyName = "DisplayMessage")]
+            public string DisplayMessage { get; set; }
         }
     }
 }
