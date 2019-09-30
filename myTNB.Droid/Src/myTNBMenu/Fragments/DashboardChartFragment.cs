@@ -3232,7 +3232,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     for (int i = 0; i < barLength; i++)
                     {
                         float[] valList = new float[1];
-                        float val = (float)selectedHistoryData.ByMonth.Months[i].AmountTotal;
+                        float val = (float)selectedHistoryData.ByMonth.Months[i].UsageTotal;
                         if (float.IsPositiveInfinity(val))
                         {
                             val = float.PositiveInfinity;
