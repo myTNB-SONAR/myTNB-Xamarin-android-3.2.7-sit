@@ -220,7 +220,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         protected override void OnResume()
         {
             base.OnResume();
-            this.userActionsListener?.GetUserNotifications();
+            if (currentFragment.GetType() == typeof(HomeMenuFragment))
+            {
+                this.userActionsListener?.GetUserNotifications();
+            }
             if (this.mPresenter != null)
             {
                 this.mPresenter.OnValidateData();

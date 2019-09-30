@@ -2509,6 +2509,7 @@
     <Compile Include="Src\Billing\MVP\BillingDetailsPresenter.cs" />
     <Compile Include="Src\Billing\MVP\BillingDetailsContract.cs" />
     <Compile Include="Src\Utils\RestrictAmountChangeListener.cs" />
+    <Compile Include="Src\MyTNBService\Model\AccountBillPayFilter.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
