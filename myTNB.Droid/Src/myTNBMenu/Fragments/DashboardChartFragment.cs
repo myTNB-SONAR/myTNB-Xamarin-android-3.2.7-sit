@@ -3231,13 +3231,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     List<BarEntry> yVals1 = new List<BarEntry>();
                     for (int i = 0; i < barLength; i++)
                     {
-                        float val = (float)selectedHistoryData.ByMonth.Months[i].UsageTotal;
+                        float[] valList = new float[1];
+                        float val = (float)selectedHistoryData.ByMonth.Months[i].AmountTotal;
                         if (float.IsPositiveInfinity(val))
                         {
                             val = float.PositiveInfinity;
                         }
-
-                        yVals1.Add(new BarEntry(i, System.Math.Abs(val)));
+                        valList[0] = System.Math.Abs(val);
+                        yVals1.Add(new BarEntry(i, valList));
                     }
 
                     BarDataSet set1;
@@ -3259,12 +3260,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         set1 = new BarDataSet(yVals1, "");
                         set1.SetDrawIcons(false);
 
+                        List<int> listOfColor = new List<int>();
 
-                        set1.HighLightColor = Color.Argb(255, 255, 255, 255);
-                        set1.HighLightAlpha = 255;
+                        for (int i = 0; i < barLength; i++)
+                        {
+                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                        }
 
-                        int[] color = { Color.Argb(100, 255, 255, 255) };
-                        set1.SetColors(color);
+                        int[] colorSet = new int[listOfColor.Count];
+                        for (int z = 0; z < listOfColor.Count; z++)
+                        {
+                            colorSet[z] = listOfColor[z];
+                        }
+
+                        set1.SetColors(colorSet);
+
                         List<IBarDataSet> dataSets = new List<IBarDataSet>();
                         dataSets.Add(set1);
 
@@ -3272,6 +3282,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         BarData data = new BarData(dataSets);
 
                         data.BarWidth = 0.25f;
+
+                        set1.HighLightAlpha = 0;
 
                         data.HighlightEnabled = true;
                         data.SetValueTextSize(10f);

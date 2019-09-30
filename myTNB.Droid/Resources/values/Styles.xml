@@ -382,6 +382,11 @@
     <item name="android:textColor">@color/errorColor</item>
     <item name="android:textSize">12sp</item>
   </style>
+    
+  <style name="TextInputLayoutBottomErrorHintAmount" parent="@android:style/TextAppearance.Medium">
+    <item name="android:textColor">@color/tomato</item>
+    <item name="android:textSize">12sp</item>
+  </style>
 
   <style name="TextInputLayoutFeedbackCount" parent="@android:style/TextAppearance.Medium">
     <item name="android:textColor">@color/tunaGrey</item>

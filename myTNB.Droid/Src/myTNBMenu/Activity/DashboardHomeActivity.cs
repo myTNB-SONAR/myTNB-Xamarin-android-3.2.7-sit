@@ -173,36 +173,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 isFromNotification = true;
                 alreadyStarted = true;
             }
-            //Task.Factory.StartNew(() =>
-            //{
-            //    GetNotifications();
-            //});
-            this.userActionsListener?.OnNotificationCount();
-
-            this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).Click += DashboardHomeActivity_Click;
-
         }
-
-        //public async void GetNotifications()
-        //{
-        //    try
-        //    {
-        //        NotificationApiImpl api = new NotificationApiImpl();
-        //        MyTNBService.Response.UserNotificationResponse response = await api.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
-        //        if (response.Data.ErrorCode == "7200")
-        //        {
-        //            foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
-        //            {
-        //                // tODO : SAVE ALL NOTIFICATIONs
-        //                int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
-        //            }
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Utility.LoggingNonFatalError(e);
-        //    }
-        //}
 
         public void ShowBackButton(bool flag)
         {
@@ -250,6 +221,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         protected override void OnResume()
         {
             base.OnResume();
+            this.userActionsListener?.GetUserNotifications();
             if (this.mPresenter != null)
             {
                 this.mPresenter.OnValidateData();

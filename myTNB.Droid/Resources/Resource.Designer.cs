@@ -17309,8 +17309,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0a018e
 			public const int Animation_Design_BottomSheetDialog = 2131362190;
 			
-			// aapt resource value: 0x7f0a020e
-			public const int App_BaseTheme = 2131362318;
+			// aapt resource value: 0x7f0a020f
+			public const int App_BaseTheme = 2131362319;
 			
 			// aapt resource value: 0x7f0a01de
 			public const int App_FullScreenTheme = 2131362270;
@@ -17318,11 +17318,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0a01df
 			public const int App_ScreenTheme = 2131362271;
 			
-			// aapt resource value: 0x7f0a020c
-			public const int AppSearchView = 2131362316;
+			// aapt resource value: 0x7f0a020d
+			public const int AppSearchView = 2131362317;
 			
-			// aapt resource value: 0x7f0a0210
-			public const int App_EditTextStyle = 2131362320;
+			// aapt resource value: 0x7f0a0211
+			public const int App_EditTextStyle = 2131362321;
 			
 			// aapt resource value: 0x7f0a00c9
 			public const int Base_AlertDialog_AppCompat = 2131361993;
@@ -17858,8 +17858,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0a0203
 			public const int LightButtonWithIcon = 2131362307;
 			
-			// aapt resource value: 0x7f0a020f
-			public const int LoadingOverlyDialogStyle = 2131362319;
+			// aapt resource value: 0x7f0a0210
+			public const int LoadingOverlyDialogStyle = 2131362320;
 			
 			// aapt resource value: 0x7f0a01b5
 			public const int MD_ActionButton = 2131362229;
@@ -18008,8 +18008,8 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0a0067
 			public const int RtlUnderlay_Widget_AppCompat_ActionButton_Overflow = 2131361895;
 			
-			// aapt resource value: 0x7f0a020b
-			public const int SMDashboardRadioButton = 2131362315;
+			// aapt resource value: 0x7f0a020c
+			public const int SMDashboardRadioButton = 2131362316;
 			
 			// aapt resource value: 0x7f0a01f9
 			public const int SwitchCompatTheme = 2131362297;
@@ -18245,11 +18245,14 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0a0209
 			public const int TextInputLayoutBottomErrorHint = 2131362313;
 			
+			// aapt resource value: 0x7f0a020a
+			public const int TextInputLayoutBottomErrorHintAmount = 2131362314;
+			
 			// aapt resource value: 0x7f0a0208
 			public const int TextInputLayoutBottomHint = 2131362312;
 			
-			// aapt resource value: 0x7f0a020a
-			public const int TextInputLayoutFeedbackCount = 2131362314;
+			// aapt resource value: 0x7f0a020b
+			public const int TextInputLayoutFeedbackCount = 2131362315;
 			
 			// aapt resource value: 0x7f0a01b9
 			public const int Theme_AddAccount = 2131362233;
@@ -18512,29 +18515,29 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0a01ec
 			public const int Theme_SubmitMeterReading = 2131362284;
 			
-			// aapt resource value: 0x7f0a0211
-			public const int Theme_TnC = 2131362321;
+			// aapt resource value: 0x7f0a0212
+			public const int Theme_TnC = 2131362322;
 			
-			// aapt resource value: 0x7f0a020d
-			public const int Theme_TooltipButton = 2131362317;
+			// aapt resource value: 0x7f0a020e
+			public const int Theme_TooltipButton = 2131362318;
 			
 			// aapt resource value: 0x7f0a01ee
 			public const int Theme_TryAgainButton = 2131362286;
 			
-			// aapt resource value: 0x7f0a0212
-			public const int Theme_UpdateMobile = 2131362322;
-			
 			// aapt resource value: 0x7f0a0213
-			public const int Theme_UpdateNickName = 2131362323;
+			public const int Theme_UpdateMobile = 2131362323;
 			
 			// aapt resource value: 0x7f0a0214
-			public const int Theme_UpdatePassword = 2131362324;
+			public const int Theme_UpdateNickName = 2131362324;
+			
+			// aapt resource value: 0x7f0a0215
+			public const int Theme_UpdatePassword = 2131362325;
 			
 			// aapt resource value: 0x7f0a01e9
 			public const int Theme_ViewBill = 2131362281;
 			
-			// aapt resource value: 0x7f0a0215
-			public const int Theme_Weblink = 2131362325;
+			// aapt resource value: 0x7f0a0216
+			public const int Theme_Weblink = 2131362326;
 			
 			// aapt resource value: 0x7f0a0136
 			public const int ThemeOverlay_AppCompat = 2131362102;

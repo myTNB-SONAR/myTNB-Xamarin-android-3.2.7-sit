@@ -76,7 +76,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 txtTitleInfo.Text = response.Data.DisplayTitle;
                 txtMessageInfo.Text = response.Data.DisplayMessage;
 
-                refNumberValue.Text = response.Data.AccountDetailsData.ApplicationID;
+                refNumberValue.Text = response.Data.AccountDetailsData.ServiceReqNo;
                 appliedOnDateValue.Text = response.Data.AccountDetailsData.AppliedOn;
             }
 
