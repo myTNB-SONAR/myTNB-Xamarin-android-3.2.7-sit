@@ -533,7 +533,7 @@ namespace myTNB
                                if (_billHistory != null && _billHistory.d != null && _billHistory.d.IsSuccess
                                     && _billHistory.d.data != null)
                                {
-                                   FilterTypes = GetHistoryFilterTypes(_billHistory.d.data.BillPayHistories);
+                                   FilterTypes = GetHistoryFilterTypes(_billHistory.d.data);
                                    FilterIndex = 0;
                                    List<BillPayHistoryModel> historyList = _billHistory.d.data.BillPayHistories;
                                    _historyTableView.Source = new BillHistorySource(historyList, false)
@@ -784,20 +784,29 @@ namespace myTNB
         #endregion
 
         #region Filter
-        private List<string> GetHistoryFilterTypes(List<BillPayHistoryModel> billHistory)
+        private List<string> GetHistoryFilterTypes(BillPayHistoriesDataModel billpayHistoryData)
         {
             List<string> filterKeys = new List<string>();
             List<string> filterTypes = new List<string>();
-            List<BillPayHistoryDataModel> historyData = new List<BillPayHistoryDataModel>();
-            foreach (var obj in billHistory)
+
+            if (billpayHistoryData != null && billpayHistoryData.BillPayFilterData != null && billpayHistoryData.BillPayFilterData.Count > 0)
             {
-                foreach (var obj2 in obj.BillPayHistoryData)
+                FilterKeys = billpayHistoryData.BillPayFilterData.Select(x => x.Type).ToList();
+                filterTypes = billpayHistoryData.BillPayFilterData.Select(x => x.Text).ToList();
+                return filterTypes;
+            }
+
+            List<BillPayHistoryDataModel> historyData = new List<BillPayHistoryDataModel>();
+            List<BillPayHistoryModel> billHistory = billpayHistoryData.BillPayHistories;
+            foreach (BillPayHistoryModel obj in billHistory)
+            {
+                foreach (BillPayHistoryDataModel obj2 in obj.BillPayHistoryData)
                 {
                     historyData.Add(obj2);
                 }
             }
-            var keys = historyData.Select(x => x.HistoryType).Distinct();
-            var names = historyData.Select(x => x.HistoryTypeText).Distinct();
+            IEnumerable<string> keys = historyData.Select(x => x.HistoryType).Distinct();
+            IEnumerable<string> names = historyData.Select(x => x.HistoryTypeText).Distinct();
             filterKeys = new List<string>(keys);
             filterKeys.Insert(0, "ALL");
             FilterKeys = new List<string>(filterKeys);
@@ -817,11 +826,11 @@ namespace myTNB
             {
                 if (index > 0)
                 {
-                    var filterKey = FilterKeys[index];
-                    foreach (var obj in historyList)
+                    string filterKey = FilterKeys[index];
+                    foreach (BillPayHistoryModel obj in historyList)
                     {
-                        var historyData = obj.BillPayHistoryData;
-                        foreach (var data in historyData)
+                        List<BillPayHistoryDataModel> historyData = obj.BillPayHistoryData;
+                        foreach (BillPayHistoryDataModel data in historyData)
                         {
                             if (data.HistoryType != filterKey)
                             {
@@ -832,9 +841,9 @@ namespace myTNB
 
                     if (dataToRemove.Count > 0)
                     {
-                        foreach (var objToRemove in dataToRemove)
+                        foreach (BillPayHistoryDataModel objToRemove in dataToRemove)
                         {
-                            foreach (var obj in historyList)
+                            foreach (BillPayHistoryModel obj in historyList)
                             {
                                 var historyData = obj.BillPayHistoryData;
                                 historyData.Remove(objToRemove);
@@ -842,9 +851,9 @@ namespace myTNB
                         }
                     }
 
-                    foreach (var obj in historyList)
+                    foreach (BillPayHistoryModel obj in historyList)
                     {
-                        var historyData = obj.BillPayHistoryData;
+                        List<BillPayHistoryDataModel> historyData = obj.BillPayHistoryData;
                         if (historyData.Count == 0)
                         {
                             historyToRemove.Add(obj);
@@ -853,7 +862,7 @@ namespace myTNB
 
                     if (historyToRemove.Count > 0)
                     {
-                        foreach (var objToRemove in historyToRemove)
+                        foreach (BillPayHistoryModel objToRemove in historyToRemove)
                         {
                             historyList.Remove(objToRemove);
                         }
