@@ -173,6 +173,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// <param name="exception">the returned exception</param>
             void ShowRetryOptionsUnknownException(Exception exception);
 
+            string GetDeviceId();
+
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -238,6 +240,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// </summary>
             /// <param name="accountNum">string</param>
             void GetAccountStatus(string accountNum);
+
         }
     }
 }

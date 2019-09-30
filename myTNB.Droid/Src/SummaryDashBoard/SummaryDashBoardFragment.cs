@@ -410,7 +410,7 @@ namespace myTNB_Android.Src.SummaryDashBoard
             if (summaryDashBoardDetails != null && !string.IsNullOrEmpty(summaryDashBoardDetails.AccNumber))
             {
                 CustomerBillingAccount.RemoveSelected();
-                CustomerBillingAccount.Update(summaryDashBoardDetails.AccNumber, true);
+                CustomerBillingAccount.SetSelected(summaryDashBoardDetails.AccNumber);
 
                 if (mCallBack != null)
                 {

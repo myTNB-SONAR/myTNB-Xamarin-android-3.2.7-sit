@@ -110,7 +110,12 @@ namespace myTNB_Android.Src.Utils
 
         internal struct SERVER_URL
         {
-#if DEBUG || STUB || DEVELOP 
+#if DEBUG || STUB
+            internal static readonly string END_POINT = "http://10.215.128.191:89";
+            internal static readonly string FPX_PAYMENT = "http://10.215.128.191:89/v5/PayRedirect.aspx?Param1=3&Param2=";
+            // internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
+            // internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
+#elif DEVELOP || SIT
             internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
             internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
             //internal static readonly string END_POINT = "https://mytnbapp.tnb.com.my";
@@ -125,7 +130,7 @@ namespace myTNB_Android.Src.Utils
 
         internal struct APP_CONFIG
         {
-#if DEBUG || STUB || DEVELOP
+#if DEBUG || STUB || DEVELOP || SIT
             internal static readonly string API_KEY_ID = "9515F2FA-C267-42C9-8087-FABA77CB84DF";
             //internal static readonly string API_KEY_ID = "E6148656-205B-494C-BC95-CC241423E72F";
             internal static readonly int MAX_IMAGE_QUALITY_IN_PERCENT = 100;
@@ -154,7 +159,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int REQUEST_VERIFICATION_SMS_TOEKN_CODE = 4812;
 
         //Promotions 
-#if DEBUG || STUB || DEVELOP
+#if DEBUG || STUB || DEVELOP || SIT
         internal static readonly int PROMOTION_DAYS_COUNTER_LIMIT = 1;
 #else
         internal static readonly int PROMOTION_DAYS_COUNTER_LIMIT = 15;
@@ -206,5 +211,70 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string REFRESH_BTN_MSG = "refreshBtnTxt";
 
         internal static readonly string AMOUNT_DUE_FAILED_KEY = "AmountDueFailedKey";
-    }
+
+        //Home Menu Scroll
+        internal static readonly int ACCOUNT_LIST_CARD_DP = 60;
+        internal static readonly int ACCOUNT_LIST_INDICATOR_DP = 10;
+        internal static readonly int ACCOUNT_LIST_SERVICE_MAX_BOUNDARY = 3;
+        internal static readonly int MY_SERVICE_CARD_DP = 90;
+        internal static readonly int MY_SERVICE_NO_CARD_DP = 5;
+        internal static readonly int ACCOUNT_LIST_HELP_NO_ACC_DP_LIMIT = 110;
+        internal static readonly int ACCOUNT_LIST_HELP_MAX_BOUNDARY = 5;
+
+        //Language
+        internal static readonly string DEFAULT_LANG = "EN";
+
+        // SMR
+        internal static readonly string SMR_RESPONSE_KEY = "smrReponse";
+        internal static readonly string SMR_SUBMIT_METER_KEY = "S";
+        internal static readonly string SMR_VIEW_METER_KEY = "V";
+        internal static readonly string SMR_TERMINATION_REASON_KEY = "smrTerminationReason";
+        internal static readonly string SMR_TERMINATION_KEY = "smrTermination";
+        internal static readonly string SMR_ENABLE_FLAG = "ENABLE_SMR";
+        internal static readonly string SMR_DISABLE_FLAG = "DISABLE_SMR";
+
+        internal static readonly string SMR_METER_UNIT_KWH = "KWH";
+        internal static readonly string SMR_METER_UNIT_KVAR = "KVARH";
+        internal static readonly string SMR_METER_UNIT_KW = "KW";
+
+        internal static readonly string AMOUNT_DUE_RESPONSE_KEY = ".amountDueResponse";
+
+        internal static readonly string SELECTED_ACCOUNT_USAGE_RESPONSE = ".selectedAccountUsageResponse";
+
+        internal static readonly string SELECTED_SM_ACCOUNT_USAGE_RESPONSE = ".selectedSMAccountUsageResponse";
+
+        internal static readonly string IS_BILLING_AVAILABLE_KEY = ".isBillingAvailable";
+
+        internal static readonly string PROJECTED_COST_KEY = "PROJECTEDCOST";
+
+        internal static readonly string CURRENT_COST_KEY = "CURRENTCOST";
+
+        internal static readonly string AVERAGE_USAGE_KEY = "AVERAGEUSAGE";
+
+        internal static readonly string CURRENT_USAGE_KEY = "CURRENTUSAGE";
+
+        internal static readonly string MISSING_READING_KEY = "MISSINGREADING";
+
+        public enum GREETING
+        {
+            MORNING,
+            AFTERNOON,
+            EVENING
+        }
+
+        //User Notification BCRM IDs
+		public const string BCRM_NOTIFICATION_NEW_BILL_ID = "01";
+		public const string BCRM_NOTIFICATION_BILL_DUE_ID = "02";
+		public const string BCRM_NOTIFICATION_DISCONNECT_NOTICE_ID = "03";
+		public const string BCRM_NOTIFICATION_DISCONNECTED_ID = "04";
+		public const string BCRM_NOTIFICATION_RECONNECTED_ID = "05";
+		public const string BCRM_NOTIFICATION_MAINTENANCE_ID = "99";
+        public const string BCRM_NOTIFICATION_METER_READING_OPEN_ID = "0009";
+        public const string BCRM_NOTIFICATION_METER_READING_REMIND_ID = "0010";
+        public const string BCRM_NOTIFICATION_SMR_DISABLED_ID = "0011";
+        public const string BCRM_NOTIFICATION_SMR_APPLY_SUCCESS_ID = "50";
+        public const string BCRM_NOTIFICATION_SMR_APPLY_FAILED_ID = "51";
+        public const string BCRM_NOTIFICATION_SMR_DISABLED_SUCCESS_ID = "52";
+        public const string BCRM_NOTIFICATION_SMR_DISABLED_FAILED_ID = "53";
+	}
 }

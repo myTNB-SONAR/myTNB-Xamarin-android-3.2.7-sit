@@ -3,6 +3,7 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Support.Design.Widget;
+using Android.Support.V7.App;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -158,16 +159,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
 
             try
             {
-                if (context is DashboardActivity)
+                if (context is DashboardHomeActivity)
                 {
-                    var activity = context as DashboardActivity;
+                    var activity = context as DashboardHomeActivity;
                     // SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
                     activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
+                    activity.UnsetToolbarBackground();
                 }
+                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "More Screen");
             }
             catch (ClassCastException e)
             {
-
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
             base.OnAttach(context);
         }
@@ -175,9 +182,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
         [OnClick(Resource.Id.btnLogout)]
         void OnLogout(object sender, EventArgs eventArgs)
         {
-            if (Activity is DashboardActivity)
+            if (Activity is DashboardHomeActivity)
             {
-                var dashboard = Activity as DashboardActivity;
+                var dashboard = Activity as DashboardHomeActivity;
                 dashboard.Logout();
             }
         }
@@ -261,6 +268,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
         public bool IsActive()
         {
             return IsResumed;
+        }
+
+        public override void OnResume()
+        {
+            base.OnResume();
+
+            var act = this.Activity as AppCompatActivity;
+
+            var actionBar = act.SupportActionBar;
+            actionBar.Show();
         }
 
 

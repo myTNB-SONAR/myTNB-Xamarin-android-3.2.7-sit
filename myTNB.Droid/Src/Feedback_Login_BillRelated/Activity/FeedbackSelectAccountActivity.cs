@@ -78,6 +78,19 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
 
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Submit Feedback -> Select Account");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         [Preserve]
         internal void OnItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {

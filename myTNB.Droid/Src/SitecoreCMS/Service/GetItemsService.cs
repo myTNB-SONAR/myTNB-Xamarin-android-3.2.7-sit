@@ -1,5 +1,7 @@
 ﻿using myTNB.SitecoreCM.Services;
 using myTNB.SitecoreCMS.Model;
+using myTNB.SitecoreCMS.Service;
+using myTNB_Android.Src.SitecoreCMS.Model;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -131,6 +133,208 @@ namespace myTNB.SitecoreCMS.Services
             }
             return respModel;
         }
+        public HelpResponseModel GetHelpItems()
+        {
+            HelpResponseModel respModel = new HelpResponseModel();
+            try
+            {
+                HelpService service = new HelpService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<HelpResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/HelpResponseModel: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public HelpTimeStampResponseModel GetHelpTimestampItem()
+        {
+            HelpTimeStampResponseModel respModel = new HelpTimeStampResponseModel();
+            try
+            {
+                HelpService service = new HelpService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<HelpTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetFAQsTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public ApplySSMRResponseModel GetApplySSMRWalkthroughItems()
+        {
+            ApplySSMRResponseModel respModel = new ApplySSMRResponseModel();
+            try
+            {
+                ApplySSMRWalkthroughService service = new ApplySSMRWalkthroughService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<ApplySSMRResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetApplySSMRWalkthroughItems: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public ApplySSMRTimeStampResponseModel GetApplySSMRWalkthroughTimestampItem()
+        {
+            ApplySSMRTimeStampResponseModel respModel = new ApplySSMRTimeStampResponseModel();
+            try
+            {
+                ApplySSMRWalkthroughService service = new ApplySSMRWalkthroughService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<ApplySSMRTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetApplySSMRWalkthroughTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public SSMRMeterReadingResponseModel GetSSMRMeterReadingOnePhaseWalkthroughItems()
+        {
+            SSMRMeterReadingResponseModel respModel = new SSMRMeterReadingResponseModel();
+            try
+            {
+                SSMRMeterReadingOnePhaseWalkThroughService service = new SSMRMeterReadingOnePhaseWalkThroughService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<SSMRMeterReadingResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetApplySSMRWalkthroughItems: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public SSMRMeterReadingTimeStampResponseModel GetSSMRMeterReadingOnePhaseWalkthroughTimestampItem()
+        {
+            SSMRMeterReadingTimeStampResponseModel respModel = new SSMRMeterReadingTimeStampResponseModel();
+            try
+            {
+                SSMRMeterReadingOnePhaseWalkThroughService service = new SSMRMeterReadingOnePhaseWalkThroughService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<SSMRMeterReadingTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetApplySSMRWalkthroughTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public SSMRMeterReadingResponseModel GetSSMRMeterReadingThreePhaseWalkthroughItems()
+        {
+            SSMRMeterReadingResponseModel respModel = new SSMRMeterReadingResponseModel();
+            try
+            {
+                SSMRMeterReadingThreePhaseWalkthroughService service = new SSMRMeterReadingThreePhaseWalkthroughService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<SSMRMeterReadingResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetApplySSMRWalkthroughItems: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public SSMRMeterReadingTimeStampResponseModel GetSSMRMeterReadingThreePhaseWalkthroughTimestampItem()
+        {
+            SSMRMeterReadingTimeStampResponseModel respModel = new SSMRMeterReadingTimeStampResponseModel();
+            try
+            {
+                SSMRMeterReadingThreePhaseWalkthroughService service = new SSMRMeterReadingThreePhaseWalkthroughService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<SSMRMeterReadingTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetApplySSMRWalkthroughTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public EnergySavingTipsResponseModel GetEnergySavingTipsItem()
+        {
+            EnergySavingTipsResponseModel respModel = new EnergySavingTipsResponseModel();
+            try
+            {
+                EnergySavingTipsService service = new EnergySavingTipsService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<EnergySavingTipsResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetEnergySavingTipsItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public EnergySavingTipsTimeStampResponseModel GetEnergySavingTipsTimestampItem()
+        {
+            EnergySavingTipsTimeStampResponseModel respModel = new EnergySavingTipsTimeStampResponseModel();
+            try
+            {
+                EnergySavingTipsService service = new EnergySavingTipsService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<EnergySavingTipsTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetEnergySavingTipsTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public BillDetailsTooltipResponseModel GetBillDetailsTooltipItem()
+        {
+            BillDetailsTooltipResponseModel respModel = new BillDetailsTooltipResponseModel();
+            try
+            {
+                BillDetailsTooltipService service = new BillDetailsTooltipService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<BillDetailsTooltipResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetBillDetailsTooltipItem: " + e.Message);
+            }
+            return respModel;
+        }
 
         public AppLaunchTimeStampResponseModel GetAppLaunchTimestampItem()
         {
@@ -147,6 +351,24 @@ namespace myTNB.SitecoreCMS.Services
             catch (Exception e)
             {
                 Debug.WriteLine("Exception in GetItemsService/GetAppLaunchTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
+        public BillDetailsTooltipTimeStampResponseModel GetBillDetailsTooltipTimestampItem()
+        {
+            BillDetailsTooltipTimeStampResponseModel respModel = new BillDetailsTooltipTimeStampResponseModel();
+            try
+            {
+                BillDetailsTooltipService service = new BillDetailsTooltipService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<BillDetailsTooltipTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetBillDetailsTooltipTimestampItem: " + e.Message);
             }
             return respModel;
         }

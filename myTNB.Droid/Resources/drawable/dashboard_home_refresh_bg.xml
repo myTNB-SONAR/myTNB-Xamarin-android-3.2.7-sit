@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
+  <item android:top="-10dp">
+    <bitmap
+        android:src="@drawable/fluid_background_refresh"
+        android:gravity="top|fill_horizontal"
+    />
+  </item>
+</layer-list>

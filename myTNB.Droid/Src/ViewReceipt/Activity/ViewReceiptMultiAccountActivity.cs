@@ -427,5 +427,18 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                 }
             }
         }
+
+        protected override void OnResume()
+        {
+            try
+            {
+                base.OnResume();
+                FirebaseAnalyticsUtils.SetScreenName(this, "View Receipt PDF Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
     }
 }

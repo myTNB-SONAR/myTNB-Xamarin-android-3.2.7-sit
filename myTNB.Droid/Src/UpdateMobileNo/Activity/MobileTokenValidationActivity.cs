@@ -275,12 +275,15 @@ namespace myTNB_Android.Src.UpdateMobileNo
                 //    RegisterReceiver(pinDisplayerSMSReceiver , new IntentFilter("com.myTNB.smsReceiver"));
                 //}
                 this.userActionsListener.Start();
+                FirebaseAnalyticsUtils.SetScreenName(this, "Update Phone - OTP Token Input Screen");
             }
             catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
         }
+
+
 
         protected override void OnDestroy()
         {
@@ -667,7 +670,7 @@ namespace myTNB_Android.Src.UpdateMobileNo
         {
             //SetResult(Result.Ok);
             //Finish();
-            Intent DashboardIntent = new Intent(this, typeof(DashboardActivity));
+            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             DashboardIntent.PutExtra(Constants.FORCE_UPDATE_PHONE_NO, true);
             StartActivity(DashboardIntent);
@@ -700,7 +703,7 @@ namespace myTNB_Android.Src.UpdateMobileNo
 
         public void ShowDashboard()
         {
-            Intent DashboardIntent = new Intent(this, typeof(DashboardActivity));
+            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(DashboardIntent);
         }

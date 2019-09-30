@@ -9,5 +9,9 @@ namespace myTNB_Android.Src.AddAccount.Api
         [Headers("Content-Type:application/json; charset=utf-8")]
         [Post("/v5/my_billingssp.asmx/AddMultipleSupplyAccountsToUserReg")]
         Task<AddMultipleAccountResponse> AddMultipleAccounts([Body] AddMultipleAccountRequest getAccountRequest);
+
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/AddAccounts")]
+        Task<AddMultipleAccountResponse> AddMultipleAccounts([Body] object getAccountRequest);
     }
 }

@@ -21,11 +21,12 @@ namespace myTNB_Android.Src.myTNBMenu.Async
         private string savedPromoTimeStamp = "0000000";
         CancellationTokenSource cts = null;
 
-        private DashboardContract.IView mView = null;
 
-        public SiteCorePromotioAPI(DashboardContract.IView mView)
+        private DashboardHomeContract.IView mHomeView = null;
+
+        public SiteCorePromotioAPI(DashboardHomeContract.IView mView)
         {
-            this.mView = mView;
+            this.mHomeView = mView;
         }
 
         protected override void OnPreExecute()
@@ -63,7 +64,6 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                         PromotionsParentV2ResponseModel responseModel = JsonConvert.DeserializeObject<PromotionsParentV2ResponseModel>(json);
                         if (responseModel.Status.Equals("Success"))
                         {
-                            //PromotionsParentEntityV2 wtManager = new PromotionsParentEntityV2();
                             wtManager.DeleteTable();
                             wtManager.CreateTable();
                             wtManager.InsertListOfItems(responseModel.Data);
@@ -83,63 +83,49 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                                     }
                                 }
                             }
-
-                            //Log.Debug("WalkThroughResponse", responseModel.Data.ToString());
                         }
                         else
                         {
                             getSiteCorePromotions = true;
                         }
+
+                        if (getSiteCorePromotions)
+                        {
+                            cts = new CancellationTokenSource();
+                            Task.Factory.StartNew(() =>
+                            {
+                                try
+                                {
+                                    string newDensity = DPUtils.GetDeviceDensity(Application.Context);
+                                    GetItemsService getNewItemsService = new GetItemsService(SiteCoreConfig.OS, newDensity, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                                    string newJson = getNewItemsService.GetPromotionsV2Item();
+                                    PromotionsV2ResponseModel promoResponseModel = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(newJson);
+                                    if (promoResponseModel.Status.Equals("Success"))
+                                    {
+                                        PromotionsEntityV2 wtManager2 = new PromotionsEntityV2();
+                                        wtManager2.DeleteTable();
+                                        wtManager2.CreateTable();
+                                        wtManager2.InsertListOfItems(promoResponseModel.Data);
+                                    }
+
+                                }
+                                catch (System.Exception e)
+                                {
+                                    Utility.LoggingNonFatalError(e);
+                                }
+                            }).ContinueWith((Task previous) =>
+                            {
+                            }, cts.Token);
+                        }
                     }
                     catch (System.Exception e)
                     {
-                        //Log.Error("API Exception", e.StackTrace);
                         Utility.LoggingNonFatalError(e);
                     }
                 }).ContinueWith((Task previous) =>
                 {
                 }, cts.Token);
 
-                //promotionWatch.Stop();
-                //Console.WriteLine($"Execution Time for promotion: {promotionWatch.ElapsedMilliseconds} ms");
-
-                if (getSiteCorePromotions)
-                {
-                    //var getPromotionWatch = new System.Diagnostics.Stopwatch();
-                    //getPromotionWatch.Start();
-
-                    cts = new CancellationTokenSource();
-                    Task.Factory.StartNew(() =>
-                    {
-                        try
-                        {
-                            string density = DPUtils.GetDeviceDensity(Application.Context);
-                            GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
-                            string json = getItemsService.GetPromotionsV2Item();
-                            PromotionsV2ResponseModel promoResponseModel = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(json);
-                            if (promoResponseModel.Status.Equals("Success"))
-                            {
-                                PromotionsEntityV2 wtManager2 = new PromotionsEntityV2();
-                                wtManager2.DeleteTable();
-                                wtManager2.CreateTable();
-                                wtManager2.InsertListOfItems(promoResponseModel.Data);
-                                //Log.Debug("DashboardPresenter", promoResponseModel.Data.ToString());
-                            }
-
-                        }
-                        catch (System.Exception e)
-                        {
-                            //Log.Error("API Exception", e.StackTrace);
-                            Utility.LoggingNonFatalError(e);
-                        }
-                    }).ContinueWith((Task previous) =>
-                    {
-                    }, cts.Token);
-
-
-                    //getPromotionWatch.Stop();
-                    //Console.WriteLine($"Execution Time for get promotion: {getPromotionWatch.ElapsedMilliseconds} ms");
-                }
             }
             catch (ApiException apiException)
             {
@@ -151,7 +137,6 @@ namespace myTNB_Android.Src.myTNBMenu.Async
             }
             catch (System.Exception e)
             {
-                //Log.Error("DB Exception", e.StackTrace);
                 Utility.LoggingNonFatalError(e);
             }
             Console.WriteLine("000 SiteCorePromotioAPI ended");
@@ -162,8 +147,10 @@ namespace myTNB_Android.Src.myTNBMenu.Async
         {
             base.OnPostExecute(result);
 
-
-            mView.ShowPromotion(true);
+            if (mHomeView != null)
+            {
+                mHomeView.ShowPromotion(true);
+            }
         }
 
     }

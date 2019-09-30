@@ -264,6 +264,19 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
             return Window.DecorView.RootView.IsShown;
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Submit Feedback");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public override int ResourceId()
         {
             return Resource.Layout.FeedbackLoginFaultyStreetLampsView;
@@ -864,12 +877,6 @@ namespace myTNB_Android.Src.Feedback_Login_FaultyStreetLamps.Activity
         public void HideMobileNo()
         {
             txtInputLayoutMobileNo.Visibility = ViewStates.Gone;
-        }
-
-        protected override void OnResume()
-        {
-            base.OnResume();
-
         }
 
         public void ShowEmptyMobileNoError()

@@ -164,6 +164,19 @@ namespace myTNB_Android.Src.Login.Activity
             return Window.DecorView.RootView.IsShown && !IsFinishing;
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Login");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public override int ResourceId()
         {
             return Resource.Layout.LoginView;
@@ -260,7 +273,7 @@ namespace myTNB_Android.Src.Login.Activity
         public void ShowDashboard()
         {
             // TODO : START ACTIVITY DASHBOARD
-            Intent DashboardIntent = new Intent(this, typeof(DashboardActivity));
+            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(DashboardIntent);
         }

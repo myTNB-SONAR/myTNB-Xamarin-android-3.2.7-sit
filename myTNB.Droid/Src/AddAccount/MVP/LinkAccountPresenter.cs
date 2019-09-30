@@ -2,7 +2,9 @@
 using myTNB_Android.Src.AddAccount.Api;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AddAccount.Requests;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Api;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
@@ -48,7 +50,20 @@ namespace myTNB_Android.Src.AddAccount.MVP
             try
             {
                 UserEntity user = UserEntity.GetActive();
-                var result = await api.GetCustomerAccountV5(new GetCustomerAccountsRequest(apiID, user.UserID));
+                var newObject = new
+                            {
+                                usrInf = new
+                                {
+                                    eid = user.UserName,
+                                    sspuid = user.UserID,
+                                    lang = "EN",
+                                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                                    sec_auth_k2 = "test",
+                                    ses_param1 = "test",
+                                    ses_param2 = "test"
+                                }
+                            };
+                var result = await api.GetCustomerAccountV6(newObject); //GetCustomerAccountV5(new GetCustomerAccountsRequest(apiID, user.UserID));
                 if (mView.IsActive())
                 {
                     this.mView.HideGetAccountsProgressDialog();
@@ -170,13 +185,26 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 var api = RestService.For<AddMultipleAccountsToUserApi>(httpClient);
 
 #else
-            var api = RestService.For<AddMultipleAccountsToUserApi>(Constants.SERVER_URL.END_POINT);
+                var api = RestService.For<AddMultipleAccountsToUserApi>(Constants.SERVER_URL.END_POINT);
 
 #endif
 
 
-
-                var result = await api.AddMultipleAccounts(new AddMultipleAccountRequest(apiKeyId, sspUserID, email, accounts));
+            var reqObject = new
+            {
+                billAccounts = accounts,
+                usrInf = new
+                {
+                    eid = email,
+                    sspuid = sspUserID,
+                    lang = "EN",
+                    sec_auth_k1 = apiKeyId,
+                    sec_auth_k2 = "test",
+                    ses_param1 = "test",
+                    ses_param2 = "test"
+                }
+            };
+                var result = await api.AddMultipleAccounts(reqObject);
 
                 if (result.response.IsError)
                 {
@@ -193,6 +221,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
                         mView.HideAddingAccountProgressDialog();
                     }
                     mView.ShowAddAccountSuccess(result.response);
+                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                 }
 
             }
@@ -240,10 +269,22 @@ namespace myTNB_Android.Src.AddAccount.MVP
 
 
                 UserEntity user = UserEntity.GetActive();
+                FirebaseTokenEntity token = FirebaseTokenEntity.GetLatest();
 
                 summaryDashBoardRequest.AccNum = account;
-                summaryDashBoardRequest.SspUserId = user.UserID;
-                summaryDashBoardRequest.ApiKeyId = Constants.APP_CONFIG.API_KEY_ID;
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = user.Email,
+                    sspuid = user.UserID,
+                    did = this.mView.GetDeviceId(),
+                    ft = token.FBToken,
+                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+                summaryDashBoardRequest.usrInf = currentUsrInf;
 
                 CallSummaryAPI(summaryDashBoardRequest);
             }

@@ -109,6 +109,14 @@ namespace myTNB_Android.Src.Maintenance.Activity
         {
             base.OnResume();
             this.userActionsListener.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Maintenance");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public bool IsActive()

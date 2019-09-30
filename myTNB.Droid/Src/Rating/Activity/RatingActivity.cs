@@ -123,6 +123,19 @@ namespace myTNB_Android.Src.Rating.Activity
             }
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Post-Payment Rating Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void OnLoadMainFragment()
         {
             Android.App.Fragment submitRatingFragment = new SubmitRatingFragment();

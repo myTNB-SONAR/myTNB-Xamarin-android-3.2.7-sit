@@ -4,6 +4,7 @@ using Android.Content;
 using Android.OS;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
+using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Android.Text;
 using Android.Text.Method;
@@ -179,6 +180,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
         private MaterialDialog mMandatoryPaymentCardDialog;
         bool failedFetch = false;
 
+        bool preShow = false;
+
         private string txtRefreshContent = "";
         private string txtBtnContent = "";
 
@@ -191,6 +194,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
             BillsMenuFragment billsMenuFragment = new BillsMenuFragment();
             Bundle args = new Bundle();
             args.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+            billsMenuFragment.Arguments = args;
+            return billsMenuFragment;
+        }
+
+        internal static BillsMenuFragment NewInstance(AccountData selectedAccount, string preShow)
+        {
+            BillsMenuFragment billsMenuFragment = new BillsMenuFragment();
+            Bundle args = new Bundle();
+            args.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+            args.PutBoolean(preShow, true);
             billsMenuFragment.Arguments = args;
             return billsMenuFragment;
         }
@@ -214,6 +227,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
             args.PutBoolean(Constants.REFRESH_MODE, true);
             args.PutString(Constants.REFRESH_MSG, contextTxt);
             args.PutString(Constants.REFRESH_BTN_MSG, btnTxt);
+            args.PutBoolean("PRE_SHOW", true);
             billsMenuFragment.Arguments = args;
             return billsMenuFragment;
         }
@@ -224,6 +238,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
             base.OnCreate(savedInstanceState);
 
             Bundle args = Arguments;
+
             if (args.ContainsKey(Constants.SELECTED_ACCOUNT))
             {
                 selectedAccount = JsonConvert.DeserializeObject<AccountData>(args.GetString(Constants.SELECTED_ACCOUNT));
@@ -235,6 +250,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
             }
 
             failedFetch = false;
+
+            if (args.ContainsKey("PRE_SHOW"))
+            {
+                preShow = true;
+            }
+            else
+            {
+                preShow = false;
+            }
 
             if (args.ContainsKey(Constants.REFRESH_MODE))
             {
@@ -252,6 +276,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
 
             mPresenter = new BillsPaymentFragmentPresenter(this, selectedAccount);
 
+
+
         }
 
         public override void OnAttach(Context context)
@@ -259,15 +285,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
 
             try
             {
-                if (context is DashboardActivity)
+                if (context is DashboardHomeActivity)
                 {
-                    var activity = context as DashboardActivity;
+                    var activity = context as DashboardHomeActivity;
                     activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
+                    activity.UnsetToolbarBackground();
+                    activity.ShowAccountName();
+                    activity.ShowHideActionBar(true);
                 }
+                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Bills Screen");
             }
             catch (ClassCastException e)
             {
-
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
             }
             base.OnAttach(context);
         }
@@ -280,20 +314,36 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
         [OnClick(Resource.Id.btnRefresh)]
         internal void OnRefresh(object sender, EventArgs e)
         {
-            CustomerBillingAccount customerAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
-            this.userActionsListener.OnSelectAccount(customerAccount);
+            try
+            {
+                ((DashboardHomeActivity)Activity).BillMenuRecalled();
+            }
+            catch (System.Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
         }
 
         public void ShowDashboardChart(UsageHistoryResponse response, AccountData accountData)
         {
             try
             {
-                ((DashboardActivity)Activity).BillsMenuRefresh(accountData);
+                ((DashboardHomeActivity)Activity).BillsMenuRefresh(accountData);
             }
             catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public override void OnResume()
+        {
+            base.OnResume();
+
+            var act = this.Activity as AppCompatActivity;
+
+            var actionBar = act.SupportActionBar;
+            actionBar.Show();
         }
 
         public void ShowView()
@@ -378,8 +428,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
 
                 SetBillDetails(selectedAccount);
 
-                this.userActionsListener.Start();
-
+                if (!preShow)
+                {
+                    this.userActionsListener.Start();
+                }
+                
                 if(failedFetch)
                 {
                     ShowRefreshView(null, null);
@@ -501,18 +554,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
         {
             Intent payment_activity = new Intent(this.Activity, typeof(SelectAccountsActivity));
             payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-            StartActivityForResult(payment_activity, DashboardActivity.PAYMENT_RESULT_CODE);
+            StartActivityForResult(payment_activity, DashboardHomeActivity.PAYMENT_RESULT_CODE);
         }
 
         public override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
-            if (requestCode == DashboardActivity.PAYMENT_RESULT_CODE)
+            if (requestCode == DashboardHomeActivity.PAYMENT_RESULT_CODE)
             {
                 if (resultCode == Result.Ok)
                 {
-                    if (Activity is DashboardActivity)
+                    if (Activity is DashboardHomeActivity)
                     {
-                        ((DashboardActivity)Activity).OnTapRefresh();
+                        ((DashboardHomeActivity)Activity).OnTapRefresh();
                     }
                 }
                 else if (resultCode == Result.FirstUser)
@@ -533,7 +586,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                         }
                         try
                         {
-                            ((DashboardActivity)Activity).BillsMenuAccess(selectedAccount);
+                            ((DashboardHomeActivity)Activity).BillsMenuAccess(selectedAccount);
                         }
                         catch (System.Exception e)
                         {
@@ -630,6 +683,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
 
         public void SetBillDetails(AccountData selectedAccount)
         {
+            allBillLayout.Visibility = ViewStates.Visible;
+            refreshLayout.Visibility = ViewStates.Gone;
             if (selectedAccount != null)
             {
                 txtAccountName.Text = (!string.IsNullOrEmpty(selectedAccount?.AccountName)) ? selectedAccount?.AccountName : "";

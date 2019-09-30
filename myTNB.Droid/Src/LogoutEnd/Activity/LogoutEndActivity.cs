@@ -61,6 +61,18 @@ namespace myTNB_Android.Src.LogoutEnd.Activity
             StartActivity(PreLoginIntent);
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Log Out");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
         public override void OnTrimMemory(TrimMemory level)
         {

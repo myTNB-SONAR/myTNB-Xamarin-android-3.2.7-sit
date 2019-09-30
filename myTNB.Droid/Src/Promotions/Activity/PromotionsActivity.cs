@@ -154,6 +154,19 @@ namespace myTNB_Android.Src.Promotions.Activity
             return base.OnOptionsItemSelected(item);
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Promotion Detail Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public async Task GetImageAsync(ImageView icon, ProgressBar progressBar, PromotionsModelV2 item)
         {
             try

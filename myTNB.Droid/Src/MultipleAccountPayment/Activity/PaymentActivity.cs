@@ -11,6 +11,7 @@ using myTNB_Android.Src.Base.Api;
 using myTNB_Android.Src.MultipleAccountPayment.Fragment;
 using myTNB_Android.Src.MultipleAccountPayment.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -37,6 +38,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         private Android.Support.V7.Widget.Toolbar toolbar;
         private Android.Support.Design.Widget.AppBarLayout appBarLayout;
         private FrameLayout frameContainer;
+        private List<AccountChargeModel> accountChargeList;
         private Android.Support.Design.Widget.CoordinatorLayout coordinatorLayout;
 
         public bool paymentReceiptGenerated = false;
@@ -112,6 +114,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     {
                         accounts = DeSerialze<List<MPAccount>>(extras.GetString("PAYMENT_ITEMS"));
                     }
+
+                    if (extras.ContainsKey("ACCOUNT_CHARGES_LIST"))
+                    {
+                        accountChargeList = DeSerialze<List<AccountChargeModel>>(extras.GetString("ACCOUNT_CHARGES_LIST"));
+                    }
                     total = Intent.Extras.GetString("TOTAL");
                 }
                 OnLoadMainFragment();
@@ -144,6 +151,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 Bundle bundle = new Bundle();
                 bundle.PutString(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
                 bundle.PutString("PAYMENT_ITEMS", JsonConvert.SerializeObject(accounts));
+                bundle.PutString("ACCOUNT_CHARGES_LIST", JsonConvert.SerializeObject(accountChargeList));
                 bundle.PutString("TOTAL", total);
                 selectPaymentFragment.Arguments = bundle;
                 var fragmentTransaction = FragmentManager.BeginTransaction();
@@ -165,6 +173,19 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                         SummaryDashBaordUpdate(summaryDashBoardRequest);
                     }
                 }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Select Payment Method");
             }
             catch (Exception e)
             {

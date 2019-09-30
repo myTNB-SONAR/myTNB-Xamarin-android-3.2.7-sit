@@ -4,6 +4,7 @@ using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.Base.Adapter;
 using myTNB_Android.Src.Database.Model;
+using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
@@ -34,7 +35,7 @@ namespace myTNB_Android.Src.Dashboard.Adapter
             AccountListViewHolder vh = null;
             if (convertView == null)
             {
-                convertView = LayoutInflater.From(context).Inflate(Resource.Layout.SelectSupplyAccountRow, parent, false);
+                convertView = LayoutInflater.From(context).Inflate(Resource.Layout.SelectSupplyAccountItemLayout, parent, false);
                 vh = new AccountListViewHolder(convertView);
                 convertView.Tag = vh;
             }
@@ -48,13 +49,29 @@ namespace myTNB_Android.Src.Dashboard.Adapter
                 CustomerBillingAccount item = GetItemObject(position);
                 vh.txtSupplyAccountName.Text = item.AccDesc;
 
+
                 if (item.AccountCategoryId.Equals("2"))
                 {
-                    vh.imageLeaf.Visibility = ViewStates.Visible;
+                    vh.imageLeaf.SetImageResource(Resource.Drawable.ic_display_r_eleaf);
                 }
                 else
                 {
-                    vh.imageLeaf.Visibility = ViewStates.Invisible;
+                    if (!item.SmartMeterCode.Equals("0"))
+                    {
+                        vh.imageLeaf.SetImageResource(Resource.Drawable.ic_display_smart_meter);
+                    }
+                    else
+                    {
+
+                        if (IsOwnedSMR(item.AccNum) && item.IsTaggedSMR)
+                        {
+                            vh.imageLeaf.SetImageResource(Resource.Drawable.smr_48_x_48);
+                        }
+                        else
+                        {
+                            vh.imageLeaf.SetImageResource(Resource.Drawable.ic_display_normal_meter);
+                        }
+                    }
                 }
 
                 if (item.IsSelected)
@@ -72,6 +89,18 @@ namespace myTNB_Android.Src.Dashboard.Adapter
                 Utility.LoggingNonFatalError(e);
             }
             return convertView;
+        }
+
+        private bool IsOwnedSMR(string accountNumber)
+        {
+            foreach (SMRAccount smrAccount in UserSessions.GetSMRAccountList())
+            {
+                if (smrAccount.accountNumber == accountNumber)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
     }
@@ -92,4 +121,5 @@ namespace myTNB_Android.Src.Dashboard.Adapter
             TextViewUtils.SetMuseoSans300Typeface(txtSupplyAccountName);
         }
     }
+
 }

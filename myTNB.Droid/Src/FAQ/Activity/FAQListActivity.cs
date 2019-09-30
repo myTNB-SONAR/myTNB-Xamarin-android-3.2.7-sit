@@ -120,6 +120,19 @@ namespace myTNB_Android.Src.FAQ.Activity
             });
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "FAQs");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void ShowProgressBar()
         {
             //mProgressBar.Visibility = ViewStates.Visible;

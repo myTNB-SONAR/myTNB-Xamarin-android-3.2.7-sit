@@ -5,6 +5,9 @@ using Refit;
 using System;
 using myTNB_Android.Src.AppLaunch.Models;
 using static myTNB_Android.Src.myTNBMenu.Models.GetInstallationDetailsResponse;
+using myTNB.SitecoreCMS.Model;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -13,14 +16,24 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         public interface IView : IBaseView<IUserActionsListener>
         {
             /// <summary>
-            /// Show by day chart
+            /// Show by Month chart
+            /// </summary>
+            void ShowByMonth();
+
+            /// <summary>
+            /// Show by Day chart
             /// </summary>
             void ShowByDay();
 
             /// <summary>
-            /// Show by month chart
+            /// Show by kWh chart
             /// </summary>
-            void ShowByMonth();
+            void ShowByKwh();
+
+            /// <summary>
+            /// Show by RM chart
+            /// </summary>
+            void ShowByRM();
 
             /// <summary>
             /// Show ViewBill
@@ -33,72 +46,14 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void ShowPayment();
 
             /// <summary>
-            /// Show not available data when day tab is clicked
-            /// </summary>
-            void ShowNotAvailableDayData();
-
-            /// <summary>
             /// Show no internet
             /// </summary>
-            void ShowNoInternet();
-
-            void ShowNoInternetWithWord(string contentTxt, string buttonTxt);
+            void ShowNoInternet(string contentTxt, string buttonTxt);
 
             /// <summary>
             ///  Show no internet snackbar
             /// </summary>
             void ShowNoInternetSnackbar();
-
-            /// <summary>
-            /// Returns connectivity
-            /// true has no internet
-            /// false has internet
-            /// </summary>
-            /// <returns>bool</returns>
-            bool HasNoInternet();
-
-            /// <summary>
-            /// Returns current chart is by day
-            /// </summary>
-            /// <returns>bool</returns>
-            bool IsByDay();
-
-            /// <summary>
-            /// Returns day is empty
-            /// </summary>
-            /// <returns>bool</returns>
-            bool IsByDayEmpty();
-
-            /// <summary>
-            /// Used for chart pagination in day
-            /// Returns the current index of the array
-            /// </summary>
-            /// <returns>integer</returns>
-            int GetCurrentParentIndex();
-
-            /// <summary>
-            /// Returns max day count
-            /// </summary>
-            /// <returns></returns>
-            int GetMaxParentIndex();
-
-            /// <summary>
-            /// Sets the chart pagination in day
-            /// </summary>
-            /// <param name="newIndex">integer</param>
-            void SetCurrentParentIndex(int newIndex);
-
-            /// <summary>
-            /// Enable left pagination button
-            /// </summary>
-            /// <param name="show">bool</param>
-            void EnableLeftArrow(bool show);
-
-            /// <summary>
-            /// Enable right pagination button
-            /// </summary>
-            /// <param name="show"></param>
-            void EnableRightArrow(bool show);
 
             /// <summary>
             /// Show tab refresh
@@ -109,22 +64,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// Show notification list
             /// </summary>
             void ShowNotification();
-
-            /// <summary>
-            /// Show bottom view amount progress
-            /// </summary>
-            void ShowAmountProgress();
-
-            /// <summary>
-            /// Show learn more
-            /// </summary>
-            /// <param name="weblink">Weblink</param>
-            void ShowLearnMore(Weblink weblink);
-
-            /// <summary>
-            /// Hide bottom view amount progress
-            /// </summary>
-            void HideAmountProgress();
 
             /// <summary>
             /// Show amount due
@@ -145,42 +84,75 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void ShowLoadBillRetryOptions();
 
             /// <summary>
-            /// Shows a cancelled exception with an option to retry
-            /// </summary>
-            /// <param name="operationCanceledException">the returned exception</param>
-            void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException);
-
-            /// <summary>
-            /// Shows an api exception with an option to retry
-            /// </summary>
-            /// <param name="apiException">the returned exception</param>
-            void ShowRetryOptionsApiException(ApiException apiException);
-
-            /// <summary>
-            /// Shows an unknown exception with an option to retry
-            /// </summary>
-            /// <param name="exception">the returned exception</param>
-            void ShowRetryOptionsUnknownException(Exception exception);
-
-            /// <summary>
             /// Show Account Status
             /// </summary>
             /// <param name="accountStatus">AccountStatusData</param>
             void ShowAccountStatus(AccountStatusData accountStatus);
 
+            void ShowSSMRDashboardView(SMRActivityInfoResponse response);
+
+            void HideSSMRDashboardView();
+
+            void ShowDisconnectionRetrySnakebar();
+
+            void ShowSMRRetrySnakebar();
+
+            string GetDeviceId();
+
+            void ShowProgress();
+
+            void HideProgress();
+
+            bool isSMDataError();
+
+            bool IsBCRMDownFlag();
+
+            bool IsLoadUsageNeeded();
+
+            AccountData GetSelectedAccount();
+
+            void DisableViewBillButton();
+
+            void EnableViewBillButton();
+
+            void ShowAmountDueFailed();
+
+            void SetUsageData(UsageHistoryData data);
+
+            void SetSMUsageData(SMUsageHistoryData data);
+
+            UsageHistoryData GetUsageHistoryData();
+
+            SMUsageHistoryData GetSMUsageHistoryData();
+
+            void HideEnergyTipsShimmerView();
+
+            void ShowEnergyTipsView(List<EnergySavingTipsModel> list);
+
+            bool GetIsMDMSDown();
+
+            void SetISMDMSDown(bool flag);
+
+            bool GetIsSMAccount();
+
+            void ShowSMStatisticCard();
+
+            void OnSetBackendTariffDisabled(bool flag);
+
+            void ByZoomDayView();
         }
 
         public interface IUserActionsListener : IBasePresenter
         {
             /// <summary>
-            /// Action by day
+            /// Action by Kwh
             /// </summary>
-            void OnByDay();
+            void OnByKwh();
 
             /// <summary>
-            /// Action by month
+            /// Action by RM
             /// </summary>
-            void OnByMonth();
+            void OnByRM();
 
             /// <summary>
             /// Action to navigate to view bill
@@ -193,16 +165,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void OnPay();
 
             /// <summary>
-            /// Action left pagination
-            /// </summary>
-            void OnArrowBackClick();
-
-            /// <summary>
-            /// Action right pagination
-            /// </summary>
-            void OnArrowForwardClick();
-
-            /// <summary>
             /// Action on Tap refresh
             /// </summary>
             void OnTapRefresh();
@@ -213,21 +175,24 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void OnNotification();
 
             /// <summary>
-            /// Action to load amount of account
-            /// </summary>
-            /// <param name="accountNum">string</param>
-            void OnLoadAmount(string accountNum);
-
-            /// <summary>
             /// Action to navigate to learn more
             /// </summary>
             void OnLearnMore();
 
-            /// <summary>
-            /// Action to get Account Status
-            /// </summary>
-            /// <param name="accountNum">string</param>
-            void GetAccountStatus(string accountNum);
+            bool IsOwnedSMR(string accountNumber);
+
+            bool IsBillingAvailable();
+
+            Task OnRandomizeEnergyTipsView(List<EnergySavingTipsModel> list);
+
+
+            List<EnergySavingTipsModel> OnLoadEnergySavingTipsShimmerList(int count);
+
+            void OnByDay();
+
+            void OnByMonth();
+
+            void OnByZoom();
         }
     }
 }

@@ -3,6 +3,7 @@ using Android.Content;
 using Android.OS;
 using Android.Support.Constraints;
 using Android.Support.Design.Widget;
+using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -131,14 +132,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
 
             try
             {
-                if (context is DashboardActivity)
+                if (context is DashboardHomeActivity)
                 {
-                    var activity = context as DashboardActivity;
+                    var activity = context as DashboardHomeActivity;
                     // SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
                     activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
+                    activity.UnsetToolbarBackground();
                 }
+                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Feedback Screen");
             }
             catch (ClassCastException e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -149,6 +156,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         {
             base.OnResume();
             this.userActionsListener.OnResume();
+            var act = this.Activity as AppCompatActivity;
+
+            var actionBar = act.SupportActionBar;
+            actionBar.Show();
         }
 
         public void SetPresenter(FeedbackMenuContract.IUserActionsListener userActionListener)

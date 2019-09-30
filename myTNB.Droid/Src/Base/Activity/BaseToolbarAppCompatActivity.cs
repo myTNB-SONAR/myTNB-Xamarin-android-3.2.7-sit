@@ -1,7 +1,13 @@
 ﻿using Android.Content;
+using Android.Graphics.Drawables;
 using Android.OS;
+using Android.Preferences;
+using Android.Support.Design.Widget;
+using Android.Text;
+using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using myTNB_Android.Src.Base.MVP;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Runtime;
@@ -12,10 +18,12 @@ namespace myTNB_Android.Src.Base.Activity
     /// <summary>
     /// The class that abstracts the implementation of the resourceId , handling of permissions and the toolbar customizations.
     /// </summary>
-    public abstract class BaseToolbarAppCompatActivity : BaseAppCompatActivity
+    public abstract class BaseToolbarAppCompatActivity : BaseAppCompatActivity, IExceptionView
     {
         [BindView(Resource.Id.toolbar)]
         protected Toolbar toolbar;
+
+        protected Snackbar mErrorMessageSnackBar;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -53,6 +61,8 @@ namespace myTNB_Android.Src.Base.Activity
                     SupportActionBar.SetDisplayShowTitleEnabled(false);
                 }
             }
+
+            UserSessions.SetSharedPreference(PreferenceManager.GetDefaultSharedPreferences(this));
         }
 
         /// <summary>
@@ -105,6 +115,69 @@ namespace myTNB_Android.Src.Base.Activity
             }
         }
 
+        public virtual void SetToolbarGradientBackground()
+        {
+            Drawable drawable = Resources.GetDrawable(Resource.Drawable.GradientToolBar);
+            if (toolbar != null)
+            {
+                toolbar?.SetBackgroundDrawable(drawable);
+            }
+            else
+            {
+                toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
+                toolbar?.SetBackgroundDrawable(drawable);
+            }
+        }
+
+        public virtual void SetToolbarBackground(int resId)
+        {
+            Drawable drawable = Resources.GetDrawable(resId);
+            if (toolbar != null)
+            {
+                toolbar?.SetBackgroundDrawable(drawable);
+            }
+            else
+            {
+                toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
+                toolbar?.SetBackgroundDrawable(drawable);
+            }
+        }
+
+        public virtual void RemoveToolbarBackground()
+        {
+            if (toolbar != null)
+            {
+                toolbar?.SetBackgroundResource(0);
+            }
+            else
+            {
+                toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
+                toolbar?.SetBackgroundResource(0);
+            }
+        }
+
+        public virtual void SetStatusBarGradientBackground()
+        {
+            if (Build.VERSION.SdkInt >= Build.VERSION_CODES.Lollipop)
+            {
+                Drawable drawable = Resources.GetDrawable(Resource.Drawable.GradientStatusBar);
+                this.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
+                this.Window.ClearFlags(WindowManagerFlags.TranslucentStatus);
+                this.Window.SetBackgroundDrawable(drawable);
+            }
+        }
+
+        public virtual void SetStatusBarBackground(int resId)
+        {
+            if (Build.VERSION.SdkInt >= Build.VERSION_CODES.Lollipop)
+            {
+                Drawable drawable = Resources.GetDrawable(resId);
+                this.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
+                this.Window.ClearFlags(WindowManagerFlags.TranslucentStatus);
+                this.Window.SetBackgroundDrawable(drawable);
+            }
+        }
+
 
         public override void OnTrimMemory(TrimMemory level)
         {
@@ -121,6 +194,54 @@ namespace myTNB_Android.Src.Base.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        public int GetDeviceHorizontalScaleInPixel(float percentageValue)
+        {
+            var deviceWidth = Resources.DisplayMetrics.WidthPixels;
+            return GetScaleInPixel(deviceWidth, percentageValue);
+        }
+
+        public int GetDeviceVerticalScaleInPixel(float percentageValue)
+        {
+            var deviceHeight = Resources.DisplayMetrics.HeightPixels;
+            return GetScaleInPixel(deviceHeight, percentageValue);
+        }
+
+        public int GetScaleInPixel(int basePixel, float percentageValue)
+        {
+            int scaledInPixel = (int)((float)basePixel * percentageValue);
+            return scaledInPixel;
+        }
+
+        public ISpanned GetFormattedText(string stringValue)
+        {
+            if (Android.OS.Build.VERSION.SdkInt >= BuildVersionCodes.N)
+            {
+                return Html.FromHtml(stringValue, FromHtmlOptions.ModeLegacy);
+            }
+            else
+            {
+                return Html.FromHtml(stringValue);
+            }
+        }
+
+        public void ShowGenericSnackbarException()
+        {
+            //if (mErrorMessageSnackBar != null && mErrorMessageSnackBar.IsShown)
+            //{
+            //    mErrorMessageSnackBar.Dismiss();
+            //}
+
+            //mErrorMessageSnackBar = Snackbar.Make(rootView, "Something went wrong! Please try again later", Snackbar.LengthIndefinite)
+            //.SetAction("Close", delegate { mErrorMessageSnackBar.Dismiss(); }
+            //);
+            //View v = mErrorMessageSnackBar.View;
+            //TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            //tv.SetMaxLines(5);
+            //Button btn = (Button)v.FindViewById<Button>(Resource.Id.snackbar_action);
+            //btn.SetTextColor(Android.Graphics.Color.Yellow);
+            //mErrorMessageSnackBar.Show();
         }
     }
 }

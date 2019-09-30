@@ -207,8 +207,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         {
             if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
             {
-                isAppLaunchDone = true;
-                Intent DashboardIntent = new Intent(this, typeof(DashboardActivity));
+                Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
                 DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                 StartActivity(DashboardIntent);
             }
@@ -269,6 +268,19 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             try
             {
                 await GoogleApiAvailability.Instance.MakeGooglePlayServicesAvailableAsync(this);
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "App Launch");
             }
             catch (Exception e)
             {
@@ -718,8 +730,8 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 {
                     isAppLaunchDone = true;
                     Intent maintenanceScreen = new Intent(this, typeof(MaintenanceActivity));
-                    maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, masterDataResponse.Data.MasterData.MaintainanceTitle);
-                    maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, masterDataResponse.Data.MasterData.MaintainanceMessage);
+                    maintenanceScreen.PutExtra(Constants.MAINTENANCE_TITLE_KEY, masterDataResponse.Data.DisplayTitle);
+                    maintenanceScreen.PutExtra(Constants.MAINTENANCE_MESSAGE_KEY, masterDataResponse.Data.DisplayMessage);
                     StartActivity(maintenanceScreen);
                 }
             }

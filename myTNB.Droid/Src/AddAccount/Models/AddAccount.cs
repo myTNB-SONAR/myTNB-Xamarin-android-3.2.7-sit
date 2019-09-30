@@ -40,5 +40,9 @@ namespace myTNB_Android.Src.AddAccount.Models
         [JsonProperty(PropertyName = "smartMeterCode")]
         [AliasAs("smartMeterCode")]
         public string smartMeterCode { get; set; }
+
+        [JsonProperty(PropertyName = "isTaggedSMR")]
+        [AliasAs("isTaggedSMR")]
+        public string IsTaggedSMR { get; set; }
     }
 }

@@ -392,7 +392,14 @@ namespace myTNB_Android.Src.AddAccount.Activity
         protected override void OnResume()
         {
             base.OnResume();
-            Log.Debug("Link Account", "OnResume");
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Link Accounts Staging Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void ShowNoAccountAddedError(string message)
@@ -429,7 +436,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
         public void ShowDashboard()
         {
-            Intent DashboardIntent = new Intent(this, typeof(DashboardActivity));
+            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
             DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(DashboardIntent);
         }
@@ -902,6 +909,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             newAccount.accountAddress = item.accountStAddress;
                             newAccount.ownerName = item.accountOwnerName;
                             newAccount.smartMeterCode = item.smartMeterCode == null ? "0" : item.smartMeterCode;
+                            newAccount.isOwned = item.isOwned;
+                            newAccount.IsTaggedSMR = item.IsTaggedSMR == "true" ? true : false;
                             finalAccountList.Add(newAccount);
                         }
                     }
@@ -913,6 +922,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                             extraAccount.accountAddress = item.accountStAddress;
                             extraAccount.ownerName = item.accountOwnerName;
                             extraAccount.smartMeterCode = item.smartMeterCode == null ? "0" : item.smartMeterCode;
+                            extraAccount.isOwned = item.isOwned;
+                            extraAccount.IsTaggedSMR = item.IsTaggedSMR == "true" ? true : false;
                             finalAccountList.Add(extraAccount);
                         }
                     }
@@ -1144,6 +1155,11 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        public string GetDeviceId()
+        {
+            return this.DeviceId();
         }
     }
 }

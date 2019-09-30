@@ -4,6 +4,7 @@ using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.MVP;
+using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.Utils;
 using Refit;
 using System;
@@ -20,12 +21,12 @@ namespace myTNB_Android.Src.myTNBMenu.Async
         INotificationApi api = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
 #endif
         private string deviceId = null;
-        private DashboardContract.IUserActionsListener listener = null;
+        private DashboardHomeContract.IUserActionsListener homeListener = null;
 
-        public UserNotificationAPI(string deviceId, DashboardContract.IUserActionsListener listener)
+        public UserNotificationAPI(string deviceId, DashboardHomeContract.IUserActionsListener listener)
         {
             this.deviceId = deviceId;
-            this.listener = listener;
+            this.homeListener = listener;
         }
 
 
@@ -34,71 +35,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
             try
             {
                 Console.WriteLine("000 UserNotificationAPI started");
-                UserEntity loggedUser = UserEntity.GetActive();
-
-                var userNotificationResponse = api.GetUserNotifications(new UserNotificationRequest()
-                {
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                    Email = loggedUser.Email,
-                    DeviceId = deviceId
-
-                }, cts.Token);
-
-                if (userNotificationResponse != null && userNotificationResponse.Result != null && userNotificationResponse.Result.Data.Status.ToUpper() == Constants.REFRESH_MODE)
-                {
-                    try
-                    {
-                        UserNotificationEntity.RemoveAll();
-                    }
-                    catch (System.Exception ne)
-                    {
-                        Utility.LoggingNonFatalError(ne);
-                    }
-                }
-                else if (userNotificationResponse.Result != null && userNotificationResponse.Result.Data != null)
-                {
-                    if (!userNotificationResponse.Result.Data.IsError)
-                    {
-                        if (userNotificationResponse.Result.Data.Data.Count > 0) 
-                        {
-                            try
-                            {
-                                UserNotificationEntity.RemoveAll();
-                            }
-                            catch (System.Exception ne)
-                            {
-                                Utility.LoggingNonFatalError(ne);
-                            }
-                        }
-                        foreach (UserNotification userNotification in userNotificationResponse.Result.Data.Data)
-                        {
-                            int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
-                        }
-
-                    }
-                    else
-                    {
-                        try
-                        {
-                            UserNotificationEntity.RemoveAll();
-                        }
-                        catch (System.Exception ne)
-                        {
-                            Utility.LoggingNonFatalError(ne);
-                        }
-                    }
-                }
-                else
-                {
-                    try
-                    {
-                        UserNotificationEntity.RemoveAll();
-                    }
-                    catch (System.Exception ne)
-                    {
-                        Utility.LoggingNonFatalError(ne);
-                    }
-                }
+                GetUserNotifications();
                 Console.WriteLine("000 UserNotificationAPI ended");
             }
             catch (ApiException apiException)
@@ -140,12 +77,54 @@ namespace myTNB_Android.Src.myTNBMenu.Async
             return null;
         }
 
+        private async void GetUserNotifications()
+        {
+            NotificationApiImpl notificationAPI = new NotificationApiImpl();
+            MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
+            if (response.Data != null && response.Data.ErrorCode == "7200")
+            {
+                if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null &&
+                    response.Data.ResponseData.UserNotificationList.Count > 0)
+                {
+                    foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
+                    {
+                        // tODO : SAVE ALL NOTIFICATIONs
+                        int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
+                    }
+                }
+                else
+                {
+                    try
+                    {
+                        UserNotificationEntity.RemoveAll();
+                    }
+                    catch (System.Exception ne)
+                    {
+                        Utility.LoggingNonFatalError(ne);
+                    }
+                }
+            }
+            else
+            {
+                try
+                {
+                    UserNotificationEntity.RemoveAll();
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
+            }
+        }
+
         protected override void OnPostExecute(Java.Lang.Object result)
         {
             base.OnPostExecute(result);
 
-
-            listener.OnNotificationCount();
+            if (homeListener != null)
+            {
+                homeListener.OnNotificationCount();
+            }
         }
 
     }

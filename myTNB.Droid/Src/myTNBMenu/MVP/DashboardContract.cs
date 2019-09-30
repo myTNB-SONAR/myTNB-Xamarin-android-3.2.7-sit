@@ -83,11 +83,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void ShowSelectSupplyAccount();
 
             /// <summary>
-            /// Show no account in dashboard
-            /// </summary>
-            void ShowNoAccountDashboardChartMenu();
-
-            /// <summary>
             /// Show no account in bill menu
             /// </summary>
             void ShowNoAccountBillMenu();
@@ -115,12 +110,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             /// NOT USED
             /// </summary>
             void ShowOwnerNonSmartMeterMonth();
-
-            /// <summary>
-            /// Show owner data
-            /// </summary>
-            /// <param name="selectedAccount">AccountData</param>
-            void ShowNonOWner(AccountData selectedAccount);
 
             /// <summary>
             /// Set toolbar title

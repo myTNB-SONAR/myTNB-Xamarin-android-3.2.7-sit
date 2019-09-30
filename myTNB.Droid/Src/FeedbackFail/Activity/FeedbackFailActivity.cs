@@ -50,6 +50,19 @@ namespace myTNB_Android.Src.FeedbackFail.Activity
             }
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Submit Feedback Fail");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
 
         [OnClick(Resource.Id.btnTryAgain)]
         void TryAgain(object sender, EventArgs eventArgs)
@@ -60,7 +73,7 @@ namespace myTNB_Android.Src.FeedbackFail.Activity
         [OnClick(Resource.Id.btnBackToDashboard)]
         void BackToDashboard(object sender, EventArgs eventArgs)
         {
-            var dashboardIntent = new Intent(this, typeof(DashboardActivity));
+            var dashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
             dashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
             StartActivity(dashboardIntent);
         }

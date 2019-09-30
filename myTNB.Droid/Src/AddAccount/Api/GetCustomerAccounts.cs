@@ -12,5 +12,8 @@ namespace myTNB_Android.Src.AddAccount.Api
         [Post("/v5/my_billingssp.asmx/GetCustomerBillingAccountList")]
         Task<AccountResponseV5> GetCustomerAccountV5([Body] GetCustomerAccountsRequest getAccountRequest);
 
+        [Headers("Content-Type:application/json; charset=utf-8")]
+        [Post("/v6/mytnbappws.asmx/GetAccounts")]
+        Task<AccountResponseV5> GetCustomerAccountV6([Body] object getAccountRequest);
     }
 }

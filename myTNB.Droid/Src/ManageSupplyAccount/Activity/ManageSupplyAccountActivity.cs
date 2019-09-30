@@ -169,6 +169,19 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             return true;
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Manage Electricity Account");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void ShowUpdateNickname()
         {
             Intent updateNickName = new Intent(this, typeof(UpdateNicknameActivity));

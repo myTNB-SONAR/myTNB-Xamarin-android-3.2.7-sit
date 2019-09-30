@@ -187,7 +187,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 accountList = CustomerBillingAccount.List();
                 if (accountList?.Count > 1 &&
                                 currentFragment.GetType() == typeof(DashboardChartFragment) ||
-                                currentFragment.GetType() == typeof(DashboardChartNonOwnerNoAccess) ||
                                 currentFragment.GetType() == typeof(DashboardSmartMeterFragment))
                 {
                     EnableDropDown(false);
@@ -227,16 +226,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 this.mPresenter.OnValidateData();
             }
         }
-
-        public void ShowNoAccountDashboardChartMenu()
-        {
-            currentFragment = new DashboardChartNoTNBAccount();
-            FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, new DashboardChartNoTNBAccount())
-                           .CommitAllowingStateLoss();
-            ShowBackButton(false);
-        }
-
 
         public void ShowNoAccountBillMenu()
         {
@@ -305,23 +294,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             //throw new NotImplementedException();
         }
 
-        public void ShowNonOWner(AccountData selectedAccount)
-        {
-            this.SelectedAccountData = selectedAccount;
-            txtAccountName.Text = SelectedAccountData.AccountName;
-            currentFragment = new DashboardChartNonOwnerNoAccess();
-            FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, DashboardChartNonOwnerNoAccess.NewInstance(selectedAccount))
-                           .CommitAllowingStateLoss();
-            if (CustomerBillingAccount.List().Count <= 1)
-            {
-                ShowBackButton(false);
-            }
-            else
-            {
-                ShowBackButton(true);
-            }
-        }
 #if STUB || DEVELOP
         public string GetUsageHistoryStub()
         {

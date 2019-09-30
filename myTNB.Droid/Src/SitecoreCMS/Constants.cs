@@ -91,6 +91,49 @@
                     public const string EndDateTime = "EndDateTime";
                     public const string ShowForSeconds = "ShowForSeconds";
                 }
+
+                public struct Help
+                {
+                    public const string TopicBGImage = "TopicBGImage";
+                    public const string BGStartColor = "BGStartColor";
+                    public const string BGEndColor = "BGEndColor";
+                    public const string BGGradientDirection = "BGGradientDirection";
+                    public const string Title = "Title";
+                    public const string Description = "Description";
+                    public const string TopicBodyTitle = "TopicBodyTitle";
+                    public const string TopicBodyContent = "TopicBodyContent";
+                    public const string CTA = "CTA";
+                    public const string Tags = "Tags";
+                    public const string TargetItem = "Target-item";
+                }
+
+                public struct ApplySSMRWalkthrough
+                {
+                    public const string Title = "Title";
+                    public const string Description = "Description";
+                    public const string Image = "Image";
+                }
+
+                public struct SSMRMeterReadingWalkthrough
+                {
+                    public const string Title = "Title";
+                    public const string Description = "Description";
+                    public const string Image = "Image";
+                }
+
+                public struct EnergySavingTips
+                {
+                    public const string Title = "Title";
+                    public const string Description = "Description";
+                    public const string Image = "Image";
+                }
+
+                public struct BillDetailsTooltip
+                {
+                    public const string Title = "Title";
+                    public const string Description = "Description";
+                    public const string Image = "Image";
+                }
             }
 
             public struct ItemID
@@ -118,6 +161,14 @@
 
                 public const string AppLaunch = "/sitecore/content/myTNBapp/Contents/App Launch Image";
 
+                public const string Help = "/sitecore/content/myTNBapp/Contents/Need Help";
+                public const string ApplySSMRWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR Apply";
+
+                public const string EnergySavingTips = "/sitecore/content/myTNBapp/Contents/Energy Saving Tips";
+
+                public const string SSMRMeterReadingOnePhaseWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead OnePhase";
+                public const string SSMRMeterReadingThreePhaseWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead ThreePhase";
+                public const string BillDetailsTooltip = "/sitecore/content/myTNBapp/Contents/Itemised Billing Tooltip";
             }
         }
     }

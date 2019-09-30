@@ -2,13 +2,16 @@
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using Java.Lang;
 using myTNB.SitecoreCM.Models;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.Base.Fragments;
+using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.Promotions.Activity;
 using myTNB_Android.Src.Promotions.Adapter;
 using myTNB_Android.Src.Promotions.MVP;
@@ -88,7 +91,7 @@ namespace myTNB_Android.Src.Promotions.Fragments
                 loadingOverlay = new LoadingOverlay(Activity, Resource.Style.LoadingOverlyDialogStyle);
                 loadingOverlay.Show();
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
             }
@@ -133,7 +136,7 @@ namespace myTNB_Android.Src.Promotions.Fragments
                         mPromotionRecyclerView.Visibility = ViewStates.Gone;
                     }
                 }
-                catch (Exception ex)
+                catch (System.Exception ex)
                 {
                     Utility.LoggingNonFatalError(ex);
                 }
@@ -168,7 +171,7 @@ namespace myTNB_Android.Src.Promotions.Fragments
                 //Activity.StartActivity(details_activity);
                 Activity.StartActivity(details_activity);
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
             }
@@ -204,10 +207,30 @@ namespace myTNB_Android.Src.Promotions.Fragments
                 }
                 this.userActionsListener.OnGetPromotionsTimeStamp();
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
             }
+        }
+
+        public override void OnAttach(Context context)
+        {
+
+            try
+            {
+                if (context is DashboardHomeActivity)
+                {
+                    var activity = context as DashboardHomeActivity;
+                    // SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
+                    activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
+                    activity.UnsetToolbarBackground();
+                }
+            }
+            catch (ClassCastException e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            base.OnAttach(context);
         }
 
         public void ShowPromotionTimestamp(bool success)
@@ -240,7 +263,7 @@ namespace myTNB_Android.Src.Promotions.Fragments
                     ShowPromotion(false);
                 }
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
             }
@@ -267,8 +290,12 @@ namespace myTNB_Android.Src.Promotions.Fragments
                     adapter.ItemClick += OnItemClick;
                     adapter.NotifyDataSetChanged();
                 }
+                var act = this.Activity as AppCompatActivity;
+
+                var actionBar = act.SupportActionBar;
+                actionBar.Show();
             }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 Utility.LoggingNonFatalError(ex);
             }

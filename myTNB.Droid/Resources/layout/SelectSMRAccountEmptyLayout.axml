@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+  <include
+      layout="@layout/toolbar"
+      android:id="@+id/toolbar" />
+   <LinearLayout
+      android:orientation="vertical"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:background="@color/ssmr_header_background">
+        <ImageView
+            android:id="@+id/htab_header"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:layout_marginTop="-35dp"
+            android:foregroundGravity="center_horizontal|center"
+            android:layout_gravity="bottom"
+            android:scaleType="fitXY"
+            android:src="@drawable/bg_smr" />
+        <ImageView
+            android:id="@+id/smr_submitted_img"
+            android:layout_width="177dp"
+            android:layout_height="140dp"
+            android:layout_marginTop="-105dp"
+            android:foregroundGravity="center_horizontal|center"
+            android:layout_gravity="center"
+            android:src="@drawable/no_eliglible_acc" />
+        <TextView
+            android:id="@+id/smr_submitted_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#8b8b8b"
+            android:layout_marginTop="22dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginRight="32dp"
+            android:textSize="14dp"
+            android:lineSpacingExtra="3dp"
+            android:gravity="center"
+            android:text="Looks like your accounts aren’t eligible for the Self Meter Reading subscription."
+            android:layout_gravity="top" />
+   </LinearLayout>
+</LinearLayout>

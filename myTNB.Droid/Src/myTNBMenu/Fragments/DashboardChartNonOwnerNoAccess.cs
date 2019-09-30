@@ -270,6 +270,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             var act = this.Activity as AppCompatActivity;
 
             var actionBar = act.SupportActionBar;
+            actionBar.Show();
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -309,7 +310,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             if (payment_activity != null && IsAdded)
             {
                 payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-                StartActivityForResult(payment_activity, DashboardActivity.PAYMENT_RESULT_CODE);
+                StartActivityForResult(payment_activity, DashboardHomeActivity.PAYMENT_RESULT_CODE);
             }
         }
 
@@ -363,7 +364,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 };
                 btnBringMeThere.Click += delegate
                 {
-                    ((DashboardActivity)Activity).BillsMenuAccess();
+                    ((DashboardHomeActivity)Activity).BillsMenuAccess();
                     mWhyThisAmtCardDialog.Dismiss();
                 };
 
@@ -380,11 +381,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public override void OnActivityResult(int requestCode, Result resultCode, Intent data)
         {
-            if (requestCode == DashboardActivity.PAYMENT_RESULT_CODE)
+            if (requestCode == DashboardHomeActivity.PAYMENT_RESULT_CODE)
             {
                 if (resultCode == Result.Ok)
                 {
-                    ((DashboardActivity)Activity).OnTapRefresh();
+                    ((DashboardHomeActivity)Activity).OnTapRefresh();
                 }
                 else if (resultCode == Result.FirstUser)
                 {
@@ -404,7 +405,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         try
                         {
-                            ((DashboardActivity)Activity).BillsMenuAccess(selectedAccount);
+                            ((DashboardHomeActivity)Activity).BillsMenuAccess(selectedAccount);
                         }
                         catch (System.Exception e)
                         {
@@ -674,15 +675,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         }
 
 
-        DashboardActivity activity = null;
+        DashboardHomeActivity activity = null;
         public override void OnAttach(Context context)
         {
             base.OnAttach(context);
             try
             {
-                activity = context as DashboardActivity;
+                if (context is DashboardHomeActivity)
+                {
+                    activity = context as DashboardHomeActivity;
+                    // SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
+                    activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
+                    activity.UnsetToolbarBackground();
+                }
+
+                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Non Owner Inner Dashboard");
             }
             catch (ClassCastException e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
@@ -693,7 +706,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             base.OnAttach(activity);
             try
             {
-                activity = activity as DashboardActivity;
+                activity = activity as DashboardHomeActivity;
             }
             catch (ClassCastException e)
             {

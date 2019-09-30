@@ -232,6 +232,19 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                FirebaseAnalyticsUtils.SetScreenName(this, "Notification Detail Screen");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
 
         [OnClick(Resource.Id.btnPay)]
         void OnPay(object sender, EventArgs eventArgs)
@@ -289,7 +302,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             }
             else
             {
-                Intent dashbaord_activity = new Intent(this, typeof(DashboardActivity));
+                Intent dashbaord_activity = new Intent(this, typeof(DashboardHomeActivity));
                 dashbaord_activity.PutExtra(Constants.PROMOTION_NOTIFICATION_VIEW, true);
                 dashbaord_activity.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                 StartActivity(dashbaord_activity);
