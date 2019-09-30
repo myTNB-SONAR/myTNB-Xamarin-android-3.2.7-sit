@@ -253,6 +253,8 @@ namespace myTNB_Android.Src.Utils
 
         internal static readonly string CURRENT_USAGE_KEY = "CURRENTUSAGE";
 
+        internal static readonly string MISSING_READING_KEY = "MISSINGREADING";
+
         public enum GREETING
         {
             MORNING,

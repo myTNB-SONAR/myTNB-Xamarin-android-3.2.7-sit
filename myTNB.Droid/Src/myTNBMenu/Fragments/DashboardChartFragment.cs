@@ -419,6 +419,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.txtMdmsDayViewDown)]
         TextView txtMdmsDayViewDown;
 
+        [BindView(Resource.Id.smDayViewZoomInIndicatorLayout)]
+        LinearLayout smDayViewZoomInIndicatorLayout;
+
+        [BindView(Resource.Id.txtDayViewZoomInIndicator)]
+        TextView txtDayViewZoomInIndicator;
+
         private static bool isZoomIn = false;
 
         TariffBlockLegendAdapter tariffBlockLegendAdapter;
@@ -485,6 +491,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private List<double> DayViewRMData = new List<double>();
         private List<double> DayViewkWhData = new List<double>();
         private List<bool> missingReadingList = new List<bool>();
+        private static List<string> dayViewMonthList = new List<string>();
 
         private Bitmap mdmsBitmap = null;
         private Bitmap missingBitmap = null;
@@ -506,6 +513,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private static bool isShowLog = false;
 
         private static float lowestVisibleX = -1f;
+
+        private 
 
         ScaleGestureDetector mScaleDetector;
 
@@ -706,6 +715,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             base.OnViewCreated(view, savedInstanceState);
             try
             {
+
+                smDayViewZoomInIndicatorLayout.Visibility = ViewStates.Gone;
+
                 BitmapFactory.Options opt = new BitmapFactory.Options();
                 opt.InMutable = true;
                 mdmsBitmap = BitmapFactory.DecodeResource(this.Activity.Resources, Resource.Drawable.mdms_down, opt);
@@ -736,7 +748,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextViewUtils.SetMuseoSans500Typeface(reTotalPayableTitle, btnReView, txtTarifToggle, txtNoPayableTitle, txtNoPayableCurrency);
                 TextViewUtils.SetMuseoSans300Typeface(smStatisticBillSubTitle, smStatisticBill, smStatisticBillCurrency, smStatisticBillKwhUnit, smStatisticBillKwh, smStatisticPredictSubTitle, smStatisticPredict, smStatisticPredictCurrency, smStatisticTrendSubTitle, smStatisticTrend);
                 TextViewUtils.SetMuseoSans500Typeface(smStatisticBillTitle, smStatisticPredictTitle, txtSmStatisticTooltip, smStatisticTrendTitle);
-                TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtMdmsDayViewDown);
+                TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtMdmsDayViewDown, txtDayViewZoomInIndicator);
 
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
@@ -819,7 +831,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         layoutSMSegmentGroup.Visibility = ViewStates.Visible;
                         isSMR = false;
                         smGraphZoomToggleLayout.Visibility = ViewStates.Gone;
-                        // Lin Siong TODO: Estimated Reading Handling & Display
                     }
                     else
                     {
@@ -1454,10 +1465,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 // Lin Siong Note: isStacked = true -> have spacing
                 // Lin Siong Note: isStacked = false -> no spacing
 
-                // Lin Siong TODO: To Add day view chart view render on smart meter
-                // 
-
                 missingReadingList = new List<bool>();
+                dayViewMonthList = new List<string>();
                 if (selectedSMHistoryData != null && selectedSMHistoryData.ByDay != null && selectedSMHistoryData.ByDay.Count > 0)
                 {
                     foreach (SMUsageHistoryData.ByDayData DayData in selectedSMHistoryData.ByDay)
@@ -1465,6 +1474,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
                         {
                             missingReadingList.Add(IndividualDayData.IsMissingReading);
+                            dayViewMonthList.Add(IndividualDayData.Month);
                         }
                     }
                 }
@@ -1472,25 +1482,29 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (ChartType == ChartType.Day && isZoomIn)
                 {
                     List<bool> newMissingReadingList = new List<bool>();
+                    List<string> newDayViewMonthList = new List<string>();
 
                     for (int j = 0; j < 4; j++)
                     {
                         newMissingReadingList.Add(false);
+                        newDayViewMonthList.Add("");
                     }
 
                     for (int j = 0; j < missingReadingList.Count; j++)
                     {
-                        // newMissingReadingList.Add(missingReadingList[j]);
-                        newMissingReadingList.Add(true);
+                        newMissingReadingList.Add(missingReadingList[j]);
+                        newDayViewMonthList.Add(dayViewMonthList[j]);
                     }
 
 
                     for (int j = 0; j < 4; j++)
                     {
                         newMissingReadingList.Add(false);
+                        newDayViewMonthList.Add("");
                     }
 
                     missingReadingList = newMissingReadingList;
+                    dayViewMonthList = newDayViewMonthList;
                 }
 
                 if (!isZoomIn)
@@ -1605,10 +1619,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             txtAddress.Text = selectedAccount.AddStreet;
 
-            // Lin Siong TODO: Estimated Reading Handling & Display on graph X Axis on Smart Meter
-
             mdmsDayViewDownLayout.Visibility = ViewStates.Gone;
             mChart.Visibility = ViewStates.Visible;
+            smDayViewZoomInIndicatorLayout.Visibility = ViewStates.Gone;
 
             if (isSMAccount)
             {
@@ -1673,6 +1686,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                     else
                     {
+                        if (isZoomIn)
+                        {
+                            smDayViewZoomInIndicatorLayout.Visibility = ViewStates.Visible;
+                        }
+
                         smGraphZoomToggleLayout.Enabled = true;
                         if (ChartDataType == ChartDataType.RM)
                         {
@@ -1822,6 +1840,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 graphTopPadding = 40;
                 mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(240f);
             }
+            else if (ChartType == ChartType.Day && isZoomIn)
+            {
+                graphBottomPadding = 6;
+                mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(196f);
+            }
+            else
+            {
+                mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(220f);
+            }
 
 
             mChart.SetExtraOffsets(graphLeftRightPadding, graphTopPadding, graphLeftRightPadding, graphBottomPadding);
@@ -1836,7 +1863,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 currentChartDataType = ChartDataType,
                 currentDayViewkWhList = DayViewkWhData,
                 currentDayViewRMList = DayViewRMData,
-                currentIsZoomIn = isZoomIn
+                currentIsZoomIn = isZoomIn,
+                currentFragment = this
             };
 
             mChart.NestedScrollingEnabled = true;
@@ -1971,10 +1999,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             xAxis.TextColor = Color.ParseColor("#ffffff");
             xAxis.AxisLineWidth = 2f;
             xAxis.AxisLineColor = Color.ParseColor("#4cffffff");
+            xAxis.TextSize = 11f;
 
             xAxis.SetDrawGridLines(false);
 
-            // Adding the MuseoSans300 to X Axis
             try
             {
                 Typeface plain = Typeface.CreateFromAsset(Context.Assets, "fonts/" + TextViewUtils.MuseoSans300);
@@ -2136,10 +2164,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             xAxis.TextColor = Color.ParseColor("#ffffff");
             xAxis.AxisLineWidth = 2f;
             xAxis.AxisLineColor = Color.ParseColor("#4cffffff");
+            xAxis.TextSize = 11f;
 
             xAxis.SetDrawGridLines(false);
 
-            // Lin Siong Note: Adding the MuseoSans300 to X Axis
             try
             {
                 Typeface plain = Typeface.CreateFromAsset(Context.Assets, "fonts/" + TextViewUtils.MuseoSans300);
@@ -4396,6 +4424,74 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         }
 
+        public void OnMissingReadingClick()
+        {
+            try
+            {
+                MaterialDialog mDialog = new MaterialDialog.Builder(Activity)
+                    .CustomView(Resource.Layout.CustomDialogOneButtonLayout, false)
+                    .Cancelable(false)
+                    .CanceledOnTouchOutside(false)
+                    .Build();
+
+                View dialogView = mDialog.Window.DecorView;
+                dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
+
+                TextView txtTitle = mDialog.FindViewById<TextView>(Resource.Id.txtTitle);
+                TextView txtMessage = mDialog.FindViewById<TextView>(Resource.Id.txtMessage);
+                TextView btnGotIt = mDialog.FindViewById<TextView>(Resource.Id.txtBtnFirst);
+                txtMessage.MovementMethod = new ScrollingMovementMethod();
+
+                txtMessage.Text = "What does this mean?";
+                txtTitle.Text = "Your full usage for this particular day has not been retrieved yet. Check back in a while.";
+                btnGotIt.Text = "Got It!";
+
+
+                foreach (SMUsageHistoryData.SmartMeterToolTips costValue in selectedSMHistoryData.ToolTips)
+                {
+                    if (costValue.Type == Constants.MISSING_READING_KEY)
+                    {
+                        if (costValue.Message != null && costValue.Message.Count > 0)
+                        {
+                            string textMessage = "";
+                            foreach (string stringValue in costValue.Message)
+                            {
+                                textMessage += stringValue;
+                            }
+
+                            if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                            {
+                                txtMessage.TextFormatted = Html.FromHtml(textMessage, FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                txtMessage.TextFormatted = Html.FromHtml(textMessage);
+                            }
+                        }
+
+                        txtTitle.Text = costValue.Title;
+                        btnGotIt.Text = costValue.SMBtnText;
+                    }
+                }
+
+                TextViewUtils.SetMuseoSans500Typeface(txtTitle, btnGotIt);
+                TextViewUtils.SetMuseoSans300Typeface(txtMessage);
+                btnGotIt.Click += delegate
+                {
+                    mDialog.Dismiss();
+                };
+
+                if (IsActive())
+                {
+                    mDialog.Show();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         internal float GetMaxRMValues()
         {
             float val = 0;
@@ -5487,9 +5583,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             int diff = currentDayViewIndex - (int)e.GetX();
 
                             currentDayViewIndex = (int)e.GetX();
-                            BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
-                            Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
-                            mChart.HighlightValue(centerBar, false);
 
                             if (diff > 0 || diff < 0)
                             {
@@ -5522,6 +5615,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     vibrator.Vibrate(200);
 
                                 }
+                            }
+
+                            BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
+                            Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
+                            mChart.HighlightValue(centerBar, false);
+
+                            if (missingReadingList[currentDayViewIndex])
+                            {
+                                OnMissingReadingClick();
                             }
                         }
                         else
@@ -5569,10 +5671,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         CurrentParentIndex = -1;
                     }
-                }
-                else if (ChartType == ChartType.Day)
-                {
-
                 }
 
                 try
@@ -6258,6 +6356,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             SetUp();
         }
 
+        private void SetDayViewMonthText(string str)
+        {
+            txtDayViewZoomInIndicator.Text = str;
+        }
+
         private class OnBarChartTouchLister : BarLineChartTouchListener
         {
             public ChartType currentChartType { get; set; }
@@ -6266,6 +6369,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             private BarLineChartBase currentChart;
             public List<double> currentDayViewRMList { get; set; }
             public List<double> currentDayViewkWhList { get; set; }
+            public DashboardChartFragment currentFragment { get; set; }
             private Context currentContext;
 
             public OnBarChartTouchLister(BarLineChartBase mChart, Matrix mMatrix, float mDistance) : base(mChart, mMatrix, mDistance)
@@ -6369,6 +6473,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
                         Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
                         currentChart.HighlightValue(centerBar, false);
+
+                        currentFragment.SetDayViewMonthText(dayViewMonthList[currentDayViewIndex]);
+
                     }
                 }
             }
@@ -6464,6 +6571,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
                             Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
                             currentChart.HighlightValue(centerBar, false);
+
+                            currentFragment.SetDayViewMonthText(dayViewMonthList[currentDayViewIndex]);
                         }
                     }
                 }
@@ -6509,6 +6618,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         currentChart.HighlightValue(centerBar, false);
                         isDayViewFirstMove = true;
                         isShowLog = true;
+
+                        currentFragment.SetDayViewMonthText(dayViewMonthList[currentDayViewIndex]);
                     }
                     else
                     {
@@ -6537,6 +6648,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             Highlight centerBar = new Highlight(tempDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
                             currentChart.HighlightValue(centerBar, false);
 
+                            currentFragment.SetDayViewMonthText(dayViewMonthList[tempDayViewIndex]);
 
                             Vibrator vibrator = (Vibrator)currentContext.GetSystemService(Context.VibratorService);
                             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
@@ -6643,6 +6755,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
                                 Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
                                 currentChart.HighlightValue(centerBar, false);
+
+                                currentFragment.SetDayViewMonthText(dayViewMonthList[currentDayViewIndex]);
                             }
                         }
                     }

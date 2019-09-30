@@ -75,10 +75,6 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
         // Lin Siong Note: this is for use of tariff block on smart meter inner dashboard
         // Lin Siong Note: Smart Meter Chart Renderer support isStacked Flag, to determine whether wanna have spacing between bar or not
 
-        // Lin Siong TODO: To draw the missing note icon
-        // Lin Siong TODO: To draw the unavailable icon on canvas when have downtime
-        // Lin Siong TODO: To see if have isEstimated Reading then have plan to draw the stripped background out
-
 
         public SMStackedBarChartRenderer(BarChart chart, ChartAnimator animator, ViewPortHandler viewPortHandler) : base(chart, animator, viewPortHandler)
         {
