@@ -129,12 +129,6 @@ namespace myTNB.Payment.SelectBills
             {
                 cell._lblAmountError.Hidden = true;
                 UpdateUIForInputError(false, cell);
-                /*if (index > -1)
-                {
-                    double parsedAmount = TextHelper.ParseStringToDouble(cell._txtFieldAmount.Text);
-                    //_accounts[index].Amount = parsedAmount;
-                    _controller.UpDateTotalAmount();
-                }*/
             };
             cell._txtFieldAmount.ShouldEndEditing = (sender) =>
             {
