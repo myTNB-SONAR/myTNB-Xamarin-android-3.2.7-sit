@@ -56,7 +56,11 @@ namespace myTNB
             NavigationController.SetNavigationBarHidden(true, true);
             SetNoSSMR();
             string accName;
-            if (_isFromSelection)
+            if (SSMRAccounts.FilteredListCount == 0)
+            {
+                _currentIndex = -1;
+            }
+            else if (_isFromSelection)
             {
                 accName = _currAcc?.accountNickName ?? string.Empty;
                 _ssmrHeaderComponent.AccountName = accName;
