@@ -793,25 +793,7 @@ namespace myTNB
             {
                 FilterKeys = billpayHistoryData.BillPayFilterData.Select(x => x.Type).ToList();
                 filterTypes = billpayHistoryData.BillPayFilterData.Select(x => x.Text).ToList();
-                return filterTypes;
             }
-
-            List<BillPayHistoryDataModel> historyData = new List<BillPayHistoryDataModel>();
-            List<BillPayHistoryModel> billHistory = billpayHistoryData.BillPayHistories;
-            foreach (BillPayHistoryModel obj in billHistory)
-            {
-                foreach (BillPayHistoryDataModel obj2 in obj.BillPayHistoryData)
-                {
-                    historyData.Add(obj2);
-                }
-            }
-            IEnumerable<string> keys = historyData.Select(x => x.HistoryType).Distinct();
-            IEnumerable<string> names = historyData.Select(x => x.HistoryTypeText).Distinct();
-            filterKeys = new List<string>(keys);
-            filterKeys.Insert(0, "ALL");
-            FilterKeys = new List<string>(filterKeys);
-            filterTypes = new List<string>(names);
-            filterTypes.Insert(0, GetCommonI18NValue(BillConstants.I18N_All));
             return filterTypes;
         }
 
