@@ -58,6 +58,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
+            holder.IsRecyclable = false;
             SelectAccountListViewHolder vh = holder as SelectAccountListViewHolder;
             try
             {
