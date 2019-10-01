@@ -367,52 +367,9 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 bool owner = isOwner;
                 string suppliedMotherName = edtOwnerMotherName.Text;
                 string accountLabel = edtAccountLabel.Text;
-                if (!IsAccountAlreadyRegistered(accountNum))
+                if (!IsAccountAlreadyRegistered(accountNum) && !AddAccountUtils.IsFoundAccountList(accountNum))
                 {
-                    if (AddAccountUtils.IsFoundAccountList(accountNum))
-                    {
-                        try
-                        {
-                            MaterialDialog mDialog = new MaterialDialog.Builder(Activity)
-                                .CustomView(Resource.Layout.AppUpdateDialog, false)
-                                .Cancelable(false)
-                                .CanceledOnTouchOutside(false)
-                                .Build();
-
-                            View dialogView = mDialog.Window.DecorView;
-                            dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
-
-                            TextView txtTitle = mDialog.FindViewById<TextView>(Resource.Id.txtTitle);
-                            TextView txtMessage = mDialog.FindViewById<TextView>(Resource.Id.txtMessage);
-                            TextView btnOK = mDialog.FindViewById<TextView>(Resource.Id.txtUpdate);
-                            txtMessage.MovementMethod = new ScrollingMovementMethod();
-
-                            txtMessage.Text = Activity.GetString(Resource.String.duplicate_account_message);
-                            txtTitle.Text = Activity.GetString(Resource.String.duplicate_account_title);
-                            btnOK.Text = Activity.GetString(Resource.String.duplicate_account_btn_ok);
-
-
-                            TextViewUtils.SetMuseoSans500Typeface(txtTitle, btnOK);
-                            TextViewUtils.SetMuseoSans300Typeface(txtMessage);
-                            btnOK.Click += delegate
-                            {
-                                mDialog.Dismiss();
-                            };
-
-                            if (IsActive())
-                            {
-                                mDialog.Show();
-                            }
-                        }
-                        catch (System.Exception e)
-                        {
-                            Utility.LoggingNonFatalError(e);
-                        }
-                    }
-                    else
-                    {
-                        this.userActionsListener.ValidateAccount(apiKeyID, accountNum, type, icNumber, suppliedMotherName, owner, accountLabel);
-                    }
+                    this.userActionsListener.ValidateAccount(apiKeyID, accountNum, type, icNumber, suppliedMotherName, owner, accountLabel);
                 }
                 else
                 {
