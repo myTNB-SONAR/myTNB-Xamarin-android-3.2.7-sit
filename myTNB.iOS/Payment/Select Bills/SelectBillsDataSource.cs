@@ -130,6 +130,22 @@ namespace myTNB.Payment.SelectBills
                 cell._lblAmountError.Hidden = true;
                 UpdateUIForInputError(false, cell);
             };
+            cell._txtFieldAmount.EditingDidBegin += (sender, e) =>
+            {
+                nfloat[] lineComponents = cell._viewLineAmount.BackgroundColor.CGColor.Components;
+                nfloat[] currentComponents = MyTNBColor.PlatinumGrey.CGColor.Components;
+                if (lineComponents.Length == currentComponents.Length)
+                {
+                    for (int i = 0; i < lineComponents.Length; i++)
+                    {
+                        if (lineComponents[i] != currentComponents[i])
+                        {
+                            return;
+                        }
+                    }
+                    cell._viewLineAmount.BackgroundColor = MyTNBColor.PowerBlue;
+                }
+            };
             cell._txtFieldAmount.ShouldEndEditing = (sender) =>
             {
                 ShowErrorMessage(index, cell);
@@ -240,16 +256,15 @@ namespace myTNB.Payment.SelectBills
         #region UpdateUIForInputError
         private void UpdateUIForInputError(bool isError, SelectBillsTableViewCell cell, bool endEditing = false)
         {
-            UIView viewLine = cell.ViewWithTag(0).ViewWithTag(1) as UIView;
             if (isError)
             {
                 cell._txtFieldAmount.TextColor = MyTNBColor.Tomato;
-                viewLine.BackgroundColor = MyTNBColor.Tomato;
+                cell._viewLineAmount.BackgroundColor = MyTNBColor.Tomato;
             }
             else
             {
                 cell._txtFieldAmount.TextColor = MyTNBColor.TunaGrey();
-                viewLine.BackgroundColor = (endEditing) ? MyTNBColor.PlatinumGrey : MyTNBColor.PowerBlue;
+                cell._viewLineAmount.BackgroundColor = MyTNBColor.PlatinumGrey;
             }
         }
         #endregion
