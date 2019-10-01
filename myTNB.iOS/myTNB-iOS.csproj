@@ -2478,6 +2478,7 @@
     <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterMDMSDownView.cs" />
     <Compile Include="Components\TitleBarComponentV2.cs" />
     <Compile Include="Components\AccountSelectionComponentV2.cs" />
+    <Compile Include="Helpers\NotifCenterUtility.cs" />
     <Compile Include="Sitecore CMS\Model\AppLaunchImageResponseModel.cs" />
     <Compile Include="Sitecore CMS\Service\AppLaunchImageService.cs" />
   </ItemGroup>
