@@ -270,7 +270,8 @@
                     android:layout_width="match_parent"
                     android:text="@string/my_account_btn_add_another_account"
                     android:textAllCaps="false"
-                    style="@style/LightButton" />
+                    style="@style/LightButton"
+                     />
             </LinearLayout>
             <LinearLayout
                 android:layout_height="wrap_content"
@@ -287,7 +288,8 @@
                     android:layout_width="match_parent"
                     android:textAllCaps="false"
                     android:text="@string/my_account_btn_logout"
-                    style="@style/DarkButton" />
+                    style="@style/DarkButton"
+                    />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

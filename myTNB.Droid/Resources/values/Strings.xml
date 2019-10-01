@@ -414,7 +414,7 @@ You acknowledge that you have been provided with and have read and understood th
   <string name="where_is_my_account_no_text">Your 12 digit account no. can be found on the top left corner of your monthly paper bill.</string>
   <string name="add_electricity_account_title">Add Electricity Account</string>
   <string name="no_account_found">No accounts found! Please add an account</string>
-  <string name="account_nickname_info">Give your accounts nicknames for your easy reference.</string>
+  <string name="account_nickname_info">Please tap on the button below...</string>
   <!-- End of Add Account Form-->
 
   <!-- Barcode -->
