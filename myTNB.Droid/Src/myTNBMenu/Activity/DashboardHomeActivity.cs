@@ -177,6 +177,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             //});
             this.userActionsListener?.OnNotificationCount();
 
+
+            if (!alreadyStarted)
+            {
+                this.userActionsListener.Start();
+                alreadyStarted = true;
+                ShowPromotion(true);
+            }
         }
 
         //public async void GetNotifications()
@@ -513,13 +520,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public override void Ready()
         {
             base.Ready();
-            if (!alreadyStarted)
-            {
-                this.userActionsListener.Start();
-                alreadyStarted = true;
-                ShowPromotion(true);
-            }
-
         }
 
         public void EnableBillMenu()
