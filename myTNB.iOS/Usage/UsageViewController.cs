@@ -217,6 +217,7 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
+                        AccountUsageSmartCache.IsMDMSDown = false;
                         if (AccountUsageSmartCache.IsRefreshNeeded(DataManager.DataManager.SharedInstance.SelectedAccount.accNum))
                         {
                             SetSmartMeterComponent(true);
@@ -231,7 +232,7 @@ namespace myTNB
                                     if (accNum == DataManager.DataManager.SharedInstance.SelectedAccount.accNum)
                                     {
                                         AccountUsageSmartCache.SetData(DataManager.DataManager.SharedInstance.SelectedAccount.accNum, accountUsageSmartResponse);
-                                        if (AccountUsageSmartCache.IsSuccess)
+                                        if (AccountUsageSmartCache.IsSuccess || AccountUsageSmartCache.IsMDMSDown)
                                         {
                                             OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
                                             SetSmartMeterComponent(false, model.Cost);

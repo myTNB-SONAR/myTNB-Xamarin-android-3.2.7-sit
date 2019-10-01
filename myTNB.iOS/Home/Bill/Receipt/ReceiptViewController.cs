@@ -1,4 +1,4 @@
-﻿using Foundation;
+using Foundation;
 using System;
 using UIKit;
 using myTNB.Dashboard.DashboardComponents;
@@ -49,23 +49,29 @@ namespace myTNB
             tableViewReceipt.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                InvokeOnMainThread(async () =>
+                InvokeOnMainThread(() =>
                 {
                     if (NetworkUtility.isReachable)
                     {
                         ActivityIndicator.Show();
-                        await GetPaymentReceipt();
-                        if (_receipt != null && _receipt?.d != null && _receipt?.d?.data != null && _receipt?.d?.didSucceed == true)
+                        InvokeInBackground(async () =>
                         {
-                            paymentMethod = _receipt?.d?.data?.payMethod;
-                            CreatePDF();
-                            SetSubviews();
-                        }
-                        else
-                        {
-                            AlertHandler.DisplayGenericAlert(this, "Receipt_NoReceipt".Translate(), string.Empty);
-                        }
-                        ActivityIndicator.Hide();
+                            await GetPaymentReceipt();
+                            InvokeOnMainThread(() =>
+                            {
+                                if (_receipt != null && _receipt?.d != null && _receipt?.d?.data != null && _receipt?.d?.didSucceed == true)
+                                {
+                                    paymentMethod = _receipt?.d?.data?.payMethod;
+                                    CreatePDF();
+                                    SetSubviews();
+                                }
+                                else
+                                {
+                                    AlertHandler.DisplayGenericAlert(this, "Receipt_NoReceipt".Translate(), string.Empty);
+                                }
+                                ActivityIndicator.Hide();
+                            });
+                        });
                     }
                     else
                     {

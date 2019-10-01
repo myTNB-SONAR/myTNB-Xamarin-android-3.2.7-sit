@@ -13,6 +13,7 @@ namespace myTNB
         protected CustomUIView _mainView, _segmentContainer, _zoomView;
         protected nfloat _width, _baseMargin, _baseMarginedWidth;
         protected UILabel _lblDateRange;
+        protected UISegmentedControl _toggleBar;
 
         protected string Format_Value = "{0} {1}";
         protected nfloat ShimmerHeight;
@@ -20,6 +21,9 @@ namespace myTNB
         public virtual void ToggleTariffView(bool isTariffView) { }
 
         public virtual void ToggleRMKWHValues(RMkWhEnum state) { }
+        public Action<int> LoadTariffLegendWithIndex;
+        public Action ShowMissedReadToolTip;
+        public virtual List<string> AvailableTariffBlockIDList { get; } = new List<string>();
 
         public virtual CustomUIView GetUI()
         {

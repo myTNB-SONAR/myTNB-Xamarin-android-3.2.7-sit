@@ -15,13 +15,20 @@ namespace myTNB
 
     public class BillPayHistoriesDataModel
     {
-        public List<BillPayHistoryModel> BillPayHistories = new List<BillPayHistoryModel>();
+        public List<BillPayHistoryModel> BillPayHistories { set; get; } = new List<BillPayHistoryModel>();
+        public List<FilterModel> BillPayFilterData { set; get; } = new List<FilterModel>();
     }
 
     public class BillPayHistoryModel
     {
         public string MonthYear { set; get; } = string.Empty;
         public List<BillPayHistoryDataModel> BillPayHistoryData = new List<BillPayHistoryDataModel>();
+    }
+
+    public class FilterModel
+    {
+        public string Text { set; get; } = string.Empty;
+        public string Type { set; get; } = string.Empty;
     }
 
     public class BillPayHistoryDataModel

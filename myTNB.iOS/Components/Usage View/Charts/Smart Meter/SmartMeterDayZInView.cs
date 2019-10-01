@@ -21,6 +21,8 @@ namespace myTNB.SmartMeterView
         private UILabel _lblMonth;
         private List<DayItemModel> _usageData = new List<DayItemModel>();
 
+        public Action OnHighlightedBarTap { set; private get; }
+
         private void AddIndicator(ref CustomUIView view)
         {
             nfloat width = GetWidthByScreenSize(12);
@@ -68,7 +70,7 @@ namespace myTNB.SmartMeterView
             _usageData = AccountUsageSmartCache.FlatDays;
             List<string> valueList = _usageData.Select(x => x.Amount).ToList();
             double maxValue = GetMaxValue(RMkWhEnum.RM, valueList);
-            double divisor = maxValue == 0 ? 0 : maxBarHeight / maxValue;
+            double divisor = maxValue > 0 ? maxBarHeight / maxValue : 0;
             CGPoint lastSegment = new CGPoint();
             _locationDictionary.Clear();
             for (int i = 0; i < _usageData.Count; i++)
@@ -209,6 +211,20 @@ namespace myTNB.SmartMeterView
 
                 point.X -= baseMargin;
                 _segmentScrollView.SetContentOffset(point, true);
+
+                if (tag == _currentBar)
+                {
+                    if (tag > -1 && tag < _usageData.Count)
+                    {
+                        if (_usageData[tag].IsMissingReading)
+                        {
+                            if (OnHighlightedBarTap != null)
+                            {
+                                OnHighlightedBarTap.Invoke();
+                            }
+                        }
+                    }
+                }
             }
         }
 

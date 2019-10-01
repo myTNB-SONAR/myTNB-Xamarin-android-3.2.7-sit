@@ -12,6 +12,7 @@ namespace myTNB.SmartMeterView
         private nfloat _width = UIScreen.MainScreen.Bounds.Width;
 
         public Action<int> OnSegmentTap { set; private get; }
+        public Action<int> LoadTariffLegendWithIndex { set; private get; }
 
         public override void CreateSegment(ref CustomUIView view)
         {
@@ -33,7 +34,7 @@ namespace myTNB.SmartMeterView
             List<MonthItemModel> usageData = AccountUsageSmartCache.ByMonthUsage;
             List<string> valueList = usageData.Select(x => x.UsageTotal).ToList();
             double maxValue = GetMaxValue(RMkWhEnum.RM, valueList);
-            double divisor = maxBarHeight / maxValue;
+            double divisor = maxValue > 0 ? maxBarHeight / maxValue : 0;
 
             for (int i = 0; i < usageData.Count; i++)
             {
@@ -50,13 +51,13 @@ namespace myTNB.SmartMeterView
                 view.AddSubview(segment);
                 xLoc += segmentWidth + segmentMargin;
 
-                if (item.IsCurrentlyUnavailable)
+                if (index == usageData.Count - 1 && AccountUsageSmartCache.IsMDMSDown)
                 {
                     UILabel lblDate = new UILabel(new CGRect((segmentWidth - GetWidthByScreenSize(40)) / 2, segment.Frame.Height - lblHeight
                         , GetWidthByScreenSize(40), lblHeight))
                     {
                         TextAlignment = UITextAlignment.Center,
-                        Font = isSelected ?  TNBFont.MuseoSans_10_500: TNBFont.MuseoSans_10_300 ,
+                        Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300,
                         TextColor = UIColor.White,
                         Text = string.IsNullOrEmpty(item.Year) ? item.Month : string.Format(Format_Value, item.Month, item.Year),
                         Tag = 1003
@@ -72,7 +73,7 @@ namespace myTNB.SmartMeterView
                     UILabel lblIndicator = new UILabel(new CGRect(0, unavailableIcon.Frame.GetMinY() - GetScaledHeight(8) - lblIndicatorHeight, GetScaledWidth(54), lblIndicatorHeight))
                     {
                         TextAlignment = UITextAlignment.Center,
-                        Font = isSelected ?  TNBFont.MuseoSans_10_500: TNBFont.MuseoSans_10_300 ,
+                        Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300,
                         TextColor = UIColor.White,
                         Lines = 0,
                         Text = LanguageUtility.GetCommonI18NValue(Constants.I18N_MDMSUnavailable),
@@ -108,7 +109,7 @@ namespace myTNB.SmartMeterView
                     if (isLatestBar)
                     {
                         viewBar.Layer.BorderWidth = GetWidthByScreenSize(1);
-                        viewBar.Layer.BorderColor = (isSelected ?  UIColor.White: UIColor.FromWhiteAlpha(1, 0.50F) ).CGColor;
+                        viewBar.Layer.BorderColor = (isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F)).CGColor;
                     }
 
                     nfloat coverWidth = isLatestBar ? viewBar.Frame.Width - GetWidthByScreenSize(6) : viewBar.Frame.Width;
@@ -118,7 +119,7 @@ namespace myTNB.SmartMeterView
 
                     UIView viewCover = new UIView(new CGRect(new CGPoint(coverXLoc, coverYLoc), new CGSize(coverWidth, coverHeight)))
                     {
-                        BackgroundColor = isSelected ?  UIColor.White: UIColor.FromWhiteAlpha(1, 0.50F) ,
+                        BackgroundColor = isSelected ? UIColor.White : UIColor.FromWhiteAlpha(1, 0.50F),
                         Tag = 2001,
                         Hidden = IsTariffView
                     };
@@ -178,6 +179,10 @@ namespace myTNB.SmartMeterView
                         , () => { }
                     );
                 }
+            }
+            if (LoadTariffLegendWithIndex != null)
+            {
+                LoadTariffLegendWithIndex.Invoke(usageData.Count - 1);
             }
         }
     }

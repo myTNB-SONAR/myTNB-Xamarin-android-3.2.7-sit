@@ -234,8 +234,22 @@ namespace myTNB
                 if (accountIndex > -1)
                 {
                     string accountNickname = DataManager.DataManager.SharedInstance.AccountRecordsList.d[accountIndex].accountNickName ?? string.Empty;
-                    message = Regex.Replace(message, "#accountNickname#", accountNickname);
+                    if (string.IsNullOrEmpty(accountNickname) || string.IsNullOrWhiteSpace(accountNickname))
+                    {
+                        accountNickname = string.Format(GetCommonI18NValue(PushNotificationConstants.I18N_CustomerAccountNumber), NotificationInfo.AccountNum);
+                    }
+                    message = Regex.Replace(message, PushNotificationConstants.REGEX_AccountNickname, accountNickname);
                 }
+                else
+                {
+                    message = Regex.Replace(message, PushNotificationConstants.REGEX_AccountNickname
+                        , string.Format(GetCommonI18NValue(PushNotificationConstants.I18N_CustomerAccountNumber), NotificationInfo.AccountNum));
+                }
+            }
+            else
+            {
+                message = Regex.Replace(message, PushNotificationConstants.REGEX_AccountNickname
+                    , string.Format(GetCommonI18NValue(PushNotificationConstants.I18N_CustomerAccountNumber), NotificationInfo.AccountNum));
             }
 
             NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(message ?? string.Empty

@@ -56,7 +56,11 @@ namespace myTNB
             NavigationController.SetNavigationBarHidden(true, true);
             SetNoSSMR();
             string accName;
-            if (_isFromSelection)
+            if (SSMRAccounts.FilteredListCount == 0)
+            {
+                _currentIndex = -1;
+            }
+            else if (_isFromSelection)
             {
                 accName = _currAcc?.accountNickName ?? string.Empty;
                 _ssmrHeaderComponent.AccountName = accName;
@@ -73,18 +77,36 @@ namespace myTNB
             {
                 if (IsFromHome || IsFromNotification)
                 {
-                    if (SSMRAccounts.HasSSMRAccount)
+                    InvokeOnMainThread(async () =>
                     {
-                        _currentIndex = 0;
-                        _currAcc = SSMRAccounts.GetFirstSSMRAccount();
-                        accName = _currAcc?.accountNickName ?? string.Empty;
-                        _ssmrHeaderComponent.AccountName = accName;
-                        EvaluateEntry();
-                    }
-                    else
-                    {
-                        _currentIndex = -1;
-                    }
+                        ActivityIndicator.Show();
+                        await GetEligibility();
+                        if (_eligibilityAccount != null && _eligibilityAccount.d != null
+                            && _eligibilityAccount.d.didSucceed && _eligibilityAccount.d.data != null
+                            && _eligibilityAccount.d.data.accountEligibilities != null)
+                        {
+                            SSMRAccounts.SetData(_eligibilityAccount.d);
+                            SSMRAccounts.SetFilteredEligibleAccounts(true);
+                            if (SSMRAccounts.HasSSMRAccount)
+                            {
+                                _currentIndex = 0;
+                                _currAcc = SSMRAccounts.GetFirstSSMRAccount();
+                                accName = _currAcc?.accountNickName ?? string.Empty;
+                                _ssmrHeaderComponent.AccountName = accName;
+                                EvaluateEntry();
+                            }
+                            else
+                            {
+                                _currentIndex = -1;
+                            }
+                            ActivityIndicator.Hide();
+                        }
+                        else
+                        {
+                            DisplayServiceError(_eligibilityAccount?.d?.ErrorMessage ?? string.Empty);
+                            ActivityIndicator.Hide();
+                        }
+                    });
                 }
                 else
                 {
@@ -106,7 +128,6 @@ namespace myTNB
             {
                 NavigationController.SetNavigationBarHidden(false, true);
             }
-           // NavigationController.SetNavigationBarHidden(false, true);
         }
 
         private void EvaluateEntry()
@@ -361,54 +382,40 @@ namespace myTNB
 
         private void OnTapDropDown()
         {
-            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            if (SSMRAccounts.FilteredListCount > 0)
             {
-                InvokeOnMainThread(async () =>
+                _rootNavigation = true;
+                if (SSMRAccounts.GetEligibleAccountList().Count > 0)
                 {
-                    if (NetworkUtility.isReachable)
-                    {
-                        ActivityIndicator.Show();
-                        await GetEligibility();
-                        if (_eligibilityAccount != null && _eligibilityAccount.d != null
-                            && _eligibilityAccount.d.didSucceed && _eligibilityAccount.d.data != null
-                            && _eligibilityAccount.d.data.accountEligibilities != null)
-                        {
-                            SSMRAccounts.SetData(_eligibilityAccount.d);
-                            _rootNavigation = true;
-                            if (SSMRAccounts.GetEligibleAccountList().Count > 0)
-                            {
-                                UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
-                                SelectAccountTableViewController viewController = storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
-                                viewController.IsFromSSMR = true;
-                                viewController.IsRoot = true;
-                                viewController.CurrentSelectedIndex = _currentIndex;
-                                viewController.OnSelect = OnSelectAccount;
-                                NavigationController.PushViewController(viewController, true);
-                            }
-                            else
-                            {
-                                UIStoryboard storyBoard = UIStoryboard.FromName("GenericNoData", null);
-                                GenericNodataViewController viewController = (GenericNodataViewController)storyBoard
-                                    .InstantiateViewController("GenericNoData");
-                                viewController.NavTitle = GetI18NValue(SSMRConstants.I18N_SelectAccountNavTitle);
-                                viewController.IsRootPage = true;
-                                viewController.Image = SSMRConstants.IMG_NoData;
-                                viewController.Message = GetI18NValue(SSMRConstants.I18N_NoEligibleAccount);
-                                NavigationController.PushViewController(viewController, true);
-                            }
-                        }
-                        else
-                        {
-                            DisplayServiceError(_eligibilityAccount?.d?.ErrorMessage);
-                        }
-                        ActivityIndicator.Hide();
-                    }
-                    else
-                    {
-                        DisplayNoDataAlert();
-                    }
-                });
-            });
+                    UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+                    SelectAccountTableViewController viewController = storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
+                    viewController.IsFromSSMR = true;
+                    viewController.IsRoot = true;
+                    viewController.CurrentSelectedIndex = _currentIndex;
+                    viewController.OnSelect = OnSelectAccount;
+                    NavigationController.PushViewController(viewController, true);
+                }
+                else
+                {
+                    DisplayNoData();
+                }
+            }
+            else
+            {
+                DisplayNoData();
+            }
+        }
+
+        private void DisplayNoData()
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("GenericNoData", null);
+            GenericNodataViewController viewController = (GenericNodataViewController)storyBoard
+                .InstantiateViewController("GenericNoData");
+            viewController.NavTitle = GetI18NValue(SSMRConstants.I18N_SelectAccountNavTitle);
+            viewController.IsRootPage = true;
+            viewController.Image = SSMRConstants.IMG_NoData;
+            viewController.Message = GetI18NValue(SSMRConstants.I18N_NoEligibleAccount);
+            NavigationController.PushViewController(viewController, true);
         }
 
         private void OnEnableSSMR()

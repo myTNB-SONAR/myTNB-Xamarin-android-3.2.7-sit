@@ -1,9 +1,13 @@
 Sprint 2 SIT Build
 
-* [Update] Service Update for Notifications
-
-* [BUG] 2341: iOS_Itemised Billing : User is able to select checkbox even if he didn't entered any amount in field label.
-* [BUG] 2335: Itemized Billing - Account with mandatory charges - emptying amount field will crash the app
-
-Note:
-Please test using correct test data.
+[User Story] 1231: [SM Dashboard - Daily View] As a myTNB app user, I want to be able to monitor my daily usage.
+[Bug] 2430: SSMR Apply_iOS - Display SSMR onboarding screen when first timer apply SSMR
+[Bug] 2404: iOS- Notifications: Misalignment in Font Style and Size
+[Bug] 2401: iOS - Itemized Billing: Mandatory charges popup shows up after clicking load more
+[Bug] 2330: Itemised Billing : Validation for minimum amount on Select Bills page is varying as per selection of account from given payable account list.
+[Bug] 2305: iOS - Itemised Billing: Misalignment in font and spacing
+[Bug] 2159: iOS - Existing Validation in App
+[Bug] 2143: iOS - Absence of copywriting message, button title and wrong selected account
+[Bug] 2438: SSMR Meter Reading : Content message on take photo tool-tip is showing special character like "{{{0}}}".
+[Bug] 2120: iOS - Regression: Misalignment in spacing, font style and copy
+[Bug] 2261: iOS - Misalignment in Copy, Image and Font Style

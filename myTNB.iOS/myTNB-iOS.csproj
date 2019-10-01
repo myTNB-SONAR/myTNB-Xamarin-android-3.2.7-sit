@@ -327,7 +327,6 @@
     <ImageAsset Include="Assets.xcassets\Payment.imageset\Payment.png" />
     <ImageAsset Include="Assets.xcassets\Payment.imageset\Payment%402x.png" />
     <ImageAsset Include="Assets.xcassets\Payment.imageset\Payment%403x.png" />
-    <ImageAsset Include="Assets.xcassets\App-Launch-Gradient.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Logo.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Logo.imageset\Logo%403x.png" />
     <ImageAsset Include="Assets.xcassets\Delete.imageset\Contents.json" />
@@ -393,9 +392,6 @@
     <ImageAsset Include="Assets.xcassets\Card-CVV.imageset\cardCvv.png" />
     <ImageAsset Include="Assets.xcassets\Card-CVV.imageset\cardCvv%402x.png" />
     <ImageAsset Include="Assets.xcassets\Card-CVV.imageset\cardCvv%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Dropdown.imageset\ic_header_dropdown.png" />
-    <ImageAsset Include="Assets.xcassets\Dropdown.imageset\ic_header_dropdown%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Dropdown.imageset\ic_header_dropdown%403x.png" />
     <ImageAsset Include="Assets.xcassets\Get-Access.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Get-Access.imageset\ic_empty_dashboard.png" />
     <ImageAsset Include="Assets.xcassets\Get-Access.imageset\ic_empty_dashboard%402x.png" />
@@ -618,9 +614,6 @@
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Streetlamp.imageset\ic_feedback_submitted_streetlamp.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Streetlamp.imageset\ic_feedback_submitted_streetlamp%402x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Submitted-Streetlamp.imageset\ic_feedback_submitted_streetlamp%403x.png" />
-    <ImageAsset Include="Assets.xcassets\App-Launch-Gradient.imageset\img_splash.png" />
-    <ImageAsset Include="Assets.xcassets\App-Launch-Gradient.imageset\img_splash%402x.png" />
-    <ImageAsset Include="Assets.xcassets\App-Launch-Gradient.imageset\img_splash%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\ic_menu_feedback.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\ic_menu_feedback%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Feedback.imageset\ic_menu_feedback%403x.png" />
@@ -1181,8 +1174,6 @@
     <ImageAsset Include="Assets.xcassets\Usage-Bg-Long.imageset\Usage-Bg-Long%402x.png" />
     <ImageAsset Include="Assets.xcassets\Usage-Bg-Long.imageset\Usage-Bg-Long%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\deleteDisabled%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\deleteDisabled%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Banner-Generic.imageset\Contents.json" />
@@ -1211,6 +1202,19 @@
     <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\MDMS-Down-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\MDMS-Down-Icon.imageset\MDMS-Down-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Tariff-Eye-Disable-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\MDMS-Down.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\MDMS-Down.imageset\MDMS-Down%402x.png" />
+    <ImageAsset Include="Assets.xcassets\MDMS-Down.imageset\MDMS-Down%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Dropdown.imageset\dropdownWhite12Px%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Dropdown.imageset\dropdownWhite12Px%403x.png" />
+    <ImageAsset Include="Assets.xcassets\AppLaunch.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SplashImageDefault.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SplashImageDefault.imageset\SplashImageDefault%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SplashImageDefault.imageset\SplashImageDefault%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppLaunch.imageset\img_splash_bg%402x.png" />
+    <ImageAsset Include="Assets.xcassets\AppLaunch.imageset\img_splash_bg%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1630,6 +1634,9 @@
     <Folder Include="Assets.xcassets\Usage-Pinch-In-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Scroll-Indicator.imageset\" />
     <Folder Include="Assets.xcassets\MDMS-Down-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\MDMS-Down.imageset\" />
+    <Folder Include="Assets.xcassets\AppLaunch.imageset\" />
+    <Folder Include="Assets.xcassets\SplashImageDefault.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2468,6 +2475,11 @@
     <Compile Include="Model\Notification\ReadNotificationResponseModel.cs" />
     <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterConstants.cs" />
     <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterDayZInView.cs" />
+    <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterMDMSDownView.cs" />
+    <Compile Include="Components\TitleBarComponentV2.cs" />
+    <Compile Include="Components\AccountSelectionComponentV2.cs" />
+    <Compile Include="Sitecore CMS\Model\AppLaunchImageResponseModel.cs" />
+    <Compile Include="Sitecore CMS\Service\AppLaunchImageService.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
@@ -2491,9 +2503,6 @@
     <BundleResource Include="Resources\Base.lproj\Localizable.strings" />
     <BundleResource Include="Resources\tnbReceiptLogoHeader.jpg" />
     <BundleResource Include="Resources\Base.lproj\InfoPlist.strings" />
-    <BundleResource Include="Resources\OCR Reading.json" />
-    <BundleResource Include="Resources\dashboardzoom.json" />
-    <BundleResource Include="Resources\GeneralLoadingR1.json" />
     <BundleResource Include="Resources\Dashboard Zoom.json" />
   </ItemGroup>
   <ItemGroup>

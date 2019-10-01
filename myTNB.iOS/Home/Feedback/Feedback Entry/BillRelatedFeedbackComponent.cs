@@ -282,7 +282,11 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             if (_controller.IsLoggedIn)
             {
                 var index = DataManager.DataManager.SharedInstance.CurrentSelectedFeedAccountNoIndex;
-                return DataManager.DataManager.SharedInstance.AccountRecordsList?.d[index]?.accNum ?? string.Empty;
+                if (DataManager.DataManager.SharedInstance.AccountRecordsList?.d.Count > 0)
+                {
+                    return DataManager.DataManager.SharedInstance.AccountRecordsList?.d[index]?.accNum ?? string.Empty;
+                }
+                return string.Empty;
             }
             else
             {

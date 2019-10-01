@@ -74,5 +74,11 @@ namespace myTNB.PushNotification
         public static string I18N_SubmitMeterReading = "submitMeterReading";
         public static string I18N_ReenableSSMR = "reenableSSMR";
         public static string I18N_ViewReadingHistory = "viewReadingHistory";
+
+        //Common
+        public static string I18N_CustomerAccountNumber = "customerAccountNumber";
+
+        //Regex Constants
+        public static string REGEX_AccountNickname = "#accountNickname#";
     }
 }

@@ -119,33 +119,35 @@ namespace myTNB.Home.Bill
                         cell.IsGroupedDateHidden = true;
                     }
                     cell.IsLineHidden = indexPath.Row == _historyList.Count;
-                    if (item.IsDocumentAvailable)
-                    {
-                        if (item.IsPayment)
-                        {
-                            cell.SetAction = new UITapGestureRecognizer(() =>
-                            {
-                                if (OnSelectPayment != null)
-                                {
-                                    OnSelectPayment.Invoke(item.DetailedInfoNumber);
-                                }
-                            });
-                        }
-                        else
-                        {
-                            cell.SetAction = new UITapGestureRecognizer(() =>
-                            {
-                                if (OnSelectBill != null)
-                                {
-                                    OnSelectBill.Invoke(item.DetailedInfoNumber);
-                                }
-                            });
-                        }
-                    }
-
                     cell.ClipsToBounds = false;
                     cell.Layer.ZPosition = 10 + indexPath.Section + indexPath.Row;
                     return cell;
+                }
+            }
+        }
+
+        public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
+        {
+            if (indexPath.Row == 0)
+                return;
+
+            int index = indexPath.Row - 1;
+            BillPayHistoryDataModel item = _historyList[index];
+            if (item.IsDocumentAvailable)
+            {
+                if (item.IsPayment)
+                {
+                    if (OnSelectPayment != null)
+                    {
+                        OnSelectPayment.Invoke(item.DetailedInfoNumber);
+                    }
+                }
+                else
+                {
+                    if (OnSelectBill != null)
+                    {
+                        OnSelectBill.Invoke(item.DetailedInfoNumber);
+                    }
                 }
             }
         }

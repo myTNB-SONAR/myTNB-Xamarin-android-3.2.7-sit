@@ -37,6 +37,7 @@ namespace myTNB
             LOTAnimationView pinchAnimation = LOTAnimationView.AnimationNamed("Dashboard Zoom.json");
             pinchAnimation.Frame = new CGRect(GetXLocationToCenterObject(animationWidth, _contentView), _title.Frame.GetMaxY() + GetScaledHeight(32F),
                                          animationWidth, animationHeight);
+            pinchAnimation.ContentMode = UIViewContentMode.ScaleAspectFill;
             pinchAnimation.LoopAnimation = true;             pinchAnimation.Play();
             _contentView.AddSubview(pinchAnimation);
 
