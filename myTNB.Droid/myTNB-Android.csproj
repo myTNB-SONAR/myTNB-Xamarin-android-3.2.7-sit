@@ -1109,19 +1109,14 @@
     <Compile Include="Src\Notifications\Models\NotificationData.cs" />
     <AndroidResource Include="Resources\menu\NotificationToolbarMenu.xml" />
     <AndroidResource Include="Resources\drawable-hdpi\empty_state_notification.png" />
-    <AndroidResource Include="Resources\drawable-hdpi\ic_action_select_all.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_header_markread.png" />
     <AndroidResource Include="Resources\drawable-mdpi\empty_state_notification.png" />
-    <AndroidResource Include="Resources\drawable-mdpi\ic_action_select_all.png" />
     <AndroidResource Include="Resources\drawable-mdpi\ic_header_markread.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\empty_state_notification.png" />
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_action_select_all.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\ic_header_markread.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\empty_state_notification.png" />
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_action_select_all.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_header_markread.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\empty_state_notification.png" />
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_action_select_all.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_markread.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_header_delete_disabled.png" />
     <AndroidResource Include="Resources\drawable-hdpi\ic_header_markread_disabled.png" />
@@ -1133,6 +1128,40 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_header_markread_disabled.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_delete_disabled.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_header_markread_disabled.png" />
+    <Compile Include="Src\SitecoreCMS\Service\AppLaunchService.cs" />
+    <Compile Include="Src\SitecoreCMS\Model\AppLaunchModel.cs" />
+    <Compile Include="Src\Database\Model\AppLaunchParentEntity.cs" />
+    <Compile Include="Src\Database\Model\AppLaunchEntity.cs" />
+    <AndroidResource Include="Resources\drawable\AppLanchGradientBackground.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\AppLaunch\Models\AppLaunchNavigation.cs" />
+    <Compile Include="Src\Utils\AppLaunchUtils.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\img_splash_bg.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\img_splash_bg.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\img_splash_bg.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\img_splash_bg.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\img_splash_bg.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\launch_screen_base.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
     <Compile Include="Src\myTNBMenu\Activity\DashboardHomeActivity.cs" />
     <AndroidResource Include="Resources\layout\DashboardHomeView.axml" />
     <AndroidResource Include="Resources\layout\HomeMenuFragmentView.axml" />
@@ -3337,7 +3366,6 @@
     <AndroidResource Include="Resources\layout\WeblinkWebView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\drawable\HorizontalGradientBackground.axml" />
     <AndroidResource Include="Resources\layout\FIndUsView.axml" />
     <AndroidResource Include="Resources\layout\GoogleMapView.axml" />
     <AndroidResource Include="Resources\layout\LocationDetailsView.axml" />
@@ -4246,9 +4274,6 @@
     <AndroidResource Include="Resources\values\SelectSupplyAccountStyle.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\HorizontalGradientBackground.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\values\TncStyle.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -4330,9 +4355,6 @@
     <AndroidResource Include="Resources\values\BarcodeStyle.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\HorizontalGradientBackground.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\green_button_background.xml" />
@@ -5998,9 +6020,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_launcher.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\ic_logo_tagline.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_notification_maintenance.png" />
   </ItemGroup>
   <ItemGroup>
@@ -6053,9 +6072,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_launcher.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\ic_logo_tagline.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_notification_maintenance.png" />
@@ -6112,9 +6128,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\ic_launcher.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\ic_logo_tagline.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\ic_notification_maintenance.png" />
   </ItemGroup>
   <ItemGroup>
@@ -6169,9 +6182,6 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_launcher.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\ic_logo_tagline.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_notification_maintenance.png" />
   </ItemGroup>
   <ItemGroup>
@@ -6224,9 +6234,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_launcher.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_logo_tagline.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_notification_maintenance.png" />
