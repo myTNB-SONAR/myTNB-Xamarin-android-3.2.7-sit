@@ -253,7 +253,7 @@ namespace myTNB.Dashboard.DashboardComponents
                         }
                         _metricCmp2.Icon.Image = UIImage.FromBundle("IC-Cost");
                         _metricCmp2.TitleLabel.Text = MyCostLikelyToBe;
-                        _metricCmp2.SubTitleLabel.Text = GetDateRange(For, _usageMetrics?.FromCycleDate, _usageMetrics?.StatsByCost?.AsOf);
+                        _metricCmp2.SubTitleLabel.Text = GetDateRange(For, _usageMetrics?.FromCycleDate, _usageMetrics?.StatsByCost?.ProjectedCostAsOf);
                         var prjctdCost = _usageMetrics?.StatsByCost?.ProjectedCost ?? "0";
                         if (!string.IsNullOrEmpty(prjctdCost))
                         {
