@@ -140,7 +140,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             mPresenter = new DashboardPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
             TextViewUtils.SetMuseoSans500Typeface(txtAccountName);
 
-            // Get CategoryBrowsable intent data
+            // Get CategoryBrowsable intent data 
             var data = Intent?.Data?.EncodedAuthority;
             if (!String.IsNullOrEmpty(data))
             {
@@ -162,6 +162,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 bottomNavigationView.Menu.FindItem(Resource.Id.menu_promotion).SetChecked(true);
                 this.userActionsListener?.OnMenuSelect(Resource.Id.menu_promotion);
             }
+
             this.userActionsListener?.OnNotificationCount();
         }
 
@@ -515,8 +516,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             ShowAccountName();
             SetToolbarTitle(Resource.String.bill_menu_activity_title);
             ShowBillMenu(accountData);
-            CustomerBillingAccount currentAccount = CustomerBillingAccount.FindByAccNum(accountData.AccountNum);
-            SetAccountName(currentAccount.AccDesc);
         }
         public void EnableDropDown(bool enable)
         {
@@ -586,8 +585,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                             {
                                 Intent viewReceipt = new Intent(this, typeof(ViewReceiptMultiAccountNewDesignActivty));
                                 viewReceipt.PutExtra("merchantTransId", transID);
-                                viewReceipt.PutExtra("contractAccount", "");
-                                viewReceipt.PutExtra("email", UserEntity.GetActive().Email);
                                 StartActivity(viewReceipt);
                                 urlSchemaCalled = false;
                             }
@@ -746,8 +743,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             CustomerBillingAccount.RemoveSelected();
             CustomerBillingAccount.SetSelected(selectedAccount.AccountNum);
             ShowBillMenu(selectedAccount);
-            CustomerBillingAccount currentAccount = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
-            SetAccountName(currentAccount.AccDesc);
             this.userActionsListener?.OnMenuSelect(Resource.Id.menu_bill);
         }
 
