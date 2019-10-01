@@ -70,6 +70,22 @@ namespace myTNB.SitecoreCMS.Services
             return JsonConvert.SerializeObject(resp);
         }
 
+        public string GetAppLaunchImageItem()
+        {
+            AppLaunchImageService service = new AppLaunchImageService();
+            var data = service.GetAppLaunchImageService(OS, ImageSize, WebsiteUrl, Language);
+            var resp = CheckData(data.ToList<object>());
+            return JsonConvert.SerializeObject(resp);
+        }
+        public string GetAppLaunchImageTimestampItem()
+        {
+            AppLaunchImageService service = new AppLaunchImageService();
+            var data = service.GetTimestamp(WebsiteUrl, Language);
+            var listData = AddDataToList(data);
+            var resp = CheckData(listData);
+            return JsonConvert.SerializeObject(resp);
+        }
+
         public string GetTimestampItem()
         {
             TimestampService service = new TimestampService();
