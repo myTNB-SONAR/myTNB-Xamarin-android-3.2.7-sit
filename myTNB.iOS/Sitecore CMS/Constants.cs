@@ -104,6 +104,14 @@
                     public const string Description = "Description";
                     public const string Image = "Image";
                 }
+
+                public struct AppLaunchImage
+                {
+                    public const string Description = "Description";
+                    public const string StartDateTime = "StartDateTime";
+                    public const string EndDateTime = "EndDateTime";
+                    public const string ShowForSeconds = "ShowForSeconds";
+                }
             }
 
             public struct ItemID
@@ -133,6 +141,7 @@
                 public const string MeterReadSSMRWalkthroughV2 = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead ThreePhase";
                 public const string EnergyTips = "/sitecore/content/myTNBapp/Contents/Energy Saving Tips";
                 public const string BillDetailsTooltip = "/sitecore/content/myTNBapp/Contents/Itemised Billing Tooltip";
+                public const string AppLaunchImage = "/sitecore/content/myTNBapp/Contents/App Launch Image";
             }
         }
     }

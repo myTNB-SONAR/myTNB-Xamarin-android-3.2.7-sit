@@ -123,12 +123,14 @@ namespace myTNB
             _refreshScrollView.AddSubview(_viewRefresh);
             _ssmrRefresh = new CustomUIView(new CGRect(0, 0, ViewWidth, 0))
             {
-                BackgroundColor = UIColor.Clear
+                BackgroundColor = UIColor.Clear,
+                Hidden = true
             };
             _viewRefresh.AddSubview(_ssmrRefresh);
             _RERefresh = new CustomUIView(new CGRect(0, 0, ViewWidth, 0))
             {
-                BackgroundColor = UIColor.Clear
+                BackgroundColor = UIColor.Clear,
+                Hidden = true
             };
             _viewRefresh.AddSubview(_RERefresh);
         }
@@ -550,6 +552,7 @@ namespace myTNB
         #region SSMR Methods
         internal void SetSSMRComponent(bool isUpdating, bool forRefreshScreen = false)
         {
+            Debug.WriteLine("forRefreshScreen: " + forRefreshScreen);
             if (!isREAccount && accountIsSSMR)
             {
                 ViewHelper.AdjustFrameSetHeight(_viewSSMR, GetScaledHeight(116f));
@@ -568,6 +571,7 @@ namespace myTNB
                     _viewSSMR.AddSubview(_ssmr);
                     if (forRefreshScreen)
                     {
+                        _ssmrRefresh.Hidden = false;
                         _ssmrRefresh.AddSubview(_ssmr);
                         ViewHelper.AdjustFrameSetY(_ssmrRefresh, GetYLocationFromFrame(_refresh.Frame, GetScaledHeight(8F)));
                         ViewHelper.AdjustFrameSetHeight(_ssmrRefresh, GetScaledHeight(116f));
@@ -608,6 +612,7 @@ namespace myTNB
                         AddSSMRViewShadow(ref _ssmr);
                         if (forRefreshScreen)
                         {
+                            _ssmrRefresh.Hidden = false;
                             _ssmrRefresh.AddSubview(_ssmr);
                             _viewRefresh.AddSubview(_ssmrRefresh);
                             ViewHelper.AdjustFrameSetY(_ssmrRefresh, GetYLocationFromFrame(_refresh.Frame, GetScaledHeight(8F)));
@@ -641,6 +646,15 @@ namespace myTNB
         {
             ViewHelper.AdjustFrameSetHeight(_viewSSMR, 0);
             _viewSSMR.Hidden = true;
+        }
+
+        internal void HideSSMRViewForRefresh()
+        {
+            if (_ssmrRefresh != null)
+            {
+                _ssmrRefresh.Hidden = true;
+                ViewHelper.AdjustFrameSetHeight(_ssmrRefresh, 0);
+            }
         }
 
         internal void HideTariffLegend()
@@ -1120,12 +1134,22 @@ namespace myTNB
         {
             if (_RERefresh != null && _RE != null)
             {
+                _RERefresh.Hidden = false;
                 _RERefresh.AddSubview(_RE);
                 ViewHelper.AdjustFrameSetY(_RERefresh, GetYLocationFromFrame(_refresh.Frame, GetScaledHeight(8F)));
                 ViewHelper.AdjustFrameSetHeight(_RERefresh, _RE.Frame.Height);
                 _viewRefresh.AddSubview(_RERefresh);
                 ViewHelper.AdjustFrameSetHeight(_viewRefresh, _refresh.Frame.Height + _RE.Frame.Height + GetScaledHeight(16F));
                 SetContentViewForRefresh();
+            }
+        }
+
+        internal void HideREAmountView()
+        {
+            if (_RERefresh != null)
+            {
+                _RERefresh.Hidden = true;
+                ViewHelper.AdjustFrameSetHeight(_RERefresh, 0);
             }
         }
         #endregion
