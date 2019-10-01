@@ -39,8 +39,8 @@ namespace myTNB.PushNotification
         {
             PageName = PushNotificationConstants.Pagename_PushNotificationList;
             base.ViewDidLoad();
-            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"OnNotificationFilterDidChange", OnNotificationFilterDidChange);
-            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"OnReceiveNotificationFromDashboard", OnReceiveNotificationFromDashboard);
+            NotifCenterUtility.AddObserver((NSString)"OnNotificationFilterDidChange", OnNotificationFilterDidChange);
+            NotifCenterUtility.AddObserver((NSString)"OnReceiveNotificationFromDashboard", OnReceiveNotificationFromDashboard);
             SetNavigationBar();
             SetSubViews();
         }
@@ -397,7 +397,7 @@ namespace myTNB.PushNotification
         private void OnSelectAction(int index)
         {
             DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex = index;
-            NSNotificationCenter.DefaultCenter.PostNotificationName("OnNotificationFilterDidChange", new NSObject());
+            NotifCenterUtility.PostNotificationName("OnNotificationFilterDidChange", new NSObject());
         }
 
         List<string> GetNotificationTypeList()
@@ -512,7 +512,7 @@ namespace myTNB.PushNotification
                                     UpdateNotifications(updateNotificationList, isMultiple, indexPath, true);
                                     UpdateNotificationDisplay();
                                     UpdateTitleRightIconImage();
-                                    NSNotificationCenter.DefaultCenter.PostNotificationName("NotificationDidChange", new NSObject());
+                                    NotifCenterUtility.PostNotificationName("NotificationDidChange", new NSObject());
                                     pushNotificationTableView.ReloadData();
                                     if (_lblTitle != null)
                                     {
@@ -564,7 +564,7 @@ namespace myTNB.PushNotification
                                     pushNotificationTableView.ReloadData();
                                     UpdateTitleRightIconImage();
                                     UpdateNotificationDisplay(true);
-                                    NSNotificationCenter.DefaultCenter.PostNotificationName("NotificationDidChange", new NSObject());
+                                    NotifCenterUtility.PostNotificationName("NotificationDidChange", new NSObject());
                                     DisplayToast("PushNotification_NotificationsDeleted".Translate());
                                     OnDismiss();
                                 }

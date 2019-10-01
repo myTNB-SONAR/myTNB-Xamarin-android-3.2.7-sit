@@ -24,7 +24,7 @@ namespace myTNB
         {
             NavigationController.NavigationBarHidden = true;
             base.ViewDidLoad();
-            NSNotificationCenter.DefaultCenter.AddObserver((Foundation.NSString)"LanguageDidChange", LanguageDidChange);
+            NotifCenterUtility.AddObserver((Foundation.NSString)"LanguageDidChange", LanguageDidChange);
             SetSubviews();
         }
 

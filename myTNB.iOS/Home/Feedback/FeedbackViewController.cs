@@ -25,7 +25,7 @@ namespace myTNB
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
-            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
+            NotifCenterUtility.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
             if (isFromPreLogin == true)
             {
                 feedbackTableView.Frame = new CGRect(0, 0, View.Frame.Width, View.Frame.Height - (114 - 64));

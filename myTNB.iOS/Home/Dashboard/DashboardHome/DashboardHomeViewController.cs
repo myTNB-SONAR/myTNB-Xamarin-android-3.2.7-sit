@@ -54,10 +54,10 @@ namespace myTNB
             IsGradientImageRequired = true;
             base.ViewDidLoad();
             _isBCRMAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
-            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"NotificationDidChange", NotificationDidChange);
-            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"OnReceiveNotificationFromDashboard", NotificationDidChange);
-            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
-            NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, OnEnterForeground);
+            NotifCenterUtility.AddObserver((NSString)"NotificationDidChange", NotificationDidChange);
+            NotifCenterUtility.AddObserver((NSString)"OnReceiveNotificationFromDashboard", NotificationDidChange);
+            NotifCenterUtility.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
+            NotifCenterUtility.AddObserver(UIApplication.WillEnterForegroundNotification, OnEnterForeground);
             _imageGradientHeight = IsGradientImageRequired ? ImageViewGradientImage.Frame.Height : 0;
             _services = new ServicesResponseModel();
             _helpList = new List<HelpModel>();
@@ -299,7 +299,7 @@ namespace myTNB
                 InvokeOnMainThread(() =>
                 {
                     PushNotificationHelper.UpdateApplicationBadge();
-                    NSNotificationCenter.DefaultCenter.PostNotificationName("OnReceiveNotificationFromDashboard", new NSObject());
+                    NotifCenterUtility.PostNotificationName("OnReceiveNotificationFromDashboard", new NSObject());
                 });
             });
         }

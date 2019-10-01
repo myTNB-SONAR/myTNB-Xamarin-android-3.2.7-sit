@@ -46,9 +46,11 @@ namespace myTNB.Dashboard
             {
                 appDelegate._dashboardVC = this;
             }
-            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
-            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"NotificationDidChange", NotificationDidChange);
-            NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
+
+            NotifCenterUtility.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
+            NotifCenterUtility.AddObserver((NSString)"NotificationDidChange", NotificationDidChange);
+            NotifCenterUtility.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
+
             DataManager.DataManager.SharedInstance.IsPreloginFeedback = false;
             NavigationController?.SetNavigationBarHidden(true, false);
             NavigationItem?.SetHidesBackButton(true, false);

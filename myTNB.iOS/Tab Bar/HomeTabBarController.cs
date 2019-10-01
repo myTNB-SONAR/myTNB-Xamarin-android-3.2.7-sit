@@ -26,8 +26,8 @@ namespace myTNB
         {
             base.ViewDidLoad();
             I18NDictionary = LanguageManager.Instance.GetValuesByPage("Tabbar");
-            NSNotificationCenter.DefaultCenter.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
-            NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.DidBecomeActiveNotification, HandleAppDidBecomeActive);
+            NotifCenterUtility.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
+            NotifCenterUtility.AddObserver(UIApplication.DidBecomeActiveNotification, HandleAppDidBecomeActive);
             TabBar.Translucent = false;
             TabBar.BackgroundColor = UIColor.White;
             SetTabbarTitle();

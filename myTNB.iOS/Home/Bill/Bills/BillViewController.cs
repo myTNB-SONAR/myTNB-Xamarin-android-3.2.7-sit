@@ -50,7 +50,7 @@ namespace myTNB
             if (NavigationController != null) { NavigationController.NavigationBarHidden = true; }
             PageName = BillConstants.Pagename_Bills;
             base.ViewDidLoad();
-            NSNotificationCenter.DefaultCenter.AddObserver(UIApplication.WillEnterForegroundNotification, OnEnterForeground);
+            NotifCenterUtility.AddObserver(UIApplication.WillEnterForegroundNotification, OnEnterForeground);
             _isBCRMAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
             View.BackgroundColor = UIColor.White;
             SetNavigation();
