@@ -552,7 +552,6 @@ namespace myTNB
         #region SSMR Methods
         internal void SetSSMRComponent(bool isUpdating, bool forRefreshScreen = false)
         {
-            Debug.WriteLine("forRefreshScreen: " + forRefreshScreen);
             if (!isREAccount && accountIsSSMR)
             {
                 ViewHelper.AdjustFrameSetHeight(_viewSSMR, GetScaledHeight(116f));
