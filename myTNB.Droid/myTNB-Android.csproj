@@ -3123,6 +3123,11 @@
     <AndroidResource Include="Resources\drawable-mdpi\notification_smr_fail_banner.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\notification_smr_fail_banner.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\notification_smr_fail_banner.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\bill_paid_extra_re_banner.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\bill_paid_extra_re_banner.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\bill_paid_extra_re_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\bill_paid_extra_re_banner.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\bill_paid_extra_re_banner.png" />
     <Compile Include="Src\Billing\MVP\BillingDetailsPresenter.cs" />
     <Compile Include="Src\Billing\MVP\BillingDetailsContract.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\zoom_out.png">

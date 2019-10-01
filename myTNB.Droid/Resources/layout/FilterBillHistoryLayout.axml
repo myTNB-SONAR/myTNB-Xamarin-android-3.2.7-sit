@@ -67,14 +67,16 @@
                 android:orientation="vertical">
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="14dp"
+                    android:gravity="center|left"
                     android:text="FILTER BY"
                     android:textSize="9dp"
                     android:textColor="@color/silverChalice"
                     android:id="@+id/txtFilterLabel"/>
                 <TextView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="24dp"
+                    android:gravity="center|left"
                     android:text="All"
                     android:textColor="@color/tunaGrey"
                     android:textSize="16dp"
