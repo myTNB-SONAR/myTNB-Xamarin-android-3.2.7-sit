@@ -14743,6 +14743,15 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f090002
 			public const int default_web_client_id = 2131296258;
 			
+			// aapt resource value: 0x7f090467
+			public const int duplicate_account_btn_ok = 2131297383;
+			
+			// aapt resource value: 0x7f090466
+			public const int duplicate_account_message = 2131297382;
+			
+			// aapt resource value: 0x7f090465
+			public const int duplicate_account_title = 2131297381;
+			
 			// aapt resource value: 0x7f090108
 			public const int email_hint = 2131296520;
 			

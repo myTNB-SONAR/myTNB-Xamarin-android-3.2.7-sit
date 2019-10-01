@@ -6,6 +6,7 @@ using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Text;
+using Android.Text.Method;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -94,6 +95,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 if (loadingOverlay != null && loadingOverlay.IsShowing)
                 {
                     loadingOverlay.Dismiss();
+                    loadingOverlay = new LoadingOverlay(Activity, Resource.Style.LoadingOverlyDialogStyle);
                 }
             }
         }
@@ -367,7 +369,50 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 string accountLabel = edtAccountLabel.Text;
                 if (!IsAccountAlreadyRegistered(accountNum))
                 {
-                    this.userActionsListener.ValidateAccount(apiKeyID, accountNum, type, icNumber, suppliedMotherName, owner, accountLabel);
+                    if (AddAccountUtils.IsFoundAccountList(accountNum))
+                    {
+                        try
+                        {
+                            MaterialDialog mDialog = new MaterialDialog.Builder(Activity)
+                                .CustomView(Resource.Layout.AppUpdateDialog, false)
+                                .Cancelable(false)
+                                .CanceledOnTouchOutside(false)
+                                .Build();
+
+                            View dialogView = mDialog.Window.DecorView;
+                            dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
+
+                            TextView txtTitle = mDialog.FindViewById<TextView>(Resource.Id.txtTitle);
+                            TextView txtMessage = mDialog.FindViewById<TextView>(Resource.Id.txtMessage);
+                            TextView btnOK = mDialog.FindViewById<TextView>(Resource.Id.txtUpdate);
+                            txtMessage.MovementMethod = new ScrollingMovementMethod();
+
+                            txtMessage.Text = Activity.GetString(Resource.String.duplicate_account_message);
+                            txtTitle.Text = Activity.GetString(Resource.String.duplicate_account_title);
+                            btnOK.Text = Activity.GetString(Resource.String.duplicate_account_btn_ok);
+
+
+                            TextViewUtils.SetMuseoSans500Typeface(txtTitle, btnOK);
+                            TextViewUtils.SetMuseoSans300Typeface(txtMessage);
+                            btnOK.Click += delegate
+                            {
+                                mDialog.Dismiss();
+                            };
+
+                            if (IsActive())
+                            {
+                                mDialog.Show();
+                            }
+                        }
+                        catch (System.Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                    }
+                    else
+                    {
+                        this.userActionsListener.ValidateAccount(apiKeyID, accountNum, type, icNumber, suppliedMotherName, owner, accountLabel);
+                    }
                 }
                 else
                 {

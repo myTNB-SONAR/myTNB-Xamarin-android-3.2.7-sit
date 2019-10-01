@@ -1444,4 +1444,8 @@ Please try again later.]]>
  <!--End App Unavailable-->
 
 <string name="dayview_mdms_down">Your daily usage information is currently unavailable. Check back in a while!</string>
+
+<string name="duplicate_account_title">Duplicate Account</string>
+<string name="duplicate_account_message">This account number is already added on the list</string>
+<string name="duplicate_account_btn_ok">Ok</string>
 </resources>
