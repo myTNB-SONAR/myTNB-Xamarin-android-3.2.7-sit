@@ -3138,6 +3138,7 @@
     </AndroidResource>
     <Compile Include="Src\Utils\RestrictAmountChangeListener.cs" />
     <Compile Include="Src\MyTNBService\Model\AccountBillPayFilter.cs" />
+    <AndroidResource Include="Resources\values\SubmitMeterReadingStyle.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

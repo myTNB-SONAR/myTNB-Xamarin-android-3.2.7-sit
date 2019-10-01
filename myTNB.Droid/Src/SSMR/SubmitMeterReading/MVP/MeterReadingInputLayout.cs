@@ -7,6 +7,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using Java.Lang;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 {
@@ -159,6 +160,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             //editText8.OnFocusChangeListener = new OnMeterInputFocus(this); //SetOnClickListener(new OnMeterInputClick(this));
             AddView(editText8);
             editTextArray[7] = editText8;
+
+            TextViewUtils.SetMuseoSans300Typeface(editText1, editText2, editText3, editText4, editText5, editText6, editText7, editText8);
 
             RequestLayout();
         }
