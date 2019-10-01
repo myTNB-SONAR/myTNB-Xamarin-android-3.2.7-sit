@@ -96,7 +96,6 @@ namespace myTNB
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
-            //NavigationController.SetNavigationBarHidden(false, true);
         }
 
         Task GetPromotions()
@@ -135,15 +134,10 @@ namespace myTNB
                     }
                 }
                 Debug.WriteLine("*****isValidTimeStamp: " + isValidTimeStamp);
-                //isValidTimeStamp = true;
-                if (isValidTimeStamp)
+                if (!isValidTimeStamp)
                 {
                     string promotionsItems = iService.GetPromotionsItem();
-#if true
                     PromotionsV2ResponseModel promotionResponse = JsonConvert.DeserializeObject<PromotionsV2ResponseModel>(promotionsItems);
-#else
-                    PromotionsResponseModel promotionResponse = JsonConvert.DeserializeObject<PromotionsResponseModel>(promotionsItems);
-#endif
                     if (promotionResponse != null && promotionResponse.Status.Equals("Success")
                         && promotionResponse.Data != null && promotionResponse.Data.Count > 0)
                     {

@@ -71,7 +71,9 @@
   },
   "Error": {
     "invalid_email": "Invalid email address",
-    "invalid_mobileNumber": "Invalid mobile number"
+    "invalid_mobileNumber": "Invalid mobile number",
+    "minimumMandatoryPayment": "Minimum amount must be at least {0}",
+    "minimumPayAmount": "Minimum amount cannot be lower than RM 1.00"
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -319,8 +321,7 @@
   },
 
   "SelectBills": {
-    "minimumMandatoryPayment": "Minimum amount must be at least {0}",
-    "minimumPayAmount": "Minimum amount cannot be lower than RM1.00"
+    "enterAmount": "Enter Amount"
   },
 
   "PushNotificationDetails": {

@@ -37,19 +37,19 @@ namespace myTNB.Home.Promotions
             {
                 ActivityIndicatorComponent _activityIndicator = new ActivityIndicatorComponent(cell.viewBanner);
                 _activityIndicator.Show();
-                NSUrl url = new NSUrl(promotion.LandscapeImage);//Image);
+                NSUrl url = new NSUrl(promotion.LandscapeImage);
                 NSUrlSession session = NSUrlSession
                     .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
                 NSUrlSessionDataTask dataTask = session.CreateDataTask(url, (data, response, error) =>
                 {
-                    if (error == null && response != null && data != null)
+                    InvokeOnMainThread(() =>
                     {
-                        InvokeOnMainThread(() =>
+                        if (error == null && response != null && data != null)
                         {
                             cell.imgBanner.Image = UIImage.LoadFromData(data);
-                            _activityIndicator.Hide();
-                        });
-                    }
+                        }
+                        _activityIndicator.Hide();
+                    });
                 });
                 dataTask.Resume();
             }

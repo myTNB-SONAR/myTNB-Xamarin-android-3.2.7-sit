@@ -199,26 +199,6 @@ namespace myTNB
                 }
                 ActivityIndicator.Hide();
             });
-            /* RequestMultiPayBill(thePlatform, thePaymentMode, cardID, isNewCard, amountDue).ContinueWith(task =>
-             {
-                 InvokeOnMainThread(() =>
-                 {
-                     if (_requestPayBill != null && _requestPayBill.d != null
-                        && _requestPayBill.d.data != null)
-                     {
-                         InitializedTableView();
-                         if (isNewCard == false)
-                         {
-                             NavigateToVC(_requestPayBill, thePlatform, thePaymentMode);
-                         }
-                     }
-                     else
-                     {
-                         AlertHandler.DisplayServiceError(this, _requestPayBill?.d?.message);
-                     }
-                     ActivityIndicator.Hide();
-                 });
-             });*/
         }
 
         internal void InitializedTableView()
