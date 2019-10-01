@@ -3174,6 +3174,10 @@
     <Compile Include="Src\MyTNBService\Model\AccountBillPayFilter.cs" />
     <Compile Include="Src\Utils\AddAccountUtils.cs" />
     <AndroidResource Include="Resources\values\SubmitMeterReadingStyle.xml" />
+    <Compile Include="Src\ForgotPasswordVerificationCodeSuccess\Activity\ForgotPasswordVerificationCodeSuccessActivity.cs" />
+    <Compile Include="Src\ForgotPasswordVerificationCodeSuccess\MVP\ForgotPasswordVerificationCodeSuccessContract.cs" />
+    <Compile Include="Src\ForgotPasswordVerificationCodeSuccess\MVP\ForgotPasswordVerificationCodeSuccessPresenter.cs" />
+    <AndroidResource Include="Resources\layout\ForgotPasswordVerificationCodeSuccessView.axml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
