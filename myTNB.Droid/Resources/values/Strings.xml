@@ -450,7 +450,7 @@ You acknowledge that you have been provided with and have read and understood th
   <string name="dashboard_chartview_range_example">31 Jul 2017 - 6 Aug 2017</string>
   <string name="dashboard_chartview_address_sample">----</string>
 
-  <string name="dashboard_chartview_view_bill">Current Bill</string>
+  <string name="dashboard_chartview_view_bill">View Details</string>
   <string name="dashboard_chartview_pay">Pay</string>
   <string name="dashboard_chart_view_payment_advice">View Payment Advice</string>
   <string name="dashboard_chartview_total_payable_title">Total Payable</string>
@@ -1442,4 +1442,6 @@ Please try again later.]]>
  <string name="unavailable_refresh_message">Uh oh, looks like this page is unplugged. Refresh to stay plugged in!</string>
  <string name="unavailable_downtime_message">Looks like your page can’t be loaded at the moment. Come back in a while.</string>
  <!--End App Unavailable-->
+
+<string name="dayview_mdms_down">Your daily usage information is currently unavailable. Check back in a while!</string>
 </resources>

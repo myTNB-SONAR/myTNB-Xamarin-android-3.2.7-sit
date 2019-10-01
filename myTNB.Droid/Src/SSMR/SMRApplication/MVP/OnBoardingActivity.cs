@@ -6,6 +6,7 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
@@ -25,7 +26,7 @@ using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 {
-    [Activity(Label = "OnBoardingActivity", Theme = "@style/Theme.Dashboard")]
+    [Activity(Label = "OnBoardingActivity", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
     public class OnBoardingActivity : BaseToolbarAppCompatActivity, ViewPager.IOnPageChangeListener, OnBoardingSMRContract.IView
     {
         [BindView(Resource.Id.viewpager)]

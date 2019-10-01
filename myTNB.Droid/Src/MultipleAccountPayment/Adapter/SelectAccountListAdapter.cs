@@ -1,7 +1,9 @@
 ﻿using AFollestad.MaterialDialogs;
 using Android.Content;
+using Android.Graphics;
 using Android.OS;
 using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
 using Android.Support.V7.Widget;
 using Android.Text;
 using Android.Text.Method;
@@ -56,6 +58,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
+            holder.IsRecyclable = false;
             SelectAccountListViewHolder vh = holder as SelectAccountListViewHolder;
             try
             {
@@ -67,7 +70,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 vh.AccountNumber.Text = item.accountNumber;
                 vh.AccountAddress.Text = item.accountAddress;
                 vh.AccountLabel.Text = item.accountLabel;
-                if (item.amount == 0f)
+               
+                if (item.amount <= 0f)
                 {
                     vh.Amount.Text = "";
                 }
@@ -131,7 +135,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                     if (newAmount < 1)
                     {
                         vh.AmountLabel.Error = mActicity.GetString(Resource.String.error_invalid_amount);
-                        vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                        vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHintAmount);
+                        vh.Amount.SetTextColor(new Color(ContextCompat.GetColor(mActicity,Resource.Color.tomato)));
                         vh.Amount.RequestFocus();
                         item.isValidAmount = false;
                         item.isSelected = false;
@@ -142,7 +147,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                     else if (newAmount < item.minimumAmountDue)
                     {
                         vh.AmountLabel.Error = string.Format("Minimum amount must be at least {0}", "RM " + item.minimumAmountDue.ToString("#,##0.00"));
-                        vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                        vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHintAmount);
+                        vh.Amount.SetTextColor(new Color(ContextCompat.GetColor(mActicity, Resource.Color.tomato)));
                         vh.Amount.RequestFocus();
                         item.isValidAmount = false;
                         item.isSelected = false;
@@ -155,6 +161,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                     {
                         vh.AmountLabel.Error = "";
                         vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
+                        vh.Amount.SetTextColor(new Color(ContextCompat.GetColor(mActicity, Resource.Color.tunaGrey)));
                         item.isValidAmount = true;
                         item.amount = newAmount;
                         item.tooltipPopUp = tooltipShow;
@@ -254,7 +261,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 TextViewUtils.SetMuseoSans300Typeface(Amount, MandatoryPaymentContent);
                 TextViewUtils.SetMuseoSans500Typeface(MandatoryPaymentTite);
 
-                Amount.AddTextChangedListener(new RestrictTextChangeListener(Amount, AmountLabel, 2));
+                Amount.AddTextChangedListener(new RestrictAmountChangeListener(Amount, AmountLabel, 2));
             }
 
         }

@@ -94,6 +94,8 @@ namespace myTNB_Android.Src.UpdateMobileNo.MVP
             /// to verfiy mobile number
             /// </summary>
             void OnUpdatePhoneNo(string newPhoneNumber, UserAuthenticationRequest request);
+
+            string OnVerfiyCellularCode(string mobile_no);
         }
     }
 }

@@ -382,6 +382,11 @@
     <item name="android:textColor">@color/errorColor</item>
     <item name="android:textSize">12sp</item>
   </style>
+    
+  <style name="TextInputLayoutBottomErrorHintAmount" parent="@android:style/TextAppearance.Medium">
+    <item name="android:textColor">@color/tomato</item>
+    <item name="android:textSize">12sp</item>
+  </style>
 
   <style name="TextInputLayoutFeedbackCount" parent="@android:style/TextAppearance.Medium">
     <item name="android:textColor">@color/tunaGrey</item>
@@ -395,4 +400,12 @@
   <style name="AppSearchView" parent="Widget.AppCompat.SearchView" >
     <item name="android:textSize">12dp</item>
   </style>
+
+	<style name="Theme.TooltipButton" parent="@android:style/Widget.Button">
+		<item name="android:textColor">#1c79ca</item>
+		<item name="android:hint">#1c79ca</item>
+		<item name="android:textSize">16dp</item>
+		<item name="android:stateListAnimator">@null</item>
+		<item name="android:background">@drawable/white_filled_button_background</item>
+	</style>
 </resources>

@@ -36,6 +36,7 @@ using Android.Text;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using Android.Runtime;
 using Android.Util;
+using static myTNB_Android.Src.AppLaunch.Models.MasterDataResponse;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -327,13 +328,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 };
                 ((DashboardHomeActivity)Activity).SetStatusBarBackground();
 
-                ((DashboardHomeActivity)Activity).ShowBottomNavigationBar();
-
                 this.presenter.GetSmartMeterReadingWalkthroughtTimeStamp();
 
                 this.presenter.GetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
 
-                this.presenter.GetEnergySavingTipsTimeStamp();
+                bool isGetEnergyTipsDisabled = false;
+                MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
+                if (currentMasterData.IsEnergyTipsDisabled)
+                {
+                    isGetEnergyTipsDisabled = true;
+                }
+
+                if (!isGetEnergyTipsDisabled)
+                {
+                    this.presenter.GetEnergySavingTipsTimeStamp();
+                }
+
                 SetRefreshLayoutParams();
 
                 ((DashboardHomeActivity)Activity).EnableDropDown(false);

@@ -16,12 +16,14 @@ namespace myTNB_Android.Src.Base.Request
     public class UserInfo
     {
         public string eid, sspuid, did, ft, lang, sec_auth_k1, sec_auth_k2, ses_param1, ses_param2;
-        public UserInfo()
+
+		public UserInfo()
         {
+            var deviceId = UserEntity.GetActive().DeviceId;
             UserEntity user = UserEntity.GetActive();
             eid = user.UserName;
             sspuid = user.UserID;
-            did = "test";
+            did = deviceId;
             ft = FirebaseTokenEntity.GetLatest().FBToken;
             lang = "EN";
             sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID;

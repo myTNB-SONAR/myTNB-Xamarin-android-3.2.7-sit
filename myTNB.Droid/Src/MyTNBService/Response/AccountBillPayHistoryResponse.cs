@@ -46,7 +46,10 @@ namespace myTNB_Android.Src.MyTNBService.Response
 		{
 			[JsonProperty(PropertyName = "BillPayHistories")]
 			public List<BillPayHistory> BillPayHistories { get; set; }
-		}
+
+            [JsonProperty(PropertyName = "BillPayFilterData")]
+            public List<BillPayFilterData> BillPayFilterData { get; set; }
+        }
 
 		public class BillPayHistory
 		{
@@ -57,7 +60,16 @@ namespace myTNB_Android.Src.MyTNBService.Response
 			public List<BillPayHistoryData> BillPayHistoryData { get; set; }
 		}
 
-		public class BillPayHistoryData
+        public class BillPayFilterData
+        {
+            [JsonProperty(PropertyName = "Text")]
+            public string Text { get; set; }
+
+            [JsonProperty(PropertyName = "Type")]
+            public string Type { get; set; }
+        }
+
+        public class BillPayHistoryData
 		{
 			[JsonProperty(PropertyName = "BillOrPaymentDate")]
 			public string BillOrPaymentDate { get; set; }

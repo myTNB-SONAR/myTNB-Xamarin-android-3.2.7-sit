@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SummaryDashBoard.Models;
 using myTNB_Android.Src.Utils;
@@ -12,6 +13,7 @@ namespace myTNB_Android.Src.Base
         private List<CustomerBillingAccount> masterCustomerBillingAccountList = new List<CustomerBillingAccount>();
         private bool HasLoaded = false;
         private bool IsNeeUpdate = false;
+        private static MasterDataResponse currentMasterDataRes = null;
         private List<string> UpdatedAccountNumberList = new List<string>();
         private MyTNBAccountManagement()
         {
@@ -178,6 +180,16 @@ namespace myTNB_Android.Src.Base
         public bool GetIsSMRTakePhotoOnBoardShown()
         {
             return CustomerBillingAccount.GetIsSMRTakePhotoOnBoardShown();
+        }
+
+        public void SetCurentMasterData(MasterDataResponse data)
+        {
+            currentMasterDataRes = data;
+        }
+
+        public MasterDataResponse GetCurrentMasterData()
+        {
+            return currentMasterDataRes;
         }
     }
 }

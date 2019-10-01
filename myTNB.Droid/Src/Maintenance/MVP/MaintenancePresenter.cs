@@ -1,12 +1,14 @@
 ﻿using Android.Content;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base.Api;
+using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.Utils;
 using Refit;
 using System;
 using System.Net.Http;
 using System.Threading;
+using static myTNB_Android.Src.AppLaunch.Models.MasterDataRequest;
 
 namespace myTNB_Android.Src.Maintenance.MVP
 {
@@ -41,29 +43,49 @@ namespace myTNB_Android.Src.Maintenance.MVP
             try
             {
                 Context mContext = MyTNBApplication.Context;
-                string email = null, sspUserID = null;
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = "",
+                    sspuid = "",
+                    did = this.mView.GetDeviceId(),
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+
                 if (UserEntity.IsCurrentlyActive())
                 {
-                    email = UserEntity.GetActive().UserName;
-                    sspUserID = UserEntity.GetActive().UserID;
+                    currentUsrInf.eid = UserEntity.GetActive().Email;
+                    currentUsrInf.sspuid = UserEntity.GetActive().UserID;
                 }
+
+                DeviceInterface currentDeviceInf = new DeviceInterface()
+                {
+                    DeviceId = this.mView.GetDeviceId(),
+                    AppVersion = DeviceIdUtils.GetAppVersionName(),
+                    OsType = Constants.DEVICE_PLATFORM,
+                    OsVersion = DeviceIdUtils.GetAndroidVersion(),
+                    DeviceDesc = Constants.DEFAULT_LANG
+
+                };
 
                 var masterDataResponse = await masterDataApi.GetAppLaunchMasterData(new MasterDataRequest()
                 {
-                    ApiKeyID = Constants.APP_CONFIG.API_KEY_ID,
-                    DeviceId = this.mView.GetDeviceId(),
-                    AppVersion = DeviceIdUtils.GetAppVersionName(),
-                    Email = email,
-                    SSPUserId = sspUserID,
-                    OsType = Constants.DEVICE_PLATFORM,
-                    OsVersion = DeviceIdUtils.GetAndroidVersion()
+                    deviceInf = currentDeviceInf,
+                    usrInf = currentUsrInf
                 }, cts.Token);
 
-                if (!masterDataResponse.Data.IsError && !masterDataResponse.Data.Status.ToUpper().Equals(Constants.MAINTENANCE_MODE))
+                if (masterDataResponse != null && masterDataResponse.Data != null)
+                {
+
+                if (masterDataResponse.Data.ErrorCode != "7000" && masterDataResponse.Data.ErrorCode == "7200")
                 {
                     this.mView.ShowLaunchViewActivity();
                 }
-                else if (masterDataResponse.Data.Status.ToUpper().Equals(Constants.MAINTENANCE_MODE))
+                else if (masterDataResponse.Data.ErrorCode == "7000")
                 {
 
                 }
@@ -73,6 +95,14 @@ namespace myTNB_Android.Src.Maintenance.MVP
                     // TODO : SHOW ERROR
                     this.mView.ShowRetryOptionApiException(null);
                 }
+                }
+                else
+                {
+                    Console.WriteLine("Excution time enters else");
+                    // TODO : SHOW ERROR
+                    this.mView.ShowRetryOptionApiException(null);
+                }
+
 
 
 
