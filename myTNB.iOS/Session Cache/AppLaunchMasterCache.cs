@@ -9,11 +9,16 @@ namespace myTNB
         private static readonly Lazy<AppLaunchMasterCache> lazy = new Lazy<AppLaunchMasterCache>(() => new AppLaunchMasterCache());
         public static AppLaunchMasterCache Instance { get { return lazy.Value; } }
 
+        private static AppLaunchResponseModel response = new AppLaunchResponseModel();
         private static AppLaunchMasterDataModel dataModel = new AppLaunchMasterDataModel();
         private static MasterDataModel masterData = new MasterDataModel();
 
-        public static void AddAppLaunchResponseData(AppLaunchResponseModel response)
+        public static void AddAppLaunchResponseData(AppLaunchResponseModel resp)
         {
+            if (response == null)
+            {
+                response = new AppLaunchResponseModel();
+            }
             if (dataModel == null)
             {
                 dataModel = new AppLaunchMasterDataModel();
@@ -22,6 +27,7 @@ namespace myTNB
             {
                 masterData = new MasterDataModel();
             }
+            response = resp;
             if (response != null &&
                 response.d != null &&
                 response.d.data != null)
@@ -65,6 +71,15 @@ namespace myTNB
                     }
                 }
             }
+        }
+
+        public static AppLaunchResponseModel GetAppLaunchResponse()
+        {
+            if (response != null)
+            {
+                return response;
+            }
+            return new AppLaunchResponseModel();
         }
 
         public static MasterDataModel GetAppLaunchMasterData()
