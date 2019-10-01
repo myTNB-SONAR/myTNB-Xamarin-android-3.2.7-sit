@@ -130,8 +130,14 @@ namespace myTNB
             try
             {
                 var jsonObj = JObject.Parse(JSONLang);
-                string value = jsonObj[pageName].ToString();
-                valuesDictionary = JsonConvert.DeserializeObject<T>(value);
+                if (jsonObj != null)
+                {
+                    string value = jsonObj[pageName]?.ToString() ?? string.Empty;
+                    if (!string.IsNullOrEmpty(value) && !string.IsNullOrWhiteSpace(value))
+                    {
+                        valuesDictionary = JsonConvert.DeserializeObject<T>(value);
+                    }
+                }
                 return valuesDictionary;
             }
             catch (Exception e)

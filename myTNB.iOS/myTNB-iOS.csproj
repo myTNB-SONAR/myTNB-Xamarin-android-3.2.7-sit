@@ -2474,6 +2474,7 @@
     <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterMDMSDownView.cs" />
     <Compile Include="Components\TitleBarComponentV2.cs" />
     <Compile Include="Components\AccountSelectionComponentV2.cs" />
+    <Compile Include="Helpers\NotifCenterUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

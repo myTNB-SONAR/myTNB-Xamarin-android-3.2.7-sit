@@ -32,15 +32,14 @@ namespace myTNB
             base.ViewDidLoad();
             SetNavigationBar();
             SetSubViews();
-
-            NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.DidShowNotification, (NSNotification obj) =>
+            NotifCenterUtility.AddObserver(UIKeyboard.DidShowNotification, (NSNotification obj) =>
             {
                 var userInfo = obj.UserInfo;
                 NSValue keyboardFrame = userInfo.ValueForKey(UIKeyboard.FrameEndUserInfoKey) as NSValue;
                 CGRect keyboardRectangle = keyboardFrame.CGRectValue;
                 tableViewRating.Frame = new CGRect(0, 0, View.Frame.Width, View.Frame.Height - (keyboardRectangle.Height));
             });
-            NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.DidHideNotification, (NSNotification obj) =>
+            NotifCenterUtility.AddObserver(UIKeyboard.DidHideNotification, (NSNotification obj) =>
             {
                 SetDefaultTableFrame();
             });
