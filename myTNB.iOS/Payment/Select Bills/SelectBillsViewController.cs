@@ -26,12 +26,12 @@ namespace myTNB
         private List<PaymentRecordModel> _accountsForDisplay = new List<PaymentRecordModel>();
         private CustomerAccountRecordModel _selectedAccount = new CustomerAccountRecordModel();
         private GetAccountsChargesResponseModel _accountChargesResponse = new GetAccountsChargesResponseModel();
-        private Dictionary<string, bool> _mandatoryPopupState = new Dictionary<string, bool>();
         private UIView _viewAmount, _viewFooter;
         private UILabel _lblTotalAmountValue, _lblCurrency;
         private string _selectedAccountNumber = string.Empty;
-        private int loadMoreCount, lastStartIndex, lastEndIndex;
-        private bool isViewDidLoad;
+        private int _loadMoreCount, _lastStartIndex, _lastEndIndex;
+        private bool _isViewDidLoad;
+        private bool _isLoadmore;
 
         public override void ViewDidLoad()
         {
@@ -59,13 +59,13 @@ namespace myTNB
                 SetDefaultTableFrame();
             });
 
-            isViewDidLoad = true;
+            _isViewDidLoad = true;
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            if (isViewDidLoad)
+            if (_isViewDidLoad)
             {
                 SetDefaultTableFrame();
                 ResetValues();
@@ -80,7 +80,7 @@ namespace myTNB
                 {
                     UpdateDuesDisplay();
                 }
-                isViewDidLoad = false;
+                _isViewDidLoad = false;
             }
         }
 
@@ -99,9 +99,9 @@ namespace myTNB
             _accounts = new List<CustomerAccountRecordModel>();
             _accountsForDisplay = new List<PaymentRecordModel>();
             _selectedAccount = new CustomerAccountRecordModel();
-            lastStartIndex = 0;
-            lastEndIndex = 0;
-            loadMoreCount = 0;
+            _lastStartIndex = 0;
+            _lastEndIndex = 0;
+            _loadMoreCount = 0;
             DataManager.DataManager.SharedInstance.ClearPaidList();
         }
 
@@ -185,8 +185,8 @@ namespace myTNB
 
         private List<string> GetAccountsForQuery(int start, int end)
         {
-            lastStartIndex = start;
-            lastEndIndex = end;
+            _lastStartIndex = start;
+            _lastEndIndex = end;
             List<string> accountsForQuery = new List<string>();
             for (int i = start; i < end; i++)
             {
@@ -199,12 +199,13 @@ namespace myTNB
             return accountsForQuery;
         }
 
-        void OnLoadMore()
+        private void OnLoadMore()
         {
+            _isLoadmore = true;
             View.EndEditing(true);
-            lastStartIndex += (loadMoreCount > 0 ? 4 : 5);
-            lastEndIndex = lastStartIndex + 4;
-            List<string> accountsForQuery = GetAccountsForQuery(lastStartIndex, lastEndIndex);
+            _lastStartIndex += (_loadMoreCount > 0 ? 4 : 5);
+            _lastEndIndex = _lastStartIndex + 4;
+            List<string> accountsForQuery = GetAccountsForQuery(_lastStartIndex, _lastEndIndex);
             if (accountsForQuery?.Count > 0)
             {
                 ActivityIndicator.Show();
@@ -214,7 +215,7 @@ namespace myTNB
             {
                 UpdateDuesDisplay();
             }
-            loadMoreCount++;
+            _loadMoreCount++;
         }
 
         internal void UpDateTotalAmount()
@@ -288,8 +289,6 @@ namespace myTNB
                 viewController.IsRoot = true;
                 viewController.AccountNumber = _selectedAccountNumber;
                 NavigationController.PushViewController(viewController, true);
-                //var navController = new UINavigationController(viewController);
-                //PresentViewController(navController, true, null);
             }
         }
 
@@ -345,7 +344,7 @@ namespace myTNB
             }
         }
 
-        internal void InitializedTableView()
+        private void InitializedTableView()
         {
             SelectBillsTableView.Source = new SelectBillsDataSource(this, _accountsForDisplay)
             {
@@ -353,25 +352,17 @@ namespace myTNB
             };
             SelectBillsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             SelectBillsTableView.ReloadData();
-
+            if (_isLoadmore) { return; }
             if (_accountsForDisplay != null && _accountsForDisplay.Count > 0 && _accountsForDisplay[0] != null)
             {
-                if (AccountChargesCache.HasMandatory(_accountsForDisplay[0].accNum) && !_mandatoryPopupState.ContainsKey(_accountsForDisplay[0].accNum))
+                if (AccountChargesCache.HasMandatory(_accountsForDisplay[0].accNum))
                 {
                     OnShowItemisedTooltip(_accountsForDisplay[0].accNum);
-                    if (_mandatoryPopupState.ContainsKey(_accountsForDisplay[0].accNum))
-                    {
-                        _mandatoryPopupState[_accountsForDisplay[0].accNum] = true;
-                    }
-                    else
-                    {
-                        _mandatoryPopupState.Add(_accountsForDisplay[0].accNum, true);
-                    }
                 }
             }
         }
 
-        internal void InitializedSubViews()
+        private void InitializedSubViews()
         {
             BtnPayBill.BackgroundColor = MyTNBColor.SilverChalice;
             BtnPayBill.Layer.CornerRadius = 4.0f;
@@ -452,7 +443,7 @@ namespace myTNB
                 , _lblCurrency.Frame.Y, _lblCurrency.Frame.Width, _lblCurrency.Frame.Height);
         }
 
-        internal void AddBackButton()
+        private void AddBackButton()
         {
             UIImage backImg = UIImage.FromBundle("Back-White");
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>

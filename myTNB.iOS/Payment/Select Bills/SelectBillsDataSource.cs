@@ -10,78 +10,74 @@ namespace myTNB.Payment.SelectBills
     public class SelectBillsDataSource : UITableViewSource
     {
         public Func<string, string> GetI18NValue;
-
         private SelectBillsViewController _controller;
         private List<PaymentRecordModel> _accounts = new List<PaymentRecordModel>();
         private TextFieldHelper _textFieldHelper = new TextFieldHelper();
-        private Dictionary<string, bool> _mandatoryPopupState = new Dictionary<string, bool>();
+        private Dictionary<string, bool> _amountStatus = new Dictionary<string, bool>();
 
         public SelectBillsDataSource(SelectBillsViewController controller, List<PaymentRecordModel> accounts)
         {
             _controller = controller;
             _accounts = accounts;
+            if (_accounts != null)
+            {
+                foreach (PaymentRecordModel obj in _accounts)
+                {
+                    _amountStatus.Add(obj.accNum, true);
+
+                    if (AccountChargesCache.HasMandatory(obj.accNum))
+                    {
+                        obj.MandatoryCharges = AccountChargesCache.GetMandatoryCharges(obj.accNum);
+                    }
+                }
+            }
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            string CELLIDENTIFIER = "SelectBillsTableViewCell";
             string acctNumber = _accounts[indexPath.Row].accNum;
-            bool hasMandatoryCharges = AccountChargesCache.HasMandatory(acctNumber);
-            SelectBillsTableViewCell cell = tableView.DequeueReusableCell(CELLIDENTIFIER, indexPath) as SelectBillsTableViewCell;
-
+            SelectBillsTableViewCell cell = tableView.DequeueReusableCell(PaymentConstants.Cell_SelectBills, indexPath) as SelectBillsTableViewCell;
+            string inlineError = string.IsNullOrEmpty(cell._lblAmountError.Text) || string.IsNullOrWhiteSpace(cell._lblAmountError.Text)
+                ? string.Empty : _accounts[indexPath.Row].InlineValidationMessage;
+            cell._lblAmountError.Text = inlineError;
             cell._lblName.Text = _accounts[indexPath.Row].accountNickName;
+            cell._lblAccountNo.Text = acctNumber;
             cell._txtViewAddress.Text = _accounts[indexPath.Row].accountStAddress;
             cell._imgViewCheckBox.Image = UIImage.FromBundle(_accounts[indexPath.Row].IsAccountSelected
-                ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
-            cell._txtFieldAmount.Placeholder = PaymentConstants.I18N_EnterAmount;
+                ? PaymentConstants.IMG_CheckboxActive : PaymentConstants.IMG_CheckboxInactive);
+            cell._txtFieldAmount.Placeholder = GetI18NValue(PaymentConstants.I18N_EnterAmount);
             cell._txtFieldAmount.Text = _accounts[indexPath.Row].Amount > 0
                 ? _accounts[indexPath.Row].Amount.ToString("N2", CultureInfo.InvariantCulture) : string.Empty;
-
+            cell.UserInteractionEnabled = true;
             cell.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                UpdateInlineError(cell, indexPath.Row);
+                if (_accounts[indexPath.Row].HasMandatory && !_accounts[indexPath.Row].IsAccountSelected && _accounts[indexPath.Row].IsValidAmount)
+                {
+                    _controller.OnShowItemisedTooltip(_accounts[indexPath.Row].accNum);
+                }
+                if (_accounts[indexPath.Row].Amount >= _accounts[indexPath.Row].MinimumAmount || _accounts[indexPath.Row].IsAccountSelected)
+                {
+                    UpdateCheckBox(cell);
+                    UpdateUIForInputError(false, cell);
+                }
+                else
+                {
+                    cell._lblAmountError.Text = _accounts[indexPath.Row].InlineValidationMessage;
+                    cell._lblAmountError.Hidden = false;
+                    UpdateUIForInputError(true, cell);
+                }
             }));
-
-            SetTextField(cell, indexPath.Row);
-            ShowErrorMessage(indexPath.Row, cell, true);
+            bool isValidAmount = NewMethod(acctNumber);
+            cell._txtFieldAmount.TextColor = isValidAmount ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
+            cell._lblAmountError.Hidden = isValidAmount;
+            cell._viewLineAmount.BackgroundColor = isValidAmount ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
+            SetTextField(cell._txtFieldAmount, cell._lblAmountError, cell);
             return cell;
         }
 
-        private void UpdateInlineError(SelectBillsTableViewCell cell, int index)
+        private bool NewMethod(string acctNumber)
         {
-            if (_accounts[index].Amount >= TNBGlobal.PaymentMinAmnt || _accounts[index].IsAccountSelected)
-            {
-                if (AccountChargesCache.HasMandatory(_accounts[index].accNum) && !_accounts[index].IsAccountSelected
-                    && !_mandatoryPopupState.ContainsKey(_accounts[index].accNum))
-                {
-                    _controller.OnShowItemisedTooltip(_accounts[index].accNum);
-                    if (_mandatoryPopupState.ContainsKey(_accounts[index].accNum))
-                    {
-                        _mandatoryPopupState[_accounts[index].accNum] = true;
-                    }
-                    else
-                    {
-                        _mandatoryPopupState.Add(_accounts[index].accNum, true);
-                    }
-                }
-                UpdateCheckBox(cell, index);
-                UpdateUIForInputError(false, cell);
-            }
-            else
-            {
-                cell._lblAmountError.Text = "Invalid_PayAmount".Translate();
-                if (AccountChargesCache.HasMandatory(_accounts[index].accNum))
-                {
-                    MandatoryChargesModel mandatoryCharges = AccountChargesCache.GetMandatoryCharges(_accounts[index].accNum);
-                    double mandatoryAmount = mandatoryCharges.TotalAmount;
-                    double.TryParse(cell._txtFieldAmount.Text, out double enteredAmt);
-
-                    cell._lblAmountError.Text = string.Format(GetI18NValue(PaymentConstants.I18N_MinimumMandatoryPayment)
-                        , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, mandatoryAmount.ToString("N2", CultureInfo.InvariantCulture)));
-                }
-                cell._lblAmountError.Hidden = false;
-                UpdateUIForInputError(true, cell);
-            }
+            return _amountStatus.ContainsKey(acctNumber) ? _amountStatus[acctNumber] : true;
         }
 
         public override nint RowsInSection(UITableView tableview, nint section)
@@ -95,8 +91,9 @@ namespace myTNB.Payment.SelectBills
         }
 
         #region UpdateCheckBox
-        private void UpdateCheckBox(SelectBillsTableViewCell cell, int index)
+        private void UpdateCheckBox(SelectBillsTableViewCell cell)
         {
+            int index = _accounts.FindIndex(x => x.accNum.Equals(cell._lblAccountNo.Text));
             if (index > -1)
             {
                 bool isAccountSelected = _accounts[index].IsAccountSelected;
@@ -110,42 +107,62 @@ namespace myTNB.Payment.SelectBills
                 }
                 _accounts[index].IsAccountSelected = !isAccountSelected;
                 cell._imgViewCheckBox.Image = UIImage.FromBundle(!isAccountSelected
-                    ? "Payment-Checkbox-Active" : "Payment-Checkbox-Inactive");
+                    ? PaymentConstants.IMG_CheckboxActive : PaymentConstants.IMG_CheckboxInactive);
                 _controller.UpDateTotalAmount();
             }
         }
         #endregion
-        #region SetTextField
-        private void SetTextField(SelectBillsTableViewCell cell, int index)
+
+        private void UnSelectBill(SelectBillsTableViewCell cell, int index)
         {
-            cell._txtFieldAmount.ShouldReturn = (sender) =>
+            if (_accounts[index].IsAccountSelected && _accounts[index].Amount < _accounts[index].MinimumAmount)
+            {
+                _accounts[index].IsAccountSelected = false;
+                cell._imgViewCheckBox.Image = UIImage.FromBundle(PaymentConstants.IMG_CheckboxInactive);
+            }
+        }
+
+        #region SetTextField
+        private void SetTextField(UITextField textField, UILabel error, SelectBillsTableViewCell cell)
+        {
+            textField.ShouldReturn = (sender) =>
             {
                 sender.ResignFirstResponder();
                 return false;
             };
-            cell._txtFieldAmount.EditingChanged += (sender, e) =>
+            textField.EditingChanged += (sender, e) =>
             {
-                cell._lblAmountError.Hidden = true;
+                error.Hidden = true;
                 UpdateUIForInputError(false, cell);
+                int index = _accounts.FindIndex(x => x.accNum.Equals(cell._lblAccountNo.Text));
                 if (index > -1)
                 {
-                    double parsedAmount = TextHelper.ParseStringToDouble(cell._txtFieldAmount.Text);
+                    double.TryParse(cell._txtFieldAmount.Text, out double parsedAmount);
                     _accounts[index].Amount = parsedAmount;
+                    UnSelectBill(cell, index);
                     _controller.UpDateTotalAmount();
                 }
             };
-            cell._txtFieldAmount.ShouldEndEditing = (sender) =>
+            textField.EditingDidBegin += (sender, e) =>
             {
-                ShowErrorMessage(index, cell);
+                cell._viewLineAmount.BackgroundColor = MyTNBColor.PowerBlue;
+                int index = _accounts.FindIndex(x => x.accNum.Equals(cell._lblAccountNo.Text));
+                ShowErrorMessage(error, index, cell);
+            };
+            textField.ShouldEndEditing = (sender) =>
+            {
+                int index = _accounts.FindIndex(x => x.accNum.Equals(cell._lblAccountNo.Text));
+                ShowErrorMessage(error, index, cell);
+                UnSelectBill(cell, index);
                 _controller.UpDateTotalAmount();
                 return true;
             };
-            cell._txtFieldAmount.ShouldReturn = (sender) =>
+            textField.ShouldReturn = (sender) =>
             {
                 sender.ResignFirstResponder();
                 return false;
             };
-            cell._txtFieldAmount.ShouldChangeCharacters += (txtField, range, replacement) =>
+            textField.ShouldChangeCharacters += (txtField, range, replacement) =>
             {
                 bool isCharValid = _textFieldHelper.ValidateTextField(replacement, TNBGlobal.AmountPattern);
 
@@ -167,7 +184,7 @@ namespace myTNB.Payment.SelectBills
                         {
                             if (!string.IsNullOrEmpty(replacement))
                             {
-                                string[] str = cell._txtFieldAmount.Text.Split('.');
+                                string[] str = textField.Text.Split('.');
                                 if (str[1] != null)
                                 {
                                     if (str[1].Length == 2)
@@ -189,69 +206,73 @@ namespace myTNB.Payment.SelectBills
 
                 return true;
             };
-            /*cell._txtFieldAmount.EditingDidEnd += (sender, e) =>
+            textField.EditingDidEnd += (sender, e) =>
             {
                 int index = _accounts.FindIndex(x => x.accNum.Equals(cell._lblAccountNo.Text));
-                ShowErrorMessage(index, cell, true);
-            };*/
+
+                double.TryParse(cell._txtFieldAmount.Text, out double parsedAmount);
+                cell._txtFieldAmount.Text = parsedAmount.ToString("N2", CultureInfo.InvariantCulture);
+
+                ShowErrorMessage(error, index, cell, true);
+            };
         }
         #endregion
         #region ShowErrorMessage 
-        private void ShowErrorMessage(int index, SelectBillsTableViewCell cell, bool isInitialLoad = false)
+        private bool ShowErrorMessage(UILabel lblError, int index, SelectBillsTableViewCell cell, bool endEditing = false)
         {
             bool isValid = false;
             if (index < 0 || index >= _accounts.Count)
             {
-                return;
+                return isValid;
             }
-            if (AccountChargesCache.HasMandatory(_accounts[index].accNum))
-            {
-                MandatoryChargesModel mandatoryCharges = AccountChargesCache.GetMandatoryCharges(_accounts[index].accNum);
-                double mandatoryAmount = mandatoryCharges.TotalAmount;
-                double.TryParse(cell._txtFieldAmount.Text, out double enteredAmt);
-                isValid = enteredAmt >= mandatoryAmount;
-                cell._lblAmountError.Hidden = isValid;
-                cell._lblAmountError.Text = string.Format(GetI18NValue(PaymentConstants.I18N_MinimumMandatoryPayment)
-                    , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, mandatoryAmount.ToString("N2", CultureInfo.InvariantCulture)));
-            }
-            else if (_accounts[index].Amount >= TNBGlobal.PaymentMinAmnt)
+            if (_accounts[index].Amount >= _accounts[index].MinimumAmount)
             {
                 isValid = true;
-                cell._lblAmountError.Hidden = isValid;
-            }
-            else if (isInitialLoad)
-            {
-                if (cell._lblAmountError.Hidden)
-                {
-                    cell._lblAmountError.Hidden = true;
-                    isValid = true;
-                }
-                else
-                {
-                    isValid = false;
-                }
+                lblError.Hidden = isValid;
+                UpdateUIForInputError(false, cell, endEditing);
             }
             else
             {
-                cell._lblAmountError.Hidden = false;
-                cell._lblAmountError.Text = GetI18NValue(PaymentConstants.I18N_MinimumPayAmount);
+                string inputVal = cell._txtFieldAmount.Text;
+                if (string.IsNullOrEmpty(inputVal) || string.IsNullOrWhiteSpace(inputVal))
+                {
+                    lblError.Hidden = true;
+                    cell._viewLineAmount.BackgroundColor = MyTNBColor.PlatinumGrey;
+                    return false;
+                }
+                lblError.Hidden = false;
+                lblError.Text = _accounts[index].InlineValidationMessage;
+                UpdateUIForInputError(true, cell, endEditing);
             }
-            UpdateUIForInputError(!isValid, cell);
+            return isValid;
         }
         #endregion
         #region UpdateUIForInputError
+        /// <summary>
+        /// Updates the UI based on user input validity.
+        /// </summary>
+        /// <param name="isError">If set to <c>true</c> is error.</param>
+        /// <param name="cell">Cell.</param>
         private void UpdateUIForInputError(bool isError, SelectBillsTableViewCell cell, bool endEditing = false)
         {
-            UIView viewLine = cell.ViewWithTag(0).ViewWithTag(1) as UIView;
+            string acctNumber = cell._lblAccountNo.Text;
+            if (!string.IsNullOrEmpty(acctNumber))
+            {
+                if (_amountStatus.ContainsKey(acctNumber))
+                {
+                    _amountStatus[acctNumber] = !isError;
+                }
+            }
+
             if (isError)
             {
                 cell._txtFieldAmount.TextColor = MyTNBColor.Tomato;
-                viewLine.BackgroundColor = MyTNBColor.Tomato;
+                cell._viewLineAmount.BackgroundColor = MyTNBColor.Tomato;
             }
             else
             {
                 cell._txtFieldAmount.TextColor = MyTNBColor.TunaGrey();
-                viewLine.BackgroundColor = (endEditing) ? MyTNBColor.PlatinumGrey : MyTNBColor.PowerBlue;
+                cell._viewLineAmount.BackgroundColor = (endEditing) ? MyTNBColor.PlatinumGrey : MyTNBColor.PowerBlue;
             }
         }
         #endregion

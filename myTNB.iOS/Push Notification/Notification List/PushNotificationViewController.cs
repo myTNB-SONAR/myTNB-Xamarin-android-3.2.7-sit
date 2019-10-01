@@ -349,7 +349,7 @@ namespace myTNB.PushNotification
 
         private void SetSelectorEvent()
         {
-            _notificationSelectionComponent = new AccountSelectionComponentV2(_headerView, _titleBarView.Frame.GetMaxY() + GetScaledHeight(4));
+            _notificationSelectionComponent = new AccountSelectionComponentV2(_headerView, _headerView.Frame.Height - GetScaledHeight(32));
             UIView accountSelectionView = _notificationSelectionComponent.GetUI();
 
             if (DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex

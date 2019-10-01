@@ -14,6 +14,7 @@ namespace myTNB
         public UIView _viewLineAmount;
         public UIView _viewCheckBox;
         public UIImageView _imgViewCheckBox;
+        public UILabel _lblAccountNo;
         private UIView _viewAmount, _viewSeparator;
 
         public SelectBillsTableViewCell(IntPtr handle) : base(handle)
@@ -21,6 +22,8 @@ namespace myTNB
             SeparatorInset = new UIEdgeInsets(0, 0, 0, 0);
             LayoutMargins = new UIEdgeInsets(0, 0, 0, 0);
             SelectionStyle = UITableViewCellSelectionStyle.None;
+
+            _lblAccountNo = new UILabel();
 
             _lblName = new UILabel(new CGRect(16, 16, ContentView.Frame.Width - 32 - 40, 18))
             {

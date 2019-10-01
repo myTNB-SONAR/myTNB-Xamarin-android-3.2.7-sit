@@ -1,14 +1,14 @@
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Globalization;
+using System.Threading.Tasks;
 using CoreGraphics;
 using myTNB.Home.Bill;
-using System;
-using System.Diagnostics;
-using System.Collections.Generic;
-using System.Globalization;
-using UIKit;
-using myTNB.SQLite.SQLiteDataManager;
-using myTNB.SitecoreCMS.Model;
 using myTNB.Model;
-using System.Threading.Tasks;
+using myTNB.SitecoreCMS.Model;
+using myTNB.SQLite.SQLiteDataManager;
+using UIKit;
 
 namespace myTNB
 {
@@ -328,7 +328,7 @@ namespace myTNB
         {
             bool isOverPaid = _charges.AmountDue <= 0;
             UIView viewPayment = new UIView(new CGRect(0, yLoc, ViewWidth, GetScaledHeight(32)));
-            nfloat statusYLoc = isOverPaid ? GetScaledHeight(8) : 0;
+            nfloat statusYLoc = isOverPaid ? GetScaledHeight(6) : GetScaledHeight(-4);
             string statusString;
             if (_charges.AmountDue == 0)
             {
@@ -338,7 +338,7 @@ namespace myTNB
             {
                 statusString = _charges.AmountDue < 0 ? BillConstants.I18N_PaidExtra : BillConstants.I18N_NeedToPay;
             }
-            UILabel lblStatus = new UILabel(new CGRect(BaseMargin, statusYLoc, BaseMarginedWidth / 2, GetScaledHeight(16)))
+            UILabel lblStatus = new UILabel(new CGRect(BaseMargin, statusYLoc, BaseMarginedWidth / 2, GetScaledHeight(20)))
             {
                 TextAlignment = UITextAlignment.Left,
                 Font = TNBFont.MuseoSans_14_500,
@@ -354,7 +354,7 @@ namespace myTNB
                 result = DateTime.ParseExact(_charges.DueDate
                    , BillConstants.Format_DateParse, CultureInfo.InvariantCulture).ToString(BillConstants.Format_Date);
             }
-            UILabel lblDue = new UILabel(new CGRect(BaseMargin, lblStatus.Frame.GetMaxY(), BaseMarginedWidth / 2, GetScaledHeight(16)))
+            UILabel lblDue = new UILabel(new CGRect(BaseMargin, lblStatus.Frame.GetMaxY(), BaseMarginedWidth / 2, GetScaledHeight(20)))
             {
                 TextAlignment = UITextAlignment.Left,
                 Font = TNBFont.MuseoSans_14_300,

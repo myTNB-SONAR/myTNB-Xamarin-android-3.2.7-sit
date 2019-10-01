@@ -4,6 +4,7 @@ using System.Linq;
 using Force.DeepCloner;
 using Foundation;
 using myTNB.Model;
+using myTNB.SQLite.SQLiteDataManager;
 
 namespace myTNB
 {
@@ -21,14 +22,17 @@ namespace myTNB
         private static readonly string PopupKey = SSMR.SSMRConstants.Popup_SMREligibiltyPopUpDetails;
         private static readonly string SelectorKey = SSMR.SSMRConstants.Pagename_SSMRReadingHistory;
 
-        public static void SetFilteredEligibleAccounts()
+        public static void SetFilteredEligibleAccounts(bool isEligible = false)
         {
             if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
                 && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null)
             {
-                FilteredEligibleAccountList = DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindAll
+                List<CustomerAccountRecordModel> accounts = isEligible ? EligibleAccountList.DeepClone()
+                    : DataManager.DataManager.SharedInstance.AccountRecordsList.d.DeepClone();
+
+                FilteredEligibleAccountList = accounts.FindAll
                     (x => x.IsOwnedAccount && !x.IsSSMR && !x.IsREAccount && x.IsNormalMeter);
-                SSMRAccountList = DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindAll
+                SSMRAccountList = accounts.FindAll
                     (x => x.IsOwnedAccount && x.IsSSMR && !x.IsREAccount && x.IsNormalMeter);
                 SSMRCombinedList.Clear();
                 if (SSMRAccountList != null)
@@ -51,20 +55,11 @@ namespace myTNB
             return null;
         }
 
-        public static CustomerAccountRecordModel GetFirstAccount()
-        {
-            if (FilteredEligibleAccountList != null && FilteredEligibleAccountList.Count > 0 && FilteredEligibleAccountList[0] != null)
-            {
-                return FilteredEligibleAccountList[0];
-            }
-            return null;
-        }
-
         public static CustomerAccountRecordModel GetAccountByIndex(int index)
         {
-            if (index > -1 && EligibleAccountList != null && EligibleAccountList.Count > 0 && index < EligibleAccountList.Count)
+            if (index > -1 && SSMRCombinedList != null && SSMRCombinedList.Count > 0 && index < SSMRCombinedList.Count)
             {
-                return EligibleAccountList[index].DeepClone();
+                return SSMRCombinedList[index].DeepClone();
             }
             return null;
         }
@@ -76,10 +71,10 @@ namespace myTNB
             EligibleAccountList.Clear();
             for (int i = 0; i < accounts.Count; i++)
             {
-                if (accounts[i].IsEligible || accounts[i].IsSSMR)
+                int index = SSMRCombinedList.FindIndex(x => x.accNum == accounts[i].ContractAccount);
+                if (index > -1)
                 {
-                    int index = SSMRCombinedList.FindIndex(x => x.accNum == accounts[i].ContractAccount);
-                    if (index > -1)
+                    if (accounts[i].IsEligible || accounts[i].IsSSMR)
                     {
                         CustomerAccountRecordModel item = SSMRCombinedList[index];
                         item.isTaggedSMR = accounts[i].IsSMRTagged;
@@ -96,7 +91,7 @@ namespace myTNB
 
         public static List<CustomerAccountRecordModel> GetEligibleAccountList()
         {
-            return EligibleAccountList != null ? EligibleAccountList : new List<CustomerAccountRecordModel>();
+            return SSMRCombinedList != null ? SSMRCombinedList : new List<CustomerAccountRecordModel>();
         }
 
         public static CustomerAccountRecordModel GetAccountbyAccountNumber(string accNo)
