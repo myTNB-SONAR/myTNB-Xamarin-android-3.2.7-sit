@@ -86,7 +86,7 @@ namespace myTNB
             NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
             sharedPreference.SetBool(true, DID_USER_SET_KEY);
             sharedPreference.Synchronize();
-            NSNotificationCenter.DefaultCenter.PostNotificationName("LanguageDidChange", new NSObject());
+            NotifCenterUtility.PostNotificationName("LanguageDidChange", new NSObject());
         }
 
         public static void SetLanguage(int index)

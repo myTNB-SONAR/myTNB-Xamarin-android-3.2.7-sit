@@ -79,7 +79,7 @@ namespace myTNB
             lineView.BackgroundColor = MyTNBColor.PlatinumGrey;
             headerView.AddSubview(lineView);
 
-            NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
+            NotifCenterUtility.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
         }
 
         public override void ViewWillAppear(bool animated)

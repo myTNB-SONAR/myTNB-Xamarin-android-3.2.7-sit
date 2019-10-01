@@ -132,22 +132,29 @@ namespace myTNB.Home.Bill
                 return;
 
             int index = indexPath.Row - 1;
-            BillPayHistoryDataModel item = _historyList[index];
-            if (item.IsDocumentAvailable)
+            if (index > -1 && index < _historyList.Count)
             {
-                if (item.IsPayment)
+                BillPayHistoryDataModel item = _historyList[index];
+                if (item != null)
                 {
-                    if (OnSelectPayment != null)
+                    if (item.IsDocumentAvailable)
                     {
-                        OnSelectPayment.Invoke(item.DetailedInfoNumber);
+                        if (item.IsPayment)
+                        {
+                            if (OnSelectPayment != null)
+                            {
+                                OnSelectPayment.Invoke(item.DetailedInfoNumber);
+                            }
+                        }
+                        else
+                        {
+                            if (OnSelectBill != null)
+                            {
+                                OnSelectBill.Invoke(item.DetailedInfoNumber);
+                            }
+                        }
                     }
-                }
-                else
-                {
-                    if (OnSelectBill != null)
-                    {
-                        OnSelectBill.Invoke(item.DetailedInfoNumber);
-                    }
+
                 }
             }
         }
