@@ -4,6 +4,7 @@ using Android.Content.PM;
 using Android.OS;
 using Android.Preferences;
 using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
 using Android.Text;
 using Android.Views;
 using Android.Widget;
@@ -27,6 +28,9 @@ namespace myTNB_Android.Src.ResetPassword.Activity
        , Theme = "@style/Theme.ResetPassword")]
     public class ResetPasswordActivity : BaseToolbarAppCompatActivity, ResetPasswordContract.IView
     {
+        [BindView(Resource.Id.txtResetPasswordTitle)]
+        TextView txtResetPasswordTitle;
+
 
         [BindView(Resource.Id.txtNewPassword)]
         TextView txtNewPassword;
@@ -65,6 +69,10 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             // Create your application here
             try
             {
+
+
+                this.DisableSubmitButton();
+
                 mPresenter = new ResetPasswordPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
 
                 TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
@@ -105,30 +113,91 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             {
                 string newPassword = txtNewPassword.Text;
                 string confirmPassword = txtConfirmNewPassword.Text;
+                //bool isError = true;
 
+
+                //if (!string.IsNullOrEmpty(newPassword))
+                //{
+
+                //    txtInputLayoutNewPassword.Error = GetString(Resource.String.registration_form_password_format_hint);
+                //    txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
+                //    TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword);
+                //    txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = true;
+                //}
+                //else
+                //{
+                //    txtInputLayoutNewPassword.Error = "";
+                //    txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                //    TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword);
+                //    txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = false;
+                //}
+
+                //if (!string.IsNullOrEmpty(confirmPassword))
+                //{
+                //    txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = true;
+                //    isError = false;
+                //}
+                //else
+                //{
+                //    txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = false;
+                //}
+
+                //if (isError)
+                //{
+                //    this.DisableSubmitButton();
+                //}
+                //else
+                //{
+                //    this.EnableSubmitButton();
+                //}
+
+                this.DisableSubmitButton();
+                this.ClearErrorMessages();
+                
+                // validation new password
                 if (!string.IsNullOrEmpty(newPassword))
                 {
-                    txtInputLayoutNewPassword.Error = GetString(Resource.String.registration_form_password_format_hint);
-                    txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomHint);
-                    TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword);
                     txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = true;
+                    if (!this.userActionsListener.CheckPasswordIsValid(newPassword))
+                    {
+                        this.ShowPasswordMinimumOf6CharactersError();
+                    }
+                    else
+                    {
+                        this.ClearErrorMessages();
+                    }
                 }
                 else
                 {
-                    txtInputLayoutNewPassword.Error = "";
-                    txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
-                    TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword);
                     txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = false;
+
                 }
 
-                if (!string.IsNullOrEmpty(confirmPassword))
+                // validation confirm password
+                if (!string.IsNullOrEmpty(confirmPassword) || (!string.IsNullOrEmpty(confirmPassword) && !string.IsNullOrEmpty(newPassword)))
                 {
                     txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = true;
+                    if (!newPassword.Equals(confirmPassword))
+                    {
+                        this.ShowNotEqualConfirmNewPasswordToNewPasswordError();
+                    }
+                    else
+                    {
+                        this.ClearErrorMessages();
+                        this.EnableSubmitButton();
+                    }
+                    
                 }
                 else
                 {
                     txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = false;
+
                 }
+
+
+
+
+
             }
             catch (Exception ex)
             {
@@ -239,11 +308,13 @@ namespace myTNB_Android.Src.ResetPassword.Activity
         public void DisableSubmitButton()
         {
             btnSubmit.Enabled = false;
+            btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
         }
 
         public void EnableSubmitButton()
         {
             btnSubmit.Enabled = true;
+            btnSubmit.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
         }
 
         private Snackbar mCancelledExceptionSnackBar;

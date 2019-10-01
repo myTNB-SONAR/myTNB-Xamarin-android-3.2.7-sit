@@ -112,6 +112,8 @@ namespace myTNB_Android.Src.ResetPassword.MVP
             /// <param name="username">string</param>
             /// <param name="deviceId">string</param>
             void Submit(string apiKeyId, string newPassword, string confirmNewPassword, string oldPassword, string username, string deviceId);
+
+            bool CheckPasswordIsValid(string password);
         }
     }
 }
