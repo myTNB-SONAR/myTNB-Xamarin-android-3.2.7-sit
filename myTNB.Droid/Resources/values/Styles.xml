@@ -408,4 +408,14 @@
 		<item name="android:stateListAnimator">@null</item>
 		<item name="android:background">@drawable/white_filled_button_background</item>
 	</style>
+    <style name="AmountHint.TextInputLayout.TextAppearance.LightBackground" parent="TextAppearance.AppCompat">
+    <!-- Hint color and label color in FALSE state -->
+    <item name="android:textColorHint">@color/silverChalice</item>
+    <item name="android:textSize">10dp</item>
+    <!-- Label color in TRUE state and bar color FALSE and TRUE State -->
+    <item name="colorAccent">@color/tunaGrey</item>
+    <item name="colorControlNormal">@color/silverChalice</item>
+    <item name="colorControlActivated">@color/tunaGrey</item>
+    <item name="textColorError">@color/errorColor</item>
+  </style>
 </resources>
