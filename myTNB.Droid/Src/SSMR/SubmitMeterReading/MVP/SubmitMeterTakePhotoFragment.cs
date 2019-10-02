@@ -38,6 +38,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         // Camera state: Picture was taken.
         public const int STATE_PICTURE_TAKEN = 4;
+
+        public const int MAX_CAMERA_ZOOM = 40;
         private static readonly SparseIntArray ORIENTATIONS = new SparseIntArray();
 
         CameraStateListener mCameraStateChange;
@@ -126,7 +128,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 if (mFragment.mPreviewRequestBuilder != null)
                 {
                     int mProgress = progress;
-                    float maxzoom = (int)mFragment.characteristics.Get(CameraCharacteristics.ScalerAvailableMaxDigitalZoom) * 5;
+                    int maxzoom = (int)mFragment.characteristics.Get(CameraCharacteristics.ScalerAvailableMaxDigitalZoom) * 5;
+                    if (maxzoom < MAX_CAMERA_ZOOM)
+                    {
+                        maxzoom = MAX_CAMERA_ZOOM;
+                    }
                     Rect rect = (Rect)mFragment.characteristics.Get(CameraCharacteristics.SensorInfoActiveArraySize);
 
                     int minW = (int)(rect.Width() / maxzoom);
@@ -462,7 +468,12 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 {
                     var cameraId = manager.GetCameraIdList()[i];
                     characteristics = manager.GetCameraCharacteristics(cameraId);
-                    seekBar.Max = (int)characteristics.Get(CameraCharacteristics.ScalerAvailableMaxDigitalZoom) * 5;
+                    int maxZoom = (int)characteristics.Get(CameraCharacteristics.ScalerAvailableMaxDigitalZoom) * 5;
+                    if (maxZoom < MAX_CAMERA_ZOOM)
+                    {
+                        maxZoom = MAX_CAMERA_ZOOM;
+                    }
+                    seekBar.Max = maxZoom;
 
                     // We don't use a front facing camera in this sample.
                     var facing = (Integer)characteristics.Get(CameraCharacteristics.LensFacing);
