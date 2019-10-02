@@ -5313,16 +5313,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     if (scrollPosition > 0)
                     {
                         requireScroll = true;
-                        bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
+                        bottomSheetBehavior.State = BottomSheetBehavior.StateCollapsed;
+                        shadowLayout.SetBackgroundResource(0);
                     }
-                    else if (scrollPosition < 0)
+                    /*else if (scrollPosition < 0)
                     {
                         bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
-                    }
+                        shadowLayout.SetBackgroundResource(Resource.Drawable.scroll_indicator);
+                    }*/
 
                     if (t == 0)
                     {
                         requireScroll = false;
+                        bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                        shadowLayout.SetBackgroundResource(Resource.Drawable.scroll_indicator);
                     }
                 }
             }
@@ -5349,9 +5353,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                     else if (!requireScroll)
                     {
-                        if (newState == BottomSheetBehavior.StateHidden)
+                        if (newState == BottomSheetBehavior.StateHidden || newState == BottomSheetBehavior.StateCollapsed)
                         {
                             bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                        }
+                    }
+                    else if (requireScroll)
+                    {
+                        if (newState == BottomSheetBehavior.StateHidden)
+                        {
+                            bottomSheetBehavior.State = BottomSheetBehavior.StateCollapsed;
                         }
                     }
                 }
@@ -5487,7 +5498,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else
                 {
-                    shadowLayout.SetBackgroundResource(Resource.Drawable.scroll_shadow);
+                    shadowLayout.SetBackgroundResource(0);
                 }
                 bottomSheet.RequestLayout();
             }
