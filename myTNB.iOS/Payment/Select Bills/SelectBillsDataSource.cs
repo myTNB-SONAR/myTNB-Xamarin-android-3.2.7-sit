@@ -209,10 +209,11 @@ namespace myTNB.Payment.SelectBills
             textField.EditingDidEnd += (sender, e) =>
             {
                 int index = _accounts.FindIndex(x => x.accNum.Equals(cell._lblAccountNo.Text));
-
-                double.TryParse(cell._txtFieldAmount.Text, out double parsedAmount);
-                cell._txtFieldAmount.Text = parsedAmount.ToString("N2", CultureInfo.InvariantCulture);
-
+                if (!string.IsNullOrEmpty(cell._txtFieldAmount.Text) && !string.IsNullOrWhiteSpace(cell._txtFieldAmount.Text))
+                {
+                    double.TryParse(cell._txtFieldAmount.Text, out double parsedAmount);
+                    cell._txtFieldAmount.Text = parsedAmount.ToString("N2", CultureInfo.InvariantCulture);
+                }
                 ShowErrorMessage(error, index, cell, true);
             };
         }
