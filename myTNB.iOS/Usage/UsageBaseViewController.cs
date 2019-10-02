@@ -10,6 +10,7 @@ using myTNB.SQLite.SQLiteDataManager;
 using UIKit;
 using CoreAnimation;
 using Foundation;
+using System.Diagnostics;
 
 namespace myTNB
 {
@@ -110,7 +111,7 @@ namespace myTNB
             _refreshScrollView = new UIScrollView(new CGRect(0, GetYLocationFromFrame(_navbarContainer.Frame, 8F), ViewWidth, height))
             {
                 BackgroundColor = UIColor.Clear,
-                Bounces = false,
+                Bounces = true,
                 CanCancelContentTouches = false,
                 DelaysContentTouches = true,
                 Hidden = true
@@ -391,6 +392,11 @@ namespace myTNB
                 }
             }
             _footerIsDocked = (_lastView.Frame.GetMaxY() + _navbarContainer.Frame.Height + GetScaledHeight(8F)) < _footerYPos + GetScaledHeight(10);
+            if (_footerViewComponent != null)
+            {
+                var view = _footerViewComponent.GetView();
+                AddFooterViewShadow(ref view, _footerIsDocked);
+            }
             if (_scrollIndicatorView != null)
             {
                 _scrollIndicatorView.Hidden = _footerIsDocked;
@@ -1226,7 +1232,7 @@ namespace myTNB
                     _viewFooter.RemoveFromSuperview();
                 }
                 nfloat componentHeight = GetScaledHeight(136);
-                nfloat indicatorHeight = isRefreshScreen ? 0 : GetScaledHeight(48);
+                nfloat indicatorHeight = !isRefreshScreen || (isRefreshScreen && accountIsSSMR) ? GetScaledHeight(48) : 0;
                 nfloat footerHeight = indicatorHeight + componentHeight;
                 nfloat footerYPos = _scrollViewContent.Frame.GetMaxY() - footerHeight;
                 _footerYPos = footerYPos;
@@ -1253,7 +1259,7 @@ namespace myTNB
                         OnPayButtonTap(dueData != null ? dueData.amountDue : 0);
                     };
                 }
-                if (!isRefreshScreen)
+                if (!isRefreshScreen || (isRefreshScreen && accountIsSSMR))
                 {
                     if (_scrollIndicatorView != null)
                     {
@@ -1276,6 +1282,8 @@ namespace myTNB
                 }
                 else
                 {
+                    var view = _footerViewComponent.GetView();
+                    AddFooterViewShadow(ref view, true);
                     UpdateFooterUI(false);
                 }
             }
@@ -1381,6 +1389,16 @@ namespace myTNB
             );
             }
         }
+
+        private void AddFooterViewShadow(ref UIView view, bool isDocked = false)
+        {
+            view.Layer.MasksToBounds = false;
+            view.Layer.ShadowColor = isDocked ? MyTNBColor.BabyBlue35.CGColor : UIColor.Clear.CGColor;
+            view.Layer.ShadowOpacity = 1f;
+            view.Layer.ShadowOffset = new CGSize(0, -8);
+            view.Layer.ShadowRadius = 8;
+            view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
+        }
         #endregion
         #region Refresh Methods
         internal void SetRefreshScreen()
@@ -1428,7 +1446,7 @@ namespace myTNB
         {
             if (accountIsSSMR)
             {
-                _refreshScrollView.ContentSize = new CGSize(ViewWidth, GetAdditionalHeight(_viewRefresh.Frame.GetMaxY()));
+                _refreshScrollView.ContentSize = new CGSize(ViewWidth, GetAdditionalHeight(_ssmrRefresh.Frame.GetMaxY()) + GetScaledHeight(40F));
             }
             else
             {
