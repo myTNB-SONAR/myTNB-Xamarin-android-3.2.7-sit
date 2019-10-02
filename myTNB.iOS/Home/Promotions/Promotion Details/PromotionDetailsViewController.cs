@@ -50,6 +50,7 @@ namespace myTNB
                 UIActivity[] applicationActivities = null;
                 var activityController = new UIActivityViewController(activityItems, applicationActivities);
                 UIBarButtonItem.AppearanceWhenContainedIn(new[] { typeof(UINavigationBar) }).TintColor = UIColor.White;
+                activityController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(activityController, true, null);
             });
             NavigationItem.RightBarButtonItem = btnDownload;

@@ -216,22 +216,25 @@ namespace myTNB
                     };
                     imgPicker.Delegate = imgPickerDelegate;
 
-                    var alert = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
+                    UIAlertController alert = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
 
                     alert.AddAction(UIAlertAction.Create("Feedback_Camera".Translate(), UIAlertActionStyle.Default, (obj) =>
                     {
                         imgPicker.SourceType = UIImagePickerControllerSourceType.Camera;
+                        imgPicker.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                         PresentViewController(imgPicker, true, null);
                     }));
 
                     alert.AddAction(UIAlertAction.Create("Feedback_CameraRoll".Translate(), UIAlertActionStyle.Default, (obj) =>
                     {
                         imgPicker.SourceType = UIImagePickerControllerSourceType.PhotoLibrary;
+                        imgPicker.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                         PresentViewController(imgPicker, true, null);
                     }));
 
-                    var cancelAction = UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, null);
+                    UIAlertAction cancelAction = UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, null);
                     alert.AddAction(cancelAction);
+                    alert.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                     PresentViewController(alert, animated: true, completionHandler: null);
                 });
 

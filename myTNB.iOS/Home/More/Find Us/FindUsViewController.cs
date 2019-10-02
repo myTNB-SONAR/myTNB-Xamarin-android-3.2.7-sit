@@ -286,7 +286,8 @@ namespace myTNB
                 UIStoryboard storyBoard = UIStoryboard.FromName("SelectStoreType", null);
                 SelectStoreTypeViewController viewController =
                     storyBoard.InstantiateViewController("SelectStoreTypeViewController") as SelectStoreTypeViewController;
-                var navController = new UINavigationController(viewController);
+                UINavigationController navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(navController, true, null);
             }));
 
@@ -473,7 +474,8 @@ namespace myTNB
                         storyBoard.InstantiateViewController("LocationDetailsViewController") as LocationDetailsViewController;
                     viewController.NavigationTitle = title;
                     viewController.Annotation = (AnnotationModel)annotation;
-                    var navController = new UINavigationController(viewController);
+                    UINavigationController navController = new UINavigationController(viewController);
+                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                     PresentViewController(navController, true, null);
                 }));
             }

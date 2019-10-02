@@ -106,7 +106,8 @@ namespace myTNB
                                                   as FeedbackDetailsViewController;
                                     viewController.FeedbackDetails = _feedbackDetails.d.data;
                                     viewController.Title = feedback.FeedbackNameInListView;
-                                    var navController = new UINavigationController(viewController);
+                                    UINavigationController navController = new UINavigationController(viewController);
+                                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                                     PresentViewController(navController, true, null);
                                 }
                                 else

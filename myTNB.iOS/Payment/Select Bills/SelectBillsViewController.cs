@@ -385,7 +385,8 @@ namespace myTNB
                     storyBoard.InstantiateViewController("SelectPaymentMethodViewController") as SelectPaymentMethodViewController;
                 viewController.AccountsForPayment = _accountsForPayment;
                 viewController.TotalAmount = totalAmount;
-                var navController = new UINavigationController(viewController);
+                UINavigationController navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(navController, true, null);
             };
 
