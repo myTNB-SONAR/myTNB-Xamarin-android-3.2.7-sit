@@ -236,16 +236,22 @@ namespace myTNB
 
         private void UpdateBackgroundImage(bool isLegendVisible = false)
         {
-            nfloat height = GetBGImageHeight(!isLegendVisible);
-            ViewHelper.AdjustFrameSetHeight(_bgImageView, height);
-            _bgImageView.Image = UIImage.FromBundle(isLegendVisible ? UsageConstants.IMG_BGLong : UsageConstants.IMG_BGNormal);
+            if (_bgImageView != null)
+            {
+                nfloat height = GetBGImageHeight(!isLegendVisible);
+                ViewHelper.AdjustFrameSetHeight(_bgImageView, height);
+                _bgImageView.Image = UIImage.FromBundle(isLegendVisible ? UsageConstants.IMG_BGLong : UsageConstants.IMG_BGNormal);
+            }
         }
 
         private void UpdateBGForRefresh()
         {
-            nfloat height = GetScaledHeight(190f);
-            ViewHelper.AdjustFrameSetHeight(_bgImageView, height);
-            _bgImageView.Image = UIImage.FromBundle(UsageConstants.IMG_BGRefresh);
+            if (_bgImageView != null)
+            {
+                nfloat height = GetScaledHeight(190f);
+                ViewHelper.AdjustFrameSetHeight(_bgImageView, height);
+                _bgImageView.Image = UIImage.FromBundle(UsageConstants.IMG_BGRefresh);
+            }
         }
 
         private void AddScrollView()
@@ -570,11 +576,14 @@ namespace myTNB
                     _viewSSMR.AddSubview(_ssmr);
                     if (forRefreshScreen)
                     {
-                        _ssmrRefresh.Hidden = false;
-                        _ssmrRefresh.AddSubview(_ssmr);
-                        ViewHelper.AdjustFrameSetY(_ssmrRefresh, GetYLocationFromFrame(_refresh.Frame, GetScaledHeight(8F)));
-                        ViewHelper.AdjustFrameSetHeight(_ssmrRefresh, GetScaledHeight(116f));
-                        _viewRefresh.AddSubview(_ssmrRefresh);
+                        if (_refresh != null)
+                        {
+                            _ssmrRefresh.Hidden = false;
+                            _ssmrRefresh.AddSubview(_ssmr);
+                            ViewHelper.AdjustFrameSetY(_ssmrRefresh, GetYLocationFromFrame(_refresh.Frame, GetScaledHeight(8F)));
+                            ViewHelper.AdjustFrameSetHeight(_ssmrRefresh, GetScaledHeight(116f));
+                            _viewRefresh.AddSubview(_ssmrRefresh);
+                        }
                     }
                 }
                 else
@@ -588,22 +597,28 @@ namespace myTNB
                         sSMRComponent.SetButtonText(smrAcountInfo.DashboardCTAText);
                         sSMRComponent.SetSRMButtonEnable(smrAcountInfo.IsDashboardCTADisabled);
                         sSMRComponent.ShowHistoryLink(smrAcountInfo.ShowReadingHistoryLink, smrAcountInfo.ReadingHistoryLinkText);
-                        sSMRComponent._labelViewHistory.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                        if (sSMRComponent._labelViewHistory != null)
                         {
-                            OnReadHistoryTap();
-                        }));
-                        sSMRComponent._smrButton.TouchUpInside += (sender, e) =>
-                        {
-                            var ctaChar = smrAcountInfo.DashboardCTAType.ToLower();
-                            if (ctaChar == DashboardHomeConstants.CTA_ShowReadingHistory)
+                            sSMRComponent._labelViewHistory.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                             {
                                 OnReadHistoryTap();
-                            }
-                            else if (ctaChar == DashboardHomeConstants.CTA_ShowSubmitReading)
+                            }));
+                        }
+                        if (sSMRComponent._smrButton != null)
+                        {
+                            sSMRComponent._smrButton.TouchUpInside += (sender, e) =>
                             {
-                                OnSubmitMeterTap();
-                            }
-                        };
+                                var ctaChar = smrAcountInfo.DashboardCTAType.ToLower();
+                                if (ctaChar == DashboardHomeConstants.CTA_ShowReadingHistory)
+                                {
+                                    OnReadHistoryTap();
+                                }
+                                else if (ctaChar == DashboardHomeConstants.CTA_ShowSubmitReading)
+                                {
+                                    OnSubmitMeterTap();
+                                }
+                            };
+                        }
                         _viewSSMR.AddSubview(_ssmr);
                         ViewHelper.AdjustFrameSetHeight(_viewSSMR, sSMRComponent.GetContainerHeight());
                         _viewSSMR.BackgroundColor = UIColor.Clear;
@@ -611,14 +626,17 @@ namespace myTNB
                         AddSSMRViewShadow(ref _ssmr);
                         if (forRefreshScreen)
                         {
-                            _ssmrRefresh.Hidden = false;
-                            _ssmrRefresh.AddSubview(_ssmr);
-                            _viewRefresh.AddSubview(_ssmrRefresh);
-                            ViewHelper.AdjustFrameSetY(_ssmrRefresh, GetYLocationFromFrame(_refresh.Frame, GetScaledHeight(8F)));
-                            ViewHelper.AdjustFrameSetHeight(_ssmrRefresh, sSMRComponent.GetContainerHeight());
-                            ViewHelper.AdjustFrameSetHeight(_viewRefresh, _refresh.Frame.Height + sSMRComponent.GetContainerHeight() + GetScaledHeight(16F));
-                            AddSSMRViewShadow(ref _ssmr);
-                            SetContentViewForRefresh();
+                            if (_refresh != null)
+                            {
+                                _ssmrRefresh.Hidden = false;
+                                _ssmrRefresh.AddSubview(_ssmr);
+                                _viewRefresh.AddSubview(_ssmrRefresh);
+                                ViewHelper.AdjustFrameSetY(_ssmrRefresh, GetYLocationFromFrame(_refresh.Frame, GetScaledHeight(8F)));
+                                ViewHelper.AdjustFrameSetHeight(_ssmrRefresh, sSMRComponent.GetContainerHeight());
+                                ViewHelper.AdjustFrameSetHeight(_viewRefresh, _refresh.Frame.Height + sSMRComponent.GetContainerHeight() + GetScaledHeight(16F));
+                                AddSSMRViewShadow(ref _ssmr);
+                                SetContentViewForRefresh();
+                            }
                         }
                     }
                 }
@@ -1173,15 +1191,21 @@ namespace myTNB
                 View.AddSubview(_viewFooter);
                 _footerViewComponent = new UsageFooterViewComponent(View, footerHeight, indicatorHeight);
                 _viewFooter.AddSubview(_footerViewComponent.GetUI());
-                _footerViewComponent._btnViewBill.TouchUpInside += (sender, e) =>
+                if (_footerViewComponent._btnViewBill != null)
                 {
-                    OnViewDetailsButtonTap();
-                };
-                _footerViewComponent._btnPay.TouchUpInside += (sender, e) =>
+                    _footerViewComponent._btnViewBill.TouchUpInside += (sender, e) =>
+                    {
+                        OnViewDetailsButtonTap();
+                    };
+                }
+                if (_footerViewComponent._btnPay != null)
                 {
-                    DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
-                    OnPayButtonTap(dueData.amountDue);
-                };
+                    _footerViewComponent._btnPay.TouchUpInside += (sender, e) =>
+                    {
+                        DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount?.accNum);
+                        OnPayButtonTap(dueData != null ? dueData.amountDue : 0);
+                    };
+                }
                 if (!isRefreshScreen)
                 {
                     if (_scrollIndicatorView != null)
@@ -1309,8 +1333,14 @@ namespace myTNB
         internal void SetRefreshScreen()
         {
             SetFooterView(true);
-            _scrollViewContent.Hidden = true;
-            _refreshScrollView.Hidden = false;
+            if (_scrollViewContent != null)
+            {
+                _scrollViewContent.Hidden = true;
+            }
+            if (_refreshScrollView != null)
+            {
+                _refreshScrollView.Hidden = false;
+            }
             UpdateBGForRefresh();
             var bcrm = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
             var bcrmMsg = !string.IsNullOrEmpty(bcrm?.DowntimeMessage) && !string.IsNullOrWhiteSpace(bcrm?.DowntimeMessage) ? bcrm?.DowntimeMessage : GetCommonI18NValue(Constants.I18N_BCRMMessage);
