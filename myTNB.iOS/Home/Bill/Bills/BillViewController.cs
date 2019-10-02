@@ -214,7 +214,8 @@ namespace myTNB
                 if (viewController != null)
                 {
                     viewController.AccountNumber = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
-                    var navController = new UINavigationController(viewController);
+                    UINavigationController navController = new UINavigationController(viewController);
+                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                     PresentViewController(navController, true, null);
                 }
             }));
@@ -240,7 +241,8 @@ namespace myTNB
                                 storyBoard.InstantiateViewController("SelectBillsViewController") as SelectBillsViewController;
                             if (selectBillsVC != null)
                             {
-                                var navController = new UINavigationController(selectBillsVC);
+                                UINavigationController navController = new UINavigationController(selectBillsVC);
+                                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                                 PresentViewController(navController, true, null);
                             }
                         }
@@ -295,7 +297,8 @@ namespace myTNB
                 SelectAccountTableViewController viewController =
                     storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
                 viewController.OnSelect = OnSelectAccount;
-                var navController = new UINavigationController(viewController);
+                UINavigationController navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(navController, true, null);
             });
             _accountSelectorContainer.AddSubview(_viewAccountSelector);
@@ -468,7 +471,8 @@ namespace myTNB
                             {
                                 viewController.URL = urlString;
                                 viewController.IsDelegateNeeded = false;
-                                var navController = new UINavigationController(viewController);
+                                UINavigationController navController = new UINavigationController(viewController);
+                                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                                 topVc.PresentViewController(navController, true, null);
                             }
                         }
@@ -694,7 +698,8 @@ namespace myTNB
                         if (viewController != null)
                         {
                             viewController.BillingNumber = DetailedInfoNumber;
-                            var navController = new UINavigationController(viewController);
+                            UINavigationController navController = new UINavigationController(viewController);
+                            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                             PresentViewController(navController, true, null);
                         }
                     }
@@ -725,7 +730,8 @@ namespace myTNB
                         if (viewController != null)
                         {
                             viewController.DetailedInfoNumber = DetailedInfoNumber;
-                            var navController = new UINavigationController(viewController);
+                            UINavigationController navController = new UINavigationController(viewController);
+                            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                             PresentViewController(navController, true, null);
                         }
                     }
@@ -748,7 +754,8 @@ namespace myTNB
                 viewController.FilterIndex = FilterIndex;
                 viewController.FilterTypes = FilterTypes;
                 viewController.ApplyFilter = ApplyFilterWithIndex;
-                var navController = new UINavigationController(viewController);
+                UINavigationController navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(navController, true, null);
             }
         }

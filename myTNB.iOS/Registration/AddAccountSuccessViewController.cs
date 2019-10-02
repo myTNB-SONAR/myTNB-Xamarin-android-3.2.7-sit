@@ -174,11 +174,13 @@ namespace myTNB
                 {
                     UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                     UIViewController homeVc = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
+                    homeVc.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                     PresentViewController(homeVc, true, null);
                 }
 #else
                 UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                 UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
+                loginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(loginVC, true, null);
 #endif
                 ActivityIndicator.Hide();
@@ -206,6 +208,7 @@ namespace myTNB
             UIStoryboard loginStoryboard = UIStoryboard.FromName("Login", null);
             UIViewController preloginVC = (UIViewController)loginStoryboard.InstantiateViewController("PreloginViewController");
             preloginVC.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
+            preloginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(preloginVC, true, null);
         }
     }

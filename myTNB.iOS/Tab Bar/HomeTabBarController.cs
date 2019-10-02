@@ -158,7 +158,7 @@ namespace myTNB
                     {
                         viewController.Promotions = filtered;
                         viewController.OnModalDone = OnPromotionsModalDone;
-                        var navController = new UINavigationController(viewController);
+                        UINavigationController navController = new UINavigationController(viewController);
                         navController.ModalPresentationStyle = UIModalPresentationStyle.OverFullScreen;
                         PresentViewController(navController, true, null);
                     }

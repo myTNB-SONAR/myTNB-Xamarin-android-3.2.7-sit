@@ -244,7 +244,8 @@ namespace myTNB
             {
                 viewController.Promotion = promotion;
                 viewController.OnDone = OnDone;
-                var navController = new UINavigationController(viewController);
+                UINavigationController navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(navController, true, null);
             }
             //ActivityIndicator.Hide();

@@ -220,7 +220,8 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
             UIViewController viewController =
                 storyBoard.InstantiateViewController("RegistrationViewController") as UIViewController;
-            var navController = new UINavigationController(viewController);
+            UINavigationController navController = new UINavigationController(viewController);
+            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(navController, true, null);
         }
 
@@ -228,6 +229,7 @@ namespace myTNB
         {
             UIStoryboard storyBoard = UIStoryboard.FromName("Login", null);
             UIViewController loginVC = storyBoard.InstantiateViewController("LoginViewController") as UIViewController;
+            loginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             ShowViewController(loginVC, this);
         }
 
@@ -244,7 +246,8 @@ namespace myTNB
                     viewController.NavigationTitle = title;
                     viewController.URL = url;
                     viewController.IsDelegateNeeded = false;
-                    var navController = new UINavigationController(viewController);
+                    UINavigationController navController = new UINavigationController(viewController);
+                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                     PresentViewController(navController, true, null);
                 }
                 return;
@@ -280,7 +283,8 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName("FindUs", null);
             FindUsViewController viewController =
                 storyBoard.InstantiateViewController("FindUsViewController") as FindUsViewController;
-            var navController = new UINavigationController(viewController);
+            UINavigationController navController = new UINavigationController(viewController);
+            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(navController, true, null);
         }
 
@@ -293,7 +297,8 @@ namespace myTNB
             if (feedbackVC != null)
             {
                 feedbackVC.isFromPreLogin = true;
-                var navController = new UINavigationController(feedbackVC);
+                UINavigationController navController = new UINavigationController(feedbackVC);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(navController, true, null);
             }
         }

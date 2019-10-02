@@ -55,6 +55,7 @@ namespace myTNB.Registration.CustomerAccounts
 
                 UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                 UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
+                loginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(loginVC, true, null);
             });
             this.NavigationItem.LeftBarButtonItem = btnBack;
@@ -203,12 +204,14 @@ namespace myTNB.Registration.CustomerAccounts
                                 {
                                     UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                                     UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
+                                    loginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                                     PresentViewController(loginVC, true, null);
                                 }
 
 #else
                                 UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                                 UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
+                                loginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                                 PresentViewController(loginVC, true, null);
 #endif
                             }
@@ -320,6 +323,7 @@ namespace myTNB.Registration.CustomerAccounts
                                  }
                                  UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                                  UIViewController homeTabBarVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
+                                 homeTabBarVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                                  PresentViewController(homeTabBarVC, true, null);
                              });
                         }
@@ -423,6 +427,7 @@ namespace myTNB.Registration.CustomerAccounts
 
                                         addAccountSuccessVC.AccountsAddedCount = (int)count;
                                         addAccountSuccessVC.IsDashboardFlow = isDashboardFlow;
+                                        addAccountSuccessVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                                         PresentViewController(addAccountSuccessVC, true, null);
                                     }
                                     HideProgressView();
@@ -577,6 +582,7 @@ namespace myTNB.Registration.CustomerAccounts
             UIStoryboard loginStoryboard = UIStoryboard.FromName("Login", null);
             UIViewController preloginVC = (UIViewController)loginStoryboard.InstantiateViewController("PreloginViewController");
             preloginVC.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
+            preloginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(preloginVC, true, null);
         }
 

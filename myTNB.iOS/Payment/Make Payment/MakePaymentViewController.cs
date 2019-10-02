@@ -103,6 +103,7 @@ namespace myTNB
                     , UIAlertActionStyle.Default, alert => NavigationController?.PopViewController(true)));
                 okCancelAlertController.AddAction(UIAlertAction.Create("Common_Cancel".Translate()
                     , UIAlertActionStyle.Cancel, alert => Debug.WriteLine("Cancel was clicked")));
+                okCancelAlertController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(okCancelAlertController, animated: true, completionHandler: null);
             });
             if (NavigationItem != null)

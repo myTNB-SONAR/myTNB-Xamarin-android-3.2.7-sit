@@ -41,6 +41,7 @@ namespace myTNB.Home.Dashboard.DashboardHome
                             {
                                 viewController.IsFromHome = true;
                                 UINavigationController navController = new UINavigationController(viewController);
+                                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                                 _controller.PresentViewController(navController, true, null);
                             }
                         }
@@ -57,7 +58,10 @@ namespace myTNB.Home.Dashboard.DashboardHome
                 GenericPageRootViewController onboardingVC =
                     onboardingStoryboard.InstantiateViewController("GenericPageRootViewController") as GenericPageRootViewController;
                 onboardingVC.PageType = GenericPageViewEnum.Type.SSMR;
-                var navController = new UINavigationController(onboardingVC);
+                var navController = new UINavigationController(onboardingVC)
+                {
+                    ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                };
                 _controller.PresentViewController(navController, true, null);
             }
         }
@@ -72,7 +76,8 @@ namespace myTNB.Home.Dashboard.DashboardHome
             if (feedbackVC != null)
             {
                 feedbackVC.isFromPreLogin = true;
-                var navController = new UINavigationController(feedbackVC);
+                UINavigationController navController = new UINavigationController(feedbackVC);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 _controller.PresentViewController(navController, true, null);
             }
         }

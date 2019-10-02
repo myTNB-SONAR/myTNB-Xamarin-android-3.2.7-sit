@@ -255,6 +255,7 @@ namespace myTNB.Registration.CustomerAccounts
                     , UIAlertControllerStyle.Alert);
                 okCancelAlertController.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Default, alert => RemoveAccount(acount)));
                 okCancelAlertController.AddAction(UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, alert => Debug.WriteLine("Cancel was clicked")));
+                okCancelAlertController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 _controller?.PresentViewController(okCancelAlertController, true, null);
             };
 

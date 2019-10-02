@@ -193,12 +193,13 @@ namespace myTNB
             string lastDigits = DataManager.DataManager.SharedInstance.RegisteredCards.d.data[index].LastDigits;
             lastDigits = lastDigits.Substring(lastDigits.Length - 4);
             string message = string.Format("Manage_RemoveCardMessage".Translate(), lastDigits);
-            var alert = UIAlertController.Create("Manage_RemoveCardTitle".Translate(), message, UIAlertControllerStyle.Alert);
+            UIAlertController alert = UIAlertController.Create("Manage_RemoveCardTitle".Translate(), message, UIAlertControllerStyle.Alert);
             alert.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Default, (obj) =>
             {
                 ExecuteRemoveAccount(index, lastDigits);
             }));
             alert.AddAction(UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, (obj) => { }));
+            alert.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(alert, animated: true, completionHandler: null);
         }
 

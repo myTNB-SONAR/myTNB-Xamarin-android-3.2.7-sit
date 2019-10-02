@@ -70,7 +70,8 @@ namespace myTNB
                         //viewController.Rating = !string.IsNullOrEmpty(rateString) ? int.Parse(rateString) : 0;
                         viewController.Rating = 0;
                         viewController.TransId = transId;
-                        var navController = new UINavigationController(viewController);
+                        UINavigationController navController = new UINavigationController(viewController);
+                        navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                         Controller?.PresentViewController(navController, true, null);
                     }
                     loadingOverlay?.Hide();

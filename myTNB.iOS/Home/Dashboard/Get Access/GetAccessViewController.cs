@@ -42,7 +42,8 @@ namespace myTNB
             {
                 UIStoryboard storyBoard = UIStoryboard.FromName("GetAccess", null);
                 GetAccessSuccessViewController loginVC = storyBoard.InstantiateViewController("GetAccessSuccessViewController") as GetAccessSuccessViewController;
-                this.ShowViewController(loginVC, this);
+                loginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                ShowViewController(loginVC, this);
             };
         }
 
