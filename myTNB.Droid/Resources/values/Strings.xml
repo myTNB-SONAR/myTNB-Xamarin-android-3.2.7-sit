@@ -266,6 +266,13 @@
   <string name="registration_validation_snackbar_sms_sent_msg">An SMS containing the activation pin has been sent to your number.</string>
   <!-- End of Registration Validation -->
 
+	<!--Forgot Password Verification Code Received Success-->
+	<string name="forgot_password_verification_code_success_title_info">Password Reset Successful</string>
+	<string name="forgot_password_verification_code_success_content_info">Log in using the 8-digit temporary password that was sent to %1$s.</string>
+	<string name="forgot_password_verification_code_success_content_info2">You may change your password after logging in.</string>
+	<string name="forgot_password_verification_code_success_btn_login">Proceed to Login</string>
+	<!--Forgot Password Verification Code Received Success-->
+
 
   <!-- Forget Password Verification Code Exceptions -->
   <string name="forget_password_code_cancelled_exception_error">Something went wrong, Please try again.</string>
@@ -278,7 +285,8 @@
 
   <!--Reset Password-->
   <string name="reset_password_activity_title">Reset Password</string>
-  <string name="reset_password_title_info">This new password will replace your current one. All account details remain unchanged.</string>
+	<string name="reset_password_primary_text">Please enter your new password.</string>
+	<string name="reset_password_title_info">This new password will replace your current one. All account details remain unchanged.</string>
   <string name="reset_password_old_password_hint">Old Password</string>
   <string name="reset_password_new_password_hint">New Password</string>
   <string name="reset_password_new_confirm_password_hint">Confirm New Password</string>
@@ -1444,4 +1452,8 @@ Please try again later.]]>
  <!--End App Unavailable-->
 
 <string name="dayview_mdms_down">Your daily usage information is currently unavailable. Check back in a while!</string>
+
+<string name="duplicate_account_title">Duplicate Account</string>
+<string name="duplicate_account_message">This account number is already added on the list</string>
+<string name="duplicate_account_btn_ok">Ok</string>
 </resources>

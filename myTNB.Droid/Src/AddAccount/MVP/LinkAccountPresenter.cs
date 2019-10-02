@@ -206,13 +206,15 @@ namespace myTNB_Android.Src.AddAccount.MVP
             };
                 var result = await api.AddMultipleAccounts(reqObject);
 
-                if (result.response.IsError)
+                if (result != null && result.response != null && result.response.ErrorCode == "7200")
                 {
                     if (mView.IsActive())
                     {
                         mView.HideAddingAccountProgressDialog();
                     }
                     mView.ShowAddAccountFail(result.response.Message);
+                    mView.ShowAddAccountSuccess(result.response);
+                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                 }
                 else
                 {
@@ -220,8 +222,7 @@ namespace myTNB_Android.Src.AddAccount.MVP
                     {
                         mView.HideAddingAccountProgressDialog();
                     }
-                    mView.ShowAddAccountSuccess(result.response);
-                    MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
+                    mView.ShowAddAccountFail(result.response.DisplayMessage);
                 }
 
             }

@@ -18,6 +18,8 @@ using Refit;
 using System;
 using System.Linq;
 using System.Runtime;
+using myTNB_Android.Src.ForgotPasswordVerificationCodeSuccess.Activity;
+
 
 namespace myTNB_Android.Src.ForgetPassword.Activity
 {
@@ -36,6 +38,8 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         private LoadingOverlay loadingOverlay;
 
         private Snackbar mSnackBar;
+
+        
 
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
@@ -113,6 +117,8 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                     MaxCounter = 30
 
                 };
+
+                
 
                 this.userActionsListener.Start();
             }
@@ -292,28 +298,33 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void ShowSuccess(string message)
         {
-            if (mSnackBar != null && mSnackBar.IsShown)
-            {
-                mSnackBar.Dismiss();
-            }
-            mSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-            .SetAction(GetString(Resource.String.forget_password_btn_close), delegate
-            {
-                mSnackBar.Dismiss();
-                if (!resendCalled)
-                {
-                    this.Finish();
-                }
-                else
-                {
-                    resendCalled = false;
-                }
-            }
-            );
-            View v = mSnackBar.View;
-            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-            tv.SetMaxLines(5);
-            mSnackBar.Show();
+            //if (mSnackBar != null && mSnackBar.IsShown)
+            //{
+            //    mSnackBar.Dismiss();
+            //}
+            //mSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
+            //.SetAction(GetString(Resource.String.forget_password_btn_close), delegate
+            //{
+            //    mSnackBar.Dismiss();
+            //    if (!resendCalled)
+            //    {
+            //        this.Finish();
+            //    }
+            //    else
+            //    {
+            //        resendCalled = false;
+            //    }
+            //}
+            //);
+            //View v = mSnackBar.View;
+            //TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            //tv.SetMaxLines(5);
+            //mSnackBar.Show();
+
+            Intent intent = new Intent(this, typeof(ForgotPasswordVerificationCodeSuccessActivity));
+            intent.PutExtra("email", email);
+            intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            StartActivity(intent);
         }
 
         protected override void OnResume()

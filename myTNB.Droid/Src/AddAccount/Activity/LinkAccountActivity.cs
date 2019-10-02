@@ -298,6 +298,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
         public void ShowAddAnotherAccountScreen()
         {
+            AddAccountUtils.SetAccountList(accountList, additionalAccountList);
             RunOnUiThread(() => StartActivityForResult(typeof(AddAccountActivity), ADD_ACCOUNT_REQUEST_CODE));
         }
 
@@ -382,6 +383,8 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 };
 
                 TextViewUtils.SetMuseoSans500Typeface(done, confirm);
+
+                AddAccountUtils.ClearList();
             }
             catch (Exception e)
             {

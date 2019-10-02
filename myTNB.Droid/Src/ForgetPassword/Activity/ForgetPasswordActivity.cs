@@ -148,6 +148,8 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         {
             base.OnCreate(savedInstanceState);
 
+            
+
             try
             {
                 // Create your application here

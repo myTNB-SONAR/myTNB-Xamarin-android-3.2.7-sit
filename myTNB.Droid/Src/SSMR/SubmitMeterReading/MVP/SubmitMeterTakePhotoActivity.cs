@@ -402,7 +402,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 {
                     UpdateTakePhotoFormattedNote();
                 }
-                
+
             }
             else
             {
@@ -526,7 +526,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     btnSubmitPhotoToOCR.Enabled = false;
                     btnSubmitPhotoToOCR.Background = GetDrawable(Resource.Drawable.silver_chalice_button_background);
                 }
-                
+
             }
         }
 
@@ -635,9 +635,9 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 int height = canvas.Height;
                 int width = canvas.Width;
                 int left = (int)(width - (width * .809));
-                int top = (int)(height - (height * .70));
+                int top = (int)(height - (height * .75));
                 int right = (int)(width - (width * .191));
-                int bottom = (int)(height - (height * .25));
+                int bottom = (int)(height - (height * .40));
                 cropAreaRect = new Rect(0, top, width, bottom);
                 canvas.DrawRect(cropAreaRect, rectPaint);
 

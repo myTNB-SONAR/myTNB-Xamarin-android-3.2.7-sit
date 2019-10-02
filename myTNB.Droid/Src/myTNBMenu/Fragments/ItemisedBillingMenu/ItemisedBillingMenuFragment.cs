@@ -492,7 +492,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
             else if (accountChargeModel.IsPaidExtra)
             {
-                itemisedBillingInfoNote.Text = "I’ve paid extra";
+                if (mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId))
+                {
+                    imageResource = Resource.Drawable.bill_paid_extra_re_banner;
+                    itemisedBillingInfoNote.Text = "I’ve been paid extra";
+                }
+                else
+                {
+                    itemisedBillingInfoNote.Text = "I’ve paid extra";
+                }
                 itemisedBillingInfoAmount.Text = (Math.Abs(accountChargeModel.AmountDue)).ToString("#,##0.00");
                 itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
                 itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#20bd4c"));
@@ -502,8 +510,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
             else if (accountChargeModel.IsNeedPay)
             {
-                imageResource = Resource.Drawable.bill_need_to_pay_banner;
-                itemisedBillingInfoNote.Text = "I need to pay";
+                if (mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId))
+                {
+                    imageResource = Resource.Drawable.bill_paid_extra_re_banner;
+                    itemisedBillingInfoNote.Text = "My earnings";
+                }
+                else
+                {
+                    imageResource = Resource.Drawable.bill_need_to_pay_banner;
+                    itemisedBillingInfoNote.Text = "I need to pay";
+                }
+                
                 itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
                 itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#49494a"));
                 itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#49494a"));
