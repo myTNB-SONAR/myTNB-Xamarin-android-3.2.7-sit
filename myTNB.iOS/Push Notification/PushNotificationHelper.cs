@@ -15,7 +15,7 @@ namespace myTNB
 {
     public static class PushNotificationHelper
     {
-        static UserNotificationResponseModel _userNotifications = new UserNotificationResponseModel();
+        private static UserNotificationResponseModel _userNotifications = new UserNotificationResponseModel();
         /// <summary>
         /// Registers the device.
         /// </summary>
@@ -98,6 +98,7 @@ namespace myTNB
                 Debug.WriteLine("Error: " + e.Message);
             }
         }
+
         /// <summary>
         /// Gets the notifications.
         /// </summary>
@@ -111,6 +112,7 @@ namespace myTNB
                 DataManager.DataManager.SharedInstance.IsLoadingFromDashboard = false;
                 //NSNotificationCenter.DefaultCenter.PostNotificationName("OnReceiveNotificationFromDashboard", new NSObject());
             }
+
             DataManager.DataManager.SharedInstance.UserNotificationResponse = _userNotifications;
             res = _userNotifications?.d?.didSucceed == true;
 
@@ -150,7 +152,7 @@ namespace myTNB
             {
                 try
                 {
-                    int count = DataManager.DataManager.SharedInstance.UserNotifications.FindAll(x => x.IsRead.ToLower().Equals("false")).Count;
+                    int count = DataManager.DataManager.SharedInstance.UserNotifications.FindAll(x => x.IsAccountNumberExist && x.IsRead.ToLower().Equals("false")).Count;
                     return count < 0 ? 0 : count;
                 }
                 catch (Exception e)
@@ -162,7 +164,7 @@ namespace myTNB
             return 0;
         }
 
-        static Task GetUserNotifications()
+        private static Task GetUserNotifications()
         {
             return Task.Factory.StartNew(() =>
             {
@@ -208,7 +210,7 @@ namespace myTNB
         /// </summary>
         public static void GetUserNotificationPreferences()
         {
-            Task[] taskList = new Task[]{
+            Task[] taskList = {
                 GetUserNotificationTypes(),
                 GetUserNotificationChannels()
             };
@@ -231,7 +233,7 @@ namespace myTNB
             });
         }
 
-        static Task GetUserNotificationChannels()
+        private static Task GetUserNotificationChannels()
         {
             return Task.Factory.StartNew(() =>
             {

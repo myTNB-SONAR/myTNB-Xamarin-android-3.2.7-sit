@@ -36,6 +36,22 @@ namespace myTNB.Model
         public string NotificationTitle { set; get; } = string.Empty;
         public string NotificationType { set; get; } = string.Empty;
         public string Target { set; get; } = string.Empty;
+        public bool IsAccountNumberExist
+        {
+            get
+            {
+                if (DataManager.DataManager.SharedInstance != null
+                    && DataManager.DataManager.SharedInstance.AccountRecordsList != null
+                    && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null
+                    && DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count > 0)
+                {
+                    int accIndex = DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindIndex(x => x.accNum == AccountNum
+                        || NotificationType == "ODN");
+                    return accIndex > -1;
+                }
+                return false;
+            }
+        }
 
         public class AccountDetailsModel
         {

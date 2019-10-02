@@ -17,7 +17,7 @@ namespace myTNB.PushNotification
         public PushNotificationDataSource(PushNotificationViewController controller, List<UserNotificationDataModel> data)
         {
             _controller = controller;
-            _data = data;
+            _data = data.FindAll(x=>x.IsAccountNumberExist);
         }
 
         public override nint NumberOfSections(UITableView tableView)
@@ -33,7 +33,7 @@ namespace myTNB.PushNotification
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
             UserNotificationDataModel notification = _data[indexPath.Row];
-            var cell = tableView.DequeueReusableCell("pushNotificationCell") as NotificationViewCell;
+            NotificationViewCell cell = tableView.DequeueReusableCell("pushNotificationCell") as NotificationViewCell;
             if (cell == null)
             {
                 cell = new NotificationViewCell("pushNotificationCell");
