@@ -1,4 +1,5 @@
 ﻿using CoreGraphics;
+using Force.DeepCloner;
 using Foundation;
 using myTNB.Model;
 using myTNB.SitecoreCMS.Model;
@@ -60,8 +61,8 @@ namespace myTNB
             NotifCenterUtility.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
             NotifCenterUtility.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
 
-            _previousMeterList = IsFromDashboard ? SSMRActivityInfoCache.DashboardPreviousReading
-                : SSMRActivityInfoCache.ViewPreviousReading;
+            _previousMeterList = IsFromDashboard ? SSMRActivityInfoCache.DashboardPreviousReading.DeepClone()
+                : SSMRActivityInfoCache.ViewPreviousReading.DeepClone();
             _isThreePhase = _previousMeterList.Count > 1;
 
             SetNavigation();
@@ -69,7 +70,7 @@ namespace myTNB
             AddFooterView();
             Initialization();
             PrepareTakePhotoHeaderView();
-            PrepareMeterReadingCard();
+            PrepareMeterReadingCard(false);
             PrepareNoteView();
         }
 
@@ -265,8 +266,11 @@ namespace myTNB
 
             if (isError)
             {
-                CGPoint point = new CGPoint(0, _meterReadScrollView.ContentSize.Height - _meterReadScrollView.Bounds.Size.Height + _meterReadScrollView.ContentInset.Bottom);
-                _meterReadScrollView.SetContentOffset(point, true);
+                if (ViewHeight - GetScaledHeight(80.0f) < _noteView.Frame.GetMaxY() + NavigationController?.NavigationBar?.Frame.Height)
+                {
+                    CGPoint point = new CGPoint(0, _meterReadScrollView.ContentSize.Height - _meterReadScrollView.Bounds.Size.Height + _meterReadScrollView.ContentInset.Bottom);
+                    _meterReadScrollView.SetContentOffset(point, true);
+                }
             }
         }
 
@@ -394,7 +398,7 @@ namespace myTNB
             }
         }
 
-        private void PrepareMeterReadingCard(bool isBusinessError = false)
+        private void PrepareMeterReadingCard(bool fromOCR, bool isBusinessError = false)
         {
             if (_previousMeterList != null)
             {
@@ -437,7 +441,14 @@ namespace myTNB
                     _meterCardComponentList.Add(sSMRMeterCardComponent);
                 }
                 lastCardYPos = yPos;
-                ShowGeneralInlineError(hasOCRError, errorMessage);
+                if (fromOCR)
+                {
+                    ShowGeneralInlineError(hasOCRError, errorMessage);
+                }
+                else
+                {
+                    ShowGeneralInlineError(false, string.Empty);
+                }
             }
         }
 
@@ -569,7 +580,7 @@ namespace myTNB
                         }
                     }
                 }
-                UpdateUIForReadings();
+                UpdateUIForReadings(true);
             }
         }
 
@@ -591,14 +602,14 @@ namespace myTNB
                         }
                     }
                 }
-                UpdateUIForReadings(true);
+                UpdateUIForReadings(false, true);
             }
         }
 
-        private void UpdateUIForReadings(bool isBusinessError = false)
+        private void UpdateUIForReadings(bool fromOCR, bool isBusinessError = false)
         {
             ClearScrollViewSubViews();
-            PrepareMeterReadingCard(isBusinessError);
+            PrepareMeterReadingCard(fromOCR, isBusinessError);
         }
 
         private void ClearScrollViewSubViews()
