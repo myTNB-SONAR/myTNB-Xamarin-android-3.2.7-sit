@@ -217,7 +217,8 @@ namespace myTNB
                 FAQViewController viewController =
                     storyBoard.InstantiateViewController("FAQViewController") as FAQViewController;
                 viewController.faqId = faqId;
-                var navController = new UINavigationController(viewController);
+                UINavigationController navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 topVc.PresentViewController(navController, true, null);
             }
         }

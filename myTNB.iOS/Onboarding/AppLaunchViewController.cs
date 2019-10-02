@@ -956,6 +956,7 @@ namespace myTNB
             GenericPageRootViewController onboardingVC = onboardingStoryboard.InstantiateViewController("GenericPageRootViewController") as GenericPageRootViewController;
             onboardingVC.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
             onboardingVC.PageType = GenericPageViewEnum.Type.Onboarding;
+            onboardingVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(onboardingVC, true, null);
         }
 
@@ -964,6 +965,7 @@ namespace myTNB
             UIStoryboard loginStoryboard = UIStoryboard.FromName("Login", null);
             UIViewController preloginVC = (UIViewController)loginStoryboard.InstantiateViewController("PreloginViewController");
             preloginVC.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
+            preloginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(preloginVC, true, null);
         }
 
@@ -971,6 +973,7 @@ namespace myTNB
         {
             UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
             UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
+            loginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             ShowViewController(loginVC, this);
         }
 
@@ -1244,7 +1247,8 @@ namespace myTNB
             {
                 viewController.WillHideBackButton = willHideBackButton;
                 viewController.IsFromLogin = true;
-                var navController = new UINavigationController(viewController);
+                UINavigationController navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(navController, true, null);
             }
             ActivityIndicator.Hide();

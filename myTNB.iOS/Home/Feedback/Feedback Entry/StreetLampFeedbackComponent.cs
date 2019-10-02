@@ -180,7 +180,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 viewController.Items = GetStateList();
                 viewController.OnSelect = OnSelectAction;
                 viewController.SelectedIndex = DataManager.DataManager.SharedInstance.CurrentSelectedStateForFeedbackIndex;
-                var navController = new UINavigationController(viewController);
+                UINavigationController navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 _controller.PresentViewController(navController, true, null);
             }));
 
@@ -395,6 +396,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                             , UIAlertActionStyle.Cancel, alert => Debug.WriteLine("Cancel was clicked")));
                         okCancelAlertController.AddAction(UIAlertAction.Create("Feedback_GoToSettings".Translate()
                             , UIAlertActionStyle.Default, alert => NavigateToSettings()));
+                        okCancelAlertController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                         _controller.PresentViewController(okCancelAlertController, true, null);
                     }
                 };

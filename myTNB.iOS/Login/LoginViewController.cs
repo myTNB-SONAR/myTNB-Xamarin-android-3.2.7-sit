@@ -414,7 +414,8 @@ namespace myTNB
                                     storyBoard.InstantiateViewController("ResetPasswordViewController") as ResetPasswordViewController;
                                 viewController._username = _eMail;
                                 viewController._currentPassword = _password;
-                                var navController = new UINavigationController(viewController);
+                                UINavigationController navController = new UINavigationController(viewController);
+                                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                                 PresentViewController(navController, true, null);
                                 ActivityIndicator.Hide();
                             }
@@ -464,7 +465,8 @@ namespace myTNB
             {
                 viewController.WillHideBackButton = willHideBackButton;
                 viewController.IsFromLogin = true;
-                var navController = new UINavigationController(viewController);
+                UINavigationController navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(navController, true, null);
             }
             ActivityIndicator.Hide();
@@ -517,6 +519,7 @@ namespace myTNB
 
                         UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                         UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
+                        loginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                         ShowViewController(loginVC, this);
                         ActivityIndicator.Hide();
                     }
@@ -580,7 +583,8 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName("ForgotPassword", null);
             ForgotPasswordViewController viewController =
                 storyBoard.InstantiateViewController("ForgotPasswordViewController") as ForgotPasswordViewController;
-            var navController = new UINavigationController(viewController);
+            UINavigationController navController = new UINavigationController(viewController);
+            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(navController, true, null);
         }
 
@@ -622,7 +626,8 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName(storyboardName, null);
             UIViewController viewController =
                 storyBoard.InstantiateViewController(storyboardID) as UIViewController;
-            var navController = new UINavigationController(viewController);
+            UINavigationController navController = new UINavigationController(viewController);
+            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(navController, true, null);
         }
 
@@ -659,6 +664,7 @@ namespace myTNB
                                 DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[0];
                                 UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                                 UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
+                                loginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                                 ShowViewController(loginVC, this);
                                 ActivityIndicator.Hide();
                             }
@@ -666,6 +672,7 @@ namespace myTNB
                             {
                                 UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                                 UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
+                                loginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                                 ShowViewController(loginVC, this);
                                 ActivityIndicator.Hide();
                             }
@@ -677,6 +684,7 @@ namespace myTNB
 
                             UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
                             UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
+                            loginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                             ShowViewController(loginVC, this);
                             ActivityIndicator.Hide();
                         }

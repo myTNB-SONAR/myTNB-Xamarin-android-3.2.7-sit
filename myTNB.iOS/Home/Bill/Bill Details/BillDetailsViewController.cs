@@ -620,7 +620,8 @@ namespace myTNB
                             if (viewController != null)
                             {
                                 viewController.IsFromUsage = true;
-                                var navController = new UINavigationController(viewController);
+                                UINavigationController navController = new UINavigationController(viewController);
+                                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                                 PresentViewController(navController, true, null);
                             }
                         }
@@ -646,7 +647,8 @@ namespace myTNB
                                 storyBoard.InstantiateViewController("SelectBillsViewController") as SelectBillsViewController;
                             if (selectBillsVC != null)
                             {
-                                var navController = new UINavigationController(selectBillsVC);
+                                UINavigationController navController = new UINavigationController(selectBillsVC);
+                                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                                 PresentViewController(navController, true, null);
                             }
                         }

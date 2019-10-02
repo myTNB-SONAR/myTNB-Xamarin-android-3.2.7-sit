@@ -78,6 +78,7 @@ namespace myTNB
 
                                         if ((vc is DashboardHomeViewController) || (vc is DashboardViewController))
                                         {
+                                            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                                             vc.PresentViewController(navController, true, null);
                                         }
                                     }
@@ -86,6 +87,7 @@ namespace myTNB
                         }
                         else
                         {
+                            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                             topVc.PresentViewController(navController, true, null);
                         }
                     }

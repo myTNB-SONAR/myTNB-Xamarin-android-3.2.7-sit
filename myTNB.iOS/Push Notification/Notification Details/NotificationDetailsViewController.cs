@@ -315,7 +315,8 @@ namespace myTNB
                             {
                                 viewController.URL = urlString;
                                 viewController.IsDelegateNeeded = false;
-                                var navController = new UINavigationController(viewController);
+                                UINavigationController navController = new UINavigationController(viewController);
+                                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                                 topVc.PresentViewController(navController, true, null);
                             }
                         }
@@ -499,7 +500,8 @@ namespace myTNB
                         if (viewController != null)
                         {
                             DataManager.DataManager.SharedInstance.SelectAccount(NotificationInfo.AccountNum);
-                            var navController = new UINavigationController(viewController);
+                            UINavigationController navController = new UINavigationController(viewController);
+                            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                             PresentViewController(navController, true, null);
                         }
                     }

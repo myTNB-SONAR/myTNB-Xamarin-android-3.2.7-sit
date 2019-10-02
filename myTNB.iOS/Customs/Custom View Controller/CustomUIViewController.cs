@@ -181,6 +181,7 @@ namespace myTNB
                     UIApplication.SharedApplication.OpenUrl(url);
                 }
             }));
+            alert.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(alert, true, null);
         }
         #endregion

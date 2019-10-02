@@ -298,8 +298,9 @@ namespace myTNB
 
         void DisplayAlertView(string title, string message)
         {
-            var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
+            UIAlertController alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
             alert.AddAction(UIAlertAction.Create("Ok", UIAlertActionStyle.Cancel, null));
+            alert.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(alert, animated: true, completionHandler: null);
         }
 

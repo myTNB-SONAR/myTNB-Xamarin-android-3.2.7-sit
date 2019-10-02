@@ -14,23 +14,26 @@ namespace myTNB
 
         public static void SaveDues(DueAmountDataModel dueAmount)
         {
-            string accountNumber = dueAmount?.accNum ?? string.Empty;
-            if (string.IsNullOrEmpty(accountNumber) && string.IsNullOrWhiteSpace(accountNumber))
+            if (dueAmount != null)
             {
-                Debug.WriteLine("Error AmoutDueCache/SaveDues, Account Number is Empty");
-                return;
-            }
-            if (AmountDueDictionary == null)
-            {
-                AmountDueDictionary = new Dictionary<string, DueAmountDataModel>();
-            }
-            if (IsAccountExist(accountNumber))
-            {
-                AmountDueDictionary[accountNumber] = dueAmount;
-            }
-            else
-            {
-                AmountDueDictionary.Add(accountNumber, dueAmount);
+                string accountNumber = dueAmount.accNum;
+                if (string.IsNullOrEmpty(accountNumber) || string.IsNullOrWhiteSpace(accountNumber))
+                {
+                    Debug.WriteLine("Error AmoutDueCache/SaveDues, Account Number is Empty");
+                    return;
+                }
+                if (AmountDueDictionary == null)
+                {
+                    AmountDueDictionary = new Dictionary<string, DueAmountDataModel>();
+                }
+                if (IsAccountExist(accountNumber))
+                {
+                    AmountDueDictionary[accountNumber] = dueAmount;
+                }
+                else
+                {
+                    AmountDueDictionary.Add(accountNumber, dueAmount);
+                }
             }
         }
         #region Public Functions

@@ -661,6 +661,7 @@ namespace myTNB.Registration
                 viewController.OnSelect = OnSelectAction;
                 viewController.SelectedIndex = DataManager.DataManager.SharedInstance.CurrentSelectedAccountTypeIndex;
                 var navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(navController, true, null);
             });
             viewAccountType.AddGestureRecognizer(tapAccounType);

@@ -52,6 +52,11 @@ namespace myTNB
             return _containerView;
         }
 
+        public UIView GetView()
+        {
+            return _containerView;
+        }
+
         private void CreatePaymentLabels()
         {
             nfloat labelWidth = (_width / 2) - BaseMarginWidth16;

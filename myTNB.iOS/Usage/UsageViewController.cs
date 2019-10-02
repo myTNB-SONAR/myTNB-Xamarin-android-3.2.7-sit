@@ -47,7 +47,8 @@ namespace myTNB
                 storyBoard.InstantiateViewController("SSMRReadingHistoryViewController") as SSMRReadingHistoryViewController;
             if (viewController != null)
             {
-                var navController = new UINavigationController(viewController);
+                UINavigationController navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(navController, true, null);
             }
         }
@@ -60,7 +61,8 @@ namespace myTNB
             if (viewController != null)
             {
                 viewController.IsFromDashboard = true;
-                var navController = new UINavigationController(viewController);
+                UINavigationController navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(navController, true, null);
             }
         }
@@ -79,7 +81,8 @@ namespace myTNB
                         {
                             viewController.AccountNumber = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
                             viewController.IsFreshCall = true;
-                            var navController = new UINavigationController(viewController);
+                            UINavigationController navController = new UINavigationController(viewController);
+                            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                             PresentViewController(navController, true, null);
                         }
                     }
@@ -105,7 +108,8 @@ namespace myTNB
                         if (viewController != null)
                         {
                             viewController.IsFromUsage = true;
-                            var navController = new UINavigationController(viewController);
+                            UINavigationController navController = new UINavigationController(viewController);
+                            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                             PresentViewController(navController, true, null);
                         }
                     }
@@ -131,7 +135,8 @@ namespace myTNB
                         if (selectBillsVC != null)
                         {
                             selectBillsVC.SelectedAccountDueAmount = amountDue;
-                            var navController = new UINavigationController(selectBillsVC);
+                            UINavigationController navController = new UINavigationController(selectBillsVC);
+                            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                             PresentViewController(navController, true, null);
                         }
                     }
@@ -242,6 +247,7 @@ namespace myTNB
                                         else
                                         {
                                             SetRefreshScreen();
+                                            SetContentViewForRefresh();
                                             HideREAmountView();
                                             HideSSMRViewForRefresh();
                                         }
