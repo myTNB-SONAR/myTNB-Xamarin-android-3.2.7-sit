@@ -58,8 +58,8 @@ namespace myTNB
 
             base.ViewDidLoad();
 
-            NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
-            NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
+            NotifCenterUtility.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
+            NotifCenterUtility.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
 
             _previousMeterList = IsFromDashboard ? SSMRActivityInfoCache.DashboardPreviousReading.DeepClone()
                 : SSMRActivityInfoCache.ViewPreviousReading.DeepClone();

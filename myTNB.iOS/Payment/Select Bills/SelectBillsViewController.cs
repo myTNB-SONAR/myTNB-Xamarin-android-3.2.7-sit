@@ -46,7 +46,7 @@ namespace myTNB
             {
                 appDelegate._selectBillsVC = this;
             }
-            NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.DidShowNotification, (NSNotification obj) =>
+            NotifCenterUtility.AddObserver(UIKeyboard.DidShowNotification, (NSNotification obj) =>
             {
                 var userInfo = obj.UserInfo;
                 NSValue keyboardFrame = userInfo.ValueForKey(UIKeyboard.FrameEndUserInfoKey) as NSValue;
@@ -54,7 +54,7 @@ namespace myTNB
                 SelectBillsTableView.Frame = new CGRect(0, 0, View.Frame.Width
                     , View.Frame.Height - (keyboardRectangle.Height));
             });
-            NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.DidHideNotification, (NSNotification obj) =>
+            NotifCenterUtility.AddObserver(UIKeyboard.DidHideNotification, (NSNotification obj) =>
             {
                 SetDefaultTableFrame();
             });

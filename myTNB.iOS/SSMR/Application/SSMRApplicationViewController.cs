@@ -42,8 +42,8 @@ namespace myTNB
             PageName = SSMRConstants.Pagename_SSMRApplication;
             NavigationController.NavigationBarHidden = false;
             base.ViewDidLoad();
-            NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
-            NSNotificationCenter.DefaultCenter.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
+            NotifCenterUtility.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
+            NotifCenterUtility.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
             AddTnCSection();
             AddDetailsSection();
             if (!IsApplication)

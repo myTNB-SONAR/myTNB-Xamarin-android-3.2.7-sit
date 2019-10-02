@@ -181,6 +181,10 @@ namespace myTNB
                                             {
                                                 SetREAmountViewForRefresh();
                                             }
+                                            else
+                                            {
+                                                HideREAmountView();
+                                            }
                                             CallGetSMRAccountActivityInfo(true, accNum);
                                         }
                                     }
@@ -238,6 +242,8 @@ namespace myTNB
                                         else
                                         {
                                             SetRefreshScreen();
+                                            HideREAmountView();
+                                            HideSSMRViewForRefresh();
                                         }
                                     }
 
