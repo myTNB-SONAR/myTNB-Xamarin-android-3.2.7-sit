@@ -247,6 +247,7 @@ namespace myTNB
                                         else
                                         {
                                             SetRefreshScreen();
+                                            SetContentViewForRefresh();
                                             HideREAmountView();
                                             HideSSMRViewForRefresh();
                                         }
