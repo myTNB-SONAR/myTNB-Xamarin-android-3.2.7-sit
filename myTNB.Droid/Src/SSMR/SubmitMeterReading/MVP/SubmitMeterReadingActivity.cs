@@ -784,7 +784,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 if (meterReadingInputLayoutList.Count > 0)
                 {
                     MeterReadingInputLayout inputLayout = meterReadingInputLayoutList.Find(input => { return input.GetMeterId().ToUpper() == model.meterReadingUnit.ToUpper(); });
-                    if (inputLayout != null && inputLayout.HasReadingInput())
+                    if (inputLayout != null)
                     {
                         model.isValidated = inputLayout.HasReadingInput();
                     }
