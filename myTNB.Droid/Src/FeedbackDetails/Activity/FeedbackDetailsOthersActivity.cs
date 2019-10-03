@@ -196,7 +196,7 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Feedback Details Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Feedback Details");
             }
             catch (Exception e)
             {

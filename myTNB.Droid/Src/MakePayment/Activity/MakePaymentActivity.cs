@@ -122,7 +122,7 @@ namespace myTNB_Android.Src.MakePayment.Activity
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Select Payment Method");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Payment Methods");
             }
             catch (Exception e)
             {

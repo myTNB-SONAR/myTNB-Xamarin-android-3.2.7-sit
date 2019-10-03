@@ -166,7 +166,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                     activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
                     activity.UnsetToolbarBackground();
                 }
-                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "More Screen");
+                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "More");
             }
             catch (ClassCastException e)
             {

@@ -373,7 +373,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Apply SMR Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Apply SMR");
             }
             catch (Exception e)
             {

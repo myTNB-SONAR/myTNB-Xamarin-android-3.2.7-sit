@@ -614,7 +614,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Selec Bills Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Select Bills");
             }
             catch (Exception e)
             {

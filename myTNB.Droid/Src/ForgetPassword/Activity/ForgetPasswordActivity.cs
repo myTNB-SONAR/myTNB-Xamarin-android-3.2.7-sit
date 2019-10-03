@@ -131,7 +131,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Forget Password Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Forgot Password");
             }
             catch (Exception e)
             {

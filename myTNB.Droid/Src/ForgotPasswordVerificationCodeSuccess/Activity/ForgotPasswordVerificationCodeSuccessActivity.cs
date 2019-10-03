@@ -88,7 +88,7 @@ namespace myTNB_Android.Src.ForgotPasswordVerificationCodeSuccess.Activity
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Reset Password Success Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Reset Password Success");
             }
             catch (Exception e)
             {
