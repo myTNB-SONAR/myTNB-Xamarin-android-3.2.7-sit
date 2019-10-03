@@ -10,13 +10,13 @@ using System.Linq;
 
 namespace myTNB
 {
-    public partial class AddAccountSuccessViewController : UIViewController
+    public partial class AddAccountSuccessViewController : CustomUIViewController
     {
         public int AccountsAddedCount = 0;
         public bool IsDashboardFlow = false;
         const float TopPadding = 48f;
         const float RowHeight = 115f;
-        const float HeaderViewHeight = 170f;
+        const float HeaderViewHeight = 131f;
         CustomerAccountRecordListModel GetStartedList = new CustomerAccountRecordListModel();
 
         public AddAccountSuccessViewController(IntPtr handle) : base(handle)
@@ -25,31 +25,33 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            PageName = AddAccountConstants.PageName;
             base.ViewDidLoad();
             SetupSuperViewBackground();
 
-            AccountsTableView.Frame = new CGRect(16, TopPadding, View.Frame.Width - 32, DeviceHelper.GetScaledHeight(HeaderViewHeight));
+            AccountsTableView.Frame = new CGRect(BaseMarginWidth16, TopPadding, ViewWidth - GetScaledWidth(32), GetScaledHeight(HeaderViewHeight));
             AccountsTableView.Source = new AddAccountSuccessDataSource(GetStartedList);
-            AccountsTableView.Layer.CornerRadius = 4f;
+            AccountsTableView.Layer.CornerRadius = GetScaledHeight(4f);
             AccountsTableView.RowHeight = RowHeight;
             AccountsTableView.BackgroundColor = UIColor.White;
             AccountsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             AccountsTableView.Bounces = false;
 
-            var headerView = new UIView((new CGRect(0, 0, View.Frame.Width - 32, DeviceHelper.GetScaledHeight(HeaderViewHeight))));
+            var headerView = new UIView((new CGRect(0, 0, ViewWidth - GetScaledWidth(32), GetScaledHeight(HeaderViewHeight))));
             headerView.BackgroundColor = UIColor.White;
 
-            var imgViewSuccess = new UIImageView(UIImage.FromBundle("Circle-With-Check-Green"))
+            nfloat imgWidth = GetScaledWidth(64);
+            nfloat imgXLoc = (headerView.Frame.Width - imgWidth) / 2;
+            UIImageView imgViewSuccess = new UIImageView(new CGRect(imgXLoc, GetScaledHeight(24), imgWidth, imgWidth))
             {
-                Frame = new CGRect((headerView.Frame.Width / 2) - DeviceHelper.GetScaledWidth(25), 49, DeviceHelper.GetScaledWidth(50), DeviceHelper.GetScaledHeight(50)),
-                ContentMode = UIViewContentMode.ScaleAspectFill
+                Image = UIImage.FromBundle(AddAccountConstants.IMG_CircleGreen)
             };
 
             var lblPasswordSuccess = new UILabel
             {
-                Frame = new CGRect(DeviceHelper.GetScaledWidth(18), DeviceHelper.GetScaledHeight(109), headerView.Frame.Width - 36, 18),
-                AttributedText = new NSAttributedString("Registration_AddAccountSuccessMessage".Translate()
-                    , font: MyTNBFont.MuseoSans18_500
+                Frame = new CGRect(GetScaledWidth(18), imgViewSuccess.Frame.GetMaxY() + GetScaledHeight(10), headerView.Frame.Width - GetScaledWidth(36), GetScaledHeight(18)),
+                AttributedText = new NSAttributedString(GetI18NValue(AddAccountConstants.I18N_AddAcctSuccessMsg)
+                    , font: TNBFont.MuseoSans_18_500
                     , foregroundColor: MyTNBColor.PowerBlue
                     , strokeWidth: 0
                 ),
@@ -61,15 +63,19 @@ namespace myTNB
 
             AccountsTableView.TableHeaderView = headerView;
 
-            btnStart.SetTitle("Common_Done".Translate(), UIControlState.Normal);
+            UIButton btnStart = new UIButton(new CGRect(GetScaledWidth(18), View.Frame.Height - GetScaledHeight(48) - GetScaledHeight(24), ViewWidth - (GetScaledWidth(18) * 2), GetScaledHeight(48)));
+            btnStart.SetTitle(GetCommonI18NValue(AddAccountConstants.I18N_Done), UIControlState.Normal);
             btnStart.SetTitleColor(UIColor.White, UIControlState.Normal);
             btnStart.BackgroundColor = MyTNBColor.FreshGreen;
-            btnStart.Font = MyTNBFont.MuseoSans16_500;
+            btnStart.Font = TNBFont.MuseoSans_16_500;
+            btnStart.Layer.CornerRadius = GetScaledHeight(5.0f);
 
             btnStart.TouchUpInside += (object sender, EventArgs e) =>
             {
                 GetStarted();
             };
+
+            View.AddSubview(btnStart);
 
             float maxTableHeight = (float)(View.Frame.Height - btnStart.Frame.Height - DeviceHelper.GetScaledHeight(TopPadding * 2));
             float tableHeight = (float)AccountsTableView.Frame.Height;
@@ -156,19 +162,9 @@ namespace myTNB
                 DataManager.DataManager.SharedInstance.PreviousSelectedAccountIndex = 0;
                 DataManager.DataManager.SharedInstance.AccountsAddedCount = AccountsAddedCount;
 
-#if true // CREATE_TABBAR
                 if (IsDashboardFlow)
                 {
-                    //var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
-                    //var topVc = AppDelegate.GetTopViewController(baseRootVc);
                     ViewHelper.DismissControllersAndSelectTab(this, 0, true, true);
-
-                    //var newtopVc = AppDelegate.GetTopViewController(baseRootVc);
-                    //var newPresenting = newtopVc?.PresentingViewController;
-                    //if (!(newPresenting is HomeTabBarController))
-                    //{
-                    //    Debug.WriteLine("newPresenting = " + newPresenting.GetType().ToString());
-                    //}
                 }
                 else
                 {
@@ -177,12 +173,6 @@ namespace myTNB
                     homeVc.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                     PresentViewController(homeVc, true, null);
                 }
-#else
-                UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
-                UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
-                loginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                PresentViewController(loginVC, true, null);
-#endif
                 ActivityIndicator.Hide();
             }
             else

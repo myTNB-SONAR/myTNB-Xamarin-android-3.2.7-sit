@@ -224,7 +224,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="56421">
-                                                    <rect key="frame" x="20" y="25" width="310" height="21"/>
+                                                    <rect key="frame" x="20" y="28" width="310" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="56431"/>
                                                     </constraints>
@@ -233,7 +233,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" bounces="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" bouncesZoom="NO" editable="NO" textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="56423">
-                                                    <rect key="frame" x="16" y="51" width="314" height="55"/>
+                                                    <rect key="frame" x="16" y="54" width="314" height="52"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="26" id="56434">
                                                             <variation key="heightClass=regular-widthClass=compact" constant="55"/>
@@ -247,7 +247,7 @@
                                                 <constraint firstItem="56420" firstAttribute="top" secondItem="56394" secondAttribute="top" constant="9" id="56424"/>
                                                 <constraint firstItem="56420" firstAttribute="leading" secondItem="56394" secondAttribute="leading" constant="20" id="56425"/>
                                                 <constraint firstAttribute="trailing" secondItem="56420" secondAttribute="trailing" constant="9" id="56426"/>
-                                                <constraint firstItem="56421" firstAttribute="top" secondItem="56394" secondAttribute="top" constant="25" id="56428"/>
+                                                <constraint firstItem="56421" firstAttribute="top" secondItem="56394" secondAttribute="top" constant="28" id="56428" relation="greaterThanOrEqual"/>
                                                 <constraint firstItem="56421" firstAttribute="leading" secondItem="56394" secondAttribute="leading" constant="20" id="56429"/>
                                                 <constraint firstAttribute="trailing" secondItem="56421" secondAttribute="trailing" constant="9" id="56430"/>
                                                 <constraint firstAttribute="bottom" secondItem="56423" secondAttribute="bottom" constant="8.5" id="56432"/>
@@ -269,29 +269,12 @@
                                     </tableViewCell>
                                 </prototypes>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="57064">
-                                <rect key="frame" x="22" y="664" width="370" height="48"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="48" id="u7F-eo-kxO"/>
-                                </constraints>
-                                <userDefinedRuntimeAttributes>
-                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                        <real key="value" value="5"/>
-                                    </userDefinedRuntimeAttribute>
-                                </userDefinedRuntimeAttributes>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="57064" firstAttribute="leading" secondItem="56331" secondAttribute="leadingMargin" constant="2" id="4g8-2L-UGd"/>
-                            <constraint firstItem="56328" firstAttribute="top" secondItem="57064" secondAttribute="bottom" constant="24" id="Dzh-cY-Vcq"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="57064" secondAttribute="trailing" constant="2" id="nax-OZ-HPP"/>
-                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Title" id="56389"/>
                     <connections>
                         <outlet property="AccountsTableView" destination="56392" id="name-outlet-56392"/>
-                        <outlet property="btnStart" destination="57064" id="name-outlet-57064"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="56332" userLabel="First Responder" sceneMemberID="firstResponder"/>

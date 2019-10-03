@@ -330,9 +330,6 @@
     <ImageAsset Include="Assets.xcassets\Logo.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Logo.imageset\Logo%403x.png" />
     <ImageAsset Include="Assets.xcassets\Delete.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Delete.imageset\delete.png" />
-    <ImageAsset Include="Assets.xcassets\Delete.imageset\delete%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Delete.imageset\delete%403x.png" />
     <ImageAsset Include="Assets.xcassets\Check-Green.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Check-Green.imageset\Check-Green.png" />
     <ImageAsset Include="Assets.xcassets\X-Red.imageset\Contents.json" />
@@ -1215,6 +1212,8 @@
     <ImageAsset Include="Assets.xcassets\SplashImageDefault.imageset\SplashImageDefault%402x.png" />
     <ImageAsset Include="Assets.xcassets\AppLaunch.imageset\img_splash_bg%402x.png" />
     <ImageAsset Include="Assets.xcassets\AppLaunch.imageset\img_splash_bg%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Delete.imageset\Delete-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Delete.imageset\Delete-Icon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1637,6 +1636,7 @@
     <Folder Include="Assets.xcassets\MDMS-Down.imageset\" />
     <Folder Include="Assets.xcassets\AppLaunch.imageset\" />
     <Folder Include="Assets.xcassets\SplashImageDefault.imageset\" />
+    <Folder Include="Assets.xcassets\Delete-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2481,6 +2481,7 @@
     <Compile Include="Helpers\NotifCenterUtility.cs" />
     <Compile Include="Sitecore CMS\Model\AppLaunchImageResponseModel.cs" />
     <Compile Include="Sitecore CMS\Service\AppLaunchImageService.cs" />
+    <Compile Include="Registration\AddAccountConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

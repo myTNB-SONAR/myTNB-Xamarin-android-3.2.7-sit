@@ -18,20 +18,11 @@ namespace myTNB
         [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UITableView AccountsTableView { get; set; }
 
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIButton btnStart { get; set; }
-
         void ReleaseDesignerOutlets ()
         {
             if (AccountsTableView != null) {
                 AccountsTableView.Dispose ();
                 AccountsTableView = null;
-            }
-
-            if (btnStart != null) {
-                btnStart.Dispose ();
-                btnStart = null;
             }
         }
     }

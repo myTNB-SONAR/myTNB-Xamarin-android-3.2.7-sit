@@ -10,6 +10,7 @@ namespace myTNB.Registration.CustomerAccounts
 {
     public class AccountRecordDataSource : UITableViewSource
     {
+        public Func<string, string> GetI18NValue;
         public CustomerAccountRecordListModel _accountList = new CustomerAccountRecordListModel();
         TextFieldHelper _txtFieldHelper = new TextFieldHelper();
         const string NAME_PATTERN = @"^[A-Za-z0-9 _]*[A-Za-z0-9][A-Za-z0-9 \-\\_ _]*$";
@@ -110,12 +111,12 @@ namespace myTNB.Registration.CustomerAccounts
             {
                 if ((_linkedAccounts != null && _linkedAccounts?.Count > 0 && _localAccounts?.Count >= 0) || (_linkedAccounts != null && _linkedAccounts?.Count == 0 && _localAccounts?.Count == 0))
                 {
-                    return 92;
+                    return ScaleUtility.GetScaledHeight(92);
                 }
 
                 if (_localAccounts != null && _localAccounts?.Count > 0 && _linkedAccounts?.Count == 0)
                 {
-                    return 30;
+                    return ScaleUtility.GetScaledHeight(30);
                 }
             }
 
@@ -123,45 +124,45 @@ namespace myTNB.Registration.CustomerAccounts
             {
                 if (_localAccounts != null && _localAccounts?.Count > 0)
                 {
-                    return 30;
+                    return ScaleUtility.GetScaledHeight(40);
                 }
             }
-            return 30;
+            return ScaleUtility.GetScaledHeight(30);
         }
 
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
         {
-            return 175;
+            return ScaleUtility.GetScaledHeight(175);
         }
 
         public override UIView GetViewForHeader(UITableView tableView, nint section)
         {
-            UIView view = new UIView(new CGRect(0, 0, tableView.Frame.Width, 100))
+            UIView view = new UIView(new CGRect(0, 0, tableView.Frame.Width, ScaleUtility.GetScaledHeight(100)))
             {
                 BackgroundColor = MyTNBColor.SectionGrey
             };
 
-            var lblSectionTitle = new UILabel(new CGRect(18, 0, tableView.Frame.Width - 36, 40));
+            var lblSectionTitle = new UILabel(new CGRect(ScaleUtility.GetScaledWidth(18), 0, tableView.Frame.Width - ScaleUtility.GetScaledWidth(36), ScaleUtility.GetScaledHeight(140)));
 
             if (section == 0)
             {
                 if ((_linkedAccounts != null && _linkedAccounts?.Count > 0 && _localAccounts?.Count >= 0)
                     || (_linkedAccounts != null && _linkedAccounts?.Count == 0 && _localAccounts?.Count == 0))
                 {
-                    lblSectionTitle = new UILabel(new CGRect(18, 0, tableView.Frame.Width - 36, 40))
+                    lblSectionTitle = new UILabel(new CGRect(ScaleUtility.GetScaledWidth(18), 0, tableView.Frame.Width - ScaleUtility.GetScaledWidth(36), ScaleUtility.GetScaledHeight(40)))
                     {
                         Text = _recordCount > 0
-                        ? string.Format("{0} {1}", _recordCount.ToString(), "Registration_SupplyAccountCount".Translate())
-                        : "Registration_NoAccountsTitle".Translate()
+                        ? string.Format("{0} {1}", _recordCount.ToString(), GetI18NValue(AddAccountConstants.I18N_SupplyAcctCount))
+                        : GetI18NValue(AddAccountConstants.I18N_NoAcctsTitle)
                     };
 
-                    var txtViewSubDetails = new UITextView(new CGRect(14, 36, tableView.Frame.Width - 30, 60))
+                    var txtViewSubDetails = new UITextView(new CGRect(ScaleUtility.GetScaledWidth(14), ScaleUtility.GetScaledHeight(36), tableView.Frame.Width - ScaleUtility.GetScaledWidth(30), ScaleUtility.GetScaledHeight(60)))
                     {
-                        Font = MyTNBFont.MuseoSans14_300,
+                        Font = TNBFont.MuseoSans_14_300,
                         TextColor = MyTNBColor.TunaGrey(),
                         UserInteractionEnabled = false,
                         BackgroundColor = UIColor.Clear,
-                        Text = "Registration_NoAccountsFoundMessage".Translate()
+                        Text = GetI18NValue(AddAccountConstants.I18N_NoAcctFoundMsg)
                     };
 
                     view.AddSubview(txtViewSubDetails);
@@ -170,9 +171,9 @@ namespace myTNB.Registration.CustomerAccounts
 
                 if (_localAccounts != null && _localAccounts?.Count > 0 && _linkedAccounts?.Count == 0)
                 {
-                    lblSectionTitle = new UILabel(new CGRect(18, 0, tableView.Frame.Width - 36, 40))
+                    lblSectionTitle = new UILabel(new CGRect(ScaleUtility.GetScaledWidth(18), 0, tableView.Frame.Width - ScaleUtility.GetScaledWidth(36), ScaleUtility.GetScaledHeight(40)))
                     {
-                        Text = "Registration_AdditionalAccounts".Translate()
+                        Text = GetI18NValue(AddAccountConstants.I18N_AdditionalAccts)
                     };
                 }
             }
@@ -181,15 +182,15 @@ namespace myTNB.Registration.CustomerAccounts
             {
                 if (_localAccounts != null && _localAccounts?.Count > 0)
                 {
-                    lblSectionTitle = new UILabel(new CGRect(18, 0, tableView.Frame.Width - 36, 40))
+                    lblSectionTitle = new UILabel(new CGRect(ScaleUtility.GetScaledWidth(18), 0, tableView.Frame.Width - ScaleUtility.GetScaledWidth(36), ScaleUtility.GetScaledHeight(40)))
                     {
-                        Text = "Registration_AdditionalAccounts".Translate()
+                        Text = GetI18NValue(AddAccountConstants.I18N_AdditionalAccts)
                     };
                 }
             }
 
             lblSectionTitle.TextColor = MyTNBColor.PowerBlue;
-            lblSectionTitle.Font = MyTNBFont.MuseoSans16_500;
+            lblSectionTitle.Font = TNBFont.MuseoSans_16_500;
             lblSectionTitle.Lines = 0;
             lblSectionTitle.LineBreakMode = UILineBreakMode.WordWrap;
             view.AddSubview(lblSectionTitle);
@@ -250,17 +251,16 @@ namespace myTNB.Registration.CustomerAccounts
             {
                 var nickName = acount?.accDesc ?? string.Empty;
                 var accountNumber = acount?.accNum ?? string.Empty;
-                var okCancelAlertController = UIAlertController.Create("Registration_RemoveAccountTitle".Translate()
-                    , string.Format("Registration_RemoveAccountMessage".Translate(), nickName, accountNumber)
+                var okCancelAlertController = UIAlertController.Create(GetI18NValue(AddAccountConstants.I18N_RemoveAcct)
+                    , string.Format(GetI18NValue(AddAccountConstants.I18N_RemoveAcctMsg), nickName, accountNumber)
                     , UIAlertControllerStyle.Alert);
-                okCancelAlertController.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Default, alert => RemoveAccount(acount)));
-                okCancelAlertController.AddAction(UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, alert => Debug.WriteLine("Cancel was clicked")));
+                okCancelAlertController.AddAction(UIAlertAction.Create(LanguageUtility.GetCommonI18NValue(AddAccountConstants.I18N_Ok), UIAlertActionStyle.Default, alert => RemoveAccount(acount)));
+                okCancelAlertController.AddAction(UIAlertAction.Create(LanguageUtility.GetCommonI18NValue(AddAccountConstants.I18N_Cancel), UIAlertActionStyle.Cancel, alert => Debug.WriteLine("Cancel was clicked")));
                 okCancelAlertController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 _controller?.PresentViewController(okCancelAlertController, true, null);
             };
 
-            cell.NickNameTitle = "Common_AccountNickname".Translate().ToUpper();
-            //cell.NicknameError = "Invalid characters. Use letters or numbers only.";
+            cell.NickNameTitle = LanguageUtility.GetCommonI18NValue(AddAccountConstants.I18N_AcctNickname).ToUpper();
 
             UITextField txtFieldNickname = cell.NicknameTextField;
             UILabel title = cell.NickNameTitleLabel;
@@ -271,12 +271,12 @@ namespace myTNB.Registration.CustomerAccounts
             error.Hidden = true;
             line.BackgroundColor = MyTNBColor.PlatinumGrey;
             txtFieldNickname.TextColor = MyTNBColor.TunaGrey();
-            error.Text = "Hint_Nickname".Translate();
+            error.Text = LanguageUtility.GetHintI18NValue(AddAccountConstants.I18N_HintNickname);
             error.TextColor = MyTNBColor.SilverChalice;
             SetTextField(txtFieldNickname, title, error, line, cell);
 
             cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-
+            cell.SetScale();
             return cell;
         }
 
@@ -297,7 +297,7 @@ namespace myTNB.Registration.CustomerAccounts
         internal void SetTextField(UITextField textField, UILabel title, UILabel error
                                    , UIView line, AccountRecordsTableViewCell cell)
         {
-            _txtFieldHelper.CreateTextFieldLeftView(textField, "Name");
+            _txtFieldHelper.CreateTextFieldLeftView(textField, LanguageUtility.GetCommonI18NValue(AddAccountConstants.I18N_Name));
             textField.ShouldReturn = (sender) =>
             {
                 sender.ResignFirstResponder();
@@ -341,8 +341,8 @@ namespace myTNB.Registration.CustomerAccounts
                 bool isUnique = DataManager.DataManager.SharedInstance.IsAccountNicknameUnique(textField.Text, cell.AccountNumber);
                 bool isValid = isFormatValid && isUnique;
                 error.Hidden = isValid;
-                error.Text = isValid ? "Hint_Nickname".Translate()
-                    : (!isFormatValid ? "Invalid_Characters".Translate() : "Invalid_AccountNicknameInUse".Translate());
+                error.Text = isValid ? LanguageUtility.GetHintI18NValue(AddAccountConstants.I18N_HintNickname)
+                    : (!isFormatValid ? LanguageUtility.GetErrorI18NValue(AddAccountConstants.I18N_InvalidNickname) : LanguageUtility.GetErrorI18NValue(AddAccountConstants.I18N_DuplicateNickname));
                 error.TextColor = isValid ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
                 line.BackgroundColor = isValid ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
                 textField.TextColor = isValid ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
