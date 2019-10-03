@@ -40,6 +40,7 @@ namespace myTNB.SSMR
         public static string I18N_Description1 = "onboardingDescription1";
         public static string I18N_Description2 = "onboardingDescription2";
         public static string I18N_StartApplication = "startApplication";
+        public static string I18N_NoHistoryData = "noHistoryData";
 
         //Common
         public static string I18N_NavTitle = "navTitle";
@@ -85,6 +86,7 @@ namespace myTNB.SSMR
         public static string IMG_NoData = "SSMR-NoData";
         public static string IMG_ReadingHistoryBanner = "SSMR-Reading-History-Banner";
         public static string IMG_Refresh = "SSMR-Refresh";
+        public static string IMG_NoHistory = "SSMR-No-History";
 
         //Error
         public static string I18N_InvalidEmail = "invalid_email";

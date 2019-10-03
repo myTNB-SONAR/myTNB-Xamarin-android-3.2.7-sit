@@ -442,7 +442,7 @@
 "PushNotification_DeleteTitleAll"="Delete All Notifications";
 "PushNotification_DeleteMessageMultiple"="Are you sure you want to delete these notifications?";
 "PushNotification_DeleteTitleMultiple"="Delete Multiple Notifications";
-"PushNotification_NoNotification"="Looks like you have no new notifications today.";
+"PushNotification_NoNotification"="Looks like you have no notifications at the moment.";
 "PushNotification_NotificationDeleted"="Notification deleted.";
 "PushNotification_NotificationsDeleted"="Notifications deleted.";
 "PushNotification_Select"="Select";

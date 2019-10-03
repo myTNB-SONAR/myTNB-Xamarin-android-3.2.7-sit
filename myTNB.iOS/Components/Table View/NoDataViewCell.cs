@@ -2,7 +2,7 @@
 using CoreGraphics;
 using UIKit;
 
-namespace myTNB.Home.Bill
+namespace myTNB
 {
     public class NoDataViewCell : UITableViewCell
     {
