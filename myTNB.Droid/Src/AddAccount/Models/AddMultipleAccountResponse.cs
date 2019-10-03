@@ -24,6 +24,13 @@ namespace myTNB_Android.Src.AddAccount.Models
 
             [JsonProperty(PropertyName = "data")]
             public List<AddAccount> Data { get; set; }
+
+
+            [JsonProperty(PropertyName = "ErrorCode")]
+            public string ErrorCode { get; set; }
+
+            [JsonProperty(PropertyName = "DisplayMessage")]
+            public string DisplayMessage { get; set; }
         }
     }
 }

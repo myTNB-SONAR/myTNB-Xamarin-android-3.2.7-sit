@@ -256,10 +256,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 SelectAccountView = itemView.FindViewById<CheckBox>(Resource.Id.select_account);
                 SelectAccountView.Click += (s, e) => listener((this), base.LayoutPosition);
 
-                TextViewUtils.SetMuseoSans300Typeface(AccountLabel, AccountNumber, AccountAddress);
+                TextViewUtils.SetMuseoSans300Typeface(AccountNumber, AccountAddress);
                 TextViewUtils.SetMuseoSans300Typeface(AmountLabel);
                 TextViewUtils.SetMuseoSans300Typeface(Amount, MandatoryPaymentContent);
-                TextViewUtils.SetMuseoSans500Typeface(MandatoryPaymentTite);
+                TextViewUtils.SetMuseoSans500Typeface(AccountLabel, MandatoryPaymentTite);
 
                 Amount.AddTextChangedListener(new RestrictAmountChangeListener(Amount, AmountLabel, 2));
             }

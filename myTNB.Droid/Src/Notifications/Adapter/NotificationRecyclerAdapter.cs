@@ -219,7 +219,7 @@ namespace myTNB_Android.Src.Notifications.Adapter
 
             public NotificationRecyclerViewHolder(NotificationRecyclerAdapter adapter, View itemView) : base(itemView)
             {
-                TextViewUtils.SetMuseoSans300Typeface(txtNotificationTitle);
+                TextViewUtils.SetMuseoSans500Typeface(txtNotificationTitle);
                 TextViewUtils.SetMuseoSans300Typeface(txtNotificationContent, txtNotificationDate);
                 itemView.SetOnLongClickListener(new NotificationLongItemClickListener(this, adapter));
                 itemView.SetOnClickListener(new NotificationItemClickListener(this, adapter));

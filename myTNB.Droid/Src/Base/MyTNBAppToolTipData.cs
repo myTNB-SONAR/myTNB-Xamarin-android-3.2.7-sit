@@ -64,14 +64,14 @@ namespace myTNB_Android.Src.Base
                     if (isOneMissing)
                     {
                         item = list.Find(x => x.Type.Contains("TakePhoto_One_Missing"));
+                        item.Description = String.Format(item.Description, secondParam);
                     }
                     else
                     {
                         item = list.Find(x => x.Type.Contains("TakePhoto"));
+                        item.Description = String.Format(item.Description, firstParam, secondParam);
                     }
-                    item.Description = String.Format(item.Description, firstParam, secondParam);
                 }
-                //item = list.Find(x => x.Type.Contains("UploadPhoto"));
             }
             else
             {
@@ -115,12 +115,13 @@ namespace myTNB_Android.Src.Base
                     if (isOneMissing)
                     {
                         item = list.Find(x => x.Type.Contains("UploadPhoto_One_Missing"));
+                        item.Description = String.Format(item.Description, secondParam);
                     }
                     else
                     {
                         item = list.Find(x => x.Type.Contains("UploadPhoto"));
+                        item.Description = String.Format(item.Description, firstParam, secondParam);
                     }
-                    item.Description = String.Format(item.Description, firstParam, secondParam);
                 }
             }
             else
