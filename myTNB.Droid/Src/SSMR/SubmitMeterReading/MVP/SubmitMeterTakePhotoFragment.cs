@@ -803,9 +803,9 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 int height = canvas.Height;
                 int width = canvas.Width;
                 int left = (int)(width - (width * .809)); 
-                int top = (int)(height - (height * .75));
+                int top = (int)(height - (height * .70));
                 int right = (int)(width - (width * .191));
-                int bottom = (int)(height - (height * .40));
+                int bottom = (int)(height - (height * .35));
                 canvas.DrawRect(0, top, width, bottom, rectPaint);
                 cropAreaRect = new Rect(left,top,right,bottom);
 
