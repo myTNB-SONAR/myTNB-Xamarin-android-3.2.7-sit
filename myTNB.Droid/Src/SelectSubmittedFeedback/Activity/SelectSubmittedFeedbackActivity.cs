@@ -123,7 +123,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Select Submitted Feedback Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Select Submitted Feedback");
             }
             catch (Exception e)
             {

@@ -759,7 +759,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Submit Meter Reading Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Input Meter Reading");
             }
             catch (Exception e)
             {

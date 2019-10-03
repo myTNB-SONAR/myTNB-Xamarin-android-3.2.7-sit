@@ -204,7 +204,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Notification Detail New Bill Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Notification Detailed Info");
             }
             catch (Exception e)
             {

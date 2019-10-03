@@ -599,7 +599,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Take Meter Reading Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Capture Meter Reading (Camera)");
             }
             catch (Exception e)
             {

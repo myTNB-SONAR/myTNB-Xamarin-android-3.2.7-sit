@@ -272,7 +272,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Notifications Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Notifications Listing");
             }
             catch (Exception e)
             {
