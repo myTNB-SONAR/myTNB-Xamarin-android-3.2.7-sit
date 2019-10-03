@@ -128,7 +128,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
                 if (installDetailsResponse != null && installDetailsResponse.Data != null && installDetailsResponse.Data.ErrorCode == "7200")
                 {
-                    if (installDetailsResponse.Data.Data.DisconnectionStatus == "Available")
+                    if (installDetailsResponse.Data.Data.DisconnectionStatus.ToUpper() == Constants.ENERGY_DISCONNECTION_KEY)
+                    {
+                        this.mView.ShowAccountStatus(installDetailsResponse.Data.Data);
+                        this.mView.HideSSMRDashboardView();
+                    }
+                    else
                     {
                         this.mView.ShowAccountStatus(null);
                         bool isSMR = IsOwnedSMR(this.mView.GetSelectedAccount().AccountNum);
@@ -140,11 +145,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         {
                             this.mView.HideSSMRDashboardView();
                         }
-                    }
-                    else
-                    {
-                        this.mView.ShowAccountStatus(installDetailsResponse.Data.Data);
-                        this.mView.HideSSMRDashboardView();
                     }
                 }
                 else
