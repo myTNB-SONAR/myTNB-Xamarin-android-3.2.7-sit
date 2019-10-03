@@ -16,12 +16,14 @@ namespace myTNB
         private SSMRHelper _sSMRHelper = new SSMRHelper();
         private readonly Dictionary<string, string> I18NDictionary = new Dictionary<string, string>();
         private bool _isEmptyHistory;
+        private bool _isSSMR;
 
-        public SSMRReadingHistoryDataSource(EventHandler onScroll, List<MeterReadingHistoryItemModel> readingHistoryList)
+        public SSMRReadingHistoryDataSource(EventHandler onScroll, List<MeterReadingHistoryItemModel> readingHistoryList, bool isSSMR = true)
         {
             I18NDictionary = LanguageManager.Instance.GetValuesByPage("SSMRReadingHistory");
             _onScroll = onScroll;
             _readingHistoryList = readingHistoryList;
+            _isSSMR = isSSMR;
             _isEmptyHistory = _readingHistoryList == null || _readingHistoryList.Count < 1;
         }
 
@@ -49,7 +51,7 @@ namespace myTNB
 
         public override nint NumberOfSections(UITableView tableView)
         {
-            return 1;
+            return _isSSMR ? 1 : 0;
         }
 
         public override nint RowsInSection(UITableView tableview, nint section)
