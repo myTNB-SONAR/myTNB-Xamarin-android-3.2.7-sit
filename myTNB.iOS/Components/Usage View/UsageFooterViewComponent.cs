@@ -214,7 +214,7 @@ namespace myTNB
                 if (_lblDate != null)
                 {
                     string formattedDate = DateHelper.GetFormattedDate(date, "dd MMM yyyy");
-                    _lblDate.Text = formattedDate;
+                    _lblDate.Text = LanguageUtility.GetCommonI18NValue(Constants.I18N_By) + " " + formattedDate;
                 }
             }
         }
