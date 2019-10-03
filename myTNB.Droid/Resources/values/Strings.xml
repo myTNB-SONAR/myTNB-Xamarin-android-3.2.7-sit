@@ -1456,4 +1456,6 @@ Please try again later.]]>
 <string name="duplicate_account_title">Duplicate Account</string>
 <string name="duplicate_account_message">This account number is already added on the list</string>
 <string name="duplicate_account_btn_ok">Ok</string>
+
+<string name="new_account_view">Welcome to your usage view! You’ll see your usage here soon.</string>
 </resources>

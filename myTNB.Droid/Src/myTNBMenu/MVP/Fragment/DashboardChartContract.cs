@@ -69,7 +69,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// Show amount due
             /// </summary>
             /// <param name="accountDueAmount">AccountDueAmount</param>
-            void ShowAmountDue(AccountDueAmount accountDueAmount);
+            void ShowAmountDue(AccountDueAmountData accountDueAmount);
 
             /// <summary>
             /// Enable pay button
@@ -140,6 +140,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void OnSetBackendTariffDisabled(bool flag);
 
             void ByZoomDayView();
+
+            void ShowNewAccountView(string contentTxt);
         }
 
         public interface IUserActionsListener : IBasePresenter

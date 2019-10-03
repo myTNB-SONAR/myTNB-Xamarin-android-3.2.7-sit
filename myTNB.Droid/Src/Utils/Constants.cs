@@ -255,6 +255,8 @@ namespace myTNB_Android.Src.Utils
 
         internal static readonly string MISSING_READING_KEY = "MISSINGREADING";
 
+        internal static readonly string ENERGY_DISCONNECTION_KEY = "UNAVAILABLE";
+
         public enum GREETING
         {
             MORNING,

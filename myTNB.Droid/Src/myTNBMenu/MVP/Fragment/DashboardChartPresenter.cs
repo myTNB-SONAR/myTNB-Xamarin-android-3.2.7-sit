@@ -128,7 +128,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
                 if (installDetailsResponse != null && installDetailsResponse.Data != null && installDetailsResponse.Data.ErrorCode == "7200")
                 {
-                    if (installDetailsResponse.Data.Data.DisconnectionStatus == "Available")
+                    if (installDetailsResponse.Data.Data.DisconnectionStatus.ToUpper() == Constants.ENERGY_DISCONNECTION_KEY)
+                    {
+                        this.mView.ShowAccountStatus(installDetailsResponse.Data.Data);
+                        this.mView.HideSSMRDashboardView();
+                    }
+                    else
                     {
                         this.mView.ShowAccountStatus(null);
                         bool isSMR = IsOwnedSMR(this.mView.GetSelectedAccount().AccountNum);
@@ -140,11 +145,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         {
                             this.mView.HideSSMRDashboardView();
                         }
-                    }
-                    else
-                    {
-                        this.mView.ShowAccountStatus(installDetailsResponse.Data.Data);
-                        this.mView.HideSSMRDashboardView();
                     }
                 }
                 else
@@ -294,26 +294,29 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
             try
             {
-                if (!this.mView.GetIsSMAccount())
+                if (!isBillAvailable)
                 {
-                    if (IsCheckHaveByMonthData(this.mView.GetUsageHistoryData()))
+                    if (!this.mView.GetIsSMAccount())
                     {
-                        isBillAvailable = true;
+                        if (IsCheckHaveByMonthData(this.mView.GetUsageHistoryData()))
+                        {
+                            isBillAvailable = true;
+                        }
+                        else
+                        {
+                            isBillAvailable = false;
+                        }
                     }
                     else
                     {
-                        isBillAvailable = false;
-                    }
-                }
-                else
-                {
-                    if (IsCheckHaveByMonthData(this.mView.GetSMUsageHistoryData()))
-                    {
-                        isBillAvailable = true;
-                    }
-                    else
-                    {
-                        isBillAvailable = false;
+                        if (IsCheckHaveByMonthData(this.mView.GetSMUsageHistoryData()))
+                        {
+                            isBillAvailable = true;
+                        }
+                        else
+                        {
+                            isBillAvailable = false;
+                        }
                     }
                 }
 
@@ -326,20 +329,34 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 				var amountDueApi = RestService.For<IAmountDueApi>(Constants.SERVER_URL.END_POINT);
 #endif
 
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = UserEntity.GetActive().Email,
+                    sspuid = UserEntity.GetActive().UserID,
+                    did = this.mView.GetDeviceId(),
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+
+
                 AccountDueAmountResponse dueResponse = await amountDueApi.GetAccountDueAmount(new Requests.AccountDueAmountRequest()
                 {
-                    ApiKeyId = Constants.APP_CONFIG.API_KEY_ID,
-                    AccNum = this.mView.GetSelectedAccount().AccountNum
-
+                    AccountNumber = this.mView.GetSelectedAccount().AccountNum,
+                    IsOwnedAccount = this.mView.GetSelectedAccount().IsOwner ? "true" : "false",
+                    usrInf = currentUsrInf
                 }, cts.Token);
 
-                if (dueResponse != null && dueResponse.Data != null && dueResponse.Data.Status.ToUpper() == Constants.REFRESH_MODE)
+                if (dueResponse != null && dueResponse.Data != null && dueResponse.Data.ErrorCode != "7200")
                 {
                     this.mView.ShowAmountDueFailed();
                 }
-                else if (!dueResponse.Data.IsError)
+                else if (dueResponse != null && dueResponse.Data != null && dueResponse.Data.ErrorCode == "7200")
                 {
-                    this.mView.ShowAmountDue(dueResponse.Data.Data);
+                    this.mView.ShowAmountDue(dueResponse.Data.Data.AmountDueData);
                 }
                 else
                 {
@@ -397,9 +414,15 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     userInterface = currentUsrInf
                 }, cts.Token);
 
-                if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode != "7200")
+                if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode != "7200" && usageHistoryResponse.Data.ErrorCode != "7201")
                 {
+                    isBillAvailable = true;
                     this.mView.ShowNoInternet(usageHistoryResponse.Data.RefreshMessage, usageHistoryResponse.Data.RefreshBtnText);
+                }
+                else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7201")
+                {
+                    isBillAvailable = true;
+                    this.mView.ShowNewAccountView(null);
                 }
                 else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7200")
                 {
@@ -410,11 +433,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         smUsageModel.JsonResponse = JsonConvert.SerializeObject(usageHistoryResponse);
                         smUsageModel.AccountNo = this.mView.GetSelectedAccount().AccountNum;
                         UsageHistoryEntity.InsertItem(smUsageModel);
-                    }
-
-                    if (!IsCheckDataReadyData(usageHistoryResponse.Data.UsageHistoryData))
-                    {
-                        // Lin Siong TODO: To set the data not ready view
                     }
 
                     this.mView.SetUsageData(usageHistoryResponse.Data.UsageHistoryData);
@@ -430,21 +448,25 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 }
                 else
                 {
+                    isBillAvailable = true;
                     this.mView.ShowNoInternet(null, null);
                 }
             }
             catch (System.OperationCanceledException e)
             {
+                isBillAvailable = true;
                 this.mView.ShowNoInternet(null, null);
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
+                isBillAvailable = true;
                 this.mView.ShowNoInternet(null, null);
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (System.Exception e)
             {
+                isBillAvailable = true;
                 this.mView.ShowNoInternet(null, null);
                 Utility.LoggingNonFatalError(e);
             }
@@ -484,17 +506,18 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                     userInterface = currentUsrInf
                 }, cts.Token);
 
-                if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode != "7200" && usageHistoryResponse.Data.ErrorCode != "7204")
+                if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode != "7200" && usageHistoryResponse.Data.ErrorCode != "7204" && usageHistoryResponse.Data.ErrorCode != "7201")
                 {
+                    isBillAvailable = true;
                     this.mView.ShowNoInternet(usageHistoryResponse.Data.RefreshMessage, usageHistoryResponse.Data.RefreshBtnText);
+                }
+                else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7201")
+                {
+                    isBillAvailable = true;
+                    this.mView.ShowNewAccountView(null);
                 }
                 else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7204")
                 {
-                    if (!IsCheckDataReadyData(usageHistoryResponse.Data.SMUsageHistoryData))
-                    {
-                        // Lin Siong TODO: To set the data not ready view
-                    }
-
                     this.mView.SetISMDMSDown(true);
                     this.mView.OnSetBackendTariffDisabled(true);
                     this.mView.SetSMUsageData(usageHistoryResponse.Data.SMUsageHistoryData);
@@ -511,11 +534,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                         SMUsageHistoryEntity.InsertItem(smUsageModel);
                     }
 
-                    if (!IsCheckDataReadyData(usageHistoryResponse.Data.SMUsageHistoryData))
-                    {
-                        // Lin Siong TODO: To set the data not ready view
-                    }
-
                     if (!usageHistoryResponse.Data.IsMonthlyTariffBlocksDisabled && !usageHistoryResponse.Data.IsMonthlyTariffBlocksUnavailable)
                     {
                         this.mView.OnSetBackendTariffDisabled(false);
@@ -530,21 +548,25 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 }
                 else
                 {
+                    isBillAvailable = true;
                     this.mView.ShowNoInternet(null, null);
                 }
             }
             catch (System.OperationCanceledException e)
             {
+                isBillAvailable = true;
                 this.mView.ShowNoInternet(null, null);
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
             {
+                isBillAvailable = true;
                 this.mView.ShowNoInternet(null, null);
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (System.Exception e)
             {
+                isBillAvailable = true;
                 this.mView.ShowNoInternet(null, null);
                 Utility.LoggingNonFatalError(e);
             }

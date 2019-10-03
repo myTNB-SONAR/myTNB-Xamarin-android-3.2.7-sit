@@ -111,7 +111,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.btnPay)]
         Button btnPay;
 
-        AccountDueAmount accountDueAmountData;
+        AccountDueAmountData accountDueAmountData;
 
         [BindView(Resource.Id.layout_graph_total)]
         LinearLayout allGraphLayout;
@@ -424,6 +424,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         [BindView(Resource.Id.txtDayViewZoomInIndicator)]
         TextView txtDayViewZoomInIndicator;
+
+        [BindView(Resource.Id.layout_new_account)]
+        LinearLayout newAccountLayout;
+
+        [BindView(Resource.Id.txtAddressNewAccount)]
+        TextView txtAddressNewAccount;
+
+        [BindView(Resource.Id.new_account_content)]
+        TextView newAccountContent;
+
+        [BindView(Resource.Id.new_account_image)]
+        ImageView newAccountImage;
 
         private static bool isZoomIn = false;
 
@@ -751,7 +763,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextViewUtils.SetMuseoSans500Typeface(reTotalPayableTitle, btnReView, txtTarifToggle, txtNoPayableTitle, txtNoPayableCurrency);
                 TextViewUtils.SetMuseoSans300Typeface(smStatisticBillSubTitle, smStatisticBill, smStatisticBillCurrency, smStatisticBillKwhUnit, smStatisticBillKwh, smStatisticPredictSubTitle, smStatisticPredict, smStatisticPredictCurrency, smStatisticTrendSubTitle, smStatisticTrend);
                 TextViewUtils.SetMuseoSans500Typeface(smStatisticBillTitle, smStatisticPredictTitle, txtSmStatisticTooltip, smStatisticTrendTitle);
-                TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtMdmsDayViewDown, txtDayViewZoomInIndicator);
+                TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtMdmsDayViewDown, txtDayViewZoomInIndicator, txtAddressNewAccount, newAccountContent);
 
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
@@ -802,6 +814,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (selectedAccount != null)
                 {
                     txtAddress.Text = selectedAccount.AddStreet;
+                    txtAddressNewAccount.Text = selectedAccount.AddStreet;
                     if (selectedAccount.AccountCategoryId.Equals("2"))
                     {
                         bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
@@ -1393,8 +1406,45 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
                             {
-                                isTariffAvailable = true;
-                                break;
+                                bool isFound = false;
+
+                                if (selectedSMHistoryData.TariffBlocksLegend != null && selectedSMHistoryData.TariffBlocksLegend.Count > 0)
+                                {
+                                    for (int k = 0; k < selectedSMHistoryData.TariffBlocksLegend.Count; k++)
+                                    {
+                                        for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                                        {
+                                            if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedSMHistoryData.TariffBlocksLegend[k].BlockId)
+                                            {
+                                                float val = (float)selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
+                                                if (float.IsPositiveInfinity(val))
+                                                {
+                                                    val = float.PositiveInfinity;
+                                                }
+                                                if (System.Math.Abs(val) > 0)
+                                                {
+                                                    isFound = true;
+                                                    isTariffAvailable = true;
+                                                    break;
+                                                }
+                                            }
+                                        }
+
+                                        if (isFound)
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                if (!isFound)
+                                {
+                                    isTariffAvailable = false;
+                                }
+                                else
+                                {
+                                    break;
+                                }
                             }
                             else
                             {
@@ -1415,8 +1465,45 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
                             {
-                                isTariffAvailable = true;
-                                break;
+                                bool isFound = false;
+
+                                if (selectedHistoryData.TariffBlocksLegend != null && selectedHistoryData.TariffBlocksLegend.Count > 0)
+                                {
+                                    for (int k = 0; k < selectedHistoryData.TariffBlocksLegend.Count; k++)
+                                    {
+                                        for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                                        {
+                                            if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedHistoryData.TariffBlocksLegend[k].BlockId)
+                                            {
+                                                float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
+                                                if (float.IsPositiveInfinity(val))
+                                                {
+                                                    val = float.PositiveInfinity;
+                                                }
+                                                if (System.Math.Abs(val) > 0)
+                                                {
+                                                    isFound = true;
+                                                    isTariffAvailable = true;
+                                                    break;
+                                                }
+                                            }
+                                        }
+
+                                        if (isFound)
+                                        {
+                                            break;
+                                        }
+                                    }
+                                }
+
+                                if (!isFound)
+                                {
+                                    isTariffAvailable = false;
+                                }
+                                else
+                                {
+                                    break;
+                                }
                             }
                             else
                             {
@@ -2410,7 +2497,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             List<float> newValList = new List<float>();
                             for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
                             {
-                                float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
+                                float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
                                 if (float.IsPositiveInfinity(val))
                                 {
                                     val = float.PositiveInfinity;
@@ -2503,7 +2590,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             {
                                                 isFound = true;
 
-                                                float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
+                                                float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
                                                 if (float.IsPositiveInfinity(val))
                                                 {
                                                     val = float.PositiveInfinity;
@@ -2575,7 +2662,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     for (int i = 0; i < barLength; i++)
                     {
                         float[] valList = new float[1];
-                        float val = (float)selectedHistoryData.ByMonth.Months[i].AmountTotal;
+                        float val = (float)selectedHistoryData.ByMonth.Months[i].UsageTotal;
                         if (float.IsPositiveInfinity(val))
                         {
                             val = float.PositiveInfinity;
@@ -2658,7 +2745,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 List<float> newValList = new List<float>();
                                 for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
                                 {
-                                    float val = (float)selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
+                                    float val = (float)selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
                                     if (float.IsPositiveInfinity(val))
                                     {
                                         val = float.PositiveInfinity;
@@ -2725,7 +2812,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             List<float> newValList = new List<float>();
                                             for (int j = 0; j < IndividualDayData.TariffBlocksList.Count; j++)
                                             {
-                                                float val = (float)IndividualDayData.TariffBlocksList[j].Amount;
+                                                float val = (float)IndividualDayData.TariffBlocksList[j].Usage;
                                                 if (float.IsPositiveInfinity(val))
                                                 {
                                                     val = float.PositiveInfinity;
@@ -2872,7 +2959,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                                 {
                                                     isFound = true;
 
-                                                    float val = (float)selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].Amount;
+                                                    float val = (float)selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
                                                     if (float.IsPositiveInfinity(val))
                                                     {
                                                         val = float.PositiveInfinity;
@@ -2931,7 +3018,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                                             {
                                                                 isFound = true;
 
-                                                                float val = (float)IndividualDayData.TariffBlocksList[j].Amount;
+                                                                float val = (float)IndividualDayData.TariffBlocksList[j].Usage;
                                                                 if (float.IsPositiveInfinity(val))
                                                                 {
                                                                     val = float.PositiveInfinity;
@@ -3064,7 +3151,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         if (ChartType == ChartType.Month)
                         {
                             float[] valList = new float[1];
-                            float val = (float)selectedSMHistoryData.ByMonth.Months[i].AmountTotal;
+                            float val = (float)selectedSMHistoryData.ByMonth.Months[i].UsageTotal;
                             if (float.IsPositiveInfinity(val))
                             {
                                 val = float.PositiveInfinity;
@@ -4609,6 +4696,73 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+        public void ShowNewAccountView(string contentTxt)
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    try
+                    {
+                        rootView.SetBackgroundResource(0);
+                        scrollViewContent.SetBackgroundResource(0);
+
+                        ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
+                        ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+
+
+                        refreshLayout.Visibility = ViewStates.Gone;
+                        newAccountLayout.Visibility = ViewStates.Visible;
+                        allGraphLayout.Visibility = ViewStates.Gone;
+                        smStatisticContainer.Visibility = ViewStates.Gone;
+                        SetNewAccountLayoutParams();
+                        StopAddressShimmer();
+                        StopRangeShimmer();
+                        StopGraphShimmer();
+                        StopSMStatisticShimmer();
+                        energyTipsView.Visibility = ViewStates.Gone;
+
+                        string defaultMessage = Activity.GetString(Resource.String.new_account_view);
+
+                        if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
+                        {
+                            if (string.IsNullOrEmpty(contentTxt))
+                            {
+                                newAccountContent.TextFormatted = Html.FromHtml(defaultMessage, FromHtmlOptions.ModeLegacy);
+                            }
+                            else
+                            {
+                                newAccountContent.TextFormatted = Html.FromHtml(contentTxt, FromHtmlOptions.ModeLegacy);
+                            }
+                        }
+                        else
+                        {
+                            if (string.IsNullOrEmpty(contentTxt))
+                            {
+                                newAccountContent.TextFormatted = Html.FromHtml(defaultMessage);
+                            }
+                            else
+                            {
+                                newAccountContent.TextFormatted = Html.FromHtml(contentTxt);
+                            }
+                        }
+
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+
+                    isChangeVirtualHeightNeed = true;
+                    SetVirtualHeightParams(6f);
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         public void ShowNoInternet(string contentTxt, string buttonTxt)
         {
             try
@@ -4624,6 +4778,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
 
                         refreshLayout.Visibility = ViewStates.Visible;
+                        newAccountLayout.Visibility = ViewStates.Gone;
                         allGraphLayout.Visibility = ViewStates.Gone;
                         smStatisticContainer.Visibility = ViewStates.Gone;
                         if (isBCRMDown)
@@ -4793,7 +4948,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             float valTotal = 0;
                             for (int i = 0; i < MonthData.TariffBlocksList.Count; i++)
                             {
-                                valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Amount);
+                                valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Usage);
                             }
                             if (System.Math.Abs(valTotal) > val)
                             {
@@ -4809,9 +4964,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         foreach (UsageHistoryData.ByMonthData.MonthData MonthData in selectedHistoryData.ByMonth.Months)
                         {
-                            if (System.Math.Abs(MonthData.AmountTotal) > val)
+                            if (System.Math.Abs(MonthData.UsageTotal) > val)
                             {
-                                val = System.Math.Abs((float)MonthData.AmountTotal);
+                                val = System.Math.Abs((float)MonthData.UsageTotal);
                             }
                         }
                         if (val == 0)
@@ -4831,7 +4986,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 float valTotal = 0;
                                 for (int i = 0; i < MonthData.TariffBlocksList.Count; i++)
                                 {
-                                    valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Amount);
+                                    valTotal += System.Math.Abs((float)MonthData.TariffBlocksList[i].Usage);
                                 }
                                 if (System.Math.Abs(valTotal) > val)
                                 {
@@ -4847,9 +5002,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             foreach (SMUsageHistoryData.ByMonthData.MonthData MonthData in selectedSMHistoryData.ByMonth.Months)
                             {
-                                if (System.Math.Abs(MonthData.AmountTotal) > val)
+                                if (System.Math.Abs(MonthData.UsageTotal) > val)
                                 {
-                                    val = System.Math.Abs((float)MonthData.AmountTotal);
+                                    val = System.Math.Abs((float)MonthData.UsageTotal);
                                 }
                             }
                             if (val == 0)
@@ -4869,7 +5024,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     float valTotal = 0;
                                     for (int i = 0; i < IndividualDayData.TariffBlocksList.Count; i++)
                                     {
-                                        valTotal += System.Math.Abs((float)IndividualDayData.TariffBlocksList[i].Amount);
+                                        valTotal += System.Math.Abs((float)IndividualDayData.TariffBlocksList[i].Usage);
                                     }
                                     if (System.Math.Abs(valTotal) > val)
                                     {
@@ -4888,9 +5043,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
                                 {
-                                    if (System.Math.Abs(IndividualDayData.Amount) > val)
+                                    if (System.Math.Abs(IndividualDayData.Consumption) > val)
                                     {
-                                        val = System.Math.Abs((float)IndividualDayData.Amount);
+                                        val = System.Math.Abs((float)IndividualDayData.Consumption);
                                     }
                                 }
                             }
@@ -5119,7 +5274,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
-        public void ShowAmountDue(AccountDueAmount accountDueAmount)
+        public void ShowAmountDue(AccountDueAmountData accountDueAmount)
         {
             try
             {
@@ -5260,31 +5415,118 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 }
                                 else
                                 {
-                                    // txtWhyThisAmt.Visibility = ViewStates.Gone;
+                                    ShowAmountDueFailed();
                                 }
                             }
                             else
                             {
-                                txtDueDate.Text = "- -";
-                                reDueDate.Text = "- -";
-                                txtTotalPayable.Text = "- -";
-                                reTotalPayable.Text = "- -";
+                                if (selectedAccount != null)
+                                {
+                                    if (isPaymentDown)
+                                    {
+                                        DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                                        DisablePayButton();
+                                        Snackbar downtimeSnackBar = Snackbar.Make(rootView,
+                                                bcrmEntity.DowntimeTextMessage,
+                                                Snackbar.LengthLong);
+                                        View v = downtimeSnackBar.View;
+                                        TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+                                        tv.SetMaxLines(5);
+                                        if (!selectedAccount.AccountCategoryId.Equals("2"))
+                                        {
+                                            downtimeSnackBar.Show();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        EnablePayButton();
+                                    }
+
+                                    if (this.userActionsListener.IsBillingAvailable())
+                                    {
+                                        EnableViewBillButton();
+                                    }
+                                    else
+                                    {
+                                        DisableViewBillButton();
+                                    }
+
+                                    txtTotalPayableCurrency.Visibility = ViewStates.Visible;
+                                    btnViewBill.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.freshGreen));
+                                    btnViewBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_green_outline_button_background);
+
+                                    if (selectedAccount.AccountCategoryId.Equals("2"))
+                                    {
+                                        re_img.Visibility = ViewStates.Visible;
+                                        rePayableLayout.Visibility = ViewStates.Visible;
+                                        // txtWhyThisAmt.Visibility = ViewStates.Gone;
+                                        selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
+                                        double calAmt = selectedAccount.AmtCustBal * -1;
+                                        if (calAmt <= 0)
+                                        {
+                                            calAmt = 0.00;
+                                        }
+                                        else
+                                        {
+                                            calAmt = System.Math.Abs(selectedAccount.AmtCustBal);
+                                        }
+
+                                        if (System.Math.Abs(calAmt) < 0.0001)
+                                        {
+                                            txtTotalPayable.Text = decimalFormat.Format(calAmt);
+                                            reTotalPayable.Text = decimalFormat.Format(calAmt);
+                                            txtDueDate.Text = "- -";
+                                            reDueDate.Text = "- -";
+                                        }
+                                        else
+                                        {
+                                            ShowAmountDueFailed();
+                                        }
+                                    }
+                                    else
+                                    {
+                                        selectedAccount.AmtCustBal = accountDueAmount.AmountDue;
+                                        double calAmt = selectedAccount.AmtCustBal;
+                                        if (calAmt <= 0.00 && System.Math.Abs(calAmt) < 0.0001)
+                                        {
+                                            totalPayableLayout.Visibility = ViewStates.Gone;
+                                            noPayableLayout.Visibility = ViewStates.Visible;
+                                            txtTotalPayable.Text = decimalFormat.Format(accountDueAmount.AmountDue);
+                                            txtNoPayableTitle.Text = "I’ve cleared all bills";
+                                            txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                            txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
+                                            txtNoPayable.Text = decimalFormat.Format(System.Math.Abs(accountDueAmount.AmountDue));
+                                            txtDueDate.Text = "- -";
+                                        }
+                                        else
+                                        {
+                                            ShowAmountDueFailed();
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    ShowAmountDueFailed();
+                                }
                                 // txtWhyThisAmt.Visibility = ViewStates.Gone;
                             }
                         }
                         catch (System.Exception ne)
                         {
+                            ShowAmountDueFailed();
                             Utility.LoggingNonFatalError(ne);
                         }
                     });
                 }
                 catch (System.Exception e)
                 {
+                    ShowAmountDueFailed();
                     Utility.LoggingNonFatalError(e);
                 }
             }
             catch (System.Exception e)
             {
+                ShowAmountDueFailed();
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -5444,7 +5686,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             if (accountStatusData != null)
             {
-                if (accountStatusData.DisconnectionStatus != "Available")
+                if (accountStatusData.DisconnectionStatus.ToUpper() == Constants.ENERGY_DISCONNECTION_KEY)
                 {
                     energyDisconnectionButton.Visibility = ViewStates.Visible;
                     string accountStatusMessage = accountStatusData?.AccountStatusMessage ?? "Your electricity is currently disconnected.";
@@ -6607,6 +6849,32 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 refreshButtonParams.TopMargin = (int)DPUtils.ConvertDPToPx(24f);
                 refreshButtonParams.BottomMargin = (int)DPUtils.ConvertDPToPx(21f);
                 btnNewRefresh.RequestLayout();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        // Lin Siong Note: Set New Account layout param
+        public void SetNewAccountLayoutParams()
+        {
+            try
+            {
+                LinearLayout.LayoutParams newAccountImageParams = newAccountImage.LayoutParameters as LinearLayout.LayoutParams;
+
+                newAccountImageParams.Width = GetDeviceHorizontalScaleInPixel(0.30f);
+                newAccountImageParams.Height = GetDeviceHorizontalScaleInPixel(0.30f);
+                newAccountImageParams.TopMargin = GetDeviceHorizontalScaleInPixel(0.201f);
+                newAccountImage.RequestLayout();
+
+                LinearLayout.LayoutParams newAccountContentParams = newAccountContent.LayoutParameters as LinearLayout.LayoutParams;
+                newAccountContentParams.TopMargin = (int)DPUtils.ConvertDPToPx(24f);
+                if (isSMR)
+                {
+                    newAccountContentParams.BottomMargin = (int)DPUtils.ConvertDPToPx(24f);
+                }
+                newAccountContent.RequestLayout();
             }
             catch (System.Exception e)
             {

@@ -3178,6 +3178,26 @@
     <Compile Include="Src\ForgotPasswordVerificationCodeSuccess\MVP\ForgotPasswordVerificationCodeSuccessContract.cs" />
     <Compile Include="Src\ForgotPasswordVerificationCodeSuccess\MVP\ForgotPasswordVerificationCodeSuccessPresenter.cs" />
     <AndroidResource Include="Resources\layout\ForgotPasswordVerificationCodeSuccessView.axml" />
+    <AndroidResource Include="Resources\drawable-hdpi\usage_view_empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\usage_view_empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\usage_view_empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\usage_view_empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\usage_view_empty.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
