@@ -359,7 +359,8 @@ namespace myTNB
             }
             else
             {
-                _viewLegend.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, _legendIsVisible ? 16F : 0F)), _viewLegend.Frame.Size);
+                bool res = isSmartMeterAccount ? _legendIsVisible && !_viewLegend.Hidden : _legendIsVisible;
+                _viewLegend.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, res ? 16F : 0F)), _viewLegend.Frame.Size);
                 _viewToggle.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_legendIsVisible ? _viewLegend.Frame : _viewChart.Frame, 16F)), _viewToggle.Frame.Size);
                 _lastView = _viewToggle;
                 if (accountIsSSMR)
@@ -758,12 +759,7 @@ namespace myTNB
         {
             if (!isREAccount)
             {
-                if (tariffList == null || tariffList.Count == 0)
-                {
-                    _tariffList = new List<LegendItemModel>(isSmartMeterAccount ? AccountUsageSmartCache.GetTariffLegendList() : AccountUsageCache.GetTariffLegendList());
-                }
-
-                if (_tariffList != null && _tariffList.Count > 0)
+                if (tariffList != null && tariffList.Count > 0)
                 {
                     ViewHelper.AdjustFrameSetHeight(_viewLegend, 0);
                     _viewLegend.BackgroundColor = UIColor.Clear;
@@ -771,13 +767,17 @@ namespace myTNB
                     {
                         _legend.RemoveFromSuperview();
                     }
-                    TariffLegendComponent tariffLegendComponent = new TariffLegendComponent(View, _tariffList);
+                    TariffLegendComponent tariffLegendComponent = new TariffLegendComponent(View, tariffList);
                     _legend = tariffLegendComponent.GetUI();
                     _viewLegend.AddSubview(_legend);
                     if (_legendIsVisible)
                     {
                         ShowHideTariffLegends(_legendIsVisible);
                     }
+                }
+                else
+                {
+                    ShowHideTariffLegends(_legendIsVisible);
                 }
             }
             else
@@ -790,23 +790,27 @@ namespace myTNB
         private void ShowHideTariffLegends(bool isVisible)
         {
             _legendIsVisible = isVisible;
-            if (_tariffList != null && _tariffList.Count > 0)
-            {
-                _viewLegend.Hidden = true;
-                UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseIn
-                    , () =>
+            _viewLegend.Hidden = true;
+            UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseIn
+                , () =>
+                {
+                    nfloat height = isVisible ? _tariffList.Count * GetScaledHeight(25f) : 0;
+                    ViewHelper.AdjustFrameSetHeight(_viewLegend, height);
+                    SetContentView();
+                    UpdateBackgroundImage(isVisible);
+                }
+                , () =>
+                {
+                    if (isVisible && _tariffList != null && _tariffList.Count > 0)
                     {
-                        nfloat height = isVisible ? _tariffList.Count * GetScaledHeight(25f) : 0;
-                        ViewHelper.AdjustFrameSetHeight(_viewLegend, height);
-                        SetContentView();
-                        UpdateBackgroundImage(isVisible);
+                        _viewLegend.Hidden = false;
                     }
-                    , () =>
+                    else
                     {
-                        _viewLegend.Hidden = !isVisible;
+                        _viewLegend.Hidden = true;
                     }
-                );
-            }
+                }
+            );
         }
         private void LoadTariffLegendWithIndex(int index)
         {
@@ -830,7 +834,7 @@ namespace myTNB
                                     var res = false;
                                     foreach (var tBlock in item.tariffBlocks)
                                     {
-                                        if (tBlock.BlockId.Equals(legend.BlockId))
+                                        if (tBlock.BlockId.Equals(legend.BlockId) && tBlock.Usage > 0)
                                         {
                                             res = true;
                                             break;

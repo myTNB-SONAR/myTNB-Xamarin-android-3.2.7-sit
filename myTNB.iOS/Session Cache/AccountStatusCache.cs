@@ -44,7 +44,10 @@ namespace myTNB
             bool res = true;
             if (accountStatusData != null)
             {
-                res = accountStatusData.DisconnectionStatus?.ToLower() == "available";
+                if (!string.IsNullOrEmpty(accountStatusData.DisconnectionStatus) && !string.IsNullOrEmpty(accountStatusData.DisconnectionStatus))
+                {
+                    res = accountStatusData.DisconnectionStatus?.ToLower() == "available";
+                }
             }
             return res;
         }

@@ -59,7 +59,7 @@ namespace myTNB.SmartMeterView
                         TextAlignment = UITextAlignment.Center,
                         Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300,
                         TextColor = UIColor.White,
-                        Text = string.IsNullOrEmpty(item.Year) ? item.Month : string.Format(Format_Value, item.Month, item.Year),
+                        Text = item.Month,
                         Tag = 1003
                     };
 
