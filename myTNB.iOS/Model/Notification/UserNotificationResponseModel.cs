@@ -36,6 +36,7 @@ namespace myTNB.Model
         public string NotificationTitle { set; get; } = string.Empty;
         public string NotificationType { set; get; } = string.Empty;
         public string Target { set; get; } = string.Empty;
+        public bool IsSMRPeriodOpen { set; get; }
         public bool IsAccountNumberExist
         {
             get
@@ -72,6 +73,7 @@ namespace myTNB.Model
                 return false;
             }
         }
+
         [JsonIgnore]
         public BCRMNotificationEnum BCRMNotificationType
         {

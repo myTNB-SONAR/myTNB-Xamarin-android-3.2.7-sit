@@ -1,5 +1,6 @@
 using CoreAnimation;
 using CoreGraphics;
+using myTNB.Home.Bill;
 using myTNB.Model;
 using myTNB.SSMR;
 using System;
@@ -323,6 +324,7 @@ namespace myTNB
         {
             _readingHistoryTableView = new UITableView(new CGRect(0, _navbarView.Frame.GetMaxY(), ViewWidth, ViewHeight));
             _readingHistoryTableView.RegisterClassForCellReuse(typeof(SSMRReadingHistoryCell), SSMRConstants.Cell_ReadingHistory);
+            _readingHistoryTableView.RegisterClassForCellReuse(typeof(NoDataViewCell), Constants.Cell_NoHistoryData);
             _readingHistoryTableView.Source = new SSMRReadingHistoryDataSource(OnTableViewScrolled, _readingHistoryList);
             _readingHistoryTableView.BackgroundColor = UIColor.Clear;
             _readingHistoryTableView.RowHeight = UITableView.AutomaticDimension;

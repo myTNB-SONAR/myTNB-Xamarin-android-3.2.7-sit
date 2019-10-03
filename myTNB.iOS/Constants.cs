@@ -49,5 +49,8 @@
         public static string I18N_Day = "day";
         public static string I18N_Month = "month";
         public static string I18N_MDMSUnavailable = "mdmsUnavailable";
+
+        //Table View Cell
+        public static string Cell_NoHistoryData = "noHistoryDataTableViewCell";
     }
 }

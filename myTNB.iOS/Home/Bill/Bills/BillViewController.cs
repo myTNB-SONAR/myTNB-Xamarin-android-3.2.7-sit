@@ -615,7 +615,7 @@ namespace myTNB
             _historyTableView = new UITableView(new CGRect(0, _navbarView.Frame.GetMaxY(), ViewWidth, height));
             _historyTableView.RegisterClassForCellReuse(typeof(BillHistoryViewCell), BillConstants.Cell_BillHistory);
             _historyTableView.RegisterClassForCellReuse(typeof(BillSectionViewCell), BillConstants.Cell_BillSection);
-            _historyTableView.RegisterClassForCellReuse(typeof(NoDataViewCell), BillConstants.Cell_NoHistoryData);
+            _historyTableView.RegisterClassForCellReuse(typeof(NoDataViewCell), Constants.Cell_NoHistoryData);
             _historyTableView.RegisterClassForCellReuse(typeof(BillHistoryShimmerViewCell), BillConstants.Cell_BillHistoryShimmer);
             _historyTableView.Source = new BillHistorySource(new List<BillPayHistoryModel>(), true)
             {

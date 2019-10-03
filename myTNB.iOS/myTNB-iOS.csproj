@@ -807,8 +807,6 @@
     <ImageAsset Include="Assets.xcassets\Refresh-Error-White.imageset\Refresh-Error-White.png" />
     <ImageAsset Include="Assets.xcassets\Refresh-Error-White.imageset\Refresh-Error-White%402x.png" />
     <ImageAsset Include="Assets.xcassets\Refresh-Error-White.imageset\Refresh-Error-White%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\Notification-Empty%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\Notification-Empty%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-MarkAsReadDisabled.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Notification-MarkAsReadDisabled.imageset\icHeaderMarkreadDisabled%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-MarkAsReadDisabled.imageset\icHeaderMarkreadDisabled%403x.png" />
@@ -1215,6 +1213,11 @@
     <ImageAsset Include="Assets.xcassets\SplashImageDefault.imageset\SplashImageDefault%402x.png" />
     <ImageAsset Include="Assets.xcassets\AppLaunch.imageset\img_splash_bg%402x.png" />
     <ImageAsset Include="Assets.xcassets\AppLaunch.imageset\img_splash_bg%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\noNotifications%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\noNotifications%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-No-History.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SSMR-No-History.imageset\smr%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-No-History.imageset\smr%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1637,6 +1640,8 @@
     <Folder Include="Assets.xcassets\MDMS-Down.imageset\" />
     <Folder Include="Assets.xcassets\AppLaunch.imageset\" />
     <Folder Include="Assets.xcassets\SplashImageDefault.imageset\" />
+    <Folder Include="Components\Table View\" />
+    <Folder Include="Assets.xcassets\SSMR-No-History.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2451,7 +2456,6 @@
     <Compile Include="Components\Usage View\Charts\Smart Meter\SmartMeterDayZOutView.cs" />
     <Compile Include="Enums\SmartMeterViewEnum.cs" />
     <Compile Include="Components\Usage View\SmartMeterOverlayComponent.cs" />
-    <Compile Include="Home\Bill\Bills\NoDataViewCell.cs" />
     <Compile Include="Model\GetAccountBillPayHistory\GetAccountBillPayHistoryResponseModel.cs" />
     <Compile Include="Sitecore CMS\Model\Bill Details\BillDetailsTooltipModel.cs" />
     <Compile Include="Sitecore CMS\Service\BillDetailsTooltipService.cs" />
@@ -2481,6 +2485,7 @@
     <Compile Include="Helpers\NotifCenterUtility.cs" />
     <Compile Include="Sitecore CMS\Model\AppLaunchImageResponseModel.cs" />
     <Compile Include="Sitecore CMS\Service\AppLaunchImageService.cs" />
+    <Compile Include="Components\Table View\NoDataViewCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
