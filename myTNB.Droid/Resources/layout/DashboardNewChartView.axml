@@ -35,16 +35,33 @@
 					        android:layout_width="match_parent"
 					        android:layout_height="match_parent"
 					        android:gravity="center"
+                            android:layout_gravity="center"
 					        android:visibility="gone">
+					        <TextView
+						        android:layout_height="wrap_content"
+						        android:layout_width="match_parent"
+						        android:textSize="11dp"
+						        android:lineSpacingExtra="2dp"
+						        android:textStyle="bold"
+                                android:paddingLeft="32dp"
+                                android:paddingRight="32dp"
+                                android:paddingBottom="12dp"
+						        android:layout_gravity="center"
+                                android:gravity="center"
+						        android:textColor="@color/white"
+						        android:text=""
+						        android:id="@+id/txtAddressNewAccount" />
 					        <LinearLayout
 						        android:orientation="vertical"
+                                android:gravity="center"
+                                android:layout_gravity="center"
 						        android:layout_width="match_parent"
 						        android:layout_height="match_parent">
                                 <ImageView
-                                    android:layout_width="132dp"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="48dp"
-                                    android:src="@drawable/refresh_1"
+                                    android:layout_width="120dp"
+                                    android:layout_height="120dp"
+                                    android:layout_marginTop="80dp"
+                                    android:src="@drawable/usage_view_empty"
                                     android:id="@+id/new_account_image"
                                     android:layout_gravity="center"/>
                                 <TextView
@@ -57,6 +74,7 @@
                                     android:layout_marginRight="32dp"
                                     android:lineSpacingExtra="4dp"
                                     android:textSize="15dp"
+                                    android:text="@string/new_account_view"
                                     android:textColor="@color/white"
                                     android:layout_gravity="center"/>
 					        </LinearLayout>
@@ -207,12 +225,10 @@
                                 android:id="@+id/layoutSubSegmentGroup"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginLeft="99dp"
-                                android:layout_marginRight="99dp"
                                 android:gravity="center">
                                 <info.hoang8f.android.segmented.SegmentedGroup
                                     android:id="@+id/segmented2"
-                                    android:layout_width="@dimen/_122sdp"
+                                    android:layout_width="132dp"
                                     android:layout_height="wrap_content"
                                     android:orientation="horizontal"
                                     segmentedgroup:sc_checked_text_color="@color/dark_periwinkle"
