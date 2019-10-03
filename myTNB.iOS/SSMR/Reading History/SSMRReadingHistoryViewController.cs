@@ -169,7 +169,7 @@ namespace myTNB
             AdjustHeader();
 
             _readingHistoryTableView.TableFooterView = null;
-            _readingHistoryTableView.Source = new SSMRReadingHistoryDataSource(OnTableViewScrolled, null);
+            _readingHistoryTableView.Source = new SSMRReadingHistoryDataSource(OnTableViewScrolled, null, false);
             _readingHistoryTableView.ReloadData();
         }
 
