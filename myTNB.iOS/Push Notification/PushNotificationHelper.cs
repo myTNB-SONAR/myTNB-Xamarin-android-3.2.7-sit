@@ -110,7 +110,6 @@ namespace myTNB
             if (DataManager.DataManager.SharedInstance.IsLoadingFromDashboard)
             {
                 DataManager.DataManager.SharedInstance.IsLoadingFromDashboard = false;
-                //NSNotificationCenter.DefaultCenter.PostNotificationName("OnReceiveNotificationFromDashboard", new NSObject());
             }
 
             DataManager.DataManager.SharedInstance.UserNotificationResponse = _userNotifications;

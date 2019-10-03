@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using CoreGraphics;
 using Foundation;
+using myTNB.Home.Bill;
 using myTNB.Model;
 using myTNB.SSMR;
 using UIKit;
@@ -10,43 +11,52 @@ namespace myTNB
 {
     public class SSMRReadingHistoryDataSource : UITableViewSource
     {
+        private EventHandler _onScroll;
         private List<MeterReadingHistoryItemModel> _readingHistoryList;
         private SSMRHelper _sSMRHelper = new SSMRHelper();
-        EventHandler _onScroll;
-        private readonly Dictionary<string, string> I18NDictionary;
+        private readonly Dictionary<string, string> I18NDictionary = new Dictionary<string, string>();
+        private bool _isEmptyHistory;
+        private bool _isSSMR;
 
-        public SSMRReadingHistoryDataSource(EventHandler onScroll, List<MeterReadingHistoryItemModel> readingHistoryList)
+        public SSMRReadingHistoryDataSource(EventHandler onScroll, List<MeterReadingHistoryItemModel> readingHistoryList, bool isSSMR = true)
         {
             I18NDictionary = LanguageManager.Instance.GetValuesByPage("SSMRReadingHistory");
             _onScroll = onScroll;
             _readingHistoryList = readingHistoryList;
+            _isSSMR = isSSMR;
+            _isEmptyHistory = _readingHistoryList == null || _readingHistoryList.Count < 1;
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            var readingHistory = _readingHistoryList[indexPath.Row];
-            SSMRReadingHistoryCell cell = tableView.DequeueReusableCell(SSMRConstants.Cell_ReadingHistory) as SSMRReadingHistoryCell;
-            cell._dateLabel.Text = readingHistory?.ReadingDate ?? string.Empty;
-            cell._descLabel.Text = readingHistory?.ReadingType ?? string.Empty;
-            cell._kwhLabel.Text = readingHistory?.Consumption ?? string.Empty;
-            cell._monthYearLabel.Text = readingHistory?.ReadingForMonth ?? string.Empty;
-            cell.UpdateCell(_sSMRHelper.IsEstimatedReading(readingHistory.ReadingType));
-            return cell;
+            if (_isEmptyHistory)
+            {
+                NoDataViewCell cell = tableView.DequeueReusableCell(Constants.Cell_NoHistoryData) as NoDataViewCell;
+                cell.Image = SSMRConstants.IMG_NoHistory;
+                cell.Message = GetI18NValue(SSMRConstants.I18N_NoHistoryData);
+                return cell;
+            }
+            else
+            {
+                MeterReadingHistoryItemModel readingHistory = _readingHistoryList[indexPath.Row];
+                SSMRReadingHistoryCell cell = tableView.DequeueReusableCell(SSMRConstants.Cell_ReadingHistory) as SSMRReadingHistoryCell;
+                cell._dateLabel.Text = readingHistory?.ReadingDate ?? string.Empty;
+                cell._descLabel.Text = readingHistory?.ReadingType ?? string.Empty;
+                cell._kwhLabel.Text = readingHistory?.Consumption ?? string.Empty;
+                cell._monthYearLabel.Text = readingHistory?.ReadingForMonth ?? string.Empty;
+                cell.UpdateCell(_sSMRHelper.IsEstimatedReading(readingHistory.ReadingType));
+                return cell;
+            }
         }
 
         public override nint NumberOfSections(UITableView tableView)
         {
-            return _readingHistoryList == null ? 0 : 1;
+            return _isSSMR ? 1 : 0;
         }
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            return _readingHistoryList?.Count ?? 0;
-        }
-
-        public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
-        {
-            return ScaleUtility.GetScaledHeight(68f);
+            return (nint)(_isEmptyHistory ? 1 : _readingHistoryList?.Count);
         }
 
         public override nfloat GetHeightForHeader(UITableView tableView, nint section)

@@ -2,7 +2,7 @@
 using CoreGraphics;
 using UIKit;
 
-namespace myTNB.Home.Bill
+namespace myTNB
 {
     public class NoDataViewCell : UITableViewCell
     {
@@ -18,7 +18,7 @@ namespace myTNB.Home.Bill
             nfloat heightFactor = 0.887F;
             _imgIcon = new UIImageView(new CGRect(ScaleUtility.GetWidthByScreenSize(131), ScaleUtility.GetScaledHeight(24)
                 , imgWidth, imgWidth * heightFactor));
-            _lblDescription = new UILabel(new CGRect(ScaleUtility.GetScaledWidth(32), ScaleUtility.GetYLocationFromFrame(_imgIcon.Frame, 7)
+            _lblDescription = new UILabel(new CGRect(ScaleUtility.GetScaledWidth(32), ScaleUtility.GetYLocationFromFrame(_imgIcon.Frame, 16)
                 , _cellWidth - ScaleUtility.GetScaledWidth(64), 60))
             {
                 TextAlignment = UITextAlignment.Center,

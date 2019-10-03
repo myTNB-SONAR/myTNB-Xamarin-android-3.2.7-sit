@@ -164,11 +164,12 @@
         "navTitle": "Self Meter Reading",
         "headerTitle": "My Meter Reading History",
         "subTitle": "I want to read my own meter for:",
-        "disableSSMRCTA": "Disable Self Meter Reading",
-        "enableSSMRCTA": "Enable Self Meter Reading",
-        "enableSSMRDescription": "This electricity account is not enabled for self meter reading yet, tap below to start!",
+        "disableSSMRCTA": "Stop Self Meter Reading",
+        "enableSSMRCTA": "Start Self Meter Reading",
+        "enableSSMRDescription": "Self meter reading service has not been started for this electricity account yet. Tap below to start!",
         "noEligibleAccount": "Looks like your accounts aren’t eligible to enable Self Meter Reading service",
-        "selectAccountNavTitle": "Select Electricity Account"
+        "selectAccountNavTitle": "Select Electricity Account",
+        "noHistoryData": "Looks like you have no meter reading history at the moment."    
     },
     "SSMRReadingHistory_selector": {
         "SMREligibiltyPopUpDetails": [
@@ -327,7 +328,7 @@
         "payNow": "Pay Now",
         "viewMyUsage": "View My Usage",
         "submitMeterReading": "Submit Meter Reading",
-        "reenableSSMR": "Re-enable Self Meter Reading",
+        "reenableSSMR": "Re-start Self Meter Reading",
         "viewReadingHistory": "View Reading History"
     },
     "AddAccount": {

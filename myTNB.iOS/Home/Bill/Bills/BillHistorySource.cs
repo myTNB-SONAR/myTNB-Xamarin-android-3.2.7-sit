@@ -80,7 +80,7 @@ namespace myTNB.Home.Bill
                 }
                 if (IsEmptyHistory)
                 {
-                    NoDataViewCell cell = tableView.DequeueReusableCell(BillConstants.Cell_NoHistoryData) as NoDataViewCell;
+                    NoDataViewCell cell = tableView.DequeueReusableCell(Constants.Cell_NoHistoryData) as NoDataViewCell;
                     cell.Image = BillConstants.IMG_NoHistoryData;
                     cell.Message = GetI18NValue(BillConstants.I18N_NoHistoryData);
                     return cell;

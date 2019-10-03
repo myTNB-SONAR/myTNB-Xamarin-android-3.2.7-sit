@@ -49,6 +49,13 @@ namespace myTNB
             };
             _containerView.AddSubviews(new UIView { _dateLabel, _descLabel, _kwhLabel, _monthYearLabel, line });
             AddSubview(_containerView);
+            if (_containerView != null)
+            {
+                _containerView.LeftAnchor.ConstraintEqualTo(LeftAnchor).Active = true;
+                _containerView.RightAnchor.ConstraintEqualTo(RightAnchor).Active = true;
+                _containerView.TopAnchor.ConstraintEqualTo(TopAnchor).Active = true;
+                _containerView.BottomAnchor.ConstraintEqualTo(BottomAnchor).Active = true;
+            }
             SelectionStyle = UITableViewCellSelectionStyle.None;
         }
 

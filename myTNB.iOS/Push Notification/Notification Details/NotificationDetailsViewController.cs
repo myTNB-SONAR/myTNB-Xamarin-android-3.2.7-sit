@@ -418,7 +418,8 @@ namespace myTNB
             if (NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.OpenMeterReadingPeriod
                 || NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.NoSubmissionReminder)
             {
-                UpdateCTA(ref _btnPrimary);
+                _btnPrimary.Enabled = NotificationInfo.IsSMRPeriodOpen;
+                UpdateCTA(ref _btnPrimary, true, NotificationInfo.IsSMRPeriodOpen);
                 _btnPrimary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_SubmitMeterReading), UIControlState.Normal);
                 _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
@@ -465,12 +466,13 @@ namespace myTNB
             _viewCTA.AddSubview(_btnPrimary);
         }
 
-        private void UpdateCTA(ref CustomUIButtonV2 btn, bool isSolidBg = true)
+        private void UpdateCTA(ref CustomUIButtonV2 btn, bool isSolidBg = true, bool isEnabled = true)
         {
             if (isSolidBg)
             {
-                btn.BackgroundColor = MyTNBColor.FreshGreen;
+                btn.BackgroundColor = isEnabled ? MyTNBColor.FreshGreen : MyTNBColor.BrownGrey;
                 btn.SetTitleColor(UIColor.White, UIControlState.Normal);
+                btn.Layer.BorderColor = (isEnabled ? MyTNBColor.FreshGreen : MyTNBColor.BrownGrey).CGColor;
             }
             else
             {
