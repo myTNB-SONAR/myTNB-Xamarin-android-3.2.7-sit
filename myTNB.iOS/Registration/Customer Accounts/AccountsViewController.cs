@@ -13,29 +13,27 @@ using System.Diagnostics;
 
 namespace myTNB.Registration.CustomerAccounts
 {
-    public partial class AccountsViewController : UIViewController
+    public partial class AccountsViewController : CustomUIViewController
     {
         UIButton btnAddAccount;
         UIButton btnConfirm;
-        UIView _progressView;
+        UIView _progressView, _footerView;
         public bool isDashboardFlow = false;
-        const int accountLimit = 10;
 
         public AccountsViewController(IntPtr handle) : base(handle)
         {
         }
         CustomerAccountResponseModel _customerAccountResponseModel = new CustomerAccountResponseModel();
-        BillingAccountDetailsResponseModel _billingAccountDetailsList = new BillingAccountDetailsResponseModel();
         CustomerAccountResponseModel _addMultipleSupplyAccountsResponseModel = new CustomerAccountResponseModel();
         public bool _needsUpdate = false;
 
         public override void ViewDidLoad()
         {
+            PageName = AddAccountConstants.PageName;
             base.ViewDidLoad();
-            // Perform any additional setup after loading the view, typically from a nib.
             NavigationItem.HidesBackButton = true;
-            NavigationItem.Title = "Common_AddElectricityAccount".Translate();
-            InitializedSubviews();
+            NavigationItem.Title = GetI18NValue(AddAccountConstants.I18N_NavTitle);
+            InitializeViews();
             SetStaticFields();
             SetEvents();
             lblDetails.Hidden = true;
@@ -45,7 +43,7 @@ namespace myTNB.Registration.CustomerAccounts
 
         internal void AddBackButton()
         {
-            UIImage backImg = UIImage.FromBundle("Back-White");
+            UIImage backImg = UIImage.FromBundle(AddAccountConstants.IMG_Back);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 DataManager.DataManager.SharedInstance.AccountRecordsList = new CustomerAccountRecordListModel
@@ -66,7 +64,7 @@ namespace myTNB.Registration.CustomerAccounts
             base.ViewWillAppear(animated);
             if (isDashboardFlow)
             {
-                UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle("Back-White"), UIBarButtonItemStyle.Done, (sender, e) =>
+                UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle(AddAccountConstants.IMG_Back), UIBarButtonItemStyle.Done, (sender, e) =>
                 {
                     DataManager.DataManager.SharedInstance.AccountsToBeAddedList = new CustomerAccountRecordListModel();
                     DismissViewController(true, null);
@@ -120,17 +118,19 @@ namespace myTNB.Registration.CustomerAccounts
         public override void DidReceiveMemoryWarning()
         {
             base.DidReceiveMemoryWarning();
-            // Release any cached data, images, etc that aren't in use.
         }
 
         internal void SetAccountTable()
         {
-            accountRecordsTableView.Source = new AccountRecordDataSource(DataManager.DataManager.SharedInstance.AccountsToBeAddedList, this);
-            accountRecordsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
-            accountRecordsTableView.BackgroundColor = MyTNBColor.SectionGrey;
+            accountRecordsTableView.Frame = new CGRect(0, 0, ViewWidth, View.Frame.Height - _footerView.Frame.Height);
+            accountRecordsTableView.Source = new AccountRecordDataSource(DataManager.DataManager.SharedInstance.AccountsToBeAddedList, this)
+            {
+                GetI18NValue = GetI18NValue
+            };
             accountRecordsTableView.ReloadData();
+
             int length = DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d?.Count ?? 0;
-            btnAddAccount.Hidden = (length >= accountLimit);
+            btnAddAccount.Hidden = length >= AddAccountConstants.Int_AccountLimit;
             btnConfirm.Hidden = false;
             SetRecordCount();
         }
@@ -143,7 +143,7 @@ namespace myTNB.Registration.CustomerAccounts
         internal void SetStaticFields()
         {
             SetRecordCount();
-            lblSubDetails.Text = "Registration_NoAccountsFoundMessage".Translate();
+            lblSubDetails.Text = GetI18NValue(AddAccountConstants.I18N_NoAcctFoundMsg);
         }
 
         internal void SetRecordCount()
@@ -153,8 +153,8 @@ namespace myTNB.Registration.CustomerAccounts
                                          ? DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count : 0);
             lblDetails.Hidden = false;
             lblDetails.Text = recordCount > 0 ? string.Format("{0} {1}", recordCount.ToString()
-                , "Registration_SupplyAccountCount".Translate())
-                : "Registration_NoAccountsFoundMessage".Translate();
+                , GetI18NValue(AddAccountConstants.I18N_SupplyAcctCount))
+                : GetI18NValue(AddAccountConstants.I18N_NoAcctFoundMsg);
             lblSubDetails.Hidden = recordCount == 0;
         }
 
@@ -179,7 +179,7 @@ namespace myTNB.Registration.CustomerAccounts
                             {
                                 if (IsEmptyNicknameExist())
                                 {
-                                    AlertHandler.DisplayGenericAlert(this, string.Empty, "Invalid_NicknameEntry".Translate());
+                                    AlertHandler.DisplayGenericAlert(this, string.Empty, GetErrorI18NValue(AddAccountConstants.I18N_EmptyNickname));
                                 }
                                 else
                                 {
@@ -194,8 +194,6 @@ namespace myTNB.Registration.CustomerAccounts
                                     DataManager.DataManager.SharedInstance.AccountRecordsList = new CustomerAccountRecordListModel();
                                     DataManager.DataManager.SharedInstance.AccountRecordsList.d = new List<CustomerAccountRecordModel>();
                                 }
-
-#if true // CREATE_TABBAR
                                 if (isDashboardFlow)
                                 {
                                     ViewHelper.DismissControllersAndSelectTab(this, 0, true);
@@ -207,13 +205,6 @@ namespace myTNB.Registration.CustomerAccounts
                                     loginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                                     PresentViewController(loginVC, true, null);
                                 }
-
-#else
-                                UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
-                                UIViewController loginVC = storyBoard.InstantiateViewController("HomeTabBarController") as UIViewController;
-                                loginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                                PresentViewController(loginVC, true, null);
-#endif
                             }
                         }
                         else
@@ -283,7 +274,6 @@ namespace myTNB.Registration.CustomerAccounts
 
         internal void ExecuteGetCustomerRecordsCall()
         {
-
             GetCustomerRecords().ContinueWith(task =>
             {
                 InvokeOnMainThread(() =>
@@ -296,8 +286,8 @@ namespace myTNB.Registration.CustomerAccounts
                         int index = currentCount + 1;
                         foreach (var item in DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d)
                         {
-                            item.accDesc = string.Format("{0} {1}", "Common_Account".Translate(), index);
-                            item.accountNickName = string.Format("{0} {1}", "Common_Account".Translate(), index);
+                            item.accDesc = string.Format("{0} {1}", GetCommonI18NValue(AddAccountConstants.I18N_Account), index);
+                            item.accountNickName = string.Format("{0} {1}", GetCommonI18NValue(AddAccountConstants.I18N_Account), index);
                             index++;
                         }
                         SetAccountTable();
@@ -394,8 +384,6 @@ namespace myTNB.Registration.CustomerAccounts
                 _customerAccountResponseModel = serviceManager.OnExecuteAPI<CustomerAccountResponseModel>("GetCustomerAccountsForICNum", requestParameter);
             });
         }
-
-
 
         internal void ExecuteAddMultipleSupplyAccountsToUserReg()
         {
@@ -563,20 +551,6 @@ namespace myTNB.Registration.CustomerAccounts
 
         }
 
-        internal Task GetBillingAccountDetails()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                ServiceManager serviceManager = new ServiceManager();
-                object requestParameter = new
-                {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    CANum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum
-                };
-                _billingAccountDetailsList = serviceManager.OnExecuteAPI<BillingAccountDetailsResponseModel>("GetBillingAccountDetails", requestParameter);
-            });
-        }
-
         internal void ShowPrelogin()
         {
             UIStoryboard loginStoryboard = UIStoryboard.FromName("Login", null);
@@ -594,34 +568,42 @@ namespace myTNB.Registration.CustomerAccounts
             NavigationController?.PushViewController(viewController, true);
         }
 
-        internal void InitializedSubviews()
+        internal void InitializeViews()
         {
-
-            var footerView = new UIView(new RectangleF(0, 0, (float)View.Frame.Width, 335));
-            footerView.BackgroundColor = UIColor.Clear;
-            accountRecordsTableView.TableFooterView = footerView;
+            var addtl = DeviceHelper.IsIphoneXUpResolution() ? GetScaledHeight(20) : 0;
+            _footerView = new UIView(new CGRect(0, View.Frame.Height - GetScaledHeight(140) - NavigationController.NavigationBar.Frame.Height - addtl, ViewWidth, GetScaledHeight(126)))
+            {
+                BackgroundColor = UIColor.Clear
+            };
 
             btnAddAccount = new UIButton(UIButtonType.Custom)
             {
-                Frame = new CGRect(18, 24, View.Frame.Width - 36, 48),
+                Frame = new CGRect(GetScaledWidth(18), 0, ViewWidth - GetScaledWidth(36), GetScaledHeight(48)),
                 BackgroundColor = UIColor.Clear
             };
-            btnAddAccount.Layer.BorderWidth = 1.0f;
+            btnAddAccount.Layer.BorderWidth = GetScaledWidth(1.0f);
             btnAddAccount.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
-            btnAddAccount.Layer.CornerRadius = 5.0f;
-            btnAddAccount.SetTitle("Common_AddAnotherAccount".Translate(), UIControlState.Normal);
+            btnAddAccount.Layer.CornerRadius = GetScaledHeight(5.0f);
+            btnAddAccount.SetTitle(GetI18NValue(AddAccountConstants.I18N_AddAnotherAcct), UIControlState.Normal);
+            btnAddAccount.Font = TNBFont.MuseoSans_16_500;
             btnAddAccount.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
-            footerView.AddSubview(btnAddAccount);
+            _footerView.AddSubview(btnAddAccount);
 
             btnConfirm = new UIButton(UIButtonType.Custom)
             {
-                Frame = new CGRect(18, 78, View.Frame.Width - 36, 48),
+                Frame = new CGRect(GetScaledWidth(18), btnAddAccount.Frame.GetMaxY() + GetScaledHeight(6), ViewWidth - GetScaledWidth(36), GetScaledHeight(48)),
                 BackgroundColor = MyTNBColor.FreshGreen
             };
-            btnConfirm.Layer.CornerRadius = 5.0f;
-            btnConfirm.SetTitle("Common_Confirm".Translate(), UIControlState.Normal);
+            btnConfirm.Layer.CornerRadius = GetScaledHeight(5.0f);
+            btnConfirm.SetTitle(GetCommonI18NValue(AddAccountConstants.I18N_Confirm), UIControlState.Normal);
+            btnConfirm.Font = TNBFont.MuseoSans_16_500;
             btnConfirm.SetTitleColor(UIColor.White, UIControlState.Normal);
-            footerView.AddSubview(btnConfirm);
+            _footerView.AddSubview(btnConfirm);
+            View.AddSubview(_footerView);
+
+            accountRecordsTableView.Frame = new CGRect(0, 0, ViewWidth, View.Frame.Height - _footerView.Frame.Height);
+            accountRecordsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
+            accountRecordsTableView.BackgroundColor = MyTNBColor.SectionGrey;
         }
 
         void DisplayProgessView(int count)
@@ -631,24 +613,24 @@ namespace myTNB.Registration.CustomerAccounts
                 BackgroundColor = new UIColor(0, .75F)
             };
 
-            UIView progressContainer = new UIView(new CGRect((_progressView.Frame.Width / 2) - 127
-                , (_progressView.Frame.Height / 2) - 87, 254, 174))
+            UIView progressContainer = new UIView(new CGRect((_progressView.Frame.Width / 2) - GetScaledWidth(127)
+                , (_progressView.Frame.Height / 2) - GetScaledHeight(87), GetScaledWidth(254), GetScaledHeight(174)))
             {
                 BackgroundColor = UIColor.White,
                 Alpha = 1F
             };
-            progressContainer.Layer.CornerRadius = 4;
+            progressContainer.Layer.CornerRadius = GetScaledHeight(4);
 
-            UILabel lblTitle = new UILabel(new CGRect(13, 23, progressContainer.Frame.Width - 26, 18));
-            lblTitle.Font = MyTNBFont.MuseoSans16;
+            UILabel lblTitle = new UILabel(new CGRect(GetScaledWidth(13), GetScaledHeight(23), progressContainer.Frame.Width - GetScaledWidth(26), GetScaledHeight(18)));
+            lblTitle.Font = TNBFont.MuseoSans_16_500;
             lblTitle.TextColor = MyTNBColor.PowerBlue;
             lblTitle.TextAlignment = UITextAlignment.Center;
-            lblTitle.Text = string.Format(count > 1 ? "Registration_AddingAccountsTitle".Translate()
-                : "Registration_AddingAccountTitle".Translate(), count);
+            lblTitle.Text = string.Format(count > 1 ? GetI18NValue(AddAccountConstants.I18N_AddAccounts)
+                : GetI18NValue(AddAccountConstants.I18N_AddAccount), count);
 
-            UIImageView imgLoading = new UIImageView(new CGRect(105, 57, 44, 44))
+            UIImageView imgLoading = new UIImageView(new CGRect(GetScaledWidth(105), GetScaledHeight(57), GetScaledWidth(44), GetScaledHeight(44)))
             {
-                Image = UIImage.FromBundle("Loading-Circle")
+                Image = UIImage.FromBundle(AddAccountConstants.IMG_LoadingCircle)
             };
 
             CABasicAnimation rotationAnimation = new CABasicAnimation
@@ -661,14 +643,14 @@ namespace myTNB.Registration.CustomerAccounts
             };
             imgLoading.Layer.AddAnimation(rotationAnimation, "rotationAnimation");
 
-            UILabel lblSubTitle = new UILabel(new CGRect(13, 112, progressContainer.Frame.Width - 26, 36))
+            UILabel lblSubTitle = new UILabel(new CGRect(GetScaledWidth(13), GetScaledHeight(112), progressContainer.Frame.Width - GetScaledWidth(26), GetScaledHeight(36)))
             {
-                Font = MyTNBFont.MuseoSans14,
+                Font = TNBFont.MuseoSans_14_300,
                 TextColor = MyTNBColor.TunaGrey(),
                 TextAlignment = UITextAlignment.Center,
                 Lines = 2,
-                Text = count > 1 ? "Registration_AddingAccountsMessage".Translate()
-                : "Registration_AddingAccountMessage".Translate()
+                Text = count > 1 ? GetI18NValue(AddAccountConstants.I18N_AddAccountsMsg)
+                : GetI18NValue(AddAccountConstants.I18N_AddAccountMsg)
             };
 
             progressContainer.AddSubviews(new UIView[] { lblTitle, imgLoading, lblSubTitle });
