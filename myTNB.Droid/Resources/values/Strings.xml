@@ -1430,22 +1430,23 @@ Please try again later.]]>
 
   <!--Smart Meter Reading-->
   <string name="meter_reading_title">Submit Meter Reading</string>
-  <string name="ssmr_submit_meter_reading_message"><![CDATA[<strong><font color="#49494a">Take or upload photos</font></strong><font color="#49494a">, or </font><strong><font color="#49494a">manually enter</font></strong><font color="#49494a"> your meter reading for each respective unit.</font>]]></string>
+  <string name="ssmr_submit_meter_reading_message_single"><![CDATA[<strong><font color="#49494a">Take or upload a photo,</font></strong><font color="#49494a"> or </font><strong><font color="#49494a">manually enter</font></strong><font color="#49494a"> your meter reading here.</font>]]></string>
+  <string name="ssmr_submit_meter_reading_message_multiple"><![CDATA[<strong><font color="#49494a">Take or upload photos,</font></strong><font color="#49494a"> or </font><strong><font color="#49494a">manually enter</font></strong><font color="#49494a"> your meter reading for each respective unit.</font>]]></string>
   <string name="ssmr_submit_meter_reading_note"><![CDATA[<font color="#414141">Note: Please <strong>round up</strong> the numbers if the reading values are showing decimal points on your meter.</font>]]></string>
   <string name="meter_kwh">kWh</string>
   <string name="meter_kVARh">kVARh</string>
   <string name="meter_kW">kW</string>
 
   <string name="dashboard_need_pay">I need to pay</string>
-    
+
   <!--Smart Meter Take Photo-->
   <string name="ssmr_single_take_photo_note">Take a photo of the reading value you see on your meter.</string>
   <string name="ssmr_single_adjust_photo_note">You can select a photo to delete and retake or adjust it before submission.</string>
-    
+
   <!--Smart Meter Reading History-->
   <string name="ssmr_reading_history_tooltip_title">Why are some of my accounts not here?</string>
-  <string name="ssmr_readint_history_tooltip_message"><![CDATA[We took the liberty to only show you electricity accounts that are eligble for the Self Meter Reading service. <font color="#1c79ca">Click here</font> to learn more about its eligibility.]]></string> 
-  
+  <string name="ssmr_readint_history_tooltip_message"><![CDATA[We took the liberty to only show you electricity accounts that are eligble for the Self Meter Reading service. <font color="#1c79ca">Click here</font> to learn more about its eligibility.]]></string>
+
  <!--App Unavailable-->
  <string name="unavailable_refresh_message">Uh oh, looks like this page is unplugged. Refresh to stay plugged in!</string>
  <string name="unavailable_downtime_message">Looks like your page can’t be loaded at the moment. Come back in a while.</string>

@@ -79,7 +79,7 @@
                         android:drawableLeft="@drawable/ic_action_camera_green"
                         android:textAllCaps="false"
                         android:textSize="16dp"
-                        style="@style/LightButtonWithIcon"/>
+                        style="@style/LightButtonWithIconTakePhoto"/>
                 </LinearLayout>
                 
                 <include android:id="@+id/kwhCard"
