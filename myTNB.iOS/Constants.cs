@@ -57,6 +57,7 @@
         public static string Common_No = "no";
         public static string Common_SelectAll = "selectAll";
         public static string Common_UnselectAll = "unselectAll";
+        public static string Common_TotalAmount = "totalAmount";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";

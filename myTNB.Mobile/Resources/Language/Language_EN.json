@@ -71,7 +71,8 @@
     "yes": "Yes",
     "no": "No",
     "selectAll": "Select All",
-    "unselectAll": "Unselect All"
+    "unselectAll": "Unselect All",
+    "totalAmount": "Total Amount"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -327,7 +328,11 @@
     "selectFilter": "Select Filter"
   },
   "SelectBills": {
-    "enterAmount": "Enter Amount"
+    "enterAmount": "Enter Amount",
+    "payMultiple": "Pay Bill ({0})",
+    "paySingle": "Pay Bill",
+    "loadMore": "Load More",
+    "selectBill":  "Select Bill(s)"
   },
   "PushNotificationList": {
     "allNotifications": "All Notifications",

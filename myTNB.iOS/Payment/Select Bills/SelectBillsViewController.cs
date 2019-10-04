@@ -37,6 +37,7 @@ namespace myTNB
         {
             PageName = PaymentConstants.Pagename_SelectBills;
             base.ViewDidLoad();
+            Title = GetI18NValue(PaymentConstants.I18N_SelectBill);
             AccountChargesCache.Clear();
             SetDefaultTableFrame();
             InitializedSubViews();
@@ -248,8 +249,8 @@ namespace myTNB
             }
             _lblTotalAmountValue.Text = totalAmount.ToString("N2", CultureInfo.InvariantCulture);
             AdjustAmountFrame();
-            var title = (selectedAccountCount > 0) ? string.Format("Payment_Multiple".Translate()
-                , selectedAccountCount.ToString()) : "Payment_Single".Translate();
+            var title = (selectedAccountCount > 0) ? string.Format(GetI18NValue(PaymentConstants.I18N_PayMultiple)
+                , selectedAccountCount.ToString()) : GetI18NValue(PaymentConstants.I18N_PaySingle);
             BtnPayBill.SetTitle(title, UIControlState.Normal);
 
             bool isValid = (selectedAccountCount > 0 && totalAmount > 0) && !hasInvalidSelection;
@@ -397,7 +398,7 @@ namespace myTNB
             UILabel lblTotalAmountTitle = new UILabel(new CGRect(0, 6, 120, 18));
             lblTotalAmountTitle.TextColor = MyTNBColor.TunaGrey();
             lblTotalAmountTitle.Font = MyTNBFont.MuseoSans14_500;
-            lblTotalAmountTitle.Text = "Common_TotalAmount".Translate();
+            lblTotalAmountTitle.Text = GetCommonI18NValue(Constants.Common_TotalAmount);
 
             _lblCurrency = new UILabel(new CGRect(0, 6, 24, 18));
             _lblCurrency.TextColor = MyTNBColor.TunaGrey();
@@ -423,7 +424,7 @@ namespace myTNB
             }));
             UILabel lblLoadMore = new UILabel(new CGRect(0, 0, _viewFooter.Frame.Width, 16));
             lblLoadMore.TextAlignment = UITextAlignment.Center;
-            lblLoadMore.AttributedText = new NSAttributedString("Payment_LoadMore".Translate()
+            lblLoadMore.AttributedText = new NSAttributedString(GetI18NValue(PaymentConstants.I18N_LoadMore)
                 , font: MyTNBFont.MuseoSans12_300
                 , foregroundColor: MyTNBColor.SilverChalice
                 , strokeWidth: 0

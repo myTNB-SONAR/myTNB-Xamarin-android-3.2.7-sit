@@ -17,7 +17,7 @@ namespace myTNB.PushNotification
         public PushNotificationDataSource(PushNotificationViewController controller, List<UserNotificationDataModel> data)
         {
             _controller = controller;
-            _data = data.FindAll(x=>x.IsAccountNumberExist);
+            _data = data.FindAll(x => x.IsAccountNumberExist);
         }
 
         public override nint NumberOfSections(UITableView tableView)
@@ -123,14 +123,14 @@ namespace myTNB.PushNotification
                 {
                     DeleteNotification(indexPath);
                 });
-                deleteAction.BackgroundColor = UIColor.FromPatternImage(RowActionImage(MyTNBColor.HarleyDavidsonOrange.CGColor, "Notification-Delete"));
+                deleteAction.BackgroundColor = UIColor.FromPatternImage(RowActionImage(MyTNBColor.HarleyDavidsonOrange.CGColor, PushNotificationConstants.IMG_Delete));
                 if (!notification.IsReadNotification)
                 {
                     UITableViewRowAction readAction = UITableViewRowAction.Create(UITableViewRowActionStyle.Default, "        ", delegate
                     {
                         ReadNotification(indexPath);
                     });
-                    readAction.BackgroundColor = UIColor.FromPatternImage(RowActionImage(MyTNBColor.Denim.CGColor, "Notification-MarkAsRead"));
+                    readAction.BackgroundColor = UIColor.FromPatternImage(RowActionImage(MyTNBColor.Denim.CGColor, PushNotificationConstants.IMG_MarkAsRead));
                     return new UITableViewRowAction[] { deleteAction, readAction };
                 }
                 else
@@ -191,7 +191,7 @@ namespace myTNB.PushNotification
              {
                  ReadNotification(indexPath);
              });
-            contextualReadAction.Image = UIImage.FromBundle("Notification-MarkAsRead");
+            contextualReadAction.Image = UIImage.FromBundle(PushNotificationConstants.IMG_MarkAsRead);
             contextualReadAction.BackgroundColor = MyTNBColor.Denim;
             UIContextualAction contextualDeleteAction = UIContextualAction.FromContextualActionStyle(UIContextualActionStyle.Normal
                 , string.Empty
@@ -208,7 +208,7 @@ namespace myTNB.PushNotification
             {
                 contextualAction = new UIContextualAction[] { contextualDeleteAction, contextualReadAction };
             }
-            contextualDeleteAction.Image = UIImage.FromBundle("Notification-Delete");
+            contextualDeleteAction.Image = UIImage.FromBundle(PushNotificationConstants.IMG_Delete);
             contextualDeleteAction.BackgroundColor = MyTNBColor.HarleyDavidsonOrange;
             UISwipeActionsConfiguration trailingSwipe = UISwipeActionsConfiguration.FromActions(contextualAction);
             trailingSwipe.PerformsFirstActionWithFullSwipe = false;
