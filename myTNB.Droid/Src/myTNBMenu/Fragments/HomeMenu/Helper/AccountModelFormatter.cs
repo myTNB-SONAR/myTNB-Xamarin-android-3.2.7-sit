@@ -26,7 +26,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Helper
                 {
                     formattedValue = amountDue;
                 }
-                formattedValue = "RM " + decimalFormatter.Format(float.Parse(formattedValue));
+                formattedValue = "RM " + decimalFormatter.Format(double.Parse(formattedValue));
             }
             return formattedValue;
         }
@@ -42,13 +42,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Helper
             {
                 if ((amountDue != null && amountDue != "") && (dueDate != null && dueDate != ""))
                 {
-                    if (float.Parse(amountDue) < 0f)
+                    if (double.Parse(amountDue) <= 0.00)
                     {
-                        dueAmountNote = "paid extra";
-                    }
-                    else if (float.Parse(amountDue) == 0f)
-                    {
-                        dueAmountNote = "all cleared";
+                        if (double.Parse(amountDue) < 0.00)
+                        {
+                            dueAmountNote = "paid extra";
+                        }
+                        else
+                        {
+                            dueAmountNote = "all cleared";
+                        }
                     }
                     else
                     {
@@ -64,7 +67,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Helper
             bool IsNegativeAmountValue = false;
             if (amountDue != null && amountDue != "")
             {
-                IsNegativeAmountValue = float.Parse(amountDue) < 0f;
+                IsNegativeAmountValue = double.Parse(amountDue) < 0.00;
             }
             return IsNegativeAmountValue;
         }
@@ -74,7 +77,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Helper
             bool IsAmountClearedValue = false;
             if (amountDue != null && amountDue != "")
             {
-                IsAmountClearedValue = float.Parse(amountDue) == 0f;
+                IsAmountClearedValue = double.Parse(amountDue) == 0.00;
             }
             return IsAmountClearedValue;
         }
