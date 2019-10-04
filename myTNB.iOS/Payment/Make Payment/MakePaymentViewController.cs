@@ -6,10 +6,11 @@ using System.Collections.Generic;
 using CoreGraphics;
 using System.Threading.Tasks;
 using System.Diagnostics;
+using myTNB.Payment;
 
 namespace myTNB
 {
-    public partial class MakePaymentViewController : UIViewController
+    public partial class MakePaymentViewController : CustomUIViewController
     {
         public GetPaymentTransactionIdResponseModel _paymentTransactionIDResponseModel;
         public CardModel _card;
@@ -28,6 +29,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            PageName = PaymentConstants.Pagename_MakePayment;
             base.ViewDidLoad();
             var appDelegate = UIApplication.SharedApplication.Delegate as AppDelegate;
             if (appDelegate != null)
@@ -35,7 +37,7 @@ namespace myTNB
                 appDelegate._makePaymentVC = this;
             }
 
-            NavigationItem.Title = (_paymentMode == "CC") ? "Payment_EnterOTP".Translate() : "Payment_OnlineBanking".Translate();
+            NavigationItem.Title = GetI18NValue(_paymentMode == "CC" ? PaymentConstants.I18N_EnterOTP : PaymentConstants.I18N_OnlineBanking);
 
             AddBackButton();
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
@@ -97,11 +99,12 @@ namespace myTNB
             UIImage backImg = UIImage.FromBundle("Back-White");
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                var okCancelAlertController = UIAlertController.Create("Payment_AbortTitle".Translate()
-                    , "Payment_AbortMessage".Translate(), UIAlertControllerStyle.Alert);
-                okCancelAlertController.AddAction(UIAlertAction.Create("Common_Abort".Translate()
+                var okCancelAlertController = UIAlertController.Create(GetI18NValue(PaymentConstants.I18N_AbortTitle)
+                    , GetI18NValue(PaymentConstants.I18N_AbortMessage)
+                    , UIAlertControllerStyle.Alert);
+                okCancelAlertController.AddAction(UIAlertAction.Create(GetCommonI18NValue(Constants.Common_Abort)
                     , UIAlertActionStyle.Default, alert => NavigationController?.PopViewController(true)));
-                okCancelAlertController.AddAction(UIAlertAction.Create("Common_Cancel".Translate()
+                okCancelAlertController.AddAction(UIAlertAction.Create(GetCommonI18NValue(Constants.Common_Cancel)
                     , UIAlertActionStyle.Cancel, alert => Debug.WriteLine("Cancel was clicked")));
                 okCancelAlertController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(okCancelAlertController, animated: true, completionHandler: null);

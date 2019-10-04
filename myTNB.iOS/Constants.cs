@@ -61,6 +61,8 @@
         public static string Common_TotalAmountRM = "totalAmountRM";
         public static string Common_Back = "back";
         public static string Common_Cards = "cards";
+        public static string Common_Abort = "abort";
+        public static string Common_Cancel = "cancel";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";

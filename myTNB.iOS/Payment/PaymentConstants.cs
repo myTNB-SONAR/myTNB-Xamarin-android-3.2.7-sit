@@ -5,6 +5,7 @@
         //Pagename
         public static string Pagename_SelectBills = "SelectBills";
         public static string Pagename_SelectPaymentMethod = "SelectPaymentMethod";
+        public static string Pagename_MakePayment = "MakePayment";
 
         //ViewCell
         public static string Cell_SelectBills = "SelectBillsTableViewCell";
@@ -25,6 +26,10 @@
         public static string I18N_AddCard = "addCard";
         public static string I18N_FPXTitle = "fpxTitle";
         public static string I18N_IAmPaying = "iamPaying";
+        public static string I18N_EnterOTP = "enterOTP";
+        public static string I18N_OnlineBanking = "onlineBanking";
+        public static string I18N_AbortTitle = "abortTitle";
+        public static string I18N_AbortMessage = "abortMessage";
 
         //Image
         public static string IMG_CheckboxActive = "Payment-Checkbox-Active";
