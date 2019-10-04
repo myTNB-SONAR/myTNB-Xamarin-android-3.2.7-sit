@@ -35,6 +35,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         private bool isFromSingleCapture = false;
         private string singlePhaseMeterId = "";
         private Bitmap singlePhaseImageData = null;
+        public int mCropAreaHeight;
         //List<MeterValidation> validatedMeterList;
         //List<MeterValidation> validationStateList;
 
@@ -239,7 +240,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 LinearLayout cropContainer = FindViewById<LinearLayout>(Resource.Id.cropAreaContainerPreview);
                 cropContainer.Alpha = 0.8f;
-                cropContainer.AddView(new CropAreaPreView(this));
+                cropContainer.AddView(new CropAreaPreView(this, mCropAreaHeight));
 
                 TextView adjustPhotoNote = FindViewById<TextView>(Resource.Id.adjust_photo_note);
                 adjustPhotoNote.Text = GetString(Resource.String.ssmr_single_adjust_photo_note);
@@ -310,7 +311,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             else
             {
                 ScaledImageView previewImage = FindViewById<ScaledImageView>(Resource.Id.adjust_photo_preview);
-                previewImage.SetScaleType(ImageView.ScaleType.CenterCrop);
+                //previewImage.SetScaleType(ImageView.ScaleType.CenterCrop);
                 previewImage.SetImageBitmap(checkedCapturedImage);
                 ShowImagePreView(true);
                 isFromSingleCapture = true;
@@ -339,7 +340,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     photoBox.Click += delegate {
                         ShowImagePreView(true);
                         ScaledImageView previewImage = FindViewById<ScaledImageView>(Resource.Id.adjust_photo_preview);
-                        previewImage.SetScaleType(ImageView.ScaleType.CenterCrop);
+                        //previewImage.SetScaleType(ImageView.ScaleType.CenterCrop);
                         previewImage.SetImageBitmap(photoBox.photoBitmap);
                         selectedPhotoBox = photoBox;
                     };
@@ -363,7 +364,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 ShowImagePreView(true);
                 ScaledImageView previewImage = FindViewById<ScaledImageView>(Resource.Id.adjust_photo_preview);
-                previewImage.SetScaleType(ImageView.ScaleType.CenterCrop);
+                //previewImage.SetScaleType(ImageView.ScaleType.CenterCrop);
                 previewImage.SetImageBitmap(photoContainerBoxes[0].photoBitmap);
                 selectedPhotoBox = photoContainerBoxes[0];
             }
@@ -599,7 +600,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Take Meter Reading Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Capture Meter Reading (Camera)");
             }
             catch (Exception e)
             {
@@ -610,8 +611,10 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public class CropAreaPreView : View
         {
             public Rect cropAreaRect;
-            public CropAreaPreView(Context context) : base(context)
+            private int mCanvasHeight;
+            public CropAreaPreView(Context context, int canvasHeight) : base(context)
             {
+                mCanvasHeight = canvasHeight;
             }
 
             public CropAreaPreView(Context context, IAttributeSet attrs) : base(context, attrs)
@@ -632,12 +635,12 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 canvas.DrawPaint(rectPaint);
 
                 rectPaint.SetXfermode(new PorterDuffXfermode(PorterDuff.Mode.Clear));
-                int height = canvas.Height;
+                int height = mCanvasHeight;// canvas.Height;
                 int width = canvas.Width;
                 int left = (int)(width - (width * .809));
-                int top = (int)(height - (height * .75));
+                int top = (int)(height - (height * .70));
                 int right = (int)(width - (width * .191));
-                int bottom = (int)(height - (height * .40));
+                int bottom = (int)(height - (height * .35));
                 cropAreaRect = new Rect(0, top, width, bottom);
                 canvas.DrawRect(cropAreaRect, rectPaint);
 

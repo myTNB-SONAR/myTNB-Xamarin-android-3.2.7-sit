@@ -199,8 +199,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             seekBar.SetOnSeekBarChangeListener(new OnSeekbarChangeListener(this));
             LinearLayout linearLayout = view.FindViewById<LinearLayout>(Resource.Id.cropAreaContainer);
             linearLayout.Alpha = 0.8f;
-            cropAreaView = new CropAreaView(this.Activity);
-            linearLayout.AddView(cropAreaView);
+            linearLayout.AddView(new CropAreaView(Context, this.Activity));
 
             takePhotoNoteView = view.FindViewById<TextView>(Resource.Id.take_photo_note);
             takePhotoNoteView.Text = GetString(Resource.String.ssmr_single_take_photo_note);
@@ -775,8 +774,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public class CropAreaView : View
         {
             public Rect cropAreaRect;
-            public CropAreaView(Context context) : base(context)
+            public int canvasHeight;
+            public Activity mOwnerActivity;
+            public CropAreaView(Context context, Activity ownerActivity) : base(context)
             {
+                mOwnerActivity = ownerActivity;
             }
 
             public CropAreaView(Context context, IAttributeSet attrs) : base(context, attrs)
@@ -797,12 +799,13 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 canvas.DrawPaint(rectPaint);
 
                 rectPaint.SetXfermode(new PorterDuffXfermode(PorterDuff.Mode.Clear));
+                ((SubmitMeterTakePhotoActivity)this.mOwnerActivity).mCropAreaHeight = canvas.Height;
                 int height = canvas.Height;
                 int width = canvas.Width;
                 int left = (int)(width - (width * .809)); 
-                int top = (int)(height - (height * .75));
+                int top = (int)(height - (height * .70));
                 int right = (int)(width - (width * .191));
-                int bottom = (int)(height - (height * .40));
+                int bottom = (int)(height - (height * .35));
                 canvas.DrawRect(0, top, width, bottom, rectPaint);
                 cropAreaRect = new Rect(left,top,right,bottom);
 

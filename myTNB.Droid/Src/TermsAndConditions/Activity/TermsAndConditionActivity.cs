@@ -196,7 +196,7 @@ namespace myTNB_Android.Src.TermsAndConditions.Activity
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Terms And Condition Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Terms And Conditions");
             }
             catch (Exception e)
             {

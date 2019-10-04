@@ -169,7 +169,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Notification Setting Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Notification Prefences");
             }
             catch (Exception e)
             {

@@ -222,7 +222,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             try
             {
                 mCallBack = context as ISummaryFragmentToDashBoardActivtyListener;
-                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Home Screen");
+                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Home");
             }
             catch (Java.Lang.ClassCastException e)
             {
@@ -791,7 +791,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                     try
                     {
-                        FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "My Service Tile Clicked");
+                        FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "My Services Card Clicked");
                     }
                     catch (System.Exception err)
                     {
@@ -818,7 +818,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                     try
                     {
-                        FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Need Help Tile Clicked");
+                        FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Need Help Card Clicked");
                     }
                     catch (System.Exception err)
                     {

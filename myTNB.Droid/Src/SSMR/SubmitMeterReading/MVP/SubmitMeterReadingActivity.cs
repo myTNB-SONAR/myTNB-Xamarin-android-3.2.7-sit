@@ -156,7 +156,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         private void InitializePage()
         {
-			meterReadingTitle.TextFormatted = GetFormattedText(GetString(Resource.String.ssmr_submit_meter_reading_message));
 			meterReadingNote.TextFormatted = GetFormattedText(GetString(Resource.String.ssmr_submit_meter_reading_note));
 
 			TextViewUtils.SetMuseoSans300Typeface(meterReadingTitle,meterReadingNote, prevReading1, prevReading2, prevReading3, prevReading4, prevReading5,
@@ -248,6 +247,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     meterReadingModelList = this.mPresenter.GetMeterReadingModelList(ssmrActivityInfoResponse.Response.Data.SMRMROValidateRegisterDetails);
                 }
             }
+            meterReadingTitle.TextFormatted = (meterReadingModelList.Count == 1) ? GetFormattedText(GetString(Resource.String.ssmr_submit_meter_reading_message_single))
+                : GetFormattedText(GetString(Resource.String.ssmr_submit_meter_reading_message_multiple));
             SetMeterReadingCards();
             OnGenerateTooltipData();
             OnUpdateSubmitMeterButton();
@@ -759,7 +760,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Submit Meter Reading Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Input Meter Reading");
             }
             catch (Exception e)
             {

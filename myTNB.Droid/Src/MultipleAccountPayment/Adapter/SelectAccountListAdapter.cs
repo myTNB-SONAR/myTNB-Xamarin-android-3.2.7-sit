@@ -144,7 +144,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                         vh.SelectAccountView.Checked = false;
                         CheckChanged(this, -2);
                     }
-                    else if (newAmount < item.minimumAmountDue)
+                    else if (newAmount < double.Parse(payableFormatter.Format(item.minimumAmountDue)))
                     {
                         vh.AmountLabel.Error = string.Format("Minimum amount must be at least {0}", "RM " + item.minimumAmountDue.ToString("#,##0.00"));
                         vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHintAmount);

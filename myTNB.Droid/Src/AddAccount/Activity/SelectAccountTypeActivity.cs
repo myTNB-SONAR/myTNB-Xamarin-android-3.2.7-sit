@@ -106,7 +106,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Add Account Select Account");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Add Account -> Select Account Type");
             }
             catch (Exception e)
             {

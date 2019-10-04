@@ -397,7 +397,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Link Accounts Staging Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Link Accounts Staging");
             }
             catch (Exception e)
             {

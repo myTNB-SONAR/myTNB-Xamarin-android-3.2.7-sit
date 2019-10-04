@@ -444,7 +444,7 @@ namespace myTNB_Android.Src.WalkThrough
             try
             {
                 base.OnResume();
-                FirebaseAnalyticsUtils.SetScreenName(this, "Pre-Login Walkthrough Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Pre-Login Walkthrough");
             }
             catch (Exception e)
             {

@@ -269,7 +269,7 @@ namespace myTNB_Android.Src.RegisterValidation
                 //    RegisterReceiver(pinDisplayerSMSReceiver , new IntentFilter("com.myTNB.smsReceiver"));
                 //}
                 this.userActionsListener.Start();
-                FirebaseAnalyticsUtils.SetScreenName(this, "Register-OTP Token Input Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "SMS OTP Token Input (Registration)");
             }
             catch (Exception e)
             {

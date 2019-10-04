@@ -1132,7 +1132,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                         try
                         {
-                            FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "BCRM Downtime Message Click");
+                            FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "BCRM Downtime Message Clicked");
                         }
                         catch (System.Exception e)
                         {
@@ -4311,7 +4311,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             this.userActionsListener.OnViewBill(selectedAccount);
             try
             {
-                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "View Bill Buttom Click");
+                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "View Bill Buttom Clicked");
             }
             catch (System.Exception ne)
             {
@@ -4325,7 +4325,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             this.userActionsListener.OnViewBill(selectedAccount);
             try
             {
-                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "View Bill Buttom Click");
+                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "View Bill Buttom Clicked");
             }
             catch (System.Exception ne)
             {
@@ -4339,7 +4339,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             this.userActionsListener.OnTapRefresh();
             try
             {
-                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Inner Dashboard Refresh Buttom Click");
+                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Inner Dashboard Refresh Buttom Clicked");
             }
             catch (System.Exception ne)
             {
@@ -4353,7 +4353,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             this.userActionsListener.OnPay();
             try
             {
-                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Inner Dashboard Payment Buttom Click");
+                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Inner Dashboard Payment Buttom Clicked");
             }
             catch (System.Exception ne)
             {
@@ -4375,7 +4375,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
             try
             {
-                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "RM / kWh Toggle Button Click");
+                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "RM / kWh Toggle Button Clicked");
             }
             catch (System.Exception ne)
             {
@@ -4426,7 +4426,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 mChart.Clear();
                 SetUp();
-                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Tariff Toggle Button Click");
+                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Tariff Toggle Button Clicked");
             }
             catch (System.Exception ne)
             {
@@ -5898,7 +5898,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 kwhLabel.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
                 rmLabel.SetTextColor(Resources.GetColor(Resource.Color.new_grey));
                 ShowByKwh();
-                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "kWh Selection Click");
+                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "kWh Selection Clicked");
             }
             catch (System.Exception ne)
             {
@@ -5917,7 +5917,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 rmLabel.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
                 kwhLabel.SetTextColor(Resources.GetColor(Resource.Color.new_grey));
                 ShowByRM();
-                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "RM Selection Click");
+                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "RM Selection Clicked");
 
             }
             catch (System.Exception ne)
@@ -6085,7 +6085,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (ChartType == ChartType.Month)
                 {
                     OnGenerateTariffLegendValue(-1, isToggleTariff);
-                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Graph Hightlight Deselected");
+                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Graph Bar Tap Out");
                 }
                 else if (ChartType == ChartType.Day && isZoomIn)
                 {
@@ -6268,7 +6268,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 try
                 {
-                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Graph Hightlight Selected");
+                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Graph Bar Tap In");
                 }
                 catch (System.Exception err)
                 {
