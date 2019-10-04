@@ -179,6 +179,10 @@ namespace myTNB
                                             SetTariffLegendComponent();
                                             SetChartView(false);
                                         }
+                                        else if (AccountUsageCache.IsDataEmpty)
+                                        {
+                                            SetEmptyDataComponent(AccountUsageCache.EmptyDataMessage);
+                                        }
                                         else
                                         {
                                             SetRefreshScreen();
@@ -243,6 +247,10 @@ namespace myTNB
                                             SetTariffButtonState();
                                             SetTariffLegendComponent();
                                             SetChartView(false);
+                                        }
+                                        else if (AccountUsageSmartCache.IsDataEmpty)
+                                        {
+                                            SetEmptyDataComponent(AccountUsageSmartCache.EmptyDataMessage);
                                         }
                                         else
                                         {

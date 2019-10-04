@@ -35,7 +35,7 @@ namespace myTNB
         internal SmartMeterViewEnum _smViewEnum;
         internal nfloat _lastContentOffset, _footerYPos;
         internal bool isBcrmAvailable, isNormalChart, isREAccount, isSmartMeterAccount, accountIsSSMR;
-        internal bool _legendIsVisible, _footerIsDocked;
+        internal bool _legendIsVisible, _footerIsDocked, _isEmptyData;
 
         internal CGRect _origViewFrame;
 
@@ -341,57 +341,66 @@ namespace myTNB
         {
             _lblAddress.Frame = new CGRect(new CGPoint(BaseMargin, 0), _lblAddress.Frame.Size);
             _viewSeparator.Frame = new CGRect(new CGPoint(BaseMargin, GetYLocationFromFrame(_lblAddress.Frame, 16F)), _viewSeparator.Frame.Size);
-
-            if (!AccountStatusCache.AccountStatusIsAvailable() && !_viewStatus.Hidden)
+            _viewSeparator.Hidden = _isEmptyData;
+            if (!_isEmptyData)
             {
-                _viewStatus.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewSeparator.Frame, 16F)), _viewStatus.Frame.Size);
-                _viewChart.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewStatus.Frame, 16F)), _viewChart.Frame.Size);
-            }
-            else
-            {
-                _viewChart.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewSeparator.Frame, 16F)), _viewChart.Frame.Size);
-            }
-
-            if (isREAccount)
-            {
-                _viewRE.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, 24F)), _viewRE.Frame.Size);
-                _lastView = _viewRE;
-            }
-            else
-            {
-                bool res = isSmartMeterAccount ? _legendIsVisible && !_viewLegend.Hidden : _legendIsVisible;
-                _viewLegend.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, res ? 16F : 0F)), _viewLegend.Frame.Size);
-                _viewToggle.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_legendIsVisible ? _viewLegend.Frame : _viewChart.Frame, 16F)), _viewToggle.Frame.Size);
-                _lastView = _viewToggle;
-                if (accountIsSSMR)
+                if (!AccountStatusCache.AccountStatusIsAvailable() && !_viewStatus.Hidden)
                 {
-                    _viewSSMR.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewToggle.Frame, 16F)), _viewSSMR.Frame.Size);
-                    _lastView = _viewSSMR;
-                    if (!AppLaunchMasterCache.IsEnergyTipsDisabled)
-                    {
-                        _viewTips.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewSSMR.Frame, 16F)), _viewTips.Frame.Size);
-                        _lastView = _viewTips;
-                    }
-                }
-                else if (isSmartMeterAccount)
-                {
-                    _viewSmartMeter.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewToggle.Frame, 24F)), _viewSmartMeter.Frame.Size);
-                    _lastView = _viewSmartMeter;
-                    if (!AppLaunchMasterCache.IsEnergyTipsDisabled)
-                    {
-                        _viewTips.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewSmartMeter.Frame, 16F)), _viewTips.Frame.Size);
-                        _lastView = _viewTips;
-                    }
+                    _viewStatus.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewSeparator.Frame, 16F)), _viewStatus.Frame.Size);
+                    _viewChart.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewStatus.Frame, 16F)), _viewChart.Frame.Size);
                 }
                 else
                 {
-                    if (!AppLaunchMasterCache.IsEnergyTipsDisabled)
+                    _viewChart.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewSeparator.Frame, 16F)), _viewChart.Frame.Size);
+                }
+
+                if (isREAccount)
+                {
+                    _viewRE.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, 24F)), _viewRE.Frame.Size);
+                    _lastView = _viewRE;
+                }
+                else
+                {
+                    bool res = isSmartMeterAccount ? _legendIsVisible && !_viewLegend.Hidden : _legendIsVisible;
+                    _viewLegend.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, res ? 16F : 0F)), _viewLegend.Frame.Size);
+                    _viewToggle.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_legendIsVisible ? _viewLegend.Frame : _viewChart.Frame, 16F)), _viewToggle.Frame.Size);
+                    _lastView = _viewToggle;
+                    if (accountIsSSMR)
                     {
-                        _viewTips.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewToggle.Frame, 24F)), _viewTips.Frame.Size);
-                        _lastView = _viewTips;
+                        _viewSSMR.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewToggle.Frame, 16F)), _viewSSMR.Frame.Size);
+                        _lastView = _viewSSMR;
+                        if (!AppLaunchMasterCache.IsEnergyTipsDisabled)
+                        {
+                            _viewTips.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewSSMR.Frame, 16F)), _viewTips.Frame.Size);
+                            _lastView = _viewTips;
+                        }
+                    }
+                    else if (isSmartMeterAccount)
+                    {
+                        _viewSmartMeter.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewToggle.Frame, 24F)), _viewSmartMeter.Frame.Size);
+                        _lastView = _viewSmartMeter;
+                        if (!AppLaunchMasterCache.IsEnergyTipsDisabled)
+                        {
+                            _viewTips.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewSmartMeter.Frame, 16F)), _viewTips.Frame.Size);
+                            _lastView = _viewTips;
+                        }
+                    }
+                    else
+                    {
+                        if (!AppLaunchMasterCache.IsEnergyTipsDisabled)
+                        {
+                            _viewTips.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewToggle.Frame, 24F)), _viewTips.Frame.Size);
+                            _lastView = _viewTips;
+                        }
                     }
                 }
             }
+            else
+            {
+                _viewChart.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_lblAddress.Frame, 0F)), _viewChart.Frame.Size);
+                _lastView = _viewSSMR.Hidden ? _viewChart : _viewSSMR;
+            }
+
             _footerIsDocked = (_lastView.Frame.GetMaxY() + _navbarContainer.Frame.Height + GetScaledHeight(8F)) < _footerYPos + GetScaledHeight(10);
             if (_footerViewComponent != null)
             {
@@ -474,6 +483,7 @@ namespace myTNB
 
         public void SetChartView(bool isUpdating)
         {
+            _isEmptyData = false;
             if (isREAccount)
             {
                 _chartView = new REChartView();
@@ -502,6 +512,24 @@ namespace myTNB
             _viewChart.AddSubview(_chart);
             ViewHelper.AdjustFrameSetHeight(_viewChart, _chart.Frame.Height);
         }
+
+        #region EMPTY DATA Methods
+        internal void SetEmptyDataComponent(string message)
+        {
+            _isEmptyData = true;
+            EmptyUsageComponent emptyUsageComponent = new EmptyUsageComponent(_viewChart);
+            if (_chart != null)
+            {
+                _chart.RemoveFromSuperview();
+            }
+            _chart = emptyUsageComponent.GetUI();
+            emptyUsageComponent.SetMessage(message);
+            _viewChart.AddSubview(_chart);
+            ViewHelper.AdjustFrameSetHeight(_viewChart, _chart.Frame.Height);
+            _viewToggle.Hidden = _isEmptyData;
+            SetContentView();
+        }
+        #endregion
 
         #region SMART METER Methods
         internal void SetSmartMeterComponent(bool isUpdating, List<UsageCostItemModel> usageCostModel = null)
@@ -1427,7 +1455,8 @@ namespace myTNB
             {
                 _refresh.RemoveFromSuperview();
             }
-            RefreshScreenComponent refreshScreenComponent = new RefreshScreenComponent(View, GetScaledHeight(84F) - (DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height));
+            float addtlHeight = (float)(NavigationController != null ? NavigationController.NavigationBar.Frame.Height : 0);
+            RefreshScreenComponent refreshScreenComponent = new RefreshScreenComponent(View, GetScaledHeight(84F) - (DeviceHelper.GetStatusBarHeight() + addtlHeight));
             refreshScreenComponent.SetIsBCRMDown(!isBcrmAvailable);
             refreshScreenComponent.SetRefreshButtonHidden(!isBcrmAvailable);
             refreshScreenComponent.SetButtonText(refreshBtnTxt);

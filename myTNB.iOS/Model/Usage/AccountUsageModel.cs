@@ -12,6 +12,13 @@ namespace myTNB.Model.Usage
         public AccountUsageDataModel data { set; get; }
         public bool IsMonthlyTariffBlocksDisabled { get; set; }
         public bool IsMonthlyTariffBlocksUnavailable { get; set; }
+        public bool IsDataEmpty
+        {
+            get
+            {
+                return ErrorCode == "7201";
+            }
+        }
     }
 
     public class AccountUsageDataModel

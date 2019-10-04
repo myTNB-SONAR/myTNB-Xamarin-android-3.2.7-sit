@@ -19,6 +19,7 @@ namespace myTNB
 
         public static bool IsSuccess { private set; get; }
         public static bool IsMDMSDown { set; get; }
+        public static bool IsDataEmpty { set; get; }
 
         public static void ClearTariffLegendList()
         {
@@ -61,10 +62,23 @@ namespace myTNB
             return new AccountUsageSmartResponseDataModel();
         }
 
+        public static string EmptyDataMessage
+        {
+            get
+            {
+                if (RefreshDataModel != null)
+                {
+                    return RefreshDataModel.DisplayTitle;
+                }
+                return string.Empty;
+            }
+        }
+
         public static void SetData(string accountNumber, AccountUsageSmartResponseModel response)
         {
             IsSuccess = response?.d?.IsSuccess ?? false;
             IsMDMSDown = response?.d?.IsMDMSDown ?? false;
+            IsDataEmpty = response?.d?.IsDataEmpty ?? false;
             if (response != null && response.d != null
                 && (response.d.IsSuccess || response.d.IsMDMSDown)
                 && response.d.data != null)

@@ -1217,6 +1217,9 @@
     <ImageAsset Include="Assets.xcassets\SSMR-No-History.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SSMR-No-History.imageset\smr%402x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-No-History.imageset\smr%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Empty-Usage-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Empty-Usage-Icon.imageset\Empty-Usage-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Empty-Usage-Icon.imageset\Empty-Usage-Icon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1642,6 +1645,7 @@
     <Folder Include="Assets.xcassets\Delete-Icon.imageset\" />
     <Folder Include="Components\Table View\" />
     <Folder Include="Assets.xcassets\SSMR-No-History.imageset\" />
+    <Folder Include="Assets.xcassets\Empty-Usage-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2483,6 +2487,7 @@
     <Compile Include="Sitecore CMS\Service\AppLaunchImageService.cs" />
     <Compile Include="Registration\AddAccountConstants.cs" />
     <Compile Include="Components\Table View\NoDataViewCell.cs" />
+    <Compile Include="Components\Usage View\EmptyUsageComponent.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
