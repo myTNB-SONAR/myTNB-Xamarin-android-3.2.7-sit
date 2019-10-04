@@ -51,6 +51,27 @@
         public static string I18N_MDMSUnavailable = "mdmsUnavailable";
         public static string I18N_By = "by";
 
+        //Common I18N
+        public static string Common_RefreshNow = "refreshNow";
+        public static string Common_Yes = "yes";
+        public static string Common_No = "no";
+        public static string Common_SelectAll = "selectAll";
+        public static string Common_UnselectAll = "unselectAll";
+        public static string Common_TotalAmount = "totalAmount";
+        public static string Common_TotalAmountRM = "totalAmountRM";
+        public static string Common_Back = "back";
+        public static string Common_Cards = "cards";
+        public static string Common_Abort = "abort";
+        public static string Common_Cancel = "cancel";
+
+        //Error I18N
+        public static string Error_RefreshMessage = "refreshMessage";
+        public static string Error_DefaultServiceErrorMessage = "serviceErrorDefaultMessage";
+        public static string Error_AmountTitle = "invalid_amountTitle";
+        public static string Error_AmountMessage = "invalid_amountMessage";
+        public static string Error_MinimumPayAmount = "minimumPayAmount";
+        public static string Error_MinimumMandatoryAmount = "minimumMandatoryPayment";
+
         //Table View Cell
         public static string Cell_NoHistoryData = "noHistoryDataTableViewCell";
     }

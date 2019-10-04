@@ -30,10 +30,10 @@ namespace myTNB.Model
         {
             get
             {
-                string inlineErrorMessage = LanguageUtility.GetErrorI18NValue("minimumPayAmount");
+                string inlineErrorMessage = LanguageUtility.GetErrorI18NValue(Constants.Error_MinimumPayAmount);
                 if (HasMandatory)
                 {
-                    inlineErrorMessage = string.Format(LanguageUtility.GetErrorI18NValue("minimumMandatoryPayment")
+                    inlineErrorMessage = string.Format(LanguageUtility.GetErrorI18NValue(Constants.Error_MinimumMandatoryAmount)
                         , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, MandatoryCharges.TotalAmount.ToString("N2", CultureInfo.InvariantCulture)));
                 }
                 return inlineErrorMessage;

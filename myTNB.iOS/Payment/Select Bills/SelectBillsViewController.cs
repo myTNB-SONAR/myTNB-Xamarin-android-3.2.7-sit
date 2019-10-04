@@ -37,18 +37,19 @@ namespace myTNB
         {
             PageName = PaymentConstants.Pagename_SelectBills;
             base.ViewDidLoad();
+            Title = GetI18NValue(PaymentConstants.I18N_SelectBill);
             AccountChargesCache.Clear();
             SetDefaultTableFrame();
             InitializedSubViews();
             AddBackButton();
-            var appDelegate = UIApplication.SharedApplication.Delegate as AppDelegate;
+            AppDelegate appDelegate = UIApplication.SharedApplication.Delegate as AppDelegate;
             if (appDelegate != null)
             {
                 appDelegate._selectBillsVC = this;
             }
             NotifCenterUtility.AddObserver(UIKeyboard.DidShowNotification, (NSNotification obj) =>
             {
-                var userInfo = obj.UserInfo;
+                NSDictionary userInfo = obj.UserInfo;
                 NSValue keyboardFrame = userInfo.ValueForKey(UIKeyboard.FrameEndUserInfoKey) as NSValue;
                 CGRect keyboardRectangle = keyboardFrame.CGRectValue;
                 SelectBillsTableView.Frame = new CGRect(0, 0, View.Frame.Width
@@ -91,10 +92,7 @@ namespace myTNB
 
         private void ResetValues()
         {
-            SelectBillsTableView.Source = new SelectBillsDataSource(this, new List<PaymentRecordModel>())
-            {
-                GetI18NValue = GetI18NValue
-            };
+            SelectBillsTableView.Source = new SelectBillsDataSource(this, new List<PaymentRecordModel>());
             SelectBillsTableView.ReloadData();
             _accounts = new List<CustomerAccountRecordModel>();
             _accountsForDisplay = new List<PaymentRecordModel>();
@@ -151,7 +149,7 @@ namespace myTNB
         private void GetAccountsForDisplay()
         {
             //Clone account record List
-            foreach (var item in DataManager.DataManager.SharedInstance.AccountRecordsList.d)
+            foreach (CustomerAccountRecordModel item in DataManager.DataManager.SharedInstance.AccountRecordsList.d)
             {
                 if (item.accountCategoryId != "2")
                 {
@@ -223,7 +221,7 @@ namespace myTNB
             totalAmount = 0;
             int selectedAccountCount = 0;
             bool hasInvalidSelection = false;
-            foreach (var item in _accountsForDisplay)
+            foreach (PaymentRecordModel item in _accountsForDisplay)
             {
                 if (_accountChargesResponse != null && _accountChargesResponse.d != null && _accountChargesResponse.d.IsSuccess
                        && _accountChargesResponse.d.data != null && _accountChargesResponse.d.data.AccountCharges != null
@@ -248,8 +246,8 @@ namespace myTNB
             }
             _lblTotalAmountValue.Text = totalAmount.ToString("N2", CultureInfo.InvariantCulture);
             AdjustAmountFrame();
-            var title = (selectedAccountCount > 0) ? string.Format("Payment_Multiple".Translate()
-                , selectedAccountCount.ToString()) : "Payment_Single".Translate();
+            string title = (selectedAccountCount > 0) ? string.Format(GetI18NValue(PaymentConstants.I18N_PayMultiple)
+                , selectedAccountCount.ToString()) : GetI18NValue(PaymentConstants.I18N_PaySingle);
             BtnPayBill.SetTitle(title, UIControlState.Normal);
 
             bool isValid = (selectedAccountCount > 0 && totalAmount > 0) && !hasInvalidSelection;
@@ -346,10 +344,7 @@ namespace myTNB
 
         private void InitializedTableView()
         {
-            SelectBillsTableView.Source = new SelectBillsDataSource(this, _accountsForDisplay)
-            {
-                GetI18NValue = GetI18NValue
-            };
+            SelectBillsTableView.Source = new SelectBillsDataSource(this, _accountsForDisplay);
             SelectBillsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             SelectBillsTableView.ReloadData();
             if (_isLoadmore) { return; }
@@ -371,7 +366,7 @@ namespace myTNB
             BtnPayBill.TouchUpInside += (sender, e) =>
             {
                 _accountsForPayment = new List<CustomerAccountRecordModel>();
-                foreach (var item in _accountsForDisplay)
+                foreach (PaymentRecordModel item in _accountsForDisplay)
                 {
                     if (item.IsAccountSelected)
                     {
@@ -397,7 +392,7 @@ namespace myTNB
             UILabel lblTotalAmountTitle = new UILabel(new CGRect(0, 6, 120, 18));
             lblTotalAmountTitle.TextColor = MyTNBColor.TunaGrey();
             lblTotalAmountTitle.Font = MyTNBFont.MuseoSans14_500;
-            lblTotalAmountTitle.Text = "Common_TotalAmount".Translate();
+            lblTotalAmountTitle.Text = GetCommonI18NValue(Constants.Common_TotalAmount);
 
             _lblCurrency = new UILabel(new CGRect(0, 6, 24, 18));
             _lblCurrency.TextColor = MyTNBColor.TunaGrey();
@@ -423,7 +418,7 @@ namespace myTNB
             }));
             UILabel lblLoadMore = new UILabel(new CGRect(0, 0, _viewFooter.Frame.Width, 16));
             lblLoadMore.TextAlignment = UITextAlignment.Center;
-            lblLoadMore.AttributedText = new NSAttributedString("Payment_LoadMore".Translate()
+            lblLoadMore.AttributedText = new NSAttributedString(GetI18NValue(PaymentConstants.I18N_LoadMore)
                 , font: MyTNBFont.MuseoSans12_300
                 , foregroundColor: MyTNBColor.SilverChalice
                 , strokeWidth: 0

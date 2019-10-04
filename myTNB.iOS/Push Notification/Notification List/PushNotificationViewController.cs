@@ -102,9 +102,9 @@ namespace myTNB.PushNotification
             else
             {
                 string msg = !string.IsNullOrWhiteSpace(userNotificationResponse?.d?.RefreshMessage)
-                    ? userNotificationResponse?.d?.RefreshMessage : "Error_RefreshMessage".Translate();
+                    ? userNotificationResponse?.d?.RefreshMessage : GetErrorI18NValue(Constants.Error_RefreshMessage);
                 string btnText = !string.IsNullOrWhiteSpace(userNotificationResponse?.d?.RefreshBtnText)
-                    ? userNotificationResponse?.d?.RefreshBtnText : "Error_RefreshBtnTitle".Translate();
+                    ? userNotificationResponse?.d?.RefreshBtnText : GetCommonI18NValue(Constants.Common_RefreshNow);
                 DisplayRefreshScreen(msg, btnText);
                 _titleBarComponent.SetPrimaryVisibility(true);
                 _titleBarComponent.SetSecondaryVisibility(true);
@@ -195,7 +195,7 @@ namespace myTNB.PushNotification
                         {
                             if (DataManager.DataManager.SharedInstance.IsNotificationDeleted)
                             {
-                                DisplayToast("PushNotification_NotificationDeleted".Translate());
+                                DisplayToast(GetI18NValue(PushNotificationConstants.I18N_NotificationDeleted));
                                 DataManager.DataManager.SharedInstance.IsNotificationDeleted = false;
                             }
                             if (DataManager.DataManager.SharedInstance.NotificationNeedsUpdate)
@@ -213,7 +213,7 @@ namespace myTNB.PushNotification
                         pushNotificationTableView.Hidden = true;
                         _titleBarComponent.SetPrimaryVisibility(true);
                         OnReset();
-                        DisplayRefreshScreen("Error_RefreshMessage".Translate(), "Error_RefreshBtnTitle".Translate());
+                        DisplayRefreshScreen(GetErrorI18NValue(Constants.Error_RefreshMessage), GetCommonI18NValue(Constants.Common_RefreshNow));
                     }
                 });
             });
@@ -233,7 +233,7 @@ namespace myTNB.PushNotification
 
             _refreshViewComponent = new RefreshViewComponent(View, _headerView);
             _refreshViewComponent.SetIconImage(PushNotificationConstants.IMG_Empty);
-            _refreshViewComponent.SetDescription("PushNotification_NoNotification".Translate());
+            _refreshViewComponent.SetDescription(GetI18NValue(PushNotificationConstants.I18N_NoNotification));
             _refreshViewComponent.SetRefreshButtonHidden(true);
 
             View.AddSubview(_refreshViewComponent.GetUI());
@@ -266,7 +266,7 @@ namespace myTNB.PushNotification
             _titleBarComponent = new TitleBarComponentV2(_headerView);
 
             _titleBarView = _titleBarComponent.GetUI();
-            _titleBarComponent.SetTitle("PushNotification_Title".Translate());
+            _titleBarComponent.SetTitle(GetI18NValue(PushNotificationConstants.I18N_Title));
             _titleBarComponent.SetSecondaryImage(PushNotificationConstants.IMG_MarkAsRead);
             _titleBarComponent.SetSecondaryAction(new UITapGestureRecognizer((obj) =>
             {
@@ -316,17 +316,17 @@ namespace myTNB.PushNotification
                     else if (count > 1)
                     {
                         bool areAllTobeDeleted = count == _notifications.Count;
-                        string alertTitle = areAllTobeDeleted ? "PushNotification_DeleteTitleAll" : "PushNotification_DeleteTitleMultiple";
-                        string alertMsg = areAllTobeDeleted ? "PushNotification_DeleteMessageAll" : "PushNotification_DeleteMessageMultiple";
-                        UIAlertController deleteAlert = UIAlertController.Create(alertTitle.Translate(), alertMsg.Translate(), UIAlertControllerStyle.Alert);
-                        deleteAlert.AddAction(UIAlertAction.Create("Common_Yes".Translate(), UIAlertActionStyle.Default, (args) =>
+                        string alertTitle = GetI18NValue(areAllTobeDeleted ? PushNotificationConstants.I18N_DeleteAllTitle : PushNotificationConstants.I18N_DeleteTitleMultiple);
+                        string alertMsg = GetI18NValue(areAllTobeDeleted ? PushNotificationConstants.I18N_DeleteAllMessage : PushNotificationConstants.I18N_DeleteMessageMultiple);
+                        UIAlertController deleteAlert = UIAlertController.Create(alertTitle, alertMsg, UIAlertControllerStyle.Alert);
+                        deleteAlert.AddAction(UIAlertAction.Create(GetCommonI18NValue(Constants.Common_Yes), UIAlertActionStyle.Default, (args) =>
                         {
                             if (_notificationsForUpdate != null)
                             {
                                 DeleteNotification(_notificationsForUpdate, true);
                             }
                         }));
-                        deleteAlert.AddAction(UIAlertAction.Create("Common_No".Translate(), UIAlertActionStyle.Cancel, null));
+                        deleteAlert.AddAction(UIAlertAction.Create(GetCommonI18NValue(Constants.Common_No), UIAlertActionStyle.Cancel, null));
                         deleteAlert.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                         PresentViewController(deleteAlert, animated: true, completionHandler: null);
                     }
@@ -340,7 +340,7 @@ namespace myTNB.PushNotification
                     _titleBarComponent.SetPrimaryImage(PushNotificationConstants.IMG_Cancel);
                     UpdateSelectAllFlags(false);
                     pushNotificationTableView.TableHeaderView = GetTableViewHeader();
-                    _titleBarComponent.SetTitle(_isSelectionMode ? "PushNotification_Title".Translate() : "PushNotification_Select".Translate());
+                    _titleBarComponent.SetTitle(GetI18NValue(_isSelectionMode ? PushNotificationConstants.I18N_Title : PushNotificationConstants.I18N_Select));
                     _isSelectionMode = !_isSelectionMode;
                     UpdateTitleRightIconImage();
                     pushNotificationTableView.ReloadData();
@@ -363,7 +363,7 @@ namespace myTNB.PushNotification
                 UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
                 GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
                     .InstantiateViewController("GenericSelectorViewController");
-                viewController.Title = "PushNotification_SelectNotification".Translate();
+                viewController.Title = GetI18NValue(PushNotificationConstants.I18N_SelectNotification);
                 viewController.Items = GetNotificationTypeList();
                 viewController.OnSelect = OnSelectAction;
                 viewController.SelectedIndex = DataManager.DataManager.SharedInstance.CurrentSelectedNotificationTypeIndex;
@@ -389,7 +389,7 @@ namespace myTNB.PushNotification
             UpdateTitleRightIconImage();
             pushNotificationTableView.ReloadData();
             _titleBarComponent.SetSecondaryVisibility(true);
-            _titleBarComponent.SetTitle("PushNotification_Title".Translate());
+            _titleBarComponent.SetTitle(GetI18NValue(PushNotificationConstants.I18N_Title));
             _titleBarComponent.SetPrimaryImage(PushNotificationConstants.IMG_Select);
             _isDeletionMode = false;
         }
@@ -516,7 +516,7 @@ namespace myTNB.PushNotification
                                     pushNotificationTableView.ReloadData();
                                     if (_lblTitle != null)
                                     {
-                                        _lblTitle.Text = "Feedback_SelectAll".Translate();
+                                        _lblTitle.Text = GetCommonI18NValue(Constants.Common_SelectAll);
                                     }
                                     if (_imgCheckbox != null)
                                     {
@@ -529,7 +529,7 @@ namespace myTNB.PushNotification
                                 }
                                 else
                                 {
-                                    DisplayToast(readNotificationResponse?.d?.ErrorMessage ?? "Error_DefaultMessage".Translate());
+                                    DisplayToast(readNotificationResponse?.d?.ErrorMessage ?? GetErrorI18NValue(Constants.Error_DefaultServiceErrorMessage));
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -565,12 +565,12 @@ namespace myTNB.PushNotification
                                     UpdateTitleRightIconImage();
                                     UpdateNotificationDisplay(true);
                                     NotifCenterUtility.PostNotificationName("NotificationDidChange", new NSObject());
-                                    DisplayToast("PushNotification_NotificationsDeleted".Translate());
+                                    DisplayToast(GetI18NValue(PushNotificationConstants.I18N_NotificationsDeleted));
                                     OnDismiss();
                                 }
                                 else
                                 {
-                                    DisplayToast(deleteNotifResponse?.d?.ErrorMessage ?? "Error_DefaultMessage".Translate());
+                                    DisplayToast(deleteNotifResponse?.d?.ErrorMessage ?? GetErrorI18NValue(Constants.Error_DefaultServiceErrorMessage));
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -706,7 +706,7 @@ namespace myTNB.PushNotification
             {
                 TextColor = MyTNBColor.CharcoalGrey,
                 Font = TNBFont.MuseoSans_14_500,
-                Text = "Feedback_SelectAll".Translate()
+                Text = GetCommonI18NValue(Constants.Common_SelectAll)
             };
 
             viewCheckBox.AddGestureRecognizer(new UITapGestureRecognizer(() =>
@@ -738,7 +738,7 @@ namespace myTNB.PushNotification
             }
             if (_lblTitle != null)
             {
-                _lblTitle.Text = areAllSelected ? "Feedback_UnselectAll".Translate() : "Feedback_SelectAll".Translate();
+                _lblTitle.Text = GetCommonI18NValue(areAllSelected ? Constants.Common_UnselectAll : Constants.Common_SelectAll);
             }
         }
 
@@ -806,10 +806,10 @@ namespace myTNB.PushNotification
             UpdateNotificationForDeletionList(notifModel);
             int count = _notificationsForUpdate != null ? _notificationsForUpdate.Count : 0;
 
-            string title = "PushNotification_Title".Translate();
+            string title = GetI18NValue(PushNotificationConstants.I18N_Title);
             if (_isSelectionMode)
             {
-                title = count > 0 ? string.Format("PushNotification_Selected".Translate(), count) : "PushNotification_Select".Translate();
+                title = count > 0 ? string.Format(GetI18NValue(PushNotificationConstants.I18N_Selected), count) : GetI18NValue(PushNotificationConstants.I18N_Select);
                 if (notifModel != null)
                 {
                     bool areAllSelected = count == _notifications.Count;

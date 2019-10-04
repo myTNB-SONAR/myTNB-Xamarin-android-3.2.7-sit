@@ -491,8 +491,9 @@ namespace myTNB
         {
             if (_accountSelector != null)
             {
-                _accountSelector.Title = DataManager.DataManager.SharedInstance.SelectedAccount.accountNickName;//AccountManager.Instance.Nickname;
+                _accountSelector.Title = DataManager.DataManager.SharedInstance.SelectedAccount.accountNickName;
             }
+            FilterDisplay(false);
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
                 InvokeOnMainThread(() =>

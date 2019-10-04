@@ -2258,10 +2258,6 @@
       <DependentUpon>AddCardCell.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\GetCustomerBillingAccountList\PaymentRecordModel.cs" />
-    <Compile Include="Payment\Select Bills\NonConsumptionTableViewCell.cs" />
-    <Compile Include="Payment\Select Bills\NonConsumptionTableViewCell.designer.cs">
-      <DependentUpon>NonConsumptionTableViewCell.cs</DependentUpon>
-    </Compile>
     <Compile Include="Session Cache\AmoutDueCache.cs" />
     <Compile Include="Customs\Generic Line\GenericLine.cs" />
     <Compile Include="Customs\Generic Tableview Selector\GenericSelectorDataSource.cs" />
