@@ -51,6 +51,17 @@
         public static string I18N_MDMSUnavailable = "mdmsUnavailable";
         public static string I18N_By = "by";
 
+        //Common I18N
+        public static string Common_RefreshNow = "refreshNow";
+        public static string Common_Yes = "yes";
+        public static string Common_No = "no";
+        public static string Common_SelectAll = "selectAll";
+        public static string Common_UnselectAll = "unselectAll";
+
+        //Error I18N
+        public static string Error_RefreshMessage = "refreshMessage";
+        public static string Error_DefaultServiceErrorMessage = "serviceErrorDefaultMessage";
+
         //Table View Cell
         public static string Cell_NoHistoryData = "noHistoryDataTableViewCell";
     }

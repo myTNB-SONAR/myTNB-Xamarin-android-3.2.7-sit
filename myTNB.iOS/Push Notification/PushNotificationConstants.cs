@@ -67,6 +67,7 @@ namespace myTNB.PushNotification
         };
 
         //I18N
+        //Details
         public static string I18N_ContactTNB = "contactTNB";
         public static string I18N_ViewBill = "viewBill";
         public static string I18N_Paynow = "payNow";
@@ -74,6 +75,21 @@ namespace myTNB.PushNotification
         public static string I18N_SubmitMeterReading = "submitMeterReading";
         public static string I18N_ReenableSSMR = "reenableSSMR";
         public static string I18N_ViewReadingHistory = "viewReadingHistory";
+        //List
+        public static string I18N_AllNotifications = "allNotifications";
+        public static string I18N_DeleteMessage = "deleteMessage";
+        public static string I18N_DeleteTitle = "deleteTitle";
+        public static string I18N_DeleteAllMessage = "deleteAllMessage";
+        public static string I18N_DeleteAllTitle = "deleteAllTitle";
+        public static string I18N_DeleteMessageMultiple = "deleteMessageMultiple";
+        public static string I18N_DeleteTitleMultiple = "deleteTitleMultiple";
+        public static string I18N_NoNotification = "noNotification";
+        public static string I18N_NotificationDeleted = "notificationDeleted";
+        public static string I18N_NotificationsDeleted = "notificationsDeleted";
+        public static string I18N_Select = "select";
+        public static string I18N_Selected = "selected";
+        public static string I18N_SelectNotification = "selectNotification";
+        public static string I18N_Title = "title";
 
         //Common
         public static string I18N_CustomerAccountNumber = "customerAccountNumber";

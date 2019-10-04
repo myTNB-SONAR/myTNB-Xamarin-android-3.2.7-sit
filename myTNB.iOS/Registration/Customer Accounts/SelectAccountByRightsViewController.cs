@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace myTNB
 {
-    public partial class SelectAccountByRightsViewController : UIViewController
+    public partial class SelectAccountByRightsViewController : CustomUIViewController
     {
         UILabel lblTitle;
         UIView viewYes;
@@ -74,7 +74,7 @@ namespace myTNB
             lblYes = new UILabel
             {
                 Frame = new CGRect(16, 16, viewYes.Frame.Width - 32, 18),
-                AttributedText = new NSAttributedString(string.Format("{0},", "Common_Yes".Translate())
+                AttributedText = new NSAttributedString(string.Format("{0},", GetCommonI18NValue(Constants.Common_Yes))
                     , font: MyTNBFont.MuseoSans16_500
                     , foregroundColor: MyTNBColor.TunaGrey()
                     , strokeWidth: 0
@@ -106,7 +106,7 @@ namespace myTNB
             lblNo = new UILabel
             {
                 Frame = new CGRect(16, 16, viewNo.Frame.Width - 32, 18),
-                AttributedText = new NSAttributedString(string.Format("{0},", "Common_No".Translate())
+                AttributedText = new NSAttributedString(string.Format("{0},", GetCommonI18NValue(Constants.Common_No))
                     , font: MyTNBFont.MuseoSans16_500
                     , foregroundColor: MyTNBColor.TunaGrey()
                     , strokeWidth: 0),
