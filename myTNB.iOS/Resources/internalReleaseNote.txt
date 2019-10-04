@@ -1,5 +1,9 @@
-Sprint 2B SIT Build
+Sprint 2 SIT Build
 
-[Bug] 2483 SSMR Meter reading_iOS - Alignment of submit meter reading screen is changed when OCR returns can't read photos for 1 Phase
-[Bug] 2440 SMART SELF METER READING_iOS - Enter Invalid Reading in Submit Meter Reading Screen for Single Phase
 [Bug] 2305 iOS - Itemised Billing: Misalignment in font and spacing
+[Bug] 2404 iOS- Notifications: Misalignment in Font Style and Size
+[Bug] 2459 Homepage_IOS : Promotional Image is not loading in "What's new" page 
+[Bug] 2533 ios_Usage Dashboard_SM : Show Tariff block is showing "kWh" usage and "RM" value range for month who has Zero consumption.
+[Bug] 2534 Usage Dashboard_iOS : Copy writing issues ( all type of account )
+[Bug] 2536 Usage Dashboard: Certain accounts have wrong tariff block coloured comparing with the usage
+[Bug] 2420 Notification Management_iOS : displaying incorrect content in SSMR
