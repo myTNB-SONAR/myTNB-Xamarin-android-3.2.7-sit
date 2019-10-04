@@ -21,6 +21,13 @@ namespace myTNB.Model.Usage
                 return ErrorCode == "7204";
             }
         }
+        public bool IsDataEmpty
+        {
+            get
+            {
+                return ErrorCode == "7201";
+            }
+        }
     }
 
     public class AccountUsageSmartDataModel
