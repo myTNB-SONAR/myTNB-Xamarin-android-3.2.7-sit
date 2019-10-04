@@ -62,10 +62,6 @@ namespace myTNB
             _lblAmountTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewAmount.Frame.Width, 12),
-                AttributedText = new NSAttributedString("SelectBill_IAmPaying".Translate().ToUpper(),
-                   font: MyTNBFont.MuseoSans9_300,
-                   foregroundColor: MyTNBColor.SilverChalice,
-                   strokeWidth: 0),
                 TextAlignment = UITextAlignment.Left
             };
 
@@ -73,7 +69,6 @@ namespace myTNB
             {
                 TextColor = MyTNBColor.Tomato,
                 Font = MyTNBFont.MuseoSans9_300,
-                Text = "Invalid_PayAmount".Translate(),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -107,6 +102,31 @@ namespace myTNB
 
             AddSubviews(_lblName, _txtViewAddress, _viewCheckBox, _viewAmount, _viewSeparator);
             UserInteractionEnabled = true;
+        }
+
+        public string AmountTitle
+        {
+            set
+            {
+                if (!string.IsNullOrEmpty(value) && !string.IsNullOrWhiteSpace(value))
+                {
+                    _lblAmountTitle.AttributedText = new NSAttributedString(value
+                        , font: MyTNBFont.MuseoSans9_300
+                        , foregroundColor: MyTNBColor.SilverChalice
+                        , strokeWidth: 0);
+                }
+            }
+        }
+
+        public string AmountError
+        {
+            set
+            {
+                if (!string.IsNullOrEmpty(value) && !string.IsNullOrWhiteSpace(value))
+                {
+                    _lblAmountError.Text = value;
+                }
+            }
         }
     }
 }

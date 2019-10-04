@@ -24,6 +24,7 @@
         public static string I18N_MaxCCAmountMessage = "maxCCAmountMessage";
         public static string I18N_AddCard = "addCard";
         public static string I18N_FPXTitle = "fpxTitle";
+        public static string I18N_IAmPaying = "iamPaying";
 
         //Image
         public static string IMG_CheckboxActive = "Payment-Checkbox-Active";

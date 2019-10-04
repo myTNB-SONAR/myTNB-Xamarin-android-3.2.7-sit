@@ -9,7 +9,6 @@ namespace myTNB.Payment.SelectBills
 {
     public class SelectBillsDataSource : UITableViewSource
     {
-        public Func<string, string> GetI18NValue;
         private SelectBillsViewController _controller;
         private List<PaymentRecordModel> _accounts = new List<PaymentRecordModel>();
         private TextFieldHelper _textFieldHelper = new TextFieldHelper();
@@ -45,9 +44,13 @@ namespace myTNB.Payment.SelectBills
             cell._txtViewAddress.Text = _accounts[indexPath.Row].accountStAddress;
             cell._imgViewCheckBox.Image = UIImage.FromBundle(_accounts[indexPath.Row].IsAccountSelected
                 ? PaymentConstants.IMG_CheckboxActive : PaymentConstants.IMG_CheckboxInactive);
-            cell._txtFieldAmount.Placeholder = GetI18NValue(PaymentConstants.I18N_EnterAmount);
+            cell._txtFieldAmount.Placeholder = _controller.GetI18NValue(PaymentConstants.I18N_EnterAmount);
             cell._txtFieldAmount.Text = _accounts[indexPath.Row].Amount > 0
                 ? _accounts[indexPath.Row].Amount.ToString("N2", CultureInfo.InvariantCulture) : string.Empty;
+
+            cell.AmountTitle = _controller.GetI18NValue(PaymentConstants.I18N_IAmPaying);
+            cell.AmountError = _controller.GetErrorI18NValue(Constants.Error_MinimumPayAmount);
+
             cell.UserInteractionEnabled = true;
             cell.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {

@@ -67,6 +67,8 @@
         public static string Error_DefaultServiceErrorMessage = "serviceErrorDefaultMessage";
         public static string Error_AmountTitle = "invalid_amountTitle";
         public static string Error_AmountMessage = "invalid_amountMessage";
+        public static string Error_MinimumPayAmount = "minimumPayAmount";
+        public static string Error_MinimumMandatoryAmount = "minimumMandatoryPayment";
 
         //Table View Cell
         public static string Cell_NoHistoryData = "noHistoryDataTableViewCell";

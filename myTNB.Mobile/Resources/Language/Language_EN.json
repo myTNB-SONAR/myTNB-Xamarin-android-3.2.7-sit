@@ -95,7 +95,7 @@
     "refreshMessage": "This page must be tired. Tap the button below to help it out.",
     "serviceErrorDefaultMessage": "Sorry, something went wrong. Please try again later.",
     "invalid_amountMessage": "Kindly enter a non-zero/positive amount",
-    "invalid_amountTitle": "Invalid Amount"
+    "invalid_amountTitle": "Invalid Amount",
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -337,7 +337,8 @@
     "payMultiple": "Pay Bill ({0})",
     "paySingle": "Pay Bill",
     "loadMore": "Load More",
-    "selectBill": "Select Bill(s)"
+    "selectBill": "Select Bill(s)",
+    "iamPaying": "I AM PAYING (RM)"
   },
   "SelectPaymentMethod": {
     "title": "Select Payment Method",
