@@ -5709,6 +5709,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         OnWhatIsThisAccountStatusTap(whatDoesThisToolTipMessage, whatDoesThisToolTipBtnLabel);
                     };
+
+                    if (isSMR)
+                    {
+                        rootView.SetBackgroundResource(0);
+                        scrollViewContent.SetBackgroundResource(0);
+                        try
+                        {
+                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
+                            ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                        }
+                        catch (System.Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                        isChangeBackgroundNeeded = false;
+                    }
                 }
                 else
                 {
