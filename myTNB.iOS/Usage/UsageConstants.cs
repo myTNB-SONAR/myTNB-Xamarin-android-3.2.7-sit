@@ -17,6 +17,7 @@
         public static string IMG_PinchIn = "Usage-Pinch-In-Icon";
         public static string IMG_PinchOut = "Usage-Pinch-Out-Icon";
         public static string IMG_ScrollIndicator = "Scroll-Indicator";
+        public static string IMG_EmpyUsage = "Empty-Usage-Icon";
 
         //PageName
         public static string PageName = "UsageView";

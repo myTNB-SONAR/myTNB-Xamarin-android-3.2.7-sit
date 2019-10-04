@@ -15,7 +15,8 @@ namespace myTNB
         private static List<LegendItemModel> TariffLegendList = new List<LegendItemModel>();
         public static AccountUsageResponseDataModel RefreshDataModel;
 
-        public static bool IsSuccess;
+        public static bool IsSuccess { set; get; }
+        public static bool IsDataEmpty { set; get; }
 
         public static void ClearTariffLegendList()
         {
@@ -43,6 +44,7 @@ namespace myTNB
         public static void SetData(string accountNumber, AccountUsageResponseModel response)
         {
             IsSuccess = response?.d?.IsSuccess ?? false;
+            IsDataEmpty = response?.d?.IsDataEmpty ?? false;
             if (response != null && response.d != null
                 && response.d.IsSuccess && response.d.data != null)
             {
@@ -81,6 +83,18 @@ namespace myTNB
                     return RefreshDataModel.IsMonthlyTariffBlocksUnavailable;
                 }
                 return true;
+            }
+        }
+
+        public static string EmptyDataMessage
+        {
+            get
+            {
+                if (RefreshDataModel != null)
+                {
+                    return RefreshDataModel.DisplayTitle;
+                }
+                return string.Empty;
             }
         }
 
