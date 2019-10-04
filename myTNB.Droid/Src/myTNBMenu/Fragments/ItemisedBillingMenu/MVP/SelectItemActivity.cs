@@ -64,7 +64,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Submit Feedback -> Select Account");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Itemised Billing -> Select Item");
             }
             catch (Exception e)
             {

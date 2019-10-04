@@ -108,7 +108,7 @@ namespace myTNB_Android.Src.NotificationFilter.Activity
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Notification Filter Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Notification Filter");
             }
             catch (Exception e)
             {

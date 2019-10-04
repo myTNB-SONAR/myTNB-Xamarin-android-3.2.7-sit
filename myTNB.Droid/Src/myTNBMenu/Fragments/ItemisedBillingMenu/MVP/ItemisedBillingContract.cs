@@ -10,7 +10,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
         public interface IView : IBaseFragmentCustomView
         {
             void PopulateAccountCharge(List<AccountChargeModel> accountChargesModelList);
-            void PopulateBillingHistoryList(List<AccountBillPayHistoryModel> billingHistoryList);
+            void PopulateBillingHistoryList(List<AccountBillPayHistoryModel> billingHistoryList, List<AccountBillPayFilter> billPayFilterList);
             void ShowBillPDFPage(AccountBillPayHistoryModel.BillingHistoryData billHistoryData);
             void ShowPayPDFPage(AccountBillPayHistoryModel.BillingHistoryData billHistoryData);
             void ShowShimmerLoading();

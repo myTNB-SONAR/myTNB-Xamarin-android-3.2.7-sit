@@ -565,7 +565,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Meter Reading History Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Meter Reading History");
             }
             catch (Exception e)
             {

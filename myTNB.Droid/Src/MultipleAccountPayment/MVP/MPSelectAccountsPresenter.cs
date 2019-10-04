@@ -276,5 +276,13 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             });
             return selectedList;
         }
+
+        public AccountChargeModel GetAccountChargeModel(MPAccount account)
+        {
+            return accountChargeModelList.Find(model =>
+            {
+                return model.ContractAccount == account.accountNumber;
+            });
+        }
     }
 }

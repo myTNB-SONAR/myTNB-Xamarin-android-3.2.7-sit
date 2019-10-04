@@ -32,12 +32,12 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.Listener
 			{
 				case SubmitMeterTakePhotoFragment.STATE_WAITING_LOCK:
 					{
-						Integer afState = (Integer)result.Get(CaptureResult.ControlAfState);
-						if (afState == null)
-						{
-							owner.CaptureStillPicture();
-						}
-
+						//Integer afState = (Integer)result.Get(CaptureResult.ControlAfState);
+						//if (afState == null)
+						//{
+						//	owner.mState = SubmitMeterTakePhotoFragment.STATE_PICTURE_TAKEN;
+						//	owner.CaptureStillPicture();
+						//}
 
                         owner.mState = SubmitMeterTakePhotoFragment.STATE_PICTURE_TAKEN;
                         owner.CaptureStillPicture();

@@ -715,7 +715,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "SMR Termination Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "SMR Termination");
             }
             catch (Exception e)
             {

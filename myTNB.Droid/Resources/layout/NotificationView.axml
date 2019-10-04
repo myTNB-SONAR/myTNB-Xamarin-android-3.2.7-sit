@@ -18,8 +18,8 @@
         <TextView
             android:id="@+id/txt_notification_name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_height="16dp"
+            android:layout_marginBottom="16dp"
             android:drawableRight="@drawable/ic_spinner_dropdown"
             android:ellipsize="end"
             android:gravity="center"
@@ -28,7 +28,7 @@
             android:text="@string/notification_selection_title"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/white"
-            android:textSize="12sp" />
+            android:textSize="12dp" />
 
         <LinearLayout
 			android:id="@+id/notificationSelectAllHeader"
@@ -53,7 +53,8 @@
 					android:layout_width="0dp"
 					android:layout_height="wrap_content"
 					android:layout_weight="1"
-          android:textSize="14sp"
+                    android:textColor="@color/tunagrey"
+                    android:textSize="14dp"
 					android:text="Select All" />
 
 				<CheckBox

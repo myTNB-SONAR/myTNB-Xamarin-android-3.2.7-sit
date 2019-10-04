@@ -55,7 +55,7 @@ namespace myTNB_Android.Src.FeedbackFail.Activity
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Submit Feedback Fail");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Submit Feedback Failed");
             }
             catch (Exception e)
             {

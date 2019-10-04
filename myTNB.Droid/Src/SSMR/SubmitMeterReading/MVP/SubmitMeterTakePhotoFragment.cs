@@ -38,6 +38,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         // Camera state: Picture was taken.
         public const int STATE_PICTURE_TAKEN = 4;
+
+        public const int MAX_CAMERA_ZOOM = 40;
         private static readonly SparseIntArray ORIENTATIONS = new SparseIntArray();
 
         CameraStateListener mCameraStateChange;
@@ -126,7 +128,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 if (mFragment.mPreviewRequestBuilder != null)
                 {
                     int mProgress = progress;
-                    float maxzoom = (int)mFragment.characteristics.Get(CameraCharacteristics.ScalerAvailableMaxDigitalZoom) * 5;
+                    int maxzoom = (int)mFragment.characteristics.Get(CameraCharacteristics.ScalerAvailableMaxDigitalZoom) * 5;
+                    if (maxzoom < MAX_CAMERA_ZOOM)
+                    {
+                        maxzoom = MAX_CAMERA_ZOOM;
+                    }
                     Rect rect = (Rect)mFragment.characteristics.Get(CameraCharacteristics.SensorInfoActiveArraySize);
 
                     int minW = (int)(rect.Width() / maxzoom);
@@ -193,8 +199,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             seekBar.SetOnSeekBarChangeListener(new OnSeekbarChangeListener(this));
             LinearLayout linearLayout = view.FindViewById<LinearLayout>(Resource.Id.cropAreaContainer);
             linearLayout.Alpha = 0.8f;
-            cropAreaView = new CropAreaView(this.Activity);
-            linearLayout.AddView(cropAreaView);
+            linearLayout.AddView(new CropAreaView(Context, this.Activity));
 
             takePhotoNoteView = view.FindViewById<TextView>(Resource.Id.take_photo_note);
             takePhotoNoteView.Text = GetString(Resource.String.ssmr_single_take_photo_note);
@@ -462,7 +467,12 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 {
                     var cameraId = manager.GetCameraIdList()[i];
                     characteristics = manager.GetCameraCharacteristics(cameraId);
-                    seekBar.Max = (int)characteristics.Get(CameraCharacteristics.ScalerAvailableMaxDigitalZoom) * 5;
+                    int maxZoom = (int)characteristics.Get(CameraCharacteristics.ScalerAvailableMaxDigitalZoom) * 5;
+                    if (maxZoom < MAX_CAMERA_ZOOM)
+                    {
+                        maxZoom = MAX_CAMERA_ZOOM;
+                    }
+                    seekBar.Max = maxZoom;
 
                     // We don't use a front facing camera in this sample.
                     var facing = (Integer)characteristics.Get(CameraCharacteristics.LensFacing);
@@ -764,8 +774,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public class CropAreaView : View
         {
             public Rect cropAreaRect;
-            public CropAreaView(Context context) : base(context)
+            public int canvasHeight;
+            public Activity mOwnerActivity;
+            public CropAreaView(Context context, Activity ownerActivity) : base(context)
             {
+                mOwnerActivity = ownerActivity;
             }
 
             public CropAreaView(Context context, IAttributeSet attrs) : base(context, attrs)
@@ -786,12 +799,13 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 canvas.DrawPaint(rectPaint);
 
                 rectPaint.SetXfermode(new PorterDuffXfermode(PorterDuff.Mode.Clear));
+                ((SubmitMeterTakePhotoActivity)this.mOwnerActivity).mCropAreaHeight = canvas.Height;
                 int height = canvas.Height;
                 int width = canvas.Width;
                 int left = (int)(width - (width * .809)); 
                 int top = (int)(height - (height * .70));
                 int right = (int)(width - (width * .191));
-                int bottom = (int)(height - (height * .25));
+                int bottom = (int)(height - (height * .35));
                 canvas.DrawRect(0, top, width, bottom, rectPaint);
                 cropAreaRect = new Rect(left,top,right,bottom);
 

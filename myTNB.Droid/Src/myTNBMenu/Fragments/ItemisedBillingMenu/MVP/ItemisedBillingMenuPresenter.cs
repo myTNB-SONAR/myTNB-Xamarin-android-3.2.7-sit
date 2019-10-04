@@ -44,6 +44,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 List<string> accountList = new List<string>();
                 List<AccountChargeModel> accountChargeModelList = new List<AccountChargeModel>();
                 List<AccountBillPayHistoryModel> billingHistoryList = new List<AccountBillPayHistoryModel>();
+                List<AccountBillPayFilter> billPayFilterList = new List<AccountBillPayFilter>();
                 accountList.Add(contractAccountValue);
                 mView.ShowAvailableBillContent();
 
@@ -72,6 +73,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 if (accountBillPayResponse.Data != null && accountBillPayResponse.Data.ErrorCode == "7200")
                 {
                     billingHistoryList = GetBillingHistoryModelList(accountBillPayResponse.Data.ResponseData.BillPayHistories);
+                    billPayFilterList = GetAccountBillPayFilterList(accountBillPayResponse.Data.ResponseData.BillPayFilterData);
                 }
                 else
                 {
@@ -94,7 +96,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     else
                     {
                         mView.PopulateAccountCharge(accountChargeModelList);
-                        mView.PopulateBillingHistoryList(billingHistoryList);
+                        mView.PopulateBillingHistoryList(billingHistoryList, billPayFilterList);
                         OnGetBillTooltipContent();
                     }
                 }
@@ -196,6 +198,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 accountChargeModelList.Add(accountChargeModel);
             });
             return accountChargeModelList;
+        }
+
+        private List<AccountBillPayFilter> GetAccountBillPayFilterList(List<BillPayFilterData> billPayFilters)
+        {
+            List<AccountBillPayFilter> accountBillPayFilters = new List<AccountBillPayFilter>();
+            AccountBillPayFilter billPayFilter;
+            billPayFilters.ForEach(filter =>
+            {
+                billPayFilter = new AccountBillPayFilter();
+                billPayFilter.Text = filter.Text;
+                billPayFilter.Type = filter.Type;
+                accountBillPayFilters.Add(billPayFilter);
+            });
+            return accountBillPayFilters;
         }
 
         private List<AccountBillPayHistoryModel> GetBillingHistoryModelList(List<BillPayHistory> billPayHistoryList)

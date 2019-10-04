@@ -16,6 +16,16 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         public interface IView : IBaseView<IUserActionsListener>
         {
             /// <summary>
+            /// Show by Month chart
+            /// </summary>
+            void ShowByMonth();
+
+            /// <summary>
+            /// Show by Day chart
+            /// </summary>
+            void ShowByDay();
+
+            /// <summary>
             /// Show by kWh chart
             /// </summary>
             void ShowByKwh();
@@ -59,7 +69,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// Show amount due
             /// </summary>
             /// <param name="accountDueAmount">AccountDueAmount</param>
-            void ShowAmountDue(AccountDueAmount accountDueAmount);
+            void ShowAmountDue(AccountDueAmountData accountDueAmount);
 
             /// <summary>
             /// Enable pay button
@@ -109,11 +119,29 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
             void SetUsageData(UsageHistoryData data);
 
+            void SetSMUsageData(SMUsageHistoryData data);
+
             UsageHistoryData GetUsageHistoryData();
+
+            SMUsageHistoryData GetSMUsageHistoryData();
 
             void HideEnergyTipsShimmerView();
 
             void ShowEnergyTipsView(List<EnergySavingTipsModel> list);
+
+            bool GetIsMDMSDown();
+
+            void SetISMDMSDown(bool flag);
+
+            bool GetIsSMAccount();
+
+            void ShowSMStatisticCard();
+
+            void OnSetBackendTariffDisabled(bool flag);
+
+            void ByZoomDayView();
+
+            void ShowNewAccountView(string contentTxt);
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -161,6 +189,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
 
             List<EnergySavingTipsModel> OnLoadEnergySavingTipsShimmerList(int count);
+
+            void OnByDay();
+
+            void OnByMonth();
+
+            void OnByZoom();
         }
     }
 }

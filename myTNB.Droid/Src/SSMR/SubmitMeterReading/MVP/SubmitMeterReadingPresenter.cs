@@ -30,63 +30,70 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public async void SubmitMeterReading(string contractAccountValue, bool isOwnedAccountValue, List<MeterReading> meterReadingList)
         {
-            SubmitMeterReadingRequest request = new SubmitMeterReadingRequest(contractAccountValue, isOwnedAccountValue, meterReadingList);
-            //Mock - START
-            //SubmitMeterReadingResponse mockResponse = new SubmitMeterReadingResponse();
-            //List<SubmitSMRMeterReadingsResp> SubmitSMRMeterReadingsRespList = new List<SubmitSMRMeterReadingsResp>();
-            //SubmitSMRMeterReadingsResp resp = new SubmitSMRMeterReadingsResp();
-            //resp.MessageID = "24";
-            //resp.ReadingUnit = "KWH";
-            //resp.Message = "Your meter reading could not be validated. Please try again.";
-            //resp.IsSuccess = false;
-            //SubmitSMRMeterReadingsRespList.Add(resp);
-
-            //resp = new SubmitSMRMeterReadingsResp();
-            //resp.MessageID = "24";
-            //resp.ReadingUnit = "KW";
-            //resp.Message = "Your meter reading could not be validated. Please try again.";
-            //resp.IsSuccess = true;
-            //SubmitSMRMeterReadingsRespList.Add(resp);
-
-            //resp = new SubmitSMRMeterReadingsResp();
-            //resp.MessageID = "24";
-            //resp.ReadingUnit = "KVAR";
-            //resp.Message = "Your meter reading could not be validated. Please try again.";
-            //resp.IsSuccess = false;
-            //SubmitSMRMeterReadingsRespList.Add(resp);
-            //mockResponse.Data = new SMRSubmitResponseData();
-            //mockResponse.Data.ErrorCode = "7100";
-            //mockResponse.Data.DisplayTitle = "Reading Submitted Test";
-            //mockResponse.Data.DisplayMessage = "Thank you for your meter reading submission. We will notify you when your meter reading has been validated.";
-            //mockResponse.Data.ResponseDetailsData = new SMRSubmitResponseDetails();
-            //mockResponse.Data.ResponseDetailsData.SubmitSMRMeterReadingsResp = SubmitSMRMeterReadingsRespList;
-            ////Mock - END
-            SubmitMeterReadingResponse response = await api.SubmitSMRMeetingReading(request);
-            if (response.Data != null && response.Data.ErrorCode == "7200")
+            try
             {
-                this.mView.OnRequestSuccessful(response.Data);
-            }
-            else if (response.Data != null && response.Data.ErrorCode == "7100")
-            {
-                List<MeterValidationData> meterValidationDataList = new List<MeterValidationData>();
-                if (response.Data.ResponseDetailsData != null)
+                SubmitMeterReadingRequest request = new SubmitMeterReadingRequest(contractAccountValue, isOwnedAccountValue, meterReadingList);
+                //Mock - START
+                //SubmitMeterReadingResponse mockResponse = new SubmitMeterReadingResponse();
+                //List<SubmitSMRMeterReadingsResp> SubmitSMRMeterReadingsRespList = new List<SubmitSMRMeterReadingsResp>();
+                //SubmitSMRMeterReadingsResp resp = new SubmitSMRMeterReadingsResp();
+                //resp.MessageID = "24";
+                //resp.ReadingUnit = "KWH";
+                //resp.Message = "Your meter reading could not be validated. Please try again.";
+                //resp.IsSuccess = false;
+                //SubmitSMRMeterReadingsRespList.Add(resp);
+
+                //resp = new SubmitSMRMeterReadingsResp();
+                //resp.MessageID = "24";
+                //resp.ReadingUnit = "KW";
+                //resp.Message = "Your meter reading could not be validated. Please try again.";
+                //resp.IsSuccess = true;
+                //SubmitSMRMeterReadingsRespList.Add(resp);
+
+                //resp = new SubmitSMRMeterReadingsResp();
+                //resp.MessageID = "24";
+                //resp.ReadingUnit = "KVAR";
+                //resp.Message = "Your meter reading could not be validated. Please try again.";
+                //resp.IsSuccess = false;
+                //SubmitSMRMeterReadingsRespList.Add(resp);
+                //mockResponse.Data = new SMRSubmitResponseData();
+                //mockResponse.Data.ErrorCode = "7100";
+                //mockResponse.Data.DisplayTitle = "Reading Submitted Test";
+                //mockResponse.Data.DisplayMessage = "Thank you for your meter reading submission. We will notify you when your meter reading has been validated.";
+                //mockResponse.Data.ResponseDetailsData = new SMRSubmitResponseDetails();
+                //mockResponse.Data.ResponseDetailsData.SubmitSMRMeterReadingsResp = SubmitSMRMeterReadingsRespList;
+                ////Mock - END
+                SubmitMeterReadingResponse response = await api.SubmitSMRMeetingReading(request);
+                if (response.Data != null && response.Data.ErrorCode == "7200")
                 {
-                    foreach (SubmitSMRMeterReadingsResp meterReadingResp in response.Data.ResponseDetailsData.SubmitSMRMeterReadingsResp)
-                    {
-                        MeterValidationData validationData = new MeterValidationData();
-                        validationData.messageId = meterReadingResp.MessageID;
-                        validationData.message = meterReadingResp.Message;
-                        validationData.registerNumber = meterReadingResp.RegisterNumber;
-                        validationData.isSuccess = meterReadingResp.IsSuccess;
-                        validationData.meterReadingUnit = meterReadingResp.ReadingUnit;
-                        meterValidationDataList.Add(validationData);
-                    }
+                    this.mView.OnRequestSuccessful(response.Data);
                 }
-                this.mView.ShowMeterCardValidationError(meterValidationDataList);
+                else if (response.Data != null && response.Data.ErrorCode == "7100")
+                {
+                    List<MeterValidationData> meterValidationDataList = new List<MeterValidationData>();
+                    if (response.Data.ResponseDetailsData != null)
+                    {
+                        foreach (SubmitSMRMeterReadingsResp meterReadingResp in response.Data.ResponseDetailsData.SubmitSMRMeterReadingsResp)
+                        {
+                            MeterValidationData validationData = new MeterValidationData();
+                            validationData.messageId = meterReadingResp.MessageID;
+                            validationData.message = meterReadingResp.Message;
+                            validationData.registerNumber = meterReadingResp.RegisterNumber;
+                            validationData.isSuccess = meterReadingResp.IsSuccess;
+                            validationData.meterReadingUnit = meterReadingResp.ReadingUnit;
+                            meterValidationDataList.Add(validationData);
+                        }
+                    }
+                    this.mView.ShowMeterCardValidationError(meterValidationDataList);
+                }
+                else
+                {
+                    this.mView.OnRequestFailed(response.Data);
+                }
             }
-            else
+            catch (Exception e)
             {
-                this.mView.OnRequestFailed(response.Data);
+                Utility.LoggingNonFatalError(e);
             }
         }
 

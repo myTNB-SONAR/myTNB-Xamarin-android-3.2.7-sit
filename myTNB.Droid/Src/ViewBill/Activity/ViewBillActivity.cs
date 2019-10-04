@@ -558,7 +558,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
             try
             {
                 base.OnResume();
-                FirebaseAnalyticsUtils.SetScreenName(this, "View Bill PDF Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "View Bill PDF");
             }
             catch (Exception e)
             {

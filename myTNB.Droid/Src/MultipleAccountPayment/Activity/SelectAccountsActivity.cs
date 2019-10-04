@@ -270,6 +270,15 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 else
                 {
                     List<MPAccount> list = adapter.GetSelectedAccounts();
+                    if (position >= 0)
+                    {
+                        MPAccount account = adapter.GetSelectedAccounts()[position];
+                        AccountChargeModel model = mPresenter.GetAccountChargeModel(account);
+                        if (account.tooltipPopUp)
+                        {
+                            ShowHasMinimumAmoutToPayTooltip(model);
+                        }
+                    }
                     Log.Debug("Selected Accounts", " List " + list);
                     UpdateTotal(list);
                 }
@@ -605,7 +614,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Selec Bills Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Select Bills");
             }
             catch (Exception e)
             {

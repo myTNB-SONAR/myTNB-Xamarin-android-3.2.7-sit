@@ -83,20 +83,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             Bundle extras = Intent.Extras;
             TextViewUtils.SetMuseoSans500Typeface(billFilterMessage, btnBillFilter);
             TextViewUtils.SetMuseoSans300Typeface(txtFilterLabel, txtFilterSelected);
-
+            txtFilterSelected.Text = "";
             if (extras != null)
             {
                 if (extras.ContainsKey("ITEM_LIST"))
                 {
                     itemFilterList = DeSerialze<List<Item>>(extras.GetString("ITEM_LIST"));
-                    int foundItemIndex = itemFilterList.FindIndex(itemFilter =>
+                    if (itemFilterList.Count > 0)
                     {
-                        return itemFilter.selected;
-                    });
+                        int foundItemIndex = itemFilterList.FindIndex(itemFilter =>
+                        {
+                            return itemFilter.selected;
+                        });
 
-                    if (foundItemIndex != -1)
-                    {
-                        txtFilterSelected.Text = itemFilterList[foundItemIndex].title;
+                        if (foundItemIndex != -1)
+                        {
+                            txtFilterSelected.Text = itemFilterList[foundItemIndex].title;
+                        }
                     }
                 }
             }

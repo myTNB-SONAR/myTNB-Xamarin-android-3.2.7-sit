@@ -162,6 +162,7 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
                     if (extras.ContainsKey(Constants.SELECTED_NOTIFICATION_LIST_ITEM))
                     {
                         userNotificationData = DeSerialze<UserNotificationData>(extras.GetString(Constants.SELECTED_NOTIFICATION_LIST_ITEM));
+                        SetToolBarTitle(userNotificationData.Title);
                     }
 
                     position = extras.GetInt(Constants.SELECTED_NOTIFICATION_ITEM_POSITION);
@@ -183,7 +184,6 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
             try
             {
                 NotificationDetailModel detailModel = mPresenter.GetNotificationDetailModel();
-                SetToolBarTitle(detailModel.detailPageTitle);
                 NotificationDetailCTAComponent ctaComponent = FindViewById<NotificationDetailCTAComponent>(Resource.Id.notificationCTAComponent);
                 if (detailModel != null)
                 {

@@ -91,7 +91,7 @@ namespace myTNB_Android.Src.FeedbackFullScreenImage.Activity
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Feedback View Image");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Feedback Details View Image");
             }
             catch (Exception e)
             {
