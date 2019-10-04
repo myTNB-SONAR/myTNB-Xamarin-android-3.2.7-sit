@@ -4,6 +4,7 @@
     {
         //Pagename
         public static string Pagename_SelectBills = "SelectBills";
+        public static string Pagename_SelectPaymentMethod = "SelectPaymentMethod";
 
         //ViewCell
         public static string Cell_SelectBills = "SelectBillsTableViewCell";
@@ -16,6 +17,13 @@
         public static string I18N_PaySingle = "paySingle";
         public static string I18N_LoadMore = "loadMore";
         public static string I18N_SelectBill = "selectBill";
+        public static string I18N_Title = "title";
+        public static string I18N_CVVThree = "cvvThreeDigitMessage";
+        public static string I18N_CVVFour = "cvvFourDigitMessage";
+        public static string I18N_OtherPaymentMethods = "otherPaymentMethods";
+        public static string I18N_MaxCCAmountMessage = "maxCCAmountMessage";
+        public static string I18N_AddCard = "addCard";
+        public static string I18N_FPXTitle = "fpxTitle";
 
         //Image
         public static string IMG_CheckboxActive = "Payment-Checkbox-Active";

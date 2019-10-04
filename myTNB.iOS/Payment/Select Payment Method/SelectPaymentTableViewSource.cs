@@ -11,12 +11,12 @@ namespace myTNB.Payment
     public class SelectPaymentTableViewSource : UITableViewSource
     {
 
-        RegisteredCardsResponseModel _registeredCards = new RegisteredCardsResponseModel();
-        SelectPaymentMethodViewController _selectPaymentMethodVC;
-        Action<SystemEnum> OnSelectUnavailablePaymentMethod;
+        private RegisteredCardsResponseModel _registeredCards = new RegisteredCardsResponseModel();
+        private SelectPaymentMethodViewController _controller;
+        private Action<SystemEnum> OnSelectUnavailablePaymentMethod;
 
         public SelectPaymentTableViewSource(RegisteredCardsResponseModel registeredCards
-            , SelectPaymentMethodViewController selectPaymentMethodVC
+            , SelectPaymentMethodViewController controller
             , Action<SystemEnum> onSelectUnavailablePaymentHandler)
         {
             if (registeredCards != null && registeredCards.d != null && registeredCards.d.data != null)
@@ -29,7 +29,7 @@ namespace myTNB.Payment
                 _registeredCards.d.data = new System.Collections.Generic.List<RegisteredCardsDataModel>();
             }
 
-            _selectPaymentMethodVC = selectPaymentMethodVC;
+            _controller = controller;
             OnSelectUnavailablePaymentMethod = onSelectUnavailablePaymentHandler;
         }
 
@@ -37,29 +37,28 @@ namespace myTNB.Payment
         {
             if (indexPath.Section == 0)
             {
-                var lastIndex = _registeredCards?.d?.isError?.ToLower() == "false"
+                int? lastIndex = _registeredCards?.d?.isError?.ToLower() == "false"
                     && _registeredCards?.d != null ? _registeredCards?.d?.data?.Count : 0;
 
                 if (indexPath.Row == lastIndex)
                 {
 
                     const string CELLIDENTIFIER = "addCardCell";
-                    var cell = tableView.DequeueReusableCell(CELLIDENTIFIER, indexPath) as AddCardCell;
+                    AddCardCell cell = tableView.DequeueReusableCell(CELLIDENTIFIER, indexPath) as AddCardCell;
 
-                    var backgroundView = new UIViewWithDashedLinerBorder();
+                    UIViewWithDashedLinerBorder backgroundView = new UIViewWithDashedLinerBorder();
                     backgroundView.Frame = new CGRect(18, 5, tableView.Frame.Width - 36, 56);
-                    //backgroundView.Layer.BorderColor = UIColor.Yellow.CGColor;
                     cell.AddSubview(backgroundView);
                     cell.BackgroundColor = MyTNBColor.SectionGrey;
                     cell.Layer.CornerRadius = 4.0f;
 
-                    var imgAdd = new UIImageView(new CGRect(35, 20, 24, 24));
+                    UIImageView imgAdd = new UIImageView(new CGRect(35, 20, 24, 24));
                     imgAdd.Image = UIImage.FromBundle("IC-Action-Add-Card");
                     cell.AddSubview(imgAdd);
 
-                    var lblAddCard = new UILabel(new CGRect(65, 23, 70, 18));
+                    UILabel lblAddCard = new UILabel(new CGRect(65, 23, 70, 18));
                     lblAddCard.Font = MyTNBFont.MuseoSans14;
-                    lblAddCard.Text = "Payment_AddCard".Translate();
+                    lblAddCard.Text = _controller.GetI18NValue(PaymentConstants.I18N_AddCard);
                     lblAddCard.TextColor = UIColor.Gray;
                     cell.AddSubview(lblAddCard);
                     return cell;
@@ -67,11 +66,11 @@ namespace myTNB.Payment
                 else
                 {
                     const string CELLIDENTIFIER = "selectPaymentCell";
-                    var cell = tableView.DequeueReusableCell(CELLIDENTIFIER, indexPath) as SelectPaymentCell;
+                    SelectPaymentCell cell = tableView.DequeueReusableCell(CELLIDENTIFIER, indexPath) as SelectPaymentCell;
                     cell.BackgroundColor = MyTNBColor.SectionGrey;
 
-                    var card = _registeredCards.d.data[indexPath.Row];
-                    var imgView = new UIImageView(new CGRect(35, 16, 24, 24));
+                    RegisteredCardsDataModel card = _registeredCards.d.data[indexPath.Row];
+                    UIImageView imgView = new UIImageView(new CGRect(35, 16, 24, 24));
 
                     cell.AddSubview(imgView);
                     if (card.CardType == "V")
@@ -90,9 +89,9 @@ namespace myTNB.Payment
                     {
                     }
 
-                    var lblCardNumber = new UILabel(new CGRect(65, 19, 150, 18));
+                    UILabel lblCardNumber = new UILabel(new CGRect(65, 19, 150, 18));
                     lblCardNumber.Font = MyTNBFont.MuseoSans14;
-                    var ccNumber = card.LastDigits;
+                    string ccNumber = card.LastDigits;
                     lblCardNumber.Text = "•••• •••• •••• " + ccNumber.Substring(ccNumber.Length - 4);
                     cell.AddSubview(lblCardNumber);
                     return cell;
@@ -102,13 +101,13 @@ namespace myTNB.Payment
             {
                 const string CELLIDENTIFIER = "fpxCell";
 
-                var cell = tableView.DequeueReusableCell(CELLIDENTIFIER, indexPath) as fpxCell;
+                fpxCell cell = tableView.DequeueReusableCell(CELLIDENTIFIER, indexPath) as fpxCell;
                 cell.BackgroundColor = MyTNBColor.SectionGrey;
 
-                var lblTitle = new UILabel(new CGRect(65, 19, 150, 18));
+                UILabel lblTitle = new UILabel(new CGRect(65, 19, 150, 18));
                 lblTitle.Font = MyTNBFont.MuseoSans14_300;
                 lblTitle.TextColor = MyTNBColor.TunaGrey();
-                lblTitle.Text = "Payment_OnlineBankingViaFPX".Translate();
+                lblTitle.Text = _controller.GetI18NValue(PaymentConstants.I18N_FPXTitle);
                 cell.AddSubview(lblTitle);
                 return cell;
             }
@@ -129,17 +128,13 @@ namespace myTNB.Payment
                 {
                     return _registeredCards.d.data.Count + 1;
                 }
-                return 1;
             }
-            else
-            {
-                return 1;
-            }
+            return 1;
         }
 
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
         {
-            var lastIndex = _registeredCards.d.isError.ToLower() == "false" && _registeredCards.d != null ? _registeredCards.d.data.Count : 0;
+            int lastIndex = _registeredCards.d.isError.ToLower() == "false" && _registeredCards.d != null ? _registeredCards.d.data.Count : 0;
             return indexPath.Section == 0 && indexPath.Row == lastIndex ? 78 : 58;
         }
 
@@ -147,10 +142,11 @@ namespace myTNB.Payment
         {
             UIView view = new UIView(new CGRect(0, 0, tableView.Frame.Width, 30));
             view.BackgroundColor = MyTNBColor.SectionGrey;
-            var lblSectionTitle = new UILabel(new CGRect(18, 6, tableView.Frame.Width, 24));
+            UILabel lblSectionTitle = new UILabel(new CGRect(18, 6, tableView.Frame.Width, 24));
             lblSectionTitle.TextColor = MyTNBColor.PowerBlue;
             lblSectionTitle.Font = MyTNBFont.MuseoSans16;
-            lblSectionTitle.Text = section == 0 ? "Common_Cards".Translate() : "Payment_OtherMethods".Translate();
+            lblSectionTitle.Text = section == 0 ? _controller.GetCommonI18NValue(Constants.Common_Cards)
+                : _controller.GetI18NValue(PaymentConstants.I18N_OtherPaymentMethods);
             view.AddSubview(lblSectionTitle);
             return view;
         }
@@ -159,11 +155,12 @@ namespace myTNB.Payment
         {
             if (NetworkUtility.isReachable)
             {
-                var lastIndex = _registeredCards.d != null ? _registeredCards.d.data.Count : 0;
-                double amountValue = TextHelper.ParseStringToDouble(_selectPaymentMethodVC.txtFieldAmountValue.Text);
-                if (string.IsNullOrWhiteSpace(_selectPaymentMethodVC.txtFieldAmountValue.Text) || amountValue == 0)
+                int lastIndex = _registeredCards.d != null ? _registeredCards.d.data.Count : 0;
+                double amountValue = TextHelper.ParseStringToDouble(_controller.txtFieldAmountValue.Text);
+                if (string.IsNullOrWhiteSpace(_controller.txtFieldAmountValue.Text) || amountValue == 0)
                 {
-                    AlertHandler.DisplayGenericAlert(_selectPaymentMethodVC, "Invalid_AmountTitle".Translate(), "Invalid_AmountMessage".Translate());
+                    _controller.DisplayGenericAlert(_controller.GetErrorI18NValue(Constants.Error_AmountTitle)
+                        , _controller.GetErrorI18NValue(Constants.Error_AmountMessage));
                 }
                 else
                 {
@@ -177,7 +174,7 @@ namespace myTNB.Payment
 
                         if (amountValue > 5000)
                         {
-                            AlertHandler.DisplayGenericAlert(_selectPaymentMethodVC, string.Empty, "Payment_MaxCCAmount".Translate());
+                            _controller.DisplayGenericAlert(string.Empty, _controller.GetI18NValue(PaymentConstants.I18N_MaxCCAmountMessage));
                             return;
                         }
 
@@ -188,16 +185,15 @@ namespace myTNB.Payment
                                 storyBoard.InstantiateViewController("AddCardViewController") as AddCardViewController;
                             addCardVC._amountDue = amountValue;
                             addCardVC._registeredCards = _registeredCards;
-                            addCardVC.AccountsForPayment = _selectPaymentMethodVC.AccountsForPayment;
-                            addCardVC.TotalAmount = _selectPaymentMethodVC.TotalAmount;
-                            var navController = new UINavigationController(addCardVC);
-                            _selectPaymentMethodVC.NavigationController.PushViewController(addCardVC, true);
+                            addCardVC.AccountsForPayment = _controller.AccountsForPayment;
+                            addCardVC.TotalAmount = _controller.TotalAmount;
+                            _controller.NavigationController.PushViewController(addCardVC, true);
                         }
                         else
                         {
                             Debug.WriteLine("Existing Credit Card Tapped!");
-                            var card = _registeredCards.d.data[indexPath.Row];
-                            _selectPaymentMethodVC.ShowCVVField(card.CardType, card.Id);
+                            RegisteredCardsDataModel card = _registeredCards.d.data[indexPath.Row];
+                            _controller.ShowCVVField(card.CardType, card.Id);
                         }
                     }
                     else
@@ -208,14 +204,14 @@ namespace myTNB.Payment
                             OnSelectUnavailablePaymentMethod?.Invoke(SystemEnum.PaymentFPX);
                             return;
                         }
-                        _selectPaymentMethodVC.ExecuteRequestPayBillCall(2, "FPX", "", false, _selectPaymentMethodVC.txtFieldAmountValue.Text);
+                        _controller.ExecuteRequestPayBillCall(2, "FPX", "", false, _controller.txtFieldAmountValue.Text);
 
                     }
                 }
             }
             else
             {
-                AlertHandler.DisplayNoDataAlert(_selectPaymentMethodVC);
+                _controller.DisplayNoDataAlert();
             }
         }
     }

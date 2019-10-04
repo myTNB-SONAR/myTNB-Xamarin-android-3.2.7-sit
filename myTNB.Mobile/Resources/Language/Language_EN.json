@@ -72,7 +72,10 @@
     "no": "No",
     "selectAll": "Select All",
     "unselectAll": "Unselect All",
-    "totalAmount": "Total Amount"
+    "totalAmount": "Total Amount",
+    "totalAmountRM": "Total Amount (RM)",
+    "back": "Back",
+    "cards": "Credit / Debit Cards"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -90,7 +93,9 @@
     "invalidNickname": "Invalid characters. Use letters or numbers only.",
     "duplicateNickname": "Nickname already used. Please create a new one.",
     "refreshMessage": "This page must be tired. Tap the button below to help it out.",
-    "serviceErrorDefaultMessage": "Sorry, something went wrong. Please try again later."
+    "serviceErrorDefaultMessage": "Sorry, something went wrong. Please try again later.",
+    "invalid_amountMessage": "Kindly enter a non-zero/positive amount",
+    "invalid_amountTitle": "Invalid Amount"
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -332,7 +337,16 @@
     "payMultiple": "Pay Bill ({0})",
     "paySingle": "Pay Bill",
     "loadMore": "Load More",
-    "selectBill":  "Select Bill(s)"
+    "selectBill": "Select Bill(s)"
+  },
+  "SelectPaymentMethod": {
+    "title": "Select Payment Method",
+    "cvvFourDigitMessage": "Please enter the 4-digit CVV/CVC located at the front of your credit card.",
+    "cvvThreeDigitMessage": "Please enter the 3-digit CVV/CVC located at the back of your credit card.",
+    "otherPaymentMethods": "Other Payment Methods",
+    "maxCCAmountMessage": "For payments more than RM 5000, please use FPX payment mode.",
+    "addCard": "Add Card",
+    "fpxTitle": "Online Banking via FPX"
   },
   "PushNotificationList": {
     "allNotifications": "All Notifications",

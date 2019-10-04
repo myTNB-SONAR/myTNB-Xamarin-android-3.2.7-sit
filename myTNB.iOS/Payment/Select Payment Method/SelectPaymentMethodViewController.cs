@@ -11,6 +11,7 @@ using System.Globalization;
 using System.Security;
 using myTNB.Payment;
 using System.Diagnostics;
+using static myTNB.TextHelper;
 
 namespace myTNB
 {
@@ -26,47 +27,45 @@ namespace myTNB
         public UserNotificationDataModel NotificationInfo = new UserNotificationDataModel();
         public List<CustomerAccountRecordModel> AccountsForPayment = new List<CustomerAccountRecordModel>();
         public bool IsFromNavigation = false;
-        bool _isAMEX = false;
-
-        UIView viewCVVContainer;
-        UIView viewCVVWrapper;
-        UIView viewCVVBackground;
         public UITextField txtFieldAmountValue;
-        bool _isKeyboardDismissed = false;
 
-        string _selectedSavedCardType = string.Empty;
-        string _selectedSavedCardID = string.Empty;
-        SecureString _cardCVVStr;
+        private bool _isAMEX = false;
+        private UIView viewCVVContainer, viewCVVWrapper, viewCVVBackground;
+        private bool _isKeyboardDismissed = false;
+
+        private string _selectedSavedCardType = string.Empty;
+        private string _selectedSavedCardID = string.Empty;
+        private SecureString _cardCVVStr;
 
         public override void ViewDidLoad()
         {
+            PageName = PaymentConstants.Pagename_SelectPaymentMethod;
             base.ViewDidLoad();
 
             AddBackButton();
 
-            var headerView = new UIView(new CGRect(0, 0, (float)View.Frame.Width, 100));
+            UIView headerView = new UIView(new CGRect(0, 0, (float)View.Frame.Width, 100));
             headerView.BackgroundColor = UIColor.White;
             selectPaymentTableView.Frame = new CGRect(0, 0, View.Frame.Width, View.Frame.Height - 64);
             selectPaymentTableView.TableHeaderView = headerView;
 
-            var footerView = new UIView(new CGRect(0, 0, (float)View.Frame.Width, 50));
+            UIView footerView = new UIView(new CGRect(0, 0, (float)View.Frame.Width, 50));
             footerView.BackgroundColor = MyTNBColor.SectionGrey;
             selectPaymentTableView.TableFooterView = footerView;
 
             //Credit Card Number 
 
-            var lblAmountTitle = new UILabel(new CGRect(18, 20, View.Frame.Width, 12));
+            UILabel lblAmountTitle = new UILabel(new CGRect(18, 20, View.Frame.Width, 12));
             lblAmountTitle.TextColor = MyTNBColor.SilverChalice;
             lblAmountTitle.Font = MyTNBFont.MuseoSans9_300;
             lblAmountTitle.TextAlignment = UITextAlignment.Left;
-            lblAmountTitle.Text = "Common_TotalAmount(RM)".Translate().ToUpper();
+            lblAmountTitle.Text = GetCommonI18NValue(Constants.Common_TotalAmountRM).ToUpper();
             headerView.AddSubview(lblAmountTitle);
 
             txtFieldAmountValue = new UITextField(new CGRect(18, 40, View.Frame.Width - 36, 24));
             txtFieldAmountValue.TextColor = MyTNBColor.TunaGrey();
             txtFieldAmountValue.Font = MyTNBFont.MuseoSans16_300;
-            //txtFieldAmountValue.Text = DataManager.DataManager.SharedInstance.BillingAccountDetails.amCustBal.ToString();
-            txtFieldAmountValue.Text = TotalAmount.ToString("N2", CultureInfo.InvariantCulture); ;
+            txtFieldAmountValue.Text = TotalAmount.ToString("N2", CultureInfo.InvariantCulture);
             txtFieldAmountValue.TextAlignment = UITextAlignment.Right;
             txtFieldAmountValue.KeyboardType = UIKeyboardType.DecimalPad;
             txtFieldAmountValue.Enabled = false;
@@ -75,7 +74,7 @@ namespace myTNB
 
             headerView.AddSubview(txtFieldAmountValue);
 
-            var lineView = new UIView((new CGRect(18, 66, View.Frame.Width - 36, 1)));
+            UIView lineView = new UIView((new CGRect(18, 66, View.Frame.Width - 36, 1)));
             lineView.BackgroundColor = MyTNBColor.PlatinumGrey;
             headerView.AddSubview(lineView);
 
@@ -111,7 +110,7 @@ namespace myTNB
             UIView.AnimationsEnabled = true;
         }
 
-        internal void AddBackButton()
+        private void AddBackButton()
         {
             UIImage backImg = UIImage.FromBundle("Back-White");
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
@@ -121,7 +120,7 @@ namespace myTNB
             NavigationItem.LeftBarButtonItem = btnBack;
         }
 
-        internal void SetNavigationBar()
+        private void SetNavigationBar()
         {
             if (NavigationController != null && NavigationController.NavigationBar != null)
             {
@@ -131,7 +130,7 @@ namespace myTNB
             UIView headerView = gradientViewComponent.GetUI();
             titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("Payment_SelectMethodTitle".Translate());
+            titleBarComponent.SetTitle(GetI18NValue(PaymentConstants.I18N_Title));
             titleBarComponent.SetPrimaryVisibility(true);
             titleBarComponent.SetBackVisibility(false);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
@@ -153,7 +152,7 @@ namespace myTNB
             View.AddSubview(headerView);
         }
 
-        internal void ExecuteGetRegisteredCardsCall()
+        private void ExecuteGetRegisteredCardsCall()
         {
             ActivityIndicator.Show();
             GetRegisteredCards().ContinueWith(task =>
@@ -166,7 +165,7 @@ namespace myTNB
             });
         }
 
-        internal Task GetRegisteredCards()
+        private Task GetRegisteredCards()
         {
             return Task.Factory.StartNew(() =>
             {
@@ -201,7 +200,7 @@ namespace myTNB
             });
         }
 
-        internal void InitializedTableView()
+        private void InitializedTableView()
         {
             selectPaymentTableView.Source = new SelectPaymentTableViewSource(_registeredCards
                 , this, OnSelectUnavailablePaymentMethod);
@@ -223,8 +222,8 @@ namespace myTNB
         /// </summary>
         private void ShowError(SystemEnum methodType)
         {
-            string errMsg = "DefaultServerErrorMessage".Translate();
-            var status = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == methodType);
+            string errMsg = GetErrorI18NValue(Constants.Error_DefaultServiceErrorMessage);
+            DowntimeDataModel status = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == methodType);
             if (status != null && !string.IsNullOrEmpty(status?.DowntimeTextMessage))
             {
                 errMsg = status?.DowntimeTextMessage;
@@ -232,7 +231,7 @@ namespace myTNB
             AlertHandler.DisplayGenericAlert(this, string.Empty, errMsg);
         }
 
-        internal void NavigateToVC(GetPaymentTransactionIdResponseModel paymentTransactionIDResponse, int platform, string paymentMode)
+        private void NavigateToVC(GetPaymentTransactionIdResponseModel paymentTransactionIDResponse, int platform, string paymentMode)
         {
             UIStoryboard storyBoard = UIStoryboard.FromName("MakePayment", null);
             MakePaymentViewController makePaymentVC =
@@ -243,7 +242,7 @@ namespace myTNB
                 makePaymentVC._isNewCard = false;
                 makePaymentVC._platform = platform;
                 makePaymentVC._paymentMode = paymentMode;
-                makePaymentVC._cardCVV = TextHelper.ConvertSecureStringToString(_cardCVVStr);
+                makePaymentVC._cardCVV = ConvertSecureStringToString(_cardCVVStr);
                 NavigationController.PushViewController(makePaymentVC, true);
             }
         }
@@ -268,7 +267,7 @@ namespace myTNB
             UIButton btnBack = new UIButton(UIButtonType.Custom);
             btnBack.Frame = new CGRect(6, 10, 60, 24);
             btnBack.SetTitleColor(MyTNBColor.PowerBlue, UIControlState.Normal);
-            btnBack.SetTitle("Common_Back".Translate(), UIControlState.Normal);
+            btnBack.SetTitle(GetCommonI18NValue(Constants.Common_Back), UIControlState.Normal);
             btnBack.Font = MyTNBFont.MuseoSans16;
             btnBack.TouchUpInside += (sender, e) =>
             {
@@ -286,8 +285,7 @@ namespace myTNB
             lblCVVDetails.LineBreakMode = UILineBreakMode.WordWrap;
             lblCVVDetails.Lines = 2;
             lblCVVDetails.TextAlignment = UITextAlignment.Left;
-            lblCVVDetails.Text = _isAMEX ? "Payment_CVVFourDigitMessage".Translate()
-                : "Payment_CVVThreeDigitMessage".Translate();
+            lblCVVDetails.Text = GetI18NValue(_isAMEX ? PaymentConstants.I18N_CVVFour : PaymentConstants.I18N_CVVThree);
 
             viewCVVWrapper = new UIView(new CGRect(0, 124, viewCVVContainer.Frame.Width, 26));
 
@@ -313,7 +311,7 @@ namespace myTNB
                 txtFieldCVV.TextAlignment = UITextAlignment.Center;
                 txtFieldCVV.ShouldChangeCharacters = (textField, range, replacementString) =>
                 {
-                    var newLength = textField.Text.Length + replacementString.Length - range.Length;
+                    nint newLength = textField.Text.Length + replacementString.Length - range.Length;
                     return newLength <= 1;
                 };
                 SetTextFieldEvents(txtFieldCVV);
@@ -367,8 +365,7 @@ namespace myTNB
             UIView.CommitAnimations();
         }
 
-
-        internal void SetTextFieldEvents(UITextField textField)
+        private void SetTextFieldEvents(UITextField textField)
         {
             textField.EditingChanged += (sender, e) =>
             {
@@ -402,7 +399,7 @@ namespace myTNB
             };
         }
 
-        internal void ValidateFields(bool isKeyboardDismissed)
+        private void ValidateFields(bool isKeyboardDismissed)
         {
             UITextField txtFieldCVV1 = viewCVVWrapper.ViewWithTag(1) as UITextField;
             UITextField txtFieldCVV2 = viewCVVWrapper.ViewWithTag(2) as UITextField;
@@ -415,7 +412,7 @@ namespace myTNB
                 && !string.IsNullOrEmpty(txtFieldCVV3.Text) && isKeyboardDismissed)
                 {
                     SecureString cvv = new SecureString();
-                    cvv = TextHelper.ConvertStringToSecureString(txtFieldCVV1.Text + txtFieldCVV2.Text + txtFieldCVV3.Text);
+                    cvv = ConvertStringToSecureString(txtFieldCVV1.Text + txtFieldCVV2.Text + txtFieldCVV3.Text);
 
                     if (_isAMEX)
                     {
@@ -423,7 +420,7 @@ namespace myTNB
                         {
                             if (!string.IsNullOrEmpty(txtFieldCVV4.Text))
                             {
-                                cvv = TextHelper.ConvertStringToSecureString(TextHelper.ConvertSecureStringToString(cvv) + txtFieldCVV4.Text);
+                                cvv = ConvertStringToSecureString(ConvertSecureStringToString(cvv) + txtFieldCVV4.Text);
                             }
                             else
                             {
@@ -465,7 +462,7 @@ namespace myTNB
         /// </summary>
         private void RemoveCachedAccountRecords()
         {
-            foreach (var item in AccountsForPayment)
+            foreach (CustomerAccountRecordModel item in AccountsForPayment)
             {
                 DataManager.DataManager.SharedInstance.DeleteDue(item.accNum);
                 DataManager.DataManager.SharedInstance.DeleteDetailsFromPaymentHistory(item.accNum);
