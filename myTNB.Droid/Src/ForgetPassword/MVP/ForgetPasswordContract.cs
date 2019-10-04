@@ -38,6 +38,8 @@ namespace myTNB_Android.Src.ForgetPassword.MVP
             /// <param name="message"></param>
             void ShowSuccess(string message);
 
+            void ShowCodeVerifiedSuccess();
+
 
             /// <summary>
             /// Show progress dialog in resetting password

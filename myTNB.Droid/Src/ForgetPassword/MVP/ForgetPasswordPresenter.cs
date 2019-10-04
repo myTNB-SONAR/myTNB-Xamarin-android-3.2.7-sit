@@ -202,7 +202,8 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                     this.mView.ClearErrorMessages();
                     this.mView.ClearTextFields();
                     string message = forgetPasswordResponse.response.Message;
-                    this.mView.ShowSuccess(message);
+                    //this.mView.ShowSuccess(message);
+                    this.mView.ShowCodeVerifiedSuccess();
                     this.mView.DisableResendButton();
 
                     // TODO : ADD FLAG THAT AFTER LOGIN USER WILL REDIRECT TO RESET PASSWORD

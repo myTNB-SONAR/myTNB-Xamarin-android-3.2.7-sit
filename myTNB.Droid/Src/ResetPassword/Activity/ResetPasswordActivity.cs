@@ -7,6 +7,7 @@ using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Text;
 using Android.Views;
+using Android.Views.InputMethods;
 using Android.Widget;
 using CheeseBind;
 using myTNB_Android.Src.AppLaunch.Activity;
@@ -19,6 +20,7 @@ using myTNB_Android.Src.Utils;
 using Refit;
 using System;
 using System.Runtime;
+using static Android.Views.View;
 
 namespace myTNB_Android.Src.ResetPassword.Activity
 {
@@ -33,10 +35,10 @@ namespace myTNB_Android.Src.ResetPassword.Activity
 
 
         [BindView(Resource.Id.txtNewPassword)]
-        TextView txtNewPassword;
+        EditText txtNewPassword;
 
         [BindView(Resource.Id.txtConfirmNewPassword)]
-        TextView txtConfirmNewPassword;
+        EditText txtConfirmNewPassword;
 
         [BindView(Resource.Id.txtTitleInfo)]
         TextView txtTitleInfo;
@@ -75,7 +77,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
 
                 mPresenter = new ResetPasswordPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this));
 
-                TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
+                TextViewUtils.SetMuseoSans500Typeface(btnSubmit, txtResetPasswordTitle);
 
                 TextViewUtils.SetMuseoSans300Typeface(txtTitleInfo, txtNewPassword, txtConfirmNewPassword);
 
@@ -99,7 +101,12 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                 }
 
                 txtNewPassword.TextChanged += TextChange;
+                txtNewPassword.AddTextChangedListener(new InputFilterFormField(txtNewPassword, txtInputLayoutNewPassword));
                 txtConfirmNewPassword.TextChanged += TextChange;
+                txtConfirmNewPassword.AddTextChangedListener(new InputFilterFormField(txtConfirmNewPassword, txtInputLayoutConfirmNewPassword));
+
+
+
             }
             catch (Exception e)
             {
@@ -107,10 +114,15 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             }
         }
 
+        
+
         private void TextChange(object sender, TextChangedEventArgs e)
         {
             try
             {
+
+             
+
                 string newPassword = txtNewPassword.Text;
                 string confirmPassword = txtConfirmNewPassword.Text;
                 //bool isError = true;
@@ -157,7 +169,11 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                 // validation new password
                 if (!string.IsNullOrEmpty(newPassword))
                 {
+                    
                     txtInputLayoutNewPassword.PasswordVisibilityToggleEnabled = true;
+                    txtInputLayoutNewPassword.Error = GetString(Resource.String.registration_form_password_format_hint);
+                    txtInputLayoutNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                    TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword);
                     if (!this.userActionsListener.CheckPasswordIsValid(newPassword))
                     {
                         this.ShowPasswordMinimumOf6CharactersError();
@@ -177,6 +193,9 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                 if (!string.IsNullOrEmpty(confirmPassword) || (!string.IsNullOrEmpty(confirmPassword) && !string.IsNullOrEmpty(newPassword)))
                 {
                     txtInputLayoutConfirmNewPassword.PasswordVisibilityToggleEnabled = true;
+                    txtInputLayoutConfirmNewPassword.Error = GetString(Resource.String.registration_form_errors_not_equal_confirm_password);
+                    txtInputLayoutConfirmNewPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
+                    TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutConfirmNewPassword);
                     if (!newPassword.Equals(confirmPassword))
                     {
                         this.ShowNotEqualConfirmNewPasswordToNewPasswordError();
