@@ -22,12 +22,12 @@ namespace myTNB
         private List<BillsTooltipModelEntity> _toolTipList;
         private List<BillsTooltipModel> _pageData;
         private bool isMandatoryExpanded;
-        public bool IsFreshCall;
-
         private AccountChargesModel _charges = new AccountChargesModel();
-        public string AccountNumber { set; private get; } = string.Empty;
-        public bool IsRoot { set; private get; } = false;
         private GetAccountsChargesResponseModel _accountCharges;
+
+        public bool IsFreshCall;
+        public bool IsRoot { set; private get; } = false;
+        public string AccountNumber { set; private get; } = string.Empty;
 
         public BillDetailsViewController(IntPtr handle) : base(handle) { }
 
@@ -222,13 +222,14 @@ namespace myTNB
             _uiScrollView = new UIScrollView(new CGRect(0, 0, ViewWidth, ViewHeight - _viewCTAContainer.Frame.Height));
             View.AddSubview(_uiScrollView);
             _viewDetails = new UIView { BackgroundColor = UIColor.White };
+
             UILabel lblAccountName = new UILabel(new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(20)))
             {
                 TextAlignment = UITextAlignment.Left,
                 TextColor = MyTNBColor.CharcoalGrey,
                 Font = TNBFont.MuseoSans_14_500,
                 LineBreakMode = UILineBreakMode.TailTruncation,
-                Text = DataManager.DataManager.SharedInstance.SelectedAccount.accountNickName
+                Text = AccountManager.GetNickname(AccountNumber)
             };
             UILabel lblAddress = new UILabel(new CGRect(BaseMargin, GetYLocationFromFrame(lblAccountName.Frame, 8)
                 , BaseMarginedWidth, GetScaledHeight(32)))
@@ -238,7 +239,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_12_300,
                 LineBreakMode = UILineBreakMode.WordWrap,
                 Lines = 0,
-                Text = DataManager.DataManager.SharedInstance.SelectedAccount.accountStAddress
+                Text = AccountManager.GetAddress(AccountNumber)
             };
             nfloat height = lblAddress.GetLabelHeight(GetScaledHeight(100));
             lblAddress.Frame = new CGRect(lblAddress.Frame.Location, new CGSize(lblAddress.Frame.Width, height));

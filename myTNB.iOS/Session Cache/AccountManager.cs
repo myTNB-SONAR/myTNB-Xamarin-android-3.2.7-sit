@@ -38,7 +38,7 @@ namespace myTNB
             return account;
         }
 
-        public CustomerAccountRecordModel GetAccountByAccountNumber(string accountNumber)
+        /*public CustomerAccountRecordModel GetAccountByAccountNumber(string accountNumber)
         {
             if (CAData != null && !string.IsNullOrEmpty(accountNumber) && !string.IsNullOrWhiteSpace(accountNumber))
             {
@@ -46,7 +46,7 @@ namespace myTNB
                 return GetAccountByIndex(index);
             }
             return new CustomerAccountRecordModel();
-        }
+        }*/
 
         public int CurrentAccountIndex { set; get; } = 0;
 
@@ -73,6 +73,40 @@ namespace myTNB
                 reAccounts = CAData.FindAll(x => x.IsREAccount).DeepClone();
             }
             return reAccounts;
+        }
+
+        public static string GetNickname(string accountNumber)
+        {
+            CustomerAccountRecordModel account = GetAccountByAccountNumber(accountNumber);
+            if (account == null)
+            {
+                return string.Empty;
+            }
+            return account.accountNickName;
+        }
+
+        public static string GetAddress(string accountNumber)
+        {
+            CustomerAccountRecordModel account = GetAccountByAccountNumber(accountNumber);
+            if (account == null)
+            {
+                return string.Empty;
+            }
+            return account.accountStAddress;
+        }
+
+        private static CustomerAccountRecordModel GetAccountByAccountNumber(string accountNumber)
+        {
+            if (string.IsNullOrEmpty(accountNumber) || string.IsNullOrWhiteSpace(accountNumber)
+                || DataManager.DataManager.SharedInstance.AccountRecordsList == null
+                || DataManager.DataManager.SharedInstance.AccountRecordsList.d == null
+                || DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count < 1)
+            {
+                return null;
+            }
+
+            CustomerAccountRecordModel account = DataManager.DataManager.SharedInstance.AccountRecordsList.d.Find(x => x.accNum == accountNumber);
+            return account;
         }
     }
 }
