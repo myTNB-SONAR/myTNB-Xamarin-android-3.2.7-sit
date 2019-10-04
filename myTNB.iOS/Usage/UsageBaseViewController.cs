@@ -530,7 +530,6 @@ namespace myTNB
             SetContentView();
         }
         #endregion
-
         #region SMART METER Methods
         internal void SetSmartMeterComponent(bool isUpdating, List<UsageCostItemModel> usageCostModel = null)
         {
@@ -1095,13 +1094,23 @@ namespace myTNB
 
         private void ToggleRMkWh()
         {
-            OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
-            if (model != null && (model.Cost != null || model.Usage != null))
+            if (isSmartMeterAccount)
             {
-                _chartView.ToggleRMKWHValues(_rMkWhEnum);
-                if (isSmartMeterAccount)
+                OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
+                if (model != null && (model.Cost != null || model.Usage != null))
                 {
+                    if (_chartView != null)
+                    {
+                        _chartView.ToggleRMKWHValues(_rMkWhEnum);
+                    }
                     SetSmartMeterComponent(false, (_rMkWhEnum == RMkWhEnum.RM) ? model.Cost : model.Usage);
+                }
+            }
+            else
+            {
+                if (_chartView != null)
+                {
+                    _chartView.ToggleRMKWHValues(_rMkWhEnum);
                 }
             }
         }
