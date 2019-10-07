@@ -69,6 +69,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             editText1.LayoutParameters = GetInputBoxLayoutParams();
             editText1.Gravity = Android.Views.GravityFlags.Center;
             editText1.SetBackgroundColor(Color.ParseColor("#f3f3f3"));
+            editText1.SetTextColor(Color.ParseColor("#424141"));
+            editText1.SetTextSize(ComplexUnitType.Dip, 14);
             editText1.AddTextChangedListener(onMeterReadingValueChange);
             editText1.SetOnKeyListener(new OnMeterInputKeyListener(this));
             editText1.InputType = InputTypes.ClassNumber;
@@ -82,6 +84,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             editText2.LayoutParameters = GetInputBoxLayoutParams();
             editText2.Gravity = Android.Views.GravityFlags.Center;
             editText2.SetBackgroundColor(Color.ParseColor("#f3f3f3"));
+            editText2.SetTextColor(Color.ParseColor("#424141"));
+            editText2.SetTextSize(ComplexUnitType.Dip, 14);
             editText2.AddTextChangedListener(onMeterReadingValueChange);
             editText2.SetOnKeyListener(new OnMeterInputKeyListener(this));
             editText2.InputType = InputTypes.ClassNumber;
@@ -94,6 +98,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             editText3.LayoutParameters = GetInputBoxLayoutParams();
             editText3.Gravity = Android.Views.GravityFlags.Center;
             editText3.SetBackgroundColor(Color.ParseColor("#f3f3f3"));
+            editText3.SetTextColor(Color.ParseColor("#424141"));
+            editText3.SetTextSize(ComplexUnitType.Dip, 14);
             editText3.AddTextChangedListener(onMeterReadingValueChange);
             editText3.SetOnKeyListener(new OnMeterInputKeyListener(this));
             editText3.InputType = InputTypes.ClassNumber;
@@ -106,6 +112,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             editText4.LayoutParameters = GetInputBoxLayoutParams();
             editText4.Gravity = Android.Views.GravityFlags.Center;
             editText4.SetBackgroundColor(Color.ParseColor("#f3f3f3"));
+            editText4.SetTextColor(Color.ParseColor("#424141"));
+            editText4.SetTextSize(ComplexUnitType.Dip, 14);
             editText4.AddTextChangedListener(onMeterReadingValueChange);
             editText4.SetOnKeyListener(new OnMeterInputKeyListener(this));
             editText4.InputType = InputTypes.ClassNumber;
@@ -118,6 +126,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             editText5.LayoutParameters = GetInputBoxLayoutParams();
             editText5.Gravity = Android.Views.GravityFlags.Center;
             editText5.SetBackgroundColor(Color.ParseColor("#f3f3f3"));
+            editText5.SetTextColor(Color.ParseColor("#424141"));
+            editText5.SetTextSize(ComplexUnitType.Dip, 14);
             editText5.AddTextChangedListener(onMeterReadingValueChange);
             editText5.SetOnKeyListener(new OnMeterInputKeyListener(this));
             editText5.InputType = InputTypes.ClassNumber;
@@ -130,6 +140,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             editText6.LayoutParameters = GetInputBoxLayoutParams();
             editText6.Gravity = Android.Views.GravityFlags.Center;
             editText6.SetBackgroundColor(Color.ParseColor("#f3f3f3"));
+            editText6.SetTextColor(Color.ParseColor("#424141"));
+            editText6.SetTextSize(ComplexUnitType.Dip, 14);
             editText6.AddTextChangedListener(onMeterReadingValueChange);
             editText6.SetOnKeyListener(new OnMeterInputKeyListener(this));
             editText6.InputType = InputTypes.ClassNumber;
@@ -142,6 +154,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             editText7.LayoutParameters = GetInputBoxLayoutParams();
             editText7.Gravity = Android.Views.GravityFlags.Center;
             editText7.SetBackgroundColor(Color.ParseColor("#f3f3f3"));
+            editText7.SetTextColor(Color.ParseColor("#424141"));
+            editText7.SetTextSize(ComplexUnitType.Dip, 14);
             editText7.AddTextChangedListener(onMeterReadingValueChange);
             editText7.SetOnKeyListener(new OnMeterInputKeyListener(this));
             editText7.InputType = InputTypes.ClassNumber;
@@ -154,6 +168,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             editText8.LayoutParameters = GetInputBoxLayoutParams();
             editText8.Gravity = Android.Views.GravityFlags.Center;
             editText8.SetBackgroundColor(Color.ParseColor("#f3f3f3"));
+            editText8.SetTextColor(Color.ParseColor("#424141"));
+            editText8.SetTextSize(ComplexUnitType.Dip, 14);
             editText8.AddTextChangedListener(onMeterReadingValueChange);
             editText8.SetOnKeyListener(new OnMeterInputKeyListener(this));
             editText8.InputType = InputTypes.ClassNumber;
@@ -161,7 +177,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             AddView(editText8);
             editTextArray[7] = editText8;
 
-            TextViewUtils.SetMuseoSans300Typeface(editText1, editText2, editText3, editText4, editText5, editText6, editText7, editText8);
+            TextViewUtils.SetMuseoSans500Typeface(editText1, editText2, editText3, editText4, editText5, editText6, editText7, editText8);
 
             RequestLayout();
         }
