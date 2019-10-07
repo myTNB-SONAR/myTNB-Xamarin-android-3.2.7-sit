@@ -144,6 +144,11 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             txtInputLayoutEmail.Error = GetString(Resource.String.forget_password_invalid_email_error);
         }
 
+        public void ShowCodeVerifiedSuccess()
+        {
+            
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
