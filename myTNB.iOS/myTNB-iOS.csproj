@@ -1646,6 +1646,7 @@
     <Folder Include="Components\Table View\" />
     <Folder Include="Assets.xcassets\SSMR-No-History.imageset\" />
     <Folder Include="Assets.xcassets\Empty-Usage-Icon.imageset\" />
+    <Folder Include="Model\GetIsSmrApplyAllowed\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2487,6 +2488,7 @@
     <Compile Include="Registration\AddAccountConstants.cs" />
     <Compile Include="Components\Table View\NoDataViewCell.cs" />
     <Compile Include="Components\Usage View\EmptyUsageComponent.cs" />
+    <Compile Include="Model\GetIsSmrApplyAllowed\GetIsSmrApplyAllowedResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

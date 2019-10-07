@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using CoreGraphics;
 using Foundation;
-using myTNB.Dashboard;
 using myTNB.Home.Dashboard.DashboardHome;
 using myTNB.Model;
 using myTNB.PushNotification;
@@ -15,7 +14,6 @@ using myTNB.Registration.CustomerAccounts;
 using UIKit;
 using myTNB.Home.Components;
 using Newtonsoft.Json;
-using myTNB.Model.Usage;
 
 namespace myTNB
 {
@@ -29,7 +27,6 @@ namespace myTNB
         private AccountsCardContentViewController _accountsCardContentViewController;
         DashboardHomeHeader _dashboardHomeHeader;
         RefreshScreenComponent _refreshScreenComponent;
-        UINavigationController _usageViewNavController;
         UIStoryboard _usageStoryBoard;
         public ServicesResponseModel _services;
         public List<HelpModel> _helpList;
@@ -42,6 +39,7 @@ namespace myTNB
         public bool _isRefreshScreenEnabled = false;
         private nfloat _addtlYValue = 0;
         private bool _isBCRMAvailable = false;
+        private GetIsSmrApplyAllowedResponseModel _isSMRApplyAllowedResponse;
 
         public override void ViewDidLoad()
         {
@@ -208,11 +206,11 @@ namespace myTNB
                     _services = new ServicesResponseModel();
                     _helpList = new List<HelpModel>();
                     OnGetServices();
-                    //UpdatePromotions();
                     OnUpdateNotification();
                     InvokeOnMainThread(() =>
                     {
                         _helpIsShimmering = true;
+                        OnUpdateCell(DashboardHomeConstants.CellIndex_Help);
                         OnGetHelpInfo().ContinueWith(task =>
                         {
                             InvokeOnMainThread(() =>
@@ -319,23 +317,37 @@ namespace myTNB
 
         private void OnGetServices()
         {
-            InvokeInBackground(async () =>
+            InvokeOnMainThread(() =>
             {
                 _servicesIsShimmering = true;
-                _services = await GetServices();
-                InvokeOnMainThread(() =>
-                {
-                    _servicesIsShimmering = false;
-                    if (_services != null && _services.d != null && _services.d.IsSuccess)
-                    {
-                        DataManager.DataManager.SharedInstance.ServicesList = _services.d.data?.services;
-                    }
-                    else
-                    {
-                        DataManager.DataManager.SharedInstance.ServicesList.Clear();
-                    }
-                    OnUpdateCell(DashboardHomeConstants.CellIndex_Services);
-                });
+                OnUpdateCell(DashboardHomeConstants.CellIndex_Services);
+                InvokeInBackground(() =>
+               {
+                   List<Task> taskList = new List<Task>();
+                   try
+                   {
+                       taskList.Add(GetServices());
+                       taskList.Add(GetIsSmrApplyAllowed());
+                       Task.WaitAll(taskList.ToArray());
+                   }
+                   catch (Exception e)
+                   {
+                       Debug.WriteLine("Error in services: " + e.Message);
+                   }
+                   InvokeOnMainThread(() =>
+                   {
+                       _servicesIsShimmering = false;
+                       if (_services != null && _services.d != null && _services.d.IsSuccess)
+                       {
+                           DataManager.DataManager.SharedInstance.ServicesList = _services.d.data?.services;
+                       }
+                       else
+                       {
+                           DataManager.DataManager.SharedInstance.ServicesList.Clear();
+                       }
+                       OnUpdateCell(DashboardHomeConstants.CellIndex_Services);
+                   });
+               });
             });
         }
 
@@ -462,6 +474,18 @@ namespace myTNB
             ServiceManager serviceManager = new ServiceManager();
             object request = new { serviceManager.usrInf };
             ServicesResponseModel response = serviceManager.OnExecuteAPIV6<ServicesResponseModel>("GetServices", request);
+            _services = response;
+            return response;
+        }
+
+        private async Task<GetIsSmrApplyAllowedResponseModel> GetIsSmrApplyAllowed()
+        {
+            ServiceManager serviceManager = new ServiceManager();
+            SSMRAccounts.SetFilteredEligibleAccounts();
+            List<string> contractAccounts = SSMRAccounts.GetFilteredAccountNumberList();
+            object request = new { serviceManager.usrInf, contractAccounts };
+            GetIsSmrApplyAllowedResponseModel response = serviceManager.OnExecuteAPIV6<GetIsSmrApplyAllowedResponseModel>("GetIsSmrApplyAllowed", request);
+            _isSMRApplyAllowedResponse = response;
             return response;
         }
 
@@ -500,7 +524,8 @@ namespace myTNB
         private void OnUpdateCell(int row)
         {
             _homeTableView.BeginUpdates();
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent);
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController
+                , _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent);
             NSIndexPath indexPath = NSIndexPath.Create(0, row);
             _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
             _homeTableView.EndUpdates();

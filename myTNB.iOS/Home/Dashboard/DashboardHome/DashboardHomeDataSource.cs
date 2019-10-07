@@ -99,7 +99,7 @@ namespace myTNB
                 ServicesTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Services) as ServicesTableViewCell;
                 cell._titleLabel.Text = _controller.GetI18NValue(DashboardHomeConstants.I18N_MyServices);
                 cell._titleLabel.TextColor = accountHeight.Height < tableView.Frame.Height * 0.30F ? UIColor.White : MyTNBColor.WaterBlue;
-                cell.AddCards(_services, _controller._servicesActionDictionary);
+                cell.AddCards(_services, _controller._servicesActionDictionary, _isServicesShimmering);
                 cell.ClipsToBounds = true;
                 return cell;
             }
@@ -115,7 +115,7 @@ namespace myTNB
             {
                 HelpTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Help) as HelpTableViewCell;
                 cell._titleLabel.Text = _controller.GetI18NValue(DashboardHomeConstants.I18N_NeedHelp);
-                cell.AddCards(_helpList);
+                cell.AddCards(_helpList, _isHelpShimmering);
                 cell.ClipsToBounds = true;
                 return cell;
             }
