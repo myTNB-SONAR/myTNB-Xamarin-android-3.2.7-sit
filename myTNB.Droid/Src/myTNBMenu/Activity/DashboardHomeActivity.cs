@@ -174,6 +174,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 alreadyStarted = true;
             }
 
+            if (!alreadyStarted)
+            {
+                this.userActionsListener.Start();
+                alreadyStarted = true;
+                ShowPromotion(true);
+            }
+
             this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).Click += DashboardHomeActivity_Click;
         }
 
@@ -517,13 +524,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public override void Ready()
         {
             base.Ready();
-            if (!alreadyStarted)
-            {
-                this.userActionsListener.Start();
-                alreadyStarted = true;
-                ShowPromotion(true);
-            }
-
         }
 
         public void EnableBillMenu()
