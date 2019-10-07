@@ -395,8 +395,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                         ((PaymentActivity)mActivity).HideToolBar();
 
                     }
-                    else if (url.ToLower().Contains("mytnbapp://payment/"))
+                    else if (url.ToLower().Contains("mytnbapp://payment/") && !isRedirected)
                     {
+                        isRedirected = true;
                         progressBar.Visibility = ViewStates.Gone;
                         MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                         Intent DashboardIntent = new Intent(mActivity, typeof(DashboardHomeActivity));

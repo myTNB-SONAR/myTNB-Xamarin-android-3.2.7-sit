@@ -106,6 +106,7 @@
                     android:paddingLeft="32dp"
                     android:paddingRight="32dp"
                     android:layout_alignParentBottom="true"
+                    android:gravity="center|bottom"
                     android:layout_below="@id/layout1">
                     <Button
                         android:id="@+id/btnAddAnotherAccount"
