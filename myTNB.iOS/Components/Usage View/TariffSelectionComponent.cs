@@ -14,7 +14,7 @@ namespace myTNB
         nfloat containerHeight = ScaleUtility.GetScaledHeight(24f);
         SmartMeterViewEnum _smViewEnum;
         public bool isTariffDisabled;
-
+        public Func<string, string> GetI18NValue;
         public TariffSelectionComponent(UIView parentView, SmartMeterViewEnum smViewEnum = SmartMeterViewEnum.Month)
         {
             _parentView = parentView;
@@ -111,7 +111,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.WaterBlue,
                 TextAlignment = UITextAlignment.Left,
-                Text = LanguageUtility.GetCommonI18NValue(Constants.I18N_ShowTariff)
+                Text = GetI18NValue(UsageConstants.I18N_ShowTariff)
             };
             _tariffSelectionView.AddSubview(_tariffLabel);
         }
@@ -160,10 +160,10 @@ namespace myTNB
             switch (_smViewEnum)
             {
                 case SmartMeterViewEnum.Day:
-                    str = LanguageUtility.GetCommonI18NValue(Constants.I18N_Months);
+                    str = LanguageUtility.GetCommonI18NValue(Constants.Common_Months);
                     break;
                 case SmartMeterViewEnum.Hour:
-                    str = LanguageUtility.GetCommonI18NValue(Constants.I18N_Days);
+                    str = LanguageUtility.GetCommonI18NValue(Constants.Common_Days);
                     break;
             }
             return str;
@@ -219,7 +219,7 @@ namespace myTNB
         public void UpdateTariffButton(bool showTariff)
         {
             _tariffIcon.Image = showTariff ? UIImage.FromBundle(Constants.IMG_TariffEyeCloseIcon) : UIImage.FromBundle(Constants.IMG_TariffEyeOpenIcon);
-            _tariffLabel.Text = showTariff ? LanguageUtility.GetCommonI18NValue(Constants.I18N_HideTariff) : LanguageUtility.GetCommonI18NValue(Constants.I18N_ShowTariff);
+            _tariffLabel.Text = showTariff ? GetI18NValue(UsageConstants.I18N_HideTariff) : GetI18NValue(UsageConstants.I18N_ShowTariff);
         }
 
         public void SetTariffButtonDisable(bool isDisable)

@@ -15,7 +15,7 @@ namespace myTNB
             view = new CustomUIView(new CGRect(0, ReferenceWidget.GetMaxY(), _width, GetHeightByScreenSize(157)));
             UIImageView icon = new UIImageView(new CGRect(GetXLocationToCenterObject(GetScaledWidth(61), view), GetScaledHeight(24), GetScaledWidth(61), GetScaledHeight(67)))
             {
-                Image = UIImage.FromBundle("MDMS-Down"),
+                Image = UIImage.FromBundle(UsageConstants.IMG_MDMSDown),
                 ContentMode = UIViewContentMode.ScaleAspectFill
             };
             view.AddSubview(icon);
@@ -26,7 +26,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_300,
                 TextColor = UIColor.White,
                 Lines = 0,
-                Text = "Your daily usage information is currently unavailable. Check back in a while!"
+                Text = GetI18NValue(UsageConstants.I18N_MDMSUnavailableMsg)
             };
             CGSize descSize = desc.SizeThatFits(new CGSize(descWidth, 1000f));
             ViewHelper.AdjustFrameSetHeight(desc, descSize.Height);

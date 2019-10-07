@@ -93,7 +93,10 @@ namespace myTNB
                 BackgroundColor = MyTNBColor.Black60
             };
             currentWindow.AddSubview(_smOverlayParentView);
-            SmartMeterOverlayComponent overlay = new SmartMeterOverlayComponent(_smOverlayParentView, GetYLocationFromFrame(_navbarContainer.Frame, 8F) + _viewChart.Frame.Y);
+            SmartMeterOverlayComponent overlay = new SmartMeterOverlayComponent(_smOverlayParentView, GetYLocationFromFrame(_navbarContainer.Frame, 8F) + _viewChart.Frame.Y)
+            {
+                GetI18NValue = GetI18NValue
+            };
             _smOverlayParentView.AddSubview(overlay.GetUI());
             overlay.SetGestureForButton(new UITapGestureRecognizer(() =>
             {
@@ -500,7 +503,8 @@ namespace myTNB
                     PinchOverlayAction = ShowPinchOverlay,
                     LoadTariffLegendWithIndex = LoadTariffLegendWithIndex,
                     LoadTariffLegendWithBlockIds = LoadTariffLegendWithBlockIds,
-                    ShowMissedReadToolTip = ShowMissedReadTooltip
+                    ShowMissedReadToolTip = ShowMissedReadTooltip,
+                    GetI18NValue = GetI18NValue
                 };
             }
 
@@ -517,7 +521,10 @@ namespace myTNB
         internal void SetEmptyDataComponent(string message)
         {
             _isEmptyData = true;
-            EmptyUsageComponent emptyUsageComponent = new EmptyUsageComponent(_viewChart);
+            EmptyUsageComponent emptyUsageComponent = new EmptyUsageComponent(_viewChart)
+            {
+                GetI18NValue = GetI18NValue
+            };
             if (_chart != null)
             {
                 _chart.RemoveFromSuperview();
@@ -648,7 +655,10 @@ namespace myTNB
                 {
                     _ssmr.RemoveFromSuperview();
                 }
-                SSMRComponent sSMRComponent = new SSMRComponent(forRefreshScreen ? _viewRefresh : _viewSSMR);
+                SSMRComponent sSMRComponent = new SSMRComponent(forRefreshScreen ? _viewRefresh : _viewSSMR)
+                {
+                    GetI18NValue = GetI18NValue
+                };
 
                 if (isUpdating)
                 {
@@ -844,7 +854,7 @@ namespace myTNB
             List<MonthItemModel> usageData = isSmartMeterAccount ? AccountUsageSmartCache.ByMonthUsage : AccountUsageCache.ByMonthUsage;
             if (usageData != null && usageData.Count > 0)
             {
-                if (index < usageData.Count)
+                if (index > -1 && index < usageData.Count)
                 {
                     MonthItemModel item = usageData[index];
                     if (item != null)
@@ -861,10 +871,13 @@ namespace myTNB
                                     var res = false;
                                     foreach (var tBlock in item.tariffBlocks)
                                     {
-                                        if (tBlock.BlockId.Equals(legend.BlockId) && tBlock.Usage > 0)
+                                        if (tBlock.BlockId != null)
                                         {
-                                            res = true;
-                                            break;
+                                            if (tBlock.BlockId.Equals(legend.BlockId) && tBlock.Usage > 0)
+                                            {
+                                                res = true;
+                                                break;
+                                            }
                                         }
                                     }
                                     if (res)
@@ -941,7 +954,10 @@ namespace myTNB
                 {
                     _tariff.RemoveFromSuperview();
                 }
-                _tariffSelectionComponent = new TariffSelectionComponent(View);
+                _tariffSelectionComponent = new TariffSelectionComponent(View)
+                {
+                    GetI18NValue = GetI18NValue
+                };
                 _tariff = _tariffSelectionComponent.GetUI();
                 _viewToggle.AddSubview(_tariff);
                 _rMkWhEnum = RMkWhEnum.RM;
@@ -1208,7 +1224,10 @@ namespace myTNB
                 {
                     _RE.RemoveFromSuperview();
                 }
-                _rEAmountComponent = new REAmountComponent(_viewRE);
+                _rEAmountComponent = new REAmountComponent(_viewRE)
+                {
+                    GetI18NValue = GetI18NValue
+                };
                 _RE = _rEAmountComponent.GetUI();
                 _viewRE.AddSubview(_RE);
                 _rEAmountComponent._btnViewPaymentAdvice.TouchUpInside += (sender, e) =>
@@ -1283,7 +1302,10 @@ namespace myTNB
                 };
                 _origViewFrame = _viewFooter.Frame;
                 View.AddSubview(_viewFooter);
-                _footerViewComponent = new UsageFooterViewComponent(View, footerHeight, indicatorHeight);
+                _footerViewComponent = new UsageFooterViewComponent(View, footerHeight, indicatorHeight)
+                {
+                    GetI18NValue = GetI18NValue
+                };
                 _viewFooter.AddSubview(_footerViewComponent.GetUI());
                 if (_footerViewComponent._btnViewBill != null)
                 {
@@ -1455,7 +1477,7 @@ namespace myTNB
             }
             UpdateBGForRefresh();
             var bcrm = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
-            var bcrmMsg = !string.IsNullOrEmpty(bcrm?.DowntimeMessage) && !string.IsNullOrWhiteSpace(bcrm?.DowntimeMessage) ? bcrm?.DowntimeMessage : GetCommonI18NValue(Constants.I18N_BCRMMessage);
+            var bcrmMsg = !string.IsNullOrEmpty(bcrm?.DowntimeMessage) && !string.IsNullOrWhiteSpace(bcrm?.DowntimeMessage) ? bcrm?.DowntimeMessage : GetCommonI18NValue(Constants.Common_BCRMMessage);
             var refreshMsg = isSmartMeterAccount ? AccountUsageSmartCache.GetRefreshDataModel()?.RefreshMessage ?? string.Empty : AccountUsageCache.GetRefreshDataModel()?.RefreshMessage ?? string.Empty;
             var refreshBtnTxt = isSmartMeterAccount ? AccountUsageSmartCache.GetRefreshDataModel()?.RefreshBtnText ?? string.Empty : AccountUsageCache.GetRefreshDataModel()?.RefreshBtnText ?? string.Empty;
             string desc = isBcrmAvailable ? refreshMsg : bcrmMsg;

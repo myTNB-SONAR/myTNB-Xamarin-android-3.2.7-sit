@@ -65,7 +65,7 @@ namespace myTNB.SmartMeterView
 
                     UIImageView unavailableIcon = new UIImageView(new CGRect(0, segment.Frame.Height - lblHeight - GetScaledHeight(20) - GetHeightByScreenSize(17), GetScaledWidth(20), GetScaledHeight(20)))
                     {
-                        Image = UIImage.FromBundle(Constants.IMG_MDMSDownIcon)
+                        Image = UIImage.FromBundle(UsageConstants.IMG_MDMSDownIcon)
                     };
                     ViewHelper.AdjustFrameSetX(unavailableIcon, GetXLocationToCenterObject(GetScaledWidth(20), segment));
 
@@ -76,7 +76,7 @@ namespace myTNB.SmartMeterView
                         Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300,
                         TextColor = UIColor.White,
                         Lines = 0,
-                        Text = LanguageUtility.GetCommonI18NValue(Constants.I18N_MDMSUnavailable),
+                        Text = GetI18NValue(UsageConstants.I18N_MDMSUnavailable),
                         Tag = 1004
                     };
                     nfloat lblWidth = lblIndicator.GetLabelWidth(GetScaledWidth(54));

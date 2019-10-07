@@ -555,7 +555,7 @@ namespace myTNB
                 Frame = new CGRect(_btnViewBill.Frame.GetMaxX() + GetScaledWidth(4), GetScaledHeight(16), btnWidth, GetScaledHeight(48)),
                 BackgroundColor = MyTNBColor.FreshGreen
             };
-            _btnPay.SetTitle(GetCommonI18NValue(BillConstants.I18N_Pay), UIControlState.Normal);
+            _btnPay.SetTitle(GetI18NValue(BillConstants.I18N_Pay), UIControlState.Normal);
             _btnPay.SetTitleColor(UIColor.White, UIControlState.Normal);
 
             _viewCTAContainer.AddSubviews(new UIView[] { _btnViewBill, _btnPay });

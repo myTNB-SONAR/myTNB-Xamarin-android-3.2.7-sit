@@ -89,12 +89,13 @@ namespace myTNB
             ServiceManager serviceManager = new ServiceManager();
             object requestParameter = new
             {
-                accNum = account.accNum,
-                apiKeyID = TNBGlobal.API_KEY_ID
+                contractAccount = account.accNum,
+                isOwnedAccount = account.isOwned,
+                serviceManager.usrInf
             };
             dueAmountResponse = await Task.Run(() =>
             {
-                return serviceManager.OnExecuteAPI<DueAmountResponseModel>("GetAccountDueAmount", requestParameter);
+                return serviceManager.OnExecuteAPIV6<DueAmountResponseModel>("GetAccountDueAmount", requestParameter);
             });
 
             return dueAmountResponse;
