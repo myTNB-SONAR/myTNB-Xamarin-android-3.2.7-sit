@@ -8,6 +8,7 @@ namespace myTNB
     {
         CustomUIView _parentView, _containerView;
         UILabel _messageLbl;
+        public Func<string, string> GetI18NValue;
         public EmptyUsageComponent(CustomUIView parentView)
         {
             _parentView = parentView;
@@ -46,14 +47,16 @@ namespace myTNB
 
         public void SetMessage(string msg)
         {
+            string message = GetI18NValue(UsageConstants.I18N_EmptyDataMessage);
             if (!string.IsNullOrEmpty(msg) && !string.IsNullOrWhiteSpace(msg))
             {
-                if (_messageLbl != null)
-                {
-                    _messageLbl.Text = msg;
-                    CGSize lblSize = _messageLbl.SizeThatFits(new CGSize(_messageLbl.Frame.Width, 1000F));
-                    ViewHelper.AdjustFrameSetHeight(_messageLbl, lblSize.Height);
-                }
+                message = msg;
+            }
+            if (_messageLbl != null)
+            {
+                _messageLbl.Text = message;
+                CGSize lblSize = _messageLbl.SizeThatFits(new CGSize(_messageLbl.Frame.Width, 1000F));
+                ViewHelper.AdjustFrameSetHeight(_messageLbl, lblSize.Height);
             }
         }
     }

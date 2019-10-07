@@ -58,7 +58,7 @@ namespace myTNB
                 string val = value;
                 if (string.IsNullOrEmpty(val) || string.IsNullOrWhiteSpace(val))
                 {
-                    val = LanguageUtility.GetHintI18NValue(Constants.I18N_EmptyAcctSelector);
+                    val = LanguageUtility.GetHintI18NValue(Constants.Hint_EmptyAcctSelector);
                 }
                 _lblTitle.Text = val;
                 CGSize size = CustomUILabel.GetLabelSize(_lblTitle, _width - GetScaledWidth(56), _lblTitle.Frame.Height);

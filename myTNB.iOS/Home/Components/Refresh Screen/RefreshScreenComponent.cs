@@ -43,8 +43,8 @@ namespace myTNB.Home.Components
                 Image = UIImage.FromBundle(_isBCRMDown ? Constants.IMG_BCRMDownIcon : Constants.IMG_RefreshIcon)
             };
 
-            var descMsg = !string.IsNullOrEmpty(_descriptionMessage) || !string.IsNullOrWhiteSpace(_descriptionMessage) ? _descriptionMessage : GetCommonI18NValue(Constants.I18N_RefreshMessage);
-            var btnText = (!string.IsNullOrEmpty(_buttonText)) || !string.IsNullOrWhiteSpace(_buttonText) ? _buttonText : GetCommonI18NValue(Constants.I18N_RefreshBtnText);
+            var descMsg = !string.IsNullOrEmpty(_descriptionMessage) || !string.IsNullOrWhiteSpace(_descriptionMessage) ? _descriptionMessage : GetCommonI18NValue(Constants.Common_RefreshMessage);
+            var btnText = (!string.IsNullOrEmpty(_buttonText)) || !string.IsNullOrWhiteSpace(_buttonText) ? _buttonText : GetCommonI18NValue(Constants.Common_RefreshBtnText);
 
             NSMutableParagraphStyle msgParagraphStyle = new NSMutableParagraphStyle
             {

@@ -308,10 +308,11 @@ namespace myTNB
                                 {
                                     if (dueAmountResponse != null &&
                                     dueAmountResponse.d != null &&
-                                    dueAmountResponse.d.didSucceed &&
-                                    dueAmountResponse.d.data != null)
+                                    dueAmountResponse.d.IsSuccess &&
+                                    dueAmountResponse.d.data != null &&
+                                    dueAmountResponse.d.data.AccountAmountDue != null)
                                     {
-                                        var model = dueAmountResponse.d.data;
+                                        var model = dueAmountResponse.d.data.AccountAmountDue;
                                         var item = new DueAmountDataModel
                                         {
                                             accNum = account.accNum,

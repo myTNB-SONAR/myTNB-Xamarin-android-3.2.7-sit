@@ -17,6 +17,7 @@ namespace myTNB.SmartMeterView
         public Action<UIPinchGestureRecognizer> PinchAction { set; protected get; }
         public bool IsTariffView { set; protected get; } = false;
         public RMkWhEnum ConsumptionState { set; protected get; } = RMkWhEnum.kWh;
+        public Func<string, string> GetI18NValue;
 
         protected virtual double GetMaxValue(RMkWhEnum view, List<string> value)
         {

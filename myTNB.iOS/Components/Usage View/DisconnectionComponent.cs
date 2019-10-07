@@ -48,7 +48,7 @@ namespace myTNB
                 Text = !string.IsNullOrEmpty(_accountStatusData?.AccountStatusMessage) &&
                     !string.IsNullOrWhiteSpace(_accountStatusData?.AccountStatusMessage) ?
                     _accountStatusData?.AccountStatusMessage :
-                    LanguageUtility.GetCommonI18NValue(Constants.I18N_DisconnectionMsg)
+                    LanguageUtility.GetCommonI18NValue(Constants.Common_DisconnectionMsg)
             };
             _containerView.AddSubview(label);
         }

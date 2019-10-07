@@ -11,7 +11,7 @@ namespace myTNB
         public UIButton _btnViewBill, _btnPay;
         UILabel _lblPaymentTitle, _lblAmount, _lblDate, _lblCommon;
         nfloat _width, _viewHeight, _yPos;
-
+        public Func<string, string> GetI18NValue;
         public UsageFooterViewComponent(UIView view, nfloat viewHeight, nfloat yPos)
         {
             _parentView = view;
@@ -126,7 +126,7 @@ namespace myTNB
             _btnViewBill.Layer.CornerRadius = GetScaledHeight(4f);
             _btnViewBill.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             _btnViewBill.Layer.BorderWidth = GetScaledHeight(1f);
-            _btnViewBill.SetTitle(LanguageUtility.GetCommonI18NValue(Constants.I18N_ViewDetails), UIControlState.Normal);
+            _btnViewBill.SetTitle(GetI18NValue(UsageConstants.I18N_ViewDetails), UIControlState.Normal);
             _btnViewBill.Font = TNBFont.MuseoSans_16_500;
             _btnViewBill.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
             _containerView.AddSubview(_btnViewBill);
@@ -139,7 +139,7 @@ namespace myTNB
             _btnPay.Layer.BackgroundColor = MyTNBColor.FreshGreen.CGColor;
             _btnPay.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             _btnPay.Layer.BorderWidth = GetScaledHeight(1f);
-            _btnPay.SetTitle(LanguageUtility.GetCommonI18NValue(Constants.I18N_Pay), UIControlState.Normal);
+            _btnPay.SetTitle(GetI18NValue(UsageConstants.I18N_Pay), UIControlState.Normal);
             _btnPay.Font = TNBFont.MuseoSans_16_500;
             _containerView.AddSubview(_btnPay);
         }
@@ -192,7 +192,7 @@ namespace myTNB
                 if (amount > 0)
                 {
                     _lblPaymentTitle.Hidden = false;
-                    _lblPaymentTitle.Text = LanguageUtility.GetCommonI18NValue(Constants.I18N_NeedToPay);
+                    _lblPaymentTitle.Text = GetI18NValue(UsageConstants.I18N_NeedToPay);
                     _lblDate.Hidden = false;
                     _lblCommon.Hidden = true;
                 }
@@ -202,7 +202,7 @@ namespace myTNB
                     _lblPaymentTitle.Text = string.Empty;
                     _lblDate.Hidden = true;
                     _lblCommon.Hidden = false;
-                    _lblCommon.Text = amount < 0 ? LanguageUtility.GetCommonI18NValue(Constants.I18N_PaidExtra) : LanguageUtility.GetCommonI18NValue(Constants.I18N_ClearedAllBills);
+                    _lblCommon.Text = amount < 0 ? GetI18NValue(UsageConstants.I18N_PaidExtra) : GetI18NValue(UsageConstants.I18N_ClearedAllBills);
                 }
             }
         }
@@ -214,7 +214,7 @@ namespace myTNB
                 if (_lblDate != null)
                 {
                     string formattedDate = DateHelper.GetFormattedDate(date, "dd MMM yyyy");
-                    _lblDate.Text = LanguageUtility.GetCommonI18NValue(Constants.I18N_By) + " " + formattedDate;
+                    _lblDate.Text = GetI18NValue(UsageConstants.I18N_By) + " " + formattedDate;
                 }
             }
         }
@@ -224,7 +224,7 @@ namespace myTNB
             if (_containerView != null)
             {
                 _lblPaymentTitle.Hidden = false;
-                _lblPaymentTitle.Text = LanguageUtility.GetCommonI18NValue(Constants.I18N_NeedToPay);
+                _lblPaymentTitle.Text = GetI18NValue(UsageConstants.I18N_NeedToPay);
                 _lblDate.Hidden = false;
                 _lblAmount.Hidden = false;
                 _shimmerParent.Hidden = true;

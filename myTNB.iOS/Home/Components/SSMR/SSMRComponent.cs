@@ -17,7 +17,7 @@ namespace myTNB
         UILabel _description;
         public UIButton _smrButton;
         nfloat _descWidth = 0f;
-
+        public Func<string, string> GetI18NValue;
         public SSMRComponent(UIView parentView)
         {
             _parentView = parentView;
@@ -127,7 +127,7 @@ namespace myTNB
             smrButton.Layer.BorderWidth = 1;
             smrButton.Font = TNBFont.MuseoSans_16_500;
             smrButton.SetTitleColor(MyTNBColor.SilverChalice, UIControlState.Normal);
-            smrButton.SetTitle(LanguageUtility.GetCommonI18NValue(Constants.I18N_ViewReadHistory), UIControlState.Normal);
+            smrButton.SetTitle(GetI18NValue(UsageConstants.I18N_ViewReadHistory), UIControlState.Normal);
             smrButton.Enabled = false;
 
             parentView.AddSubview(smrButton);

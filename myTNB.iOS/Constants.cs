@@ -21,35 +21,9 @@
         public static string IMG_TrendUpIcon = "Trend-Up-Icon";
         public static string IMG_TrendDownIcon = "Trend-Down-Icon";
         public static string IMG_ArrowLeftBlueIcon = "Arrow-Left-Blue";
-        public static string IMG_MDMSDownIcon = "MDMS-Down-Icon";
 
-        //I18N Keys
-        public static string I18N_BCRMMessage = "bcrmMessage";
-        public static string I18N_RefreshMessage = "refreshDescription";
-        public static string I18N_RefreshBtnText = "refreshNow";
-        public static string I18N_ViewDetails = "viewDetails";
-        public static string I18N_Pay = "pay";
-        public static string I18N_EmptyAcctSelector = "emptyAcctSelector";
-        public static string I18N_DisconnectionMsg = "disconnectionMsg";
-        public static string I18N_MyEarnings = "myEarnings";
-        public static string I18N_ViewPaymentAdvice = "viewPaymentAdvice";
-        public static string I18N_IWillGetBy = "iWillGetBy";
-        public static string I18N_EmptyTextAPIFail = "emptyTextAPIFail";
-        public static string I18N_ShowTariff = "showTariff";
-        public static string I18N_HideTariff = "hideTariff";
-        public static string I18N_NeedToPay = "needToPay";
-        public static string I18N_PaidExtra = "paidExtra";
-        public static string I18N_ClearedAllBills = "clearedAllBills";
-        public static string I18N_ViewReadHistory = "viewReadHistory";
-        public static string I18N_Months = "months";
-        public static string I18N_Days = "days";
-        public static string I18N_SMOverlayTitle = "SMOverlayTitle";
-        public static string I18N_SMOverlayMsg = "SMOverlayMsg";
-        public static string I18N_SMOverlayBtnTxt = "SMOverlayBtnTxt";
-        public static string I18N_Day = "day";
-        public static string I18N_Month = "month";
-        public static string I18N_MDMSUnavailable = "mdmsUnavailable";
-        public static string I18N_By = "by";
+        //Hint
+        public static string Hint_EmptyAcctSelector = "emptyAcctSelector";
 
         //Common I18N
         public static string Common_RefreshNow = "refreshNow";
@@ -63,6 +37,12 @@
         public static string Common_Cards = "cards";
         public static string Common_Abort = "abort";
         public static string Common_Cancel = "cancel";
+        public static string Common_Months = "months";
+        public static string Common_Days = "days";
+        public static string Common_DisconnectionMsg = "disconnectionMsg";
+        public static string Common_RefreshMessage = "refreshDescription";
+        public static string Common_RefreshBtnText = "refreshNow";
+        public static string Common_BCRMMessage = "bcrmMessage";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";
