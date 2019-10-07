@@ -156,7 +156,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             MenuInflater.Inflate(Resource.Menu.NotificationToolbarMenu, menu);
             notificationMenu = menu;
             notificationMenu.FindItem(Resource.Id.action_notification_read).SetIcon(GetDrawable(Resource.Drawable.ic_header_markread)).SetVisible(false);
-            int count = UserNotificationEntity.Count();
+            int count = UserNotificationEntity.ListAllActive().Count;
             if (count == 0)
             {
                 notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(false);
