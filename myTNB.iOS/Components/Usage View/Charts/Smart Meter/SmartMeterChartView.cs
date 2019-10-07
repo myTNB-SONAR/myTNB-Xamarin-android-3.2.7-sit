@@ -18,6 +18,7 @@ namespace myTNB
 
         public Action PinchOverlayAction { set; private get; }
         public Action<List<String>> LoadTariffLegendWithBlockIds { set; private get; }
+        public Func<string, string> GetI18NValue;
 
         private BaseSmartMeterView _baseSmartMeterView;
         private bool _isTariffView;
@@ -90,8 +91,8 @@ namespace myTNB
             attrSelected.TextColor = MyTNBColor.DarkPeriwinkle;
 
             _toggleBar = new UISegmentedControl(new CGRect(GetXLocationToCenterObject(toggleWidth, parentView), 1, toggleWidth, toggleHeight));
-            _toggleBar.InsertSegment(LanguageUtility.GetCommonI18NValue(Constants.I18N_Day), 0, false);
-            _toggleBar.InsertSegment(LanguageUtility.GetCommonI18NValue(Constants.I18N_Month), 1, false);
+            _toggleBar.InsertSegment(LanguageUtility.GetCommonI18NValue(UsageConstants.I18N_Day), 0, false);
+            _toggleBar.InsertSegment(LanguageUtility.GetCommonI18NValue(UsageConstants.I18N_Month), 1, false);
             _toggleBar.TintColor = UIColor.White;
             _toggleBar.SetTitleTextAttributes(attr, UIControlState.Normal);
             _toggleBar.SetTitleTextAttributes(attrSelected, UIControlState.Selected);
@@ -229,7 +230,8 @@ namespace myTNB
                 _baseSmartMeterView = new SmartMeterMonthView()
                 {
                     OnSegmentTap = OnSegmentTap,
-                    LoadTariffLegendWithIndex = OnBarSelected
+                    LoadTariffLegendWithIndex = OnBarSelected,
+                    GetI18NValue = GetI18NValue
                 };
             }
             else if (AccountUsageSmartCache.IsMDMSDown)

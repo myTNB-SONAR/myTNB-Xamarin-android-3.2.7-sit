@@ -11,6 +11,7 @@ namespace myTNB
         CustomUIView _btnView;
         UILabel _title, _description;
         nfloat _yPos;
+        public Func<string, string> GetI18NValue;
         public SmartMeterOverlayComponent(UIView parentView, nfloat yPos)
         {
             _parentView = parentView;
@@ -29,12 +30,12 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = UIColor.White,
                 TextAlignment = UITextAlignment.Center,
-                Text = LanguageUtility.GetCommonI18NValue(Constants.I18N_SMOverlayTitle)
+                Text = GetI18NValue(UsageConstants.I18N_SMOverlayTitle)
             };
             _contentView.AddSubview(_title);
             nfloat animationWidth = GetScaledWidth(76F);
             nfloat animationHeight = GetScaledWidth(76F);
-            LOTAnimationView pinchAnimation = LOTAnimationView.AnimationNamed("Dashboard Zoom.json");
+            LOTAnimationView pinchAnimation = LOTAnimationView.AnimationNamed(UsageConstants.STR_PinchInOutFilename);
             pinchAnimation.Frame = new CGRect(GetXLocationToCenterObject(animationWidth, _contentView), _title.Frame.GetMaxY() + GetScaledHeight(32F),
                                          animationWidth, animationHeight);
             pinchAnimation.ContentMode = UIViewContentMode.ScaleAspectFill;
@@ -47,7 +48,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_300,
                 TextColor = UIColor.White,
                 TextAlignment = UITextAlignment.Center,
-                Text = LanguageUtility.GetCommonI18NValue(Constants.I18N_SMOverlayMsg),
+                Text = GetI18NValue(UsageConstants.I18N_SMOverlayMsg),
                 Lines = 0
             };
             _contentView.AddSubview(_description);
@@ -63,7 +64,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
                 TextAlignment = UITextAlignment.Center,
-                Text = LanguageUtility.GetCommonI18NValue(Constants.I18N_SMOverlayBtnTxt)
+                Text = GetI18NValue(UsageConstants.I18N_SMOverlayBtnTxt)
             };
             _btnView.AddSubview(btnLabel);
             _contentView.AddSubview(_btnView);

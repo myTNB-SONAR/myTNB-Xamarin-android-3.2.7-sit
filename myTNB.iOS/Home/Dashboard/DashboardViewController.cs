@@ -274,25 +274,25 @@ namespace myTNB.Dashboard
             {
                 InvokeOnMainThread(() =>
                 {
-                    if (_dueAmount != null && _dueAmount?.d != null
-                        && _dueAmount?.d?.didSucceed == true
-                        && _dueAmount?.d?.data != null
-                        && _dueAmount?.d?.status.ToLower() != "failed")
-                    {
-                        amountDueIsAvailable = true;
-                        _amountDue = _dueAmount.d.data.amountDue;
-                        _dateDue = _dueAmount.d.data.billDueDate;
-                        _dueIncrementDays = _dueAmount.d.data.IncrementREDueDateByDays;
-                        SetAmountInBillingDetails(_amountDue);
-                        SaveDueToCache(_dueAmount.d.data);
-                    }
-                    else
-                    {
-                        amountDueIsAvailable = false;
-                        _dashboardMainComponent.ConstructGeneralRefreshScreen(RefreshScreen, _dueAmount.d);
-                        ActivityIndicator.Hide();
-                    }
-                    SetBillAndPaymentDetails();
+                    //if (_dueAmount != null && _dueAmount?.d != null
+                    //    && _dueAmount?.d?.didSucceed == true
+                    //    && _dueAmount?.d?.data != null
+                    //    && _dueAmount?.d?.status.ToLower() != "failed")
+                    //{
+                    //    amountDueIsAvailable = true;
+                    //    _amountDue = _dueAmount.d.data.amountDue;
+                    //    _dateDue = _dueAmount.d.data.billDueDate;
+                    //    _dueIncrementDays = _dueAmount.d.data.IncrementREDueDateByDays;
+                    //    SetAmountInBillingDetails(_amountDue);
+                    //    SaveDueToCache(_dueAmount.d.data);
+                    //}
+                    //else
+                    //{
+                    //    amountDueIsAvailable = false;
+                    //    _dashboardMainComponent.ConstructGeneralRefreshScreen(RefreshScreen, _dueAmount.d);
+                    //    ActivityIndicator.Hide();
+                    //}
+                    //SetBillAndPaymentDetails();
                 });
             });
         }
@@ -949,21 +949,21 @@ namespace myTNB.Dashboard
 
         void DisplayItemisedBillingToolTip()
         {
-            string title = _dueAmount?.d?.data?.WhyThisAmountTitle ?? "Dashboard_TooltipTitle".Translate();
-            string msg = _dueAmount?.d?.data?.WhyThisAmountMessage ?? "Dashboard_TooltipMessage".Translate();
-            string primaryButton = _dueAmount?.d?.data?.WhyThisAmountPriButtonText ?? "Common_GotIt".Translate();
-            string secondaryButton = _dueAmount?.d?.data?.WhyThisAmountSecButtonText ?? "Dashboard_BringMeThere".Translate();
+            //string title = _dueAmount?.d?.data?.WhyThisAmountTitle ?? "Dashboard_TooltipTitle".Translate();
+            //string msg = _dueAmount?.d?.data?.WhyThisAmountMessage ?? "Dashboard_TooltipMessage".Translate();
+            //string primaryButton = _dueAmount?.d?.data?.WhyThisAmountPriButtonText ?? "Common_GotIt".Translate();
+            //string secondaryButton = _dueAmount?.d?.data?.WhyThisAmountSecButtonText ?? "Dashboard_BringMeThere".Translate();
 
-            DisplayCustomAlert(title, msg
-                , new Dictionary<string, Action>() {
-                    { primaryButton, ()=>{
-                        if (TabBarController != null)
-                        {
-                            TabBarController.SelectedIndex = 1;
-                        }
-                    }}
-                    , { secondaryButton, null }
-                });
+            //DisplayCustomAlert(title, msg
+            //    , new Dictionary<string, Action>() {
+            //        { primaryButton, ()=>{
+            //            if (TabBarController != null)
+            //            {
+            //                TabBarController.SelectedIndex = 1;
+            //            }
+            //        }}
+            //        , { secondaryButton, null }
+            //    });
         }
 
         /// <summary>

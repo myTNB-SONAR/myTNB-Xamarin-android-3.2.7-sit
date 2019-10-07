@@ -1987,7 +1987,6 @@
     </Compile>
     <Compile Include="Model\ValidateManualAccountLinking\ValidateManualAccountLinkingDataModel.cs" />
     <Compile Include="Model\GetAccountDueAmount\DueAmountDataModel.cs" />
-    <Compile Include="Model\GetAccountDueAmount\DueAmountModel.cs" />
     <Compile Include="Model\GetAccountDueAmount\DueAmountResponseModel.cs" />
     <Compile Include="Home\Components\ActivityIndicatorComponent.cs" />
     <Compile Include="Model\Base Model\BaseModel.cs" />
