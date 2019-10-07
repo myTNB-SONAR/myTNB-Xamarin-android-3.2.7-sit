@@ -46,22 +46,20 @@ namespace myTNB
             SelectionStyle = UITableViewCellSelectionStyle.None;
         }
 
-        public void AddCards(List<HelpModel> helpList)
+        public void AddCards(List<HelpModel> helpList, bool isLoading)
         {
             for (int i = _scrollView.Subviews.Length; i-- > 0;)
             {
                 _scrollView.Subviews[i].RemoveFromSuperview();
             }
 
-            bool hasData = helpList.Count > 0;
-
-            if (hasData)
+            if (isLoading)
             {
-                AddContentData(helpList);
+                AddShimmer();
             }
             else
             {
-                AddShimmer();
+                AddContentData(helpList);
             }
         }
 

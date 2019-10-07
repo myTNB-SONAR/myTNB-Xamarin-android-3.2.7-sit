@@ -4,7 +4,6 @@ using System.Diagnostics;
 using System.Threading.Tasks;
 using CoreGraphics;
 using Foundation;
-using myTNB.Dashboard;
 using myTNB.Home.Dashboard.DashboardHome;
 using myTNB.Model;
 using myTNB.PushNotification;
@@ -15,7 +14,7 @@ using myTNB.Registration.CustomerAccounts;
 using UIKit;
 using myTNB.Home.Components;
 using Newtonsoft.Json;
-using myTNB.Model.Usage;
+using System.Threading;
 
 namespace myTNB
 {
@@ -29,7 +28,6 @@ namespace myTNB
         private AccountsCardContentViewController _accountsCardContentViewController;
         DashboardHomeHeader _dashboardHomeHeader;
         RefreshScreenComponent _refreshScreenComponent;
-        UINavigationController _usageViewNavController;
         UIStoryboard _usageStoryBoard;
         public ServicesResponseModel _services;
         public List<HelpModel> _helpList;
@@ -208,11 +206,11 @@ namespace myTNB
                     _services = new ServicesResponseModel();
                     _helpList = new List<HelpModel>();
                     OnGetServices();
-                    //UpdatePromotions();
                     OnUpdateNotification();
                     InvokeOnMainThread(() =>
                     {
                         _helpIsShimmering = true;
+                        OnUpdateCell(DashboardHomeConstants.CellIndex_Help);
                         OnGetHelpInfo().ContinueWith(task =>
                         {
                             InvokeOnMainThread(() =>
@@ -319,22 +317,27 @@ namespace myTNB
 
         private void OnGetServices()
         {
-            InvokeInBackground(async () =>
+            InvokeOnMainThread(() =>
             {
                 _servicesIsShimmering = true;
-                _services = await GetServices();
-                InvokeOnMainThread(() =>
+                OnUpdateCell(DashboardHomeConstants.CellIndex_Services);
+                InvokeInBackground(async () =>
                 {
-                    _servicesIsShimmering = false;
-                    if (_services != null && _services.d != null && _services.d.IsSuccess)
+                    _services = await GetServices();
+                    Thread.Sleep(5000);
+                    InvokeOnMainThread(() =>
                     {
-                        DataManager.DataManager.SharedInstance.ServicesList = _services.d.data?.services;
-                    }
-                    else
-                    {
-                        DataManager.DataManager.SharedInstance.ServicesList.Clear();
-                    }
-                    OnUpdateCell(DashboardHomeConstants.CellIndex_Services);
+                        _servicesIsShimmering = false;
+                        if (_services != null && _services.d != null && _services.d.IsSuccess)
+                        {
+                            DataManager.DataManager.SharedInstance.ServicesList = _services.d.data?.services;
+                        }
+                        else
+                        {
+                            DataManager.DataManager.SharedInstance.ServicesList.Clear();
+                        }
+                        OnUpdateCell(DashboardHomeConstants.CellIndex_Services);
+                    });
                 });
             });
         }
@@ -500,7 +503,8 @@ namespace myTNB
         private void OnUpdateCell(int row)
         {
             _homeTableView.BeginUpdates();
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController, _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent);
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountsCardContentViewController
+                , _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent);
             NSIndexPath indexPath = NSIndexPath.Create(0, row);
             _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
             _homeTableView.EndUpdates();
