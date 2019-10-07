@@ -422,7 +422,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7201")
                 {
                     isBillAvailable = true;
-                    this.mView.ShowNewAccountView(null);
+                    this.mView.ShowNewAccountView(usageHistoryResponse.Data.DisplayTitle);
                 }
                 else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7200")
                 {
@@ -514,7 +514,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7201")
                 {
                     isBillAvailable = true;
-                    this.mView.ShowNewAccountView(null);
+                    this.mView.ShowNewAccountView(usageHistoryResponse.Data.DisplayTitle);
                 }
                 else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7204")
                 {
