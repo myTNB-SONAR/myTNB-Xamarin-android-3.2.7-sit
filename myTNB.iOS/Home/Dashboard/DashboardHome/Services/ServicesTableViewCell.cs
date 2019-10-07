@@ -49,7 +49,7 @@ namespace myTNB
             {
                 _view.Subviews[i].RemoveFromSuperview();
             }
-            if (isLoading)
+            if (isLoading || services == null || services.d == null || services.d.data == null || services.d.data.services == null)
             {
                 AddShimmer();
             }

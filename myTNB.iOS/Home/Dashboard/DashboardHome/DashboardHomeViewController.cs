@@ -39,6 +39,7 @@ namespace myTNB
         public bool _isRefreshScreenEnabled = false;
         private nfloat _addtlYValue = 0;
         private bool _isBCRMAvailable = false;
+        private GetIsSmrApplyAllowedResponseModel _isSMRApplyAllowedResponse;
 
         public override void ViewDidLoad()
         {
@@ -320,23 +321,33 @@ namespace myTNB
             {
                 _servicesIsShimmering = true;
                 OnUpdateCell(DashboardHomeConstants.CellIndex_Services);
-                InvokeInBackground(async () =>
-                {
-                    _services = await GetServices();
-                    InvokeOnMainThread(() =>
-                    {
-                        _servicesIsShimmering = false;
-                        if (_services != null && _services.d != null && _services.d.IsSuccess)
-                        {
-                            DataManager.DataManager.SharedInstance.ServicesList = _services.d.data?.services;
-                        }
-                        else
-                        {
-                            DataManager.DataManager.SharedInstance.ServicesList.Clear();
-                        }
-                        OnUpdateCell(DashboardHomeConstants.CellIndex_Services);
-                    });
-                });
+                InvokeInBackground(() =>
+               {
+                   List<Task> taskList = new List<Task>();
+                   try
+                   {
+                       taskList.Add(GetServices());
+                       taskList.Add(GetIsSmrApplyAllowed());
+                       Task.WaitAll(taskList.ToArray());
+                   }
+                   catch (Exception e)
+                   {
+                       Debug.WriteLine("Error in services: " + e.Message);
+                   }
+                   InvokeOnMainThread(() =>
+                   {
+                       _servicesIsShimmering = false;
+                       if (_services != null && _services.d != null && _services.d.IsSuccess)
+                       {
+                           DataManager.DataManager.SharedInstance.ServicesList = _services.d.data?.services;
+                       }
+                       else
+                       {
+                           DataManager.DataManager.SharedInstance.ServicesList.Clear();
+                       }
+                       OnUpdateCell(DashboardHomeConstants.CellIndex_Services);
+                   });
+               });
             });
         }
 
@@ -463,6 +474,18 @@ namespace myTNB
             ServiceManager serviceManager = new ServiceManager();
             object request = new { serviceManager.usrInf };
             ServicesResponseModel response = serviceManager.OnExecuteAPIV6<ServicesResponseModel>("GetServices", request);
+            _services = response;
+            return response;
+        }
+
+        private async Task<GetIsSmrApplyAllowedResponseModel> GetIsSmrApplyAllowed()
+        {
+            ServiceManager serviceManager = new ServiceManager();
+            SSMRAccounts.SetFilteredEligibleAccounts();
+            List<string> contractAccounts = SSMRAccounts.GetFilteredAccountNumberList();
+            object request = new { serviceManager.usrInf, contractAccounts };
+            GetIsSmrApplyAllowedResponseModel response = serviceManager.OnExecuteAPIV6<GetIsSmrApplyAllowedResponseModel>("GetIsSmrApplyAllowed", request);
+            _isSMRApplyAllowedResponse = response;
             return response;
         }
 

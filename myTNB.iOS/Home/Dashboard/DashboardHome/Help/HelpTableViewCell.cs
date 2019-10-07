@@ -53,7 +53,7 @@ namespace myTNB
                 _scrollView.Subviews[i].RemoveFromSuperview();
             }
 
-            if (isLoading)
+            if (isLoading || helpList == null)
             {
                 AddShimmer();
             }
