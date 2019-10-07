@@ -14,7 +14,6 @@ using myTNB.Registration.CustomerAccounts;
 using UIKit;
 using myTNB.Home.Components;
 using Newtonsoft.Json;
-using System.Threading;
 
 namespace myTNB
 {
@@ -324,7 +323,6 @@ namespace myTNB
                 InvokeInBackground(async () =>
                 {
                     _services = await GetServices();
-                    Thread.Sleep(5000);
                     InvokeOnMainThread(() =>
                     {
                         _servicesIsShimmering = false;
