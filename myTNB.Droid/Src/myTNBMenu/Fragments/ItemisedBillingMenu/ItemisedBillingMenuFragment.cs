@@ -106,6 +106,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         List<AccountChargeModel> selectedAccountChargesModelList;
         List<Item> itemFilterList = new List<Item>();
         List<AccountBillPayHistoryModel> selectedBillingHistoryModelList;
+        List<AccountBillPayFilter> billPayFilterList;
 
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
@@ -265,46 +266,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             itemisedBillingInfoShimmer.Visibility = ViewStates.Visible;
         }
 
-        public void AddFilterItem(string itemTitle)
-        {
-            if (itemFilterList.Count == 0)
-            {
-                Item allFilterItem = new Item();
-                allFilterItem.title = "All";
-                allFilterItem.selected = true;
-                itemFilterList.Add(allFilterItem);
-            }
-
-            int foundIndex = itemFilterList.FindIndex(item =>
-            {
-                return item.title == itemTitle;
-            });
-
-            if (foundIndex == -1)
-            {
-                Item newItem = new Item();
-                newItem.title = itemTitle;
-                newItem.selected = false;
-                itemFilterList.Add(newItem);
-            }
-        }
-
         public void UpdateBillingHistory(string filterItemString)
         {
             Item selectedFilter = JsonConvert.DeserializeObject<Item>(filterItemString);
             itemFilterList.ForEach(filterItem =>
             {
-                filterItem.selected = (filterItem.title == selectedFilter.title) ? true : false;
+                filterItem.selected = (filterItem.type == selectedFilter.type) ? true : false;
             });
-            RenderBillingHistoryList(true, selectedFilter.title);
+            RenderBillingHistoryList(selectedFilter.type);
         }
 
-        private void RenderBillingHistoryList(bool isUpdate, string historyType)
+        private void RenderBillingHistoryList(string historyType)
         {
             itemisedBillingList.RemoveAllViews();
             ItemisedBillingGroupComponent itemisedBillingGroupComponent;
             List<AccountBillPayHistoryModel> filteredBillingList = new List<AccountBillPayHistoryModel>();
-            if (historyType == "All")
+            if (string.IsNullOrEmpty(historyType) || historyType == "ALL")
             {
                 filteredBillingList.AddRange(selectedBillingHistoryModelList);
             }
@@ -314,7 +291,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 {
                     int foundIndex = billingHistory.BillingHistoryDataList.FindIndex(data =>
                     {
-                        return data.HistoryTypeText == historyType;
+                        return data.HistoryType == historyType;
                     });
 
                     if (foundIndex != -1)
@@ -324,69 +301,35 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 });
             }
 
-            for (int i = 0; i < filteredBillingList.Count; i++)
+            if (filteredBillingList.Count > 0)
             {
-                itemisedBillingGroupComponent = new ItemisedBillingGroupComponent(Activity);
-                ItemisedBillingGroupContentComponent content;
-
-                AccountBillPayHistoryModel model = filteredBillingList[i];
-                itemisedBillingGroupComponent.SetMonthYearLabel(model.MonthYear);
-
-                if (i == 0)
+                emptyItemisedBillingList.Visibility = ViewStates.Gone;
+                itemisedBillingList.Visibility = ViewStates.Visible;
+                for (int i = 0; i < filteredBillingList.Count; i++)
                 {
-                    itemisedBillingGroupComponent.ShowSeparator(false);
-                }
-                else
-                {
-                    itemisedBillingGroupComponent.ShowSeparator(true);
-                    itemisedBillingGroupComponent.SetBackground();
-                }
+                    itemisedBillingGroupComponent = new ItemisedBillingGroupComponent(Activity);
+                    ItemisedBillingGroupContentComponent content;
 
-                for (int j = 0; j < model.BillingHistoryDataList.Count; j++)
-                {
-                    AccountBillPayHistoryModel.BillingHistoryData data = model.BillingHistoryDataList[j];
-                    //Rendering All History Type
-                    if (historyType == "All")
+                    AccountBillPayHistoryModel model = filteredBillingList[i];
+                    itemisedBillingGroupComponent.SetMonthYearLabel(model.MonthYear);
+
+                    if (i == 0)
                     {
-                        content = new ItemisedBillingGroupContentComponent(Activity);
-                        if (!isUpdate)
-                        {
-                            AddFilterItem(data.HistoryTypeText);
-                        }
-                        content.IsPayment(data.HistoryType.ToUpper() == "PAYMENT");
-                        content.SetDateHistoryType(data.DateAndHistoryType);
-                        content.SetPaidVia(data.PaidVia);
-                        content.SetAmount("RM " + data.Amount);
-                        if (data.DetailedInfoNumber != "")
-                        {
-                            content.SetShowBillingDetailsListener(new OnShowBillingDetailsListener(this, data));
-                        }
-                        else
-                        {
-                            content.SetShowBillingDetailsListener(null);
-                        }
-
-                        if (j == (model.BillingHistoryDataList.Count - 1))
-                        {
-                            content.ShowSeparator(false);
-                        }
-                        else
-                        {
-                            content.ShowSeparator(true);
-                        }
-
-                        itemisedBillingGroupComponent.AddContent(content);
+                        itemisedBillingGroupComponent.ShowSeparator(false);
                     }
-                    //Rendering Filtered History Type
                     else
                     {
-                        if (historyType == data.HistoryTypeText)
+                        itemisedBillingGroupComponent.ShowSeparator(true);
+                        itemisedBillingGroupComponent.SetBackground();
+                    }
+
+                    for (int j = 0; j < model.BillingHistoryDataList.Count; j++)
+                    {
+                        AccountBillPayHistoryModel.BillingHistoryData data = model.BillingHistoryDataList[j];
+                        //Rendering All History Type
+                        if (string.IsNullOrEmpty(historyType) || historyType == "ALL")
                         {
                             content = new ItemisedBillingGroupContentComponent(Activity);
-                            if (!isUpdate)
-                            {
-                                AddFilterItem(data.HistoryType.ToUpper());
-                            }
                             content.IsPayment(data.HistoryType.ToUpper() == "PAYMENT");
                             content.SetDateHistoryType(data.DateAndHistoryType);
                             content.SetPaidVia(data.PaidVia);
@@ -411,9 +354,45 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
                             itemisedBillingGroupComponent.AddContent(content);
                         }
+                        //Rendering Filtered History Type
+                        else
+                        {
+                            if (historyType == data.HistoryType)
+                            {
+                                content = new ItemisedBillingGroupContentComponent(Activity);
+                                content.IsPayment(data.HistoryType.ToUpper() == "PAYMENT");
+                                content.SetDateHistoryType(data.DateAndHistoryType);
+                                content.SetPaidVia(data.PaidVia);
+                                content.SetAmount("RM " + data.Amount);
+                                if (data.DetailedInfoNumber != "")
+                                {
+                                    content.SetShowBillingDetailsListener(new OnShowBillingDetailsListener(this, data));
+                                }
+                                else
+                                {
+                                    content.SetShowBillingDetailsListener(null);
+                                }
+
+                                if (j == (model.BillingHistoryDataList.Count - 1))
+                                {
+                                    content.ShowSeparator(false);
+                                }
+                                else
+                                {
+                                    content.ShowSeparator(true);
+                                }
+
+                                itemisedBillingGroupComponent.AddContent(content);
+                            }
+                        }
                     }
+                    itemisedBillingList.AddView(itemisedBillingGroupComponent);
                 }
-                itemisedBillingList.AddView(itemisedBillingGroupComponent);
+            }
+            else
+            {
+                emptyItemisedBillingList.Visibility = ViewStates.Visible;
+                itemisedBillingList.Visibility = ViewStates.Gone;
             }
         }
 
@@ -457,26 +436,37 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
         }
 
-        public void PopulateBillingHistoryList(List<AccountBillPayHistoryModel> billingHistoryModelList)
+        private void UpdateFilterItems(List<AccountBillPayFilter> billPayFilters)
+        {
+            itemFilterList = new List<Item>();
+            billPayFilters.ForEach(filter => {
+                Item item = new Item();
+                item.title = filter.Text;
+                item.type = filter.Type;
+                itemFilterList.Add(item);
+            });
+            itemFilterList[0].selected = true;
+        }
+
+        public void PopulateBillingHistoryList(List<AccountBillPayHistoryModel> billingHistoryModelList, List<AccountBillPayFilter> billPayFilters)
         {
             itemisedBillingListShimmer.Visibility = ViewStates.Gone;
             
             if (billingHistoryModelList.Count > 0)
             {
+                UpdateFilterItems(billPayFilters);
                 selectedBillingHistoryModelList = new List<AccountBillPayHistoryModel>();
                 selectedBillingHistoryModelList = billingHistoryModelList;
                 emptyItemisedBillingList.Visibility = ViewStates.Gone;
                 itemisedBillingList.Visibility = ViewStates.Visible;
                 billFilterIcon.Enabled = true;
-                itemFilterList = new List<Item>();
                 EnableActionButtons(true);
-                RenderBillingHistoryList(false, "All");
+                RenderBillingHistoryList(null);
             }
             else
             {
                 emptyItemisedBillingList.Visibility = ViewStates.Visible;
                 itemisedBillingList.Visibility = ViewStates.Gone;
-                billFilterIcon.Enabled = false;
             }
         }
 
@@ -502,7 +492,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
             else if (accountChargeModel.IsPaidExtra)
             {
-                itemisedBillingInfoNote.Text = "I’ve paid extra";
+                if (mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId))
+                {
+                    imageResource = Resource.Drawable.bill_paid_extra_re_banner;
+                    itemisedBillingInfoNote.Text = "I’ve been paid extra";
+                }
+                else
+                {
+                    itemisedBillingInfoNote.Text = "I’ve paid extra";
+                }
                 itemisedBillingInfoAmount.Text = (Math.Abs(accountChargeModel.AmountDue)).ToString("#,##0.00");
                 itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
                 itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#20bd4c"));
@@ -512,8 +510,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
             else if (accountChargeModel.IsNeedPay)
             {
-                imageResource = Resource.Drawable.bill_need_to_pay_banner;
-                itemisedBillingInfoNote.Text = "I need to pay";
+                if (mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId))
+                {
+                    imageResource = Resource.Drawable.bill_paid_extra_re_banner;
+                    itemisedBillingInfoNote.Text = "My earnings";
+                }
+                else
+                {
+                    imageResource = Resource.Drawable.bill_need_to_pay_banner;
+                    itemisedBillingInfoNote.Text = "I need to pay";
+                }
+                
                 itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
                 itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#49494a"));
                 itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#49494a"));

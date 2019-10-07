@@ -12,9 +12,9 @@ namespace myTNB_Android.Src.MyTNBService.Model
 	public class AccountChargeModel
 	{
 		public string ContractAccount { get; set; }
-		public float CurrentCharges { get; set; }
-		public float OutstandingCharges { get; set; }
-		public float AmountDue { get; set; }
+		public double CurrentCharges { get; set; }
+		public double OutstandingCharges { get; set; }
+		public double AmountDue { get; set; }
 		public string DueDate { get; set; }
 		public string BillDate { get; set; }
 		public string IncrementREDueDateByDays { get; set; }
@@ -26,7 +26,7 @@ namespace myTNB_Android.Src.MyTNBService.Model
 
 	public class MandatoryChargeModel
 	{
-		public float TotalAmount { get; set; }
+		public double TotalAmount { get; set; }
 		public List<ChargeModel> ChargeModelList { get; set; }
 	}
 
@@ -34,7 +34,7 @@ namespace myTNB_Android.Src.MyTNBService.Model
 	{
 		public string Key { get; set; }
 		public string Title { get; set; }
-		public float Amount { get; set; }
+		public double Amount { get; set; }
 	}
 
 	public class MandatoryChargesPopupModel

@@ -111,7 +111,7 @@ namespace myTNB_Android.Src.Maintenance.Activity
             this.userActionsListener.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Maintenance");
+                FirebaseAnalyticsUtils.SetScreenName(this, "App Under Maintenance");
             }
             catch (Exception e)
             {

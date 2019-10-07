@@ -75,8 +75,7 @@ namespace myTNB_Android.Src.SSMR.SSMRBase.MVP
         [OnClick(Resource.Id.btnTrackApplication)]
         void OnTryAgain(object sender, EventArgs eventArgs)
         {
-            Intent intent = new Intent(this, typeof(SSMRMeterHistoryActivity));
-            StartActivity(intent);
+            Finish();
         }
     }
 }

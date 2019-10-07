@@ -334,7 +334,7 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
             try
             {
                 base.OnResume();
-                FirebaseAnalyticsUtils.SetScreenName(this, "Update Account Nickname Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Update Account Nickname");
             }
             catch (Exception e)
             {

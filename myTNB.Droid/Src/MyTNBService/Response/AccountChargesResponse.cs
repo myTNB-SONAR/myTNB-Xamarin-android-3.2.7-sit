@@ -57,13 +57,13 @@ namespace myTNB_Android.Src.MyTNBService.Response
             public string ContractAccount { get; set; }
 
             [JsonProperty(PropertyName = "CurrentCharges")]
-            public float CurrentCharges { get; set; }
+            public double CurrentCharges { get; set; }
 
             [JsonProperty(PropertyName = "OutstandingCharges")]
-            public float OutstandingCharges { get; set; }
+            public double OutstandingCharges { get; set; }
 
             [JsonProperty(PropertyName = "AmountDue")]
-            public float AmountDue { get; set; }
+            public double AmountDue { get; set; }
 
             [JsonProperty(PropertyName = "DueDate")]
             public string DueDate { get; set; }
@@ -81,7 +81,7 @@ namespace myTNB_Android.Src.MyTNBService.Response
         public class MandatoryCharge
         {
             [JsonProperty(PropertyName = "TotalAmount")]
-            public float TotalAmount { get; set; }
+            public double TotalAmount { get; set; }
 
             [JsonProperty(PropertyName = "Charges")]
             public List<Charge> Charges { get; set; }
@@ -96,7 +96,7 @@ namespace myTNB_Android.Src.MyTNBService.Response
             public string Title { get; set; }
 
             [JsonProperty(PropertyName = "Amount")]
-            public float Amount { get; set; }
+            public double Amount { get; set; }
         }
 
         public class MandatoryChargesPopUpDetail

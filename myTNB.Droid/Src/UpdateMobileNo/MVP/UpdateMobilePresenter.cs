@@ -245,6 +245,61 @@ namespace myTNB_Android.Src.UpdateMobileNo.MVP
 
         }
 
+        public string OnVerfiyCellularCode(string mobileNo)
+        {
+            try
+            {
+                if (TextUtils.IsEmpty(mobileNo) || mobileNo.Length < 3 || !mobileNo.Contains("+60"))
+                {
+                    mobileNo = "+60";
+                    this.mView.ClearErrors();
+                    //this.mView.DisableSubmitButton();
+                }
+                else if (mobileNo == "+60")
+                {
+                    this.mView.ClearErrors();
+                    //this.mView.DisableSubmitButton();
+                }
+                else if (mobileNo.Contains("+60") && mobileNo.IndexOf("+60") > 0)
+                {
+                    mobileNo = mobileNo.Substring(mobileNo.IndexOf("+60"));
+                    if (mobileNo == "+60")
+                    {
+                        this.mView.ClearErrors();
+                        //this.mView.DisableSubmitButton();
+                    }
+                    else if (!Utility.IsValidMobileNumber(mobileNo))
+                    {
+                        this.mView.ShowInvalidMobileNoError();
+                        //this.mView.DisableSubmitButton();
+                    }
+                    else
+                    {
+                        this.mView.ClearErrors();
+                        //this.mView.EnableSubmitButton();
+                    }
+                }
+                else
+                {
+                    if (!Utility.IsValidMobileNumber(mobileNo))
+                    {
+                        this.mView.ShowInvalidMobileNoError();
+                        //this.mView.DisableSubmitButton();
+                    }
+                    else
+                    {
+                        this.mView.ClearErrors();
+                        //this.mView.EnableSubmitButton();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            return mobileNo;
+        }
+
         public void OnVerifyMobile(string mobileNo, bool isForceUpdate)
         {
             try

@@ -10,22 +10,31 @@ namespace myTNB_Android.Src.myTNBMenu.Charts.Formatter
     public class SMChartsMonthFormatter : Java.Lang.Object, IAxisValueFormatter
     {
 
-        private List<SMUsageHistoryData.ByMonthData> byMonthData;
+        private SMUsageHistoryData.ByMonthData byMonthData;
         private BarChart chart;
-        private int index;
 
-        public SMChartsMonthFormatter(List<SMUsageHistoryData.ByMonthData> byMonthData, BarChart chart, int i)
+        public SMChartsMonthFormatter(SMUsageHistoryData.ByMonthData byMonthData, BarChart chart)
         {
             this.byMonthData = byMonthData;
             this.chart = chart;
-            this.index = i;
         }
 
         public string GetFormattedValue(float value, AxisBase axis)
         {
             int invertedIndex = (int)value;
+            if (invertedIndex >= byMonthData.Months.Count)
+            {
+                invertedIndex = byMonthData.Months.Count - 1;
+            }
 
-            return byMonthData[index].Months[Math.Abs(invertedIndex)].Month;
+            if (invertedIndex == -1)
+            {
+                return "";
+            }
+            else
+            {
+                return byMonthData.Months[Math.Abs(invertedIndex)].Month;
+            }
         }
     }
 }

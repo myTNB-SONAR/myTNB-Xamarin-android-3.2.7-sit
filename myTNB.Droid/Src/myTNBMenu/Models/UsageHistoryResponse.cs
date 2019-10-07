@@ -30,6 +30,14 @@ namespace myTNB_Android.Src.myTNBMenu.Models
             [AliasAs("RefreshBtnText")]
             public string RefreshBtnText { get; set; }
 
+            [JsonProperty(PropertyName = "IsMonthlyTariffBlocksDisabled")]
+            [AliasAs("IsMonthlyTariffBlocksDisabled")]
+            public bool IsMonthlyTariffBlocksDisabled { get; set; }
+
+            [JsonProperty(PropertyName = "IsMonthlyTariffBlocksUnavailable")]
+            [AliasAs("IsMonthlyTariffBlocksUnavailable")]
+            public bool IsMonthlyTariffBlocksUnavailable { get; set; }
+
             [JsonProperty(PropertyName = "ErrorMessage")]
             [AliasAs("ErrorMessage")]
             public string ErrorMessage { get; set; }

@@ -37,7 +37,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         KWH,KVARH,KW
     }
 
-    [Activity(Label = "@string/meter_reading_title", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
+    [Activity(Label = "@string/meter_reading_title", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.SubmitMeterReadingInput")]
     public class SubmitMeterReadingActivity : BaseToolbarAppCompatActivity, SubmitMeterReadingContract.IView
     {
         private METER_READING_TYPE meterType;
@@ -66,6 +66,30 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         [BindView(Resource.Id.meterReadingContent)]
         LinearLayout meterReadingContent;
+
+        [BindView(Resource.Id.previous_reading_1)]
+        TextView prevReading1;
+
+        [BindView(Resource.Id.previous_reading_2)]
+        TextView prevReading2;
+
+        [BindView(Resource.Id.previous_reading_3)]
+        TextView prevReading3;
+
+        [BindView(Resource.Id.previous_reading_4)]
+        TextView prevReading4;
+
+        [BindView(Resource.Id.previous_reading_5)]
+        TextView prevReading5;
+
+        [BindView(Resource.Id.previous_reading_6)]
+        TextView prevReading6;
+
+        [BindView(Resource.Id.previous_reading_7)]
+        TextView prevReading7;
+
+        [BindView(Resource.Id.previous_reading_8)]
+        TextView prevReading8;
 
         public readonly static int SSMR_SUBMIT_METER_ACTIVITY_CODE = 8796;
         public readonly static int SSMR_SUBMIT_METER_OCR_SUBMIT_CODE = 8797;
@@ -132,10 +156,10 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         private void InitializePage()
         {
-			meterReadingTitle.TextFormatted = GetFormattedText(GetString(Resource.String.ssmr_submit_meter_reading_message));
 			meterReadingNote.TextFormatted = GetFormattedText(GetString(Resource.String.ssmr_submit_meter_reading_note));
 
-			TextViewUtils.SetMuseoSans300Typeface(meterReadingTitle,meterReadingNote);
+			TextViewUtils.SetMuseoSans300Typeface(meterReadingTitle,meterReadingNote, prevReading1, prevReading2, prevReading3, prevReading4, prevReading5,
+                prevReading6, prevReading7, prevReading8);
             TextViewUtils.SetMuseoSans500Typeface(meterReadingError, btnTakePhoto, btnSubmitReading);
 
             EnableSubmitButton(false);
@@ -223,6 +247,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     meterReadingModelList = this.mPresenter.GetMeterReadingModelList(ssmrActivityInfoResponse.Response.Data.SMRMROValidateRegisterDetails);
                 }
             }
+            meterReadingTitle.TextFormatted = (meterReadingModelList.Count == 1) ? GetFormattedText(GetString(Resource.String.ssmr_submit_meter_reading_message_single))
+                : GetFormattedText(GetString(Resource.String.ssmr_submit_meter_reading_message_multiple));
             SetMeterReadingCards();
             OnGenerateTooltipData();
             OnUpdateSubmitMeterButton();
@@ -511,7 +537,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 intent.PutExtra("SUBMIT_RESULT", JsonConvert.SerializeObject(response));
             }
-            StartActivityForResult(intent, SSMR_SUBMIT_METER_ACTIVITY_CODE);
+            StartActivity(intent);
+            Finish();
         }
 
         public void OnRequestFailed(SMRSubmitResponseData response)
@@ -733,7 +760,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Submit Meter Reading Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Input Meter Reading");
             }
             catch (Exception e)
             {
@@ -758,7 +785,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 if (meterReadingInputLayoutList.Count > 0)
                 {
                     MeterReadingInputLayout inputLayout = meterReadingInputLayoutList.Find(input => { return input.GetMeterId().ToUpper() == model.meterReadingUnit.ToUpper(); });
-                    if (inputLayout != null && inputLayout.HasReadingInput())
+                    if (inputLayout != null)
                     {
                         model.isValidated = inputLayout.HasReadingInput();
                     }

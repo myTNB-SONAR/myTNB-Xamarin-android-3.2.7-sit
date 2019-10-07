@@ -163,7 +163,14 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
         [Preserve]
         private void TxtMobileNo_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
-            this.userActionsListener.OnVerifyMobile(e.Text.ToString(), forceUpdatePhoneNo);
+
+
+            string checkedPhoneNumber = this.userActionsListener.OnVerfiyCellularCode(e.Text.ToString());
+            if (checkedPhoneNumber != txtMobileNo.Text)
+            {
+                txtMobileNo.Text = checkedPhoneNumber;
+            }
+            this.userActionsListener.OnVerifyMobile(txtMobileNo.Text.ToString(), forceUpdatePhoneNo);
         }
 
         [OnClick(Resource.Id.btnSave)]

@@ -380,7 +380,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             try
             {
                 base.OnResume();
-                FirebaseAnalyticsUtils.SetScreenName(this, "View Receipt PDF Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "View Payment Receipt");
             }
             catch (Exception e)
             {

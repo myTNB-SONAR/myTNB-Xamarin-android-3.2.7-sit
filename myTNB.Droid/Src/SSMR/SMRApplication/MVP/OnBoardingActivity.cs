@@ -186,7 +186,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Apply SMR Onboarding Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Apply SMR Onboarding");
             }
             catch (Exception e)
             {

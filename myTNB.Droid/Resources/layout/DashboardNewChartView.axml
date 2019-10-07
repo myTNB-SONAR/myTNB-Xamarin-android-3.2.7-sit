@@ -8,15 +8,10 @@
     android:theme="@style/Theme.Dashboard"
     android:background="@color/greyBackground"
     android:id="@+id/rootView">
-    <LinearLayout
-        android:id="@+id/subMainView"
-        android:layout_height="match_parent"
-        android:layout_width="match_parent"
-        android:orientation="vertical">
-        <myTNB_Android.Src.myTNBMenu.Listener.NMREDashboardScrollView
+    <myTNB_Android.Src.myTNBMenu.Listener.NMRESMDashboardScrollView
 		    android:id="@+id/scroll_view"
 		    android:layout_width="match_parent"
-		    android:overScrollMode="never"
+		    android:overScrollMode="always"
 		    android:layout_height="match_parent"
 		    android:minWidth="25px"
 		    android:minHeight="25px">
@@ -34,6 +29,56 @@
 					    android:layout_height="match_parent"
 					    android:orientation="vertical"
 					    android:visibility="visible">
+				        <LinearLayout
+					        android:id="@+id/layout_new_account"
+					        android:orientation="vertical"
+					        android:layout_width="match_parent"
+					        android:layout_height="match_parent"
+					        android:gravity="center"
+                            android:layout_gravity="center"
+					        android:visibility="gone">
+					        <TextView
+						        android:layout_height="wrap_content"
+						        android:layout_width="match_parent"
+						        android:textSize="11dp"
+						        android:lineSpacingExtra="2dp"
+						        android:textStyle="bold"
+                                android:paddingLeft="32dp"
+                                android:paddingRight="32dp"
+                                android:paddingBottom="12dp"
+						        android:layout_gravity="center"
+                                android:gravity="center"
+						        android:textColor="@color/white"
+						        android:text=""
+						        android:id="@+id/txtAddressNewAccount" />
+					        <LinearLayout
+						        android:orientation="vertical"
+                                android:gravity="center"
+                                android:layout_gravity="center"
+						        android:layout_width="match_parent"
+						        android:layout_height="match_parent">
+                                <ImageView
+                                    android:layout_width="120dp"
+                                    android:layout_height="120dp"
+                                    android:layout_marginTop="80dp"
+                                    android:src="@drawable/usage_view_empty"
+                                    android:id="@+id/new_account_image"
+                                    android:layout_gravity="center"/>
+                                <TextView
+                                    android:id="@+id/new_account_content"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="24dp"
+                                    android:layout_marginLeft="32dp"
+                                    android:layout_marginRight="32dp"
+                                    android:lineSpacingExtra="4dp"
+                                    android:textSize="15dp"
+                                    android:text="@string/new_account_view"
+                                    android:textColor="@color/white"
+                                    android:layout_gravity="center"/>
+					        </LinearLayout>
+				        </LinearLayout>
 				        <LinearLayout
 					        android:id="@+id/layout_api_refresh"
 					        android:orientation="vertical"
@@ -121,7 +166,7 @@
                                 <TextView
 						            android:layout_height="wrap_content"
 						            android:layout_width="match_parent"
-						            android:textSize="14dp"
+						            android:textSize="13dp"
 						            android:layout_gravity="center"
                                     android:gravity="center"
 						            android:textColor="@color/shimmer_color_second"
@@ -138,7 +183,7 @@
                                 <TextView
 						            android:layout_height="wrap_content"
 						            android:layout_width="match_parent"
-						            android:textSize="14dp"
+						            android:textSize="13dp"
 						            android:layout_gravity="center"
                                     android:gravity="center"
 						            android:textColor="@color/shimmer_color_second"
@@ -148,12 +193,12 @@
 					    <TextView
 						    android:layout_height="wrap_content"
 						    android:layout_width="match_parent"
-						    android:textSize="12dp"
+						    android:textSize="11dp"
 						    android:lineSpacingExtra="2dp"
 						    android:textStyle="bold"
                             android:paddingLeft="32dp"
                             android:paddingRight="32dp"
-                            android:paddingBottom="18dp"
+                            android:paddingBottom="12dp"
 						    android:layout_gravity="center"
                             android:gravity="center"
 						    android:textColor="@color/white"
@@ -167,7 +212,64 @@
 						    android:layout_marginLeft="16dp"
 						    android:layout_marginRight="16dp"
 						    android:background="#4cffffff"
-						    android:visibility="visible"/>
+						    android:visibility="gone"/>
+                        <RelativeLayout
+                            android:id="@+id/layoutSegmentGroup"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="12dp"
+                            android:layout_marginLeft="16dp"
+						    android:layout_marginRight="16dp"
+                            android:visibility="visible">
+                            <RelativeLayout
+                                android:id="@+id/layoutSubSegmentGroup"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center">
+                                <info.hoang8f.android.segmented.SegmentedGroup
+                                    android:id="@+id/segmented2"
+                                    android:layout_width="132dp"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    segmentedgroup:sc_checked_text_color="@color/dark_periwinkle"
+                                    segmentedgroup:sc_corner_radius="100dp"
+                                    segmentedgroup:sc_tint_color="@color/white">
+                                    <RadioButton
+                                        android:id="@+id/btnToggleDay"
+                                        style="@style/RadioButton"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:text="@string/dashboard_chartview_day"
+                                        android:textSize="13dp" />
+                                    <RadioButton
+                                        android:id="@+id/btnToggleMonth"
+                                        style="@style/RadioButton"
+                                        android:layout_width="0dp"
+                                        android:layout_height="wrap_content"
+                                        android:layout_weight="1"
+                                        android:checked="true"
+                                        android:text="@string/dashboard_chartview_month"
+                                        android:textColor="@color/dark_periwinkle"
+                                        android:textSize="13dp" />
+                                </info.hoang8f.android.segmented.SegmentedGroup>
+                            </RelativeLayout>
+                            <LinearLayout
+                            android:id="@+id/smGraphZoomToggleLayout"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:gravity="right"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerInParent="true"
+                            android:clickable="true">
+                                <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:layout_gravity="center"
+                                android:src="@drawable/dashboard_zoom_tooltip"
+                                android:id="@+id/smGraphZoomToggle"/>
+                            </LinearLayout>
+                        </RelativeLayout>
                         <LinearLayout
                             android:id="@+id/energyDisconnectionButton"
                             android:layout_width="match_parent"
@@ -175,6 +277,7 @@
                             android:background="@drawable/rectangle_yellow_button_bg"
                             android:paddingLeft="6dp"
                             android:paddingRight="6dp"
+                            android:layout_marginTop="2dp"
                             android:layout_marginLeft="16dp"
                             android:layout_marginRight="16dp"
                             android:layout_marginBottom="16dp"
@@ -215,7 +318,7 @@
                                 <TextView
 						        android:layout_height="wrap_content"
 						        android:layout_width="match_parent"
-						        android:textSize="14dp"
+						        android:textSize="13dp"
                                 android:layout_gravity="center"
 						        android:gravity="center"
 						        android:textColor="@color/shimmer_color_second"
@@ -225,12 +328,13 @@
 					    <TextView
 						    android:layout_height="wrap_content"
 						    android:layout_width="wrap_content"
-						    android:textSize="14dp"
+						    android:textSize="13dp"
 						    android:textStyle="bold"
                             android:layout_gravity="center"
 						    android:gravity="center"
 						    android:textColor="@color/sunGlow"
 						    android:text="@string/dashboard_chartview_range_example"
+                            android:visibility="visible"
 						    android:id="@+id/txtRange" />
                         <RelativeLayout
                             android:layout_width="match_parent"
@@ -240,8 +344,7 @@
 					            android:layout_width="match_parent"
 					            android:layout_height="190dp"
 					            android:orientation="vertical"
-                                android:visibility="gone"
-                                android:layout_marginBottom="5dp">
+                                android:visibility="gone">
                                 <com.facebook.shimmer.ShimmerFrameLayout
                                     android:id="@+id/shimmrtGraph"
                                     android:layout_width="match_parent"
@@ -258,13 +361,64 @@
                                     </LinearLayout>
                                 </com.facebook.shimmer.ShimmerFrameLayout>
                             </LinearLayout>
+                            <LinearLayout
+					            android:id="@+id/mdmsDayViewDownLayout"
+					            android:layout_width="match_parent"
+					            android:layout_height="234.5dp"
+					            android:orientation="vertical"
+                                android:gravity="center"
+                                android:visibility="gone">
+                                <ImageView
+                                    android:layout_width="65dp"
+                                    android:layout_height="72dp"
+                                    android:src="@drawable/mdms_down_dayview"
+                                    android:id="@+id/imgMdmsDayViewDown"
+                                    android:layout_gravity="center"/>
+                                <TextView
+                                    android:id="@+id/txtMdmsDayViewDown"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginLeft="32dp"
+                                    android:layout_marginRight="32dp"
+                                    android:lineSpacingExtra="3dp"
+                                    android:textSize="15dp"
+                                    android:textColor="@color/white"
+                                    android:text="@string/dayview_mdms_down"
+                                    android:layout_gravity="center"/>
+                            </LinearLayout>
 					        <com.github.mikephil.charting.charts.BarChart
 						        android:id="@+id/bar_chart"
 						        android:layout_width="match_parent"
 						        android:layout_height="220dp"
-                                android:layout_marginLeft="4dp"
-                                android:layout_marginRight="4dp"
 						        android:visibility="visible" />
+                            <LinearLayout
+					            android:id="@+id/smDayViewZoomInIndicatorLayout"
+                                android:layout_below="@id/bar_chart"
+					            android:layout_width="match_parent"
+					            android:layout_height="wrap_content"
+					            android:orientation="vertical"
+                                android:visibility="visible">
+                                <TextView
+                                    android:id="@+id/txtDayViewZoomInIndicator"
+                                    android:gravity="center"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="3dp"
+                                    android:lineSpacingExtra="3dp"
+                                    android:textSize="11dp"
+                                    android:textColor="@color/white"
+                                    android:text="Aug"
+                                    android:layout_gravity="center"/>
+                                <ImageView
+                                    android:layout_width="12dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="3dp"
+                                    android:src="@drawable/dashboard_indicator"
+                                    android:id="@+id/imgMdmsDayViewDown"
+                                    android:layout_gravity="center"/>
+                            </LinearLayout>
                             <android.support.v7.widget.RecyclerView
                                 android:id="@+id/tariffBlockLegendRecyclerView"
                                 android:visibility="gone"
@@ -438,9 +592,9 @@
                                 </com.facebook.shimmer.ShimmerFrameLayout>
                                 <ImageView
                                     android:id="@+id/re_img"
-                                    android:src="@drawable/ic_display_r_eleaf"
-                                    android:layout_width="28dp"
-                                    android:layout_height="28dp"
+                                    android:src="@drawable/re_meter_dashboard"
+                                    android:layout_width="32dp"
+                                    android:layout_height="32dp"
                                     android:layout_marginLeft="2dp"
                                     android:layout_marginRight="12dp"
                                     android:layout_gravity="center"
@@ -527,11 +681,11 @@
                                         android:layout_alignParentEnd="true"
                                         android:layout_alignParentRight="true"
                                         android:layout_alignParentTop="true"
-                                        android:layout_marginTop="4dp"
+                                        android:layout_marginTop="7dp"
                                         android:layout_marginRight="1dp"
                                         android:text="0.00"
                                         android:textColor="@color/charcoalGrey"
-                                        android:textSize="23dp" />
+                                        android:textSize="17dp" />
                                     <TextView
                                         android:id="@+id/reTotalPayableCurrency"
                                         android:layout_width="wrap_content"
@@ -611,7 +765,7 @@
                                         android:paddingBottom="3dp"
                                         android:paddingTop="5dp"
                                         android:layout_marginRight="7dp"
-                                        android:src="@drawable/smr_48_x_48"
+                                        android:src="@drawable/smr_meter_dashboard"
                                         android:layout_centerVertical="true"
                                         android:scaleType="fitCenter"
                                         android:visibility="visible" />
@@ -626,13 +780,15 @@
                                         android:layout_height="wrap_content"
                                         android:textColor="@color/charcoalGrey"
                                         android:text=""
-                                        android:textSize="13dp"/>
+                                        android:textSize="13dp"
+                                        android:lineSpacingExtra="2dp"/>
                                         <TextView
                                         android:id="@+id/btnTxtSsmrViewHistory"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:textColor="@color/powerBlue"
                                         android:text="View my reading history"
+                                        android:layout_marginTop="2dp"
                                         android:clickable="true"
                                         android:visibility="gone"
                                         android:textSize="13dp"/>
@@ -650,6 +806,531 @@
                                     android:layout_weight="1"
                                     android:text="@string/ssmr_submit_meter"
                                     android:textAllCaps="false" />
+                            </LinearLayout>
+                        </android.support.v7.widget.CardView>
+                    </LinearLayout>
+                        <LinearLayout
+                        android:id="@+id/smStatisticContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginLeft="11dp"
+						android:layout_marginRight="11dp"
+                        android:layout_marginBottom="16dp"
+                        android:visibility="gone">
+                        <android.support.v7.widget.CardView
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            segmentedgroup:cardCornerRadius="4dp"
+                            segmentedgroup:cardBackgroundColor="@color/white"
+                            segmentedgroup:cardUseCompatPadding="true"
+                            segmentedgroup:cardElevation="4dp"
+                            android:id="@+id/sm_statistic_status_card">
+                            <LinearLayout 
+                                android:id="@+id/sm_statistic_status"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+                                <LinearLayout
+                                    android:id="@+id/sm_statistic_bill"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_marginTop="16dp"
+                                    android:layout_marginLeft="16dp"
+                                    android:layout_marginRight="16dp"
+                                    android:layout_marginBottom="8dp">
+                                <ImageView
+                                    android:id="@+id/sm_statistic_bill_img"
+                                    android:src="@drawable/calendar"
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
+                                    android:layout_marginRight="12dp"
+                                    android:layout_gravity="center"
+                                    android:visibility="visible"
+                                    android:scaleType="fitCenter" />
+                                <com.facebook.shimmer.ShimmerFrameLayout
+                                    android:id="@+id/shimmerSMStatisticBillImg"
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
+                                    android:layout_marginRight="12dp"
+                                    android:layout_gravity="center"
+                                    android:visibility="gone">
+                                    <ImageView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:scaleType="fitCenter"
+                                        android:src="@drawable/round_circle"/>
+                                </com.facebook.shimmer.ShimmerFrameLayout>
+                                <RelativeLayout
+                                    android:id="@+id/shimmerSMStatisticBillLayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/white"
+                                    android:visibility="gone">
+                                    <com.facebook.shimmer.ShimmerFrameLayout
+                                        android:id="@+id/shimmrtSMStatisticBillTitle"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_alignParentTop="true">
+                                        <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/shimmer_color"
+                                        android:background="@color/shimmer_color"
+                                        android:text="                            "
+                                        android:textSize="13dp" />
+                                    </com.facebook.shimmer.ShimmerFrameLayout>
+                                    <com.facebook.shimmer.ShimmerFrameLayout
+                                        android:id="@+id/shimmrtSMStatisticBill"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_alignParentTop="true"
+                                        android:layout_marginTop="4dp"
+                                        android:layout_marginRight="1dp">
+                                        <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_alignParentTop="true"
+                                        android:text="@string/dashboard_need_pay"
+                                        android:textColor="@color/shimmer_color"
+                                        android:background="@color/shimmer_color"
+                                        android:textSize="18dp" />
+                                    </com.facebook.shimmer.ShimmerFrameLayout>
+                                    <com.facebook.shimmer.ShimmerFrameLayout
+                                        android:id="@+id/shimmrtSMStatisticBillDueDate"
+                                        android:layout_below="@+id/shimmrtSMStatisticBillTitle"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_marginTop="5dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content">
+                                        <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_alignParentTop="true"
+                                        android:text="                                    "
+                                        android:textColor="@color/shimmer_color"
+                                        android:background="@color/shimmer_color"
+                                        android:textSize="8dp" />
+                                    </com.facebook.shimmer.ShimmerFrameLayout>
+                                </RelativeLayout>
+                                <RelativeLayout
+                                    android:id="@+id/smStatisticBillLayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/white"
+                                    android:visibility="visible">
+                                    <TextView
+                                        android:id="@+id/smStatisticBillTitle"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_alignParentTop="true"
+                                        android:text="My bill amount so far"
+                                        android:textColor="@color/charcoalGrey"
+                                        android:textSize="13dp" />
+                                    <TextView
+                                        android:id="@+id/smStatisticBill"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_alignParentTop="true"
+                                        android:layout_marginTop="7dp"
+                                        android:layout_marginRight="1dp"
+                                        android:visibility="visible"
+                                        android:text="0.00"
+                                        android:textColor="@color/charcoalGrey"
+                                        android:textSize="17dp" />
+                                    <TextView
+                                        android:id="@+id/smStatisticBillCurrency"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignBaseline="@+id/smStatisticBill"
+                                        android:layout_alignBottom="@+id/smStatisticBill"
+                                        android:layout_toLeftOf="@+id/smStatisticBill"
+                                        android:layout_toStartOf="@+id/smStatisticBill"
+                                        android:visibility="visible"
+                                        android:text="RM"
+                                        android:layout_marginRight="7dp"
+                                        android:textColor="@color/charcoalGrey"
+                                        android:textSize="11dp" />
+                                    <TextView
+                                        android:id="@+id/smStatisticBillKwhUnit"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_alignParentTop="true"
+                                        android:visibility="gone"
+                                        android:text="kWh"
+                                        android:layout_marginTop="13dp"
+                                        android:layout_marginRight="1dp"
+                                        android:textColor="@color/charcoalGrey"
+                                        android:textSize="11dp" />
+                                    <TextView
+                                        android:id="@+id/smStatisticBillKwh"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginRight="5dp"
+                                        android:layout_alignBaseline="@+id/smStatisticBillKwhUnit"
+                                        android:layout_alignBottom="@+id/smStatisticBillKwhUnit"
+                                        android:layout_toLeftOf="@+id/smStatisticBillKwhUnit"
+                                        android:layout_toStartOf="@+id/smStatisticBillKwhUnit"
+                                        android:visibility="gone"
+                                        android:text="0"
+                                        android:textColor="@color/charcoalGrey"
+                                        android:textSize="17dp" />
+                                    <TextView
+                                        android:id="@+id/smStatisticBillSubTitle"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_below="@+id/smStatisticBillTitle"
+                                        android:textSize="13dp"
+                                        android:layout_marginTop="2dp"
+                                        android:textColor="@color/new_grey"
+                                        android:text="for - " />
+                                </RelativeLayout>
+                                </LinearLayout>
+					            <View
+						            android:id="@+id/smStatisticDivider"
+						            android:layout_height="1dp"
+						            android:layout_width="match_parent"
+                                    android:layout_marginTop="8dp"
+						            android:layout_marginBottom="8dp"
+						            android:layout_marginLeft="16dp"
+						            android:layout_marginRight="16dp"
+						            android:background="@color/platinumGrey"
+						            android:visibility="visible"/>
+                                <LinearLayout
+                                    android:id="@+id/sm_statistic_predict"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:visibility="visible"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_marginLeft="16dp"
+                                    android:layout_marginRight="16dp"
+                                    android:layout_marginBottom="16dp">
+                                <ImageView
+                                    android:id="@+id/sm_statistic_predict_img"
+                                    android:src="@drawable/predict"
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
+                                    android:layout_marginRight="12dp"
+                                    android:layout_gravity="center"
+                                    android:visibility="visible"
+                                    android:scaleType="fitCenter" />
+                                <com.facebook.shimmer.ShimmerFrameLayout
+                                    android:id="@+id/shimmerSMStatisticPredictImg"
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
+                                    android:layout_marginRight="12dp"
+                                    android:layout_gravity="center"
+                                    android:visibility="gone">
+                                    <ImageView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:scaleType="fitCenter"
+                                        android:src="@drawable/round_circle"/>
+                                </com.facebook.shimmer.ShimmerFrameLayout>
+                                <RelativeLayout
+                                    android:id="@+id/shimmerSMStatisticPredictLayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/white"
+                                    android:visibility="gone">
+                                    <com.facebook.shimmer.ShimmerFrameLayout
+                                        android:id="@+id/shimmrtSMStatisticPredictTitle"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_alignParentTop="true">
+                                        <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/shimmer_color"
+                                        android:background="@color/shimmer_color"
+                                        android:text="                            "
+                                        android:textSize="13dp" />
+                                    </com.facebook.shimmer.ShimmerFrameLayout>
+                                    <com.facebook.shimmer.ShimmerFrameLayout
+                                        android:id="@+id/shimmrtSMStatisticPredict"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_alignParentTop="true"
+                                        android:layout_marginTop="4dp"
+                                        android:layout_marginRight="1dp">
+                                        <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_alignParentTop="true"
+                                        android:text="@string/dashboard_need_pay"
+                                        android:textColor="@color/shimmer_color"
+                                        android:background="@color/shimmer_color"
+                                        android:textSize="18dp" />
+                                    </com.facebook.shimmer.ShimmerFrameLayout>
+                                    <com.facebook.shimmer.ShimmerFrameLayout
+                                        android:id="@+id/shimmrtSMStatisticPredictDueDate"
+                                        android:layout_below="@+id/shimmrtSMStatisticPredictTitle"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_marginTop="5dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content">
+                                        <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_alignParentTop="true"
+                                        android:text="                                    "
+                                        android:textColor="@color/shimmer_color"
+                                        android:background="@color/shimmer_color"
+                                        android:textSize="8dp" />
+                                    </com.facebook.shimmer.ShimmerFrameLayout>
+                                </RelativeLayout>
+                                <RelativeLayout
+                                    android:id="@+id/smStatisticPredictLayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/white"
+                                    android:visibility="visible">
+                                    <TextView
+                                        android:id="@+id/smStatisticPredictTitle"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_alignParentTop="true"
+                                        android:text="My bill may reach"
+                                        android:textColor="@color/charcoalGrey"
+                                        android:textSize="13dp" />
+                                    <TextView
+                                        android:id="@+id/smStatisticPredict"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_alignParentTop="true"
+                                        android:layout_marginTop="7dp"
+                                        android:layout_marginRight="1dp"
+                                        android:text="0.00"
+                                        android:textColor="@color/charcoalGrey"
+                                        android:textSize="17dp" />
+                                    <TextView
+                                        android:id="@+id/smStatisticPredictCurrency"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignBaseline="@+id/smStatisticPredict"
+                                        android:layout_alignBottom="@+id/smStatisticPredict"
+                                        android:layout_toLeftOf="@+id/smStatisticPredict"
+                                        android:layout_toStartOf="@+id/smStatisticPredict"
+                                        android:text="RM"
+                                        android:layout_marginRight="7dp"
+                                        android:textColor="@color/charcoalGrey"
+                                        android:textSize="11dp" />
+                                    <TextView
+                                        android:id="@+id/smStatisticPredictSubTitle"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_below="@+id/smStatisticPredictTitle"
+                                        android:textSize="13dp"
+                                        android:layout_marginTop="2dp"
+                                        android:textColor="@color/new_grey"
+                                        android:text="for - " />
+                                </RelativeLayout>
+                                </LinearLayout>
+                                <LinearLayout
+                                    android:id="@+id/sm_statistic_trend"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:orientation="horizontal"
+                                    android:layout_marginTop="8dp"
+                                    android:layout_marginLeft="16dp"
+                                    android:layout_marginRight="16dp"
+                                    android:visibility="gone"
+                                    android:layout_marginBottom="16dp">
+                                <ImageView
+                                    android:id="@+id/sm_statistic_trend_img"
+                                    android:src="@drawable/trend"
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
+                                    android:layout_marginRight="12dp"
+                                    android:layout_gravity="center"
+                                    android:visibility="visible"
+                                    android:scaleType="fitCenter" />
+                                <com.facebook.shimmer.ShimmerFrameLayout
+                                    android:id="@+id/shimmerSMStatisticTrendImg"
+                                    android:layout_width="28dp"
+                                    android:layout_height="28dp"
+                                    android:layout_marginRight="12dp"
+                                    android:layout_gravity="center"
+                                    android:visibility="gone">
+                                    <ImageView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:scaleType="fitCenter"
+                                        android:src="@drawable/round_circle"/>
+                                </com.facebook.shimmer.ShimmerFrameLayout>
+                                <RelativeLayout
+                                    android:id="@+id/shimmerSMStatisticTrendLayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/white"
+                                    android:visibility="gone">
+                                    <com.facebook.shimmer.ShimmerFrameLayout
+                                        android:id="@+id/shimmrtSMStatisticTrendTitle"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_alignParentTop="true">
+                                        <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:textColor="@color/shimmer_color"
+                                        android:background="@color/shimmer_color"
+                                        android:text="                            "
+                                        android:textSize="13dp" />
+                                    </com.facebook.shimmer.ShimmerFrameLayout>
+                                    <com.facebook.shimmer.ShimmerFrameLayout
+                                        android:id="@+id/shimmrtSMStatisticTrend"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_alignParentTop="true"
+                                        android:layout_marginTop="4dp"
+                                        android:layout_marginRight="1dp">
+                                        <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_alignParentTop="true"
+                                        android:text="@string/dashboard_need_pay"
+                                        android:textColor="@color/shimmer_color"
+                                        android:background="@color/shimmer_color"
+                                        android:textSize="18dp" />
+                                    </com.facebook.shimmer.ShimmerFrameLayout>
+                                    <com.facebook.shimmer.ShimmerFrameLayout
+                                        android:id="@+id/shimmrtSMStatisticTrendDueDate"
+                                        android:layout_below="@+id/shimmrtSMStatisticTrendTitle"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_marginTop="5dp"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content">
+                                        <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_alignParentTop="true"
+                                        android:text="                                    "
+                                        android:textColor="@color/shimmer_color"
+                                        android:background="@color/shimmer_color"
+                                        android:textSize="8dp" />
+                                    </com.facebook.shimmer.ShimmerFrameLayout>
+                                </RelativeLayout>
+                                <RelativeLayout
+                                    android:id="@+id/smStatisticTrendLayout"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@color/white"
+                                    android:visibility="visible">
+                                    <TextView
+                                        android:id="@+id/smStatisticTrendTitle"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_alignParentTop="true"
+                                        android:text="My current usage trend is"
+                                        android:textColor="@color/charcoalGrey"
+                                        android:textSize="13dp" />
+                                    <TextView
+                                        android:id="@+id/smStatisticTrend"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentEnd="true"
+                                        android:layout_alignParentRight="true"
+                                        android:layout_alignParentTop="true"
+                                        android:layout_marginTop="7dp"
+                                        android:layout_marginRight="1dp"
+                                        android:text="0%"
+                                        android:textColor="@color/charcoalGrey"
+                                        android:textSize="17dp" />
+                                    <TextView
+                                        android:id="@+id/smStatisticTrendSubTitle"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentStart="true"
+                                        android:layout_below="@+id/smStatisticTrendTitle"
+                                        android:textSize="13dp"
+                                        android:layout_marginTop="2dp"
+                                        android:textColor="@color/new_grey"
+                                        android:text="the same as the last bill period" />
+                                </RelativeLayout>
+                                </LinearLayout>
+                                <com.facebook.shimmer.ShimmerFrameLayout
+                                    android:id="@+id/shimmrtSmStatisticTooltip"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    android:gravity="center"
+                                    android:visibility="gone"
+                                    android:layout_marginLeft="16dp"
+                                    android:layout_marginRight="16dp"
+                                    android:layout_marginBottom="16dp">
+                                    <TextView
+						                android:layout_height="wrap_content"
+						                android:layout_width="match_parent"
+						                android:textSize="14dp"
+						                android:layout_gravity="center"
+                                        android:gravity="center"
+						                android:textColor="@color/shimmer_color"
+                                        android:background="@color/shimmer_color" />
+                                </com.facebook.shimmer.ShimmerFrameLayout>
+                                <LinearLayout
+                                    android:id="@+id/smStatisticTooltip"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
+                                    android:paddingLeft="6dp"
+                                    android:paddingRight="6dp"
+                                    android:layout_marginLeft="16dp"
+                                    android:layout_marginRight="16dp"
+                                    android:layout_marginBottom="16dp"
+                                    android:orientation="horizontal"
+                                    android:visibility="visible"
+                                    android:clickable="true">
+                                    <ImageView
+                                        android:layout_width="16dp"
+                                        android:layout_height="16dp"
+                                        android:layout_gravity="center"
+                                        android:src="@drawable/info_blue"
+                                        android:layout_marginRight="8dp"
+                                        android:id="@+id/smStatisticTooltipImg"/>
+                                        <TextView
+                                            android:id="@+id/txtSmStatisticTooltip"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:textColor="@color/powerBlue"
+                                            android:textSize="13dp"
+                                            android:layout_gravity="right|center_vertical"
+                                            android:text="What are these?"/>
+                                </LinearLayout>
                             </LinearLayout>
                         </android.support.v7.widget.CardView>
                     </LinearLayout>
@@ -678,15 +1359,15 @@
                                 android:scrollIndicators="none" />
                         </LinearLayout>
                         <LinearLayout
+                            android:id="@+id/virtualHeight"
 					        android:layout_width="match_parent"
-					        android:layout_height="100dp"
+					        android:layout_height="50dp"
 					        android:orientation="vertical">
                         </LinearLayout>
 				    </LinearLayout>
 			    </FrameLayout>
 		    </LinearLayout>
-	    </myTNB_Android.Src.myTNBMenu.Listener.NMREDashboardScrollView>
-    </LinearLayout>
+	    </myTNB_Android.Src.myTNBMenu.Listener.NMRESMDashboardScrollView>
     <LinearLayout
         android:id="@+id/bottom_sheet"
         android:layout_height="wrap_content"
@@ -696,6 +1377,13 @@
         segmentedgroup:layout_behavior="@string/bottom_sheet_behavior"
         segmentedgroup:behavior_hideable="true"
         segmentedgroup:behavior_peekHeight="100dp">
+        <ImageView
+            android:id="@+id/shadow_layout"
+            android:layout_width="match_parent"
+            android:layout_height="33dp"
+            android:visibility="visible"
+            android:scaleType="fitXY"
+            android:background="@drawable/scroll_indicator" />
         <LinearLayout
             android:layout_height="wrap_content"
             android:layout_width="match_parent"

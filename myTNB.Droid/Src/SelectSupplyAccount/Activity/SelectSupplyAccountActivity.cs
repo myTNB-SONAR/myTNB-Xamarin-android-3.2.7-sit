@@ -153,7 +153,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Select Electricity Account Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Select Electricity Account");
             }
             catch (Exception e)
             {

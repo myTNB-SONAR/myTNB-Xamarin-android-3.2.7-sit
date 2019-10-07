@@ -293,7 +293,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.BillsMenu
                     activity.ShowAccountName();
                     activity.ShowHideActionBar(true);
                 }
-                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Bills Screen");
+                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Bills");
             }
             catch (ClassCastException e)
             {

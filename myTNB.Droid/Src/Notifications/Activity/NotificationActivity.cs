@@ -129,7 +129,7 @@ namespace myTNB_Android.Src.Notifications.Activity
                     .Progress(true, 0)
                     .Build();
 
-                TextViewUtils.SetMuseoSans500Typeface(txtNotificationName);
+                TextViewUtils.SetMuseoSans500Typeface(txtNotificationName, selectAllNotificationLabel);
                 TextViewUtils.SetMuseoSans300Typeface(txtNotificationsContent);
 
                 selectAllCheckboxButton.SetOnCheckedChangeListener(this);
@@ -272,7 +272,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Notifications Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Notifications Listing");
             }
             catch (Exception e)
             {

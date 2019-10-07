@@ -228,7 +228,7 @@ namespace myTNB_Android.Src.FAQ.Activity
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "FAQ");
+                FirebaseAnalyticsUtils.SetScreenName(this, "FAQs");
             }
             catch (Exception e)
             {

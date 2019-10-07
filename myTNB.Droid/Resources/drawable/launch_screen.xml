@@ -6,12 +6,12 @@
   <item android:drawable="@drawable/img_splash"/>
   
   <!-- Your product logo - 144dp color version of your app icon -->
-  <item>
+  <!--<item>
 
     <bitmap
       android:src="@drawable/ic_logo_tagline"
       android:gravity="center"/>
     
-  </item>
+  </item>-->
   
 </layer-list>

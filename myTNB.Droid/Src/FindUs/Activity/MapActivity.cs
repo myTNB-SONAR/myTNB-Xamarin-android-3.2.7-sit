@@ -526,7 +526,7 @@ namespace myTNB_Android.Src.FindUs.Activity
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Locations Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Locations");
             }
             catch (Exception e)
             {
