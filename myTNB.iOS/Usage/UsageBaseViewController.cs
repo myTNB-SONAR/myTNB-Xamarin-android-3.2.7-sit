@@ -364,8 +364,7 @@ namespace myTNB
                 }
                 else
                 {
-                    bool res = isSmartMeterAccount ? _legendIsVisible && !_viewLegend.Hidden : _legendIsVisible;
-                    _viewLegend.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, res ? 16F : 0F)), _viewLegend.Frame.Size);
+                    _viewLegend.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, _legendIsVisible && _tariffList?.Count > 0 ? 16F : 0F)), _viewLegend.Frame.Size);
                     _viewToggle.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_legendIsVisible ? _viewLegend.Frame : _viewChart.Frame, 16F)), _viewToggle.Frame.Size);
                     _lastView = _viewToggle;
                     if (accountIsSSMR)
@@ -401,7 +400,14 @@ namespace myTNB
             else
             {
                 _viewChart.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_lblAddress.Frame, 0F)), _viewChart.Frame.Size);
-                _lastView = _viewSSMR.Hidden ? _viewChart : _viewSSMR;
+                if (isSmartMeterAccount)
+                {
+                    _lastView = _viewSmartMeter;
+                }
+                else
+                {
+                    _lastView = _viewSSMR.Hidden ? _viewChart : _viewSSMR;
+                }
             }
 
             _footerIsDocked = (_lastView.Frame.GetMaxY() + _navbarContainer.Frame.Height + GetScaledHeight(8F)) < _footerYPos + GetScaledHeight(10);

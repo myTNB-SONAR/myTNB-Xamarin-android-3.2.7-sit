@@ -630,8 +630,7 @@ namespace myTNB
                        {
                            InvokeOnMainThread(() =>
                           {
-                              if (_ssmrApplicationStatus != null && _ssmrApplicationStatus.d != null
-                                   && _ssmrApplicationStatus.d.data != null)
+                              if (_ssmrApplicationStatus != null && _ssmrApplicationStatus.d != null)
                               {
                                   UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
                                   GenericStatusPageViewController status = storyBoard.InstantiateViewController("GenericStatusPageViewController") as GenericStatusPageViewController;
@@ -640,13 +639,16 @@ namespace myTNB
                                   status.IsSuccess = _ssmrApplicationStatus.d.IsSuccess;
                                   status.StatusTitle = _ssmrApplicationStatus.d.DisplayTitle;
                                   status.StatusMessage = _ssmrApplicationStatus.d.DisplayMessage;
-                                  status.ReferenceNumber = _ssmrApplicationStatus.d.data.ServiceReqNo;
-                                  status.ReferenceDate = _ssmrApplicationStatus.d.data.AppliedOn;
+                                  if (_ssmrApplicationStatus.d.data != null)
+                                  {
+                                      status.ReferenceNumber = _ssmrApplicationStatus.d.data.ServiceReqNo;
+                                      status.ReferenceDate = _ssmrApplicationStatus.d.data.AppliedOn;
+                                  }
                                   NavigationController.PushViewController(status, true);
                               }
                               else
                               {
-                                  DisplayServiceError(_ssmrApplicationStatus.d.ErrorMessage);
+                                  DisplayServiceError(_ssmrApplicationStatus?.d?.ErrorMessage);
                               }
                               ActivityIndicator.Hide();
                           });
