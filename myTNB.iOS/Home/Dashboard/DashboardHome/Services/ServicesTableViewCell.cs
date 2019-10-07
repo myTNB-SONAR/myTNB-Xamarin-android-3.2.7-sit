@@ -40,7 +40,7 @@ namespace myTNB
             SelectionStyle = UITableViewCellSelectionStyle.None;
         }
 
-        public void AddCards(ServicesResponseModel services, Dictionary<string, Action> actionsDictionary)
+        public void AddCards(ServicesResponseModel services, Dictionary<string, Action> actionsDictionary, bool isLoading)
         {
             _actionsDictionary = actionsDictionary;
             rowFactor = -1;
@@ -49,17 +49,13 @@ namespace myTNB
             {
                 _view.Subviews[i].RemoveFromSuperview();
             }
-
-            bool hasData = services != null && services.d != null && services.d.IsSuccess
-                && services.d.data != null && services.d.data.services != null
-                && services.d.data.services.Count > 0;
-            if (hasData)
+            if (isLoading || services == null || services.d == null || services.d.data == null || services.d.data.services == null)
             {
-                AddContentData(services.d.data.services);
+                AddShimmer();
             }
             else
             {
-                AddShimmer();
+                AddContentData(services.d.data.services);
             }
         }
 
