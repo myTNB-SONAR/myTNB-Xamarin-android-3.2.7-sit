@@ -147,11 +147,15 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         [OnClick(Resource.Id.btnTakePhoto)]
         internal void OnTakePhotoReading(object sender, EventArgs eventArgs)
         {
-            Intent photoIntent = new Intent(this, typeof(SubmitMeterTakePhotoActivity));
-            photoIntent.PutExtra("REQUESTED_PHOTOS", JsonConvert.SerializeObject(meterReadingModelList));
-            photoIntent.PutExtra("IS_SINGLE_PHASE", meterReadingModelList.Count == 1 ? true : false);
-            photoIntent.PutExtra("CONTRACT_NUMBER", selectedAccount.AccountNum);
-            StartActivityForResult(photoIntent, SSMR_SUBMIT_METER_OCR_SUBMIT_CODE);
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent photoIntent = new Intent(this, typeof(SubmitMeterTakePhotoActivity));
+                photoIntent.PutExtra("REQUESTED_PHOTOS", JsonConvert.SerializeObject(meterReadingModelList));
+                photoIntent.PutExtra("IS_SINGLE_PHASE", meterReadingModelList.Count == 1 ? true : false);
+                photoIntent.PutExtra("CONTRACT_NUMBER", selectedAccount.AccountNum);
+                StartActivityForResult(photoIntent, SSMR_SUBMIT_METER_OCR_SUBMIT_CODE);
+            }
         }
 
         private void InitializePage()
@@ -766,6 +770,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
         }
 
         public void OnUpdateSubmitMeterButton()

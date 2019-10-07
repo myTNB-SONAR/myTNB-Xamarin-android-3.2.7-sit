@@ -22,6 +22,8 @@ namespace myTNB_Android.Src.Base.Fragments
     {
         private AlertDialog rationaleDialog;
 
+        private bool isClicked = false;
+
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
             View inflateView = null;
@@ -47,8 +49,25 @@ namespace myTNB_Android.Src.Base.Fragments
         public override void OnResume()
         {
             base.OnResume();
+            this.isClicked = false;
             Ready();
 
+        }
+
+        public virtual void SetIsClicked(bool flag)
+        {
+            this.isClicked = flag;
+        }
+
+        public virtual bool GetIsClicked()
+        {
+            return this.isClicked;
+        }
+
+        public override void OnPause()
+        {
+            base.OnPause();
+            this.isClicked = true;
         }
 
 

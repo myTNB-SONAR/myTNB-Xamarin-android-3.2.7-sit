@@ -278,31 +278,51 @@ namespace myTNB_Android.Src.MyAccount.Activity
         [OnClick(Resource.Id.btnTextUpdateMobileNo)]
         void OnClickMobile(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.OnUpdateMobileNo();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnUpdateMobileNo();
+            }
         }
 
         [OnClick(Resource.Id.btnTextUpdatePassword)]
         void OnClickPassword(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.OnUpdatePassword();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnUpdatePassword();
+            }
         }
 
         [OnClick(Resource.Id.btnTextUpdateCards)]
         void OnClickUpdateCards(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.OnManageCards();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnManageCards();
+            }
         }
 
         [OnClick(Resource.Id.btnAddAccount)]
         void OnClickAddAccount(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.OnAddAccount();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnAddAccount();
+            }
         }
 
         [OnClick(Resource.Id.btnAddAnotherAccount)]
         void OnClickAddAnotherAccount(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.OnAddAccount();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnAddAccount();
+            }
         }
 
         [OnClick(Resource.Id.btnLogout)]
@@ -441,6 +461,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
         }
 
         public void HideShowProgressDialog()

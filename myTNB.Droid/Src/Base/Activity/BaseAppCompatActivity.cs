@@ -30,6 +30,8 @@ namespace myTNB_Android.Src.Base.Activity
         public bool EnforceMissingMemberHandling { get; private set; }
         public bool IgnoreNullValues { get; private set; }
 
+        private bool isClicked = false;
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -41,7 +43,24 @@ namespace myTNB_Android.Src.Base.Activity
         protected override void OnResume()
         {
             base.OnResume();
+            this.isClicked = false;
             Ready();
+        }
+
+        public virtual void SetIsClicked(bool flag)
+        {
+            this.isClicked = flag;
+        }
+
+        public virtual bool GetIsClicked()
+        {
+            return this.isClicked;
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+            this.isClicked = true;
         }
 
         private void EvaluateRequestPermissions()

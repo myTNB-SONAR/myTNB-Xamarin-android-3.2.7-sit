@@ -12,13 +12,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
     {
         List<List<AccountCardModel>> originalCardList;
         List<List<AccountCardModel>> filterCardList;
-        List<AccountCardModel> originalCardModelList;
+        List<AccountCardModel> originalCardModelList = new List<AccountCardModel>();
         AccountsRecyclerViewAdapter mAdapter;
 
         public AccountCardsFilter(AccountsRecyclerViewAdapter adapter, List<AccountCardModel> cardModelList)
         {
             this.mAdapter = adapter;
-            this.originalCardModelList = cardModelList;
+            if (cardModelList != null && cardModelList.Count > 0)
+            {
+                this.originalCardModelList = cardModelList;
+            }
+            else
+            {
+                this.originalCardModelList = new List<AccountCardModel>();
+            }
         }
 
         protected override FilterResults PerformFiltering(ICharSequence constraint)

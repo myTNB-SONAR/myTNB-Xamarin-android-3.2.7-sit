@@ -380,9 +380,13 @@ namespace myTNB_Android.Src.FindUs.Activity
 
             selectorLocationType.Click += delegate
             {
-                Intent accountType = new Intent(this, typeof(SelectLocationTypeActivity));
-                accountType.PutExtra("selectedLocationType", JsonConvert.SerializeObject(selectedLocationType));
-                StartActivityForResult(accountType, SELECT_LOCATION_TYPE_CODE);
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    Intent accountType = new Intent(this, typeof(SelectLocationTypeActivity));
+                    accountType.PutExtra("selectedLocationType", JsonConvert.SerializeObject(selectedLocationType));
+                    StartActivityForResult(accountType, SELECT_LOCATION_TYPE_CODE);
+                }
             };
 
             //edtSearch.AfterTextChanged += (sender, args) =>

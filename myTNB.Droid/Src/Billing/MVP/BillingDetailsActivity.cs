@@ -114,16 +114,20 @@ namespace myTNB_Android.Src.Billing.MVP
         [OnClick(Resource.Id.btnPayBill)]
         void OnPayBill(object sender, EventArgs eventArgs)
         {
-            Intent payment_activity = new Intent(this, typeof(SelectAccountsActivity));
-            payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
-            StartActivity(payment_activity);
-            try
+            if (!this.GetIsClicked())
             {
-                FirebaseAnalyticsUtils.LogClickEvent(this, "Billing Payment Buttom Clicked");
-            }
-            catch (System.Exception ne)
-            {
-                Utility.LoggingNonFatalError(ne);
+                this.SetIsClicked(true);
+                Intent payment_activity = new Intent(this, typeof(SelectAccountsActivity));
+                payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
+                StartActivity(payment_activity);
+                try
+                {
+                    FirebaseAnalyticsUtils.LogClickEvent(this, "Billing Payment Buttom Clicked");
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
             }
         }
 
@@ -271,6 +275,16 @@ namespace myTNB_Android.Src.Billing.MVP
         void OnTapMinChargeTooltip(object sender, EventArgs eventArgs)
         {
             ShowAccountHasMinCharge();
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
         }
 
         public void ShowAccountHasMinCharge()

@@ -24,7 +24,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
         List<List<AccountCardModel>> cardList = new List<List<AccountCardModel>>();
         List<AccountCardModel> accountModelList = new List<AccountCardModel>();
-        public List<AccountCardModel> accountCardModelList;
+        public List<AccountCardModel> accountCardModelList = new List<AccountCardModel>();
         ViewGroup parentGroup;
 
         public AccountsRecyclerViewAdapter(HomeMenuContract.IHomeMenuView listener)
@@ -41,7 +41,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
         public int GetAccountCardCount(List<AccountCardModel> list)
         {
             int cardCount;
-            if (list.Count > 0)
+            if (list != null && list.Count > 0)
             {
                 cardCount = list.Count / MAX_ACCOUNT_PER_CARD;
                 if ((list.Count % MAX_ACCOUNT_PER_CARD) > 0)
@@ -131,31 +131,34 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             List<AccountCardModel> returnAccountCardModelList = new List<AccountCardModel>();
             AccountCardModel cardModel;
 
-            foreach (SummaryDashBoardDetails summaryDashBoardDetails in accountList)
+            if (accountList != null && accountList.Count > 0)
             {
-                int accountType = Int32.Parse(summaryDashBoardDetails.AccType);
-                cardModel = new AccountCardModel();
-                cardModel.AccountNumber = summaryDashBoardDetails.AccNumber;
-                if (summaryDashBoardDetails.AmountDue != null)
+                foreach (SummaryDashBoardDetails summaryDashBoardDetails in accountList)
                 {
-                    cardModel.AccountType = accountType;
-                    cardModel.AccountName = summaryDashBoardDetails.AccName;
-                    cardModel.IsNegativeAmount = (accountType == 2) ? false : AccountModelFormatter.IsNegativeAmount(summaryDashBoardDetails.AmountDue);
-                    cardModel.IsZeroAmount = AccountModelFormatter.IsAmountCleared(summaryDashBoardDetails.AmountDue);
-                    cardModel.BillDueAmount = AccountModelFormatter.GetFormatAmount(summaryDashBoardDetails.AmountDue);
-                    cardModel.BillDueNote = AccountModelFormatter.GetBillDueNote(accountType,
-                        summaryDashBoardDetails.AmountDue, summaryDashBoardDetails.BillDueDate, summaryDashBoardDetails.IsTaggedSMR);
-                    cardModel.IsTaggedSMR = summaryDashBoardDetails.IsTaggedSMR;
-                    if (summaryDashBoardDetails.SmartMeterCode == "0")
+                    int accountType = Int32.Parse(summaryDashBoardDetails.AccType);
+                    cardModel = new AccountCardModel();
+                    cardModel.AccountNumber = summaryDashBoardDetails.AccNumber;
+                    if (summaryDashBoardDetails.AmountDue != null)
                     {
-                        cardModel.SmartMeterCode = Int32.Parse(summaryDashBoardDetails.SmartMeterCode);
+                        cardModel.AccountType = accountType;
+                        cardModel.AccountName = summaryDashBoardDetails.AccName;
+                        cardModel.IsNegativeAmount = (accountType == 2) ? false : AccountModelFormatter.IsNegativeAmount(summaryDashBoardDetails.AmountDue);
+                        cardModel.IsZeroAmount = AccountModelFormatter.IsAmountCleared(summaryDashBoardDetails.AmountDue);
+                        cardModel.BillDueAmount = AccountModelFormatter.GetFormatAmount(summaryDashBoardDetails.AmountDue);
+                        cardModel.BillDueNote = AccountModelFormatter.GetBillDueNote(accountType,
+                            summaryDashBoardDetails.AmountDue, summaryDashBoardDetails.BillDueDate, summaryDashBoardDetails.IsTaggedSMR);
+                        cardModel.IsTaggedSMR = summaryDashBoardDetails.IsTaggedSMR;
+                        if (summaryDashBoardDetails.SmartMeterCode == "0")
+                        {
+                            cardModel.SmartMeterCode = Int32.Parse(summaryDashBoardDetails.SmartMeterCode);
+                        }
+                        else
+                        {
+                            cardModel.SmartMeterCode = 3;
+                        }
                     }
-                    else
-                    {
-                        cardModel.SmartMeterCode = 3;
-                    }
+                    returnAccountCardModelList.Add(cardModel);
                 }
-                returnAccountCardModelList.Add(cardModel);
             }
             return returnAccountCardModelList;
         }
@@ -165,27 +168,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             List<AccountCardModel> returnAccountCardModelList = new List<AccountCardModel>();
             AccountCardModel model;
 
-            foreach (SummaryDashBoardDetails summaryDashBoardDetails in accountList)
+            if (accountList != null && accountList.Count > 0)
             {
-                int accountType = Int32.Parse(summaryDashBoardDetails.AccType);
-                model = new AccountCardModel();
-                model.AccountName = summaryDashBoardDetails.AccName;
-                model.AccountNumber = summaryDashBoardDetails.AccNumber;
-                model.IsNegativeAmount = (accountType == 2) ? false : AccountModelFormatter.IsNegativeAmount(summaryDashBoardDetails.AmountDue);
-                model.IsZeroAmount = AccountModelFormatter.IsAmountCleared(summaryDashBoardDetails.AmountDue);
-                model.BillDueAmount = summaryDashBoardDetails.AmountDue;
-                model.BillDueNote = summaryDashBoardDetails.BillDueDate;
-                model.AccountType = accountType;
-                model.IsTaggedSMR = summaryDashBoardDetails.IsTaggedSMR;
-                if (summaryDashBoardDetails.SmartMeterCode == "0")
+                foreach (SummaryDashBoardDetails summaryDashBoardDetails in accountList)
                 {
-                    model.SmartMeterCode = Int32.Parse(summaryDashBoardDetails.SmartMeterCode);
+                    int accountType = Int32.Parse(summaryDashBoardDetails.AccType);
+                    model = new AccountCardModel();
+                    model.AccountName = summaryDashBoardDetails.AccName;
+                    model.AccountNumber = summaryDashBoardDetails.AccNumber;
+                    model.IsNegativeAmount = (accountType == 2) ? false : AccountModelFormatter.IsNegativeAmount(summaryDashBoardDetails.AmountDue);
+                    model.IsZeroAmount = AccountModelFormatter.IsAmountCleared(summaryDashBoardDetails.AmountDue);
+                    model.BillDueAmount = summaryDashBoardDetails.AmountDue;
+                    model.BillDueNote = summaryDashBoardDetails.BillDueDate;
+                    model.AccountType = accountType;
+                    model.IsTaggedSMR = summaryDashBoardDetails.IsTaggedSMR;
+                    if (summaryDashBoardDetails.SmartMeterCode == "0")
+                    {
+                        model.SmartMeterCode = Int32.Parse(summaryDashBoardDetails.SmartMeterCode);
+                    }
+                    else
+                    {
+                        model.SmartMeterCode = 3;
+                    }
+                    returnAccountCardModelList.Add(model);
                 }
-                else
-                {
-                    model.SmartMeterCode = 3;
-                }
-                returnAccountCardModelList.Add(model);
             }
             return returnAccountCardModelList;
         }

@@ -95,6 +95,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Task OnGetEnergySavingTips();
 
             Task OnSetEnergySavingTipsToCache();
+
+            void OnCancelToken();
         }
 
         public interface IHomeMenuService
