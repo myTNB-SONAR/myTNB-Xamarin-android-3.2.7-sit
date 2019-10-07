@@ -147,29 +147,33 @@ namespace myTNB_Android.Src.Promotions.Fragments
         {
             try
             {
-                PromotionsModelV2 model = promotions[position];
-                PromotionsEntityV2 wtManager = new PromotionsEntityV2()
+                if (!this.GetIsClicked())
                 {
-                    ID = model.ID,
-                    GeneralLinkUrl = model.GeneralLinkUrl,
-                    Text = model.Text,
-                    Title = model.Title,
-                    HeaderContent = model.HeaderContent,
-                    BodyContent = model.BodyContent,
-                    FooterContent = model.FooterContent,
-                    PortraitImage = model.PortraitImage.Replace(" ", "%20"),
-                    LandscapeImage = model.LandscapeImage.Replace(" ", "%20"),
-                    PromoStartDate = model.PromoStartDate,
-                    PromoEndDate = model.PromoEndDate,
-                    PublishedDate = model.PublishedDate,
-                    IsPromoExpired = model.IsPromoExpired,
-                    Read = true
-                };
-                wtManager.UpdateItem(wtManager);
-                Intent details_activity = new Intent(Activity, typeof(PromotionsActivity));
-                details_activity.PutExtra("Promotion", JsonConvert.SerializeObject(model));
-                //Activity.StartActivity(details_activity);
-                Activity.StartActivity(details_activity);
+                    this.SetIsClicked(true);
+                    PromotionsModelV2 model = promotions[position];
+                    PromotionsEntityV2 wtManager = new PromotionsEntityV2()
+                    {
+                        ID = model.ID,
+                        GeneralLinkUrl = model.GeneralLinkUrl,
+                        Text = model.Text,
+                        Title = model.Title,
+                        HeaderContent = model.HeaderContent,
+                        BodyContent = model.BodyContent,
+                        FooterContent = model.FooterContent,
+                        PortraitImage = model.PortraitImage.Replace(" ", "%20"),
+                        LandscapeImage = model.LandscapeImage.Replace(" ", "%20"),
+                        PromoStartDate = model.PromoStartDate,
+                        PromoEndDate = model.PromoEndDate,
+                        PublishedDate = model.PublishedDate,
+                        IsPromoExpired = model.IsPromoExpired,
+                        Read = true
+                    };
+                    wtManager.UpdateItem(wtManager);
+                    Intent details_activity = new Intent(Activity, typeof(PromotionsActivity));
+                    details_activity.PutExtra("Promotion", JsonConvert.SerializeObject(model));
+                    //Activity.StartActivity(details_activity);
+                    Activity.StartActivity(details_activity);
+                }
             }
             catch (System.Exception ex)
             {
@@ -272,6 +276,11 @@ namespace myTNB_Android.Src.Promotions.Fragments
         public override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
+        }
+
+        public override void OnPause()
+        {
+            base.OnPause();
         }
 
         public override void OnResume()

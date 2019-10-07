@@ -462,14 +462,18 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [OnClick(Resource.Id.btnSubmitMeter)]
         internal void OnSubmitMeter(object sender, EventArgs eventArgs)
         {
-            AccountData accountData = new AccountData();
-            SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
-            accountData.AccountNum = selectedAccountNumber;
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                AccountData accountData = new AccountData();
+                SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
+                accountData.AccountNum = selectedAccountNumber;
 
-            Intent ssmr_submit_meter_activity = new Intent(this, typeof(SubmitMeterReadingActivity));
-            ssmr_submit_meter_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
-            ssmr_submit_meter_activity.PutExtra(Constants.SMR_RESPONSE_KEY, JsonConvert.SerializeObject(smrResponse));
-            StartActivityForResult(ssmr_submit_meter_activity, SSMR_SUBMIT_METER_ACTIVITY_CODE);
+                Intent ssmr_submit_meter_activity = new Intent(this, typeof(SubmitMeterReadingActivity));
+                ssmr_submit_meter_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+                ssmr_submit_meter_activity.PutExtra(Constants.SMR_RESPONSE_KEY, JsonConvert.SerializeObject(smrResponse));
+                StartActivityForResult(ssmr_submit_meter_activity, SSMR_SUBMIT_METER_ACTIVITY_CODE);
+            }
         }
 
 
@@ -499,8 +503,12 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             }
             else
             {
-                Intent intent = new Intent(this, typeof(SelectSMRAccountActivity));
-                StartActivityForResult(intent, SSMR_SELECT_ACCOUNT_ACTIVITY_CODE);
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    Intent intent = new Intent(this, typeof(SelectSMRAccountActivity));
+                    StartActivityForResult(intent, SSMR_SELECT_ACCOUNT_ACTIVITY_CODE);
+                }
             }
         }
 
@@ -571,7 +579,13 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
-				}
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+        }
+
         public void ShowEnableDisableSMR(CAContactDetailsModel contactDetailsModel)
         {
             AccountData accountData = new AccountData();

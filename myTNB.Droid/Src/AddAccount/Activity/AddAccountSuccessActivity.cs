@@ -73,7 +73,11 @@ namespace myTNB_Android.Src.AddAccount.Activity
             Button done = FindViewById<Button>(Resource.Id.btnGetStarted);
             done.Click += delegate
             {
-                GetStarted();
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    GetStarted();
+                }
             };
 
             TextViewUtils.SetMuseoSans500Typeface(textAddAccountSuccess);
@@ -106,6 +110,11 @@ namespace myTNB_Android.Src.AddAccount.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        protected override void OnPause()
+        {
+           base.OnPause(); 
         }
 
         public override void OnTrimMemory(TrimMemory level)

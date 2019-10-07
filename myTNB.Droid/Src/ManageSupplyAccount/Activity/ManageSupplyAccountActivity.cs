@@ -109,7 +109,11 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         [OnClick(Resource.Id.btnTextUpdateNickName)]
         void OnClickUpdateNickname(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.OnUpdateNickname();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnUpdateNickname();
+            }
         }
         AlertDialog removeDialog;
         [OnClick(Resource.Id.btnRemoveAccount)]
@@ -180,6 +184,11 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
         }
 
         public void ShowUpdateNickname()

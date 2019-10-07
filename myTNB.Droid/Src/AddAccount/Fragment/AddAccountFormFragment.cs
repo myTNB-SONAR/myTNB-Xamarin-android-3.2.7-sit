@@ -80,6 +80,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
         [BindView(Resource.Id.selector_account_type)]
         TextView accountType;
 
+        private bool isClicked = false;
+
         public void ClearText()
         {
             edtAccountNo.Text = "";
@@ -167,9 +169,12 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 scan = rootView.FindViewById<ImageButton>(Resource.Id.scan);
                 scan.Click += async delegate
                 {
-                    Intent barcodeIntent = new Intent(Activity, typeof(BarcodeActivity));
-                    StartActivityForResult(barcodeIntent, Constants.BARCODE_REQUEST_CODE);
-
+                    if (!isClicked)
+                    {
+                        isClicked = true;
+                        Intent barcodeIntent = new Intent(Activity, typeof(BarcodeActivity));
+                        StartActivityForResult(barcodeIntent, Constants.BARCODE_REQUEST_CODE);
+                    }
                 };
 
                 btnWhereIsMyAccountNo = rootView.FindViewById<TextView>(Resource.Id.btnWhereIsMyAccountNo);
@@ -204,9 +209,13 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 accountType.Text = selectedAccountType.Type;
                 accountType.Click += async delegate
                 {
-                    Intent accountType = new Intent(Activity, typeof(SelectAccountActivity));
-                    accountType.PutExtra("selectedAccountType", JsonConvert.SerializeObject(selectedAccountType));
-                    StartActivityForResult(accountType, SELECT_ACCOUNT_TYPE_REQ_CODE);
+                    if (!isClicked)
+                    {
+                        isClicked = true;
+                        Intent accountType = new Intent(Activity, typeof(SelectAccountActivity));
+                        accountType.PutExtra("selectedAccountType", JsonConvert.SerializeObject(selectedAccountType));
+                        StartActivityForResult(accountType, SELECT_ACCOUNT_TYPE_REQ_CODE);
+                    }
                 };
 
                 edtAccountNo.TextChanged += TextChange;
@@ -275,6 +284,17 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             return rootView;
         }
 
+        public override void OnResume()
+        {
+            base.OnResume();
+            isClicked = false;
+        }
+
+        public override void OnPause()
+        {
+            base.OnPause();
+            isClicked = true;
+        }
 
         private bool onLongClick(object sender, View.LongClickEventArgs e)
         {

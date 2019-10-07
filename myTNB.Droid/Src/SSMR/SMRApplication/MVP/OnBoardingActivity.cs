@@ -176,9 +176,18 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
 
         public void StartSMRApplication()
         {
-            Intent intent = new Intent(this, typeof(SSMRMeterHistoryActivity));
-            StartActivity(intent);
-            Finish();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent intent = new Intent(this, typeof(SSMRMeterHistoryActivity));
+                StartActivity(intent);
+                Finish();
+            }
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
         }
 
         protected override void OnResume()

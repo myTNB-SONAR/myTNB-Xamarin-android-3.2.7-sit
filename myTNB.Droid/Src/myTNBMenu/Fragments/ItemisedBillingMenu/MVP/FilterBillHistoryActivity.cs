@@ -41,10 +41,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
         {
             try
             {
-                Intent resultIntent = new Intent();
-                resultIntent.PutExtra("SELECTED_ITEM_FILTER", JsonConvert.SerializeObject(itemFilterList.Find(itemFilter=> { return itemFilter.selected; })));
-                SetResult(Result.Ok, resultIntent);
-                Finish();
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    Intent resultIntent = new Intent();
+                    resultIntent.PutExtra("SELECTED_ITEM_FILTER", JsonConvert.SerializeObject(itemFilterList.Find(itemFilter=> { return itemFilter.selected; })));
+                    SetResult(Result.Ok, resultIntent);
+                    Finish();
+                }
             }
             catch (System.Exception e)
             {
@@ -57,9 +61,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
         {
             try
             {
-                Intent newIntent = new Intent(this, typeof(SelectItemActivity));
-                newIntent.PutExtra("ITEM_LIST", JsonConvert.SerializeObject(itemFilterList));
-                StartActivityForResult(newIntent, SELECT_FILTER);
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    Intent newIntent = new Intent(this, typeof(SelectItemActivity));
+                    newIntent.PutExtra("ITEM_LIST", JsonConvert.SerializeObject(itemFilterList));
+                    StartActivityForResult(newIntent, SELECT_FILTER);
+                }
             }
             catch (System.Exception e)
             {
@@ -75,6 +83,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
         public override bool ShowCustomToolbarTitle()
         {
             return true;
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
         }
 
         protected override void OnCreate(Bundle savedInstanceState)

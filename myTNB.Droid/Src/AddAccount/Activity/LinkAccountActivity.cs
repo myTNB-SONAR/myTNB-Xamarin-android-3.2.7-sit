@@ -355,7 +355,11 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 done = FindViewById<Button>(Resource.Id.btnAddAnotherAccount);
                 done.Click += delegate
                 {
-                    ShowAddAnotherAccountScreen();
+                    if (!this.GetIsClicked())
+                    {
+                        this.SetIsClicked(true);
+                        ShowAddAnotherAccountScreen();
+                    }
 
                 };
 
@@ -403,6 +407,11 @@ namespace myTNB_Android.Src.AddAccount.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        protected override void OnPause()
+        {
+           base.OnPause(); 
         }
 
         public void ShowNoAccountAddedError(string message)

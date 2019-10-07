@@ -1154,7 +1154,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
-                ((DashboardHomeActivity)Activity).OnSelectAccount();
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    ((DashboardHomeActivity)Activity).OnSelectAccount();
+                }
             }
             catch (System.Exception e)
             {
@@ -1287,7 +1291,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
-                StartSSMRMeterHistoryPage();
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    StartSSMRMeterHistoryPage();
+                }
             }
             catch (System.Exception e)
             {
@@ -1300,13 +1308,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
-                if (isSubmitMeter)
+                if (!this.GetIsClicked())
                 {
-                    StartSSMRSubmitMeterReadingPage();
-                }
-                else
-                {
-                    StartSSMRMeterHistoryPage();
+                    this.SetIsClicked(true);
+                    if (isSubmitMeter)
+                    {
+                        StartSSMRSubmitMeterReadingPage();
+                    }
+                    else
+                    {
+                        StartSSMRMeterHistoryPage();
+                    }
                 }
             }
             catch (System.Exception e)
@@ -4308,28 +4320,36 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [OnClick(Resource.Id.btnViewBill)]
         internal void OnViewBill(object sender, EventArgs e)
         {
-            this.userActionsListener.OnViewBill(selectedAccount);
-            try
+            if (!this.GetIsClicked())
             {
-                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "View Bill Buttom Clicked");
-            }
-            catch (System.Exception ne)
-            {
-                Utility.LoggingNonFatalError(ne);
+                this.SetIsClicked(true);
+                this.userActionsListener.OnViewBill(selectedAccount);
+                try
+                {
+                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "View Bill Buttom Clicked");
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
             }
         }
 
         [OnClick(Resource.Id.btnReView)]
         internal void OnREViewBill(object sender, EventArgs e)
         {
-            this.userActionsListener.OnViewBill(selectedAccount);
-            try
+            if (!this.GetIsClicked())
             {
-                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "View Bill Buttom Clicked");
-            }
-            catch (System.Exception ne)
-            {
-                Utility.LoggingNonFatalError(ne);
+                this.SetIsClicked(true);
+                this.userActionsListener.OnViewBill(selectedAccount);
+                try
+                {
+                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "View Bill Buttom Clicked");
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
             }
         }
 
@@ -4350,14 +4370,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [OnClick(Resource.Id.btnPay)]
         internal void OnUserPay(object sender, EventArgs e)
         {
-            this.userActionsListener.OnPay();
-            try
+            if (!this.GetIsClicked())
             {
-                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Inner Dashboard Payment Buttom Clicked");
-            }
-            catch (System.Exception ne)
-            {
-                Utility.LoggingNonFatalError(ne);
+                this.SetIsClicked(true);
+                this.userActionsListener.OnPay();
+                try
+                {
+                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Inner Dashboard Payment Buttom Clicked");
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
             }
         }
 
@@ -6874,6 +6898,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public override void OnPause()
+        {
+            base.OnPause();
         }
 
         // Lin Siong Note: Set New Account layout param

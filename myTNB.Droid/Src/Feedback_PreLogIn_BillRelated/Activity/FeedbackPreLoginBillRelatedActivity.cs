@@ -110,6 +110,11 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
         {
             return true;
         }
+        
+        protected override void OnPause()
+        {
+            base.OnPause();
+        }
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -463,21 +468,28 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
 
         public void ShowCamera()
         {
-            var intent = new Intent(MediaStore.ActionImageCapture);
-            Java.IO.File file = new Java.IO.File(FileUtils.GetTemporaryImageFilePath(this, FileUtils.TEMP_IMAGE_FOLDER, string.Format("{0}.jpeg", "temporaryImage")));
-            Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
-                                            ApplicationContext.PackageName + ".provider", file);
-            intent.PutExtra(Android.Provider.MediaStore.ExtraOutput, fileUri);
-            intent.AddFlags(ActivityFlags.GrantReadUriPermission);
-            StartActivityForResult(intent, Constants.REQUEST_ATTACHED_CAMERA_IMAGE);
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                var intent = new Intent(MediaStore.ActionImageCapture);
+                Java.IO.File file = new Java.IO.File(FileUtils.GetTemporaryImageFilePath(this, FileUtils.TEMP_IMAGE_FOLDER, string.Format("{0}.jpeg", "temporaryImage")));
+                Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
+                                                ApplicationContext.PackageName + ".provider", file);
+                intent.PutExtra(Android.Provider.MediaStore.ExtraOutput, fileUri);
+                intent.AddFlags(ActivityFlags.GrantReadUriPermission);
+                StartActivityForResult(intent, Constants.REQUEST_ATTACHED_CAMERA_IMAGE);
+            }
         }
 
         public void ShowGallery()
         {
-            Intent galleryIntent = new Intent(Intent.ActionPick, MediaStore.Images.Media.ExternalContentUri);
-            galleryIntent.SetType("image/*");
-            StartActivityForResult(Intent.CreateChooser(galleryIntent, GetString(Resource.String.bill_related_feedback_select_images)), Constants.RUNTIME_PERMISSION_GALLERY_REQUEST_CODE);
-
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent galleryIntent = new Intent(Intent.ActionPick, MediaStore.Images.Media.ExternalContentUri);
+                galleryIntent.SetType("image/*");
+                StartActivityForResult(Intent.CreateChooser(galleryIntent, GetString(Resource.String.bill_related_feedback_select_images)), Constants.RUNTIME_PERMISSION_GALLERY_REQUEST_CODE);
+            }
         }
 
         public void SetPresenter(FeedbackPreLoginBillRelatedContract.IUserActionsListener userActionListener)

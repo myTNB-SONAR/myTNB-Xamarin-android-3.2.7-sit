@@ -302,29 +302,37 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 notificationHeaderIcon.SetOnClickListener(null);
                 addActionContainer.Click += delegate
                 {
-                    try
+                    if (!this.GetIsClicked())
                     {
-                        FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Home Screen -> Add Account");
+                        this.SetIsClicked(true);
+                        try
+                        {
+                            FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Home Screen -> Add Account");
+                        }
+                        catch (System.Exception err)
+                        {
+                            Utility.LoggingNonFatalError(err);
+                        }
+                        Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
+                        linkAccount.PutExtra("fromDashboard", true);
+                        StartActivity(linkAccount);
                     }
-                    catch (System.Exception err)
-                    {
-                        Utility.LoggingNonFatalError(err);
-                    }
-                    Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
-                    linkAccount.PutExtra("fromDashboard", true);
-                    StartActivity(linkAccount);
                 };
                 notificationHeaderIcon.Click += delegate
                 {
-                    try
+                    if (!this.GetIsClicked())
                     {
-                        FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Home Screen -> Notification");
+                        this.SetIsClicked(true);
+                        try
+                        {
+                            FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Home Screen -> Notification");
+                        }
+                        catch (System.Exception err)
+                        {
+                            Utility.LoggingNonFatalError(err);
+                        }
+                        StartActivity(new Intent(this.Activity, typeof(NotificationActivity)));
                     }
-                    catch (System.Exception err)
-                    {
-                        Utility.LoggingNonFatalError(err);
-                    }
-                    StartActivity(new Intent(this.Activity, typeof(NotificationActivity)));
                 };
                 ((DashboardHomeActivity)Activity).SetStatusBarBackground();
 
@@ -573,6 +581,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
+        public override void OnPause()
+        {
+            base.OnPause();
+            this.presenter.OnCancelToken();
+        }
+
         private void SetupNewPromotionShimmerEffect()
         {
             try
@@ -770,32 +784,41 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 if (position != -1)
                 {
-                    MyService selectedService = currentMyServiceList[position];
-                    if (selectedService.ServiceCategoryId == "1003")
+                    if (!this.GetIsClicked())
                     {
-                        ShowFeedbackMenu();
-                    }
-                    else if (selectedService.ServiceCategoryId == "1001")
-                    {
-                        Intent applySMRIntent;
-                        if (MyTNBAccountManagement.GetInstance().IsSMROnboardingShown())
+                        this.SetIsClicked(true);
+
+                        MyService selectedService = currentMyServiceList[position];
+                        if (selectedService.ServiceCategoryId == "1003")
                         {
-                            applySMRIntent = new Intent(this.Activity, typeof(SSMRMeterHistoryActivity));
+                            ShowFeedbackMenu();
+                        }
+                        else if (selectedService.ServiceCategoryId == "1001")
+                        {
+                            Intent applySMRIntent;
+                            if (MyTNBAccountManagement.GetInstance().IsSMROnboardingShown())
+                            {
+                                applySMRIntent = new Intent(this.Activity, typeof(SSMRMeterHistoryActivity));
+                            }
+                            else
+                            {
+                                applySMRIntent = new Intent(this.Activity, typeof(OnBoardingActivity));
+                            }
+                            StartActivityForResult(applySMRIntent, SSMR_METER_HISTORY_ACTIVITY_CODE);
                         }
                         else
                         {
-                            applySMRIntent = new Intent(this.Activity, typeof(OnBoardingActivity));
+                            this.SetIsClicked(false);
                         }
-                        StartActivityForResult(applySMRIntent, SSMR_METER_HISTORY_ACTIVITY_CODE);
-                    }
 
-                    try
-                    {
-                        FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "My Services Card Clicked");
-                    }
-                    catch (System.Exception err)
-                    {
-                        Utility.LoggingNonFatalError(err);
+                        try
+                        {
+                            FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "My Services Card Clicked");
+                        }
+                        catch (System.Exception err)
+                        {
+                            Utility.LoggingNonFatalError(err);
+                        }
                     }
                 }
             }
@@ -811,18 +834,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 if (position != -1)
                 {
-                    NewFAQ selectedNewFAQ = currentNewFAQList[position];
-                    Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
-                    faqIntent.PutExtra(Constants.FAQ_ID_PARAM, selectedNewFAQ.TargetItem);
-                    Activity.StartActivity(faqIntent);
+                    if (!this.GetIsClicked())
+                    {
+                        this.SetIsClicked(true);
 
-                    try
-                    {
-                        FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Need Help Card Clicked");
-                    }
-                    catch (System.Exception err)
-                    {
-                        Utility.LoggingNonFatalError(err);
+                        NewFAQ selectedNewFAQ = currentNewFAQList[position];
+                        Intent faqIntent = new Intent(this.Activity, typeof(FAQListActivity));
+                        faqIntent.PutExtra(Constants.FAQ_ID_PARAM, selectedNewFAQ.TargetItem);
+                        Activity.StartActivity(faqIntent);
+
+                        try
+                        {
+                            FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Need Help Card Clicked");
+                        }
+                        catch (System.Exception err)
+                        {
+                            Utility.LoggingNonFatalError(err);
+                        }
                     }
                 }
             }
@@ -1034,12 +1062,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             if (accountNumber != null)
             {
-                CustomerBillingAccount.RemoveSelected();
-                CustomerBillingAccount.SetSelected(accountNumber);
-
-                if (mCallBack != null)
+                if (!this.GetIsClicked())
                 {
-                    mCallBack.NavigateToDashBoardFragment();
+                    this.SetIsClicked(true);
+
+                    CustomerBillingAccount.RemoveSelected();
+                    CustomerBillingAccount.SetSelected(accountNumber);
+
+                    if (mCallBack != null)
+                    {
+                        mCallBack.NavigateToDashBoardFragment();
+                    }
                 }
             }
         }
@@ -1365,9 +1398,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [OnClick(Resource.Id.accountCard)]
         internal void OnAddAccountCardClick(object sender, EventArgs e)
         {
-            Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
-            linkAccount.PutExtra("fromDashboard", true);
-            StartActivity(linkAccount);
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+
+                Intent linkAccount = new Intent(this.Activity, typeof(LinkAccountActivity));
+                linkAccount.PutExtra("fromDashboard", true);
+                StartActivity(linkAccount);
+            }
         }
 
         public void OnSavedEnergySavingTipsTimeStamp(string mSavedTimeStamp)

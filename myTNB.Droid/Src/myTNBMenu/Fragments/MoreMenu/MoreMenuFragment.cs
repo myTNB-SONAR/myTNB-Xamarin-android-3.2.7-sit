@@ -184,8 +184,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
         {
             if (Activity is DashboardHomeActivity)
             {
-                var dashboard = Activity as DashboardHomeActivity;
-                dashboard.Logout();
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    var dashboard = Activity as DashboardHomeActivity;
+                    dashboard.Logout();
+                }
             }
         }
 
@@ -198,56 +202,92 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
         [OnClick(Resource.Id.txt_more_fragment_settings_my_account)]
         void OnMyAccountClick(object sender, EventArgs e)
         {
-            this.userActionsListener.OnMyAccount();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnMyAccount();
+            }
         }
 
         [OnClick(Resource.Id.txt_more_fragment_help_support_call_us)]
         void OnCallUs(object sender, EventArgs e)
         {
-            this.userActionsListener.OnCallUs();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnCallUs();
+            }
         }
 
         [OnClick(Resource.Id.txt_more_fragment_help_support_call_us_1)]
         void OnCallUs1(object sender, EventArgs e)
         {
-            this.userActionsListener.OnCallUs1();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnCallUs1();
+            }
         }
 
 
         [OnClick(Resource.Id.txt_more_fragment_help_support_understand_bill)]
         void OnUnderstandBill(object sender, EventArgs e)
         {
-            this.userActionsListener.OnUnderstandBill();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnUnderstandBill();
+            }
         }
 
         [OnClick(Resource.Id.txt_more_fragment_help_support_faq)]
         void OnFAQ(object sender, EventArgs e)
         {
-            this.userActionsListener.OnFAQ();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnFAQ();
+            }
         }
 
         [OnClick(Resource.Id.txt_more_fragment_help_support_TC)]
         void OnTC(object sender, EventArgs e)
         {
-            this.userActionsListener.OnTermsAndConditions();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnTermsAndConditions();
+            }
         }
 
         [OnClick(Resource.Id.txt_more_fragment_share_share_this_app)]
         void OnShareApp(object sender, EventArgs e)
         {
-            this.userActionsListener.OnShareApp();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnShareApp();
+            }
         }
 
         [OnClick(Resource.Id.txt_more_fragment_help_support_find_us)]
         void OnFindUs(object sender, EventArgs e)
         {
-            this.userActionsListener.OnFindUs();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnFindUs();
+            }
         }
 
         [OnClick(Resource.Id.txt_more_fragment_share_rate_this_app)]
         void OnRateApp(object sender, EventArgs e)
         {
-            this.userActionsListener.OnRateUs();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnRateUs();
+            }
         }
 
         public void ShowNotifications()
@@ -278,6 +318,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
 
             var actionBar = act.SupportActionBar;
             actionBar.Show();
+        }
+
+        public override void OnPause()
+        {
+            base.OnPause();
         }
 
 

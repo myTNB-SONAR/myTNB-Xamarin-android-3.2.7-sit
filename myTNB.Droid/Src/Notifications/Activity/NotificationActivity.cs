@@ -280,6 +280,11 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
         }
 
+        protected override void OnPause()
+        {
+            base.OnPause();
+        }
+
         public override void OnTrimMemory(TrimMemory level)
         {
             base.OnTrimMemory(level);
@@ -333,7 +338,11 @@ namespace myTNB_Android.Src.Notifications.Activity
         [OnClick(Resource.Id.txt_notification_name)]
         void OnNotificationFilter(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.OnShowNotificationFilter();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnShowNotificationFilter();
+            }
         }
 
         public void ShowNotificationFilter()

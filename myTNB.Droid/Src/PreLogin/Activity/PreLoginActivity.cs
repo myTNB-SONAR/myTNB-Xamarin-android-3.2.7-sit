@@ -133,12 +133,21 @@ namespace myTNB_Android.Src.PreLogin.Activity
             }
         }
 
+        protected override void OnPause()
+        {
+            base.OnPause();
+        }
+
         [OnClick(Resource.Id.btnLogin)]
         void OnLogin(object sender, EventArgs eventArgs)
         {
             try
             {
-                this.userActionsListener.NavigateToLogin();
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    this.userActionsListener.NavigateToLogin();
+                }
             }
             catch (Exception ex)
             {
@@ -151,7 +160,11 @@ namespace myTNB_Android.Src.PreLogin.Activity
         {
             try
             {
-                this.userActionsListener.NavigateToRegister();
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    this.userActionsListener.NavigateToRegister();
+                }
             }
             catch (Exception ex)
             {
@@ -164,7 +177,11 @@ namespace myTNB_Android.Src.PreLogin.Activity
         {
             try
             {
-                this.userActionsListener.NavigateToFindUs();
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    this.userActionsListener.NavigateToFindUs();
+                }
             }
             catch (Exception ex)
             {
@@ -177,7 +194,11 @@ namespace myTNB_Android.Src.PreLogin.Activity
         {
             try
             {
-                this.userActionsListener.NavigateToCallUs();
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    this.userActionsListener.NavigateToCallUs();
+                }
             }
             catch (Exception ex)
             {
@@ -192,7 +213,11 @@ namespace myTNB_Android.Src.PreLogin.Activity
         {
             try
             {
-                this.userActionsListener.NavigateToFeedback();
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    this.userActionsListener.NavigateToFeedback();
+                }
             }
             catch (Exception ex)
             {

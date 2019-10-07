@@ -173,9 +173,13 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                             string faqid = tooltipData.description.Substring(startIndex, lengthOfId);
                             if (!string.IsNullOrEmpty(faqid))
                             {
-                                Intent faqIntent = new Intent(this, typeof(FAQListActivity));
-                                faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
-                                StartActivity(faqIntent);
+                                if (!this.GetIsClicked())
+                                {
+                                    this.SetIsClicked(true);
+                                    Intent faqIntent = new Intent(this, typeof(FAQListActivity));
+                                    faqIntent.PutExtra(Constants.FAQ_ID_PARAM, faqid);
+                                    StartActivity(faqIntent);
+                                }
                             }
                         }
                     }
@@ -218,6 +222,11 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
         }
     }
 }
