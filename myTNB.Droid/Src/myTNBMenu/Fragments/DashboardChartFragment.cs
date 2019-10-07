@@ -1800,6 +1800,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         smGraphZoomToggleLayout.Enabled = true;
                         if (ChartDataType == ChartDataType.RM)
                         {
+                            DayViewkWhData = new List<double>();
                             DayViewRMData = new List<double>();
                             if (selectedSMHistoryData != null && selectedSMHistoryData.ByDay != null && selectedSMHistoryData.ByDay.Count > 0)
                             {
@@ -1808,6 +1809,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
                                     {
                                         DayViewRMData.Add(IndividualDayData.Amount);
+                                        DayViewkWhData.Add(IndividualDayData.Consumption);
                                     }
                                 }
                             }
@@ -1843,12 +1845,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         else
                         {
                             DayViewkWhData = new List<double>();
+                            DayViewRMData = new List<double>();
                             if (selectedSMHistoryData != null && selectedSMHistoryData.ByDay != null && selectedSMHistoryData.ByDay.Count > 0)
                             {
                                 foreach (SMUsageHistoryData.ByDayData DayData in selectedSMHistoryData.ByDay)
                                 {
                                     foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
                                     {
+                                        DayViewRMData.Add(IndividualDayData.Amount);
                                         DayViewkWhData.Add(IndividualDayData.Consumption);
                                     }
                                 }
@@ -3174,7 +3178,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         else if (ChartType == ChartType.Day)
                         {
                             float[] valList = new float[1];
-                            float val = (float)DayViewRMData[i];
+                            float val = (float)DayViewkWhData[i];
                             if (float.IsPositiveInfinity(val))
                             {
                                 val = float.PositiveInfinity;
@@ -5729,6 +5733,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         OnWhatIsThisAccountStatusTap(whatDoesThisToolTipMessage, whatDoesThisToolTipBtnLabel);
                     };
+
+                    if (isSMR)
+                    {
+                        rootView.SetBackgroundResource(0);
+                        scrollViewContent.SetBackgroundResource(0);
+                        try
+                        {
+                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
+                            ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                        }
+                        catch (System.Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                        isChangeBackgroundNeeded = false;
+                    }
                 }
                 else
                 {

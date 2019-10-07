@@ -298,29 +298,39 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void ShowSuccess(string message)
         {
-            //if (mSnackBar != null && mSnackBar.IsShown)
-            //{
-            //    mSnackBar.Dismiss();
-            //}
-            //mSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
-            //.SetAction(GetString(Resource.String.forget_password_btn_close), delegate
-            //{
-            //    mSnackBar.Dismiss();
-            //    if (!resendCalled)
-            //    {
-            //        this.Finish();
-            //    }
-            //    else
-            //    {
-            //        resendCalled = false;
-            //    }
-            //}
-            //);
-            //View v = mSnackBar.View;
-            //TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
-            //tv.SetMaxLines(5);
-            //mSnackBar.Show();
+           
+            if (mSnackBar != null && mSnackBar.IsShown)
+            {
+                mSnackBar.Dismiss();
+            }
+            mSnackBar = Snackbar.Make(rootView, message, Snackbar.LengthIndefinite)
+            .SetAction(GetString(Resource.String.forget_password_btn_close), delegate
+            {
+                mSnackBar.Dismiss();
+                if (!resendCalled)
+                {
+                    this.Finish();
+                }
+                else
+                {
+                    resendCalled = false;
+                }
+            }
+            );
+            View v = mSnackBar.View;
+            TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
+            tv.SetMaxLines(5);
+            mSnackBar.Show();
 
+            
+            
+
+            
+
+        }
+
+        public void ShowCodeVerifiedSuccess()
+        {
             Intent intent = new Intent(this, typeof(ForgotPasswordVerificationCodeSuccessActivity));
             intent.PutExtra("email", email);
             intent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
