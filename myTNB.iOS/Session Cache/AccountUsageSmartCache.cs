@@ -109,6 +109,18 @@ namespace myTNB
             }
         }
 
+        public static void SetUsageMetrics(AccountUsageSmartResponseModel response)
+        {
+            if (response != null &&
+                response.d != null &&
+                response.d.data != null)
+            {
+                AccountUsageSmartDataModel data = response.d.data.DeepClone();
+                UsageMetrics = data.OtherUsageMetrics;
+                Tooltips = data.ToolTips;
+            }
+        }
+
         #region Dates
         private static string _currentCycle;
         private static string _startDate;

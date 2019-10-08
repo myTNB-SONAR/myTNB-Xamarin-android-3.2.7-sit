@@ -29,9 +29,18 @@ namespace myTNB
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
             UITableViewCell cell = tableView.DequeueReusableCell("genericViewCell", indexPath);
-            cell.TextLabel.Text = _controller.Items[indexPath.Row];
-            cell.TextLabel.TextColor = MyTNBColor.CharcoalGrey;
-            cell.TextLabel.Font = TNBFont.MuseoSans_16_300;
+
+            UIStringAttributes stringAttributes = new UIStringAttributes
+            {
+                Font = TNBFont.MuseoSans_16_300,
+                ForegroundColor = MyTNBColor.CharcoalGrey,
+                ParagraphStyle = new NSMutableParagraphStyle() { LineSpacing = 5.0f }
+            };
+            var text = _controller.Items[indexPath.Row];
+            var AttributedText = new NSMutableAttributedString(_controller.Items[indexPath.Row]);
+            AttributedText.AddAttributes(stringAttributes, new NSRange(0, text.Length));
+            cell.TextLabel.AttributedText = AttributedText;
+
             cell.TextLabel.Lines = 0;
             cell.TextLabel.LineBreakMode = UILineBreakMode.WordWrap;
             cell.TextLabel.BackgroundColor = UIColor.Clear;

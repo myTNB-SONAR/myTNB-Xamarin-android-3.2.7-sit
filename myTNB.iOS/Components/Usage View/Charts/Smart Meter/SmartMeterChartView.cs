@@ -236,7 +236,10 @@ namespace myTNB
             }
             else if (AccountUsageSmartCache.IsMDMSDown)
             {
-                _baseSmartMeterView = new SmartMeterMDMSDownView();
+                _baseSmartMeterView = new SmartMeterMDMSDownView()
+                {
+                    GetI18NValue = GetI18NValue
+                };
             }
             else if (viewType == SmartMeterConstants.SmartMeterViewType.DayZOut)
             {
