@@ -399,14 +399,32 @@ namespace myTNB
             }
             else
             {
-                _viewChart.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_lblAddress.Frame, 0F)), _viewChart.Frame.Size);
+                if (!AccountStatusCache.AccountStatusIsAvailable() && !_viewStatus.Hidden)
+                {
+                    _viewStatus.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_lblAddress.Frame, 16F)), _viewStatus.Frame.Size);
+                    _viewChart.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewStatus.Frame, 16F)), _viewChart.Frame.Size);
+                }
+                else
+                {
+                    _viewChart.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_lblAddress.Frame, 16F)), _viewChart.Frame.Size);
+                }
+
                 if (isSmartMeterAccount)
                 {
+                    _viewSmartMeter.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, 16F)), _viewSmartMeter.Frame.Size);
                     _lastView = _viewSmartMeter;
                 }
                 else
                 {
-                    _lastView = _viewSSMR.Hidden ? _viewChart : _viewSSMR;
+                    if (_viewSSMR.Hidden)
+                    {
+                        _lastView = _viewChart;
+                    }
+                    else
+                    {
+                        _viewSSMR.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, 16F)), _viewSSMR.Frame.Size);
+                        _lastView = _viewSSMR;
+                    }
                 }
             }
 
@@ -527,6 +545,7 @@ namespace myTNB
         internal void SetEmptyDataComponent(string message)
         {
             _isEmptyData = true;
+            ViewHelper.AdjustFrameSetHeight(_viewChart, GetHeightByScreenSize(229));
             EmptyUsageComponent emptyUsageComponent = new EmptyUsageComponent(_viewChart)
             {
                 GetI18NValue = GetI18NValue
@@ -535,10 +554,8 @@ namespace myTNB
             {
                 _chart.RemoveFromSuperview();
             }
-            _chart = emptyUsageComponent.GetUI();
-            emptyUsageComponent.SetMessage(message);
+            _chart = emptyUsageComponent.GetUI(message);
             _viewChart.AddSubview(_chart);
-            ViewHelper.AdjustFrameSetHeight(_viewChart, _chart.Frame.Height);
             _viewToggle.Hidden = _isEmptyData;
             SetContentView();
         }
