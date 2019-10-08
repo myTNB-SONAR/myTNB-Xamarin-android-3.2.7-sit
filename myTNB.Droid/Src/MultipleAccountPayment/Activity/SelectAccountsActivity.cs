@@ -805,6 +805,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 Intent intent = new Intent(this, typeof(BillingDetailsActivity));
                 intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(selectedAccountData));
                 intent.PutExtra("SELECTED_BILL_DETAILS", JsonConvert.SerializeObject(accountChargeModel));
+                intent.PutExtra("PEEK_BILL_DETAILS", true);
                 StartActivity(intent);
             }
         }

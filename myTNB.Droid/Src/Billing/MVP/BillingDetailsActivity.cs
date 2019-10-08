@@ -96,6 +96,7 @@ namespace myTNB_Android.Src.Billing.MVP
         AccountData selectedAccountData;
         BillingDetailsContract.IPresenter billingDetailsPresenter;
         private LoadingOverlay loadingOverlay;
+		private bool fromSelectAccountPage;
 
         [OnClick(Resource.Id.btnViewBill)]
         void OnViewBill(object sender, EventArgs eventArgs)
@@ -116,10 +117,18 @@ namespace myTNB_Android.Src.Billing.MVP
         {
             if (!this.GetIsClicked())
             {
-                this.SetIsClicked(true);
-                Intent payment_activity = new Intent(this, typeof(SelectAccountsActivity));
-                payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
-                StartActivity(payment_activity);
+                if (fromSelectAccountPage)
+                {
+                    Finish();
+                }
+                else
+                {
+                    this.SetIsClicked(true);
+                    Intent payment_activity = new Intent(this, typeof(SelectAccountsActivity));
+                    payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
+                    StartActivity(payment_activity);
+                }
+                
                 try
                 {
                     FirebaseAnalyticsUtils.LogClickEvent(this, "Billing Payment Buttom Clicked");
@@ -161,7 +170,15 @@ namespace myTNB_Android.Src.Billing.MVP
             {
                 billingHistoryData = JsonConvert.DeserializeObject<BillingHistoryData>(extras.GetString("LATEST_BILL_HISTORY"));
             }
-            SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+			if (extras.ContainsKey("PEEK_BILL_DETAILS"))
+			{
+                fromSelectAccountPage = extras.GetBoolean("PEEK_BILL_DETAILS");
+			}
+			else
+			{
+				fromSelectAccountPage = false;
+			}
+			SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
             accountName.Text = selectedAccountData.AccountNickName;
