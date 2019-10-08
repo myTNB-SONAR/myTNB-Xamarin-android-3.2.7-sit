@@ -585,6 +585,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ses_param1 = "",
                     ses_param2 = ""
                 };
+
+                await GetIsSmrApplyAllowedService();
+
                 GetServicesResponse getServicesResponse = await this.serviceApi.GetServices(new GetServiceRequests()
                 {
                     usrInf = currentUsrInf

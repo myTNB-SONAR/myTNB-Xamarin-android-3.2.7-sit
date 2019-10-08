@@ -454,7 +454,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             myServiceShimmerView.Visibility = ViewStates.Visible;
             myServiceView.Visibility = ViewStates.Gone;
-            this.presenter.InitiateGetApplySMR();
             this.presenter.InitiateMyService();
 
         }
@@ -977,7 +976,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             myServiceShimmerView.Visibility = ViewStates.Visible;
             myServiceView.Visibility = ViewStates.Gone;
 
-            this.presenter.InitiateGetApplySMR();
             this.presenter.RetryMyService();
         }
 
