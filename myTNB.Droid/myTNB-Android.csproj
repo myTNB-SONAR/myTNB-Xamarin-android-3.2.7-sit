@@ -3198,6 +3198,9 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Api\IGetIsSmrApplyAllowedApi.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Requests\GetIsSmrApplyAllowedRequest.cs" />
+    <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\GetIsSmrApplyAllowedResponse.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

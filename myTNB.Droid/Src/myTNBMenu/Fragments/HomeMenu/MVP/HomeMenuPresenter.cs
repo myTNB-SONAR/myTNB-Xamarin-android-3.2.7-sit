@@ -47,6 +47,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private static EnergySavingTipsParentEntity EnergySavingTipsParentManager;
         private static EnergySavingTipsEntity EnergySavingTipsManager;
         private static List<string> loadedSummaryList;
+        private static bool isSMRApplyAllowFlag = true;
 
         private CancellationTokenSource tokenSource = new CancellationTokenSource();
 
@@ -478,6 +479,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             tokenSource.Cancel();
         }
 
+        public async Task InitiateGetApplySMR()
+        {
+            await GetIsSmrApplyAllowedService();
+        }
+
         public async Task InitiateMyService()
         {
             await GetMyServiceService();
@@ -621,6 +627,75 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 // ReadMyServiceFromCache();
                 // this.mView.ShowMyServiceRetryOptions(null);
+                Utility.LoggingNonFatalError(unknownException);
+            }
+        }
+
+
+        private async Task GetIsSmrApplyAllowedService()
+        {
+            try
+            {
+                isSMRApplyAllowFlag = true;
+
+                ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
+                UserInterface currentUsrInf = new UserInterface()
+                {
+                    eid = UserEntity.GetActive().Email,
+                    sspuid = UserEntity.GetActive().UserID,
+                    did = this.mView.GetDeviceId(),
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+
+                List<CustomerBillingAccount> eligibleSMRAccountList = CustomerBillingAccount.GetEligibleAndSMRAccountList();
+                List<string> smrEligibleAccountList = new List<string>();
+                eligibleSMRAccountList.ForEach(account =>
+                {
+                    smrEligibleAccountList.Add(account.AccNum);
+                });
+
+                GetIsSmrApplyAllowedResponse isSMRApplyResponse = await this.serviceApi.GetIsSmrApplyAllowed(new GetIsSmrApplyAllowedRequest()
+                {
+                    usrInf = currentUsrInf,
+                    contractAccounts = smrEligibleAccountList
+                });
+
+                if (isSMRApplyResponse.Data.ErrorCode == "7200" && isSMRApplyResponse.Data.Data.Count > 0)
+                {
+                    isSMRApplyAllowFlag = false;
+                    for (int i = 0; i < isSMRApplyResponse.Data.Data.Count; i++)
+                    {
+                        if (isSMRApplyResponse.Data.Data[i].AllowApply)
+                        {
+                            isSMRApplyAllowFlag = true;
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    isSMRApplyAllowFlag = false;
+                }
+
+            }
+            catch (System.OperationCanceledException cancelledException)
+            {
+                isSMRApplyAllowFlag = false;
+                Utility.LoggingNonFatalError(cancelledException);
+            }
+            catch (ApiException apiException)
+            {
+                isSMRApplyAllowFlag = false;
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception unknownException)
+            {
+                isSMRApplyAllowFlag = false;
                 Utility.LoggingNonFatalError(unknownException);
             }
         }

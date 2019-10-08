@@ -97,6 +97,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Task OnSetEnergySavingTipsToCache();
 
             void OnCancelToken();
+
+            Task InitiateGetApplySMR();
         }
 
         public interface IHomeMenuService
@@ -104,6 +106,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Task<SummaryDashBoardResponse> GetLinkedSummaryInfo(SummaryDashBordRequest request);
             Task<GetServicesResponse> GetServices(GetServiceRequests request);
             Task<AccountSMRStatusResponse> GetSMRAccountStatus(AccountsSMRStatusRequest request);
+            Task<GetIsSmrApplyAllowedResponse> GetIsSmrApplyAllowed(GetIsSmrApplyAllowedRequest request);
         }
     }
 }
