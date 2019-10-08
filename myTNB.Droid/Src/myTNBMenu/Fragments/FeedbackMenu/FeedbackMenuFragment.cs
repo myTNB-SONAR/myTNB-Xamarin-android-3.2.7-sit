@@ -208,55 +208,65 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
         [OnClick(Resource.Id.billRelatedContraint)]
         void OnBillingAndPayment(object sender, EventArgs eventArgs)
         {
-
-            if (DownTimeEntity.IsBCRMDown())
+            if (!this.GetIsClicked())
             {
-                OnBCRMDownTimeErrorMessage();
+                this.SetIsClicked(true);
+                if (DownTimeEntity.IsBCRMDown())
+                {
+                    this.SetIsClicked(false);
+                    OnBCRMDownTimeErrorMessage();
+                }
+                else
+                {
+                    this.userActionsListener.OnBillingPayment();
+                }
             }
-            else
-            {
-                this.userActionsListener.OnBillingPayment();
-            }
-
         }
 
         [OnClick(Resource.Id.faultyStreetLampsContraint)]
         void OnFaultyStreetLamps(object sender, EventArgs eventArgs)
         {
-            if (DownTimeEntity.IsBCRMDown())
+            if (!this.GetIsClicked())
             {
-                OnBCRMDownTimeErrorMessage();
-            }
-            else
-            {
-                this.userActionsListener.OnFaultyStreetLamps();
+                this.SetIsClicked(true);
+                if (DownTimeEntity.IsBCRMDown())
+                {
+                    this.SetIsClicked(false);
+                    OnBCRMDownTimeErrorMessage();
+                }
+                else
+                {
+                    this.userActionsListener.OnFaultyStreetLamps();
+                }
             }
         }
 
         [OnClick(Resource.Id.othersContraint)]
         void OnOthers(object sender, EventArgs eventArgs)
         {
-            if (DownTimeEntity.IsBCRMDown())
+            if (!this.GetIsClicked())
             {
-                OnBCRMDownTimeErrorMessage();
-            }
-            else
-            {
-                this.userActionsListener.OnOthers();
+                this.SetIsClicked(true);
+                if (DownTimeEntity.IsBCRMDown())
+                {
+                    this.SetIsClicked(false);
+                    OnBCRMDownTimeErrorMessage();
+                }
+                else
+                {
+                    this.userActionsListener.OnOthers();
+                }
             }
         }
 
         [OnClick(Resource.Id.submittedFeedbackConstraint)]
         void OnSubmittedFeedback(object sender, EventArgs eventArgs)
         {
-            //if (DownTimeEntity.IsBCRMDown())
-            //{
-            //    OnBCRMDownTimeErrorMessage();
-            //}
-            //else
-            //{
-            this.userActionsListener.OnSubmittedFeedback();
-            //}
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnSubmittedFeedback();
+            }
         }
 
 
@@ -330,6 +340,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
             }
             );
             mCancelledExceptionSnackBar.Show();
+            this.SetIsClicked(false);
 
         }
 
@@ -350,6 +361,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
             }
             );
             mApiExcecptionSnackBar.Show();
+            this.SetIsClicked(false);
 
         }
         private Snackbar mUknownExceptionSnackBar;
@@ -370,6 +382,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
             }
             );
             mUknownExceptionSnackBar.Show();
+            this.SetIsClicked(false);
 
         }
 
@@ -475,9 +488,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                 tv.SetMaxLines(5);
                 v.SetPadding(0, 0, 0, 50);
                 mErrorMessageSnackBar.Show();
+                this.SetIsClicked(false);
             }
             catch (System.Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }

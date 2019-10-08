@@ -88,11 +88,16 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
         {
             try
             {
-                SubmittedFeedback feedback = adapter.GetItemObject(e.Position);
-                this.userActionsListener.OnSelect(feedback);
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    SubmittedFeedback feedback = adapter.GetItemObject(e.Position);
+                    this.userActionsListener.OnSelect(feedback);
+                }
             }
             catch (Exception ex)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(ex);
             }
         }
@@ -206,7 +211,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             }
             );
             mCancelledExceptionSnackBar.Show();
-
+            this.SetIsClicked(false);
         }
 
         private Snackbar mApiExcecptionSnackBar;
@@ -226,7 +231,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             }
             );
             mApiExcecptionSnackBar.Show();
-
+            this.SetIsClicked(false);
         }
         private Snackbar mUknownExceptionSnackBar;
         public void ShowRetryOptionsUnknownException(Exception exception)
@@ -246,7 +251,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             }
             );
             mUknownExceptionSnackBar.Show();
-
+            this.SetIsClicked(false);
         }
 
         public void ShowStartLoading()
@@ -303,7 +308,7 @@ namespace myTNB_Android.Src.SelectSubmittedFeedback.Activity
             Button btn = (Button)v.FindViewById<Button>(Resource.Id.snackbar_action);
             btn.SetTextColor(Android.Graphics.Color.Yellow);
             bcrmExceptionSnackBar.Show();
-
+            this.SetIsClicked(false);
         }
 
 

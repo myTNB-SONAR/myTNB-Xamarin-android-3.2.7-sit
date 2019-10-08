@@ -195,8 +195,12 @@ namespace myTNB_Android.Src.MyAccount.Activity
         [Preserve]
         private void ListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            CustomerBillingAccount customerBillingAccount = adapter.GetItemObject(e.Position);
-            this.userActionsListener.OnManageSupplyAccount(customerBillingAccount, e.Position);
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                CustomerBillingAccount customerBillingAccount = adapter.GetItemObject(e.Position);
+                this.userActionsListener.OnManageSupplyAccount(customerBillingAccount, e.Position);
+            }
         }
 
         private Snackbar mCancelledExceptionSnackBar;
@@ -217,9 +221,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 }
                 );
                 mCancelledExceptionSnackBar.Show();
+                this.SetIsClicked(false);
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -242,9 +248,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 }
                 );
                 mApiExcecptionSnackBar.Show();
+                this.SetIsClicked(false);
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -268,9 +276,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 }
                 );
                 mUknownExceptionSnackBar.Show();
+                this.SetIsClicked(false);
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -587,9 +597,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                 tv.SetMaxLines(4);
                 updatePhoneSnackBar.Show();
+                this.SetIsClicked(false);
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -610,9 +622,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                 tv.SetMaxLines(4);
                 updatePassWordBar.Show();
+                this.SetIsClicked(false);
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -631,9 +645,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                             // EMPTY WILL CLOSE SNACKBAR
                         }
                            ).Show();
+                this.SetIsClicked(false);
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -661,9 +677,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                             // EMPTY WILL CLOSE SNACKBAR
                         }
                            ).Show();
+                this.SetIsClicked(false);
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -711,9 +729,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                              // EMPTY WILL CLOSE SNACKBAR
                          }
                             ).Show();
+                this.SetIsClicked(false);
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -782,9 +802,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                 tv.SetMaxLines(4);
                 updatePassWordBar.Show();
+                this.SetIsClicked(false);
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }

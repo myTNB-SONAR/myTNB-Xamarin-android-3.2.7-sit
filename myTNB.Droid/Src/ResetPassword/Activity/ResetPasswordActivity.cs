@@ -309,6 +309,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             .SetAction(GetString(Resource.String.reset_password_validation_snackbar_btn_close), delegate { mSnackBar.Dismiss(); }
             );
             mSnackBar.Show();
+            this.SetIsClicked(false);
         }
 
         public void ShowErrorMessage(string errorMessage)
@@ -322,6 +323,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             .SetAction(GetString(Resource.String.reset_password_validation_snackbar_btn_close), delegate { mSnackBar.Dismiss(); }
             );
             mSnackBar.Show();
+            this.SetIsClicked(false);
         }
 
         public void DisableSubmitButton()
@@ -353,6 +355,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             }
             );
             mCancelledExceptionSnackBar.Show();
+            this.SetIsClicked(false);
 
         }
 
@@ -375,6 +378,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             }
             );
             mApiExcecptionSnackBar.Show();
+            this.SetIsClicked(false);
 
         }
         private Snackbar mUknownExceptionSnackBar;
@@ -400,6 +404,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             }
             );
             mUknownExceptionSnackBar.Show();
+            this.SetIsClicked(false);
 
         }
 
@@ -424,12 +429,17 @@ namespace myTNB_Android.Src.ResetPassword.Activity
         {
             try
             {
-                string newPassword = txtNewPassword.Text;
-                string confirmPassword = txtConfirmNewPassword.Text;
-                this.userActionsListener.Submit(Constants.APP_CONFIG.API_KEY_ID, newPassword, confirmPassword, enteredPassword, enteredUserName, this.DeviceId());
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    string newPassword = txtNewPassword.Text;
+                    string confirmPassword = txtConfirmNewPassword.Text;
+                    this.userActionsListener.Submit(Constants.APP_CONFIG.API_KEY_ID, newPassword, confirmPassword, enteredPassword, enteredUserName, this.DeviceId());
+                }
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }

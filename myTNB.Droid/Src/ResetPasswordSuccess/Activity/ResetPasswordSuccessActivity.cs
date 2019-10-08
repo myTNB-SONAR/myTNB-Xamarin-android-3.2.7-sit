@@ -100,13 +100,21 @@ namespace myTNB_Android.Src.ResetPasswordSuccess.Activity
         [OnClick(Resource.Id.btnLogin)]
         void OnLogin(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.OnLogin();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnLogin();
+            }
         }
 
         [OnClick(Resource.Id.btnClose)]
         void OnClose(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.OnClose();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnClose();
+            }
         }
 
         public override void OnTrimMemory(TrimMemory level)

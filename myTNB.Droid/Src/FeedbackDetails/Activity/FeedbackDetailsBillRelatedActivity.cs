@@ -199,10 +199,14 @@ namespace myTNB_Android.Src.FeedbackDetails.Activity
 
         private void Adapter_SelectClickEvent(object sender, int e)
         {
-            AttachedImage selectedImage = adapter.GetItemObject(e);
-            var fullImageIntent = new Intent(this, typeof(FeedbackDetailsFullScreenImageActivity));
-            fullImageIntent.PutExtra(Constants.SELECTED_FEEDBACK_DETAIL_IMAGE, JsonConvert.SerializeObject(selectedImage));
-            StartActivity(fullImageIntent);
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                AttachedImage selectedImage = adapter.GetItemObject(e);
+                var fullImageIntent = new Intent(this, typeof(FeedbackDetailsFullScreenImageActivity));
+                fullImageIntent.PutExtra(Constants.SELECTED_FEEDBACK_DETAIL_IMAGE, JsonConvert.SerializeObject(selectedImage));
+                StartActivity(fullImageIntent);
+            }
         }
 
         public override void OnTrimMemory(TrimMemory level)

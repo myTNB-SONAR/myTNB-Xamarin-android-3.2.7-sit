@@ -80,16 +80,19 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             catch (System.OperationCanceledException cancelledException)
             {
                 this.mView.HideProgressDialog();
+                this.mView.EnableButton();
                 Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
                 this.mView.HideProgressDialog();
+                this.mView.EnableButton();
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
                 this.mView.HideProgressDialog();
+                this.mView.EnableButton();
                 Utility.LoggingNonFatalError(unknownException);
             }
         }

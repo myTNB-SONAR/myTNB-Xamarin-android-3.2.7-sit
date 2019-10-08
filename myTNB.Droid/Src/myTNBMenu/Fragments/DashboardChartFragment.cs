@@ -5261,6 +5261,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 );
                 mNoInternetSnackbar.Show();
+                this.SetIsClicked(false);
             }
             catch (System.Exception e)
             {
@@ -5285,6 +5286,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 );
                 mLoadBillSnackBar.Show();
+                this.SetIsClicked(false);
             }
             catch (System.Exception e)
             {
@@ -5577,6 +5579,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 );
                 mSmartMeterError.Show();
+                this.SetIsClicked(false);
             }
             catch (System.Exception e)
             {
@@ -5602,6 +5605,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 );
                 mDisconnectionSnackbar.Show();
+                this.SetIsClicked(false);
             }
             catch (System.Exception e)
             {
@@ -5628,6 +5632,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 );
                 mSMRSnackbar.Show();
+                this.SetIsClicked(false);
             }
             catch (System.Exception e)
             {

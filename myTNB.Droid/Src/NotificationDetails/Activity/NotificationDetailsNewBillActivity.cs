@@ -218,10 +218,15 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         {
             try
             {
-                this.newBillUserActionsListener.OnPayment(notificationDetails);
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    this.newBillUserActionsListener.OnPayment(notificationDetails);
+                }
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -231,10 +236,15 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         {
             try
             {
-                this.newBillUserActionsListener.OnViewDetails(notificationDetails);
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    this.newBillUserActionsListener.OnViewDetails(notificationDetails);
+                }
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }

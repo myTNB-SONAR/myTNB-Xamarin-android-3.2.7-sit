@@ -99,6 +99,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 );
                 mSnackBar.Show();
             }
+            this.SetIsClicked(false);
         }
 
         public void ShowSuccess(string message)
@@ -197,8 +198,12 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         [OnClick(Resource.Id.btnSubmit)]
         void OnGetCode(object sender, EventArgs eventArgs)
         {
-            string email = txtEmail.Text;
-            this.userActionsListener.GetCode(Constants.APP_CONFIG.API_KEY_ID, email);
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                string email = txtEmail.Text;
+                this.userActionsListener.GetCode(Constants.APP_CONFIG.API_KEY_ID, email);
+            }
         }
 
         public void EnableSubmitButton()
@@ -260,6 +265,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             }
             );
             mCancelledExceptionSnackBar.Show();
+            this.SetIsClicked(false);
 
         }
 
@@ -282,7 +288,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             }
             );
             mApiExcecptionSnackBar.Show();
-
+            this.SetIsClicked(false);
         }
         private Snackbar mUknownExceptionSnackBar;
         public void ShowRetryOptionsUnknownException(Exception exception)
@@ -304,7 +310,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             }
             );
             mUknownExceptionSnackBar.Show();
-
+            this.SetIsClicked(false);
         }
 
         public override bool ShowCustomToolbarTitle()
@@ -365,6 +371,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             }
             );
             mCodeCancelledExceptionSnackBar.Show();
+            this.SetIsClicked(false);
         }
 
         private Snackbar mCodeApiExceptionSnackBar;
@@ -385,6 +392,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             }
             );
             mCodeApiExceptionSnackBar.Show();
+            this.SetIsClicked(false);
         }
         private Snackbar mCodeUnknownException;
         public void ShowRetryOptionsCodeUnknownException(Exception exception)
@@ -404,6 +412,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             }
             );
             mCodeUnknownException.Show();
+            this.SetIsClicked(false);
         }
 
         public void ClearTextFields()
