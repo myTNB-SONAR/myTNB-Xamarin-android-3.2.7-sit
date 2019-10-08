@@ -149,26 +149,21 @@ namespace myTNB
         private UITextView GetInfo()
         {
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = new NSAttributedString(GetI18NValue(IsApplication
-                 ? SSMRConstants.I18N_TnCSubscribe : SSMRConstants.I18N_TnCUnsubscribe)
-                                                                           , new NSAttributedStringDocumentAttributes
-                                                                           {
-                                                                               DocumentType = NSDocumentType.HTML,
-                                                                               StringEncoding = NSStringEncoding.UTF8,
-                                                                           }
-                                                                           , ref htmlBodyError);
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(IsApplication
+                ? SSMRConstants.I18N_TnCSubscribe : SSMRConstants.I18N_TnCUnsubscribe)
+                        , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(12F));
+            NSMutableAttributedString mutableHTMLFooter = new NSMutableAttributedString(htmlBody);
+
             UIStringAttributes linkAttributes = new UIStringAttributes
             {
                 ForegroundColor = MyTNBColor.WaterBlue,
-                Font = TNBFont.MuseoSans_12_500,
                 UnderlineStyle = NSUnderlineStyle.None,
                 UnderlineColor = UIColor.Clear
             };
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
             {
-                ForegroundColor = MyTNBColor.CharcoalGrey,
-                Font = TNBFont.MuseoSans_12_300
+                ForegroundColor = MyTNBColor.CharcoalGrey
             }, new NSRange(0, htmlBody.Length));
             UITextView txtFieldInfo = new UITextView
             {
