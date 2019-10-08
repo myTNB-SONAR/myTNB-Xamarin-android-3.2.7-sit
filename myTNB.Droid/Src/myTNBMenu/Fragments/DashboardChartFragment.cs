@@ -5707,7 +5707,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             if (accountStatusData != null)
             {
-                if (accountStatusData.DisconnectionStatus.ToUpper() == Constants.ENERGY_DISCONNECTION_KEY)
+                if (!string.IsNullOrEmpty(accountStatusData.DisconnectionStatus) && accountStatusData.DisconnectionStatus.ToUpper() != Constants.ENERGY_DISCONNECTION_KEY)
                 {
                     energyDisconnectionButton.Visibility = ViewStates.Visible;
                     string accountStatusMessage = accountStatusData?.AccountStatusMessage ?? "Your electricity is currently disconnected.";

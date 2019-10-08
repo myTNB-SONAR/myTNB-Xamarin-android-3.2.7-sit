@@ -128,7 +128,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
                 if (installDetailsResponse != null && installDetailsResponse.Data != null && installDetailsResponse.Data.ErrorCode == "7200")
                 {
-                    if (installDetailsResponse.Data.Data.DisconnectionStatus.ToUpper() == Constants.ENERGY_DISCONNECTION_KEY)
+                    if (!string.IsNullOrEmpty(installDetailsResponse.Data.Data.DisconnectionStatus) && installDetailsResponse.Data.Data.DisconnectionStatus.ToUpper() != Constants.ENERGY_DISCONNECTION_KEY)
                     {
                         this.mView.ShowAccountStatus(installDetailsResponse.Data.Data);
                         this.mView.HideSSMRDashboardView();
