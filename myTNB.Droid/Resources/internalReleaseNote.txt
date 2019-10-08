@@ -1,2 +1,2 @@
-SIT Build v2.0.0(125)- 10/07
+SIT Build v2.0.0(126)- 10/08
 - Bug Fixes. Please check SIT Wiki for the changes.
