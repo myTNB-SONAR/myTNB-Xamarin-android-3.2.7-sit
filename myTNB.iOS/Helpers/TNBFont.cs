@@ -5,7 +5,7 @@ namespace myTNB
 {
     public static class TNBFont
     {
-        readonly static string FONTNAME_300 = "MuseoSans-300";
+        public readonly static string FONTNAME_300 = "MuseoSans-300";
         readonly static string FONTNAME_500 = "MuseoSans-500";
 
         private static nfloat WidthBase = 320;
@@ -68,5 +68,7 @@ namespace myTNB
         public static UIFont MuseoSans_22_500 { get { return _m500_22; } }
         public static UIFont MuseoSans_24_500 { get { return _m500_24; } }
         public static UIFont MuseoSans_26_500 { get { return _m500_26; } }
+
+        public static nfloat GetFontSize(nfloat size) { return size * ARDelta; }
     }
 }

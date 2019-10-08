@@ -99,8 +99,8 @@ namespace myTNB
                             else
                             {
                                 _currentIndex = -1;
+                                ActivityIndicator.Hide();
                             }
-                            ActivityIndicator.Hide();
                         }
                         else
                         {
@@ -137,14 +137,13 @@ namespace myTNB
             {
                 InvokeOnMainThread(async () =>
                 {
-                    ActivityIndicator.Show();
                     await LoadSMRAccountActivityInfo(_currAcc);
-                    ActivityIndicator.Hide();
                 });
             }
             else
             {
                 SetEnableSSMR();
+                ActivityIndicator.Hide();
             }
         }
 
@@ -156,7 +155,7 @@ namespace myTNB
                 AdjustHeader();
             }
             _readingHistoryTableView.TableFooterView = null;
-            _readingHistoryTableView.Source = new SSMRReadingHistoryDataSource(OnTableViewScrolled, _readingHistoryList);
+            _readingHistoryTableView.Source = new SSMRReadingHistoryDataSource(OnTableViewScrolled, _readingHistoryList, false);
             _readingHistoryTableView.ReloadData();
         }
 
@@ -531,6 +530,7 @@ namespace myTNB
                         _readingHistoryTableView.Hidden = true;
                         DisplayRefresh();
                     }
+                    ActivityIndicator.Hide();
                 });
             });
         }

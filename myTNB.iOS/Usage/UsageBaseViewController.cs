@@ -364,8 +364,7 @@ namespace myTNB
                 }
                 else
                 {
-                    bool res = isSmartMeterAccount ? _legendIsVisible && !_viewLegend.Hidden : _legendIsVisible;
-                    _viewLegend.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, res ? 16F : 0F)), _viewLegend.Frame.Size);
+                    _viewLegend.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, _legendIsVisible && _tariffList?.Count > 0 ? 16F : 0F)), _viewLegend.Frame.Size);
                     _viewToggle.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_legendIsVisible ? _viewLegend.Frame : _viewChart.Frame, 16F)), _viewToggle.Frame.Size);
                     _lastView = _viewToggle;
                     if (accountIsSSMR)
@@ -400,8 +399,33 @@ namespace myTNB
             }
             else
             {
-                _viewChart.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_lblAddress.Frame, 0F)), _viewChart.Frame.Size);
-                _lastView = _viewSSMR.Hidden ? _viewChart : _viewSSMR;
+                if (!AccountStatusCache.AccountStatusIsAvailable() && !_viewStatus.Hidden)
+                {
+                    _viewStatus.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_lblAddress.Frame, 16F)), _viewStatus.Frame.Size);
+                    _viewChart.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewStatus.Frame, 16F)), _viewChart.Frame.Size);
+                }
+                else
+                {
+                    _viewChart.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_lblAddress.Frame, 16F)), _viewChart.Frame.Size);
+                }
+
+                if (isSmartMeterAccount)
+                {
+                    _viewSmartMeter.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, 16F)), _viewSmartMeter.Frame.Size);
+                    _lastView = _viewSmartMeter;
+                }
+                else
+                {
+                    if (_viewSSMR.Hidden)
+                    {
+                        _lastView = _viewChart;
+                    }
+                    else
+                    {
+                        _viewSSMR.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, 16F)), _viewSSMR.Frame.Size);
+                        _lastView = _viewSSMR;
+                    }
+                }
             }
 
             _footerIsDocked = (_lastView.Frame.GetMaxY() + _navbarContainer.Frame.Height + GetScaledHeight(8F)) < _footerYPos + GetScaledHeight(10);
@@ -521,6 +545,7 @@ namespace myTNB
         internal void SetEmptyDataComponent(string message)
         {
             _isEmptyData = true;
+            ViewHelper.AdjustFrameSetHeight(_viewChart, GetHeightByScreenSize(229));
             EmptyUsageComponent emptyUsageComponent = new EmptyUsageComponent(_viewChart)
             {
                 GetI18NValue = GetI18NValue
@@ -529,10 +554,8 @@ namespace myTNB
             {
                 _chart.RemoveFromSuperview();
             }
-            _chart = emptyUsageComponent.GetUI();
-            emptyUsageComponent.SetMessage(message);
+            _chart = emptyUsageComponent.GetUI(message);
             _viewChart.AddSubview(_chart);
-            ViewHelper.AdjustFrameSetHeight(_viewChart, _chart.Frame.Height);
             _viewToggle.Hidden = _isEmptyData;
             SetContentView();
         }
