@@ -156,7 +156,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             MenuInflater.Inflate(Resource.Menu.NotificationToolbarMenu, menu);
             notificationMenu = menu;
             notificationMenu.FindItem(Resource.Id.action_notification_read).SetIcon(GetDrawable(Resource.Drawable.ic_header_markread)).SetVisible(false);
-            int count = UserNotificationEntity.ListAllActive().Count;
+            int count = notificationRecyclerAdapter.GetAllNotifications().Count;
             if (count == 0)
             {
                 notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(false);
@@ -165,21 +165,6 @@ namespace myTNB_Android.Src.Notifications.Activity
             {
                 notificationMenu.FindItem(Resource.Id.action_notification_edit_delete).SetIcon(GetDrawable(Resource.Drawable.notification_select_all)).SetVisible(true);
             }
-            //if (hasNotification)
-            //{
-            //    this.userActionsListener.QueryOnLoad(this.DeviceId());
-            //}
-            //else if (count == 0)
-            //{
-            //    ShowQueryProgress();
-            //    this.userActionsListener.QueryOnLoad(this.DeviceId());
-            //    ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
-            //}
-            //else
-            //{
-            //    ShowQueryProgress();
-            //    this.userActionsListener.QueryNotifications(this.DeviceId());
-            //}
             return base.OnCreateOptionsMenu(menu);
         }
 
@@ -465,12 +450,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
 
             notificationRecyclerAdapter = new NotificationRecyclerAdapter(this, this, true);
-            //notificationRecyclerView.SetEmptyView(FindViewById(Resource.Id.emptyLayout));
-            //notificationRecyclerAdapter.SetNotificationSelectListener(this.mPresenter);
-
             notificationRecyclerView.SetAdapter(notificationRecyclerAdapter);
-            //NotificationSimpleCallback notificationSimpleCallback = new NotificationSimpleCallback(notificationRecyclerAdapter,0, ItemTouchHelper.Left);
-
             notificationSwipeDelete = new NotificationSwipeDeleteCallback(this, GetDrawable(Resource.Drawable.notification_delete_active), GetDrawable(Resource.Drawable.ic_header_markread));
 			notificationSwipeDelete.SetInitialState();
 			itemTouchHelper = new ItemTouchHelper(notificationSwipeDelete);
@@ -500,27 +480,8 @@ namespace myTNB_Android.Src.Notifications.Activity
             notificationRecyclerAdapter.SetClickable(true);
         }
 
-
-        //[OnItemClick(Resource.Id.notification_listview)]
-        void OnItemClick(object sender, AbsListView.ItemClickEventArgs args)
-        {
-            //try
-            //{
-            //    UserNotificationData data = notificationAdapter.GetItemObject(args.Position);
-            //    this.userActionsListener.OnSelectedNotificationItem(data, args.Position);
-            //}
-            //catch (Exception e)
-            //{
-            //    Utility.LoggingNonFatalError(e);
-            //}
-        }
-
         public void ShowProgress()
         {
-            //if (mProgressDialog != null && !mProgressDialog.IsShowing)
-            //{
-            //    mProgressDialog.Show();
-            //}
             try
             {
                 if (loadingOverlay != null && loadingOverlay.IsShowing)
@@ -581,10 +542,6 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         public void HideProgress()
         {
-            //if (mProgressDialog != null && mProgressDialog.IsShowing)
-            //{
-            //    mProgressDialog.Dismiss();
-            //}
             try
             {
                 if (loadingOverlay != null && loadingOverlay.IsShowing)
@@ -616,6 +573,9 @@ namespace myTNB_Android.Src.Notifications.Activity
             SetToolBarTitle(GetString(Resource.String.notification_activity_title));
             notificationRecyclerAdapter.SetClickable(true);
             notificationRecyclerAdapter.SelectAllNotifications(false);
+            selectAllCheckboxButton.SetOnCheckedChangeListener(null);
+            selectAllCheckboxButton.Checked = false;
+            selectAllCheckboxButton.SetOnCheckedChangeListener(this);
             if (IsActive())
             {
                 HideProgress();
@@ -726,38 +686,13 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         }
 
-
-
-
-
         public void UpdateIsReadNotificationItem(int position, bool isRead)
         {
-            //try
-            //{
-            //    UserNotificationData userNotificationData = notificationAdapter.GetItemObject(position);
-            //    userNotificationData.IsRead = isRead;
-            //    notificationAdapter.Update(position, userNotificationData);
-            //}
-            //catch (Exception e)
-            //{
-            //    Utility.LoggingNonFatalError(e);
-            //}
         }
 
         public void UpdateIsDeleteNotificationItem(int position, bool isDelete)
         {
-            //try
-            //{
-            //    UserNotificationData userNotificationData = notificationAdapter.GetItemObject(position);
-            //    notificationAdapter.Remove(position);
-            //}
-            //catch (Exception e)
-            //{
-            //    Utility.LoggingNonFatalError(e);
-            //}
-
         }
-
 
         private Snackbar mNotificationRemoved;
         public void ShowNotificationRemoved()
@@ -809,28 +744,8 @@ namespace myTNB_Android.Src.Notifications.Activity
             StartActivityForResult(notificationDetails, Constants.NOTIFICATION_DETAILS_REQUEST_CODE);
         }
 
-        //public void ShowSelectedNotificationNewBillItem(NotificationDetails.Models.NotificationDetails details, UserNotificationData notificationData, int position)
-        //{
-        //    Intent notificationDetails = new Intent(this, typeof(NotificationDetailsNewBillActivity));
-        //    notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
-        //    notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_ITEM_POSITION, position);
-        //    StartActivityForResult(notificationDetails, Constants.NOTIFICATION_DETAILS_REQUEST_CODE);
-        //}
-
-        //public void ShowSelectedNotificationDunningDisconnection(NotificationDetails.Models.NotificationDetails details, UserNotificationData notificationData, int position)
-        //{
-        //    Intent notificationDetails = new Intent(this, typeof(NotificationDetailAccountRelatedMattersActivity));
-        //    notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_DETAIL_ITEM, JsonConvert.SerializeObject(details));
-        //    notificationDetails.PutExtra(Constants.SELECTED_NOTIFICATION_ITEM_POSITION, position);
-        //    StartActivityForResult(notificationDetails, Constants.NOTIFICATION_DETAILS_REQUEST_CODE);
-        //}
-
         public void ShowQueryProgress()
         {
-            //if (mQueryProgressDialog != null && !mQueryProgressDialog.IsShowing)
-            //{
-            //    mQueryProgressDialog.Show();
-            //}
             try
             {
                 if (loadingOverlay != null && loadingOverlay.IsShowing)
@@ -849,10 +764,6 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         public void HideQueryProgress()
         {
-            //if (mQueryProgressDialog != null && mQueryProgressDialog.IsShowing)
-            //{
-            //    mQueryProgressDialog.Dismiss();
-            //}
             try
             {
                 if (loadingOverlay != null && loadingOverlay.IsShowing)
@@ -1025,7 +936,6 @@ namespace myTNB_Android.Src.Notifications.Activity
         public void ShowNotificationDetails(int itemPosition)
 		{
 			UserNotificationData userNotificationData = notificationRecyclerAdapter.GetAllNotifications()[itemPosition];
-            //mPresenter.OnSelectedNotificationItem(userNotificationData, itemPosition);
             mPresenter.OnShowNotificationDetails(userNotificationData, itemPosition);
 		}
 
@@ -1036,7 +946,6 @@ namespace myTNB_Android.Src.Notifications.Activity
             ShowSelectAllOption(ViewStates.Visible);
             notificationRecyclerAdapter.ShowSelectButtons(true);
             editState = EditNotificationStates.SHOW;
-            //itemTouchHelper.AttachToRecyclerView(null);
             notificationRecyclerAdapter.SetClickable(false);
             SetToolBarTitle(GetString(Resource.String.Notification_Select));
         }
