@@ -210,12 +210,7 @@ namespace myTNB
         {
             // Do your magic to handle the notification data
             Debug.WriteLine(notification?.Request?.Content?.UserInfo);
-            if (DataManager.DataManager.SharedInstance.IsLoggedIn())
-            {
-                DataManager.DataManager.SharedInstance.IsFromPushNotification = true;
-            }
             Debug.WriteLine("debug: WillPresentNotification");
-
         }
 
         // Receive data message on iOS 10 devices.

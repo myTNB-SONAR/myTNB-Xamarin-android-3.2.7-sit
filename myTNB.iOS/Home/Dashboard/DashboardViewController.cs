@@ -67,30 +67,26 @@ namespace myTNB.Dashboard
                 DisplayCustomAlert(string.Empty, acctStatusTooltipMsg, acctStatusTooltipBtnTitle, null);
             });
 
-            if (!DataManager.DataManager.SharedInstance.IsLoadingFromDashboard)
+            if (DataManager.DataManager.SharedInstance.UserNotifications?.Count == 0)
             {
-                if (DataManager.DataManager.SharedInstance.UserNotifications?.Count == 0)
+                NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                 {
-                    NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+                    InvokeOnMainThread(async () =>
                     {
-                        InvokeOnMainThread(async () =>
+                        if (NetworkUtility.isReachable)
                         {
-                            if (NetworkUtility.isReachable)
+                            await PushNotificationHelper.GetNotifications();
+                            if (_dashboardMainComponent._titleBarComponent != null)
                             {
-                                DataManager.DataManager.SharedInstance.IsLoadingFromDashboard = true;
-                                await PushNotificationHelper.GetNotifications();
-                                if (_dashboardMainComponent._titleBarComponent != null)
-                                {
-                                    _dashboardMainComponent._titleBarComponent.SetPrimaryImage(PushNotificationHelper.GetNotificationImage());
-                                }
+                                _dashboardMainComponent._titleBarComponent.SetPrimaryImage(PushNotificationHelper.GetNotificationImage());
                             }
-                            else
-                            {
-                                DisplayNoDataAlert();
-                            }
-                        });
+                        }
+                        else
+                        {
+                            DisplayNoDataAlert();
+                        }
                     });
-                }
+                });
             }
         }
 

@@ -187,25 +187,18 @@ namespace myTNB.PushNotification
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        if (DataManager.DataManager.SharedInstance.IsLoadingFromDashboard)
+                        if (DataManager.DataManager.SharedInstance.IsNotificationDeleted)
                         {
-                            ActivityIndicator.Show();
+                            DisplayToast(GetI18NValue(PushNotificationConstants.I18N_NotificationDeleted));
+                            DataManager.DataManager.SharedInstance.IsNotificationDeleted = false;
+                        }
+                        if (DataManager.DataManager.SharedInstance.NotificationNeedsUpdate)
+                        {
+                            GetUserNotif();
                         }
                         else
                         {
-                            if (DataManager.DataManager.SharedInstance.IsNotificationDeleted)
-                            {
-                                DisplayToast(GetI18NValue(PushNotificationConstants.I18N_NotificationDeleted));
-                                DataManager.DataManager.SharedInstance.IsNotificationDeleted = false;
-                            }
-                            if (DataManager.DataManager.SharedInstance.NotificationNeedsUpdate)
-                            {
-                                GetUserNotif();
-                            }
-                            else
-                            {
-                                ValidateResponse();
-                            }
+                            ValidateResponse();
                         }
                     }
                     else
