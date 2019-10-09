@@ -28,28 +28,10 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
                 this.onBoardingDataModelList.Add(model);
             }
         }
-
+        
         public List<OnBoardingDataModel> GetOnBoardingSMRData()
         {
             return this.onBoardingDataModelList;
-        }
-
-        public void OnBoardingList()
-        {
-            OnboardingSSMREntity entity = new OnboardingSSMREntity();
-            List<OnboardingSSMREntity> items = entity.GetAllItems();
-            if (items.Count > 0)
-            {
-                onBoardingDataModelList = new List<OnBoardingDataModel>();
-                foreach (OnboardingSSMRModel model in items)
-                {
-                    OnBoardingDataModel dataModel = new OnBoardingDataModel();
-                    dataModel.ImageURL = model.Image;
-                    dataModel.Title = model.Title;
-                    dataModel.Description = model.Description;
-                    this.onBoardingDataModelList.Add(dataModel);
-                }
-            }
         }
 
         public void GetCARegisteredContactInfo()

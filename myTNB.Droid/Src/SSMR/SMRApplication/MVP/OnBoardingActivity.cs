@@ -108,9 +108,8 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             presenter = new OnBoardingSMRPresenter(this);
             onBoardViewPager = (ViewPager)FindViewById(Resource.Id.onBoardingSMRViewPager);
             onBoardViewPager.AddOnPageChangeListener(this);
-            this.presenter.OnBoardingList();
             onBoardingSMRAdapter = new OnBoardingSMRAdapter(SupportFragmentManager);
-            onBoardingSMRAdapter.SetData(this.presenter.GetOnBoardingSMRData());
+            onBoardingSMRAdapter.SetData(MyTNBAppWalkthroughData.GetInstance().GetApplySSMROnboardingList());
 
             onBoardViewPager.Adapter = onBoardingSMRAdapter;
 

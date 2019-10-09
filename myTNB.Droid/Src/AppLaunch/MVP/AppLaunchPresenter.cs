@@ -10,7 +10,6 @@ using System.IO;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SitecoreCMS.Services;
 using myTNB.SQLite.SQLiteDataManager;
-using myTNB_Android.Src.AppLaunch.Api;
 using myTNB_Android.Src.AppLaunch.Async;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
@@ -88,7 +87,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     Console.WriteLine("GooglePlayServices is Installed");
                     ServicePointManager.ServerCertificateValidationCallback += SSLFactoryHelper.CertificateValidationCallBack;
                     LoadAccounts();
-                    OnGetSSMRTimeStamp();
+                    GetSSMRWalkThrough();
                 }
             }
             catch (Exception e)
@@ -379,19 +378,19 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             }
             catch (ApiException apiException)
             {
-                
+
                 this.mView.ShowRetryOptionApiException(apiException);
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Newtonsoft.Json.JsonReaderException e)
             {
-                
+
                 this.mView.ShowRetryOptionUknownException(e);
                 Utility.LoggingNonFatalError(e);
             }
             catch (Exception e)
             {
-                
+
                 this.mView.ShowRetryOptionUknownException(e);
                 Utility.LoggingNonFatalError(e);
             }
@@ -893,58 +892,6 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             this.mView.OnAppUpdateClick();
         }
 
-        public void OnGetSSMRTimeStamp()
-        {
-            try
-            {
-                OnboardingSSMRParentEntity wtManager = new OnboardingSSMRParentEntity();
-                List<OnboardingSSMRParentEntity> items = wtManager.GetAllItems();
-                if (items != null && items.Count != 0)
-                {
-                    foreach (OnboardingSSMRParentEntity obj in items)
-                    {
-                        mApplySSMRSavedTimeStamp = obj.Timestamp;
-                    }
-                }
-                GetSSMRWalkThroughTimeStamp();
-            }
-            catch (Exception e)
-            {
-                GetSSMRWalkThroughTimeStamp();
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        public Task GetSSMRWalkThroughTimeStamp()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
-                    ApplySSMRTimeStampResponseModel test = getItemsService.GetApplySSMRWalkthroughTimestampItem();
-
-                    if (test.Status.Equals("Success"))
-                    {
-                        OnboardingSSMRParentEntity wtManager = new OnboardingSSMRParentEntity();
-                        wtManager.DeleteTable();
-                        wtManager.CreateTable();
-                        wtManager.InsertListOfItems(test.Data);
-                    }
-                    if (test.Data[0].Timestamp != mApplySSMRSavedTimeStamp)
-                    {
-                        GetSSMRWalkThrough();
-                    }
-                }
-                catch (Exception e)
-                {
-                    GetSSMRWalkThrough();
-                    Utility.LoggingNonFatalError(e);
-                }
-            });
-        }
-
         public Task GetSSMRWalkThrough()
         {
             return Task.Factory.StartNew(() =>
@@ -953,14 +900,19 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
-                    ApplySSMRResponseModel responseModel = getItemsService.GetApplySSMRWalkthroughItems();
 
-                    if (responseModel.Status.Equals("Success"))
+                    ApplySSMRTimeStampResponseModel timestampModel = getItemsService.GetApplySSMRWalkthroughTimestampItem();
+                    if (timestampModel.Status.Equals("Success") && timestampModel.Data != null && timestampModel.Data.Count > 0)
                     {
-                        OnboardingSSMREntity wtManager = new OnboardingSSMREntity();
-                        wtManager.DeleteTable();
-                        wtManager.CreateTable();
-                        wtManager.InsertListOfItems(responseModel.Data);
+                        if (SitecoreCmsEntity.IsNeedUpdates(SitecoreCmsEntity.SITE_CORE_ID.APPLY_SSMR_WALKTHROUGH, timestampModel.Data[0].Timestamp))
+                        {
+                            ApplySSMRResponseModel responseModel = getItemsService.GetApplySSMRWalkthroughItems();
+
+                            if (responseModel.Status.Equals("Success"))
+                            {
+                                SitecoreCmsEntity.InsertSiteCoreItem(SitecoreCmsEntity.SITE_CORE_ID.APPLY_SSMR_WALKTHROUGH, JsonConvert.SerializeObject(responseModel.Data), timestampModel.Data[0].Timestamp);
+                            }
+                        }
                     }
                 }
                 catch (Exception e)
