@@ -916,9 +916,6 @@
     <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\icDisplayUnsuccessful%402x.png" />
     <ImageAsset Include="Assets.xcassets\Red-Cross.imageset\icDisplayUnsuccessful%403x.png" />
     <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\SMR-Medium-Icon.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\SMR-Medium-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\SMR-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\oval.png" />
     <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\oval%402x.png" />
@@ -961,17 +958,7 @@
     <ImageAsset Include="Assets.xcassets\Help-Background-6.imageset\faqColor1Copy%402x.png" />
     <ImageAsset Include="Assets.xcassets\Help-Background-6.imageset\faqColor1Copy%403x.png" />
     <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG1.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG1.imageset\SMR-ToolTip-BG1.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG1.imageset\SMR-ToolTip-BG1%402x.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG1.imageset\SMR-ToolTip-BG1%403x.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG2.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG2.imageset\SMR-ToolTip-BG2.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG2.imageset\SMR-ToolTip-BG2%402x.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG2.imageset\SMR-ToolTip-BG2%403x.png" />
     <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG3.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG3.imageset\SMR-ToolTip-BG3.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG3.imageset\SMR-ToolTip-BG3%402x.png" />
-    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG3.imageset\SMR-ToolTip-BG3%403x.png" />
     <ImageAsset Include="Assets.xcassets\Stub-Promotion-1.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Stub-Promotion-2.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Stub-Promotion-1.imageset\image1.png" />
@@ -1005,12 +992,6 @@
     <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\Add-Icon-Blue.png" />
     <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\Add-Icon-Blue%402x.png" />
     <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\Add-Icon-Blue%403x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\singlePhase.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\singlePhase%402x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\singlePhase%403x.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase-1.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%402x-1.png" />
-    <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group%402x.png" />
@@ -1220,6 +1201,19 @@
     <ImageAsset Include="Assets.xcassets\Empty-Usage-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Empty-Usage-Icon.imageset\Empty-Usage-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Empty-Usage-Icon.imageset\Empty-Usage-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG2.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG1.imageset\SMR-ToolTip-BG1%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG1.imageset\SMR-ToolTip-BG1%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG2.imageset\SMR-ToolTip-BG2%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG2.imageset\SMR-ToolTip-BG2%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\SMR-Medium-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-Medium-Icon.imageset\SMR-Medium-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG3.imageset\SMR-ToolTip-BG3%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG3.imageset\SMR-ToolTip-BG3%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%403x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\multiPhase%402x.png" />
+    <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\multiPhase%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1557,7 +1551,6 @@
     <Folder Include="Assets.xcassets\Help-Background-6.imageset\" />
     <Folder Include="Home\Dashboard\DashboardHome\Promotion\" />
     <Folder Include="Assets.xcassets\SMR-ToolTip-BG1.imageset\" />
-    <Folder Include="Assets.xcassets\SMR-ToolTip-BG2.imageset\" />
     <Folder Include="Assets.xcassets\SMR-ToolTip-BG3.imageset\" />
     <Folder Include="Assets.xcassets\Stub-Promotion-1.imageset\" />
     <Folder Include="Assets.xcassets\Stub-Promotion-2.imageset\" />
@@ -1647,6 +1640,7 @@
     <Folder Include="Assets.xcassets\SSMR-No-History.imageset\" />
     <Folder Include="Assets.xcassets\Empty-Usage-Icon.imageset\" />
     <Folder Include="Model\GetIsSmrApplyAllowed\" />
+    <Folder Include="Assets.xcassets\SMR-ToolTip-BG2.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
