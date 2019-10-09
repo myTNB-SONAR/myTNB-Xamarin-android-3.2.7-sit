@@ -21,6 +21,7 @@ namespace myTNB
         public double SelectedAccountDueAmount;
         public List<CustomerAccountRecordModel> _accountsForPayment = new List<CustomerAccountRecordModel>();
         public double totalAmount;
+        public bool IsFromBillDetails { set; get; }
 
         private List<CustomerAccountRecordModel> _accounts = new List<CustomerAccountRecordModel>();
         private List<PaymentRecordModel> _accountsForDisplay = new List<PaymentRecordModel>();
@@ -285,6 +286,7 @@ namespace myTNB
             if (viewController != null)
             {
                 viewController.IsRoot = true;
+                viewController.IsFromBillSelection = true;
                 viewController.AccountNumber = _selectedAccountNumber;
                 NavigationController.PushViewController(viewController, true);
             }
@@ -350,7 +352,7 @@ namespace myTNB
             if (_isLoadmore) { return; }
             if (_accountsForDisplay != null && _accountsForDisplay.Count > 0 && _accountsForDisplay[0] != null)
             {
-                if (AccountChargesCache.HasMandatory(_accountsForDisplay[0].accNum))
+                if (AccountChargesCache.HasMandatory(_accountsForDisplay[0].accNum) && !IsFromBillDetails)
                 {
                     OnShowItemisedTooltip(_accountsForDisplay[0].accNum);
                 }
