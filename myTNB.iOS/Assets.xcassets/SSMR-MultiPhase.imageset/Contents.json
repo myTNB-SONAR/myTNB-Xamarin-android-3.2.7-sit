@@ -4,17 +4,16 @@
       "idiom": "universal"
     },
     {
-      "filename": "singlePhase.png",
       "scale": "1x",
       "idiom": "universal"
     },
     {
-      "filename": "singlePhase@2x.png",
+      "filename": "multiPhase@2x.png",
       "scale": "2x",
       "idiom": "universal"
     },
     {
-      "filename": "singlePhase@3x.png",
+      "filename": "multiPhase@3x.png",
       "scale": "3x",
       "idiom": "universal"
     },
