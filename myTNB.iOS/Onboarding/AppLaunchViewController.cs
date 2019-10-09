@@ -304,6 +304,12 @@ namespace myTNB
 
         public override void ViewDidAppear(bool animated)
         {
+            UINavigationBar.Appearance.SetTitleTextAttributes(new UITextAttributes()
+            {
+                TextColor = UIColor.White,
+                Font = TNBFont.MuseoSans_16_500
+            });
+
             base.ViewDidAppear(animated);
             GetUserEntity();
             UIApplication.SharedApplication.NetworkActivityIndicatorVisible = true;

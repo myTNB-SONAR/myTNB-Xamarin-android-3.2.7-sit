@@ -176,13 +176,6 @@ namespace myTNB
             //Setup the Navigation Bar background
             UINavigationBar.Appearance.SetBackgroundImage(image, UIBarMetrics.Default);
 
-            //Setup the Navigation Bar title
-            UINavigationBar.Appearance.SetTitleTextAttributes(new UITextAttributes()
-            {
-                TextColor = UIColor.White,
-                Font = MyTNBFont.MuseoSans16
-            });
-
             //Setup the Navigation Bar tint color 
             UINavigationBar.Appearance.TintColor = UIColor.White;
         }
