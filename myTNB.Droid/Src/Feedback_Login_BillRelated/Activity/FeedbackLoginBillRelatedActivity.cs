@@ -630,27 +630,32 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
         {
             try
             {
-                btnSubmit.Enabled = false;
-                Handler h = new Handler();
-                Action myAction = () =>
+                if (!this.GetIsClicked())
                 {
-                    btnSubmit.Enabled = true;
-                };
-                h.PostDelayed(myAction, 3000);
+                    this.SetIsClicked(true);
+                    btnSubmit.Enabled = false;
+                    Handler h = new Handler();
+                    Action myAction = () =>
+                    {
+                        btnSubmit.Enabled = true;
+                    };
+                    h.PostDelayed(myAction, 3000);
 
-                string feedback = txtFeedback.Text.Trim();
-                if (txtInputLayoutMobileNo.Visibility == ViewStates.Visible)
-                {
-                    string mobile_no = txtMobileNo.Text.Trim();
-                    this.userActionsListener.OnSubmit(this.DeviceId(), mobile_no, customerBillingAccount?.AccNum, feedback, adapter?.GetAllImages());
-                }
-                else
-                {
-                    this.userActionsListener.OnSubmit(this.DeviceId(), customerBillingAccount?.AccNum, feedback, adapter?.GetAllImages());
+                    string feedback = txtFeedback.Text.Trim();
+                    if (txtInputLayoutMobileNo.Visibility == ViewStates.Visible)
+                    {
+                        string mobile_no = txtMobileNo.Text.Trim();
+                        this.userActionsListener.OnSubmit(this.DeviceId(), mobile_no, customerBillingAccount?.AccNum, feedback, adapter?.GetAllImages());
+                    }
+                    else
+                    {
+                        this.userActionsListener.OnSubmit(this.DeviceId(), customerBillingAccount?.AccNum, feedback, adapter?.GetAllImages());
+                    }
                 }
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -796,6 +801,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
             tv.SetMaxLines(5);
 
             mErrorMessageSnackBar.Show();
+            this.SetIsClicked(false);
         }
 
         public override void OnTrimMemory(TrimMemory level)

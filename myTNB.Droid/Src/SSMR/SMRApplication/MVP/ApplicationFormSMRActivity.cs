@@ -112,20 +112,24 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             OnInitiateSMREligibilityAccount();
             selectAccountContainer.Click += delegate
             {
-                List<SMRAccount> list = UserSessions.GetRealSMREligibilityAccountList();
-                if (list == null)
+                if (!this.GetIsClicked())
                 {
-                    list = UserSessions.GetSMREligibilityAccountList();
-                }
-                if (list != null && list.Count > 0)
-                {
-                    Intent intent = new Intent(this, typeof(SelectSMRAccountActivity));
-                    StartActivityForResult(intent, 1);
-                }
-                else
-                {
-                    Intent intent = new Intent(this, typeof(SelectSMRAccountEmptyActivity));
-                    StartActivity(intent);
+                    this.SetIsClicked(true);
+                    List<SMRAccount> list = UserSessions.GetRealSMREligibilityAccountList();
+                    if (list == null)
+                    {
+                        list = UserSessions.GetSMREligibilityAccountList();
+                    }
+                    if (list != null && list.Count > 0)
+                    {
+                        Intent intent = new Intent(this, typeof(SelectSMRAccountActivity));
+                        StartActivityForResult(intent, 1);
+                    }
+                    else
+                    {
+                        Intent intent = new Intent(this, typeof(SelectSMRAccountEmptyActivity));
+                        StartActivity(intent);
+                    }
                 }
             };
         }
@@ -249,18 +253,22 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         [OnClick(Resource.Id.btnSubmitRegistration)]
         void SubmitRegistration(object sender, EventArgs eventArgs)
         {
-            List<SMRAccount> list = UserSessions.GetRealSMREligibilityAccountList();
-            if (list == null)
+            if (!this.GetIsClicked())
             {
-                list = UserSessions.GetSMREligibilityAccountList();
-            }
-            SMRAccount sMRAccount = list.Find(smrAccount =>
-            {
-                return smrAccount.accountSelected;
-            });
+                this.SetIsClicked(true);
+                List<SMRAccount> list = UserSessions.GetRealSMREligibilityAccountList();
+                if (list == null)
+                {
+                    list = UserSessions.GetSMREligibilityAccountList();
+                }
+                SMRAccount sMRAccount = list.Find(smrAccount =>
+                {
+                    return smrAccount.accountSelected;
+                });
 
-            ShowProgressDialog();
-            mPresenter.SubmitSMRRegistration(sMRAccount,txtMobileNumber.Text,txtEmail.Text,"");
+                ShowProgressDialog();
+                mPresenter.SubmitSMRRegistration(sMRAccount,txtMobileNumber.Text,txtEmail.Text,"");
+            }
         }
 
         public void ShowSubmitSuccessResult(string jsonResponse)
@@ -325,10 +333,19 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             return this.DeviceId();
         }
 
+        public void EnableButton()
+        {
+            this.SetIsClicked(false);
+        }
+
         [OnClick(Resource.Id.txtTermsAndCondition)]
         void OnTermsConditions(object sender, EventArgs eventArgs)
         {
-            StartActivity(typeof(TermsAndConditionActivity));
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                StartActivity(typeof(TermsAndConditionActivity));
+            }
         }
 
         public void ShowInvalidEmailError()

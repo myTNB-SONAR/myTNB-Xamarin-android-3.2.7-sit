@@ -101,14 +101,18 @@ namespace myTNB_Android.Src.Billing.MVP
         [OnClick(Resource.Id.btnViewBill)]
         void OnViewBill(object sender, EventArgs eventArgs)
         {
-            billingDetailsPresenter.GetBillHistory(selectedAccountData);
-            try
+            if (!this.GetIsClicked())
             {
-                FirebaseAnalyticsUtils.LogClickEvent(this, "View Bill Buttom Clicked");
-            }
-            catch (System.Exception ne)
-            {
-                Utility.LoggingNonFatalError(ne);
+                this.SetIsClicked(true);
+                billingDetailsPresenter.GetBillHistory(selectedAccountData);
+                try
+                {
+                    FirebaseAnalyticsUtils.LogClickEvent(this, "View Bill Buttom Clicked");
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
             }
         }
 
@@ -377,9 +381,11 @@ namespace myTNB_Android.Src.Billing.MVP
                 }
                 );
                 mLoadBillSnackBar.Show();
+                this.SetIsClicked(false);
             }
             catch (System.Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }

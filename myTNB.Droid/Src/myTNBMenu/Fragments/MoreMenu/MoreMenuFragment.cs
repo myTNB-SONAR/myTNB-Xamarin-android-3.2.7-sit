@@ -196,8 +196,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
         [OnClick(Resource.Id.txt_more_fragment_settings_notifications)]
         void OnNotificationClick(object sender, EventArgs e)
         {
-            Log.Debug(Tag, "On Click " + this.userActionsListener);
-            this.userActionsListener.OnNotification(this.DeviceId());
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnNotification(this.DeviceId());
+            }
         }
         [OnClick(Resource.Id.txt_more_fragment_settings_my_account)]
         void OnMyAccountClick(object sender, EventArgs e)
@@ -344,9 +347,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                 }
                 );
                 mCancelledExceptionSnackBar.Show();
+                this.SetIsClicked(false);
             }
             catch (System.Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -370,9 +375,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                 }
                 );
                 mApiExcecptionSnackBar.Show();
+                this.SetIsClicked(false);
             }
             catch (System.Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -397,9 +404,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                 }
                 );
                 mUknownExceptionSnackBar.Show();
+                this.SetIsClicked(false);
             }
             catch (System.Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }

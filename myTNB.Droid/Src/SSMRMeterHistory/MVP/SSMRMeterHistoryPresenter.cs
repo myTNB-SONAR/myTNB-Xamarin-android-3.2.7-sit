@@ -233,21 +233,25 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 else
                 {
                     //this.mView.UpdateSMRData(selectedSMRAccount.email, selectedSMRAccount.mobileNumber);
+                    this.mView.EnableButton();
                 }
             }
             catch (System.OperationCanceledException cancelledException)
             {
                 //this.mView.UpdateSMRData(selectedSMRAccount.email, selectedSMRAccount.mobileNumber);
+                this.mView.EnableButton();
                 Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
                 //this.mView.UpdateSMRData(selectedSMRAccount.email, selectedSMRAccount.mobileNumber);
+                this.mView.EnableButton();
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
                 //this.mView.UpdateSMRData(selectedSMRAccount.email, selectedSMRAccount.mobileNumber);
+                this.mView.EnableButton();
                 Utility.LoggingNonFatalError(unknownException);
             }
 

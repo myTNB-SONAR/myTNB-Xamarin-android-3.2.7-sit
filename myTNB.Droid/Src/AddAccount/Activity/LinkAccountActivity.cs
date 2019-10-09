@@ -366,24 +366,24 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 Button confirm = FindViewById<Button>(Resource.Id.btnConfirm);
                 confirm.Click += delegate
                 {
-                    int totalAccountAdded = adapter.GetAccountList().Count() + additionalAdapter.GetAccountList().Count();
-                    if (adapter.ItemCount == 0 && additionalAdapter.ItemCount == 0)
+                    if (!this.GetIsClicked())
                     {
-                        this.userActionsListener.OnConfirm(accountList);
+                        this.SetIsClicked(true);
+                        int totalAccountAdded = adapter.GetAccountList().Count() + additionalAdapter.GetAccountList().Count();
+                        if (adapter.ItemCount == 0 && additionalAdapter.ItemCount == 0)
+                        {
+                            this.userActionsListener.OnConfirm(accountList);
+                        }
+                        else if (totalAccountAdded > Constants.ADD_ACCOUNT_LIMIT)
+                        {
+                            string errorLimit = GetString(Resource.String.add_account_link_account_limit_wildcard, Constants.ADD_ACCOUNT_LIMIT.ToString());
+                            ShowErrorMessage(errorLimit);
+                        }
+                        else
+                        {
+                            CallAddMultileAccountsService();
+                        }
                     }
-                    else if (totalAccountAdded > Constants.ADD_ACCOUNT_LIMIT)
-                    {
-                        string errorLimit = GetString(Resource.String.add_account_link_account_limit_wildcard, Constants.ADD_ACCOUNT_LIMIT.ToString());
-                        ShowErrorMessage(errorLimit);
-                    }
-                    else
-                    {
-                        CallAddMultileAccountsService();
-                    }
-
-
-                    // TODO : START ACTIVITY DASHBOARD
-
                 };
 
                 TextViewUtils.SetMuseoSans500Typeface(done, confirm);
@@ -429,6 +429,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             tv.SetMaxLines(5);
 
             mErrorMessageSnackBar.Show();
+            this.SetIsClicked(false);
         }
 
         public override bool ShowCustomToolbarTitle()
@@ -566,6 +567,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -820,6 +822,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             Button btn = (Button)v.FindViewById<Button>(Resource.Id.snackbar_action);
             btn.SetTextColor(Android.Graphics.Color.Yellow);
             mErrorMessageSnackBar.Show();
+            this.SetIsClicked(false);
         }
 
         public void ShowErrorMessage(string message)
@@ -838,6 +841,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             Button btn = (Button)v.FindViewById<Button>(Resource.Id.snackbar_action);
             btn.SetTextColor(Android.Graphics.Color.Yellow);
             mErrorMessageSnackBar.Show();
+            this.SetIsClicked(false);
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -979,6 +983,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             Button btn = (Button)v.FindViewById<Button>(Resource.Id.snackbar_action);
             btn.SetTextColor(Android.Graphics.Color.Yellow);
             mSnackBar.Show();
+            this.SetIsClicked(false);
         }
 
         public void ShowAddingAccountProgressDialog()
@@ -1061,6 +1066,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             Button btn = (Button)v.FindViewById<Button>(Resource.Id.snackbar_action);
             btn.SetTextColor(Android.Graphics.Color.Yellow);
             mCancelledExceptionSnackBar.Show();
+            this.SetIsClicked(false);
         }
 
         private Snackbar mApiExcecptionSnackBar;
@@ -1085,6 +1091,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             Button btn = (Button)v.FindViewById<Button>(Resource.Id.snackbar_action);
             btn.SetTextColor(Android.Graphics.Color.Yellow);
             mApiExcecptionSnackBar.Show();
+            this.SetIsClicked(false);
         }
 
         private Snackbar mUknownExceptionSnackBar;
@@ -1110,6 +1117,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
             Button btn = (Button)v.FindViewById<Button>(Resource.Id.snackbar_action);
             btn.SetTextColor(Android.Graphics.Color.Yellow);
             mUknownExceptionSnackBar.Show();
+            this.SetIsClicked(false);
         }
 
         public void RetryGetCusterByIc()

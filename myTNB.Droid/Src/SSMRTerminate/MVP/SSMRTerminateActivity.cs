@@ -465,7 +465,11 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         [OnClick(Resource.Id.txtTermsConditions)]
         void OnTermsConditions(object sender, EventArgs eventArgs)
         {
-            this.mPresenter.NavigateToTermsAndConditions();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.mPresenter.NavigateToTermsAndConditions();
+            }
         }
 
         [OnClick(Resource.Id.btnDisconnectionSubmit)]

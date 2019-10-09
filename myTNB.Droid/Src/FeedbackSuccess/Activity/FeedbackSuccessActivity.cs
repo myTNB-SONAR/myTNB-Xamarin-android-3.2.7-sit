@@ -98,7 +98,11 @@ namespace myTNB_Android.Src.FeedbackSuccess.Activity
         [OnClick(Resource.Id.btnBackToFeedback)]
         void OnBack(object sender, EventArgs eventArgs)
         {
-            Finish();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Finish();
+            }
         }
 
         protected override void OnResume()

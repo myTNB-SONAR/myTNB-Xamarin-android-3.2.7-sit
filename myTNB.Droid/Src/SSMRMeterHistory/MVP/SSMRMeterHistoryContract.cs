@@ -16,6 +16,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             void UpdateUIForSMR(SMRActivityInfoResponse activityInfoResponse);
             void ShowRefreshScreen(bool isShow);
             void ShowEnableDisableSMR(CAContactDetailsModel contactDetailsModel);
+            void EnableButton();
         }
 
         public interface IPresenter

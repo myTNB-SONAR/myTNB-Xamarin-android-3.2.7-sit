@@ -251,10 +251,15 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         {
             try
             {
-                this.userActionsListener.OnPayment(notificationDetails);
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    this.userActionsListener.OnPayment(notificationDetails);
+                }
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -264,17 +269,22 @@ namespace myTNB_Android.Src.NotificationDetails.Activity
         {
             try
             {
-                if (notificationDetails.BCRMNotificationTypeId.Equals("97"))
+                if (!this.GetIsClicked())
                 {
-                    this.userActionsListener.OnViewPromotion(notificationDetails);
-                }
-                else
-                {
-                    this.userActionsListener.OnViewDetails(notificationDetails);
+                    this.SetIsClicked(true);
+                    if (notificationDetails.BCRMNotificationTypeId.Equals("97"))
+                    {
+                        this.userActionsListener.OnViewPromotion(notificationDetails);
+                    }
+                    else
+                    {
+                        this.userActionsListener.OnViewDetails(notificationDetails);
+                    }
                 }
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }

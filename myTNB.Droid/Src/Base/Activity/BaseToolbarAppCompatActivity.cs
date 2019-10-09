@@ -242,6 +242,7 @@ namespace myTNB_Android.Src.Base.Activity
             //Button btn = (Button)v.FindViewById<Button>(Resource.Id.snackbar_action);
             //btn.SetTextColor(Android.Graphics.Color.Yellow);
             //mErrorMessageSnackBar.Show();
+            this.SetIsClicked(false);
         }
     }
 }

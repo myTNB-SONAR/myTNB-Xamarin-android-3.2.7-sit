@@ -340,26 +340,31 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
         {
             try
             {
-                btnSubmit.Enabled = false;
-                Handler h = new Handler();
-                Action myAction = () =>
+                if (!this.GetIsClicked())
                 {
-                    btnSubmit.Enabled = true;
-                };
-                h.PostDelayed(myAction, 3000);
+                    this.SetIsClicked(true);
+                    btnSubmit.Enabled = false;
+                    Handler h = new Handler();
+                    Action myAction = () =>
+                    {
+                        btnSubmit.Enabled = true;
+                    };
+                    h.PostDelayed(myAction, 3000);
 
-                string fullname = txtFullName.Text.Trim();
-                string mobile_no = txtMobileNo.Text.Trim();
-                string email = txtEmail.Text.Trim();
-                string account_no = txtAccountNo.Text.Trim();
-                string feedback = txtFeedback.Text.Trim();
-                List<AttachedImage> attachedImages = adapter.GetAllImages();
+                    string fullname = txtFullName.Text.Trim();
+                    string mobile_no = txtMobileNo.Text.Trim();
+                    string email = txtEmail.Text.Trim();
+                    string account_no = txtAccountNo.Text.Trim();
+                    string feedback = txtFeedback.Text.Trim();
+                    List<AttachedImage> attachedImages = adapter.GetAllImages();
 
 
-                this.userActionsListener.OnSubmit(this.DeviceId(), fullname, mobile_no, email, account_no, feedback, attachedImages);
+                    this.userActionsListener.OnSubmit(this.DeviceId(), fullname, mobile_no, email, account_no, feedback, attachedImages);
+                }
             }
             catch (System.Exception ex)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(ex);
             }
         }
@@ -850,6 +855,7 @@ namespace myTNB_Android.Src.Feedback_PreLogin_BillRelated.Activity
             tv.SetMaxLines(5);
 
             mErrorMessageSnackBar.Show();
+            this.SetIsClicked(false);
         }
 
         public override void OnTrimMemory(TrimMemory level)
