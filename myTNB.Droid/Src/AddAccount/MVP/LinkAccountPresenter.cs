@@ -100,20 +100,15 @@ namespace myTNB_Android.Src.AddAccount.MVP
         {
             try
             {
-                if (mView.IsActive())
-                {
-                    this.mView.ShowGetAccountsProgressDialog();
-                }
+                this.mView.ShowGetAccountsProgressDialog();
                 var api = RestService.For<GetCustomerAccountsForICNumApi>(Constants.SERVER_URL.END_POINT);
                 // TODO : UPDATE TO V5
                 var result = await api.GetCustomerAccountByIc(new GetBCRMAccountRequest(apiKeyID, currentAccountList, email, identificationNo));
 
                 if (result.Data.IsError)
                 {
-                    if (mView.IsActive())
-                    {
-                        this.mView.HideGetAccountsProgressDialog();
-                    }
+                    this.mView.HideGetAccountsProgressDialog();
+
                     if (result.Data.Status.Equals("failed"))
                     {
                         this.mView.ShowBCRMDownException(result.Data.Message);
@@ -126,38 +121,27 @@ namespace myTNB_Android.Src.AddAccount.MVP
                 }
                 else
                 {
-                    if (mView.IsActive())
-                    {
-                        this.mView.HideGetAccountsProgressDialog();
-                    }
+                    this.mView.HideGetAccountsProgressDialog();
+
                     this.mView.ShowBCRMAccountList(result.Data.BCRMAccountList);
 
                 }
             }
             catch (System.OperationCanceledException cancelledException)
             {
-                if (mView.IsActive())
-                {
-                    mView.HideGetAccountsProgressDialog();
-                }
+                mView.HideGetAccountsProgressDialog();
                 this.mView.ShowErrorMessage();
                 Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
-                if (mView.IsActive())
-                {
-                    mView.HideGetAccountsProgressDialog();
-                }
+                mView.HideGetAccountsProgressDialog();
                 this.mView.ShowErrorMessage();
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
-                if (mView.IsActive())
-                {
-                    mView.HideGetAccountsProgressDialog();
-                }
+                mView.HideGetAccountsProgressDialog();
                 this.mView.ShowErrorMessage();
                 Utility.LoggingNonFatalError(unknownException);
             }

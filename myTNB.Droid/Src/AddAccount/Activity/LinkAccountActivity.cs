@@ -103,16 +103,13 @@ namespace myTNB_Android.Src.AddAccount.Activity
         {
             try
             {
-                if (IsActive())
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
                 {
-                    if (loadingOverlay != null && loadingOverlay.IsShowing)
-                    {
-                        loadingOverlay.Dismiss();
-                    }
-
-                    loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                    loadingOverlay.Show();
+                    loadingOverlay.Dismiss();
                 }
+
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
             }
             catch (Exception e)
             {
@@ -124,12 +121,9 @@ namespace myTNB_Android.Src.AddAccount.Activity
         {
             try
             {
-                if (IsActive())
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
                 {
-                    if (loadingOverlay != null && loadingOverlay.IsShowing)
-                    {
-                        loadingOverlay.Dismiss();
-                    }
+                    loadingOverlay.Dismiss();
                 }
             }
             catch (Exception e)
