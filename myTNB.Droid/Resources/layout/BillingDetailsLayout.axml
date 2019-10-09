@@ -129,7 +129,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="0.5"
                                 android:gravity="left"
-                                android:text="My bill this month"
+                                android:text="My latest bill"
                                 android:textColor="#49494a"
                                 android:textSize="14dp"/>
                             <TextView
@@ -157,19 +157,18 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingTop="16dp"
-                        android:paddingBottom="16dp"
                         android:weightSum="1"
                         android:orientation="horizontal">
                         <LinearLayout
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="40dp"
                             android:layout_weight="0.4"
                             android:gravity="center|left"
                             android:orientation="vertical">
                             <TextView
                                 android:id="@+id/accountPayAmountLabel"
                                 android:layout_width="match_parent"
-                                android:layout_height="0dp"
+                                android:layout_height="20dp"
                                 android:layout_weight="1"
                                 android:gravity="left|center"
                                 android:text="I need to pay"
@@ -178,7 +177,7 @@
                             <TextView
                                 android:id="@+id/accountPayAmountDate"
                                 android:layout_width="match_parent"
-                                android:layout_height="0dp"
+                                android:layout_height="20dp"
                                 android:layout_weight="1"
                                 android:gravity="left|center"
                                 android:text="by 24 Sep 2019"
@@ -187,8 +186,9 @@
                         </LinearLayout>
                         <LinearLayout
                             android:layout_width="0dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="32dp"
                             android:layout_weight="0.6"
+                            android:layout_gravity="right|center"
                             android:gravity="right"
                             android:orientation="horizontal">
                             <TextView
@@ -212,6 +212,7 @@
                         android:id="@+id/accountMinChargeLabelContainer"
                         android:layout_width="match_parent"
                         android:layout_height="24dp"
+                        android:layout_marginTop="16dp"
                         android:paddingLeft="2dp"
                         android:background="@drawable/rectangle_rounded_corner_light_blue_bg"
                         android:gravity="center|left"
@@ -223,7 +224,7 @@
                             android:textSize="12dp"
                             android:textColor="#1c79ca"
                             android:drawablePadding="8dp"
-                            android:text="This account has a minimum charge"
+                            android:text="This account has a minimum charge."
                             android:drawableLeft="@drawable/smr_why_accounts_info"/>
                     </LinearLayout>
                 </LinearLayout>

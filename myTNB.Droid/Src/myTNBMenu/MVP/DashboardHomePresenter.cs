@@ -18,6 +18,7 @@ using myTNB_Android.Src.myTNBMenu.Fragments;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.Requests;
+using myTNB_Android.Src.MyTNBService.Notification;
 using myTNB_Android.Src.SiteCore;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.SummaryDashBoard;
@@ -52,6 +53,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 		private string preSelectedAccount;
 		private UsageHistoryResponse usageHistoryResponse;
+        private SMUsageHistoryResponse smUsageHistoryResponse;
 
         private bool isBillAvailable = true;
 
@@ -94,31 +96,35 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 						if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
 						{
-
-							if (selectedAccount != null && selectedAccount.SmartMeterCode != null && selectedAccount.SmartMeterCode.Equals("0"))
+                            if (selectedAccount.AccountCategoryId.Equals("2"))
+                            {
+                                this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_re_activity_title);
+                            }
+                            else
+                            {
+                                this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
+                            }
+                            this.mView.SetAccountToolbarTitle(selectedAccount.AccDesc);
+                            this.mView.HideAccountName();
+                            if (selectedAccount != null && selectedAccount.SmartMeterCode != null && selectedAccount.SmartMeterCode.Equals("0"))
 							{
-                                if (selectedAccount.AccountCategoryId.Equals("2"))
-                                {
-                                    this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_re_activity_title);
-                                }
-                                else
-                                {
-                                    this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
-                                }
-                                this.mView.HideAccountName();
                                 if (!string.IsNullOrEmpty(selectedAccount.AccNum) && !UsageHistoryEntity.IsSMDataUpdated(selectedAccount.AccNum))
                                 {
                                     UsageHistoryEntity storedEntity = new UsageHistoryEntity();
                                     storedEntity = UsageHistoryEntity.GetItemByAccountNo(selectedAccount.AccNum);
+                                    CustomerBillingAccount.RemoveSelected();
+                                    if (!string.IsNullOrEmpty(selectedAccount.AccNum))
+                                    {
+                                        CustomerBillingAccount.SetSelected(selectedAccount.AccNum);
+                                    }
                                     if (storedEntity != null)
                                     {
-                                        CustomerBillingAccount.RemoveSelected();
-                                        if (!string.IsNullOrEmpty(selectedAccount.AccNum))
-                                        {
-                                            CustomerBillingAccount.SetSelected(selectedAccount.AccNum);
-                                        }
                                         usageHistoryResponse = JsonConvert.DeserializeObject<UsageHistoryResponse>(storedEntity.JsonResponse);
                                         if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode != "7200")
+                                        {
+                                            usageHistoryResponse = null;
+                                        }
+                                        else if ((usageHistoryResponse != null && usageHistoryResponse.Data == null) || (usageHistoryResponse == null))
                                         {
                                             usageHistoryResponse = null;
                                         }
@@ -151,27 +157,45 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                                         storedEntity = SMUsageHistoryEntity.GetItemByAccountNo(selectedAccount.AccNum);
                                     }
                                     SMUsageHistoryResponse storedSMData = new SMUsageHistoryResponse();
+
+                                    CustomerBillingAccount.RemoveSelected();
+                                    if (!string.IsNullOrEmpty(selectedAccount.AccNum))
+                                    {
+                                        CustomerBillingAccount.SetSelected(selectedAccount.AccNum);
+                                    }
+
                                     if (storedEntity != null)
                                     {
                                         storedSMData = JsonConvert.DeserializeObject<SMUsageHistoryResponse>(storedEntity.JsonResponse);
-                                    }
-                                    if (storedSMData != null && storedSMData.Data != null && storedSMData.Data.SMUsageHistoryData != null)
-                                    {
-                                        this.mView.ShowAccountName();
-                                        this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
-                                        this.mView.ShowSMChart(storedSMData.Data.SMUsageHistoryData, AccountData.Copy(selectedAccount, true));
+                                        if (storedSMData != null && storedSMData.Data != null && storedSMData.Data.ErrorCode != "7200")
+                                        {
+                                            smUsageHistoryResponse = null;
+                                        }
+                                        else if ((storedSMData != null && storedSMData.Data == null) || (storedSMData == null))
+                                        {
+                                            smUsageHistoryResponse = null;
+                                        }
+                                        else if (storedSMData.Data.IsMDMSCurrentlyUnavailable || !IsCheckHaveByMonthData(storedSMData.Data.SMUsageHistoryData))
+                                        {
+                                            smUsageHistoryResponse = null;
+                                        }
+                                        else
+                                        {
+                                            smUsageHistoryResponse = storedSMData;
+                                        }
+                                        LoadSMUsageHistory(selectedAccount);
                                     }
                                     else
                                     {
+                                        smUsageHistoryResponse = null;
                                         LoadSMUsageHistory(selectedAccount);
                                     }
                                 }
                                 else
                                 {
+                                    smUsageHistoryResponse = null;
                                     LoadSMUsageHistory(selectedAccount);
                                 }
-
-
                             }
                             if (selectedAccount != null)
                             {
@@ -270,8 +294,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			{
 				case Resource.Id.menu_dashboard:
 					if (DashboardHomeActivity.currentFragment != null && (DashboardHomeActivity.currentFragment.GetType() == typeof(HomeMenuFragment) ||
-						DashboardHomeActivity.currentFragment.GetType() == typeof(DashboardChartFragment) ||
-						DashboardHomeActivity.currentFragment.GetType() == typeof(DashboardSmartMeterFragment)))
+						DashboardHomeActivity.currentFragment.GetType() == typeof(DashboardChartFragment)))
 					{
 						mView.ShowBackButton(false);
 						DoLoadHomeDashBoardFragment();
@@ -455,6 +478,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
                 }
 
+                this.mView.SetAccountToolbarTitle(accountSelected.AccDesc);
+
                 if (smDataError)
                 {
                     smDataError = false;
@@ -478,6 +503,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
                 }
 
+                this.mView.SetAccountToolbarTitle(accountSelected.AccDesc);
+
                 if (smDataError)
                 {
                     smDataError = false;
@@ -496,127 +523,22 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 		private async void LoadSMUsageHistory(CustomerBillingAccount accountSelected)
 		{
-			/*** Check for timestamp to call service ***/
+            try
+            {
+                this.mView.HideAccountName();
+                this.mView.SetToolbarTitle(Resource.String.dashboard_chartview_activity_title);
 
-			/****/
+                this.mView.ShowSMChart(smUsageHistoryResponse, AccountData.Copy(accountSelected, true));
+                smUsageHistoryResponse = null;
 
-			cts = new CancellationTokenSource();
-            this.mView.ShowProgressDialog();
+				this.mView.SetAccountToolbarTitle(accountSelected.AccDesc);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
 
-#if STUB
-            var api = RestService.For<IUsageHistoryApi>(Constants.SERVER_URL.END_POINT);
-#elif DEBUG
-            var httpClient = new HttpClient(new HttpLoggingHandler(/*new NativeMessageHandler()*/)) { BaseAddress = new Uri(Constants.SERVER_URL.END_POINT) };
-            var api = RestService.For<IUsageHistoryApi>(httpClient);
-
-#elif DEVELOP
-            var api = RestService.For<IUsageHistoryApi>(Constants.SERVER_URL.END_POINT);
-#else
-			var api = RestService.For<IUsageHistoryApi>(Constants.SERVER_URL.END_POINT);
-#endif
-
-
-
-			try
-			{
-				var response = await api.DoSMQueryV2(new Requests.SMUsageHistoryRequest(Constants.APP_CONFIG.API_KEY_ID)
-				{
-					AccountNum = accountSelected.AccNum,
-					isOwner = true,
-					sspUserId = UserEntity.GetActive().UserID,
-					userEmail = UserEntity.GetActive().Email,
-					MeterCode = accountSelected.SmartMeterCode
-				}, cts.Token);
-
-				if (response != null && response.Data.Status.Equals("success") && !response.Data.IsError)
-				{
-
-                    if (this.mView.IsActive())
-                    {
-                        this.mView.HideProgressDialog();
-                    }
-
-                    if (!string.IsNullOrEmpty(response.Data.StatusCode) && response.Data.StatusCode.Equals("201"))
-					{
-                        ///No data condition
-                        this.mView.ShowAccountName();
-                        this.mView.ShowSMChartWithError(response.Data.SMUsageHistoryData, AccountData.Copy(accountSelected, true), true);
-					}
-					else
-					{
-						/*** Save SM Usage History For the Day***/
-						SMUsageHistoryEntity smUsageModel = new SMUsageHistoryEntity();
-						smUsageModel.Timestamp = DateTime.Now.ToLocalTime();
-						smUsageModel.JsonResponse = JsonConvert.SerializeObject(response);
-						smUsageModel.AccountNo = accountSelected.AccNum;
-						SMUsageHistoryEntity.InsertItem(smUsageModel);
-						/*****/
-
-						if (currentBottomNavigationMenu == Resource.Id.menu_dashboard)
-						{
-							this.mView.ShowAccountName();
-                            this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
-                            this.mView.ShowSMChart(response.Data.SMUsageHistoryData, AccountData.Copy(accountSelected, true));
-						}
-						else if (currentBottomNavigationMenu == Resource.Id.menu_bill)
-						{
-							this.mView.ShowAccountName();
-							this.mView.SetToolbarTitle(Resource.String.bill_menu_activity_title);
-							LoadBills(accountSelected);
-						}
-					}
-
-
-					this.mView.SetAccountName(accountSelected.AccDesc);
-				}
-				else
-				{
-                    ///On 204 (No Content) error display normal dashboard
-                    if (this.mView.IsActive())
-                    {
-                        this.mView.HideProgressDialog();
-                    }
-                    smDataError = true;
-					smErrorCode = response.Data.StatusCode;
-					smErrorMessage = response.Data.Message;
-					LoadUsageHistory(accountSelected);
-				}
-			}
-			catch (System.OperationCanceledException e)
-			{
-                if (this.mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
-                // ADD OPERATION CANCELLED HERE
-                smDataError = true;
-				LoadUsageHistory(accountSelected);
-				Utility.LoggingNonFatalError(e);
-			}
-			catch (ApiException apiException)
-			{
-                // ADD HTTP CONNECTION EXCEPTION HERE
-                if (this.mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
-                smDataError = true;
-				LoadUsageHistory(accountSelected);
-				Utility.LoggingNonFatalError(apiException);
-			}
-			catch (System.Exception e)
-			{
-                // ADD UNKNOWN EXCEPTION HERE
-                if (this.mView.IsActive())
-                {
-                    this.mView.HideProgressDialog();
-                }
-                smDataError = true;
-				LoadUsageHistory(accountSelected);
-				Utility.LoggingNonFatalError(e);
-			}
-
-		}
+        }
 
 		private async void LoadBills(CustomerBillingAccount accountSelected)
 		{
@@ -893,35 +815,52 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 							/** Smart meter account check **/
 							if (!selected.SmartMeterCode.Equals("0"))
 							{
-								if (!SMUsageHistoryEntity.IsSMDataUpdated(selected.AccNum))
-								{
-									//Get stored data
-									SMUsageHistoryEntity storedEntity = new SMUsageHistoryEntity();
-									if (!string.IsNullOrEmpty(selected.AccNum))
-									{
-										storedEntity = SMUsageHistoryEntity.GetItemByAccountNo(selected.AccNum);
-									}
-									SMUsageHistoryResponse storedSMData = new SMUsageHistoryResponse();
-									if (storedEntity != null)
-									{
-										storedSMData = JsonConvert.DeserializeObject<SMUsageHistoryResponse>(storedEntity.JsonResponse);
-									}
-									if (storedSMData != null && storedSMData.Data != null && storedSMData.Data.SMUsageHistoryData != null)
-									{
-										this.mView.ShowAccountName();
-                                        this.mView.SetToolbarTitle(Resource.String.dashboard_menu_activity_title);
-                                        this.mView.ShowSMChart(storedSMData.Data.SMUsageHistoryData, AccountData.Copy(selected, true));
-									}
-									else
-									{
-										LoadSMUsageHistory(selected);
-									}
-								}
-								else
-								{
-									LoadSMUsageHistory(selected);
-								}
-							}
+                                if (!SMUsageHistoryEntity.IsSMDataUpdated(selected.AccNum))
+                                {
+                                    //Get stored data
+                                    SMUsageHistoryEntity storedEntity = new SMUsageHistoryEntity();
+                                    if (!string.IsNullOrEmpty(selected.AccNum))
+                                    {
+                                        storedEntity = SMUsageHistoryEntity.GetItemByAccountNo(selected.AccNum);
+                                    }
+                                    SMUsageHistoryResponse storedSMData = new SMUsageHistoryResponse();
+
+                                    if (storedEntity != null)
+                                    {
+                                        storedSMData = JsonConvert.DeserializeObject<SMUsageHistoryResponse>(storedEntity.JsonResponse);
+                                    }
+
+                                    CustomerBillingAccount.RemoveSelected();
+                                    if (!string.IsNullOrEmpty(selected.AccNum))
+                                    {
+                                        CustomerBillingAccount.SetSelected(selected.AccNum);
+                                    }
+
+                                    if (storedSMData != null && storedSMData.Data != null && storedSMData.Data.ErrorCode != "7200")
+                                    {
+                                        smUsageHistoryResponse = null;
+                                    }
+                                    else if ((storedSMData != null && storedSMData.Data == null) || (storedSMData == null))
+                                    {
+                                        smUsageHistoryResponse = null;
+                                    }
+                                    else if (storedSMData.Data.IsMDMSCurrentlyUnavailable || !IsCheckHaveByMonthData(storedSMData.Data.SMUsageHistoryData))
+                                    {
+                                        smUsageHistoryResponse = null;
+                                    }
+                                    else
+                                    {
+                                        smUsageHistoryResponse = storedSMData;
+                                    }
+
+                                    LoadSMUsageHistory(selected);
+                                }
+                                else
+                                {
+                                    smUsageHistoryResponse = null;
+                                    LoadSMUsageHistory(selected);
+                                }
+                            }
 							else
 							{
 								if (!string.IsNullOrEmpty(selected.AccNum) && !UsageHistoryEntity.IsSMDataUpdated(selected.AccNum))
@@ -940,6 +879,10 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 										{
 											usageHistoryResponse = null;
 										}
+                                        else if ((usageHistoryResponse != null && usageHistoryResponse.Data == null) || (usageHistoryResponse == null))
+                                        {
+                                            usageHistoryResponse = null;
+                                        }
                                         else if (!IsCheckHaveByMonthData(usageHistoryResponse.Data.UsageHistoryData))
                                         {
                                             usageHistoryResponse = null;
@@ -1076,26 +1019,91 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         {
             bool isHaveData = true;
 
-            if (data == null || (data != null && data.ByMonth == null) || (data != null && data.ByMonth != null && data.ByMonth.Months.Count == 0))
+            if (data == null || (data != null && data.ByMonth == null) || (data != null && data.ByMonth != null && data.ByMonth.Months == null) || (data != null && data.ByMonth != null && data.ByMonth.Months != null && data.ByMonth.Months.Count == 0))
             {
                 isHaveData = false;
             }
             else
             {
-                foreach (UsageHistoryData.ByMonthData.MonthData monthData in data.ByMonth.Months)
+                for(int i = 0; i < data.ByMonth.Months.Count; i++)
                 {
-                    if ((string.IsNullOrEmpty(monthData.UsageTotal.ToString()) && string.IsNullOrEmpty(monthData.AmountTotal.ToString())) || (Math.Abs(monthData.UsageTotal) < 0.001 && Math.Abs(monthData.AmountTotal) < 0.001))
+                    if ((string.IsNullOrEmpty(data.ByMonth.Months[i].UsageTotal.ToString()) && string.IsNullOrEmpty(data.ByMonth.Months[i].AmountTotal.ToString())) || (Math.Abs(data.ByMonth.Months[i].UsageTotal) < 0.001 && Math.Abs(data.ByMonth.Months[i].AmountTotal) < 0.001))
                     {
                         isHaveData = false;
                     }
                     else
                     {
                         isHaveData = true;
+                        break;
                     }
                 }
             }
 
             return isHaveData;
+        }
+
+        private bool IsCheckHaveByMonthData(SMUsageHistoryData data)
+        {
+            bool isHaveData = true;
+
+            if (data == null || (data != null && data.ByMonth == null) || (data != null && data.ByMonth != null && data.ByMonth.Months == null) || (data != null && data.ByMonth != null && data.ByMonth.Months != null && data.ByMonth.Months.Count == 0))
+            {
+                isHaveData = false;
+            }
+            else
+            {
+                for (int i = 0; i < data.ByMonth.Months.Count; i++)
+                {
+                    if ((string.IsNullOrEmpty(data.ByMonth.Months[i].UsageTotal.ToString()) && string.IsNullOrEmpty(data.ByMonth.Months[i].AmountTotal.ToString())) || (Math.Abs(data.ByMonth.Months[i].UsageTotal) < 0.001 && Math.Abs(data.ByMonth.Months[i].AmountTotal) < 0.001))
+                    {
+                        isHaveData = false;
+                    }
+                    else
+                    {
+                        isHaveData = true;
+                        break;
+                    }
+                }
+            }
+
+            return isHaveData;
+        }
+
+        public void GetUserNotifications()
+        {
+            Task.Factory.StartNew(() =>
+            {
+                InvokeGetUserNotifications();
+            });
+        }
+
+        private async void InvokeGetUserNotifications()
+        {
+            try
+            {
+                NotificationApiImpl notificationAPI = new NotificationApiImpl();
+                MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
+                if (response.Data != null && response.Data.ErrorCode == "7200")
+                {
+                    if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null &&
+                        response.Data.ResponseData.UserNotificationList.Count > 0)
+                    {
+                        foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
+                        {
+                            int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
+                        }
+                    }
+                    else
+                    {
+                        UserNotificationEntity.RemoveAll();
+                    }
+                }
+                this.mView.ShowNotificationCount(UserNotificationEntity.Count());
+            }
+            catch (System.Exception ne)
+            {
+                Utility.LoggingNonFatalError(ne);
+            }
         }
 
     }

@@ -246,7 +246,7 @@ namespace myTNB_Android.Src.Login.MVP
                         int Id = UserEntity.InsertOrReplace(userResponse.Data.User);
                         if (Id > 0)
                         {
-
+                            UserEntity.UpdateDeviceId(deviceId);
 
 #if STUB
                             var customerAccountsApi = RestService.For<GetCustomerAccounts>(Constants.SERVER_URL.END_POINT);

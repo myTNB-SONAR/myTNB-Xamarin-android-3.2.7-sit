@@ -6,6 +6,12 @@ namespace myTNB_Android.Src.myTNBMenu.Models
 {
     public class AccountDueAmount
     {
+        [JsonProperty("AccountAmountDue")]
+        public AccountDueAmountData AmountDueData { get; set; }
+    }
+
+    public class AccountDueAmountData
+    {
         [JsonProperty("amountDue")]
         public double AmountDue { get; set; }
 

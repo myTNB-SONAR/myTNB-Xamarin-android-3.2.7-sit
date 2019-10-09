@@ -98,6 +98,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public static bool GO_TO_INNER_DASHBOARD = false;
 
+        private bool isSetToolbarClick = false;
+
         public bool IsActive()
         {
             return Window.DecorView.RootView.IsShown && !IsFinishing;
@@ -153,7 +155,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
 
             bottomNavigationView.SetShiftMode(false, false);
-            bottomNavigationView.SetImageSize(28, 3);
+            bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
             bottomNavigationView.ItemIconTintList = null;
 
             bottomNavigationView.NavigationItemSelected += BottomNavigationView_NavigationItemSelected;
@@ -171,34 +173,9 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 isFromNotification = true;
                 alreadyStarted = true;
             }
-            //Task.Factory.StartNew(() =>
-            //{
-            //    GetNotifications();
-            //});
-            this.userActionsListener?.OnNotificationCount();
 
+            this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).Click += DashboardHomeActivity_Click;
         }
-
-        //public async void GetNotifications()
-        //{
-        //    try
-        //    {
-        //        NotificationApiImpl api = new NotificationApiImpl();
-        //        MyTNBService.Response.UserNotificationResponse response = await api.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
-        //        if (response.Data.ErrorCode == "7200")
-        //        {
-        //            foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
-        //            {
-        //                // tODO : SAVE ALL NOTIFICATIONs
-        //                int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
-        //            }
-        //        }
-        //    }
-        //    catch (Exception e)
-        //    {
-        //        Utility.LoggingNonFatalError(e);
-        //    }
-        //}
 
         public void ShowBackButton(bool flag)
         {
@@ -211,7 +188,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             try
             {
                 if (currentFragment.GetType() == typeof(DashboardChartFragment) ||
-                    currentFragment.GetType() == typeof(DashboardSmartMeterFragment) ||
                     currentFragment.GetType() == typeof(FeedbackMenuFragment))
                 {
                     if (isFromNotification)
@@ -247,6 +223,10 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         protected override void OnResume()
         {
             base.OnResume();
+            if (currentFragment.GetType() == typeof(HomeMenuFragment))
+            {
+                this.userActionsListener?.GetUserNotifications();
+            }
             if (this.mPresenter != null)
             {
                 this.mPresenter.OnValidateData();
@@ -259,30 +239,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             FragmentManager.BeginTransaction()
                    .Replace(Resource.Id.content_layout, new BillingMenuNoTNBAccount())
                    .CommitAllowingStateLoss();
-        }
-
-        public void ShowSMChart(SMUsageHistoryData data, AccountData selectedAccount)
-        {
-            this.SelectedAccountData = selectedAccount;
-            txtAccountName.Text = SelectedAccountData.AccountName;
-            currentFragment = new DashboardSmartMeterFragment();
-            FragmentManager.BeginTransaction()
-                           .Replace(Resource.Id.content_layout, DashboardSmartMeterFragment.NewInstance(data, SelectedAccountData),
-                                    typeof(DashboardSmartMeterFragment).Name)
-                           .CommitAllowingStateLoss();
-            ShowBackButton(true);
-        }
-
-        public void ShowSMChartWithError(SMUsageHistoryData data, AccountData selectedAccount, bool noSMData)
-        {
-            this.SelectedAccountData = selectedAccount;
-            txtAccountName.Text = SelectedAccountData.AccountName;
-            currentFragment = new DashboardSmartMeterFragment();
-            FragmentManager.BeginTransaction()
-                .Replace(Resource.Id.content_layout, DashboardSmartMeterFragment.NewInstance(data, SelectedAccountData, noSMData),
-                         typeof(DashboardSmartMeterFragment).Name)
-                           .CommitAllowingStateLoss();
-            ShowBackButton(true);
         }
 
         [OnClick(Resource.Id.txt_account_name)]
@@ -344,7 +300,55 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void SetToolbarTitle(int stringResourceId)
         {
-            this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).Text = GetString(stringResourceId);
+            try
+            {
+                this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).Text = GetString(stringResourceId);
+                this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).SetPadding(0, 0, 0, 0);
+                this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).CompoundDrawablePadding = 0;
+                this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).SetCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                isSetToolbarClick = false;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void SetAccountToolbarTitle(string accountName)
+        {
+            try
+            {
+                this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).Text = accountName;
+                int padding = (int)DPUtils.ConvertDPToPx(3f);
+                this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).SetPadding(padding, padding, padding, padding);
+                this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).CompoundDrawablePadding = padding;
+                List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
+                bool enableDropDown = accountList.Count > 0 ? true : false;
+                if (enableDropDown)
+                {
+                    Drawable dropdown = ContextCompat.GetDrawable(this, Resource.Drawable.ic_spinner_dropdown);
+                    Drawable transparentDropDown = ContextCompat.GetDrawable(this, Resource.Drawable.ic_action_dropdown);
+                    transparentDropDown.Alpha = 0;
+                    this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).SetCompoundDrawablesWithIntrinsicBounds(transparentDropDown, null, dropdown, null);
+                }
+                else
+                {
+                    this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).SetCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+                }
+                isSetToolbarClick = true;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void DashboardHomeActivity_Click(object sender, EventArgs e)
+        {
+            if (isSetToolbarClick)
+            {
+                this.userActionsListener.SelectSupplyAccount();
+            }
         }
 
         public void BillsMenuRefresh(AccountData accountData)
@@ -593,7 +597,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 if (promotionMenuItem != null)
                 {
                     promotionMenuItem.SetIcon(Resource.Drawable.ic_menu_promotions_unread_selector);
-                    bottomNavigationView.SetImageSize(28, 3);
+                    bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
             }
         }
@@ -608,7 +612,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 if (promotionMenuItem != null)
                 {
                     promotionMenuItem.SetIcon(Resource.Drawable.ic_menu_promotions_selector);
-                    bottomNavigationView.SetImageSize(28, 3);
+                    bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
             }
         }
@@ -845,6 +849,19 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             ShowBackButton(true);
         }
 
+        public void ShowSMChart(SMUsageHistoryResponse response, AccountData selectedAccount)
+        {
+            this.SelectedAccountData = selectedAccount;
+            txtAccountName.Text = SelectedAccountData.AccountNickName;
+            currentFragment = new DashboardChartFragment();
+            FragmentManager.BeginTransaction()
+                           .Replace(Resource.Id.content_layout, DashboardChartFragment.NewInstance(response, selectedAccount),
+                                    typeof(DashboardChartFragment).Name)
+                           .CommitAllowingStateLoss();
+            ShowBackButton(true);
+        }
+
+        // Show Bottom Navigation Bar in Fragment
         public void ShowBottomNavigationBar()
         {
             try
@@ -853,7 +870,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
                 ViewGroup.MarginLayoutParams lp3 = (ViewGroup.MarginLayoutParams)contentLayout.LayoutParameters;
 
-                lp3.BottomMargin = (int)DPUtils.ConvertDPToPx(41f);
+                lp3.BottomMargin = (int)DPUtils.ConvertDPToPx(48f);
 
                 contentLayout.LayoutParameters = lp3;
 
@@ -865,6 +882,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
         }
 
+        // Hide Bottom Navigation Bar in Fragment
         public void HideBottomNavigationBar()
         {
             try

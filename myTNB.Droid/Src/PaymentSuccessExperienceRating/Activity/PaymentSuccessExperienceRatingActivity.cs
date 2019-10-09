@@ -197,7 +197,7 @@ namespace myTNB_Android.Src.PaymentSuccessExperienceRating.Activity
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Post-Payment Rating Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Post Payment Rating & Feedback");
             }
             catch (Exception e)
             {

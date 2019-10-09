@@ -76,14 +76,5 @@ namespace myTNB_Android.Src.Utils
             }
             return s;
         }
-
-        public static string ReplaceValueByPattern(Regex pattern, string stringValue, string replaceValue)
-        {
-            return pattern.Replace(stringValue, match =>
-            {
-                string newMatch = match.Groups[1].Value;
-                return replaceValue;
-            });
-        }
     }
 }

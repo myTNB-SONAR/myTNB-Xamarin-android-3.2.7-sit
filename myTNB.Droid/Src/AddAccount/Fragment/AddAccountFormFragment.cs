@@ -6,6 +6,7 @@ using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Text;
+using Android.Text.Method;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -94,6 +95,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 if (loadingOverlay != null && loadingOverlay.IsShowing)
                 {
                     loadingOverlay.Dismiss();
+                    loadingOverlay = new LoadingOverlay(Activity, Resource.Style.LoadingOverlyDialogStyle);
                 }
             }
         }
@@ -365,7 +367,7 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                 bool owner = isOwner;
                 string suppliedMotherName = edtOwnerMotherName.Text;
                 string accountLabel = edtAccountLabel.Text;
-                if (!IsAccountAlreadyRegistered(accountNum))
+                if (!IsAccountAlreadyRegistered(accountNum) && !AddAccountUtils.IsFoundAccountList(accountNum))
                 {
                     this.userActionsListener.ValidateAccount(apiKeyID, accountNum, type, icNumber, suppliedMotherName, owner, accountLabel);
                 }

@@ -212,7 +212,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Select SMR Electricity Account Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Select SMR Electricity Account");
             }
             catch (Exception e)
             {

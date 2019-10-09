@@ -220,7 +220,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Reset Password Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Reset Password");
             }
             catch (Exception e)
             {

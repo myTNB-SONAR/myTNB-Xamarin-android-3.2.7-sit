@@ -40,6 +40,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("status")]
         public int Status { get; set; }
 
+        [Column("deviceId")]
+        public string DeviceId { get; set; }
+
 
         public static int CreateTable()
         {
@@ -90,6 +93,12 @@ namespace myTNB_Android.Src.Database.Model
             var db = DBHelper.GetSQLiteConnection();
             return db.Execute("UPDATE UserEntity SET mobileNo = ?", newPhoneNumber);
             //}
+        }
+
+        public static int UpdateDeviceId(string deviceId)
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            return db.Execute("UPDATE UserEntity SET deviceId = ?", deviceId);
         }
 
         public static IEnumerable<UserEntity> ListAllActive()

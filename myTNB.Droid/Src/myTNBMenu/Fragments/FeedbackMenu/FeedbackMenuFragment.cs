@@ -139,7 +139,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.FeedbackMenu
                     activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
                     activity.UnsetToolbarBackground();
                 }
-                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Feedback Screen");
+                FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Feedback");
             }
             catch (ClassCastException e)
             {

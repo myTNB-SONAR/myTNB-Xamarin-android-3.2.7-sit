@@ -115,6 +115,24 @@ namespace myTNB.SitecoreCMS.Services
             return JsonConvert.SerializeObject(resp);
         }
 
+
+        public AppLaunchResponseModel GetAppLaunchItem()
+        {
+            AppLaunchResponseModel respModel = new AppLaunchResponseModel();
+            try
+            {
+                AppLaunchService service = new AppLaunchService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<AppLaunchResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetAppLaunchItem: " + e.Message);
+            }
+            return respModel;
+        }
         public HelpResponseModel GetHelpItems()
         {
             HelpResponseModel respModel = new HelpResponseModel();
@@ -318,6 +336,24 @@ namespace myTNB.SitecoreCMS.Services
             return respModel;
         }
 
+        public AppLaunchTimeStampResponseModel GetAppLaunchTimestampItem()
+        {
+            AppLaunchTimeStampResponseModel respModel = new AppLaunchTimeStampResponseModel();
+            try
+            {
+                AppLaunchService service = new AppLaunchService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<AppLaunchTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetAppLaunchTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
         public BillDetailsTooltipTimeStampResponseModel GetBillDetailsTooltipTimestampItem()
         {
             BillDetailsTooltipTimeStampResponseModel respModel = new BillDetailsTooltipTimeStampResponseModel();

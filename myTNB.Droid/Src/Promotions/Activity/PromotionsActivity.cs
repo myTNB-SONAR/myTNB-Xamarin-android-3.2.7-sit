@@ -159,7 +159,7 @@ namespace myTNB_Android.Src.Promotions.Activity
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "Promotion Detail Screen");
+                FirebaseAnalyticsUtils.SetScreenName(this, "Promotion Detailed Info");
             }
             catch (Exception e)
             {

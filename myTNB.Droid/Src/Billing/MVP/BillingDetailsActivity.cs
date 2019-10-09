@@ -103,7 +103,7 @@ namespace myTNB_Android.Src.Billing.MVP
             billingDetailsPresenter.GetBillHistory(selectedAccountData);
             try
             {
-                FirebaseAnalyticsUtils.LogClickEvent(this, "View Bill Button Click");
+                FirebaseAnalyticsUtils.LogClickEvent(this, "View Bill Buttom Clicked");
             }
             catch (System.Exception ne)
             {
@@ -119,7 +119,7 @@ namespace myTNB_Android.Src.Billing.MVP
             StartActivity(payment_activity);
             try
             {
-                FirebaseAnalyticsUtils.LogClickEvent(this, "Pay Bill Button Click");
+                FirebaseAnalyticsUtils.LogClickEvent(this, "Billing Payment Buttom Clicked");
             }
             catch (System.Exception ne)
             {

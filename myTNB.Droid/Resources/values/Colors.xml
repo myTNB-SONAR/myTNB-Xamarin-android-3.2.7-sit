@@ -9,7 +9,10 @@
 
   <color name="bg_gradientTopFill">#2a97fb</color>
   <color name="bg_gradientBottomFill">#7730d3</color>
+  <color name="bg_gradientNewBottomFill">#634add</color>
 
+
+  <color name="bg_gradientSplashBottomFill">#634add</color>
 
   <color name="loginBtnColor">#20bd4c</color>
   <color name="resendBtnColor">#20bd4c</color>
@@ -99,4 +102,6 @@
     <color name="new_grey">#727171</color>
     
     <color name="all_cleared_amount">#8b8b8b</color>
+
+    <color name="dark_periwinkle">#575be4</color>
 </resources>
