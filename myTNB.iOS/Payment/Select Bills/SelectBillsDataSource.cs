@@ -56,12 +56,9 @@ namespace myTNB.Payment.SelectBills
             {
                 if (_controller.IsFromBillDetails)
                 {
-                    if (indexPath.Row > 0)
+                    if (indexPath.Row > 0 && _accounts[indexPath.Row].HasMandatory && !_accounts[indexPath.Row].IsAccountSelected && _accounts[indexPath.Row].IsValidAmount)
                     {
-                        if (_accounts[indexPath.Row].HasMandatory && !_accounts[indexPath.Row].IsAccountSelected && _accounts[indexPath.Row].IsValidAmount)
-                        {
-                            _controller.OnShowItemisedTooltip(_accounts[indexPath.Row].accNum);
-                        }
+                        _controller.OnShowItemisedTooltip(_accounts[indexPath.Row].accNum);
                     }
                 }
                 else
