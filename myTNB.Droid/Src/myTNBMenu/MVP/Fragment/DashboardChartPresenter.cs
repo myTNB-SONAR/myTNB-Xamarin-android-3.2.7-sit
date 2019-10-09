@@ -128,7 +128,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
                 if (installDetailsResponse != null && installDetailsResponse.Data != null && installDetailsResponse.Data.ErrorCode == "7200")
                 {
-                    if (installDetailsResponse.Data.Data.DisconnectionStatus.ToUpper() == Constants.ENERGY_DISCONNECTION_KEY)
+                    if (!string.IsNullOrEmpty(installDetailsResponse.Data.Data.DisconnectionStatus) && installDetailsResponse.Data.Data.DisconnectionStatus.ToUpper() != Constants.ENERGY_DISCONNECTION_KEY)
                     {
                         this.mView.ShowAccountStatus(installDetailsResponse.Data.Data);
                         this.mView.HideSSMRDashboardView();
@@ -422,6 +422,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7201")
                 {
                     isBillAvailable = true;
+                    this.mView.SetUsageData(usageHistoryResponse.Data.UsageHistoryData);
                     this.mView.ShowNewAccountView(usageHistoryResponse.Data.DisplayTitle);
                 }
                 else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7200")
@@ -514,6 +515,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7201")
                 {
                     isBillAvailable = true;
+                    this.mView.SetSMUsageData(usageHistoryResponse.Data.SMUsageHistoryData);
                     this.mView.ShowNewAccountView(usageHistoryResponse.Data.DisplayTitle);
                 }
                 else if (usageHistoryResponse != null && usageHistoryResponse.Data != null && usageHistoryResponse.Data.ErrorCode == "7204")
