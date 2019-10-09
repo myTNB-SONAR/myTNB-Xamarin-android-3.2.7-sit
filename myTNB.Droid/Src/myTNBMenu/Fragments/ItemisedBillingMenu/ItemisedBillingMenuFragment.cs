@@ -601,6 +601,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             {
                 downtimeSnackBar.Show();
             }
+            this.SetIsClicked(false);
         }
 
         public void ShowAvailableBillContent()
@@ -621,13 +622,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
             public void OnClick(View v)
             {
-                if (mBillHistoryData.HistoryType.ToUpper() == "PAYMENT")
+                if (!mView.GetIsClicked())
                 {
-                    mView.ShowPayPDFPage(mBillHistoryData);
-                }
-                else
-                {
-                    mView.ShowBillPDFPage(mBillHistoryData);
+                    mView.SetIsClicked(true);
+                    if (mBillHistoryData.HistoryType.ToUpper() == "PAYMENT")
+                    {
+                        mView.ShowPayPDFPage(mBillHistoryData);
+                    }
+                    else
+                    {
+                        mView.ShowBillPDFPage(mBillHistoryData);
+                    }
                 }
             }
         }
