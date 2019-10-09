@@ -58,7 +58,7 @@ namespace myTNB.SQLite.SQLiteDataManager
                         Image = obj.Image,
                         Title = obj.Title,
                         Description = obj.Description,
-                        NSDataImage = obj.NSDataImage
+                        ImageByteArray = obj.ImageByteArray
                     };
                     InsertItem(item);
                 }
@@ -98,7 +98,7 @@ namespace myTNB.SQLite.SQLiteDataManager
                     Image = item.Image,
                     Title = item.Title,
                     Description = item.Description,
-                    NSDataImage = item.NSDataImage
+                    ImageByteArray = item.ImageByteArray
                 };
                 itemList.Add(ssmrItem);
             }

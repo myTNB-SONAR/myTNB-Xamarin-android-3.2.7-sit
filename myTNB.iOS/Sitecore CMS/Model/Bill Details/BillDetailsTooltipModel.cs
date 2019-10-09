@@ -21,6 +21,8 @@ namespace myTNB.SitecoreCMS.Model
         public string Description { set; get; }
         public string Image { set; get; }
         public string ID { set; get; }
+        public byte[] ImageByteArray { set; get; }
+
     }
 
     public class BillsTooltipModel
@@ -29,6 +31,8 @@ namespace myTNB.SitecoreCMS.Model
         public List<string> Description { set; get; }
         public string Image { set; get; }
         public string ID { set; get; }
+        public byte[] ImageByteArray { set; get; }
+
         [JsonIgnore]
         public bool IsSitecoreData { set; get; }
     }
