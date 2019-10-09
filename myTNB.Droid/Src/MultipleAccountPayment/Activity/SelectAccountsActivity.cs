@@ -361,11 +361,15 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 
         public void ShowDashboardChart(AccountData accountData)
         {
-            Intent result = new Intent();
-            result.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
-            result.PutExtra(Constants.ITEMZIED_BILLING_VIEW_KEY, true);
-            SetResult(Result.FirstUser, result);
-            Finish();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent result = new Intent();
+                result.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+                result.PutExtra(Constants.ITEMZIED_BILLING_VIEW_KEY, true);
+                SetResult(Result.FirstUser, result);
+                Finish();
+            }
         }
 
 
@@ -432,13 +436,17 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             {
                 if (adapter.IsAllAmountValid())
                 {
-                    Intent payment_activity = new Intent(this, typeof(PaymentActivity));
-                    payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
-                    payment_activity.PutExtra("PAYMENT_ITEMS", JsonConvert.SerializeObject(adapter.GetSelectedAccounts()));
-                    List<AccountChargeModel>  chargeModelList = mPresenter.GetSelectedAccountChargesModelList(adapter.GetSelectedAccounts());
-                    payment_activity.PutExtra("ACCOUNT_CHARGES_LIST", JsonConvert.SerializeObject(chargeModelList));
-                    payment_activity.PutExtra("TOTAL", textTotalPayable.Text);
-                    StartActivityForResult(payment_activity, PaymentActivity.SELECT_PAYMENT_ACTIVITY_CODE);
+                    if (!this.GetIsClicked())
+                    {
+                        this.SetIsClicked(true);
+                        Intent payment_activity = new Intent(this, typeof(PaymentActivity));
+                        payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
+                        payment_activity.PutExtra("PAYMENT_ITEMS", JsonConvert.SerializeObject(adapter.GetSelectedAccounts()));
+                        List<AccountChargeModel> chargeModelList = mPresenter.GetSelectedAccountChargesModelList(adapter.GetSelectedAccounts());
+                        payment_activity.PutExtra("ACCOUNT_CHARGES_LIST", JsonConvert.SerializeObject(chargeModelList));
+                        payment_activity.PutExtra("TOTAL", textTotalPayable.Text);
+                        StartActivityForResult(payment_activity, PaymentActivity.SELECT_PAYMENT_ACTIVITY_CODE);
+                    }
                 }
                 else
                 {
@@ -622,6 +630,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
             }
         }
 
+        protected override void OnPause()
+        {
+            base.OnPause();
+        }
+
         public void GetAccountDueAmountResult(List<MPAccount> accounts)
         {
             try
@@ -779,17 +792,22 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 
         private void ShowBillingDetails(AccountChargeModel accountChargeModel)
         {
-            CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountChargeModel.ContractAccount);
-            AccountData selectedAccountData = new AccountData();
-            selectedAccountData.AccountNum = accountChargeModel.ContractAccount;
-            selectedAccountData.AccountNickName = customerBillingAccount.AccDesc;
-            selectedAccountData.AddStreet = customerBillingAccount.AccountStAddress;
-            selectedAccountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                CustomerBillingAccount customerBillingAccount = CustomerBillingAccount.FindByAccNum(accountChargeModel.ContractAccount);
+                AccountData selectedAccountData = new AccountData();
+                selectedAccountData.AccountNum = accountChargeModel.ContractAccount;
+                selectedAccountData.AccountNickName = customerBillingAccount.AccDesc;
+                selectedAccountData.AddStreet = customerBillingAccount.AccountStAddress;
+                selectedAccountData.AccountCategoryId = customerBillingAccount.AccountCategoryId;
 
-            Intent intent = new Intent(this, typeof(BillingDetailsActivity));
-            intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(selectedAccountData));
-            intent.PutExtra("SELECTED_BILL_DETAILS", JsonConvert.SerializeObject(accountChargeModel));
-            StartActivity(intent);
+                Intent intent = new Intent(this, typeof(BillingDetailsActivity));
+                intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(selectedAccountData));
+                intent.PutExtra("SELECTED_BILL_DETAILS", JsonConvert.SerializeObject(accountChargeModel));
+                intent.PutExtra("PEEK_BILL_DETAILS", true);
+                StartActivity(intent);
+            }
         }
     }
 }

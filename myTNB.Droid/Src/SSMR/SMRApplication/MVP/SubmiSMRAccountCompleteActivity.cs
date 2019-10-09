@@ -73,14 +73,32 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
         [OnClick(Resource.Id.btnBackToHomeSuccess)]
         void OnBackToHome(object sender, EventArgs eventArgs)
         {
-            Intent intent = new Intent(this, typeof(DashboardHomeActivity));
-            StartActivity(intent);
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent intent = new Intent(this, typeof(DashboardHomeActivity));
+                StartActivity(intent);
+            }
         }
 
         [OnClick(Resource.Id.btnTrackApplication)]
         void OnTrackApplication(object sender, EventArgs eventArgs)
         {
-            Finish();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Finish();
+            }
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
         }
     }
 }

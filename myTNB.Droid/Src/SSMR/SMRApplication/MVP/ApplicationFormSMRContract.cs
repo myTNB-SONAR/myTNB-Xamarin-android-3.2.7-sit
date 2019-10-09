@@ -22,6 +22,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             void ShowInvalidEmailError();
             void ClearEmailError();
             void ClearErrors();
+            void EnableButton();
         }
 
         public interface IPresenter

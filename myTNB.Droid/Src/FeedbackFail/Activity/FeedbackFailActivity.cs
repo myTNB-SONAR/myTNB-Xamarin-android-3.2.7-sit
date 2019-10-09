@@ -67,15 +67,23 @@ namespace myTNB_Android.Src.FeedbackFail.Activity
         [OnClick(Resource.Id.btnTryAgain)]
         void TryAgain(object sender, EventArgs eventArgs)
         {
-            Finish();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Finish();
+            }
         }
 
         [OnClick(Resource.Id.btnBackToDashboard)]
         void BackToDashboard(object sender, EventArgs eventArgs)
         {
-            var dashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
-            dashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-            StartActivity(dashboardIntent);
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                var dashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+                dashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                StartActivity(dashboardIntent);
+            }
         }
 
 

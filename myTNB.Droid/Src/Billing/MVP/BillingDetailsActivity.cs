@@ -96,34 +96,51 @@ namespace myTNB_Android.Src.Billing.MVP
         AccountData selectedAccountData;
         BillingDetailsContract.IPresenter billingDetailsPresenter;
         private LoadingOverlay loadingOverlay;
+		private bool fromSelectAccountPage;
 
         [OnClick(Resource.Id.btnViewBill)]
         void OnViewBill(object sender, EventArgs eventArgs)
         {
-            billingDetailsPresenter.GetBillHistory(selectedAccountData);
-            try
+            if (!this.GetIsClicked())
             {
-                FirebaseAnalyticsUtils.LogClickEvent(this, "View Bill Buttom Clicked");
-            }
-            catch (System.Exception ne)
-            {
-                Utility.LoggingNonFatalError(ne);
+                this.SetIsClicked(true);
+                billingDetailsPresenter.GetBillHistory(selectedAccountData);
+                try
+                {
+                    FirebaseAnalyticsUtils.LogClickEvent(this, "View Bill Buttom Clicked");
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
             }
         }
 
         [OnClick(Resource.Id.btnPayBill)]
         void OnPayBill(object sender, EventArgs eventArgs)
         {
-            Intent payment_activity = new Intent(this, typeof(SelectAccountsActivity));
-            payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
-            StartActivity(payment_activity);
-            try
+            if (!this.GetIsClicked())
             {
-                FirebaseAnalyticsUtils.LogClickEvent(this, "Billing Payment Buttom Clicked");
-            }
-            catch (System.Exception ne)
-            {
-                Utility.LoggingNonFatalError(ne);
+                if (fromSelectAccountPage)
+                {
+                    Finish();
+                }
+                else
+                {
+                    this.SetIsClicked(true);
+                    Intent payment_activity = new Intent(this, typeof(SelectAccountsActivity));
+                    payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
+                    StartActivity(payment_activity);
+                }
+                
+                try
+                {
+                    FirebaseAnalyticsUtils.LogClickEvent(this, "Billing Payment Buttom Clicked");
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
             }
         }
 
@@ -157,7 +174,15 @@ namespace myTNB_Android.Src.Billing.MVP
             {
                 billingHistoryData = JsonConvert.DeserializeObject<BillingHistoryData>(extras.GetString("LATEST_BILL_HISTORY"));
             }
-            SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
+			if (extras.ContainsKey("PEEK_BILL_DETAILS"))
+			{
+                fromSelectAccountPage = extras.GetBoolean("PEEK_BILL_DETAILS");
+			}
+			else
+			{
+				fromSelectAccountPage = false;
+			}
+			SetStatusBarBackground(Resource.Drawable.dashboard_fluid_background);
             SetToolbarBackground(Resource.Drawable.CustomDashboardGradientToolbar);
 
             accountName.Text = selectedAccountData.AccountNickName;
@@ -273,6 +298,16 @@ namespace myTNB_Android.Src.Billing.MVP
             ShowAccountHasMinCharge();
         }
 
+        protected override void OnResume()
+        {
+            base.OnResume();
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+        }
+
         public void ShowAccountHasMinCharge()
         {
             BillMandatoryChargesTooltipModel mandatoryTooltipModel = MyTNBAppToolTipData.GetInstance().GetMandatoryChargesTooltipData();
@@ -346,9 +381,11 @@ namespace myTNB_Android.Src.Billing.MVP
                 }
                 );
                 mLoadBillSnackBar.Show();
+                this.SetIsClicked(false);
             }
             catch (System.Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }

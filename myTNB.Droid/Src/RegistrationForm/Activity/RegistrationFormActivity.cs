@@ -353,17 +353,22 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         {
             try
             {
-                string fName = txtFullName.Text.ToString().Trim();
-                string ic_no = txtICNumber.Text.ToString().Trim();
-                string mobile_no = txtMobileNumber.Text.ToString().Trim();
-                string eml_str = txtEmail.Text.ToString().Trim();
-                string confirm_email = txtConfirmEmail.Text.ToString().Trim();
-                string password = txtPassword.Text;
-                string confirm_password = txtConfirmPassword.Text;
-                this.userActionsListener.OnAcquireToken(fName, ic_no, mobile_no, eml_str, confirm_email, password, confirm_password);
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    string fName = txtFullName.Text.ToString().Trim();
+                    string ic_no = txtICNumber.Text.ToString().Trim();
+                    string mobile_no = txtMobileNumber.Text.ToString().Trim();
+                    string eml_str = txtEmail.Text.ToString().Trim();
+                    string confirm_email = txtConfirmEmail.Text.ToString().Trim();
+                    string password = txtPassword.Text;
+                    string confirm_password = txtConfirmPassword.Text;
+                    this.userActionsListener.OnAcquireToken(fName, ic_no, mobile_no, eml_str, confirm_email, password, confirm_password);
+                }
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -372,7 +377,11 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
         [OnClick(Resource.Id.txtTermsConditions)]
         void OnTermsConditions(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.NavigateToTermsAndConditions();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.NavigateToTermsAndConditions();
+            }
         }
 
 
@@ -475,6 +484,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             tv.SetMaxLines(5);
 
             mRegistrationSnackBar.Show();
+            this.SetIsClicked(false);
         }
         private Snackbar mCancelledExceptionSnackBar;
         public void ShowRetryOptionsCancelledException(System.OperationCanceledException operationCanceledException)
@@ -501,6 +511,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             }
             );
             mCancelledExceptionSnackBar.Show();
+            this.SetIsClicked(false);
 
         }
 
@@ -529,6 +540,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             }
             );
             mApiExcecptionSnackBar.Show();
+            this.SetIsClicked(false);
 
         }
         private Snackbar mUknownExceptionSnackBar;
@@ -557,6 +569,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
             }
             );
             mUknownExceptionSnackBar.Show();
+            this.SetIsClicked(false);
 
         }
 
@@ -656,6 +669,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
                 }
                 mSnackBar.Show();
             }
+            this.SetIsClicked(false);
         }
 
         public bool IsGrantedSMSReceivePermission()

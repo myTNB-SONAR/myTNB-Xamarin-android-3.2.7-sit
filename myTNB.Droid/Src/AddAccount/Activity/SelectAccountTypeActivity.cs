@@ -93,12 +93,16 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
         internal void OnItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            selectedAccountType = accountType.GetItemObject(e.Position);
-            selectedAccountType.IsSelected = true;
-            Intent link_activity = new Intent(this, typeof(AddAccountActivity));
-            link_activity.PutExtra("selectedAccountType", JsonConvert.SerializeObject(selectedAccountType));
-            SetResult(Result.Ok, link_activity);
-            Finish();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                selectedAccountType = accountType.GetItemObject(e.Position);
+                selectedAccountType.IsSelected = true;
+                Intent link_activity = new Intent(this, typeof(AddAccountActivity));
+                link_activity.PutExtra("selectedAccountType", JsonConvert.SerializeObject(selectedAccountType));
+                SetResult(Result.Ok, link_activity);
+                Finish();
+            }
         }
 
         protected override void OnResume()
@@ -114,6 +118,10 @@ namespace myTNB_Android.Src.AddAccount.Fragment
             }
         }
 
+        protected override void OnPause()
+        {
+            base.OnPause();
+        }
 
         public override bool ShowCustomToolbarTitle()
         {

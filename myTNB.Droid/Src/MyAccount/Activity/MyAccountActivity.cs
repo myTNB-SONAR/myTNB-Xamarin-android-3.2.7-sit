@@ -195,8 +195,12 @@ namespace myTNB_Android.Src.MyAccount.Activity
         [Preserve]
         private void ListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
-            CustomerBillingAccount customerBillingAccount = adapter.GetItemObject(e.Position);
-            this.userActionsListener.OnManageSupplyAccount(customerBillingAccount, e.Position);
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                CustomerBillingAccount customerBillingAccount = adapter.GetItemObject(e.Position);
+                this.userActionsListener.OnManageSupplyAccount(customerBillingAccount, e.Position);
+            }
         }
 
         private Snackbar mCancelledExceptionSnackBar;
@@ -217,9 +221,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 }
                 );
                 mCancelledExceptionSnackBar.Show();
+                this.SetIsClicked(false);
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -242,9 +248,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 }
                 );
                 mApiExcecptionSnackBar.Show();
+                this.SetIsClicked(false);
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -268,9 +276,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 }
                 );
                 mUknownExceptionSnackBar.Show();
+                this.SetIsClicked(false);
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -278,31 +288,51 @@ namespace myTNB_Android.Src.MyAccount.Activity
         [OnClick(Resource.Id.btnTextUpdateMobileNo)]
         void OnClickMobile(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.OnUpdateMobileNo();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnUpdateMobileNo();
+            }
         }
 
         [OnClick(Resource.Id.btnTextUpdatePassword)]
         void OnClickPassword(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.OnUpdatePassword();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnUpdatePassword();
+            }
         }
 
         [OnClick(Resource.Id.btnTextUpdateCards)]
         void OnClickUpdateCards(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.OnManageCards();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnManageCards();
+            }
         }
 
         [OnClick(Resource.Id.btnAddAccount)]
         void OnClickAddAccount(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.OnAddAccount();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnAddAccount();
+            }
         }
 
         [OnClick(Resource.Id.btnAddAnotherAccount)]
         void OnClickAddAnotherAccount(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.OnAddAccount();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnAddAccount();
+            }
         }
 
         [OnClick(Resource.Id.btnLogout)]
@@ -443,6 +473,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
             }
         }
 
+        protected override void OnPause()
+        {
+            base.OnPause();
+        }
+
         public void HideShowProgressDialog()
         {
             //if (accountRetrieverDialog != null && accountRetrieverDialog.IsShowing)
@@ -562,9 +597,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                 tv.SetMaxLines(4);
                 updatePhoneSnackBar.Show();
+                this.SetIsClicked(false);
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -585,9 +622,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                 tv.SetMaxLines(4);
                 updatePassWordBar.Show();
+                this.SetIsClicked(false);
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -606,9 +645,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                             // EMPTY WILL CLOSE SNACKBAR
                         }
                            ).Show();
+                this.SetIsClicked(false);
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -636,9 +677,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                             // EMPTY WILL CLOSE SNACKBAR
                         }
                            ).Show();
+                this.SetIsClicked(false);
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -686,9 +729,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                              // EMPTY WILL CLOSE SNACKBAR
                          }
                             ).Show();
+                this.SetIsClicked(false);
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -757,9 +802,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 TextView tv = (TextView)v.FindViewById<TextView>(Resource.Id.snackbar_text);
                 tv.SetMaxLines(4);
                 updatePassWordBar.Show();
+                this.SetIsClicked(false);
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }

@@ -184,6 +184,11 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
             }
         }
 
+        protected override void OnPause()
+        {
+            base.OnPause();
+        }
+
         [Preserve]
         private void TextChanged(object sender, Android.Text.TextChangedEventArgs e)
         {
@@ -510,20 +515,27 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
 
         public void ShowCamera()
         {
-            var intent = new Intent(MediaStore.ActionImageCapture);
-            Java.IO.File file = new Java.IO.File(FileUtils.GetTemporaryImageFilePath(this, FileUtils.TEMP_IMAGE_FOLDER, string.Format("{0}.jpeg", "temporaryImage")));
-            Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
-                                            ApplicationContext.PackageName + ".provider", file);
-            intent.PutExtra(Android.Provider.MediaStore.ExtraOutput, fileUri);
-            StartActivityForResult(intent, Constants.REQUEST_ATTACHED_CAMERA_IMAGE);
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                var intent = new Intent(MediaStore.ActionImageCapture);
+                Java.IO.File file = new Java.IO.File(FileUtils.GetTemporaryImageFilePath(this, FileUtils.TEMP_IMAGE_FOLDER, string.Format("{0}.jpeg", "temporaryImage")));
+                Android.Net.Uri fileUri = FileProvider.GetUriForFile(this,
+                                                ApplicationContext.PackageName + ".provider", file);
+                intent.PutExtra(Android.Provider.MediaStore.ExtraOutput, fileUri);
+                StartActivityForResult(intent, Constants.REQUEST_ATTACHED_CAMERA_IMAGE);
+            }
         }
 
         public void ShowGallery()
         {
-            Intent galleryIntent = new Intent(Intent.ActionPick, MediaStore.Images.Media.ExternalContentUri);
-            galleryIntent.SetType("image/*");
-            StartActivityForResult(Intent.CreateChooser(galleryIntent, GetString(Resource.String.bill_related_feedback_select_images)), Constants.RUNTIME_PERMISSION_GALLERY_REQUEST_CODE);
-
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent galleryIntent = new Intent(Intent.ActionPick, MediaStore.Images.Media.ExternalContentUri);
+                galleryIntent.SetType("image/*");
+                StartActivityForResult(Intent.CreateChooser(galleryIntent, GetString(Resource.String.bill_related_feedback_select_images)), Constants.RUNTIME_PERMISSION_GALLERY_REQUEST_CODE);
+            }
         }
 
         public void ShowEmptyFeedbackError()
@@ -618,27 +630,32 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
         {
             try
             {
-                btnSubmit.Enabled = false;
-                Handler h = new Handler();
-                Action myAction = () =>
+                if (!this.GetIsClicked())
                 {
-                    btnSubmit.Enabled = true;
-                };
-                h.PostDelayed(myAction, 3000);
+                    this.SetIsClicked(true);
+                    btnSubmit.Enabled = false;
+                    Handler h = new Handler();
+                    Action myAction = () =>
+                    {
+                        btnSubmit.Enabled = true;
+                    };
+                    h.PostDelayed(myAction, 3000);
 
-                string feedback = txtFeedback.Text.Trim();
-                if (txtInputLayoutMobileNo.Visibility == ViewStates.Visible)
-                {
-                    string mobile_no = txtMobileNo.Text.Trim();
-                    this.userActionsListener.OnSubmit(this.DeviceId(), mobile_no, customerBillingAccount?.AccNum, feedback, adapter?.GetAllImages());
-                }
-                else
-                {
-                    this.userActionsListener.OnSubmit(this.DeviceId(), customerBillingAccount?.AccNum, feedback, adapter?.GetAllImages());
+                    string feedback = txtFeedback.Text.Trim();
+                    if (txtInputLayoutMobileNo.Visibility == ViewStates.Visible)
+                    {
+                        string mobile_no = txtMobileNo.Text.Trim();
+                        this.userActionsListener.OnSubmit(this.DeviceId(), mobile_no, customerBillingAccount?.AccNum, feedback, adapter?.GetAllImages());
+                    }
+                    else
+                    {
+                        this.userActionsListener.OnSubmit(this.DeviceId(), customerBillingAccount?.AccNum, feedback, adapter?.GetAllImages());
+                    }
                 }
             }
             catch (Exception e)
             {
+                this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -647,19 +664,31 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
         [OnClick(Resource.Id.accountLayout)]
         void OnSelectAccountLayout(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.OnSelectAccount();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnSelectAccount();
+            }
         }
 
         [OnClick(Resource.Id.txtInputLayoutAccountNo)]
         void OnSelectAccountLayout1(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.OnSelectAccount();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnSelectAccount();
+            }
         }
 
         [OnClick(Resource.Id.txtAccountNo)]
         void OnSelectAccountLayout2(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.OnSelectAccount();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.OnSelectAccount();
+            }
         }
 
 
@@ -772,6 +801,7 @@ namespace myTNB_Android.Src.Feedback_Login_BillRelated.Activity
             tv.SetMaxLines(5);
 
             mErrorMessageSnackBar.Show();
+            this.SetIsClicked(false);
         }
 
         public override void OnTrimMemory(TrimMemory level)

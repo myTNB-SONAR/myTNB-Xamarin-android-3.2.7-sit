@@ -462,14 +462,18 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [OnClick(Resource.Id.btnSubmitMeter)]
         internal void OnSubmitMeter(object sender, EventArgs eventArgs)
         {
-            AccountData accountData = new AccountData();
-            SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
-            accountData.AccountNum = selectedAccountNumber;
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                AccountData accountData = new AccountData();
+                SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
+                accountData.AccountNum = selectedAccountNumber;
 
-            Intent ssmr_submit_meter_activity = new Intent(this, typeof(SubmitMeterReadingActivity));
-            ssmr_submit_meter_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
-            ssmr_submit_meter_activity.PutExtra(Constants.SMR_RESPONSE_KEY, JsonConvert.SerializeObject(smrResponse));
-            StartActivityForResult(ssmr_submit_meter_activity, SSMR_SUBMIT_METER_ACTIVITY_CODE);
+                Intent ssmr_submit_meter_activity = new Intent(this, typeof(SubmitMeterReadingActivity));
+                ssmr_submit_meter_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+                ssmr_submit_meter_activity.PutExtra(Constants.SMR_RESPONSE_KEY, JsonConvert.SerializeObject(smrResponse));
+                StartActivityForResult(ssmr_submit_meter_activity, SSMR_SUBMIT_METER_ACTIVITY_CODE);
+            }
         }
 
 
@@ -493,27 +497,35 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [OnClick(Resource.Id.selectAccountContainer)]
         void OnSelectAccount(object sender, EventArgs eventArgs)
         {
-            if (smrAccountList != null && smrAccountList.Count > 0)
+            if (!this.GetIsClicked())
             {
-                this.mPresenter.CheckSMRAccountEligibility(smrAccountList);
-            }
-            else
-            {
-                Intent intent = new Intent(this, typeof(SelectSMRAccountActivity));
-                StartActivityForResult(intent, SSMR_SELECT_ACCOUNT_ACTIVITY_CODE);
+                this.SetIsClicked(true);
+                if (smrAccountList != null && smrAccountList.Count > 0)
+                {
+                    this.mPresenter.CheckSMRAccountEligibility(smrAccountList);
+                }
+                else
+                {
+                    Intent intent = new Intent(this, typeof(SelectSMRAccountActivity));
+                    StartActivityForResult(intent, SSMR_SELECT_ACCOUNT_ACTIVITY_CODE);
+                }
             }
         }
 
         [OnClick(Resource.Id.btnDisableSubmitMeter)]
         void OnDisableSubmitMeter(object sender, EventArgs eventArgs)
         {
-            AccountData accountData = new AccountData();
-            SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
-            accountData.AccountNum = selectedAccountNumber;
-            accountData.AddStreet = eligibleAccount.accountAddress;
-            accountData.AccountNickName = eligibleAccount.accountName;
-						SMR_ACTION_KEY = Constants.SMR_DISABLE_FLAG;
-            this.mPresenter.GetCARegisteredContactInfoAsync(accountData);
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                AccountData accountData = new AccountData();
+                SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
+                accountData.AccountNum = selectedAccountNumber;
+                accountData.AddStreet = eligibleAccount.accountAddress;
+                accountData.AccountNickName = eligibleAccount.accountName;
+                SMR_ACTION_KEY = Constants.SMR_DISABLE_FLAG;
+                this.mPresenter.GetCARegisteredContactInfoAsync(accountData);
+            }
         }
 
         public override void OnBackPressed()
@@ -532,13 +544,17 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [OnClick(Resource.Id.btnEnableSubmitMeter)]
         void OnEnableSubmitMeter(object sender, EventArgs eventArgs)
         {
-            AccountData accountData = new AccountData();
-            SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
-            accountData.AccountNum = selectedAccountNumber;
-            accountData.AddStreet = eligibleAccount.accountAddress;
-            accountData.AccountNickName = eligibleAccount.accountName;
-            SMR_ACTION_KEY = Constants.SMR_ENABLE_FLAG;
-            this.mPresenter.GetCARegisteredContactInfoAsync(accountData);
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                AccountData accountData = new AccountData();
+                SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
+                accountData.AccountNum = selectedAccountNumber;
+                accountData.AddStreet = eligibleAccount.accountAddress;
+                accountData.AccountNickName = eligibleAccount.accountName;
+                SMR_ACTION_KEY = Constants.SMR_ENABLE_FLAG;
+                this.mPresenter.GetCARegisteredContactInfoAsync(accountData);
+            }
         }
 
         public void ShowSMREligibleAccountList(List<SMRAccount> smrEligibleAccountList)
@@ -550,6 +566,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 
         public void ShowRefreshScreen(bool isShow)
         {
+            this.SetIsClicked(false);
             NestedScrollViewContent.Visibility = isShow ? ViewStates.Gone : ViewStates.Visible;
             smrAccountListRefreshContainer.Visibility = isShow ? ViewStates.Visible : ViewStates.Gone;
         }
@@ -571,7 +588,13 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
-				}
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
+        }
+
         public void ShowEnableDisableSMR(CAContactDetailsModel contactDetailsModel)
         {
             AccountData accountData = new AccountData();
@@ -585,6 +608,11 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             SSMRTerminateActivity.PutExtra("SMR_CONTACT_DETAILS", JsonConvert.SerializeObject(contactDetailsModel));
             SSMRTerminateActivity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
             StartActivity(SSMRTerminateActivity);
+        }
+
+        public void EnableButton()
+        {
+            this.SetIsClicked(false);
         }
     }
 }

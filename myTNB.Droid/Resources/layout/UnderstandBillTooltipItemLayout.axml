@@ -6,7 +6,7 @@
     <ImageView
         android:id="@+id/tooltipImageHeader"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="180dp"
         android:scaleType="fitXY"/>
     <TextView
         android:id="@+id/txtToolTipTitle"
@@ -22,5 +22,5 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="150dp"/>
 </LinearLayout>

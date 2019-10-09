@@ -10,23 +10,22 @@
       android:layout_height="wrap_content"
       android:layout_gravity="center"
       android:id="@+id/rootView"
-      android:background="@drawable/custom_round_white_dialog_shadow">
+      android:background="@color/white">
     <android.support.v7.widget.RecyclerView
         android:id="@+id/dialogRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="335dp"/>
+        android:layout_height="350dp"/>
     <LinearLayout
           android:orientation="horizontal"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
           android:gravity="center"
           android:id="@+id/dialoagListViewIndicatorContainer"/>
     <LinearLayout
           android:orientation="vertical"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
-          android:layout_marginTop="8dp"
+          android:layout_marginTop="16dp"
           android:clickable="true"
           android:id="@+id/btnFirst">
         <View

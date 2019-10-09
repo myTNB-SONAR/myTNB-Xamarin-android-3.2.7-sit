@@ -86,6 +86,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         private SummaryDashBordRequest summaryDashBoardRequest = null;
         DecimalFormat decimalFormat = new DecimalFormat("#,###,###,###,##0.00");
 
+        private bool isClicked = false;
+
         public bool IsActive()
         {
             return IsVisible;
@@ -97,6 +99,12 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
 
             // Create your fragment here
 
+        }
+
+        public override void OnPause()
+        {
+            base.OnPause();
+            isClicked = true;
         }
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -279,6 +287,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
         {
             ((PaymentActivity)Activity).SetToolBarTitle(TOOL_BAR_TITLE);
             base.OnResume();
+
+            isClicked = false;
         }
 
         void OnItemClick(object sender, int position)
@@ -315,10 +325,14 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 selectedPaymentMethod = METHOD_CREDIT_CARD;
                 if (IsValidPayableAmount())
                 {
-                    Intent nextIntent = new Intent();
-                    nextIntent.PutExtra("registeredCards", JsonConvert.SerializeObject(registerdCards));
-                    nextIntent.SetClass(Activity, typeof(AddCardActivity));
-                    StartActivityForResult(nextIntent, ADD_CARD_REQUEST_CDOE);
+                    if (!isClicked)
+                    {
+                        isClicked = true;
+                        Intent nextIntent = new Intent();
+                        nextIntent.PutExtra("registeredCards", JsonConvert.SerializeObject(registerdCards));
+                        nextIntent.SetClass(Activity, typeof(AddCardActivity));
+                        StartActivityForResult(nextIntent, ADD_CARD_REQUEST_CDOE);
+                    }
                 }
             }
             catch (Exception e)

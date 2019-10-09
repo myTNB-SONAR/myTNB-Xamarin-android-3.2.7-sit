@@ -19,6 +19,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Service
         ISummaryDashBoard summaryDashboardInfoApi = null;
         IGetServiceApi getServiceApi = null;
         IAccountsSMRStatusApi getSMRAccountStatusApi = null;
+        IGetIsSmrApplyAllowedApi getIsSmrApplyAllowedApi = null;
 
         public HomeMenuServiceImpl()
         {
@@ -27,10 +28,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Service
             summaryDashboardInfoApi = RestService.For<ISummaryDashBoard>(httpClient);
             getServiceApi = RestService.For<IGetServiceApi>(httpClient);
             getSMRAccountStatusApi = RestService.For<IAccountsSMRStatusApi>(httpClient);
+            getIsSmrApplyAllowedApi = RestService.For<IGetIsSmrApplyAllowedApi>(httpClient);
 #else
             summaryDashboardInfoApi = RestService.For<ISummaryDashBoard>(Constants.SERVER_URL.END_POINT);
             getServiceApi = RestService.For<IGetServiceApi>(Constants.SERVER_URL.END_POINT);
             getSMRAccountStatusApi = RestService.For<IAccountsSMRStatusApi>(Constants.SERVER_URL.END_POINT);
+            getIsSmrApplyAllowedApi = RestService.For<IGetIsSmrApplyAllowedApi>(Constants.SERVER_URL.END_POINT);
 #endif
         }
 
@@ -47,6 +50,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Service
         public Task<AccountSMRStatusResponse> GetSMRAccountStatus(AccountsSMRStatusRequest request)
         {
             return getSMRAccountStatusApi.AccountsSMRStatusApi(request, new System.Threading.CancellationToken());
+        }
+
+        public Task<GetIsSmrApplyAllowedResponse> GetIsSmrApplyAllowed(GetIsSmrApplyAllowedRequest request)
+        {
+            return getIsSmrApplyAllowedApi.GetIsSmrApplyAllowed(request, new System.Threading.CancellationToken());
         }
     }
 }

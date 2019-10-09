@@ -109,9 +109,11 @@
   <string name="registration_form_confirm_password_hint">Confirm New Password</string>
   <string name="registration_form_registration_pin_info">Please enter your 4-digit activation pin to complete your registration</string>
   <string name="registration_form_terms_conditions">By registering, you are agreeing to the <font color='#1c79ca'>TNB Terms and Conditions, User Agreement and Privacy policy.</font> </string>
-  <string name="registration_form_password_format_hint">PASSWORD MUST HAVE AT LEAST 8 ALPHANUMERIC CHARACTERS.</string>
+  <string name="registration_form_password_format_hint">Password must have at least 8 alphanumeric characters.</string>
   <!-- End of Registration Form -->
 
+	
+	
   <string name="terms_conditions_activity_title">Terms &amp; Conditions</string>
 
   <!-- Registration Form Errors-->
@@ -288,7 +290,7 @@
 	<string name="reset_password_primary_text">Please enter your new password.</string>
 	<string name="reset_password_title_info">This new password will replace your current one. All account details remain unchanged.</string>
   <string name="reset_password_old_password_hint">Old Password</string>
-  <string name="reset_password_new_password_hint">New Password</string>
+  <string name="reset_password_new_password_hint">Enter new password</string>
   <string name="reset_password_new_confirm_password_hint">Confirm New Password</string>
   <string name="reset_password_btn_submit">Submit</string>
   <!--End of Reset Password-->

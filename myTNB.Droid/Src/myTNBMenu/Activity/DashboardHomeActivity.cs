@@ -122,9 +122,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowPreLogin()
         {
-            Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
-            PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-            StartActivity(PreLoginIntent);
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
+                PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                StartActivity(PreLoginIntent);
+            }
         }
 
         public override bool ShowBackArrowIndicator()
@@ -172,6 +176,13 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 mPresenter.OnAccountSelectDashBoard();
                 isFromNotification = true;
                 alreadyStarted = true;
+            }
+
+            if (!alreadyStarted)
+            {
+                this.userActionsListener.Start();
+                alreadyStarted = true;
+                ShowPromotion(true);
             }
 
             this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).Click += DashboardHomeActivity_Click;
@@ -233,6 +244,11 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }            
         }
 
+        protected override void OnPause()
+        {
+            base.OnPause();
+        }
+
         public void ShowNoAccountBillMenu()
         {
             ShowBackButton(false);
@@ -249,8 +265,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
 
         public void ShowSelectSupplyAccount()
         {
-            Intent supplyAccount = new Intent(this, typeof(SelectSupplyAccountActivity));
-            StartActivityForResult(supplyAccount, Constants.SELECT_ACCOUNT_REQUEST_CODE);
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent supplyAccount = new Intent(this, typeof(SelectSupplyAccountActivity));
+                StartActivityForResult(supplyAccount, Constants.SELECT_ACCOUNT_REQUEST_CODE);
+            }
         }
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -517,13 +537,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         public override void Ready()
         {
             base.Ready();
-            if (!alreadyStarted)
-            {
-                this.userActionsListener.Start();
-                alreadyStarted = true;
-                ShowPromotion(true);
-            }
-
         }
 
         public void EnableBillMenu()

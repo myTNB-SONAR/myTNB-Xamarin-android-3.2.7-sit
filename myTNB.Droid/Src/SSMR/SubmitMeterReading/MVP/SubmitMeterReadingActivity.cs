@@ -58,8 +58,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 		[BindView(Resource.Id.btnSubmitReading)]
         Button btnSubmitReading;
 
-        [BindView(Resource.Id.btnTakePhoto)]
-        Button btnTakePhoto;
+        [BindView(Resource.Id.btnTakeUploadPicture)]
+        FrameLayout btnTakePhoto;
 
         [BindView(Resource.Id.meterReadingError)]
         TextView meterReadingError;
@@ -90,6 +90,9 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         [BindView(Resource.Id.previous_reading_8)]
         TextView prevReading8;
+
+        [BindView(Resource.Id.btnTakeUploadPictureText)]
+        TextView btnTakeUploadPictureText;
 
         public readonly static int SSMR_SUBMIT_METER_ACTIVITY_CODE = 8796;
         public readonly static int SSMR_SUBMIT_METER_OCR_SUBMIT_CODE = 8797;
@@ -144,14 +147,18 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             this.mPresenter.SubmitMeterReading(contractAccount, isOwnedAccount, meterReadingRequestList);
         }
 
-        [OnClick(Resource.Id.btnTakePhoto)]
+        [OnClick(Resource.Id.btnTakeUploadPicture)]
         internal void OnTakePhotoReading(object sender, EventArgs eventArgs)
         {
-            Intent photoIntent = new Intent(this, typeof(SubmitMeterTakePhotoActivity));
-            photoIntent.PutExtra("REQUESTED_PHOTOS", JsonConvert.SerializeObject(meterReadingModelList));
-            photoIntent.PutExtra("IS_SINGLE_PHASE", meterReadingModelList.Count == 1 ? true : false);
-            photoIntent.PutExtra("CONTRACT_NUMBER", selectedAccount.AccountNum);
-            StartActivityForResult(photoIntent, SSMR_SUBMIT_METER_OCR_SUBMIT_CODE);
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent photoIntent = new Intent(this, typeof(SubmitMeterTakePhotoActivity));
+                photoIntent.PutExtra("REQUESTED_PHOTOS", JsonConvert.SerializeObject(meterReadingModelList));
+                photoIntent.PutExtra("IS_SINGLE_PHASE", meterReadingModelList.Count == 1 ? true : false);
+                photoIntent.PutExtra("CONTRACT_NUMBER", selectedAccount.AccountNum);
+                StartActivityForResult(photoIntent, SSMR_SUBMIT_METER_OCR_SUBMIT_CODE);
+            }
         }
 
         private void InitializePage()
@@ -160,10 +167,10 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
 			TextViewUtils.SetMuseoSans300Typeface(meterReadingTitle,meterReadingNote, prevReading1, prevReading2, prevReading3, prevReading4, prevReading5,
                 prevReading6, prevReading7, prevReading8);
-            TextViewUtils.SetMuseoSans500Typeface(meterReadingError, btnTakePhoto, btnSubmitReading);
+            TextViewUtils.SetMuseoSans500Typeface(meterReadingError, btnTakeUploadPictureText, btnSubmitReading);
 
             EnableSubmitButton(false);
-            TextViewUtils.SetMuseoSans500Typeface(btnTakePhoto, btnSubmitReading);
+            TextViewUtils.SetMuseoSans500Typeface(btnTakeUploadPictureText, btnSubmitReading);
 
             previousMeterViews = new int[8];
             previousMeterViews[0] = Resource.Id.previous_reading_1;
@@ -527,7 +534,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 btnSubmitReading.Enabled = false;
                 btnSubmitReading.Background = GetDrawable(Resource.Drawable.silver_chalice_button_background);
             }
-            TextViewUtils.SetMuseoSans500Typeface(btnTakePhoto, btnSubmitReading);
+            TextViewUtils.SetMuseoSans500Typeface(btnTakeUploadPictureText, btnSubmitReading);
         }
 
         public void OnRequestSuccessful(SMRSubmitResponseData response)
@@ -766,6 +773,11 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
         }
 
         public void OnUpdateSubmitMeterButton()

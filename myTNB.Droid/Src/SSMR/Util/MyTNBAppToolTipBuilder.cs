@@ -236,7 +236,7 @@ namespace myTNB_Android.Src.SSMR.Util
                 }
                 catch (Exception e)
                 {
-
+                    Utility.LoggingNonFatalError(e);
                 }
 
                 tooltipCTA.Click += delegate

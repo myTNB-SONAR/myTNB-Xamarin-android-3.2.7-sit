@@ -263,17 +263,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 
         public void EvaluateAmountDue(AccountChargeModel accountChargeModel)
         {
-            if (accountChargeModel.AmountDue > 0f)
+            if (accountChargeModel.AmountDue > 0.00)
             {
                 accountChargeModel.IsNeedPay = true;
             }
 
-            if (accountChargeModel.AmountDue < 0f)
+            if (accountChargeModel.AmountDue < 0.00)
             {
                 accountChargeModel.IsPaidExtra = true;
             }
 
-            if (accountChargeModel.AmountDue == 0f)
+            if (accountChargeModel.AmountDue == 0.00)
             {
                 accountChargeModel.IsCleared = true;
             }

@@ -67,19 +67,30 @@
                         android:text="Take or upload photos, or manually enter your meter reading for each respective unit."
                         android:textSize="14dp"
                         android:gravity="left"
-                        android:layout_marginBottom="12dp"
+                        android:lineSpacingExtra="3dp"
+                        android:layout_marginTop="3dp"
+                        android:layout_marginBottom="15dp"
                         android:textColor="#49494a"/>
-                    <Button
-                        android:id="@+id/btnTakePhoto"
+                    <FrameLayout
+                        android:id="@+id/btnTakeUploadPicture"
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
-                        android:text="Take Or Upload Photo"
-                        android:paddingLeft="70dp"
-                        android:paddingRight="43dp"
-                        android:drawableLeft="@drawable/ic_action_camera_green"
-                        android:textAllCaps="false"
-                        android:textSize="16dp"
-                        style="@style/LightButtonWithIconTakePhoto"/>
+                        android:paddingTop="12dp"
+                        android:paddingBottom="12dp"
+                        style="@style/LightButtonWithIconTakePhoto">
+                        <TextView
+                            android:id="@+id/btnTakeUploadPictureText"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:drawablePadding="16dp"
+                            android:textColor="#20bd4c"
+                            android:drawableLeft="@drawable/ic_action_camera_green"
+                            android:gravity="center"
+                            android:textSize="16dp"
+                            android:text="Take Or Upload Photo" 
+                        />
+                    </FrameLayout>
                 </LinearLayout>
                 
                 <include android:id="@+id/kwhCard"

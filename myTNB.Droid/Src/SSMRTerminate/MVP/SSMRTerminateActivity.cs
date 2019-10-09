@@ -381,14 +381,13 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
                     if (e.Action == MotionEventActions.Up)
                     {
-                        if (e.RawX >= (txtSelectReason.Right - txtSelectReason.GetCompoundDrawables()[DRAWABLE_RIGHT].Bounds.Width()))
+                        if (!this.GetIsClicked())
                         {
-                            
+                            this.SetIsClicked(true);
+                            Intent intent = new Intent(this, typeof(SSMRTerminationReasonSelectionActivity));
+                            intent.PutExtra(Constants.SMR_TERMINATION_REASON_KEY, JsonConvert.SerializeObject(terminationList));
+                            StartActivityForResult(intent, SELECT_TERMINATION_ACTIVITY_CODE);
                         }
-                        Intent intent = new Intent(this, typeof(SSMRTerminationReasonSelectionActivity));
-                        intent.PutExtra(Constants.SMR_TERMINATION_REASON_KEY, JsonConvert.SerializeObject(terminationList));
-                        StartActivityForResult(intent, SELECT_TERMINATION_ACTIVITY_CODE);
-
                         return true;
                     }
                 }
@@ -466,7 +465,11 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         [OnClick(Resource.Id.txtTermsConditions)]
         void OnTermsConditions(object sender, EventArgs eventArgs)
         {
-            this.mPresenter.NavigateToTermsAndConditions();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.mPresenter.NavigateToTermsAndConditions();
+            }
         }
 
         [OnClick(Resource.Id.btnDisconnectionSubmit)]
@@ -721,6 +724,11 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
         }
 
     }

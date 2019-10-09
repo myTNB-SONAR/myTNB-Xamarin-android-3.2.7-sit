@@ -177,6 +177,11 @@ namespace myTNB_Android.Src.Login.Activity
             }
         }
 
+        protected override void OnPause()
+        {
+            base.OnPause();
+        }
+
         public override int ResourceId()
         {
             return Resource.Layout.LoginView;
@@ -309,13 +314,21 @@ namespace myTNB_Android.Src.Login.Activity
         [OnClick(Resource.Id.txtForgotPassword)]
         void OnForgetPassword(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.NavigateToForgetPassword();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.NavigateToForgetPassword();
+            }
         }
 
         [OnClick(Resource.Id.txtRegisterAccount)]
         void OnRegisterAccount(object sender, EventArgs eventArgs)
         {
-            this.userActionsListener.NavigateToRegistrationForm();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                this.userActionsListener.NavigateToRegistrationForm();
+            }
         }
 
         public void DisableLoginButton()

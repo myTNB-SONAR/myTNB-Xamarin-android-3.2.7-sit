@@ -137,18 +137,26 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         [OnClick(Resource.Id.btnViewDetails)]
         void OnViewDetails(object sender, EventArgs eventArgs)
         {
-            Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
-            intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(mSelectedAccountData));
-            intent.PutExtra("SELECTED_BILL_DETAILS", JsonConvert.SerializeObject(selectedAccountChargesModelList[0]));
-            StartActivity(intent);
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
+                intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(mSelectedAccountData));
+                intent.PutExtra("SELECTED_BILL_DETAILS", JsonConvert.SerializeObject(selectedAccountChargesModelList[0]));
+                StartActivity(intent);
+            }
         }
 
         [OnClick(Resource.Id.btnPayBill)]
         void OnPayment(object sender, EventArgs eventArgs)
         {
-            Intent payment_activity = new Intent(this.Activity, typeof(SelectAccountsActivity));
-            payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
-            StartActivityForResult(payment_activity, DashboardHomeActivity.PAYMENT_RESULT_CODE);
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                Intent payment_activity = new Intent(this.Activity, typeof(SelectAccountsActivity));
+                payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(mSelectedAccountData));
+                StartActivityForResult(payment_activity, DashboardHomeActivity.PAYMENT_RESULT_CODE);
+            }
         }
 
         [OnClick(Resource.Id.accountSelection)]
@@ -169,9 +177,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             try
             {
-                Intent newIntent = new Intent(this.Activity, typeof(FilterBillHistoryActivity));
-                newIntent.PutExtra("ITEM_LIST", JsonConvert.SerializeObject(itemFilterList));
-                StartActivityForResult(newIntent, 12345);
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    Intent newIntent = new Intent(this.Activity, typeof(FilterBillHistoryActivity));
+                    newIntent.PutExtra("ITEM_LIST", JsonConvert.SerializeObject(itemFilterList));
+                    StartActivityForResult(newIntent, 12345);
+                }
             }
             catch (System.Exception e)
             {
@@ -618,6 +630,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                     mView.ShowBillPDFPage(mBillHistoryData);
                 }
             }
+        }
+
+        public override void OnResume()
+        {
+            base.OnResume();
+        }
+
+        public override void OnPause()
+        {
+            base.OnPause();
         }
 
     }

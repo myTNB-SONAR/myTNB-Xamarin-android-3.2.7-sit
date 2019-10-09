@@ -428,8 +428,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.layout_new_account)]
         LinearLayout newAccountLayout;
 
-        [BindView(Resource.Id.txtAddressNewAccount)]
-        TextView txtAddressNewAccount;
+        [BindView(Resource.Id.layout_not_new_account)]
+        LinearLayout notNewAccountLayout;
 
         [BindView(Resource.Id.new_account_content)]
         TextView newAccountContent;
@@ -763,7 +763,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextViewUtils.SetMuseoSans500Typeface(reTotalPayableTitle, btnReView, txtTarifToggle, txtNoPayableTitle, txtNoPayableCurrency);
                 TextViewUtils.SetMuseoSans300Typeface(smStatisticBillSubTitle, smStatisticBill, smStatisticBillCurrency, smStatisticBillKwhUnit, smStatisticBillKwh, smStatisticPredictSubTitle, smStatisticPredict, smStatisticPredictCurrency, smStatisticTrendSubTitle, smStatisticTrend);
                 TextViewUtils.SetMuseoSans500Typeface(smStatisticBillTitle, smStatisticPredictTitle, txtSmStatisticTooltip, smStatisticTrendTitle);
-                TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtMdmsDayViewDown, txtDayViewZoomInIndicator, txtAddressNewAccount, newAccountContent);
+                TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtMdmsDayViewDown, txtDayViewZoomInIndicator, newAccountContent);
 
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
@@ -814,7 +814,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (selectedAccount != null)
                 {
                     txtAddress.Text = selectedAccount.AddStreet;
-                    txtAddressNewAccount.Text = selectedAccount.AddStreet;
                     if (selectedAccount.AccountCategoryId.Equals("2"))
                     {
                         bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
@@ -1154,7 +1153,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
-                ((DashboardHomeActivity)Activity).OnSelectAccount();
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    ((DashboardHomeActivity)Activity).OnSelectAccount();
+                }
             }
             catch (System.Exception e)
             {
@@ -1287,7 +1290,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
-                StartSSMRMeterHistoryPage();
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    StartSSMRMeterHistoryPage();
+                }
             }
             catch (System.Exception e)
             {
@@ -1300,13 +1307,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
-                if (isSubmitMeter)
+                if (!this.GetIsClicked())
                 {
-                    StartSSMRSubmitMeterReadingPage();
-                }
-                else
-                {
-                    StartSSMRMeterHistoryPage();
+                    this.SetIsClicked(true);
+                    if (isSubmitMeter)
+                    {
+                        StartSSMRSubmitMeterReadingPage();
+                    }
+                    else
+                    {
+                        StartSSMRMeterHistoryPage();
+                    }
                 }
             }
             catch (System.Exception e)
@@ -1788,6 +1799,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         smGraphZoomToggleLayout.Enabled = true;
                         if (ChartDataType == ChartDataType.RM)
                         {
+                            DayViewkWhData = new List<double>();
                             DayViewRMData = new List<double>();
                             if (selectedSMHistoryData != null && selectedSMHistoryData.ByDay != null && selectedSMHistoryData.ByDay.Count > 0)
                             {
@@ -1796,6 +1808,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
                                     {
                                         DayViewRMData.Add(IndividualDayData.Amount);
+                                        DayViewkWhData.Add(IndividualDayData.Consumption);
                                     }
                                 }
                             }
@@ -1831,12 +1844,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         else
                         {
                             DayViewkWhData = new List<double>();
+                            DayViewRMData = new List<double>();
                             if (selectedSMHistoryData != null && selectedSMHistoryData.ByDay != null && selectedSMHistoryData.ByDay.Count > 0)
                             {
                                 foreach (SMUsageHistoryData.ByDayData DayData in selectedSMHistoryData.ByDay)
                                 {
                                     foreach (SMUsageHistoryData.ByDayData.DayData IndividualDayData in DayData.Days)
                                     {
+                                        DayViewRMData.Add(IndividualDayData.Amount);
                                         DayViewkWhData.Add(IndividualDayData.Consumption);
                                     }
                                 }
@@ -3162,7 +3177,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         else if (ChartType == ChartType.Day)
                         {
                             float[] valList = new float[1];
-                            float val = (float)DayViewRMData[i];
+                            float val = (float)DayViewkWhData[i];
                             if (float.IsPositiveInfinity(val))
                             {
                                 val = float.PositiveInfinity;
@@ -4304,28 +4319,36 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [OnClick(Resource.Id.btnViewBill)]
         internal void OnViewBill(object sender, EventArgs e)
         {
-            this.userActionsListener.OnViewBill(selectedAccount);
-            try
+            if (!this.GetIsClicked())
             {
-                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "View Bill Buttom Clicked");
-            }
-            catch (System.Exception ne)
-            {
-                Utility.LoggingNonFatalError(ne);
+                this.SetIsClicked(true);
+                this.userActionsListener.OnViewBill(selectedAccount);
+                try
+                {
+                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "View Bill Buttom Clicked");
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
             }
         }
 
         [OnClick(Resource.Id.btnReView)]
         internal void OnREViewBill(object sender, EventArgs e)
         {
-            this.userActionsListener.OnViewBill(selectedAccount);
-            try
+            if (!this.GetIsClicked())
             {
-                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "View Bill Buttom Clicked");
-            }
-            catch (System.Exception ne)
-            {
-                Utility.LoggingNonFatalError(ne);
+                this.SetIsClicked(true);
+                this.userActionsListener.OnViewBill(selectedAccount);
+                try
+                {
+                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "View Bill Buttom Clicked");
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
             }
         }
 
@@ -4346,14 +4369,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [OnClick(Resource.Id.btnPay)]
         internal void OnUserPay(object sender, EventArgs e)
         {
-            this.userActionsListener.OnPay();
-            try
+            if (!this.GetIsClicked())
             {
-                FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Inner Dashboard Payment Buttom Clicked");
-            }
-            catch (System.Exception ne)
-            {
-                Utility.LoggingNonFatalError(ne);
+                this.SetIsClicked(true);
+                this.userActionsListener.OnPay();
+                try
+                {
+                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "Inner Dashboard Payment Buttom Clicked");
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
             }
         }
 
@@ -4704,22 +4731,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     try
                     {
-                        rootView.SetBackgroundResource(0);
-                        scrollViewContent.SetBackgroundResource(0);
-
-                        ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
-                        ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
-
-
                         refreshLayout.Visibility = ViewStates.Gone;
                         newAccountLayout.Visibility = ViewStates.Visible;
-                        allGraphLayout.Visibility = ViewStates.Gone;
-                        smStatisticContainer.Visibility = ViewStates.Gone;
+                        notNewAccountLayout.Visibility = ViewStates.Gone;
+                        layoutSMSegmentGroup.Visibility = ViewStates.Gone;
+                        allGraphLayout.Visibility = ViewStates.Visible;
                         SetNewAccountLayoutParams();
                         StopAddressShimmer();
                         StopRangeShimmer();
                         StopGraphShimmer();
-                        StopSMStatisticShimmer();
+                        ShowSMStatisticCard();
                         energyTipsView.Visibility = ViewStates.Gone;
 
                         string defaultMessage = Activity.GetString(Resource.String.new_account_view);
@@ -5233,6 +5254,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 );
                 mNoInternetSnackbar.Show();
+                this.SetIsClicked(false);
             }
             catch (System.Exception e)
             {
@@ -5257,6 +5279,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 );
                 mLoadBillSnackBar.Show();
+                this.SetIsClicked(false);
             }
             catch (System.Exception e)
             {
@@ -5549,6 +5572,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 );
                 mSmartMeterError.Show();
+                this.SetIsClicked(false);
             }
             catch (System.Exception e)
             {
@@ -5574,6 +5598,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 );
                 mDisconnectionSnackbar.Show();
+                this.SetIsClicked(false);
             }
             catch (System.Exception e)
             {
@@ -5600,6 +5625,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 );
                 mSMRSnackbar.Show();
+                this.SetIsClicked(false);
             }
             catch (System.Exception e)
             {
@@ -5686,7 +5712,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             if (accountStatusData != null)
             {
-                if (accountStatusData.DisconnectionStatus.ToUpper() == Constants.ENERGY_DISCONNECTION_KEY)
+                if (!string.IsNullOrEmpty(accountStatusData.DisconnectionStatus) && accountStatusData.DisconnectionStatus.ToUpper() != Constants.ENERGY_DISCONNECTION_KEY)
                 {
                     energyDisconnectionButton.Visibility = ViewStates.Visible;
                     string accountStatusMessage = accountStatusData?.AccountStatusMessage ?? "Your electricity is currently disconnected.";
@@ -5705,6 +5731,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         OnWhatIsThisAccountStatusTap(whatDoesThisToolTipMessage, whatDoesThisToolTipBtnLabel);
                     };
+
+                    if (isSMR)
+                    {
+                        rootView.SetBackgroundResource(0);
+                        scrollViewContent.SetBackgroundResource(0);
+                        try
+                        {
+                            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
+                            ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                        }
+                        catch (System.Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                        isChangeBackgroundNeeded = false;
+                    }
                 }
                 else
                 {
@@ -6856,6 +6898,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+        public override void OnPause()
+        {
+            base.OnPause();
+        }
+
         // Lin Siong Note: Set New Account layout param
         public void SetNewAccountLayoutParams()
         {
@@ -6865,14 +6912,39 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 newAccountImageParams.Width = GetDeviceHorizontalScaleInPixel(0.30f);
                 newAccountImageParams.Height = GetDeviceHorizontalScaleInPixel(0.30f);
-                newAccountImageParams.TopMargin = GetDeviceHorizontalScaleInPixel(0.201f);
+                if (isREAccount || isSMR || isSMAccount)
+                {
+                    if (isSMAccount)
+                    {
+                        newAccountImageParams.TopMargin = (int)DPUtils.ConvertDPToPx(76f);
+                    }
+                    else
+                    {
+                        newAccountImageParams.TopMargin = (int)DPUtils.ConvertDPToPx(32f);
+                    }
+                }
+                else
+                {
+                    newAccountImageParams.TopMargin = GetDeviceHorizontalScaleInPixel(0.201f);
+                }
                 newAccountImage.RequestLayout();
 
                 LinearLayout.LayoutParams newAccountContentParams = newAccountContent.LayoutParameters as LinearLayout.LayoutParams;
                 newAccountContentParams.TopMargin = (int)DPUtils.ConvertDPToPx(24f);
-                if (isSMR)
+                if (isREAccount || isSMR || isSMAccount)
                 {
-                    newAccountContentParams.BottomMargin = (int)DPUtils.ConvertDPToPx(24f);
+                    if (isSMR)
+                    {
+                        newAccountContentParams.BottomMargin = (int)DPUtils.ConvertDPToPx(38f);
+                    }
+                    else if (isSMAccount)
+                    {
+                        newAccountContentParams.BottomMargin = (int)DPUtils.ConvertDPToPx(76f);
+                    }
+                    else
+                    {
+                        newAccountContentParams.BottomMargin = (int)DPUtils.ConvertDPToPx(24f);
+                    }
                 }
                 newAccountContent.RequestLayout();
             }

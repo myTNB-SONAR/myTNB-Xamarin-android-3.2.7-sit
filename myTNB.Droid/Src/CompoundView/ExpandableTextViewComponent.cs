@@ -71,12 +71,12 @@ namespace myTNB_Android.Src.CompoundView
             expandableContainer.Visibility = isExpand ? ViewStates.Visible : ViewStates.Gone;
         }
 
-        public void SetOtherCharges(float totalAmount, List<ChargeModel> chargeList)
+        public void SetOtherCharges(double totalAmount, List<ChargeModel> chargeList)
         {
             myApplicationChargesValue.Text = "RM " + totalAmount.ToString("#,##0.00");
             chargeList.ForEach(charge =>
             {
-                if (charge.Amount > 0f)
+                if (charge.Amount > 0.00)
                 {
                     LinearLayout item = (LinearLayout)LayoutInflater.From(mContext).Inflate(Resource.Layout.MyOtherChargesItemLayout,this,false);
                     TextView textView = item.FindViewById<TextView>(Resource.Id.otherChargeItem);
