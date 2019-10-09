@@ -55,7 +55,8 @@ namespace myTNB.SSMR
                             Description = walkThroughList[i].Description,
                             Image = walkThroughList[i].Image,
                             FallbackImage = string.Format("SSMR_Background_{0}", i + 1),
-                            IsSitecoreData = true
+                            IsSitecoreData = true,
+                            NSDataImage = walkThroughList[i].NSDataImage
                         };
                         pageData.Add(item);
                     }

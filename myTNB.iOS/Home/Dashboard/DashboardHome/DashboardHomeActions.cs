@@ -26,6 +26,7 @@ namespace myTNB.Home.Dashboard.DashboardHome
 
         private void On_1001_Action()
         {
+            SSMRAccounts.IsHideOnboarding = false;
             if (SSMRAccounts.IsHideOnboarding)
             {
                 NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>

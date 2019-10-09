@@ -1,4 +1,6 @@
-﻿namespace myTNB.SSMR
+﻿using Foundation;
+
+namespace myTNB.SSMR
 {
     public class SSMROnboardingModel
     {
@@ -7,5 +9,6 @@
         public string Description { set; get; }
         public string FallbackImage { set; get; }
         public bool IsSitecoreData { set; get; }
+        public NSData NSDataImage { set; get; }
     }
 }

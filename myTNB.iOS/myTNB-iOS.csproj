@@ -2489,6 +2489,7 @@
     <Compile Include="Components\Table View\NoDataViewCell.cs" />
     <Compile Include="Components\Usage View\EmptyUsageComponent.cs" />
     <Compile Include="Model\GetIsSmrApplyAllowed\GetIsSmrApplyAllowedResponse.cs" />
+    <Compile Include="Sitecore CMS\SitecoreServices.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

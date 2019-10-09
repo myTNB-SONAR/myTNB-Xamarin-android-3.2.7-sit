@@ -55,7 +55,15 @@ namespace myTNB.SSMR
             lblDescription.Frame = new CGRect(lblDescription.Frame.X, lblDescription.Frame.Y, lblDescription.Frame.Width, size.Height);
             that.View.AddSubviews(new UIView[] { imgBackground, lblTitle, lblDescription });
 
-            UIImage displayImage;             if (SSMRDataObject.IsSitecoreData)             {                 if (string.IsNullOrEmpty(SSMRDataObject.Image) || string.IsNullOrWhiteSpace(SSMRDataObject.Image))                 {                     displayImage = UIImage.FromBundle(string.Empty);                 }                 else                 {
+            UIImage displayImage = UIImage.FromBundle(SSMRDataObject.FallbackImage);             if (SSMRDataObject.IsSitecoreData && SSMRDataObject.NSDataImage != null)             {                 displayImage = UIImage.LoadFromData(SSMRDataObject.NSDataImage);
+            }/*                 if (SSMRDataObject.NSDataImage !=null)
+                {
+                    displayImage = UIImage.LoadFromData(SSMRDataObject.NSDataImage);
+                }
+                else
+                {
+                    displayImage = UIImage.FromBundle(SSMRDataObject.FallbackImage);
+                }                  /*                 if (string.IsNullOrEmpty(SSMRDataObject.Image) || string.IsNullOrWhiteSpace(SSMRDataObject.Image))                 {                     displayImage = UIImage.FromBundle(string.Empty);                 }                 else                 {
                     NSError error;
                     try
                     {
@@ -77,7 +85,7 @@ namespace myTNB.SSMR
                 else
                 {
                     displayImage = UIImage.FromBundle(SSMRDataObject.Image);
-                }             }
+                }             }*/
             imgBackground.Image = displayImage;
         }
     }

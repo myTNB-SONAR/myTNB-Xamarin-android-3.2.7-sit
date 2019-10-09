@@ -57,7 +57,8 @@ namespace myTNB.SQLite.SQLiteDataManager
                         ID = obj.ID,
                         Image = obj.Image,
                         Title = obj.Title,
-                        Description = obj.Description
+                        Description = obj.Description,
+                        NSDataImage = obj.NSDataImage
                     };
                     InsertItem(item);
                 }
@@ -89,14 +90,15 @@ namespace myTNB.SQLite.SQLiteDataManager
             List<ApplySSMRModel> itemList = new List<ApplySSMRModel>();
             List<ApplySSMRWalkthroughEntity> entityItems = GetAllEntityItems();
             ApplySSMRModel ssmrItem;
-            foreach (var item in entityItems)
+            foreach (ApplySSMRWalkthroughEntity item in entityItems)
             {
                 ssmrItem = new ApplySSMRModel
                 {
                     ID = item.ID,
                     Image = item.Image,
                     Title = item.Title,
-                    Description = item.Description
+                    Description = item.Description,
+                    NSDataImage = item.NSDataImage
                 };
                 itemList.Add(ssmrItem);
             }

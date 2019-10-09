@@ -17,6 +17,7 @@ using CoreGraphics;
 using myTNB.Dashboard.DashboardComponents;
 using System.IO;
 using System.Net;
+using myTNB.SitecoreCMS;
 
 namespace myTNB
 {
@@ -682,8 +683,32 @@ namespace myTNB
                 AlertHandler.DisplayServiceError(this, string.Empty);
             }
         }
+        List<NSData> nsdataList = new List<NSData>();
+        private async Task<NSData> Test(string urlString)
+        {
+            NSUrl url = NSUrl.FromString(urlString);
+            NSError error;
+            NSData data = NSData.FromUrl(url, NSDataReadingOptions.MappedAlways, out error);
+            nsdataList.Add(data);
+            return data;
 
-        private Task LoadSSMRWalkthrough()
+            /*NSData data = null;
+            NSUrl url = new NSUrl(urlString);
+            NSUrlSession session = NSUrlSession
+                    .FromConfiguration(NSUrlSessionConfiguration.DefaultSessionConfiguration);
+            NSUrlSessionDataTask dataTask = session.CreateDataTask(url, (d, response, error) =>
+            {
+                if (error == null && response != null && data != null)
+                {
+                    data = d;
+                    nsdataList.Add(d);
+                }
+            });
+            dataTask.Resume();
+            return data;*/
+        }
+
+        /*private Task LoadSSMRWalkthrough()
         {
             return Task.Factory.StartNew(() =>
             {
@@ -728,7 +753,7 @@ namespace myTNB
                     }
                 }
             });
-        }
+        }*/
 
         private Task LoadMeterReadSSMRWalkthrough()
         {
@@ -988,11 +1013,25 @@ namespace myTNB
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var isWalkthroughDone = sharedPreference.BoolForKey("isWalkthroughDone");
             GetUserEntity();
+            SSMRAccounts.IsHideOnboarding = false;
             if (!SSMRAccounts.IsHideOnboarding)
             {
                 InvokeInBackground(async () =>
                 {
-                    await LoadSSMRWalkthrough();
+                    await SitecoreServices.Instance.LoadSSMRWalkthrough(); //LoadSSMRWalkthrough();
+                    Debug.WriteLine("Done");
+                    /*InvokeOnMainThread(() =>
+                    {
+                        ApplySSMRWalkthroughEntity wtE = new ApplySSMRWalkthroughEntity();
+                        List<ApplySSMRModel> wt = wtE.GetAllItems();
+                        List<Task> taskList = new List<Task>();
+                        foreach (var item in wt)
+                        {
+                            taskList.Add(SitecoreServices.Instance.GetImageFromURL(item.Image));
+                        }
+                        Task.WaitAll(taskList.ToArray());
+                        var t = SitecoreServices.Instance.nsdataList;
+                    });*/
                 });
             }
             if (isWalkthroughDone)
