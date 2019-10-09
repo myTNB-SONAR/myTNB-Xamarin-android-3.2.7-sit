@@ -285,6 +285,7 @@ namespace myTNB
             if (viewController != null)
             {
                 viewController.IsRoot = true;
+                viewController.IsFromBillSelection = true;
                 viewController.AccountNumber = _selectedAccountNumber;
                 NavigationController.PushViewController(viewController, true);
             }
