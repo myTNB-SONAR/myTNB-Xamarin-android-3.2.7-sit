@@ -453,7 +453,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 needMeterCaptureList.Add(requiredMeterReadingModelList[i].meterReadingUnitDisplay);
             }
-            string remainingMeter = needMeterCaptureList.Count > 1 ? String.Join(",", needMeterCaptureList.ToArray()) : needMeterCaptureList[0];
+            string remainingMeter = needMeterCaptureList.Count > 1 ? String.Join(", ", needMeterCaptureList.ToArray()) : needMeterCaptureList[0];
             SMRPhotoPopUpDetailsModel tooltipData = MyTNBAppToolTipData.GetTakePhotoToolTipData(isSinglePhase,
                 requiredMeterReadingModelList.Count == 1,
                 requiredMeterReadingModelList.Count.ToString(),

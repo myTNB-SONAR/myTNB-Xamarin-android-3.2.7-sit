@@ -173,11 +173,11 @@ namespace myTNB_Android.Src.Base
         public static List<UnderstandTooltipModel> GetUnderstandBillTooltipData()
         {
             List<UnderstandTooltipModel> tooltipModelDataList = new List<UnderstandTooltipModel>();
-            List<SitecoreCmsEntity> entryList = SitecoreCmsEntity.GetItemById("BILL_TOOLTIP");
-            if (entryList.Count > 0)
+            UnderstandTooltipModel tooltipModel;
+            string jsonData = SitecoreCmsEntity.GetItemById(SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIP);
+            if (jsonData != null)
             {
-                List<BillsTooltipModelEntity> billTooltipDataList = JsonConvert.DeserializeObject<List<BillsTooltipModelEntity>>(entryList[0].jsonStringData);
-                UnderstandTooltipModel tooltipModel;
+                List<BillsTooltipModelEntity> billTooltipDataList = JsonConvert.DeserializeObject<List<BillsTooltipModelEntity>>(jsonData);
                 billTooltipDataList.ForEach(data =>
                 {
                     tooltipModel = new UnderstandTooltipModel();
@@ -189,19 +189,19 @@ namespace myTNB_Android.Src.Base
             }
             else
             {
-                UnderstandTooltipModel newModel = new UnderstandTooltipModel();
-                newModel.TooltipImage = null;
-                newModel.Title = "Title 1";
+                tooltipModel = new UnderstandTooltipModel();
+                tooltipModel.TooltipImage = null;
+                tooltipModel.Title = "Title 1";
                 List<string> itemList = "Security Deposit|Stamp Duty|Processing Fee|Meter Fee".Split('|').ToList();
-                newModel.ItemList = itemList;
-                tooltipModelDataList.Add(newModel);
+                tooltipModel.ItemList = itemList;
+                tooltipModelDataList.Add(tooltipModel);
 
-                newModel = new UnderstandTooltipModel();
-                newModel.TooltipImage = null;
-                newModel.Title = "Title 2";
+                tooltipModel = new UnderstandTooltipModel();
+                tooltipModel.TooltipImage = null;
+                tooltipModel.Title = "Title 2";
                 itemList = "Security Deposit|Stamp Duty|Processing Fee|Meter Fee".Split('|').ToList();
-                newModel.ItemList = itemList;
-                tooltipModelDataList.Add(newModel);
+                tooltipModel.ItemList = itemList;
+                tooltipModelDataList.Add(tooltipModel);
             }
             return tooltipModelDataList;
         }
