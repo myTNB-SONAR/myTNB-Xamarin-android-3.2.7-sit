@@ -292,7 +292,6 @@ namespace myTNB
         {
             InvokeInBackground(async () =>
             {
-                DataManager.DataManager.SharedInstance.IsLoadingFromDashboard = true;
                 await PushNotificationHelper.GetNotifications(false);
                 InvokeOnMainThread(() =>
                 {

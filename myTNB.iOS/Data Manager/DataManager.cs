@@ -62,7 +62,6 @@ namespace myTNB.DataManager
         public bool IsRegisteredForRemoteNotification = false;
         public string FCMToken = string.Empty;
         public bool IsFromPushNotification = false;
-        public bool IsLoadingFromDashboard = false;
         public UserNotificationResponseModel UserNotificationResponse = new UserNotificationResponseModel();
 
         //Notification Service Response

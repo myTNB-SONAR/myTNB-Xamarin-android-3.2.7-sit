@@ -107,10 +107,6 @@ namespace myTNB
         {
             bool res = false;
             await GetUserNotifications();
-            if (DataManager.DataManager.SharedInstance.IsLoadingFromDashboard)
-            {
-                DataManager.DataManager.SharedInstance.IsLoadingFromDashboard = false;
-            }
 
             DataManager.DataManager.SharedInstance.UserNotificationResponse = _userNotifications;
             res = _userNotifications?.d?.didSucceed == true;
