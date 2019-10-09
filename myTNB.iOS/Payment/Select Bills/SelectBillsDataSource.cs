@@ -54,9 +54,22 @@ namespace myTNB.Payment.SelectBills
             cell.UserInteractionEnabled = true;
             cell.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                if (_accounts[indexPath.Row].HasMandatory && !_accounts[indexPath.Row].IsAccountSelected && _accounts[indexPath.Row].IsValidAmount)
+                if (_controller.IsFromBillDetails)
                 {
-                    _controller.OnShowItemisedTooltip(_accounts[indexPath.Row].accNum);
+                    if (indexPath.Row > 0)
+                    {
+                        if (_accounts[indexPath.Row].HasMandatory && !_accounts[indexPath.Row].IsAccountSelected && _accounts[indexPath.Row].IsValidAmount)
+                        {
+                            _controller.OnShowItemisedTooltip(_accounts[indexPath.Row].accNum);
+                        }
+                    }
+                }
+                else
+                {
+                    if (_accounts[indexPath.Row].HasMandatory && !_accounts[indexPath.Row].IsAccountSelected && _accounts[indexPath.Row].IsValidAmount)
+                    {
+                        _controller.OnShowItemisedTooltip(_accounts[indexPath.Row].accNum);
+                    }
                 }
                 if (_accounts[indexPath.Row].Amount >= _accounts[indexPath.Row].MinimumAmount || _accounts[indexPath.Row].IsAccountSelected)
                 {

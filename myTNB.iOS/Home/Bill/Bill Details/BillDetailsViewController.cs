@@ -654,6 +654,7 @@ namespace myTNB
                                 storyBoard.InstantiateViewController("SelectBillsViewController") as SelectBillsViewController;
                             if (selectBillsVC != null)
                             {
+                                selectBillsVC.IsFromBillDetails = true;
                                 UINavigationController navController = new UINavigationController(selectBillsVC);
                                 navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                                 PresentViewController(navController, true, null);
