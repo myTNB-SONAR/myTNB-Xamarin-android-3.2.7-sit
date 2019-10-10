@@ -225,7 +225,7 @@ namespace myTNB
                 UnderlineStyle = NSUnderlineStyle.None,
                 UnderlineColor = UIColor.Clear
             };
-            string message = NotificationInfo.Message;
+            string message = NotificationInfo.Message + "<br>";
             if (NotificationInfo != null && !string.IsNullOrEmpty(NotificationInfo.Message) && !string.IsNullOrWhiteSpace(NotificationInfo.Message)
                 && DataManager.DataManager.SharedInstance != null && DataManager.DataManager.SharedInstance.AccountRecordsList != null
                 && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null && DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count > 0)
