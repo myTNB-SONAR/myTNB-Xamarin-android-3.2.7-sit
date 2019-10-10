@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using CoreGraphics;
 using Foundation;
 using myTNB.Model;
@@ -12,16 +11,16 @@ namespace myTNB
 {
     public class PaginatedTooltipComponent : BaseComponent
     {
-        UIView _parentView, _containerView, _toolTipFooterView;
-        UIScrollView _scrollView;
-        UILabel _proceedLabel;
-        int _currentPageIndex;
-        List<SSMRMeterReadWalkthroughModel> _ssmrData;
-        List<SSMRMeterReadWalkthroughModel> _ssmrDefaultData;
-        List<BillsTooltipModel> _billsTooltipData;
-        List<SMRMROValidateRegisterDetailsInfoModel> _previousMeterList;
-        UIPageControl _pageControl;
-        bool isSSMRData;
+        private UIView _parentView, _containerView, _toolTipFooterView;
+        private UIScrollView _scrollView;
+        private UILabel _proceedLabel;
+        private int _currentPageIndex;
+        private List<SSMRMeterReadWalkthroughModel> _ssmrData;
+        private List<SSMRMeterReadWalkthroughModel> _ssmrDefaultData;
+        private List<BillsTooltipModel> _billsTooltipData;
+        private List<SMRMROValidateRegisterDetailsInfoModel> _previousMeterList;
+        private UIPageControl _pageControl;
+        private bool isSSMRData;
 
         public PaginatedTooltipComponent(UIView parent)
         {
@@ -83,36 +82,10 @@ namespace myTNB
                 UIView viewContainer = new UIView(_scrollView.Bounds);
                 viewContainer.BackgroundColor = UIColor.White;
 
-                UIImage displayImage;
-                if (_billsTooltipData[i].IsSitecoreData)
+                UIImage displayImage = UIImage.FromBundle(_billsTooltipData[i].Image ?? string.Empty) ?? UIImage.FromBundle(string.Empty);
+                if (_billsTooltipData[i].IsSitecoreData && _billsTooltipData[i].NSDataImage != null)
                 {
-                    if (string.IsNullOrEmpty(_billsTooltipData[i].Image) || string.IsNullOrWhiteSpace(_billsTooltipData[i].Image))
-                    {
-                        displayImage = UIImage.FromBundle(string.Empty);
-                    }
-                    else
-                    {
-                        try
-                        {
-                            displayImage = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(_billsTooltipData[i].Image)));
-                        }
-                        catch (Exception e)
-                        {
-                            Debug.WriteLine("Image load Error: " + e.Message);
-                            displayImage = UIImage.FromBundle(string.Empty);
-                        }
-                    }
-                }
-                else
-                {
-                    if (string.IsNullOrEmpty(_billsTooltipData[i].Image) || string.IsNullOrWhiteSpace(_billsTooltipData[i].Image))
-                    {
-                        displayImage = UIImage.FromBundle(string.Empty);
-                    }
-                    else
-                    {
-                        displayImage = UIImage.FromBundle(_billsTooltipData[i].Image);
-                    }
+                    displayImage = UIImage.LoadFromData(_billsTooltipData[i].NSDataImage);
                 }
 
                 nfloat origImageRatio = 180.0f / 284.0f;
@@ -267,11 +240,8 @@ namespace myTNB
         public void SetSSMRData(List<SSMRMeterReadWalkthroughModel> data, List<SSMRMeterReadWalkthroughModel> defaultData)
         {
             _ssmrDefaultData = defaultData;
-            if (data != null)
-            {
-                _ssmrData = data;
-                isSSMRData = true;
-            }
+            isSSMRData = true;
+            _ssmrData = data ?? defaultData;
         }
 
         public void SetPreviousMeterData(List<SMRMROValidateRegisterDetailsInfoModel> data)
@@ -292,43 +262,18 @@ namespace myTNB
                 UIView viewContainer = new UIView(_scrollView.Bounds);
                 viewContainer.BackgroundColor = UIColor.White;
 
-                UIImage displayImage;
-                if (_ssmrData[i].IsSitecoreData)
+                UIImage displayImage = UIImage.FromBundle(string.Empty);
+                if (_ssmrDefaultData != null)
                 {
-                    if (string.IsNullOrEmpty(_ssmrData[i].Image) || string.IsNullOrWhiteSpace(_ssmrData[i].Image))
+                    if (i > -1 && i < _ssmrDefaultData.Count)
                     {
-                        displayImage = UIImage.FromBundle(string.Empty);
-                    }
-                    else
-                    {
-                        try
-                        {
-                            displayImage = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(_ssmrData[i].Image)));
-                        }
-                        catch (Exception e)
-                        {
-                            Debug.WriteLine("Image load Error: " + e.Message);
-                            displayImage = UIImage.FromBundle(string.Empty);
-                            if (_ssmrDefaultData != null)
-                            {
-                                if (i > -1 && i < _ssmrDefaultData.Count)
-                                {
-                                    displayImage = UIImage.FromBundle(_ssmrDefaultData[i].Image);
-                                }
-                            }
-                        }
+                        displayImage = UIImage.FromBundle(_ssmrDefaultData[i].Image ?? string.Empty);
                     }
                 }
-                else
+
+                if (_ssmrData[i].IsSitecoreData && _ssmrData[i].NSDataImage != null)
                 {
-                    if (string.IsNullOrEmpty(_ssmrData[i].Image) || string.IsNullOrWhiteSpace(_ssmrData[i].Image))
-                    {
-                        displayImage = UIImage.FromBundle(string.Empty);
-                    }
-                    else
-                    {
-                        displayImage = UIImage.FromBundle(_ssmrData[i].Image);
-                    }
+                    displayImage = UIImage.LoadFromData(_ssmrData[i].NSDataImage);
                 }
 
                 nfloat origImageRatio = 155.0f / 284.0f;

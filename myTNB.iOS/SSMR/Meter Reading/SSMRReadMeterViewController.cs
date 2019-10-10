@@ -7,7 +7,6 @@ using myTNB.SQLite.SQLiteDataManager;
 using myTNB.SSMR;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using UIKit;
 
@@ -193,7 +192,8 @@ namespace myTNB
                         Title = _toolTipList[i].Title,
                         Description = _toolTipList[i].Description,
                         Image = _toolTipList[i].Image,
-                        IsSitecoreData = true
+                        IsSitecoreData = true,
+                        NSDataImage = _toolTipList[i].ImageByteArray.ToNSData()
                     };
                     pageData.Add(item);
                 }

@@ -684,147 +684,6 @@ namespace myTNB
             }
         }
 
-        private Task LoadMeterReadSSMRWalkthroughV2()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                GetItemsService iService = new GetItemsService(TNBGlobal.OS
-                    , DataManager.DataManager.SharedInstance.ImageSize, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
-                MeterReadSSMRTimeStampResponseModel timeStamp = iService.GetMeterReadSSMRWalkthroughTimestampItemV2();
-
-                bool needsUpdate = true;
-                if (timeStamp != null && timeStamp.Data != null && timeStamp.Data.Count > 0 && timeStamp.Data[0] != null
-                    && !string.IsNullOrEmpty(timeStamp.Data[0].Timestamp))
-                {
-                    NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
-                    string currentTS = sharedPreference.StringForKey("SiteCoreMeterReadSSMRWalkthroughTimeStampV2");
-                    if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
-                    {
-                        sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreMeterReadSSMRWalkthroughTimeStampV2");
-                        sharedPreference.Synchronize();
-                    }
-                    else
-                    {
-                        if (currentTS.Equals(timeStamp.Data[0].Timestamp))
-                        {
-                            needsUpdate = false;
-                        }
-                        else
-                        {
-                            sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreMeterReadSSMRWalkthroughTimeStampV2");
-                            sharedPreference.Synchronize();
-                        }
-                    }
-                }
-
-                if (needsUpdate)
-                {
-                    MeterReadSSMRResponseModel meterReadSSMrWalkthroughItems = iService.GetMeterReadSSMRWalkthroughItemsV2();
-                    if (meterReadSSMrWalkthroughItems != null && meterReadSSMrWalkthroughItems.Data != null && meterReadSSMrWalkthroughItems.Data.Count > 0)
-                    {
-                        MeterReadSSMRWalkthroughEntityV2 wsManager = new MeterReadSSMRWalkthroughEntityV2();
-                        wsManager.DeleteTable();
-                        wsManager.CreateTable();
-                        wsManager.InsertListOfItems(meterReadSSMrWalkthroughItems.Data);
-                    }
-                }
-            });
-        }
-
-        private Task LoadEnergyTips()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                GetItemsService iService = new GetItemsService(TNBGlobal.OS
-                    , DataManager.DataManager.SharedInstance.ImageSize, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
-                EnergyTipsTimeStampResponseModel timeStamp = iService.GetEnergyTipsTimestampItem();
-
-                bool needsUpdate = true;
-                if (timeStamp != null && timeStamp.Data != null && timeStamp.Data.Count > 0 && timeStamp.Data[0] != null
-                    && !string.IsNullOrEmpty(timeStamp.Data[0].Timestamp))
-                {
-                    NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
-                    string currentTS = sharedPreference.StringForKey("SiteCoreEnergyTipsTimeStamp");
-                    if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
-                    {
-                        sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreEnergyTipsTimeStamp");
-                        sharedPreference.Synchronize();
-                    }
-                    else
-                    {
-                        if (currentTS.Equals(timeStamp.Data[0].Timestamp))
-                        {
-                            needsUpdate = false;
-                        }
-                        else
-                        {
-                            sharedPreference.SetString(timeStamp.Data[0].Timestamp, "SiteCoreEnergyTipsTimeStamp");
-                            sharedPreference.Synchronize();
-                        }
-                    }
-                }
-
-                if (needsUpdate)
-                {
-                    EnergyTipsResponseModel energyTipsItems = iService.GetEnergyTipsItem();
-                    if (energyTipsItems != null && energyTipsItems.Data != null && energyTipsItems.Data.Count > 0)
-                    {
-                        EnergyTipsEntity wsManager = new EnergyTipsEntity();
-                        wsManager.DeleteTable();
-                        wsManager.CreateTable();
-                        wsManager.InsertListOfItems(energyTipsItems.Data);
-                    }
-                }
-            });
-        }
-
-        private Task LoadBillDetailsTooltip()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                GetItemsService iService = new GetItemsService(TNBGlobal.OS
-                    , DataManager.DataManager.SharedInstance.ImageSize, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
-                BillDetailsTooltipTimeStampResponseModel timeStamp = iService.GetBillDetailsTooltipTimestampItem();
-
-                bool needsUpdate = true;
-                if (timeStamp != null && timeStamp.Data != null && timeStamp.Data.Count > 0 && timeStamp.Data[0] != null
-                    && !string.IsNullOrEmpty(timeStamp.Data[0].Timestamp))
-                {
-                    NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
-                    string currentTS = sharedPreference.StringForKey("BillDetailsTooltipTimeStamp");
-                    if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
-                    {
-                        sharedPreference.SetString(timeStamp.Data[0].Timestamp, "BillDetailsTooltipTimeStamp");
-                        sharedPreference.Synchronize();
-                    }
-                    else
-                    {
-                        if (currentTS.Equals(timeStamp.Data[0].Timestamp))
-                        {
-                            needsUpdate = false;
-                        }
-                        else
-                        {
-                            sharedPreference.SetString(timeStamp.Data[0].Timestamp, "BillDetailsTooltipTimeStamp");
-                            sharedPreference.Synchronize();
-                        }
-                    }
-                }
-
-                if (needsUpdate)
-                {
-                    BillDetailsTooltipResponseModel tooltipsItems = iService.GetBillDetailsTooltipItem();
-                    if (tooltipsItems != null && tooltipsItems.Data != null && tooltipsItems.Data.Count > 0)
-                    {
-                        BillDetailsTooltipEntity wsManager = new BillDetailsTooltipEntity();
-                        wsManager.DeleteTable();
-                        wsManager.CreateTable();
-                        wsManager.InsertListOfItems(tooltipsItems.Data);
-                    }
-                }
-            });
-        }
-
         /// <summary>
         /// Loads the master data.
         /// </summary>
@@ -943,13 +802,13 @@ namespace myTNB
 
             InvokeInBackground(async () =>
             {
-                await SitecoreServices.Instance.LoadMeterReadSSMRWalkthrough();//LoadMeterReadSSMRWalkthrough();
-                await LoadMeterReadSSMRWalkthroughV2();
+                await SitecoreServices.Instance.LoadMeterReadSSMRWalkthrough();
+                await SitecoreServices.Instance.LoadMeterReadSSMRWalkthroughV2();
+                await SitecoreServices.Instance.LoadBillDetailsTooltip();
                 if (!AppLaunchMasterCache.IsEnergyTipsDisabled)
                 {
-                    await LoadEnergyTips();
+                    await SitecoreServices.Instance.LoadEnergyTips();
                 }
-                await LoadBillDetailsTooltip();
             });
         }
 

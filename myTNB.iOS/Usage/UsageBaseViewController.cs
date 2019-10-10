@@ -10,7 +10,6 @@ using myTNB.SQLite.SQLiteDataManager;
 using UIKit;
 using CoreAnimation;
 using Foundation;
-using System.Diagnostics;
 
 namespace myTNB
 {
@@ -1159,17 +1158,31 @@ namespace myTNB
         {
             if (!isREAccount)
             {
-                List<TipsModel> tipsList;
+                List<TipsPresentationModel> tipsList = new List<TipsPresentationModel>();
                 EnergyTipsEntity wsManager = new EnergyTipsEntity();
-                var tips = wsManager.GetAllItems();
-                tipsList = tips;
+                List<TipsModel> tips = wsManager.GetAllItems();
+                foreach (TipsModel item in tips)
+                {
+                    tipsList.Add(new TipsPresentationModel
+                    {
+                        Title = item.Title,
+                        Description = item.Description,
+                        NSDataImage = item.ImageByteArray.ToNSData()
+                    });
+                }
+                //tipsList = tips;
                 if (tips.Count > UsageConstants.MaxRandomTips)
                 {
-                    tipsList = new List<TipsModel>();
+                    tipsList = new List<TipsPresentationModel>();
                     var randomIndexes = UsageHelper.RandomizedTips(tips.Count, UsageConstants.MaxRandomTips);
                     for (int i = 0; i < randomIndexes.Length; i++)
                     {
-                        tipsList.Add(tips[randomIndexes[i]]);
+                        tipsList.Add(new TipsPresentationModel
+                        {
+                            Title = tips[randomIndexes[i]].Title,
+                            Description = tips[randomIndexes[i]].Description,
+                            NSDataImage = tips[randomIndexes[i]].ImageByteArray.ToNSData()
+                        });
                     }
                 }
                 if (tipsList != null &&

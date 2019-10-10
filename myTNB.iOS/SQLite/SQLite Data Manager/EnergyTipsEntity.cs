@@ -57,7 +57,8 @@ namespace myTNB.SQLite.SQLiteDataManager
                         ID = obj.ID,
                         Image = obj.Image,
                         Title = obj.Title,
-                        Description = obj.Description
+                        Description = obj.Description,
+                        ImageByteArray = obj.ImageByteArray
                     };
                     InsertItem(item);
                 }
@@ -89,14 +90,15 @@ namespace myTNB.SQLite.SQLiteDataManager
             List<TipsModel> itemList = new List<TipsModel>();
             List<EnergyTipsEntity> entityItems = GetAllEntityItems();
             TipsModel tipsItem;
-            foreach (var item in entityItems)
+            foreach (EnergyTipsEntity item in entityItems)
             {
                 tipsItem = new TipsModel
                 {
                     ID = item.ID,
                     Image = item.Image,
                     Title = item.Title,
-                    Description = item.Description
+                    Description = item.Description,
+                    ImageByteArray = item.ImageByteArray
                 };
                 itemList.Add(tipsItem);
             }

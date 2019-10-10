@@ -10,20 +10,20 @@ namespace myTNB
 {
     public class EnergyTipsComponent
     {
-        CustomUIView _containerView;
-        UIView _parentView;
-        UIScrollView _scrollView;
+        private CustomUIView _containerView;
+        private UIView _parentView;
+        private UIScrollView _scrollView;
 
-        List<TipsModel> _tipsList;
+        private List<TipsPresentationModel> _tipsList;
 
-        nfloat scrollViewRatio = 100.0f / 288.0f;
-        nfloat margin = ScaleUtility.GetScaledWidth(8f);
-        nfloat paddingX = ScaleUtility.GetScaledWidth(16f);
-        nfloat paddingY = ScaleUtility.GetScaledHeight(16f);
-        nfloat containerHeight = ScaleUtility.GetScaledHeight(100f);
-        int currentPageIndex;
+        private nfloat scrollViewRatio = 100.0f / 288.0f;
+        private nfloat margin = ScaleUtility.GetScaledWidth(8f);
+        private nfloat paddingX = ScaleUtility.GetScaledWidth(16f);
+        private nfloat paddingY = ScaleUtility.GetScaledHeight(16f);
+        private nfloat containerHeight = ScaleUtility.GetScaledHeight(100f);
+        private int currentPageIndex;
 
-        public EnergyTipsComponent(UIView parentView, List<TipsModel> tipsList)
+        public EnergyTipsComponent(UIView parentView, List<TipsPresentationModel> tipsList)
         {
             _parentView = parentView;
             _tipsList = tipsList;
@@ -101,23 +101,12 @@ namespace myTNB
                 };
                 viewContainer.AddSubview(descView);
 
-                UIImage displayImage;
-                if (string.IsNullOrEmpty(_tipsList[i].Image) || string.IsNullOrWhiteSpace(_tipsList[i].Image))
+                UIImage displayImage = UIImage.FromBundle(string.Empty);
+                if (_tipsList[i].NSDataImage != null)
                 {
-                    displayImage = UIImage.FromBundle(string.Empty);
+                    displayImage = UIImage.LoadFromData(_tipsList[i].NSDataImage);
                 }
-                else
-                {
-                    try
-                    {
-                        displayImage = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(_tipsList[i].Image)));
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.WriteLine("Image load Error: " + e.Message);
-                        displayImage = UIImage.FromBundle(string.Empty);
-                    }
-                }
+
                 nfloat iconWidth = ScaleUtility.GetScaledWidth(36f);
                 iconView = new UIImageView(new CGRect(0, ScaleUtility.GetYLocationToCenterObject(iconWidth, descView), iconWidth, iconWidth))
                 {

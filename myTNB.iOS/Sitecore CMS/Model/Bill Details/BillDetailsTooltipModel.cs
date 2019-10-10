@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Foundation;
 using Newtonsoft.Json;
 
 namespace myTNB.SitecoreCMS.Model
@@ -22,7 +23,6 @@ namespace myTNB.SitecoreCMS.Model
         public string Image { set; get; }
         public string ID { set; get; }
         public byte[] ImageByteArray { set; get; }
-
     }
 
     public class BillsTooltipModel
@@ -31,7 +31,7 @@ namespace myTNB.SitecoreCMS.Model
         public List<string> Description { set; get; }
         public string Image { set; get; }
         public string ID { set; get; }
-        public byte[] ImageByteArray { set; get; }
+        public NSData NSDataImage { set; get; }
 
         [JsonIgnore]
         public bool IsSitecoreData { set; get; }

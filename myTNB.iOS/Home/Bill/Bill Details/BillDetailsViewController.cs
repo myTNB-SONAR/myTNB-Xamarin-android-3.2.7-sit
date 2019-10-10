@@ -180,7 +180,8 @@ namespace myTNB
                         Title = _toolTipList[i].Title,
                         Description = GetDescriptionList(_toolTipList[i].Description),
                         Image = _toolTipList[i].Image,
-                        IsSitecoreData = true
+                        IsSitecoreData = true,
+                        NSDataImage = _toolTipList[i].ImageByteArray.ToNSData()
                     };
                     _pageData.Add(item);
                 }

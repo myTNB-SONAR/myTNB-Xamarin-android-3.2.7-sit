@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Foundation;
 
 namespace myTNB.SitecoreCMS.Model
 {
@@ -19,8 +20,14 @@ namespace myTNB.SitecoreCMS.Model
         public string Title { set; get; }
         public string Description { set; get; }
         public string Image { set; get; }
+        public byte[] ImageByteArray { set; get; }
 
         public string ID { set; get; }
+    }
+
+    public class TipsPresentationModel : TipsModel
+    {
+        public NSData NSDataImage { set; get; }
     }
 
     public class EnergyTipsTimeStamp
