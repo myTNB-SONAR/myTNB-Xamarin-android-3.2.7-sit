@@ -396,12 +396,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
                     currentBottomNavigationMenu = Resource.Id.menu_reward;
                     this.mView.ShowToBeAddedToast();
 					break;
-				case Resource.Id.menu_feedback:
-                    currentBottomNavigationMenu = Resource.Id.menu_feedback;
-					this.mView.HideAccountName();
-                    this.mView.SetToolbarTitle(Resource.String.feedback_menu_activity_title);
-					this.mView.ShowFeedbackMenu();
-					break;
 				case Resource.Id.menu_more:
                     currentBottomNavigationMenu = Resource.Id.menu_more;
 					this.mView.HideAccountName();
@@ -445,7 +439,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 				LaunchViewActivity.MAKE_INITIAL_CALL = false;
 			}
 
-			if (currentBottomNavigationMenu == Resource.Id.menu_promotion || currentBottomNavigationMenu == Resource.Id.menu_feedback || currentBottomNavigationMenu == Resource.Id.menu_reward || currentBottomNavigationMenu == Resource.Id.menu_more)
+			if (currentBottomNavigationMenu == Resource.Id.menu_promotion || currentBottomNavigationMenu == Resource.Id.menu_reward || currentBottomNavigationMenu == Resource.Id.menu_more)
 			{
 				return;
 			}

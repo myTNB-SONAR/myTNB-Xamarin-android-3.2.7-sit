@@ -18,6 +18,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
     public class AccountsRecyclerViewAdapter : RecyclerView.Adapter, IFilterable
     {
         int accountsCardContainer = 0;
+        int INTIATE_ACCOUNT_PER_CARD = 3;
         int MAX_ACCOUNT_PER_CARD = 5;
         Filter accountsFilter;
         static HomeMenuFragment viewListener;

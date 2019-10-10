@@ -471,7 +471,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             tokenSource = new CancellationTokenSource();
             this.mView.SetMyServiceRecycleView();
             this.mView.SetNewFAQRecycleView();
-            this.mView.SetNewPromotionRecycleView();
         }
 
         public void OnCancelToken()
@@ -492,23 +491,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public async Task RetryMyService()
         {
             await GetMyServiceService();
-        }
-
-        public async Task InitiateNewPromotion()
-        {
-            await Task.Delay(3000);
-            List<NewPromotion> list = new List<NewPromotion>();
-            list.Add(new NewPromotion()
-            {
-                Title = "TNB Energy Night Run",
-                Description = "Join some excited 3,500 runners to raise awareness towards energy conservation."
-            });
-            list.Add(new NewPromotion()
-            {
-                Title = "Maevi - Celcom Bonanza 2019",
-                Description = "Get 15% discount off all MAEVI devices and extra 30% discount off MAEVI Gateway."
-            });
-            this.mView.SetNewPromotionResult(list);
         }
 
         private void ReadMyServiceFromCache()
@@ -733,25 +715,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             for (int i = 0; i < count; i++)
             {
                 list.Add(new NewFAQ()
-                {
-                    Title = ""
-                });
-            }
-
-            return list;
-        }
-
-        public List<NewPromotion> LoadShimmerPromotionList(int count)
-        {
-            if (count <= 0)
-            {
-                count = 1;
-            }
-
-            List<NewPromotion> list = new List<NewPromotion>();
-            for (int i = 0; i < count; i++)
-            {
-                list.Add(new NewPromotion()
                 {
                     Title = ""
                 });

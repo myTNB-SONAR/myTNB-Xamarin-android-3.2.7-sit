@@ -46,7 +46,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
     [Activity(Label = "@string/dashboard_activity_title"
               , Icon = "@drawable/ic_launcher"
         , ScreenOrientation = ScreenOrientation.Portrait
-        ,Theme = "@style/Theme.Dashboard"
+        ,Theme = "@style/Theme.DashboardHome"
         ,WindowSoftInputMode = SoftInput.AdjustNothing)]
     [IntentFilter(new[] { Android.Content.Intent.ActionView },
             DataScheme = "mytnbapp",
@@ -811,16 +811,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             view.GetLocationOnScreen(location);
             outRect.Offset(location[0], location[1]);
             return outRect.Contains(x, y);
-        }
-
-        public void SetStatusBarBackground()
-        {
-            if (Build.VERSION.SdkInt >= Build.VERSION_CODES.Lollipop)
-            {
-                Drawable drawable = Resources.GetDrawable(Resource.Drawable.gradient_background);
-                Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
-                Window.SetBackgroundDrawable(drawable);
-            }
         }
 
         public void SetInnerDashboardToolbarBackground()

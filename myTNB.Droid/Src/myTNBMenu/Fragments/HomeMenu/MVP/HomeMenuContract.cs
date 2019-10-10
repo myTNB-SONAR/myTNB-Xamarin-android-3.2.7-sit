@@ -37,10 +37,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void CheckSSMRMeterReadingThreePhaseTimeStamp();
 
-            void SetNewPromotionRecycleView();
-
-            void SetNewPromotionResult(List<NewPromotion> list);
-
             void ShowRefreshScreen(string contentMsg, string buttonMsg);
 
             void UpdateCurrentSMRAccountList();
@@ -83,10 +79,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Task OnGetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
 
             Task OnGetSSMRMeterReadingThreePhaseScreens();
-
-            List<NewPromotion> LoadShimmerPromotionList(int count);
-
-            Task InitiateNewPromotion();
 
             void GetEnergySavingTipsTimeStamp();
 

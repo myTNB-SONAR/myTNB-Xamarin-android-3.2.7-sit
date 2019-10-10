@@ -69,8 +69,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.myServiceView)]
         LinearLayout myServiceView;
 
-        [BindView(Resource.Id.myServiceTitle)]
-        TextView myServiceTitle;
         [BindView(Resource.Id.accountsHeaderTitle)]
         TextView accountHeaderTitle;
 
@@ -89,9 +87,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.accountRecyclerViewContainer)]
         RecyclerView accountsRecyclerView;
 
-        [BindView(Resource.Id.indicatorContainer)]
-        LinearLayout indicatorContainer;
-
         [BindView(Resource.Id.summaryNestScrollView)]
         NestedScrollView summaryNestScrollView;
 
@@ -106,22 +101,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         [BindView(Resource.Id.addAction)]
         ImageView addActionImage;
-
-
-        [BindView(Resource.Id.newPromotionTitle)]
-        TextView newPromotionTitle;
-
-        [BindView(Resource.Id.newPromotionShimmerView)]
-        LinearLayout newPromotionShimmerView;
-
-        [BindView(Resource.Id.newPromotionShimmerList)]
-        RecyclerView newPromotionShimmerList;
-
-        [BindView(Resource.Id.newPromotionView)]
-        LinearLayout newPromotionView;
-
-        [BindView(Resource.Id.newPromotionList)]
-        RecyclerView newPromotionList;
 
         [BindView(Resource.Id.accountListViewContainer)]
         LinearLayout accountListViewContainer;
@@ -145,7 +124,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         TextView txtAdd;
 
         [BindView(Resource.Id.accountCard)]
-        CardView accountCard;
+        LinearLayout accountCard;
 
         [BindView(Resource.Id.addActionLabel)]
         TextView addActionLabel;
@@ -167,6 +146,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         [BindView(Resource.Id.refreshMsg)]
         TextView refreshMsg;
+
+        [BindView(Resource.Id.accountActionDivider)]
+        View accountActionDivider;
 
 
         AccountsRecyclerViewAdapter accountsAdapter;
@@ -202,10 +184,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         NewFAQAdapter newFAQAdapter;
 
-        NewPromotionShimmerAdapter newPromotionShimmerAdapter;
-
-        NewPromotionAdapter newPromotionAdapter;
-
         private LoadingOverlay loadingOverlay;
 
 
@@ -223,6 +201,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 mCallBack = context as ISummaryFragmentToDashBoardActivtyListener;
                 FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Home");
+                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.AppLanchGradientBackground);
             }
             catch (Java.Lang.ClassCastException e)
             {
@@ -294,9 +273,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetAccountActionHeader();
                 SetupMyServiceView();
                 SetupNewFAQView();
-                SetupNewPromotionView();
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg);
-                TextViewUtils.SetMuseoSans500Typeface(myServiceTitle, newFAQTitle, newPromotionTitle, btnRefresh, txtAdd, addActionLabel, searchActionLabel);
+                TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd, addActionLabel, searchActionLabel);
 
                 addActionContainer.SetOnClickListener(null);
                 notificationHeaderIcon.SetOnClickListener(null);
@@ -334,7 +312,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         StartActivity(new Intent(this.Activity, typeof(NotificationActivity)));
                     }
                 };
-                ((DashboardHomeActivity)Activity).SetStatusBarBackground();
 
                 this.presenter.GetSmartMeterReadingWalkthroughtTimeStamp();
 
@@ -366,8 +343,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     myServiceListRecycleView.Focusable = false;
                     myServiceShimmerList.Focusable = false;
                     accountsRecyclerView.Focusable = false;
-                    newPromotionShimmerList.Focusable = false;
-                    newPromotionList.Focusable = false;
                     topRootView.Focusable = true;
                     topRootView.RequestFocus();
                     ViewTreeObserver observer = summaryNestScrollView.ViewTreeObserver;
@@ -438,15 +413,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         }
 
-        private void SetupNewPromotionView()
-        {
-            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
-            newPromotionShimmerList.SetLayoutManager(linearLayoutManager);
-
-            LinearLayoutManager linearShimmerLayoutManager = new LinearLayoutManager(this.Activity, LinearLayoutManager.Horizontal, false);
-            newPromotionList.SetLayoutManager(linearShimmerLayoutManager);
-        }
-
         public void SetMyServiceRecycleView()
         {
             myServiceShimmerAdapter = new MyServiceShimmerAdapter(this.presenter.LoadShimmerServiceList(6), this.Activity);
@@ -473,25 +439,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     currentMyServiceList.Clear();
                     currentMyServiceList.AddRange(list);
                     myServiceAdapter.ClickChanged += OnClickChanged;
-                    try
-                    {
-                        if (accountsAdapter != null && accountsAdapter.accountCardModelList != null && myServiceAdapter != null)
-                        {
-                            int count = accountsAdapter.accountCardModelList.Count;
-                            if (count < 1 && myServiceAdapter.ItemCount == 0)
-                            {
-                                newFAQTitle.SetTextColor(Color.White);
-                            }
-                            else
-                            {
-                                newFAQTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
-                            }
-                        }
-                    }
-                    catch (System.Exception e)
-                    {
-                        Utility.LoggingNonFatalError(e);
-                    }
                 });
             }
             catch (System.Exception e)
@@ -555,57 +502,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        public void SetNewPromotionRecycleView()
-        {
-            SetupNewPromotionShimmerEffect();
-            this.presenter.InitiateNewPromotion();
-        }
-
-        public void SetNewPromotionResult(List<NewPromotion> list)
-        {
-            try
-            {
-                Activity.RunOnUiThread(() =>
-                {
-                    newPromotionShimmerAdapter = new NewPromotionShimmerAdapter(null, this.Activity);
-                    newPromotionShimmerList.SetAdapter(newPromotionShimmerAdapter);
-                    newPromotionShimmerView.Visibility = ViewStates.Gone;
-                    newPromotionView.Visibility = ViewStates.Visible;
-                    newPromotionAdapter = new NewPromotionAdapter(list, this.Activity);
-                    newPromotionList.SetAdapter(newPromotionAdapter);
-                });
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
         public override void OnPause()
         {
             base.OnPause();
             this.presenter.OnCancelToken();
         }
-
-        private void SetupNewPromotionShimmerEffect()
-        {
-            try
-            {
-                Activity.RunOnUiThread(() =>
-                {
-                    newPromotionShimmerAdapter = new NewPromotionShimmerAdapter(this.presenter.LoadShimmerPromotionList(2), this.Activity);
-                    newPromotionShimmerList.SetAdapter(newPromotionShimmerAdapter);
-
-                    newPromotionShimmerView.Visibility = ViewStates.Visible;
-                    newPromotionView.Visibility = ViewStates.Gone;
-                });
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
 
         public void ShowSearchAction(bool isShow)
         {
@@ -615,6 +516,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 searchEditText.Visibility = ViewStates.Visible;
                 searchEditText.SetMaxWidth(Integer.MaxValue);
                 searchActionContainer.Visibility = ViewStates.Gone;
+                accountActionDivider.Visibility = ViewStates.Gone;
                 searchEditText.OnActionViewExpanded();
                 searchEditText.RequestFocus();
                 if (searchEditText.Query != "")
@@ -631,14 +533,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 accountHeaderTitle.Visibility = ViewStates.Visible;
                 searchEditText.Visibility = ViewStates.Gone;
                 searchActionContainer.Visibility = ViewStates.Visible;
+                accountActionDivider.Visibility = ViewStates.Visible;
             }
         }
 
         private void SetAccountActionHeader()
         {
             LinearLayout.LayoutParams param = (LinearLayout.LayoutParams)accountsActionsContainer.LayoutParameters;
-            param.LeftMargin = GetDeviceHorizontalScaleInPixel(0.05f);
-            param.RightMargin = GetDeviceHorizontalScaleInPixel(0.05f);
+            param.LeftMargin = (int) DPUtils.ConvertDPToPx(16f);
+            param.RightMargin = (int)DPUtils.ConvertDPToPx(16f);
 
             TextViewUtils.SetMuseoSans500Typeface(accountHeaderTitle, accountGreeting, accountGreetingName);
             searchEditText.SetOnQueryTextListener(new AccountsSearchOnQueryTextListener(this,accountsAdapter));
@@ -674,7 +577,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             accountsRecyclerView.SetLayoutManager(linearLayoutManager);
 
             accountsAdapter = new AccountsRecyclerViewAdapter(this);
-            accountsRecyclerView.AddOnScrollListener(new AccountsRecyclerViewOnScrollListener(this.presenter, linearLayoutManager, indicatorContainer));
+            accountsRecyclerView.AddOnScrollListener(new AccountsRecyclerViewOnScrollListener(this.presenter, linearLayoutManager));
 
             SnapHelper snapHelper = new LinearSnapHelper();
             snapHelper.AttachToRecyclerView(accountsRecyclerView);
@@ -730,38 +633,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             return Resource.Layout.HomeMenuFragmentView;
         }
-        private void UpdateAccountListIndicator()
-        {
-            indicatorContainer.RemoveAllViews();
-            int accountsCount = accountsAdapter.ItemCount;
-            if (accountsCount > 1)
-            {
-                indicatorContainer.Visibility = ViewStates.Visible;
-                for (int i = 0; i < accountsCount; i++)
-                {
-                    ImageView image = new ImageView(Activity);
-                    image.Id = i;
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
-                    layoutParams.RightMargin = 8;
-                    layoutParams.LeftMargin = 8;
-                    image.LayoutParameters = layoutParams;
-                    if (i == 0)
-                    {
-                        image.SetImageResource(Resource.Drawable.circle_active);
-                    }
-                    else
-                    {
-                        image.SetImageResource(Resource.Drawable.circle);
-                    }
-                    indicatorContainer.AddView(image, i);
-                }
-            }
-            else
-            {
-                indicatorContainer.Visibility = ViewStates.Gone;
-            }
-            ChangeMyServiceFAQTextColor();
-        }
 
         public void OnUpdateAccountListChanged(bool isSearchSubmit)
 		{
@@ -774,7 +645,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 List<string> accountNumberList = accountsAdapter.GetAccountCardNumberListByPosition(position);
                 this.presenter.LoadSummaryDetailsInBatch(accountNumberList);
 			}
-            UpdateAccountListIndicator();
 		}
 
 
@@ -885,60 +755,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             actionBar.SetDisplayShowHomeEnabled(flag);
         }
 
-        private void ChangeMyServiceFAQTextColor()
-        {
-            try
-            {
-                if (accountsAdapter != null && accountsAdapter.accountCardModelList != null && myServiceAdapter != null)
-                {
-                    int count = accountsAdapter.accountCardModelList.Count;
-                    if (count < 2)
-                    {
-                        myServiceTitle.SetTextColor(Color.White);
-                    }
-                    else
-                    {
-                        myServiceTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
-                    }
-                    if (count < 1 && myServiceAdapter.ItemCount == 0)
-                    {
-                        newFAQTitle.SetTextColor(Color.White);
-                    }
-                    else
-                    {
-                        newFAQTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
-                    }
-                }
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
-        private void ChangeMyServiceTextColor()
-        {
-            try
-            {
-                if (accountsAdapter != null && accountsAdapter.accountCardModelList != null)
-                {
-                    int count = accountsAdapter.accountCardModelList.Count;
-                    if (count < 2)
-                    {
-                        myServiceTitle.SetTextColor(Color.White);
-                    }
-                    else
-                    {
-                        myServiceTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
-                    }
-                }
-            }
-            catch (System.Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
-            }
-        }
-
         public string GetDeviceId()
         {
             return this.DeviceId();
@@ -986,14 +802,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private void SetHeaderActionVisiblity(List<SummaryDashBoardDetails> accountList)
         {
-            if (accountList.Count <= 5)
+            if (accountList.Count < 3)
             {
                 searchActionContainer.Visibility = ViewStates.Gone;
+                accountActionDivider.Visibility = ViewStates.Gone;
                 searchEditText.Visibility = ViewStates.Gone;
             }
             else
             {
                 searchActionContainer.Visibility = ViewStates.Visible;
+                accountActionDivider.Visibility = ViewStates.Visible;
             }
         }
 
@@ -1002,7 +820,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             SetHeaderActionVisiblity(accountList);
             accountsAdapter.SetAccountCards(accountList);
             accountsRecyclerView.SetAdapter(accountsAdapter);
-            ChangeMyServiceTextColor();
         }
 
         public void SetAccountListCardsFromLocal(List<SummaryDashBoardDetails> accountList)
@@ -1010,7 +827,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             SetHeaderActionVisiblity(accountList);
             accountsAdapter.SetAccountCardsFromLocal(accountList);
             accountsRecyclerView.SetAdapter(accountsAdapter);
-            ChangeMyServiceTextColor();
         }
 
         public void OnSavedTimeStamp(string savedTimeStamp)
@@ -1217,8 +1033,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void ShowRefreshScreen(string contentMsg, string buttonMsg)
         {
-            myServiceTitle.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
-            topRootView.SetBackgroundResource(Resource.Drawable.dashboard_home_refresh_bg);
             accountListRefreshContainer.Visibility = ViewStates.Visible;
             accountListViewContainer.Visibility = ViewStates.Gone;
             string refreshMsg = string.IsNullOrEmpty(contentMsg) ? "Uh oh, looks like this page is unplugged. Reload to stay plugged in!" : contentMsg;
@@ -1280,19 +1094,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 accountListContainer.Visibility = ViewStates.Visible;
                 accountCard.Visibility = ViewStates.Gone;
                 addActionContainer.Visibility = ViewStates.Visible;
+                accountActionDivider.Visibility = ViewStates.Gone;
             }
             else
             {
-                myServiceTitle.SetTextColor(Color.White);
                 addActionContainer.Visibility = ViewStates.Gone;
                 accountListContainer.Visibility = ViewStates.Gone;
+                accountActionDivider.Visibility = ViewStates.Gone;
                 accountCard.Visibility = ViewStates.Visible;
             }
 
             UserSessions.SetSMRAccountList(currentSmrAccountList);
             UserSessions.SetSMREligibilityAccountList(eligibleSmrAccountList);
 
-            topRootView.SetBackgroundResource(Resource.Drawable.dashboard_home_bg);
             accountListRefreshContainer.Visibility = ViewStates.Gone;
             accountListViewContainer.Visibility = ViewStates.Visible;
             if (MyTNBAccountManagement.GetInstance().IsNeedUpdatedBillingDetails())
