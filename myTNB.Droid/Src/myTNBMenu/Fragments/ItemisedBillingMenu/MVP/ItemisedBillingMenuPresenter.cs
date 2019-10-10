@@ -152,7 +152,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
                     BillDetailsTooltipResponseModel responseModel = getItemsService.GetBillDetailsTooltipItem();
-                    SitecoreCmsEntity.InsertListOfItems("BILL_TOOLTIP", JsonConvert.SerializeObject(responseModel.Data));
+                    SitecoreCmsEntity.InsertSiteCoreItem(SitecoreCmsEntity.SITE_CORE_ID.BILL_TOOLTIP, JsonConvert.SerializeObject(responseModel.Data),"");
                 }
                 catch (Exception e)
                 {

@@ -621,6 +621,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
             );
             mCancelledErrorSnackBar.Show();
+            this.SetIsClicked(false);
         }
 
 
@@ -641,7 +642,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
             );
             mCancelledExceptionSnackBar.Show();
-
+            this.SetIsClicked(false);
         }
 
 
@@ -663,7 +664,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
             );
             mApiExcecptionSnackBar.Show();
-
+            this.SetIsClicked(false);
         }
         private Snackbar mUknownExceptionSnackBar;
         public void ShowRetryOptionsUnknownException(Exception exception)
@@ -683,7 +684,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
             );
             mUknownExceptionSnackBar.Show();
-
+            this.SetIsClicked(false);
         }
 
         public void UpdateIsReadNotificationItem(int position, bool isRead)
@@ -711,6 +712,7 @@ namespace myTNB_Android.Src.Notifications.Activity
             }
             );
             mNotificationRemoved.Show();
+            this.SetIsClicked(false);
         }
 
         public void ClearAdapter()
@@ -935,8 +937,12 @@ namespace myTNB_Android.Src.Notifications.Activity
 
         public void ShowNotificationDetails(int itemPosition)
 		{
-			UserNotificationData userNotificationData = notificationRecyclerAdapter.GetAllNotifications()[itemPosition];
-            mPresenter.OnShowNotificationDetails(userNotificationData, itemPosition);
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                UserNotificationData userNotificationData = notificationRecyclerAdapter.GetAllNotifications()[itemPosition];
+                mPresenter.OnShowNotificationDetails(userNotificationData, itemPosition);
+            }
 		}
 
         public void ShowEditMode()

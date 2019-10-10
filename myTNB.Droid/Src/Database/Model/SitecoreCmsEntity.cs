@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using myTNB_Android.Src.SitecoreCMS.Model;
-using Newtonsoft.Json;
 using SQLite;
 
 namespace myTNB_Android.Src.Database.Model
@@ -17,6 +15,12 @@ namespace myTNB_Android.Src.Database.Model
         [Column("jsonTimeStampData")]
         public string jsonTimeStampData { get; set; }
 
+        public enum SITE_CORE_ID
+        {
+            APPLY_SSMR_WALKTHROUGH,
+            BILL_TOOLTIP
+        }
+
         public static void CreateTable()
         {
             var db = DBHelper.GetSQLiteConnection();
@@ -24,7 +28,7 @@ namespace myTNB_Android.Src.Database.Model
             db.CreateTable<SitecoreCmsEntity>();
         }
 
-        public static void InsertItem(SitecoreCmsEntity item)
+        private static void InsertItem(SitecoreCmsEntity item)
         {
             try
             {
@@ -38,27 +42,56 @@ namespace myTNB_Android.Src.Database.Model
             }
         }
 
-        public static void InsertListOfItems(string itemId, string jsonStringDataList)
+        public static void InsertSiteCoreItem(SITE_CORE_ID itemId, string jsonItemData, string timestampData)
         {
-            SitecoreCmsEntity item = new SitecoreCmsEntity();
-            item.itemId = itemId;
-            item.jsonStringData = jsonStringDataList;
-            InsertItem(item);
+           try
+            {
+                SitecoreCmsEntity item = new SitecoreCmsEntity();
+                item.itemId = itemId.ToString();
+                item.jsonStringData = jsonItemData;
+                item.jsonTimeStampData = timestampData;
+
+                var db = DBHelper.GetSQLiteConnection();
+                int newRecord = db.InsertOrReplace(item);
+                Console.WriteLine("Insert Record: {0}", newRecord);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in Insert Item in Table : {0}", e.Message);
+            }
         }
 
-        public static List<SitecoreCmsEntity> GetItemById(string id)
+        public static string GetItemById(SITE_CORE_ID itemId)
         {
-            List<SitecoreCmsEntity> itemList = new List<SitecoreCmsEntity>();
             try
             {
                 var db = DBHelper.GetSQLiteConnection();
-                itemList = db.Query<SitecoreCmsEntity>("select * from SitecoreCmsEntity WHERE itemId = ?",id);
+                var itemList = db.Query<SitecoreCmsEntity>("SELECT jsonStringData FROM SitecoreCmsEntity WHERE itemId = ?", itemId.ToString());
+                if (itemList.Count > 0)
+                {
+                    return itemList[0].jsonStringData;
+                }
             }
             catch (Exception e)
             {
                 Console.WriteLine("Error in Get All Items : {0}", e.Message);
             }
-            return itemList;
+            return null;
+        }
+
+        public static bool IsNeedUpdates(SITE_CORE_ID itemId, string newTimeStampData)
+        {
+            try
+            {
+                var db = DBHelper.GetSQLiteConnection();
+                List<SitecoreCmsEntity> itemList = db.Query<SitecoreCmsEntity>("SELECT jsonTimeStampData FROM SitecoreCmsEntity WHERE itemId = ?", itemId.ToString());
+                return newTimeStampData != itemList[0].jsonTimeStampData;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Error in Get All Items : {0}", e.Message);
+            }
+            return true;
         }
 
         public static List<SitecoreCmsEntity> GetAllItems()

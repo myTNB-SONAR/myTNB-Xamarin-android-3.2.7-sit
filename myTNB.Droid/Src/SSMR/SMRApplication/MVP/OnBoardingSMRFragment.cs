@@ -11,6 +11,7 @@ using Android.Support.V4.App;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
@@ -28,11 +29,11 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             // Create your fragment here
         }
 
-        public static OnBoardingSMRFragment Instance(OnBoardingDataModel model)
+        public static OnBoardingSMRFragment Instance(ApplySSMRModel model)
         {
             OnBoardingSMRFragment fragment = new OnBoardingSMRFragment();
             Bundle args = new Bundle();
-            args.PutString(IMAGE_URL, model.ImageURL);
+            args.PutString(IMAGE_URL, model.Image);
             args.PutString(TITLE, model.Title);
             args.PutString(DESCRIPTION, model.Description);
             fragment.Arguments = args;
@@ -54,35 +55,24 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.MVP
             TextViewUtils.SetMuseoSans500Typeface(titleView);
             TextViewUtils.SetMuseoSans300Typeface(descriptionView);
 
-            if (imageUrl.Contains("onboarding_bg_"))
+            Bitmap bitmap = ImageUtils.GetImageBitmapFromUrl(imageUrl);
+            int imageUrlResource = Resource.Drawable.onboarding_bg_1;
+            if (bitmap == null)
             {
-                int imageUrlResource = Resource.Drawable.onboarding_bg_1;
-                if (imageUrl != null)
+                if (imageUrl.Contains("onboarding1"))
                 {
-                    if (imageUrl == "onboarding_bg_1")
-                    {
-                        imageUrlResource = Resource.Drawable.onboarding_bg_1;
-                    }
-                    else if (imageUrl == "onboarding_bg_2")
-                    {
-                        imageUrlResource = Resource.Drawable.onboarding_bg_2;
-                    }
-                    else
-                    {
-                        imageUrlResource = Resource.Drawable.onboarding_bg_3;
-                    }
+                    imageUrlResource = Resource.Drawable.onboarding_bg_1;
                 }
 
+                if (imageUrl.Contains("onboarding2"))
+                {
+                    imageUrlResource = Resource.Drawable.onboarding_bg_2;
+                }
                 imageSource.SetImageResource(imageUrlResource);
             }
             else
             {
-                Bitmap bitmap = null;
-                bitmap = ImageUtils.GetImageBitmapFromUrl(imageUrl);
-                if (bitmap != null)
-                {
-                    imageSource.SetImageBitmap(bitmap);
-                }
+                imageSource.SetImageBitmap(bitmap);
             }
 
             titleView.Text = title;

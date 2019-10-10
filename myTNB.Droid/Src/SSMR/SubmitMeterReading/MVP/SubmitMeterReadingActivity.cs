@@ -633,7 +633,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 {
                     meterReadingUnitList.Add(meterReadingModelList[i].meterReadingUnitDisplay);
                 }
-                string meterReadingListToString = String.Join(",", meterReadingUnitList.ToArray());
+                string meterReadingListToString = String.Join(", ", meterReadingUnitList.ToArray());
                 threePhaseList[0].Description = String.Format(threePhaseList[0].Description, meterReadingUnitList.Count, meterReadingListToString);
                 SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(false, this, SupportFragmentManager, threePhaseList);
             }

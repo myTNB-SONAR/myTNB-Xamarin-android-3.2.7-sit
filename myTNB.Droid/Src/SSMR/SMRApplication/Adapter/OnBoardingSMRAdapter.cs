@@ -1,18 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using Android.Support.V4.App;
+using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 
 namespace myTNB_Android.Src.SSMR.SMRApplication.Adapter
 {
     public class OnBoardingSMRAdapter : FragmentStatePagerAdapter
     {
-        List<OnBoardingDataModel> onBoardingDataModelList;
+        List<ApplySSMRModel> onBoardingDataModelList;
         public OnBoardingSMRAdapter(FragmentManager fm) : base(fm)
         {
         }
 
-        public void SetData(List<OnBoardingDataModel> dataList)
+        public void SetData(List<ApplySSMRModel> dataList)
         {
             onBoardingDataModelList = dataList;
         }
@@ -20,7 +21,7 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Adapter
 
         public override Fragment GetItem(int position)
         {
-            OnBoardingDataModel model = this.onBoardingDataModelList[position];
+            ApplySSMRModel model = this.onBoardingDataModelList[position];
             return OnBoardingSMRFragment.Instance(model);
         }
     }
