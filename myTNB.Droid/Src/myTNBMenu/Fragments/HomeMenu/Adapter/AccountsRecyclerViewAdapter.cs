@@ -329,13 +329,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
             billDueAmount.Text = cardModel.BillDueAmount;
             billDueNote.Text = cardModel.BillDueNote;
 
+            // Lin Siong TODO
             if (cardModel.IsZeroAmount)
             {
-                billDueAmount.SetTextColor(parentGroup.Context.Resources.GetColor(Resource.Color.all_cleared_amount, null));
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.M)
+                {
+                    billDueAmount.SetTextColor(parentGroup.Context.Resources.GetColor(Resource.Color.all_cleared_amount, null));
+                }
+                else
+                {
+                    billDueAmount.SetTextColor(parentGroup.Context.Resources.GetColor(Resource.Color.all_cleared_amount));
+                }
             }
             if (cardModel.IsNegativeAmount)
             {
-                billDueAmount.SetTextColor(parentGroup.Context.Resources.GetColor(Resource.Color.freshGreen, null));
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.M)
+                {
+                    billDueAmount.SetTextColor(parentGroup.Context.Resources.GetColor(Resource.Color.freshGreen, null));
+                }
+                else
+                {
+                    billDueAmount.SetTextColor(parentGroup.Context.Resources.GetColor(Resource.Color.freshGreen));
+                }
             }
 
             accountTypeIcon.SetImageResource(GetAccountIcon(cardModel.AccountType, cardModel.SmartMeterCode, cardModel.IsTaggedSMR, cardModel.AccountNumber));
