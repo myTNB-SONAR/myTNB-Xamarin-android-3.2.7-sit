@@ -755,13 +755,6 @@ namespace myTNB
             var isWalkthroughDone = sharedPreference.BoolForKey("isWalkthroughDone");
             GetUserEntity();
             SSMRAccounts.IsHideOnboarding = false;
-            if (!SSMRAccounts.IsHideOnboarding)
-            {
-                InvokeInBackground(async () =>
-                {
-                    await SitecoreServices.Instance.LoadSSMRWalkthrough();
-                });
-            }
             if (isWalkthroughDone)
             {
                 await ClearWalkthroughCache();
@@ -802,13 +795,7 @@ namespace myTNB
 
             InvokeInBackground(async () =>
             {
-                await SitecoreServices.Instance.LoadMeterReadSSMRWalkthrough();
-                await SitecoreServices.Instance.LoadMeterReadSSMRWalkthroughV2();
-                await SitecoreServices.Instance.LoadBillDetailsTooltip();
-                if (!AppLaunchMasterCache.IsEnergyTipsDisabled)
-                {
-                    await SitecoreServices.Instance.LoadEnergyTips();
-                }
+                await SitecoreServices.Instance.OnAppLaunchSitecoreCall();
             });
         }
 

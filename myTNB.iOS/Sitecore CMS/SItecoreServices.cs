@@ -13,6 +13,20 @@ namespace myTNB.SitecoreCMS
         private static readonly Lazy<SitecoreServices> lazy = new Lazy<SitecoreServices>(() => new SitecoreServices());
         public static SitecoreServices Instance { get { return lazy.Value; } }
 
+        public async Task OnAppLaunchSitecoreCall()
+        {
+            List<Task> taskList = new List<Task>();
+            taskList.Add(LoadMeterReadSSMRWalkthrough());
+            taskList.Add(LoadMeterReadSSMRWalkthroughV2());
+            taskList.Add(LoadBillDetailsTooltip());
+            taskList.Add(LoadSSMRWalkthrough());
+            if (!AppLaunchMasterCache.IsEnergyTipsDisabled)
+            {
+                taskList.Add(LoadEnergyTips());
+            }
+            await Task.WhenAll(taskList.ToArray());
+        }
+
         private async Task<NSData> GetImageFromURL(string urlString)
         {
             NSUrl url = NSUrl.FromString(urlString);
@@ -37,7 +51,7 @@ namespace myTNB.SitecoreCMS
             }
         }
 
-        public Task LoadSSMRWalkthrough()
+        private Task LoadSSMRWalkthrough()
         {
             return Task.Factory.StartNew(() =>
            {
@@ -89,7 +103,7 @@ namespace myTNB.SitecoreCMS
            });
         }
 
-        public Task LoadMeterReadSSMRWalkthrough()
+        private Task LoadMeterReadSSMRWalkthrough()
         {
             return Task.Factory.StartNew(() =>
             {
@@ -139,7 +153,7 @@ namespace myTNB.SitecoreCMS
             });
         }
 
-        public Task LoadMeterReadSSMRWalkthroughV2()
+        private Task LoadMeterReadSSMRWalkthroughV2()
         {
             return Task.Factory.StartNew(() =>
             {
@@ -189,7 +203,7 @@ namespace myTNB.SitecoreCMS
             });
         }
 
-        public Task LoadBillDetailsTooltip()
+        private Task LoadBillDetailsTooltip()
         {
             return Task.Factory.StartNew(() =>
             {
@@ -239,7 +253,7 @@ namespace myTNB.SitecoreCMS
             });
         }
 
-        public Task LoadEnergyTips()
+        private Task LoadEnergyTips()
         {
             return Task.Factory.StartNew(() =>
             {
