@@ -158,7 +158,7 @@
         "ssmrTrackApplication": "Track Application",
         "ssmrBackToUsage": "Back to My Usage",
         "ssmrTrackUsage": "Track Application Usage",
-        "ssmrViewReadHistory": "View Reading History"
+        "ssmrViewReadHistory": "Back to Reading History"
     },
     "SSMRReadingHistory": {
         "navTitle": "Self Meter Reading",
