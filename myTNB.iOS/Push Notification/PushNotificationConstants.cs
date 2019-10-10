@@ -49,7 +49,7 @@ namespace myTNB.PushNotification
             , { SSMRNotificationEnum.RegistrationCancelled, Banner_SSMRMissed }
             , { SSMRNotificationEnum.OpenMeterReadingPeriod, Banner_SSMROpen }
             , { SSMRNotificationEnum.NoSubmissionReminder, Banner_SSMRRemainder }
-            , { SSMRNotificationEnum.MissedSubmission, Banner_SSMRMissed }
+            , { SSMRNotificationEnum.MissedSubmission, Banner_SSMROpen }
             , { SSMRNotificationEnum.TerminationCompleted, Banner_SSMRRemainder }
             , { SSMRNotificationEnum.TerminationCancelled, Banner_SSMRMissed }
         };

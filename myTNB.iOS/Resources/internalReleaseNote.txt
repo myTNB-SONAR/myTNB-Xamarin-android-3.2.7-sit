@@ -1,6 +1,8 @@
-Sprint 2 SIT Build
+Sprint 2B SIT Build
 
-[Bug] 2543 Usage Dashboard_iOS: RM/KWh toggle doesn't change the value displaying on the bar after fresh open the app
-[Bug] 2544 Itemized Billing_iOS: Bill details after mandatory popup are not showing the correct name and address.
-[Bug] 2518 iOS - SSMR : Misalignment in Copy, Font Size and Font Style (Front End defects fixed)
-[Bug] 2261 iOS - Misalignment in Copy, Image and Font Style (Front End defects fixed)
+[Bug] 2749 SMR Notification_iOS: Body content message cropped out
+[Bug] 2727 Itemized Billing_iOS: Mandatory charges account should be selected after pay from the view details popup
+[Bug] 2575 SSMR Notification_iOS: After enable for SSMR the notification screen will stuck at loading indefinitely.
+[Bug] 2568 Notification Management_iOS(Apply) : Copy Writing for SSMR Notification CTA Button
+[Bug] 2461 Notification - 1st Day of 3rd Month Meter Reading Submission Open have wrong CTA (Msg type 11)
+[Task] Update SSMR Start/Stop Success and Fail Buttons

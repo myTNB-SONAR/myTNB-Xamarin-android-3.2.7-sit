@@ -135,22 +135,26 @@ namespace myTNB
             {
                 Image = UIImage.FromBundle(IsSuccess ? StatusPageConstants.IMG_Success : StatusPageConstants.IMG_Fail)
             };
-            UILabel lblTitle = new UILabel(new CGRect(GetScaledWidth(16), imgStatus.Frame.GetMaxY(), viewCard.Frame.Width - GetScaledWidth(32), GetScaledHeight(24)))
+            UILabel lblTitle = new UILabel(new CGRect(GetScaledWidth(16), imgStatus.Frame.GetMaxY()
+                , viewCard.Frame.Width - GetScaledWidth(32), GetScaledHeight(24)))
             {
                 TextAlignment = UITextAlignment.Center,
                 TextColor = MyTNBColor.WaterBlue,
                 Font = TNBFont.MuseoSans_16_500,
-                Text = string.IsNullOrEmpty(StatusTitle) ? GetText(IsSuccess ? StatusPageConstants.Success : StatusPageConstants.Fail) : StatusTitle
+                Text = string.IsNullOrEmpty(StatusTitle) ? GetText(IsSuccess
+                    ? StatusPageConstants.Success : StatusPageConstants.Fail) : StatusTitle
             };
             ResizeLabel(ref lblTitle, GetScaledHeight(24));
-            UILabel lblMessage = new UILabel(new CGRect(GetScaledWidth(16), GetYLocationFromFrame(lblTitle.Frame, 4), viewCard.Frame.Width - GetScaledWidth(32), GetScaledHeight(24)))
+            UILabel lblMessage = new UILabel(new CGRect(GetScaledWidth(16), GetYLocationFromFrame(lblTitle.Frame, 4)
+                , viewCard.Frame.Width - GetScaledWidth(32), GetScaledHeight(24)))
             {
                 TextAlignment = UITextAlignment.Center,
                 TextColor = MyTNBColor.CharcoalGrey,
                 LineBreakMode = UILineBreakMode.WordWrap,
                 Lines = 0,
                 Font = TNBFont.MuseoSans_12_300,
-                Text = string.IsNullOrEmpty(StatusMessage) ? GetText(IsSuccess ? StatusPageConstants.SuccessMessage : StatusPageConstants.FailMessage) : StatusMessage
+                Text = string.IsNullOrEmpty(StatusMessage) ? GetText(IsSuccess
+                    ? StatusPageConstants.SuccessMessage : StatusPageConstants.FailMessage) : StatusMessage
             };
             ResizeLabel(ref lblMessage, GetScaledHeight(16));
 
@@ -158,8 +162,10 @@ namespace myTNB
             nfloat viewCardHeight = lblMessage.Frame.GetMaxY() + 16.0F;
             if (IsSuccess && StatusDisplayType != StatusType.SSMRReading)
             {
-                UIView viewLine = GenericLine.GetLine(new CGRect(GetScaledWidth(16), GetYLocationFromFrame(lblMessage.Frame, 16), viewCard.Frame.Width - GetScaledWidth(32), GetScaledHeight(1)));
-                UILabel lblRef = new UILabel(new CGRect(GetScaledWidth(16), GetYLocationFromFrame(viewLine.Frame, 16), viewCard.Frame.Width * 0.60F, GetScaledHeight(14)))
+                UIView viewLine = GenericLine.GetLine(new CGRect(GetScaledWidth(16), GetYLocationFromFrame(lblMessage.Frame, 16
+                    ), viewCard.Frame.Width - GetScaledWidth(32), GetScaledHeight(1)));
+                UILabel lblRef = new UILabel(new CGRect(GetScaledWidth(16), GetYLocationFromFrame(viewLine.Frame, 16)
+                    , viewCard.Frame.Width * 0.60F, GetScaledHeight(14)))
                 {
                     TextAlignment = UITextAlignment.Left,
                     TextColor = MyTNBColor.SilverChalice,
@@ -252,6 +258,7 @@ namespace myTNB
         {
             CustomUIButtonV2 btnPrimary = new CustomUIButtonV2();
             CustomUIButtonV2 btnSecondary = new CustomUIButtonV2();
+
             if (StatusDisplayType == StatusType.Feedback)
             {
                 GetCTA(ref btnPrimary, GetI18NValue(StatusPageConstants.I18N_BackToFeedback), true, _actions.BackToFeedback);
@@ -260,27 +267,26 @@ namespace myTNB
             }
             else if (StatusDisplayType == StatusType.SSMRApply)
             {
-                GetCTA(ref btnSecondary, GetCommonI18NValue(StatusPageConstants.I18N_BacktoHome), false, _actions.BackToHome);
                 if (IsSuccess)
                 {
-                    GetCTA(ref btnPrimary, GetI18NValue(StatusPageConstants.I18N_SSMRTrackApplication), true, _actions.TrackApplication, true);
+                    GetCTA(ref btnPrimary, GetCommonI18NValue(StatusPageConstants.I18N_BacktoHome), true, _actions.BackToHome, true);
                 }
                 else
                 {
+                    GetCTA(ref btnSecondary, GetCommonI18NValue(StatusPageConstants.I18N_BacktoHome), false, _actions.BackToHome);
                     GetCTA(ref btnPrimary, GetCommonI18NValue(StatusPageConstants.I18N_TryAgain), true, _actions.SSMRTryAgain, true);
                 }
             }
             else if (StatusDisplayType == StatusType.SSMRDiscontinue)
             {
-                GetCTA(ref btnSecondary, GetCommonI18NValue(StatusPageConstants.I18N_BacktoHome), false, _actions.BackToHome);
                 if (IsSuccess)
                 {
-                    GetCTA(ref btnPrimary, GetI18NValue(StatusPageConstants.I18N_SSMRTrackApplication), true, _actions.TrackApplication, true);
+                    GetCTA(ref btnPrimary, GetCommonI18NValue(StatusPageConstants.I18N_BacktoHome), true, _actions.BackToHome, true);
                 }
                 else
                 {
+                    GetCTA(ref btnSecondary, GetI18NValue(StatusPageConstants.I18N_SSMRViewReadHistory), false, _actions.ViewReadingHistory);
                     GetCTA(ref btnPrimary, GetCommonI18NValue(StatusPageConstants.I18N_TryAgain), true, _actions.SSMRTryAgain, true);
-
                 }
             }
             else if (StatusDisplayType == StatusType.SSMRReading)

@@ -629,17 +629,25 @@ namespace myTNB
                               {
                                   UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
                                   GenericStatusPageViewController status = storyBoard.InstantiateViewController("GenericStatusPageViewController") as GenericStatusPageViewController;
-                                  status.StatusDisplayType = IsApplication ? GenericStatusPageViewController.StatusType.SSMRApply
-                                    : GenericStatusPageViewController.StatusType.SSMRDiscontinue;
-                                  status.IsSuccess = _ssmrApplicationStatus.d.IsSuccess;
-                                  status.StatusTitle = _ssmrApplicationStatus.d.DisplayTitle;
-                                  status.StatusMessage = _ssmrApplicationStatus.d.DisplayMessage;
-                                  if (_ssmrApplicationStatus.d.data != null)
+                                  if (status != null)
                                   {
-                                      status.ReferenceNumber = _ssmrApplicationStatus.d.data.ServiceReqNo;
-                                      status.ReferenceDate = _ssmrApplicationStatus.d.data.AppliedOn;
+                                      status.StatusDisplayType = IsApplication ? GenericStatusPageViewController.StatusType.SSMRApply
+                                        : GenericStatusPageViewController.StatusType.SSMRDiscontinue;
+                                      status.IsSuccess = _ssmrApplicationStatus.d.IsSuccess;
+                                      status.StatusTitle = _ssmrApplicationStatus.d.DisplayTitle;
+                                      status.StatusMessage = _ssmrApplicationStatus.d.DisplayMessage;
+                                      if (!IsApplication)
+                                      {
+                                          status.NextViewController = GetSMRReadingHistoryView();
+                                          SSMRActivityInfoCache.SubmittedAccount = SSMRActivityInfoCache.ViewHistoryAccount;
+                                      }
+                                      if (_ssmrApplicationStatus.d.data != null)
+                                      {
+                                          status.ReferenceNumber = _ssmrApplicationStatus.d.data.ServiceReqNo;
+                                          status.ReferenceDate = _ssmrApplicationStatus.d.data.AppliedOn;
+                                      }
+                                      NavigationController.PushViewController(status, true);
                                   }
-                                  NavigationController.PushViewController(status, true);
                               }
                               else
                               {
@@ -731,6 +739,15 @@ namespace myTNB
                 _ssmrApplicationStatus = serviceManager
                     .OnExecuteAPIV6<SSMRApplicationStatusResponseModel>(SSMRConstants.Service_SubmitSSMRApplication, request);
             });
+        }
+
+        private UIViewController GetSMRReadingHistoryView()
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+            SSMRReadingHistoryViewController viewController =
+                storyBoard.InstantiateViewController("SSMRReadingHistoryViewController") as SSMRReadingHistoryViewController;
+            viewController.FromStatusPage = true;
+            return viewController;
         }
     }
 }
