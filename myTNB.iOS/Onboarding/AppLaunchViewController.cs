@@ -855,17 +855,6 @@ namespace myTNB
                 }
                 if (isValidTimeStamp)
                 {
-                    string tncItems = iService.GetFullRTEPagesItems();
-                    TermsAndConditionResponseModel tncResponse = JsonConvert.DeserializeObject<TermsAndConditionResponseModel>(tncItems);
-                    if (tncResponse != null && tncResponse.Status.Equals("Success")
-                        && tncResponse.Data != null && tncResponse.Data.Count > 0)
-                    {
-                        TermsAndConditionEntity tncEntity = new TermsAndConditionEntity();
-                        tncEntity.DeleteTable();
-                        tncEntity.CreateTable();
-                        tncEntity.InsertListOfItems(tncResponse.Data);
-                    }
-
                     string walkThroughItems = iService.GetWalkthroughScreenItems();
                     WalkthroughScreensResponseModel walkThroughResponse = JsonConvert.DeserializeObject<WalkthroughScreensResponseModel>(walkThroughItems);
                     if (walkThroughResponse != null && walkThroughResponse.Status.Equals("Success")

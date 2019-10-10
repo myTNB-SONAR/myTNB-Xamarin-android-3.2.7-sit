@@ -20,6 +20,7 @@ namespace myTNB.SitecoreCMS
             taskList.Add(LoadMeterReadSSMRWalkthroughV2());
             taskList.Add(LoadBillDetailsTooltip());
             taskList.Add(LoadSSMRWalkthrough());
+            taskList.Add(LoadTermsAndCondition());
             if (!AppLaunchMasterCache.IsEnergyTipsDisabled)
             {
                 taskList.Add(LoadEnergyTips());
@@ -298,6 +299,42 @@ namespace myTNB.SitecoreCMS
                         wsManager.DeleteTable();
                         wsManager.CreateTable();
                         wsManager.InsertListOfItems(energyTipsItems.Data);
+                    }
+                }
+            });
+        }
+
+        private Task LoadTermsAndCondition()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS, DataManager.DataManager.SharedInstance.ImageSize
+                    , TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
+                TimestampResponseModel timeStamp = iService.GetTimestampItemV2();
+
+                bool needsUpdate = false;
+
+                if (timeStamp == null || timeStamp.Data == null || timeStamp.Data.Count == 0
+                    || string.IsNullOrEmpty(timeStamp.Data[0].Timestamp)
+                    || string.IsNullOrWhiteSpace(timeStamp.Data[0].Timestamp))
+                {
+                    timeStamp = new TimestampResponseModel();
+                    timeStamp.Data = new List<TimestampModel> { new TimestampModel { Timestamp = string.Empty } };
+                }
+
+                UpdateTimeStamp(timeStamp.Data[0].Timestamp, "SiteCoreTimeStamp", ref needsUpdate);
+
+                if (needsUpdate)
+                {
+                    TermsAndConditionResponseModel tncResponse = iService.GetFullRTEPagesItems();
+                    if (tncResponse != null && tncResponse.Status.Equals("Success")
+                        && tncResponse.Data != null && tncResponse.Data.Count > 0)
+                    {
+                        TermsAndConditionEntity tncEntity = new TermsAndConditionEntity();
+                        tncEntity.DeleteTable();
+                        tncEntity.CreateTable();
+                        tncEntity.InsertListOfItems(tncResponse.Data);
+                        var test = tncEntity.GetAllItems();
                     }
                 }
             });

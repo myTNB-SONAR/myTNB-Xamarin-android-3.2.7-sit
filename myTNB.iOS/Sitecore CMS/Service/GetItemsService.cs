@@ -31,12 +31,22 @@ namespace myTNB.SitecoreCMS.Services
             return JsonConvert.SerializeObject(resp);
         }
 
-        public string GetFullRTEPagesItems()
+        public TermsAndConditionResponseModel GetFullRTEPagesItems()
         {
-            FullRTEPagesService service = new FullRTEPagesService();
-            var data = service.GetFullRTEPages(WebsiteUrl, Language);
-            var resp = CheckData(data.ToList<object>());
-            return JsonConvert.SerializeObject(resp);
+            TermsAndConditionResponseModel respModel = new TermsAndConditionResponseModel();
+            try
+            {
+                FullRTEPagesService service = new FullRTEPagesService();
+                var data = service.GetFullRTEPages(WebsiteUrl, Language);
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<TermsAndConditionResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetFullRTEPagesItems: " + e.Message);
+            }
+            return respModel;
         }
 
         public string GetPromotionsItem()
@@ -93,6 +103,25 @@ namespace myTNB.SitecoreCMS.Services
             var listData = AddDataToList(data);
             var resp = CheckData(listData);
             return JsonConvert.SerializeObject(resp);
+        }
+
+        public TimestampResponseModel GetTimestampItemV2()
+        {
+            TimestampResponseModel responseModel = new TimestampResponseModel();
+            try
+            {
+                TimestampService service = new TimestampService();
+                TimestampModel data = service.GetTimestamp(WebsiteUrl, Language);
+                List<object> listData = AddDataToList(data);
+                BaseModel resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                responseModel = JsonConvert.DeserializeObject<TimestampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetTimestampItemV2: " + e.Message);
+            }
+            return responseModel;
         }
 
         private BaseModel CheckData(List<object> data)
