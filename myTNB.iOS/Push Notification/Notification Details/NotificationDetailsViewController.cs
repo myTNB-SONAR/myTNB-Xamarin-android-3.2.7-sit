@@ -416,7 +416,8 @@ namespace myTNB
                 Frame = new CGRect(BaseMargin, GetScaledHeight(16), BaseMarginedWidth, GetScaledHeight(48))
             };
             if (NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.OpenMeterReadingPeriod
-                || NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.NoSubmissionReminder)
+                || NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.NoSubmissionReminder
+                || NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.MissedSubmission)
             {
                 _btnPrimary.Enabled = NotificationInfo.IsSMRPeriodOpen;
                 UpdateCTA(ref _btnPrimary, true, NotificationInfo.IsSMRPeriodOpen);
@@ -424,15 +425,6 @@ namespace myTNB
                 _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
                     OnSubmitMeterReading();
-                }));
-            }
-            else if (NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.MissedSubmission)
-            {
-                UpdateCTA(ref _btnPrimary, false);
-                _btnPrimary.SetTitle(GetI18NValue(PushNotificationConstants.I18N_ViewReadingHistory), UIControlState.Normal);
-                _btnPrimary.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-                {
-                    OnViewMeterReadingHistory();
                 }));
             }
             else if (NotificationInfo.SSMRNotificationType == Enums.SSMRNotificationEnum.TerminationCompleted)
