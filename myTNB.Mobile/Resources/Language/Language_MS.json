@@ -1,8 +1,10 @@
 ﻿{
+  //Sample
   "page": {
     "title": "Title",
     "submit": "Submit"
   },
+  //Sample
   "page_selector": {
     "date": [
       {
@@ -20,13 +22,13 @@
     ]
   },
   "Common": {
-    "account": "Account",
-    "emailAddress": "Email Address",
-    "mobileNumber": "Mobile Number",
-    "submit": "Submit",
+    "account": "Akaun",
+    "emailAddress": "Alamat Emel",
+    "mobileNumber": "Nombor Telefon",
+    "submit": "Hantar",
     "selectAccounts": "Select Accounts",
     "selectAccount": "Select Account",
-    "backToHome": "Back to Home",
+    "backToHome": "Kembali ke Laman Utama",
     "tryAgain": "Cuba Lagi",
     "settings": "Settings",
     "cancel": "Batal",
@@ -48,15 +50,15 @@
     "day": "Hari",
     "month": "Bulan",
     "customerAccountNumber": "Customer Account Number {0}",
-    "confirm": "Confirm",
+    "confirm": "Sahkan",
     "ok": "Ok",
     "acctNickname": "Account Nickname",
     "name": "Name",
     "done": "Selesai",
     "yes": "Yes",
     "no": "No",
-    "selectAll": "Select All",
-    "unselectAll": "Unselect All",
+    "selectAll": "Pilih Semua",
+    "unselectAll": "Unselect All", //missing
     "totalAmount": "Jumlah Keseluruhan",
     "totalAmountRM": "Jumlah Keseluruhan (RM)",
     "back": "Back",
@@ -80,7 +82,7 @@
     "refreshMessage": "This page must be tired. Tap the button below to help it out.",
     "serviceErrorDefaultMessage": "Sorry, something went wrong. Please try again later.",
     "invalid_amountMessage": "Kindly enter a non-zero/positive amount",
-    "invalid_amountTitle": "Invalid Amount",
+    "invalid_amountTitle": "Invalid Amount"
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -109,24 +111,24 @@
     "profile": "Profil"
   },
   "SSMROnboarding": {
-    "skip": "Skip",
+    "skip": "Langkau",
     "onboardingTitle1": "What is Self Meter Reading?",
     "onboardingTitle2": "Why should I enable this service?",
     "onboardingDescription1": "Self Meter Reading is a service you can enable to easily read and submit your own meter readings. We will send you a reminder when it's time to submit.",
     "onboardingDescription2": "You get estimated bills when TNB meter readers can’t get access to your meter. With this service, you will always get bills with accurate readings.",
-    "startApplication": "Get Started!"
+    "startApplication": "Mulakan!"
   },
   "SSMRApplication": {
     "navTitle": "Self Meter Reading",
-    "applyingFor": "I am starting for:",
-    "terminateFor": "I am stopping for:",
-    "contactDetails": "My contact details:",
-    "terminateTitle": "We’re sorry to see you go! Can you tell us why you want to stop this service?",
-    "tncUnsubscribe": "By submitting, you are agreeing to the <a href=\"\\\"><strong>TNB’s Terms of Use</strong></a>, <a href=\"\\\"><strong>Privacy policy</strong></a>, <a href=\"\\\"><strong>Anti-Spam Policy</strong></a> and <a href=\"\\\"><strong>Personal Data Protection Policy</strong></a>.",
-    "tncSubscribe": "By submitting, you are agreeing to the <a href=\"\\\"><strong>Self Meter Reading Terms and Conditions</strong></a>, <a href=\"\\\"><strong>TNB’s Terms of Use</strong></a>, <a href=\"\\\"><strong>Privacy policy</strong></a>, <a href=\"\\\"><strong>Anti-Spam Policy</strong></a> and <a href=\"\\\"><strong>Personal Data Protection Policy</strong></a>.",
-    "editContactInfo": "By editing, you will update your myTNB profile and electricity account contact details.",
-    "selectReason": "Select Reason",
-    "stateReason": "Please state your reason",
+    "applyingFor": "Saya memulakan untuk:",
+    "terminateFor": "Saya ingin hentikan membuat bacaan untuk:",
+    "contactDetails": "Maklumat saya:",
+    "terminateTitle": "Mengapakah anda ingin hentikan perkhidmatan ini?",
+    "tncUnsubscribe": "Dengan menghantar, anda bersetuju pada <a href=\"\\\"><strong>Terma Penggunaan</strong></a>, <a href=\"\\\"><strong>Polisi Privasi</strong></a>, <a href=\"\\\"><strong>Polisi AntiSpam</strong></a> dan <a href=\"\\\"><strong>Polisi Perlindungan Data Peribadi TNB</strong></a>.",
+    "tncSubscribe": "Dengan menghantar, anda bersetuju pada <a href=\"\\\"><strong>Terma dan Syarat Self Meter Reading</strong></a>, <a href=\"\\\"><strong>Terma Penggunaan</strong></a>, <a href=\"\\\"><strong>Polisi Privasi</strong></a>, <a href=\"\\\"><strong>Polisi AntiSpam</strong></a> dan <a href=\"\\\"><strong>Polisi Perlindungan Data Peribadi TNB</strong></a>.",
+    "editContactInfo": "Dengan mengedit, anda akan mengemas kini profil myTNB dan maklumat akaun elektrik anda.",
+    "selectReason": "Pilih Sebab",
+    "stateReason": "Sila nyatakan sebab anda",
     "selectAnAccount": "Select an account"
   },
   "Status": {
@@ -136,38 +138,38 @@
     "feedbackFailMessage": "Your feedback didn't go through.",
     "feedbackReferenceTitle": "Feedback ID",
     "feedbackDateTitle": "Feedback Date & Time",
-    "ssmrApplySuccessTitle": "Application Submitted",
-    "ssmrApplyFailTitle": "Please Try Again",
-    "ssmrApplySuccessMessage": "We have received your request to starting the Self Meter Reading service. You’ll receive a notification when your request is successful!",
-    "ssmrApplyFailMessage": "It looks like we can't process your application at the moment.",
-    "ssmrApplyReferenceTitle": "Service Request number",
-    "ssmrApplyDateTitle": "Applied on",
-    "ssmrDiscontinueSuccessTitle": "Application Submitted",
-    "ssmrDiscontinueFailTitle": "Please Try Again",
-    "ssmrDiscontinueSuccessMessage": "We have received your request to stop this service. For your reference you may keep the service request number below.",
-    "ssmrDiscontinueFailMessage": "It looks like we can't process your application at the moment.",
-    "ssmrDiscontinueReferenceTitle": "Service Request number",
-    "ssmrDiscontinueDateTitle": "Applied on",
-    "ssmrReadingSuccessTitle": "Reading Submitted",
-    "ssmrReadingFailTitle": "Please Try Again",
-    "ssmrReadingSuccessMessage": "Thank you for your meter reading submission. We’ll notify you when your bill is ready.",
-    "ssmrReadingFailMessage": "It looks like we can’t validate your meter reading at the moment.",
+    "ssmrApplySuccessTitle": "Permohonan Dihantar",
+    "ssmrApplyFailTitle": "Sila Cuba Lagi",
+    "ssmrApplySuccessMessage": "Permohonan anda untuk memulakan Self Meter Reading diterima. Kami akan memaklumkan anda setelah permohonan ini berjaya!",
+    "ssmrApplyFailMessage": "Maaf, kami tidak dapat memproses permohonan anda buat masa ini.",
+    "ssmrApplyReferenceTitle": "Nombor Permintaan Perkhidmatan",
+    "ssmrApplyDateTitle": "Dimohon Pada",
+    "ssmrDiscontinueSuccessTitle": "Permohonan Dihantar",
+    "ssmrDiscontinueFailTitle": "Sila Cuba Lagi",
+    "ssmrDiscontinueSuccessMessage": "Kami telah menerima permintaan anda untuk menghentikan perkhidmatan ini. Sila simpan nombor permintaan perkhidmatan berikut sebagai rujukan.",
+    "ssmrDiscontinueFailMessage": "Maaf, kami tidak dapat memproses permohonan anda buat masa ini.",
+    "ssmrDiscontinueReferenceTitle": "Nombor Permintaan Perkhidmatan",
+    "ssmrDiscontinueDateTitle": "Dimohon Pada",
+    "ssmrReadingSuccessTitle": "Bacaan Dihantar",
+    "ssmrReadingFailTitle": "Sila Cuba Lagi",
+    "ssmrReadingSuccessMessage": "Terima kasih kerana menghantar bacaan meter. Kami akan memaklumkan apabila bil anda telah sedia.",
+    "ssmrReadingFailMessage": "Nampaknya kami tidak dapat mengesahkan bacaan meter anda buat masa ini.",
     "backToFeedback": "Back to Feedback",
-    "ssmrTrackApplication": "Track Application",
-    "ssmrBackToUsage": "Back to My Usage",
+    "ssmrTrackApplication": "Pantau Permohonan",
+    "ssmrBackToUsage": "Kembali ke Penggunaaan",
     "ssmrTrackUsage": "Track Application Usage",
-    "ssmrViewReadHistory": "Back to Reading History"
+    "ssmrViewReadHistory": "Back to Reading History" //missing
   },
   "SSMRReadingHistory": {
     "navTitle": "Self Meter Reading",
-    "headerTitle": "My Meter Reading History",
-    "subTitle": "I want to read my own meter for:",
-    "disableSSMRCTA": "Stop Self Meter Reading",
-    "enableSSMRCTA": "Start Self Meter Reading",
-    "enableSSMRDescription": "Self meter reading service has not been started for this electricity account yet. Tap below to start!",
-    "noEligibleAccount": "Looks like your accounts aren’t eligible to start Self Meter Reading service",
-    "selectAccountNavTitle": "Select Electricity Account",
-    "noHistoryData": "Looks like you have no meter reading history at the moment."
+    "headerTitle": "Rekod Bacaan Meter Saya",
+    "subTitle": "Saya ingin membaca meter sendiri untuk:",
+    "disableSSMRCTA": "Hentikan Self Meter Reading",
+    "enableSSMRCTA": "Aktifkan Self Meter Reading",
+    "enableSSMRDescription": "Akaun elektrik ini belum diaktifkan untuk bacaan meter sendiri, tekan butang di bawah untuk memulakan!",
+    "noEligibleAccount": "Maaf, akaun anda tidak layak untuk memulakan perkhidmatan Self Meter Reading",
+    "selectAccountNavTitle": "Pilih Akaun Elektrik",
+    "noHistoryData": "Looks like you have no meter reading history at the moment." //missing
   },
   "SSMRReadingHistory_selector": {
     "SMREligibiltyPopUpDetails": [
@@ -180,7 +182,7 @@
     ]
   },
   "SSMRSubmitMeterReading": {
-    "navTitle": "Submit Meter Reading",
+    "navTitle": "Hantar Bacaan Meter",
     "dontShow": "Don’t show me again",
     "tooltipTitle1": "Alright, what do I need to read?",
     "tooltipTitle2": "But wait, how do I read my meter?",
@@ -190,25 +192,25 @@
     "tooltipDescription3": "Enter the numbers according to its unit in the input. You’ll see your previous month's reading as a reference.",
     "tooltipDescription4": "Your meter will display the kWh reading by default. Enter the reading manually or just take/upload a photo, and we’ll do the reading for you.",
     "tooltipDescription5": "For manual reading, enter the kWh numbers in the input. You’ll see your previous month's reading as a reference.",
-    "headerDescription": "<b>Take or upload photos</b>, or <b>manually enter</b> your meter reading for each respective unit.",
+    "headerDescription": "<b>Tangkap/muat naik gambar</b> atau <b>masukkan bacaan secara manual</b> untuk setiap unit.",
     "imReady": "I'm Ready!",
-    "note": "Note: Please <b>round up</b> the numbers if the reading values are showing decimal points on your meter.",
-    "previousMeterReading": "Previous Meter Reading",
-    "submitReading": "Submit Reading",
-    "takeOrUploadPhoto": "Take Or Upload Photo"
+    "note": "Nota: Sila genapkan nombor sekiranya bacaan pada meter anda memiliki titik perpuluhan.",
+    "previousMeterReading": "Bacaan Meter Sebelum",
+    "submitReading": "Hantar Bacaan",
+    "takeOrUploadPhoto": "Tangkap / Muat Naik Gambar"
   },
   "SSMRCaptureMeter": {
-    "ocrReading": "Please wait for a moment while we read your photos…",
-    "navTitleTakePhoto": "Take Photo",
-    "singleTakePhotoDescription": "Take a photo of the reading value you see on your meter.",
-    "editDescription": "You can select a photo to delete and retake or adjust it before submission.",
-    "multiTakePhotoDescription": "There will be {0} different units. Take a photo of the 1st unit you see.",
-    "multiTakeNextPhotoDescription": "Great! Now take a photo of the next unit you see.",
-    "singularDone": "You're done with {0}!",
-    "pluralDone": "You're done with {0} and {1}!",
-    "singularOnto": "On to the final unit {0} now.",
-    "pluralOnto": "On to the next units {0} and {1}.",
-    "deletePhoto": "Delete Photo"
+    "ocrReading": "Sila tunggu sebentar sementara kami membaca gambar anda...",
+    "navTitleTakePhoto": "Tangkap Gambar",
+    "singleTakePhotoDescription": "Tangkap gambar nilai bacaan pada skrin meter.",
+    "editDescription": "Anda boleh padam, ambil semula atau betul gambar anda sebelum hantar.",
+    "multiTakePhotoDescription": "Ada {0} unit berbeza. Tangkap gambar mana-mana unit pertama yang dilihat.",
+    "multiTakeNextPhotoDescription": "Hebat! Sekarang tangkap gambar unit seterusnya.",
+    "singularDone": "Anda sudah memasukkan unit {0}!",
+    "pluralDone": "{0} dan {1}? Selesai!",
+    "singularOnto": "Masa untuk unit terakhir, {0}.",
+    "pluralOnto": "Beralih ke dua unit seterusnya, {0} dan {1}.",
+    "deletePhoto": "Padam Gambar"
   },
   "SSMRCaptureMeter_selector": {
     "SMRPhotoPopUpDetails": [
@@ -252,7 +254,7 @@
   },
   "SelectElectricityAccounts": {
     "navTitle": "Pilih Akaun Elektrik",
-    "accountsMissing": "Why are some of my accounts not here?"
+    "accountsMissing": "Mengapa akaun saya tiada di sini?"
   },
   "Usage": {
     "navTitle": "Usage",
@@ -267,7 +269,7 @@
     "SMOverlayTitle": "Bagaimana cara untuk melihat penggunaan harian saya?",
     "SMOverlayMsg": "Gerakkan dua jari seperti di atas untuk zum masuk atau keluar! Zum masuk untuk melihat pecahan harian anda.",
     "SMOverlayBtnTxt": "Faham!",
-    "viewReadHistory": "View Reading History",
+    "viewReadHistory": "Kembali ke Penggunaan",
     "showTariff": "Tunjuk Tarif",
     "hideTariff": "Sorok Tarif",
     "myEarnings": "Pendapatan saya",
@@ -309,7 +311,7 @@
       {
         "Title": "This account has a minimum amount to be paid.",
         "Description": "You are required to clear <b>{0}</b> from your service charges first.<br><br>You may view a breakdown in your bill details.",
-        "CTA": "View Details,Got It!",
+        "CTA": "View Details,Faham!",
         "Type": "MandatoryPayment"
       }
     ]
@@ -362,29 +364,29 @@
     "abortMessage": "Are you sure you want to abort payment?"
   },
   "PushNotificationList": {
-    "allNotifications": "All Notifications",
+    "allNotifications": "Semua Pemberitahuan",
     "deleteMessage": "Are you sure you want to delete this notification?",
     "deleteTitle": "Delete Notification",
     "deleteAllMessage": "Are you sure you want to delete all notifications?",
     "deleteAllTitle": "Delete All Notifications",
     "deleteMessageMultiple": "Are you sure you want to delete these notifications?",
     "deleteTitleMultiple": "Delete Multiple Notifications",
-    "noNotification": "Looks like you have no notifications at the moment.",
+    "noNotification": "Anda tiada Pemberitahuan baharu pada masa ini.",
     "notificationDeleted": "Notification deleted.",
     "notificationsDeleted": "Notifications deleted.",
-    "select": "Select",
-    "selected": "Selected ({0})",
-    "selectNotification": "Select Notification",
-    "title": "Notifications"
+    "select": "Pilih",
+    "selected": "Dipilih ({0})",
+    "selectNotification": "Pilih Pemberitahuan",
+    "title": "Pemberitahuan"
   },
   "PushNotificationDetails": {
-    "contactTNB": "Contact TNB",
+    "contactTNB": "Hubungi TNB",
     "viewBill": "Lihat Butiran",
-    "payNow": "Pay Now",
-    "viewMyUsage": "View Usage",
-    "submitMeterReading": "Submit Meter Reading",
-    "reenableSSMR": "Re-start Self Meter Reading",
-    "viewReadingHistory": "View Reading History"
+    "payNow": "Bayar Sekarang",
+    "viewMyUsage": "Lihat Penggunaan Saya",
+    "submitMeterReading": "Hantar Bacaan Meter",
+    "reenableSSMR": "Aktifkan semula SMR",
+    "viewReadingHistory": "Kembali ke Penggunaan"
   },
   "AddAccount": {
     "navTitle": "Add Electricity Account",
