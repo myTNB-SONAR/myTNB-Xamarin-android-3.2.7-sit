@@ -174,8 +174,8 @@
   "SSMRReadingHistory_selector": {
     "SMREligibiltyPopUpDetails": [
       {
-        "Title": "Why are some of my accounts not here?",
-        "Description": "We took the liberty to only show you electricity accounts that are eligble for the Self Meter Reading service. <a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">Click here</a> to learn more about its eligibility.",
+        "Title": "Mengapa akaun saya tiada di sini?",
+        "Description": "Bagi memudahkan anda, kami hanya menyenaraikan akaun elektrik yang layak untuk perkhidmatan Self Meter Reading. <a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">Klik di sini</a> untuk mengetahui syarat kelayakan.",
         "CTA": "Faham!",
         "Type": "Not_SMR_CA"
       }
@@ -215,38 +215,38 @@
   "SSMRCaptureMeter_selector": {
     "SMRPhotoPopUpDetails": [
       {
-        "Title": "Uploading from your album?",
-        "Description": "Be sure to upload <strong>a straight-facing photo containing the value</strong>. You don’t need a photo of the whole meter. Ensure the numbers are clear and there is no glare, shadow or distortion.",
+        "Title": "Muat naik daripada album anda?",
+        "Description": "Pastikan anda memuat naik gambar yang mengandungi bacaan meter (hanya gambar skrin beserta nombor diperlukan). Pastikan nombornya jelas, tidak silau, atau bergegar.",
         "CTA": "Faham!",
         "Type": "Single_UploadPhoto"
       },
       {
-        "Title": "How do I take these photos?",
-        "Description": "You'll need to submit {0} different meter reading values <strong>({1})</strong>.<br><br>Stand close to your meter. You don’t need a photo of the whole meter. Just capture <strong>the box containing the values with your camera directly facing it</strong>. Ensure the numbers are clear and there is no glare, shadow or distortion.",
+        "Title": "Bagaimana cara menangkap gambar bacaan?",
+        "Description": "Anda perlu menghantar {0} nilai bacaan meter yang berbeza <strong>({1})</strong>.<br><br>Berdiri berhampiran meter anda. Anda hanya perlu menangkap gambar skrin paparan pada meter tersebut. Pastikan nombornya jelas, tidak silau, atau bergegar.",
         "CTA": "Faham!",
         "Type": "Multi_TakePhoto"
       },
       {
-        "Title": "How do I take this photo?",
-        "Description": "Stand close to your meter. You don’t need a photo of the whole meter. Just capture <strong>the box containing the value with your camera directly facing it</strong>. Ensure the numbers are clear and there is no glare, shadow or distortion. ",
+        "Title": "Bagaimana cara menangkap gambar bacaan?",
+        "Description": "Berdiri berhampiran meter anda. Anda hanya perlu menangkap gambar skrin paparan pada meter tersebut. Pastikan nombornya jelas, tidak silau, atau bergegar",
         "CTA": "Faham!",
         "Type": "Single_TakePhoto"
       },
       {
-        "Title": "Uploading from your album?",
-        "Description": "You'll need to submit {0} different meter reading values <strong>({1})</strong>.<br><br>Be sure to upload <strong>straight-facing photos containing the values</strong>. You don’t need a photo of the whole meter. Ensure the numbers are clear and there is no glare, shadow or distortion.",
+        "Title": "Muat naik daripada album anda?",
+        "Description": "Anda perlu menghantar {0} nilai bacaan meter yang berbeza <strong>({1})</strong>.<br><br>Pastikan anda memuat naik gambar yang mengandungi bacaan meter (hanya gambar skrin beserta nombor diperlukan). Pastikan nombornya jelas, tidak silau, atau bergegar.",
         "CTA": "Faham!",
         "Type": "Multi_UploadPhoto"
       },
       {
-        "Title": "How do I take these photos?",
+        "Title": "Bagaimana cara menangkap gambar bacaan?",
         "Description": "Stand close to your meter. You don’t need a photo of the whole meter. Just capture <strong>the box containing the values with your camera directly facing it</strong>. Ensure the numbers are clear and there is no glare, shadow or distortion.",
         "CTA": "Faham!",
         "Type": "Multi_TakePhoto_One_Missing"
       },
       {
-        "Title": "Uploading from your album?",
-        "Description": "Be sure to upload <strong>straight-facing photos containing the values</strong>. You don’t need a photo of the whole meter. Ensure the numbers are clear and there is no glare, shadow or distortion.",
+        "Title": "Muat naik daripada album anda?",
+        "Description": "Pastikan anda memuat naik gambar yang mengandungi bacaan meter (hanya gambar skrin beserta nombor diperlukan). Pastikan nombornya jelas, tidak silau, atau bergegar.",
         "CTA": "Faham!",
         "Type": "Multi_UploadPhoto_One_Missing"
       }
