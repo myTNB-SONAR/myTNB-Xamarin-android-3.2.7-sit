@@ -28,6 +28,7 @@ namespace myTNB
         public bool IsFreshCall;
         public bool IsRoot { set; private get; } = false;
         public string AccountNumber { set; private get; } = string.Empty;
+        public bool IsFromBillSelection { set; private get; }
 
         public BillDetailsViewController(IntPtr handle) : base(handle) { }
 
@@ -636,6 +637,11 @@ namespace myTNB
 
             _btnPay.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
+                if (IsFromBillSelection)
+                {
+                    NavigationController.PopViewController(true);
+                    return;
+                }
                 NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                 {
                     InvokeOnMainThread(() =>
@@ -648,6 +654,7 @@ namespace myTNB
                                 storyBoard.InstantiateViewController("SelectBillsViewController") as SelectBillsViewController;
                             if (selectBillsVC != null)
                             {
+                                selectBillsVC.IsFromBillDetails = true;
                                 UINavigationController navController = new UINavigationController(selectBillsVC);
                                 navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                                 PresentViewController(navController, true, null);

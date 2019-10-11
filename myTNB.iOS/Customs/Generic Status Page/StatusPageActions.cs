@@ -25,7 +25,7 @@ namespace myTNB.Customs.GenericStatusPage
 
         internal void SSMRTryAgain()
         {
-            ViewHelper.DismissControllersAndSelectTab(_controller, 0, true);
+            _controller.NavigationController.PopViewController(true);
         }
 
         internal void SSMRReadingTryAgain()
