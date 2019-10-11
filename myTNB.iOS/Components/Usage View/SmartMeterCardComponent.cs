@@ -130,7 +130,7 @@ namespace myTNB
             else
             {
                 string amountStr = (model != null) ? model.Value : "--";
-                string valueUnitStr = (model != null) ? model.ValueUnit : "RM";
+                string valueUnitStr = (model != null) ? model.ValueUnit : TNBGlobal.UNIT_CURRENCY;
                 amount.AttributedText = TextHelper.CreateValuePairString(amountStr + " "
                         , valueUnitStr + " ", !isCurrentUsage, TNBFont.MuseoSans_16_300
                         , MyTNBColor.GreyishBrownTwo, TNBFont.MuseoSans_10_300, MyTNBColor.GreyishBrownTwo);

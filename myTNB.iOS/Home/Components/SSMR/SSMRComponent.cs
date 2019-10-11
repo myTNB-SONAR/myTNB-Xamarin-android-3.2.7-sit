@@ -17,7 +17,7 @@ namespace myTNB
         UILabel _description;
         public UIButton _smrButton;
         nfloat _descWidth = 0f;
-        public Func<string, string> GetI18NValue;
+
         public SSMRComponent(UIView parentView)
         {
             _parentView = parentView;

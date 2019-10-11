@@ -14,7 +14,7 @@ namespace myTNB
         nfloat containerHeight = ScaleUtility.GetScaledHeight(24f);
         SmartMeterViewEnum _smViewEnum;
         public bool isTariffDisabled;
-        public Func<string, string> GetI18NValue;
+
         public TariffSelectionComponent(UIView parentView, SmartMeterViewEnum smViewEnum = SmartMeterViewEnum.Month)
         {
             _parentView = parentView;

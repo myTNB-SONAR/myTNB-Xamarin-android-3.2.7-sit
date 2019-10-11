@@ -11,7 +11,7 @@ namespace myTNB
         public UIButton _btnViewBill, _btnPay;
         UILabel _lblPaymentTitle, _lblAmount, _lblDate, _lblCommon;
         nfloat _width, _viewHeight, _yPos;
-        public Func<string, string> GetI18NValue;
+
         public UsageFooterViewComponent(UIView view, nfloat viewHeight, nfloat yPos)
         {
             _parentView = view;

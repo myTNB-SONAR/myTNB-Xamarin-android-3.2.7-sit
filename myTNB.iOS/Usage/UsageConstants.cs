@@ -3,7 +3,7 @@
     public static class UsageConstants
     {
         //PageName
-        public static string PageName = "UsageView";
+        public static string PageName = "Usage";
 
         //String
         public static string STR_MissingReading = "MISSINGREADING";

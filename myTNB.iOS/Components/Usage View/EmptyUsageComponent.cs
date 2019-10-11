@@ -9,7 +9,7 @@ namespace myTNB
         CustomUIView _parentView, _containerView;
         UIImageView _icon;
         UILabel _messageLbl;
-        public Func<string, string> GetI18NValue;
+
         public EmptyUsageComponent(CustomUIView parentView)
         {
             _parentView = parentView;

@@ -6,6 +6,8 @@ namespace myTNB
 {
     public class BaseComponent
     {
+        public Func<string, string> GetI18NValue;
+
         #region I18N Utilities
         public string GetCommonI18NValue(string key)
         {

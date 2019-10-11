@@ -1170,7 +1170,7 @@ namespace myTNB
                         NSDataImage = item.ImageByteArray.ToNSData()
                     });
                 }
-                //tipsList = tips;
+
                 if (tips.Count > UsageConstants.MaxRandomTips)
                 {
                     tipsList = new List<TipsPresentationModel>();

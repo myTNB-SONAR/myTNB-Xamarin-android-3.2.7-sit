@@ -14,7 +14,7 @@ namespace myTNB
         UILabel _lblTitle, _lblDate, _lblAmount;
         nfloat _viewWidth;
         nfloat _viewHeight;
-        public Func<string, string> GetI18NValue;
+
         public REAmountComponent(UIView parentView)
         {
             _parentView = parentView;

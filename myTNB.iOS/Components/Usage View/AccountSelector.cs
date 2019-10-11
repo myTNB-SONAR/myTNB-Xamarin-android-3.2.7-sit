@@ -1,6 +1,5 @@
 ﻿using System;
 using CoreGraphics;
-using myTNB.Home.Components;
 using UIKit;
 
 namespace myTNB

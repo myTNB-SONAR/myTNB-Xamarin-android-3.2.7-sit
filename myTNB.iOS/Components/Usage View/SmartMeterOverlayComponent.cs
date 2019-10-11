@@ -11,7 +11,7 @@ namespace myTNB
         CustomUIView _btnView;
         UILabel _title, _description;
         nfloat _yPos;
-        public Func<string, string> GetI18NValue;
+
         public SmartMeterOverlayComponent(UIView parentView, nfloat yPos)
         {
             _parentView = parentView;
