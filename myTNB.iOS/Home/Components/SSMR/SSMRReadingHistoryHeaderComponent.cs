@@ -7,7 +7,7 @@ using UIKit;
 
 namespace myTNB
 {
-    public class SSMRReadingHistoryHeaderComponent
+    public class SSMRReadingHistoryHeaderComponent : BaseComponent
     {
         private readonly UIView _parentView;
         private UIView _containerView;

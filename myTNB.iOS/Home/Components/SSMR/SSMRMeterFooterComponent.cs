@@ -4,7 +4,7 @@ using UIKit;
 
 namespace myTNB
 {
-    public class SSMRMeterFooterComponent
+    public class SSMRMeterFooterComponent : BaseComponent
     {
         private readonly UIView _parentView;
         UIView _containerView;

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using CoreGraphics;
 using Foundation;
 using myTNB.SSMR;
@@ -10,13 +9,14 @@ namespace myTNB
     public class SSMRComponent : BaseComponent
     {
         private readonly UIView _parentView;
-        CustomUIView _containerView;
-        UIView _iconLabelView;
-        UIImageView _iconView;
-        public UILabel _labelViewHistory;
-        UILabel _description;
+        private CustomUIView _containerView;
+        private UIView _iconLabelView;
+        private UIImageView _iconView;
+        private UILabel _description;
+        private nfloat _descWidth = 0f;
+
         public UIButton _smrButton;
-        nfloat _descWidth = 0f;
+        public UILabel _labelViewHistory;
 
         public SSMRComponent(UIView parentView)
         {
@@ -56,7 +56,8 @@ namespace myTNB
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.TailTruncation
             };
-            _labelViewHistory = new UILabel(new CGRect(_iconView.Frame.GetMaxX() + iconPadding, _description.Frame.GetMaxY(), _descWidth, GetScaledHeight(20f)))
+            _labelViewHistory = new UILabel(new CGRect(_iconView.Frame.GetMaxX() + iconPadding
+                , _description.Frame.GetMaxY(), _descWidth, GetScaledHeight(20f)))
             {
                 UserInteractionEnabled = true,
                 BackgroundColor = UIColor.Clear,
@@ -69,7 +70,8 @@ namespace myTNB
             };
             _smrButton = new UIButton(UIButtonType.Custom)
             {
-                Frame = new CGRect(BaseMarginWidth16, _description.Frame.GetMaxY() + BaseMarginHeight16, _containerView.Frame.Width - (BaseMarginWidth16 * 2), buttonHeight)
+                Frame = new CGRect(BaseMarginWidth16, _description.Frame.GetMaxY() + BaseMarginHeight16
+                    , _containerView.Frame.Width - (BaseMarginWidth16 * 2), buttonHeight)
             };
             _smrButton.Layer.CornerRadius = 4;
             _smrButton.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
@@ -106,13 +108,15 @@ namespace myTNB
                 BackgroundColor = MyTNBColor.PaleGrey
             };
             iconView.Layer.CornerRadius = GetScaledHeight(16f);
-            UIView labelView = new UIView(new CGRect(iconView.Frame.GetMaxX() + iconPadding, BaseMarginHeight16, parentView.Frame.Width - GetScaledWidth(28f) - iconView.Frame.GetMaxX(), GetScaledHeight(16)))
+            UIView labelView = new UIView(new CGRect(iconView.Frame.GetMaxX() + iconPadding, BaseMarginHeight16
+                , parentView.Frame.Width - GetScaledWidth(28f) - iconView.Frame.GetMaxX(), GetScaledHeight(16)))
             {
                 BackgroundColor = MyTNBColor.PaleGrey
             };
             labelView.Layer.CornerRadius = GetScaledHeight(2f);
 
-            UIView labelView2 = new UIView(new CGRect(iconView.Frame.GetMaxX() + iconPadding, labelView.Frame.GetMaxY() + GetScaledHeight(8f), parentView.Frame.Width - GetScaledWidth(28f) - iconView.Frame.GetMaxX(), GetScaledHeight(16)))
+            UIView labelView2 = new UIView(new CGRect(iconView.Frame.GetMaxX() + iconPadding
+                , labelView.Frame.GetMaxY() + GetScaledHeight(8f), parentView.Frame.Width - GetScaledWidth(28f) - iconView.Frame.GetMaxX(), GetScaledHeight(16)))
             {
                 BackgroundColor = MyTNBColor.PaleGrey
             };
@@ -120,7 +124,8 @@ namespace myTNB
 
             UIButton smrButton = new UIButton(UIButtonType.Custom)
             {
-                Frame = new CGRect(BaseMarginWidth16, labelView2.Frame.GetMaxY() + BaseMarginHeight16, parentView.Frame.Width - (BaseMarginWidth16 * 2), buttonHeight)
+                Frame = new CGRect(BaseMarginWidth16, labelView2.Frame.GetMaxY() + BaseMarginHeight16
+                    , parentView.Frame.Width - (BaseMarginWidth16 * 2), buttonHeight)
             };
             smrButton.Layer.CornerRadius = 4;
             smrButton.Layer.BorderColor = MyTNBColor.SilverChalice.CGColor;

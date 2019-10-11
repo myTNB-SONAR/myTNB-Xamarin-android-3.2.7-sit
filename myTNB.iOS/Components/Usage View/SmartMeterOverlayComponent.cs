@@ -7,10 +7,10 @@ namespace myTNB
 {
     public class SmartMeterOverlayComponent : BaseComponent
     {
-        UIView _parentView, _contentView;
-        CustomUIView _btnView;
-        UILabel _title, _description;
-        nfloat _yPos;
+        private UIView _parentView, _contentView;
+        private CustomUIView _btnView;
+        private UILabel _title, _description;
+        private nfloat _yPos;
 
         public SmartMeterOverlayComponent(UIView parentView, nfloat yPos)
         {

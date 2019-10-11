@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using CoreGraphics;
-using Foundation;
 using myTNB.Model.Usage;
 using UIKit;
 
@@ -9,11 +8,11 @@ namespace myTNB
 {
     public class SmartMeterCardComponent : BaseComponent
     {
-        CustomUIView _containerView, _toolTipView;
-        UILabel _toolTipLabel;
-        UIView _parentView;
-        List<UsageCostItemModel> _usageCostModel;
-        RMkWhEnum _RMkWh;
+        private CustomUIView _containerView, _toolTipView;
+        private UILabel _toolTipLabel;
+        private UIView _parentView;
+        private List<UsageCostItemModel> _usageCostModel;
+        private RMkWhEnum _RMkWh;
 
         public SmartMeterCardComponent(UIView parentView, List<UsageCostItemModel> usageCostModel, RMkWhEnum RMkWh)
         {

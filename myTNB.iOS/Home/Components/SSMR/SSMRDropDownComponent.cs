@@ -6,14 +6,15 @@ using UIKit;
 
 namespace myTNB
 {
-    public class SSMRDropDownComponent
+    public class SSMRDropDownComponent : BaseComponent
     {
-        SSMRReadingHistoryViewController _controller;
+        private SSMRReadingHistoryViewController _controller;
         private readonly UIView _parentView;
+        private UIView _viewTitleBar;
+        private nfloat titleBarHeight = 24f;
+        private nfloat lastRowMaxY = 0f;
+
         public UIView _containerView, _dropDownContainer, _viewRightBtn;
-        UIView _viewTitleBar;
-        nfloat titleBarHeight = 24f;
-        nfloat lastRowMaxY = 0f;
 
         public SSMRDropDownComponent(SSMRReadingHistoryViewController controller, UIView parentView)
         {

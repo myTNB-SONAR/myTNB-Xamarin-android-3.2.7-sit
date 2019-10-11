@@ -7,25 +7,26 @@ using UIKit;
 
 namespace myTNB
 {
-    public class SSMRMeterCardComponent
+    public class SSMRMeterCardComponent : BaseComponent
     {
-        SSMRReadMeterViewController _controller;
-        SMRMROValidateRegisterDetailsInfoModel _model;
+        private SSMRReadMeterViewController _controller;
+        private SMRMROValidateRegisterDetailsInfoModel _model;
         private readonly UIView _parentView;
-        UIView _containerView, _prevReadingView, _viewBoxContainer, _iconView;
-        UILabel _errorLabel, _iconLabel, _prevReadingLabel;
-        nfloat containerRatio = 148.0f / 288.0f;
-        nfloat viewBoxContainerRatio = 40.0f / 256.0f;
-        nfloat prevReadingContainerRatio = 20.0f / 256.0f;
-        float imgHeight = 20.0f;
-        float imgWidth = 52.0f;
-        nfloat _paddingX = ScaleUtility.GetScaledWidth(16f);
-        nfloat _paddingY = ScaleUtility.GetScaledHeight(16f);
-        int boxMaxCount = 8;
-        nfloat _yLocation;
-        nfloat _iconYposOriginal;
-        nfloat _containerHeightOriginal;
+        private UIView _containerView, _prevReadingView, _viewBoxContainer, _iconView;
+        private UILabel _errorLabel, _iconLabel, _prevReadingLabel;
+        private nfloat containerRatio = 148.0f / 288.0f;
+        private nfloat viewBoxContainerRatio = 40.0f / 256.0f;
+        private nfloat prevReadingContainerRatio = 20.0f / 256.0f;
+        private float imgHeight = 20.0f;
+        private float imgWidth = 52.0f;
+        private nfloat _paddingX = ScaleUtility.GetScaledWidth(16f);
+        private nfloat _paddingY = ScaleUtility.GetScaledHeight(16f);
+        private int boxMaxCount = 8;
+        private nfloat _yLocation;
+        private nfloat _iconYposOriginal;
+        private nfloat _containerHeightOriginal;
         string _previousMeterReadingValue = string.Empty;
+
         public string _meterReadingValue = string.Empty;
         public bool IsActive;
 
