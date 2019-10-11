@@ -29,6 +29,7 @@ namespace myTNB.DataManager
         //Dashboard Home
         public List<HelpModel> HelpList = new List<HelpModel>();
         public List<ServiceItemModel> ServicesList = new List<ServiceItemModel>();
+        public List<DueAmountDataModel> ActiveAccountList = new List<DueAmountDataModel>();
 
         //Chart Related Data
         //Contains selected account from AccountRecordsList
@@ -176,6 +177,7 @@ namespace myTNB.DataManager
 
             HelpList = new List<HelpModel>();
             ServicesList = new List<ServiceItemModel>();
+            ActiveAccountList = new List<DueAmountDataModel>();
 
             SelectedAccount = new CustomerAccountRecordModel();
             BillingAccountDetails = new BillingAccountDetailsDataModel();

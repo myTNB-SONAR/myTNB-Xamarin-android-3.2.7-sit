@@ -12,7 +12,7 @@ namespace myTNB
     public class DashboardHomeDataSource : UITableViewSource
     {
         private DashboardHomeViewController _controller;
-        private AccountsCardContentViewController _accountsCardContentViewController;
+        private AccountListViewController _accountListViewController;
         private DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
         private RefreshScreenComponent _refreshScreenComponent;
         private ServicesResponseModel _services;
@@ -21,7 +21,7 @@ namespace myTNB
         private List<PromotionsModelV2> _promotions;
 
         public DashboardHomeDataSource(DashboardHomeViewController controller,
-            AccountsCardContentViewController accountsCardContentViewController,
+            AccountListViewController accountListViewController,
             ServicesResponseModel services,
             List<PromotionsModelV2> promotions,
             List<HelpModel> helpList,
@@ -31,7 +31,7 @@ namespace myTNB
             RefreshScreenComponent refreshScreenComponent)
         {
             _controller = controller;
-            _accountsCardContentViewController = accountsCardContentViewController;
+            _accountListViewController = accountListViewController;
             _services = services;
             _promotions = promotions;
             _helpList = helpList;
@@ -60,7 +60,7 @@ namespace myTNB
         {
             if (indexPath.Row == 0)
             {
-                return _showRefreshScreen ? _refreshScreenComponent?.GetViewHeight() ?? _dashboardHomeHelper.GetDefaulthHeightForRefreshScreen() : _dashboardHomeHelper.GetHeightForAccountCards();
+                return _showRefreshScreen ? _refreshScreenComponent?.GetViewHeight() ?? _dashboardHomeHelper.GetDefaulthHeightForRefreshScreen() : _dashboardHomeHelper.GetHeightForAccountList();
             }
             if (indexPath.Row == 1)
             {
@@ -89,7 +89,7 @@ namespace myTNB
                 }
                 else
                 {
-                    cell.AddViewsToContainers(_accountsCardContentViewController);
+                    cell.AddViewsToContainers(_accountListViewController);
                 }
                 return cell;
             }

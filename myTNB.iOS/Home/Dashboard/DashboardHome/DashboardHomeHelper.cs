@@ -104,6 +104,43 @@ namespace myTNB
             return groupedAccountsList;
         }
 
+        public List<DueAmountDataModel> GeAccountList(List<CustomerAccountRecordModel> acctsList)
+        {
+            var sortedAccounts = new List<CustomerAccountRecordModel>();
+
+            var results = acctsList.GroupBy(x => x.IsREAccount);
+            if (results != null && results?.Count() > 0)
+            {
+                var reAccts = results.Where(x => x.Key == true).SelectMany(y => y).OrderBy(o => o.accountNickName).ToList();
+                var normalAccts = results.Where(x => x.Key == false).SelectMany(y => y).OrderBy(o => o.accountNickName).ToList();
+                reAccts.AddRange(normalAccts);
+                sortedAccounts = reAccts;
+            }
+
+            List<DueAmountDataModel> acctList = new List<DueAmountDataModel>();
+            if (sortedAccounts != null &&
+                sortedAccounts.Count > 0)
+            {
+                for (int i = 0; i < sortedAccounts.Count; i++)
+                {
+                    var acctCached = DataManager.DataManager.SharedInstance.GetDue(sortedAccounts[i].accNum);
+                    DueAmountDataModel item = new DueAmountDataModel
+                    {
+                        accNum = sortedAccounts[i].accNum,
+                        accNickName = sortedAccounts[i].accountNickName,
+                        IsReAccount = sortedAccounts[i].IsREAccount,
+                        IsNormalAccount = sortedAccounts[i].IsNormalMeter,
+                        IsSSMR = sortedAccounts[i].IsSSMR,
+                        IsOwnedAccount = sortedAccounts[i].IsOwnedAccount,
+                        amountDue = acctCached != null ? acctCached.amountDue : 0.00,
+                        billDueDate = acctCached != null ? acctCached.billDueDate : string.Empty
+                    };
+                    acctList.Add(item);
+                }
+            }
+            return acctList;
+        }
+
         /// <summary>
         /// Returns the account model using account number
         /// </summary>
@@ -238,6 +275,24 @@ namespace myTNB
                 tableViewCellHeight = accountsList.Count * (ScaleUtility.GetScaledHeight(60f) + ScaleUtility.GetScaledHeight(8f));
             }
             return tableViewCellHeight;
+        }
+
+        public nfloat GetHeightForAccountList()
+        {
+            var activeAcctList = DataManager.DataManager.SharedInstance.ActiveAccountList;
+            nfloat footerHeight = AllAccountsAreVisible ? ScaleUtility.GetScaledHeight(85F) : ScaleUtility.GetScaledHeight(44F);
+            nfloat acctListTotalHeight = ScaleUtility.GetScaledHeight(61F) * activeAcctList.Count;
+            return acctListTotalHeight + DashboardHomeConstants.SearchViewHeight + ScaleUtility.GetScaledHeight(24F) + footerHeight;
+        }
+
+        public bool AllAccountsAreVisible
+        {
+            get
+            {
+                var allAcctList = DataManager.DataManager.SharedInstance.AccountRecordsList.d;
+                var activeAcctList = DataManager.DataManager.SharedInstance.ActiveAccountList;
+                return activeAcctList.Count == allAcctList.Count;
+            }
         }
 
         /// <summary>

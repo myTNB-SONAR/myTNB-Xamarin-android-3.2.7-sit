@@ -14,7 +14,7 @@ namespace myTNB
     {
         internal Dictionary<string, string> I18NDictionary;
         internal string PageName;
-        internal bool IsGradientRequired, IsFullGradient, IsReversedGradient;
+        internal bool IsGradientRequired, IsFullGradient, IsReversedGradient, IsNewGradientRequired;
         internal bool IsGradientImageRequired;
         internal UIImageView ImageViewGradientImage;
         internal UIView _statusBarView, _customNavBar;
@@ -43,6 +43,10 @@ namespace myTNB
             if (IsGradientRequired)
             {
                 CreateBackgroundGradient();
+            }
+            if (IsNewGradientRequired)
+            {
+                CreateNewBackgroundGradient();
             }
             if (IsGradientImageRequired)
             {
@@ -315,6 +319,20 @@ namespace myTNB
             View.AddSubview(ImageViewGradientImage);
         }
 
+        private void CreateNewBackgroundGradient()
+        {
+            UIView gradientView = new UIView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height));
+            CGColor startColor = MyTNBColor.LightIndigo.CGColor;
+            CGColor endColor = MyTNBColor.ClearBlue.CGColor;
+            CAGradientLayer gradientLayer = new CAGradientLayer
+            {
+                Colors = new[] { startColor, endColor }
+            };
+            gradientLayer.Locations = new NSNumber[] { 0, 1 };
+            gradientLayer.Frame = gradientView.Bounds;
+            gradientView.Layer.InsertSublayer(gradientLayer, 0);
+            View.AddSubview(gradientView);
+        }
         #endregion
         #region Customize View
         public virtual void SetStatusBarNoOverlap()

@@ -897,10 +897,6 @@
     <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\icDisplaySmartMeter%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%403x-1.png" />
-    <ImageAsset Include="Assets.xcassets\Search-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Search-Icon.imageset\Search-Icon.png" />
-    <ImageAsset Include="Assets.xcassets\Search-Icon.imageset\Search-Icon2x.png" />
-    <ImageAsset Include="Assets.xcassets\Search-Icon.imageset\Search-Icon3x.png" />
     <ImageAsset Include="Assets.xcassets\Help-Background-1.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Help-Background-2.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Help-Background-3.imageset\Contents.json" />
@@ -988,10 +984,6 @@
     <ImageAsset Include="Assets.xcassets\Search-Icon-Blue.imageset\Search-Icon-Blue.png" />
     <ImageAsset Include="Assets.xcassets\Search-Icon-Blue.imageset\Search-Icon-Blue%402x.png" />
     <ImageAsset Include="Assets.xcassets\Search-Icon-Blue.imageset\Search-Icon-Blue%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\Add-Icon-Blue.png" />
-    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\Add-Icon-Blue%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\Add-Icon-Blue%403x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info-Blue.imageset\group%402x.png" />
@@ -1214,6 +1206,27 @@
     <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\singlePhase%403x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\multiPhase%402x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\multiPhase%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Down-White-Small.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Down-White-Small.imageset\Arrow-Down-White-Small%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Down-White-Small.imageset\Arrow-Down-White-Small%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Up-White-Small.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Up-White-Small.imageset\Arrow-Up-White-Small%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Up-White-Small.imageset\Arrow-Up-White-Small%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Rearrange-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Rearrange-Icon.imageset\Rearrange-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Rearrange-Icon.imageset\Rearrange-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\RE-Leaf.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\RE-Leaf.imageset\RE-Leaf%402x.png" />
+    <ImageAsset Include="Assets.xcassets\RE-Leaf.imageset\RE-Leaf%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Icon-White.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Search-Icon-White.imageset\Search-Icon-White%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Icon-White.imageset\Search-Icon-White%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-White.imageset\Add-Icon-Blue.png" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-White.imageset\Add-Icon-Blue%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-White.imageset\Add-Icon-Blue%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-White.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-White.imageset\Add-Account-Icon-White%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Add-Account-Icon-White.imageset\Add-Account-Icon-White%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1500,7 +1513,6 @@
     <Folder Include="Assets.xcassets\Accounts-RE-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Accounts-Normal-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\" />
-    <Folder Include="Assets.xcassets\Search-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Help-Background-1.imageset\" />
     <Folder Include="Assets.xcassets\Help-Background-2.imageset\" />
     <Folder Include="Assets.xcassets\Help-Background-3.imageset\" />
@@ -1567,7 +1579,6 @@
     <Folder Include="Assets.xcassets\Search-Cancel-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Add-Icon-Blue.imageset\" />
     <Folder Include="Assets.xcassets\Search-Icon-Blue.imageset\" />
-    <Folder Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\" />
     <Folder Include="Assets.xcassets\Add-Account-Icon-Blue.imageset\" />
     <Folder Include="Assets.xcassets\IC-Info-Blue.imageset\" />
     <Folder Include="Assets.xcassets\SSMR-Reading-History-Banner.imageset\" />
@@ -1641,6 +1652,13 @@
     <Folder Include="Assets.xcassets\Empty-Usage-Icon.imageset\" />
     <Folder Include="Model\GetIsSmrApplyAllowed\" />
     <Folder Include="Assets.xcassets\SMR-ToolTip-BG2.imageset\" />
+    <Folder Include="Home\Dashboard\DashboardHome\Account List\" />
+    <Folder Include="Assets.xcassets\Arrow-Down-White-Small.imageset\" />
+    <Folder Include="Assets.xcassets\Arrow-Up-White-Small.imageset\" />
+    <Folder Include="Assets.xcassets\Rearrange-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\RE-Leaf.imageset\" />
+    <Folder Include="Assets.xcassets\Search-Icon-White.imageset\" />
+    <Folder Include="Assets.xcassets\Add-Account-Icon-White.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2483,6 +2501,12 @@
     <Compile Include="Components\Table View\NoDataViewCell.cs" />
     <Compile Include="Components\Usage View\EmptyUsageComponent.cs" />
     <Compile Include="Model\GetIsSmrApplyAllowed\GetIsSmrApplyAllowedResponse.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Account List\AccountListViewController.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Account List\AccountListViewController.designer.cs">
+      <DependentUpon>AccountListViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Home\Dashboard\DashboardHome\Account List\AccountListDataSource.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Account List\AccountListCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

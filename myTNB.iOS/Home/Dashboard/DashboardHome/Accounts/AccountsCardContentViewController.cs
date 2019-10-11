@@ -143,7 +143,7 @@ namespace myTNB
 
             _addAccountIcon = new UIImageView(new CGRect(BaseMarginWidth12, GetYLocationToCenterObject(iconWidth, _addContainerView), iconWidth, iconWidth))
             {
-                Image = UIImage.FromBundle(DashboardHomeConstants.Img_AddAcctIconBlue),
+                Image = UIImage.FromBundle(DashboardHomeConstants.Img_AddAcctIconWhite),
             };
             _addContainerView.AddSubview(_addAccountIcon);
 

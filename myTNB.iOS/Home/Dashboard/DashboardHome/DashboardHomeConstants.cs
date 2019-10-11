@@ -6,7 +6,7 @@ namespace myTNB
     {
         //Card
         public static int MaxAccountPerCard = 5;
-        public static nfloat SearchViewHeight = ScaleUtility.GetScaledHeight(24f);
+        public static nfloat SearchViewHeight = ScaleUtility.GetScaledHeight(37f);
         public static nfloat PageControlHeight = ScaleUtility.GetScaledHeight(20f);
 
         //Cell
@@ -14,6 +14,7 @@ namespace myTNB
         public static string Cell_Help = "helpTableViewCell";
         public static string Cell_Services = "servicesTableViewCell";
         public static string Cell_Promotion = "promotionTableViewCell";
+        public static string Cell_AccountList = "accountListTableViewCell";
 
         //I18N Keys
         public static string I18N_Afternoon = "greeting_afternoon";
@@ -40,7 +41,7 @@ namespace myTNB
         public static string Img_AddIconGrey = "Add-Account-Icon-Grey";
         public static string Img_SearchIconBlue = "Search-Icon-Blue";
         public static string Img_SearchCancelIcon = "Search-Cancel-Icon";
-        public static string Img_AddAcctIconBlue = "Add-Account-Icon-Blue";
+        public static string Img_AddAcctIconWhite = "Add-Account-Icon-White";
         public static string Img_SMIcon = "Accounts-Smart-Meter-Icon";
         public static string Img_REIcon = "Accounts-RE-Icon";
         public static string Img_SMRIcon = "Accounts-SMR-Icon";

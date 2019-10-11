@@ -12,11 +12,11 @@ namespace myTNB
             SelectionStyle = UITableViewCellSelectionStyle.None;
         }
 
-        public void AddViewsToContainers(UIViewController accountsCardViewController)
+        public void AddViewsToContainers(UIViewController accountListViewController)
         {
-            if (accountsCardViewController != null)
+            if (accountListViewController != null)
             {
-                AddSubview(accountsCardViewController.View);
+                AddSubview(accountListViewController.View);
             }
         }
 
