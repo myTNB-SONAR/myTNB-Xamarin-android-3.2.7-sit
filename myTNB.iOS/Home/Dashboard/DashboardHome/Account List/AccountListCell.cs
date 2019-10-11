@@ -61,7 +61,7 @@ namespace myTNB
             AddSubview(lineView);
         }
 
-        public void SetModel(DueAmountDataModel model)
+        public void SetAccountCell(DueAmountDataModel model)
         {
             if (model != null)
             {

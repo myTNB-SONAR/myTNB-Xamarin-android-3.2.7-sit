@@ -19,11 +19,13 @@ namespace myTNB
         private DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
         private List<DueAmountDataModel> _accountList = new List<DueAmountDataModel>();
         private RefreshScreenInfoModel _refreshScreenInfoModel = new RefreshScreenInfoModel();
+        private TextFieldHelper _textFieldHelper = new TextFieldHelper();
 
-        private UIView _parentView, _headerView;
+        private UIView _parentView, _headerView, _addAccountView, _searchView;
         private CustomUIView _footerView;
         private UILabel _headerTitle;
         private UITableView _accountListTableView;
+        private UITextField _textFieldSearch;
 
         public override void ViewDidLayoutSubviews()
         {
@@ -35,17 +37,21 @@ namespace myTNB
         {
             PageName = DashboardHomeConstants.PageName;
             base.ViewDidLoad();
-            PrepareAccounts();
             SetParentView();
             SetHeaderView();
+            SetAddAccountView();
             AddTableView();
-            SetFooterView();
+            if (_dashboardHomeHelper.HasMoreThanThreeAccts)
+            {
+                SetSearchView();
+                SetFooterView();
+            }
+            PrepareAccounts();
         }
 
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            ReloadTableView();
         }
 
         #region Initialization Methods
@@ -69,89 +75,6 @@ namespace myTNB
             };
             _parentView.AddSubview(_headerView);
 
-            _headerTitle = new UILabel(new CGRect(BaseMarginWidth16, 0, GetScaledWidth(84f), GetScaledHeight(20f)))
-            {
-                Font = TNBFont.MuseoSans_14_500,
-                TextColor = UIColor.White,
-                Text = GetI18NValue(DashboardHomeConstants.I18N_MyAccts),
-                BackgroundColor = UIColor.Clear
-            };
-            _headerView.AddSubview(_headerTitle);
-
-            CustomUIView searchView = new CustomUIView(new CGRect(0, GetScaledHeight(2F), 0, GetScaledHeight(16F)))
-            {
-                BackgroundColor = UIColor.Clear
-            };
-            searchView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-            {
-                OnSearchAction();
-            }));
-            _headerView.AddSubview(searchView);
-
-            UIImageView searchIcon = new UIImageView(new CGRect(0, 0, GetScaledWidth(16F), GetScaledHeight(16F)))
-            {
-                Image = UIImage.FromBundle("Search-Icon-White")
-            };
-            searchView.AddSubview(searchIcon);
-
-            UILabel searchLbl = new UILabel(new CGRect(0, 0, 0, GetScaledHeight(16F)))
-            {
-                Font = TNBFont.MuseoSans_12_500,
-                TextColor = UIColor.White,
-                Text = GetI18NValue(DashboardHomeConstants.I18N_Search),
-                BackgroundColor = UIColor.Clear
-            };
-            searchView.AddSubview(searchLbl);
-
-            CGSize searchSize = searchLbl.SizeThatFits(new CGSize(1000F, 1000F));
-            ViewHelper.AdjustFrameSetWidth(searchLbl, searchSize.Width);
-
-            ViewHelper.AdjustFrameSetWidth(searchView, GetScaledWidth(12F) + searchIcon.Frame.Width + GetScaledWidth(4F) + searchLbl.Frame.Width);
-            ViewHelper.AdjustFrameSetX(searchView, _headerView.Frame.Width - searchView.Frame.Width - GetScaledWidth(16F));
-
-            ViewHelper.AdjustFrameSetX(searchLbl, searchView.Frame.Width - searchLbl.Frame.Width);
-            ViewHelper.AdjustFrameSetX(searchIcon, searchLbl.Frame.GetMinX() - GetScaledWidth(4F) - searchIcon.Frame.Width);
-
-            UIView pipeView = new UIView(new CGRect(searchView.Frame.GetMinX() - GetScaledWidth(1F), 0, GetScaledWidth(1F), GetScaledHeight(20F)))
-            {
-                BackgroundColor = UIColor.FromWhiteAlpha(1, 0.2F)
-            };
-            _headerView.AddSubview(pipeView);
-
-            CustomUIView addView = new CustomUIView(new CGRect(0, GetScaledHeight(2F), 0, GetScaledHeight(16F)))
-            {
-                BackgroundColor = UIColor.Clear
-            };
-            addView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-            {
-                OnAddAccountAction();
-            }));
-            _headerView.AddSubview(addView);
-
-            UIImageView addIcon = new UIImageView(new CGRect(0, 0, GetScaledWidth(16F), GetScaledHeight(16F)))
-            {
-                Image = UIImage.FromBundle(DashboardHomeConstants.Img_AddAcctIconWhite)
-            };
-            addView.AddSubview(addIcon);
-
-            UILabel addLbl = new UILabel(new CGRect(0, 0, 0, GetScaledHeight(16F)))
-            {
-                Font = TNBFont.MuseoSans_12_500,
-                TextColor = UIColor.White,
-                Text = GetI18NValue(DashboardHomeConstants.I18N_Add),
-                BackgroundColor = UIColor.Clear
-            };
-            addView.AddSubview(addLbl);
-
-            CGSize addSize = addLbl.SizeThatFits(new CGSize(1000F, 1000F));
-            ViewHelper.AdjustFrameSetWidth(addLbl, addSize.Width);
-
-            ViewHelper.AdjustFrameSetWidth(addView, addIcon.Frame.Width + GetScaledWidth(4F) + addLbl.Frame.Width + GetScaledWidth(12F));
-            ViewHelper.AdjustFrameSetX(addView, pipeView.Frame.GetMinX() - addView.Frame.Width);
-
-            ViewHelper.AdjustFrameSetX(addIcon, 0);
-            ViewHelper.AdjustFrameSetX(addLbl, addIcon.Frame.GetMaxX() + GetScaledWidth(4F));
-
             UIView lineView = new UIView(new CGRect(0, _headerView.Frame.Height - GetScaledHeight(1F), ViewWidth, GetScaledHeight(1F)))
             {
                 BackgroundColor = UIColor.FromWhiteAlpha(1, 0.2F)
@@ -159,8 +82,157 @@ namespace myTNB
             _headerView.AddSubview(lineView);
         }
 
+        private void SetAddAccountView()
+        {
+            _addAccountView = new UIView(_headerView.Bounds)
+            {
+                BackgroundColor = UIColor.Clear
+            };
+            _headerView.AddSubview(_addAccountView);
+
+            _headerTitle = new UILabel(new CGRect(BaseMarginWidth16, 0, GetScaledWidth(84f), GetScaledHeight(20f)))
+            {
+                Font = TNBFont.MuseoSans_14_500,
+                TextColor = UIColor.White,
+                Text = GetI18NValue(DashboardHomeConstants.I18N_MyAccts),
+                BackgroundColor = UIColor.Clear
+            };
+            _addAccountView.AddSubview(_headerTitle);
+            if (_dashboardHomeHelper.HasAccounts)
+            {
+                CustomUIView searchView = new CustomUIView(new CGRect(0, GetScaledHeight(2F), 0, GetScaledHeight(16F)))
+                {
+                    BackgroundColor = UIColor.Clear,
+                    Hidden = !_dashboardHomeHelper.HasMoreThanThreeAccts
+                };
+                searchView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    OnSearchAction();
+                }));
+                _addAccountView.AddSubview(searchView);
+
+                UIImageView searchIcon = new UIImageView(new CGRect(0, 0, GetScaledWidth(16F), GetScaledHeight(16F)))
+                {
+                    Image = UIImage.FromBundle("Search-Icon-White")
+                };
+                searchView.AddSubview(searchIcon);
+
+                UILabel searchLbl = new UILabel(new CGRect(0, 0, 0, GetScaledHeight(16F)))
+                {
+                    Font = TNBFont.MuseoSans_12_500,
+                    TextColor = UIColor.White,
+                    Text = GetI18NValue(DashboardHomeConstants.I18N_Search),
+                    BackgroundColor = UIColor.Clear
+                };
+                searchView.AddSubview(searchLbl);
+
+                CGSize searchSize = searchLbl.SizeThatFits(new CGSize(1000F, 1000F));
+                ViewHelper.AdjustFrameSetWidth(searchLbl, searchSize.Width);
+
+                ViewHelper.AdjustFrameSetWidth(searchView, GetScaledWidth(12F) + searchIcon.Frame.Width + GetScaledWidth(4F) + searchLbl.Frame.Width);
+                ViewHelper.AdjustFrameSetX(searchView, _addAccountView.Frame.Width - searchView.Frame.Width - GetScaledWidth(16F));
+
+                ViewHelper.AdjustFrameSetX(searchLbl, searchView.Frame.Width - searchLbl.Frame.Width);
+                ViewHelper.AdjustFrameSetX(searchIcon, searchLbl.Frame.GetMinX() - GetScaledWidth(4F) - searchIcon.Frame.Width);
+
+                UIView pipeView = new UIView(new CGRect(searchView.Frame.GetMinX() - GetScaledWidth(1F), 0, GetScaledWidth(1F), GetScaledHeight(20F)))
+                {
+                    BackgroundColor = UIColor.FromWhiteAlpha(1, 0.2F),
+                    Hidden = !_dashboardHomeHelper.HasMoreThanThreeAccts
+                };
+                _addAccountView.AddSubview(pipeView);
+
+                CustomUIView addView = new CustomUIView(new CGRect(0, GetScaledHeight(2F), 0, GetScaledHeight(16F)))
+                {
+                    BackgroundColor = UIColor.Clear
+                };
+                addView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                {
+                    OnAddAccountAction();
+                }));
+                _addAccountView.AddSubview(addView);
+
+                UIImageView addIcon = new UIImageView(new CGRect(0, 0, GetScaledWidth(16F), GetScaledHeight(16F)))
+                {
+                    Image = UIImage.FromBundle(DashboardHomeConstants.Img_AddAcctIconWhite)
+                };
+                addView.AddSubview(addIcon);
+
+                UILabel addLbl = new UILabel(new CGRect(0, 0, 0, GetScaledHeight(16F)))
+                {
+                    Font = TNBFont.MuseoSans_12_500,
+                    TextColor = UIColor.White,
+                    Text = GetI18NValue(DashboardHomeConstants.I18N_Add),
+                    BackgroundColor = UIColor.Clear
+                };
+                addView.AddSubview(addLbl);
+
+                CGSize addSize = addLbl.SizeThatFits(new CGSize(1000F, 1000F));
+                ViewHelper.AdjustFrameSetWidth(addLbl, addSize.Width);
+
+                ViewHelper.AdjustFrameSetWidth(addView, addIcon.Frame.Width + GetScaledWidth(4F) + addLbl.Frame.Width + GetScaledWidth(_dashboardHomeHelper.HasMoreThanThreeAccts ? 12F : 0F));
+                ViewHelper.AdjustFrameSetX(addView, _dashboardHomeHelper.HasMoreThanThreeAccts ? pipeView.Frame.GetMinX() - addView.Frame.Width : _headerView.Frame.Width - addView.Frame.Width - BaseMarginWidth16);
+
+                ViewHelper.AdjustFrameSetX(addIcon, 0);
+                ViewHelper.AdjustFrameSetX(addLbl, addIcon.Frame.GetMaxX() + GetScaledWidth(4F));
+            }
+        }
+
+        private void SetSearchView()
+        {
+            _searchView = new UIView(_headerView.Bounds)
+            {
+                BackgroundColor = UIColor.Clear,
+                Hidden = true
+            };
+            _headerView.AddSubview(_searchView);
+
+            UIImageView searchIcon = new UIImageView(new CGRect(BaseMarginWidth16, 0, GetScaledWidth(16F), GetScaledHeight(16F)))
+            {
+                Image = UIImage.FromBundle("Search-Active-Icon-White")
+            };
+            _searchView.AddSubview(searchIcon);
+
+            _textFieldSearch = new UITextField(new CGRect(searchIcon.Frame.GetMaxX() + GetScaledWidth(8F), 0, _searchView.Frame.Width - (BaseMarginWidth16 * 2) - (searchIcon.Frame.GetMaxX() + GetScaledWidth(16F)), GetScaledHeight(16F)))
+            {
+                Font = TNBFont.MuseoSans_12_500,
+                TextColor = UIColor.White,
+                AttributedPlaceholder = new NSAttributedString(
+                   GetI18NValue(DashboardHomeConstants.I18N_SearchPlaceholder)
+                   , font: TNBFont.MuseoSans_12_500
+                   , foregroundColor: UIColor.FromWhiteAlpha(1, 0.6F)
+                   , strokeWidth: 0
+               ),
+                BackgroundColor = UIColor.Clear
+            };
+            _textFieldHelper.SetKeyboard(_textFieldSearch);
+            _textFieldSearch.ReturnKeyType = UIReturnKeyType.Search;
+            SetTextFieldEvents(_textFieldSearch);
+            _searchView.AddSubview(_textFieldSearch);
+
+            UIImageView cancelIcon = new UIImageView(new CGRect(_searchView.Frame.Width - GetScaledWidth(16F) - BaseMarginWidth16, 0, GetScaledWidth(16F), GetScaledHeight(16F)))
+            {
+                Image = UIImage.FromBundle(DashboardHomeConstants.Img_SearchCancelIcon),
+                UserInteractionEnabled = true
+            };
+            cancelIcon.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                SetViewForActiveSearch(false);
+            }));
+            _searchView.AddSubview(cancelIcon);
+
+            UIView lineView = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(_textFieldSearch.Frame, 4F), _searchView.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(1F)))
+            {
+                BackgroundColor = MyTNBColor.VeryLightPinkThree
+            };
+            _searchView.AddSubview(lineView);
+        }
+
         private void SetFooterView(bool allAcctsAreVisible = false)
         {
+            if (!_dashboardHomeHelper.HasMoreThanThreeAccts)
+                return;
+
             if (_footerView != null)
             {
                 _footerView.RemoveFromSuperview();
@@ -280,42 +352,85 @@ namespace myTNB
             { BackgroundColor = UIColor.Clear, ScrollEnabled = false };
             _accountListTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             _accountListTableView.RegisterClassForCellReuse(typeof(AccountListCell), DashboardHomeConstants.Cell_AccountList);
+            _accountListTableView.RegisterClassForCellReuse(typeof(AccountListEmptyCell), DashboardHomeConstants.Cell_AccountListEmpty);
             _parentView.AddSubview(_accountListTableView);
         }
 
-        private void ReloadTableView()
+        private void ReloadTableView(bool hasEmptyAcct = false)
         {
             if (_accountListTableView != null)
             {
-                _accountListTableView.Source = new AccountListDataSource(DataManager.DataManager.SharedInstance.ActiveAccountList, GetI18NValue);
+                _accountListTableView.Source = new AccountListDataSource(DataManager.DataManager.SharedInstance.ActiveAccountList,
+                    GetI18NValue,
+                    _homeViewController.OnAccountCardSelected,
+                    _homeViewController.OnAddAccountAction,
+                    hasEmptyAcct);
                 _accountListTableView.ReloadData();
             }
+        }
+        #endregion
+
+        #region Search Methods
+        private void SetViewForActiveSearch(bool isSearchMode)
+        {
+            if (isSearchMode)
+            {
+                _textFieldSearch.BecomeFirstResponder();
+            }
+            else
+            {
+                _textFieldSearch.ResignFirstResponder();
+            }
+            _addAccountView.Hidden = isSearchMode;
+            _searchView.Hidden = !isSearchMode;
+        }
+
+        private void SetTextFieldEvents(UITextField textField)
+        {
+            textField.EditingChanged += (sender, e) =>
+            {
+                //SearchFromAccountList(textField.Text);
+            };
+            textField.ShouldReturn = (sender) =>
+            {
+                sender.ResignFirstResponder();
+                return false;
+            };
         }
         #endregion
 
         #region API/Logic Methods
         private void PrepareAccounts()
         {
-            var activeAccountList = DataManager.DataManager.SharedInstance.ActiveAccountList;
-            List<string> acctNumList = new List<string>();
-            if (activeAccountList.Count > 0)
+            var accountList = DataManager.DataManager.SharedInstance.AccountRecordsList.d;
+            if (accountList != null && accountList.Count > 0)
             {
-                var newBatchList = GetBatchAccountList(GetInactiveAccountList(activeAccountList), ref acctNumList);
-                if (newBatchList != null &&
-                    newBatchList.Count > 0)
+                var activeAccountList = DataManager.DataManager.SharedInstance.ActiveAccountList;
+                List<string> acctNumList = new List<string>();
+                if (activeAccountList.Count > 0)
                 {
-                    DataManager.DataManager.SharedInstance.ActiveAccountList.AddRange(newBatchList);
+                    var newBatchList = GetBatchAccountList(GetInactiveAccountList(activeAccountList), ref acctNumList);
+                    if (newBatchList != null &&
+                        newBatchList.Count > 0)
+                    {
+                        DataManager.DataManager.SharedInstance.ActiveAccountList.AddRange(newBatchList);
+                    }
+                }
+                else
+                {
+                    _accountList = _dashboardHomeHelper.GeAccountList(accountList);
+                    DataManager.DataManager.SharedInstance.ActiveAccountList = new List<DueAmountDataModel>();
+                    DataManager.DataManager.SharedInstance.ActiveAccountList = GetBatchAccountList(_accountList, ref acctNumList, true);
+                }
+                if (acctNumList.Count > 0)
+                {
+                    GetAccountsBillSummary(acctNumList);
+                    GetAccountsSMRStatus(acctNumList);
                 }
             }
             else
             {
-                _accountList = _dashboardHomeHelper.GeAccountList(DataManager.DataManager.SharedInstance.AccountRecordsList.d);
-                DataManager.DataManager.SharedInstance.ActiveAccountList = new List<DueAmountDataModel>();
-                DataManager.DataManager.SharedInstance.ActiveAccountList = GetBatchAccountList(_accountList, ref acctNumList, true);
-            }
-            if (acctNumList.Count > 0)
-            {
-                GetAccountsBillSummary(acctNumList);
+                ReloadTableView(true);
             }
         }
 
@@ -389,6 +504,24 @@ namespace myTNB
             }
         }
 
+        private void UpdateIsSSMRForDisplayedAccounts(List<SMRAccountStatusModel> statusDetails)
+        {
+            var activeAccountList = DataManager.DataManager.SharedInstance.ActiveAccountList;
+            foreach (var status in statusDetails)
+            {
+                foreach (var account in activeAccountList)
+                {
+                    if (account.accNum == status.ContractAccount)
+                    {
+                        var item = account;
+                        item.UpdateIsSSMRValue(status);
+                        DataManager.DataManager.SharedInstance.UpdateDueIsSSMR(account.accNum, status.IsTaggedSMR);
+                        break;
+                    }
+                }
+            }
+        }
+
         private void GetAccountsBillSummary(List<string> accounts)
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
@@ -431,6 +564,38 @@ namespace myTNB
             });
         }
 
+        private void GetAccountsSMRStatus(List<string> accounts)
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        InvokeInBackground(async () =>
+                        {
+                            SMRAccountStatusResponseModel response = await ServiceCall.GetAccountsSMRStatus(accounts);
+                            InvokeOnMainThread(() =>
+                            {
+                                if (response != null &&
+                                    response.d != null &&
+                                    response.d.IsSuccess &&
+                                    response.d.data != null &&
+                                    response.d.data.Count > 0)
+                                {
+                                    UpdateIsSSMRForDisplayedAccounts(response.d.data);
+                                }
+                            });
+                        });
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
         private void ReloadViews()
         {
             ReloadTableView();
@@ -455,7 +620,7 @@ namespace myTNB
         }
         private void OnSearchAction()
         {
-            Debug.WriteLine("OnSearchAction()");
+            SetViewForActiveSearch(true);
         }
         private void OnShowMoreAction()
         {
@@ -463,7 +628,6 @@ namespace myTNB
         }
         private void OnShowLessAction()
         {
-            Debug.WriteLine("OnShowLessAction()");
             DataManager.DataManager.SharedInstance.ActiveAccountList = new List<DueAmountDataModel>();
             PrepareAccounts();
         }

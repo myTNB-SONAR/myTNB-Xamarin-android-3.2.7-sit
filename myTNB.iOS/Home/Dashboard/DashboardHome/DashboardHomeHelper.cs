@@ -279,10 +279,19 @@ namespace myTNB
 
         public nfloat GetHeightForAccountList()
         {
-            var activeAcctList = DataManager.DataManager.SharedInstance.ActiveAccountList;
-            nfloat footerHeight = AllAccountsAreVisible ? ScaleUtility.GetScaledHeight(85F) : ScaleUtility.GetScaledHeight(44F);
-            nfloat acctListTotalHeight = ScaleUtility.GetScaledHeight(61F) * activeAcctList.Count;
-            return acctListTotalHeight + DashboardHomeConstants.SearchViewHeight + ScaleUtility.GetScaledHeight(24F) + footerHeight;
+            nfloat totalCellHeight;
+            if (HasAccounts)
+            {
+                var activeAcctList = DataManager.DataManager.SharedInstance.ActiveAccountList;
+                nfloat footerHeight = HasMoreThanThreeAccts ? AllAccountsAreVisible ? ScaleUtility.GetScaledHeight(85F) : ScaleUtility.GetScaledHeight(44F) : ScaleUtility.GetScaledHeight(16F);
+                nfloat acctListTotalHeight = ScaleUtility.GetScaledHeight(61F) * activeAcctList.Count;
+                totalCellHeight = acctListTotalHeight + DashboardHomeConstants.SearchViewHeight + ScaleUtility.GetScaledHeight(24F) + footerHeight;
+            }
+            else
+            {
+                totalCellHeight = DashboardHomeConstants.SearchViewHeight + ScaleUtility.GetScaledHeight(24F) + ScaleUtility.GetScaledHeight(101F);
+            }
+            return totalCellHeight;
         }
 
         public bool AllAccountsAreVisible
@@ -292,6 +301,22 @@ namespace myTNB
                 var allAcctList = DataManager.DataManager.SharedInstance.AccountRecordsList.d;
                 var activeAcctList = DataManager.DataManager.SharedInstance.ActiveAccountList;
                 return activeAcctList.Count == allAcctList.Count;
+            }
+        }
+
+        public bool HasAccounts
+        {
+            get
+            {
+                return DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0;
+            }
+        }
+
+        public bool HasMoreThanThreeAccts
+        {
+            get
+            {
+                return DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 3;
             }
         }
 

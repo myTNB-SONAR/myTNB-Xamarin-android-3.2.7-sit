@@ -552,9 +552,9 @@ namespace myTNB
                 _isRefreshScreenEnabled = isFail;
                 if (_isRefreshScreenEnabled)
                 {
-                    CGRect frame = ImageViewGradientImage.Frame;
-                    frame.Y = _addtlYValue;
-                    ImageViewGradientImage.Frame = frame;
+                    //CGRect frame = ImageViewGradientImage.Frame;
+                    //frame.Y = _addtlYValue;
+                    //ImageViewGradientImage.Frame = frame;
 
                     var bcrm = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
                     var bcrmMsg = bcrm?.DowntimeMessage ?? "Error_BCRMMessage".Translate();
@@ -594,9 +594,9 @@ namespace myTNB
                 }
             }
             _isRefreshScreenEnabled = false;
-            CGRect frame = ImageViewGradientImage.Frame;
-            frame.Y = 0;
-            ImageViewGradientImage.Frame = frame;
+            //CGRect frame = ImageViewGradientImage.Frame;
+            //frame.Y = 0;
+            //ImageViewGradientImage.Frame = frame;
             SetAccountListViewController();
             OnUpdateCell(DashboardHomeConstants.CellIndex_Accounts);
         }

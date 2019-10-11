@@ -977,9 +977,6 @@
     <ImageAsset Include="Assets.xcassets\IC-Header-Dropdown.imageset\icHeaderDropdown12Px%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Header-Dropdown.imageset\icHeaderDropdown12Px%403x.png" />
     <ImageAsset Include="Assets.xcassets\Search-Cancel-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Search-Cancel-Icon.imageset\Search-Cancel-Icon.png" />
-    <ImageAsset Include="Assets.xcassets\Search-Cancel-Icon.imageset\Search-Cancel-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Search-Cancel-Icon.imageset\Search-Cancel-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\Search-Icon-Blue.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Search-Icon-Blue.imageset\Search-Icon-Blue.png" />
     <ImageAsset Include="Assets.xcassets\Search-Icon-Blue.imageset\Search-Icon-Blue%402x.png" />
@@ -1227,6 +1224,11 @@
     <ImageAsset Include="Assets.xcassets\Add-Account-Icon-White.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Add-Account-Icon-White.imageset\Add-Account-Icon-White%402x.png" />
     <ImageAsset Include="Assets.xcassets\Add-Account-Icon-White.imageset\Add-Account-Icon-White%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Cancel-Icon.imageset\Search-Cancel-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Cancel-Icon.imageset\Search-Cancel-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Active-Icon-White.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Search-Active-Icon-White.imageset\Search-Active-Icon-White%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Search-Active-Icon-White.imageset\Search-Active-Icon-White%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1659,6 +1661,7 @@
     <Folder Include="Assets.xcassets\RE-Leaf.imageset\" />
     <Folder Include="Assets.xcassets\Search-Icon-White.imageset\" />
     <Folder Include="Assets.xcassets\Add-Account-Icon-White.imageset\" />
+    <Folder Include="Assets.xcassets\Search-Active-Icon-White.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2507,6 +2510,7 @@
     </Compile>
     <Compile Include="Home\Dashboard\DashboardHome\Account List\AccountListDataSource.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\Account List\AccountListCell.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Account List\AccountListEmptyCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

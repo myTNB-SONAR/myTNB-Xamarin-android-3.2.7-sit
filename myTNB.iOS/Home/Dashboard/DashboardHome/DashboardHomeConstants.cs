@@ -15,6 +15,7 @@ namespace myTNB
         public static string Cell_Services = "servicesTableViewCell";
         public static string Cell_Promotion = "promotionTableViewCell";
         public static string Cell_AccountList = "accountListTableViewCell";
+        public static string Cell_AccountListEmpty = "accountListEmptyTableViewCell";
 
         //I18N Keys
         public static string I18N_Afternoon = "greeting_afternoon";
