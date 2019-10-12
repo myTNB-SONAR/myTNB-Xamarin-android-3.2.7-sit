@@ -141,8 +141,11 @@ namespace myTNB
             UpdateGreeting(GetGreeting());
             if (DataManager.DataManager.SharedInstance.SummaryNeedsRefresh)
             {
-                SetAccountListViewController();
-                OnUpdateCell(DashboardHomeConstants.CellIndex_Accounts);
+                if (_accountListViewController != null)
+                {
+                    _accountListViewController.PrepareAccountList();
+                }
+                DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = false;
             }
             //SSMRAccounts.SetEligibleAccounts();
             OnLoadHomeData();
@@ -193,6 +196,10 @@ namespace myTNB
         private void OnEnterForeground(NSNotification notification)
         {
             Debug.WriteLine("On Enter Foreground");
+            if (_accountListViewController != null)
+            {
+                _accountListViewController.PrepareAccountList();
+            }
             OnLoadHomeData();
         }
 

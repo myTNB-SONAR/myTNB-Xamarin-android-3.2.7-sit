@@ -38,6 +38,18 @@ namespace myTNB
             PageName = DashboardHomeConstants.PageName;
             base.ViewDidLoad();
             SetParentView();
+            PrepareAccountList();
+        }
+
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+        }
+
+        #region Initialization Methods
+        public void PrepareAccountList()
+        {
+            DataManager.DataManager.SharedInstance.ActiveAccountList = new List<DueAmountDataModel>();
             SetHeaderView();
             SetAddAccountView();
             AddTableView();
@@ -49,12 +61,6 @@ namespace myTNB
             PrepareAccounts();
         }
 
-        public override void ViewWillAppear(bool animated)
-        {
-            base.ViewWillAppear(animated);
-        }
-
-        #region Initialization Methods
         private void SetParentView()
         {
             _parentView = new UIView(new CGRect(0,
@@ -69,6 +75,11 @@ namespace myTNB
 
         private void SetHeaderView()
         {
+            if (_headerView != null)
+            {
+                _headerView.RemoveFromSuperview();
+                _headerView = null;
+            }
             _headerView = new UIView(new CGRect(0, 0, _parentView.Frame.Width, DashboardHomeConstants.SearchViewHeight))
             {
                 BackgroundColor = UIColor.Clear
@@ -347,6 +358,11 @@ namespace myTNB
 
         private void AddTableView()
         {
+            if (_accountListTableView != null)
+            {
+                _accountListTableView.RemoveFromSuperview();
+                _accountListTableView = null;
+            }
             _accountListTableView = new UITableView(new CGRect(0, _headerView.Frame.GetMaxY()
                 , ViewWidth, _parentView.Frame.Height - _headerView.Frame.Height))
             { BackgroundColor = UIColor.Clear, ScrollEnabled = false };
@@ -425,7 +441,11 @@ namespace myTNB
                 if (acctNumList.Count > 0)
                 {
                     GetAccountsBillSummary(acctNumList);
-                    GetAccountsSMRStatus(acctNumList);
+                    var eligibleSSMRAccounts = _dashboardHomeHelper.FilterAccountNoForSSMR(acctNumList, activeAccountList);
+                    if (eligibleSSMRAccounts?.Count > 0)
+                    {
+                        GetAccountsSMRStatus(eligibleSSMRAccounts);
+                    }
                 }
             }
             else
