@@ -388,7 +388,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     }
 #endif
                 }
-                textTotalPayable.Text = payableFormatter.Format(total);
+                textTotalPayable.Text = total.ToString("#,##0.00");
                 if (selectedAccounts.Count > 0)
                 {
                     btnPayBill.Text = this.GetString(Resource.String.text_pay_bill) + " (" + selectedAccounts.Count + ")";
