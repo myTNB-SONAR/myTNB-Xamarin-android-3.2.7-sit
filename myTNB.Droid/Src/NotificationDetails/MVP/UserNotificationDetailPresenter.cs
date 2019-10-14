@@ -154,6 +154,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             //pageTitle = "Smart Meter Reading";
                             primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Meter Reading", delegate () { SubmitMeterReading(notificationDetails); });
                             primaryCTA.SetSolidCTA(true);
+                            primaryCTA.SetEnabled(notificationDetails.IsSMRPeriodOpen);
                             ctaList.Add(primaryCTA);
 
                             break;
@@ -162,6 +163,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         {
                             primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Meter Reading", delegate () { SubmitMeterReading(notificationDetails); });
                             primaryCTA.SetSolidCTA(true);
+                            primaryCTA.SetEnabled(notificationDetails.IsSMRPeriodOpen);
                             ctaList.Add(primaryCTA);
                             //pageTitle = "Smart Meter Reading";
                             imageResourceBanner = Resource.Drawable.notification_smr_generic_banner;
@@ -169,7 +171,9 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                         }
                     case Constants.BCRM_NOTIFICATION_SMR_DISABLED_ID:
                         {
-                            primaryCTA = new NotificationDetailModel.NotificationCTA("Re-enable Self Meter Reading", delegate () { EnableSelfMeterReading(notificationDetails); });
+                            primaryCTA = new NotificationDetailModel.NotificationCTA("Submit Meter Reading", delegate () { EnableSelfMeterReading(notificationDetails); });
+                            primaryCTA.SetSolidCTA(true);
+                            primaryCTA.SetEnabled(notificationDetails.IsSMRPeriodOpen);
                             ctaList.Add(primaryCTA);
                             //pageTitle = "Smart Meter Reading";
                             imageResourceBanner = Resource.Drawable.notification_smr_fail_banner;
