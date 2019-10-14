@@ -10,8 +10,10 @@ using Android.Text;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using myTNB;
 using myTNB_Android.Src.Utils;
 using System;
+using System.Collections.Generic;
 using AlertDialog = Android.App.AlertDialog;
 using Constants = myTNB_Android.Src.Utils.Constants;
 
@@ -22,6 +24,7 @@ namespace myTNB_Android.Src.Base.Fragments
         private AlertDialog rationaleDialog;
 
         private bool isClicked = false;
+        private Dictionary<string, string> languageKeyValue;
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -30,6 +33,8 @@ namespace myTNB_Android.Src.Base.Fragments
             {
                 inflateView = inflater.Inflate(ResourceId(), container, false);
                 Cheeseknife.Bind(this, inflateView);
+                string pageId = GetPageId();
+                languageKeyValue = LanguageManager.Instance.GetValuesByPage(GetPageId());
                 EvaluateRequestPermissions();
             }
             catch (Exception e)
@@ -44,6 +49,8 @@ namespace myTNB_Android.Src.Base.Fragments
         /// </summary>
         /// <returns></returns>
         public abstract int ResourceId();
+
+        public abstract string GetPageId();
 
         public override void OnResume()
         {
@@ -453,6 +460,11 @@ namespace myTNB_Android.Src.Base.Fragments
         public bool IsActive()
         {
             return IsAdded && IsVisible && !IsDetached && !IsRemoving;
+        }
+
+        public string GetLabelByLanguage(string key)
+        {
+            return languageKeyValue[key];
         }
     }
 }

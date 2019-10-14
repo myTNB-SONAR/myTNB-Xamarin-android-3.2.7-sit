@@ -116,6 +116,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
 
         const string SELECTED_ACCOUNT_KEY = "SELECTED_ACCOUNT";
+        const string PAGE_ID = "Bills";
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -254,6 +255,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         public void RenderUI()
         {
             accountSelection.Text = mSelectedAccountData.AccountNickName;
+            myBillHistoryTitle.Text = GetLabelByLanguage("myHistory");
+            btnViewDetails.Text = GetLabelByLanguage("viewMore");
+            btnPayBill.Text = GetLabelByLanguage("pay");
             if (mPresenter.IsEnableAccountSelection())
             {
                 Drawable dropdown = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.ic_spinner_dropdown);
@@ -414,7 +418,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             itemisedBillingInfoShimmer.Visibility = ViewStates.Gone;
             itemisedBillingInfoContainer.Visibility = ViewStates.Visible;
             itemisedBillingCTAContainer.Visibility = mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId) ? ViewStates.Gone : ViewStates.Visible;
-            itemisedBillingInfoNote.Text = "I need to pay";
+            itemisedBillingInfoNote.Text = GetLabelByLanguage("needToPay");
             itemisedBillingInfoAmount.Text = "0.00";
             itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
             itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#49494a"));
@@ -495,7 +499,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             itemisedBillingInfoAmount.Text = accountChargeModel.AmountDue.ToString("#,##0.00");
             if (accountChargeModel.IsCleared)
             {
-                itemisedBillingInfoNote.Text = "I’ve cleared all bills";
+                itemisedBillingInfoNote.Text = GetLabelByLanguage("clearedBills");
                 itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
                 itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#49494a"));
                 itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#49494a"));
@@ -507,11 +511,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 if (mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId))
                 {
                     imageResource = Resource.Drawable.bill_paid_extra_re_banner;
-                    itemisedBillingInfoNote.Text = "I’ve been paid extra";
+                    itemisedBillingInfoNote.Text = GetLabelByLanguage("beenPaidExtra");
                 }
                 else
                 {
-                    itemisedBillingInfoNote.Text = "I’ve paid extra";
+                    itemisedBillingInfoNote.Text = GetLabelByLanguage("paidExtra");
                 }
                 itemisedBillingInfoAmount.Text = (Math.Abs(accountChargeModel.AmountDue)).ToString("#,##0.00");
                 itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
@@ -525,12 +529,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 if (mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId))
                 {
                     imageResource = Resource.Drawable.bill_paid_extra_re_banner;
-                    itemisedBillingInfoNote.Text = "My earnings";
+                    itemisedBillingInfoNote.Text = GetLabelByLanguage("myEarnings");
                 }
                 else
                 {
                     imageResource = Resource.Drawable.bill_need_to_pay_banner;
-                    itemisedBillingInfoNote.Text = "I need to pay";
+                    itemisedBillingInfoNote.Text = GetLabelByLanguage("needToPay");
                 }
                 
                 itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
@@ -538,7 +542,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#49494a"));
 
                 itemisedBillingInfoDate.Visibility = ViewStates.Visible;
-                itemisedBillingInfoDate.Text = "by " + dateFormatter.Format(dateParser.Parse(accountChargeModel.DueDate));
+                itemisedBillingInfoDate.Text = GetLabelByLanguage("by") + " " + dateFormatter.Format(dateParser.Parse(accountChargeModel.DueDate));
             }
             EnableActionButtons(true);
             itemisedBillingHeaderImage.SetImageResource(imageResource);
@@ -647,5 +651,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             base.OnPause();
         }
 
+        public override string GetPageId()
+        {
+            return PAGE_ID;
+        }
     }
 }
