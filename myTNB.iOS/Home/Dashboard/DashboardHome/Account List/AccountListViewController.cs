@@ -16,16 +16,17 @@ namespace myTNB
         public AccountListViewController(IntPtr handle) : base(handle) { }
 
         public DashboardHomeViewController _homeViewController;
-        private DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
+        private readonly DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
         private List<DueAmountDataModel> _accountList = new List<DueAmountDataModel>();
-        private RefreshScreenInfoModel _refreshScreenInfoModel = new RefreshScreenInfoModel();
-        private TextFieldHelper _textFieldHelper = new TextFieldHelper();
+        private readonly RefreshScreenInfoModel _refreshScreenInfoModel = new RefreshScreenInfoModel();
+        private readonly TextFieldHelper _textFieldHelper = new TextFieldHelper();
 
         private UIView _parentView, _headerView, _addAccountView, _searchView;
         private CustomUIView _footerView;
         private UILabel _headerTitle;
         private UITableView _accountListTableView;
         private UITextField _textFieldSearch;
+        private bool _isOnSearchMode;
 
         public override void ViewDidLayoutSubviews()
         {
@@ -47,18 +48,28 @@ namespace myTNB
         }
 
         #region Initialization Methods
-        public void PrepareAccountList()
+        public void PrepareAccountList(List<CustomerAccountRecordModel> linkedCAs = null, bool isFromSearch = false)
         {
-            DataManager.DataManager.SharedInstance.ActiveAccountList = new List<DueAmountDataModel>();
-            SetHeaderView();
-            SetAddAccountView();
-            AddTableView();
-            if (_dashboardHomeHelper.HasMoreThanThreeAccts)
+            if (linkedCAs == null)
             {
-                SetSearchView();
-                SetFooterView();
+                DataManager.DataManager.SharedInstance.CurrentAccountList = DataManager.DataManager.SharedInstance.AccountRecordsList.d;
             }
-            PrepareAccounts();
+            else
+            {
+                DataManager.DataManager.SharedInstance.CurrentAccountList = linkedCAs;
+            }
+            DataManager.DataManager.SharedInstance.ActiveAccountList = new List<DueAmountDataModel>();
+            if (!_isOnSearchMode)
+            {
+                SetHeaderView();
+                SetAddAccountView();
+                if (_dashboardHomeHelper.HasMoreThanThreeAccts)
+                {
+                    SetSearchView();
+                }
+                AddTableView();
+            }
+            PrepareAccounts(DataManager.DataManager.SharedInstance.CurrentAccountList, isFromSearch);
         }
 
         private void SetParentView()
@@ -86,6 +97,15 @@ namespace myTNB
             };
             _parentView.AddSubview(_headerView);
 
+            _headerTitle = new UILabel(new CGRect(BaseMarginWidth16, 0, GetScaledWidth(84f), GetScaledHeight(20f)))
+            {
+                Font = TNBFont.MuseoSans_14_500,
+                TextColor = UIColor.White,
+                Text = GetI18NValue(DashboardHomeConstants.I18N_MyAccts),
+                BackgroundColor = UIColor.Clear
+            };
+            _headerView.AddSubview(_headerTitle);
+
             UIView lineView = new UIView(new CGRect(0, _headerView.Frame.Height - GetScaledHeight(1F), ViewWidth, GetScaledHeight(1F)))
             {
                 BackgroundColor = UIColor.FromWhiteAlpha(1, 0.2F)
@@ -101,14 +121,6 @@ namespace myTNB
             };
             _headerView.AddSubview(_addAccountView);
 
-            _headerTitle = new UILabel(new CGRect(BaseMarginWidth16, 0, GetScaledWidth(84f), GetScaledHeight(20f)))
-            {
-                Font = TNBFont.MuseoSans_14_500,
-                TextColor = UIColor.White,
-                Text = GetI18NValue(DashboardHomeConstants.I18N_MyAccts),
-                BackgroundColor = UIColor.Clear
-            };
-            _addAccountView.AddSubview(_headerTitle);
             if (_dashboardHomeHelper.HasAccounts)
             {
                 CustomUIView searchView = new CustomUIView(new CGRect(0, GetScaledHeight(2F), 0, GetScaledHeight(16F)))
@@ -214,7 +226,8 @@ namespace myTNB
                    , foregroundColor: UIColor.FromWhiteAlpha(1, 0.6F)
                    , strokeWidth: 0
                ),
-                BackgroundColor = UIColor.Clear
+                BackgroundColor = UIColor.Clear,
+                TintColor = UIColor.White
             };
             _textFieldHelper.SetKeyboard(_textFieldSearch);
             _textFieldSearch.ReturnKeyType = UIReturnKeyType.Search;
@@ -229,6 +242,19 @@ namespace myTNB
             cancelIcon.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 SetViewForActiveSearch(false);
+                if (_textFieldSearch != null)
+                {
+                    if (_textFieldSearch.Text.Length > 0)
+                    {
+                        _textFieldSearch.Text = string.Empty;
+                        DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
+                        if (_homeViewController != null)
+                        {
+                            _homeViewController.OnReloadTableForSearch();
+                        }
+                        PrepareAccountList();
+                    }
+                }
             }));
             _searchView.AddSubview(cancelIcon);
 
@@ -364,15 +390,16 @@ namespace myTNB
                 _accountListTableView = null;
             }
             _accountListTableView = new UITableView(new CGRect(0, _headerView.Frame.GetMaxY()
-                , ViewWidth, _parentView.Frame.Height - _headerView.Frame.Height))
+                , ViewWidth, DashboardHomeConstants.ShimmerAcctHeight))
             { BackgroundColor = UIColor.Clear, ScrollEnabled = false };
             _accountListTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             _accountListTableView.RegisterClassForCellReuse(typeof(AccountListCell), DashboardHomeConstants.Cell_AccountList);
             _accountListTableView.RegisterClassForCellReuse(typeof(AccountListEmptyCell), DashboardHomeConstants.Cell_AccountListEmpty);
+            _accountListTableView.RegisterClassForCellReuse(typeof(AccountListShimmerCell), DashboardHomeConstants.Cell_AccountListShimmer);
             _parentView.AddSubview(_accountListTableView);
         }
 
-        private void ReloadTableView(bool hasEmptyAcct = false)
+        private void ReloadTableView(bool isLoading, bool hasEmptyAcct = false)
         {
             if (_accountListTableView != null)
             {
@@ -380,6 +407,7 @@ namespace myTNB
                     GetI18NValue,
                     _homeViewController.OnAccountCardSelected,
                     _homeViewController.OnAddAccountAction,
+                    isLoading,
                     hasEmptyAcct);
                 _accountListTableView.ReloadData();
             }
@@ -389,6 +417,7 @@ namespace myTNB
         #region Search Methods
         private void SetViewForActiveSearch(bool isSearchMode)
         {
+            _isOnSearchMode = isSearchMode;
             if (isSearchMode)
             {
                 _textFieldSearch.BecomeFirstResponder();
@@ -397,6 +426,7 @@ namespace myTNB
             {
                 _textFieldSearch.ResignFirstResponder();
             }
+            _headerTitle.Hidden = isSearchMode;
             _addAccountView.Hidden = isSearchMode;
             _searchView.Hidden = !isSearchMode;
         }
@@ -405,7 +435,7 @@ namespace myTNB
         {
             textField.EditingChanged += (sender, e) =>
             {
-                //SearchFromAccountList(textField.Text);
+                SearchFromAccountList(textField.Text);
             };
             textField.ShouldReturn = (sender) =>
             {
@@ -413,12 +443,24 @@ namespace myTNB
                 return false;
             };
         }
+
+        private void SearchFromAccountList(string searchString)
+        {
+            Debug.WriteLine("searchString: " + searchString);
+            DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
+            if (_footerView != null)
+            {
+                _footerView.RemoveFromSuperview();
+            }
+            var accountsList = DataManager.DataManager.SharedInstance.AccountRecordsList.d;
+            var searchResults = accountsList.FindAll(x => x.accountNickName.ToLower().Contains(searchString.ToLower()) || x.accNum.Contains(searchString));
+            PrepareAccountList(searchResults, true);
+        }
         #endregion
 
         #region API/Logic Methods
-        private void PrepareAccounts()
+        private void PrepareAccounts(List<CustomerAccountRecordModel> accountList, bool isFromSearch = false)
         {
-            var accountList = DataManager.DataManager.SharedInstance.AccountRecordsList.d;
             if (accountList != null && accountList.Count > 0)
             {
                 var activeAccountList = DataManager.DataManager.SharedInstance.ActiveAccountList;
@@ -440,7 +482,25 @@ namespace myTNB
                 }
                 if (acctNumList.Count > 0)
                 {
-                    GetAccountsBillSummary(acctNumList);
+                    var acctsToGetDues = GetAccountsToUpdate(acctNumList);
+                    foreach (var acctNum in acctsToGetDues)
+                    {
+                        Debug.WriteLine("acctNum: " + acctNum);
+                    }
+                    if (acctsToGetDues.Count > 0)
+                    {
+                        GetAccountsBillSummary(acctNumList, DataManager.DataManager.SharedInstance.ActiveAccountList.Count <= DashboardHomeConstants.InitialLoadMaxCount, isFromSearch);
+                    }
+                    else
+                    {
+                        DataManager.DataManager.SharedInstance.AccountListIsLoaded = true;
+                        _homeViewController.ShowRefreshScreen(false, null);
+                        if (_homeViewController != null)
+                        {
+                            _homeViewController.OnReloadTableForSearch();
+                        }
+                        ReloadViews(isFromSearch);
+                    }
                     var eligibleSSMRAccounts = _dashboardHomeHelper.FilterAccountNoForSSMR(acctNumList, activeAccountList);
                     if (eligibleSSMRAccounts?.Count > 0)
                     {
@@ -450,7 +510,7 @@ namespace myTNB
             }
             else
             {
-                ReloadTableView(true);
+                ReloadTableView(false, true);
             }
         }
 
@@ -461,7 +521,7 @@ namespace myTNB
                 inactiveList.Count > 0)
             {
                 int ctr = 0;
-                int maxAcctLimit = isReset ? 3 : 5;
+                int maxAcctLimit = isReset ? DashboardHomeConstants.InitialLoadMaxCount : DashboardHomeConstants.MaxAccountPerLoad;
                 foreach (var account in inactiveList)
                 {
                     if (ctr < maxAcctLimit)
@@ -542,7 +602,43 @@ namespace myTNB
             }
         }
 
-        private void GetAccountsBillSummary(List<string> accounts)
+        private List<string> GetAccountsToUpdate(List<string> accNumList)
+        {
+            var acctsToGetLatestDues = new List<string>();
+            var activeAccountList = DataManager.DataManager.SharedInstance.ActiveAccountList;
+
+            // cache updates
+            for (int i = 0; i < activeAccountList.Count; i++)
+            {
+                if (i > -1 && i < activeAccountList.Count)
+                {
+                    foreach (var acctNum in accNumList)
+                    {
+                        var account = activeAccountList[i];
+                        if (acctNum.Equals(account.accNum))
+                        {
+                            var acctCached = DataManager.DataManager.SharedInstance.GetDue(account.accNum);
+                            if (acctCached == null)
+                            {
+                                // get latest if not in cache
+                                acctsToGetLatestDues.Add(account.accNum);
+                            }
+                            else if (account.amountDue != acctCached.amountDue
+                                   || string.Compare(account.accNickName, acctCached.accNickName) != 0)
+                            {
+                                // update nickname
+                                account.amountDue = acctCached.amountDue;
+                                account.accNickName = acctCached.accNickName;
+                                DataManager.DataManager.SharedInstance.ActiveAccountList[i] = account;
+                            }
+                        }
+                    }
+                }
+            }
+            return acctsToGetLatestDues;
+        }
+
+        private void GetAccountsBillSummary(List<string> accounts, bool isFirstCall = false, bool isFromSearch = false)
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -550,12 +646,31 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        ActivityIndicator.Show();
+                        if (isFirstCall)
+                        {
+                            if (_addAccountView != null)
+                            {
+                                _addAccountView.Hidden = true;
+                            }
+                            ReloadTableView(true);
+                            if (isFromSearch)
+                            {
+                                if (_homeViewController != null)
+                                {
+                                    _homeViewController.OnReloadTableForSearch();
+                                }
+                            }
+                        }
+                        else
+                        {
+                            ActivityIndicator.Show();
+                        }
                         InvokeInBackground(async () =>
                         {
                             AmountDueStatusResponseModel response = await ServiceCall.GetAccountsBillSummary(accounts);
                             InvokeOnMainThread(() =>
                             {
+                                DataManager.DataManager.SharedInstance.AccountListIsLoaded = true;
                                 if (response != null &&
                                     response.d != null &&
                                     response.d.IsSuccess &&
@@ -564,7 +679,7 @@ namespace myTNB
                                 {
                                     _homeViewController.ShowRefreshScreen(false, null);
                                     UpdateDueForDisplayedAccounts(response.d.data);
-                                    ReloadViews();
+                                    ReloadViews(isFromSearch);
                                 }
                                 else
                                 {
@@ -616,12 +731,26 @@ namespace myTNB
             });
         }
 
-        private void ReloadViews()
+        private void ReloadViews(bool isFromSearch = false)
         {
-            ReloadTableView();
-            if (_homeViewController != null)
+            if (_addAccountView != null)
             {
-                _homeViewController.OnUpdateCell(0);
+                _addAccountView.Hidden = _isOnSearchMode;
+            }
+            ReloadTableView(false);
+            if (!isFromSearch)
+            {
+                if (_homeViewController != null)
+                {
+                    _homeViewController.OnUpdateCell(0);
+                }
+            }
+            else
+            {
+                if (_homeViewController != null)
+                {
+                    _homeViewController.OnReloadTableForSearch();
+                }
             }
             ViewHelper.AdjustFrameSetHeight(_parentView, _dashboardHomeHelper.GetHeightForAccountList() - GetScaledHeight(24F));
             ViewHelper.AdjustFrameSetHeight(_accountListTableView, _parentView.Frame.Height - _headerView.Frame.Height);
@@ -644,12 +773,16 @@ namespace myTNB
         }
         private void OnShowMoreAction()
         {
-            PrepareAccounts();
+            PrepareAccounts(DataManager.DataManager.SharedInstance.CurrentAccountList);
         }
         private void OnShowLessAction()
         {
-            DataManager.DataManager.SharedInstance.ActiveAccountList = new List<DueAmountDataModel>();
-            PrepareAccounts();
+            DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
+            if (_homeViewController != null)
+            {
+                _homeViewController.OnReloadTableForSearch();
+            }
+            PrepareAccountList(DataManager.DataManager.SharedInstance.CurrentAccountList);
         }
         private void OnRearrangeAction()
         {

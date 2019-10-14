@@ -969,9 +969,6 @@
     <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Grey.imageset\Add-Account-Icon-Grey%402x.png" />
     <ImageAsset Include="Assets.xcassets\Add-Account-Icon-Grey.imageset\Add-Account-Icon-Grey%403x.png" />
     <ImageAsset Include="Assets.xcassets\Refresh-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Refresh-Icon.imageset\Refresh-Icon.png" />
-    <ImageAsset Include="Assets.xcassets\Refresh-Icon.imageset\Refresh-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Refresh-Icon.imageset\Refresh-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Header-Dropdown.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IC-Header-Dropdown.imageset\icHeaderDropdown12Px.png" />
     <ImageAsset Include="Assets.xcassets\IC-Header-Dropdown.imageset\icHeaderDropdown12Px%402x.png" />
@@ -1038,8 +1035,6 @@
     <ImageAsset Include="Assets.xcassets\Usage-MissingReading.imageset\missingCopy%402x.png" />
     <ImageAsset Include="Assets.xcassets\Usage-MissingReading.imageset\missingCopy%403x.png" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\BCRM-Down-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\BCRM-Down-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Filter.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Filter.imageset\filterCopy1%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Action-Filter.imageset\filterCopy1%403x.png" />
@@ -1229,6 +1224,10 @@
     <ImageAsset Include="Assets.xcassets\Search-Active-Icon-White.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Search-Active-Icon-White.imageset\Search-Active-Icon-White%402x.png" />
     <ImageAsset Include="Assets.xcassets\Search-Active-Icon-White.imageset\Search-Active-Icon-White%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Refresh-Icon.imageset\Refresh-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Refresh-Icon.imageset\Refresh-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\BCRM-Down-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\BCRM-Down-Icon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -2511,6 +2510,8 @@
     <Compile Include="Home\Dashboard\DashboardHome\Account List\AccountListDataSource.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\Account List\AccountListCell.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\Account List\AccountListEmptyCell.cs" />
+    <Compile Include="Home\Dashboard\DashboardHome\Account List\AccountListShimmerCell.cs" />
+    <Compile Include="Customs\CustomUITableViewCell.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

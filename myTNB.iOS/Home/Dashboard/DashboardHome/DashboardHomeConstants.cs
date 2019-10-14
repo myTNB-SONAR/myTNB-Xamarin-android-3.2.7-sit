@@ -4,10 +4,14 @@ namespace myTNB
 {
     public static class DashboardHomeConstants
     {
-        //Card
-        public static int MaxAccountPerCard = 5;
+        //Account List
+        public static int InitialLoadMaxCount = 3;
+        public static int MaxAccountPerLoad = 5;
         public static nfloat SearchViewHeight = ScaleUtility.GetScaledHeight(37f);
         public static nfloat PageControlHeight = ScaleUtility.GetScaledHeight(20f);
+        public static nfloat EmptyAcctHeight = ScaleUtility.GetScaledHeight(101F);
+        public static nfloat AccountCellHeight = ScaleUtility.GetScaledHeight(61F);
+        public static nfloat ShimmerAcctHeight = ScaleUtility.GetScaledHeight(105F);
 
         //Cell
         public static string Cell_Accounts = "accountsTableViewCell";
@@ -16,6 +20,7 @@ namespace myTNB
         public static string Cell_Promotion = "promotionTableViewCell";
         public static string Cell_AccountList = "accountListTableViewCell";
         public static string Cell_AccountListEmpty = "accountListEmptyTableViewCell";
+        public static string Cell_AccountListShimmer = "accountListShimmerTableViewCell";
 
         //I18N Keys
         public static string I18N_Afternoon = "greeting_afternoon";
@@ -56,7 +61,7 @@ namespace myTNB
         public static int CellIndex_Accounts = 0;
         public static int CellIndex_Services = 1;
         public static int CellIndex_Promotion = 2;
-        public static int CellIndex_Help = 3;
+        public static int CellIndex_Help = 2;
 
         //SMR CTA
         public static string CTA_ShowReadingHistory = "v";

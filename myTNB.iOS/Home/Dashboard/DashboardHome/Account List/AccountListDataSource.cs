@@ -8,22 +8,25 @@ namespace myTNB
 {
     public class AccountListDataSource : UITableViewSource
     {
-        private List<DueAmountDataModel> _accountList;
+        private readonly List<DueAmountDataModel> _accountList = new List<DueAmountDataModel>();
         public Func<string, string> GetI18NValue;
-        private Action<DueAmountDataModel> OnRowSelected;
-        private Action OnAddAccountAction;
-        private bool _hasEmptyAcct;
+        private readonly Action<DueAmountDataModel> OnRowSelected;
+        private readonly Action OnAddAccountAction;
+        private readonly bool _isLoading;
+        private readonly bool _hasEmptyAcct;
 
         public AccountListDataSource(List<DueAmountDataModel> accountList,
             Func<string, string> getI18NValue,
             Action<DueAmountDataModel> onRowSelected,
             Action onAddAccountAction,
+            bool isLoading = false,
             bool hasEmptyAcct = false)
         {
             _accountList = accountList;
             GetI18NValue = getI18NValue;
             OnRowSelected = onRowSelected;
             OnAddAccountAction = onAddAccountAction;
+            _isLoading = isLoading;
             _hasEmptyAcct = hasEmptyAcct;
         }
 
@@ -34,35 +37,44 @@ namespace myTNB
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            return _hasEmptyAcct ? 1 : _accountList.Count;
+            return _isLoading || _hasEmptyAcct ? 1 : _accountList.Count;
         }
 
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
         {
-            return _hasEmptyAcct ? ScaleUtility.GetScaledHeight(101F) : ScaleUtility.GetScaledHeight(61F);
+            return _isLoading ? DashboardHomeConstants.ShimmerAcctHeight : _hasEmptyAcct ? DashboardHomeConstants.EmptyAcctHeight : DashboardHomeConstants.AccountCellHeight;
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            if (_hasEmptyAcct)
+            if (_isLoading)
             {
-                AccountListEmptyCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_AccountListEmpty) as AccountListEmptyCell;
-                cell.GetI18NValue = GetI18NValue;
-                cell.SetEmptyCell();
+                AccountListShimmerCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_AccountListShimmer) as AccountListShimmerCell;
                 cell.SelectionStyle = UITableViewCellSelectionStyle.None;
                 return cell;
             }
             else
             {
-                AccountListCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_AccountList) as AccountListCell;
-                var index = indexPath.Row;
-                if (index > -1 && index < _accountList.Count)
+                if (_hasEmptyAcct)
                 {
+                    AccountListEmptyCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_AccountListEmpty) as AccountListEmptyCell;
                     cell.GetI18NValue = GetI18NValue;
-                    cell.SetAccountCell(_accountList[indexPath.Row]);
+                    cell.SetEmptyCell();
+                    cell.SelectionStyle = UITableViewCellSelectionStyle.None;
+                    return cell;
                 }
-                cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-                return cell;
+                else
+                {
+                    AccountListCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_AccountList) as AccountListCell;
+                    var index = indexPath.Row;
+                    if (index > -1 && index < _accountList.Count)
+                    {
+                        cell.GetI18NValue = GetI18NValue;
+                        cell.SetAccountCell(_accountList[index]);
+                    }
+                    cell.SelectionStyle = UITableViewCellSelectionStyle.None;
+                    return cell;
+                }
             }
         }
 
@@ -72,7 +84,7 @@ namespace myTNB
             {
                 OnAddAccountAction?.Invoke();
             }
-            else
+            else if (!_isLoading)
             {
                 var index = indexPath.Row;
                 if (index > -1 && index < _accountList.Count)

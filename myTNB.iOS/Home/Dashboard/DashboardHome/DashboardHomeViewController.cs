@@ -52,6 +52,7 @@ namespace myTNB
             IsNewGradientRequired = true;
             base.ViewDidLoad();
             _isBCRMAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
+            DataManager.DataManager.SharedInstance.CurrentAccountList = DataManager.DataManager.SharedInstance.AccountRecordsList?.d;
             NotifCenterUtility.AddObserver((NSString)"NotificationDidChange", NotificationDidChange);
             NotifCenterUtility.AddObserver((NSString)"OnReceiveNotificationFromDashboard", NotificationDidChange);
             NotifCenterUtility.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
@@ -143,6 +144,7 @@ namespace myTNB
             {
                 if (_accountListViewController != null)
                 {
+                    DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
                     _accountListViewController.PrepareAccountList();
                 }
                 DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = false;
@@ -198,6 +200,7 @@ namespace myTNB
             Debug.WriteLine("On Enter Foreground");
             if (_accountListViewController != null)
             {
+                DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
                 _accountListViewController.PrepareAccountList();
             }
             OnLoadHomeData();
@@ -567,7 +570,7 @@ namespace myTNB
                     var bcrmMsg = bcrm?.DowntimeMessage ?? "Error_BCRMMessage".Translate();
                     string desc = _isBCRMAvailable ? model?.RefreshMessage ?? string.Empty : bcrmMsg;
 
-                    _refreshScreenComponent = new RefreshScreenComponent(View, 64f);
+                    _refreshScreenComponent = new RefreshScreenComponent(View, GetScaledHeight(24f));
                     _refreshScreenComponent.SetIsBCRMDown(!_isBCRMAvailable);
                     _refreshScreenComponent.SetRefreshButtonHidden(!_isBCRMAvailable);
                     _refreshScreenComponent.SetButtonText(model?.RefreshBtnText ?? string.Empty);

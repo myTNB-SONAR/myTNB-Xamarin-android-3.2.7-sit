@@ -48,7 +48,7 @@ namespace myTNB
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            return 4;
+            return 3;
         }
 
         public override nfloat EstimatedHeight(UITableView tableView, NSIndexPath indexPath)
@@ -67,10 +67,6 @@ namespace myTNB
                 return _dashboardHomeHelper.GetHeightForServices(_isServicesShimmering);
             }
             if (indexPath.Row == 2)
-            {
-                return _dashboardHomeHelper.GetHeightForPromotions;
-            }
-            if (indexPath.Row == 3)
             {
                 return _dashboardHomeHelper.GetHeightForHelp(_isHelpShimmering);
             }
@@ -104,14 +100,6 @@ namespace myTNB
                 return cell;
             }
             if (indexPath.Row == 2)
-            {
-                PromotionTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Promotion) as PromotionTableViewCell;
-                cell._titleLabel.Text = _controller.GetI18NValue(DashboardHomeConstants.I18N_Promotions);
-                cell.AddCards(_promotions);
-                cell.ClipsToBounds = true;
-                return cell;
-            }
-            if (indexPath.Row == 3)
             {
                 HelpTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Help) as HelpTableViewCell;
                 cell._titleLabel.Text = _controller.GetI18NValue(DashboardHomeConstants.I18N_NeedHelp);

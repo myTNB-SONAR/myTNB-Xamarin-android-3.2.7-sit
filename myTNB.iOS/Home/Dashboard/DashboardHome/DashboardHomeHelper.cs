@@ -59,7 +59,7 @@ namespace myTNB
             for (int i = 0; i < sortedAccounts.Count; i++)
             {
                 var acctCached = DataManager.DataManager.SharedInstance.GetDue(sortedAccounts[i].accNum);
-                if (count < DashboardHomeConstants.MaxAccountPerCard)
+                if (count < DashboardHomeConstants.MaxAccountPerLoad)
                 {
                     DueAmountDataModel item = new DueAmountDataModel
                     {
@@ -282,10 +282,17 @@ namespace myTNB
             nfloat totalCellHeight;
             if (HasAccounts)
             {
-                var activeAcctList = DataManager.DataManager.SharedInstance.ActiveAccountList;
-                nfloat footerHeight = HasMoreThanThreeAccts ? AllAccountsAreVisible ? ScaleUtility.GetScaledHeight(85F) : ScaleUtility.GetScaledHeight(44F) : ScaleUtility.GetScaledHeight(16F);
-                nfloat acctListTotalHeight = ScaleUtility.GetScaledHeight(61F) * activeAcctList.Count;
-                totalCellHeight = acctListTotalHeight + DashboardHomeConstants.SearchViewHeight + ScaleUtility.GetScaledHeight(24F) + footerHeight;
+                if (DataManager.DataManager.SharedInstance.AccountListIsLoaded)
+                {
+                    var activeAcctList = DataManager.DataManager.SharedInstance.ActiveAccountList;
+                    nfloat footerHeight = HasMoreThanThreeAccts ? AllAccountsAreVisible ? ScaleUtility.GetScaledHeight(85F) : ScaleUtility.GetScaledHeight(44F) : ScaleUtility.GetScaledHeight(16F);
+                    nfloat acctListTotalHeight = ScaleUtility.GetScaledHeight(61F) * activeAcctList.Count;
+                    totalCellHeight = acctListTotalHeight + DashboardHomeConstants.SearchViewHeight + ScaleUtility.GetScaledHeight(24F) + footerHeight;
+                }
+                else
+                {
+                    totalCellHeight = DashboardHomeConstants.SearchViewHeight + ScaleUtility.GetScaledHeight(24F) + DashboardHomeConstants.ShimmerAcctHeight;
+                }
             }
             else
             {
@@ -298,7 +305,7 @@ namespace myTNB
         {
             get
             {
-                var allAcctList = DataManager.DataManager.SharedInstance.AccountRecordsList.d;
+                var allAcctList = DataManager.DataManager.SharedInstance.CurrentAccountList;
                 var activeAcctList = DataManager.DataManager.SharedInstance.ActiveAccountList;
                 return activeAcctList.Count == allAcctList.Count;
             }
@@ -308,7 +315,7 @@ namespace myTNB
         {
             get
             {
-                return DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0;
+                return DataManager.DataManager.SharedInstance.CurrentAccountList?.Count > 0;
             }
         }
 
@@ -316,7 +323,7 @@ namespace myTNB
         {
             get
             {
-                return DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 3;
+                return DataManager.DataManager.SharedInstance.CurrentAccountList?.Count > 3;
             }
         }
 

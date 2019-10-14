@@ -7,17 +7,15 @@ using UIKit;
 
 namespace myTNB
 {
-    public class AccountListCell : UITableViewCell
+    public class AccountListCell : CustomUITableViewCell
     {
-        public Func<string, string> GetI18NValue;
-        private nfloat _cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
         UILabel _nickname, _accountNumber, _amountDue, _dueDate;
         UIImageView _imgRe;
         public AccountListCell(IntPtr handle) : base(handle)
         {
-            BackgroundColor = UIColor.Clear;
-            _nickname = new UILabel(new CGRect(ScaleUtility.BaseMarginWidth16, GetScaledHeight(12F), _cellWidth * 0.60F, GetScaledHeight(16F)))
+            _nickname = new UILabel(new CGRect(BaseMarginWidth16, GetScaledHeight(12F), 0, GetScaledHeight(16F)))
             {
+                BackgroundColor = UIColor.Clear,
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = UIColor.White,
                 LineBreakMode = UILineBreakMode.TailTruncation
@@ -31,14 +29,14 @@ namespace myTNB
             };
             AddSubview(_imgRe);
 
-            _accountNumber = new UILabel(new CGRect(ScaleUtility.BaseMarginWidth16, GetYLocationFromFrame(_nickname.Frame, 4F), _cellWidth * 0.50F, GetScaledHeight(16F)))
+            _accountNumber = new UILabel(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(_nickname.Frame, 4F), (_cellWidth - GetScaledWidth(32F)) * 0.50F, GetScaledHeight(16F)))
             {
                 Font = TNBFont.MuseoSans_12_300,
                 TextColor = UIColor.FromWhiteAlpha(1, 0.60F)
             };
             AddSubview(_accountNumber);
 
-            _amountDue = new UILabel(new CGRect(_cellWidth - ScaleUtility.BaseMarginWidth16 - (_cellWidth * 0.40F), GetScaledHeight(12F), _cellWidth * 0.40F, GetScaledHeight(16F)))
+            _amountDue = new UILabel(new CGRect(_cellWidth - BaseMarginWidth16 - (_cellWidth * 0.40F), GetScaledHeight(12F), 0, GetScaledHeight(16F)))
             {
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = UIColor.White,
@@ -46,7 +44,7 @@ namespace myTNB
             };
             AddSubview(_amountDue);
 
-            _dueDate = new UILabel(new CGRect(_cellWidth - ScaleUtility.BaseMarginWidth16 - (_cellWidth * 0.50F), GetYLocationFromFrame(_amountDue.Frame, 4F), _cellWidth * 0.50F, GetScaledHeight(16F)))
+            _dueDate = new UILabel(new CGRect(_cellWidth - BaseMarginWidth16 - ((_cellWidth - GetScaledWidth(32F)) * 0.50F), GetYLocationFromFrame(_amountDue.Frame, 4F), (_cellWidth - GetScaledWidth(32F)) * 0.50F, GetScaledHeight(16F)))
             {
                 Font = TNBFont.MuseoSans_12_300,
                 TextColor = UIColor.FromWhiteAlpha(1, 0.60F),
@@ -54,7 +52,7 @@ namespace myTNB
             };
             AddSubview(_dueDate);
 
-            UIView lineView = new UIView(new CGRect(ScaleUtility.BaseMarginWidth16, GetYLocationFromFrame(_accountNumber.Frame, 12F), _cellWidth - GetScaledWidth(32), GetScaledHeight(1F)))
+            UIView lineView = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(_accountNumber.Frame, 12F), _cellWidth - GetScaledWidth(32), GetScaledHeight(1F)))
             {
                 BackgroundColor = UIColor.FromWhiteAlpha(1, 0.2F)
             };
@@ -106,29 +104,28 @@ namespace myTNB
                     , UIColor.FromWhiteAlpha(1, 0.60F), TNBFont.MuseoSans_12_300, UIColor.FromWhiteAlpha(1, 0.60F));
                 }
 
+                nfloat cellWidth = _cellWidth - GetScaledWidth(32F);
+                CGSize amountDueSize = _amountDue.SizeThatFits(new CGSize(1000F, GetScaledHeight(16F)));
+                ViewHelper.AdjustFrameSetWidth(_amountDue, amountDueSize.Width);
+                ViewHelper.AdjustFrameSetX(_amountDue, _cellWidth - _amountDue.Frame.Width - BaseMarginWidth16);
+
+                nfloat widthForNickName = cellWidth - _amountDue.Frame.Width;
+                _imgRe.Hidden = !model.IsReAccount;
+
                 if (model.IsReAccount)
                 {
-                    _imgRe.Hidden = false;
-                    CGSize nameSize = _nickname.SizeThatFits(new CGSize(1000F, 1000F));
-                    ViewHelper.AdjustFrameSetWidth(_nickname, nameSize.Width);
-                    ViewHelper.AdjustFrameSetX(_imgRe, _nickname.Frame.GetMaxX() + GetScaledWidth(4F));
+                    widthForNickName -= GetScaledWidth(18F);
+                    CGSize nameSize = _nickname.SizeThatFits(new CGSize(widthForNickName, GetScaledHeight(16F)));
+                    ViewHelper.AdjustFrameSetWidth(_nickname, nameSize.Width <= widthForNickName ? nameSize.Width : widthForNickName);
+                    nfloat addtl = nameSize.Width <= widthForNickName ? GetScaledWidth(4F) : 0;
+                    ViewHelper.AdjustFrameSetX(_imgRe, _nickname.Frame.GetMaxX() + addtl);
+                }
+                else
+                {
+                    CGSize nameSize = _nickname.SizeThatFits(new CGSize(widthForNickName, GetScaledHeight(16F)));
+                    ViewHelper.AdjustFrameSetWidth(_nickname, nameSize.Width <= widthForNickName ? nameSize.Width : widthForNickName);
                 }
             }
-        }
-
-        private nfloat GetScaledHeight(nfloat value)
-        {
-            return ScaleUtility.GetScaledHeight(value);
-        }
-
-        private nfloat GetScaledWidth(nfloat value)
-        {
-            return ScaleUtility.GetScaledWidth(value);
-        }
-
-        private nfloat GetYLocationFromFrame(CGRect frame, nfloat value)
-        {
-            return ScaleUtility.GetYLocationFromFrame(frame, value);
         }
     }
 }
