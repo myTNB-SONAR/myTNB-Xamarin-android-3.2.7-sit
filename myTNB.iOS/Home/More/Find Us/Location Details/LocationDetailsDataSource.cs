@@ -4,24 +4,27 @@ using System.Drawing;
 using System.Linq;
 using CoreGraphics;
 using Foundation;
+using myTNB.Profile;
 using UIKit;
 
 namespace myTNB.Home.More.FindUs.LocationDetails
 {
     public class LocationDetailsDataSource : UITableViewSource
     {
-        LocationDetailsViewController _controller;
-        AnnotationModel _annotation;
-        Dictionary<string, string> _dataDictionary = new Dictionary<string, string>();
+        private LocationDetailsViewController _controller;
+        private AnnotationModel _annotation;
+        private Dictionary<string, string> _dataDictionary = new Dictionary<string, string>();
+        private Func<string, string> GetI18NValue;
 
-        public LocationDetailsDataSource(LocationDetailsViewController controller, AnnotationModel annotation)
+        public LocationDetailsDataSource(LocationDetailsViewController controller, AnnotationModel annotation, Func<string, string> getI18NFunc)
         {
             _controller = controller;
             _annotation = annotation;
+            GetI18NValue = getI18NFunc;
             PopulateDictionary();
         }
 
-        void PopulateDictionary()
+        private void PopulateDictionary()
         {
             _dataDictionary.Clear();
             _dataDictionary.Add("TITLE", _annotation.Title);
@@ -35,7 +38,7 @@ namespace myTNB.Home.More.FindUs.LocationDetails
                 int phoneCount = 0;
                 if (_annotation.KTItem.Phones.Count > 1)
                 {
-                    foreach (var item in _annotation.KTItem.Phones)
+                    foreach (Model.PhoneModel item in _annotation.KTItem.Phones)
                     {
                         phoneCount++;
                         _dataDictionary.Add(string.Format("{0} {1}", "FindUs_Phone".Translate(), phoneCount), item.PhoneNumber);
@@ -67,7 +70,7 @@ namespace myTNB.Home.More.FindUs.LocationDetails
 
             if (key.ToLower().Equals("title"))
             {
-                var cell = tableView.DequeueReusableCell("LocationNameViewCell", indexPath) as LocationNameViewCell;
+                LocationNameViewCell cell = tableView.DequeueReusableCell("LocationNameViewCell", indexPath) as LocationNameViewCell;
                 cell.SelectionStyle = UITableViewCellSelectionStyle.None;
                 cell.lblName.Text = _annotation.Title;
                 CGSize newSize = GetTitleLabelSize(_annotation.Title);
@@ -77,9 +80,9 @@ namespace myTNB.Home.More.FindUs.LocationDetails
             }
             else if (key.ToLower().Equals("address"))
             {
-                var cell = tableView.DequeueReusableCell("AddressViewCell", indexPath) as AddressViewCell;
+                AddressViewCell cell = tableView.DequeueReusableCell("AddressViewCell", indexPath) as AddressViewCell;
                 cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-                cell.lblTitle.Text = "FindUs_Address".Translate().ToUpper();
+                cell.lblTitle.Text = GetI18NValue(ProfileConstants.I18N_Address);
                 cell.lblValue.Text = _annotation.Subtitle;
                 CGSize newSize = GetLabelSize(cell.lblValue, cell.lblValue.Frame.Width, 1000);
                 cell.lblValue.Frame = new CGRect(cell.lblValue.Frame.X, cell.lblValue.Frame.Y
@@ -90,16 +93,15 @@ namespace myTNB.Home.More.FindUs.LocationDetails
                 }));
 
                 cell.viewDirections.Frame = new CGRect(cell.viewDirections.Frame.X
-                                                       , 30 + ((newSize.Height - cell.viewDirections.Frame.Height) / 2)
-                                                       , cell.viewDirections.Frame.Width
-                                                       , cell.viewDirections.Frame.Height);
+                    , 30 + ((newSize.Height - cell.viewDirections.Frame.Height) / 2)                    , cell.viewDirections.Frame.Width
+                    , cell.viewDirections.Frame.Height);
                 return cell;
             }
             else if (key.ToLower().Contains("FindUs_Phone".Translate().ToLower()))
             {
-                var cell = tableView.DequeueReusableCell("ContactUsViewCell", indexPath) as ContactUsViewCell;
+                ContactUsViewCell cell = tableView.DequeueReusableCell("ContactUsViewCell", indexPath) as ContactUsViewCell;
                 cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-                cell.lblTitle.Text = key;
+                cell.lblTitle.Text = GetI18NValue(ProfileConstants.I18N_Phone);
                 string number = string.Empty;
                 if (!_annotation.is7E)
                 {
@@ -125,9 +127,9 @@ namespace myTNB.Home.More.FindUs.LocationDetails
             }
             else if (key.ToLower().Equals("opening hours"))
             {
-                var cell = tableView.DequeueReusableCell("OpeningHoursViewCell", indexPath) as OpeningHoursViewCell;
+                OpeningHoursViewCell cell = tableView.DequeueReusableCell("OpeningHoursViewCell", indexPath) as OpeningHoursViewCell;
                 cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-                cell.lblTitle.Text = "FindUs_OpeningHours".Translate().ToUpper();
+                cell.lblTitle.Text = GetI18NValue(ProfileConstants.I18N_OpeningHours);
                 if (_annotation.is7E)
                 {
                     cell.lbl7EOperation.Text = "FindUs_Open24Hours".Translate();
@@ -142,9 +144,9 @@ namespace myTNB.Home.More.FindUs.LocationDetails
                     CGSize newSizeDay = GetLabelSize(cell.lblDay, cell.lblDay.Frame.Width, 100);
                     CGSize newSizeTime = GetLabelSize(cell.lblTime, cell.lblTime.Frame.Width, 100);
                     cell.lblDay.Frame = new CGRect(cell.lblDay.Frame.X, cell.lblDay.Frame.Y
-                                                   , cell.lblDay.Frame.Width, newSizeDay.Height);
+                        , cell.lblDay.Frame.Width, newSizeDay.Height);
                     cell.lblTime.Frame = new CGRect(cell.lblTime.Frame.X, cell.lblTime.Frame.Y
-                                                    , cell.lblTime.Frame.Width, newSizeTime.Height);
+                        , cell.lblTime.Frame.Width, newSizeTime.Height);
                     return cell;
                 }
                 cell.lblDay.Hidden = _annotation.is7E;
@@ -154,9 +156,9 @@ namespace myTNB.Home.More.FindUs.LocationDetails
             }
             else if (key.ToLower().Equals("services"))
             {
-                var cell = tableView.DequeueReusableCell("ServicesViewCell", indexPath) as ServicesViewCell;
+                ServicesViewCell cell = tableView.DequeueReusableCell("ServicesViewCell", indexPath) as ServicesViewCell;
                 cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-                cell.lblTitle.Text = "FindUs_Services".Translate().ToUpper();
+                cell.lblTitle.Text = GetI18NValue(ProfileConstants.I18N_Services);
                 cell.AddSubview(RenderServicesListCell());
                 return cell;
             }
@@ -255,13 +257,13 @@ namespace myTNB.Home.More.FindUs.LocationDetails
                 innerView.AddSubviews(lblDot, lblVal);
                 viewContent.AddSubview(innerView);
 
-                lblYPos = lblYPos + strSize.Height;
+                lblYPos += strSize.Height;
             }
 
             return viewContent;
         }
 
-        void GetOperatingHours(ref string day, ref string time)
+        private void GetOperatingHours(ref string day, ref string time)
         {
             for (int i = 0; i < _annotation.KTItem.OpeningHours.Count; i++)
             {
@@ -276,7 +278,7 @@ namespace myTNB.Home.More.FindUs.LocationDetails
             }
         }
 
-        void GetServices(ref string services)
+        private void GetServices(ref string services)
         {
             if (_annotation.is7E)
             {
@@ -296,12 +298,12 @@ namespace myTNB.Home.More.FindUs.LocationDetails
             }
         }
 
-        CGSize GetLabelSize(UILabel label, nfloat width, nfloat height)
+        private CGSize GetLabelSize(UILabel label, nfloat width, nfloat height)
         {
             return label.Text.StringSize(label.Font, new SizeF((float)width, (float)height));
         }
 
-        CGSize GetLabelSize(string text, bool hasRightIcon)
+        private CGSize GetLabelSize(string text, bool hasRightIcon)
         {
             float widthInset = hasRightIcon ? 78F : 36F;
             UILabel label = new UILabel(new CGRect(0, 0, UIApplication.SharedApplication.KeyWindow.Frame.Width - widthInset, 1000));
@@ -310,7 +312,7 @@ namespace myTNB.Home.More.FindUs.LocationDetails
             return label.Text.StringSize(label.Font, new SizeF((float)label.Frame.Width, 1000F));
         }
 
-        CGSize GetTitleLabelSize(string text)
+        private CGSize GetTitleLabelSize(string text)
         {
             UILabel label = new UILabel(new CGRect(0, 0, UIApplication.SharedApplication.KeyWindow.Frame.Width - 36, 1000));
             label.Font = MyTNBFont.MuseoSans16;

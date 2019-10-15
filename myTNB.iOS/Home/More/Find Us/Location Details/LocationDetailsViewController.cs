@@ -8,10 +8,11 @@ using myTNB.Dashboard.DashboardComponents;
 using myTNB.Home.Components;
 using System.Collections.Generic;
 using System.Diagnostics;
+using myTNB.Profile;
 
 namespace myTNB
 {
-    public partial class LocationDetailsViewController : UIViewController
+    public partial class LocationDetailsViewController : CustomUIViewController
     {
         public LocationDetailsViewController(IntPtr handle) : base(handle)
         {
@@ -20,11 +21,12 @@ namespace myTNB
         public string NavigationTitle = string.Empty;
         public AnnotationModel Annotation;
 
-        ActivityIndicatorComponent _activityIndicator;
-        UIImageView _imgLocation;
+        private ActivityIndicatorComponent _activityIndicator;
+        private UIImageView _imgLocation;
 
         public override void ViewDidLoad()
         {
+            PageName = ProfileConstants.Pagename_LocationDetails;
             base.ViewDidLoad();
             ActivityIndicator.Show();
             SetNavigationBar();
@@ -62,7 +64,7 @@ namespace myTNB
             View.AddSubview(headerView);
         }
 
-        void SetTableHeader()
+        private void SetTableHeader()
         {
             UIView viewHeader = new UIView(new CGRect(0, 0, View.Frame.Width, 180));
             _imgLocation = new UIImageView(new CGRect(0, 0, View.Frame.Width, 180));
@@ -72,7 +74,7 @@ namespace myTNB
             locationDetailsTableView.TableHeaderView = viewHeader;
         }
 
-        void AddLocationImage()
+        private void AddLocationImage()
         {
             string imgPath = string.Empty;
             if ((bool)Annotation?.is7E)
@@ -143,12 +145,12 @@ namespace myTNB
             }
         }
 
-        void SetTableView()
+        private void SetTableView()
         {
             SetTableHeader();
             locationDetailsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             locationDetailsTableView.Frame = new CGRect(0, 64, View.Frame.Width, View.Frame.Height - 64);
-            locationDetailsTableView.Source = new LocationDetailsDataSource(this, Annotation);
+            locationDetailsTableView.Source = new LocationDetailsDataSource(this, Annotation, GetI18NValue);
             locationDetailsTableView.ReloadData();
         }
 
@@ -194,11 +196,11 @@ namespace myTNB
             }
             if (schemaDictionary.Count > 0)
             {
-                var mapAlert = UIAlertController.Create("FindUs_MapSelection".Translate()
+                UIAlertController mapAlert = UIAlertController.Create("FindUs_MapSelection".Translate()
                     , "FindUs_SelectApplication".Translate(), UIAlertControllerStyle.ActionSheet);
-                foreach (var schema in schemaDictionary)
+                foreach (KeyValuePair<string, string> schema in schemaDictionary)
                 {
-                    var action = UIAlertAction.Create(string.Format("{0} {1}", "FindUs_OpenIn".Translate(), schema.Key)
+                    UIAlertAction action = UIAlertAction.Create(string.Format("{0} {1}", "FindUs_OpenIn".Translate(), schema.Key)
                         , UIAlertActionStyle.Default, (obj) =>
                     {
                         UIApplication.SharedApplication.OpenUrl(new NSUrl(schema.Value));

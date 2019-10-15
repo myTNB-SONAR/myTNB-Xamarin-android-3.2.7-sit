@@ -432,5 +432,15 @@
   },
   "TnC": {
     "title": "Terms & Conditions"
+  },
+  "FindUs": {
+    "title": "Find Us",
+    "searchPlaceholder": "Search via street name or area"
+  },
+  "LocationDetails": {
+    "address": "ADDRESS",
+    "phone": "PHONE",
+    "openingHours": "OPENING HOURS",
+    "services": "SERVICES"
   }
 }

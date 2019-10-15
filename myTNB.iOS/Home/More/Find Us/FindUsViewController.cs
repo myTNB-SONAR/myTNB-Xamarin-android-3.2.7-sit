@@ -11,10 +11,11 @@ using System.Linq;
 using myTNB.Home.More.FindUs;
 using System.Threading.Tasks;
 using myTNB.Model;
+using myTNB.Profile;
 
 namespace myTNB
 {
-    public partial class FindUsViewController : UIViewController
+    public partial class FindUsViewController : CustomUIViewController
     {
         public FindUsViewController(IntPtr handle) : base(handle)
         {
@@ -37,6 +38,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            PageName = ProfileConstants.Pagename_FindUs;
             base.ViewDidLoad();
             SetNavigationBar();
             AddSubViews();
@@ -215,7 +217,7 @@ namespace myTNB
                 Frame = new CGRect(0, 12, viewSearch.Frame.Width, 24)
                 ,
                 AttributedPlaceholder = new NSAttributedString(
-                    "FindUs_Search".Translate()
+                    GetI18NValue(ProfileConstants.I18N_SearchPlaceholder)
                     , font: MyTNBFont.MuseoSans16
                     , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
@@ -343,7 +345,7 @@ namespace myTNB
             UIView headerView = gradientViewComponent.GetUI();
             TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("FindUs_FindUs".Translate());
+            titleBarComponent.SetTitle(GetI18NValue(ProfileConstants.I18N_NavTitle));
             titleBarComponent.SetPrimaryVisibility(true);
             titleBarComponent.SetBackVisibility(false);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>

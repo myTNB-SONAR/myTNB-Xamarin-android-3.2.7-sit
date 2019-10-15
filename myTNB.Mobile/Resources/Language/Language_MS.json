@@ -430,5 +430,15 @@
   },
   "TnC": {
     "title": "Terma & Syarat"
+  },
+  "FindUs": {
+    "title": "Temui Kami",
+    "searchPlaceholder": "Cari mengikut nama jalan atau kawasan"
+  },
+  "LocationDetails": {
+    "address": "ALAMAT",
+    "phone": "NOMBOR TELEFON",
+    "openingHours": "MASA OPERASI",
+    "services": "PERKHIDMATAN"
   }
 }

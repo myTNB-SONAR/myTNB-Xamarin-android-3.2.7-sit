@@ -18,8 +18,8 @@ namespace myTNB
         {
         }
 
-        TitleBarComponent _titleBarComponent;
-        UILabel _lblAppVersion;
+        private TitleBarComponent _titleBarComponent;
+        private UILabel _lblAppVersion;
 
         public override void ViewDidLoad()
         {
@@ -33,7 +33,6 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
-            //NavigationController.SetNavigationBarHidden(true, true);
             moreTableView.Source = new MoreDataSource(this, GetMoreList());
             moreTableView.ReloadData();
         }
@@ -41,7 +40,6 @@ namespace myTNB
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
-            //NavigationController.SetNavigationBarHidden(false, true);
         }
 
         public void LanguageDidChange(NSNotification notification)
@@ -55,7 +53,7 @@ namespace myTNB
             }
         }
 
-        Dictionary<string, List<string>> GetMoreList()
+        private Dictionary<string, List<string>> GetMoreList()
         {
             Dictionary<string, List<string>> _itemsDictionary = new Dictionary<string, List<string>>(){
                 {GetI18NValue(ProfileConstants.I18N_Settings), new List<string>{ GetI18NValue(ProfileConstants.I18N_MyAccount)
@@ -88,7 +86,7 @@ namespace myTNB
             return _itemsDictionary;
         }
 
-        void SetSubviews()
+        private void SetSubviews()
         {
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 64, true);
             UIView headerView = gradientViewComponent.GetUI();
@@ -195,13 +193,13 @@ namespace myTNB
                     }
                     else
                     {
-                        AlertHandler.DisplayNoDataAlert(this);
+                        DisplayNoDataAlert();
                     }
                 });
             });
         }
 
-        void GoToFindUs()
+        private void GoToFindUs()
         {
             DataManager.DataManager.SharedInstance.CurrentStoreTypeIndex = 0;
             DataManager.DataManager.SharedInstance.PreviousStoreTypeIndex = 0;
@@ -215,7 +213,7 @@ namespace myTNB
             PresentViewController(navController, true, null);
         }
 
-        void GetNotificationPreferences()
+        private void GetNotificationPreferences()
         {
             ActivityIndicator.Show();
             PushNotificationHelper.GetUserNotificationPreferences();
@@ -248,12 +246,12 @@ namespace myTNB
                 {
                     errorMessage = DataManager.DataManager.SharedInstance.NotificationChannelResponse?.d?.message;
                 }
-                AlertHandler.DisplayServiceError(this, errorMessage);
+                DisplayServiceError(errorMessage);
                 ActivityIndicator.Hide();
             }
         }
 
-        void GoToLanguageSetting()
+        private void GoToLanguageSetting()
         {
             UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
             GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
@@ -267,7 +265,7 @@ namespace myTNB
             PresentViewController(navController, true, null);
         }
 
-        void GoToMyAccount()
+        private void GoToMyAccount()
         {
             ActivityIndicator.Show();
             ServiceCall.GetRegisteredCards().ContinueWith(task =>
@@ -285,7 +283,7 @@ namespace myTNB
             });
         }
 
-        void GoToTermsAndCondition()
+        private void GoToTermsAndCondition()
         {
             UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
             TermsAndConditionViewController viewController =
@@ -299,7 +297,7 @@ namespace myTNB
             }
         }
 
-        void GoToFAQ()
+        private void GoToFAQ()
         {
             UIStoryboard storyBoard = UIStoryboard.FromName("FAQ", null);
             FAQViewController viewController =
@@ -309,12 +307,12 @@ namespace myTNB
             PresentViewController(navController, true, null);
         }
 
-        bool IsValidWeblinks()
+        private bool IsValidWeblinks()
         {
             return DataManager.DataManager.SharedInstance.WebLinks != null;
         }
 
-        void ShowBrowser(string code)
+        private void ShowBrowser(string code)
         {
             if (IsValidWeblinks())
             {
@@ -338,10 +336,10 @@ namespace myTNB
                     return;
                 }
             }
-            AlertHandler.DisplayServiceError(this, "Error_LinkNotAvailable".Translate());
+            DisplayServiceError("Error_LinkNotAvailable".Translate());
         }
 
-        void CallCustomerService(string code)
+        private void CallCustomerService(string code)
         {
             if (IsValidWeblinks())
             {
@@ -357,10 +355,10 @@ namespace myTNB
                     }
                 }
             }
-            AlertHandler.DisplayServiceError(this, "Error_TelephoneNumberNotAvailable".Translate());
+            DisplayServiceError("Error_TelephoneNumberNotAvailable".Translate());
         }
 
-        void OpenAppStore()
+        private void OpenAppStore()
         {
             if (IsValidWeblinks())
             {
@@ -375,29 +373,29 @@ namespace myTNB
                     }
                 }
             }
-            AlertHandler.DisplayServiceError(this, "Error_RatingNotAvailable".Translate());
+            DisplayServiceError("Error_RatingNotAvailable".Translate());
         }
 
-        void Share()
+        private void Share()
         {
             if (IsValidWeblinks())
             {
                 int index = DataManager.DataManager.SharedInstance.WebLinks?.FindIndex(x => x.Code.ToLower().Equals("ios")) ?? -1;
                 if (index > -1)
                 {
-                    var message = NSObject.FromObject("More_ShareMessage".Translate());
+                    NSObject message = NSObject.FromObject(GetI18NValue(ProfileConstants.I18N_ShareMessage));
                     string url = DataManager.DataManager.SharedInstance.WebLinks[index].Url;
-                    var item = NSObject.FromObject(url);
-                    var activityItems = new NSObject[] { message, item };
+                    NSObject item = NSObject.FromObject(url);
+                    NSObject[] activityItems = { message, item };
                     UIActivity[] applicationActivities = null;
-                    var activityController = new UIActivityViewController(activityItems, applicationActivities);
+                    UIActivityViewController activityController = new UIActivityViewController(activityItems, applicationActivities);
                     UIBarButtonItem.AppearanceWhenContainedIn(new[] { typeof(UINavigationBar) }).TintColor = UIColor.White;
                     activityController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                     PresentViewController(activityController, true, null);
                     return;
                 }
             }
-            AlertHandler.DisplayServiceError(this, "Error_ShareNotAvailable".Translate());
+            DisplayServiceError("Error_ShareNotAvailable".Translate());
         }
     }
 }
