@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using myTNB.Registration;
 using myTNB.DataManager;
 using System.Diagnostics;
+using myTNB.Profile;
 
 namespace myTNB
 {
@@ -22,9 +23,10 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            PageName = ProfileConstants.Pagename_Profile;
             NavigationController.NavigationBarHidden = true;
             base.ViewDidLoad();
-            NotifCenterUtility.AddObserver((Foundation.NSString)"LanguageDidChange", LanguageDidChange);
+            NotifCenterUtility.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
             SetSubviews();
         }
 
@@ -45,8 +47,8 @@ namespace myTNB
         public void LanguageDidChange(NSNotification notification)
         {
             Debug.WriteLine("DEBUG >>> MORE LanguageDidChange");
-            _titleBarComponent?.SetTitle("More_Title".Translate());
-            _lblAppVersion.Text = string.Format("{0} {1}", "More_AppVersion".Translate(), AppVersionHelper.GetAppShortVersion());
+            _titleBarComponent?.SetTitle(GetI18NValue(ProfileConstants.I18N_NavTitle));
+            _lblAppVersion.Text = string.Format("{0} {1}", GetI18NValue(ProfileConstants.I18N_AppVersion), AppVersionHelper.GetAppShortVersion());
             if (!TNBGlobal.IsProduction)
             {
                 _lblAppVersion.Text += string.Format("({0})", AppVersionHelper.GetBuildVersion());
@@ -56,17 +58,17 @@ namespace myTNB
         Dictionary<string, List<string>> GetMoreList()
         {
             Dictionary<string, List<string>> _itemsDictionary = new Dictionary<string, List<string>>(){
-                {"More_Settings".Translate(), new List<string>{ "More_MyAccount".Translate()
-                    , "More_Notifications".Translate()}}//, LanguageSettings.Title}}
-                , {"More_HelpAndSupport".Translate(), new List<string>{ "More_FindUs".Translate()
-                    , "More_CallUsOutagesAndBreakdown".Translate()
-                    , "More_CallUsBilling".Translate()
-                    , "More_FAQ".Translate()
-                    , "More_TnC".Translate()}}
-                , {"More_Share".Translate(), new List<string>{ "More_ShareThisApp".Translate()
-                    , "More_RateThisApp".Translate()}}
+                {GetI18NValue(ProfileConstants.I18N_Settings), new List<string>{ GetI18NValue(ProfileConstants.I18N_MyAccount)
+                    , GetI18NValue(ProfileConstants.I18N_Notifications)}}//, LanguageSettings.Title}}
+                , {GetI18NValue(ProfileConstants.I18N_HelpAndSupport), new List<string>{ GetI18NValue(ProfileConstants.I18N_FindUs)
+                    , GetI18NValue(ProfileConstants.I18N_CallUsOutagesAndBreakdown)
+                    ,GetI18NValue(ProfileConstants.I18N_CallUsBilling)
+                    ,GetI18NValue(ProfileConstants.I18N_FAQ)
+                    , GetI18NValue(ProfileConstants.I18N_TNC)}}
+                , {GetI18NValue(ProfileConstants.I18N_Share).Translate(), new List<string>{ GetI18NValue(ProfileConstants.I18N_ShareDescription)
+                    , GetI18NValue(ProfileConstants.I18N_Rate).Translate()}}
             };
-            if (_itemsDictionary.ContainsKey("More_HelpAndSupport".Translate()) && IsValidWeblinks())
+            if (_itemsDictionary.ContainsKey(GetI18NValue(ProfileConstants.I18N_HelpAndSupport)) && IsValidWeblinks())
             {
                 int cloIndex = DataManager.DataManager.SharedInstance.WebLinks.FindIndex(x => x.Code.ToLower().Equals("tnbclo"));
                 int cleIndex = DataManager.DataManager.SharedInstance.WebLinks.FindIndex(x => x.Code.ToLower().Equals("tnbcle"));
@@ -74,13 +76,13 @@ namespace myTNB
                 {
                     List<string> helpAndSupportList = new List<string>
                     {
-                        "More_FindUs".Translate()
+                        GetI18NValue(ProfileConstants.I18N_FindUs)
                         , DataManager.DataManager.SharedInstance.WebLinks[cloIndex].Title
                         , DataManager.DataManager.SharedInstance.WebLinks[cleIndex].Title
-                        , "More_FAQ".Translate()
-                        , "More_TnC".Translate()
+                        , GetI18NValue(ProfileConstants.I18N_FAQ)
+                        , GetI18NValue(ProfileConstants.I18N_TNC)
                     };
-                    _itemsDictionary["More_HelpAndSupport".Translate()] = helpAndSupportList;
+                    _itemsDictionary[GetI18NValue(ProfileConstants.I18N_HelpAndSupport)] = helpAndSupportList;
                 }
             }
             return _itemsDictionary;
@@ -92,7 +94,7 @@ namespace myTNB
             UIView headerView = gradientViewComponent.GetUI();
             _titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = _titleBarComponent.GetUI();
-            _titleBarComponent.SetTitle("More_Title".Translate());
+            _titleBarComponent.SetTitle(GetI18NValue(ProfileConstants.I18N_NavTitle));
             _titleBarComponent.SetPrimaryVisibility(true);
             headerView.AddSubview(titleBarView);
             View.AddSubview(headerView);
@@ -107,7 +109,7 @@ namespace myTNB
             {
                 TextColor = MyTNBColor.SilverChalice,
                 Font = MyTNBFont.MuseoSans9_300,
-                Text = string.Format("{0} {1}", "More_AppVersion".Translate(), AppVersionHelper.GetAppShortVersion())
+                Text = string.Format("{0} {1}", GetI18NValue(ProfileConstants.I18N_AppVersion), AppVersionHelper.GetAppShortVersion())
             };
 
             if (!TNBGlobal.IsProduction)

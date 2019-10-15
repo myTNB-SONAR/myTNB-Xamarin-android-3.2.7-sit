@@ -2485,6 +2485,7 @@
     <Compile Include="Model\GetIsSmrApplyAllowed\GetIsSmrApplyAllowedResponse.cs" />
     <Compile Include="Sitecore CMS\SitecoreServices.cs" />
     <Compile Include="Helpers\NSDataHelper.cs" />
+    <Compile Include="Home\More\ProfileConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

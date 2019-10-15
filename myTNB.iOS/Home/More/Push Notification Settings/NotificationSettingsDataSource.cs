@@ -10,9 +10,10 @@ namespace myTNB.Home.More.PushNotificationSettings
     public class NotificationSettingsDataSource : UITableViewSource
     {
 
-        NotificationSettingsViewController _controller;
-        List<string> _keys = new List<string>();
-        List<NotificationPreferenceModel> _preferenceItems = new List<NotificationPreferenceModel>();
+        private NotificationSettingsViewController _controller;
+        private List<string> _keys = new List<string>();
+        private List<NotificationPreferenceModel> _preferenceItems = new List<NotificationPreferenceModel>();
+
         public NotificationSettingsDataSource(NotificationSettingsViewController controller, List<string> keys, List<NotificationPreferenceModel> preferenceItems)
         {
             _controller = controller;

@@ -10,15 +10,15 @@ using myTNB.SitecoreCMS.Model;
 using Foundation;
 using myTNB.SQLite.SQLiteDataManager;
 using System.Collections.Generic;
-
 using System.Diagnostics;
+using myTNB.Profile;
 
 namespace myTNB
 {
-    public partial class FAQViewController : UIViewController
+    public partial class FAQViewController : CustomUIViewController
     {
         FAQModel _faq = new FAQModel();
-        string _imageSize = string.Empty;
+        private string _imageSize = string.Empty;
         public string faqId;
         public FAQViewController(IntPtr handle) : base(handle)
         {
@@ -26,6 +26,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            PageName = ProfileConstants.Pagename_FAQ;
             base.ViewDidLoad();
             SetNavigationBar();
             tableviewFAQ.Frame = new CGRect(0, 0, View.Frame.Width, View.Frame.Height - 64);
@@ -94,9 +95,9 @@ namespace myTNB
             }
         }
 
-        void SetNavigationBar()
+        private void SetNavigationBar()
         {
-            Title = _faq.title;
+            Title = GetI18NValue(ProfileConstants.I18N_NavTitle);
             NavigationItem.HidesBackButton = true;
             UIImage backImg = UIImage.FromBundle("Back-White");
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
@@ -106,7 +107,7 @@ namespace myTNB
             NavigationItem.LeftBarButtonItem = btnBack;
         }
 
-        Task GetFAQs()
+        private Task GetFAQs()
         {
             return Task.Factory.StartNew(() =>
             {
@@ -158,12 +159,11 @@ namespace myTNB
             });
         }
 
-        void GetFAQContent()
+        private void GetFAQContent()
         {
-            string faqContent = string.Empty;
             try
             {
-                faqContent = System.IO.File.ReadAllText("FAQ.json");
+                string faqContent = System.IO.File.ReadAllText("FAQ.json");
                 _faq = JsonConvert.DeserializeObject<FAQModel>(faqContent);
             }
             catch (Exception e)

@@ -3,40 +3,39 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using CoreGraphics;
 using Foundation;
+using myTNB.Profile;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using UIKit;
 
 namespace myTNB.Registration
 {
-    public partial class TermsAndConditionViewController : UIViewController
+    public partial class TermsAndConditionViewController : CustomUIViewController
     {
         public TermsAndConditionViewController(IntPtr handle) : base(handle)
         {
         }
 
-        List<FullRTEPagesModel> _tncItems = new List<FullRTEPagesModel>();
+        private List<FullRTEPagesModel> _tncItems = new List<FullRTEPagesModel>();
 
-        public bool isPresentedVC = false;
+        public bool isPresentedVC;
 
         public override void ViewDidLoad()
         {
+            PageName = ProfileConstants.Pagename_TnC;
             base.ViewDidLoad();
 
             AddBackButton();
             InitializedSubviews();
         }
 
-        void InitializedSubviews()
+        private void InitializedSubviews()
         {
             NSError error = null;
             NSAttributedString htmlString = new NSAttributedString(GetContent()
                 , new NSAttributedStringDocumentAttributes { DocumentType = NSDocumentType.HTML }, ref error);
             NSMutableAttributedString mutableHTMLString = new NSMutableAttributedString(htmlString);
-            NSMutableParagraphStyle style = new NSMutableParagraphStyle
-            {
-                Alignment = UITextAlignment.Justified
-            };
+
             UIStringAttributes attributes = new UIStringAttributes
             {
                 Font = MyTNBFont.MuseoSans12
@@ -61,9 +60,9 @@ namespace myTNB.Registration
             View.AddSubview(txtViewTNC);
         }
 
-        void AddBackButton()
+        private void AddBackButton()
         {
-            Title = "Registration_TnCTitle".Translate();
+            Title = GetI18NValue(ProfileConstants.I18N_NavTitle);
             NavigationItem.HidesBackButton = true;
             UIImage backImg = UIImage.FromBundle("Back-White");
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
@@ -80,7 +79,7 @@ namespace myTNB.Registration
             NavigationItem.LeftBarButtonItem = btnBack;
         }
 
-        string GetTNCFromFile()
+        private string GetTNCFromFile()
         {
             string tncStatement = string.Empty;
             try
@@ -94,7 +93,7 @@ namespace myTNB.Registration
             return tncStatement;
         }
 
-        string GetContent()
+        private string GetContent()
         {
             if (IsFromSiteCore())
             {
@@ -112,7 +111,7 @@ namespace myTNB.Registration
             }
         }
 
-        bool IsFromSiteCore()
+        private bool IsFromSiteCore()
         {
             TermsAndConditionEntity tncEntity = new TermsAndConditionEntity();
             _tncItems = tncEntity.GetAllItems();

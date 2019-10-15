@@ -84,7 +84,7 @@
     "refreshMessage": "This page must be tired. Tap the button below to help it out.",
     "serviceErrorDefaultMessage": "Sorry, something went wrong. Please try again later.",
     "invalid_amountMessage": "Kindly enter a non-zero/positive amount",
-    "invalid_amountTitle": "Invalid Amount",
+    "invalid_amountTitle": "Invalid Amount"
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -404,5 +404,33 @@
     "removeAcct": "Remove Account",
     "removeAcctMsg": "You are about to remove {0}, account number {1}.",
     "addAcctSuccessMsg": "Add Account(s) Successful"
+  },
+  "Profile": {
+    "title": "Profile",
+    "appVersion": "App Version",
+    "callUsBilling": "Call Us (Billing Enquiries)",
+    "callUsOutagesAndBreakdown": "Call Us (Outages & Breakdown)",
+    "faq": "FAQ",
+    "helpAndSupport": "Help & Support",
+    "myAccount": "My Account",
+    "notifications": "Notifications",
+    "rate": "Rate this app",
+    "settings": "Settings",
+    "share": "Share",
+    "shareMessage": "New myTNB app is now available in App Store.",
+    "shareDescription": "Share this app",
+    "tnc": "Terms & Conditions",
+    "findUs": "Find Us"
+  },
+  "NotificationSettings": {
+    "title": "Notification Settings",
+    "typeDescription": "Select the type of notifications you wish to receive from TNB",
+    "modeDescription": "Select how you wish to receive your notifications"
+  },
+  "FAQ": {
+    "title": "FAQ"
+  },
+  "TnC": {
+    "title": "Terms & Conditions"
   }
 }

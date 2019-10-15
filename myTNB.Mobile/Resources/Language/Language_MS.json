@@ -402,5 +402,33 @@
     "removeAcct": "Remove Account",
     "removeAcctMsg": "You are about to remove {0}, account number {1}.",
     "addAcctSuccessMsg": "Add Account(s) Successful"
+  },
+  "Profile": {
+    "title": "Profil",
+    "appVersion": "Aplikasi Versi",
+    "callUsBilling": "Hubungi Kami (Pertanyaan Berkaitan Bil)", //Fallback - Service Dependent
+    "callUsOutagesAndBreakdown": "Hubungi Kami (Gangguan Bekalan)", //Fallback - Service Dependent
+    "faq": "Soalan Lazim",
+    "helpAndSupport": "Bantuan & Sokongan",
+    "myAccount": "Akaun Saya",
+    "notifications": "Pemberitahuan",
+    "rate": "Nilai aplikasi ini",
+    "settings": "Tetapan",
+    "share": "Kongsi",
+    "shareMessage": "New myTNB app is now available in App Store.",
+    "shareDescription": "Kongsi aplikasi ini",
+    "tnc": "Terma & Syarat",
+    "findUs": "Temui Kami"
+  },
+  "NotificationSettings": {
+    "title": "Tetapan Pemberitahuan",
+    "typeDescription": "Pilih jenis makluman yang ingin diterima daripada TNB",
+    "modeDescription": "Pilih cara pemberitahuan anda"
+  },
+  "FAQ": {
+    "title": "SOALAN LAZIM"
+  },
+  "TnC": {
+    "title": "Terma & Syarat"
   }
 }

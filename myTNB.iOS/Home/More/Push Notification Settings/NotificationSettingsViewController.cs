@@ -6,22 +6,19 @@ using myTNB.Home.More.PushNotificationSettings;
 using System.Collections.Generic;
 using myTNB.Model;
 using System.Threading.Tasks;
+using myTNB.Profile;
 
 namespace myTNB
 {
-    public partial class NotificationSettingsViewController : UIViewController
+    public partial class NotificationSettingsViewController : CustomUIViewController
     {
         public NotificationSettingsViewController(IntPtr handle) : base(handle)
         {
         }
 
-        internal List<string> NotificationSettingsTitle = new List<string>
-        {
-            "Notification_Type".Translate(),
-            "Notification_Channel".Translate()
-        };
+        internal List<string> NotificationSettingsTitle;
 
-        NotificationPreferenceUpdateResponseModel _notificationPreferenceUpdate = new NotificationPreferenceUpdateResponseModel();
+        private NotificationPreferenceUpdateResponseModel _notificationPreferenceUpdate = new NotificationPreferenceUpdateResponseModel();
 
         internal List<NotificationPreferenceModel> SelectedNotificationTypeList = new List<NotificationPreferenceModel>();
         internal List<NotificationPreferenceModel> SelectedNotificationChannelList = new List<NotificationPreferenceModel>();
@@ -30,7 +27,13 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            PageName = ProfileConstants.Pagename_NotificationSettings;
             base.ViewDidLoad();
+            NotificationSettingsTitle = new List<string>
+            {
+               GetI18NValue(ProfileConstants.I18N_TypeDescription),
+               GetI18NValue(ProfileConstants.I18N_ModeDescription)
+            };
             SetNavigationBar();
             SetSubViews();
         }
@@ -57,7 +60,7 @@ namespace myTNB
             UIView headerView = gradientViewComponent.GetUI();
             TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("Notification_Title".Translate());
+            titleBarComponent.SetTitle(GetI18NValue(ProfileConstants.I18N_NavTitle));
             titleBarComponent.SetPrimaryVisibility(true);
             titleBarComponent.SetBackVisibility(false);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
@@ -68,7 +71,7 @@ namespace myTNB
             View.AddSubview(headerView);
         }
 
-        internal void SetSubViews()
+        private void SetSubViews()
         {
             notificationSettingsTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution()
                 ? 88 : 64, View.Frame.Width, View.Frame.Height - 64);
@@ -117,7 +120,7 @@ namespace myTNB
             });
         }
 
-        internal Task SaveUserNotificationPreference(bool isNotificationType, NotificationPreferenceModel preference)
+        private Task SaveUserNotificationPreference(bool isNotificationType, NotificationPreferenceModel preference)
         {
             return Task.Factory.StartNew(() =>
             {
