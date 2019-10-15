@@ -189,14 +189,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 
         public async void GetCARegisteredContactInfoAsync(AccountData selectedAccount)
         {
-            //SMRAccount selectedSMRAccount = new SMRAccount();
-            //selectedSMRAccount.email = "";
-            //selectedSMRAccount.mobileNumber = "";
-            //selectedSMRAccount = UserSessions.GetSMRAccountList().Find(x => x.accountNumber == selectedAccount.AccountNum);
-            //if (UserSessions.GetSMRAccountList().Count > 0)
-            //{
-            //    selectedSMRAccount = UserSessions.GetSMRAccountList().Find(x => x.accountNumber == selectedAccount.AccountNum);
-            //}
+            this.mView.ShowProgressDialog();
             try
             {
                 CustomerBillingAccount account = CustomerBillingAccount.FindByAccNum(selectedAccount.AccountNum);
@@ -221,7 +214,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     ICNumber = UserEntity.GetActive().IdentificationNo,
                     usrInf = currentUsrInf
                 });
-
+                
                 if (response.Data.ErrorCode == "7200")
                 {
                     CAContactDetailsModel contactDetailsModel = new CAContactDetailsModel();
@@ -232,25 +225,25 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 }
                 else
                 {
-                    //this.mView.UpdateSMRData(selectedSMRAccount.email, selectedSMRAccount.mobileNumber);
                     this.mView.EnableButton();
                 }
+                this.mView.HideProgressDialog();
             }
             catch (System.OperationCanceledException cancelledException)
             {
-                //this.mView.UpdateSMRData(selectedSMRAccount.email, selectedSMRAccount.mobileNumber);
+                this.mView.HideProgressDialog();
                 this.mView.EnableButton();
                 Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
-                //this.mView.UpdateSMRData(selectedSMRAccount.email, selectedSMRAccount.mobileNumber);
+                this.mView.HideProgressDialog();
                 this.mView.EnableButton();
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
-                //this.mView.UpdateSMRData(selectedSMRAccount.email, selectedSMRAccount.mobileNumber);
+                this.mView.HideProgressDialog();
                 this.mView.EnableButton();
                 Utility.LoggingNonFatalError(unknownException);
             }

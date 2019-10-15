@@ -137,7 +137,7 @@
                         android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
                         android:layout_weight="1"
-                        android:text="Enable Self Meter Reading"
+                        android:text="Start Self Meter Reading"
                         android:textAllCaps="false"
                         android:visibility="visible" />
                 </LinearLayout>
@@ -213,7 +213,7 @@
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_weight="1"
-                    android:text="Disable Self Meter Reading"
+                    android:text="Stop Self Meter Reading"
                     android:textAllCaps="false"
                     android:visibility="visible" />
             </LinearLayout>
