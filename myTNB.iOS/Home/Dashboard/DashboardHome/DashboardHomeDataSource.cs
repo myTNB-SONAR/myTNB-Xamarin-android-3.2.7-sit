@@ -19,6 +19,7 @@ namespace myTNB
         private List<HelpModel> _helpList;
         private bool _isServicesShimmering, _isHelpShimmering, _showRefreshScreen;
         private List<PromotionsModelV2> _promotions;
+        public Action<int> _onReloadCell;
 
         public DashboardHomeDataSource(DashboardHomeViewController controller,
             AccountListViewController accountListViewController,
@@ -28,7 +29,8 @@ namespace myTNB
             bool isServicesShimmering,
             bool isHelpShimmering,
             bool showRefreshScreen,
-            RefreshScreenComponent refreshScreenComponent)
+            RefreshScreenComponent refreshScreenComponent,
+            Action<int> onReloadCell)
         {
             _controller = controller;
             _accountListViewController = accountListViewController;
@@ -39,6 +41,7 @@ namespace myTNB
             _isHelpShimmering = isHelpShimmering;
             _showRefreshScreen = showRefreshScreen;
             _refreshScreenComponent = refreshScreenComponent;
+            _onReloadCell = onReloadCell;
         }
 
         public override nint NumberOfSections(UITableView tableView)
@@ -91,10 +94,9 @@ namespace myTNB
             }
             if (indexPath.Row == 1)
             {
-                CGRect accountHeight = tableView.RectForRowAtIndexPath(NSIndexPath.Create(0, 0));
                 ServicesTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Services) as ServicesTableViewCell;
-                cell._titleLabel.Text = _controller.GetI18NValue(DashboardHomeConstants.I18N_MyServices);
-                cell._titleLabel.TextColor = accountHeight.Height < tableView.Frame.Height * 0.30F ? UIColor.White : MyTNBColor.WaterBlue;
+                cell.IsLoading = _isServicesShimmering;
+                cell.ReloadCell = _onReloadCell;
                 cell.AddCards(_services, _controller._servicesActionDictionary, _isServicesShimmering);
                 cell.ClipsToBounds = true;
                 return cell;

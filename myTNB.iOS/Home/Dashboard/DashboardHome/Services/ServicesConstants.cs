@@ -11,8 +11,8 @@ namespace myTNB.Home.Dashboard.DashboardHome.Services
             { "1001","Services-ApplySSMR"}
             , { "1002","Services-CheckStatus"}
             , { "1003","Services-Feedback"}
-            , { "1004","Services-SetAppointments"}
-            , { "1005","Services-ApplyAutoPay"}
+            , { "1004","Services-Pay-Bills"}
+            , { "1005","Services-View-Bills"}
         };
 
         //ID

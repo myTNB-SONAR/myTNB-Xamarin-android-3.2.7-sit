@@ -342,7 +342,7 @@ namespace myTNB
             _dashboardHomeHelper.GroupAccountsList(accountsList);
             _groupAccountList.Clear();
             _groupAccountList = DataManager.DataManager.SharedInstance.AccountsGroupList;
-            _homeViewController.OnReloadTableForSearch();
+            _homeViewController.OnUpdateCellWithoutReload(DashboardHomeConstants.CellIndex_Services);
             ClearScrollViewSubViews();
             AdjustParentFrame();
             SetCardScrollView();

@@ -250,7 +250,7 @@ namespace myTNB
                         DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
                         if (_homeViewController != null)
                         {
-                            _homeViewController.OnReloadTableForSearch();
+                            _homeViewController.OnUpdateCellWithoutReload(DashboardHomeConstants.CellIndex_Services);
                         }
                         PrepareAccountList();
                     }
@@ -497,7 +497,7 @@ namespace myTNB
                         _homeViewController.ShowRefreshScreen(false, null);
                         if (_homeViewController != null)
                         {
-                            _homeViewController.OnReloadTableForSearch();
+                            _homeViewController.OnUpdateCellWithoutReload(DashboardHomeConstants.CellIndex_Services);
                         }
                         ReloadViews(isFromSearch);
                     }
@@ -657,7 +657,7 @@ namespace myTNB
                             {
                                 if (_homeViewController != null)
                                 {
-                                    _homeViewController.OnReloadTableForSearch();
+                                    _homeViewController.OnUpdateCellWithoutReload(DashboardHomeConstants.CellIndex_Services);
                                 }
                             }
                         }
@@ -749,7 +749,7 @@ namespace myTNB
             {
                 if (_homeViewController != null)
                 {
-                    _homeViewController.OnReloadTableForSearch();
+                    _homeViewController.OnUpdateCellWithoutReload(DashboardHomeConstants.CellIndex_Services);
                 }
             }
             ViewHelper.AdjustFrameSetHeight(_parentView, _dashboardHomeHelper.GetHeightForAccountList() - GetScaledHeight(24F));
@@ -780,7 +780,7 @@ namespace myTNB
             DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
             if (_homeViewController != null)
             {
-                _homeViewController.OnReloadTableForSearch();
+                _homeViewController.OnUpdateCellWithoutReload(DashboardHomeConstants.CellIndex_Services);
             }
             PrepareAccountList(DataManager.DataManager.SharedInstance.CurrentAccountList);
         }

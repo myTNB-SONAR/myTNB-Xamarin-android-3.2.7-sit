@@ -1228,6 +1228,21 @@
     <ImageAsset Include="Assets.xcassets\Refresh-Icon.imageset\Refresh-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\BCRM-Down-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\BCRM-Down-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Up-Blue-Small.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Up-Blue-Small.imageset\Arrow-Up-Blue-Small%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Up-Blue-Small.imageset\Arrow-Up-Blue-Small%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Down-Blue-Small.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Down-Blue-Small.imageset\Arrow-Down-Blue-Small%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Arrow-Down-Blue-Small.imageset\Arrow-Down-Blue-Small%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-Pay-Bills.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Services-Pay-Bills.imageset\Services-Pay-Bills%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-Pay-Bills.imageset\Services-Pay-Bills%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-View-Bills.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Services-View-Bills.imageset\Services-View-Bills%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-View-Bills.imageset\Services-View-Bills%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Home-Footer-BG.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Home-Footer-BG.imageset\Home-Footer-BG%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Home-Footer-BG.imageset\Home-Footer-BG%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1661,6 +1676,11 @@
     <Folder Include="Assets.xcassets\Search-Icon-White.imageset\" />
     <Folder Include="Assets.xcassets\Add-Account-Icon-White.imageset\" />
     <Folder Include="Assets.xcassets\Search-Active-Icon-White.imageset\" />
+    <Folder Include="Assets.xcassets\Arrow-Up-Blue-Small.imageset\" />
+    <Folder Include="Assets.xcassets\Arrow-Down-Blue-Small.imageset\" />
+    <Folder Include="Assets.xcassets\Services-Pay-Bills.imageset\" />
+    <Folder Include="Assets.xcassets\Services-View-Bills.imageset\" />
+    <Folder Include="Assets.xcassets\Home-Footer-BG.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

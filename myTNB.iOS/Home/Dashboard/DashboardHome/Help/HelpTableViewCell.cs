@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using CoreAnimation;
 using CoreGraphics;
+using Foundation;
 using myTNB.SitecoreCMS.Model;
 using UIKit;
 
 namespace myTNB
 {
-    public class HelpTableViewCell : UITableViewCell
+    public class HelpTableViewCell : CustomUITableViewCell
     {
         private UIScrollView _scrollView;
         private nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
@@ -16,20 +18,21 @@ namespace myTNB
         public UILabel _titleLabel;
         public HelpTableViewCell(IntPtr handle) : base(handle)
         {
-            cardWidth = ScaleUtility.GetScaledWidth(92);
-            cardHeight = cardWidth;
-            _titleLabel = new UILabel(new CGRect(ScaleUtility.BaseMarginWidth16, ScaleUtility.GetScaledHeight(2f), cellWidth - 32, 20f))
+            cardWidth = GetScaledWidth(92F);
+            cardHeight = GetScaledHeight(56F);
+            _titleLabel = new UILabel(new CGRect(BaseMarginWidth16, 0, cellWidth - GetScaledWidth(32F), GetScaledHeight(20F)))
             {
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.WaterBlue
             };
             AddSubview(_titleLabel);
-            UIView view = new UIView(new CGRect(0, _titleLabel.Frame.GetMaxY() + 8f, cellWidth, cardHeight + 24.0F))
+            UIView view = new UIView(new CGRect(0, GetYLocationFromFrame(_titleLabel.Frame, 8F), cellWidth, cardHeight + GetScaledHeight(12F)))
             {
                 BackgroundColor = UIColor.Clear
             };
             _scrollView = new UIScrollView(new CGRect(0, 0, view.Frame.Width, cardHeight))
             {
+                ClipsToBounds = false,
                 ScrollEnabled = true,
                 ShowsHorizontalScrollIndicator = false
             };
@@ -66,7 +69,7 @@ namespace myTNB
         private void AddShimmer()
         {
             nfloat xLoc = ScaleUtility.BaseMarginWidth16;
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 4; i++)
             {
                 CustomShimmerView shimmeringView = new CustomShimmerView();
                 UIView viewParent = new UIView(new CGRect(xLoc, 0, cardWidth, cardHeight)) { BackgroundColor = UIColor.Clear };
@@ -74,14 +77,14 @@ namespace myTNB
                 UIView viewShimmerContent = new UIView(new CGRect(0, 0, cardWidth, cardHeight)) { BackgroundColor = UIColor.Clear };
                 viewParent.AddSubviews(new UIView[] { viewShimmerParent, viewShimmerContent });
 
-                UIView viewShimmerUI = new UIView(new CGRect(0, 0, cardWidth, cardHeight)) { BackgroundColor = MyTNBColor.PaleGrey };
+                UIView viewShimmerUI = new UIView(new CGRect(0, 0, cardWidth, cardHeight)) { BackgroundColor = MyTNBColor.PaleGreyThree };
                 viewShimmerContent.AddSubview(viewShimmerUI);
 
                 viewShimmerParent.AddSubview(shimmeringView);
                 shimmeringView.ContentView = viewShimmerContent;
                 shimmeringView.Shimmering = true;
                 shimmeringView.SetValues();
-
+                AddShimmerShadow(ref viewParent);
                 _scrollView.Add(viewParent);
                 xLoc += cardWidth + ScaleUtility.BaseMarginWidth8;
             }
@@ -100,21 +103,34 @@ namespace myTNB
                 {
                     ViewHelper.GoToFAQScreenWithId(helpKey);
                 }));
+
                 UIImageView imgView = new UIImageView(new CGRect(0, 0, cardWidth, cardHeight))
                 {
                     Image = UIImage.FromBundle(string.Format("Help-Background-{0}", GetBackgroundImage(i)))
                 };
+
+                UIView gradientBG = new UIView(new CGRect(0, 0, cardWidth, cardHeight));
+                CGColor startColor = MyTNBColor.LightIndigo.CGColor;
+                CGColor endColor = MyTNBColor.ClearBlue.CGColor;
+                CAGradientLayer gradientLayer = new CAGradientLayer
+                {
+                    Colors = new[] { startColor, endColor }
+                };
+                gradientLayer.Locations = new NSNumber[] { 0, 1 };
+                gradientLayer.Frame = gradientBG.Bounds;
+                gradientBG.Layer.InsertSublayer(gradientLayer, 0);
+
                 AddCardShadow(ref helpCardView);
-                UILabel lblHelp = new UILabel(new CGRect(8, 8, helpCardView.Frame.Width - 16, helpCardView.Frame.Height - 16))
+                UILabel lblHelp = new UILabel(new CGRect(GetScaledWidth(8F), GetScaledHeight(12F), helpCardView.Frame.Width - GetScaledWidth(16F), helpCardView.Frame.Height - GetScaledHeight(24F)))
                 {
                     TextColor = UIColor.White,
                     Font = TNBFont.MuseoSans_12_500,
                     TextAlignment = UITextAlignment.Left,
-                    Lines = 0,
+                    Lines = 2,
                     LineBreakMode = UILineBreakMode.WordWrap,
                     Text = helpList[i]?.Title ?? string.Empty
                 };
-                helpCardView.AddSubviews(new UIView[] { imgView, lblHelp });
+                helpCardView.AddSubviews(new UIView[] { gradientBG, lblHelp });
                 _scrollView.Add(helpCardView);
                 xLoc += cardWidth + ScaleUtility.BaseMarginWidth8;
             }
@@ -132,6 +148,16 @@ namespace myTNB
         {
             view.Layer.CornerRadius = 4.0F;
             view.ClipsToBounds = true;
+        }
+
+        private void AddShimmerShadow(ref UIView view)
+        {
+            view.Layer.MasksToBounds = false;
+            view.Layer.ShadowColor = MyTNBColor.VeryLightPinkFive.CGColor;
+            view.Layer.ShadowOpacity = 0.8F;
+            view.Layer.ShadowOffset = new CGSize(0, 4);
+            view.Layer.ShadowRadius = 4;
+            view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
         }
     }
 }

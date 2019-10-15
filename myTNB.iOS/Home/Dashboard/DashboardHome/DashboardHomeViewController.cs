@@ -40,6 +40,8 @@ namespace myTNB
         private nfloat _addtlYValue = 0;
         private bool _isBCRMAvailable = false;
         private GetIsSmrApplyAllowedResponseModel _isSMRApplyAllowedResponse;
+        private nfloat _footerImageBGYPos;
+        private UIImageView _footerImageBG;
 
         public override void ViewDidLoad()
         {
@@ -51,6 +53,7 @@ namespace myTNB
             PageName = DashboardHomeConstants.PageName;
             IsNewGradientRequired = true;
             base.ViewDidLoad();
+            AddFooterBG();
             _isBCRMAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
             DataManager.DataManager.SharedInstance.CurrentAccountList = DataManager.DataManager.SharedInstance.AccountRecordsList?.d;
             NotifCenterUtility.AddObserver((NSString)"NotificationDidChange", NotificationDidChange);
@@ -67,6 +70,16 @@ namespace myTNB
             PrepareTableView();
             SetGreetingView();
             PrepareUsageStoryBoard();
+        }
+
+        private void AddFooterBG()
+        {
+            _footerImageBG = new UIImageView(new CGRect(0, ViewHeight + DeviceHelper.GetStatusBarHeight() - GetScaledHeight(1000F), ViewWidth, GetScaledHeight(1000F)))
+            {
+                Image = UIImage.FromBundle("Home-Footer-BG")
+            };
+            _footerImageBGYPos = _footerImageBG.Frame.Y;
+            View.AddSubview(_footerImageBG);
         }
 
         private void PrepareUsageStoryBoard()
@@ -245,8 +258,9 @@ namespace myTNB
         // </summary>
         private void InitializeTableView()
         {
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountListViewController, _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent);
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountListViewController, _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent, OnUpdateCellWithoutReload);
             _homeTableView.ReloadData();
+            UpdateFooterBG();
         }
 
         private void AddTableView()
@@ -312,21 +326,17 @@ namespace myTNB
 
         internal void OnTableViewScroll(UIScrollView scrollView)
         {
-            //if (ImageViewGradientImage == null) { return; }
-            //nfloat addtl = _isRefreshScreenEnabled ? _addtlYValue : 0;
-            //nfloat scrollDiff = scrollView.ContentOffset.Y - _previousScrollOffset;
-            //if (scrollDiff < 0 || (scrollDiff > (scrollView.ContentSize.Height - scrollView.Frame.Size.Height))) { return; }
-            //_previousScrollOffset = tableViewAccounts.ContentOffset.Y;
-            //CGRect frame = ImageViewGradientImage.Frame;
-            //frame.Y = scrollDiff > 0 ? 0 - scrollDiff + addtl : frame.Y + scrollDiff;
-            //ImageViewGradientImage.Frame = frame;
-            //_statusBarView.Hidden = !(scrollDiff > 0 && scrollDiff > _imageGradientHeight / 2);
+            nfloat scrollDiff = scrollView.ContentOffset.Y - _previousScrollOffset;
+            CGRect frame = _footerImageBG.Frame;
+            ViewHelper.AdjustFrameSetY(_footerImageBG, frame.Y - scrollDiff);
+            _previousScrollOffset = scrollView.ContentOffset.Y;
         }
 
         private void OnGetServices()
         {
             InvokeOnMainThread(() =>
             {
+                DataManager.DataManager.SharedInstance.ActiveServicesList = new List<ServiceItemModel>();
                 _servicesIsShimmering = true;
                 OnUpdateCell(DashboardHomeConstants.CellIndex_Services);
                 InvokeInBackground(() =>
@@ -533,18 +543,26 @@ namespace myTNB
         {
             _homeTableView.BeginUpdates();
             _homeTableView.Source = new DashboardHomeDataSource(this, _accountListViewController
-                , _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent);
+                , _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent, OnUpdateCellWithoutReload);
             NSIndexPath indexPath = NSIndexPath.Create(0, row);
             _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
             _homeTableView.EndUpdates();
+            UpdateFooterBG();
         }
 
-        public void OnReloadTableForSearch()
+        public void OnUpdateCellWithoutReload(int row)
         {
             _homeTableView.BeginUpdates();
-            NSIndexPath indexPath = NSIndexPath.Create(0, DashboardHomeConstants.CellIndex_Services);
+            NSIndexPath indexPath = NSIndexPath.Create(0, row);
             _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
             _homeTableView.EndUpdates();
+            UpdateFooterBG();
+        }
+
+        private void UpdateFooterBG()
+        {
+            CGRect servicesCellHeight = _homeTableView.RectForRowAtIndexPath(NSIndexPath.Create(0, 1));
+            ViewHelper.AdjustFrameSetY(_footerImageBG, DeviceHelper.GetStatusBarHeight() + servicesCellHeight.Y + (servicesCellHeight.Height * 0.40F) - _previousScrollOffset);
         }
 
         public void ShowRefreshScreen(bool isFail, RefreshScreenInfoModel model = null)
@@ -579,10 +597,11 @@ namespace myTNB
                     _refreshScreenComponent.OnButtonTap = RefreshViewForAccounts;
 
                     _homeTableView.BeginUpdates();
-                    _homeTableView.Source = new DashboardHomeDataSource(this, null, _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent);
+                    _homeTableView.Source = new DashboardHomeDataSource(this, null, _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent, OnUpdateCellWithoutReload);
                     NSIndexPath indexPath = NSIndexPath.Create(0, 0);
                     _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
                     _homeTableView.EndUpdates();
+                    UpdateFooterBG();
 
                     if (_accountListViewController != null)
                     {

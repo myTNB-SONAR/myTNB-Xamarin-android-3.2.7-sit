@@ -35,5 +35,15 @@ namespace myTNB
         {
             return ScaleUtility.GetYLocationFromFrame(frame, value);
         }
+
+        public nfloat GetXLocationToCenterObject(nfloat width, UIView parentView)
+        {
+            return ScaleUtility.GetXLocationToCenterObject(width, parentView);
+        }
+
+        public nfloat GetYLocationToCenterObject(nfloat height, UIView parentView)
+        {
+            return ScaleUtility.GetYLocationToCenterObject(height, parentView);
+        }
     }
 }

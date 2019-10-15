@@ -333,25 +333,28 @@ namespace myTNB
         /// <returns></returns>
         public nfloat GetHeightForServices(bool isShimmering)
         {
-            nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
-            nfloat cardWidth = (cellWidth - 24) / 3;
-            nfloat cardHeight = cardWidth * 0.9545F;
-            nfloat tableViewCellHeight = 20f;
+            nfloat tableViewCellHeight = 0;
+            nfloat cardHeight = ScaleUtility.GetScaledHeight(84F);
+
             if (isShimmering)
             {
-                tableViewCellHeight = tableViewCellHeight + (cardHeight * 2) + 24f;
+                tableViewCellHeight = ScaleUtility.GetScaledHeight(100F);
             }
             else
             {
-                if (DataManager.DataManager.SharedInstance.ServicesList?.Count > 0)
+                var serviceList = DataManager.DataManager.SharedInstance.ActiveServicesList;
+                bool isMoreThanThreeItems = DataManager.DataManager.SharedInstance.ServicesList.Count > 3;
+                if (serviceList != null &&
+                    serviceList.Count > 0)
                 {
-                    var rowNumber = Math.Ceiling((double)DataManager.DataManager.SharedInstance.ServicesList.Count / 3);
-                    tableViewCellHeight = (nfloat)(tableViewCellHeight + (cardHeight * rowNumber) + (12f * rowNumber));
+                    var multiplier = Math.Ceiling((double)serviceList.Count / 3);
+                    tableViewCellHeight += cardHeight * (nfloat)multiplier;
+                    if (isMoreThanThreeItems)
+                    {
+                        tableViewCellHeight += ScaleUtility.GetScaledHeight(41F) + ScaleUtility.GetScaledHeight(16F);
+                    }
                 }
-                else
-                {
-                    tableViewCellHeight = 0;
-                }
+
             }
             return tableViewCellHeight;
         }
@@ -362,21 +365,18 @@ namespace myTNB
         /// <returns></returns>
         public nfloat GetHeightForHelp(bool isShimmering)
         {
-            nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
-            nfloat tableViewCellHeight = 20f;
-            nfloat cardHeight = 0f;
+            nfloat tableViewCellHeight = DeviceHelper.IsIphoneXUpResolution() ? ScaleUtility.GetScaledHeight(12F) : 0;
             if (isShimmering)
             {
-                cardHeight = cellWidth * 0.30f + 24.0f + 40f;
+                tableViewCellHeight += ScaleUtility.GetScaledHeight(108F);
             }
             else
             {
                 if (DataManager.DataManager.SharedInstance.HelpList?.Count > 0)
                 {
-                    cardHeight = cellWidth * 0.30f + 24.0f + 40f;
+                    tableViewCellHeight += ScaleUtility.GetScaledHeight(108F);
                 }
             }
-            tableViewCellHeight += cardHeight;
             return tableViewCellHeight;
         }
 
