@@ -3201,6 +3201,11 @@
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\Requests\GetIsSmrApplyAllowedRequest.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\HomeMenu\MVP\GetIsSmrApplyAllowedResponse.cs" />
     <Compile Include="Src\Base\MyTNBAppWalkthroughData.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\smr_history_empty_icon.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\smr_history_empty_icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\smr_history_empty_icon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\smr_history_empty_icon.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\smr_history_empty_icon.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

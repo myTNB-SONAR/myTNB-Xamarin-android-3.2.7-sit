@@ -1427,7 +1427,7 @@ Please try again later.]]>
   <string name="ssmr_view_meter">View Reading History</string>
 
   <string name="ssmr_meter_history_activity_title">Self Meter Reading</string>
-
+  <string name="ssmr_empty_history_message">Looks like you have no meter reading history at the moment.</string>
    <string name="ssmr_need_pay">I Need To Pay</string>
 
   <!--Smart Meter Reading-->
