@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using CoreGraphics;
+using Foundation;
 using myTNB.Home.Dashboard.DashboardHome.Services;
 using myTNB.Model;
 using UIKit;
@@ -195,7 +196,7 @@ namespace myTNB
             {
                 if (RemoveServiceItem(serviceList[i].ServiceId)) { continue; }
                 UIView card = GetCard(serviceList[i], i);
-                SetCardAction(ref card, serviceList[i].ServiceId);
+                SetCardAction(ref card, serviceList[i]);
                 _view.AddSubview(card);
             }
             ViewHelper.AdjustFrameSetHeight(_view, GetViewHeight(serviceList, isMoreThanThreeItems));
@@ -229,45 +230,135 @@ namespace myTNB
 
             UIView view = new UIView(new CGRect(xLoc, yLoc, cardWidth, cardHeight)) { BackgroundColor = UIColor.Clear };
 
-            nfloat imgSize = GetScaledWidth(27F);
+            nfloat imgSize = GetScaledWidth(28F);
             nfloat imgYLoc = GetScaledHeight(12F);
             UIImageView imgView = new UIImageView(new CGRect(GetXLocationToCenterObject(imgSize, view), imgYLoc, imgSize, imgSize))
             {
-                Image = UIImage.FromBundle(GetImage(serviceItem.ServiceId))
+                Image = UIImage.FromBundle(GetImage(serviceItem))
             };
 
-            nfloat xLblLoc = GetScaledWidth(14F);
-            nfloat ylblLoc = GetYLocationFromFrame(imgView.Frame, GetScaledHeight(5F));
-            UILabel lblTitle = new UILabel(new CGRect(xLblLoc, ylblLoc, cardWidth - (xLblLoc * 2), GetScaledHeight(28F)))
+            NSError htmlBodyError = null;
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetServiceName(serviceItem)
+                , ref htmlBodyError, TNBFont.FONTNAME_500, (float)GetScaledHeight(10F));
+            NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
+            mutableHTMLBody.AddAttributes(new UIStringAttributes
             {
-                TextAlignment = UITextAlignment.Center,
-                TextColor = MyTNBColor.WaterBlue,
-                Font = TNBFont.MuseoSans_10_500,
-                Lines = 2,
-                LineBreakMode = UILineBreakMode.WordWrap,
-                Text = serviceItem.ServiceName
-            };
+                ForegroundColor = ServiceIsDisabled(serviceItem) ? MyTNBColor.WhiteTwo : MyTNBColor.WaterBlue,
+                ParagraphStyle = new NSMutableParagraphStyle
+                {
+                    Alignment = UITextAlignment.Center,
+                    LineSpacing = 3.0f
+                }
+            }, new NSRange(0, htmlBody.Length));
 
-            UIView indicatorView = new UIView(new CGRect(GetScaledWidth(51F), GetScaledHeight(13F), 0, GetScaledHeight(14F)))
+            UITextView txtTitle = new UITextView(new CGRect(0, imgView.Frame.GetMaxY(), cardWidth, GetScaledHeight(28F)))
             {
-                BackgroundColor = MyTNBColor.SunflowerYellow
+                BackgroundColor = UIColor.Clear,
+                Editable = false,
+                ScrollEnabled = false,
+                AttributedText = mutableHTMLBody
             };
-            indicatorView.Layer.CornerRadius = GetScaledHeight(8F);
-            UILabel newLbl = new UILabel(new CGRect(GetScaledWidth(4F), GetScaledHeight(2F), 0, GetScaledHeight(10F)))
+            CGSize cGSize = txtTitle.SizeThatFits(new CGSize(cardWidth, 1000F));
+            ViewHelper.AdjustFrameSetHeight(txtTitle, cGSize.Height);
+            view.AddSubviews(new UIView[] { imgView, txtTitle });
+
+            if (ShowIndicator(serviceItem.ServiceId))
             {
-                TextAlignment = UITextAlignment.Center,
-                TextColor = MyTNBColor.GreyishBrown,
-                Font = TNBFont.MuseoSans_8_500,
-                Text = "New"
-            };
-            indicatorView.AddSubview(newLbl);
+                UIView indicatorView = new UIView(new CGRect(GetScaledWidth(51F), GetScaledHeight(13F), 0, GetScaledHeight(14F)))
+                {
+                    BackgroundColor = MyTNBColor.SunflowerYellow
+                };
+                indicatorView.Layer.CornerRadius = GetScaledHeight(8F);
+                UILabel newLbl = new UILabel(new CGRect(GetScaledWidth(4F), GetScaledHeight(2F), 0, GetScaledHeight(10F)))
+                {
+                    TextAlignment = UITextAlignment.Center,
+                    TextColor = MyTNBColor.GreyishBrown,
+                    Font = TNBFont.MuseoSans_8_500,
+                    Text = "New"
+                };
+                indicatorView.AddSubview(newLbl);
 
-            CGSize newLblSize = newLbl.SizeThatFits(new CGSize(1000F, GetScaledHeight(10F)));
-            ViewHelper.AdjustFrameSetWidth(newLbl, newLblSize.Width);
-            ViewHelper.AdjustFrameSetWidth(indicatorView, newLblSize.Width + GetScaledWidth(8F));
+                CGSize newLblSize = newLbl.SizeThatFits(new CGSize(1000F, GetScaledHeight(10F)));
+                ViewHelper.AdjustFrameSetWidth(newLbl, newLblSize.Width);
+                ViewHelper.AdjustFrameSetWidth(indicatorView, newLblSize.Width + GetScaledWidth(8F));
 
-            view.AddSubviews(new UIView[] { imgView, lblTitle, indicatorView });
+                view.AddSubview(indicatorView);
+            }
+
             return view;
+        }
+
+        private string GetServiceName(ServiceItemModel serviceItem)
+        {
+            string name = string.Empty;
+            if (serviceItem != null)
+            {
+                switch (serviceItem.ServiceType)
+                {
+                    case ServiceEnum.VIEWBILL:
+                        name = "View <br>My e-Bill";
+                        if (_dashboardHomeHelper.HasNormalAccounts && _dashboardHomeHelper.HasREAccounts)
+                        {
+                            if (_dashboardHomeHelper.HasMultipleNormalAccounts)
+                            {
+                                name = "View My<br>e-Bills / Advice";
+                            }
+                            else
+                            {
+                                name = "View My<br>e-Bill / Advice";
+                            }
+                        }
+                        else if (_dashboardHomeHelper.HasREAccounts)
+                        {
+                            name = "View My<br>Advice";
+                        }
+                        break;
+                    case ServiceEnum.PAYBILL:
+                        name = "Pay<br>My Bill";
+                        if (_dashboardHomeHelper.HasNormalAccounts)
+                        {
+                            if (_dashboardHomeHelper.HasMultipleNormalAccounts)
+                            {
+                                name = "Pay<br>My Bills";
+                            }
+                            else
+                            {
+                                name = "Pay<br>My Bill";
+                            }
+                        }
+                        break;
+                    case ServiceEnum.SUBMITFEEDBACK:
+                        name = "Submit<br>Feedback";
+                        break;
+                    case ServiceEnum.SELFMETERREADING:
+                        name = "Self<br>Meter Reading";
+                        break;
+                    default:
+                        name = serviceItem.ServiceName;
+                        break;
+                }
+            }
+            return name;
+        }
+
+        private void SetIndicatorFlag(string key)
+        {
+            if (!string.IsNullOrEmpty(key) && !string.IsNullOrWhiteSpace(key))
+            {
+                var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                sharedPreference.SetBool(true, "Service Id - " + key);
+            }
+        }
+
+        private bool ShowIndicator(string key)
+        {
+            bool res = false;
+            if (!string.IsNullOrEmpty(key) && !string.IsNullOrWhiteSpace(key))
+            {
+                var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                res = sharedPreference.BoolForKey("Service Id - " + key);
+            }
+            return !res;
         }
 
         private UIView GetShimmerCards(int index)
@@ -330,21 +421,68 @@ namespace myTNB
             view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
         }
 
-        private string GetImage(string serviceID)
+        private string GetImage(ServiceItemModel serviceItem)
         {
-            return ServicesConstants.ImageDictionary.ContainsKey(serviceID) ? ServicesConstants.ImageDictionary[serviceID] : string.Empty;
+            string imageName = string.Empty;
+
+            if (serviceItem != null)
+            {
+                if (!string.IsNullOrEmpty(serviceItem.ServiceId) && !string.IsNullOrWhiteSpace(serviceItem.ServiceId))
+                {
+                    if (ServicesConstants.ImageDictionary.ContainsKey(serviceItem.ServiceId))
+                    {
+                        imageName = ServicesConstants.ImageDictionary[serviceItem.ServiceId] + (ServiceIsDisabled(serviceItem) ? "-Disabled" : string.Empty);
+                    }
+                }
+            }
+            return imageName;
         }
 
-        private void SetCardAction(ref UIView view, string id)
+        private bool ServiceIsDisabled(ServiceItemModel serviceItem)
         {
-            Action action = _actionsDictionary.ContainsKey(id) ? _actionsDictionary[id] : null;
-            view.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            bool res = false;
+            if (serviceItem != null)
             {
-                if (action != null)
+                switch (serviceItem.ServiceType)
                 {
-                    action.Invoke();
+                    case ServiceEnum.PAYBILL:
+                        if (_dashboardHomeHelper.IsEmptyAccount)
+                        {
+                            res = true;
+                        }
+                        else
+                        {
+                            res = !_dashboardHomeHelper.HasNormalAccounts;
+                        }
+                        break;
+                    case ServiceEnum.VIEWBILL:
+                        res = _dashboardHomeHelper.IsEmptyAccount;
+                        break;
+                    default:
+                        res = false;
+                        break;
                 }
-            }));
+            }
+            return res;
+        }
+
+        private void SetCardAction(ref UIView view, ServiceItemModel serviceItem)
+        {
+            if (serviceItem != null)
+            {
+                if (!ServiceIsDisabled(serviceItem))
+                {
+                    Action action = _actionsDictionary.ContainsKey(serviceItem.ServiceId) ? _actionsDictionary[serviceItem.ServiceId] : null;
+                    view.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                    {
+                        if (action != null)
+                        {
+                            SetIndicatorFlag(serviceItem.ServiceId);
+                            action.Invoke();
+                        }
+                    }));
+                }
+            }
         }
     }
 }

@@ -6,7 +6,7 @@ namespace myTNB
     public static class TNBFont
     {
         public readonly static string FONTNAME_300 = "MuseoSans-300";
-        readonly static string FONTNAME_500 = "MuseoSans-500";
+        public readonly static string FONTNAME_500 = "MuseoSans-500";
 
         private static nfloat WidthBase = 320;
         private static nfloat HeightBase = 568;

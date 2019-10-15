@@ -327,6 +327,41 @@ namespace myTNB
             }
         }
 
+        public bool HasREAccounts
+        {
+            get
+            {
+                var result = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindAll(x => x.IsREAccount);
+                return result?.Count > 0;
+            }
+        }
+
+        public bool IsEmptyAccount
+        {
+            get
+            {
+                return DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count <= 0;
+            }
+        }
+
+        public bool HasNormalAccounts
+        {
+            get
+            {
+                var result = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindAll(x => x.IsNormalMeter);
+                return result?.Count > 0;
+            }
+        }
+
+        public bool HasMultipleNormalAccounts
+        {
+            get
+            {
+                var result = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindAll(x => x.IsNormalMeter);
+                return result?.Count > 1;
+            }
+        }
+
         /// <summary>
         /// Returns the height for Services Cell
         /// </summary>

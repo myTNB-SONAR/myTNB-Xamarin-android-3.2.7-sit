@@ -136,7 +136,7 @@ namespace myTNB
 
                 UIImageView searchIcon = new UIImageView(new CGRect(0, 0, GetScaledWidth(16F), GetScaledHeight(16F)))
                 {
-                    Image = UIImage.FromBundle("Search-Icon-White")
+                    Image = UIImage.FromBundle(DashboardHomeConstants.Img_SearchIconWhite)
                 };
                 searchView.AddSubview(searchIcon);
 
@@ -212,7 +212,7 @@ namespace myTNB
 
             UIImageView searchIcon = new UIImageView(new CGRect(BaseMarginWidth16, 0, GetScaledWidth(16F), GetScaledHeight(16F)))
             {
-                Image = UIImage.FromBundle("Search-Active-Icon-White")
+                Image = UIImage.FromBundle(DashboardHomeConstants.Img_SearchActiveIconWhite)
             };
             _searchView.AddSubview(searchIcon);
 
@@ -307,12 +307,12 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = UIColor.White,
-                Text = allAcctsAreVisible ? "Show Less" : "More Accounts"
+                Text = allAcctsAreVisible ? GetI18NValue(DashboardHomeConstants.I18N_ShowLess) : GetI18NValue(DashboardHomeConstants.I18N_MoreAccts)
             };
             moreLessView.AddSubview(moreAcctsLabel);
             UIImageView arrowUpDown = new UIImageView(new CGRect(moreAcctsLabel.Frame.GetMaxX(), 0, GetScaledWidth(16F), GetScaledHeight(16F)))
             {
-                Image = UIImage.FromBundle(allAcctsAreVisible ? "Arrow-Up-White-Small" : "Arrow-Down-White-Small")
+                Image = UIImage.FromBundle(allAcctsAreVisible ? DashboardHomeConstants.Img_ArrowUpWhite : DashboardHomeConstants.Img_ArrowDownWhite)
             };
             moreLessView.AddSubview(arrowUpDown);
 
@@ -347,14 +347,14 @@ namespace myTNB
 
                 UIImageView iconR = new UIImageView(new CGRect(0, 0, GetScaledWidth(16F), GetScaledHeight(16F)))
                 {
-                    Image = UIImage.FromBundle("Rearrange-Icon")
+                    Image = UIImage.FromBundle(DashboardHomeConstants.Img_RearrangeIcon)
                 };
                 rearrangeView.AddSubview(iconR);
                 UILabel rearrangeLabel = new UILabel(new CGRect(0, 0, 0, GetScaledHeight(16F)))
                 {
                     Font = TNBFont.MuseoSans_12_500,
                     TextColor = UIColor.White,
-                    Text = "Rearrange Accounts"
+                    Text = GetI18NValue(DashboardHomeConstants.I18N_RearrangeAccts)
                 };
                 rearrangeView.AddSubview(rearrangeLabel);
 
@@ -446,7 +446,6 @@ namespace myTNB
 
         private void SearchFromAccountList(string searchString)
         {
-            Debug.WriteLine("searchString: " + searchString);
             DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
             if (_footerView != null)
             {
@@ -483,10 +482,6 @@ namespace myTNB
                 if (acctNumList.Count > 0)
                 {
                     var acctsToGetDues = GetAccountsToUpdate(acctNumList);
-                    foreach (var acctNum in acctsToGetDues)
-                    {
-                        Debug.WriteLine("acctNum: " + acctNum);
-                    }
                     if (acctsToGetDues.Count > 0)
                     {
                         GetAccountsBillSummary(acctNumList, DataManager.DataManager.SharedInstance.ActiveAccountList.Count <= DashboardHomeConstants.InitialLoadMaxCount, isFromSearch);

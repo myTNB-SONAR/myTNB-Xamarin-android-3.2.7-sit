@@ -112,6 +112,21 @@ namespace myTNB
                 UIView gradientBG = new UIView(new CGRect(0, 0, cardWidth, cardHeight));
                 CGColor startColor = MyTNBColor.LightIndigo.CGColor;
                 CGColor endColor = MyTNBColor.ClearBlue.CGColor;
+
+                List<int> sList = GetRGBList(helpList[i].BGStartColor);
+                if (sList?.Count == 3)
+                {
+                    UIColor sColor = GradientColour(sList);
+                    startColor = sColor?.CGColor;
+                }
+
+                List<int> eList = GetRGBList(helpList[i].BGEndColor);
+                if (eList?.Count == 3)
+                {
+                    UIColor eColor = GradientColour(eList);
+                    endColor = eColor?.CGColor;
+                }
+
                 CAGradientLayer gradientLayer = new CAGradientLayer
                 {
                     Colors = new[] { startColor, endColor }
@@ -135,6 +150,34 @@ namespace myTNB
                 xLoc += cardWidth + ScaleUtility.BaseMarginWidth8;
             }
             _scrollView.ContentSize = new CGSize(xLoc, cardHeight);
+        }
+
+        private UIColor GradientColour(List<int> RGB)
+        {
+            UIColor colour = UIColor.White;
+            if (!string.IsNullOrEmpty(RGB[0].ToString()) &&
+                !string.IsNullOrEmpty(RGB[1].ToString()) &&
+                !string.IsNullOrEmpty(RGB[2].ToString()))
+            {
+                colour = UIColor.FromRGB(RGB[0], RGB[1], RGB[2]);
+            }
+            return colour;
+        }
+
+        private List<int> GetRGBList(string rgbString)
+        {
+            List<int> rgbList = new List<int>();
+            var rgbSplit = rgbString.Split('|');
+
+            if (rgbSplit.Length > 0)
+            {
+                foreach (string str in rgbSplit)
+                {
+                    if (Int32.TryParse(str, out int numValue))
+                        rgbList.Add(numValue);
+                }
+            }
+            return rgbList;
         }
 
         private int GetBackgroundImage(int index)

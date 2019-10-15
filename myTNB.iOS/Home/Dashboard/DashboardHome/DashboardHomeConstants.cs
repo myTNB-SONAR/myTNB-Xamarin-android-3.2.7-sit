@@ -41,6 +41,9 @@ namespace myTNB
         public static string I18N_AllCleared = "allCleared";
         public static string I18N_Add = "add";
         public static string I18N_Search = "search";
+        public static string I18N_ShowLess = "showLess";
+        public static string I18N_MoreAccts = "moreAccts";
+        public static string I18N_RearrangeAccts = "rearrangeAccts";
 
         //Image
         public static string Img_Notification = "Notification";
@@ -53,6 +56,12 @@ namespace myTNB
         public static string Img_SMRIcon = "Accounts-SMR-Icon";
         public static string Img_NormalIcon = "Accounts-Normal-Icon";
         public static string Img_RefreshIcon = "Refresh-Icon";
+        public static string Img_SearchIconWhite = "Search-Icon-White";
+        public static string Img_SearchActiveIconWhite = "Search-Active-Icon-White";
+        public static string Img_ArrowUpWhite = "Arrow-Up-White-Small";
+        public static string Img_ArrowDownWhite = "Arrow-Down-White-Small";
+        public static string Img_RearrangeIcon = "Rearrange-Icon";
+        public static string Img_RELeaf = "RE-Leaf";
 
         //PageName
         public static string PageName = "DashboardHome";

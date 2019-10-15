@@ -1243,6 +1243,12 @@
     <ImageAsset Include="Assets.xcassets\Home-Footer-BG.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Home-Footer-BG.imageset\Home-Footer-BG%402x.png" />
     <ImageAsset Include="Assets.xcassets\Home-Footer-BG.imageset\Home-Footer-BG%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-View-Bills-Disabled.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Services-Pay-Bills-Disabled.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Services-Pay-Bills-Disabled.imageset\Services-Pay-Bills-Disabled%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-Pay-Bills-Disabled.imageset\Services-Pay-Bills-Disabled%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-View-Bills-Disabled.imageset\Services-View-Bills-Disabled%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Services-View-Bills-Disabled.imageset\Services-View-Bills-Disabled%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1681,6 +1687,8 @@
     <Folder Include="Assets.xcassets\Services-Pay-Bills.imageset\" />
     <Folder Include="Assets.xcassets\Services-View-Bills.imageset\" />
     <Folder Include="Assets.xcassets\Home-Footer-BG.imageset\" />
+    <Folder Include="Assets.xcassets\Services-View-Bills-Disabled.imageset\" />
+    <Folder Include="Assets.xcassets\Services-Pay-Bills-Disabled.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

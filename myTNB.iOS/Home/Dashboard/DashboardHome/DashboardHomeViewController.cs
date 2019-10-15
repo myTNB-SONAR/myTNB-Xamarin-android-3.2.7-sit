@@ -258,7 +258,7 @@ namespace myTNB
         // </summary>
         private void InitializeTableView()
         {
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountListViewController, _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent, OnUpdateCellWithoutReload);
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountListViewController, _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent, OnUpdateCellWithoutReload, GetI18NValue);
             _homeTableView.ReloadData();
             UpdateFooterBG();
         }
@@ -543,7 +543,7 @@ namespace myTNB
         {
             _homeTableView.BeginUpdates();
             _homeTableView.Source = new DashboardHomeDataSource(this, _accountListViewController
-                , _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent, OnUpdateCellWithoutReload);
+                , _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent, OnUpdateCellWithoutReload, GetI18NValue);
             NSIndexPath indexPath = NSIndexPath.Create(0, row);
             _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
             _homeTableView.EndUpdates();
@@ -597,7 +597,7 @@ namespace myTNB
                     _refreshScreenComponent.OnButtonTap = RefreshViewForAccounts;
 
                     _homeTableView.BeginUpdates();
-                    _homeTableView.Source = new DashboardHomeDataSource(this, null, _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent, OnUpdateCellWithoutReload);
+                    _homeTableView.Source = new DashboardHomeDataSource(this, null, _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent, OnUpdateCellWithoutReload, GetI18NValue);
                     NSIndexPath indexPath = NSIndexPath.Create(0, 0);
                     _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
                     _homeTableView.EndUpdates();

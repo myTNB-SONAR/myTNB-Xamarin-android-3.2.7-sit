@@ -691,6 +691,7 @@ namespace myTNB
                     }
                     else
                     {
+                        DataManager.DataManager.SharedInstance.ClearLoginState();
                         ShowServerError(DataManager.DataManager.SharedInstance.CustomerAccounts?.d?.DisplayMessage);
                         ActivityIndicator.Hide();
                     }

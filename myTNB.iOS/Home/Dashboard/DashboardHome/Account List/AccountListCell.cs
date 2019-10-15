@@ -24,7 +24,7 @@ namespace myTNB
 
             _imgRe = new UIImageView(new CGRect(0, GetScaledHeight(14F), GetScaledWidth(12F), GetScaledHeight(12F)))
             {
-                Image = UIImage.FromBundle("RE-Leaf"),
+                Image = UIImage.FromBundle(DashboardHomeConstants.Img_RELeaf),
                 Hidden = true
             };
             AddSubview(_imgRe);
