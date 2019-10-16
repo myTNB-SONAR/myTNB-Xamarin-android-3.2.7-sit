@@ -49,7 +49,7 @@ namespace myTNB
         /// <param name="handler">Handler.</param>
         private static void DisplayAlert(UIViewController controller, string title, string message, Action<UIAlertAction> handler = null)
         {
-            message = message ?? "Error_DefaultMessage".Translate();
+            message = string.IsNullOrEmpty(message) || string.IsNullOrWhiteSpace(message) ? "Error_DefaultMessage".Translate() : message;
             var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
             alert.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Cancel, handler));
             alert.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
