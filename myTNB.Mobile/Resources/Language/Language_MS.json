@@ -62,11 +62,17 @@
     "totalAmount": "Jumlah Keseluruhan",
     "totalAmountRM": "Jumlah Keseluruhan (RM)",
     "back": "Back",
-    "cards": "Credit / Debit Cards",
+    "cards": "Kad Kredit / Debit",
     "abort": "Abort",
     "warning": "Warning", //missing
     "manage": "Uruskan",
-    "update": "Kemas kini"
+    "update": "Kemas kini",
+    "logout": "Log Keluar",
+    "idNUmber": "IC / ROC / Passport No.", //missing
+    "password": "Kata Laluan",
+    "mobileNo": "No. Mudah Alih",
+    "email": "Emel",
+    "addAnotherAcct": "Masukkan Satu Lagi Akaun"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -451,5 +457,10 @@
     "selectApplication": "Select navigation application", //missing
     "openIn": "Open in", //missing
     "noSupportedApp": "No supported map application is installed" //missing
+  },
+  "MyAccount": {
+    "title": "Akaun Saya",
+    "detailSectionTitle": "myTNB Akaun",
+    "accountSectionTitle": "Akaun Bekalan Elektrik TNB"
   }
 }

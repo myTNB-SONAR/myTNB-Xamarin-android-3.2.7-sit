@@ -68,7 +68,13 @@
     "abort": "Abort",
     "warning": "Warning",
     "manage": "Manage",
-    "update": "Update"
+    "update": "Update",
+    "logout": "Logout",
+    "idNUmber": "IC / ROC / Passport No.",
+    "password": "Password",
+    "mobileNo": "Mobile No.",
+    "email": "Email",
+    "addAnotherAcct": "Add Another Account"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -458,6 +464,5 @@
     "title": "My Account",
     "detailSectionTitle": "myTNB Account",
     "accountSectionTitle": "TNB Electricity Supply Accounts"
-
   }
 }

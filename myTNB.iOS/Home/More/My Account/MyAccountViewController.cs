@@ -64,7 +64,7 @@ namespace myTNB
             btnLogout.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             btnLogout.BackgroundColor = MyTNBColor.FreshGreen;
             btnLogout.Layer.BorderWidth = 1;
-            btnLogout.SetTitle("MyAccount_Logout".Translate(), UIControlState.Normal);
+            btnLogout.SetTitle(GetCommonI18NValue(Constants.Common_Logout), UIControlState.Normal);
             btnLogout.Font = MyTNBFont.MuseoSans16;
             btnLogout.SetTitleColor(UIColor.White, UIControlState.Normal);
             btnLogout.TouchUpInside += (sender, e) =>
@@ -96,7 +96,7 @@ namespace myTNB
             btnAddAccount.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             btnAddAccount.BackgroundColor = UIColor.White;
             btnAddAccount.Layer.BorderWidth = 1;
-            btnAddAccount.SetTitle("Common_AddAnotherAccount".Translate(), UIControlState.Normal);
+            btnAddAccount.SetTitle(GetCommonI18NValue(Constants.Common_AddAnotherAccount), UIControlState.Normal);
             btnAddAccount.Font = MyTNBFont.MuseoSans16;
             btnAddAccount.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
             btnAddAccount.TouchUpInside += (sender, e) =>
@@ -149,7 +149,7 @@ namespace myTNB
                 lblDetails.TextAlignment = UITextAlignment.Center;
 
                 btnAddAccount.Frame = new CGRect(90, 76, myAccountTableView.Frame.Width - 180, 48);
-                btnAddAccount.SetTitle("Common_AddAccount".Translate(), UIControlState.Normal);
+                btnAddAccount.SetTitle(GetCommonI18NValue(Constants.Common_AddAnotherAccount), UIControlState.Normal);
                 viewLogout.Frame = new CGRect(0, 140, View.Frame.Width, 88);
                 viewFooter.AddSubviews(new UIView[] { lblTitle, lblDetails, btnAddAccount, viewLogout });
             }
@@ -163,7 +163,7 @@ namespace myTNB
             UIView headerView = gradientViewComponent.GetUI();
             TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("MyAccount_Title".Translate());
+            titleBarComponent.SetTitle(GetI18NValue(MyAccountConstants.I18N_Title));
             titleBarComponent.SetPrimaryVisibility(true);
             titleBarComponent.SetBackVisibility(false);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>

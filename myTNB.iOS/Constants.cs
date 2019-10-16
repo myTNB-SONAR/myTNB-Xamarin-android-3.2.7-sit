@@ -47,6 +47,13 @@
         public static string Common_Warning = "warning";
         public static string Common_Manage = "manage";
         public static string Common_Update = "update";
+        public static string Common_Logout = "logout";
+        public static string Common_Name = "name";
+        public static string Common_IDNumber = "idNumber";
+        public static string Common_Password = "password";
+        public static string Common_MobileNo = "mobileNo";
+        public static string Common_Email = "email";
+        public static string Common_AddAnotherAccount = "addAnotherAcct";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";
