@@ -11,7 +11,7 @@ using System.Linq;
 using myTNB.Home.More.FindUs;
 using System.Threading.Tasks;
 using myTNB.Model;
-using myTNB.Profile;
+using myTNB.FindUs;
 
 namespace myTNB
 {
@@ -21,24 +21,23 @@ namespace myTNB
         {
         }
 
-        CLLocationManager _locationManager;
-        TextFieldHelper _textFieldHelper = new TextFieldHelper();
-        UIView _viewLocation;
-        MKMapView _mapView;
-        UILabel _lblType;
+        private CLLocationManager _locationManager;
+        private TextFieldHelper _textFieldHelper = new TextFieldHelper();
+        private UIView _viewLocation;
+        private MKMapView _mapView;
+        private UILabel _lblType;
 
-        List<MKMapItem> _convinientStoreList = new List<MKMapItem>();
-        GetLocationsResponseModel _locations = new GetLocationsResponseModel();
+        private List<MKMapItem> _convinientStoreList = new List<MKMapItem>();
+        private GetLocationsResponseModel _locations = new GetLocationsResponseModel();
 
-        CLAuthorizationStatus _locStatus = CLAuthorizationStatus.NotDetermined;
+        private CLAuthorizationStatus _locStatus = CLAuthorizationStatus.NotDetermined;
 
-        string _searchLoc = string.Empty;
-        bool _ktSearchDone = false;
-        bool _711SearchDone = false;
+        private string _searchLoc = string.Empty;
+        private bool _ktSearchDone, _711SearchDone;
 
         public override void ViewDidLoad()
         {
-            PageName = ProfileConstants.Pagename_FindUs;
+            PageName = FindUsConstants.Pagename_FindUs;
             base.ViewDidLoad();
             SetNavigationBar();
             AddSubViews();
@@ -73,7 +72,7 @@ namespace myTNB
             ShowStoreLocations();
         }
 
-        void ShowStoreLocations()
+        private void ShowStoreLocations()
         {
             if (!DataManager.DataManager.SharedInstance.isLocationSearch
                 && !DataManager.DataManager.SharedInstance.IsSameStoreType)
@@ -116,7 +115,7 @@ namespace myTNB
             }
         }
 
-        void DisplayKTLocations(bool isSearch)
+        private void DisplayKTLocations(bool isSearch)
         {
             GetLocations(isSearch).ContinueWith(task =>
             {
@@ -143,12 +142,12 @@ namespace myTNB
                         }
                         else
                         {
-                            AlertHandler.DisplayGenericAlert(this, "FindUs_ZeroLocations".Translate(), "FindUs_NoKTFound".Translate());
+                            DisplayGenericAlert(GetI18NValue(FindUsConstants.I18N_ZeroLocations), GetI18NValue(FindUsConstants.I18N_NoKTFound));
                         }
                     }
                     else
                     {
-                        AlertHandler.DisplayGenericAlert(this, "FindUs_ZeroLocations".Translate(), "FindUs_NoKTFound".Translate());
+                        DisplayGenericAlert(GetI18NValue(FindUsConstants.I18N_ZeroLocations), GetI18NValue(FindUsConstants.I18N_NoKTFound));
                     }
                     _ktSearchDone = true;
                     HideActivityIndicator();
@@ -156,7 +155,7 @@ namespace myTNB
             });
         }
 
-        void DisplayConvinietStoreLocations(bool isRecenter)
+        private void DisplayConvinietStoreLocations(bool isRecenter)
         {
             MKLocalSearchRequest searchRequest = new MKLocalSearchRequest();
             searchRequest.NaturalLanguageQuery = "7 Eleven";
@@ -187,19 +186,19 @@ namespace myTNB
                     if (isRecenter && _convinientStoreList != null && _convinientStoreList?.Count > 0)
                     {
                         ReCenterMap((double)_convinientStoreList[0].Placemark.Coordinate.Latitude
-                                    , (double)_convinientStoreList[0].Placemark.Coordinate.Longitude);
+                            , (double)_convinientStoreList[0].Placemark.Coordinate.Longitude);
                     }
                 }
                 else
                 {
-                    AlertHandler.DisplayGenericAlert(this, "FindUs_ZeroLocations".Translate(), "FindUs_No711Found".Translate());
+                    DisplayGenericAlert(GetI18NValue(FindUsConstants.I18N_ZeroLocations), GetI18NValue(FindUsConstants.I18N_No711Found));
                 }
                 _711SearchDone = true;
                 HideActivityIndicator();
             });
         }
 
-        void HideActivityIndicator()
+        private void HideActivityIndicator()
         {
             if (_ktSearchDone && _711SearchDone)
             {
@@ -209,7 +208,7 @@ namespace myTNB
             }
         }
 
-        internal void AddSubViews()
+        private void AddSubViews()
         {
             UIView viewSearch = new UIView(new CGRect(18, DeviceHelper.IsIphoneXUpResolution() ? 104 : 80, View.Frame.Width - 36, 51));
             UITextField txtFieldSearch = new UITextField
@@ -217,7 +216,7 @@ namespace myTNB
                 Frame = new CGRect(0, 12, viewSearch.Frame.Width, 24)
                 ,
                 AttributedPlaceholder = new NSAttributedString(
-                    GetI18NValue(ProfileConstants.I18N_SearchPlaceholder)
+                    GetI18NValue(FindUsConstants.I18N_SearchPlaceholder)
                     , font: MyTNBFont.MuseoSans16
                     , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
@@ -257,7 +256,7 @@ namespace myTNB
             UIView viewShow = new UIView(new CGRect(18, DeviceHelper.IsIphoneXUpResolution() ? 160 : 138, View.Frame.Width - 36, 51));
             UILabel lblShow = new UILabel(new CGRect(0, 0, viewShow.Frame.Width, 12))
             {
-                Text = "FindUs_Show".Translate().ToUpper(),
+                Text = GetI18NValue(FindUsConstants.I18N_Show).ToUpper(),
                 TextAlignment = UITextAlignment.Left,
                 TextColor = MyTNBColor.SilverChalice,
                 Font = MyTNBFont.MuseoSans9
@@ -265,7 +264,7 @@ namespace myTNB
 
             _lblType = new UILabel(new CGRect(0, 12, viewShow.Frame.Width, 24))
             {
-                Text = "Common_All".ToUpper(),
+                Text = GetCommonI18NValue(Constants.Common_All),
                 TextAlignment = UITextAlignment.Left,
                 TextColor = MyTNBColor.TunaGrey(),
                 Font = MyTNBFont.MuseoSans16
@@ -296,19 +295,22 @@ namespace myTNB
             View.AddSubviews(new UIView[] { viewSearch });
         }
 
-        bool IsConvinientStoreSearch()
+        private bool IsConvinientStoreSearch
         {
-            /*foreach (string item in TNBGlobal.CONVINIENT_STORE_LIST)
+            get
             {
-                if (_searchLoc.ToLower().Contains(item))
+                /*foreach (string item in TNBGlobal.CONVINIENT_STORE_LIST)
                 {
-                    return true;
-                }
-            }*/
-            return false;
+                    if (_searchLoc.ToLower().Contains(item))
+                    {
+                        return true;
+                    }
+                }*/
+                return false;
+            }
         }
 
-        void ExecuteLocationSearch()
+        private void ExecuteLocationSearch()
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -319,7 +321,7 @@ namespace myTNB
                         DataManager.DataManager.SharedInstance.isLocationSearch = true;
                         _mapView.RemoveAnnotations(_mapView.Annotations);
                         ActivityIndicator.Show();
-                        if (IsConvinientStoreSearch())
+                        if (IsConvinientStoreSearch)
                         {
                             _ktSearchDone = true;
                             DisplayConvinietStoreLocations(true);
@@ -338,14 +340,14 @@ namespace myTNB
             });
         }
 
-        internal void SetNavigationBar()
+        private void SetNavigationBar()
         {
             NavigationController.NavigationBar.Hidden = true;
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 64, true);
             UIView headerView = gradientViewComponent.GetUI();
             TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle(GetI18NValue(ProfileConstants.I18N_NavTitle));
+            titleBarComponent.SetTitle(GetI18NValue(FindUsConstants.I18N_NavTitle));
             titleBarComponent.SetPrimaryVisibility(true);
             titleBarComponent.SetBackVisibility(false);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
@@ -354,7 +356,7 @@ namespace myTNB
                 DataManager.DataManager.SharedInstance.CurrentStoreTypeIndex = 0;
                 DataManager.DataManager.SharedInstance.PreviousStoreTypeIndex = 0;
                 DataManager.DataManager.SharedInstance.SelectedLocationTypeID = "all";
-                DataManager.DataManager.SharedInstance.SelectedLocationTypeTitle = "Common_All".Translate();
+                DataManager.DataManager.SharedInstance.SelectedLocationTypeTitle = GetCommonI18NValue(Constants.Common_All);
                 DataManager.DataManager.SharedInstance.IsSameStoreType = false;
                 DismissViewController(true, null);
             }));
@@ -362,7 +364,7 @@ namespace myTNB
             View.AddSubview(headerView);
         }
 
-        internal void SetMapView()
+        private void SetMapView()
         {
             _mapView = new MKMapView(new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 160
                 : 138, View.Frame.Width, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 162 : 137)))
@@ -375,7 +377,7 @@ namespace myTNB
             View.AddSubview(_mapView);
         }
 
-        internal void CreateLocationIcon()
+        private void CreateLocationIcon()
         {
             _viewLocation = new UIView(new CGRect(_mapView.Frame.Width - 67, _mapView.Frame.Height - 75, 50, 50));
 
@@ -401,14 +403,14 @@ namespace myTNB
             _mapView.AddSubview(_viewLocation);
         }
 
-        void ReCenterMap(double lat, double lon)
+        private void ReCenterMap(double lat, double lon)
         {
             CLLocationCoordinate2D coords = new CLLocationCoordinate2D(lat, lon);
             MKCoordinateSpan span = new MKCoordinateSpan(MilesToLatitudeDegrees(1), MilesToLongitudeDegrees(1, coords.Latitude));
             _mapView.Region = new MKCoordinateRegion(coords, span);
         }
 
-        internal void SetUserLocation()
+        private void SetUserLocation()
         {
             _mapView.ShowsUserLocation = true;
             _locationManager = new CLLocationManager();
@@ -434,13 +436,14 @@ namespace myTNB
             };
         }
 
-        double MilesToLatitudeDegrees(double miles)
+        private double MilesToLatitudeDegrees(double miles)
         {
             double earthRadius = 3960.0; // in miles
             double radiansToDegrees = 180.0 / Math.PI;
             return (miles / earthRadius) * radiansToDegrees;
         }
-        double MilesToLongitudeDegrees(double miles, double atLatitude)
+
+        private double MilesToLongitudeDegrees(double miles, double atLatitude)
         {
             double earthRadius = 3960.0; // in miles
             double degreesToRadians = Math.PI / 180.0;
@@ -450,7 +453,7 @@ namespace myTNB
             return (miles / radiusAtLatitude) * radiansToDegrees;
         }
 
-        MKAnnotationView GetViewForAnnotation(MKMapView mapView, IMKAnnotation annotation)
+        private MKAnnotationView GetViewForAnnotation(MKMapView mapView, IMKAnnotation annotation)
         {
             MKAnnotationView annotationView = null;
             if (annotation is MKUserLocation)
@@ -465,8 +468,7 @@ namespace myTNB
                     annotationView = new MKAnnotationView(annotation, "annotationIdentifier");
                 }
                 annotationView.Image = UIImage.FromBundle(((AnnotationModel)annotation).is7E
-                                                          ? "Map-Convenient-Store"
-                                                          : "Map-Kedai-Tenaga");
+                    ? "Map-Convenient-Store" : "Map-Kedai-Tenaga");
                 annotationView.CanShowCallout = false;
                 string title = ((AnnotationModel)annotation).is7E ? "7-Eleven" : "Kedai Tenaga";
                 annotationView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
@@ -484,7 +486,7 @@ namespace myTNB
             return annotationView;
         }
 
-        Task GetLocations(bool isSearch)
+        private Task GetLocations(bool isSearch)
         {
             return Task.Factory.StartNew(() =>
             {
@@ -495,8 +497,7 @@ namespace myTNB
                 if (!isSearch)
                 {
                     locType = DataManager.DataManager.SharedInstance.SelectedLocationTypeTitle == "All"
-                                         ? "KT"
-                                         : DataManager.DataManager.SharedInstance.SelectedLocationTypeTitle;
+                        ? "KT" : DataManager.DataManager.SharedInstance.SelectedLocationTypeTitle;
                 }
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
@@ -507,7 +508,8 @@ namespace myTNB
                     locationType = locType,
                     keyword = isSearch ? _searchLoc : string.Empty
                 };
-                _locations = serviceManager.OnExecuteAPI<GetLocationsResponseModel>(isSearch ? "GetLocationsByKeyword" : "GetLocations", requestParameter);
+                _locations = serviceManager.OnExecuteAPI<GetLocationsResponseModel>(isSearch
+                    ? "GetLocationsByKeyword" : "GetLocations", requestParameter);
             });
         }
     }

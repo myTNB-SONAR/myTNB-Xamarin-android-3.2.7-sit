@@ -4,23 +4,26 @@ using myTNB.Dashboard.DashboardComponents;
 using CoreGraphics;
 using myTNB.Home.More.MyAccount;
 using myTNB.Registration.CustomerAccounts;
+using myTNB.MyAccount;
 
 namespace myTNB
 {
-    public partial class MyAccountViewController : UIViewController
+    public partial class MyAccountViewController : CustomUIViewController
     {
         public MyAccountViewController(IntPtr handle) : base(handle)
         {
         }
 
-        UIView _viewNotificationMsg;
-        UILabel _lblNotificationDetails;
+        private UIView _viewNotificationMsg;
+        private UILabel _lblNotificationDetails;
 
         public override void ViewDidLoad()
         {
+            PageName = MyAccountConstants.Pagename_MyAccount;
             base.ViewDidLoad();
             SetNavigationBar();
-            myAccountTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution() ? 88 : 64, View.Frame.Width, View.Frame.Height - 64);
+            myAccountTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution()
+                ? 88 : 64, View.Frame.Width, View.Frame.Height - 64);
             myAccountTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
         }
 
@@ -53,7 +56,7 @@ namespace myTNB
             ActivityIndicator.Hide();
         }
 
-        internal void SetFooterView()
+        private void SetFooterView()
         {
             UIButton btnLogout = new UIButton(UIButtonType.Custom);
             btnLogout.Frame = new CGRect(18, 16, View.Frame.Width - 36, 48);
@@ -77,7 +80,7 @@ namespace myTNB
                     navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                     PresentViewController(navController, true, null);
                 }));
-                alert.AddAction(UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, null));
+                alert.AddAction(UIAlertAction.Create(GetCommonI18NValue(Constants.Common_Cancel), UIAlertActionStyle.Cancel, null));
                 alert.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(alert, animated: true, completionHandler: null);
             };
@@ -153,7 +156,7 @@ namespace myTNB
             myAccountTableView.TableFooterView = viewFooter;
         }
 
-        internal void SetNavigationBar()
+        private void SetNavigationBar()
         {
             NavigationController.NavigationBar.Hidden = true;
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 64, true);
@@ -230,22 +233,26 @@ namespace myTNB
             ActivityIndicator.Hide();
         }
 
-        internal void InitializeNotificationMessage()
+        private void InitializeNotificationMessage()
         {
             if (_viewNotificationMsg == null)
             {
-                _viewNotificationMsg = new UIView(new CGRect(18, 32, View.Frame.Width - 36, 64));
-                _viewNotificationMsg.BackgroundColor = MyTNBColor.SunGlow;
+                _viewNotificationMsg = new UIView(new CGRect(18, 32, View.Frame.Width - 36, 64))
+                {
+                    BackgroundColor = MyTNBColor.SunGlow,
+                    Hidden = true
+                };
                 _viewNotificationMsg.Layer.CornerRadius = 2.0f;
-                _viewNotificationMsg.Hidden = true;
 
-                _lblNotificationDetails = new UILabel(new CGRect(16, 16, _viewNotificationMsg.Frame.Width - 32, 32));
-                _lblNotificationDetails.TextAlignment = UITextAlignment.Left;
-                _lblNotificationDetails.Font = MyTNBFont.MuseoSans12;
-                _lblNotificationDetails.TextColor = MyTNBColor.TunaGrey();
-                _lblNotificationDetails.Text = TNBGlobal.EMPTY_ADDRESS;
-                _lblNotificationDetails.Lines = 0;
-                _lblNotificationDetails.LineBreakMode = UILineBreakMode.WordWrap;
+                _lblNotificationDetails = new UILabel(new CGRect(16, 16, _viewNotificationMsg.Frame.Width - 32, 32))
+                {
+                    TextAlignment = UITextAlignment.Left,
+                    Font = MyTNBFont.MuseoSans12,
+                    TextColor = MyTNBColor.TunaGrey(),
+                    Text = TNBGlobal.EMPTY_ADDRESS,
+                    Lines = 0,
+                    LineBreakMode = UILineBreakMode.WordWrap
+                };
 
                 _viewNotificationMsg.AddSubview(_lblNotificationDetails);
 
@@ -254,11 +261,11 @@ namespace myTNB
             }
         }
 
-        internal void ShowNotificationMessage()
+        private void ShowNotificationMessage()
         {
             _viewNotificationMsg.Hidden = false;
             _viewNotificationMsg.Alpha = 1.0f;
-            UIView.Animate(5, 1, UIViewAnimationOptions.CurveEaseOut, () =>
+            UIView.Animate(2, 1, UIViewAnimationOptions.CurveEaseOut, () =>
             {
                 _viewNotificationMsg.Alpha = 0.0f;
             }, () =>

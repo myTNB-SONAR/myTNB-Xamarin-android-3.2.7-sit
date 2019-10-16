@@ -8,7 +8,7 @@ using myTNB.Dashboard.DashboardComponents;
 using myTNB.Home.Components;
 using System.Collections.Generic;
 using System.Diagnostics;
-using myTNB.Profile;
+using myTNB.FindUs;
 
 namespace myTNB
 {
@@ -26,7 +26,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
-            PageName = ProfileConstants.Pagename_LocationDetails;
+            PageName = FindUsConstants.Pagename_LocationDetails;
             base.ViewDidLoad();
             ActivityIndicator.Show();
             SetNavigationBar();
@@ -196,25 +196,25 @@ namespace myTNB
             }
             if (schemaDictionary.Count > 0)
             {
-                UIAlertController mapAlert = UIAlertController.Create("FindUs_MapSelection".Translate()
-                    , "FindUs_SelectApplication".Translate(), UIAlertControllerStyle.ActionSheet);
+                UIAlertController mapAlert = UIAlertController.Create(GetI18NValue(FindUsConstants.I18N_MapSelection)
+                    , GetI18NValue(FindUsConstants.I18N_SelectApplication), UIAlertControllerStyle.ActionSheet);
                 foreach (KeyValuePair<string, string> schema in schemaDictionary)
                 {
-                    UIAlertAction action = UIAlertAction.Create(string.Format("{0} {1}", "FindUs_OpenIn".Translate(), schema.Key)
+                    UIAlertAction action = UIAlertAction.Create(string.Format("{0} {1}", GetI18NValue(FindUsConstants.I18N_OpenIn), schema.Key)
                         , UIAlertActionStyle.Default, (obj) =>
                     {
                         UIApplication.SharedApplication.OpenUrl(new NSUrl(schema.Value));
                     });
                     mapAlert.AddAction(action);
                 }
-                UIAlertAction cancelAction = UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, null);
+                UIAlertAction cancelAction = UIAlertAction.Create(GetCommonI18NValue(Constants.Common_Cancel), UIAlertActionStyle.Cancel, null);
                 mapAlert.AddAction(cancelAction);
                 mapAlert.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(mapAlert, animated: true, completionHandler: null);
             }
             else
             {
-                AlertHandler.DisplayGenericAlert(this, "Common_Warning".Translate(), "FindUs_NoSupportedApplication".Translate());
+                DisplayGenericAlert(GetCommonI18NValue(Constants.Common_Warning), GetI18NValue(FindUsConstants.I18N_NoSupportedApp));
             }
         }
     }

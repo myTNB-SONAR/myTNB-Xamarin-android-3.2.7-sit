@@ -65,7 +65,10 @@
     "totalAmountRM": "Total Amount (RM)",
     "back": "Back",
     "cards": "Credit / Debit Cards",
-    "abort": "Abort"
+    "abort": "Abort",
+    "warning": "Warning",
+    "manage": "Manage",
+    "update": "Update"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -435,12 +438,26 @@
   },
   "FindUs": {
     "title": "Find Us",
-    "searchPlaceholder": "Search via street name or area"
+    "searchPlaceholder": "Search via street name or area",
+    "zeroLocations": "0 Locations",
+    "noKTFound": "No Kedai Tenaga Found",
+    "no711Found": "No 7-Eleven Found",
+    "show": "Show"
   },
   "LocationDetails": {
     "address": "ADDRESS",
     "phone": "PHONE",
     "openingHours": "OPENING HOURS",
-    "services": "SERVICES"
+    "services": "SERVICES",
+    "mapSelection": "Map Selection",
+    "selectApplication": "Select navigation application",
+    "openIn": "Open in",
+    "noSupportedApp": "No supported map application is installed"
+  },
+  "MyAccount": {
+    "title": "My Account",
+    "detailSectionTitle": "myTNB Account",
+    "accountSectionTitle": "TNB Electricity Supply Accounts"
+
   }
 }

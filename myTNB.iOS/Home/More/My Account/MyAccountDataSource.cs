@@ -11,8 +11,8 @@ namespace myTNB.Home.More.MyAccount
 {
     public class MyAccountDataSource : UITableViewSource
     {
-        RegisteredCardsResponseModel _registeredCards = new RegisteredCardsResponseModel();
-        MyAccountViewController _controller;
+        private RegisteredCardsResponseModel _registeredCards = new RegisteredCardsResponseModel();
+        private MyAccountViewController _controller;
         public MyAccountDataSource(MyAccountViewController controller)
         {
             _controller = controller;
@@ -29,13 +29,13 @@ namespace myTNB.Home.More.MyAccount
             }
         }
 
-        List<string> SectionTitle = new List<string>
+        private List<string> SectionTitle = new List<string>
         {
             "MyAccount_MyTNBAccount".Translate(),
             "MyAccount_TNBSupplyAccount".Translate()
         };
 
-        List<string> DetailContent = new List<string>
+        private List<string> DetailContent = new List<string>
         {
             "Common_Name".Translate().ToUpper(),
             "Common_ICROCPassportNumber".Translate().ToUpper(),
@@ -59,8 +59,7 @@ namespace myTNB.Home.More.MyAccount
             else if (section == 1)
             {
                 return DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null
-                                  ? DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count
-                                      : 0;
+                    ? DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count : 0;
             }
             else
             {
@@ -209,7 +208,7 @@ namespace myTNB.Home.More.MyAccount
             return 50f;
         }
 
-        CustomerAccountRecordModel GetAccountModel(int index)
+        private CustomerAccountRecordModel GetAccountModel(int index)
         {
             if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
                && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null
@@ -220,7 +219,7 @@ namespace myTNB.Home.More.MyAccount
             return new CustomerAccountRecordModel();
         }
 
-        CGSize GetLabelSize(UILabel label, nfloat width, nfloat height)
+        private CGSize GetLabelSize(UILabel label, nfloat width, nfloat height)
         {
             return label.Text.StringSize(label.Font, new SizeF((float)width, (float)height));
         }

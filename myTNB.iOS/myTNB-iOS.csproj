@@ -2486,6 +2486,8 @@
     <Compile Include="Sitecore CMS\SitecoreServices.cs" />
     <Compile Include="Helpers\NSDataHelper.cs" />
     <Compile Include="Home\More\ProfileConstants.cs" />
+    <Compile Include="Home\More\Find Us\FindUsConstants.cs" />
+    <Compile Include="Home\More\My Account\MyAccountConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

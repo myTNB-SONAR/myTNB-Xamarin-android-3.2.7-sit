@@ -43,6 +43,10 @@
         public static string Common_RefreshMessage = "refreshDescription";
         public static string Common_RefreshBtnText = "refreshNow";
         public static string Common_BCRMMessage = "bcrmMessage";
+        public static string Common_All = "all";
+        public static string Common_Warning = "warning";
+        public static string Common_Manage = "manage";
+        public static string Common_Update = "update";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";

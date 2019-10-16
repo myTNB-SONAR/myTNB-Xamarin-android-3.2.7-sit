@@ -4,7 +4,7 @@ using System.Drawing;
 using System.Linq;
 using CoreGraphics;
 using Foundation;
-using myTNB.Profile;
+using myTNB.FindUs;
 using UIKit;
 
 namespace myTNB.Home.More.FindUs.LocationDetails
@@ -82,7 +82,7 @@ namespace myTNB.Home.More.FindUs.LocationDetails
             {
                 AddressViewCell cell = tableView.DequeueReusableCell("AddressViewCell", indexPath) as AddressViewCell;
                 cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-                cell.lblTitle.Text = GetI18NValue(ProfileConstants.I18N_Address);
+                cell.lblTitle.Text = GetI18NValue(FindUsConstants.I18N_Address);
                 cell.lblValue.Text = _annotation.Subtitle;
                 CGSize newSize = GetLabelSize(cell.lblValue, cell.lblValue.Frame.Width, 1000);
                 cell.lblValue.Frame = new CGRect(cell.lblValue.Frame.X, cell.lblValue.Frame.Y
@@ -101,7 +101,7 @@ namespace myTNB.Home.More.FindUs.LocationDetails
             {
                 ContactUsViewCell cell = tableView.DequeueReusableCell("ContactUsViewCell", indexPath) as ContactUsViewCell;
                 cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-                cell.lblTitle.Text = GetI18NValue(ProfileConstants.I18N_Phone);
+                cell.lblTitle.Text = GetI18NValue(FindUsConstants.I18N_Phone);
                 string number = string.Empty;
                 if (!_annotation.is7E)
                 {
@@ -129,7 +129,7 @@ namespace myTNB.Home.More.FindUs.LocationDetails
             {
                 OpeningHoursViewCell cell = tableView.DequeueReusableCell("OpeningHoursViewCell", indexPath) as OpeningHoursViewCell;
                 cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-                cell.lblTitle.Text = GetI18NValue(ProfileConstants.I18N_OpeningHours);
+                cell.lblTitle.Text = GetI18NValue(FindUsConstants.I18N_OpeningHours);
                 if (_annotation.is7E)
                 {
                     cell.lbl7EOperation.Text = "FindUs_Open24Hours".Translate();
@@ -158,7 +158,7 @@ namespace myTNB.Home.More.FindUs.LocationDetails
             {
                 ServicesViewCell cell = tableView.DequeueReusableCell("ServicesViewCell", indexPath) as ServicesViewCell;
                 cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-                cell.lblTitle.Text = GetI18NValue(ProfileConstants.I18N_Services);
+                cell.lblTitle.Text = GetI18NValue(FindUsConstants.I18N_Services);
                 cell.AddSubview(RenderServicesListCell());
                 return cell;
             }

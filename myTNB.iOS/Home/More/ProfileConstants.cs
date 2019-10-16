@@ -7,8 +7,6 @@
         public static string Pagename_NotificationSettings = "NotificationSettings";
         public static string Pagename_FAQ = "FAQ";
         public static string Pagename_TnC = "TnC";
-        public static string Pagename_FindUs = "FindUs";
-        public static string Pagename_LocationDetails = "LocationDetails";
 
         //I18N
         public static string I18N_NavTitle = "title";
@@ -29,12 +27,5 @@
 
         public static string I18N_TypeDescription = "typeDescription";
         public static string I18N_ModeDescription = "modeDescription";
-
-        public static string I18N_SearchPlaceholder = "searchPlaceholder";
-
-        public static string I18N_Address = "address";
-        public static string I18N_Phone = "phone";
-        public static string I18N_OpeningHours = "openingHours";
-        public static string I18N_Services = "services";
     }
 }

@@ -63,7 +63,10 @@
     "totalAmountRM": "Jumlah Keseluruhan (RM)",
     "back": "Back",
     "cards": "Credit / Debit Cards",
-    "abort": "Abort"
+    "abort": "Abort",
+    "warning": "Warning", //missing
+    "manage": "Uruskan",
+    "update": "Kemas kini"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -392,7 +395,7 @@
     "navTitle": "Add Electricity Account",
     "noAcctFoundMsg": "Please tap on the button below to add your TNB electricity account.",
     "supplyAcctCount": "electricity supply account(s) found!",
-    "addAnotherAcct": "Add Another Account",
+    "addAnotherAcct": "Masukkan Satu Lagi Akaun",
     "addAccount": "Adding {0} Account",
     "addAccounts": "Adding {0} Accounts",
     "addAccountMsg": "This may take a while as we are\r\nadding your TNB account.",
@@ -433,12 +436,20 @@
   },
   "FindUs": {
     "title": "Temui Kami",
-    "searchPlaceholder": "Cari mengikut nama jalan atau kawasan"
+    "searchPlaceholder": "Cari mengikut nama jalan atau kawasan",
+    "zeroLocations": "0 Locations", //missing
+    "noKTFound": "No Kedai Tenaga Found", //missing
+    "no711Found": "No 7-Eleven Found", //missing
+    "show": "Tunjukkan"
   },
   "LocationDetails": {
     "address": "ALAMAT",
     "phone": "NOMBOR TELEFON",
     "openingHours": "MASA OPERASI",
-    "services": "PERKHIDMATAN"
+    "services": "PERKHIDMATAN",
+    "mapSelection": "Map Selection", //missing
+    "selectApplication": "Select navigation application", //missing
+    "openIn": "Open in", //missing
+    "noSupportedApp": "No supported map application is installed" //missing
   }
 }
