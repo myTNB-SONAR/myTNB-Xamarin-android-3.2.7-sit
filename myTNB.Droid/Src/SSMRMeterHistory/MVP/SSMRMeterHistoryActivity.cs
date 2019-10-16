@@ -59,6 +59,12 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [BindView(Resource.Id.smr_history_recyclerview)]
         RecyclerView mSMRRecyclerView;
 
+        [BindView(Resource.Id.empty_smr_history_container)]
+        LinearLayout EmptySMRHistoryContainer;
+
+        [BindView(Resource.Id.empty_smr_history_message)]
+        TextView EmptySMRHistoryMessage;
+
         [BindView(Resource.Id.smr_message_title)]
         TextView SMRMessageTitle;
 
@@ -137,7 +143,9 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 SetStatusBarBackground(Resource.Drawable.bg_smr);
 
                 TextViewUtils.SetMuseoSans500Typeface(SMRMainTitle, SMRListHeader, SMRMessageTitle, btnSubmitMeter, btnEnableSubmitMeter, btnDisableSubmitMeter);
-                TextViewUtils.SetMuseoSans300Typeface(SMRMainContent, SMRAccountTitle, SMRAccountSelected, NonSMRNoteContent);
+                TextViewUtils.SetMuseoSans300Typeface(SMRMainContent, SMRAccountTitle, SMRAccountSelected, NonSMRNoteContent, EmptySMRHistoryMessage);
+
+                EmptySMRHistoryMessage.Text = GetString(Resource.String.ssmr_empty_history_message);
 
                 mPresenter = new SSMRMeterHistoryPresenter(this);
                 mSMRRecyclerView.SetLayoutManager(new LinearLayoutManager(this));
@@ -262,8 +270,18 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             ShowNonSMRVisible(false,false);
             smrResponse = activityInfoResponse;
 
-            SSMRMeterHistoryAdapter adapter = new SSMRMeterHistoryAdapter(activityInfoResponse.Response.Data.MeterReadingHistory);
-            mSMRRecyclerView.SetAdapter(adapter);
+            if (activityInfoResponse.Response.Data.MeterReadingHistory.Count > 0)
+            {
+                SSMRMeterHistoryAdapter adapter = new SSMRMeterHistoryAdapter(activityInfoResponse.Response.Data.MeterReadingHistory);
+                mSMRRecyclerView.SetAdapter(adapter);
+                mSMRRecyclerView.Visibility = ViewStates.Visible;
+                EmptySMRHistoryContainer.Visibility = ViewStates.Gone;
+            }
+            else
+            {
+                EmptySMRHistoryContainer.Visibility = ViewStates.Visible;
+                mSMRRecyclerView.Visibility = ViewStates.Gone;
+            }
 
             if (activityInfoResponse.Response.Data.DashboardCTAType == Constants.SMR_SUBMIT_METER_KEY && activityInfoResponse.Response.Data.isCurrentPeriodSubmitted == "false"
                 && activityInfoResponse.Response.Data.isDashboardCTADisabled == "false")

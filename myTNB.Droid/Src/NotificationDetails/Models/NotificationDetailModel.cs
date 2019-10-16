@@ -23,6 +23,7 @@ namespace myTNB_Android.Src.NotificationDetails.Models
             public string label;
             public Action action;
             public bool isSolidBackground;
+            public bool isEnabled = true;
 
             public NotificationCTA(string btnLabel, Action ctaAction)
             {
@@ -33,6 +34,11 @@ namespace myTNB_Android.Src.NotificationDetails.Models
             public void SetSolidCTA(bool isSolid)
             {
                 isSolidBackground = isSolid;
+            }
+
+            public void SetEnabled(bool enable)
+            {
+                isEnabled = enable;
             }
 
         }

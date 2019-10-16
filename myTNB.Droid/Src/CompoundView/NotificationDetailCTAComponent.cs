@@ -55,6 +55,16 @@ namespace myTNB_Android.Src.CompoundView
                 {
                     primaryBtn.SetTextColor(new Color(ContextCompat.GetColor(Context, Resource.Color.white)));
                     primaryBtn.Background = ContextCompat.GetDrawable(mContext, Resource.Drawable.green_button_background);
+                    if (ctaList[0].isEnabled)
+                    {
+                        primaryBtn.Enabled = true;
+                        primaryBtn.Background = ContextCompat.GetDrawable(mContext, Resource.Drawable.green_button_background);
+                    }
+                    else
+                    {
+                        primaryBtn.Enabled = false;
+                        primaryBtn.Background = ContextCompat.GetDrawable(mContext, Resource.Drawable.silver_chalice_button_background);
+                    }
                 }
                 else
                 {
@@ -65,7 +75,6 @@ namespace myTNB_Android.Src.CompoundView
                 {
                     ctaList[0].action();
                 };
-
                 TextViewUtils.SetMuseoSans500Typeface(primaryBtn);
             }
             else
