@@ -136,7 +136,7 @@ namespace myTNB
 
         private void OnTableViewScrolled(object sender, EventArgs e)
         {
-            nfloat safeInset = UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Top;
+            nfloat safeInset = DeviceHelper.TopSafeAreaInset;
             _previousScrollOffset = _scrollView.ContentOffset.Y;
             if (!_isViewDidload)
             {
@@ -339,7 +339,7 @@ namespace myTNB
             }
             else
             {
-                nfloat height = GetScaledHeight(80) + UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Bottom;
+                nfloat height = GetScaledHeight(80) + DeviceHelper.BottomSafeAreaInset;
                 _viewCTA = new UIView(new CGRect(0, View.Frame.Height - height, ViewWidth, height))
                 {
                     BackgroundColor = UIColor.White
