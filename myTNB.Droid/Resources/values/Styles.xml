@@ -407,6 +407,9 @@
 
   <style name="AppSearchView" parent="Widget.AppCompat.SearchView" >
     <item name="android:textSize">12dp</item>
+	<item name="android:textColor">#ffffff</item>
+	<item name="android:hint">#96FFFFFF</item>
+	<item name="android:textColorHint">#96FFFFFF</item>
   </style>
 
 	<style name="Theme.TooltipButton" parent="@android:style/Widget.Button">

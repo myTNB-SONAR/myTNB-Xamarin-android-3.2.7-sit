@@ -93,9 +93,49 @@ namespace myTNB_Android.Src.Base
             CustomerBillingAccount.UpdateIsSMROnboardingShown();
         }
 
+        public void UpdateIsPayBillShown()
+        {
+            CustomerBillingAccount.UpdateIsPayBillShown();
+        }
+
+        public void UpdateIsViewBillShown()
+        {
+            CustomerBillingAccount.UpdateIsViewBillShown();
+        }
+
         public bool IsSMROnboardingShown()
         {
             return CustomerBillingAccount.GetIsSMROnboardingShown();
+        }
+
+        public bool IsPayBillShown()
+        {
+            return CustomerBillingAccount.GetIsPayBillShown();
+        }
+
+        public bool IsViewBillShown()
+        {
+            return CustomerBillingAccount.GetIsViewBillShown();
+        }
+
+        public bool IsPayBillEnabledNeeded()
+        {
+            return CustomerBillingAccount.GetIsPayBillEnabled();
+        }
+
+        public bool IsViewBillEnabledNeeded()
+        {
+            return CustomerBillingAccount.GetIsViewBillEnabled();
+        }
+
+        public int IsHasNonREAccountCount()
+        {
+            return CustomerBillingAccount.NonREAccountList().Count;
+        }
+
+        public int IsHasREAccountCount()
+        {
+            return CustomerBillingAccount.REAccountList().Count;
         }
 
         public void UpdateIsSMRMeterReadingOnePhaseOnboardingShown(bool flag)

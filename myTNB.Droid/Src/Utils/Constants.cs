@@ -257,6 +257,10 @@ namespace myTNB_Android.Src.Utils
 
         internal static readonly string ENERGY_DISCONNECTION_KEY = "AVAILABLE";
 
+        internal static readonly int SELECT_ACCOUNT_PDF_REQUEST_CODE = 9078;
+
+        internal static readonly string CODE_KEY = "CODE_KEY";
+
         public enum GREETING
         {
             MORNING,

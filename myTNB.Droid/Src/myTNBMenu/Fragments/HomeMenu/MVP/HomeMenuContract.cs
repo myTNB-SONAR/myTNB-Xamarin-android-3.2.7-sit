@@ -7,6 +7,8 @@ using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Requests;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.AppLaunch.Requests;
+using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.Database.Model;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -37,10 +39,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void CheckSSMRMeterReadingThreePhaseTimeStamp();
 
-            void SetNewPromotionRecycleView();
-
-            void SetNewPromotionResult(List<NewPromotion> list);
-
             void ShowRefreshScreen(string contentMsg, string buttonMsg);
 
             void UpdateCurrentSMRAccountList();
@@ -50,7 +48,24 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void OnSavedEnergySavingTipsTimeStamp(string mSavedTimeStamp);
 
             void CheckEnergySavingTipsTimeStamp();
-            void UpdateSearchViewBackground(string searchText);
+
+            void UpdateQueryListing(string searchText);
+
+            void IsLoadMoreButtonVisible(bool isVisible, bool isRotate);
+
+            void SetHeaderActionVisiblity(List<SummaryDashBoardDetails> accountList);
+
+            void IsMyServiceLoadMoreButtonVisible(bool isVisible, bool isRotate);
+
+            void SetBottomLayoutBackground(bool isMyServiceExpand);
+
+            void ShowProgressDialog();
+
+            void HideProgressDialog();
+
+            void ShowBillErrorSnackBar();
+
+            void ShowBillPDF(AccountData selectedAccountData, BillHistoryV5 selectedBill = null);
 
         }
 
@@ -68,7 +83,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Task OnGetFAQTimeStamp();
             void ReadNewFAQFromCache();
             Task OnGetFAQs();
-            void LoadBatchSummarDetailsByIndex(int batchIndex);
             void LoadLocalAccounts();
 			void LoadSummaryDetailsInBatch(List<string> accountNumbers);
 
@@ -84,10 +98,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             Task OnGetSSMRMeterReadingThreePhaseScreens();
 
-            List<NewPromotion> LoadShimmerPromotionList(int count);
-
-            Task InitiateNewPromotion();
-
             void GetEnergySavingTipsTimeStamp();
 
             Task OnGetEnergySavingTipsTimeStamp();
@@ -99,6 +109,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void OnCancelToken();
 
             Task InitiateGetApplySMR();
+
+            void DoLoadMoreAccount();
+
+            void RefreshAccountSummary();
+
+            void LoadQueryAccounts(string searchText);
+
+            void DoMySerivceLoadMoreAccount();
+
+            void InitiateMyServiceRefresh();
+
+            void LoadingBillsHistory(CustomerBillingAccount selectedAccount);
         }
 
         public interface IHomeMenuService
@@ -107,6 +129,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             Task<GetServicesResponse> GetServices(GetServiceRequests request);
             Task<AccountSMRStatusResponse> GetSMRAccountStatus(AccountsSMRStatusRequest request);
             Task<GetIsSmrApplyAllowedResponse> GetIsSmrApplyAllowed(GetIsSmrApplyAllowedRequest request);
+            Task<SummaryDashBoardResponse> GetLinkedSummaryInfoQuery(SummaryDashBordRequest request, System.Threading.CancellationToken token);
         }
     }
 }

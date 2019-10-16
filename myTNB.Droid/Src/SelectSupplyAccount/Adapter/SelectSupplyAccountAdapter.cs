@@ -49,29 +49,14 @@ namespace myTNB_Android.Src.Dashboard.Adapter
                 CustomerBillingAccount item = GetItemObject(position);
                 vh.txtSupplyAccountName.Text = item.AccDesc;
 
-
+                // Lin Siong TODO
                 if (item.AccountCategoryId.Equals("2"))
                 {
-                    vh.imageLeaf.SetImageResource(Resource.Drawable.ic_display_r_eleaf);
+                    vh.imageLeaf.Visibility = ViewStates.Visible;
                 }
                 else
                 {
-                    if (!item.SmartMeterCode.Equals("0"))
-                    {
-                        vh.imageLeaf.SetImageResource(Resource.Drawable.ic_display_smart_meter);
-                    }
-                    else
-                    {
-
-                        if (IsOwnedSMR(item.AccNum) && item.IsTaggedSMR)
-                        {
-                            vh.imageLeaf.SetImageResource(Resource.Drawable.smr_48_x_48);
-                        }
-                        else
-                        {
-                            vh.imageLeaf.SetImageResource(Resource.Drawable.ic_display_normal_meter);
-                        }
-                    }
+                    vh.imageLeaf.Visibility = ViewStates.Gone;
                 }
 
                 if (item.IsSelected)

@@ -432,7 +432,7 @@ You acknowledge that you have been provided with and have read and understood th
 
   <!-- Dashboard Menu-->
   <string name="menu_dashboard">Home</string>
-  <string name="menu_bills">My Bills</string>
+  <string name="menu_bills">Bills</string>
   <string name="menu_promotions">What\'s New</string>
   <string name="menu_feedback">Feedback</string>
   <string name="menu_reward">Rewards</string>
@@ -1366,7 +1366,11 @@ Please try again later.]]>
   <string name="greeting_text_morning">Good Morning,</string>
   <string name="greeting_text_afternoon">Good Afternoon,</string>
   <string name="greeting_text_evening">Good Evening,</string>
-	<string name="load_more_accounts">Load More Accounts</string>
+	<string name="load_more_accounts">More Accounts</string>
+    <string name="rearrange_accounts">Rearrange Accounts</string>
+    <string name="show_less_accounts">Show Less</string>
+<string name="show_more">Show More</string>
+    <string name="show_less">Show Less</string>
   <string name="malaysia_currency">RM</string>
   <string name="add_another_account">Add Another Account</string>
 	<string name="all_accounts">All Accounts</string>

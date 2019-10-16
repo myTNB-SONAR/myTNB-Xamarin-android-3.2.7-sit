@@ -85,6 +85,12 @@ namespace myTNB_Android.Src.Database.Model
         [Column("IsSMRTakePhotoOnBoardShown")]
         public bool IsSMRTakePhotoOnBoardShown { get; set; }
 
+        [Column("IsPayBillShown")]
+        public bool IsPayBillShown { get; set; }
+
+        [Column("IsViewBillShown")]
+        public bool IsViewBillShown { get; set; }
+
         public static int CreateTable()
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH))
@@ -636,6 +642,18 @@ namespace myTNB_Android.Src.Database.Model
             db.Execute("Update CustomerBillingAccountEntity SET IsSMROnboardingShown = 1");
         }
 
+        public static void UpdateIsPayBillShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            db.Execute("Update CustomerBillingAccountEntity SET IsPayBillShown = 1");
+        }
+
+        public static void UpdateIsViewBillShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            db.Execute("Update CustomerBillingAccountEntity SET IsViewBillShown = 1");
+        }
+
         public static bool GetIsSMROnboardingShown()
         {
             var db = DBHelper.GetSQLiteConnection();
@@ -644,6 +662,30 @@ namespace myTNB_Android.Src.Database.Model
             if (customerBillingAccounts.Count > 0)
             {
                 isShown = customerBillingAccounts[0].IsSMROnboardingShown;
+            }
+            return isShown;
+        }
+
+        public static bool GetIsPayBillShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            bool isShown = false;
+            List<CustomerBillingAccount> customerBillingAccounts = db.Query<CustomerBillingAccount>("Select IsPayBillShown from CustomerBillingAccountEntity");
+            if (customerBillingAccounts.Count > 0)
+            {
+                isShown = customerBillingAccounts[0].IsPayBillShown;
+            }
+            return isShown;
+        }
+
+        public static bool GetIsViewBillShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            bool isShown = false;
+            List<CustomerBillingAccount> customerBillingAccounts = db.Query<CustomerBillingAccount>("Select IsViewBillShown from CustomerBillingAccountEntity");
+            if (customerBillingAccounts.Count > 0)
+            {
+                isShown = customerBillingAccounts[0].IsViewBillShown;
             }
             return isShown;
         }
@@ -713,6 +755,30 @@ namespace myTNB_Android.Src.Database.Model
                 isShown = customerBillingAccounts[0].IsSMRTakePhotoOnBoardShown;
             }
             return isShown;
+        }
+
+        public static bool GetIsPayBillEnabled()
+        {
+            bool enabled = false;
+
+            if (NonREAccountList().Count > 0)
+            {
+                enabled = true;
+            }
+
+            return enabled;
+        }
+
+        public static bool GetIsViewBillEnabled()
+        {
+            bool enabled = false;
+
+            if (HasItems())
+            {
+                enabled = true;
+            }
+
+            return enabled;
         }
 
     }

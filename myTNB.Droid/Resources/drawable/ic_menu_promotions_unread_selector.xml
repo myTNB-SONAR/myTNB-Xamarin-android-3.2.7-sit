@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:state_checked="true" android:drawable="@drawable/ic_menu_promo_toggled_unread"  />
-  <item android:drawable="@drawable/ic_menu_promo_unread" />
+  <item android:state_checked="true" android:drawable="@drawable/whatsNewNewTagRead"  />
+  <item android:drawable="@drawable/whatsNewNewTagUnread" />
 </selector>

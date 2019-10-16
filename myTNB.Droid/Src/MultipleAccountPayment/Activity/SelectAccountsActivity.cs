@@ -133,11 +133,15 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 }
 
                 registerdAccounts = CustomerBillingAccount.List();
-                var found = registerdAccounts.Where(x => x.AccNum == selectedAccount.AccountNum).FirstOrDefault();
-                if (found != null)
+                if (selectedAccount != null)
                 {
-                    registerdAccounts.Remove(found);
+                    var found = registerdAccounts.Where(x => x.AccNum == selectedAccount.AccountNum).FirstOrDefault();
+                    if (found != null)
+                    {
+                        registerdAccounts.Remove(found);
+                    }
                 }
+
                 registerdAccounts.RemoveAll(x => x.AccountCategoryId == "2");
 
                 TOTAL_ACCOUNTS = registerdAccounts.Count;
@@ -168,7 +172,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                 {
                     NO_OF_ITARATION = NO_OF_ITARATION - 1;
                     List<string> custAccounts = new List<string>();
-                    custAccounts.Add(selectedAccount.AccountNum);
+                    if (selectedAccount != null)
+                    {
+                        custAccounts.Add(selectedAccount.AccountNum);
+                    }
                     List<CustomerBillingAccount> list = GetMoreCustomerAccounts(INDEX_COUNTER);
                     foreach (CustomerBillingAccount item in list)
                     {
