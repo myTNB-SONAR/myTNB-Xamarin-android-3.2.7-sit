@@ -74,14 +74,32 @@ namespace myTNB_Android.Src.Utils
                 iconView.SetPadding(0, paddingTop, 0, 0);
                 layoutParams.Height = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, sizeInDp, displayMetrics);
                 layoutParams.Width = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, sizeInDp, displayMetrics);
+                if (bottomNavigationMenuView.ChildCount == 5)
+                {
+                    if (i == 2 || i == 3)
+                    {
+                        layoutParams.Height = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, 28f, displayMetrics);
+                        layoutParams.Width = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, 38f, displayMetrics);
+                    }
+                }
+                else
+                {
+                    if (i == 2)
+                    {
+                        layoutParams.Height = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, 28f, displayMetrics);
+                        layoutParams.Width = (int)TypedValue.ApplyDimension(ComplexUnitType.Dip, 38f, displayMetrics);
+                    }
+                }
 
                 TextView selectedTextView = bottomNavigationMenuView.GetChildAt(i).FindViewById<TextView>(Resource.Id.largeLabel);
                 TextView unselectedTextView = bottomNavigationMenuView.GetChildAt(i).FindViewById<TextView>(Resource.Id.smallLabel);
 
                 selectedTextView.SetTextColor(mActivity.Resources.GetColor(Resource.Color.powerBlue));
-                unselectedTextView.SetTextColor(mActivity.Resources.GetColor(Resource.Color.silverChalice));
+                unselectedTextView.SetTextColor(mActivity.Resources.GetColor(Resource.Color.charcoalGrey));
                 selectedTextView.SetTextSize(ComplexUnitType.Dip, textSize);
                 unselectedTextView.SetTextSize(ComplexUnitType.Dip, textSize);
+                selectedTextView.SetPadding(0, 0, 0, paddingTop);
+                unselectedTextView.SetPadding(0, 0, 0, paddingTop);
 
                 TextViewUtils.SetMuseoSans500Typeface(selectedTextView);
                 TextViewUtils.SetMuseoSans300Typeface(unselectedTextView);

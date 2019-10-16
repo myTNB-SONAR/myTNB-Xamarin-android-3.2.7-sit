@@ -31,7 +31,7 @@ namespace myTNB_Android.Src.ViewBill.Activity
     [Activity(Label = "@string/viewbill_activity_title"
           , ScreenOrientation = ScreenOrientation.Portrait
           , Theme = "@style/Theme.AddAccount")]
-    public class ViewBillActivity : BaseToolbarAppCompatActivity
+    public class ViewBillActivity : BaseToolbarAppCompatActivity, ViewBillContract.IView
     {
 
         AccountData selectedAccount;
@@ -58,6 +58,8 @@ namespace myTNB_Android.Src.ViewBill.Activity
         private bool downloadClicked = false;
         private bool isLoadedDocument = false;
 
+        private bool isFromQuickAction = false;
+
 
         CancellationTokenSource cts;
 
@@ -69,6 +71,9 @@ namespace myTNB_Android.Src.ViewBill.Activity
         SfPdfViewer pdfViewer;
 
         private LoadingOverlay loadingOverlay;
+
+        ViewBillContract.IUserActionsListener userActionsListener;
+        ViewBillPresenter mPresenter;
 
         public override int ResourceId()
         {
@@ -124,11 +129,21 @@ namespace myTNB_Android.Src.ViewBill.Activity
             return title;
         }
 
+        public void SetPresenter(ViewBillContract.IUserActionsListener userActionListener)
+        {
+            this.userActionsListener = userActionListener;
+        }
+
+        public bool IsActive()
+        {
+            return Window.DecorView.RootView.IsShown;
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
-
-
             Bundle extras = Intent.Extras;
+
+            isFromQuickAction = false;
 
             if (extras != null)
             {
@@ -144,6 +159,11 @@ namespace myTNB_Android.Src.ViewBill.Activity
                     selectedBill = DeSerialze<BillHistoryV5>(extras.GetString(Constants.SELECTED_BILL));
                 }
 
+                if (extras.ContainsKey(Constants.CODE_KEY) && extras.GetInt(Constants.CODE_KEY) == Constants.SELECT_ACCOUNT_PDF_REQUEST_CODE)
+                {
+                    isFromQuickAction = true;
+                }
+
             }
 
 
@@ -152,6 +172,8 @@ namespace myTNB_Android.Src.ViewBill.Activity
             base.OnCreate(savedInstanceState);
             try
             {
+                this.mPresenter = new ViewBillPresenter(this);
+
                 //webView = FindViewById<WebView>(Resource.Id.webView);
                 baseView = FindViewById<FrameLayout>(Resource.Id.rootView);
                 mProgressBar = FindViewById<ProgressBar>(Resource.Id.progressBar);
@@ -164,6 +186,19 @@ namespace myTNB_Android.Src.ViewBill.Activity
                 pdfViewer = FindViewById<SfPdfViewer>(Resource.Id.pdf_viewer_control_view);
                 //InputMethodManager inputMethodManager = (InputMethodManager)baseView.Context.GetSystemService(Context.InputMethodService);
                 //inputMethodManager.HideSoftInputFromWindow(baseView.WindowToken, HideSoftInputFlags.None);
+
+
+                try
+                {
+                    if (isFromQuickAction)
+                    {
+                        RunOnUiThread(() =>
+                        {
+                            this.userActionsListener.LoadingBillsHistory(selectedAccount);
+                        });
+                    }
+                    else
+                    {
 
 #if STUB
             if (selectedBill != null && !string.IsNullOrEmpty(selectedBill.NrBill))
@@ -179,35 +214,41 @@ namespace myTNB_Android.Src.ViewBill.Activity
                 //webView.LoadUrl("http://drive.google.com/viewerng/viewer?embedded=true&url=" + URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/GetBillPDF?apiKeyID="+Constants.APP_CONFIG.API_KEY_ID+"&accNum=" + selectedAccount.AccountNum , "utf-8"));
             }
 #else
-            if (selectedBill != null && !string.IsNullOrEmpty(selectedBill.NrBill))
-            {
-                getPDFUrl = Constants.SERVER_URL.END_POINT + "/v5/my_billingssp.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill;
-                pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v5/my_billingssp.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill, "utf-8");
-                //webView.LoadUrl("http://drive.google.com/viewerng/viewer?embedded=true&url=" + URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/GetBillPDF?apiKeyID="+Constants.APP_CONFIG.API_KEY_ID+"&accNum=" + selectedAccount.AccountNum+"&billingNo="+selectedBill.NrBill, "utf-8"));
-            }
-            else
-            {
-                getPDFUrl = Constants.SERVER_URL.END_POINT + "/v5/my_billingssp.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum;
-                pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v5/my_billingssp.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum, "utf-8");
-                //webView.LoadUrl("http://drive.google.com/viewerng/viewer?embedded=true&url=" + URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/GetBillPDF?apiKeyID="+Constants.APP_CONFIG.API_KEY_ID+"&accNum=" + selectedAccount.AccountNum , "utf-8"));
-            }
+                        if (selectedBill != null && !string.IsNullOrEmpty(selectedBill.NrBill))
+                        {
+                            getPDFUrl = Constants.SERVER_URL.END_POINT + "/v5/my_billingssp.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill;
+                            pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v5/my_billingssp.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill, "utf-8");
+                            //webView.LoadUrl("http://drive.google.com/viewerng/viewer?embedded=true&url=" + URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/GetBillPDF?apiKeyID="+Constants.APP_CONFIG.API_KEY_ID+"&accNum=" + selectedAccount.AccountNum+"&billingNo="+selectedBill.NrBill, "utf-8"));
+                        }
+                        else
+                        {
+                            getPDFUrl = Constants.SERVER_URL.END_POINT + "/v5/my_billingssp.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum;
+                            pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v5/my_billingssp.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum, "utf-8");
+                            //webView.LoadUrl("http://drive.google.com/viewerng/viewer?embedded=true&url=" + URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/GetBillPDF?apiKeyID="+Constants.APP_CONFIG.API_KEY_ID+"&accNum=" + selectedAccount.AccountNum , "utf-8"));
+                        }
 #endif
-                //selectedAccount = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
-                //webView.LoadUrl("http://drive.google.com/viewerng/viewer?embedded=true&url=https://mobiletestingws.tnb.com.my/v4/my_billingssp.asmx/GetBillPDF?apiKeyID=9515F2FA-C267-42C9-8087-FABA77CB84DF&accNum=" + selectedAccount.AccountNum);
+                        //selectedAccount = JsonConvert.DeserializeObject<AccountData>(Intent.Extras.GetString(Constants.SELECTED_ACCOUNT));
+                        //webView.LoadUrl("http://drive.google.com/viewerng/viewer?embedded=true&url=https://mobiletestingws.tnb.com.my/v4/my_billingssp.asmx/GetBillPDF?apiKeyID=9515F2FA-C267-42C9-8087-FABA77CB84DF&accNum=" + selectedAccount.AccountNum);
 
-                //webView.LoadUrl(pdfURL);
-                downloadClicked = true;
-                RunOnUiThread(() =>
+                        //webView.LoadUrl(pdfURL);
+                        downloadClicked = true;
+                        RunOnUiThread(() =>
+                        {
+                            if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) == (int)Permission.Granted && ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) == (int)Permission.Granted)
+                            {
+                                GetPDF();
+                            }
+                            else
+                            {
+                                RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
+                            }
+                        });
+                    }
+                }
+                catch (Exception e)
                 {
-                    if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) == (int)Permission.Granted && ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) == (int)Permission.Granted)
-                    {
-                        GetPDF();
-                    }
-                    else
-                    {
-                        RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
-                    }
-                });
+                    Utility.LoggingNonFatalError(e);
+                }
             }
             catch (Exception e)
             {
@@ -215,11 +256,6 @@ namespace myTNB_Android.Src.ViewBill.Activity
             }
 
         }
-
-
-
-
-
 
 
         public class MyTNBWebViewClient : WebViewClient
@@ -561,6 +597,73 @@ namespace myTNB_Android.Src.ViewBill.Activity
                 FirebaseAnalyticsUtils.SetScreenName(this, "View Bill PDF");
             }
             catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowBillPDF(BillHistoryV5 selectedBill = null)
+        {
+            try
+            {
+                if (selectedBill != null && !string.IsNullOrEmpty(selectedBill.NrBill))
+                {
+                    getPDFUrl = Constants.SERVER_URL.END_POINT + "/v5/my_billingssp.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill;
+                    pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v5/my_billingssp.asmx/GetBillPDFByBillNo?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum + "&billingNo=" + selectedBill.NrBill, "utf-8");
+                }
+                else
+                {
+                    getPDFUrl = Constants.SERVER_URL.END_POINT + "/v5/my_billingssp.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum;
+                    pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v5/my_billingssp.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum, "utf-8");
+                }
+
+                downloadClicked = true;
+                RunOnUiThread(() =>
+                {
+                    if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) == (int)Permission.Granted && ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) == (int)Permission.Granted)
+                    {
+                        GetPDF();
+                    }
+                    else
+                    {
+                        RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
+                    }
+                });
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ShowProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+
+                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                loadingOverlay.Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideProgressDialog()
+        {
+            try
+            {
+                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                {
+                    loadingOverlay.Dismiss();
+                }
+            }
+            catch (System.Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }

@@ -108,4 +108,12 @@
     <color name="background_pale_grey">#f5f6f7</color>
 
     <color name="opacity_white">#33FFFFFF</color>
+
+    <color name="sixty_opacity_white">#96FFFFFF</color>
+
+    <color name="light_green_blue">#6ae78d</color>
+
+    <color name="faq_default_top">#553ccf</color>
+
+    <color name="faq_default_bottom">#3a9bf4</color>
 </resources>

@@ -6,6 +6,7 @@ using Android.Widget;
 using Facebook.Shimmer;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.Utils;
+using System;
 using System.Collections.Generic;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
@@ -34,17 +35,40 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
-			NewFAQShimmerViewHolder vh = holder as NewFAQShimmerViewHolder;
-            ViewGroup.LayoutParams currentCard = vh.faqCardView.LayoutParameters;
-
-            int cardWidth = (int)((this.mActivity.Resources.DisplayMetrics.WidthPixels / 3.15) - DPUtils.ConvertDPToPx(10f));
-            if (DPUtils.ConvertPxToDP(cardWidth) < 92f)
+            try
             {
-                cardWidth = (int) DPUtils.ConvertDPToPx(92f);
-            }
+                NewFAQShimmerViewHolder vh = holder as NewFAQShimmerViewHolder;
+                ViewGroup.LayoutParams currentCard = vh.faqCardView.LayoutParameters;
 
-            currentCard.Height = cardWidth;
-            currentCard.Width = cardWidth;
+                int cardWidth = (int)((this.mActivity.Resources.DisplayMetrics.WidthPixels / 2.95) - DPUtils.ConvertDPToPx(12f));
+
+                float heightRatio = 56f / 92f;
+                int cardHeight = (int)(cardWidth * (heightRatio));
+
+                currentCard.Height = cardHeight;
+                currentCard.Width = cardWidth;
+
+                ShimmerFrameLayout.LayoutParams layoutParams = new ShimmerFrameLayout.LayoutParams(cardWidth,
+                cardHeight);
+                if (position == 0)
+                {
+                    layoutParams.LeftMargin = (int)DPUtils.ConvertDPToPx(11f);
+                    layoutParams.RightMargin = (int)DPUtils.ConvertDPToPx(2f);
+                }
+                if ((position + 1) == faqList.Count)
+                {
+                    layoutParams.RightMargin = (int)DPUtils.ConvertDPToPx(11f);
+                }
+                else
+                {
+                    layoutParams.RightMargin = (int)DPUtils.ConvertDPToPx(2f);
+                }
+                vh.faqCardView.LayoutParameters = layoutParams;
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)

@@ -186,6 +186,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
 
             this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).Click += DashboardHomeActivity_Click;
+
+            ShowUnreadRewards();
         }
 
         public void ShowBackButton(bool flag)
@@ -772,7 +774,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         }
                         else
                         {
-                            fragment.OnSearchOutFocus(false);
+                            fragment.OnSearchClearFocus();
                         }
                     }
                 }
@@ -905,6 +907,36 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 Utility.LoggingNonFatalError(e);
             }
 
+        }
+
+        public void ShowUnreadRewards()
+        {
+            if (bottomNavigationView != null && bottomNavigationView.Menu != null)
+            {
+                IMenu bottomMenu = bottomNavigationView.Menu;
+
+                IMenuItem rewardMenuItem = bottomMenu.FindItem(Resource.Id.menu_reward);
+                if (rewardMenuItem != null)
+                {
+                    rewardMenuItem.SetIcon(Resource.Drawable.ic_menu_reward_unread_selector);
+                    bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
+                }
+            }
+        }
+
+        public void HideUnreadRewards()
+        {
+            if (bottomNavigationView != null && bottomNavigationView.Menu != null)
+            {
+                IMenu bottomMenu = bottomNavigationView.Menu;
+
+                IMenuItem rewardMenuItem = bottomMenu.FindItem(Resource.Id.menu_reward);
+                if (rewardMenuItem != null)
+                {
+                    rewardMenuItem.SetIcon(Resource.Drawable.ic_menu_reward_selector);
+                    bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
+                }
+            }
         }
     }
 }

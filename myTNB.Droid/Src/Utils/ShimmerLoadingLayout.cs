@@ -18,7 +18,7 @@ namespace myTNB_Android.Src.Utils
         private const string SHIMMER_ID = "shimmerContainer-";
         private ShimmerLoadingLayout()
         {
-          shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+          shimmerBuilder = ShimmerUtils.InvertedShimmerBuilderConfig();
             shimmerViewList = new List<ShimmerViewContainer>();
         }
         public static ShimmerLoadingLayout GetInstance()

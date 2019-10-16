@@ -16,6 +16,7 @@ using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SelectSupplyAccount.MVP;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using myTNB_Android.Src.ViewBill.Activity;
 using Newtonsoft.Json;
 using Refit;
 using System;
@@ -44,6 +45,8 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
 
         MaterialDialog materialDialog;
         private LoadingOverlay loadingOverlay;
+
+        private bool isFromQuickAction = false;
 
         public bool IsActive()
         {
@@ -133,6 +136,15 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
 
             try
             {
+                isFromQuickAction = false;
+
+                Bundle extras = Intent.Extras;
+
+                if (extras != null && extras.ContainsKey(Constants.CODE_KEY) && extras.GetInt(Constants.CODE_KEY) == Constants.SELECT_ACCOUNT_PDF_REQUEST_CODE)
+                {
+                    isFromQuickAction = true;
+                }
+
                 mPresenter = new SelectSupplyAccountPresenter(this);
 
                 accountListAdapter = new SelectSupplyAccountAdapter(this, true);
@@ -169,10 +181,20 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
                 CustomerBillingAccount customerAccount = accountListAdapter.GetItemObject(e.Position);
                 CustomerBillingAccount.RemoveSelected();
                 CustomerBillingAccount.SetSelected(customerAccount.AccNum);
-                Intent result = new Intent();
-                result.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(customerAccount));
-                SetResult(Result.Ok, result);
-                Finish();
+
+                if (isFromQuickAction)
+                {
+                    OnViewPDF(customerAccount);
+                    accountListAdapter.Clear();
+                    this.userActionsListener.Start();
+                }
+                else
+                {
+                    Intent result = new Intent();
+                    result.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(customerAccount));
+                    SetResult(Result.Ok, result);
+                    Finish();
+                }
             }
             catch (Exception ex)
             {
@@ -353,6 +375,16 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
         public bool HasInternetConnection()
         {
             return ConnectionUtils.HasInternetConnection(this);
+        }
+
+        private void OnViewPDF(CustomerBillingAccount selectedAccount)
+        {
+            AccountData selectedAccountData = AccountData.Copy(selectedAccount, true);
+
+            Intent viewBill = new Intent(this, typeof(ViewBillActivity));
+            viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
+            viewBill.PutExtra(Constants.CODE_KEY, Constants.SELECT_ACCOUNT_PDF_REQUEST_CODE);
+            StartActivity(viewBill);
         }
 
 

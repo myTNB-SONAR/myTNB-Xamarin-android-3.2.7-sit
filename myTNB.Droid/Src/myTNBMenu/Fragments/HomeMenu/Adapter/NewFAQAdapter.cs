@@ -1,4 +1,6 @@
-﻿using Android.Support.V7.Widget;
+﻿using Android.Graphics;
+using Android.Graphics.Drawables;
+using Android.Support.V7.Widget;
 using Android.Text;
 using Android.Util;
 using Android.Views;
@@ -36,75 +38,98 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
 
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
-			NewFAQViewHolder vh = holder as NewFAQViewHolder;
-
-			NewFAQ model = faqList[position];
-
             try
             {
-                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                NewFAQViewHolder vh = holder as NewFAQViewHolder;
+
+                NewFAQ model = faqList[position];
+
+                try
                 {
-                    vh.faqTitle.TextFormatted = Html.FromHtml(model.Title, FromHtmlOptions.ModeLegacy);
+                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                    {
+                        vh.faqTitle.TextFormatted = Html.FromHtml(model.Title, FromHtmlOptions.ModeLegacy);
+                    }
+                    else
+                    {
+                        vh.faqTitle.TextFormatted = Html.FromHtml(model.Title);
+                    }
                 }
-                else
+                catch (Exception e)
                 {
-                    vh.faqTitle.TextFormatted = Html.FromHtml(model.Title);
+                    Utility.LoggingNonFatalError(e);
+                }
+
+                try
+                {
+                    Color startColor = Color.Argb(255, 85, 60, 207);
+                    Color endColor = Color.Argb(255, 58, 155, 244);
+
+                    if (!string.IsNullOrEmpty(model.BGStartColor) && !string.IsNullOrEmpty(model.BGEndColor))
+                    {
+                        string[] startColorArray = model.BGStartColor.Split("|");
+
+                        string[] endColorArray = model.BGEndColor.Split("|");
+
+                        if (startColorArray.Length == 3 && endColorArray.Length == 3)
+                        {
+                            try
+                            {
+                                startColor = Color.Argb(255, int.Parse(startColorArray[0]), int.Parse(startColorArray[1]), int.Parse(startColorArray[2]));
+                                endColor = Color.Argb(255, int.Parse(endColorArray[0]), int.Parse(endColorArray[1]), int.Parse(endColorArray[2]));
+                            }
+                            catch (Exception e)
+                            {
+                                startColor = Color.Argb(255, 85, 60, 207);
+                                endColor = Color.Argb(255, 58, 155, 244);
+                                Utility.LoggingNonFatalError(e);
+                            }
+                        }
+                    }
+
+                    GradientDrawable gd = new GradientDrawable(
+                        GradientDrawable.Orientation.TopBottom,
+                        new int[] { startColor, endColor });
+
+                    vh.backgroundImg.Background = gd;
+
+                    TextViewUtils.SetMuseoSans500Typeface(vh.faqTitle);
+
+                    ViewGroup.LayoutParams currentCard = vh.faqCardView.LayoutParameters;
+
+                    int cardWidth = (int)((this.mActivity.Resources.DisplayMetrics.WidthPixels / 3.05) - DPUtils.ConvertDPToPx(16f));
+
+                    float heightRatio = 56f / 92f;
+                    int cardHeight = (int)(cardWidth * (heightRatio));
+
+                    currentCard.Height = cardHeight;
+                    currentCard.Width = cardWidth;
+
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(cardWidth,
+                    cardHeight);
+                    if (position == 0)
+                    {
+                        layoutParams.LeftMargin = (int)DPUtils.ConvertDPToPx(16f);
+                        layoutParams.RightMargin = (int)DPUtils.ConvertDPToPx(8f);
+                    }
+                    if ((position + 1) == faqList.Count)
+                    {
+                        layoutParams.RightMargin = (int)DPUtils.ConvertDPToPx(16f);
+                    }
+                    else
+                    {
+                        layoutParams.RightMargin = (int)DPUtils.ConvertDPToPx(8f);
+                    }
+                    vh.faqCardView.LayoutParameters = layoutParams;
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
                 }
             }
-            catch (Exception e)
+            catch (Exception ne)
             {
-                Utility.LoggingNonFatalError(e);
-            }
-
-            try
-            {
-                int currentCount = position % 7;
-
-                switch (currentCount)
-                {
-                    case 0:
-                        vh.backgroundImg.SetBackgroundResource(Resource.Drawable.faq_color_1);
-                        break;
-                    case 1:
-                        vh.backgroundImg.SetBackgroundResource(Resource.Drawable.faq_color_2);
-                        break;
-                    case 2:
-                        vh.backgroundImg.SetBackgroundResource(Resource.Drawable.faq_color_3);
-                        break;
-                    case 3:
-                        vh.backgroundImg.SetBackgroundResource(Resource.Drawable.faq_color_4);
-                        break;
-                    case 4:
-                        vh.backgroundImg.SetBackgroundResource(Resource.Drawable.faq_color_5);
-                        break;
-                    case 5:
-                        vh.backgroundImg.SetBackgroundResource(Resource.Drawable.faq_color_6);
-                        break;
-                    case 6:
-                        vh.backgroundImg.SetBackgroundResource(Resource.Drawable.faq_color_7);
-                        break;
-                    default:
-                        vh.backgroundImg.SetBackgroundResource(Resource.Drawable.faq_color_1);
-                        break;
-
-                }
-
-                TextViewUtils.SetMuseoSans500Typeface(vh.faqTitle);
-
-                ViewGroup.LayoutParams currentCard = vh.faqCardView.LayoutParameters;
-
-                int cardWidth = (int)((this.mActivity.Resources.DisplayMetrics.WidthPixels / 3.15) - DPUtils.ConvertDPToPx(10f));
-                if (DPUtils.ConvertPxToDP(cardWidth) < 92f)
-                {
-                    cardWidth = (int)DPUtils.ConvertDPToPx(92f);
-                }
-
-                currentCard.Height = cardWidth;
-                currentCard.Width = cardWidth;
-            }
-            catch (Exception e)
-            {
-                Utility.LoggingNonFatalError(e);
+                Utility.LoggingNonFatalError(ne);
             }
         }
 
