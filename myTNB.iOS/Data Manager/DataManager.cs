@@ -33,6 +33,7 @@ namespace myTNB.DataManager
         public List<CustomerAccountRecordModel> CurrentAccountList = new List<CustomerAccountRecordModel>();
         public List<DueAmountDataModel> ActiveAccountList = new List<DueAmountDataModel>();
         public bool AccountListIsLoaded;
+        public bool IsOnSearchMode;
 
         //Chart Related Data
         //Contains selected account from AccountRecordsList
@@ -184,6 +185,7 @@ namespace myTNB.DataManager
             CurrentAccountList = new List<CustomerAccountRecordModel>();
             ActiveAccountList = new List<DueAmountDataModel>();
             AccountListIsLoaded = false;
+            IsOnSearchMode = false;
 
             SelectedAccount = new CustomerAccountRecordModel();
             BillingAccountDetails = new BillingAccountDetailsDataModel();

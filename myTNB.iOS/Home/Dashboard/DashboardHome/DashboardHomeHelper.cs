@@ -282,21 +282,16 @@ namespace myTNB
             nfloat totalCellHeight;
             if (HasAccounts)
             {
-                if (DataManager.DataManager.SharedInstance.AccountListIsLoaded)
-                {
-                    var activeAcctList = DataManager.DataManager.SharedInstance.ActiveAccountList;
-                    nfloat footerHeight = HasMoreThanThreeAccts ? AllAccountsAreVisible ? ScaleUtility.GetScaledHeight(85F) : ScaleUtility.GetScaledHeight(44F) : ScaleUtility.GetScaledHeight(16F);
-                    nfloat acctListTotalHeight = ScaleUtility.GetScaledHeight(61F) * activeAcctList.Count;
-                    totalCellHeight = acctListTotalHeight + DashboardHomeConstants.SearchViewHeight + ScaleUtility.GetScaledHeight(24F) + footerHeight;
-                }
-                else
-                {
-                    totalCellHeight = DashboardHomeConstants.SearchViewHeight + ScaleUtility.GetScaledHeight(24F) + DashboardHomeConstants.ShimmerAcctHeight;
-                }
+                nfloat footerHeight = HasMoreThanThreeAccts ? AllAccountsAreVisible ? ScaleUtility.GetScaledHeight(85F) : ScaleUtility.GetScaledHeight(44F) : ScaleUtility.GetScaledHeight(16F);
+                var activeAcctList = DataManager.DataManager.SharedInstance.ActiveAccountList;
+                nfloat acctListTotalHeight = ScaleUtility.GetScaledHeight(61F) * activeAcctList.Count;
+                totalCellHeight = acctListTotalHeight + DashboardHomeConstants.SearchViewHeight + ScaleUtility.GetScaledHeight(24F);
+                totalCellHeight += DataManager.DataManager.SharedInstance.AccountListIsLoaded ? footerHeight : ScaleUtility.GetScaledHeight(28F);
             }
             else
             {
-                totalCellHeight = DashboardHomeConstants.SearchViewHeight + ScaleUtility.GetScaledHeight(24F) + ScaleUtility.GetScaledHeight(101F);
+                totalCellHeight = DashboardHomeConstants.SearchViewHeight + ScaleUtility.GetScaledHeight(24F);
+                totalCellHeight += DataManager.DataManager.SharedInstance.IsOnSearchMode ? ScaleUtility.GetScaledHeight(28F) : ScaleUtility.GetScaledHeight(101F);
             }
             return totalCellHeight;
         }
@@ -388,8 +383,11 @@ namespace myTNB
                     {
                         tableViewCellHeight += ScaleUtility.GetScaledHeight(41F) + ScaleUtility.GetScaledHeight(16F);
                     }
+                    else
+                    {
+                        tableViewCellHeight += ScaleUtility.GetScaledHeight(16F);
+                    }
                 }
-
             }
             return tableViewCellHeight;
         }

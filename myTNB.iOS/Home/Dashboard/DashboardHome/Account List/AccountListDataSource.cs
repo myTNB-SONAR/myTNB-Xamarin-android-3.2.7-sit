@@ -37,44 +37,55 @@ namespace myTNB
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            return _isLoading || _hasEmptyAcct ? 1 : _accountList.Count;
+            return _hasEmptyAcct ? 1 : _accountList.Count;
         }
 
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
         {
-            return _isLoading ? DashboardHomeConstants.ShimmerAcctHeight : _hasEmptyAcct ? DashboardHomeConstants.EmptyAcctHeight : DashboardHomeConstants.AccountCellHeight;
+            return _isLoading ? DashboardHomeConstants.AccountCellHeight : _hasEmptyAcct ? DashboardHomeConstants.EmptyAcctHeight : DashboardHomeConstants.AccountCellHeight;
         }
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
             if (_isLoading)
             {
-                AccountListShimmerCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_AccountListShimmer) as AccountListShimmerCell;
+                AccountListCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_AccountList) as AccountListCell;
+                var index = indexPath.Row;
+                if (index > -1 && index < _accountList.Count)
+                {
+                    var acctCached = DataManager.DataManager.SharedInstance.GetDue(_accountList[index].accNum);
+                    if (acctCached == null)
+                    {
+                        cell.SetShimmerCell();
+                    }
+                    else
+                    {
+                        cell.GetI18NValue = GetI18NValue;
+                        cell.SetAccountCell(_accountList[index]);
+                    }
+                }
+                cell.SelectionStyle = UITableViewCellSelectionStyle.None;
+                return cell;
+            }
+            else if (_hasEmptyAcct)
+            {
+                AccountListEmptyCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_AccountListEmpty) as AccountListEmptyCell;
+                cell.GetI18NValue = GetI18NValue;
+                cell.SetEmptyCell();
                 cell.SelectionStyle = UITableViewCellSelectionStyle.None;
                 return cell;
             }
             else
             {
-                if (_hasEmptyAcct)
+                AccountListCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_AccountList) as AccountListCell;
+                var index = indexPath.Row;
+                if (index > -1 && index < _accountList.Count)
                 {
-                    AccountListEmptyCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_AccountListEmpty) as AccountListEmptyCell;
                     cell.GetI18NValue = GetI18NValue;
-                    cell.SetEmptyCell();
-                    cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-                    return cell;
+                    cell.SetAccountCell(_accountList[index]);
                 }
-                else
-                {
-                    AccountListCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_AccountList) as AccountListCell;
-                    var index = indexPath.Row;
-                    if (index > -1 && index < _accountList.Count)
-                    {
-                        cell.GetI18NValue = GetI18NValue;
-                        cell.SetAccountCell(_accountList[index]);
-                    }
-                    cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-                    return cell;
-                }
+                cell.SelectionStyle = UITableViewCellSelectionStyle.None;
+                return cell;
             }
         }
 

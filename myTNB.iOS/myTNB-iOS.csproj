@@ -2538,7 +2538,6 @@
     <Compile Include="Home\Dashboard\DashboardHome\Account List\AccountListDataSource.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\Account List\AccountListCell.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\Account List\AccountListEmptyCell.cs" />
-    <Compile Include="Home\Dashboard\DashboardHome\Account List\AccountListShimmerCell.cs" />
     <Compile Include="Customs\CustomUITableViewCell.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -395,7 +395,6 @@ namespace myTNB
             _accountListTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             _accountListTableView.RegisterClassForCellReuse(typeof(AccountListCell), DashboardHomeConstants.Cell_AccountList);
             _accountListTableView.RegisterClassForCellReuse(typeof(AccountListEmptyCell), DashboardHomeConstants.Cell_AccountListEmpty);
-            _accountListTableView.RegisterClassForCellReuse(typeof(AccountListShimmerCell), DashboardHomeConstants.Cell_AccountListShimmer);
             _parentView.AddSubview(_accountListTableView);
         }
 
@@ -418,6 +417,7 @@ namespace myTNB
         private void SetViewForActiveSearch(bool isSearchMode)
         {
             _isOnSearchMode = isSearchMode;
+            DataManager.DataManager.SharedInstance.IsOnSearchMode = isSearchMode;
             if (isSearchMode)
             {
                 _textFieldSearch.BecomeFirstResponder();
@@ -494,7 +494,7 @@ namespace myTNB
                         {
                             _homeViewController.OnUpdateCellWithoutReload(DashboardHomeConstants.CellIndex_Services);
                         }
-                        ReloadViews(isFromSearch);
+                        ReloadViews(false, isFromSearch);
                     }
                     var eligibleSSMRAccounts = _dashboardHomeHelper.FilterAccountNoForSSMR(acctNumList, activeAccountList);
                     if (eligibleSSMRAccounts?.Count > 0)
@@ -505,7 +505,7 @@ namespace myTNB
             }
             else
             {
-                ReloadTableView(false, true);
+                ReloadViews(false, isFromSearch, DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count == 0);
             }
         }
 
@@ -641,25 +641,8 @@ namespace myTNB
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        if (isFirstCall)
-                        {
-                            if (_addAccountView != null)
-                            {
-                                _addAccountView.Hidden = true;
-                            }
-                            ReloadTableView(true);
-                            if (isFromSearch)
-                            {
-                                if (_homeViewController != null)
-                                {
-                                    _homeViewController.OnUpdateCellWithoutReload(DashboardHomeConstants.CellIndex_Services);
-                                }
-                            }
-                        }
-                        else
-                        {
-                            ActivityIndicator.Show();
-                        }
+                        DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
+                        ReloadViews(true, isFromSearch);
                         InvokeInBackground(async () =>
                         {
                             AmountDueStatusResponseModel response = await ServiceCall.GetAccountsBillSummary(accounts);
@@ -674,7 +657,7 @@ namespace myTNB
                                 {
                                     _homeViewController.ShowRefreshScreen(false, null);
                                     UpdateDueForDisplayedAccounts(response.d.data);
-                                    ReloadViews(isFromSearch);
+                                    ReloadViews(false, isFromSearch);
                                 }
                                 else
                                 {
@@ -726,13 +709,13 @@ namespace myTNB
             });
         }
 
-        private void ReloadViews(bool isFromSearch = false)
+        private void ReloadViews(bool isLoading, bool isFromSearch = false, bool hasEmptyAcct = false)
         {
             if (_addAccountView != null)
             {
                 _addAccountView.Hidden = _isOnSearchMode;
             }
-            ReloadTableView(false);
+            ReloadTableView(isLoading, hasEmptyAcct);
             if (!isFromSearch)
             {
                 if (_homeViewController != null)
@@ -749,7 +732,18 @@ namespace myTNB
             }
             ViewHelper.AdjustFrameSetHeight(_parentView, _dashboardHomeHelper.GetHeightForAccountList() - GetScaledHeight(24F));
             ViewHelper.AdjustFrameSetHeight(_accountListTableView, _parentView.Frame.Height - _headerView.Frame.Height);
-            SetFooterView(_dashboardHomeHelper.AllAccountsAreVisible);
+
+            if (isLoading)
+            {
+                if (_footerView != null)
+                {
+                    _footerView.RemoveFromSuperview();
+                }
+            }
+            else
+            {
+                SetFooterView(_dashboardHomeHelper.AllAccountsAreVisible);
+            }
         }
 
         #endregion

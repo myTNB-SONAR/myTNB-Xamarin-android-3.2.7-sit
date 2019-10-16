@@ -32,15 +32,12 @@ namespace myTNB
         public List<HelpModel> _helpList;
         private List<PromotionsModelV2> _promotions;
         private nfloat _previousScrollOffset;
-        private nfloat _imageGradientHeight;
         internal Dictionary<string, Action> _servicesActionDictionary;
         private bool _servicesIsShimmering = true;
         private bool _helpIsShimmering = true;
-        public bool _isRefreshScreenEnabled = false;
-        private nfloat _addtlYValue = 0;
-        private bool _isBCRMAvailable = false;
+        public bool _isRefreshScreenEnabled;
+        private bool _isBCRMAvailable;
         private GetIsSmrApplyAllowedResponseModel _isSMRApplyAllowedResponse;
-        private nfloat _footerImageBGYPos;
         private UIImageView _footerImageBG;
 
         public override void ViewDidLoad()
@@ -60,12 +57,10 @@ namespace myTNB
             NotifCenterUtility.AddObserver((NSString)"OnReceiveNotificationFromDashboard", NotificationDidChange);
             NotifCenterUtility.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
             NotifCenterUtility.AddObserver(UIApplication.WillEnterForegroundNotification, OnEnterForeground);
-            _imageGradientHeight = IsGradientImageRequired ? ImageViewGradientImage.Frame.Height : 0;
             _services = new ServicesResponseModel();
             _helpList = new List<HelpModel>();
             SetActionsDictionary();
             SetStatusBarNoOverlap();
-            SetValuesForRefreshState();
             AddTableView();
             PrepareTableView();
             SetGreetingView();
@@ -78,7 +73,6 @@ namespace myTNB
             {
                 Image = UIImage.FromBundle("Home-Footer-BG")
             };
-            _footerImageBGYPos = _footerImageBG.Frame.Y;
             View.AddSubview(_footerImageBG);
         }
 
@@ -126,29 +120,6 @@ namespace myTNB
             _accountListViewController._homeViewController = this;
         }
 
-        private void SetValuesForRefreshState()
-        {
-            if (DeviceHelper.IsIphoneXUpResolution())
-            {
-                if (DeviceHelper.IsIphoneXOrXs())
-                {
-                    _addtlYValue = -165f;
-                }
-                else
-                {
-                    _addtlYValue = -195f;
-                }
-            }
-            else if (DeviceHelper.IsIphone6UpResolution())
-            {
-                _addtlYValue = -125f;
-            }
-            else
-            {
-                _addtlYValue = -80f;
-            }
-        }
-
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
@@ -158,6 +129,7 @@ namespace myTNB
                 if (_accountListViewController != null)
                 {
                     DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
+                    AmountDueCache.Reset();
                     _accountListViewController.PrepareAccountList();
                 }
                 DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = false;
@@ -214,6 +186,7 @@ namespace myTNB
             if (_accountListViewController != null)
             {
                 DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
+                AmountDueCache.Reset();
                 _accountListViewController.PrepareAccountList();
             }
             OnLoadHomeData();
@@ -258,7 +231,10 @@ namespace myTNB
         // </summary>
         private void InitializeTableView()
         {
-            _homeTableView.Source = new DashboardHomeDataSource(this, _accountListViewController, _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent, OnUpdateCellWithoutReload, GetI18NValue);
+            _homeTableView.Source = new DashboardHomeDataSource(this, _accountListViewController,
+                DataManager.DataManager.SharedInstance.ServicesList, _promotions, _helpList,
+                _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent,
+                OnUpdateCellWithoutReload, GetI18NValue);
             _homeTableView.ReloadData();
             UpdateFooterBG();
         }
@@ -355,9 +331,28 @@ namespace myTNB
                    InvokeOnMainThread(() =>
                    {
                        _servicesIsShimmering = false;
-                       if (_services != null && _services.d != null && _services.d.IsSuccess)
+                       if (_services != null &&
+                           _services.d != null &&
+                           _services.d.IsSuccess &&
+                           _services.d.data != null)
                        {
-                           DataManager.DataManager.SharedInstance.ServicesList = _services.d.data?.services;
+                           List<ServiceItemModel> services = new List<ServiceItemModel>(_services.d.data.services);
+                           if (_isSMRApplyAllowedResponse != null &&
+                               _isSMRApplyAllowedResponse.d != null &&
+                               _isSMRApplyAllowedResponse.d.IsSuccess &&
+                               _isSMRApplyAllowedResponse.d.data != null &&
+                               _isSMRApplyAllowedResponse.d.data.Count > 0)
+                           {
+                               if (!_isSMRApplyAllowedResponse.d.data[0].AllowApply)
+                               {
+                                   services.RemoveAt(ServiceItemIndexToRemove(services));
+                               }
+                           }
+                           else
+                           {
+                               services.RemoveAt(ServiceItemIndexToRemove(services));
+                           }
+                           DataManager.DataManager.SharedInstance.ServicesList = services;
                        }
                        else
                        {
@@ -507,6 +502,21 @@ namespace myTNB
             return response;
         }
 
+        private int ServiceItemIndexToRemove(List<ServiceItemModel> services)
+        {
+            int index = -1;
+            if (services != null && services.Count > 0)
+            {
+                var indx = services.FindIndex(x => x.ServiceType == ServiceEnum.SELFMETERREADING);
+
+                if (indx > -1 && indx < services.Count)
+                {
+                    index = indx;
+                }
+            }
+            return index;
+        }
+
         private void NavigateToUsageView()
         {
             if (_usageStoryBoard != null)
@@ -543,7 +553,9 @@ namespace myTNB
         {
             _homeTableView.BeginUpdates();
             _homeTableView.Source = new DashboardHomeDataSource(this, _accountListViewController
-                , _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent, OnUpdateCellWithoutReload, GetI18NValue);
+                , DataManager.DataManager.SharedInstance.ServicesList, _promotions, _helpList,
+                _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent,
+                OnUpdateCellWithoutReload, GetI18NValue);
             NSIndexPath indexPath = NSIndexPath.Create(0, row);
             _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
             _homeTableView.EndUpdates();
@@ -561,8 +573,8 @@ namespace myTNB
 
         private void UpdateFooterBG()
         {
-            CGRect servicesCellHeight = _homeTableView.RectForRowAtIndexPath(NSIndexPath.Create(0, 1));
-            ViewHelper.AdjustFrameSetY(_footerImageBG, DeviceHelper.GetStatusBarHeight() + servicesCellHeight.Y + (servicesCellHeight.Height * 0.40F) - _previousScrollOffset);
+            CGRect servicesCellRect = _homeTableView.RectForRowAtIndexPath(NSIndexPath.Create(0, DashboardHomeConstants.CellIndex_Services));
+            ViewHelper.AdjustFrameSetY(_footerImageBG, DeviceHelper.GetStatusBarHeight() + servicesCellRect.Y + (servicesCellRect.Height * 0.40F) - _previousScrollOffset);
         }
 
         public void ShowRefreshScreen(bool isFail, RefreshScreenInfoModel model = null)
@@ -580,10 +592,6 @@ namespace myTNB
                 _isRefreshScreenEnabled = isFail;
                 if (_isRefreshScreenEnabled)
                 {
-                    //CGRect frame = ImageViewGradientImage.Frame;
-                    //frame.Y = _addtlYValue;
-                    //ImageViewGradientImage.Frame = frame;
-
                     var bcrm = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
                     var bcrmMsg = bcrm?.DowntimeMessage ?? "Error_BCRMMessage".Translate();
                     string desc = _isBCRMAvailable ? model?.RefreshMessage ?? string.Empty : bcrmMsg;
@@ -597,7 +605,9 @@ namespace myTNB
                     _refreshScreenComponent.OnButtonTap = RefreshViewForAccounts;
 
                     _homeTableView.BeginUpdates();
-                    _homeTableView.Source = new DashboardHomeDataSource(this, null, _services, _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent, OnUpdateCellWithoutReload, GetI18NValue);
+                    _homeTableView.Source = new DashboardHomeDataSource(this, null, DataManager.DataManager.SharedInstance.ServicesList,
+                        _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent,
+                        OnUpdateCellWithoutReload, GetI18NValue);
                     NSIndexPath indexPath = NSIndexPath.Create(0, 0);
                     _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
                     _homeTableView.EndUpdates();
@@ -623,9 +633,6 @@ namespace myTNB
                 }
             }
             _isRefreshScreenEnabled = false;
-            //CGRect frame = ImageViewGradientImage.Frame;
-            //frame.Y = 0;
-            //ImageViewGradientImage.Frame = frame;
             SetAccountListViewController();
             OnUpdateCell(DashboardHomeConstants.CellIndex_Accounts);
         }

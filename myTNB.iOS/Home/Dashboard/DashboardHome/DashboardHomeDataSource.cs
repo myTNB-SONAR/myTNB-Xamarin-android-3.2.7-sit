@@ -15,7 +15,7 @@ namespace myTNB
         private AccountListViewController _accountListViewController;
         private DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
         private RefreshScreenComponent _refreshScreenComponent;
-        private ServicesResponseModel _services;
+        private List<ServiceItemModel> _services;
         private List<HelpModel> _helpList;
         private bool _isServicesShimmering, _isHelpShimmering, _showRefreshScreen;
         private List<PromotionsModelV2> _promotions;
@@ -24,7 +24,7 @@ namespace myTNB
 
         public DashboardHomeDataSource(DashboardHomeViewController controller,
             AccountListViewController accountListViewController,
-            ServicesResponseModel services,
+            List<ServiceItemModel> services,
             List<PromotionsModelV2> promotions,
             List<HelpModel> helpList,
             bool isServicesShimmering,
