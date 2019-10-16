@@ -1,2 +1,2 @@
-SIT Build v2.0.0(129)- 10/16
-- Bug Fixes. Please check SIT Wiki for the changes.
+SIT Build v2.0.0(130)- 10/17
+- Please check SIT Deployment Wiki for the changes.
