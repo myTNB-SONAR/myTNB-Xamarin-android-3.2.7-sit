@@ -570,6 +570,10 @@ namespace myTNB
         private void UpdateHeaderData(AccountChargesModel data)
         {
             bool isRe = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
+            if (isRe)
+            {
+                data.AmountDue *= -1;
+            }
             _lblAmount.Text = Math.Abs(data.AmountDue).ToString("N2", CultureInfo.InvariantCulture);
             CGRect ctaFrame = _viewCTA.Frame;
 
