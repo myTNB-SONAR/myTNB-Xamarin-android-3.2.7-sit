@@ -166,7 +166,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             primaryCTA.SetEnabled(notificationDetails.IsSMRPeriodOpen);
                             ctaList.Add(primaryCTA);
                             //pageTitle = "Smart Meter Reading";
-                            imageResourceBanner = Resource.Drawable.notification_smr_generic_banner;
+                            imageResourceBanner = Resource.Drawable.notification_smr_check_banner;
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_SMR_DISABLED_ID:
@@ -176,7 +176,7 @@ namespace myTNB_Android.Src.NotificationDetails.MVP
                             primaryCTA.SetEnabled(notificationDetails.IsSMRPeriodOpen);
                             ctaList.Add(primaryCTA);
                             //pageTitle = "Smart Meter Reading";
-                            imageResourceBanner = Resource.Drawable.notification_smr_fail_banner;
+                            imageResourceBanner = Resource.Drawable.notification_smr_check_banner;
                             break;
                         }
                     case Constants.BCRM_NOTIFICATION_SMR_APPLY_SUCCESS_ID:
