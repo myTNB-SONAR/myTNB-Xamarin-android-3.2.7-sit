@@ -6,6 +6,7 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
@@ -19,7 +20,7 @@ using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.SubmitMeterReadingRes
 
 namespace myTNB_Android.Src.SSMR.SSMRBase.MVP
 {
-    [Activity(Label = "ResponseFailedActivity", Theme = "@style/Theme.BillRelated")]
+    [Activity(Label = "ResponseFailedActivity", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.BillRelated")]
     public class ResponseFailedActivity : BaseAppCompatActivity
     {
         

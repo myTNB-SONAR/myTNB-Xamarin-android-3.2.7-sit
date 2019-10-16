@@ -270,14 +270,14 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         {
             if (SMR_ACTION == Constants.SMR_ENABLE_FLAG)
             {
-                disconnectionTtile.Text = "I am enabling for:";
+                disconnectionTtile.Text = "I am starting for:";
                 terminationReasonTitle.Visibility = ViewStates.Gone;
                 reasonDetailContainer.Visibility = ViewStates.Gone;
                 ShowContactDetails();
             }
             else
             {
-                disconnectionTtile.Text = "I am disabling for:";
+                disconnectionTtile.Text = "I am stopping for:";
                 terminationReasonTitle.Visibility = ViewStates.Visible;
                 reasonDetailContainer.Visibility = ViewStates.Visible;
 

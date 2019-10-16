@@ -3312,6 +3312,11 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\smr_history_empty_icon.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\smr_history_empty_icon.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\smr_history_empty_icon.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\smr_history_empty_icon.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\smr_history_empty_icon.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
