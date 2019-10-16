@@ -72,7 +72,7 @@ namespace myTNB
             }
             UITextAttributes normalSelected = new UITextAttributes();
             normalSelected.Font = TNBFont.MuseoSans_10_300;
-            normalSelected.TextColor = MyTNBColor.SilverChalice;
+            normalSelected.TextColor = MyTNBColor.GreyishBrown;
 
             UITextAttributes attrSelected = new UITextAttributes();
             attrSelected.Font = TNBFont.MuseoSans_10_500;
@@ -103,6 +103,9 @@ namespace myTNB
             tabbarItem[3].Tag = 3;
             tabbarItem[4].Tag = 4;
 
+            tabbarItem[3].Image = UIImage.FromBundle(ImageString(TabEnum.REWARDS, false)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+            tabbarItem[3].SelectedImage = UIImage.FromBundle(ImageString(TabEnum.REWARDS, true)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+
             foreach (UITabBarItem item in tabbarItem)
             {
                 UIImage imgUnselected = item.Image.ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
@@ -123,11 +126,30 @@ namespace myTNB
 
         public override void ItemSelected(UITabBar tabbar, UITabBarItem item)
         {
+            if (!ShowNewIndicator("2"))
+            {
+                TabBar.Items[2].Image = UIImage.FromBundle(ImageString(TabEnum.WHATSNEW, false)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+                TabBar.Items[2].SelectedImage = UIImage.FromBundle(ImageString(TabEnum.WHATSNEW, true)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+            }
+            if (!ShowNewIndicator("3"))
+            {
+                TabBar.Items[3].Image = UIImage.FromBundle(ImageString(TabEnum.REWARDS, false)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+                TabBar.Items[3].SelectedImage = UIImage.FromBundle(ImageString(TabEnum.REWARDS, true)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+            }
+
             if (tabbar.SelectedItem.Tag == 1)
             {
                 UINavigationController navigationController = ChildViewControllers[1] as UINavigationController;
                 BillViewController viewController = navigationController.ViewControllers[0] as BillViewController;
                 viewController.NeedsUpdate = true;
+            }
+            else if (tabbar.SelectedItem.Tag == 2)
+            {
+                SetNewIndicator("2");
+            }
+            else if (tabbar.SelectedItem.Tag == 3)
+            {
+                SetNewIndicator("3");
             }
         }
 
@@ -333,14 +355,8 @@ namespace myTNB
 
         private void UpdatePromotionTabBarIcon()
         {
-            PromotionsEntity wsManager = new PromotionsEntity();
-            List<PromotionsModelV2> promotionList = wsManager.GetAllItemsV2();
-            string img = promotionList != null && promotionList.Count > 0 && HasUnreadPromotion(promotionList)
-                ? TabbarConstants.Img_InactivePromotionsUnread : TabbarConstants.Img_Promotions;
-            string imgSelected = promotionList != null && promotionList.Count > 0 && HasUnreadPromotion(promotionList)
-                ? TabbarConstants.Img_ActivePromotionsUnread : TabbarConstants.Img_PromotionsSelected;
-            TabBar.Items[2].Image = UIImage.FromBundle(img).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
-            TabBar.Items[2].SelectedImage = UIImage.FromBundle(imgSelected).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+            TabBar.Items[2].Image = UIImage.FromBundle(ImageString(TabEnum.WHATSNEW, false)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
+            TabBar.Items[2].SelectedImage = UIImage.FromBundle(ImageString(TabEnum.WHATSNEW, true)).ImageWithRenderingMode(UIImageRenderingMode.AlwaysOriginal);
         }
 
         private Task GetPromotions()
@@ -393,6 +409,74 @@ namespace myTNB
                     }
                 }
             });
+        }
+
+        private string ImageString(TabEnum tabEnum, bool isSelected)
+        {
+            string imageStr;
+            switch (tabEnum)
+            {
+                case TabEnum.WHATSNEW:
+
+                    if (ShowNewIndicator("2"))
+                    {
+                        imageStr = isSelected ? TabbarConstants.Img_PromotionsSelected + "-New" : TabbarConstants.Img_Promotions + "-New";
+                    }
+                    else
+                    {
+                        PromotionsEntity wsManager = new PromotionsEntity();
+                        List<PromotionsModelV2> promotionList = wsManager.GetAllItemsV2();
+                        imageStr = promotionList != null && promotionList.Count > 0 && HasUnreadPromotion(promotionList) ?
+                            isSelected ? TabbarConstants.Img_ActivePromotionsUnread : TabbarConstants.Img_InactivePromotionsUnread
+                            : isSelected ? TabbarConstants.Img_PromotionsSelected : TabbarConstants.Img_Promotions;
+                    }
+                    break;
+                case TabEnum.REWARDS:
+                    if (ShowNewIndicator("3"))
+                    {
+                        imageStr = isSelected ? TabbarConstants.Img_RewardsSelected + "-New" : TabbarConstants.Img_Rewards + "-New";
+                    }
+                    else
+                    {
+                        imageStr = isSelected ? TabbarConstants.Img_RewardsSelected : TabbarConstants.Img_Rewards;
+                    }
+                    break;
+                default:
+                    imageStr = string.Empty;
+                    break;
+            }
+
+            return imageStr;
+        }
+
+        private void SetNewIndicator(string key)
+        {
+            if (!string.IsNullOrEmpty(key) && !string.IsNullOrWhiteSpace(key))
+            {
+                var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                sharedPreference.SetBool(true, "Tab Id - " + key);
+            }
+        }
+
+        private bool ShowNewIndicator(string key)
+        {
+            bool res = false;
+            if (!string.IsNullOrEmpty(key) && !string.IsNullOrWhiteSpace(key))
+            {
+                var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                res = sharedPreference.BoolForKey("Tab Id - " + key);
+            }
+            return !res;
+        }
+
+        private enum TabEnum
+        {
+            None = 0,
+            HOME,
+            BILLS,
+            WHATSNEW,
+            REWARDS,
+            PROFILE
         }
     }
 }

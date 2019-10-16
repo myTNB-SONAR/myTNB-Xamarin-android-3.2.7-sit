@@ -867,15 +867,8 @@
     <ImageAsset Include="Assets.xcassets\Services-Feedback.imageset\feedback.png" />
     <ImageAsset Include="Assets.xcassets\Services-Feedback.imageset\feedback%402x.png" />
     <ImageAsset Include="Assets.xcassets\Services-Feedback.imageset\feedback%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected.imageset\whatSNewSelected-1.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected.imageset\whatSNewSelected%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected.imageset\whatSNewSelected%403x-1.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\whatSNewSelectedNotification.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\whatSNewSelectedNotification%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\whatSNewSelectedNotification%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\whatSNewNotification.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\whatSNewNotification%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\whatSNewNotification%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\home.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\home%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\home%403x.png" />
@@ -1249,6 +1242,22 @@
     <ImageAsset Include="Assets.xcassets\Services-Pay-Bills-Disabled.imageset\Services-Pay-Bills-Disabled%403x.png" />
     <ImageAsset Include="Assets.xcassets\Services-View-Bills-Disabled.imageset\Services-View-Bills-Disabled%402x.png" />
     <ImageAsset Include="Assets.xcassets\Services-View-Bills-Disabled.imageset\Services-View-Bills-Disabled%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\whatSNewSelectedNotification%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\whatSNewSelectedNotification%402x-1.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\whatSNewNotification%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\whatSNewNotification%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-New.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected-New.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-New.imageset\whatSNewNotificationNew%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-New.imageset\whatSNewNotificationNew%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected-New.imageset\whatSNewNotificationNewSelected%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected-New.imageset\whatSNewNotificationNewSelected%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-New.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected-New.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-New.imageset\rewardsNew%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-New.imageset\rewardsNew%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected-New.imageset\rewardsNewSelected%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected-New.imageset\rewardsNewSelected%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1689,6 +1698,12 @@
     <Folder Include="Assets.xcassets\Home-Footer-BG.imageset\" />
     <Folder Include="Assets.xcassets\Services-View-Bills-Disabled.imageset\" />
     <Folder Include="Assets.xcassets\Services-Pay-Bills-Disabled.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Promotions-New.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Promotions-Selected-New.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Promotions-Unread-Active-New.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Promotions-Unread-Inactive-New.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Rewards-New.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Rewards-Selected-New.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
