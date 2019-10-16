@@ -256,7 +256,8 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear,
                 Editable = false,
                 ScrollEnabled = false,
-                AttributedText = mutableHTMLBody
+                AttributedText = mutableHTMLBody,
+                UserInteractionEnabled = false
             };
             CGSize cGSize = txtTitle.SizeThatFits(new CGSize(cardWidth, 1000F));
             ViewHelper.AdjustFrameSetHeight(txtTitle, cGSize.Height);

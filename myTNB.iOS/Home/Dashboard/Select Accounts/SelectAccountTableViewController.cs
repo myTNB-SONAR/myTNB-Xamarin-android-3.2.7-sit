@@ -13,6 +13,7 @@ namespace myTNB
 
         public bool IsFromSSMR;
         public bool IsFromUsage;
+        public bool IsFromHome;
         public bool IsRoot;
         public int CurrentSelectedIndex = -1;
         public Action<int> OnSelect;
@@ -36,6 +37,10 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            if (accountRecordsTableView != null && IsFromHome)
+            {
+                accountRecordsTableView.ReloadData();
+            }
         }
 
         private void AddBackButton()
@@ -51,6 +56,32 @@ namespace myTNB
                 { DismissViewController(true, null); }
             });
             NavigationItem.LeftBarButtonItem = btnBack;
+        }
+
+        public void ShowBillScreen(int index)
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        UIStoryboard storyBoard = UIStoryboard.FromName("ViewBill", null);
+                        ViewBillViewController viewController =
+                            storyBoard.InstantiateViewController("ViewBillViewController") as ViewBillViewController;
+                        if (viewController != null)
+                        {
+                            viewController.IsFromHome = true;
+                            viewController.selectedIndex = index;
+                            NavigationController.PushViewController(viewController, true);
+                        }
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
         }
 
         #region SSMR Footer

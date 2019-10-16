@@ -26,6 +26,7 @@ namespace myTNB
 
         public int selectedIndex = -1;
         public bool IsFromUsage { set; private get; }
+        public bool IsFromHome { set; private get; }
         public string BillingNumber { set; private get; } = string.Empty;
         public Action OnDone;
 
@@ -60,7 +61,15 @@ namespace myTNB
             UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle("Back-White"), UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 OnDone?.Invoke();
-                DismissViewController(true, null);
+
+                if (IsFromHome)
+                {
+                    NavigationController.PopViewController(true);
+                }
+                else
+                {
+                    DismissViewController(true, null);
+                }
             });
             NavigationItem.LeftBarButtonItem = btnBack;
 
@@ -139,7 +148,7 @@ namespace myTNB
                         {"apiKeyID", TNBGlobal.API_KEY_ID},
                         {"lang", TNBGlobal.DEFAULT_LANGUAGE}
                     };
-                if (IsFromUsage)
+                if (IsFromUsage || IsFromHome)
                 {
                     requestParams.Add("contractAccount", DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
                     _url = serviceManager.GetPDFServiceURL("GetBillPDF", requestParams);
@@ -185,7 +194,14 @@ namespace myTNB
                     {
                         AlertHandler.DisplayServiceError(this, _billHistory?.d?.ErrorMessage, (obj) =>
                         {
-                            DismissViewController(true, null);
+                            if (IsFromHome)
+                            {
+                                NavigationController.PopViewController(true);
+                            }
+                            else
+                            {
+                                DismissViewController(true, null);
+                            }
                         });
                     }
                 });

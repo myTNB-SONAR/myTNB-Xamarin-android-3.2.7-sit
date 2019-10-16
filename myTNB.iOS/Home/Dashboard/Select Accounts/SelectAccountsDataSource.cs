@@ -104,6 +104,20 @@ namespace myTNB.Dashboard.SelectAccounts
                 _controller.NavigationController.PopViewController(true);
                 return;
             }
+
+            if (_controller.IsFromHome)
+            {
+                if (indexPath.Row < _accountList.Count)
+                {
+                    var selected = _accountList[indexPath.Row];
+                    DataManager.DataManager.SharedInstance.IsSameAccount = DataManager.DataManager.SharedInstance.GetAccountsCount() > 1
+                        && string.Compare(selected.accNum, DataManager.DataManager.SharedInstance.SelectedAccount?.accNum) == 0;
+                    DataManager.DataManager.SharedInstance.SelectAccount(selected.accNum);
+                    _controller.ShowBillScreen(indexPath.Row);
+                }
+                return;
+            }
+
             if (indexPath.Row < _accountList.Count)
             {
                 var selected = _accountList[indexPath.Row];
