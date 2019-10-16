@@ -192,9 +192,17 @@ namespace myTNB_Android.Src.ViewBill.Activity
                 {
                     if (isFromQuickAction)
                     {
+                        downloadClicked = false;
                         RunOnUiThread(() =>
                         {
-                            this.userActionsListener.LoadingBillsHistory(selectedAccount);
+                            if (ContextCompat.CheckSelfPermission(this, Manifest.Permission.ReadExternalStorage) == (int)Permission.Granted && ContextCompat.CheckSelfPermission(this, Manifest.Permission.WriteExternalStorage) == (int)Permission.Granted)
+                            {
+                                this.userActionsListener.LoadingBillsHistory(selectedAccount);
+                            }
+                            else
+                            {
+                                RequestPermissions(new string[] { Manifest.Permission.WriteExternalStorage }, Constants.RUNTIME_PERMISSION_STORAGE_REQUEST_CODE);
+                            }
                         });
                     }
                     else
@@ -551,11 +559,30 @@ namespace myTNB_Android.Src.ViewBill.Activity
                     {
                         if (grantResults[0] == Permission.Granted)
                         {
-                            RunOnUiThread(() =>
+                            if (isFromQuickAction)
                             {
-                                GetPDF();
-                            });
-
+                                if (downloadClicked)
+                                {
+                                    RunOnUiThread(() =>
+                                    {
+                                        GetPDF();
+                                    });
+                                }
+                                else
+                                {
+                                    RunOnUiThread(() =>
+                                    {
+                                        this.userActionsListener.LoadingBillsHistory(selectedAccount);
+                                    });
+                                }
+                            }
+                            else
+                            {
+                                RunOnUiThread(() =>
+                                {
+                                    GetPDF();
+                                });
+                            }
                         }
                     }
                 }
@@ -617,6 +644,49 @@ namespace myTNB_Android.Src.ViewBill.Activity
                     pdfURL += URLEncoder.Encode(Constants.SERVER_URL.END_POINT + "/v5/my_billingssp.asmx/GetBillPDF?apiKeyID=" + Constants.APP_CONFIG.API_KEY_ID + "&accNum=" + selectedAccount.AccountNum, "utf-8");
                 }
 
+                Date d = null;
+                string title = " Bill";
+                if (selectedAccount != null)
+                {
+                    if (selectedAccount.AccountCategoryId.Equals("2"))
+                    {
+                        title = " Advice";
+                    }
+                }
+                try
+                {
+                    if (selectedBill != null && !string.IsNullOrEmpty(selectedBill.DtBill))
+                    {
+                        d = simpleDateParser.Parse(selectedBill.DtBill);
+                    }
+                    else
+                    {
+                        if (!string.IsNullOrEmpty(selectedAccount?.DateBill))
+                        {
+                            d = simpleDateParser.Parse(selectedAccount?.DateBill);
+                        }
+                    }
+
+                }
+                catch (Java.Text.ParseException e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+
+                if (d != null)
+                {
+                    title = simpleDateFormat.Format(d) + title;
+                }
+
+                RunOnUiThread(() =>
+                {
+                    this.SetToolBarTitle(title);
+                });
+
                 downloadClicked = true;
                 RunOnUiThread(() =>
                 {
@@ -640,13 +710,16 @@ namespace myTNB_Android.Src.ViewBill.Activity
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                RunOnUiThread(() =>
                 {
-                    loadingOverlay.Dismiss();
-                }
+                    if (loadingOverlay != null && loadingOverlay.IsShowing)
+                    {
+                        loadingOverlay.Dismiss();
+                    }
 
-                loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
-                loadingOverlay.Show();
+                    loadingOverlay = new LoadingOverlay(this, Resource.Style.LoadingOverlyDialogStyle);
+                    loadingOverlay.Show();
+                });
             }
             catch (System.Exception e)
             {
@@ -658,10 +731,13 @@ namespace myTNB_Android.Src.ViewBill.Activity
         {
             try
             {
-                if (loadingOverlay != null && loadingOverlay.IsShowing)
+                RunOnUiThread(() =>
                 {
-                    loadingOverlay.Dismiss();
-                }
+                    if (loadingOverlay != null && loadingOverlay.IsShowing)
+                    {
+                        loadingOverlay.Dismiss();
+                    }
+                });
             }
             catch (System.Exception e)
             {
