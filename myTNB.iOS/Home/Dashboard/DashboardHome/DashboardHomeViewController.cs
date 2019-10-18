@@ -637,11 +637,11 @@ namespace myTNB
             OnUpdateCell(DashboardHomeConstants.CellIndex_Accounts);
         }
 
-        public void DismissmissActiveKeyboard()
+        public void DismissActiveKeyboard()
         {
             if (_accountListViewController != null)
             {
-                //_accountListViewController.DismissActiveKeyboard();
+                _accountListViewController.DismissActiveKeyboard();
             }
         }
     }

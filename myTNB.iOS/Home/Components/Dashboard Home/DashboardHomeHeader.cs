@@ -36,7 +36,7 @@ namespace myTNB
             {
                 if (_controller != null)
                 {
-                    _controller.DismissmissActiveKeyboard();
+                    _controller.DismissActiveKeyboard();
                 }
             }));
 

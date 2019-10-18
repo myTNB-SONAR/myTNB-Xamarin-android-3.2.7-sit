@@ -139,6 +139,8 @@
                 public const string ApplySSMRWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR Apply";
                 public const string MeterReadSSMRWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead OnePhase";
                 public const string MeterReadSSMRWalkthroughV2 = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead ThreePhase";
+                public const string MeterReadSSMRWalkthroughOCROff = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead OnePhase OCR Off";
+                public const string MeterReadSSMRWalkthroughV2OCROff = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead ThreePhase OCR Off";
                 public const string EnergyTips = "/sitecore/content/myTNBapp/Contents/Energy Saving Tips";
                 public const string BillDetailsTooltip = "/sitecore/content/myTNBapp/Contents/Itemised Billing Tooltip";
                 public const string AppLaunchImage = "/sitecore/content/myTNBapp/Contents/App Launch Image";

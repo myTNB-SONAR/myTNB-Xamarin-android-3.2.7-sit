@@ -263,7 +263,7 @@ namespace myTNB
             ViewHelper.AdjustFrameSetHeight(txtTitle, cGSize.Height);
             view.AddSubviews(new UIView[] { imgView, txtTitle });
 
-            if (ShowIndicator(serviceItem.ServiceId))
+            if (ShowIndicator(serviceItem.ServiceId) && serviceItem.ServiceType != ServiceEnum.SUBMITFEEDBACK)
             {
                 UIView indicatorView = new UIView(new CGRect(GetScaledWidth(51F), GetScaledHeight(13F), 0, GetScaledHeight(14F)))
                 {

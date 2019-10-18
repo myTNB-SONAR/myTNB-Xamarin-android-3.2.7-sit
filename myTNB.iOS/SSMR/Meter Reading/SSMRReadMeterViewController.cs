@@ -26,7 +26,7 @@ namespace myTNB
         public List<SSMRMeterReadWalkthroughModel> pageData;
         List<SSMRMeterReadWalkthroughModel> pageDefaultData;
 
-        UIView _toolTipParentView, _takePhotoView, _takePhotoBtnView, _noteView;
+        UIView _toolTipParentView, _takePhotoView, _manualInputView, _takePhotoBtnView, _noteView;
         UIScrollView _meterReadScrollView;
         UIImageView _cameraIconView;
         UILabel _takePhotoLabel, _errorLabel;
@@ -36,7 +36,7 @@ namespace myTNB
         nfloat takePhotoViewRatio = 136.0f / 320.0f;
         nfloat lastCardYPos;
         CGRect scrollViewFrame;
-        bool _isThreePhase = false;
+        bool _isThreePhase;
 
         private bool _isKeyboardActive;
         private List<SSMRMeterCardComponent> _meterCardComponentList = new List<SSMRMeterCardComponent>();
@@ -69,6 +69,7 @@ namespace myTNB
             SetWalkthroughData();
             AddFooterView();
             Initialization();
+            PrepareManualInputView();
             PrepareTakePhotoHeaderView();
             PrepareMeterReadingCard(false);
             PrepareNoteView();
@@ -83,7 +84,6 @@ namespace myTNB
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            ShowToolTipByDefault();
         }
 
         private void SetNavigation()
@@ -140,26 +140,6 @@ namespace myTNB
                 };
                 pageData.Add(item3);
                 pageDefaultData.Add(item3);
-            }
-        }
-
-        private void ShowToolTipByDefault()
-        {
-            if (_isThreePhase)
-            {
-                if (!SSMRAccounts.IsHideReadMeterWalkthroughV2)
-                {
-                    PrepareToolTipView();
-                    SSMRAccounts.IsHideReadMeterWalkthroughV2 = true;
-                }
-            }
-            else
-            {
-                if (!SSMRAccounts.IsHideReadMeterWalkthrough)
-                {
-                    PrepareToolTipView();
-                    SSMRAccounts.IsHideReadMeterWalkthrough = true;
-                }
             }
         }
 
@@ -274,8 +254,32 @@ namespace myTNB
             }
         }
 
+        private void PrepareManualInputView()
+        {
+            if (!AppLaunchMasterCache.IsOCRDown)
+                return;
+
+            _manualInputView = new UIView(new CGRect(BaseMarginWidth16, GetScaledHeight(16F), View.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(44F)))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+            UILabel label = new UILabel(new CGRect(0, 0, _manualInputView.Frame.Width, _manualInputView.Frame.Height))
+            {
+                Font = TNBFont.MuseoSans_14_500,
+                TextColor = MyTNBColor.WaterBlue,
+                Lines = 0,
+                TextAlignment = UITextAlignment.Left,
+                Text = GetI18NValue(SSMRConstants.I18N_ManualInputTitle)
+            };
+            _manualInputView.AddSubview(label);
+            _meterReadScrollView.AddSubview(_manualInputView);
+        }
+
         private void PrepareTakePhotoHeaderView()
         {
+            if (AppLaunchMasterCache.IsOCRDown)
+                return;
+
             nfloat takePhotoViewHeight = View.Frame.Width * takePhotoViewRatio;
             nfloat descLabelWidth = _meterReadScrollView.Frame.Width - (_paddingX * 2);
             _takePhotoView = new UIView(new CGRect(0, 0, View.Frame.Width, takePhotoViewHeight))
@@ -335,7 +339,7 @@ namespace myTNB
             nfloat height = GetScaledHeight(16f);
             _cameraIconView = new UIImageView(new CGRect(0, 0, width, height))
             {
-                Image = UIImage.FromBundle("Camera-Icon-Green")
+                Image = UIImage.FromBundle(SSMRConstants.IMG_CameraIcon)
             };
             containerView.AddSubview(_cameraIconView);
 
@@ -379,6 +383,7 @@ namespace myTNB
                 };
                 currentWindow.AddSubview(_toolTipParentView);
                 PaginatedTooltipComponent tooltipComponent = new PaginatedTooltipComponent(_toolTipParentView);
+                tooltipComponent.GetI18NValue = GetI18NValue;
                 tooltipComponent.SetSSMRData(pageData, pageDefaultData);
                 tooltipComponent.SetPreviousMeterData(_previousMeterList);
                 _toolTipParentView.AddSubview(tooltipComponent.GetSSMRTooltip());
@@ -404,7 +409,7 @@ namespace myTNB
             {
                 bool hasOCRError = false;
                 string errorMessage = string.Empty;
-                nfloat yPos = _takePhotoView.Frame.GetMaxY() + _paddingY;
+                nfloat yPos = AppLaunchMasterCache.IsOCRDown ? _manualInputView.Frame.GetMaxY() + GetScaledHeight(16F) : _takePhotoView.Frame.GetMaxY() + _paddingY;
                 _meterCardComponentList.Clear();
                 foreach (var previousMeter in _previousMeterList)
                 {
