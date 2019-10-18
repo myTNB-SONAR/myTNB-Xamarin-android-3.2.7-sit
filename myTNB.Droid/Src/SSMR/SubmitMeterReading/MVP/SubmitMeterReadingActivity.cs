@@ -26,6 +26,7 @@ using myTNB_Android.Src.SSMRTerminate.MVP;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using Newtonsoft.Json;
+using static myTNB_Android.Src.AppLaunch.Models.MasterDataResponse;
 using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.GetMeterReadingOCRResponse;
 using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.SubmitMeterReadingRequest;
 using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.SubmitMeterReadingResponse;
@@ -93,6 +94,12 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         [BindView(Resource.Id.btnTakeUploadPictureText)]
         TextView btnTakeUploadPictureText;
+
+        [BindView(Resource.Id.capture_reading_layout)]
+        LinearLayout captureReadingLayout;
+
+        [BindView(Resource.Id.meterReadingManualTitle)]
+        TextView meterReadingManualTitle;
 
         public readonly static int SSMR_SUBMIT_METER_ACTIVITY_CODE = 8796;
         public readonly static int SSMR_SUBMIT_METER_OCR_SUBMIT_CODE = 8797;
@@ -241,6 +248,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             Bundle intentExtras = Intent.Extras;
 
+            TextViewUtils.SetMuseoSans500Typeface(meterReadingManualTitle);
+
             if (intentExtras.ContainsKey(Constants.SELECTED_ACCOUNT))
             {
                 selectedAccount = JsonConvert.DeserializeObject<AccountData>(intentExtras.GetString(Constants.SELECTED_ACCOUNT));
@@ -254,6 +263,20 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     meterReadingModelList = this.mPresenter.GetMeterReadingModelList(ssmrActivityInfoResponse.Response.Data.SMRMROValidateRegisterDetails);
                 }
             }
+
+            bool isOCRDisabled = false;
+            MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
+            if (currentMasterData.IsOCRDown)
+            {
+                isOCRDisabled = true;
+            }
+
+            if (isOCRDisabled)
+            {
+                captureReadingLayout.Visibility = ViewStates.Gone;
+                meterReadingManualTitle.Visibility = ViewStates.Visible;
+            }
+
             meterReadingTitle.TextFormatted = (meterReadingModelList.Count == 1) ? GetFormattedText(GetString(Resource.String.ssmr_submit_meter_reading_message_single))
                 : GetFormattedText(GetString(Resource.String.ssmr_submit_meter_reading_message_multiple));
             SetMeterReadingCards();
@@ -571,7 +594,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 {
                     if (!MyTNBAccountManagement.GetInstance().GetSMRMeterReadingThreePhaseOnboardingShown() && isFirstLaunch)
                     {
-                        ShowMeterReadingTooltip();
+                        // ShowMeterReadingTooltip();
                         isFirstLaunch = false;
                     }
                 }
@@ -587,7 +610,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 {
                     if (!MyTNBAccountManagement.GetInstance().GetSMRMeterReadingOnePhaseOnboardingShown() && isFirstLaunch)
                     {
-                        ShowMeterReadingTooltip();
+                        // ShowMeterReadingTooltip();
                         isFirstLaunch = false;
                     }
                 }
@@ -603,7 +626,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             HideProgressDialog();
             if (!MyTNBAccountManagement.GetInstance().GetSMRMeterReadingThreePhaseOnboardingShown())
             {
-                ShowMeterReadingTooltip();
+                // ShowMeterReadingTooltip();
                 isFirstLaunch = false;
             }
             MyTNBAccountManagement.GetInstance().UpdateIsSMRMeterReadingThreePhaseOnboardingShown(true);
@@ -618,7 +641,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             HideProgressDialog();
             if (!MyTNBAccountManagement.GetInstance().GetSMRMeterReadingOnePhaseOnboardingShown())
             {
-                ShowMeterReadingTooltip();
+                // ShowMeterReadingTooltip();
                 isFirstLaunch = false;
             }
             MyTNBAccountManagement.GetInstance().UpdateIsSMRMeterReadingOnePhaseOnboardingShown(true);

@@ -220,7 +220,7 @@ namespace myTNB.SitecoreCMS.Services
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Exception in GetItemsService/GetApplySSMRWalkthroughItems: " + e.Message);
+                Debug.WriteLine("Exception in GetItemsService/GetSSMRMeterReadingOnePhaseWalkthroughItems: " + e.Message);
             }
             return respModel;
         }
@@ -239,7 +239,44 @@ namespace myTNB.SitecoreCMS.Services
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Exception in GetItemsService/GetApplySSMRWalkthroughTimestampItem: " + e.Message);
+                Debug.WriteLine("Exception in GetItemsService/GetSSMRMeterReadingOnePhaseWalkthroughTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public SSMRMeterReadingResponseModel GetSSMRMeterReadingOnePhaseOCROffWalkthroughItems()
+        {
+            SSMRMeterReadingResponseModel respModel = new SSMRMeterReadingResponseModel();
+            try
+            {
+                SSMRMeterReadingOnePhaseWalkThroughOCROffService service = new SSMRMeterReadingOnePhaseWalkThroughOCROffService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<SSMRMeterReadingResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetSSMRMeterReadingOnePhaseOCROffWalkthroughItems: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public SSMRMeterReadingTimeStampResponseModel GetSSMRMeterReadingOnePhaseOCROffWalkthroughTimestampItem()
+        {
+            SSMRMeterReadingTimeStampResponseModel respModel = new SSMRMeterReadingTimeStampResponseModel();
+            try
+            {
+                SSMRMeterReadingOnePhaseWalkThroughOCROffService service = new SSMRMeterReadingOnePhaseWalkThroughOCROffService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<SSMRMeterReadingTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetSSMRMeterReadingOnePhaseOCROffWalkthroughTimestampItem: " + e.Message);
             }
             return respModel;
         }
@@ -257,7 +294,7 @@ namespace myTNB.SitecoreCMS.Services
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Exception in GetItemsService/GetApplySSMRWalkthroughItems: " + e.Message);
+                Debug.WriteLine("Exception in GetItemsService/GetSSMRMeterReadingThreePhaseWalkthroughItems: " + e.Message);
             }
             return respModel;
         }
@@ -276,7 +313,44 @@ namespace myTNB.SitecoreCMS.Services
             }
             catch (Exception e)
             {
-                Debug.WriteLine("Exception in GetItemsService/GetApplySSMRWalkthroughTimestampItem: " + e.Message);
+                Debug.WriteLine("Exception in GetItemsService/GetSSMRMeterReadingThreePhaseWalkthroughTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public SSMRMeterReadingResponseModel GetSSMRMeterReadingThreePhaseOCROffWalkthroughItems()
+        {
+            SSMRMeterReadingResponseModel respModel = new SSMRMeterReadingResponseModel();
+            try
+            {
+                SSMRMeterReadingThreePhaseWalkthroughOCROffService service = new SSMRMeterReadingThreePhaseWalkthroughOCROffService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<SSMRMeterReadingResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetSSMRMeterReadingThreePhaseOCROffWalkthroughItems: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public SSMRMeterReadingTimeStampResponseModel GetSSMRMeterReadingThreePhaseOCROffWalkthroughTimestampItem()
+        {
+            SSMRMeterReadingTimeStampResponseModel respModel = new SSMRMeterReadingTimeStampResponseModel();
+            try
+            {
+                SSMRMeterReadingThreePhaseWalkthroughOCROffService service = new SSMRMeterReadingThreePhaseWalkthroughOCROffService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<SSMRMeterReadingTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetSSMRMeterReadingThreePhaseOCROffWalkthroughTimestampItem: " + e.Message);
             }
             return respModel;
         }

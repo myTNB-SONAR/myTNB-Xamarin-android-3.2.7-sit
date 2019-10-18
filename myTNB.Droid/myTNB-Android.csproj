@@ -3317,6 +3317,14 @@
     <AndroidResource Include="Resources\drawable-xhdpi\smr_history_empty_icon.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\smr_history_empty_icon.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\smr_history_empty_icon.png" />
+    <Compile Include="Src\SSMRMeterHistory\MVP\ContactNotAvailableModel.cs" />
+    <Compile Include="Src\AddAccount\Models\AccountResponseV6.cs" />
+    <Compile Include="Src\Database\Model\SSMRMeterReadingScreensOCROffEntity.cs" />
+    <Compile Include="Src\Database\Model\SSMRMeterReadingScreensOCROffParentEntity.cs" />
+    <Compile Include="Src\Database\Model\SSMRMeterReadingThreePhaseScreensOCROffEntity.cs" />
+    <Compile Include="Src\Database\Model\SSMRMeterReadingThreePhaseScreensOCROffParentEntity.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\SSMRMeterReadingOnePhaseWalkThroughOCROffService.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\SSMRMeterReadingThreePhaseWalkthroughOCROffService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

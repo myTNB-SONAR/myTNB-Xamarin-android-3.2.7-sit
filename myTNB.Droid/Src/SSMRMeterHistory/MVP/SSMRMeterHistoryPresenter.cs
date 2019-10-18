@@ -215,7 +215,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     usrInf = currentUsrInf
                 });
                 
-                if (response.Data.ErrorCode == "7200")
+                if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
                 {
                     CAContactDetailsModel contactDetailsModel = new CAContactDetailsModel();
                     contactDetailsModel.email = response.Data.AccountDetailsData.Email;
@@ -223,9 +223,18 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     contactDetailsModel.isAllowEdit = response.Data.AccountDetailsData.isAllowEdit;
                     this.mView.ShowEnableDisableSMR(contactDetailsModel);
                 }
+                else if (response != null && response.Data != null && response.Data.ErrorCode == "7205" && this.mView.GetSMRActionKey() == Constants.SMR_ENABLE_FLAG)
+                {
+                    this.mView.EnableButton();
+                    this.mView.ShowContactNotAvailableTooltip(response.Data.DisplayTitle, response.Data.DisplayMessage, response.Data.RefreshBtnText);
+                }
                 else
                 {
                     this.mView.EnableButton();
+                    if (this.mView.GetSMRActionKey() == Constants.SMR_ENABLE_FLAG)
+                    {
+                        this.mView.ShowContactNotAvailableTooltip(null, null, null);
+                    }
                 }
                 this.mView.HideProgressDialog();
             }
@@ -233,18 +242,30 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             {
                 this.mView.HideProgressDialog();
                 this.mView.EnableButton();
+                if (this.mView.GetSMRActionKey() == Constants.SMR_ENABLE_FLAG)
+                {
+                    this.mView.ShowContactNotAvailableTooltip(null, null, null);
+                }
                 Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
                 this.mView.HideProgressDialog();
                 this.mView.EnableButton();
+                if (this.mView.GetSMRActionKey() == Constants.SMR_ENABLE_FLAG)
+                {
+                    this.mView.ShowContactNotAvailableTooltip(null, null, null);
+                }
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
                 this.mView.HideProgressDialog();
                 this.mView.EnableButton();
+                if (this.mView.GetSMRActionKey() == Constants.SMR_ENABLE_FLAG)
+                {
+                    this.mView.ShowContactNotAvailableTooltip(null, null, null);
+                }
                 Utility.LoggingNonFatalError(unknownException);
             }
 

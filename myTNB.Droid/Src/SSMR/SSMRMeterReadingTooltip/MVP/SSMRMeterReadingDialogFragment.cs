@@ -25,6 +25,7 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP
 		private LinearLayout indicator;
         //private CheckBox dontShowAgainCheckbox;
         private LinearLayout txtBtnFirst;
+        private TextView txtBtnLabel;
         private bool isSinglePhase = false;
         private List<SSMRMeterReadingModel> SSMRMeterReadingModelList = new List<SSMRMeterReadingModel>();
 
@@ -57,18 +58,9 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP
                 indicator = rootView.FindViewById<LinearLayout>(Resource.Id.indicatorContainer);
                 //dontShowAgainCheckbox = rootView.FindViewById<CheckBox>(Resource.Id.dontShowAgainCheckbox);
                 txtBtnFirst = rootView.FindViewById<LinearLayout>(Resource.Id.txtBtnFirst);
+                txtBtnLabel = rootView.FindViewById<TextView>(Resource.Id.txtBtnLabel);
 
-                if (SSMRMeterReadingModelList.Count == 0)
-                {
-                    if (isSinglePhase)
-                    {
-                        SSMRMeterReadingModelList.AddRange(OnGetOnePhaseData());
-                    }
-                    else
-                    {
-                        SSMRMeterReadingModelList.AddRange(OnGetThreePhaseData());
-                    }
-                }
+                TextViewUtils.SetMuseoSans500Typeface(txtBtnLabel);
 
                 if (SSMRMeterReadingModelList.Count > 0)
                 {
@@ -91,26 +83,40 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP
                         }
                         indicator.AddView(image, i);
                     }
-                }
 
-                adapter = new SSMRMeterReadingPagerAdapter(mContext, SSMRMeterReadingModelList);
-                pager.Adapter = adapter;
-
-                pager.PageSelected += (object sender, ViewPager.PageSelectedEventArgs e) => {
-                    for (int i = 0; i < SSMRMeterReadingModelList.Count; i++)
+                    if (SSMRMeterReadingModelList.Count <= 1)
                     {
-                        ImageView selectedDot = (ImageView)indicator.GetChildAt(i);
-                        if (e.Position == i)
-                        {
-                            selectedDot.SetImageResource(Resource.Drawable.onboarding_circle_active);
-                        }
-                        else
-                        {
-                            selectedDot.SetImageResource(Resource.Drawable.onboarding_circle_inactive);
-                        }
+                        indicator.Visibility = ViewStates.Gone;
+                        LinearLayout.LayoutParams pagerParam = pager.LayoutParameters as LinearLayout.LayoutParams;
+                        pagerParam.Height = (int)DPUtils.ConvertDPToPx(300f);
+                        txtBtnLabel.Text = this.Activity.GetString(Resource.String.tooltip_btnLabel);
                     }
-                };
 
+                    adapter = new SSMRMeterReadingPagerAdapter(mContext, SSMRMeterReadingModelList);
+                    pager.Adapter = adapter;
+
+                    pager.PageSelected += (object sender, ViewPager.PageSelectedEventArgs e) => {
+                        for (int i = 0; i < SSMRMeterReadingModelList.Count; i++)
+                        {
+                            ImageView selectedDot = (ImageView)indicator.GetChildAt(i);
+                            if (e.Position == i)
+                            {
+                                selectedDot.SetImageResource(Resource.Drawable.onboarding_circle_active);
+                            }
+                            else
+                            {
+                                selectedDot.SetImageResource(Resource.Drawable.onboarding_circle_inactive);
+                            }
+                        }
+                    };
+                }
+                else
+                {
+                    indicator.Visibility = ViewStates.Gone;
+                    LinearLayout.LayoutParams pagerParam = pager.LayoutParameters as LinearLayout.LayoutParams;
+                    pagerParam.Height = (int)DPUtils.ConvertDPToPx(300f);
+                    txtBtnLabel.Text = this.Activity.GetString(Resource.String.tooltip_btnLabel);
+                }
 
                 txtBtnFirst.Click += GotIt_Click;
 
@@ -149,58 +155,6 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP
 		{
 			base.OnCreate(savedInstanceState);
 		}
-
-        public List<SSMRMeterReadingModel> OnGetThreePhaseData()
-        {
-            List<SSMRMeterReadingModel> items = new List<SSMRMeterReadingModel>();
-            for (int i = 0; i < 3; i++)
-            {
-                SSMRMeterReadingModel dataModel = new SSMRMeterReadingModel();
-                if (i == 0)
-                {
-                    dataModel.Image = "tooltip_bg_1";
-                    dataModel.Title = "Alright, what do I need to read?";
-                    dataModel.Description = "You'll need to read 3 reading values (kWh, kVARh, kW). Your meter will automatically flash one after the other.";
-                }
-                else if (i == 1)
-                {
-                    dataModel.Image = "tooltip_bg_2";
-                    dataModel.Title = "But wait, how do I read my meter?";
-                    dataModel.Description = "You can enter each reading manually or just snap/upload a photo, and we’ll do the reading for you.";
-                }
-                else
-                {
-                    dataModel.Image = "tooltip_bg_3";
-                    dataModel.Title = "How do I enter these values?";
-                    dataModel.Description = "Enter the numbers according to its unit in the input. You’ll see your previous month's reading as a reference.";
-                }
-                items.Add(dataModel);
-            }
-            return items;
-        }
-
-        private List<SSMRMeterReadingModel> OnGetOnePhaseData()
-        {
-            List<SSMRMeterReadingModel> items = new List<SSMRMeterReadingModel>();
-            for (int i = 0; i < 2; i++)
-            {
-                SSMRMeterReadingModel dataModel = new SSMRMeterReadingModel();
-                if (i == 0)
-                {
-                    dataModel.Image = "tooltip_bg_2";
-                    dataModel.Title = "Alright, what do I need to read?";
-                    dataModel.Description = "Your meter will display the kWh reading by default. Enter the reading manually or just snap/upload a photo, and we’ll do the reading for you.";
-                }
-                else if (i == 1)
-                {
-                    dataModel.Image = "tooltip_bg_3";
-                    dataModel.Title = "How do I enter the value?";
-                    dataModel.Description = "For manual reading, enter the kWh numbers in the input. You’ll see your previous month's reading as a reference.";
-                }
-                items.Add(dataModel);
-            }
-            return items;
-        }
 
     }
 }

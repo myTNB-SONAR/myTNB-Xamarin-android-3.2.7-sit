@@ -1465,4 +1465,12 @@ Please try again later.]]>
 <string name="duplicate_account_btn_ok">Ok</string>
 
 <string name="new_account_view">Welcome to your usage view! You’ll see your usage here soon.</string>
+
+<string name="smr_contact_not_available_title">Sorry, Self Meter Reading is currently unavailable for your account.</string>
+
+<string name="smr_contact_not_available_message">We are working hard to make this service available for you in the future. Apologies for the inconvenience!</string>
+
+<string name="smr_contact_not_available_btn">Got It!</string>
+
+<string name="smr_manual_reading_title">Please enter your meter reading for the unit(s) below.</string>
 </resources>

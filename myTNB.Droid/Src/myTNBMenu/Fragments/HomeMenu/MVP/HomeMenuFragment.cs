@@ -1144,16 +1144,42 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
-                SSMRMeterReadingScreensParentEntity wtManager = new SSMRMeterReadingScreensParentEntity();
-                List<SSMRMeterReadingScreensParentEntity> items = wtManager.GetAllItems();
-                if (items != null)
+                bool isOCRDisabled = false;
+                MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
+                if (currentMasterData.IsOCRDown)
                 {
-                    SSMRMeterReadingScreensParentEntity entity = items[0];
-                    if (entity != null)
+                    isOCRDisabled = true;
+                }
+
+                if (isOCRDisabled)
+                {
+                    SSMRMeterReadingScreensOCROffParentEntity wtManager = new SSMRMeterReadingScreensOCROffParentEntity();
+                    List<SSMRMeterReadingScreensOCROffParentEntity> items = wtManager.GetAllItems();
+                    if (items != null)
                     {
-                        if (!entity.Timestamp.Equals(savedSSMRMeterReadingTimeStamp))
+                        SSMRMeterReadingScreensOCROffParentEntity entity = items[0];
+                        if (entity != null)
                         {
-                            this.presenter.OnGetSSMRMeterReadingScreens();
+                            if (!entity.Timestamp.Equals(savedSSMRMeterReadingTimeStamp))
+                            {
+                                this.presenter.OnGetSSMRMeterReadingScreens();
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    SSMRMeterReadingScreensParentEntity wtManager = new SSMRMeterReadingScreensParentEntity();
+                    List<SSMRMeterReadingScreensParentEntity> items = wtManager.GetAllItems();
+                    if (items != null)
+                    {
+                        SSMRMeterReadingScreensParentEntity entity = items[0];
+                        if (entity != null)
+                        {
+                            if (!entity.Timestamp.Equals(savedSSMRMeterReadingTimeStamp))
+                            {
+                                this.presenter.OnGetSSMRMeterReadingScreens();
+                            }
                         }
                     }
                 }
@@ -1177,16 +1203,42 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
-                SSMRMeterReadingThreePhaseScreensParentEntity wtManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
-                List<SSMRMeterReadingThreePhaseScreensParentEntity> items = wtManager.GetAllItems();
-                if (items != null)
+                bool isOCRDisabled = false;
+                MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
+                if (currentMasterData.IsOCRDown)
                 {
-                    SSMRMeterReadingThreePhaseScreensParentEntity entity = items[0];
-                    if (entity != null)
+                    isOCRDisabled = true;
+                }
+
+                if (isOCRDisabled)
+                {
+                    SSMRMeterReadingThreePhaseScreensOCROffParentEntity wtManager = new SSMRMeterReadingThreePhaseScreensOCROffParentEntity();
+                    List<SSMRMeterReadingThreePhaseScreensOCROffParentEntity> items = wtManager.GetAllItems();
+                    if (items != null)
                     {
-                        if (!entity.Timestamp.Equals(savedSSMRMeterReadingThreePhaseTimeStamp))
+                        SSMRMeterReadingThreePhaseScreensOCROffParentEntity entity = items[0];
+                        if (entity != null)
                         {
-                            this.presenter.OnGetSSMRMeterReadingThreePhaseScreens();
+                            if (!entity.Timestamp.Equals(savedSSMRMeterReadingThreePhaseTimeStamp))
+                            {
+                                this.presenter.OnGetSSMRMeterReadingThreePhaseScreens();
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    SSMRMeterReadingThreePhaseScreensParentEntity wtManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
+                    List<SSMRMeterReadingThreePhaseScreensParentEntity> items = wtManager.GetAllItems();
+                    if (items != null)
+                    {
+                        SSMRMeterReadingThreePhaseScreensParentEntity entity = items[0];
+                        if (entity != null)
+                        {
+                            if (!entity.Timestamp.Equals(savedSSMRMeterReadingThreePhaseTimeStamp))
+                            {
+                                this.presenter.OnGetSSMRMeterReadingThreePhaseScreens();
+                            }
                         }
                     }
                 }
