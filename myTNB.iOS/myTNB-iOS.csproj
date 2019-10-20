@@ -1258,6 +1258,27 @@
     <ImageAsset Include="Assets.xcassets\Tab-Rewards-New.imageset\rewardsNew%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected-New.imageset\rewardsNewSelected%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected-New.imageset\rewardsNewSelected%403x.png" />
+    <ImageAsset Include="Assets.xcassets\TNB-Logo.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\TNB-Logo.imageset\TNB-Logo%402x.png" />
+    <ImageAsset Include="Assets.xcassets\TNB-Logo.imageset\TNB-Logo%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Prelogin-Header.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Prelogin-Header.imageset\Prelogin-Header%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Prelogin-Header.imageset\Prelogin-Header%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Find-Us-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Find-Us-Icon.imageset\Find-Us-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Find-Us-Icon.imageset\Find-Us-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Call-Us-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Call-Us-Icon.imageset\Call-Us-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Call-Us-Icon.imageset\Call-Us-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Icon.imageset\Feedback-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Feedback-Icon.imageset\Feedback-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Email-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Email-Icon.imageset\Email-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Email-Icon.imageset\Email-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Password-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Password-Icon.imageset\Password-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Password-Icon.imageset\Password-Icon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1704,6 +1725,13 @@
     <Folder Include="Assets.xcassets\Tab-Promotions-Unread-Inactive-New.imageset\" />
     <Folder Include="Assets.xcassets\Tab-Rewards-New.imageset\" />
     <Folder Include="Assets.xcassets\Tab-Rewards-Selected-New.imageset\" />
+    <Folder Include="Assets.xcassets\TNB-Logo.imageset\" />
+    <Folder Include="Assets.xcassets\Prelogin-Header.imageset\" />
+    <Folder Include="Assets.xcassets\Find-Us-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Call-Us-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Feedback-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Email-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Password-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2554,6 +2582,8 @@
     <Compile Include="Home\Dashboard\DashboardHome\Account List\AccountListCell.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\Account List\AccountListEmptyCell.cs" />
     <Compile Include="Customs\CustomUITableViewCell.cs" />
+    <Compile Include="Login\PreloginConstants.cs" />
+    <Compile Include="Login\LoginConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

@@ -24,19 +24,7 @@ namespace myTNB
 
         [Outlet]
         [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UIImageView imgViewLogo { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UILabel lblAccountLogin { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
         UIKit.UILabel lblNoAccount { get; set; }
-
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UILabel lblWelcome { get; set; }
 
         void ReleaseDesignerOutlets ()
         {
@@ -50,24 +38,9 @@ namespace myTNB
                 btnRegister = null;
             }
 
-            if (imgViewLogo != null) {
-                imgViewLogo.Dispose ();
-                imgViewLogo = null;
-            }
-
-            if (lblAccountLogin != null) {
-                lblAccountLogin.Dispose ();
-                lblAccountLogin = null;
-            }
-
             if (lblNoAccount != null) {
                 lblNoAccount.Dispose ();
                 lblNoAccount = null;
-            }
-
-            if (lblWelcome != null) {
-                lblWelcome.Dispose ();
-                lblWelcome = null;
             }
         }
     }

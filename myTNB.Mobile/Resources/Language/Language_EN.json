@@ -61,7 +61,10 @@
         "back": "Back",
         "cards": "Credit / Debit Cards",
         "abort": "Abort",
-        "gotIt": "Got It!"
+        "gotIt": "Got It!",
+        "login": "Log In",
+        "email": "Email",
+        "password": "Password"
     },
     "Hint": {
         "mobileNumber": "Please include the country code of your phone number.",
@@ -404,5 +407,22 @@
         "removeAcct": "Remove Account",
         "removeAcctMsg": "You are about to remove {0}, account number {1}.",
         "addAcctSuccessMsg": "Add Account(s) Successful"
+    },
+    "PreloginView": {
+        "welcomeTitle": "Welcome to myTNB",
+        "tagline": "A whole new world with shockingly amazing possibilities.",
+        "register": "Register",
+        "login": "Login",
+        "quickAccess": "Quick Access",
+        "findUs": "Find Us",
+        "callUs": "Call Us",
+        "feedback": "Give Us Feedback"
+    },
+    "LoginView": {
+        "title": "myTNB Account Login",
+        "rememberEmail": "Remember my email",
+        "forgotPassword": "Forgot your password?",
+        "dontHaveAcct": "Don’t have a myTNB account?",
+        "registerAcctNow": "Register for an account now."
     }
 }

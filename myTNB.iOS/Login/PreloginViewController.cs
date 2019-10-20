@@ -2,20 +2,18 @@ using Foundation;
 using System;
 using UIKit;
 using CoreGraphics;
-using CoreAnimation;
+using System.Diagnostics;
 
 namespace myTNB
 {
-    public partial class PreloginViewController : UIViewController
+    public partial class PreloginViewController : CustomUIViewController
     {
-        public PreloginViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public PreloginViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
         {
+            PageName = PreloginConstants.PageName;
             base.ViewDidLoad();
-            SetBackgroundView();
             SetSubviews();
         }
 
@@ -24,60 +22,50 @@ namespace myTNB
             base.ViewDidAppear(animated);
         }
 
-        void SetBackgroundView()
-        {
-            var startColor = MyTNBColor.GradientPurpleDarkElement;
-            var endColor = MyTNBColor.GradientPurpleLightElement;
-            var gradientLayer = new CAGradientLayer
-            {
-                Colors = new[] { startColor.CGColor, endColor.CGColor },
-                Locations = new NSNumber[] { 0, 1 },
-                Frame = View.Bounds
-            };
-            View.Layer.InsertSublayer(gradientLayer, 0);
-        }
-
         void SetSubviews()
         {
-            UIImageView imgLogo = new UIImageView(new CGRect((View.Frame.Width / 2) - DeviceHelper.GetScaledWidth(22)
-                , DeviceHelper.GetScaledSize(6.3F), DeviceHelper.GetScaledWidth(44), DeviceHelper.GetScaledHeight(44)))
+            UIImageView imgLogo = new UIImageView(new CGRect(GetXLocationToCenterObject(GetScaledWidth(40F), View)
+                , DeviceHelper.GetStatusBarHeight() + GetScaledHeight(16F), GetScaledWidth(40F), GetScaledHeight(40F)))
             {
-                Image = UIImage.FromBundle("app_logo")
+                Image = UIImage.FromBundle(PreloginConstants.IMG_TNBLogo)
             };
 
-            UIImageView imgPrelogin = new UIImageView(new CGRect((View.Frame.Width / 2) - DeviceHelper.GetScaledWidth(75)
-                , DeviceHelper.GetScaledSize(16.9F), DeviceHelper.GetScaledWidth(150), DeviceHelper.GetScaledHeight(100)))
+            UIImageView imgHeader = new UIImageView(new CGRect(0, 0, ViewWidth, GetScaledHeight(220F)))
             {
-                Image = UIImage.FromBundle("IC-Display-Prelogin")
+                Image = UIImage.FromBundle(PreloginConstants.IMG_Header),
+                ContentMode = UIViewContentMode.ScaleAspectFill
             };
 
-            UILabel lblbWelcome = new UILabel(new CGRect(0, DeviceHelper.GetScaledSize(35.6F), View.Frame.Width, 24))
+            UILabel lblWelcome = new UILabel(new CGRect(0, GetYLocationFromFrame(imgHeader.Frame, 12F), ViewWidth, GetScaledHeight(24F)))
             {
-                Text = "Login_Welcome".Translate(),
+                Text = GetI18NValue(PreloginConstants.I18N_WelcomeTitle),
                 TextAlignment = UITextAlignment.Center,
-                TextColor = MyTNBColor.SunGlow,
-                Font = MyTNBFont.MuseoSans24
+                TextColor = MyTNBColor.WaterBlueTwo,
+                Font = TNBFont.MuseoSans_16_500
             };
 
-            UILabel lblSubtitle = new UILabel(new CGRect(0, DeviceHelper.GetScaledSize(40.5F), View.Frame.Width, 24))
+            UILabel lblSubtitle = new UILabel(new CGRect(GetScaledWidth(24F), GetYLocationFromFrame(lblWelcome.Frame, 4F), ViewWidth - (GetScaledWidth(24F) * 2), GetScaledHeight(32F)))
             {
-                Text = "Login_ManageYourAccount".Translate(),
+                Text = GetI18NValue(PreloginConstants.I18N_Tagline),
                 TextAlignment = UITextAlignment.Center,
-                TextColor = UIColor.White,
-                Font = MyTNBFont.MuseoSans16
+                TextColor = MyTNBColor.WarmGrey,
+                Font = TNBFont.MuseoSans_12_300,
+                Lines = 0
             };
 
-            UIView viewCTA = new UIView(new CGRect(18, DeviceHelper.GetScaledSize(47.5F), View.Frame.Width - 36, 48));
+            UIView viewCTA = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(lblSubtitle.Frame, 20F), ViewWidth - (BaseMarginWidth16 * 2), GetScaledHeight(48F)));
 
             UIButton btnRegister = new UIButton(UIButtonType.Custom)
             {
-                Frame = new CGRect(0, 0, (viewCTA.Frame.Width - 4) / 2, 48)
+                Frame = new CGRect(0, 0, (viewCTA.Frame.Width / 2) - GetScaledWidth(2F), GetScaledHeight(48F))
             };
-            btnRegister.SetTitle("Common_Register".Translate(), UIControlState.Normal);
-            btnRegister.Layer.CornerRadius = 4.0f;
-            btnRegister.Layer.BorderWidth = 1.0f;
-            btnRegister.Layer.BorderColor = UIColor.White.CGColor;
-            btnRegister.BackgroundColor = UIColor.Clear;
+            btnRegister.Font = TNBFont.MuseoSans_16_500;
+            btnRegister.SetTitle(GetI18NValue(PreloginConstants.I18N_Register), UIControlState.Normal);
+            btnRegister.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
+            btnRegister.Layer.CornerRadius = GetScaledHeight(4F);
+            btnRegister.Layer.BorderWidth = GetScaledWidth(1F);
+            btnRegister.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
+            btnRegister.BackgroundColor = UIColor.White;
             btnRegister.TouchUpInside += (sender, e) =>
             {
                 OnRegister();
@@ -85,11 +73,12 @@ namespace myTNB
 
             UIButton btnLogin = new UIButton(UIButtonType.Custom)
             {
-                Frame = new CGRect(((viewCTA.Frame.Width) / 2) + 2, 0, (viewCTA.Frame.Width - 4) / 2, 48)
+                Frame = new CGRect(btnRegister.Frame.GetMaxX() + GetScaledWidth(4F), 0, (viewCTA.Frame.Width / 2) - GetScaledWidth(2F), GetScaledHeight(48F))
             };
-            btnLogin.SetTitle("Login_Login".Translate(), UIControlState.Normal);
-            btnLogin.Layer.CornerRadius = 4.0f;
-            btnLogin.Layer.BorderWidth = 1.0f;
+            btnLogin.Font = TNBFont.MuseoSans_16_500;
+            btnLogin.SetTitle(GetI18NValue(PreloginConstants.I18N_Login), UIControlState.Normal);
+            btnLogin.Layer.CornerRadius = GetScaledHeight(4F);
+            btnLogin.Layer.BorderWidth = GetScaledWidth(1F);
             btnLogin.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             btnLogin.BackgroundColor = MyTNBColor.FreshGreen;
             btnLogin.TouchUpInside += (sender, e) =>
@@ -99,78 +88,69 @@ namespace myTNB
 
             viewCTA.AddSubviews(new UIView[] { btnRegister, btnLogin });
 
-            UIView viewLine = new UIView(new CGRect(18, DeviceHelper.GetScaledSize(58.8F), View.Frame.Width - 36, 1))
+            UIView viewLine = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(viewCTA.Frame, 15.5F), ViewWidth - (BaseMarginWidth16 * 2), GetScaledHeight(1F)))
             {
-                BackgroundColor = UIColor.FromRGBA(255, 255, 255, 50)
+                BackgroundColor = MyTNBColor.VeryLightPinkThree
             };
 
-            UILabel lblQuickAccess = new UILabel(new CGRect(18, DeviceHelper.GetScaledSize(62F), View.Frame.Width - 36, 18))
+            UIView viewQuickAccess = new UIView(new CGRect(0, GetYLocationFromFrame(viewLine.Frame, 15.5F)
+                , ViewWidth, GetScaledHeight(176)))
             {
-                Text = "Login_QuickAccess".Translate(),
+                ClipsToBounds = false
+            };
+
+            UILabel lblQuickAccess = new UILabel(new CGRect(0, 0, ViewWidth, GetScaledHeight(24F)))
+            {
+                Text = GetI18NValue(PreloginConstants.I18N_QuickAccess),
                 TextAlignment = UITextAlignment.Center,
-                TextColor = UIColor.White,
-                Font = MyTNBFont.MuseoSans16
+                TextColor = MyTNBColor.WaterBlueTwo,
+                Font = TNBFont.MuseoSans_16_500
             };
 
-            UIView viewQuickAccess = new UIView(new CGRect(0, DeviceHelper.GetScaledSize(66.2F)
-                , View.Frame.Width, DeviceHelper.IsIphone4() ? 160 : 168));
-
-            UIView viewFindUs = new UIView(new CGRect(18, 0
-                , viewQuickAccess.Frame.Width - 36, DeviceHelper.IsIphone4() ? 42 : 44));
-            viewFindUs.Layer.CornerRadius = 5F;
+            UIView viewFindUs = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(lblQuickAccess.Frame, 8F)
+                , viewQuickAccess.Frame.Width / 3 - GetScaledWidth(22F), GetScaledHeight(84F)))
+            {
+                ClipsToBounds = false
+            };
+            viewFindUs.Layer.CornerRadius = GetScaledHeight(5F);
             viewFindUs.BackgroundColor = UIColor.White;
+            AddCardShadow(ref viewFindUs);
 
-            UIImageView imgFindUs = new UIImageView(new CGRect(10, 10, 24, 24))
+            UIImageView imgFindUs = new UIImageView(new CGRect(GetXLocationToCenterObject(GetScaledWidth(28F), viewFindUs), GetScaledHeight(12F), GetScaledWidth(28F), GetScaledHeight(28F)))
             {
-                Image = UIImage.FromBundle("Locate-Blue")
+                Image = UIImage.FromBundle(PreloginConstants.IMG_FindUsIcon)
             };
 
-            UILabel lblFindUs = new UILabel(new CGRect(50, 10, viewFindUs.Frame.Width - 50, 24))
+            UILabel lblFindUs = new UILabel(new CGRect(0, GetYLocationFromFrame(imgFindUs.Frame, 12F), viewFindUs.Frame.Width, GetScaledHeight(14F)))
             {
-                Text = "Login_FindUs".Translate(),
-                TextAlignment = UITextAlignment.Left,
-                TextColor = MyTNBColor.PowerBlue,
-                Font = MyTNBFont.MuseoSans14
+                Text = GetI18NValue(PreloginConstants.I18N_FindUs),
+                TextAlignment = UITextAlignment.Center,
+                TextColor = MyTNBColor.WaterBlue,
+                Font = TNBFont.MuseoSans_10_500
             };
 
             viewFindUs.AddSubviews(new UIView[] { imgFindUs, lblFindUs });
 
-            UIView viewFeedback = new UIView(new CGRect(18, DeviceHelper.IsIphone4() ? 48 : 50
-                , viewQuickAccess.Frame.Width - 36, DeviceHelper.IsIphone4() ? 42 : 44));
-            viewFeedback.Layer.CornerRadius = 5F;
-            viewFeedback.BackgroundColor = UIColor.White;
-
-            UIImageView imgFeedback = new UIImageView(new CGRect(10, 10, 24, 24))
+            UIView viewCallUs = new UIView(new CGRect(GetXLocationFromFrame(viewFindUs.Frame, 12F), GetYLocationFromFrame(lblQuickAccess.Frame, 8F)
+               , viewQuickAccess.Frame.Width / 3 - GetScaledWidth(22F), GetScaledHeight(84F)))
             {
-                Image = UIImage.FromBundle("Feedback-Blue")
+                ClipsToBounds = false
             };
-
-            UILabel lblFeedback = new UILabel(new CGRect(50, 10, viewFindUs.Frame.Width - 50, 24))
-            {
-                Text = "Login_Feedback".Translate(),
-                TextAlignment = UITextAlignment.Left,
-                TextColor = MyTNBColor.PowerBlue,
-                Font = MyTNBFont.MuseoSans14
-            };
-
-            viewFeedback.AddSubviews(new UIView[] { imgFeedback, lblFeedback });
-
-            UIView viewCallUs = new UIView(new CGRect(18, DeviceHelper.IsIphone4() ? 96 : 100
-                , viewQuickAccess.Frame.Width - 36, DeviceHelper.IsIphone4() ? 42 : 44));
-            viewCallUs.Layer.CornerRadius = 5F;
+            viewCallUs.Layer.CornerRadius = GetScaledHeight(5F);
             viewCallUs.BackgroundColor = UIColor.White;
+            AddCardShadow(ref viewCallUs);
 
-            UIImageView imgCallUs = new UIImageView(new CGRect(10, 10, 24, 24))
+            UIImageView imgCallUs = new UIImageView(new CGRect(GetXLocationToCenterObject(GetScaledWidth(28F), viewCallUs), GetScaledHeight(12F), GetScaledWidth(28F), GetScaledHeight(28F)))
             {
-                Image = UIImage.FromBundle("Call")
+                Image = UIImage.FromBundle(PreloginConstants.IMG_CallUsIcon)
             };
 
-            UILabel lblCallUs = new UILabel(new CGRect(50, 10, viewFindUs.Frame.Width - 50, 24))
+            UILabel lblCallUs = new UILabel(new CGRect(0, GetYLocationFromFrame(imgCallUs.Frame, 12F), viewCallUs.Frame.Width, GetScaledHeight(14F)))
             {
-                Text = "Login_CallUs".Translate(),
-                TextAlignment = UITextAlignment.Left,
-                TextColor = MyTNBColor.PowerBlue,
-                Font = MyTNBFont.MuseoSans14
+                Text = GetI18NValue(PreloginConstants.I18N_CallUs),
+                TextAlignment = UITextAlignment.Center,
+                TextColor = MyTNBColor.WaterBlue,
+                Font = TNBFont.MuseoSans_10_500
             };
 
             if (DataManager.DataManager.SharedInstance.WebLinks != null)
@@ -182,16 +162,38 @@ namespace myTNB
                 }
             }
 
-
             viewCallUs.AddSubviews(new UIView[] { imgCallUs, lblCallUs });
 
-            UILabel lblDetails = new UILabel(new CGRect(18, DeviceHelper.IsIphone4() ? 144 : 150
-                 , viewQuickAccess.Frame.Width - 36, 18))
+            UIView viewFeedback = new UIView(new CGRect(GetXLocationFromFrame(viewCallUs.Frame, 12F), GetYLocationFromFrame(lblQuickAccess.Frame, 8F)
+                , viewQuickAccess.Frame.Width / 3 - GetScaledWidth(22F), GetScaledHeight(84F)));
+            viewFeedback.Layer.CornerRadius = GetScaledHeight(5F);
+            viewFeedback.BackgroundColor = UIColor.White;
+            AddCardShadow(ref viewFeedback);
+
+            UIImageView imgFeedback = new UIImageView(new CGRect(GetXLocationToCenterObject(GetScaledWidth(28F), viewFeedback), GetScaledHeight(12F), GetScaledWidth(28F), GetScaledHeight(28F)))
+            {
+                Image = UIImage.FromBundle(PreloginConstants.IMG_FeedbackIcon)
+            };
+
+            UILabel lblFeedback = new UILabel(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(imgFeedback.Frame, 4F), viewFeedback.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(28F)))
+            {
+                Text = GetI18NValue(PreloginConstants.I18N_Feedback),
+                TextAlignment = UITextAlignment.Center,
+                TextColor = MyTNBColor.WaterBlue,
+                Font = TNBFont.MuseoSans_10_500,
+                Lines = 0
+            };
+
+            viewFeedback.AddSubviews(new UIView[] { imgFeedback, lblFeedback });
+
+            UILabel lblNote = new UILabel(new CGRect(0, GetYLocationFromFrame(viewCallUs.Frame, 19F), viewQuickAccess.Frame.Width, GetScaledHeight(18F)))
             {
                 Text = "Login_Note".Translate(),
                 TextAlignment = UITextAlignment.Center,
-                TextColor = UIColor.White,
-                Font = MyTNBFont.MuseoSans12
+                TextColor = MyTNBColor.WaterBlueTwo,
+                Font = TNBFont.MuseoSans_12_500,
+                UserInteractionEnabled = true,
+                Hidden = true //TO DO: show label and set appropriate text and action
             };
 
             viewFindUs.AddGestureRecognizer(new UITapGestureRecognizer(() =>
@@ -209,10 +211,26 @@ namespace myTNB
                 CallCustomerService();
             }));
 
-            viewQuickAccess.AddSubviews(new UIView[] { viewFindUs, viewFeedback, viewCallUs, lblDetails });
+            lblNote.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                Debug.WriteLine("tap on label action");
+            }));
 
-            View.AddSubviews(new UIView[] { imgLogo, imgPrelogin, lblbWelcome
-                , lblSubtitle, viewCTA, viewLine, lblQuickAccess, viewQuickAccess});
+            viewQuickAccess.AddSubviews(new UIView[] { lblQuickAccess, viewFindUs, viewCallUs, viewFeedback, lblNote });
+
+            View.AddSubviews(new UIView[] { imgHeader, imgLogo, lblWelcome
+                , lblSubtitle, viewCTA, viewLine, viewQuickAccess});
+        }
+
+        private void AddCardShadow(ref UIView view)
+        {
+            view.Layer.CornerRadius = 5f;
+            view.Layer.MasksToBounds = false;
+            view.Layer.ShadowColor = MyTNBColor.BabyBlue60.CGColor;
+            view.Layer.ShadowOpacity = .8f;
+            view.Layer.ShadowOffset = new CGSize(0, 8);
+            view.Layer.ShadowRadius = 8;
+            view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
         }
 
         internal void OnRegister()

@@ -243,7 +243,7 @@ namespace myTNB
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
             {
-                ForegroundColor = ServiceIsDisabled(serviceItem) ? MyTNBColor.WhiteTwo : MyTNBColor.WaterBlue,
+                ForegroundColor = ServiceIsDisabled(serviceItem) ? MyTNBColor.VeryLightPinkSeven : MyTNBColor.WaterBlue,
                 ParagraphStyle = new NSMutableParagraphStyle
                 {
                     Alignment = UITextAlignment.Center,
