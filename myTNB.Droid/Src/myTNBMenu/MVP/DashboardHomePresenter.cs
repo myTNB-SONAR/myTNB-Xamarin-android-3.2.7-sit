@@ -9,6 +9,7 @@ using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AppLaunch.Activity;
 using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Activity;
@@ -56,6 +57,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         private SMUsageHistoryResponse smUsageHistoryResponse;
 
         private bool isBillAvailable = true;
+
+        private static bool isPromoClicked = false;
 
 		public DashboardHomePresenter(DashboardHomeContract.IView mView, ISharedPreferences preferences)
 		{
@@ -293,7 +296,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			switch (resourceId)
 			{
 				case Resource.Id.menu_dashboard:
-					if (DashboardHomeActivity.currentFragment != null && (DashboardHomeActivity.currentFragment.GetType() == typeof(HomeMenuFragment) ||
+                    OnUpdatePromoUnRead();
+                    if (DashboardHomeActivity.currentFragment != null && (DashboardHomeActivity.currentFragment.GetType() == typeof(HomeMenuFragment) ||
 						DashboardHomeActivity.currentFragment.GetType() == typeof(DashboardChartFragment)))
 					{
 						mView.ShowBackButton(false);
@@ -315,7 +319,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 					}
 					break;
 				case Resource.Id.menu_bill:
-					if (accountList.Count > 0)
+                    OnUpdatePromoUnRead();
+                    if (accountList.Count > 0)
 					{
                         CustomerBillingAccount selected;
 						if (CustomerBillingAccount.HasSelected())
@@ -367,8 +372,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 					break;
 				case Resource.Id.menu_promotion:
-
-
                     WeblinkEntity weblinkEntity = WeblinkEntity.GetByCode("PROMO");
 					if (weblinkEntity != null)
 					{
@@ -376,9 +379,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 						this.mView.HideAccountName();
 						this.mView.SetToolbarTitle(Resource.String.promotion_menu_activity_title);
 						this.mView.ShowPromotionsMenu(Weblink.Copy(weblinkEntity));
-					}
+                    }
 
-					if (this.mView.IsActive())
+                    isPromoClicked = true;
+
+                    if (this.mView.IsActive())
 					{
 						if (PromotionsEntityV2.HasUnread())
 						{
@@ -393,10 +398,12 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 					}
 					break;
 				case Resource.Id.menu_reward:
+                    OnUpdatePromoUnRead();
                     currentBottomNavigationMenu = Resource.Id.menu_reward;
                     this.mView.ShowToBeAddedToast();
 					break;
 				case Resource.Id.menu_more:
+                    OnUpdatePromoUnRead();
                     currentBottomNavigationMenu = Resource.Id.menu_more;
 					this.mView.HideAccountName();
                     this.mView.SetToolbarTitle(Resource.String.more_menu_activity_title);
@@ -668,18 +675,30 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			}
 		}
 
+        private void OnUpdatePromoUnRead()
+        {
+            if (PromotionsEntityV2.HasUnread())
+            {
+                if (isPromoClicked && !MyTNBAccountManagement.GetInstance().IsWhatNewShown())
+                {
+                    MyTNBAccountManagement.GetInstance().UpdateIsWhatNewShown();
+                }
+
+                this.mView.ShowUnreadPromotions();
+
+            }
+            else
+            {
+                this.mView.HideUnreadPromotions();
+
+            }
+
+            isPromoClicked = false;
+        }
+
 		public void OnValidateData()
 		{
-			if (PromotionsEntityV2.HasUnread())
-			{
-				this.mView.ShowUnreadPromotions();
-
-			}
-			else
-			{
-				this.mView.HideUnreadPromotions();
-
-			}
+            OnUpdatePromoUnRead();
 
             List<CustomerBillingAccount> accountList = CustomerBillingAccount.List();
             if(accountList.Count == 0)

@@ -19,6 +19,7 @@ using CheeseBind;
 using myTNB.SitecoreCM.Models;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Fragments;
@@ -607,7 +608,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem promotionMenuItem = bottomMenu.FindItem(Resource.Id.menu_promotion);
                 if (promotionMenuItem != null)
                 {
-                    promotionMenuItem.SetIcon(Resource.Drawable.ic_menu_promotions_unread_selector);
+                    if (MyTNBAccountManagement.GetInstance().IsWhatNewShown())
+                    {
+                        promotionMenuItem.SetIcon(Resource.Drawable.ic_menu_promotions_unread_selector);
+                    }
+                    else
+                    {
+                        promotionMenuItem.SetIcon(Resource.Drawable.ic_menu_promotions_unread_new_selector);
+                    }
                     bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
             }

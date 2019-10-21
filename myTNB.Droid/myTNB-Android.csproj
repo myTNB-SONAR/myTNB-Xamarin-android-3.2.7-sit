@@ -3325,6 +3325,14 @@
     <Compile Include="Src\Database\Model\SSMRMeterReadingThreePhaseScreensOCROffParentEntity.cs" />
     <Compile Include="Src\SitecoreCMS\Service\SSMRMeterReadingOnePhaseWalkThroughOCROffService.cs" />
     <Compile Include="Src\SitecoreCMS\Service\SSMRMeterReadingThreePhaseWalkthroughOCROffService.cs" />
+    <AndroidResource Include="Resources\drawable\ic_menu_promotions_unread_new_selector.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\ic_menu_reward_unread_new_selector.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

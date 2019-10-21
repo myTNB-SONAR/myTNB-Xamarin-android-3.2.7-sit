@@ -85,6 +85,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("IsSMRTakePhotoOnBoardShown")]
         public bool IsSMRTakePhotoOnBoardShown { get; set; }
 
+        [Column("IsWhatNewShown")]
+        public bool IsWhatNewShown { get; set; }
+
         [Column("IsPayBillShown")]
         public bool IsPayBillShown { get; set; }
 
@@ -648,6 +651,12 @@ namespace myTNB_Android.Src.Database.Model
             db.Execute("Update CustomerBillingAccountEntity SET IsPayBillShown = 1");
         }
 
+        public static void UpdateIsWhatNewShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            db.Execute("Update CustomerBillingAccountEntity SET IsWhatNewShown = 1");
+        }
+
         public static void UpdateIsViewBillShown()
         {
             var db = DBHelper.GetSQLiteConnection();
@@ -674,6 +683,18 @@ namespace myTNB_Android.Src.Database.Model
             if (customerBillingAccounts.Count > 0)
             {
                 isShown = customerBillingAccounts[0].IsPayBillShown;
+            }
+            return isShown;
+        }
+
+        public static bool GetIsWhatNewShown()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            bool isShown = false;
+            List<CustomerBillingAccount> customerBillingAccounts = db.Query<CustomerBillingAccount>("Select IsWhatNewShown from CustomerBillingAccountEntity");
+            if (customerBillingAccounts.Count > 0)
+            {
+                isShown = customerBillingAccounts[0].IsWhatNewShown;
             }
             return isShown;
         }

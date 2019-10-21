@@ -98,6 +98,11 @@ namespace myTNB_Android.Src.Base
             CustomerBillingAccount.UpdateIsPayBillShown();
         }
 
+        public void UpdateIsWhatNewShown()
+        {
+            CustomerBillingAccount.UpdateIsWhatNewShown();
+        }
+
         public void UpdateIsViewBillShown()
         {
             CustomerBillingAccount.UpdateIsViewBillShown();
@@ -111,6 +116,11 @@ namespace myTNB_Android.Src.Base
         public bool IsPayBillShown()
         {
             return CustomerBillingAccount.GetIsPayBillShown();
+        }
+
+        public bool IsWhatNewShown()
+        {
+            return CustomerBillingAccount.GetIsWhatNewShown();
         }
 
         public bool IsViewBillShown()
