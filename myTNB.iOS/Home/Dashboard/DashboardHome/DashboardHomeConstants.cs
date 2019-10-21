@@ -4,16 +4,22 @@ namespace myTNB
 {
     public static class DashboardHomeConstants
     {
-        //Card
-        public static int MaxAccountPerCard = 5;
-        public static nfloat SearchViewHeight = ScaleUtility.GetScaledHeight(24f);
+        //Account List
+        public static int InitialLoadMaxCount = 3;
+        public static int MaxAccountPerLoad = 5;
+        public static nfloat SearchViewHeight = ScaleUtility.GetScaledHeight(37f);
         public static nfloat PageControlHeight = ScaleUtility.GetScaledHeight(20f);
+        public static nfloat EmptyAcctHeight = ScaleUtility.GetScaledHeight(101F);
+        public static nfloat AccountCellHeight = ScaleUtility.GetScaledHeight(61F);
+        public static nfloat ShimmerAcctHeight = ScaleUtility.GetScaledHeight(105F);
 
         //Cell
         public static string Cell_Accounts = "accountsTableViewCell";
         public static string Cell_Help = "helpTableViewCell";
         public static string Cell_Services = "servicesTableViewCell";
         public static string Cell_Promotion = "promotionTableViewCell";
+        public static string Cell_AccountList = "accountListTableViewCell";
+        public static string Cell_AccountListEmpty = "accountListEmptyTableViewCell";
 
         //I18N Keys
         public static string I18N_Afternoon = "greeting_afternoon";
@@ -34,18 +40,27 @@ namespace myTNB
         public static string I18N_AllCleared = "allCleared";
         public static string I18N_Add = "add";
         public static string I18N_Search = "search";
+        public static string I18N_ShowLess = "showLess";
+        public static string I18N_MoreAccts = "moreAccts";
+        public static string I18N_RearrangeAccts = "rearrangeAccts";
 
         //Image
         public static string Img_Notification = "Notification";
         public static string Img_AddIconGrey = "Add-Account-Icon-Grey";
         public static string Img_SearchIconBlue = "Search-Icon-Blue";
         public static string Img_SearchCancelIcon = "Search-Cancel-Icon";
-        public static string Img_AddAcctIconBlue = "Add-Account-Icon-Blue";
+        public static string Img_AddAcctIconWhite = "Add-Account-Icon-White";
         public static string Img_SMIcon = "Accounts-Smart-Meter-Icon";
         public static string Img_REIcon = "Accounts-RE-Icon";
         public static string Img_SMRIcon = "Accounts-SMR-Icon";
         public static string Img_NormalIcon = "Accounts-Normal-Icon";
         public static string Img_RefreshIcon = "Refresh-Icon";
+        public static string Img_SearchIconWhite = "Search-Icon-White";
+        public static string Img_SearchActiveIconWhite = "Search-Active-Icon-White";
+        public static string Img_ArrowUpWhite = "Arrow-Up-White-Small";
+        public static string Img_ArrowDownWhite = "Arrow-Down-White-Small";
+        public static string Img_RearrangeIcon = "Rearrange-Icon";
+        public static string Img_RELeaf = "RE-Leaf";
 
         //PageName
         public static string PageName = "DashboardHome";
@@ -54,7 +69,7 @@ namespace myTNB
         public static int CellIndex_Accounts = 0;
         public static int CellIndex_Services = 1;
         public static int CellIndex_Promotion = 2;
-        public static int CellIndex_Help = 3;
+        public static int CellIndex_Help = 2;
 
         //SMR CTA
         public static string CTA_ShowReadingHistory = "v";

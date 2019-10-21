@@ -112,7 +112,10 @@
     "getBy": "get by",
     "payBy": "pay by",
     "add": "Add",
-    "search": "Search"
+    "search": "Search",
+    "showLess": "Show Less",
+    "moreAccts": "More Accounts",
+    "rearrangeAccts": "Rearrange Accounts"
   },
   "Tabbar": {
     "home": "Home",

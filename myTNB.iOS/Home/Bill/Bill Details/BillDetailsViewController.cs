@@ -538,8 +538,8 @@ namespace myTNB
 
         private void AddCTAs()
         {
-            nfloat containerHeight = GetScaledHeight(80) + UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Bottom;
-            nfloat yLoc = View.Frame.Height - UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Top - NavigationController.NavigationBar.Frame.Height - containerHeight;
+            nfloat containerHeight = GetScaledHeight(80) + DeviceHelper.BottomSafeAreaInset;
+            nfloat yLoc = View.Frame.Height - DeviceHelper.TopSafeAreaInset - NavigationController.NavigationBar.Frame.Height - containerHeight;
             _viewCTAContainer = new UIView(new CGRect(0, yLoc, ViewWidth, containerHeight)) { BackgroundColor = UIColor.White };
 
             nfloat btnWidth = (BaseMarginedWidth - GetScaledWidth(4)) / 2;

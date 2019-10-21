@@ -36,8 +36,8 @@ namespace myTNB.Home.Components
                 BackgroundColor = UIColor.Clear
             };
 
-            nfloat iconWidth = _isBCRMDown ? GetScaledWidth(193f) : GetScaledWidth(138f);
-            nfloat iconHeight = GetScaledHeight(138f);
+            nfloat iconWidth = _isBCRMDown ? GetScaledWidth(80f) : GetScaledWidth(85f);
+            nfloat iconHeight = _isBCRMDown ? GetScaledHeight(78f) : GetScaledHeight(80f);
             _iconView = new UIImageView(new CGRect(GetXLocationToCenterObject(iconWidth, _viewContainer), _iconYPos, iconWidth, iconHeight))
             {
                 Image = UIImage.FromBundle(_isBCRMDown ? Constants.IMG_BCRMDownIcon : Constants.IMG_RefreshIcon)
@@ -53,16 +53,16 @@ namespace myTNB.Home.Components
 
             UIStringAttributes msgAttributes = new UIStringAttributes
             {
-                Font = TNBFont.MuseoSans_16_300,
-                ForegroundColor = MyTNBColor.BrownGreyThree,
+                Font = TNBFont.MuseoSans_14_300,
+                ForegroundColor = UIColor.White,
                 BackgroundColor = UIColor.Clear,
                 ParagraphStyle = msgParagraphStyle
             };
 
             UIStringAttributes linkAttributes = new UIStringAttributes
             {
-                Font = TNBFont.MuseoSans_16_300,
-                ForegroundColor = MyTNBColor.BrownGreyThree,
+                Font = TNBFont.MuseoSans_14_300,
+                ForegroundColor = UIColor.White,
                 UnderlineStyle = NSUnderlineStyle.Single,
                 BackgroundColor = UIColor.Clear
             };
@@ -73,7 +73,7 @@ namespace myTNB.Home.Components
             nfloat buttonWidth = (float)(_viewContainer.Frame.Width - (buttonPadding * 2));
             nfloat buttonHeight = GetScaledHeight(48f);
 
-            _txtDescription = new UITextView(new CGRect(descPadding, _iconView.Frame.GetMaxY() + BaseMarginWidth16, labelWidth, 90f))
+            _txtDescription = new UITextView(new CGRect(descPadding, _iconView.Frame.GetMaxY() + GetScaledHeight(18f), labelWidth, 90f))
             {
                 BackgroundColor = UIColor.Clear,
                 Editable = false,
@@ -145,15 +145,13 @@ namespace myTNB.Home.Components
             {
                 Frame = new CGRect(buttonPadding, _txtDescription.Frame.GetMaxY() + buttonPadding, buttonWidth, buttonHeight),
                 Hidden = _isBtnHidden,
-                BackgroundColor = MyTNBColor.FreshGreen,
+                BackgroundColor = UIColor.White,
                 Font = TNBFont.MuseoSans_16_500
             };
 
             _btnRefresh.Layer.CornerRadius = 4;
-            _btnRefresh.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
-            _btnRefresh.Layer.BorderWidth = 1;
             _btnRefresh.SetTitle(btnText, UIControlState.Normal);
-            _btnRefresh.SetTitleColor(UIColor.White, UIControlState.Normal);
+            _btnRefresh.SetTitleColor(MyTNBColor.WaterBlue, UIControlState.Normal);
             _btnRefresh.TouchUpInside += (sender, e) =>
             {
                 OnButtonTap?.Invoke();

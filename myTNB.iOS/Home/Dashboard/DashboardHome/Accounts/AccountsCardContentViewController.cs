@@ -143,7 +143,7 @@ namespace myTNB
 
             _addAccountIcon = new UIImageView(new CGRect(BaseMarginWidth12, GetYLocationToCenterObject(iconWidth, _addContainerView), iconWidth, iconWidth))
             {
-                Image = UIImage.FromBundle(DashboardHomeConstants.Img_AddAcctIconBlue),
+                Image = UIImage.FromBundle(DashboardHomeConstants.Img_AddAcctIconWhite),
             };
             _addContainerView.AddSubview(_addAccountIcon);
 
@@ -342,7 +342,7 @@ namespace myTNB
             _dashboardHomeHelper.GroupAccountsList(accountsList);
             _groupAccountList.Clear();
             _groupAccountList = DataManager.DataManager.SharedInstance.AccountsGroupList;
-            _homeViewController.OnReloadTableForSearch();
+            _homeViewController.OnUpdateCellWithoutReload(DashboardHomeConstants.CellIndex_Services);
             ClearScrollViewSubViews();
             AdjustParentFrame();
             SetCardScrollView();

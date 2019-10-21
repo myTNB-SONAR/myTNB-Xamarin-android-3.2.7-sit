@@ -83,8 +83,43 @@ namespace myTNB.Home.Dashboard.DashboardHome
             }
         }
 
-        private void On_1004_Action() { }
+        private void On_1004_Action()
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                _controller.InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        DataManager.DataManager.SharedInstance.IsSameAccount = true;
+                        UIStoryboard storyBoard = UIStoryboard.FromName("Payment", null);
+                        SelectBillsViewController selectBillsVC =
+                            storyBoard.InstantiateViewController("SelectBillsViewController") as SelectBillsViewController;
+                        if (selectBillsVC != null)
+                        {
+                            UINavigationController navController = new UINavigationController(selectBillsVC);
+                            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                            _controller.PresentViewController(navController, true, null);
+                        }
+                    }
+                    else
+                    {
+                        _controller.DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
 
-        private void On_1005_Action() { }
+        private void On_1005_Action()
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);
+            SelectAccountTableViewController viewController =
+                storyBoard.InstantiateViewController("SelectAccountTableViewController") as SelectAccountTableViewController;
+            viewController.IsRoot = false;
+            viewController.IsFromHome = true;
+            UINavigationController navController = new UINavigationController(viewController);
+            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+            _controller.PresentViewController(navController, true, null);
+        }
     }
 }

@@ -13,6 +13,7 @@ namespace myTNB
 
         public bool IsFromSSMR;
         public bool IsFromUsage;
+        public bool IsFromHome;
         public bool IsRoot;
         public int CurrentSelectedIndex = -1;
         public Action<int> OnSelect;
@@ -24,8 +25,8 @@ namespace myTNB
             AddBackButton();
             nfloat navBarHeigt = NavigationController == null ? 0 : NavigationController.NavigationBar.Frame.Height;
             accountRecordsTableView.Frame = new CGRect(0, 0, View.Frame.Width
-                , View.Frame.Height - UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Bottom
-                - UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Top
+                , View.Frame.Height - DeviceHelper.BottomSafeAreaInset
+                - DeviceHelper.TopSafeAreaInset
                 - navBarHeigt);
             accountRecordsTableView.Source = new SelectAccountsDataSource(this);
             accountRecordsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
@@ -36,6 +37,10 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            if (accountRecordsTableView != null && IsFromHome)
+            {
+                accountRecordsTableView.ReloadData();
+            }
         }
 
         private void AddBackButton()
@@ -51,6 +56,32 @@ namespace myTNB
                 { DismissViewController(true, null); }
             });
             NavigationItem.LeftBarButtonItem = btnBack;
+        }
+
+        public void ShowBillScreen(int index)
+        {
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        UIStoryboard storyBoard = UIStoryboard.FromName("ViewBill", null);
+                        ViewBillViewController viewController =
+                            storyBoard.InstantiateViewController("ViewBillViewController") as ViewBillViewController;
+                        if (viewController != null)
+                        {
+                            viewController.IsFromHome = true;
+                            viewController.selectedIndex = index;
+                            NavigationController.PushViewController(viewController, true);
+                        }
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
         }
 
         #region SSMR Footer

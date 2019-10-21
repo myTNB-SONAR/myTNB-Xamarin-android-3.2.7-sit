@@ -27,12 +27,14 @@ using UIKit;  namespace myTNB {
         readonly static UIColor _whiteTwo = new UIColor(red: 0.82f, green: 0.82f, blue: 0.82f, alpha: 1.0f);
         readonly static UIColor _greyishBrown = new UIColor(red: 0.26f, green: 0.25f, blue: 0.25f, alpha: 1.0f);
         readonly static UIColor _charcoalGrey = new UIColor(red: 0.29f, green: 0.29f, blue: 0.29f, alpha: 1.0f);
-        readonly static UIColor _veryLightPinkTwo = new UIColor(red: 0.89f, green: 0.89f, blue: 0.89f, alpha: 1.0f);
         readonly static UIColor _brownGrey = new UIColor(red: 0.59f, green: 0.59f, blue: 0.59f, alpha: 1.0f);
         readonly static UIColor _warmGrey = new UIColor(red: 0.45f, green: 0.44f, blue: 0.44f, alpha: 1.0f);
         readonly static UIColor _greyishBrownTwo = new UIColor(red: 0.33f, green: 0.33f, blue: 0.33f, alpha: 1.0f);
+        readonly static UIColor _veryLightPinkTwo = new UIColor(red: 0.89f, green: 0.89f, blue: 0.89f, alpha: 1.0f);
         readonly static UIColor _veryLightPinkThree = new UIColor(red: 0.89f, green: 0.89f, blue: 0.89f, alpha: 1.0f);
         readonly static UIColor _veryLightPinkFour = new UIColor(red: 0.95f, green: 0.95f, blue: 0.95f, alpha: 1.0f);
+        readonly static UIColor _veryLightPinkFive = new UIColor(red: 0.83f, green: 0.83f, blue: 0.83f, alpha: 1.0f);
+        readonly static UIColor _veryLightPinkSix = new UIColor(red: 0.93f, green: 0.93f, blue: 0.93f, alpha: 1.0f);
         readonly static UIColor _black60 = new UIColor(red: 0.00f, green: 0.00f, blue: 0.00f, alpha: 0.6f);
         readonly static UIColor _veryLightPink = new UIColor(red: 0.89f, green: 0.89f, blue: 0.89f, alpha: 1.0f);
         readonly static UIColor _brownGreyTwo = new UIColor(red: 0.59f, green: 0.59f, blue: 0.59f, alpha: 1.0f);
@@ -48,6 +50,11 @@ using UIKit;  namespace myTNB {
         readonly static UIColor _silverChalice10 = new UIColor(red: 0.65f, green: 0.65f, blue: 0.65f, alpha: 0.1f);
         readonly static UIColor _darkPeriwinkle = new UIColor(red: 0.34f, green: 0.36f, blue: 0.89f, alpha: 1.0f);
         readonly static UIColor _lightIndigo = new UIColor(red: 0.39f, green: 0.29f, blue: 0.87f, alpha: 1.0f);
+        readonly static UIColor _lightGreenBlue = new UIColor(red: 0.42f, green: 0.91f, blue: 0.55f, alpha: 1.0f);
+        readonly static UIColor _paleGrey25 = new UIColor(red: 0.95f, green: 0.96f, blue: 0.98f, alpha: 0.25f);
+        readonly static UIColor _paleGreyThree = new UIColor(red: 0.95f, green: 0.96f, blue: 0.98f, alpha: 1.0f);
+        readonly static UIColor _paleGreyFour = new UIColor(red: 0.96f, green: 0.96f, blue: 0.97f, alpha: 1.0f);
+        readonly static UIColor _sunflowerYellow = new UIColor(red: 1.00f, green: 0.87f, blue: 0.00f, alpha: 1.0f);
 
         /// <summary>         /// A color with RGBA of (0.47, 0.19, 0.83, 1).         /// </summary>         public static UIColor GradientPurpleDarkElement
         {
@@ -400,5 +407,40 @@ using UIKit;  namespace myTNB {
         public static UIColor LightIndigo
         {
             get { return _lightIndigo; }
+        }
+
+        public static UIColor LightGreenBlue
+        {
+            get { return _lightGreenBlue; }
+        }
+
+        public static UIColor PaleGrey25
+        {
+            get { return _paleGrey25; }
+        }
+
+        public static UIColor PaleGreyThree
+        {
+            get { return _paleGreyThree; }
+        }
+
+        public static UIColor SunflowerYellow
+        {
+            get { return _sunflowerYellow; }
+        }
+
+        public static UIColor VeryLightPinkFive
+        {
+            get { return _veryLightPinkFive; }
+        }
+
+        public static UIColor VeryLightPinkSix
+        {
+            get { return _veryLightPinkSix; }
+        }
+
+        public static UIColor PaleGreyFour
+        {
+            get { return _paleGreyFour; }
         }
     } }

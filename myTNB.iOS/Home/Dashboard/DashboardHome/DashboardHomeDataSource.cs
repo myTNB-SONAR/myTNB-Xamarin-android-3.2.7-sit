@@ -12,26 +12,30 @@ namespace myTNB
     public class DashboardHomeDataSource : UITableViewSource
     {
         private DashboardHomeViewController _controller;
-        private AccountsCardContentViewController _accountsCardContentViewController;
+        private AccountListViewController _accountListViewController;
         private DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
         private RefreshScreenComponent _refreshScreenComponent;
-        private ServicesResponseModel _services;
+        private List<ServiceItemModel> _services;
         private List<HelpModel> _helpList;
         private bool _isServicesShimmering, _isHelpShimmering, _showRefreshScreen;
         private List<PromotionsModelV2> _promotions;
+        public Action<int> _onReloadCell;
+        public Func<string, string> _getI18NValue;
 
         public DashboardHomeDataSource(DashboardHomeViewController controller,
-            AccountsCardContentViewController accountsCardContentViewController,
-            ServicesResponseModel services,
+            AccountListViewController accountListViewController,
+            List<ServiceItemModel> services,
             List<PromotionsModelV2> promotions,
             List<HelpModel> helpList,
             bool isServicesShimmering,
             bool isHelpShimmering,
             bool showRefreshScreen,
-            RefreshScreenComponent refreshScreenComponent)
+            RefreshScreenComponent refreshScreenComponent,
+            Action<int> onReloadCell,
+            Func<string, string> getI18NValue)
         {
             _controller = controller;
-            _accountsCardContentViewController = accountsCardContentViewController;
+            _accountListViewController = accountListViewController;
             _services = services;
             _promotions = promotions;
             _helpList = helpList;
@@ -39,6 +43,8 @@ namespace myTNB
             _isHelpShimmering = isHelpShimmering;
             _showRefreshScreen = showRefreshScreen;
             _refreshScreenComponent = refreshScreenComponent;
+            _onReloadCell = onReloadCell;
+            _getI18NValue = getI18NValue;
         }
 
         public override nint NumberOfSections(UITableView tableView)
@@ -48,7 +54,7 @@ namespace myTNB
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            return 4;
+            return 3;
         }
 
         public override nfloat EstimatedHeight(UITableView tableView, NSIndexPath indexPath)
@@ -60,17 +66,13 @@ namespace myTNB
         {
             if (indexPath.Row == 0)
             {
-                return _showRefreshScreen ? _refreshScreenComponent?.GetViewHeight() ?? _dashboardHomeHelper.GetDefaulthHeightForRefreshScreen() : _dashboardHomeHelper.GetHeightForAccountCards();
+                return _showRefreshScreen ? _refreshScreenComponent?.GetViewHeight() ?? _dashboardHomeHelper.GetDefaulthHeightForRefreshScreen() : _dashboardHomeHelper.GetHeightForAccountList();
             }
             if (indexPath.Row == 1)
             {
                 return _dashboardHomeHelper.GetHeightForServices(_isServicesShimmering);
             }
             if (indexPath.Row == 2)
-            {
-                return _dashboardHomeHelper.GetHeightForPromotions;
-            }
-            if (indexPath.Row == 3)
             {
                 return _dashboardHomeHelper.GetHeightForHelp(_isHelpShimmering);
             }
@@ -89,29 +91,21 @@ namespace myTNB
                 }
                 else
                 {
-                    cell.AddViewsToContainers(_accountsCardContentViewController);
+                    cell.AddViewsToContainers(_accountListViewController);
                 }
                 return cell;
             }
             if (indexPath.Row == 1)
             {
-                CGRect accountHeight = tableView.RectForRowAtIndexPath(NSIndexPath.Create(0, 0));
                 ServicesTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Services) as ServicesTableViewCell;
-                cell._titleLabel.Text = _controller.GetI18NValue(DashboardHomeConstants.I18N_MyServices);
-                cell._titleLabel.TextColor = accountHeight.Height < tableView.Frame.Height * 0.30F ? UIColor.White : MyTNBColor.WaterBlue;
+                cell.GetI18NValue = _getI18NValue;
+                cell.IsLoading = _isServicesShimmering;
+                cell.ReloadCell = _onReloadCell;
                 cell.AddCards(_services, _controller._servicesActionDictionary, _isServicesShimmering);
                 cell.ClipsToBounds = true;
                 return cell;
             }
             if (indexPath.Row == 2)
-            {
-                PromotionTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Promotion) as PromotionTableViewCell;
-                cell._titleLabel.Text = _controller.GetI18NValue(DashboardHomeConstants.I18N_Promotions);
-                cell.AddCards(_promotions);
-                cell.ClipsToBounds = true;
-                return cell;
-            }
-            if (indexPath.Row == 3)
             {
                 HelpTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Help) as HelpTableViewCell;
                 cell._titleLabel.Text = _controller.GetI18NValue(DashboardHomeConstants.I18N_NeedHelp);

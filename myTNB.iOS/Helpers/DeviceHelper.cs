@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using UIKit;
 
 namespace myTNB
@@ -225,7 +226,47 @@ namespace myTNB
         {
             get
             {
-                return UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Bottom > 0;
+                try
+                {
+                    return UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Bottom > 0;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("IsNotched Error: " + e.Message);
+                    return IsIphoneXUpResolution();
+                }
+            }
+        }
+
+        public static nfloat TopSafeAreaInset
+        {
+            get
+            {
+                try
+                {
+                    return UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Top;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("TopSafeAreaInset Error: " + e.Message);
+                    return 0;
+                }
+            }
+        }
+
+        public static nfloat BottomSafeAreaInset
+        {
+            get
+            {
+                try
+                {
+                    return UIApplication.SharedApplication.KeyWindow.SafeAreaInsets.Bottom;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("BottomSafeAreaInset Error: " + e.Message);
+                    return 0;
+                }
             }
         }
     }
