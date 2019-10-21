@@ -20,12 +20,10 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 #else
         INotificationApi api = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
 #endif
-        private string deviceId = null;
         private DashboardHomeContract.IUserActionsListener homeListener = null;
 
-        public UserNotificationAPI(string deviceId, DashboardHomeContract.IUserActionsListener listener)
+        public UserNotificationAPI(DashboardHomeContract.IUserActionsListener listener)
         {
-            this.deviceId = deviceId;
             this.homeListener = listener;
         }
 
@@ -83,7 +81,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
             {
                 NotificationApiImpl notificationAPI = new NotificationApiImpl();
                 MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
-                if (response.Data != null && response.Data.ErrorCode == "7200")
+                if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
                 {
                     if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null &&
                         response.Data.ResponseData.UserNotificationList.Count > 0)

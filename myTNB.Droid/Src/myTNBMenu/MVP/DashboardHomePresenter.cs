@@ -434,7 +434,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 
 			if (LaunchViewActivity.MAKE_INITIAL_CALL)
 			{
-				new UserNotificationAPI(mView.GetDeviceId(), this).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
+				new UserNotificationAPI(this).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
 				new SiteCorePromotioAPI(mView).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
 				LaunchViewActivity.MAKE_INITIAL_CALL = false;
 			}
@@ -1061,43 +1061,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             }
 
             return isHaveData;
-        }
-
-        public void GetUserNotifications()
-        {
-            Task.Factory.StartNew(() =>
-            {
-                InvokeGetUserNotifications();
-            });
-        }
-
-        private async void InvokeGetUserNotifications()
-        {
-            try
-            {
-                NotificationApiImpl notificationAPI = new NotificationApiImpl();
-                MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
-                if (response.Data != null && response.Data.ErrorCode == "7200")
-                {
-                    if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null &&
-                        response.Data.ResponseData.UserNotificationList.Count > 0)
-                    {
-                        foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
-                        {
-                            int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
-                        }
-                    }
-                    else
-                    {
-                        UserNotificationEntity.RemoveAll();
-                    }
-                }
-                this.mView.ShowNotificationCount(UserNotificationEntity.Count());
-            }
-            catch (System.Exception ne)
-            {
-                Utility.LoggingNonFatalError(ne);
-            }
         }
 
     }

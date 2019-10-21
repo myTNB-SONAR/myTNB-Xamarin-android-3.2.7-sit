@@ -234,8 +234,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             int CheckCurrentDashboardMenu();
 
             void BillMenuStartRefresh();
-
-            void GetUserNotifications();
         }
 	}
 }

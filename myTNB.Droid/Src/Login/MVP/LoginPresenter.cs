@@ -294,7 +294,7 @@ namespace myTNB_Android.Src.Login.MVP
 
                             NotificationApiImpl notificationAPI = new NotificationApiImpl();
                             MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
-                            if (response.Data != null && response.Data.ErrorCode == "7200")
+                            if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
                             {
                                 if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null &&
                                     response.Data.ResponseData.UserNotificationList.Count > 0)

@@ -733,6 +733,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 SetBottomLayoutBackground(false);
                 this.presenter.InitiateService();
+                this.presenter.GetUserNotifications();
                 SetNotificationIndicator();
             }
             catch (System.Exception e)
@@ -1851,6 +1852,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             viewBill.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
             viewBill.PutExtra(Constants.SELECTED_BILL, JsonConvert.SerializeObject(selectedBill));
             StartActivity(viewBill);
+        }
+
+        public void ShowNotificationCount(int count)
+        {
+            try
+            {
+                if (count <= 0)
+                {
+                    ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.Activity);
+                }
+                else
+                {
+                    ME.Leolin.Shortcutbadger.ShortcutBadger.ApplyCount(this.Activity, count);
+                }
+
+                SetNotificationIndicator();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }
