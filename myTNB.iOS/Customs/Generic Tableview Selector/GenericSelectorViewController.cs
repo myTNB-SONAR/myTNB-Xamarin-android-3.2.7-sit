@@ -10,6 +10,10 @@ namespace myTNB
         public List<string> Items;
         public int SelectedIndex = -1;
         public bool IsRootPage;
+        public bool HasSectionTitle { set; get; }
+        public bool HasCTA { set; private get; }
+        public string SectionTitle { set; get; } = string.Empty;
+        public string CTATitle { set; private get; } = string.Empty;
 
         public GenericSelectorViewController(IntPtr handle) : base(handle)
         {

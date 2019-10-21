@@ -72,7 +72,11 @@
     "password": "Kata Laluan",
     "mobileNo": "No. Mudah Alih",
     "email": "Emel",
-    "addAnotherAcct": "Masukkan Satu Lagi Akaun"
+    "addAnotherAcct": "Masukkan Satu Lagi Akaun",
+    "setAppLanguage": "Set App Langugage",
+    "setAppLanguageDescription": "Select Your Preferred Language",
+    "english": "English",
+    "bahasa": "Bahasa Malaysia"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -111,9 +115,9 @@
     "payBy": "tarikh akhir",
     "add": "Tambah",
     "search": "Cari",
-    "showLess": "Show Less",
+    "showLess": "Show Less", //missing
     "moreAccts": "Tambah Akaun",
-    "rearrangeAccts": "Rearrange Accounts"
+    "rearrangeAccts": "Rearrange Accounts" //missing
   },
   "Tabbar": {
     "home": "Utama",
@@ -331,8 +335,8 @@
   "BillDetails": {
     "navTitle": "Butiran Bil",
     "billDetails": "Butiran Bil Saya",
-    "outstandingCharges": "Tunggakan",
-    "billThisMonth": "Bil terkini saya",
+    "outstandingCharges": "Tunggakan saya",
+    "billThisMonth": "Bil saya bulan ini",
     "needToPay": "Saya perlu bayar",
     "by": "sebelum",
     "paidExtra": "Saya ada ekstra",
@@ -430,7 +434,8 @@
     "shareMessage": "New myTNB app is now available in App Store.",
     "shareDescription": "Kongsi aplikasi ini",
     "tnc": "Terma & Syarat",
-    "findUs": "Temui Kami"
+    "findUs": "Temui Kami",
+    "setAppLanguage": "Set App Language" //missing
   },
   "NotificationSettings": {
     "title": "Tetapan Pemberitahuan",

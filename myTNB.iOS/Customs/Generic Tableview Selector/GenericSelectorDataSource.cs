@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using CoreGraphics;
 using Foundation;
-using myTNB.Model;
 using UIKit;
 
 namespace myTNB
@@ -21,6 +19,35 @@ namespace myTNB
             return 1;
         }
 
+        public override nfloat GetHeightForHeader(UITableView tableView, nint section)
+        {
+            return ScaleUtility.GetScaledHeight(44);
+        }
+
+        public override UIView GetViewForHeader(UITableView tableView, nint section)
+        {
+            UIView view = new UIView();
+            if (_controller.HasSectionTitle
+                && !string.IsNullOrEmpty(_controller.SectionTitle)
+                && !string.IsNullOrWhiteSpace(_controller.SectionTitle))
+            {
+                view = new UIView(new CGRect(0, 0, tableView.Frame.Width, ScaleUtility.GetScaledHeight(44)))
+                {
+                    BackgroundColor = MyTNBColor.SectionGrey
+                };
+
+                UILabel lblSectionTitle = new UILabel(new CGRect(ScaleUtility.GetScaledWidth(16)
+                    , ScaleUtility.GetScaledHeight(16), tableView.Frame.Width, ScaleUtility.GetScaledHeight(20)))
+                {
+                    Text = _controller.SectionTitle ?? string.Empty,
+                    Font = TNBFont.MuseoSans_16_500,
+                    TextColor = MyTNBColor.WaterBlue
+                };
+                view.Add(lblSectionTitle);
+            }
+            return view;
+        }
+
         public override nint RowsInSection(UITableView tableview, nint section)
         {
             return (nint)(_controller?.Items != null ? _controller.Items?.Count : 0);
@@ -29,18 +56,10 @@ namespace myTNB
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
             UITableViewCell cell = tableView.DequeueReusableCell("genericViewCell", indexPath);
-
-            UIStringAttributes stringAttributes = new UIStringAttributes
-            {
-                Font = TNBFont.MuseoSans_16_300,
-                ForegroundColor = MyTNBColor.CharcoalGrey,
-                ParagraphStyle = new NSMutableParagraphStyle() { LineSpacing = 5.0f }
-            };
-            var text = _controller.Items[indexPath.Row];
-            var AttributedText = new NSMutableAttributedString(_controller.Items[indexPath.Row]);
-            AttributedText.AddAttributes(stringAttributes, new NSRange(0, text.Length));
-            cell.TextLabel.AttributedText = AttributedText;
-
+            string text = _controller.Items[indexPath.Row] ?? string.Empty;
+            cell.TextLabel.Text = text;
+            cell.TextLabel.Font = TNBFont.MuseoSans_16_500;
+            cell.TextLabel.TextColor = MyTNBColor.CharcoalGrey;
             cell.TextLabel.Lines = 0;
             cell.TextLabel.LineBreakMode = UILineBreakMode.WordWrap;
             cell.TextLabel.BackgroundColor = UIColor.Clear;

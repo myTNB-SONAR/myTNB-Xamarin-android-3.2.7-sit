@@ -57,7 +57,8 @@ namespace myTNB
         {
             Dictionary<string, List<string>> _itemsDictionary = new Dictionary<string, List<string>>(){
                 {GetI18NValue(ProfileConstants.I18N_Settings), new List<string>{ GetI18NValue(ProfileConstants.I18N_MyAccount)
-                    , GetI18NValue(ProfileConstants.I18N_Notifications)}}//, LanguageSettings.Title}}
+                    , GetI18NValue(ProfileConstants.I18N_Notifications)
+                    , GetI18NValue(ProfileConstants.I18N_SetAppLanguage)}}
                 , {GetI18NValue(ProfileConstants.I18N_HelpAndSupport), new List<string>{ GetI18NValue(ProfileConstants.I18N_FindUs)
                     , GetI18NValue(ProfileConstants.I18N_CallUsOutagesAndBreakdown)
                     ,GetI18NValue(ProfileConstants.I18N_CallUsBilling)
@@ -139,10 +140,10 @@ namespace myTNB
                                     {
                                         GetNotificationPreferences();
                                     }
-                                    /*else
+                                    else
                                     {
                                         GoToLanguageSetting();
-                                    }*/
+                                    }
                                     break;
                                 }
                             case 1:
@@ -256,13 +257,20 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
             GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
                 .InstantiateViewController("GenericSelectorViewController");
-            viewController.Title = LanguageSettings.Title;
-            viewController.Items = LanguageSettings.SupportedLanguage;
-            viewController.OnSelect = LanguageSettings.OnSelect;
-            viewController.SelectedIndex = LanguageSettings.SelectedLangugageIndex;
-            UINavigationController navController = new UINavigationController(viewController);
-            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-            PresentViewController(navController, true, null);
+            if (viewController != null)
+            {
+                viewController.Title = LanguageSettings.Title;
+                viewController.Items = LanguageSettings.SupportedLanguage;
+                viewController.HasSectionTitle = true;
+                viewController.SectionTitle = LanguageSettings.SectionTitle;
+                viewController.HasCTA = true;
+                viewController.CTATitle = LanguageSettings.CTATitle;
+                viewController.OnSelect = LanguageSettings.OnSelect;
+                viewController.SelectedIndex = LanguageSettings.SelectedLanguageIndex;
+                UINavigationController navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                PresentViewController(navController, true, null);
+            }
         }
 
         private void GoToMyAccount()

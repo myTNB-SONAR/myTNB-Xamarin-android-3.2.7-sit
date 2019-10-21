@@ -24,6 +24,7 @@
         public static string I18N_ShareDescription = "shareDescription";
         public static string I18N_TNC = "tnc";
         public static string I18N_FindUs = "findUs";
+        public static string I18N_SetAppLanguage = "setAppLanguage";
 
         public static string I18N_TypeDescription = "typeDescription";
         public static string I18N_ModeDescription = "modeDescription";

@@ -54,6 +54,11 @@
         public static string Common_MobileNo = "mobileNo";
         public static string Common_Email = "email";
         public static string Common_AddAnotherAccount = "addAnotherAcct";
+        public static string Common_SetAppLanguage = "setAppLanguage";
+        public static string Common_SetAppLanguageDescription = "setAppLanguageDescription";
+        public static string Common_SaveChanges = "saveChanges";
+        public static string Common_English = "english";
+        public static string Common_Bahasa = "bahasa";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";

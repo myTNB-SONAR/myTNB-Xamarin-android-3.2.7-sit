@@ -74,7 +74,12 @@
     "password": "Password",
     "mobileNo": "Mobile No.",
     "email": "Email",
-    "addAnotherAcct": "Add Another Account"
+    "addAnotherAcct": "Add Another Account",
+    "setAppLanguage": "Set App Langugage",
+    "setAppLanguageDescription": "Select Your Preferred Language",
+    "english": "English",
+    "bahasa": "Bahasa Malaysia",
+    "saveChanges": "Save Changes"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -432,7 +437,8 @@
     "shareMessage": "New myTNB app is now available in App Store.",
     "shareDescription": "Share this app",
     "tnc": "Terms & Conditions",
-    "findUs": "Find Us"
+    "findUs": "Find Us",
+    "setAppLanguage": "Set App Language"
   },
   "NotificationSettings": {
     "title": "Notification Settings",

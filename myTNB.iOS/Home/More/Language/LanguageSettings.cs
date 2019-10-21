@@ -23,8 +23,8 @@ namespace myTNB
             get
             {
                 return new List<string>(){
-                    "Language_English".Translate()
-                    , "Language_Malay".Translate()
+                    LanguageUtility.GetCommonI18NValue(Constants.Common_English)
+                    , LanguageUtility.GetCommonI18NValue(Constants.Common_Bahasa)
                 };
             }
         }
@@ -41,7 +41,23 @@ namespace myTNB
         {
             get
             {
-                return "Language_Title".Translate();
+                return LanguageUtility.GetCommonI18NValue(Constants.Common_SetAppLanguage);
+            }
+        }
+
+        public static string SectionTitle
+        {
+            get
+            {
+                return LanguageUtility.GetCommonI18NValue(Constants.Common_SetAppLanguageDescription);
+            }
+        }
+
+        public static string CTATitle
+        {
+            get
+            {
+                return LanguageUtility.GetCommonI18NValue(Constants.Common_SaveChanges);
             }
         }
 
@@ -53,7 +69,7 @@ namespace myTNB
             }
         }
 
-        public static int SelectedLangugageIndex
+        public static int SelectedLanguageIndex
         {
             set
             {
@@ -92,11 +108,28 @@ namespace myTNB
         public static void SetLanguage(int index)
         {
             index = index > -1 ? index : 0;
-            SelectedLangugageIndex = index;
-            string pathName = SupportedLanguageCode[index].ToLower();
-            pathName = string.Compare(pathName, "en") == 0 ? "Base" : pathName;
-            var path = NSBundle.MainBundle.PathForResource(pathName, "lproj");
-            LanguageBundle = NSBundle.FromPath(path);
+            SelectedLanguageIndex = index;
+
+            if (SelectedLanguageIndex < SupportedLanguageCode.Count)
+            {
+                string langCode = SupportedLanguageCode[index];
+                if (langCode.ToUpper() == LanguageManager.Language.EN.ToString().ToUpper())
+                {
+                    LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, LanguageManager.Language.EN);
+                }
+                else
+                {
+
+                    LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, LanguageManager.Language.MS);
+                }
+            }
+
+            /*
+                        string pathName = SupportedLanguageCode[index].ToLower();
+                        pathName = string.Compare(pathName, "en") == 0 ? "Base" : pathName;
+                        var path = NSBundle.MainBundle.PathForResource(pathName, "lproj");
+                        LanguageBundle = NSBundle.FromPath(path);
+                        */
         }
 
         public static void InitializeLanguage()
