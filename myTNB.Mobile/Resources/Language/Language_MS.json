@@ -110,7 +110,10 @@
     "getBy": "dapat pada",
     "payBy": "tarikh akhir",
     "add": "Tambah",
-    "search": "Cari"
+    "search": "Cari",
+    "showLess": "Show Less",
+    "moreAccts": "Tambah Akaun",
+    "rearrangeAccts": "Rearrange Accounts"
   },
   "Tabbar": {
     "home": "Utama",
