@@ -1,3 +1,7 @@
 Sprint 2C SIT Build
 
-[User Story] 2589 [New Home Screen] As a myTNB App user, I want to see a whole new look for home screen with account listing
+- Pre login screen redesign
+- Login screen redesign
+- SMR Apply Rules change for Empty IC & Email
+- Implementation of OCR Turn ON/OFF Switch
+- Smart Meter in usage screen crash fix
