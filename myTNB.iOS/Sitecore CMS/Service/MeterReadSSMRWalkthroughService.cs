@@ -24,9 +24,9 @@ namespace myTNB.SitecoreCMS.Service
 
         internal List<MeterReadSSMRModel> GetItems()
         {
+            string itemName = AppLaunchMasterCache.IsOCRDown ? Constants.Sitecore.ItemPath.MeterReadSSMRWalkthroughOCROff : Constants.Sitecore.ItemPath.MeterReadSSMRWalkthrough;
             SitecoreService sitecoreService = new SitecoreService();
-            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.MeterReadSSMRWalkthrough
-                , PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
+            var req = sitecoreService.GetItemByPath(itemName, PayloadType.Content, new List<ScopeType> { ScopeType.Children }, _websiteURL, _language);
             var item = req.Result;
             var list = ParseToChildrenItems(item);
             var itemList = list.Result;
@@ -35,9 +35,9 @@ namespace myTNB.SitecoreCMS.Service
 
         internal MeterReadSSMRTimeStamp GetTimeStamp()
         {
+            string itemName = AppLaunchMasterCache.IsOCRDown ? Constants.Sitecore.ItemPath.MeterReadSSMRWalkthroughOCROff : Constants.Sitecore.ItemPath.MeterReadSSMRWalkthrough;
             SitecoreService sitecoreService = new SitecoreService();
-            var req = sitecoreService.GetItemByPath(Constants.Sitecore.ItemPath.MeterReadSSMRWalkthrough
-                , PayloadType.Content, new List<ScopeType> { ScopeType.Self }, _websiteURL, _language);
+            var req = sitecoreService.GetItemByPath(itemName, PayloadType.Content, new List<ScopeType> { ScopeType.Self }, _websiteURL, _language);
             var item = req.Result;
             var list = ParseToTimestamp(item);
             var itemList = list.Result;

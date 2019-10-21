@@ -22,6 +22,7 @@ namespace myTNB
         List<SMRMROValidateRegisterDetailsInfoModel> _previousMeterList;
         UIPageControl _pageControl;
         bool isSSMRData;
+        public Func<string, string> GetI18NValue;
 
         public PaginatedTooltipComponent(UIView parent)
         {
@@ -240,7 +241,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = "Got It!",//GetI18NValue(SSMRConstants.I18N_ImReady),
+                Text = LanguageUtility.GetCommonI18NValue(Constants.Common_GotIt),
                 TextAlignment = UITextAlignment.Center,
                 UserInteractionEnabled = true
             };
@@ -427,8 +428,9 @@ namespace myTNB
                 }
             }
 
-            UIView line = new UIView(new CGRect(0, _pageControl.Frame.GetMaxY() + GetScaledHeight(16f)
-                , _toolTipFooterView.Frame.Width, GetScaledHeight(1f)))
+            nfloat yPos = (_pageControl != null ? _pageControl.Frame.GetMaxY() : 0) + GetScaledHeight(16f);
+
+            UIView line = new UIView(new CGRect(0, yPos, _toolTipFooterView.Frame.Width, GetScaledHeight(1f)))
             {
                 BackgroundColor = MyTNBColor.VeryLightPink
             };
@@ -439,7 +441,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = "I'm Ready!",//GetI18NValue(SSMRConstants.I18N_ImReady),
+                Text = GetI18NValue(SSMRConstants.I18N_ImReady),
                 TextAlignment = UITextAlignment.Center,
                 UserInteractionEnabled = true
             };

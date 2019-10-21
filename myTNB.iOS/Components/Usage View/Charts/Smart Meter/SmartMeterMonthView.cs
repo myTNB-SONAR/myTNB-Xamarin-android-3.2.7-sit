@@ -144,9 +144,13 @@ namespace myTNB.SmartMeterView
                         Hidden = !isSelected,
                         Tag = 1002
                     };
-                    nfloat lblAmountWidth = lblConsumption.GetLabelWidth(GetWidthByScreenSize(100));
-                    lblConsumption.Frame = new CGRect((segmentWidth - lblAmountWidth) / 2, lblConsumption.Frame.Y
-                        , lblAmountWidth, lblConsumption.Frame.Height);
+
+                    if (lblConsumption.Text != null)
+                    {
+                        nfloat lblAmountWidth = lblConsumption.GetLabelWidth(GetWidthByScreenSize(100));
+                        lblConsumption.Frame = new CGRect((segmentWidth - lblAmountWidth) / 2, lblConsumption.Frame.Y
+                            , lblAmountWidth, lblConsumption.Frame.Height);
+                    }
 
                     UILabel lblDate = new UILabel(new CGRect((segmentWidth - GetWidthByScreenSize(40)) / 2, segment.Frame.Height - lblHeight
                         , GetWidthByScreenSize(40), lblHeight))
@@ -157,8 +161,12 @@ namespace myTNB.SmartMeterView
                         Text = item.Month,
                         Tag = 1003
                     };
-                    nfloat lblDateWidth = lblDate.GetLabelWidth(GetWidthByScreenSize(100));
-                    lblDate.Frame = new CGRect((segmentWidth - lblDateWidth) / 2, lblDate.Frame.Y, lblDateWidth, lblDate.Frame.Height);
+
+                    if (lblDate.Text != null)
+                    {
+                        nfloat lblDateWidth = lblDate.GetLabelWidth(GetWidthByScreenSize(100));
+                        lblDate.Frame = new CGRect((segmentWidth - lblDateWidth) / 2, lblDate.Frame.Y, lblDateWidth, lblDate.Frame.Height);
+                    }
 
                     segment.AddSubviews(new UIView[] { lblConsumption, viewBar, lblDate });
 

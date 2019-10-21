@@ -423,6 +423,11 @@ namespace myTNB
             ScaleUtility.GetYLocationFromFrame(frame, ref yValue);
             return yValue;
         }
+        public nfloat GetXLocationFromFrame(CGRect frame, nfloat xValue)
+        {
+            ScaleUtility.GetXLocationFromFrame(frame, ref xValue);
+            return xValue;
+        }
         public nfloat GetYLocationToCenterObject(nfloat height, UIView view = null)
         {
             return ScaleUtility.GetYLocationToCenterObject(height, view);

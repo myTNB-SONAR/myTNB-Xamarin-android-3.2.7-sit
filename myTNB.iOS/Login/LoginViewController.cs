@@ -38,18 +38,14 @@ namespace myTNB
         UITextField txtFieldEmail, txtFieldPassword;
         UIImageView imgViewCheckBox;
 
-        public LoginViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public LoginViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
         {
+            PageName = LoginConstants.PageName;
             base.ViewDidLoad();
-            AddBackButton();
             InitializeSubViews();
             Setevents();
-            SetupFonts();
-            SetupSuperViewBackground();
             SetupSubViews();
         }
 
@@ -67,101 +63,166 @@ namespace myTNB
         public override void ViewWillDisappear(bool animated)
         {
             base.ViewWillDisappear(animated);
-            txtFieldEmail.Text = string.Empty;
-            txtFieldPassword.Text = string.Empty;
         }
 
         void InitializeSubViews()
         {
-            viewEmail = new UIView(new CGRect(18, 184, View.Frame.Width - 36, 51));
+            UIImageView imgLogo = new UIImageView(new CGRect(GetXLocationToCenterObject(GetScaledWidth(40F), View)
+                   , DeviceHelper.GetStatusBarHeight() + GetScaledHeight(16F), GetScaledWidth(40F), GetScaledHeight(40F)))
+            {
+                Image = UIImage.FromBundle(LoginConstants.IMG_TNBLogo)
+            };
 
-            lblEmailTitle = new UILabel(new CGRect(0, 0, viewEmail.Frame.Width, 12))
+            UIImageView imgHeader = new UIImageView(new CGRect(0, 0, ViewWidth, GetScaledHeight(220F)))
+            {
+                Image = UIImage.FromBundle(LoginConstants.IMG_Header),
+                ContentMode = UIViewContentMode.ScaleAspectFill
+            };
+
+            UIImageView btnBack = new UIImageView(new CGRect(GetScaledWidth(18F), DeviceHelper.GetStatusBarHeight() + GetScaledHeight(4F), GetScaledWidth(24F), GetScaledHeight(24F)))
+            {
+                Image = UIImage.FromBundle(LoginConstants.IMG_Back),
+                UserInteractionEnabled = true
+            };
+            btnBack.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                OnDismiss();
+            }));
+
+            UILabel lblTitle = new UILabel(new CGRect(0, GetYLocationFromFrame(imgHeader.Frame, 12F), ViewWidth, GetScaledHeight(24F)))
+            {
+                Text = GetI18NValue(LoginConstants.I18N_Title),
+                TextAlignment = UITextAlignment.Center,
+                TextColor = MyTNBColor.WaterBlueTwo,
+                Font = TNBFont.MuseoSans_16_500
+            };
+
+            View.AddSubviews(new UIView[] { imgHeader, btnBack, imgLogo, lblTitle });
+
+            viewEmail = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(lblTitle.Frame, 6F), ViewWidth - (BaseMarginWidth16 * 2), GetScaledHeight(51F)));
+
+            lblEmailTitle = new UILabel(new CGRect(0, 0, viewEmail.Frame.Width, GetScaledHeight(11.5F)))
             {
                 TextAlignment = UITextAlignment.Left,
-                Font = MyTNBFont.MuseoSans9_300,
-                TextColor = MyTNBColor.LightGray,
-                Text = "Common_Email".Translate().ToUpper()
+                Font = TNBFont.MuseoSans_10_300,
+                TextColor = MyTNBColor.SilverChalice,
+                Text = GetCommonI18NValue(Constants.Common_Email).ToUpper()
             };
 
             txtFieldEmail = new UITextField
             {
-                Frame = new CGRect(0, 12, viewEmail.Frame.Width, 24),
+                Frame = new CGRect(0, GetScaledHeight(11.1F), viewEmail.Frame.Width, GetScaledHeight(24F)),
                 AttributedPlaceholder = new NSAttributedString(
-                    "Common_Email".Translate(),
-                    font: MyTNBFont.MuseoSans18_300,
-                    foregroundColor: MyTNBColor.LightGray,
+                    GetCommonI18NValue(Constants.Common_Email),
+                    font: TNBFont.MuseoSans_16_300,
+                    foregroundColor: MyTNBColor.SilverChalice,
                     strokeWidth: 0
                 ),
-                TextColor = UIColor.White
+                Font = TNBFont.MuseoSans_16_300,
+                TextColor = MyTNBColor.CharcoalGrey,
             };
             txtFieldEmail.KeyboardType = UIKeyboardType.EmailAddress;
-            txtFieldEmail.TintColor = MyTNBColor.SunGlow;
-            _textFieldHelper.CreateTextFieldLeftView(txtFieldEmail, "email_white");
+            txtFieldEmail.TintColor = MyTNBColor.CharcoalGrey;
+            _textFieldHelper.CreateTextFieldLeftView(txtFieldEmail, LoginConstants.IMG_EmailIcon);
             _textFieldHelper.SetKeyboard(txtFieldEmail);
 
-            viewLineEmail = new UIView((new CGRect(0, 36, viewEmail.Frame.Width, 1)));
-            viewLineEmail.BackgroundColor = UIColor.White;
+            viewLineEmail = new UIView(new CGRect(0, GetScaledHeight(34.6F), viewEmail.Frame.Width, GetScaledHeight(1F)))
+            {
+                BackgroundColor = MyTNBColor.VeryLightPinkThree
+            };
 
             viewEmail.AddSubviews(new UIView[] { lblEmailTitle, txtFieldEmail, viewLineEmail });
 
-            viewPassword = new UIView(new CGRect(18, 241, View.Frame.Width - 36, 53));
+            viewRememberMe = new UIView(new CGRect(BaseMarginWidth16, viewEmail.Frame.GetMaxY(), ViewWidth - (BaseMarginWidth16 * 2), GetScaledHeight(24F)));
 
-            lblPasswordTitle = new UILabel(new CGRect(0, 0, viewPassword.Frame.Width, 12))
+            viewCheckBox = new UIView(new CGRect(GetScaledWidth(2F), GetScaledHeight(2F), GetScaledWidth(20F), GetScaledHeight(20F)))
+            {
+                BackgroundColor = MyTNBColor.WhiteTwo
+            };
+            viewCheckBox.Layer.CornerRadius = GetScaledWidth(5F);
+            viewCheckBox.Layer.BorderColor = UIColor.Clear.CGColor;
+            viewCheckBox.Layer.BorderWidth = GetScaledWidth(1F);
+            imgViewCheckBox = new UIImageView(new CGRect(0, 0, GetScaledWidth(20F), GetScaledHeight(20F)))
+            {
+                Image = UIImage.FromBundle(LoginConstants.IMG_RememberIcon),
+                ContentMode = UIViewContentMode.ScaleAspectFill,
+                BackgroundColor = UIColor.Clear
+            };
+            viewCheckBox.AddSubview(imgViewCheckBox);
+
+            viewCheckBox.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                IsRememberMe = !IsRememberMe;
+                imgViewCheckBox.Hidden = !IsRememberMe;
+                viewCheckBox.Layer.BorderColor = IsRememberMe ? UIColor.Clear.CGColor : MyTNBColor.VeryLightPinkSeven.CGColor;
+            }));
+
+            lblRememberMe = new UILabel(new CGRect(GetXLocationFromFrame(viewCheckBox.Frame, 8F), GetScaledHeight(4F), viewRememberMe.Frame.Width, GetScaledHeight(16F)))
+            {
+                Font = TNBFont.MuseoSans_12_300,
+                TextColor = MyTNBColor.GreyishBrown,
+                Text = GetI18NValue(LoginConstants.I18N_RememberEmail)
+            };
+
+            viewRememberMe.AddSubviews(new UIView[] { viewCheckBox, lblRememberMe });
+
+            viewPassword = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(viewRememberMe.Frame, 16F), ViewWidth - (BaseMarginWidth16 * 2), GetScaledHeight(51F)));
+
+            lblPasswordTitle = new UILabel(new CGRect(0, 0, viewPassword.Frame.Width, GetScaledHeight(12F)))
             {
                 TextAlignment = UITextAlignment.Left,
-                Font = MyTNBFont.MuseoSans9_300,
-                TextColor = MyTNBColor.LightGray,
-                Text = "Common_Password".Translate().ToUpper()
+                Font = TNBFont.MuseoSans_10_300,
+                TextColor = MyTNBColor.SilverChalice,
+                Text = GetCommonI18NValue(Constants.Common_Password).ToUpper()
             };
 
             txtFieldPassword = new UITextField
             {
-                Frame = new CGRect(0, 12, viewPassword.Frame.Width - 30, 24),
+                Frame = new CGRect(0, GetScaledHeight(11.1F), viewPassword.Frame.Width - GetScaledWidth(34), GetScaledHeight(24F)),
                 AttributedPlaceholder = new NSAttributedString(
-                    "Common_Password".Translate(),
-                    font: MyTNBFont.MuseoSans18_300,
-                    foregroundColor: MyTNBColor.LightGray,
+                    GetCommonI18NValue(Constants.Common_Password),
+                    font: TNBFont.MuseoSans_16_300,
+                    foregroundColor: MyTNBColor.SilverChalice,
                     strokeWidth: 0
                 ),
-                TextColor = UIColor.White
+                Font = TNBFont.MuseoSans_16_300,
+                TextColor = MyTNBColor.CharcoalGrey,
             };
             txtFieldPassword.KeyboardType = UIKeyboardType.Default;
-            txtFieldPassword.TintColor = MyTNBColor.SunGlow;
+            txtFieldPassword.TintColor = MyTNBColor.CharcoalGrey;
             txtFieldPassword.SecureTextEntry = true;
             _textFieldHelper.SetKeyboard(txtFieldPassword);
-            _textFieldHelper.CreateTextFieldLeftView(txtFieldPassword, "password_white");
+            _textFieldHelper.CreateTextFieldLeftView(txtFieldPassword, LoginConstants.IMG_PasswordIcon);
 
-            viewLinePassword = new UIView((new CGRect(0, 36, viewPassword.Frame.Width, 1)))
+            viewLinePassword = new UIView(new CGRect(0, GetScaledHeight(34.6F), viewPassword.Frame.Width, GetScaledHeight(1F)))
             {
-                BackgroundColor = UIColor.White
+                BackgroundColor = MyTNBColor.VeryLightPinkThree
             };
 
-            viewForgotPassword = new UIView(new CGRect(0, 37, viewPassword.Frame.Width, 16));
-            UILabel lblForgetPassword = new UILabel(new CGRect(0, 0, viewForgotPassword.Frame.Width, 16))
+            viewForgotPassword = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(viewPassword.Frame, 4F), ViewWidth - (BaseMarginWidth16 * 2), GetScaledHeight(16F)));
+            UILabel lblForgotPassword = new UILabel(new CGRect(0, 0, viewForgotPassword.Frame.Width, GetScaledHeight(16F)))
             {
                 TextAlignment = UITextAlignment.Right,
-                Font = MyTNBFont.MuseoSans12_500,
-                TextColor = UIColor.White,
-                Text = "Login_ForgotPassword".Translate()
+                Font = TNBFont.MuseoSans_12_500,
+                TextColor = MyTNBColor.WaterBlue,
+                Text = GetI18NValue(LoginConstants.I18N_ForgotPassword)
             };
-            viewForgotPassword.AddSubview(lblForgetPassword);
+            viewForgotPassword.AddSubview(lblForgotPassword);
 
-            viewShowPassword = new UIView(new CGRect(viewPassword.Frame.Width - 30, 12, 24, 24))
+            viewShowPassword = new UIView(new CGRect(viewPassword.Frame.Width - GetScaledWidth(24F), GetScaledHeight(11.1F), GetScaledWidth(24F), GetScaledHeight(24F)))
             {
                 Hidden = true
             };
-            UIImageView imgShowPassword = new UIImageView(new CGRect(0, 0, 24, 24));
-            imgShowPassword.Image = UIImage.FromBundle("IC-Action-Show-PasswordWhite");
+            UIImageView imgShowPassword = new UIImageView(new CGRect(0, 0, GetScaledWidth(24F), GetScaledHeight(24F)));
+            imgShowPassword.Image = UIImage.FromBundle(LoginConstants.IMG_ShowPasswordIcon);
             viewShowPassword.AddSubview(imgShowPassword);
             viewShowPassword.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 imgShowPassword.Image = UIImage.FromBundle(txtFieldPassword.SecureTextEntry
-                    ? "IC-Action-Hide-PasswordWhite" : "IC-Action-Show-PasswordWhite");
+                    ? LoginConstants.IMG_HidePasswordIcon : LoginConstants.IMG_ShowPasswordIcon);
                 txtFieldPassword.SecureTextEntry = !txtFieldPassword.SecureTextEntry;
             }));
-
-            viewPassword.AddSubviews(new UIView[] { lblPasswordTitle, txtFieldPassword
-                , viewLinePassword, viewForgotPassword, viewShowPassword });
+            viewPassword.AddSubviews(new UIView[] { lblPasswordTitle, txtFieldPassword, viewShowPassword, viewLinePassword });
 
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var emailString = sharedPreference.StringForKey(TNBGlobal.PreferenceKeys.RememberEmail);
@@ -170,32 +231,46 @@ namespace myTNB
                 txtFieldEmail.Text = emailString;
                 txtFieldEmail.LeftViewMode = UITextFieldViewMode.Never;
             }
-            viewRememberMe = new UIView(new CGRect(18, viewPassword.Frame.GetMaxY() + DeviceHelper.GetScaledHeight(20), View.Frame.Width - 36, 25));
+            View.AddSubviews(new UIView[] { viewEmail, viewRememberMe, viewPassword, viewForgotPassword });
 
-            viewCheckBox = new UIView(new CGRect(0, 0, 24, 24));
-            imgViewCheckBox = new UIImageView(new CGRect(0, 0, 24, 24))
+            UIButton btnLogin = new UIButton(UIButtonType.Custom)
             {
-                Image = UIImage.FromBundle("Payment-Checkbox-Active")
+                Frame = new CGRect(BaseMarginWidth16, ViewHeight + DeviceHelper.GetStatusBarHeight() - GetScaledHeight(48F) - GetScaledHeight(16F), ViewWidth - (BaseMarginWidth16 * 2), GetScaledHeight(48F))
             };
-            viewCheckBox.AddSubview(imgViewCheckBox);
-
-            viewCheckBox.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            btnLogin.Font = TNBFont.MuseoSans_16_500;
+            btnLogin.SetTitle(GetI18NValue(LoginConstants.I18N_LogIn), UIControlState.Normal);
+            btnLogin.Layer.CornerRadius = GetScaledHeight(4F);
+            btnLogin.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
+            btnLogin.BackgroundColor = MyTNBColor.FreshGreen;
+            btnLogin.TouchUpInside += (sender, e) =>
             {
-                IsRememberMe = !IsRememberMe;
-                imgViewCheckBox.Image = UIImage.FromBundle(IsRememberMe
-                    ? "Payment-Checkbox-Active" : "Payment-Checkbox-White-Inactive");
+                OnLogin();
+            };
+            View.AddSubview(btnLogin);
+
+            UILabel registerLbl = new UILabel(new CGRect(BaseMarginWidth16, btnLogin.Frame.GetMinY() - GetScaledHeight(32F), ViewWidth - (BaseMarginWidth16 * 2), GetScaledHeight(16F)))
+            {
+                TextAlignment = UITextAlignment.Center,
+                Font = TNBFont.MuseoSans_12_500,
+                TextColor = MyTNBColor.WaterBlueTwo,
+                Text = GetI18NValue(LoginConstants.I18N_RegisterAcctNow),
+                UserInteractionEnabled = true
+            };
+            registerLbl.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                ShowRegister();
             }));
+            View.AddSubview(registerLbl);
 
-            lblRememberMe = new UILabel(new CGRect(viewCheckBox.Frame.Width + 6, 4, viewRememberMe.Frame.Width, 16))
+            UILabel descLbl = new UILabel(new CGRect(BaseMarginWidth16, registerLbl.Frame.GetMinY() - GetScaledHeight(16F), ViewWidth - (BaseMarginWidth16 * 2), GetScaledHeight(16F)))
             {
-                Font = MyTNBFont.MuseoSans12_500,
-                TextColor = UIColor.White,
-                Text = "Login_RememberMe".Translate()
+                TextAlignment = UITextAlignment.Center,
+                Font = TNBFont.MuseoSans_12_300,
+                TextColor = MyTNBColor.GreyishBrown,
+                Text = GetI18NValue(LoginConstants.I18N_DontHaveAcct),
+                UserInteractionEnabled = true
             };
-
-            viewRememberMe.AddSubviews(new UIView[] { viewCheckBox, lblRememberMe });
-
-            View.AddSubviews(new UIView[] { viewEmail, viewPassword, viewRememberMe });
+            View.AddSubview(descLbl);
         }
         /// <summary>
         /// Method to remember or not the email based user selection when logging in
@@ -214,34 +289,12 @@ namespace myTNB
             sharedPreference.Synchronize();
         }
 
-        void SetupSuperViewBackground()
-        {
-            var startColor = MyTNBColor.GradientPurpleDarkElement;
-            var endColor = MyTNBColor.GradientPurpleLightElement;
-            var gradientLayer = new CAGradientLayer();
-            gradientLayer.Colors = new[] { startColor.CGColor, endColor.CGColor };
-            gradientLayer.Locations = new NSNumber[] { 0, 1 };
-            gradientLayer.Frame = View.Bounds;
-            View.Layer.InsertSublayer(gradientLayer, 0);
-        }
-
         void Setevents()
         {
-
-            btnLogin.TouchUpInside += (sender, e) =>
-            {
-                OnLogin();
-            };
-
             viewForgotPassword.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 ShowForgotPassword();
             }));
-
-            btnRegister.TouchUpInside += (sender, e) =>
-            {
-                ShowRegister();
-            };
 
             txtFieldEmail.EditingChanged += (sender, e) =>
             {
@@ -251,7 +304,7 @@ namespace myTNB
             txtFieldEmail.EditingDidBegin += (sender, e) =>
             {
                 lblEmailTitle.Hidden = txtFieldEmail.Text.Length == 0;
-                viewLineEmail.BackgroundColor = MyTNBColor.SunGlow;
+                viewLineEmail.BackgroundColor = MyTNBColor.WaterBlueTwo;
                 txtFieldEmail.LeftViewMode = UITextFieldViewMode.Never;
             };
 
@@ -263,7 +316,7 @@ namespace myTNB
 
             txtFieldEmail.EditingDidEnd += (sender, e) =>
             {
-                viewLineEmail.BackgroundColor = UIColor.White;
+                viewLineEmail.BackgroundColor = MyTNBColor.VeryLightPinkThree;
                 if (txtFieldEmail.Text.Length == 0)
                 {
                     txtFieldEmail.LeftViewMode = UITextFieldViewMode.UnlessEditing;
@@ -291,7 +344,7 @@ namespace myTNB
             {
                 lblPasswordTitle.Hidden = txtFieldPassword.Text.Length == 0;
                 viewShowPassword.Hidden = txtFieldPassword.Text.Length == 0;
-                viewLinePassword.BackgroundColor = MyTNBColor.SunGlow;
+                viewLinePassword.BackgroundColor = MyTNBColor.WaterBlueTwo;
                 txtFieldPassword.LeftViewMode = UITextFieldViewMode.Never;
             };
 
@@ -304,7 +357,7 @@ namespace myTNB
 
             txtFieldPassword.EditingDidEnd += (sender, e) =>
             {
-                viewLinePassword.BackgroundColor = UIColor.White;
+                viewLinePassword.BackgroundColor = MyTNBColor.VeryLightPinkThree;
                 if (txtFieldPassword.Text.Length == 0)
                     txtFieldPassword.LeftViewMode = UITextFieldViewMode.UnlessEditing;
             };
@@ -418,6 +471,8 @@ namespace myTNB
                                 navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                                 PresentViewController(navController, true, null);
                                 ActivityIndicator.Hide();
+                                txtFieldEmail.Text = string.Empty;
+                                txtFieldPassword.Text = string.Empty;
                             }
                             else
                             {
@@ -550,26 +605,8 @@ namespace myTNB
         void SetupSubViews()
         {
             //Setup Corner Radius
-            btnLogin.Layer.CornerRadius = 5;
             lblEmailTitle.Hidden = txtFieldEmail.Text.Length == 0;
             lblPasswordTitle.Hidden = txtFieldPassword.Text.Length == 0;
-        }
-
-        void SetupFonts()
-        {
-            //Labels
-            lblWelcome.Font = MyTNBFont.MuseoSans26_500;
-            lblWelcome.Text = "Login_Welcome".Translate();
-            lblAccountLogin.Font = MyTNBFont.MuseoSans18_300;
-            lblAccountLogin.Text = "Login_AccountLogin".Translate();
-            lblNoAccount.Font = MyTNBFont.MuseoSans12_300;
-            lblNoAccount.Text = "Login_NoTNBAccount".Translate();
-
-            //Buttons
-            btnRegister.TitleLabel.Font = MyTNBFont.MuseoSans12_500;
-            btnRegister.SetTitle("Login_RegisterForAccount".Translate(), UIControlState.Normal);
-            btnLogin.TitleLabel.Font = MyTNBFont.MuseoSans16_500;
-            btnLogin.SetTitle("Login_Login".Translate(), UIControlState.Normal);
         }
 
         void dismissKeyBoard()
@@ -591,29 +628,6 @@ namespace myTNB
         void ShowRegister()
         {
             DisplayPage("Registration", "RegistrationViewController");
-        }
-
-        void AddBackButton()
-        {
-            UIButton btnBack = new UIButton(UIButtonType.Custom);
-            btnBack.Frame = new CGRect(0f, 0f, 0f, 0f);
-            btnBack.SetImage(UIImage.FromBundle("Back-White"), UIControlState.Normal);
-            btnBack.Layer.BorderColor = UIColor.White.CGColor;
-            btnBack.BackgroundColor = UIColor.Clear;
-
-            btnBack.TranslatesAutoresizingMaskIntoConstraints = false;
-            View.AddSubview(btnBack);
-            View.AddConstraints(
-                btnBack.AtTopOf(View, DeviceHelper.IsIphoneXUpResolution() ? 50 : 26)
-                , btnBack.AtLeftOf(View, 18)
-                , btnBack.Width().EqualTo(24)
-                , btnBack.Height().EqualTo(24)
-             );
-
-            btnBack.TouchUpInside += (sender, e) =>
-            {
-                OnDismiss();
-            };
         }
 
         void OnDismiss()
@@ -688,6 +702,8 @@ namespace myTNB
                             ShowViewController(loginVC, this);
                             ActivityIndicator.Hide();
                         }
+                        txtFieldEmail.Text = string.Empty;
+                        txtFieldPassword.Text = string.Empty;
                     }
                     else
                     {

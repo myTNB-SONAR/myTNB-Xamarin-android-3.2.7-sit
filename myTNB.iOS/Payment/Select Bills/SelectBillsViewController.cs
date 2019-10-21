@@ -296,25 +296,32 @@ namespace myTNB
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                InvokeOnMainThread(async () =>
+                InvokeOnMainThread(() =>
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        _accountChargesResponse = await GetAccountsCharges(accountsForQuery);
-                        if (_accountChargesResponse != null && _accountChargesResponse.d != null && _accountChargesResponse.d.IsSuccess
-                        && _accountChargesResponse.d.data != null && _accountChargesResponse.d.data.AccountCharges != null)
+                        InvokeInBackground(async () =>
                         {
-                            AccountChargesCache.SetData(_accountChargesResponse);
-                            SetInitialSelectedAccount();
-                            UpdateAccountListWithAmount();
-                            UpdateDuesDisplay();
-                        }
-                        else
-                        {
-                            UpDateTotalAmount();
-                            DisplayServiceError(_accountChargesResponse?.d?.ErrorMessage ?? string.Empty);
-                        }
-                        ActivityIndicator.Hide();
+                            _accountChargesResponse = await GetAccountsCharges(accountsForQuery);
+                            InvokeOnMainThread(() =>
+                            {
+                                if (_accountChargesResponse != null && _accountChargesResponse.d != null && _accountChargesResponse.d.IsSuccess
+                                    && _accountChargesResponse.d.data != null && _accountChargesResponse.d.data.AccountCharges != null)
+                                {
+                                    AccountChargesCache.SetData(_accountChargesResponse);
+                                    SetInitialSelectedAccount();
+                                    UpdateAccountListWithAmount();
+                                    UpdateDuesDisplay();
+                                }
+                                else
+                                {
+                                    UpDateTotalAmount();
+                                    DisplayServiceError(_accountChargesResponse?.d?.ErrorMessage ?? string.Empty);
+                                }
+                                ActivityIndicator.Hide();
+                            });
+                        });
+
                     }
                     else
                     {

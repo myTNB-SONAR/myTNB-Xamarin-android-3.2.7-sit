@@ -40,6 +40,11 @@ namespace myTNB
             return _hasEmptyAcct ? 1 : _accountList.Count;
         }
 
+        public override nfloat EstimatedHeight(UITableView tableView, NSIndexPath indexPath)
+        {
+            return GetHeightForRow(tableView, indexPath);
+        }
+
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
         {
             return _isLoading ? DashboardHomeConstants.AccountCellHeight : _hasEmptyAcct ? DashboardHomeConstants.EmptyAcctHeight : DashboardHomeConstants.AccountCellHeight;

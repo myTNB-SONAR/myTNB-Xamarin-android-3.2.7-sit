@@ -460,7 +460,7 @@ namespace myTNB
                 if (isSelected)
                 { view.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor; }
                 else
-                { view.Layer.BorderColor = hasImg ? MyTNBColor.FreshGreen.CGColor : MyTNBColor.WhiteTwo.CGColor; }
+                { view.Layer.BorderColor = hasImg ? MyTNBColor.FreshGreen.CGColor : MyTNBColor.WhiteThree.CGColor; }
                 currentLbl.TextColor = isSelected ? MyTNBColor.WaterBlue : MyTNBColor.GreyishBrown;
             }
         }
@@ -537,7 +537,7 @@ namespace myTNB
             UIView view = new UIView(frame) { ClipsToBounds = true };
             view.Layer.CornerRadius = 4.0F;
             view.Layer.BorderWidth = 2.0F;
-            view.Layer.BorderColor = (index == 1 ? MyTNBColor.WaterBlue : MyTNBColor.WhiteTwo).CGColor;
+            view.Layer.BorderColor = (index == 1 ? MyTNBColor.WaterBlue : MyTNBColor.WhiteThree).CGColor;
             nfloat lblHeight = GetScaledHeight(24);
             UILabel label = new UILabel(new CGRect(0, (frame.Height - lblHeight) / 2, frame.Width, lblHeight))
             {
@@ -895,7 +895,7 @@ namespace myTNB
                 _viewMainPreviewParent = new UIView(new CGRect(0, 0, ViewWidth, _viewCamera.Frame.Height))
                 {
                     ClipsToBounds = true,
-                    BackgroundColor = MyTNBColor.WhiteTwo
+                    BackgroundColor = MyTNBColor.WhiteThree
                 };
             }
 

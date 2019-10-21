@@ -267,18 +267,6 @@ namespace myTNB
             }
         }
 
-        private void UpdateBGForRefresh()
-        {
-            _gradientView.Hidden = true;
-            if (_bgImageView != null)
-            {
-                _bgImageView.Hidden = false;
-                nfloat height = GetScaledHeight(190f);
-                ViewHelper.AdjustFrameSetHeight(_bgImageView, height);
-                _bgImageView.Image = UIImage.FromBundle(UsageConstants.IMG_BGRefresh);
-            }
-        }
-
         private void AddScrollView()
         {
             nfloat height = UIScreen.MainScreen.Bounds.Height - _navbarContainer.Frame.Height - GetScaledHeight(8F);
@@ -1498,7 +1486,6 @@ namespace myTNB
             {
                 _refreshScrollView.Hidden = false;
             }
-            UpdateBGForRefresh();
             var bcrm = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == Enums.SystemEnum.BCRM);
             var bcrmMsg = !string.IsNullOrEmpty(bcrm?.DowntimeMessage) && !string.IsNullOrWhiteSpace(bcrm?.DowntimeMessage) ? bcrm?.DowntimeMessage : GetCommonI18NValue(Constants.Common_BCRMMessage);
             var refreshMsg = isSmartMeterAccount ? AccountUsageSmartCache.GetRefreshDataModel()?.RefreshMessage ?? string.Empty : AccountUsageCache.GetRefreshDataModel()?.RefreshMessage ?? string.Empty;
@@ -1510,7 +1497,7 @@ namespace myTNB
                 _refresh.RemoveFromSuperview();
             }
             float addtlHeight = (float)(NavigationController != null ? NavigationController.NavigationBar.Frame.Height : 0);
-            RefreshScreenComponent refreshScreenComponent = new RefreshScreenComponent(View, GetScaledHeight(84F) - (DeviceHelper.GetStatusBarHeight() + addtlHeight));
+            RefreshScreenComponent refreshScreenComponent = new RefreshScreenComponent(View, GetScaledHeight(32F));
             refreshScreenComponent.SetIsBCRMDown(!isBcrmAvailable);
             refreshScreenComponent.SetRefreshButtonHidden(!isBcrmAvailable);
             refreshScreenComponent.SetButtonText(refreshBtnTxt);

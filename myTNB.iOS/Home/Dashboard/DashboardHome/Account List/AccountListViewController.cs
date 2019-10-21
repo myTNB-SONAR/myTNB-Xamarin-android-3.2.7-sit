@@ -444,6 +444,14 @@ namespace myTNB
             };
         }
 
+        public void DismissActiveKeyboard()
+        {
+            if (_textFieldSearch != null)
+            {
+                _textFieldSearch.ResignFirstResponder();
+            }
+        }
+
         private void SearchFromAccountList(string searchString)
         {
             DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;

@@ -71,6 +71,12 @@ namespace myTNB
             return yValue;
         }
 
+        public static void GetXLocationFromFrame(CGRect frame, ref nfloat xValue)
+        {
+            nfloat maxX = frame.GetMaxX();
+            xValue = maxX + GetScaledWidth(xValue);
+        }
+
         public static nfloat GetHeightValueByPercentage(CGRect refFrame, nfloat percentage)
         {
             return refFrame.Height * (percentage / 100);
