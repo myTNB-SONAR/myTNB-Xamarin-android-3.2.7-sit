@@ -108,7 +108,7 @@ namespace myTNB
             };
 
             UIView viewFindUs = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(lblQuickAccess.Frame, 8F)
-                , viewQuickAccess.Frame.Width / 3 - GetScaledWidth(22F), GetScaledHeight(84F)))
+                , viewQuickAccess.Frame.Width / 3 - GetScaledWidth(18.67F), GetScaledHeight(84F)))
             {
                 ClipsToBounds = false
             };
@@ -132,7 +132,7 @@ namespace myTNB
             viewFindUs.AddSubviews(new UIView[] { imgFindUs, lblFindUs });
 
             UIView viewCallUs = new UIView(new CGRect(GetXLocationFromFrame(viewFindUs.Frame, 12F), GetYLocationFromFrame(lblQuickAccess.Frame, 8F)
-               , viewQuickAccess.Frame.Width / 3 - GetScaledWidth(22F), GetScaledHeight(84F)))
+               , viewQuickAccess.Frame.Width / 3 - GetScaledWidth(18.67F), GetScaledHeight(84F)))
             {
                 ClipsToBounds = false
             };
@@ -165,7 +165,7 @@ namespace myTNB
             viewCallUs.AddSubviews(new UIView[] { imgCallUs, lblCallUs });
 
             UIView viewFeedback = new UIView(new CGRect(GetXLocationFromFrame(viewCallUs.Frame, 12F), GetYLocationFromFrame(lblQuickAccess.Frame, 8F)
-                , viewQuickAccess.Frame.Width / 3 - GetScaledWidth(22F), GetScaledHeight(84F)));
+                , viewQuickAccess.Frame.Width / 3 - GetScaledWidth(18.67F), GetScaledHeight(84F)));
             viewFeedback.Layer.CornerRadius = GetScaledHeight(5F);
             viewFeedback.BackgroundColor = UIColor.White;
             AddCardShadow(ref viewFeedback);
