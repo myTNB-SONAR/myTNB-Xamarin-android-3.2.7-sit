@@ -651,10 +651,6 @@
     <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Amex.imageset\ic_payment_card_amex.png" />
     <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Amex.imageset\ic_payment_card_amex%402x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Payment-Card-Amex.imageset\ic_payment_card_amex%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Show-PasswordWhite.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Show-PasswordWhite.imageset\ic_action_show password_white.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Show-PasswordWhite.imageset\ic_action_show password_white%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Show-PasswordWhite.imageset\ic_action_show password_white%403x.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Empty.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Feedback-Empty.imageset\ic_empty_archived_message.png" />
     <ImageAsset Include="Assets.xcassets\Feedback-Empty.imageset\ic_empty_archived_message%402x.png" />
@@ -737,10 +733,6 @@
     <ImageAsset Include="Assets.xcassets\Receipt-Header.imageset\TNB_Receipt_Logo-Header.png" />
     <ImageAsset Include="Assets.xcassets\Receipt-Header.imageset\TNB_Receipt_Logo-Header%402x.png" />
     <ImageAsset Include="Assets.xcassets\Receipt-Header.imageset\TNB_Receipt_Logo-Header%403x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-PasswordWhite.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-PasswordWhite.imageset\ic_action_hide password_white.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-PasswordWhite.imageset\ic_action_hide password_white%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Hide-PasswordWhite.imageset\ic_action_hide password_white%403x.png" />
     <ImageAsset Include="Assets.xcassets\app_logo.imageset\Logo.png" />
     <ImageAsset Include="Assets.xcassets\app_logo.imageset\Logo%402x.png" />
     <ImageAsset Include="Assets.xcassets\app_logo.imageset\Logo%403x.png" />
@@ -1279,6 +1271,15 @@
     <ImageAsset Include="Assets.xcassets\Password-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Password-Icon.imageset\Password-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Password-Icon.imageset\Password-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Show-Password-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Show-Password-Icon.imageset\Show-Password-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Show-Password-Icon.imageset\Show-Password-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Hide-Password-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Hide-Password-Icon.imageset\Hide-Password-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Hide-Password-Icon.imageset\Hide-Password-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Remember-Icon.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Remember-Icon.imageset\Remember-Icon%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Remember-Icon.imageset\Remember-Icon%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1732,6 +1733,9 @@
     <Folder Include="Assets.xcassets\Feedback-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Email-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Password-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Show-Password-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Hide-Password-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\Remember-Icon.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

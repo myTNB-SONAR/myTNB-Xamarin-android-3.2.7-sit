@@ -423,6 +423,7 @@
         "rememberEmail": "Remember my email",
         "forgotPassword": "Forgot your password?",
         "dontHaveAcct": "Don’t have a myTNB account?",
-        "registerAcctNow": "Register for an account now."
+        "registerAcctNow": "Register for an account now.",
+        "login": "Log In"
     }
 }

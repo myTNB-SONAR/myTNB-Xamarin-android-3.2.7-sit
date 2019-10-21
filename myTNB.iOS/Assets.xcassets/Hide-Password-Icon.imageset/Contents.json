@@ -4,17 +4,16 @@
       "idiom": "universal"
     },
     {
-      "filename": "ic_action_show password_white.png",
       "scale": "1x",
       "idiom": "universal"
     },
     {
-      "filename": "ic_action_show password_white@2x.png",
+      "filename": "Hide-Password-Icon@2x.png",
       "scale": "2x",
       "idiom": "universal"
     },
     {
-      "filename": "ic_action_show password_white@3x.png",
+      "filename": "Hide-Password-Icon@3x.png",
       "scale": "3x",
       "idiom": "universal"
     },
@@ -76,6 +75,17 @@
     {
       "scale": "2x",
       "idiom": "mac"
+    },
+    {
+      "idiom": "car"
+    },
+    {
+      "scale": "2x",
+      "idiom": "car"
+    },
+    {
+      "scale": "3x",
+      "idiom": "car"
     }
   ],
   "info": {
