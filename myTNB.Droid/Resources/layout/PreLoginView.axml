@@ -8,11 +8,11 @@
         android:layout_height="match_parent"
         android:layout_width="match_parent"
         android:overScrollMode="never"
+        android:background="@color/white"
         android:fillViewport="true">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/gradientbackground"
             android:orientation="vertical">
             <LinearLayout
                 android:layout_width="match_parent"
@@ -21,26 +21,30 @@
                 android:orientation="vertical"
                 android:paddingTop="16dp"
                 android:paddingRight="16dp"
+                android:background="@drawable/login_background_bg"
                 android:paddingLeft="16dp">
                 <ImageView
                     android:id="@+id/img_logo"
-                    android:layout_height="48dp"
-                    android:layout_width="48dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_height="40dp"
+                    android:layout_width="40dp"
+                    android:layout_marginBottom="6dp"
                     android:layout_gravity="center_horizontal"
                     android:src="@drawable/ic_splash_logo" />
                 <ImageView
                     android:id="@+id/img_display"
-                    android:layout_height="120dp"
-                    android:layout_width="170dp"
+                    android:layout_height="132dp"
+                    android:layout_width="203dp"
+                    android:layout_marginTop="10dp"
                     android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="8dp"
-                    android:src="@drawable/ic_display_prelogin" />
+                    android:layout_marginBottom="6dp"
+                    android:src="@drawable/welcome_illustration" />
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:textSize="24sp"
-                    android:textColor="@color/sunGlow"
+                    android:layout_marginTop="6dp"
+                    android:layout_marginBottom="8dp"
+                    android:textSize="16dp"
+                    android:textColor="@color/water_blue"
                     android:textStyle="bold"
                     android:gravity="center_horizontal"
                     android:text="@string/prelogin_welcome"
@@ -49,17 +53,20 @@
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:textSize="16sp"
-                    android:textColor="@color/white"
+                    android:textColor="@color/new_grey"
                     android:gravity="center_horizontal"
                     android:layout_marginTop="2dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginBottom="11dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
                     android:text="@string/prelogin_login_to_manage_account"
                     android:id="@+id/txtManageAccount" />
                 <LinearLayout
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
-                    android:padding="8dp"
+                    android:layout_marginTop="11dp"
+                    android:layout_marginBottom="8dp"
                     android:weightSum="1">
                     <Button
                         android:id="@+id/btnRegister"
@@ -67,27 +74,28 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="0.5"
-                        style="@style/WhiteButton"
+                        android:layout_marginRight="2dp"
+                        style="@style/Theme.PreLoginRegisterButton"
                         android:textAllCaps="false" />
                     <Button
                         android:id="@+id/btnLogin"
                         android:text="@string/prelogin_btn_login"
                         android:layout_width="match_parent"
                         android:layout_weight="0.5"
+                        android:layout_marginLeft="2dp"
                         android:layout_height="wrap_content"
-                        style="@style/DarkButton1"
+                        style="@style/Theme.PreLoginLoginButton"
                         android:textAllCaps="false" />
                 </LinearLayout>
             </LinearLayout>
             <View
                 android:layout_height="1dp"
                 android:layout_width="match_parent"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
-                android:background="@color/white"
-                android:alpha="0.25" />
+                android:background="@color/platinumGrey"/>
             <LinearLayout
                 android:layout_height="match_parent"
                 android:layout_width="match_parent"
@@ -96,56 +104,114 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:textSize="16sp"
-                    android:paddingBottom="8dp"
-                    android:paddingTop="8dp"
-                    android:textColor="@color/white"
+                    android:layout_marginTop="8dp"
+                    android:textColor="@color/water_blue"
                     android:text="@string/quick_access"
                     android:layout_gravity="center_horizontal"
                     android:id="@+id/txtLikeToday" />
                 <LinearLayout
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:orientation="vertical"
-                    android:layout_marginLeft="32dp"
-                    android:layout_marginRight="32dp">
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:text="@string/prelogin_select_location"
-                        android:textColor="@color/powerBlue"
-                        android:textSize="16sp"
-                        android:gravity="center_vertical"
-                        android:drawableLeft="@drawable/ic_button_locate"
-                        android:drawablePadding="4dp"
-                        android:layout_marginBottom="4dp"
-                        android:background="@drawable/white_rounded_button_selector"
-                        android:padding="8dp"
-                        android:id="@+id/txtFindUs" />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:text="@string/prelogin_feedback"
-                        android:textColor="@color/powerBlue"
-                        android:drawablePadding="4dp"
-                        android:gravity="center_vertical"
-                        android:background="@drawable/white_rounded_button_selector"
-                        android:textSize="16sp"
-                        android:drawableLeft="@drawable/ic_button_feedback"
-                        android:layout_marginBottom="4dp"
-                        android:padding="8dp"
-                        android:id="@+id/txtFeedback" />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="48dp"
-                        android:text="@string/prelogin_call_us"
-                        android:textColor="@color/powerBlue"
-                        android:drawablePadding="4dp"
-                        android:gravity="center_vertical"
-                        android:background="@drawable/white_rounded_button_selector"
-                        android:textSize="16sp"
-                        android:drawableLeft="@drawable/ic_button_call"
-                        android:padding="8dp"
-                        android:id="@+id/txtCallUs" />
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="8dp">
+                    <android.support.v7.widget.CardView
+                        android:orientation="vertical"
+                        android:layout_width="88dp"
+                        android:layout_height="84dp"
+                        app:cardCornerRadius="4dp"
+                        app:cardBackgroundColor="@color/white"
+                        app:cardElevation="4dp"
+                        android:layout_marginRight="12dp"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:id="@+id/cardview_find_us">
+                        <LinearLayout 
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center">
+                            <ImageView
+                            android:id="@+id/img_find_us"
+                            android:layout_height="28dp"
+                            android:layout_width="28dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/find_us"/>
+                            <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/prelogin_select_location"
+                            android:textColor="@color/powerBlue"
+                            android:layout_marginTop="12dp"
+                            android:textSize="10dp"
+                            android:gravity="center"
+                            android:id="@+id/txtFindUs" />
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+                    <android.support.v7.widget.CardView
+                        android:orientation="vertical"
+                        android:layout_width="88dp"
+                        android:layout_height="84dp"
+                        app:cardCornerRadius="4dp"
+                        app:cardBackgroundColor="@color/white"
+                        app:cardElevation="4dp"
+                        android:layout_marginRight="12dp"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:id="@+id/cardview_call_us">
+                        <LinearLayout 
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center">
+                            <ImageView
+                            android:id="@+id/img_call_us"
+                            android:layout_height="28dp"
+                            android:layout_width="28dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/call_us"/>
+                            <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/prelogin_call_us"
+                            android:textColor="@color/powerBlue"
+                            android:layout_marginTop="12dp"
+                            android:textSize="10dp"
+                            android:gravity="center"
+                            android:id="@+id/txtCallUs" />
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
+                    <android.support.v7.widget.CardView
+                        android:orientation="vertical"
+                        android:layout_width="88dp"
+                        android:layout_height="84dp"
+                        app:cardCornerRadius="4dp"
+                        app:cardBackgroundColor="@color/white"
+                        app:cardElevation="4dp"
+                        android:gravity="center"
+                        android:clickable="true"
+                        android:id="@+id/cardview_feedback">
+                        <LinearLayout 
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:gravity="center">
+                            <ImageView
+                            android:id="@+id/img_feedback"
+                            android:layout_height="28dp"
+                            android:layout_width="28dp"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/feedback_1"/>
+                            <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Give Us Feedback"
+                            android:textColor="@color/powerBlue"
+                            android:layout_marginTop="12dp"
+                            android:textSize="10dp"
+                            android:gravity="center"
+                            android:id="@+id/txtFeedback" />
+                        </LinearLayout>
+                    </android.support.v7.widget.CardView>
                 </LinearLayout>
                 <TextView
                     android:layout_height="wrap_content"
@@ -156,6 +222,7 @@
                     android:paddingTop="8dp"
                     android:textColor="@color/white"
                     android:gravity="center_horizontal"
+                    android:visibility="gone"
                     android:text="@string/login_to_enjoy_more_features"
                     android:id="@+id/txtPromotion" />
                 <FrameLayout
