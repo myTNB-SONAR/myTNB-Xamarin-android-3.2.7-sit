@@ -86,6 +86,12 @@ namespace myTNB_Android.Src.PreLogin.Activity
         [BindView(Resource.Id.imgPromotion)]
         ImageView imgPromotion;
 
+        [BindView(Resource.Id.img_logo)]
+        ImageView img_logo;
+
+        [BindView(Resource.Id.img_display)]
+        ImageView img_display;
+
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -99,6 +105,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
 
                 TextViewUtils.SetMuseoSans500Typeface(btnLogin, btnRegister);
 
+                GenerateTopLayoutLayout();
                 GenerateFindUsCardLayout();
                 GenerateCallUsCardLayout();
                 GenerateFeedbackCardLayout();
@@ -356,6 +363,34 @@ namespace myTNB_Android.Src.PreLogin.Activity
                     GCSettings.LargeObjectHeapCompactionMode = GCLargeObjectHeapCompactionMode.CompactOnce;
                     GC.Collect();
                     break;
+            }
+        }
+
+        private void GenerateTopLayoutLayout()
+        {
+            try
+            {
+                LinearLayout.LayoutParams currentLogoImg = img_logo.LayoutParameters as LinearLayout.LayoutParams;
+
+                int imgWidth = GetDeviceHorizontalScaleInPixel(0.125f);
+
+                currentLogoImg.Height = imgWidth;
+                currentLogoImg.Width = imgWidth;
+
+                LinearLayout.LayoutParams currentDisplayLogoImg = img_display.LayoutParameters as LinearLayout.LayoutParams;
+
+                int imgDisplayWidth = GetDeviceHorizontalScaleInPixel(0.634f);
+
+                float heightRatio = 132f / 203f;
+                int imgDisplayHeight = (int)(imgDisplayWidth * (heightRatio));
+
+                currentDisplayLogoImg.Height = imgDisplayHeight;
+                currentDisplayLogoImg.Width = imgDisplayWidth;
+
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
             }
         }
 
