@@ -2,6 +2,7 @@
 using Android.Content.PM;
 using Android.Text;
 using Android.Util;
+using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.AddAccount.Api;
 using myTNB_Android.Src.AddAccount.Models;
 using myTNB_Android.Src.AppLaunch.Api;
@@ -391,8 +392,22 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                         var customerAccountsApi = RestService.For<GetCustomerAccounts>(Constants.SERVER_URL.END_POINT);
 #endif
 
-                        var customerAccountsResponse = await customerAccountsApi.GetCustomerAccountV5(new AddAccount.Requests.GetCustomerAccountsRequest(Constants.APP_CONFIG.API_KEY_ID, userResponse.Data.User.UserId));
-                        if (!customerAccountsResponse.D.IsError && customerAccountsResponse.D.AccountListData.Count > 0)
+                        var newObject = new
+                        {
+                            usrInf = new
+                            {
+                                eid = UserEntity.GetActive().UserName,
+                                sspuid = userResponse.Data.User.UserId,
+                                lang = "EN",
+                                sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                                sec_auth_k2 = "",
+                                ses_param1 = "",
+                                ses_param2 = ""
+                            }
+                        };
+
+                        var customerAccountsResponse = await customerAccountsApi.GetCustomerAccountV6(newObject);
+                        if (customerAccountsResponse.D.ErrorCode == "7200" && customerAccountsResponse.D.AccountListData.Count > 0)
                         {
                             int ctr = 0;
                             foreach (Account acc in customerAccountsResponse.D.AccountListData)
@@ -400,7 +415,6 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                                 bool isSelected = ctr == 0 ? true : false;
                                 int rowChange = CustomerBillingAccount.InsertOrReplace(acc, isSelected);
                                 ctr++;
-
                             }
                         }
 
@@ -460,6 +474,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     this.mView.HideRegistrationProgress();
                     this.mView.ShowRetryLoginUnknownException(e.StackTrace);
                 }
+                ClearDataCache();
                 Utility.LoggingNonFatalError(e);
             }
             catch (ApiException apiException)
@@ -470,6 +485,7 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     this.mView.HideRegistrationProgress();
                     this.mView.ShowRetryLoginUnknownException(apiException.StackTrace);
                 }
+                ClearDataCache();
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception e)
@@ -481,6 +497,36 @@ namespace myTNB_Android.Src.RegisterValidation.MVP
                     this.mView.HideRegistrationProgress();
                     this.mView.ShowRetryLoginUnknownException(e.StackTrace);
                 }
+                ClearDataCache();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void ClearDataCache()
+        {
+            try
+            {
+                UserEntity.RemoveActive();
+                UserRegister.RemoveActive();
+                CustomerBillingAccount.RemoveActive();
+                NotificationFilterEntity.RemoveAll();
+                UserNotificationEntity.RemoveAll();
+                SubmittedFeedbackEntity.Remove();
+                SMUsageHistoryEntity.RemoveAll();
+                UsageHistoryEntity.RemoveAll();
+                PromotionsEntityV2 promotionTable = new PromotionsEntityV2();
+                promotionTable.DeleteTable();
+                PromotionsParentEntityV2 promotionEntityTable = new PromotionsParentEntityV2();
+                promotionEntityTable.DeleteTable();
+                BillHistoryEntity.RemoveAll();
+                PaymentHistoryEntity.RemoveAll();
+                REPaymentHistoryEntity.RemoveAll();
+                AccountDataEntity.RemoveAll();
+                SummaryDashBoardAccountEntity.RemoveAll();
+                SelectBillsEntity.RemoveAll();
+            }
+            catch (Exception e)
+            {
                 Utility.LoggingNonFatalError(e);
             }
         }
