@@ -1004,9 +1004,6 @@
     <ImageAsset Include="Assets.xcassets\Usage-Bg-Long.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\ocrReading%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\ocrReading%403x-1.png" />
-    <ImageAsset Include="Assets.xcassets\Usage-Refresh-Bg.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Usage-Refresh-Bg.imageset\Usage-Refresh-Bg%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Usage-Refresh-Bg.imageset\Usage-Refresh-Bg%403x.png" />
     <ImageAsset Include="Assets.xcassets\Calendar-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Calendar-Icon.imageset\Calendar-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Calendar-Icon.imageset\Calendar-Icon%403x.png" />

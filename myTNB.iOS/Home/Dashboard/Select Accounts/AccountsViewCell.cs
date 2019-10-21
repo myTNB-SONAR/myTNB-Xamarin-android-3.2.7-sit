@@ -10,12 +10,10 @@ namespace myTNB
         public UIImageView reIconView;
         public UIView viewLine;
         private nfloat _imgWidth = ScaleUtility.GetScaledWidth(20F);
-        private nfloat widthForNickName;
         public AccountsViewCell(IntPtr handle) : base(handle)
         {
             nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
-            widthForNickName = cellWidth - (BaseMarginWidth16 * 2) - GetScaledWidth(24F);
-            lblAccountName = new UILabel(new CGRect(BaseMarginWidth16, GetScaledHeight(18F), widthForNickName, GetScaledHeight(24F)))
+            lblAccountName = new UILabel(new CGRect(BaseMarginWidth16, GetScaledHeight(18F), GetNicknameWidth(), GetScaledHeight(24F)))
             {
                 LineBreakMode = UILineBreakMode.TailTruncation,
                 Font = TNBFont.MuseoSans_16_300,
@@ -38,7 +36,7 @@ namespace myTNB
                     !string.IsNullOrWhiteSpace(value))
                 {
                     reIconView.Hidden = false;
-                    nfloat width = widthForNickName - GetScaledWidth(28F);
+                    nfloat width = GetNicknameWidth() - GetScaledWidth(28F);
                     reIconView.Image = UIImage.FromBundle(value);
                     CGSize nameSize = lblAccountName.SizeThatFits(new CGSize(width, GetScaledHeight(16F)));
                     ViewHelper.AdjustFrameSetWidth(lblAccountName, nameSize.Width <= width ? nameSize.Width : width);
@@ -47,12 +45,20 @@ namespace myTNB
                 }
                 else
                 {
-                    if (reIconView != null)
+                    if (reIconView != null && lblAccountName != null)
                     {
                         reIconView.Hidden = true;
+                        ViewHelper.AdjustFrameSetWidth(lblAccountName, GetNicknameWidth());
                     }
                 }
             }
+        }
+
+        private nfloat GetNicknameWidth()
+        {
+            nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
+            nfloat width = cellWidth - (BaseMarginWidth16 * 2) - GetScaledWidth(24F);
+            return width;
         }
     }
 }
