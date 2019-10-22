@@ -20,12 +20,10 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 #else
         INotificationApi api = RestService.For<INotificationApi>(Constants.SERVER_URL.END_POINT);
 #endif
-        private string deviceId = null;
         private DashboardHomeContract.IUserActionsListener homeListener = null;
 
-        public UserNotificationAPI(string deviceId, DashboardHomeContract.IUserActionsListener listener)
+        public UserNotificationAPI(DashboardHomeContract.IUserActionsListener listener)
         {
-            this.deviceId = deviceId;
             this.homeListener = listener;
         }
 
@@ -79,17 +77,31 @@ namespace myTNB_Android.Src.myTNBMenu.Async
 
         private async void GetUserNotifications()
         {
-            NotificationApiImpl notificationAPI = new NotificationApiImpl();
-            MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
-            if (response.Data != null && response.Data.ErrorCode == "7200")
+            try
             {
-                if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null &&
-                    response.Data.ResponseData.UserNotificationList.Count > 0)
+                NotificationApiImpl notificationAPI = new NotificationApiImpl();
+                MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
+                if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
                 {
-                    foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
+                    if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null &&
+                        response.Data.ResponseData.UserNotificationList.Count > 0)
                     {
-                        // tODO : SAVE ALL NOTIFICATIONs
-                        int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
+                        foreach (UserNotification userNotification in response.Data.ResponseData.UserNotificationList)
+                        {
+                            // tODO : SAVE ALL NOTIFICATIONs
+                            int newRecord = UserNotificationEntity.InsertOrReplace(userNotification);
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            UserNotificationEntity.RemoveAll();
+                        }
+                        catch (System.Exception ne)
+                        {
+                            Utility.LoggingNonFatalError(ne);
+                        }
                     }
                 }
                 else
@@ -104,7 +116,7 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                     }
                 }
             }
-            else
+            catch (ApiException apiException)
             {
                 try
                 {
@@ -114,6 +126,31 @@ namespace myTNB_Android.Src.myTNBMenu.Async
                 {
                     Utility.LoggingNonFatalError(ne);
                 }
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Newtonsoft.Json.JsonReaderException e)
+            {
+                try
+                {
+                    UserNotificationEntity.RemoveAll();
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (System.Exception e)
+            {
+                try
+                {
+                    UserNotificationEntity.RemoveAll();
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
+                Utility.LoggingNonFatalError(e);
             }
         }
 

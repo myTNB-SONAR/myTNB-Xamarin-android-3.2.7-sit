@@ -67,6 +67,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void ShowBillPDF(AccountData selectedAccountData, BillHistoryV5 selectedBill = null);
 
+            void ShowNotificationCount(int count);
+
         }
 
         public interface IHomeMenuPresenter
@@ -121,6 +123,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void InitiateMyServiceRefresh();
 
             void LoadingBillsHistory(CustomerBillingAccount selectedAccount);
+
+            void GetUserNotifications();
         }
 
         public interface IHomeMenuService

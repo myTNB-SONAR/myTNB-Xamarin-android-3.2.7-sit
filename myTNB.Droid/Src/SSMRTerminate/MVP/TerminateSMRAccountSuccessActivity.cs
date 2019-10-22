@@ -48,6 +48,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         [BindView(Resource.Id.btnBackToHomeSuccess)]
         Button btnBackToHomeSuccess;
 
+        private string SMR_ACTION = "";
 
         private AccountData selectedAccount;
 
@@ -80,9 +81,17 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 appliedOnDateValue.Text = response.Data.AccountDetailsData.AppliedOn;
             }
 
+            btnBackToHomeSuccess.Visibility = ViewStates.Gone;
+            btnTrackApplication.Text = "Back to Home";
+
             if (extras != null && extras.ContainsKey(Constants.SELECTED_ACCOUNT))
             {
                 selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
+            }
+
+            if (extras != null && extras.ContainsKey("SMR_ACTION"))
+            {
+                SMR_ACTION = extras.GetString("SMR_ACTION");
             }
         }
 
@@ -101,8 +110,40 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         [OnClick(Resource.Id.btnTrackApplication)]
         void OnTryAgain(object sender, EventArgs eventArgs)
         {
-            SetResult(Result.Canceled);
-            Finish();
+            // SetResult(Result.Canceled);
+            // Finish();
+            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+            DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            StartActivity(DashboardIntent);
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                if (SMR_ACTION == Constants.SMR_ENABLE_FLAG)
+                {
+                    FirebaseAnalyticsUtils.SetScreenName(this, "Apply SMR Success");
+                }
+                else if (SMR_ACTION == Constants.SMR_DISABLE_FLAG)
+                {
+                    FirebaseAnalyticsUtils.SetScreenName(this, "SMR Termination Success");
+                }
+                else
+                {
+                    FirebaseAnalyticsUtils.SetScreenName(this, "Apply SMR Success");
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
         }
     }
 }
