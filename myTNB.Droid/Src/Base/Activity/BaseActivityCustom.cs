@@ -7,12 +7,9 @@ namespace myTNB_Android.Src.Base.Activity
 {
     public abstract class BaseActivityCustom : BaseToolbarAppCompatActivity
     {
-        private Dictionary<string, string> languageKeyValue;
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            languageKeyValue = LanguageManager.Instance.GetValuesByPage(GetPageId());
         }
         /// <summary>
         /// Gets the Page Id. To be implemented by child activity.
@@ -27,7 +24,17 @@ namespace myTNB_Android.Src.Base.Activity
         /// <returns></returns>
         public string GetLabelByLanguage(string key)
         {
-            return languageKeyValue[key];
+            return LanguageManager.Instance.GetValuesByPage(GetPageId())[key];
+        }
+
+        /// <summary>
+        /// Gets the common labels
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public string GetLabelCommonByLanguage(string key)
+        {
+            return LanguageManager.Instance.GetCommonValuePairs()[key];
         }
     }
 }
