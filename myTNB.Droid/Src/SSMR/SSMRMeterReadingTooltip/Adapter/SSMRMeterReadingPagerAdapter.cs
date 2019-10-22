@@ -78,7 +78,11 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.Adapter
                 }
                 else
                 {
-                    if (list.Count == 2)
+                    if (list.Count == 1)
+                    {
+                        tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_3);
+                    }
+                    else if (list.Count == 2)
                     {
                         if (position == 0)
                         {

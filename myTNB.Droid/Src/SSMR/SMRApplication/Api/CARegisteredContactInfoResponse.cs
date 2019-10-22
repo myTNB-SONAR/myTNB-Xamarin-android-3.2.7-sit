@@ -20,9 +20,6 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Api
             [JsonProperty(PropertyName = "status")]
             public string Status { get; set; }
 
-            [JsonProperty(PropertyName = "isError")]
-            public bool IsError { get; set; }
-
             [JsonProperty(PropertyName = "message")]
             public string Message { get; set; }
 
@@ -35,8 +32,14 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Api
             [JsonProperty(PropertyName = "DisplayMessage")]
             public string DisplayMessage { get; set; }
 
+            [JsonProperty(PropertyName = "DisplayTitle")]
+            public string DisplayTitle { get; set; }
+
             [JsonProperty(PropertyName = "DisplayType")]
             public string DisplayType { get; set; }
+
+            [JsonProperty(PropertyName = "RefreshBtnText")]
+            public string RefreshBtnText { get; set; }
         }
 
         public class AccountDetails
