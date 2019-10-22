@@ -17,6 +17,8 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             void ShowRefreshScreen(bool isShow);
             void ShowEnableDisableSMR(CAContactDetailsModel contactDetailsModel);
             void EnableButton();
+            void ShowContactNotAvailableTooltip(string title, string content, string cta);
+            string GetSMRActionKey();
         }
 
         public interface IPresenter

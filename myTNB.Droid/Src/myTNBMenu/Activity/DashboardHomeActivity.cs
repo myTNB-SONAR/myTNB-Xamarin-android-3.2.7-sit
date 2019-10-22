@@ -19,6 +19,7 @@ using CheeseBind;
 using myTNB.SitecoreCM.Models;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Fragments;
@@ -46,7 +47,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
     [Activity(Label = "@string/dashboard_activity_title"
               , Icon = "@drawable/ic_launcher"
         , ScreenOrientation = ScreenOrientation.Portrait
-        ,Theme = "@style/Theme.Dashboard"
+        ,Theme = "@style/Theme.DashboardHome"
         ,WindowSoftInputMode = SoftInput.AdjustNothing)]
     [IntentFilter(new[] { Android.Content.Intent.ActionView },
             DataScheme = "mytnbapp",
@@ -186,6 +187,8 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             }
 
             this.toolbar.FindViewById<TextView>(Resource.Id.toolbar_title).Click += DashboardHomeActivity_Click;
+
+            ShowUnreadRewards();
         }
 
         public void ShowBackButton(bool flag)
@@ -234,10 +237,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
         protected override void OnResume()
         {
             base.OnResume();
-            if (currentFragment.GetType() == typeof(HomeMenuFragment))
-            {
-                this.userActionsListener?.GetUserNotifications();
-            }
             if (this.mPresenter != null)
             {
                 this.mPresenter.OnValidateData();
@@ -609,7 +608,14 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem promotionMenuItem = bottomMenu.FindItem(Resource.Id.menu_promotion);
                 if (promotionMenuItem != null)
                 {
-                    promotionMenuItem.SetIcon(Resource.Drawable.ic_menu_promotions_unread_selector);
+                    if (MyTNBAccountManagement.GetInstance().IsWhatNewShown())
+                    {
+                        promotionMenuItem.SetIcon(Resource.Drawable.ic_menu_promotions_unread_selector);
+                    }
+                    else
+                    {
+                        promotionMenuItem.SetIcon(Resource.Drawable.ic_menu_promotions_unread_new_selector);
+                    }
                     bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
             }
@@ -772,7 +778,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                         }
                         else
                         {
-                            fragment.OnSearchOutFocus(false);
+                            fragment.OnSearchClearFocus();
                         }
                     }
                 }
@@ -811,16 +817,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             view.GetLocationOnScreen(location);
             outRect.Offset(location[0], location[1]);
             return outRect.Contains(x, y);
-        }
-
-        public void SetStatusBarBackground()
-        {
-            if (Build.VERSION.SdkInt >= Build.VERSION_CODES.Lollipop)
-            {
-                Drawable drawable = Resources.GetDrawable(Resource.Drawable.gradient_background);
-                Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
-                Window.SetBackgroundDrawable(drawable);
-            }
         }
 
         public void SetInnerDashboardToolbarBackground()
@@ -915,6 +911,36 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 Utility.LoggingNonFatalError(e);
             }
 
+        }
+
+        public void ShowUnreadRewards()
+        {
+            if (bottomNavigationView != null && bottomNavigationView.Menu != null)
+            {
+                IMenu bottomMenu = bottomNavigationView.Menu;
+
+                IMenuItem rewardMenuItem = bottomMenu.FindItem(Resource.Id.menu_reward);
+                if (rewardMenuItem != null)
+                {
+                    rewardMenuItem.SetIcon(Resource.Drawable.ic_menu_reward_unread_selector);
+                    bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
+                }
+            }
+        }
+
+        public void HideUnreadRewards()
+        {
+            if (bottomNavigationView != null && bottomNavigationView.Menu != null)
+            {
+                IMenu bottomMenu = bottomNavigationView.Menu;
+
+                IMenuItem rewardMenuItem = bottomMenu.FindItem(Resource.Id.menu_reward);
+                if (rewardMenuItem != null)
+                {
+                    rewardMenuItem.SetIcon(Resource.Drawable.ic_menu_reward_selector);
+                    bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
+                }
+            }
         }
     }
 }

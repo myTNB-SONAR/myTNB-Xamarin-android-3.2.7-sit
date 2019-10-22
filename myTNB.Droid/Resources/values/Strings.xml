@@ -37,16 +37,16 @@
 
   <!-- PreLogin -->
   <string name="prelogin">PreLogin</string>
-  <string name="prelogin_login_to_manage_account">Manage your account now!</string>
-  <string name="prelogin_welcome">Welcome</string>
-  <string name="prelogin_btn_login">Login</string>
+  <string name="prelogin_login_to_manage_account">A whole new world with shockingly amazing possibilities.</string>
+  <string name="prelogin_welcome">Welcome to myTNB</string>
+  <string name="prelogin_btn_login">Log In</string>
   <string name="prelogin_btn_register">Register</string>
   <string name="prelogin_what_would_you_like_today">What would you like to do today?</string>
   <string name="prelogin_select_location">Find Us</string>
-  <string name="prelogin_feedback">Feedback</string>
+  <string name="prelogin_feedback"><![CDATA[Give Us<br/>Feedback]]></string>
   <string name="prelogin_call_us">Call Us</string>
   <string name="prelogin_promotion">Promotion</string>
-  <string name="quick_access">Quick Access</string>
+  <string name="quick_access">Quick Actions</string>
   <string name="login_to_enjoy_more_features">Log in to enjoy more features!</string>
   <!-- End Of Prelogin -->
 
@@ -55,7 +55,7 @@
   <!-- Login Activity -->
   <string name="email_hint">Email</string>
   <string name="password_hint">Password</string>
-  <string name="login">Login</string>
+  <string name="login">Log In</string>
   <string name="login_forget_password">Forgot password?</string>
   <string name="welcome_back">Welcome back!</string>
   <string name="account_login">myTNB Account Login</string>
@@ -432,7 +432,7 @@ You acknowledge that you have been provided with and have read and understood th
 
   <!-- Dashboard Menu-->
   <string name="menu_dashboard">Home</string>
-  <string name="menu_bills">My Bills</string>
+  <string name="menu_bills">Bills</string>
   <string name="menu_promotions">What\'s New</string>
   <string name="menu_feedback">Feedback</string>
   <string name="menu_reward">Rewards</string>
@@ -560,7 +560,7 @@ You acknowledge that you have been provided with and have read and understood th
   <string name="bill_menu_current_bill">Current Bill</string>
   <!--Menu Activity Titles-->
   <string name="bill_menu_activity_title">Bills</string>
-  <string name="promotion_menu_activity_title">Promotions</string>
+  <string name="promotion_menu_activity_title">What\'s New</string>
   <string name="feedback_menu_activity_title">Feedback</string>
   <string name="more_menu_activity_title">More</string>
   <string name="dashboard_menu_activity_title"></string>
@@ -1366,7 +1366,11 @@ Please try again later.]]>
   <string name="greeting_text_morning">Good Morning,</string>
   <string name="greeting_text_afternoon">Good Afternoon,</string>
   <string name="greeting_text_evening">Good Evening,</string>
-	<string name="load_more_accounts">Load More Accounts</string>
+	<string name="load_more_accounts">More Accounts</string>
+    <string name="rearrange_accounts">Rearrange Accounts</string>
+    <string name="show_less_accounts">Show Less</string>
+<string name="show_more">Show More</string>
+    <string name="show_less">Show Less</string>
   <string name="malaysia_currency">RM</string>
   <string name="add_another_account">Add Another Account</string>
 	<string name="all_accounts">All Accounts</string>
@@ -1461,4 +1465,12 @@ Please try again later.]]>
 <string name="duplicate_account_btn_ok">Ok</string>
 
 <string name="new_account_view">Welcome to your usage view! You’ll see your usage here soon.</string>
+
+<string name="smr_contact_not_available_title">Sorry, Self Meter Reading is currently unavailable for your account.</string>
+
+<string name="smr_contact_not_available_message">We are working hard to make this service available for you in the future. Apologies for the inconvenience!</string>
+
+<string name="smr_contact_not_available_btn">Got It!</string>
+
+<string name="smr_manual_reading_title">Please enter your meter reading for the unit(s) below.</string>
 </resources>

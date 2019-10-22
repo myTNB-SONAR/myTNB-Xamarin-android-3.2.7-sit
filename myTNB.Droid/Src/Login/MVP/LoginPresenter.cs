@@ -265,12 +265,12 @@ namespace myTNB_Android.Src.Login.MVP
                                     sspuid = userResponse.Data.User.UserId,
                                     lang = "EN",
                                     sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
-                                    sec_auth_k2 = "test",
-                                    ses_param1 = "test",
-                                    ses_param2 = "test"
+                                    sec_auth_k2 = "",
+                                    ses_param1 = "",
+                                    ses_param2 = ""
                                 }
                             };
-                            var customerAccountsResponse = await customerAccountsApi.GetCustomerAccountV6(newObject);// new AddAccount.Requests.GetCustomerAccountsRequest(Constants.APP_CONFIG.API_KEY_ID, userResponse.Data.User.UserId));
+                            var customerAccountsResponse = await customerAccountsApi.GetCustomerAccountV6(newObject);
                             if (customerAccountsResponse.D.ErrorCode == "7200" && customerAccountsResponse.D.AccountListData.Count > 0)
                             {
                                 int ctr = 0;
@@ -294,7 +294,7 @@ namespace myTNB_Android.Src.Login.MVP
 
                             NotificationApiImpl notificationAPI = new NotificationApiImpl();
                             MyTNBService.Response.UserNotificationResponse response = await notificationAPI.GetUserNotifications<MyTNBService.Response.UserNotificationResponse>(new Base.Request.APIBaseRequest());
-                            if (response.Data != null && response.Data.ErrorCode == "7200")
+                            if (response != null && response.Data != null && response.Data.ErrorCode == "7200")
                             {
                                 if (response.Data.ResponseData != null && response.Data.ResponseData.UserNotificationList != null &&
                                     response.Data.ResponseData.UserNotificationList.Count > 0)

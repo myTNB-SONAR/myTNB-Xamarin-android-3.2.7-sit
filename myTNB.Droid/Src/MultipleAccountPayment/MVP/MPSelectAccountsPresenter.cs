@@ -131,14 +131,17 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
 
                     this.mView.SetAccountsDueAmountResult(newAccountList);
 
-                    int foundIndex = accountChargeModelList.FindIndex(model =>
+                    if (preSelectedAccount != null)
                     {
-                        return model.ContractAccount == preSelectedAccount;
-                    });
+                        int foundIndex = accountChargeModelList.FindIndex(model =>
+                        {
+                            return model.ContractAccount == preSelectedAccount;
+                        });
 
-                    if (foundIndex != -1)
-                    {
-                        this.mView.ShowHasMinimumAmoutToPayTooltip(accountChargeModelList[foundIndex]);
+                        if (foundIndex != -1)
+                        {
+                            this.mView.ShowHasMinimumAmoutToPayTooltip(accountChargeModelList[foundIndex]);
+                        }
                     }
                 }
                 else

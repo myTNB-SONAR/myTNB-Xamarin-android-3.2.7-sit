@@ -521,6 +521,9 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             {
                 intent.PutExtra("SUBMIT_RESULT", JsonConvert.SerializeObject(response));
             }
+
+            intent.PutExtra("SMR_ACTION", SMR_ACTION);
+
             if (selectedAccount != null)
             {
                 intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
@@ -535,6 +538,9 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             {
                 intent.PutExtra("SUBMIT_RESULT", JsonConvert.SerializeObject(response));
             }
+
+            intent.PutExtra("SMR_ACTION", SMR_ACTION);
+
             if (selectedAccount != null)
             {
                 intent.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
@@ -718,7 +724,18 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             base.OnResume();
             try
             {
-                FirebaseAnalyticsUtils.SetScreenName(this, "SMR Termination");
+                if (SMR_ACTION == Constants.SMR_ENABLE_FLAG)
+                {
+                    FirebaseAnalyticsUtils.SetScreenName(this, "Apply SMR");
+                }
+                else if (SMR_ACTION == Constants.SMR_DISABLE_FLAG)
+                {
+                    FirebaseAnalyticsUtils.SetScreenName(this, "SMR Termination");
+                }
+                else
+                {
+                    FirebaseAnalyticsUtils.SetScreenName(this, "Apply SMR");
+                }
             }
             catch (Exception e)
             {

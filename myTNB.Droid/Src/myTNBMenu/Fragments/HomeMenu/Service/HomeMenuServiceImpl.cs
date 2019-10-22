@@ -56,5 +56,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Service
         {
             return getIsSmrApplyAllowedApi.GetIsSmrApplyAllowed(request, new System.Threading.CancellationToken());
         }
+
+        public Task<SummaryDashBoardResponse> GetLinkedSummaryInfoQuery(SummaryDashBordRequest request, System.Threading.CancellationToken token)
+        {
+            return summaryDashboardInfoApi.GetLinkedAccountsSummaryInfo(request, token);
+        }
     }
 }
