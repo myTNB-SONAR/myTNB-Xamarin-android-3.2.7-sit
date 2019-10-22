@@ -19,6 +19,7 @@ using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
+using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.SSMRMeterHistory.Adapter;
 using myTNB_Android.Src.SSMRTerminate.MVP;
 using myTNB_Android.Src.Utils;
@@ -542,7 +543,10 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 accountData.AddStreet = eligibleAccount.accountAddress;
                 accountData.AccountNickName = eligibleAccount.accountName;
                 SMR_ACTION_KEY = Constants.SMR_DISABLE_FLAG;
-                this.mPresenter.GetCARegisteredContactInfoAsync(accountData);
+                Intent SSMRTerminateActivity = new Intent(this, typeof(SSMRTerminateActivity));
+                SSMRTerminateActivity.PutExtra("SMR_ACTION", SMR_ACTION_KEY);
+                SSMRTerminateActivity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+                StartActivity(SSMRTerminateActivity);
             }
         }
 
@@ -631,6 +635,49 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         public void EnableButton()
         {
             this.SetIsClicked(false);
+        }
+
+        public void ShowContactNotAvailableTooltip(string title, string content, string cta)
+        {
+            ContactNotAvailableModel notavailableTooltipModel = new ContactNotAvailableModel();
+
+            if (string.IsNullOrEmpty(title))
+            {
+                notavailableTooltipModel.Title = GetString(Resource.String.smr_contact_not_available_title);
+            }
+            else
+            {
+                notavailableTooltipModel.Title = title;
+            }
+
+            if (string.IsNullOrEmpty(content))
+            {
+                notavailableTooltipModel.Content = GetString(Resource.String.smr_contact_not_available_message);
+            }
+            else
+            {
+                notavailableTooltipModel.Content = content;
+            }
+
+            if (string.IsNullOrEmpty(cta))
+            {
+                notavailableTooltipModel.CTA = GetString(Resource.String.smr_contact_not_available_btn);
+            }
+            else
+            {
+                notavailableTooltipModel.CTA = cta;
+            }
+
+            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                .SetTitle(notavailableTooltipModel.Title)
+                .SetMessage(notavailableTooltipModel.Content)
+                .SetCTALabel(notavailableTooltipModel.CTA)
+                .Build().Show();
+        }
+
+        public string GetSMRActionKey()
+        {
+            return SMR_ACTION_KEY;
         }
     }
 }

@@ -169,6 +169,9 @@
                 public const string SSMRMeterReadingOnePhaseWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead OnePhase";
                 public const string SSMRMeterReadingThreePhaseWalkthrough = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead ThreePhase";
                 public const string BillDetailsTooltip = "/sitecore/content/myTNBapp/Contents/Itemised Billing Tooltip";
+
+                public const string SSMRMeterReadingOnePhaseWalkthroughOCROff = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead OnePhase OCR Off";
+                public const string SSMRMeterReadingThreePhaseWalkthroughOCROff = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead ThreePhase OCR Off";
             }
         }
     }

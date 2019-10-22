@@ -39,6 +39,8 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
         private AccountData selectedAccount;
 
+        private string SMR_ACTION = "";
+
 
         public override int ResourceId()
         {
@@ -53,7 +55,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             TextViewUtils.SetMuseoSans500Typeface(txtTitleInfoError, btnBackToHomeFailed, btnTryAgainFailed);
             TextViewUtils.SetMuseoSans300Typeface(txtMessageInfoError);
 
-            btnBackToHomeFailed.Text = "Back to My Usage";
+            btnBackToHomeFailed.Text = "Back to Home";
             btnTryAgainFailed.Text = "Try Again";
 
             Bundle extras = Intent.Extras;
@@ -88,24 +90,94 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             {
                 selectedAccount = JsonConvert.DeserializeObject<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
             }
+
+            if (extras != null && extras.ContainsKey("SMR_ACTION"))
+            {
+                SMR_ACTION = extras.GetString("SMR_ACTION");
+                if (!string.IsNullOrEmpty(SMR_ACTION))
+                {
+                    if (SMR_ACTION == Constants.SMR_ENABLE_FLAG)
+                    {
+                        btnBackToHomeFailed.Text = "Back to Home";
+                        btnTryAgainFailed.Text = "Try Again";
+                    }
+                    else if (SMR_ACTION == Constants.SMR_DISABLE_FLAG)
+                    {
+                        btnBackToHomeFailed.Text = "Back to Reading History";
+                        btnTryAgainFailed.Text = "Try Again";
+                    }
+                }
+            }
         }
 
         [OnClick(Resource.Id.btnBackToHomeFailed)]
         void OnBackToHome(object sender, EventArgs eventArgs)
         {
-            if (selectedAccount != null)
+            if (!this.GetIsClicked())
             {
-                CustomerBillingAccount.RemoveSelected();
-                CustomerBillingAccount.SetSelected(selectedAccount.AccountNum);
+                this.SetIsClicked(true);
+                if (SMR_ACTION == Constants.SMR_ENABLE_FLAG)
+                {
+                    Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+                    DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                    StartActivity(DashboardIntent);
+                }
+                else if (SMR_ACTION == Constants.SMR_DISABLE_FLAG)
+                {
+                    if (selectedAccount != null)
+                    {
+                        CustomerBillingAccount.RemoveSelected();
+                        CustomerBillingAccount.SetSelected(selectedAccount.AccountNum);
+                    }
+                    SetResult(Result.Ok);
+                    Finish();
+                }
+                else
+                {
+                    Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+                    DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                    StartActivity(DashboardIntent);
+                }
             }
-            SetResult(Result.Ok);
-            Finish();
         }
 
         [OnClick(Resource.Id.btnTryAgainFailed)]
         void OnTryAgain(object sender, EventArgs eventArgs)
         {
-            OnBackPressed();
+            if (!this.GetIsClicked())
+            {
+                this.SetIsClicked(true);
+                OnBackPressed();
+            }
+        }
+
+        protected override void OnResume()
+        {
+            base.OnResume();
+            try
+            {
+                if (SMR_ACTION == Constants.SMR_ENABLE_FLAG)
+                {
+                    FirebaseAnalyticsUtils.SetScreenName(this, "Apply SMR Failed");
+                }
+                else if (SMR_ACTION == Constants.SMR_DISABLE_FLAG)
+                {
+                    FirebaseAnalyticsUtils.SetScreenName(this, "SMR Termination Failed");
+                }
+                else
+                {
+                    FirebaseAnalyticsUtils.SetScreenName(this, "Apply SMR Failed");
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        protected override void OnPause()
+        {
+            base.OnPause();
         }
     }
 }

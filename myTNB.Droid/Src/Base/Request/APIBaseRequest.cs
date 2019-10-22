@@ -27,9 +27,9 @@ namespace myTNB_Android.Src.Base.Request
             ft = FirebaseTokenEntity.GetLatest().FBToken;
             lang = "EN";
             sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID;
-            sec_auth_k2 = "test";
-            ses_param1 = "test";
-            ses_param2 = "test";
+            sec_auth_k2 = "";
+            ses_param1 = "";
+            ses_param2 = "";
         }
 
     }
