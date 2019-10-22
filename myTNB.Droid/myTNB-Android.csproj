@@ -3206,6 +3206,7 @@
     <AndroidResource Include="Resources\drawable-xhdpi\smr_history_empty_icon.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\smr_history_empty_icon.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\smr_history_empty_icon.png" />
+    <Compile Include="Src\Base\Activity\BaseActivityCustom.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

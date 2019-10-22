@@ -35,7 +35,7 @@ using static myTNB_Android.Src.MyTNBService.Model.AccountBillPayHistoryModel;
 namespace myTNB_Android.Src.Billing.MVP
 {
     [Activity(Label = "Bill Details", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
-    public class BillingDetailsActivity : BaseToolbarAppCompatActivity, BillingDetailsContract.IView
+    public class BillingDetailsActivity : BaseActivityCustom, BillingDetailsContract.IView
     {
         [BindView(Resource.Id.accountName)]
         TextView accountName;
@@ -97,6 +97,7 @@ namespace myTNB_Android.Src.Billing.MVP
         BillingDetailsContract.IPresenter billingDetailsPresenter;
         private LoadingOverlay loadingOverlay;
 		private bool fromSelectAccountPage;
+        private const string PAGE_ID = "Bills";
 
         [OnClick(Resource.Id.btnViewBill)]
         void OnViewBill(object sender, EventArgs eventArgs)
@@ -388,6 +389,11 @@ namespace myTNB_Android.Src.Billing.MVP
                 this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }
