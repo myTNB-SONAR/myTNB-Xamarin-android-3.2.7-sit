@@ -52,9 +52,6 @@ namespace myTNB_Android.Src.Login.Activity
         [BindView(Resource.Id.txtPassword)]
         EditText txtPassword;
 
-        [BindView(Resource.Id.txtWelcomeBack)]
-        TextView txtWelcomeBack;
-
         [BindView(Resource.Id.txtAccountLogin)]
         TextView txtAccountLogin;
 
@@ -75,6 +72,12 @@ namespace myTNB_Android.Src.Login.Activity
 
         [BindView(Resource.Id.chk_remember_me)]
         CheckBox chkRemeberMe;
+
+        [BindView(Resource.Id.img_logo)]
+        ImageView img_logo;
+
+        [BindView(Resource.Id.img_display)]
+        ImageView img_display;
 
         private LoadingOverlay loadingOverlay;
 
@@ -100,12 +103,10 @@ namespace myTNB_Android.Src.Login.Activity
                     .SetCancelable(false)
                     .Create();
 
-                TextViewUtils.SetMuseoSans500Typeface(txtWelcomeBack);
-                TextViewUtils.SetMuseoSans300Typeface(txtAccountLogin, txtEmail, txtPassword, txtNoAccount, txtForgotPassword);
-                TextViewUtils.SetMuseoSans500Typeface(txtRegisterAccount);
+                TextViewUtils.SetMuseoSans300Typeface(chkRemeberMe, txtEmail, txtPassword, txtNoAccount);
+                TextViewUtils.SetMuseoSans500Typeface(txtRegisterAccount, txtAccountLogin, txtForgotPassword);
                 TextViewUtils.SetMuseoSans500Typeface(btnLogin);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail, txtInputLayoutPassword);
-                TextViewUtils.SetMuseoSans500Typeface(chkRemeberMe);
 
                 txtPassword.TextChanged += TextChange;
                 txtPassword.AddTextChangedListener(new InputFilterFormField(txtPassword, txtInputLayoutPassword));
@@ -113,8 +114,19 @@ namespace myTNB_Android.Src.Login.Activity
 
                 ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(this);
                 string savedEmail = UserSessions.GetUserEmail(sharedPreferences);
+
+                if (!string.IsNullOrEmpty(savedEmail))
+                {
+                    chkRemeberMe.Checked = true;
+                }
+                else
+                {
+                    chkRemeberMe.Checked = false;
+                }
+
                 txtEmail.Append(savedEmail);
 
+                GenerateTopLayoutLayout();
 
 
                 if (Android.OS.Build.Manufacturer.ToLower() == "samsung")
@@ -164,12 +176,49 @@ namespace myTNB_Android.Src.Login.Activity
             return Window.DecorView.RootView.IsShown && !IsFinishing;
         }
 
+        private void GenerateTopLayoutLayout()
+        {
+            try
+            {
+                LinearLayout.LayoutParams currentLogoImg = img_logo.LayoutParameters as LinearLayout.LayoutParams;
+
+                int imgWidth = GetDeviceHorizontalScaleInPixel(0.125f);
+
+                currentLogoImg.Height = imgWidth;
+                currentLogoImg.Width = imgWidth;
+
+                LinearLayout.LayoutParams currentDisplayLogoImg = img_display.LayoutParameters as LinearLayout.LayoutParams;
+
+                int imgDisplayWidth = GetDeviceHorizontalScaleInPixel(0.634f);
+
+                float heightRatio = 132f / 203f;
+                int imgDisplayHeight = (int)(imgDisplayWidth * (heightRatio));
+
+                currentDisplayLogoImg.Height = imgDisplayHeight;
+                currentDisplayLogoImg.Width = imgDisplayWidth;
+
+            }
+            catch (Exception ex)
+            {
+                Utility.LoggingNonFatalError(ex);
+            }
+        }
+
         protected override void OnResume()
         {
             base.OnResume();
             try
             {
                 FirebaseAnalyticsUtils.SetScreenName(this, "Login");
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            try
+            {
+                SetStatusBarBackground(Resource.Drawable.bg_smr);
             }
             catch (Exception e)
             {

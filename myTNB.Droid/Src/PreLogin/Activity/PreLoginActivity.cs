@@ -410,7 +410,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 currentCard.TopMargin = (int)DPUtils.ConvertDPToPx(12f);
                 currentCard.LeftMargin = (int)DPUtils.ConvertDPToPx(16f);
                 currentCard.RightMargin = GetDeviceHorizontalScaleInPixel(0.038f);
-                currentCard.BottomMargin = (int)DPUtils.ConvertDPToPx(6f);
+                currentCard.BottomMargin = (int)DPUtils.ConvertDPToPx(8f);
 
                 float imgHeightRatio = 28f / 88f;
                 int imgHeight = (int)(cardWidth * (imgHeightRatio));
@@ -439,7 +439,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 currentCard.Width = cardWidth;
                 currentCard.TopMargin = (int)DPUtils.ConvertDPToPx(12f);
                 currentCard.RightMargin = GetDeviceHorizontalScaleInPixel(0.038f);
-                currentCard.BottomMargin = (int)DPUtils.ConvertDPToPx(6f);
+                currentCard.BottomMargin = (int)DPUtils.ConvertDPToPx(8f);
 
                 float imgHeightRatio = 28f / 88f;
                 int imgHeight = (int)(cardWidth * (imgHeightRatio));
@@ -468,7 +468,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 currentCard.Width = cardWidth;
                 currentCard.TopMargin = (int)DPUtils.ConvertDPToPx(12f);
                 currentCard.RightMargin = (int)DPUtils.ConvertDPToPx(16f);
-                currentCard.BottomMargin = (int)DPUtils.ConvertDPToPx(6f);
+                currentCard.BottomMargin = (int)DPUtils.ConvertDPToPx(8f);
 
                 float imgHeightRatio = 28f / 88f;
                 int imgHeight = (int)(cardWidth * (imgHeightRatio));
