@@ -22,9 +22,11 @@ using UIKit;  namespace myTNB {
         readonly static UIColor _grey = new UIColor(red: 0.55f, green: 0.55f, blue: 0.55f, alpha: 1.0f);
         readonly static UIColor _babyBlue = new UIColor(red: 0.61f, green: 0.82f, blue: 1f, alpha: 1.0f);
         readonly static UIColor _waterBlue = new UIColor(red: 0.11f, green: 0.47f, blue: 0.79f, alpha: 1.0f);
+        readonly static UIColor _waterBlueTwo = new UIColor(red: 0.11f, green: 0.47f, blue: 0.79f, alpha: 1.0f);
         readonly static UIColor _clearBlue = new UIColor(red: 0.16f, green: 0.59f, blue: 0.98f, alpha: 1.0f);
         readonly static UIColor _powderBlue = new UIColor(red: 0.75f, green: 0.85f, blue: 0.95f, alpha: 1.0f);
-        readonly static UIColor _whiteTwo = new UIColor(red: 0.82f, green: 0.82f, blue: 0.82f, alpha: 1.0f);
+        readonly static UIColor _whiteTwo = new UIColor(red: 0.97f, green: 0.97f, blue: 0.97f, alpha: 1.0f);
+        readonly static UIColor _whiteThree = new UIColor(red: 0.98f, green: 0.98f, blue: 0.98f, alpha: 1.0f);
         readonly static UIColor _greyishBrown = new UIColor(red: 0.26f, green: 0.25f, blue: 0.25f, alpha: 1.0f);
         readonly static UIColor _charcoalGrey = new UIColor(red: 0.29f, green: 0.29f, blue: 0.29f, alpha: 1.0f);
         readonly static UIColor _brownGrey = new UIColor(red: 0.59f, green: 0.59f, blue: 0.59f, alpha: 1.0f);
@@ -35,6 +37,7 @@ using UIKit;  namespace myTNB {
         readonly static UIColor _veryLightPinkFour = new UIColor(red: 0.95f, green: 0.95f, blue: 0.95f, alpha: 1.0f);
         readonly static UIColor _veryLightPinkFive = new UIColor(red: 0.83f, green: 0.83f, blue: 0.83f, alpha: 1.0f);
         readonly static UIColor _veryLightPinkSix = new UIColor(red: 0.93f, green: 0.93f, blue: 0.93f, alpha: 1.0f);
+        readonly static UIColor _veryLightPinkSeven = new UIColor(red: 0.82f, green: 0.82f, blue: 0.82f, alpha: 1.0f);
         readonly static UIColor _black60 = new UIColor(red: 0.00f, green: 0.00f, blue: 0.00f, alpha: 0.6f);
         readonly static UIColor _veryLightPink = new UIColor(red: 0.89f, green: 0.89f, blue: 0.89f, alpha: 1.0f);
         readonly static UIColor _brownGreyTwo = new UIColor(red: 0.59f, green: 0.59f, blue: 0.59f, alpha: 1.0f);
@@ -232,6 +235,14 @@ using UIKit;  namespace myTNB {
             }
         }
 
+        public static UIColor WaterBlueTwo
+        {
+            get
+            {
+                return _waterBlueTwo;
+            }
+        }
+
         public static UIColor ClearBlue
         {
             get
@@ -247,11 +258,20 @@ using UIKit;  namespace myTNB {
                 return _powderBlue;
             }
         }
+
         public static UIColor WhiteTwo
         {
             get
             {
                 return _whiteTwo;
+            }
+        }
+
+        public static UIColor WhiteThree
+        {
+            get
+            {
+                return _whiteThree;
             }
         }
 
@@ -442,5 +462,10 @@ using UIKit;  namespace myTNB {
         public static UIColor PaleGreyFour
         {
             get { return _paleGreyFour; }
+        }
+
+        public static UIColor VeryLightPinkSeven
+        {
+            get { return _veryLightPinkSeven; }
         }
     } }

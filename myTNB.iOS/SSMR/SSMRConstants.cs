@@ -87,6 +87,7 @@ namespace myTNB.SSMR
         public static string IMG_ReadingHistoryBanner = "SSMR-Reading-History-Banner";
         public static string IMG_Refresh = "SSMR-Refresh";
         public static string IMG_NoHistory = "SSMR-No-History";
+        public static string IMG_CameraIcon = "Camera-Icon-Green";
 
         //Error
         public static string I18N_InvalidEmail = "invalid_email";
@@ -136,6 +137,7 @@ namespace myTNB.SSMR
         public static string I18N_PreviousReading = "previousMeterReading";
         public static string I18N_SubmitReading = "submitReading";
         public static string I18N_TakeOrUploadPhoto = "takeOrUploadPhoto";
+        public static string I18N_ManualInputTitle = "manualInputTitle";
 
         //Patterns
         public static string Pattern_ImageName = "MYTNBAPP_SSMR_OCR_{0}_{1}";

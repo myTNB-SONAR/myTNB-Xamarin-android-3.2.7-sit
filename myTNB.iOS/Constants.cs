@@ -59,6 +59,7 @@
         public static string Common_SaveChanges = "saveChanges";
         public static string Common_English = "english";
         public static string Common_Bahasa = "bahasa";
+        public static string Common_GotIt = "gotIt";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";

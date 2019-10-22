@@ -34,7 +34,7 @@ namespace myTNB
 		public void CreateTextFieldLeftView(UITextField textField, string imageName)
         {
             var leftView = new UIImageView(UIImage.FromBundle(imageName));
-            leftView.Frame = new CGRect(leftView.Frame.X, leftView.Frame.Y, leftView.Frame.Width + 10, leftView.Frame.Height);
+            leftView.Frame = new CGRect(leftView.Frame.X, leftView.Frame.Y, leftView.Frame.Width + ScaleUtility.GetScaledWidth(6F), leftView.Frame.Height);
             leftView.ContentMode = UIViewContentMode.Left;
             textField.LeftView = leftView;
             textField.LeftViewMode = UITextFieldViewMode.UnlessEditing;

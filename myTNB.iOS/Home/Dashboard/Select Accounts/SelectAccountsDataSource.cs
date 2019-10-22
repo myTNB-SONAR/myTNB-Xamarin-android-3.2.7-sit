@@ -77,18 +77,10 @@ namespace myTNB.Dashboard.SelectAccounts
 
         private string GetIcon(CustomerAccountRecordModel account)
         {
-            string iconName = DashboardHomeConstants.Img_SMIcon;
+            string iconName = string.Empty;
             if (account.IsREAccount)
             {
-                iconName = DashboardHomeConstants.Img_REIcon;
-            }
-            else if (account.IsNormalMeter && account.IsSSMR && account.IsOwnedAccount)
-            {
-                iconName = DashboardHomeConstants.Img_SMRIcon;
-            }
-            else if (account.IsNormalMeter)
-            {
-                iconName = DashboardHomeConstants.Img_NormalIcon;
+                iconName = DashboardHomeConstants.Img_RELeaf;
             }
             return iconName;
         }

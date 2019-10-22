@@ -76,7 +76,10 @@
     "setAppLanguage": "Set App Langugage",
     "setAppLanguageDescription": "Select Your Preferred Language",
     "english": "English",
-    "bahasa": "Bahasa Malaysia"
+    "bahasa": "Bahasa Malaysia",
+    "saveChanges": "Save Changes",
+    "gotIt": "Got It!",
+    "login": "Log In"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -470,5 +473,23 @@
     "title": "Akaun Saya",
     "detailSectionTitle": "myTNB Akaun",
     "accountSectionTitle": "Akaun Bekalan Elektrik TNB"
+  },
+  "Prelogin": {
+    "welcomeTitle": "Welcome to myTNB",
+    "tagline": "A whole new world with shockingly amazing possibilities.",
+    "register": "Register",
+    "login": "Login",
+    "quickAccess": "Quick Access",
+    "findUs": "Find Us",
+    "callUs": "Call Us",
+    "feedback": "Give Us Feedback"
+  },
+  "Login": {
+    "title": "myTNB Account Login",
+    "rememberEmail": "Remember my email",
+    "forgotPassword": "Forgot your password?",
+    "dontHaveAcct": "Don’t have a myTNB account?",
+    "registerAcctNow": "Register for an account now.",
+    "login": "Log In"
   }
 }

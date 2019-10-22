@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using CoreGraphics;
 using Foundation;
 using myTNB.Model;
@@ -11,16 +12,17 @@ namespace myTNB
 {
     public class PaginatedTooltipComponent : BaseComponent
     {
-        private UIView _parentView, _containerView, _toolTipFooterView;
-        private UIScrollView _scrollView;
-        private UILabel _proceedLabel;
-        private int _currentPageIndex;
-        private List<SSMRMeterReadWalkthroughModel> _ssmrData;
-        private List<SSMRMeterReadWalkthroughModel> _ssmrDefaultData;
-        private List<BillsTooltipModel> _billsTooltipData;
-        private List<SMRMROValidateRegisterDetailsInfoModel> _previousMeterList;
-        private UIPageControl _pageControl;
-        private bool isSSMRData;
+        UIView _parentView, _containerView, _toolTipFooterView;
+        UIScrollView _scrollView;
+        UILabel _proceedLabel;
+        int _currentPageIndex;
+        List<SSMRMeterReadWalkthroughModel> _ssmrData;
+        List<SSMRMeterReadWalkthroughModel> _ssmrDefaultData;
+        List<BillsTooltipModel> _billsTooltipData;
+        List<SMRMROValidateRegisterDetailsInfoModel> _previousMeterList;
+        UIPageControl _pageControl;
+        bool isSSMRData;
+        public Func<string, string> GetI18NValue;
 
         public PaginatedTooltipComponent(UIView parent)
         {
@@ -82,10 +84,36 @@ namespace myTNB
                 UIView viewContainer = new UIView(_scrollView.Bounds);
                 viewContainer.BackgroundColor = UIColor.White;
 
-                UIImage displayImage = UIImage.FromBundle(_billsTooltipData[i].Image ?? string.Empty) ?? UIImage.FromBundle(string.Empty);
-                if (_billsTooltipData[i].IsSitecoreData && _billsTooltipData[i].NSDataImage != null)
+                UIImage displayImage;
+                if (_billsTooltipData[i].IsSitecoreData)
                 {
-                    displayImage = UIImage.LoadFromData(_billsTooltipData[i].NSDataImage);
+                    if (string.IsNullOrEmpty(_billsTooltipData[i].Image) || string.IsNullOrWhiteSpace(_billsTooltipData[i].Image))
+                    {
+                        displayImage = UIImage.FromBundle(string.Empty);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            displayImage = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(_billsTooltipData[i].Image)));
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine("Image load Error: " + e.Message);
+                            displayImage = UIImage.FromBundle(string.Empty);
+                        }
+                    }
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(_billsTooltipData[i].Image) || string.IsNullOrWhiteSpace(_billsTooltipData[i].Image))
+                    {
+                        displayImage = UIImage.FromBundle(string.Empty);
+                    }
+                    else
+                    {
+                        displayImage = UIImage.FromBundle(_billsTooltipData[i].Image);
+                    }
                 }
 
                 nfloat origImageRatio = 180.0f / 284.0f;
@@ -213,7 +241,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = "Got It!",//GetI18NValue(SSMRConstants.I18N_ImReady),
+                Text = LanguageUtility.GetCommonI18NValue(Constants.Common_GotIt),
                 TextAlignment = UITextAlignment.Center,
                 UserInteractionEnabled = true
             };
@@ -240,8 +268,11 @@ namespace myTNB
         public void SetSSMRData(List<SSMRMeterReadWalkthroughModel> data, List<SSMRMeterReadWalkthroughModel> defaultData)
         {
             _ssmrDefaultData = defaultData;
-            isSSMRData = true;
-            _ssmrData = data ?? defaultData;
+            if (data != null)
+            {
+                _ssmrData = data;
+                isSSMRData = true;
+            }
         }
 
         public void SetPreviousMeterData(List<SMRMROValidateRegisterDetailsInfoModel> data)
@@ -262,18 +293,43 @@ namespace myTNB
                 UIView viewContainer = new UIView(_scrollView.Bounds);
                 viewContainer.BackgroundColor = UIColor.White;
 
-                UIImage displayImage = UIImage.FromBundle(string.Empty);
-                if (_ssmrDefaultData != null)
+                UIImage displayImage;
+                if (_ssmrData[i].IsSitecoreData)
                 {
-                    if (i > -1 && i < _ssmrDefaultData.Count)
+                    if (string.IsNullOrEmpty(_ssmrData[i].Image) || string.IsNullOrWhiteSpace(_ssmrData[i].Image))
                     {
-                        displayImage = UIImage.FromBundle(_ssmrDefaultData[i].Image ?? string.Empty);
+                        displayImage = UIImage.FromBundle(string.Empty);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            displayImage = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(_ssmrData[i].Image)));
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine("Image load Error: " + e.Message);
+                            displayImage = UIImage.FromBundle(string.Empty);
+                            if (_ssmrDefaultData != null)
+                            {
+                                if (i > -1 && i < _ssmrDefaultData.Count)
+                                {
+                                    displayImage = UIImage.FromBundle(_ssmrDefaultData[i].Image);
+                                }
+                            }
+                        }
                     }
                 }
-
-                if (_ssmrData[i].IsSitecoreData && _ssmrData[i].NSDataImage != null)
+                else
                 {
-                    displayImage = UIImage.LoadFromData(_ssmrData[i].NSDataImage);
+                    if (string.IsNullOrEmpty(_ssmrData[i].Image) || string.IsNullOrWhiteSpace(_ssmrData[i].Image))
+                    {
+                        displayImage = UIImage.FromBundle(string.Empty);
+                    }
+                    else
+                    {
+                        displayImage = UIImage.FromBundle(_ssmrData[i].Image);
+                    }
                 }
 
                 nfloat origImageRatio = 155.0f / 284.0f;
@@ -372,8 +428,9 @@ namespace myTNB
                 }
             }
 
-            UIView line = new UIView(new CGRect(0, _pageControl.Frame.GetMaxY() + GetScaledHeight(16f)
-                , _toolTipFooterView.Frame.Width, GetScaledHeight(1f)))
+            nfloat yPos = (_pageControl != null ? _pageControl.Frame.GetMaxY() : 0) + GetScaledHeight(16f);
+
+            UIView line = new UIView(new CGRect(0, yPos, _toolTipFooterView.Frame.Width, GetScaledHeight(1f)))
             {
                 BackgroundColor = MyTNBColor.VeryLightPink
             };
@@ -384,7 +441,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = "I'm Ready!",//GetI18NValue(SSMRConstants.I18N_ImReady),
+                Text = GetI18NValue(SSMRConstants.I18N_ImReady),
                 TextAlignment = UITextAlignment.Center,
                 UserInteractionEnabled = true
             };

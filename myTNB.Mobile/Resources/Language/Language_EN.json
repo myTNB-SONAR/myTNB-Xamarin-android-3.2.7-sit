@@ -79,7 +79,9 @@
     "setAppLanguageDescription": "Select Your Preferred Language",
     "english": "English",
     "bahasa": "Bahasa Malaysia",
-    "saveChanges": "Save Changes"
+    "saveChanges": "Save Changes",
+    "gotIt": "Got It!",
+    "login": "Log In"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -216,7 +218,8 @@
     "note": "Note: Please <b>round up</b> the numbers if the reading values are showing decimal points on your meter.",
     "previousMeterReading": "Previous Meter Reading",
     "submitReading": "Submit Reading",
-    "takeOrUploadPhoto": "Take Or Upload Photo"
+    "takeOrUploadPhoto": "Take Or Upload Photo",
+    "manualInputTitle": "Please enter your meter reading for the unit(s) below."
   },
   "SSMRCaptureMeter": {
     "ocrReading": "Please wait for a moment while we read your photos…",
@@ -473,5 +476,23 @@
     "title": "My Account",
     "detailSectionTitle": "myTNB Account",
     "accountSectionTitle": "TNB Electricity Supply Accounts"
+  },
+  "Prelogin": {
+    "welcomeTitle": "Welcome to myTNB",
+    "tagline": "A whole new world with shockingly amazing possibilities.",
+    "register": "Register",
+    "login": "Login",
+    "quickAccess": "Quick Access",
+    "findUs": "Find Us",
+    "callUs": "Call Us",
+    "feedback": "Give Us Feedback"
+  },
+  "Login": {
+    "title": "myTNB Account Login",
+    "rememberEmail": "Remember my email",
+    "forgotPassword": "Forgot your password?",
+    "dontHaveAcct": "Don’t have a myTNB account?",
+    "registerAcctNow": "Register for an account now.",
+    "login": "Log In"
   }
 }

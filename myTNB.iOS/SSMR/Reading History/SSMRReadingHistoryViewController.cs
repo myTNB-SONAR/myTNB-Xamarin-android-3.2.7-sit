@@ -439,24 +439,34 @@ namespace myTNB
                     {
                         ActivityIndicator.Show();
                         await GetContactInfo();
-                        if (_contactDetails != null && _contactDetails.d != null
-                        && _contactDetails.d.IsSuccess && _contactDetails.d.data != null)
+                        if (_contactDetails != null && _contactDetails.d != null)
                         {
-                            _rootNavigation = true;
-                            UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
-                            SSMRApplicationViewController viewController =
-                                storyBoard.InstantiateViewController("SSMRApplicationViewController") as SSMRApplicationViewController;
-                            if (viewController != null)
+                            if (_contactDetails.d.IsSuccess && _contactDetails.d.data != null)
                             {
-                                viewController.IsApplication = isEnable;
-                                viewController.SelectedAccount = _currAcc;
-                                viewController.ContactDetails = _contactDetails;
-                                NavigationController.PushViewController(viewController, true);
+                                _rootNavigation = true;
+                                UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+                                SSMRApplicationViewController viewController =
+                                    storyBoard.InstantiateViewController("SSMRApplicationViewController") as SSMRApplicationViewController;
+                                if (viewController != null)
+                                {
+                                    viewController.IsApplication = isEnable;
+                                    viewController.SelectedAccount = _currAcc;
+                                    viewController.ContactDetails = _contactDetails;
+                                    NavigationController.PushViewController(viewController, true);
+                                }
+                            }
+                            else if (_contactDetails.d.IsBusinessFail)
+                            {
+                                DisplayCustomAlert(_contactDetails.d.DisplayTitle, _contactDetails.d.DisplayMessage, _contactDetails.d.RefreshBtnText, null);
+                            }
+                            else
+                            {
+                                DisplayServiceError(_contactDetails?.d?.ErrorMessage);
                             }
                         }
                         else
                         {
-                            DisplayServiceError(_contactDetails?.d?.ErrorMessage);
+                            DisplayServiceError(GetErrorI18NValue(Constants.Error_DefaultServiceErrorMessage));
                         }
                         ActivityIndicator.Hide();
                     }

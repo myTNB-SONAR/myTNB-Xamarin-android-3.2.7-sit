@@ -361,8 +361,11 @@ namespace myTNB
                 if (date != null)
                 {
                     date.Font = isSelected ? TNBFont.MuseoSans_10_500 : TNBFont.MuseoSans_10_300;
-                    nfloat lblDateWidth = date.GetLabelWidth(GetWidthByScreenSize(100));
-                    date.Frame = new CGRect((segmentView.Frame.Width - lblDateWidth) / 2, date.Frame.Y, lblDateWidth, date.Frame.Height);
+                    if (date.Text != null)
+                    {
+                        nfloat lblDateWidth = date.GetLabelWidth(GetWidthByScreenSize(100));
+                        date.Frame = new CGRect((segmentView.Frame.Width - lblDateWidth) / 2, date.Frame.Y, lblDateWidth, date.Frame.Height);
+                    }
                 }
             }
             OnBarSelected(index);
