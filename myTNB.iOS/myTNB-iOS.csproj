@@ -2590,6 +2590,7 @@
     <Compile Include="Customs\CustomUITableViewCell.cs" />
     <Compile Include="Login\PreloginConstants.cs" />
     <Compile Include="Login\LoginConstants.cs" />
+    <Compile Include="Login\Forgot Password\ForgotPasswordConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

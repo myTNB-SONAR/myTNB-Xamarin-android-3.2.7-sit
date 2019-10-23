@@ -478,18 +478,23 @@
     "welcomeTitle": "Welcome to myTNB",
     "tagline": "A whole new world with shockingly amazing possibilities.",
     "register": "Register",
-    "login": "Login",
+    "login": "Log masuk",
     "quickAccess": "Quick Access",
     "findUs": "Find Us",
     "callUs": "Call Us",
     "feedback": "Give Us Feedback"
   },
   "Login": {
-    "title": "myTNB Account Login",
-    "rememberEmail": "Remember my email",
-    "forgotPassword": "Forgot your password?",
-    "dontHaveAcct": "Don’t have a myTNB account?",
-    "registerAcctNow": "Register for an account now.",
-    "login": "Log In"
+    "title": "Log Masuk Akaun myTNB",
+    "rememberEmail": "Ingat alamat emel saya",
+    "forgotPassword": "Lupa Kata Laluan?",
+    "dontHaveAcct": "Tiada akaun myTNB?",
+    "registerAcctNow": "Daftar sekarang!",
+    "login": "Log masuk"
+  },
+  "ResetPassword": {
+    "title": "Set Semula Kata Laluan",
+    "subTitle": "Sila masukkan emel anda.",
+    "details": "Kod pengesahan 4 digit akan dihantar ke alamat emel ini."
   }
 }

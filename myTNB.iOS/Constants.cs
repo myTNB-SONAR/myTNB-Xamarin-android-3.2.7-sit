@@ -60,6 +60,7 @@
         public static string Common_English = "english";
         public static string Common_Bahasa = "bahasa";
         public static string Common_GotIt = "gotIt";
+        public static string Common_Submit = "submit";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";
@@ -68,6 +69,7 @@
         public static string Error_AmountMessage = "invalid_amountMessage";
         public static string Error_MinimumPayAmount = "minimumPayAmount";
         public static string Error_MinimumMandatoryAmount = "minimumMandatoryPayment";
+        public static string Error_InvalidEmailAddress = "invalid_email";
 
         //Table View Cell
         public static string Cell_NoHistoryData = "noHistoryDataTableViewCell";

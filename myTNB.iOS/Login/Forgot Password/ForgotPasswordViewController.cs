@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 using Foundation;
 using CoreGraphics;
 using myTNB.DataManager;
+using myTNB.Login.ForgotPassword;
 
 namespace myTNB
 {
-    public partial class ForgotPasswordViewController : UIViewController
+    public partial class ForgotPasswordViewController : CustomUIViewController
     {
         UILabel lblEmailTitle;
         UITextField txtFieldEmail;
@@ -23,15 +24,14 @@ namespace myTNB
         BaseResponseModel _resetCodeList = new BaseResponseModel();
 
         const string EMAIL_PATTERN = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
-        const string TOKEN_PATTERN = @"^[0-9]{4,4}$";
         string _email = string.Empty;
-        string _token = string.Empty;
 
         public override void ViewDidLoad()
         {
+            PageName = ForgotPasswordConstants.Pagename_ResetPassword;
             base.ViewDidLoad();
-            this.Title = "Login_ResetPasswordTitle".Translate();
-            this.NavigationItem.HidesBackButton = true;
+            Title = GetI18NValue(ForgotPasswordConstants.I18N_Title);
+            NavigationItem.HidesBackButton = true;
 
             InitializedSubViews();
             AddBackButton();
@@ -44,7 +44,7 @@ namespace myTNB
             lblTitle.Frame = new CGRect(18, 19, View.Frame.Width - 36, 18);
             lblTitle.TextColor = MyTNBColor.PowerBlue;
             lblTitle.Font = MyTNBFont.MuseoSans16_500;
-            lblTitle.Text = "Login_EnterEmail".Translate();
+            lblTitle.Text = GetI18NValue(ForgotPasswordConstants.I18N_SubTitle);
 
             lblDescription.Frame = new CGRect(18, 40, View.Frame.Width - 36, 36);
             lblDescription.TextColor = MyTNBColor.TunaGrey();
@@ -52,7 +52,7 @@ namespace myTNB
             lblDescription.TextAlignment = UITextAlignment.Left;
             lblDescription.Lines = 0;
             lblDescription.LineBreakMode = UILineBreakMode.WordWrap;
-            lblDescription.Text = "Login_CodeSentToEmailMessage".Translate();
+            lblDescription.Text = GetI18NValue(ForgotPasswordConstants.I18N_Details);
 
             btnSubmit.Layer.CornerRadius = 5f;
 
@@ -63,18 +63,18 @@ namespace myTNB
             lblEmailTitle = new UILabel(new CGRect(0, 0, viewEmail.Frame.Width, 12));
             lblEmailTitle.Font = MyTNBFont.MuseoSans9_300;
             lblEmailTitle.TextColor = MyTNBColor.SilverChalice;
-            lblEmailTitle.Text = "Common_Email".Translate().ToUpper();
+            lblEmailTitle.Text = GetCommonI18NValue(Constants.Common_Email).ToUpper();
             lblEmailTitle.TextAlignment = UITextAlignment.Left;
 
             lblEmailError = new UILabel(new CGRect(0, 37, viewEmail.Frame.Width, 14));
             lblEmailError.Font = MyTNBFont.MuseoSans9_300;
             lblEmailError.TextColor = MyTNBColor.Tomato;
-            lblEmailError.Text = "Invalid_Email".Translate();
+            lblEmailError.Text = GetErrorI18NValue(Constants.Error_InvalidEmailAddress);
             lblEmailError.TextAlignment = UITextAlignment.Left;
 
             txtFieldEmail = new UITextField(new CGRect(0, 12, viewEmail.Frame.Width, 24));
             txtFieldEmail.AttributedPlaceholder = new NSAttributedString(
-                "Common_Email".Translate().ToUpper()
+                GetCommonI18NValue(Constants.Common_Email).ToUpper()
                 , font: MyTNBFont.MuseoSans16_300
                 , foregroundColor: MyTNBColor.SilverChalice
                 , strokeWidth: 0
@@ -98,7 +98,7 @@ namespace myTNB
             lblEmailTitle.Hidden = true;
             lblEmailError.Hidden = true;
             btnSubmit.Enabled = false;
-            btnSubmit.SetTitle("Common_Submit".Translate(), UIControlState.Normal);
+            btnSubmit.SetTitle(GetCommonI18NValue(Constants.Common_Submit), UIControlState.Normal);
             btnSubmit.BackgroundColor = MyTNBColor.PlatinumGrey;
             btnSubmit.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution()
                 ? 184 : DeviceHelper.GetScaledHeight(136)), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));

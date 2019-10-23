@@ -494,5 +494,10 @@
     "dontHaveAcct": "Don’t have a myTNB account?",
     "registerAcctNow": "Register for an account now.",
     "login": "Log In"
+  },
+  "ResetPassword": {
+    "title": "Reset Password",
+    "subTitle": "Please enter your email address.",
+    "details": "A 4 digit verification code will be sent to this email address."
   }
 }
