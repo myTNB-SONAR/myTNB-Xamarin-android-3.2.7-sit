@@ -7,6 +7,7 @@ using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Text;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -24,7 +25,6 @@ namespace myTNB_Android.Src.Base.Fragments
         private AlertDialog rationaleDialog;
 
         private bool isClicked = false;
-        private Dictionary<string, string> languageKeyValue;
 
         public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -33,8 +33,6 @@ namespace myTNB_Android.Src.Base.Fragments
             {
                 inflateView = inflater.Inflate(ResourceId(), container, false);
                 Cheeseknife.Bind(this, inflateView);
-                string pageId = GetPageId();
-                languageKeyValue = LanguageManager.Instance.GetValuesByPage(GetPageId());
                 EvaluateRequestPermissions();
             }
             catch (Exception e)
@@ -49,8 +47,6 @@ namespace myTNB_Android.Src.Base.Fragments
         /// </summary>
         /// <returns></returns>
         public abstract int ResourceId();
-
-        public abstract string GetPageId();
 
         public override void OnResume()
         {
@@ -462,9 +458,48 @@ namespace myTNB_Android.Src.Base.Fragments
             return IsAdded && IsVisible && !IsDetached && !IsRemoving;
         }
 
+        /// <summary>
+        /// Gets the Page Id. To be implemented by child activity.
+        /// </summary>
+        /// <returns></returns>
+        public abstract string GetPageId();
+
+        /// <summary>
+        /// Gets the label based on selected language.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
         public string GetLabelByLanguage(string key)
         {
-            return languageKeyValue[key];
+            string label = "";
+            try
+            {
+                label = LanguageManager.Instance.GetValuesByPage(GetPageId())[key];
+            }
+            catch (Exception e)
+            {
+                Log.Debug("DEBUG Error: ", e.Message);
+            }
+            return label;
+        }
+
+        /// <summary>
+        /// Gets the common labels
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public string GetLabelCommonByLanguage(string key)
+        {
+            string label = "";
+            try
+            {
+                label = LanguageManager.Instance.GetCommonValuePairs()[key];
+            }
+            catch (Exception e)
+            {
+                Log.Debug("DEBUG Error: ", e.Message);
+            }
+            return label;
         }
     }
 }

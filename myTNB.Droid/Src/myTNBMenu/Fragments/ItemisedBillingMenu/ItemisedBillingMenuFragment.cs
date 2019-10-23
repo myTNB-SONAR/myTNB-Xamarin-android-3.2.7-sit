@@ -256,6 +256,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             accountSelection.Text = mSelectedAccountData.AccountNickName;
             myBillHistoryTitle.Text = GetLabelByLanguage("myHistory");
+            emptyBillingHistoryMessage.Text = GetLabelByLanguage("noHistoryData");
             btnViewDetails.Text = GetLabelByLanguage("viewMore");
             btnPayBill.Text = GetLabelByLanguage("pay");
             if (mPresenter.IsEnableAccountSelection())
@@ -582,13 +583,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             if (isShowRefresh)
             {
                 unavailableBillBannerImg.SetImageResource(Resource.Drawable.bg_application_status);
-                unavailableBillMsg.TextFormatted = GetFormattedText(GetString(Resource.String.unavailable_refresh_message));
+                unavailableBillMsg.TextFormatted = GetFormattedText(GetLabelCommonByLanguage("refreshDescription"));
                 btnRefresh.Visibility = ViewStates.Visible;
             }
             else
             {
                 unavailableBillBannerImg.SetImageResource(Resource.Drawable.downtime_banner);
-                unavailableBillMsg.TextFormatted = GetFormattedText(GetString(Resource.String.unavailable_downtime_message));
+                unavailableBillMsg.TextFormatted = GetFormattedText(GetLabelByLanguage("bcrmDownMessage"));
                 btnRefresh.Visibility = ViewStates.Gone;
             }
         }
