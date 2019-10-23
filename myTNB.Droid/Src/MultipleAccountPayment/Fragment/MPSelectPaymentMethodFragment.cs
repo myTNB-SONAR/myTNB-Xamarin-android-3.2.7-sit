@@ -1003,9 +1003,9 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Fragment
                 if (response != null)
                 {
                     Log.Debug("Initiate Payment Response", "Response Count" + response.ToString());
-                    if (response.requestPayBill.IsError)
+                    if (response.requestPayBill.ErrorCode != "7200")
                     {
-                        ShowErrorMessage(response.requestPayBill.Message);
+                        ShowErrorMessage(response.requestPayBill.DisplayMessage);
                     }
                     else
                     {
