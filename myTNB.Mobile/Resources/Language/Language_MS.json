@@ -88,7 +88,7 @@
     "nickname": "e.g. My House, Parent's House"
   },
   "Error": {
-    "invalid_email": "Invalid email address",
+    "invalid_email": "Format emel tidak sah.",
     "invalid_mobileNumber": "Invalid mobile number",
     "minimumMandatoryPayment": "Minimum amount must be at least {0}",
     "minimumPayAmount": "Minimum amount cannot be lower than RM 1.00",
@@ -98,7 +98,8 @@
     "refreshMessage": "This page must be tired. Tap the button below to help it out.",
     "serviceErrorDefaultMessage": "Sorry, something went wrong. Please try again later.",
     "invalid_amountMessage": "Kindly enter a non-zero/positive amount",
-    "invalid_amountTitle": "Invalid Amount"
+    "invalid_amountTitle": "Invalid Amount",
+    "invalid_code": "Kod tidak sah"
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -496,5 +497,11 @@
     "title": "Set Semula Kata Laluan",
     "subTitle": "Sila masukkan emel anda.",
     "details": "Kod pengesahan 4 digit akan dihantar ke alamat emel ini."
+  },
+  "EnterCode": {
+    "title": "Masukkan Kod",
+    "decription": "Sila masukkan kod 4 digit yang telah dihantar ke {0}",
+    "emailNotReceived": "Tidak terima emel?",
+    "resend": "Hantar semula"
   }
 }

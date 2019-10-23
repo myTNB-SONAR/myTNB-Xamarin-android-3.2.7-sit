@@ -70,6 +70,7 @@
         public static string Error_MinimumPayAmount = "minimumPayAmount";
         public static string Error_MinimumMandatoryAmount = "minimumMandatoryPayment";
         public static string Error_InvalidEmailAddress = "invalid_email";
+        public static string Error_InvalidCode = "invalid_code";
 
         //Table View Cell
         public static string Cell_NoHistoryData = "noHistoryDataTableViewCell";

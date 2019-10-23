@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using myTNB.Model;
 using myTNB.DataManager;
 using System.Timers;
+using myTNB.Login.ForgotPassword;
 
 namespace myTNB
 {
-    public partial class EnterCodeViewController : UIViewController
+    public partial class EnterCodeViewController : CustomUIViewController
     {
         public EnterCodeViewController(IntPtr handle) : base(handle)
         {
@@ -41,6 +42,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            PageName = ForgotPasswordConstants.Pagename_EnterCode;
             base.ViewDidLoad();
             timer = new Timer();
             timer.Interval = INTERVAL;
@@ -59,7 +61,7 @@ namespace myTNB
         internal void AddBackButton()
         {
             NavigationItem.HidesBackButton = true;
-            NavigationItem.Title = "Login_EnterCode".Translate();
+            NavigationItem.Title = GetI18NValue(ForgotPasswordConstants.I18N_Title);
             UIImage backImg = UIImage.FromBundle("Back-White");
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
@@ -75,7 +77,7 @@ namespace myTNB
             lblDescription.TextColor = MyTNBColor.TunaGrey();
             lblDescription.LineBreakMode = UILineBreakMode.WordWrap;
             lblDescription.Lines = 0;
-            lblDescription.Text = string.Format("Login_CodeSentToMessage".Translate(), EmailAddress);
+            lblDescription.Text = string.Format(GetI18NValue(ForgotPasswordConstants.I18N_Details), EmailAddress);
             lblDescription.TextAlignment = UITextAlignment.Left;
             View.AddSubview(lblDescription);
 
@@ -84,7 +86,7 @@ namespace myTNB
             lblResendToken.TextColor = MyTNBColor.TunaGrey();
             lblResendToken.LineBreakMode = UILineBreakMode.WordWrap;
             lblResendToken.Lines = 0;
-            lblResendToken.Text = "Login_EmailNotReceived".Translate();
+            lblResendToken.Text = GetI18NValue(ForgotPasswordConstants.I18N_EmailNotReceived);
             lblResendToken.TextAlignment = UITextAlignment.Center;
             View.AddSubview(lblResendToken);
 
@@ -174,7 +176,7 @@ namespace myTNB
             {
                 InvokeOnMainThread(() =>
                 {
-                    _resendLabel.Text = string.Format("Registration_ResendTimer".Translate(), timerCtr);
+                    _resendLabel.Text = string.Format("{0} ({1})", GetI18NValue(ForgotPasswordConstants.I18N_Resend), timerCtr);
                 });
                 timerCtr = timerCtr - 1;
             }
@@ -187,7 +189,7 @@ namespace myTNB
         void AnimateResendView()
         {
             timerCtr = 30;
-            _resendLabel.Text = string.Format("Login_ResendTimer".Translate(), timerCtr);
+            _resendLabel.Text = string.Format("{0} ({1})", GetI18NValue(ForgotPasswordConstants.I18N_Resend), timerCtr);
             _resendLabel.TextColor = MyTNBColor.FreshGreen;
             timer.Enabled = true;
             UIView.Animate(30, 1, UIViewAnimationOptions.CurveEaseOut, () =>
@@ -202,7 +204,7 @@ namespace myTNB
                 _segment.BackgroundColor = MyTNBColor.FreshGreen;
                 _loadingImage.Frame = new CGRect(25, 13, 24, 24);
                 _resendLabel.Frame = new CGRect(55, 15, 85, 20);
-                _resendLabel.Text = "Login_Resend".Translate();
+                _resendLabel.Text = GetI18NValue(ForgotPasswordConstants.I18N_Resend);
                 _resendLabel.TextColor = UIColor.White;
                 _loadingImage.Image = _loadedImg;
                 _loadingView.AddGestureRecognizer(_onResendPin);

@@ -100,7 +100,8 @@
     "refreshMessage": "This page must be tired. Tap the button below to help it out.",
     "serviceErrorDefaultMessage": "Sorry, something went wrong. Please try again later.",
     "invalid_amountMessage": "Kindly enter a non-zero/positive amount",
-    "invalid_amountTitle": "Invalid Amount"
+    "invalid_amountTitle": "Invalid Amount",
+    "invalid_code": "Invalid code"
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -499,5 +500,11 @@
     "title": "Reset Password",
     "subTitle": "Please enter your email address.",
     "details": "A 4 digit verification code will be sent to this email address."
+  },
+  "EnterCode": {
+    "title": "Enter Code",
+    "decription": "Please enter the 4 digit code that was sent to {0}",
+    "emailNotReceived": "Didn't receive the email?",
+    "resend": "Resend"
   }
 }
