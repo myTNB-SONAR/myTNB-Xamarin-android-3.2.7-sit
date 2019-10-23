@@ -56,7 +56,7 @@
                     <TextView
                         android:layout_height="wrap_content"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="6dp"
+                        android:layout_marginTop="10dp"
                         android:textSize="16dp"
                         android:textColor="@color/water_blue"
                         android:textStyle="bold"
@@ -96,10 +96,9 @@
                     android:id="@+id/chk_remember_me"
                     android:layout_height="28dp"
                     android:layout_width="wrap_content"
-                    android:layout_marginBottom="14dp"
                     android:layout_marginLeft="2dp"
                     android:paddingLeft="8dp"
-                    android:layout_marginTop="-14dp"
+                    android:layout_marginTop="-20dp"
                     android:checked="true"
                     android:text="@string/login_remember_me"
                     android:textColor="@color/charcoalGrey"
@@ -111,6 +110,7 @@
                     app:hintTextAppearance="@style/TextInputLayout.TextAppearance"
                     android:id="@+id/txtInputLayoutPassword"
                     app:errorEnabled="true"
+                    android:layout_marginTop="10dp"
                     android:layout_marginRight="17dp">
                     <EditText
                         android:hint="@string/password_hint"

@@ -42,7 +42,7 @@
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
-                    android:layout_marginTop="6dp"
+                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="8dp"
                     android:textSize="16dp"
                     android:textColor="@color/water_blue"
@@ -67,7 +67,6 @@
                     android:layout_width="match_parent"
                     android:orientation="horizontal"
                     android:layout_marginTop="11dp"
-                    android:layout_marginBottom="8dp"
                     android:weightSum="1">
                     <Button
                         android:id="@+id/btnRegister"
@@ -94,8 +93,8 @@
                 android:layout_width="match_parent"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="16dp"
                 android:background="@color/platinumGrey"/>
             <LinearLayout
                 android:layout_height="match_parent"
@@ -105,7 +104,7 @@
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
                     android:textSize="16sp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="10dp"
                     android:textColor="@color/water_blue"
                     android:text="@string/quick_access"
                     android:layout_gravity="center_horizontal"

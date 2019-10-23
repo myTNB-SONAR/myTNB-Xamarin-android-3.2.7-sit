@@ -115,15 +115,6 @@ namespace myTNB_Android.Src.Login.Activity
                 ISharedPreferences sharedPreferences = PreferenceManager.GetDefaultSharedPreferences(this);
                 string savedEmail = UserSessions.GetUserEmail(sharedPreferences);
 
-                if (!string.IsNullOrEmpty(savedEmail))
-                {
-                    chkRemeberMe.Checked = true;
-                }
-                else
-                {
-                    chkRemeberMe.Checked = false;
-                }
-
                 txtEmail.Append(savedEmail);
 
                 GenerateTopLayoutLayout();
@@ -284,22 +275,67 @@ namespace myTNB_Android.Src.Login.Activity
             this.userActionsListener = userActionListener;
         }
 
+        private Snackbar mEmptyEmailSnackBar;
         public void ShowEmptyEmailError()
         {
             ClearErrors();
-            this.txtInputLayoutEmail.Error = GetString(Resource.String.login_validation_email_empty_error);
+            // TODO : SHOW SNACKBAR ERROR MESSAGE
+            if (mEmptyEmailSnackBar != null && mEmptyEmailSnackBar.IsShown)
+            {
+                mEmptyEmailSnackBar.Dismiss();
+                mEmptyEmailSnackBar.Show();
+            }
+            else
+            {
+                mEmptyEmailSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_validation_email_empty_error), Snackbar.LengthIndefinite)
+                .SetAction(GetString(Resource.String.login_validation_snackbar_btn_close), delegate { mEmptyEmailSnackBar.Dismiss(); }
+                );
+                mEmptyEmailSnackBar.Show();
+            }
+
+            this.SetIsClicked(false);
         }
 
+        private Snackbar mEmptyPasswordSnackBar;
         public void ShowEmptyPasswordError()
         {
             ClearErrors();
-            this.txtInputLayoutPassword.Error = GetString(Resource.String.login_validation_password_empty_error);
+            // TODO : SHOW SNACKBAR ERROR MESSAGE
+            if (mEmptyPasswordSnackBar != null && mEmptyPasswordSnackBar.IsShown)
+            {
+                mEmptyPasswordSnackBar.Dismiss();
+                mEmptyPasswordSnackBar.Show();
+            }
+            else
+            {
+                mEmptyPasswordSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_validation_password_empty_error), Snackbar.LengthIndefinite)
+                .SetAction(GetString(Resource.String.login_validation_snackbar_btn_close), delegate { mEmptyPasswordSnackBar.Dismiss(); }
+                );
+                mEmptyPasswordSnackBar.Show();
+            }
+
+            this.SetIsClicked(false);
         }
 
+        private Snackbar mInvalidEmailSnackBar;
         public void ShowInvalidEmailError()
         {
             ClearErrors();
-            this.txtInputLayoutEmail.Error = GetString(Resource.String.login_validation_email_invalid_error);
+            // TODO : SHOW SNACKBAR ERROR MESSAGE
+            if (mInvalidEmailSnackBar != null && mInvalidEmailSnackBar.IsShown)
+            {
+                mInvalidEmailSnackBar.Dismiss();
+                mInvalidEmailSnackBar.Show();
+            }
+            else
+            {
+                mInvalidEmailSnackBar = Snackbar.Make(rootView, GetString(Resource.String.login_validation_email_invalid_error), Snackbar.LengthIndefinite)
+                .SetAction(GetString(Resource.String.login_validation_snackbar_btn_close), delegate { mInvalidEmailSnackBar.Dismiss(); }
+                );
+                mInvalidEmailSnackBar.Show();
+            }
+
+            this.SetIsClicked(false);
         }
         private Snackbar mSnackBar;
         public void ShowInvalidEmailPasswordError(string errorMessage)
@@ -319,7 +355,7 @@ namespace myTNB_Android.Src.Login.Activity
                 mSnackBar.Show();
             }
 
-
+            this.SetIsClicked(false);
 
         }
 
@@ -350,9 +386,13 @@ namespace myTNB_Android.Src.Login.Activity
         {
             try
             {
-                string em_str = txtEmail.Text.ToString().Trim();
-                string pass_str = txtPassword.Text;
-                this.userActionsListener.LoginAsync(em_str, pass_str, this.DeviceId(), chkRemeberMe.Checked);
+                if (!this.GetIsClicked())
+                {
+                    this.SetIsClicked(true);
+                    string em_str = txtEmail.Text.ToString().Trim();
+                    string pass_str = txtPassword.Text;
+                    this.userActionsListener.LoginAsync(em_str, pass_str, this.DeviceId(), chkRemeberMe.Checked);
+                }
             }
             catch (Exception ex)
             {
@@ -411,6 +451,8 @@ namespace myTNB_Android.Src.Login.Activity
             );
             mCancelledExceptionSnackBar.Show();
 
+            this.SetIsClicked(false);
+
         }
 
         private Snackbar mApiExcecptionSnackBar;
@@ -433,6 +475,8 @@ namespace myTNB_Android.Src.Login.Activity
             );
             mApiExcecptionSnackBar.Show();
 
+            this.SetIsClicked(false);
+
         }
         private Snackbar mUknownExceptionSnackBar;
         public void ShowRetryOptionsUnknownException(Exception exception)
@@ -454,6 +498,8 @@ namespace myTNB_Android.Src.Login.Activity
             }
             );
             mUknownExceptionSnackBar.Show();
+
+            this.SetIsClicked(false);
 
         }
 
