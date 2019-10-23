@@ -281,7 +281,7 @@ namespace myTNB_Android.Src.Billing.MVP
 
         private void ShowUnderstandBillTooltip()
         {
-            List<UnderstandTooltipModel> modelList = MyTNBAppToolTipData.GetUnderstandBillTooltipData();
+            List<UnderstandTooltipModel> modelList = MyTNBAppToolTipData.GetUnderstandBillTooltipData(this);
             UnderstandBillToolTipAdapter adapter = new UnderstandBillToolTipAdapter(modelList);
             MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.LISTVIEW_WITH_INDICATOR_AND_HEADER)
                 .SetAdapter(adapter)
