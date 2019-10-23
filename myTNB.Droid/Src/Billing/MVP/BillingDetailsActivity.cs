@@ -199,21 +199,6 @@ namespace myTNB_Android.Src.Billing.MVP
             PopulateCharges();
         }
 
-        //private void EnableShowBillButtons(bool isEnable)
-        //{
-        //    btnViewBill.Enabled = isEnable;
-        //    if (isEnable)
-        //    {
-        //        btnViewBill.SetTextColor(new Color(ContextCompat.GetColor(this, Resource.Color.freshGreen)));
-        //        btnViewBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_button_background);
-        //    }
-        //    else
-        //    {
-        //        btnViewBill.SetTextColor(new Color(ContextCompat.GetColor(this, Resource.Color.silverChalice)));
-        //        btnViewBill.Background = ContextCompat.GetDrawable(this, Resource.Drawable.light_button_background_disabled);
-        //    }
-        //}
-
         private void PopulateCharges()
         {
             if (selectedAccountChargeModel.MandatoryCharges.TotalAmount > 0f)
@@ -232,7 +217,7 @@ namespace myTNB_Android.Src.Billing.MVP
             accountChargeValue.Text = "RM " + (Math.Abs(selectedAccountChargeModel.OutstandingCharges)).ToString("#,##0.00");
             if (selectedAccountChargeModel.OutstandingCharges < 0f)
             {
-                accountChargeLabel.Text = GetLabelByLanguage("paidExtra");// "I've paid extra";
+                accountChargeLabel.Text = GetLabelByLanguage("paidExtra");
                 accountChargeValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.freshGreen)));
             }
             else
@@ -245,7 +230,7 @@ namespace myTNB_Android.Src.Billing.MVP
             if (selectedAccountChargeModel.IsNeedPay)
             {
                 accountPayAmountLabel.Visibility = ViewStates.Visible;
-                accountPayAmountLabel.Text = GetLabelByLanguage("needToPay");// "I need to pay";
+                accountPayAmountLabel.Text = GetLabelByLanguage("needToPay");
                 accountPayAmountDate.Visibility = ViewStates.Visible;
                 accountPayAmountDate.Text = GetLabelByLanguage("by") + " " + dateFormatter.Format(dateParser.Parse(selectedAccountChargeModel.DueDate));
 
@@ -257,7 +242,7 @@ namespace myTNB_Android.Src.Billing.MVP
                 accountPayAmountLabel.Visibility = ViewStates.Visible;
                 accountPayAmountDate.Visibility = ViewStates.Gone;
 
-                accountPayAmountLabel.Text = GetLabelByLanguage("paidExtra"); //"I've paid extra";
+                accountPayAmountLabel.Text = GetLabelByLanguage("paidExtra");
                 accountPayAmountValue.Text = (Math.Abs(selectedAccountChargeModel.AmountDue)).ToString("#,##0.00");
                 accountPayAmountCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.freshGreen)));
                 accountPayAmountValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.freshGreen)));
@@ -267,7 +252,7 @@ namespace myTNB_Android.Src.Billing.MVP
                 accountPayAmountLabel.Visibility = ViewStates.Visible;
                 accountPayAmountDate.Visibility = ViewStates.Gone;
 
-                accountPayAmountLabel.Text = GetLabelByLanguage("clearedBills"); //"I've cleared all bills";
+                accountPayAmountLabel.Text = GetLabelByLanguage("clearedBills");
                 accountPayAmountCurrency.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
                 accountPayAmountValue.SetTextColor(new Android.Graphics.Color(ContextCompat.GetColor(this, Resource.Color.tunaGrey)));
             }
@@ -286,6 +271,7 @@ namespace myTNB_Android.Src.Billing.MVP
             MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.LISTVIEW_WITH_INDICATOR_AND_HEADER)
                 .SetAdapter(adapter)
                 .SetContext(this)
+                .SetCTALabel(Utility.GetLocalizedLabel("Common","gotIt"))
                 .Build()
                 .Show();
         }

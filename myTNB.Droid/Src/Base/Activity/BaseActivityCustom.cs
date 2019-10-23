@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using Android.OS;
 using Android.Util;
-using myTNB;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.Base.Activity
 {
@@ -25,16 +24,7 @@ namespace myTNB_Android.Src.Base.Activity
         /// <returns></returns>
         public string GetLabelByLanguage(string key)
         {
-            string label = "";
-            try
-            {
-                label = LanguageManager.Instance.GetValuesByPage(GetPageId())[key];
-            }
-            catch (Exception e)
-            {
-                Log.Debug("DEBUG Error: ", e.Message);
-            }
-            return label;
+            return Utility.GetLocalizedLabel(GetPageId(), key);
         }
 
         /// <summary>
@@ -44,16 +34,7 @@ namespace myTNB_Android.Src.Base.Activity
         /// <returns></returns>
         public string GetLabelCommonByLanguage(string key)
         {
-            string label = "";
-            try
-            {
-                label = LanguageManager.Instance.GetCommonValuePairs()[key];
-            }
-            catch (Exception e)
-            {
-                Log.Debug("DEBUG Error: ", e.Message);
-            }
-            return label;
+            return Utility.GetLocalizedLabel("Common", key);
         }
     }
 }

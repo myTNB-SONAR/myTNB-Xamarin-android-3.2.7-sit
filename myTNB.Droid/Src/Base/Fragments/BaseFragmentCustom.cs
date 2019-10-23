@@ -11,10 +11,8 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
-using myTNB;
 using myTNB_Android.Src.Utils;
 using System;
-using System.Collections.Generic;
 using AlertDialog = Android.App.AlertDialog;
 using Constants = myTNB_Android.Src.Utils.Constants;
 
@@ -471,16 +469,7 @@ namespace myTNB_Android.Src.Base.Fragments
         /// <returns></returns>
         public string GetLabelByLanguage(string key)
         {
-            string label = "";
-            try
-            {
-                label = LanguageManager.Instance.GetValuesByPage(GetPageId())[key];
-            }
-            catch (Exception e)
-            {
-                Log.Debug("DEBUG Error: ", e.Message);
-            }
-            return label;
+            return Utility.GetLocalizedLabel(GetPageId(), key);
         }
 
         /// <summary>
@@ -490,16 +479,7 @@ namespace myTNB_Android.Src.Base.Fragments
         /// <returns></returns>
         public string GetLabelCommonByLanguage(string key)
         {
-            string label = "";
-            try
-            {
-                label = LanguageManager.Instance.GetCommonValuePairs()[key];
-            }
-            catch (Exception e)
-            {
-                Log.Debug("DEBUG Error: ", e.Message);
-            }
-            return label;
+            return Utility.GetLocalizedLabel("Common", key);
         }
     }
 }
