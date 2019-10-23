@@ -1,5 +1,8 @@
-﻿using Android.Graphics;
+﻿using Android.App;
+using Android.Graphics;
+using Android.Graphics.Drawables;
 using Android.Media;
+using Android.Util;
 using System;
 
 namespace myTNB_Android.Src.Utils
@@ -120,6 +123,62 @@ namespace myTNB_Android.Src.Utils
             paint.SetXfermode(new PorterDuffXfermode(PorterDuff.Mode.SrcIn));
             canvas.DrawBitmap(raw, rect, rect, paint);
             return result;
+        }
+
+        public static Bitmap ScaledImage(Bitmap originalBitmap, int widthInPx, int heightInPx)
+        {
+            Bitmap background = Bitmap.CreateBitmap(widthInPx, heightInPx, Bitmap.Config.Argb8888);
+
+            int originalWidth = originalBitmap.Width;
+            int originalHeight = originalBitmap.Height;
+
+            Canvas canvas = new Canvas(background);
+
+            float scale = widthInPx / originalWidth;
+
+            float xTranslation = 0.0f;
+            float yTranslation = (heightInPx - originalHeight * scale) / 2.0f;
+
+            Matrix transformation = new Matrix();
+            transformation.PostTranslate(xTranslation, yTranslation);
+            transformation.PreScale(scale, scale);
+
+            Paint paint = new Paint();
+            paint.FilterBitmap = true;
+
+            canvas.DrawBitmap(originalBitmap, transformation, paint);
+
+            return background;
+        }
+
+        public static Bitmap ScaledImageFromDrawable(int id, int widthInPx, int heightInPx, Activity mActivity)
+        {
+            BitmapFactory.Options opt = new BitmapFactory.Options();
+            opt.InMutable = true;
+            Bitmap originalBitmap = BitmapFactory.DecodeResource(mActivity.Resources, id, opt);
+
+            Bitmap background = Bitmap.CreateBitmap(widthInPx, heightInPx, Bitmap.Config.Argb8888);
+
+            int originalWidth = originalBitmap.Width;
+            int originalHeight = originalBitmap.Height;
+
+            Canvas canvas = new Canvas(background);
+
+            float scale = widthInPx / originalWidth;
+
+            float xTranslation = 0.0f;
+            float yTranslation = (heightInPx - originalHeight * scale) / 2.0f;
+
+            Matrix transformation = new Matrix();
+            transformation.PostTranslate(xTranslation, yTranslation);
+            transformation.PreScale(scale, scale);
+
+            Paint paint = new Paint();
+            paint.FilterBitmap = true;
+
+            canvas.DrawBitmap(originalBitmap, transformation, paint);
+
+            return background;
         }
 
     }

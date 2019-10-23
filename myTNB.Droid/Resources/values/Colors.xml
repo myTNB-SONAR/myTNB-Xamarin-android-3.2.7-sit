@@ -116,4 +116,7 @@
     <color name="faq_default_top">#553ccf</color>
 
     <color name="faq_default_bottom">#3a9bf4</color>
+
+    <color name="water_blue">#1b78ca</color>
+
 </resources>

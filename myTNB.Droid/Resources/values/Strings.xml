@@ -56,12 +56,12 @@
   <string name="email_hint">Email</string>
   <string name="password_hint">Password</string>
   <string name="login">Log In</string>
-  <string name="login_forget_password">Forgot password?</string>
+  <string name="login_forget_password">Forgot your password?</string>
   <string name="welcome_back">Welcome back!</string>
   <string name="account_login">myTNB Account Login</string>
   <string name="login_no_account">Don\'t have a myTNB account?</string>
-  <string name="login_register_account">Register for an account</string>
-  <string name="login_remember_me">Remember email</string>
+  <string name="login_register_account">Register for an account now.</string>
+  <string name="login_remember_me">Remember my email</string>
   <!-- End Login Activity -->
 
 
