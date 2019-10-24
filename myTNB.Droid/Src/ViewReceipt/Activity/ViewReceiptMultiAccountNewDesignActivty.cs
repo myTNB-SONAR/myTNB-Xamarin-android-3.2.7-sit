@@ -237,7 +237,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
             {
                 if (response != null)
                 {
-                    if (!response.receipt.IsError)
+                    if (response.receipt.ErrorCode == "7200")
                     {
                         mProgressBar.Visibility = ViewStates.Gone;
                         ShowGetReceiptDialog();
@@ -547,7 +547,7 @@ namespace myTNB_Android.Src.ViewReceipt.Activity
                 this.response = response;
                 if (response != null)
                 {
-                    if (!response.receipt.IsError)
+                    if (response.receipt.ErrorCode == "7200")
                     {
                         Log.Debug(TAG, "Receipt :" + response.receipt.receiptDetails);
                         MultiReceiptDetails receiiptDetails = response.receipt.receiptDetails;

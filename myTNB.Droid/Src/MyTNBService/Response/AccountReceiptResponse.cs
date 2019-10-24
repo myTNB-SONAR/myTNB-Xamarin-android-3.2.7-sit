@@ -20,13 +20,17 @@ namespace myTNB_Android.Src.MyTNBService.Response
             [AliasAs("status")]
             public string Status { get; set; }
 
-            [JsonProperty(PropertyName = "isError")]
-            [AliasAs("isError")]
-            public bool IsError { get; set; }
+            [JsonProperty(PropertyName = "ErrorCode")]
+            [AliasAs("ErrorCode")]
+            public string ErrorCode { get; set; }
 
-            [JsonProperty(PropertyName = "message")]
-            [AliasAs("message")]
-            public string Message { get; set; }
+            [JsonProperty(PropertyName = "ErrorMessage")]
+            [AliasAs("ErrorMessage")]
+            public string ErrorMessage { get; set; }
+
+            [JsonProperty(PropertyName = "DisplayMessage")]
+            [AliasAs("DisplayMessage")]
+            public string DisplayMessage { get; set; }
 
             [JsonProperty(PropertyName = "data")]
             [AliasAs("data")]
