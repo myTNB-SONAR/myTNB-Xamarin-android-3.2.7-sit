@@ -78,8 +78,8 @@
     "english": "English",
     "bahasa": "Bahasa Malaysia",
     "saveChanges": "Save Changes",
-    "gotIt": "Got It!",
-    "login": "Log In"
+    "gotIt": "Faham!",
+    "login": "Log masuk"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -99,7 +99,9 @@
     "serviceErrorDefaultMessage": "Sorry, something went wrong. Please try again later.",
     "invalid_amountMessage": "Kindly enter a non-zero/positive amount",
     "invalid_amountTitle": "Invalid Amount",
-    "invalid_code": "Kod tidak sah"
+    "invalid_code": "Kod tidak sah",
+    "invalid_password": "Password must have at least 8 alphanumeric characters.",
+    "invalid_mismatchedPassword": "Your new password do not match."
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -507,6 +509,15 @@
   "PasswordResetSuccess": {
     "title": "Berjaya Set Semula Kata Laluan",
     "details": "Log masuk dengan kata laluan sementara 8 digit yang telah dihantar ke {0}.\r\n\r\nKata laluan boleh ditukar selepas log masuk.",
-    "proceedToLogin": "Teruskan Log Masuk"
+    "proceedToLogin": "Teruskan Log Masuk",
+    "resetSuccessMessage": "Kata laluan anda telah berjaya ditukar. Anda boleh teruskan log masuk dengan kata laluan baru."
+  },
+  "ResetPassword": {
+    "title": "Set Semula Kata Laluan",
+    "subTitle": "Sila masukkan kata laluan baharu.",
+    "details": "Ia akan menggantikan kata laluan sedia ada. Segala butiran akaun anda masih kekal.",
+    "newPassword": "Masukkan kata laluan baharu",
+    "confirmNewPassword": "Sahkan kata laluan baharu",
+    "confirmPassword": "Confirm Password"
   }
 }

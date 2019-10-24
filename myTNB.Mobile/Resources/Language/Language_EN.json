@@ -101,7 +101,9 @@
     "serviceErrorDefaultMessage": "Sorry, something went wrong. Please try again later.",
     "invalid_amountMessage": "Kindly enter a non-zero/positive amount",
     "invalid_amountTitle": "Invalid Amount",
-    "invalid_code": "Invalid code"
+    "invalid_code": "Invalid code",
+    "invalid_password": "Password must have at least 8 alphanumeric characters.",
+    "invalid_mismatchedPassword":  "Your new password do not match."
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -510,6 +512,15 @@
   "PasswordResetSuccess": {
     "title": "Password Reset Successful",
     "details": "Log in using the 8 digit temporary password that was sent to {0}.\r\n\r\nYou may change your password after logging in.",
-    "proceedToLogin": "Proceed to Log In"
+    "proceedToLogin": "Proceed to Log In",
+    "resetSuccessMessage": "Your password has been changed successfully. You may proceed to login with the new password."
+  },
+  "ResetPassword": {
+    "title": "Reset Password",
+    "subTitle": "Please enter your new password.",
+    "details": "This will replace your current one. All your account details will remain unchanged.",
+    "newPassword": "Enter new password",
+    "confirmNewPassword": "Confirm new password",
+    "confirmPassword": "Confirm Password"
   }
 }
