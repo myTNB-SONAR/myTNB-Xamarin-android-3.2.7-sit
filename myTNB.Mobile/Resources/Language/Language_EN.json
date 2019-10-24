@@ -413,10 +413,10 @@
         "tagline": "A whole new world with shockingly amazing possibilities.",
         "register": "Register",
         "login": "Login",
-        "quickAccess": "Quick Access",
+        "quickAccess": "Quick Actions",
         "findUs": "Find Us",
         "callUs": "Call Us",
-        "feedback": "Give Us Feedback"
+        "feedback": "Submit Feedback"
     },
     "LoginView": {
         "title": "myTNB Account Login",
