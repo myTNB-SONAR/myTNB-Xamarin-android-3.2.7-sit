@@ -1261,6 +1261,9 @@
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-2.imageset\Onboarding-Image-2%403x.png" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-3.imageset\Onboarding-Image-3%402x.png" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-3.imageset\Onboarding-Image-3%403x.png" />
+    <ImageAsset Include="Assets.xcassets\RE-Leaf-Large.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\RE-Leaf-Large.imageset\RE-Leaf-Large%402x.png" />
+    <ImageAsset Include="Assets.xcassets\RE-Leaf-Large.imageset\RE-Leaf-Large%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1725,6 +1728,7 @@
     <Folder Include="Assets.xcassets\Onboarding-Image-3.imageset\" />
     <Folder Include="Assets.xcassets\Onboarding-Image-4.imageset\" />
     <Folder Include="Assets.xcassets\Onboarding-Image-5.imageset\" />
+    <Folder Include="Assets.xcassets\RE-Leaf-Large.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

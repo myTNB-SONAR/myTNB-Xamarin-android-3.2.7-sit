@@ -12,7 +12,7 @@ namespace myTNB
         public static string IMG_Dropdown = "IC-Header-Dropdown";
         public static string IMG_InfoBlackIcon = "Info-Black-Icon";
         public static string IMG_SavingTipsBg = "Saving-Tips-Bg";
-        public static string IMG_AcctREIcon = "Accounts-RE-Icon";
+        public static string IMG_AcctREIcon = "RE-Leaf-Large";
         public static string IMG_RMKwHDropdownIcon = "RmKwh-Dropdown-Icon";
         public static string IMG_TariffEyeOpenIcon = "Tariff-Eye-Open-Icon";
         public static string IMG_TariffEyeCloseIcon = "Tariff-Eye-Close-Icon";
