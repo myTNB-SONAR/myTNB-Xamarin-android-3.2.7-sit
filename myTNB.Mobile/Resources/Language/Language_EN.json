@@ -425,5 +425,17 @@
         "dontHaveAcct": "Don’t have a myTNB account?",
         "registerAcctNow": "Register for an account now.",
         "login": "Log In"
+    },
+    "Onboarding": {
+        "letsStart": "Let's get started!",
+        "skip": "Skip",
+        "title1": "Welcome to myTNB!",
+        "title2": "Bills at Your Fingertips.",
+        "title3": "Pay Your Bills Anytime, Anywhere.",
+        "title4": "Enhanced View for Better Experiences.",
+        "description1": "Track, monitor and stay on top of your electricity usage!",
+        "description2": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",
+        "description3": "Pay your electricity bills while at home, on holiday, on the train – whenever you want to. Say goodbye to late charges and queuing up!",
+        "description4": "We’ve revamped the Home, Bills and Usage screens! It’s not just prettier, it’s way more helpful with more details (including block tariffs so you can stay informed on all things usage-related)."
     }
 }

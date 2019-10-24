@@ -1,0 +1,22 @@
+{
+    "Data": [
+        {
+            "Title": "title1",
+            "Description": "description1",
+            "Image": "Onboarding-Image-1",
+            "ID": "1"
+        },
+        {
+            "Title": "title2",
+            "Description": "description2",
+            "Image": "Onboarding-Image-2",
+            "ID": "2"
+        },
+        {
+            "Title": "title3",
+            "Description": "description4",
+            "Image": "Onboarding-Image-3",
+            "ID": "3"
+        }
+    ]
+}
