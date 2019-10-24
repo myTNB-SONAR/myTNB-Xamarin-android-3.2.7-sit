@@ -207,6 +207,7 @@ namespace myTNB_Android.Src.AppLaunch.Activity
         {
             if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
             {
+                isAppLaunchDone = true;
                 Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
                 DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
                 StartActivity(DashboardIntent);
