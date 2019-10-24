@@ -1253,14 +1253,14 @@
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-2.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-3.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-4.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-4.imageset\Onboarding-Image-4%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-4.imageset\Onboarding-Image-4%403x.png" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-1.imageset\Onboarding-Image-1%402x.png" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-1.imageset\Onboarding-Image-1%403x.png" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-2.imageset\Onboarding-Image-2%402x.png" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-2.imageset\Onboarding-Image-2%403x.png" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-3.imageset\Onboarding-Image-3%402x.png" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-3.imageset\Onboarding-Image-3%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-4.imageset\Onboarding-Image-4%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-4.imageset\Onboarding-Image-4%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
