@@ -28,7 +28,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
-            PageName = ForgotPasswordConstants.Pagename_ResetPassword;
+            PageName = ForgotPasswordConstants.Pagename_ForgotPassword;
             base.ViewDidLoad();
             Title = GetI18NValue(ForgotPasswordConstants.I18N_Title);
             NavigationItem.HidesBackButton = true;

@@ -496,15 +496,20 @@
     "registerAcctNow": "Register for an account now.",
     "login": "Log In"
   },
-  "ResetPassword": {
+  "ForgotPassword": {
     "title": "Reset Password",
     "subTitle": "Please enter your email address.",
     "details": "A 4 digit verification code will be sent to this email address."
   },
   "EnterCode": {
     "title": "Enter Code",
-    "decription": "Please enter the 4 digit code that was sent to {0}",
+    "details": "Please enter the 4 digit code that was sent to {0}",
     "emailNotReceived": "Didn't receive the email?",
     "resend": "Resend"
+  },
+  "PasswordResetSuccess": {
+    "title": "Password Reset Successful",
+    "details": "Log in using the 8 digit temporary password that was sent to {0}.\r\n\r\nYou may change your password after logging in.",
+    "proceedToLogin": "Proceed to Log In"
   }
 }

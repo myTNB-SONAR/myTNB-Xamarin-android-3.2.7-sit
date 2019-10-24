@@ -493,15 +493,20 @@
     "registerAcctNow": "Daftar sekarang!",
     "login": "Log masuk"
   },
-  "ResetPassword": {
+  "ForgotPassword": {
     "title": "Set Semula Kata Laluan",
     "subTitle": "Sila masukkan emel anda.",
     "details": "Kod pengesahan 4 digit akan dihantar ke alamat emel ini."
   },
   "EnterCode": {
     "title": "Masukkan Kod",
-    "decription": "Sila masukkan kod 4 digit yang telah dihantar ke {0}",
+    "details": "Sila masukkan kod 4 digit yang telah dihantar ke {0}",
     "emailNotReceived": "Tidak terima emel?",
     "resend": "Hantar semula"
+  },
+  "PasswordResetSuccess": {
+    "title": "Berjaya Set Semula Kata Laluan",
+    "details": "Log masuk dengan kata laluan sementara 8 digit yang telah dihantar ke {0}.\r\n\r\nKata laluan boleh ditukar selepas log masuk.",
+    "proceedToLogin": "Teruskan Log Masuk"
   }
 }

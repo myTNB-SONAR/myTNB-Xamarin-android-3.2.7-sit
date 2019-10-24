@@ -126,7 +126,7 @@ namespace myTNB
             _lblError.Font = MyTNBFont.MuseoSans9_300;
             _lblError.TextColor = MyTNBColor.Tomato;
             _lblError.TextAlignment = UITextAlignment.Left;
-            _lblError.Text = "Invalid_Code".Translate();
+            _lblError.Text = GetErrorI18NValue(Constants.Error_InvalidCode);
             _lblError.Hidden = true;
             float txtFieldWidth = ((float)_viewTokenFieldContainer.Frame.Width - 36) / 4;
             float xLocation = 0;

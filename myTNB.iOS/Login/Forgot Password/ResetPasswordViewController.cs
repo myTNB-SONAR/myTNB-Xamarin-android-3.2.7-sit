@@ -6,10 +6,9 @@ using myTNB.DataManager;
 using myTNB.Model;
 using UIKit;
 
-
 namespace myTNB.Login.ForgotPassword
 {
-    public partial class ResetPasswordViewController : UIViewController
+    public partial class ResetPasswordViewController : CustomUIViewController
     {
         public ResetPasswordViewController(IntPtr handle) : base(handle)
         {
@@ -41,9 +40,10 @@ namespace myTNB.Login.ForgotPassword
 
         public override void ViewDidLoad()
         {
+            PageName = ForgotPasswordConstants.Pagename_ResetPassword;
             base.ViewDidLoad();
             // Perform any additional setup after loading the view, typically from a nib.
-            this.NavigationItem.HidesBackButton = true;
+            NavigationItem.HidesBackButton = true;
             AddBackButton();
 
             InitializeSubviews();
@@ -61,10 +61,12 @@ namespace myTNB.Login.ForgotPassword
 
         internal void InitializeSubviews()
         {
-            lblTitle = new UILabel(new CGRect(18, 16, View.Frame.Width - 36, 18));
-            lblTitle.TextColor = MyTNBColor.PowerBlue;
-            lblTitle.Font = MyTNBFont.MuseoSans16_500;
-            lblTitle.Text = "Login_EnterPassword".Translate();
+            lblTitle = new UILabel(new CGRect(18, 16, View.Frame.Width - 36, 18))
+            {
+                TextColor = MyTNBColor.PowerBlue,
+                Font = MyTNBFont.MuseoSans16_500,
+                Text = "Login_EnterPassword".Translate()
+            };
             View.AddSubview(lblTitle);
 
             lblDescription.TextColor = MyTNBColor.TunaGrey();
@@ -110,21 +112,28 @@ namespace myTNB.Login.ForgotPassword
                     , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
                 ),
-                TextColor = MyTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey(),
+                KeyboardType = UIKeyboardType.Default,
+                ReturnKeyType = UIReturnKeyType.Done,
+                SecureTextEntry = true
             };
-            txtFieldPassword.KeyboardType = UIKeyboardType.Default;
-            txtFieldPassword.ReturnKeyType = UIReturnKeyType.Done;
-            txtFieldPassword.SecureTextEntry = true;
+
             viewPassword.AddSubview(txtFieldPassword);
 
-            viewLinePassword = new UIView((new CGRect(0, 36, viewPassword.Frame.Width, 1)));
-            viewLinePassword.BackgroundColor = MyTNBColor.PlatinumGrey;
+            viewLinePassword = new UIView((new CGRect(0, 36, viewPassword.Frame.Width, 1)))
+            {
+                BackgroundColor = MyTNBColor.PlatinumGrey
+            };
             viewPassword.AddSubview(viewLinePassword);
 
-            viewShowPassword = new UIView(new CGRect(viewPassword.Frame.Width - 30, 12, 24, 24));
-            viewShowPassword.Hidden = true;
-            UIImageView imgShowPassword = new UIImageView(new CGRect(0, 0, 24, 24));
-            imgShowPassword.Image = UIImage.FromBundle("IC-Action-Show-Password");
+            viewShowPassword = new UIView(new CGRect(viewPassword.Frame.Width - 30, 12, 24, 24))
+            {
+                Hidden = true
+            };
+            UIImageView imgShowPassword = new UIImageView(new CGRect(0, 0, 24, 24))
+            {
+                Image = UIImage.FromBundle("IC-Action-Show-Password")
+            };
             viewShowPassword.AddSubview(imgShowPassword);
             viewShowPassword.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
@@ -135,10 +144,11 @@ namespace myTNB.Login.ForgotPassword
             View.AddSubview(viewPassword);
             #endregion
 
-
             #region Confirm Password
-            UIView viewConfirmPassword = new UIView((new CGRect(18, 156, View.Frame.Width - 36, 51)));
-            viewConfirmPassword.BackgroundColor = UIColor.Clear;
+            UIView viewConfirmPassword = new UIView((new CGRect(18, 156, View.Frame.Width - 36, 51)))
+            {
+                BackgroundColor = UIColor.Clear
+            };
 
             lblConfirmPasswordTitle = new UILabel
             {
@@ -153,10 +163,12 @@ namespace myTNB.Login.ForgotPassword
             };
             viewConfirmPassword.AddSubview(lblConfirmPasswordTitle);
 
-            lblConfirmPasswordError = new UILabel(new CGRect(0, 37, viewConfirmPassword.Frame.Width, 14));
-            lblConfirmPasswordError.TextAlignment = UITextAlignment.Left;
-            lblConfirmPasswordError.Font = MyTNBFont.MuseoSans9_300;
-            lblConfirmPasswordError.TextColor = MyTNBColor.Tomato;
+            lblConfirmPasswordError = new UILabel(new CGRect(0, 37, viewConfirmPassword.Frame.Width, 14))
+            {
+                TextAlignment = UITextAlignment.Left,
+                Font = MyTNBFont.MuseoSans9_300,
+                TextColor = MyTNBColor.Tomato
+            };
 
             viewConfirmPassword.AddSubview(lblConfirmPasswordError);
 
@@ -169,11 +181,11 @@ namespace myTNB.Login.ForgotPassword
                     , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
                 ),
-                TextColor = MyTNBColor.TunaGrey()
+                TextColor = MyTNBColor.TunaGrey(),
+                KeyboardType = UIKeyboardType.Default,
+                ReturnKeyType = UIReturnKeyType.Done,
+                SecureTextEntry = true
             };
-            txtFieldConfirmPassword.KeyboardType = UIKeyboardType.Default;
-            txtFieldConfirmPassword.ReturnKeyType = UIReturnKeyType.Done;
-            txtFieldConfirmPassword.SecureTextEntry = true;
             viewConfirmPassword.AddSubview(txtFieldConfirmPassword);
 
             viewLineConfirmPassword = new UIView((new CGRect(0, 36, viewConfirmPassword.Frame.Width, 1)));
@@ -334,7 +346,7 @@ namespace myTNB.Login.ForgotPassword
             {
                 OnShowLogin();
             });
-            this.NavigationItem.LeftBarButtonItem = btnBack;
+            NavigationItem.LeftBarButtonItem = btnBack;
             Title = "Reset Password";
         }
 

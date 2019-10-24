@@ -61,6 +61,7 @@
         public static string Common_Bahasa = "bahasa";
         public static string Common_GotIt = "gotIt";
         public static string Common_Submit = "submit";
+        public static string Common_Login = "login";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";
