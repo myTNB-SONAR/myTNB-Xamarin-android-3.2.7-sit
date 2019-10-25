@@ -285,5 +285,7 @@ namespace myTNB_Android.Src.Utils
 
         public const string ACCOUNT_NICKNAME_PATTERN = "#accountNickname#";
 
+        internal static readonly string APP_NAVIGATION_KEY = ".appNavigation";
+
     }
 }
