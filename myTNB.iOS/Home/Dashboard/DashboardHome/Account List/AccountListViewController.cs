@@ -488,7 +488,7 @@ namespace myTNB
                 }
                 else
                 {
-                    _accountList = _dashboardHomeHelper.GeAccountList(accountList);
+                    _accountList = _dashboardHomeHelper.GetAccountList(accountList);
                     DataManager.DataManager.SharedInstance.ActiveAccountList = new List<DueAmountDataModel>();
                     DataManager.DataManager.SharedInstance.ActiveAccountList = GetBatchAccountList(_accountList, ref acctNumList, true);
                 }

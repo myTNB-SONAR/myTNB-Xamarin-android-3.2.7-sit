@@ -2390,10 +2390,6 @@
     <Compile Include="Home\Dashboard\DashboardHome\Services\ServicesConstants.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeActions.cs" />
     <Compile Include="Data Manager\ServiceEnum.cs" />
-    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsCardContentViewController.cs" />
-    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsCardContentViewController.designer.cs">
-      <DependentUpon>AccountsCardContentViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Sitecore CMS\Service\HelpService.cs" />
     <Compile Include="Sitecore CMS\Model\Help\HelpModel.cs" />
     <Compile Include="SQLite\SQLite Data Manager\HelpEntity.cs" />
@@ -2445,7 +2441,6 @@
     <Compile Include="Model\GetCARegisteredContactInfo\CARegisteredContactInfoResponseModel.cs" />
     <Compile Include="Model\SSMRApplicationStatus\SSMRApplicationStatus.cs" />
     <Compile Include="SSMR\SSMRHelper.cs" />
-    <Compile Include="Home\Components\Dashboard Home\DashboardHomeAccountCard.cs" />
     <Compile Include="Home\Components\Dashboard Home\DashboardHomeHeader.cs" />
     <Compile Include="Model\SSMR\SMRAccountStatusResponseModel.cs" />
     <Compile Include="Customs\CustomUISlider.cs" />
