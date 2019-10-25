@@ -55,10 +55,12 @@ namespace myTNB.Registration
                 NavigationItem.Title = GetI18NValue(VerifyPinConstants.I18N_Title);
             }
 
-            timer = new Timer();
-            timer.Interval = INTERVAL;
+            timer = new Timer
+            {
+                Interval = INTERVAL,
+                AutoReset = true
+            };
             timer.Elapsed += TimerElapsed;
-            timer.AutoReset = true;
 
             SetViews();
             SetEvents(IsMobileVerification);
@@ -342,8 +344,8 @@ namespace myTNB.Registration
                 LineBreakMode = UILineBreakMode.WordWrap,
                 Lines = 0
             };
-            string desc = !IsMobileVerification ? "Registration_OTPRegistration".Translate()
-                : "Registration_OTPMobileUpdate".Translate();
+            string desc = !IsMobileVerification ? GetI18NValue(VerifyPinConstants.I18N_OTPRegistration)
+                : GetI18NValue(VerifyPinConstants.I18N_OTPMobileUpdate);
             lblDescription.Text = string.Format(desc, _mobileNo);
             lblDescription.TextAlignment = UITextAlignment.Left;
             _commonView.AddSubview(lblDescription);
@@ -354,7 +356,7 @@ namespace myTNB.Registration
                 TextColor = MyTNBColor.TunaGrey(),
                 LineBreakMode = UILineBreakMode.WordWrap,
                 Lines = 0,
-                Text = "Registration_SMSNotReceived".Translate(),
+                Text = GetI18NValue(VerifyPinConstants.I18N_SMSNotreceived),
                 TextAlignment = UITextAlignment.Center
             };
             _commonView.AddSubview(lblResendToken);
@@ -418,7 +420,7 @@ namespace myTNB.Registration
                         }
                         else
                         {
-                            DisplayGenericAlert("Error_OTPTitle".Translate(), _smsToken?.d?.message);
+                            DisplayServiceError(_smsToken?.d?.message ?? string.Empty);
                         }
                     }
                 });
@@ -437,22 +439,17 @@ namespace myTNB.Registration
                         {
                             InvokeOnMainThread(() =>
                             {
-                                if (_smsToken != null && _smsToken?.d != null)
+                                if (_smsToken != null && _smsToken?.d != null
+                                    && _smsToken?.d?.didSucceed == true
+                                    && _smsToken?.d?.status?.ToLower() == "success")
                                 {
-                                    if (_smsToken?.d?.didSucceed == true && _smsToken?.d?.status?.ToLower() == "success")
-                                    {
-                                        ShowViewPinSent();
-                                        CreateResendView();
-                                        AnimateResendView();
-                                    }
-                                    else
-                                    {
-                                        DisplayGenericAlert("Error_RegistraionTokenTitle".Translate(), _smsToken?.d?.message);
-                                    }
+                                    ShowViewPinSent();
+                                    CreateResendView();
+                                    AnimateResendView();
                                 }
                                 else
                                 {
-                                    DisplayGenericAlert("Error_RegistraionTokenTitle".Translate(), _smsToken?.d?.message);
+                                    DisplayServiceError(_smsToken?.d?.message ?? string.Empty);
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -492,14 +489,14 @@ namespace myTNB.Registration
         private void DisplayRegistrationAlertView(string title, string message)
         {
             UIAlertController alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, (obj) =>
+            alert.AddAction(UIAlertAction.Create(GetCommonI18NValue(Constants.Common_Cancel), UIAlertActionStyle.Cancel, (obj) =>
             {
                 UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
                 UIViewController viewController =
                     storyBoard.InstantiateViewController("RegistrationViewController") as UIViewController;
                 NavigationController?.PushViewController(viewController, true);
             }));
-            alert.AddAction(UIAlertAction.Create("Common_Retry".Translate(), UIAlertActionStyle.Default, (obj) =>
+            alert.AddAction(UIAlertAction.Create(GetCommonI18NValue(Constants.Common_Retry), UIAlertActionStyle.Default, (obj) =>
             {
                 ValidateFields(_isKeyboardDismissed);
             }));
@@ -531,7 +528,7 @@ namespace myTNB.Registration
             {
                 InvokeOnMainThread(() =>
                 {
-                    _resendLabel.Text = string.Format("Login_ResendTimer".Translate(), timerCtr);
+                    _resendLabel.Text = string.Format("{0} ({1})", GetCommonI18NValue(Constants.Common_Resend), timerCtr);
                 });
                 timerCtr = timerCtr - 1;
             }
@@ -544,7 +541,7 @@ namespace myTNB.Registration
         private void AnimateResendView()
         {
             timerCtr = 30;
-            _resendLabel.Text = string.Format("Registration_ResendTimer".Translate(), timerCtr);
+            _resendLabel.Text = string.Format("{0} ({1})", GetCommonI18NValue(Constants.Common_Resend), timerCtr);
             _resendLabel.TextColor = MyTNBColor.FreshGreen;
             timer.Enabled = true;
             UIView.Animate(30, 1, UIViewAnimationOptions.CurveEaseOut, () =>
@@ -559,7 +556,7 @@ namespace myTNB.Registration
                 _segment.BackgroundColor = MyTNBColor.FreshGreen;
                 _loadingImage.Frame = new CGRect(25, 13, 24, 24);
                 _resendLabel.Frame = new CGRect(55, 15, 85, 20);
-                _resendLabel.Text = "Registration_Resend".Translate();
+                _resendLabel.Text = GetCommonI18NValue(Constants.Common_Resend);
                 _resendLabel.TextColor = UIColor.White;
                 _loadingImage.Image = _loadedImg;
                 _loadingView.AddGestureRecognizer(_onResendPin);
@@ -667,7 +664,7 @@ namespace myTNB.Registration
                     }
                     else
                     {
-                        DisplayGenericAlert("Error_Registration".Translate(), _authenticationList?.d?.message);
+                        DisplayServiceError(_authenticationList?.d?.message ?? string.Empty);
                         ClearTokenField();
                     }
                     ActivityIndicator.Hide();
@@ -693,10 +690,9 @@ namespace myTNB.Registration
                     deviceCordova = TNBGlobal.API_KEY_ID,
                     deviceId = DataManager.DataManager.SharedInstance.UDID,
                     fcmToken = DataManager.DataManager.SharedInstance.FCMToken != null
-                                          && !string.IsNullOrEmpty(DataManager.DataManager.SharedInstance.FCMToken)
-                                          && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.FCMToken)
-                                          ? DataManager.DataManager.SharedInstance.FCMToken
-                                          : ""
+                        && !string.IsNullOrEmpty(DataManager.DataManager.SharedInstance.FCMToken)
+                        && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.FCMToken)
+                            ? DataManager.DataManager.SharedInstance.FCMToken : string.Empty
                 };
                 _authenticationList = serviceManager.OnExecuteAPI<UserAuthenticationResponseModel>("IsUserAuthenticate", requestParameter);
             });
@@ -815,7 +811,7 @@ namespace myTNB.Registration
                 TextAlignment = UITextAlignment.Left,
                 Font = MyTNBFont.MuseoSans12_300,
                 TextColor = MyTNBColor.TunaGrey(),
-                Text = "Registration_SMSMessage".Translate(),
+                Text = GetI18NValue(VerifyPinConstants.I18N_ResendPin),
                 Lines = 0,
                 LineBreakMode = UILineBreakMode.WordWrap
             };

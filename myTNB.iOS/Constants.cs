@@ -61,6 +61,7 @@
         public static string Common_Login = "login";
         public static string Common_Next = "next";
         public static string Common_Resend = "resend";
+        public static string Common_Retry = "retry";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";

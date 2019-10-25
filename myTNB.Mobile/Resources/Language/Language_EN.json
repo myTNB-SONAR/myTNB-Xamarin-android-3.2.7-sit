@@ -80,7 +80,8 @@
     "gotIt": "Got It!",
     "login": "Log In",
     "next": "Next",
-    "resend": "Resend"
+    "resend": "Resend",
+    "retry": "Retry"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -530,8 +531,9 @@
   },
   "VerifyPin": {
     "title": "Verify Device",
-    "message": "An OTP has been sent to {0}, please enter it below.",
     "smsNotReceived": "Didn't receive the SMS?",
-    "resendPinMessage": "An SMS containing the activation pin has been sent to your number."
+    "resendPinMessage": "An SMS containing the activation pin has been sent to your number.",
+    "otpMobileUpdate": "An OTP has been sent to {0}, please enter it below.",
+    "otpRegistration": "Please enter the 4-digit activation pin that was sent to {0}."
   }
 }

@@ -80,7 +80,8 @@
     "gotIt": "Faham!",
     "login": "Log masuk",
     "next": "Seterusnya",
-    "resend": "Hantar semula"
+    "resend": "Hantar semula",
+    "retry": "Retry"//missing
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -530,8 +531,9 @@
   },
   "VerifyPin": {
     "title": "Sahkan No. Telefon",
-    "message": "Sila masukkan kod OTP 4 digit yang telah dihantar ke {0}.",
     "smsNotReceived": "Tidak terima SMS?",
-    "resendPinMessage": "SMS mengandungi pin pengaktifan telah dihantar ke nombor anda."
+    "resendPinMessage": "SMS mengandungi pin pengaktifan telah dihantar ke nombor anda.",
+    "otpMobileUpdate": "Sila masukkan kod OTP 4 digit yang telah dihantar ke {0}.",
+    "otpRegistration": "Sila masukkan kod OTP 4 digit yang telah dihantar ke {0}."
   }
 }
