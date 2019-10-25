@@ -19,7 +19,6 @@ namespace myTNB.DataManager
         //Contains list of accounts
         public CustomerAccountRecordListModel AccountRecordsList = new CustomerAccountRecordListModel();
         public CustomerAccountRecordListModel AccountsToBeAddedList = new CustomerAccountRecordListModel();
-        public List<List<DueAmountDataModel>> AccountsGroupList = new List<List<DueAmountDataModel>>();
         public string AccountNumber = string.Empty;
         public int AccountsAddedCount = 0;
         public bool SummaryNeedsRefresh = false;
@@ -175,7 +174,6 @@ namespace myTNB.DataManager
             User = new UserModel();
             AccountRecordsList = new CustomerAccountRecordListModel();
             AccountsToBeAddedList = new CustomerAccountRecordListModel();
-            AccountsGroupList = new List<List<DueAmountDataModel>>();
             AccountNumber = string.Empty;
             AccountsAddedCount = 0;
 
