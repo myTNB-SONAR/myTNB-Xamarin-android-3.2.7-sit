@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using myTNB.SitecoreCMS.Model;
+using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
@@ -170,7 +171,7 @@ namespace myTNB_Android.Src.Base
             return eligibiltyPopUpDetails;
         }
 
-        public static List<UnderstandTooltipModel> GetUnderstandBillTooltipData()
+        public static List<UnderstandTooltipModel> GetUnderstandBillTooltipData(BaseActivityCustom baseActivity)
         {
             List<UnderstandTooltipModel> tooltipModelDataList = new List<UnderstandTooltipModel>();
             UnderstandTooltipModel tooltipModel;
@@ -191,15 +192,15 @@ namespace myTNB_Android.Src.Base
             {
                 tooltipModel = new UnderstandTooltipModel();
                 tooltipModel.TooltipImage = null;
-                tooltipModel.Title = "Title 1";
-                List<string> itemList = "Security Deposit|Stamp Duty|Processing Fee|Meter Fee".Split('|').ToList();
+                tooltipModel.Title = baseActivity.GetLabelByLanguage("tooltiptitle1");
+                List<string> itemList = baseActivity.GetLabelByLanguage("tooltipdesc1").Split('|').ToList();
                 tooltipModel.ItemList = itemList;
                 tooltipModelDataList.Add(tooltipModel);
 
                 tooltipModel = new UnderstandTooltipModel();
                 tooltipModel.TooltipImage = null;
-                tooltipModel.Title = "Title 2";
-                itemList = "Security Deposit|Stamp Duty|Processing Fee|Meter Fee".Split('|').ToList();
+                tooltipModel.Title = baseActivity.GetLabelByLanguage("tooltiptitle2");
+                itemList = baseActivity.GetLabelByLanguage("tooltipdesc2").Split('|').ToList();
                 tooltipModel.ItemList = itemList;
                 tooltipModelDataList.Add(tooltipModel);
             }

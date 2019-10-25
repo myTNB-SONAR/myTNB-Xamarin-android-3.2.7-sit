@@ -30,6 +30,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using myTNB_Android.Src.AppLaunch.Api;
 using static myTNB_Android.Src.AppLaunch.Models.MasterDataRequest;
+using myTNB;
 
 namespace myTNB_Android.Src.AppLaunch.MVP
 {
@@ -171,7 +172,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     usrInf = currentUsrInf
                 }, cts.Token);
 
-
+                LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, LanguageManager.Language.EN);
                 if (masterDataResponse != null && masterDataResponse.Data != null)
                 {
                     if (masterDataResponse.Data.ErrorCode == "7200" && masterDataResponse.Data.ErrorCode != "7000")

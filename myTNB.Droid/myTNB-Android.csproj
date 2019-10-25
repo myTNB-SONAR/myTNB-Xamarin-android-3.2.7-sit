@@ -3481,6 +3481,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\Base\Activity\BaseActivityCustom.cs" />
     <Compile Include="Src\SSMRMeterHistory\MVP\ContactNotAvailableModel.cs" />
     <Compile Include="Src\AddAccount\Models\AccountResponseV6.cs" />
     <Compile Include="Src\Database\Model\SSMRMeterReadingScreensOCROffEntity.cs" />

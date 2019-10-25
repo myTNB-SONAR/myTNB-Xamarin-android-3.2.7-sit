@@ -7,6 +7,7 @@ using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Text;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -453,6 +454,32 @@ namespace myTNB_Android.Src.Base.Fragments
         public bool IsActive()
         {
             return IsAdded && IsVisible && !IsDetached && !IsRemoving;
+        }
+
+        /// <summary>
+        /// Gets the Page Id. To be implemented by child activity.
+        /// </summary>
+        /// <returns></returns>
+        public abstract string GetPageId();
+
+        /// <summary>
+        /// Gets the label based on selected language.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public string GetLabelByLanguage(string key)
+        {
+            return Utility.GetLocalizedLabel(GetPageId(), key);
+        }
+
+        /// <summary>
+        /// Gets the common labels
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public string GetLabelCommonByLanguage(string key)
+        {
+            return Utility.GetLocalizedLabel("Common", key);
         }
     }
 }
