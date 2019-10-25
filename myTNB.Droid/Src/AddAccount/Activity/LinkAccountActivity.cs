@@ -183,7 +183,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 }
                 else
                 {
-                    textNoOfAcoount.Text = "No Accounts Found!";
+                    textNoOfAcoount.Text = "No accounts found!";
                     labelAccountLabel.Visibility = ViewStates.Gone;
                     mNoAccountFoundDialog = new AlertDialog.Builder(this)
                     .SetTitle("Sorry")
@@ -405,7 +405,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
         protected override void OnPause()
         {
-           base.OnPause(); 
+           base.OnPause();
         }
 
         public void ShowNoAccountAddedError(string message)
@@ -499,13 +499,13 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     }
                     else
                     {
-                        textNoOfAcoount.Text = "No Accounts Found!";
+                        textNoOfAcoount.Text = "No accounts found!";
                         ShowAddAnotherAccountScreen();
                     }
                 }
                 else
                 {
-                    textNoOfAcoount.Text = "No Accounts Found!";
+                    textNoOfAcoount.Text = "No accounts found!";
                     ShowAddAnotherAccountScreen();
                 }
             }
