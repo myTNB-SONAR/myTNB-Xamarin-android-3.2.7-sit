@@ -1393,7 +1393,6 @@
     <Folder Include="Home\More\My Account\Manage Cards\" />
     <Folder Include="Home\More\My Account\Manage Accounts\" />
     <Folder Include="Home\More\My Account\Manage Accounts\Update Nickname\" />
-    <Folder Include="Home\More\My Account\Logout\" />
     <Folder Include="Assets.xcassets\Logout-Logo.imageset\" />
     <Folder Include="Assets.xcassets\IC-Action-Rating-Active.imageset\" />
     <Folder Include="Assets.xcassets\IC-Action-Rating-Inactive.imageset\" />
@@ -1734,6 +1733,7 @@
     <Folder Include="Assets.xcassets\Hide-Password-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Remember-Icon.imageset\" />
     <Folder Include="Registration\Verify Pin\" />
+    <Folder Include="Logout\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1756,7 +1756,6 @@
     <InterfaceDefinition Include="Home\More\My Account\Manage Cards\ManageCards.storyboard" />
     <InterfaceDefinition Include="Home\More\My Account\Manage Accounts\ManageAccounts.storyboard" />
     <InterfaceDefinition Include="Home\More\My Account\Manage Accounts\Update Nickname\UpdateNickname.storyboard" />
-    <InterfaceDefinition Include="Home\More\My Account\Logout\Logout.storyboard" />
     <InterfaceDefinition Include="Home\More\Find Us\FindUs.storyboard" />
     <InterfaceDefinition Include="Home\Bill\Receipt\Receipt.storyboard" />
     <InterfaceDefinition Include="Home\More\Find Us\Select Store Type\SelectStoreType.storyboard" />
@@ -1772,6 +1771,7 @@
     <InterfaceDefinition Include="Customs\Generic No Data Page\GenericNoData.storyboard" />
     <InterfaceDefinition Include="Usage\Usage.storyboard" />
     <InterfaceDefinition Include="Home\Bill\Bill Details\BillDetails.storyboard" />
+    <InterfaceDefinition Include="Logout\Logout.storyboard" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -2042,10 +2042,6 @@
     <Compile Include="Home\More\My Account\Update Password\UpdatePasswordViewController.cs" />
     <Compile Include="Home\More\My Account\Update Password\UpdatePasswordViewController.designer.cs">
       <DependentUpon>UpdatePasswordViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\More\My Account\Logout\LogoutViewController.cs" />
-    <Compile Include="Home\More\My Account\Logout\LogoutViewController.designer.cs">
-      <DependentUpon>LogoutViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Home\More\Find Us\FindUsViewController.cs" />
     <Compile Include="Home\More\Find Us\FindUsViewController.designer.cs">
@@ -2594,6 +2590,11 @@
       <DependentUpon>VerifyPinViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Registration\Verify Pin\VerifyPinConstants.cs" />
+    <Compile Include="Logout\LogoutViewController.cs" />
+    <Compile Include="Logout\LogoutViewController.designer.cs">
+      <DependentUpon>..\Home\More\My Account\Logout\LogoutViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Logout\LogoutConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

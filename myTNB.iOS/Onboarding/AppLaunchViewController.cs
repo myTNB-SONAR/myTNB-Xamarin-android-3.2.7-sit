@@ -763,7 +763,7 @@ namespace myTNB
                 {
                     DataManager.DataManager.SharedInstance.User.UserID = DataManager.DataManager.SharedInstance.UserEntity[0]?.userID;
 
-                    bool isPhoneVerified = false;// await GetPhoneVerificationStatus();
+                    bool isPhoneVerified = await GetPhoneVerificationStatus();
 
                     if (isPhoneVerified)
                     {

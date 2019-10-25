@@ -26,8 +26,8 @@
     "emailAddress": "Alamat Emel",
     "mobileNumber": "Nombor Telefon",
     "submit": "Hantar",
-    "selectAccounts": "Select Accounts",
-    "selectAccount": "Select Account",
+    "selectAccounts": "Pilih Akaun",
+    "selectAccount": "Pilih Akaun",
     "backToHome": "Kembali ke Laman Utama",
     "tryAgain": "Cuba Lagi",
     "settings": "Settings",
@@ -52,7 +52,7 @@
     "confirm": "Sahkan",
     "ok": "Ok",
     "acctNickname": "Account Nickname",
-    "name": "Name",
+    "name": "Nama",
     "done": "Selesai",
     "yes": "Yes",
     "no": "No",
@@ -67,7 +67,7 @@
     "manage": "Uruskan",
     "update": "Kemas kini",
     "logout": "Log Keluar",
-    "idNUmber": "IC / ROC / Passport No.", //missing
+    "idNumber": "IC / ROC / Passport No.", //missing
     "password": "Kata Laluan",
     "mobileNo": "No. Mudah Alih",
     "email": "Emel",
@@ -81,7 +81,7 @@
     "login": "Log masuk",
     "next": "Seterusnya",
     "resend": "Hantar semula",
-    "retry": "Retry"//missing
+    "retry": "Retry" //missing
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -478,17 +478,24 @@
   "MyAccount": {
     "title": "Akaun Saya",
     "detailSectionTitle": "myTNB Akaun",
-    "accountSectionTitle": "Akaun Bekalan Elektrik TNB"
+    "accountSectionTitle": "Akaun Bekalan Elektrik TNB",
+    "logout": "Log Keluar",
+    "logoutMessage": "Anda pasti mahu log keluar daripada aplikasi myTNB?",
+    "mobileNumberVerified": "Nombor mudah alih anda telah berjaya disahkan.",
+    "accountDeleteSuccess": "Akaun bekalan elektrik anda telah dikeluarkan daripada akaun myTNB.",
+    "passwordUpdateSuccess": "Kata laluan anda telah berjaya ditukar.",
+    "noAccounts": "Tiada Akaun Elektrik",
+    "addAccountMessage": "Masukkan Akaun Bekalan Elektrik TNB sedia ada anda untuk melihat butiran penggunaan dan transaksi."
   },
   "Prelogin": {
     "welcomeTitle": "Welcome to myTNB",
     "tagline": "A whole new world with shockingly amazing possibilities.",
-    "register": "Register",
+    "register": "Daftar",
     "login": "Log masuk",
-    "quickAccess": "Quick Access",
-    "findUs": "Find Us",
-    "callUs": "Call Us",
-    "feedback": "Give Us Feedback"
+    "quickAccess": "Akses Pantas",
+    "findUs": "Temui Kami",
+    "callUs": "Hubungi Kami",
+    "feedback": "Beri Maklum Balas anda"
   },
   "Login": {
     "title": "Log Masuk Akaun myTNB",
@@ -535,5 +542,10 @@
     "resendPinMessage": "SMS mengandungi pin pengaktifan telah dihantar ke nombor anda.",
     "otpMobileUpdate": "Sila masukkan kod OTP 4 digit yang telah dihantar ke {0}.",
     "otpRegistration": "Sila masukkan kod OTP 4 digit yang telah dihantar ke {0}."
+  },
+  "Logout": {
+    "title": "Terima kasih kerana menggunakan myTNB.",
+    "message": "Anda telah log keluar daripada aplikasi myTNB.",
+    "loginAgain": "Log Masuk Semula"
   }
 }

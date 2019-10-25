@@ -67,7 +67,7 @@
     "manage": "Manage",
     "update": "Update",
     "logout": "Logout",
-    "idNUmber": "IC / ROC / Passport No.",
+    "idNumber": "IC / ROC / Passport No.",
     "password": "Password",
     "mobileNo": "Mobile No.",
     "email": "Email",
@@ -478,13 +478,20 @@
   "MyAccount": {
     "title": "My Account",
     "detailSectionTitle": "myTNB Account",
-    "accountSectionTitle": "TNB Electricity Supply Accounts"
+    "accountSectionTitle": "TNB Electricity Supply Accounts",
+    "logout": "Log Out",
+    "logoutMessage": "Are you sure you want to log out from the myTNB app?",
+    "mobileNumberVerified": "Your mobile number has been verified successfully.",
+    "accountDeleteSuccess": "Your electricity supply account has been removed from myTNB account.",
+    "passwordUpdateSuccess": "Your password has been changed successfully.",
+    "noAccounts": "No Electricity Account",
+    "addAccountMessage": "Add your existing TNB Electricity Supply Account to view usage and transaction details."
   },
   "Prelogin": {
     "welcomeTitle": "Welcome to myTNB",
     "tagline": "A whole new world with shockingly amazing possibilities.",
     "register": "Register",
-    "login": "Login",
+    "login": "Log In",
     "quickAccess": "Quick Access",
     "findUs": "Find Us",
     "callUs": "Call Us",
@@ -535,5 +542,10 @@
     "resendPinMessage": "An SMS containing the activation pin has been sent to your number.",
     "otpMobileUpdate": "An OTP has been sent to {0}, please enter it below.",
     "otpRegistration": "Please enter the 4-digit activation pin that was sent to {0}."
+  },
+  "Logout": {
+    "title": "Thank you for using myTNB.",
+    "message": "You are now logged out of the myTNB app.",
+    "loginAgain": "Log In Again"
   }
 }

@@ -4,15 +4,18 @@ using System.Drawing;
 using CoreGraphics;
 using Foundation;
 using myTNB.Model;
+using myTNB.MyAccount;
 using UIKit;
-
 
 namespace myTNB.Home.More.MyAccount
 {
     public class MyAccountDataSource : UITableViewSource
     {
-        private RegisteredCardsResponseModel _registeredCards = new RegisteredCardsResponseModel();
-        private MyAccountViewController _controller;
+        private readonly RegisteredCardsResponseModel _registeredCards = new RegisteredCardsResponseModel();
+        private readonly MyAccountViewController _controller;
+        private readonly List<string> SectionTitle;
+        private readonly List<string> DetailContent;
+
         public MyAccountDataSource(MyAccountViewController controller)
         {
             _controller = controller;
@@ -27,23 +30,19 @@ namespace myTNB.Home.More.MyAccount
                 _registeredCards.d = new RegisteredCardsModel();
                 _registeredCards.d.data = new List<RegisteredCardsDataModel>();
             }
+            SectionTitle = new List<string>{
+                GetI18NValue(MyAccountConstants.I18N_DetailSectionTitle)
+                , GetI18NValue(MyAccountConstants.I18N_AccountSectionTitle)
+            };
+            DetailContent = new List<string>{
+                GetCommonI18NValue(Constants.Common_Name).ToUpper(),
+                GetCommonI18NValue(Constants.Common_IDNumber).ToUpper(),
+                GetCommonI18NValue(Constants.Common_Email).ToUpper(),
+                GetCommonI18NValue(Constants.Common_MobileNo).ToUpper(),
+                GetCommonI18NValue(Constants.Common_Password).ToUpper(),
+                GetCommonI18NValue(Constants.Common_Cards).ToUpper()
+            };
         }
-
-        private List<string> SectionTitle = new List<string>
-        {
-            "MyAccount_MyTNBAccount".Translate(),
-            "MyAccount_TNBSupplyAccount".Translate()
-        };
-
-        private List<string> DetailContent = new List<string>
-        {
-            "Common_Name".Translate().ToUpper(),
-            "Common_ICROCPassportNumber".Translate().ToUpper(),
-            "Common_Email".Translate().ToUpper(),
-            "Common_MobileNumber".Translate().ToUpper(),
-            "Common_Password".Translate().ToUpper(),
-            "Common_Cards".Translate().ToUpper()
-        };
 
         public override nint NumberOfSections(UITableView tableView)
         {
@@ -72,10 +71,12 @@ namespace myTNB.Home.More.MyAccount
             UIView view = new UIView(new CGRect(0, 0, tableView.Frame.Width, 48));
             view.BackgroundColor = MyTNBColor.SectionGrey;
 
-            var lblSectionTitle = new UILabel(new CGRect(18, 16, tableView.Frame.Width, 18));
-            lblSectionTitle.Text = SectionTitle[(int)section];
-            lblSectionTitle.Font = MyTNBFont.MuseoSans16;
-            lblSectionTitle.TextColor = MyTNBColor.PowerBlue;
+            UILabel lblSectionTitle = new UILabel(new CGRect(18, 16, tableView.Frame.Width, 18))
+            {
+                Text = SectionTitle[(int)section],
+                Font = MyTNBFont.MuseoSans16,
+                TextColor = MyTNBColor.PowerBlue
+            };
             view.Add(lblSectionTitle);
 
             return view;
@@ -85,15 +86,15 @@ namespace myTNB.Home.More.MyAccount
         {
             if (indexPath.Section == 0)
             {
-                var cell = tableView.DequeueReusableCell("AccountDetailsViewCell", indexPath) as AccountDetailsViewCell;
+                AccountDetailsViewCell cell = tableView.DequeueReusableCell("AccountDetailsViewCell", indexPath) as AccountDetailsViewCell;
                 cell.Frame = new CGRect(cell.Frame.X, cell.Frame.Y, tableView.Frame.Width, 64);
 
-                var detailCount = DetailContent?.Count ?? 0;
+                int detailCount = DetailContent?.Count ?? 0;
                 cell.lblTitle.Text = indexPath.Row < detailCount ? DetailContent[indexPath.Row] : string.Empty;
                 cell.viewCTA.Hidden = true;
                 cell.lblDetail.TextColor = MyTNBColor.SilverChalice;
 
-                var userInfo = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+                SQLite.SQLiteDataManager.UserEntity userInfo = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
                                           ? DataManager.DataManager.SharedInstance.UserEntity[0]
                                           : new SQLite.SQLiteDataManager.UserEntity();
                 if (indexPath.Row == 0)
@@ -106,7 +107,7 @@ namespace myTNB.Home.More.MyAccount
                     if (!string.IsNullOrEmpty(icNo) && icNo.Length > 4)
                     {
                         string lastDigit = icNo.Substring(icNo.Length - 4);
-                        icNo = "MyAccount_ICNumberMask".Translate() + lastDigit;
+                        icNo = "•••••• •• " + lastDigit;
                     }
                     string maskedICNo = icNo;
                     cell.lblDetail.Text = maskedICNo;
@@ -119,7 +120,7 @@ namespace myTNB.Home.More.MyAccount
                 {
                     cell.lblDetail.Text = userInfo?.mobileNo;
                     cell.lblDetail.TextColor = MyTNBColor.TunaGrey();
-                    cell.lblCTA.Text = "Common_Update".Translate();
+                    cell.lblCTA.Text = GetCommonI18NValue(Constants.Common_Update);
                     cell.viewCTA.Hidden = false;
                     cell.viewCTA.AddGestureRecognizer(new UITapGestureRecognizer(_controller.UpdateMobileNumber));
                 }
@@ -127,7 +128,7 @@ namespace myTNB.Home.More.MyAccount
                 {
                     cell.lblDetail.Text = "••••••••••••••";
                     cell.lblDetail.TextColor = MyTNBColor.TunaGrey();
-                    cell.lblCTA.Text = "Common_Update".Translate();
+                    cell.lblCTA.Text = GetCommonI18NValue(Constants.Common_Update);
                     cell.viewCTA.Hidden = false;
                     cell.viewCTA.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                     {
@@ -136,10 +137,10 @@ namespace myTNB.Home.More.MyAccount
                 }
                 else if (indexPath.Row == 5)
                 {
-                    var cardCount = _registeredCards?.d?.data?.Count ?? 0;
+                    int cardCount = _registeredCards?.d?.data?.Count ?? 0;
                     cell.lblDetail.Text = cardCount.ToString();
                     cell.lblDetail.TextColor = MyTNBColor.TunaGrey();
-                    cell.lblCTA.Text = "Common_Manage".Translate();
+                    cell.lblCTA.Text = GetCommonI18NValue(Constants.Common_Manage);
                     UITapGestureRecognizer manageCards = new UITapGestureRecognizer(() =>
                     {
                         _controller.ManageRegisteredCards();
@@ -162,12 +163,12 @@ namespace myTNB.Home.More.MyAccount
             }
             else if (indexPath.Section == 1)
             {
-                var cell = tableView.DequeueReusableCell("SupplyAccountViewCell", indexPath) as SupplyAccountViewCell;
+                SupplyAccountViewCell cell = tableView.DequeueReusableCell("SupplyAccountViewCell", indexPath) as SupplyAccountViewCell;
                 cell.Frame = new CGRect(cell.Frame.X, cell.Frame.Y, tableView.Frame.Width, 80);
                 cell.lblName.Text = GetAccountModel(indexPath.Row).accDesc;
                 cell.lblAccountNumber.Text = GetAccountModel(indexPath.Row).accNum;
                 //cell.lblUsers.Text = "2 Users";
-                cell.lblCTA.Text = "Common_Manage".Translate();
+                cell.lblCTA.Text = GetCommonI18NValue(Constants.Common_Manage);
                 cell.SelectionStyle = UITableViewCellSelectionStyle.None;
 
                 nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
@@ -222,6 +223,16 @@ namespace myTNB.Home.More.MyAccount
         private CGSize GetLabelSize(UILabel label, nfloat width, nfloat height)
         {
             return label.Text.StringSize(label.Font, new SizeF((float)width, (float)height));
+        }
+
+        private string GetI18NValue(string key)
+        {
+            return _controller.GetI18NValue(key);
+        }
+
+        private string GetCommonI18NValue(string key)
+        {
+            return _controller.GetCommonI18NValue(key);
         }
     }
 }

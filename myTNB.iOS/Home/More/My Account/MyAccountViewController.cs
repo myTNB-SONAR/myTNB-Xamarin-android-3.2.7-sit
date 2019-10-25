@@ -10,9 +10,7 @@ namespace myTNB
 {
     public partial class MyAccountViewController : CustomUIViewController
     {
-        public MyAccountViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public MyAccountViewController(IntPtr handle) : base(handle) { }
 
         private UIView _viewNotificationMsg;
         private UILabel _lblNotificationDetails;
@@ -37,19 +35,19 @@ namespace myTNB
             InitializeNotificationMessage();
             if (DataManager.DataManager.SharedInstance.IsMobileNumberUpdated)
             {
-                _lblNotificationDetails.Text = "MyAccount_UpdatedMobileNumber".Translate();
+                _lblNotificationDetails.Text = GetI18NValue(MyAccountConstants.I18N_MobileNumberVerified);
                 ShowNotificationMessage();
                 DataManager.DataManager.SharedInstance.IsMobileNumberUpdated = false;
             }
             if (DataManager.DataManager.SharedInstance.IsAccountDeleted)
             {
-                _lblNotificationDetails.Text = "MyAccount_UpdatedTNBAccount".Translate();
+                _lblNotificationDetails.Text = GetI18NValue(MyAccountConstants.I18N_AccountDeleteSuccess);
                 ShowNotificationMessage();
                 DataManager.DataManager.SharedInstance.IsAccountDeleted = false;
             }
             if (DataManager.DataManager.SharedInstance.IsPasswordUpdated)
             {
-                _lblNotificationDetails.Text = "MyAccount_UpdatedPassword".Translate();
+                _lblNotificationDetails.Text = GetI18NValue(MyAccountConstants.I18N_PasswordUpdateSuccess);
                 ShowNotificationMessage();
                 DataManager.DataManager.SharedInstance.IsPasswordUpdated = false;
             }
@@ -58,20 +56,23 @@ namespace myTNB
 
         private void SetFooterView()
         {
-            UIButton btnLogout = new UIButton(UIButtonType.Custom);
-            btnLogout.Frame = new CGRect(18, 16, View.Frame.Width - 36, 48);
+            UIButton btnLogout = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(18, 16, View.Frame.Width - 36, 48),
+                BackgroundColor = MyTNBColor.FreshGreen,
+                Font = MyTNBFont.MuseoSans16
+            };
+
             btnLogout.Layer.CornerRadius = 4;
             btnLogout.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
-            btnLogout.BackgroundColor = MyTNBColor.FreshGreen;
             btnLogout.Layer.BorderWidth = 1;
             btnLogout.SetTitle(GetCommonI18NValue(Constants.Common_Logout), UIControlState.Normal);
-            btnLogout.Font = MyTNBFont.MuseoSans16;
             btnLogout.SetTitleColor(UIColor.White, UIControlState.Normal);
             btnLogout.TouchUpInside += (sender, e) =>
             {
-                UIAlertController alert = UIAlertController.Create("MyAccount_Logout".Translate()
-                    , "MyAccount_LogoutConfirmation".Translate(), UIAlertControllerStyle.Alert);
-                alert.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Default, (obj) =>
+                UIAlertController alert = UIAlertController.Create(GetI18NValue(MyAccountConstants.I18N_Logout)
+                    , GetI18NValue(MyAccountConstants.I18N_LogoutMessage), UIAlertControllerStyle.Alert);
+                alert.AddAction(UIAlertAction.Create(GetCommonI18NValue(Constants.Common_Ok), UIAlertActionStyle.Default, (obj) =>
                 {
                     UIStoryboard storyBoard = UIStoryboard.FromName("Logout", null);
                     LogoutViewController viewController =
@@ -85,19 +86,24 @@ namespace myTNB
                 PresentViewController(alert, animated: true, completionHandler: null);
             };
 
-            UIView viewLogout = new UIView();
-            viewLogout.BackgroundColor = MyTNBColor.SectionGrey;
+            UIView viewLogout = new UIView
+            {
+                BackgroundColor = MyTNBColor.SectionGrey
+            };
             viewLogout.AddSubview(btnLogout);
 
             UIView viewFooter = new UIView();
-            UIButton btnAddAccount = new UIButton(UIButtonType.Custom);
-            btnAddAccount.Frame = new CGRect(18, 16, myAccountTableView.Frame.Width - 36, 48);
+            UIButton btnAddAccount = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(18, 16, myAccountTableView.Frame.Width - 36, 48),
+                Font = MyTNBFont.MuseoSans16,
+                BackgroundColor = UIColor.White
+            };
+
             btnAddAccount.Layer.CornerRadius = 4;
             btnAddAccount.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
-            btnAddAccount.BackgroundColor = UIColor.White;
             btnAddAccount.Layer.BorderWidth = 1;
             btnAddAccount.SetTitle(GetCommonI18NValue(Constants.Common_AddAnotherAccount), UIControlState.Normal);
-            btnAddAccount.Font = MyTNBFont.MuseoSans16;
             btnAddAccount.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
             btnAddAccount.TouchUpInside += (sender, e) =>
             {
@@ -134,19 +140,23 @@ namespace myTNB
             {
                 viewFooter = new UIView(new CGRect(0, 0, myAccountTableView.Frame.Width, 150));
                 viewFooter.Frame = new CGRect(0, 0, myAccountTableView.Frame.Width, 230);
-                UILabel lblTitle = new UILabel(new CGRect(93, 16, myAccountTableView.Frame.Width - 186, 16));
-                lblTitle.TextColor = MyTNBColor.TunaGrey();
-                lblTitle.Font = MyTNBFont.MuseoSans12_500;
-                lblTitle.Text = "Common_NoAccount".Translate();
-                lblTitle.TextAlignment = UITextAlignment.Center;
+                UILabel lblTitle = new UILabel(new CGRect(93, 16, myAccountTableView.Frame.Width - 186, 16))
+                {
+                    TextColor = MyTNBColor.TunaGrey(),
+                    Font = MyTNBFont.MuseoSans12_500,
+                    Text = GetI18NValue(MyAccountConstants.I18N_NoAccounts),
+                    TextAlignment = UITextAlignment.Center
+                };
 
-                UILabel lblDetails = new UILabel(new CGRect(0, 32, myAccountTableView.Frame.Width, 36));
-                lblDetails.TextColor = MyTNBColor.TunaGrey();
-                lblDetails.Font = MyTNBFont.MuseoSans9_300;
-                lblDetails.Text = "MyAccount_AddAccountDetails".Translate();
-                lblDetails.Lines = 0;
-                lblDetails.LineBreakMode = UILineBreakMode.WordWrap;
-                lblDetails.TextAlignment = UITextAlignment.Center;
+                UILabel lblDetails = new UILabel(new CGRect(0, 32, myAccountTableView.Frame.Width, 36))
+                {
+                    TextColor = MyTNBColor.TunaGrey(),
+                    Font = MyTNBFont.MuseoSans9_300,
+                    Text = GetI18NValue(MyAccountConstants.I18N_AddAccountMessage),
+                    Lines = 0,
+                    LineBreakMode = UILineBreakMode.WordWrap,
+                    TextAlignment = UITextAlignment.Center
+                };
 
                 btnAddAccount.Frame = new CGRect(90, 76, myAccountTableView.Frame.Width - 180, 48);
                 btnAddAccount.SetTitle(GetCommonI18NValue(Constants.Common_AddAnotherAccount), UIControlState.Normal);

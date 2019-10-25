@@ -5,17 +5,17 @@ using CoreGraphics;
 using System.Threading.Tasks;
 using myTNB.Model;
 using CoreAnimation;
+using myTNB.Logout;
 
 namespace myTNB
 {
-    public partial class LogoutViewController : UIViewController
+    public partial class LogoutViewController : CustomUIViewController
     {
-        public LogoutViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public LogoutViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
         {
+            PageName = LogoutConstants.Pagename_Logout;
             base.ViewDidLoad();
             NavigationController.NavigationBar.Hidden = true;
             SetupSuperViewBackground();
@@ -30,7 +30,7 @@ namespace myTNB
             UIApplication.SharedApplication.ApplicationIconBadgeNumber = 0;
         }
 
-        internal void SetSubView()
+        private void SetSubView()
         {
             UIView viewContent = new UIView(new CGRect(18, DeviceHelper.IsIphoneXUpResolution() ? 60 : 36, View.Frame.Width - 36, 240));
             viewContent.BackgroundColor = UIColor.White;
@@ -42,29 +42,31 @@ namespace myTNB
             UILabel lblThankYou = new UILabel(new CGRect(0, 182, viewContent.Frame.Width, 18));
             lblThankYou.TextColor = MyTNBColor.PowerBlue;
             lblThankYou.Font = MyTNBFont.MuseoSans16;
-            lblThankYou.Text = "Logout_ThankYouMessage".Translate();
+            lblThankYou.Text = GetI18NValue(LogoutConstants.I18N_Title);
             lblThankYou.TextAlignment = UITextAlignment.Center;
 
             UILabel lblSubTitle = new UILabel(new CGRect(24, 200, viewContent.Frame.Width - 48, 16));
             lblSubTitle.Font = MyTNBFont.MuseoSans12;
             lblSubTitle.TextColor = MyTNBColor.TunaGrey();
             lblSubTitle.TextAlignment = UITextAlignment.Center;
-            lblSubTitle.Text = "Logout_Message".Translate();
+            lblSubTitle.Text = GetI18NValue(LogoutConstants.I18N_Message);
 
             viewContent.AddSubviews(new UIView[] { imgLogo, lblThankYou, lblSubTitle });
             View.AddSubview(viewContent);
         }
 
-        internal void AddCTA()
+        private void AddCTA()
         {
-            UIButton btnCTA = new UIButton(UIButtonType.Custom);
-            btnCTA.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 96 : 72), View.Frame.Width - 36, 48);
+            UIButton btnCTA = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 96 : 72), View.Frame.Width - 36, 48),
+                Font = MyTNBFont.MuseoSans16,
+                BackgroundColor = MyTNBColor.FreshGreen
+            };
+            btnCTA.Layer.BorderWidth = 1;
+            btnCTA.SetTitle(GetI18NValue(LogoutConstants.I18N_LoginAgain), UIControlState.Normal);
             btnCTA.Layer.CornerRadius = 4;
             btnCTA.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
-            btnCTA.BackgroundColor = MyTNBColor.FreshGreen;
-            btnCTA.Layer.BorderWidth = 1;
-            btnCTA.SetTitle("Logout_BackToHome".Translate(), UIControlState.Normal);
-            btnCTA.Font = MyTNBFont.MuseoSans16;
             btnCTA.SetTitleColor(UIColor.White, UIControlState.Normal);
             btnCTA.TouchUpInside += (sender, e) =>
             {
@@ -74,7 +76,7 @@ namespace myTNB
             View.AddSubview(btnCTA);
         }
 
-        internal void ExecuteLogout()
+        private void ExecuteLogout()
         {
             ActivityIndicator.Show();
             LogoutUser().ContinueWith(task =>
@@ -87,16 +89,16 @@ namespace myTNB
             });
         }
 
-        internal void BackToHome()
+        private void BackToHome()
         {
             UIStoryboard loginStoryboard = UIStoryboard.FromName("Login", null);
-            UIViewController preloginVC = (UIViewController)loginStoryboard.InstantiateViewController("PreloginViewController");
+            UIViewController preloginVC = loginStoryboard.InstantiateViewController("PreloginViewController");
             preloginVC.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
             preloginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(preloginVC, true, null);
         }
 
-        internal Task LogoutUser()
+        private Task LogoutUser()
         {
             return Task.Factory.StartNew(() =>
             {
@@ -114,14 +116,16 @@ namespace myTNB
             });
         }
 
-        internal void SetupSuperViewBackground()
+        private void SetupSuperViewBackground()
         {
-            var startColor = MyTNBColor.GradientPurpleDarkElement;
-            var endColor = MyTNBColor.GradientPurpleLightElement;
-            var gradientLayer = new CAGradientLayer();
-            gradientLayer.Colors = new[] { startColor.CGColor, endColor.CGColor };
-            gradientLayer.Locations = new NSNumber[] { 0, 1 };
-            gradientLayer.Frame = View.Bounds;
+            UIColor startColor = MyTNBColor.GradientPurpleDarkElement;
+            UIColor endColor = MyTNBColor.GradientPurpleLightElement;
+            CAGradientLayer gradientLayer = new CAGradientLayer
+            {
+                Colors = new[] { startColor.CGColor, endColor.CGColor },
+                Locations = new NSNumber[] { 0, 1 },
+                Frame = View.Bounds
+            };
             View.Layer.InsertSublayer(gradientLayer, 0);
         }
     }
