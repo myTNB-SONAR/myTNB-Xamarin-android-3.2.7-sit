@@ -165,7 +165,6 @@ namespace myTNB_Android.Src.Billing.MVP
             TextViewUtils.SetMuseoSans500Typeface(accountName, myBillDetailsLabel, accountChargeLabel, accountChargeValue, btnViewBill, btnPayBill,
                 accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel, accountPayAmountCurrency, accountMinChargeLabel);
             billingDetailsPresenter = new BillingDetailsPresenter(this);
-            SetToolBarTitle(GetLabelByLanguage("navTitle"));
             accountBillThisMonthLabel.Text = GetLabelByLanguage("billThisMonth");
             accountMinChargeLabel.Text = GetLabelByLanguage("minimumChargeDescription");
             btnViewBill.Text = GetLabelCommonByLanguage("viewBill");
@@ -205,6 +204,7 @@ namespace myTNB_Android.Src.Billing.MVP
             {
                 otherChargesExpandableView.Visibility = ViewStates.Visible;
                 accountMinChargeLabelContainer.Visibility = ViewStates.Visible;
+                otherChargesExpandableView.SetApplicationChargesLabel(GetLabelByLanguage("applicationCharges"));
                 otherChargesExpandableView.SetOtherCharges(selectedAccountChargeModel.MandatoryCharges.TotalAmount, selectedAccountChargeModel.MandatoryCharges.ChargeModelList);
                 otherChargesExpandableView.RequestLayout();
             }
@@ -305,12 +305,15 @@ namespace myTNB_Android.Src.Billing.MVP
 
         public void ShowAccountHasMinCharge()
         {
-            BillMandatoryChargesTooltipModel mandatoryTooltipModel = MyTNBAppToolTipData.GetInstance().GetMandatoryChargesTooltipData();
-            MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+            BillMandatoryChargesTooltipModel mandatoryTooltipModel = MyTNBAppToolTipData.GetInstance().GetMandatoryChargesTooltipData("MandatoryCharges");
+            if (mandatoryTooltipModel != null)
+            {
+                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
                 .SetTitle(mandatoryTooltipModel.Title)
                 .SetMessage(mandatoryTooltipModel.Description)
                 .SetCTALabel(mandatoryTooltipModel.CTA)
                 .Build().Show();
+            }
         }
 
         public void ShowBillPDF(BillHistoryV5 selectedBill)

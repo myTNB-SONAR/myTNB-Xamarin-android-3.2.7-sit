@@ -134,7 +134,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                     double newAmount = double.Parse(vh.Amount.Text);
                     if (newAmount < 1)
                     {
-                        vh.AmountLabel.Error = mActicity.GetString(Resource.String.error_invalid_amount);
+                        vh.AmountLabel.Error = Utility.GetLocalizedLabel("Error", "minimumPayAmount");
                         vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHintAmount);
                         vh.Amount.SetTextColor(new Color(ContextCompat.GetColor(mActicity,Resource.Color.tomato)));
                         vh.Amount.RequestFocus();
@@ -146,7 +146,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                     }
                     else if (newAmount < double.Parse(payableFormatter.Format(item.minimumAmountDue)))
                     {
-                        vh.AmountLabel.Error = string.Format("Minimum amount must be at least {0}", "RM " + item.minimumAmountDue.ToString("#,##0.00"));
+                        vh.AmountLabel.Error = string.Format(Utility.GetLocalizedLabel("Error", "minimumMandatoryPayment"), "RM " + item.minimumAmountDue.ToString("#,##0.00"));
                         vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHintAmount);
                         vh.Amount.SetTextColor(new Color(ContextCompat.GetColor(mActicity, Resource.Color.tomato)));
                         vh.Amount.RequestFocus();
@@ -178,7 +178,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Adapter
                 }
                 else
                 {
-                    vh.AmountLabel.Error = mActicity.GetString(Resource.String.error_invalid_amount);
+                    vh.AmountLabel.Error = Utility.GetLocalizedLabel("Error", "minimumPayAmount");
                     vh.AmountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
                     vh.Amount.RequestFocus();
                     item.isValidAmount = false;

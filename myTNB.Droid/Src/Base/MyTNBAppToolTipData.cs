@@ -207,22 +207,31 @@ namespace myTNB_Android.Src.Base
             return tooltipModelDataList;
         }
 
-        public BillMandatoryChargesTooltipModel GetMandatoryChargesTooltipData()
+        public BillMandatoryChargesTooltipModel GetMandatoryChargesTooltipData(string tooltipType)
         {
-            return mBillMandatoryChargesTooltipModelList.Find(model =>
+            BillMandatoryChargesTooltipModel tooltipModel = null;
+            if (mBillMandatoryChargesTooltipModelList.Count > 0)
             {
-                return model.Type == "MandatoryCharges";
-            });
-        }
-
-        public BillMandatoryChargesTooltipModel GetMandatoryPaymentTooltipData()
-        {
-            return mBillMandatoryChargesTooltipModelList.Find(model =>
+                tooltipModel = mBillMandatoryChargesTooltipModelList.Find(model =>
+                {
+                    return model.Type == tooltipType;
+                });
+            }
+            else
             {
-                return model.Type == "MandatoryPayment";
-            });
+                Utility.GetTooltipSelectorModel("Bills", "MandatoryChargesPopUpDetails").ForEach(model =>
+                {
+                    if (model.Type == tooltipType)
+                    {
+                        tooltipModel = new BillMandatoryChargesTooltipModel();
+                        tooltipModel.Title = model.Title;
+                        tooltipModel.Description = model.Description;
+                        tooltipModel.CTA = model.CTA;
+                    }
+                });
+            }
+            return tooltipModel;
         }
-
 
         public class SMREligibiltyPopUpDetailData
         {

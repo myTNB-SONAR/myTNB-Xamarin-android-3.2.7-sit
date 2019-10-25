@@ -4,6 +4,7 @@ using Android.Text.Style;
 using Android.Util;
 using myTNB;
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace myTNB_Android.Src.Utils
@@ -96,6 +97,26 @@ namespace myTNB_Android.Src.Utils
                 Log.Debug("DEBUG Error: ", e.Message);
             }
             return label;
+        }
+
+        /// <summary>
+        /// Gets the tooltip selector based on selected language.
+        /// </summary>
+        /// <param name="pageId"></param>
+        /// <param name="keyId"></param>
+        /// <returns></returns>
+        public static List<PopupSelectorModel> GetTooltipSelectorModel(string pageId, string keyId)
+        {
+            List<PopupSelectorModel> popupSelectorModels = new List<PopupSelectorModel>();
+            try
+            {
+                popupSelectorModels = LanguageManager.Instance.GetPopupSelectorsByPage(pageId)[keyId];
+            }
+            catch (Exception e)
+            {
+                Log.Debug("DEBUG Error: ", e.Message);
+            }
+            return popupSelectorModels;
         }
     }
 }

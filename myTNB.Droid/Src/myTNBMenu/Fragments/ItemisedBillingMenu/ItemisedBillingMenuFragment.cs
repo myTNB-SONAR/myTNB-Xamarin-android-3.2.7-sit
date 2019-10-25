@@ -235,11 +235,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
+            base.OnViewCreated(view, savedInstanceState);
             itemisedBillingInfoShimmer = view.FindViewById<ShimmerFrameLayout>(Resource.Id.itemisedBillingInfoShimmer);
             itemisedBillingInfoShimmer.SetShimmer(ShimmerUtils.ShimmerBuilderConfig().Build());
             itemisedBillingInfoShimmer.StartShimmer();
-
-            base.OnViewCreated(view, savedInstanceState);
             ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
             ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.bg_smr);
 
@@ -498,18 +497,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             int imageResource = Resource.Drawable.bill_no_outstanding_banner;
 
             itemisedBillingInfoAmount.Text = accountChargeModel.AmountDue.ToString("#,##0.00");
+            bool isREAccount = mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId);
             if (accountChargeModel.IsCleared)
             {
-                if (mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId))
+                if (isREAccount)
                 {
                     imageResource = Resource.Drawable.bill_paid_extra_re_banner;
-                    itemisedBillingInfoNote.Text = "My earnings";
+                    itemisedBillingInfoNote.Text = GetLabelByLanguage("myEarnings");
                 }
                 else
                 {
-                    itemisedBillingInfoNote.Text = "I’ve cleared all bills";
+                    itemisedBillingInfoNote.Text = GetLabelByLanguage("clearedBills");
                 }
-                itemisedBillingInfoNote.Text = GetLabelByLanguage("clearedBills");
                 itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
                 itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#49494a"));
                 itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#49494a"));
@@ -517,58 +516,51 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
             else if (accountChargeModel.IsPaidExtra)
             {
-                if (mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId))
+                if (isREAccount)
                 {
                     imageResource = Resource.Drawable.bill_paid_extra_re_banner;
-                    itemisedBillingInfoNote.Text = "My earnings";
+                    itemisedBillingInfoNote.Text = GetLabelByLanguage("myEarnings");
+                    itemisedBillingInfoDate.Text = GetLabelByLanguage("getBy") + " " + dateFormatter.Format(dateParser.Parse(accountChargeModel.DueDate));
+                    itemisedBillingInfoDate.Visibility = ViewStates.Visible;
+
                     itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
                     itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#49494a"));
                     itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#49494a"));
-                    itemisedBillingInfoDate.Visibility = ViewStates.Visible;
-                    itemisedBillingInfoDate.Text = "get by " + dateFormatter.Format(dateParser.Parse(accountChargeModel.DueDate));
                 }
                 else
                 {
-                    itemisedBillingInfoNote.Text = "I’ve paid extra";
+                    itemisedBillingInfoNote.Text = GetLabelByLanguage("paidExtra");
+
                     itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
                     itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#20bd4c"));
                     itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#20bd4c"));
                     itemisedBillingInfoDate.Visibility = ViewStates.Gone;
-                    itemisedBillingInfoNote.Text = GetLabelByLanguage("beenPaidExtra");
                 }
                 itemisedBillingInfoAmount.Text = (Math.Abs(accountChargeModel.AmountDue)).ToString("#,##0.00");
             }
             else if (accountChargeModel.IsNeedPay)
             {
-                if (mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId))
+                if (isREAccount)
                 {
                     imageResource = Resource.Drawable.bill_paid_extra_re_banner;
-                    itemisedBillingInfoNote.Text = "I’ve been paid extra";
+                    itemisedBillingInfoNote.Text = GetLabelByLanguage("beenPaidExtra");
+
                     itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
                     itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#20bd4c"));
                     itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#20bd4c"));
-                    itemisedBillingInfoNote.Text = GetLabelByLanguage("myEarnings");
                 }
                 else
                 {
                     imageResource = Resource.Drawable.bill_need_to_pay_banner;
-                    itemisedBillingInfoNote.Text = "I need to pay";
+                    itemisedBillingInfoNote.Text = GetLabelByLanguage("needToPay");
+                    itemisedBillingInfoDate.Text = GetLabelByLanguage("by") + " " + dateFormatter.Format(dateParser.Parse(accountChargeModel.DueDate));
+                    itemisedBillingInfoDate.Visibility = ViewStates.Visible;
 
                     itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
                     itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#49494a"));
                     itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#49494a"));
-
-                    itemisedBillingInfoDate.Visibility = ViewStates.Visible;
-                    itemisedBillingInfoDate.Text = "by " + dateFormatter.Format(dateParser.Parse(accountChargeModel.DueDate));
-                    itemisedBillingInfoNote.Text = GetLabelByLanguage("needToPay");
                 }
-
-                itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
-                itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#49494a"));
-                itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#49494a"));
-
-                itemisedBillingInfoDate.Visibility = ViewStates.Visible;
-                itemisedBillingInfoDate.Text = GetLabelByLanguage("by") + " " + dateFormatter.Format(dateParser.Parse(accountChargeModel.DueDate));
+                itemisedBillingInfoAmount.Text = (Math.Abs(accountChargeModel.AmountDue)).ToString("#,##0.00");
             }
             EnableActionButtons(true);
             itemisedBillingHeaderImage.SetImageResource(imageResource);

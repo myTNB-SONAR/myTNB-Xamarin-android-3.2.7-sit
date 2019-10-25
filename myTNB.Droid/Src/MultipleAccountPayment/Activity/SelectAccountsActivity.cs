@@ -789,15 +789,18 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         {
             if (accountChargeModel.MandatoryCharges.TotalAmount > 0f)
             {
-                BillMandatoryChargesTooltipModel mandatoryTooltipModel = MyTNBAppToolTipData.GetInstance().GetMandatoryPaymentTooltipData();
-                List<string> ctaList = mandatoryTooltipModel.CTA.Split(',').ToList();
-                MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
-                    .SetTitle(mandatoryTooltipModel.Title)
-                    .SetMessage(string.Format(mandatoryTooltipModel.Description, "RM"+ accountChargeModel.MandatoryCharges.TotalAmount.ToString("#,##0.00")))
-                    .SetCTALabel(ctaList[0])
-                    .SetCTAaction(()=> { ShowBillingDetails(accountChargeModel); })
-                    .SetSecondaryCTALabel(ctaList[1])
-                    .Build().Show();
+                BillMandatoryChargesTooltipModel mandatoryTooltipModel = MyTNBAppToolTipData.GetInstance().GetMandatoryChargesTooltipData("MandatoryPayment");
+                if (mandatoryTooltipModel != null)
+                {
+                    List<string> ctaList = mandatoryTooltipModel.CTA.Split(',').ToList();
+                    MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                        .SetTitle(mandatoryTooltipModel.Title)
+                        .SetMessage(string.Format(mandatoryTooltipModel.Description, "RM" + accountChargeModel.MandatoryCharges.TotalAmount.ToString("#,##0.00")))
+                        .SetCTALabel(ctaList[0])
+                        .SetCTAaction(() => { ShowBillingDetails(accountChargeModel); })
+                        .SetSecondaryCTALabel(ctaList[1])
+                        .Build().Show();
+                }
             }
         }
 
