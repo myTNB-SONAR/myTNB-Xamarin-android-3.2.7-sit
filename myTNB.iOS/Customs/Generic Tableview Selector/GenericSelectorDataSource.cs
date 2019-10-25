@@ -21,7 +21,13 @@ namespace myTNB
 
         public override nfloat GetHeightForHeader(UITableView tableView, nint section)
         {
-            return ScaleUtility.GetScaledHeight(44);
+            if (_controller.HasSectionTitle
+                && !string.IsNullOrEmpty(_controller.SectionTitle)
+                && !string.IsNullOrWhiteSpace(_controller.SectionTitle))
+            {
+                return ScaleUtility.GetScaledHeight(44);
+            }
+            return 0;
         }
 
         public override UIView GetViewForHeader(UITableView tableView, nint section)

@@ -1733,6 +1733,7 @@
     <Folder Include="Assets.xcassets\Show-Password-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Hide-Password-Icon.imageset\" />
     <Folder Include="Assets.xcassets\Remember-Icon.imageset\" />
+    <Folder Include="Registration\Verify Pin\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1797,10 +1798,6 @@
     <Compile Include="Registration\Customer Accounts\AccountsViewController.cs" />
     <Compile Include="Registration\Customer Accounts\AccountsViewController.designer.cs">
       <DependentUpon>AccountsViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Registration\VerifyPinViewController.cs" />
-    <Compile Include="Registration\VerifyPinViewController.designer.cs">
-      <DependentUpon>VerifyPinViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Registration\RegistrationViewController.cs" />
     <Compile Include="Registration\RegistrationViewController.designer.cs">
@@ -2591,6 +2588,12 @@
     <Compile Include="Login\PreloginConstants.cs" />
     <Compile Include="Login\LoginConstants.cs" />
     <Compile Include="Login\Forgot Password\ForgotPasswordConstants.cs" />
+    <Compile Include="Home\More\My Account\Update Mobile Number\MobileNumberConstants.cs" />
+    <Compile Include="Registration\Verify Pin\VerifyPinViewController.cs" />
+    <Compile Include="Registration\Verify Pin\VerifyPinViewController.designer.cs">
+      <DependentUpon>VerifyPinViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registration\Verify Pin\VerifyPinConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

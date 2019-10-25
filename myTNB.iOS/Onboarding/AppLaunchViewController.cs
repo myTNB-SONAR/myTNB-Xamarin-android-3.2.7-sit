@@ -313,7 +313,6 @@ namespace myTNB
 
             base.ViewDidAppear(animated);
             GetUserEntity();
-            UIApplication.SharedApplication.NetworkActivityIndicatorVisible = true;
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
                 InvokeOnMainThread(async () =>
@@ -759,11 +758,12 @@ namespace myTNB
             {
                 await ClearWalkthroughCache();
                 var isLogin = sharedPreference.BoolForKey(TNBGlobal.PreferenceKeys.LoginState);
-                if (isLogin && DataManager.DataManager.SharedInstance.UserEntity != null && DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
+                if (isLogin && DataManager.DataManager.SharedInstance.UserEntity != null
+                    && DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
                 {
                     DataManager.DataManager.SharedInstance.User.UserID = DataManager.DataManager.SharedInstance.UserEntity[0]?.userID;
 
-                    bool isPhoneVerified = await GetPhoneVerificationStatus();
+                    bool isPhoneVerified = false;// await GetPhoneVerificationStatus();
 
                     if (isPhoneVerified)
                     {
@@ -777,7 +777,6 @@ namespace myTNB
                 else
                 {
                     ShowPrelogin();
-                    UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
                 }
             }
             else
@@ -788,7 +787,6 @@ namespace myTNB
                     InvokeOnMainThread(() =>
                     {
                         ShowOnboarding();
-                        UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
                     });
                 });
             }
@@ -935,20 +933,17 @@ namespace myTNB
             {
                 DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[0];
                 ShowDashboard();
-                UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
             }
             else if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
               && DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null
               && DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count == 0)
             {
                 ShowDashboard();
-                UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
             }
             else
             {
                 DataManager.DataManager.SharedInstance.ClearLoginState();
                 ShowPrelogin();
-                UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
             }
         }
 

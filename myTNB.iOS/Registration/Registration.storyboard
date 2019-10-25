@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="997">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="997">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -37,7 +37,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Verify Pin" id="4108"/>
+                    <navigationItem key="navigationItem" id="4108"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="219" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -204,7 +204,7 @@
                                         <rect key="frame" x="0.0" y="28" width="339" height="115"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="56393" id="56394">
-                                            <rect key="frame" x="0.0" y="0.0" width="339" height="114.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="339" height="115"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="58472">
@@ -247,7 +247,7 @@
                                                 <constraint firstItem="56420" firstAttribute="top" secondItem="56394" secondAttribute="top" constant="9" id="56424"/>
                                                 <constraint firstItem="56420" firstAttribute="leading" secondItem="56394" secondAttribute="leading" constant="20" id="56425"/>
                                                 <constraint firstAttribute="trailing" secondItem="56420" secondAttribute="trailing" constant="9" id="56426"/>
-                                                <constraint firstItem="56421" firstAttribute="top" secondItem="56394" secondAttribute="top" constant="28" id="56428" relation="greaterThanOrEqual"/>
+                                                <constraint firstItem="56421" firstAttribute="top" relation="greaterThanOrEqual" secondItem="56394" secondAttribute="top" constant="28" id="56428"/>
                                                 <constraint firstItem="56421" firstAttribute="leading" secondItem="56394" secondAttribute="leading" constant="20" id="56429"/>
                                                 <constraint firstAttribute="trailing" secondItem="56421" secondAttribute="trailing" constant="9" id="56430"/>
                                                 <constraint firstAttribute="bottom" secondItem="56423" secondAttribute="bottom" constant="8.5" id="56432"/>

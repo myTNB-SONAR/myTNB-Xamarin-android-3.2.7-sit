@@ -13,11 +13,11 @@
         public static string I18N_SubTitle = "subTitle";
         public static string I18N_Details = "details";
         public static string I18N_EmailNotReceived = "emailNotReceived";
-        public static string I18N_Resend = "resend";
         public static string I18N_ProceedToLogin = "proceedToLogin";
         public static string I18N_NewPassword = "newPassword";
         public static string I18N_ConfirmNewPassword = "confirmNewPassword";
         public static string I18N_ConfirmPassword = "confirmPassword";
         public static string I18N_ResetSuccessMessage = "resetSuccessMessage";
+        public static string I18N_ResendPinMessage = "resendPinMessage";
     }
 }

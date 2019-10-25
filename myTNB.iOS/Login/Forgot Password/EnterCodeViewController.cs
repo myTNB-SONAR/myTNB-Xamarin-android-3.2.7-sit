@@ -176,7 +176,7 @@ namespace myTNB
             {
                 InvokeOnMainThread(() =>
                 {
-                    _resendLabel.Text = string.Format("{0} ({1})", GetI18NValue(ForgotPasswordConstants.I18N_Resend), timerCtr);
+                    _resendLabel.Text = string.Format("{0} ({1})", GetCommonI18NValue(Constants.Common_Resend), timerCtr);
                 });
                 timerCtr = timerCtr - 1;
             }
@@ -189,7 +189,7 @@ namespace myTNB
         void AnimateResendView()
         {
             timerCtr = 30;
-            _resendLabel.Text = string.Format("{0} ({1})", GetI18NValue(ForgotPasswordConstants.I18N_Resend), timerCtr);
+            _resendLabel.Text = string.Format("{0} ({1})", GetCommonI18NValue(Constants.Common_Resend), timerCtr);
             _resendLabel.TextColor = MyTNBColor.FreshGreen;
             timer.Enabled = true;
             UIView.Animate(30, 1, UIViewAnimationOptions.CurveEaseOut, () =>
@@ -204,7 +204,7 @@ namespace myTNB
                 _segment.BackgroundColor = MyTNBColor.FreshGreen;
                 _loadingImage.Frame = new CGRect(25, 13, 24, 24);
                 _resendLabel.Frame = new CGRect(55, 15, 85, 20);
-                _resendLabel.Text = GetI18NValue(ForgotPasswordConstants.I18N_Resend);
+                _resendLabel.Text = GetCommonI18NValue(Constants.Common_Resend);
                 _resendLabel.TextColor = UIColor.White;
                 _loadingImage.Image = _loadedImg;
                 _loadingView.AddGestureRecognizer(_onResendPin);
@@ -275,7 +275,7 @@ namespace myTNB
             lblPinSent.TextAlignment = UITextAlignment.Left;
             lblPinSent.Font = MyTNBFont.MuseoSans12_300;
             lblPinSent.TextColor = MyTNBColor.TunaGrey();
-            lblPinSent.Text = "Login_PinSentMessage".Translate();
+            lblPinSent.Text = GetI18NValue(ForgotPasswordConstants.I18N_ResendPinMessage);
             lblPinSent.Lines = 0;
             lblPinSent.LineBreakMode = UILineBreakMode.WordWrap;
 

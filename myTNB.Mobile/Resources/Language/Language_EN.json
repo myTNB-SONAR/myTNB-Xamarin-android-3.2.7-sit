@@ -46,9 +46,6 @@
     "all": "All",
     "maintenanceTitle": "We're fine-tuning!",
     "maintenanceMsg": "System is under maintenance. Please try again later. We apologize for the inconvenience. Thank you.",
-    "SMOverlayTitle": "How do I view my daily usage?",
-    "SMOverlayMsg": "Pinch to zoom in or out! Zoom in to view your daily breakdown.",
-    "SMOverlayBtnTxt": "Got It!",
     "day": "Day",
     "month": "Month",
     "customerAccountNumber": "Customer Account Number {0}",
@@ -81,7 +78,9 @@
     "bahasa": "Bahasa Malaysia",
     "saveChanges": "Save Changes",
     "gotIt": "Got It!",
-    "login": "Log In"
+    "login": "Log In",
+    "next": "Next",
+    "resend": "Resend"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -103,7 +102,7 @@
     "invalid_amountTitle": "Invalid Amount",
     "invalid_code": "Invalid code",
     "invalid_password": "Password must have at least 8 alphanumeric characters.",
-    "invalid_mismatchedPassword":  "Your new password do not match."
+    "invalid_mismatchedPassword": "Your new password do not match."
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -225,7 +224,7 @@
     "manualInputTitle": "Please enter your meter reading for the unit(s) below."
   },
   "SSMRCaptureMeter": {
-    "ocrReading": "Please wait for a moment while we read your photos…",
+    "ocrReading": "Please wait for a moment while we read your photos...",
     "navTitleTakePhoto": "Take Photo",
     "singleTakePhotoDescription": "Take a photo of the reading value you see on your meter.",
     "editDescription": "You can select a photo to delete and retake or adjust it before submission.",
@@ -507,7 +506,7 @@
     "title": "Enter Code",
     "details": "Please enter the 4 digit code that was sent to {0}",
     "emailNotReceived": "Didn't receive the email?",
-    "resend": "Resend"
+    "resendPinMessage": "An Email containing the activation pin has been sent to your email address."
   },
   "PasswordResetSuccess": {
     "title": "Password Reset Successful",
@@ -522,5 +521,17 @@
     "newPassword": "Enter new password",
     "confirmNewPassword": "Confirm new password",
     "confirmPassword": "Confirm Password"
+  },
+  "UpdateMobileNumber": {
+    "verifyDeviceTitle": "Verify Device",
+    "verifyDeviceMessage": "Please take a moment to verify your device.",
+    "details": "For security purposes, please enter your mobile number to verify this device.",
+    "updateMobileNumberTitle": "Update Mobile No."
+  },
+  "VerifyPin": {
+    "title": "Verify Device",
+    "message": "An OTP has been sent to {0}, please enter it below.",
+    "smsNotReceived": "Didn't receive the SMS?",
+    "resendPinMessage": "An SMS containing the activation pin has been sent to your number."
   }
 }

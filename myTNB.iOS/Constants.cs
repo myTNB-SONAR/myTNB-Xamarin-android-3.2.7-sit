@@ -22,9 +22,6 @@
         public static string IMG_TrendDownIcon = "Trend-Down-Icon";
         public static string IMG_ArrowLeftBlueIcon = "Arrow-Left-Blue";
 
-        //Hint
-        public static string Hint_EmptyAcctSelector = "emptyAcctSelector";
-
         //Common I18N
         public static string Common_RefreshNow = "refreshNow";
         public static string Common_Yes = "yes";
@@ -62,6 +59,8 @@
         public static string Common_GotIt = "gotIt";
         public static string Common_Submit = "submit";
         public static string Common_Login = "login";
+        public static string Common_Next = "next";
+        public static string Common_Resend = "resend";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";
@@ -74,6 +73,11 @@
         public static string Error_InvalidCode = "invalid_code";
         public static string Error_InvalidPassword = "invalid_password";
         public static string Error_MismatchedPassword = "invalid_mismatchedPassword";
+        public static string Error_InvalidMobileNumber = "invalid_mobileNumber";
+
+        //Hint I18N
+        public static string Hint_EmptyAcctSelector = "emptyAcctSelector";
+        public static string Hint_MobileNumber = "mobileNumberSample";
 
         //Table View Cell
         public static string Cell_NoHistoryData = "noHistoryDataTableViewCell";
