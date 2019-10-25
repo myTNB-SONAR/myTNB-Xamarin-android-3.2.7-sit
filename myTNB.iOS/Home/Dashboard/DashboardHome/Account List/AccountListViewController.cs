@@ -50,6 +50,10 @@ namespace myTNB
         #region Initialization Methods
         public void PrepareAccountList(List<CustomerAccountRecordModel> linkedCAs = null, bool isFromSearch = false)
         {
+            if (_parentView == null)
+            {
+                SetParentView();
+            }
             if (linkedCAs == null)
             {
                 DataManager.DataManager.SharedInstance.CurrentAccountList = DataManager.DataManager.SharedInstance.AccountRecordsList.d;
@@ -91,7 +95,8 @@ namespace myTNB
                 _headerView.RemoveFromSuperview();
                 _headerView = null;
             }
-            _headerView = new UIView(new CGRect(0, 0, _parentView.Frame.Width, DashboardHomeConstants.SearchViewHeight))
+            nfloat width = _parentView != null ? _parentView.Frame.Width : ViewWidth;
+            _headerView = new UIView(new CGRect(0, 0, width, DashboardHomeConstants.SearchViewHeight))
             {
                 BackgroundColor = UIColor.Clear
             };

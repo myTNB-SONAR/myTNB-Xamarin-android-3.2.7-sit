@@ -300,18 +300,29 @@ namespace myTNB
                         name = "View <br>My e-Bill";
                         if (_dashboardHomeHelper.HasNormalAccounts && _dashboardHomeHelper.HasREAccounts)
                         {
-                            if (_dashboardHomeHelper.HasMultipleNormalAccounts)
-                            {
-                                name = "View My<br>e-Bills / Advice";
-                            }
-                            else
-                            {
-                                name = "View My<br>e-Bill / Advice";
-                            }
+                            name = "View My<br>e-Bills / Advices";
                         }
                         else if (_dashboardHomeHelper.HasREAccounts)
                         {
-                            name = "View My<br>Advice";
+                            if (_dashboardHomeHelper.HasMultipleREAccounts)
+                            {
+                                name = "View My<br>Advices";
+                            }
+                            else
+                            {
+                                name = "View My<br>Advice";
+                            }
+                        }
+                        else if (_dashboardHomeHelper.HasNormalAccounts)
+                        {
+                            if (_dashboardHomeHelper.HasMultipleNormalAccounts)
+                            {
+                                name = "View <br>My e-Bills";
+                            }
+                            else
+                            {
+                                name = "View <br>My e-Bill";
+                            }
                         }
                         break;
                     case ServiceEnum.PAYBILL:

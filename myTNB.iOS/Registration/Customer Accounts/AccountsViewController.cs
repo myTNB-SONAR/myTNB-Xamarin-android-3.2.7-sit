@@ -578,7 +578,7 @@ namespace myTNB.Registration.CustomerAccounts
 
             btnAddAccount = new UIButton(UIButtonType.Custom)
             {
-                Frame = new CGRect(GetScaledWidth(18), 0, ViewWidth - GetScaledWidth(36), GetScaledHeight(48)),
+                Frame = new CGRect(GetScaledWidth(18), GetScaledHeight(10F), ViewWidth - GetScaledWidth(36), GetScaledHeight(48)),
                 BackgroundColor = UIColor.Clear
             };
             btnAddAccount.Layer.BorderWidth = GetScaledWidth(1.0f);

@@ -54,5 +54,6 @@
         public static string I18N_Pay = "pay";
         public static string I18N_MDMSUnavailable = "mdmsUnavailable";
         public static string I18N_MDMSUnavailableMsg = "mdmsUnavailableMsg";
+        public static string I18N_BeenPaidExtra = "beenPaidExtra";
     }
 }

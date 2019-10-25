@@ -1256,8 +1256,7 @@ namespace myTNB
                 if (!isUpdating)
                 {
                     DueAmountDataModel dueData = AmountDueCache.GetDues(DataManager.DataManager.SharedInstance.SelectedAccount.accNum);
-                    _rEAmountComponent.SetAmount(dueData.amountDue);
-                    _rEAmountComponent.SetDate(dueData.billDueDate);
+                    _rEAmountComponent.SetValues(dueData.billDueDate, dueData.amountDue);
                 }
             }
         }
