@@ -85,7 +85,6 @@ namespace myTNB
         {
             if (_isBCRMAvailable)
             {
-                _dashboardHomeHelper.GroupAccountsList(DataManager.DataManager.SharedInstance.AccountRecordsList.d);
                 SetAccountListViewController();
                 InitializeTableView();
             }
@@ -183,13 +182,21 @@ namespace myTNB
         private void OnEnterForeground(NSNotification notification)
         {
             Debug.WriteLine("On Enter Foreground");
-            if (_accountListViewController != null)
+            var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+            var topVc = AppDelegate.GetTopViewController(baseRootVc);
+            if (topVc != null)
             {
-                DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
-                AmountDueCache.Reset();
-                _accountListViewController.PrepareAccountList();
+                if (topVc is DashboardHomeViewController)
+                {
+                    if (_accountListViewController != null)
+                    {
+                        DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
+                        AmountDueCache.Reset();
+                        _accountListViewController.PrepareAccountList();
+                    }
+                    OnLoadHomeData();
+                }
             }
-            OnLoadHomeData();
         }
 
         private void OnLoadHomeData()

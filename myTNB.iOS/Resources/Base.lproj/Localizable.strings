@@ -265,7 +265,7 @@
 "Hint_Password"="Password must have at least 8 alphanumeric characters.";
 
 /*Invalid*/
-"Invalid_AccountLength"="Please enter a valid 12-digit or 14-digit account no.";
+"Invalid_AccountLength"="Please enter a valid 12-digit account no.";
 "Invalid_AccountNickname"="Invalid account nickname";
 "Invalid_AccountNicknameInUse"="Nickname already used. Please create a new one.";
 "Invalid_AccountType"="Invalid Account Type";
@@ -388,7 +388,7 @@
 "MyAccount_LogoutConfirmation"="Are you sure you want to log out from myTNB app?";
 "MyAccount_MyTNBAccount"="myTNB Account";
 "MyAccount_Title"="My Account";
-"MyAccount_TNBSupplyAccount"="TNB Electricity Supply Account";
+"MyAccount_TNBSupplyAccount"="TNB Electricity Supply Accounts";
 "MyAccount_UpdatedMobileNumber"="Your mobile number has been updated successfully.";
 "MyAccount_UpdatedPassword"="Your password has been updated successfully.";
 "MyAccount_UpdatedTNBAccount"="Your electricity supply account has been removed from myTNB account.";

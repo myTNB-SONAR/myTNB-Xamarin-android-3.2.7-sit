@@ -882,12 +882,6 @@
     <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\icDisplaySmartMeter%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%403x-1.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-1.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-2.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-3.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-4.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_2.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Circle-With-Check-Green.imageset\icDisplaySuccessful.png" />
@@ -916,28 +910,6 @@
     <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SSMR-MultiPhase.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SSMR-SinglePhase.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-6.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\faqColor1-1.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\faqColor1%402x-1.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-0.imageset\faqColor1%403x-1.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-1.imageset\faqColor2-1.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-1.imageset\faqColor2%402x-1.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-1.imageset\faqColor2%403x-1.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-2.imageset\faqColor3-1.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-2.imageset\faqColor3%402x-1.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-2.imageset\faqColor3%403x-1.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-3.imageset\faqColor4-1.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-3.imageset\faqColor4%402x-1.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-3.imageset\faqColor4%403x-1.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-4.imageset\faqColor5-1.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-4.imageset\faqColor5%402x-1.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-4.imageset\faqColor5%403x-1.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\faqColor6-1.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\faqColor6%402x-1.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-5.imageset\faqColor6%403x-1.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-6.imageset\faqColor1Copy.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-6.imageset\faqColor1Copy%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Help-Background-6.imageset\faqColor1Copy%403x.png" />
     <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG1.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SMR-ToolTip-BG3.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Stub-Promotion-1.imageset\Contents.json" />
@@ -1277,6 +1249,21 @@
     <ImageAsset Include="Assets.xcassets\Remember-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Remember-Icon.imageset\Remember-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Remember-Icon.imageset\Remember-Icon%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-1.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-2.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-3.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-4.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-4.imageset\Onboarding-Image-4%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-4.imageset\Onboarding-Image-4%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-1.imageset\Onboarding-Image-1%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-1.imageset\Onboarding-Image-1%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-2.imageset\Onboarding-Image-2%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-2.imageset\Onboarding-Image-2%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-3.imageset\Onboarding-Image-3%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-3.imageset\Onboarding-Image-3%403x.png" />
+    <ImageAsset Include="Assets.xcassets\RE-Leaf-Large.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\RE-Leaf-Large.imageset\RE-Leaf-Large%402x.png" />
+    <ImageAsset Include="Assets.xcassets\RE-Leaf-Large.imageset\RE-Leaf-Large%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1734,6 +1721,15 @@
     <Folder Include="Assets.xcassets\Remember-Icon.imageset\" />
     <Folder Include="Registration\Verify Pin\" />
     <Folder Include="Logout\" />
+    <Folder Include="Components\Walkthrough\" />
+    <Folder Include="Sitecore CMS\Model\Onboarding\" />
+    <Folder Include="Resources\JSON\" />
+    <Folder Include="Assets.xcassets\Onboarding-Image-1.imageset\" />
+    <Folder Include="Assets.xcassets\Onboarding-Image-2.imageset\" />
+    <Folder Include="Assets.xcassets\Onboarding-Image-3.imageset\" />
+    <Folder Include="Assets.xcassets\Onboarding-Image-4.imageset\" />
+    <Folder Include="Assets.xcassets\Onboarding-Image-5.imageset\" />
+    <Folder Include="Assets.xcassets\RE-Leaf-Large.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2387,10 +2383,6 @@
     <Compile Include="Home\Dashboard\DashboardHome\Services\ServicesConstants.cs" />
     <Compile Include="Home\Dashboard\DashboardHome\DashboardHomeActions.cs" />
     <Compile Include="Data Manager\ServiceEnum.cs" />
-    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsCardContentViewController.cs" />
-    <Compile Include="Home\Dashboard\DashboardHome\Accounts\AccountsCardContentViewController.designer.cs">
-      <DependentUpon>AccountsCardContentViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Sitecore CMS\Service\HelpService.cs" />
     <Compile Include="Sitecore CMS\Model\Help\HelpModel.cs" />
     <Compile Include="SQLite\SQLite Data Manager\HelpEntity.cs" />
@@ -2442,7 +2434,6 @@
     <Compile Include="Model\GetCARegisteredContactInfo\CARegisteredContactInfoResponseModel.cs" />
     <Compile Include="Model\SSMRApplicationStatus\SSMRApplicationStatus.cs" />
     <Compile Include="SSMR\SSMRHelper.cs" />
-    <Compile Include="Home\Components\Dashboard Home\DashboardHomeAccountCard.cs" />
     <Compile Include="Home\Components\Dashboard Home\DashboardHomeHeader.cs" />
     <Compile Include="Model\SSMR\SMRAccountStatusResponseModel.cs" />
     <Compile Include="Customs\CustomUISlider.cs" />
@@ -2594,6 +2585,13 @@
       <DependentUpon>..\Home\More\My Account\Logout\LogoutViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Logout\LogoutConstants.cs" />
+    <Compile Include="Components\Walkthrough\WalkthroughComponent.cs" />
+    <Compile Include="Onboarding\OnboardingViewController.cs" />
+    <Compile Include="Onboarding\OnboardingViewController.designer.cs">
+      <DependentUpon>OnboardingViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Sitecore CMS\Model\Onboarding\OnboardingModel.cs" />
+    <Compile Include="Onboarding\OnboardingConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
@@ -2618,6 +2616,8 @@
     <BundleResource Include="Resources\tnbReceiptLogoHeader.jpg" />
     <BundleResource Include="Resources\Base.lproj\InfoPlist.strings" />
     <BundleResource Include="Resources\Dashboard Zoom.json" />
+    <BundleResource Include="Resources\JSON\AppUpdateOnboarding.json" />
+    <BundleResource Include="Resources\JSON\FreshInstallOnboarding.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\myTNB.Mobile\myTNB.Mobile.csproj">

@@ -139,7 +139,7 @@ namespace myTNB.Registration
 
         internal void SetViews()
         {
-            _textFieldHelper.CreateTextFieldLeftView(txtFieldAccountNo, "IC");
+            _textFieldHelper.CreateTextFieldLeftView(txtFieldAccountNo, "Account-Number");
             _textFieldHelper.CreateTextFieldLeftView(txtFieldNickname, "Name");
             _textFieldHelper.CreateTextFieldLeftView(txtFieldICNo, "IC");
             //_textFieldHelper.CreateTextFieldLeftView(txtFieldMaidenName, "Name");

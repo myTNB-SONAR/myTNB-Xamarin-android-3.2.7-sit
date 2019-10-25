@@ -309,7 +309,8 @@
     "by": "by",
     "pay": "Pay",
     "mdmsUnavailable": "Currently Unavailable",
-    "mdmsUnavailableMsg": "Your daily usage information is currently unavailable. Check back in a while!"
+    "mdmsUnavailableMsg": "Your daily usage information is currently unavailable. Check back in a while!",
+    "beenPaidExtra": "I’ve been paid extra"
   },
   "Bills": {
     "navTitle": "Bills",
@@ -493,10 +494,10 @@
     "tagline": "A whole new world with shockingly amazing possibilities.",
     "register": "Register",
     "login": "Log In",
-    "quickAccess": "Quick Access",
+    "quickAccess": "Quick Actions",
     "findUs": "Find Us",
     "callUs": "Call Us",
-    "feedback": "Give Us Feedback"
+    "feedback": "Submit Feedback"
   },
   "Login": {
     "title": "myTNB Account Login",
@@ -564,5 +565,17 @@
     "removeAccount": "Remove This Account",
     "popupremoveAccountTitle": "Remove Account",
     "popupremoveAccountMessage": "You are about to remove <b>{0}</b>, Account Number: <b>{1}</b>.<br><br>Note: This does not close your electricity supply account. Visit the Self-Service Portal or Kedai Tenaga to close your electriity supply account."
+  },
+  "Onboarding": {
+    "letsStart": "Let's get started!",
+    "skip": "Skip",
+    "title1": "Welcome to myTNB!",
+    "title2": "Bills at Your Fingertips.",
+    "title3": "Pay Your Bills Anytime, Anywhere.",
+    "title4": "Enhanced View for Better Experiences.",
+    "description1": "Track, monitor and stay on top of your electricity usage!",
+    "description2": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",
+    "description3": "Pay your electricity bills while at home, on holiday, on the train – whenever you want to. Say goodbye to late charges and queuing up!",
+    "description4": "We’ve revamped the Home, Bills and Usage screens! It’s not just prettier, it’s way more helpful with more details (including block tariffs so you can stay informed on all things usage-related)."
   }
 }

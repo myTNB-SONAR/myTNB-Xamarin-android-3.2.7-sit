@@ -21,6 +21,13 @@ using myTNB.SitecoreCMS;
 
 namespace myTNB
 {
+    public enum OnboardingEnum
+    {
+        None = 0,
+        FreshInstall,
+        AppUpdate
+    }
+
     public partial class AppLaunchViewController : UIViewController
     {
         UIImageView imgViewAppLaunch;
@@ -34,6 +41,7 @@ namespace myTNB
         string _endDateStr = string.Empty;
         double _delay;
         bool _isGetDynamicDone, _isTaskDelayDone, _isLoadMasterDataDone, _splashIsShown, _hasProceeded, _splashDelayIsDone;
+        OnboardingEnum _onboardingEnum;
         int _timeOut = 4000;
         UIView maintenanceView;
         public AppLaunchViewController(IntPtr handle) : base(handle)
@@ -113,9 +121,8 @@ namespace myTNB
         internal void ClearCacheForVersionUpdate()
         {
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
-            var appShortVersion = sharedPreference.StringForKey("appShortVersion");
-            var appBuildVersion = sharedPreference.StringForKey("appBuildVersion");
-            bool clearCache = false;
+            var appShortVersion = sharedPreference.StringForKey(AppLaunchConstants.STR_AppShortVersion);
+            var appBuildVersion = sharedPreference.StringForKey(AppLaunchConstants.STR_AppBuildVersion);
 
             if (!string.IsNullOrEmpty(appShortVersion) && !string.IsNullOrEmpty(appBuildVersion))
             {
@@ -123,26 +130,26 @@ namespace myTNB
                 {
                     if (appBuildVersion != AppVersionHelper.GetBuildVersion())
                     {
-                        clearCache = true;
-                        sharedPreference.SetString(AppVersionHelper.GetAppShortVersion(), "appShortVersion");
-                        sharedPreference.SetString(AppVersionHelper.GetBuildVersion(), "appBuildVersion");
+                        _onboardingEnum = OnboardingEnum.AppUpdate;
+                        sharedPreference.SetString(AppVersionHelper.GetAppShortVersion(), AppLaunchConstants.STR_AppShortVersion);
+                        sharedPreference.SetString(AppVersionHelper.GetBuildVersion(), AppLaunchConstants.STR_AppBuildVersion);
                     }
                 }
                 else
                 {
-                    clearCache = true;
-                    sharedPreference.SetString(AppVersionHelper.GetAppShortVersion(), "appShortVersion");
-                    sharedPreference.SetString(AppVersionHelper.GetBuildVersion(), "appBuildVersion");
+                    _onboardingEnum = OnboardingEnum.AppUpdate;
+                    sharedPreference.SetString(AppVersionHelper.GetAppShortVersion(), AppLaunchConstants.STR_AppShortVersion);
+                    sharedPreference.SetString(AppVersionHelper.GetBuildVersion(), AppLaunchConstants.STR_AppBuildVersion);
                 }
             }
             else
             {
-                clearCache = true;
-                sharedPreference.SetString(AppVersionHelper.GetAppShortVersion(), "appShortVersion");
-                sharedPreference.SetString(AppVersionHelper.GetBuildVersion(), "appBuildVersion");
+                _onboardingEnum = OnboardingEnum.FreshInstall;
+                sharedPreference.SetString(AppVersionHelper.GetAppShortVersion(), AppLaunchConstants.STR_AppShortVersion);
+                sharedPreference.SetString(AppVersionHelper.GetBuildVersion(), AppLaunchConstants.STR_AppBuildVersion);
             }
 
-            if (clearCache)
+            if (_onboardingEnum == OnboardingEnum.AppUpdate)
             {
                 BillHistoryEntity.DeleteTable();
                 ChartEntity.DeleteTable();
@@ -313,6 +320,7 @@ namespace myTNB
 
             base.ViewDidAppear(animated);
             GetUserEntity();
+            UIApplication.SharedApplication.NetworkActivityIndicatorVisible = true;
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
                 InvokeOnMainThread(async () =>
@@ -585,7 +593,6 @@ namespace myTNB
         private void PrepareMaintenanceScreen(AppLaunchMasterDataModel response)
         {
             isMaintenance = true;
-            float screenHeight = (float)UIApplication.SharedApplication.KeyWindow.Frame.Height;
             float screenWidth = (float)UIApplication.SharedApplication.KeyWindow.Frame.Width;
             float imageWidth = DeviceHelper.GetScaledWidth(151f);
             float imageHeight = DeviceHelper.GetScaledHeight(136f);
@@ -721,12 +728,16 @@ namespace myTNB
             DataManager.DataManager.SharedInstance.UserEntity = uManager.GetAllItems();
         }
 
-        internal void ShowOnboarding()
+        internal void ShowOnboarding(List<OnboardingItemModel> model)
         {
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            var isLogin = sharedPreference.BoolForKey(TNBGlobal.PreferenceKeys.LoginState);
             UIStoryboard onboardingStoryboard = UIStoryboard.FromName("Onboarding", null);
-            GenericPageRootViewController onboardingVC = onboardingStoryboard.InstantiateViewController("GenericPageRootViewController") as GenericPageRootViewController;
+            OnboardingViewController onboardingVC = onboardingStoryboard.InstantiateViewController("OnboardingViewController") as OnboardingViewController;
+            onboardingVC.onboardingEnum = _onboardingEnum;
+            onboardingVC.isLogin = isLogin;
+            onboardingVC.model = model;
             onboardingVC.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
-            onboardingVC.PageType = GenericPageViewEnum.Type.Onboarding;
             onboardingVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(onboardingVC, true, null);
         }
@@ -750,16 +761,15 @@ namespace myTNB
 
         internal async void ExecuteSiteCoreCall()
         {
-            var sharedPreference = NSUserDefaults.StandardUserDefaults;
-            var isWalkthroughDone = sharedPreference.BoolForKey("isWalkthroughDone");
-            GetUserEntity();
-            SSMRAccounts.IsHideOnboarding = false;
-            if (isWalkthroughDone)
+            if ((_onboardingEnum == OnboardingEnum.FreshInstall) || (_onboardingEnum == OnboardingEnum.AppUpdate))
             {
-                await ClearWalkthroughCache();
+                ProcessOnboarding(_onboardingEnum);
+            }
+            else
+            {
+                var sharedPreference = NSUserDefaults.StandardUserDefaults;
                 var isLogin = sharedPreference.BoolForKey(TNBGlobal.PreferenceKeys.LoginState);
-                if (isLogin && DataManager.DataManager.SharedInstance.UserEntity != null
-                    && DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
+                if (isLogin && DataManager.DataManager.SharedInstance.UserEntity != null && DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
                 {
                     DataManager.DataManager.SharedInstance.User.UserID = DataManager.DataManager.SharedInstance.UserEntity[0]?.userID;
 
@@ -777,18 +787,8 @@ namespace myTNB
                 else
                 {
                     ShowPrelogin();
+                    UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
                 }
-            }
-            else
-            {
-                _imageSize = DeviceHelper.GetImageSize((int)View.Frame.Width);
-                await GetWalkthroughScreens().ContinueWith(task =>
-                {
-                    InvokeOnMainThread(() =>
-                    {
-                        ShowOnboarding();
-                    });
-                });
             }
 
             InvokeInBackground(async () =>
@@ -808,16 +808,7 @@ namespace myTNB
             DataManager.DataManager.SharedInstance.CreatePaymentHistoryTable();
         }
 
-        private Task ClearWalkthroughCache()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                WalkthroughScreensEntity wsManager = new WalkthroughScreensEntity();
-                wsManager.DeleteTable();
-            });
-        }
-
-        internal Task GetWalkthroughScreens()
+        internal Task LoadTermsAndConditions()
         {
             return Task.Factory.StartNew(() =>
             {
@@ -853,18 +844,44 @@ namespace myTNB
                 }
                 if (isValidTimeStamp)
                 {
-                    string walkThroughItems = iService.GetWalkthroughScreenItems();
-                    WalkthroughScreensResponseModel walkThroughResponse = JsonConvert.DeserializeObject<WalkthroughScreensResponseModel>(walkThroughItems);
-                    if (walkThroughResponse != null && walkThroughResponse.Status.Equals("Success")
-                        && walkThroughResponse.Data != null && walkThroughResponse.Data.Count > 0)
+                    TermsAndConditionResponseModel tncResponse = iService.GetFullRTEPagesItems();
+                    if (tncResponse != null && tncResponse.Status.Equals("Success")
+                        && tncResponse.Data != null && tncResponse.Data.Count > 0)
                     {
-                        WalkthroughScreensEntity wsManager = new WalkthroughScreensEntity();
-                        wsManager.DeleteTable();
-                        wsManager.CreateTable();
-                        wsManager.InsertListOfItems(walkThroughResponse.Data);
+                        TermsAndConditionEntity tncEntity = new TermsAndConditionEntity();
+                        tncEntity.DeleteTable();
+                        tncEntity.CreateTable();
+                        tncEntity.InsertListOfItems(tncResponse.Data);
                     }
                 }
             });
+        }
+
+        private void ProcessOnboarding(OnboardingEnum onboardingEnum)
+        {
+            List<OnboardingItemModel> onboardingData = GetOnboardingData(onboardingEnum);
+            if (onboardingData != null &&
+                onboardingData.Count > 0)
+            {
+                ShowOnboarding(onboardingData);
+            }
+        }
+
+        private List<OnboardingItemModel> GetOnboardingData(OnboardingEnum onboardingEnum)
+        {
+            List<OnboardingItemModel> onboardingData = new List<OnboardingItemModel>();
+            try
+            {
+                string jsonFilename = onboardingEnum == OnboardingEnum.FreshInstall ? "JSON/FreshInstallOnboarding.json" : "JSON/AppUpdateOnboarding.json";
+                string dataJson = System.IO.File.ReadAllText(jsonFilename);
+                OnboardingResponseModel respModel = JsonConvert.DeserializeObject<OnboardingResponseModel>(dataJson);
+                onboardingData = respModel?.Data;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("ERROR: " + e.Message);
+            }
+            return onboardingData;
         }
 
         internal async Task<bool> GetDynamicSplash()
@@ -933,17 +950,20 @@ namespace myTNB
             {
                 DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[0];
                 ShowDashboard();
+                UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
             }
             else if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
               && DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null
               && DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count == 0)
             {
                 ShowDashboard();
+                UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
             }
             else
             {
                 DataManager.DataManager.SharedInstance.ClearLoginState();
                 ShowPrelogin();
+                UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
             }
         }
 

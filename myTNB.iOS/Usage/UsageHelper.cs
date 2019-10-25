@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using myTNB.Model;
 
@@ -43,16 +44,13 @@ namespace myTNB
             DueAmountDataModel model = new DueAmountDataModel();
             if (!string.IsNullOrEmpty(accountNo))
             {
-                var groupAccountList = DataManager.DataManager.SharedInstance.AccountsGroupList;
-                foreach (var accountList in groupAccountList)
+                var accountList = GetAccountList(DataManager.DataManager.SharedInstance.AccountRecordsList.d);
+                foreach (var account in accountList)
                 {
-                    foreach (var account in accountList)
+                    if (account.accNum == accountNo)
                     {
-                        if (account.accNum == accountNo)
-                        {
-                            model = account;
-                            break;
-                        }
+                        model = account;
+                        break;
                     }
                 }
             }
@@ -70,6 +68,43 @@ namespace myTNB
                 intValues[i] = values[i];
             }
             return intValues;
+        }
+
+        private static List<DueAmountDataModel> GetAccountList(List<CustomerAccountRecordModel> acctsList)
+        {
+            var sortedAccounts = new List<CustomerAccountRecordModel>();
+
+            var results = acctsList.GroupBy(x => x.IsREAccount);
+            if (results != null && results?.Count() > 0)
+            {
+                var reAccts = results.Where(x => x.Key == true).SelectMany(y => y).OrderBy(o => o.accountNickName).ToList();
+                var normalAccts = results.Where(x => x.Key == false).SelectMany(y => y).OrderBy(o => o.accountNickName).ToList();
+                reAccts.AddRange(normalAccts);
+                sortedAccounts = reAccts;
+            }
+
+            List<DueAmountDataModel> acctList = new List<DueAmountDataModel>();
+            if (sortedAccounts != null &&
+                sortedAccounts.Count > 0)
+            {
+                for (int i = 0; i < sortedAccounts.Count; i++)
+                {
+                    var acctCached = DataManager.DataManager.SharedInstance.GetDue(sortedAccounts[i].accNum);
+                    DueAmountDataModel item = new DueAmountDataModel
+                    {
+                        accNum = sortedAccounts[i].accNum,
+                        accNickName = sortedAccounts[i].accountNickName,
+                        IsReAccount = sortedAccounts[i].IsREAccount,
+                        IsNormalAccount = sortedAccounts[i].IsNormalMeter,
+                        IsOwnedAccount = sortedAccounts[i].IsOwnedAccount,
+                        IsSSMR = acctCached != null ? acctCached.IsSSMR : sortedAccounts[i].IsSSMR,
+                        amountDue = acctCached != null ? acctCached.amountDue : 0.00,
+                        billDueDate = acctCached != null ? acctCached.billDueDate : string.Empty
+                    };
+                    acctList.Add(item);
+                }
+            }
+            return acctList;
         }
     }
 }

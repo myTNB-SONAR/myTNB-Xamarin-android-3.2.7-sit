@@ -239,7 +239,16 @@ namespace myTNB
             {
                 string value = TextField.Text;
                 LblHint.Hidden = !IsEmpty(value) && !LblError.Hidden || value.Length == 0;
-                LblTitle.Hidden = TextFieldType != Type.MobileNumber || value.Length != 3 && IsEmpty(value) || value.Length == 0;
+                bool hidden;
+                if (TextFieldType == Type.MobileNumber)
+                {
+                    hidden = value.Length != 3 && IsEmpty(value) || value.Length == 0;
+                }
+                else
+                {
+                    hidden = IsEmpty(value) || value.Length == 0;
+                }
+                LblTitle.Hidden = hidden;
                 LblError.Hidden = true;
                 _viewLine.BackgroundColor = MyTNBColor.PlatinumGrey;
                 TextField.TextColor = TextColor;
@@ -252,7 +261,16 @@ namespace myTNB
                     TextField.Text += TNBGlobal.MobileNoPrefix;
                 }
                 string value = TextField.Text;
-                LblTitle.Hidden = TextFieldType != Type.MobileNumber || value.Length != 3 && IsEmpty(value) || value.Length == 0;
+                bool hidden;
+                if (TextFieldType == Type.MobileNumber)
+                {
+                    hidden = value.Length != 3 && IsEmpty(value) || value.Length == 0;
+                }
+                else
+                {
+                    hidden = IsEmpty(value) || value.Length == 0;
+                }
+                LblTitle.Hidden = hidden;
                 LblHint.Hidden = !IsEmpty(value) && !LblError.Hidden || value.Length == 0;
                 _viewLine.BackgroundColor = MyTNBColor.PowerBlue;
                 TextField.LeftViewMode = UITextFieldViewMode.Never;
@@ -261,7 +279,16 @@ namespace myTNB
             TextField.ShouldEndEditing = (sender) =>
             {
                 string value = TextField.Text;
-                LblTitle.Hidden = TextFieldType != Type.MobileNumber || value.Length != 3 && IsEmpty(value) || value.Length == 0;
+                bool hidden;
+                if (TextFieldType == Type.MobileNumber)
+                {
+                    hidden = value.Length != 3 && IsEmpty(value) || value.Length == 0;
+                }
+                else
+                {
+                    hidden = IsEmpty(value) || value.Length == 0;
+                }
+                LblTitle.Hidden = hidden;
                 _isFieldValid = _txtFieldHelper.ValidateTextField(value, GetRegexPattern());
                 if (TextFieldType == Type.MobileNumber)
                 {

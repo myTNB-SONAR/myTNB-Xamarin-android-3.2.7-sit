@@ -58,20 +58,20 @@ namespace myTNB
 
         private void CreatePaymentLabels()
         {
-            _iconView = new UIImageView(new CGRect(BaseMarginWidth16, GetScaledHeight(18f), GetScaledWidth(28f), GetScaledHeight(28f)))
+            _iconView = new UIImageView(new CGRect(BaseMarginWidth16, GetScaledHeight(16f), GetScaledWidth(32f), GetScaledHeight(32f)))
             {
                 Image = UIImage.FromBundle(Constants.IMG_AcctREIcon)
             };
             _containerView.AddSubview(_iconView);
 
-            _viewIcon = new UIView(new CGRect(BaseMarginWidth16, GetScaledHeight(18f), GetScaledWidth(28f), GetScaledHeight(28f)))
+            _viewIcon = new UIView(new CGRect(BaseMarginWidth16, GetScaledHeight(16f), GetScaledWidth(32f), GetScaledHeight(32f)))
             {
                 BackgroundColor = MyTNBColor.PaleGrey
             };
             _viewIcon.Layer.CornerRadius = GetScaledHeight(14f);
 
             nfloat labelWidth = (_viewWidth / 2) - BaseMarginWidth16;
-            _lblTitle = new UILabel(new CGRect(_iconView.Frame.GetMaxX() + GetScaledWidth(12F), BaseMarginWidth16, labelWidth, GetScaledHeight(16f)))
+            _lblTitle = new UILabel(new CGRect(_iconView.Frame.GetMaxX() + GetScaledWidth(8F), BaseMarginWidth16, labelWidth, GetScaledHeight(16f)))
             {
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.GreyishBrown,
@@ -81,13 +81,13 @@ namespace myTNB
             };
             _containerView.AddSubview(_lblTitle);
 
-            _viewTitle = new UIView(new CGRect(_iconView.Frame.GetMaxX() + GetScaledWidth(12F), BaseMarginWidth16, labelWidth * 0.8F, _lblTitle.Frame.Height * 0.8F))
+            _viewTitle = new UIView(new CGRect(_iconView.Frame.GetMaxX() + GetScaledWidth(8F), BaseMarginWidth16, labelWidth * 0.8F, _lblTitle.Frame.Height * 0.8F))
             {
                 BackgroundColor = MyTNBColor.PaleGrey
             };
             _viewTitle.Layer.CornerRadius = GetScaledHeight(4f);
 
-            _lblDate = new UILabel(new CGRect(_iconView.Frame.GetMaxX() + GetScaledWidth(12F), _lblTitle.Frame.GetMaxY(), labelWidth, GetScaledHeight(16f)))
+            _lblDate = new UILabel(new CGRect(_iconView.Frame.GetMaxX() + GetScaledWidth(8F), _lblTitle.Frame.GetMaxY(), labelWidth, GetScaledHeight(16f)))
             {
                 Font = TNBFont.MuseoSans_12_300,
                 TextColor = MyTNBColor.WarmGrey,
@@ -145,22 +145,33 @@ namespace myTNB
             view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
         }
 
-        public void SetAmount(double amount)
+        public void SetValues(string date, double amount)
         {
-            _lblAmount.AttributedText = TextHelper.CreateValuePairString(Math.Abs(amount).ToString("N2", CultureInfo.InvariantCulture)
+            double amnt = amount * -1;
+            _lblAmount.AttributedText = TextHelper.CreateValuePairString(amnt.ToString("N2", CultureInfo.InvariantCulture)
                         , TNBGlobal.UNIT_CURRENCY + " ", true, TNBFont.MuseoSans_16_300
                         , MyTNBColor.GreyishBrown, TNBFont.MuseoSans_10_300, MyTNBColor.GreyishBrown);
-        }
 
-        public void SetDate(string date)
-        {
-            if (!string.IsNullOrEmpty(date) && !string.IsNullOrWhiteSpace(date))
+            if (amnt < 0)
             {
-                string formattedDate = DateHelper.GetFormattedDate(date, "dd MMM");
+                _lblDate.Text = "- -";
+                _lblTitle.Text = GetI18NValue(UsageConstants.I18N_BeenPaidExtra);
+            }
+            else
+            {
+                _lblTitle.Text = GetI18NValue(UsageConstants.I18N_MyEarnings);
+                if (!string.IsNullOrEmpty(date) && !string.IsNullOrWhiteSpace(date))
+                {
+                    string formattedDate = DateHelper.GetFormattedDate(date, "dd MMM");
 
-                _lblDate.AttributedText = TextHelper.CreateValuePairString(formattedDate
-                        , GetI18NValue(UsageConstants.I18N_IWillGetBy) + " ", true, TNBFont.MuseoSans_12_300
-                        , MyTNBColor.WarmGrey, TNBFont.MuseoSans_12_300, MyTNBColor.WarmGrey);
+                    _lblDate.AttributedText = TextHelper.CreateValuePairString(formattedDate
+                            , GetI18NValue(UsageConstants.I18N_IWillGetBy) + " ", true, TNBFont.MuseoSans_12_300
+                            , MyTNBColor.WarmGrey, TNBFont.MuseoSans_12_300, MyTNBColor.WarmGrey);
+                }
+                else
+                {
+                    _lblDate.Text = "- -";
+                }
             }
         }
 
