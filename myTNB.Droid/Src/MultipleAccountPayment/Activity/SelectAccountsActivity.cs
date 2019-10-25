@@ -447,6 +447,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                     {
                         this.SetIsClicked(true);
                         Intent payment_activity = new Intent(this, typeof(PaymentActivity));
+                        if (selectedAccount == null)
+                        {
+                            selectedAccount = AccountData.Copy(CustomerBillingAccount.FindByAccNum(adapter.GetSelectedAccounts()[0].accountNumber), true);
+                        }
                         payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
                         payment_activity.PutExtra("PAYMENT_ITEMS", JsonConvert.SerializeObject(adapter.GetSelectedAccounts()));
                         List<AccountChargeModel> chargeModelList = mPresenter.GetSelectedAccountChargesModelList(adapter.GetSelectedAccounts());
@@ -576,7 +580,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                                     accountLabel = customerBillingAccount.AccDesc,
                                     accountNumber = customerBillingAccount.AccNum,
                                     accountAddress = customerBillingAccount.AccountStAddress,
-                                    isSelected = selectedAccount.AccountNum.Equals(customerBillingAccount.AccNum) ? true && dueAmount > 0 : false,
+                                    isSelected = (selectedAccount!= null && selectedAccount.AccountNum.Equals(customerBillingAccount.AccNum)) ? true && dueAmount > 0 : false,
                                     isTooltipShow = false,
 #if STUB
                                     OpenChargeTotal = account.OpenChargesTotal == 0.00 ? 0.00 : account.OpenChargesTotal,

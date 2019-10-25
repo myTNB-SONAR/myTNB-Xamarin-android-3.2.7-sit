@@ -495,33 +495,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             itemisedBillingInfoAmount.Text = accountChargeModel.AmountDue.ToString("#,##0.00");
             if (accountChargeModel.IsCleared)
             {
-                itemisedBillingInfoNote.Text = "I’ve cleared all bills";
-                itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
-                itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#49494a"));
-                itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#49494a"));
-
-                itemisedBillingInfoDate.Visibility = ViewStates.Gone;
-            }
-            else if (accountChargeModel.IsPaidExtra)
-            {
-                if (mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId))
-                {
-                    imageResource = Resource.Drawable.bill_paid_extra_re_banner;
-                    itemisedBillingInfoNote.Text = "I’ve been paid extra";
-                }
-                else
-                {
-                    itemisedBillingInfoNote.Text = "I’ve paid extra";
-                }
-                itemisedBillingInfoAmount.Text = (Math.Abs(accountChargeModel.AmountDue)).ToString("#,##0.00");
-                itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
-                itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#20bd4c"));
-                itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#20bd4c"));
-
-                itemisedBillingInfoDate.Visibility = ViewStates.Gone;
-            }
-            else if (accountChargeModel.IsNeedPay)
-            {
                 if (mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId))
                 {
                     imageResource = Resource.Drawable.bill_paid_extra_re_banner;
@@ -529,16 +502,57 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 }
                 else
                 {
-                    imageResource = Resource.Drawable.bill_need_to_pay_banner;
-                    itemisedBillingInfoNote.Text = "I need to pay";
+                    itemisedBillingInfoNote.Text = "I’ve cleared all bills";
                 }
-                
                 itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
                 itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#49494a"));
                 itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#49494a"));
+                itemisedBillingInfoDate.Visibility = ViewStates.Gone;
+            }
+            else if (accountChargeModel.IsPaidExtra)
+            {
+                if (mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId))
+                {
+                    imageResource = Resource.Drawable.bill_paid_extra_re_banner;
+                    itemisedBillingInfoNote.Text = "My earnings";
+                    itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
+                    itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#49494a"));
+                    itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#49494a"));
+                    itemisedBillingInfoDate.Visibility = ViewStates.Visible;
+                    itemisedBillingInfoDate.Text = "get by " + dateFormatter.Format(dateParser.Parse(accountChargeModel.DueDate));
+                }
+                else
+                {
+                    itemisedBillingInfoNote.Text = "I’ve paid extra";
+                    itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
+                    itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#20bd4c"));
+                    itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#20bd4c"));
+                    itemisedBillingInfoDate.Visibility = ViewStates.Gone;
+                }
+                itemisedBillingInfoAmount.Text = (Math.Abs(accountChargeModel.AmountDue)).ToString("#,##0.00");
+            }
+            else if (accountChargeModel.IsNeedPay)
+            {
+                if (mPresenter.IsREAccount(mSelectedAccountData.AccountCategoryId))
+                {
+                    imageResource = Resource.Drawable.bill_paid_extra_re_banner;
+                    itemisedBillingInfoNote.Text = "I’ve been paid extra";
+                    itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
+                    itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#20bd4c"));
+                    itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#20bd4c"));
+                }
+                else
+                {
+                    imageResource = Resource.Drawable.bill_need_to_pay_banner;
+                    itemisedBillingInfoNote.Text = "I need to pay";
 
-                itemisedBillingInfoDate.Visibility = ViewStates.Visible;
-                itemisedBillingInfoDate.Text = "by " + dateFormatter.Format(dateParser.Parse(accountChargeModel.DueDate));
+                    itemisedBillingInfoNote.SetTextColor(Color.ParseColor("#49494a"));
+                    itemisedBillingInfoAmount.SetTextColor(Color.ParseColor("#49494a"));
+                    itemisedBillingInfoAmountCurrency.SetTextColor(Color.ParseColor("#49494a"));
+
+                    itemisedBillingInfoDate.Visibility = ViewStates.Visible;
+                    itemisedBillingInfoDate.Text = "by " + dateFormatter.Format(dateParser.Parse(accountChargeModel.DueDate));
+                }
             }
             EnableActionButtons(true);
             itemisedBillingHeaderImage.SetImageResource(imageResource);
