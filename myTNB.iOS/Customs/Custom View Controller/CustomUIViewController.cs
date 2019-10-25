@@ -144,6 +144,12 @@ namespace myTNB
             AlertHandler.DisplayCustomAlert(title, message, ctaButtons);
         }
 
+        public void DisplayCustomAlert(string title, string message, Dictionary<string, Action> ctaButtons
+            , UITextAlignment titleAlignment, UITextAlignment messageAlignment)
+        {
+            AlertHandler.DisplayCustomAlert(title, message, ctaButtons, titleAlignment, messageAlignment);
+        }
+
         public void DisplayCustomAlert(string title, string message, string btnTitle, Action btnAction = null)
         {
             AlertHandler.DisplayCustomAlert(title, message, new Dictionary<string, Action>() {

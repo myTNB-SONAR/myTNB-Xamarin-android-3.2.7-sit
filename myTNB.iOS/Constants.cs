@@ -21,6 +21,7 @@
         public static string IMG_TrendUpIcon = "Trend-Up-Icon";
         public static string IMG_TrendDownIcon = "Trend-Down-Icon";
         public static string IMG_ArrowLeftBlueIcon = "Arrow-Left-Blue";
+        public static string IMG_ShowPassword = "IC-Action-Show-Password";
 
         //Common I18N
         public static string Common_RefreshNow = "refreshNow";
@@ -63,6 +64,8 @@
         public static string Common_Resend = "resend";
         public static string Common_Retry = "retry";
         public static string Common_Ok = "ok";
+        public static string Common_Save = "save";
+        public static string Common_AccountNickname = "acctNickname";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";
@@ -76,6 +79,8 @@
         public static string Error_InvalidPassword = "invalid_password";
         public static string Error_MismatchedPassword = "invalid_mismatchedPassword";
         public static string Error_InvalidMobileNumber = "invalid_mobileNumber";
+        public static string Error_InvalidNickname = "invalidNickname";
+        public static string Error_DuplicateNickname = "duplicateNickname";
 
         //Hint I18N
         public static string Hint_EmptyAcctSelector = "emptyAcctSelector";

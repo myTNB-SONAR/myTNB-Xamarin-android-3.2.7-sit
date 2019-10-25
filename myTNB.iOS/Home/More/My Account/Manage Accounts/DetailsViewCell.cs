@@ -16,21 +16,28 @@ namespace myTNB
             nfloat cellHeight = 82;
             Frame = new CGRect(0, 0, cellWidth, cellHeight);
 
-            lblAccountNumber = new UILabel(new CGRect(18, 16, cellWidth - 36, 18));
-            lblAccountNumber.TextColor = MyTNBColor.TunaGrey();
-            lblAccountNumber.Font = MyTNBFont.MuseoSans14_500;
+            lblAccountNumber = new UILabel(new CGRect(18, 16, cellWidth - 36, 18))
+            {
+                TextColor = MyTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans14_500
+            };
 
-            lblAddress = new UILabel(new CGRect(18, 34, cellWidth - 36, 40));
-            lblAddress.TextColor = MyTNBColor.TunaGrey();
-            lblAddress.Font = MyTNBFont.MuseoSans12_300;
-            lblAddress.Lines = 0;
-            lblAddress.LineBreakMode = UILineBreakMode.WordWrap;
+            lblAddress = new UILabel(new CGRect(18, 34, cellWidth - 36, 40))
+            {
+                TextColor = MyTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans12_300,
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
+            };
 
-            viewLine = new UIView(new CGRect(0, cellHeight - 1, cellWidth, 1));
-            viewLine.BackgroundColor = MyTNBColor.PlatinumGrey;
-            viewLine.Hidden = false;
+            viewLine = new UIView(new CGRect(0, cellHeight - 1, cellWidth, 1))
+            {
+                BackgroundColor = MyTNBColor.PlatinumGrey,
+                Hidden = false
+            };
 
             AddSubviews(new UIView[] { lblAccountNumber, lblAddress, viewLine });
+            SelectionStyle = UITableViewCellSelectionStyle.None;
         }
     }
 }

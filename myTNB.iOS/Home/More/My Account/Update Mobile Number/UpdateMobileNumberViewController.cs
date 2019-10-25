@@ -6,7 +6,7 @@ using CoreGraphics;
 using myTNB.Model;
 using myTNB.DataManager;
 using myTNB.Registration;
-using myTNB.Home.More.MyAccount.UpdateMobileNumber;
+using myTNB.MyAccount;
 
 namespace myTNB
 {
@@ -29,7 +29,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
-            PageName = MobileNumberConstants.Pagename_UpdateMobileNumber;
+            PageName = MyAccountConstants.Pagename_UpdateMobileNumber;
             base.ViewDidLoad();
             SetNavigationBar();
             AddSaveButton();
@@ -37,7 +37,7 @@ namespace myTNB
 
             if (IsFromLogin)
             {
-                DisplayToast(GetI18NValue(MobileNumberConstants.I18N_VerifyDeviceMessage));
+                DisplayToast(GetI18NValue(MyAccountConstants.I18N_VerifyDeviceMessage));
             }
         }
 
@@ -68,7 +68,7 @@ namespace myTNB
                     Lines = 0,
                     Font = MyTNBFont.MuseoSans14_300,
                     TextColor = MyTNBColor.TunaGrey(),
-                    Text = GetI18NValue(MobileNumberConstants.I18N_Details)
+                    Text = GetI18NValue(MyAccountConstants.I18N_Details)
                 };
                 View.AddSubview(info);
                 viewMobileNumber = new UIView((new CGRect(18, info.Frame.GetMaxY() + marginY, View.Frame.Width - 36, 51)));
@@ -245,7 +245,7 @@ namespace myTNB
             UIView headerView = gradientViewComponent.GetUI();
             TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            _navTitle = GetI18NValue(IsFromLogin ? MobileNumberConstants.I18N_VerifyDeviceTitle : MobileNumberConstants.I18N_UpdateMobileTitle);
+            _navTitle = GetI18NValue(IsFromLogin ? MyAccountConstants.I18N_VerifyDeviceTitle : MyAccountConstants.I18N_UpdateMobileTitle);
             titleBarComponent.SetTitle(_navTitle);
             titleBarComponent.SetPrimaryVisibility(true);
             titleBarComponent.SetBackVisibility(WillHideBackButton);

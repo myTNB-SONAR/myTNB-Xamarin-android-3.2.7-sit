@@ -6,24 +6,25 @@ using myTNB.Home.More.MyAccount.ManageAccounts;
 using CoreGraphics;
 using System.Threading.Tasks;
 using myTNB.SQLite.SQLiteDataManager;
+using myTNB.MyAccount;
+using System.Collections.Generic;
 
 namespace myTNB
 {
-    public partial class ManageAccountsViewController : UIViewController
+    public partial class ManageAccountsViewController : CustomUIViewController
     {
-        public ManageAccountsViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public ManageAccountsViewController(IntPtr handle) : base(handle) { }
 
-        UIView _viewNotificationMsg;
-        UILabel _lblNotificationDetails;
+        private UIView _viewNotificationMsg;
+        private UILabel _lblNotificationDetails;
 
         public CustomerAccountRecordModel CustomerRecord = new CustomerAccountRecordModel();
         //public int AccountRecordIndex = -1;
-        BaseResponseModel _removeAccount = new BaseResponseModel();
+        private BaseResponseModel _removeAccount = new BaseResponseModel();
 
         public override void ViewDidLoad()
         {
+            PageName = MyAccountConstants.Pagename_ManageAccount;
             base.ViewDidLoad();
             SetNavigationBar();
             manageAccountsTableView.Frame = new CGRect(0, DeviceHelper.IsIphoneXUpResolution()
@@ -44,7 +45,7 @@ namespace myTNB
             InitializeNotificationMessage();
             if (DataManager.DataManager.SharedInstance.IsNickNameUpdated)
             {
-                _lblNotificationDetails.Text = "Manage_UpdateNicknameSuccess".Translate();
+                _lblNotificationDetails.Text = GetI18NValue(MyAccountConstants.I18N_NicknameUpdateSuccess);
                 ShowNotificationMessage();
                 DataManager.DataManager.SharedInstance.IsNickNameUpdated = false;
             }
@@ -52,14 +53,14 @@ namespace myTNB
             manageAccountsTableView.ReloadData();
         }
 
-        internal void SetNavigationBar()
+        private void SetNavigationBar()
         {
             NavigationController.NavigationBar.Hidden = true;
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 64, true);
             UIView headerView = gradientViewComponent.GetUI();
             TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("Manage_ManageElectricityAccount".Translate());
+            titleBarComponent.SetTitle(GetI18NValue(MyAccountConstants.I18N_Title));
             titleBarComponent.SetPrimaryVisibility(true);
             titleBarComponent.SetBackVisibility(false);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
@@ -84,22 +85,26 @@ namespace myTNB
             }
         }
 
-        internal void InitializeNotificationMessage()
+        private void InitializeNotificationMessage()
         {
             if (_viewNotificationMsg == null)
             {
-                _viewNotificationMsg = new UIView(new CGRect(18, 32, View.Frame.Width - 36, 64));
-                _viewNotificationMsg.BackgroundColor = MyTNBColor.SunGlow;
+                _viewNotificationMsg = new UIView(new CGRect(18, 32, View.Frame.Width - 36, 64))
+                {
+                    BackgroundColor = MyTNBColor.SunGlow,
+                    Hidden = true
+                };
                 _viewNotificationMsg.Layer.CornerRadius = 2.0f;
-                _viewNotificationMsg.Hidden = true;
 
-                _lblNotificationDetails = new UILabel(new CGRect(16, 16, _viewNotificationMsg.Frame.Width - 32, 32));
-                _lblNotificationDetails.TextAlignment = UITextAlignment.Left;
-                _lblNotificationDetails.Font = MyTNBFont.MuseoSans12;
-                _lblNotificationDetails.TextColor = MyTNBColor.TunaGrey();
-                _lblNotificationDetails.Text = TNBGlobal.EMPTY_ADDRESS;
-                _lblNotificationDetails.Lines = 0;
-                _lblNotificationDetails.LineBreakMode = UILineBreakMode.WordWrap;
+                _lblNotificationDetails = new UILabel(new CGRect(16, 16, _viewNotificationMsg.Frame.Width - 32, 32))
+                {
+                    TextAlignment = UITextAlignment.Left,
+                    Font = MyTNBFont.MuseoSans12,
+                    TextColor = MyTNBColor.TunaGrey(),
+                    Text = TNBGlobal.EMPTY_ADDRESS,
+                    Lines = 0,
+                    LineBreakMode = UILineBreakMode.WordWrap
+                };
 
                 _viewNotificationMsg.AddSubview(_lblNotificationDetails);
 
@@ -108,7 +113,7 @@ namespace myTNB
             }
         }
 
-        internal void ShowNotificationMessage()
+        private void ShowNotificationMessage()
         {
             _viewNotificationMsg.Hidden = false;
             _viewNotificationMsg.Alpha = 1.0f;
@@ -123,39 +128,34 @@ namespace myTNB
 
         internal void OnRemoveAccount()
         {
-            UIAlertController alert = UIAlertController.Create("Manage_RemoveAccount".Translate()
-                , string.Format("Manage_RemoveAccountMessage".Translate(), CustomerRecord.accDesc, CustomerRecord.accNum)
-                , UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Default, (obj) =>
-            {
-                ActivityIndicator.Show();
-                NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
-                {
-                    InvokeOnMainThread(() =>
-                    {
-                        if (NetworkUtility.isReachable)
+            DisplayCustomAlert(GetI18NValue(MyAccountConstants.Popup_RemoveAccountTitle)
+                , string.Format(GetI18NValue(MyAccountConstants.Popup_RemoveAccountMessage), CustomerRecord.accDesc, CustomerRecord.accNum)
+                , new Dictionary<string, Action> { {GetCommonI18NValue(Constants.Common_Cancel), null },
+                    {GetCommonI18NValue(Constants.Common_Ok), ()=>{
+                        ActivityIndicator.Show();
+                        NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
                         {
-                            ActivityIndicator.Show();
-                            ExecuteRemoveTNBAccountForUserFavCall();
-                        }
-                        else
-                        {
-                            AlertHandler.DisplayNoDataAlert(this);
-                            ActivityIndicator.Hide();
-                        }
+                            InvokeOnMainThread(() =>
+                            {
+                                if (NetworkUtility.isReachable)
+                                {
+                                    ExecuteRemoveTNBAccountForUserFavCall();
+                                }
+                                else
+                                {
+                                    DisplayNoDataAlert();
+                                    ActivityIndicator.Hide();
+                                }
 
-                    });
-                });
-            }));
-            alert.AddAction(UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, (obj) =>
-            {
-
-            }));
-            alert.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-            PresentViewController(alert, animated: true, completionHandler: null);
+                            });
+                        });
+                    } } }
+                , UITextAlignment.Center
+                , UITextAlignment.Center
+            );
         }
 
-        internal void ExecuteRemoveTNBAccountForUserFavCall()
+        private void ExecuteRemoveTNBAccountForUserFavCall()
         {
             RemoveTNBAccountForUserFav().ContinueWith(task =>
             {
@@ -189,17 +189,16 @@ namespace myTNB
                     }
                     else
                     {
-                        AlertHandler.DisplayServiceError(this, _removeAccount?.d?.message);
+                        DisplayServiceError(_removeAccount?.d?.message ?? string.Empty);
                     }
                     ActivityIndicator.Hide();
                 });
             });
         }
 
-
-        internal Task RemoveTNBAccountForUserFav()
+        private Task RemoveTNBAccountForUserFav()
         {
-            var emailAddress = string.Empty;
+            string emailAddress = string.Empty;
             if (DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
             {
                 emailAddress = DataManager.DataManager.SharedInstance.UserEntity[0]?.email;
@@ -221,7 +220,7 @@ namespace myTNB
                     accNum = CustomerRecord.accNum,
                     email = emailAddress
                 };
-                _removeAccount = serviceManager.BaseServiceCall("RemoveTNBAccountForUserFav", requestParameter);
+                _removeAccount = serviceManager.BaseServiceCall(MyAccountConstants.Service_RemoveAccount, requestParameter);
             });
         }
     }

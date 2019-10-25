@@ -77,7 +77,7 @@ namespace myTNB
                     UIStoryboard storyBoard = UIStoryboard.FromName("Logout", null);
                     LogoutViewController viewController =
                         storyBoard.InstantiateViewController("LogoutViewController") as LogoutViewController;
-                    var navController = new UINavigationController(viewController);
+                    UINavigationController navController = new UINavigationController(viewController);
                     navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                     PresentViewController(navController, true, null);
                 }));
@@ -124,7 +124,7 @@ namespace myTNB
                         }
                         else
                         {
-                            AlertHandler.DisplayNoDataAlert(this);
+                            DisplayNoDataAlert();
                         }
                         ActivityIndicator.Hide();
                     });
@@ -189,8 +189,10 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName("UpdateMobileNumber", null);
             UpdateMobileNumberViewController viewController =
                 storyBoard.InstantiateViewController("UpdateMobileNumberViewController") as UpdateMobileNumberViewController;
-            UINavigationController navController = new UINavigationController(viewController);
-            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+            UINavigationController navController = new UINavigationController(viewController)
+            {
+                ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+            };
             PresentViewController(navController, true, null);
         }
 
@@ -199,8 +201,10 @@ namespace myTNB
             UIStoryboard storyBoard = UIStoryboard.FromName("UpdatePassword", null);
             UpdatePasswordViewController viewController =
                 storyBoard.InstantiateViewController("UpdatePasswordViewController") as UpdatePasswordViewController;
-            UINavigationController navController = new UINavigationController(viewController);
-            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+            UINavigationController navController = new UINavigationController(viewController)
+            {
+                ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+            };
             PresentViewController(navController, true, null);
         }
 
@@ -216,13 +220,15 @@ namespace myTNB
                         UIStoryboard storyBoard = UIStoryboard.FromName("ManageCards", null);
                         ManageCardViewController viewController =
                             storyBoard.InstantiateViewController("ManageCardViewController") as ManageCardViewController;
-                        UINavigationController navController = new UINavigationController(viewController);
-                        navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                        UINavigationController navController = new UINavigationController(viewController)
+                        {
+                            ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                        };
                         PresentViewController(navController, true, null);
                     }
                     else
                     {
-                        AlertHandler.DisplayNoDataAlert(this);
+                        DisplayNoDataAlert();
                     }
                     ActivityIndicator.Hide();
                 });
@@ -237,8 +243,10 @@ namespace myTNB
                 storyBoard.InstantiateViewController("ManageAccountsViewController") as ManageAccountsViewController;
             //viewController.AccountRecordIndex = accountRecordIndex;
             DataManager.DataManager.SharedInstance.AccountRecordIndex = accountRecordIndex;
-            UINavigationController navController = new UINavigationController(viewController);
-            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+            UINavigationController navController = new UINavigationController(viewController)
+            {
+                ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+            };
             PresentViewController(navController, true, null);
             ActivityIndicator.Hide();
         }

@@ -26,8 +26,8 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            ExecuteLogout();
             UIApplication.SharedApplication.ApplicationIconBadgeNumber = 0;
+            ExecuteLogout();
         }
 
         private void SetSubView()
@@ -37,7 +37,7 @@ namespace myTNB
             viewContent.Layer.CornerRadius = 5.0f;
 
             UIImageView imgLogo = new UIImageView(new CGRect((viewContent.Frame.Width / 2) - 75, 16, 150, 150));
-            imgLogo.Image = UIImage.FromBundle("Logout-Logo");
+            imgLogo.Image = UIImage.FromBundle(LogoutConstants.IMG_Logout);
 
             UILabel lblThankYou = new UILabel(new CGRect(0, 182, viewContent.Frame.Width, 18));
             lblThankYou.TextColor = MyTNBColor.PowerBlue;
@@ -112,7 +112,7 @@ namespace myTNB
                     OsType = TNBGlobal.DEVICE_PLATFORM_IOS,
                     OsVersion = DeviceHelper.GetOSVersion()
                 };
-                BaseResponseModel logoutResponse = serviceManager.BaseServiceCall("LogoutUser_V2", requestParameter);
+                BaseResponseModel logoutResponse = serviceManager.BaseServiceCall(LogoutConstants.Service_Logout, requestParameter);
             });
         }
 

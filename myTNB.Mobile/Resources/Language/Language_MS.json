@@ -81,7 +81,8 @@
     "login": "Log masuk",
     "next": "Seterusnya",
     "resend": "Hantar semula",
-    "retry": "Retry" //missing
+    "retry": "Retry", //missing
+    "save": "Simpan"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -547,5 +548,21 @@
     "title": "Terima kasih kerana menggunakan myTNB.",
     "message": "Anda telah log keluar daripada aplikasi myTNB.",
     "loginAgain": "Log Masuk Semula"
+  },
+  "UpdatePassword": {
+    "title": "Kemas Kini Kata Laluan",
+    "currentPassword": "Kata Laluan Semasa",
+    "newPassword": "Kata Laluan Baharu",
+    "confirmNewPassword": "Sahkan Kata Laluan Baharu"
+  },
+  "UpdateNickname": {
+    "title": "Kemas Kini Nama Panggilan Akaun"
+  },
+  "ManageAccount": {
+    "title": "Manage Electricity Account",
+    "nicknameUpdateSuccess": "Account nickname has been updated successfully.",
+    "removeAccount": "Remove This Account",
+    "popupremoveAccountTitle": "Keluarkan Akaun",
+    "popupremoveAccountMessage": "Anda sedang mengeluarkan <b>{0}</b>, Nombor Akaun: <b>{1}</b>.<br><br>Nota: Tindakan ini tidak menutup akaun bekalan elektrik anda. Layari Portal Layan Diri atau Kedai Tenaga untuk menutup akaun bekalan elektrik anda."
   }
 }

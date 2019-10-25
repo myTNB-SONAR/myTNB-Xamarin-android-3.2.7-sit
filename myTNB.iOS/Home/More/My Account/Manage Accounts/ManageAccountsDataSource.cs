@@ -3,6 +3,7 @@ using CoreGraphics;
 using Foundation;
 using myTNB.DataManager;
 using myTNB.Model;
+using myTNB.MyAccount;
 using UIKit;
 
 namespace myTNB.Home.More.MyAccount.ManageAccounts
@@ -35,36 +36,34 @@ namespace myTNB.Home.More.MyAccount.ManageAccounts
         {
             if (indexPath.Row == 0)
             {
-                var cell = tableView.DequeueReusableCell("DetailsViewCell", indexPath) as DetailsViewCell;
+                DetailsViewCell cell = tableView.DequeueReusableCell(MyAccountConstants.Cell_Details, indexPath) as DetailsViewCell;
                 cell.Frame = new CGRect(cell.Frame.X, cell.Frame.Y, tableView.Frame.Width, 82);
                 cell.lblAccountNumber.Text = ServiceCall.ValidateResponseItem(_accountRecord.accNum);
                 cell.lblAddress.Text = ServiceCall.ValidateResponseItem(_accountRecord.accountStAddress);
-                cell.SelectionStyle = UITableViewCellSelectionStyle.None;
                 return cell;
             }
             else if (indexPath.Row == 1)
             {
-                var cell = tableView.DequeueReusableCell("UpdateViewCell", indexPath) as UpdateViewCell;
+                UpdateViewCell cell = tableView.DequeueReusableCell(MyAccountConstants.Cell_Update, indexPath) as UpdateViewCell;
                 cell.Frame = new CGRect(cell.Frame.X, cell.Frame.Y, tableView.Frame.Width, 62);
-                cell.lblTitle.Text = "Common_AccountNickname".Translate().ToUpper();
+                cell.lblTitle.Text = GetCommonI18NValue(Constants.Common_AccountNickname).ToUpper();
                 cell.lblDetail.Text = ServiceCall.ValidateResponseItem(_accountRecord.accDesc);
-                cell.lblCTA.Text = "Common_Update".Translate();
+                cell.lblCTA.Text = GetCommonI18NValue(Constants.Common_Update);
                 cell.viewCTA.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
                     _controller.UpdateNickName();
                 }));
-                cell.SelectionStyle = UITableViewCellSelectionStyle.None;
                 return cell;
             }
             else if (indexPath.Row == 2)
             {
-                var cell = tableView.DequeueReusableCell("RemoveViewCell", indexPath) as RemoveViewCell;
+                RemoveViewCell cell = tableView.DequeueReusableCell(MyAccountConstants.Cell_Remove, indexPath) as RemoveViewCell;
                 cell.Frame = new CGRect(cell.Frame.X, cell.Frame.Y, tableView.Frame.Width, DeviceHelper.GetScaledHeight(88));
                 cell.btnRemove.TouchUpInside += (sender, e) =>
                 {
                     _controller.OnRemoveAccount();
                 };
-                cell.SelectionStyle = UITableViewCellSelectionStyle.None;
+                cell.btnRemove.SetTitle(GetI18NValue(MyAccountConstants.I18N_RemoveAccount), UIControlState.Normal);
                 return cell;
             }
             return new UITableViewCell();
@@ -86,6 +85,16 @@ namespace myTNB.Home.More.MyAccount.ManageAccounts
                 rowHeight = DeviceHelper.GetScaledHeight(88);
             }
             return rowHeight;
+        }
+
+        private string GetI18NValue(string key)
+        {
+            return _controller.GetI18NValue(key);
+        }
+
+        private string GetCommonI18NValue(string key)
+        {
+            return _controller.GetCommonI18NValue(key);
         }
     }
 }

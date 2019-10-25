@@ -2584,7 +2584,6 @@
     <Compile Include="Login\PreloginConstants.cs" />
     <Compile Include="Login\LoginConstants.cs" />
     <Compile Include="Login\Forgot Password\ForgotPasswordConstants.cs" />
-    <Compile Include="Home\More\My Account\Update Mobile Number\MobileNumberConstants.cs" />
     <Compile Include="Registration\Verify Pin\VerifyPinViewController.cs" />
     <Compile Include="Registration\Verify Pin\VerifyPinViewController.designer.cs">
       <DependentUpon>VerifyPinViewController.cs</DependentUpon>

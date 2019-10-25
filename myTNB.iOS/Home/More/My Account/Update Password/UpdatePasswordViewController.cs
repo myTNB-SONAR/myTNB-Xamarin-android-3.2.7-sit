@@ -6,48 +6,36 @@ using CoreGraphics;
 using System.Threading.Tasks;
 using myTNB.Model;
 using myTNB.DataManager;
+using myTNB.MyAccount;
 
 namespace myTNB
 {
-    public partial class UpdatePasswordViewController : UIViewController
+    public partial class UpdatePasswordViewController : CustomUIViewController
     {
-        public UpdatePasswordViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public UpdatePasswordViewController(IntPtr handle) : base(handle) { }
 
         const string PASSWORD_PATTERN = @"^.{8,}$"; // @"(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,})$";
 
-        BaseResponseModel _saveResponse = new BaseResponseModel();
-        TextFieldHelper _textFieldHelper = new TextFieldHelper();
+        private BaseResponseModel _saveResponse = new BaseResponseModel();
+        private TextFieldHelper _textFieldHelper = new TextFieldHelper();
 
-        UITextField txtFieldPassword;
-        UITextField txtFieldNewPassword;
-        UITextField txtFieldConfirmNewPassword;
+        private UITextField txtFieldPassword, txtFieldNewPassword, txtFieldConfirmNewPassword;
 
-        UIView viewLinePassword;
-        UIView viewLineNewPassword;
-        UIView viewLineConfirmNewPassword;
+        private UIView viewLinePassword, viewLineNewPassword, viewLineConfirmNewPassword
+            , viewShowPassword, viewShowNewPassword, viewShowConfirmNewPassword;
 
-        UILabel lblPasswordTitle;
-        UILabel lblNewPasswordTitle;
-        UILabel lblConfirmNewPasswordTitle;
+        private UILabel lblPasswordTitle, lblNewPasswordTitle, lblConfirmNewPasswordTitle
+            , lblPasswordError, lblNewPasswordError, lblConfirmNewPasswordError;
 
-        UILabel lblPasswordError;
-        UILabel lblNewPasswordError;
-        UILabel lblConfirmNewPasswordError;
+        private UIButton btnSave;
 
-        UIView viewShowPassword;
-        UIView viewShowNewPassword;
-        UIView viewShowConfirmNewPassword;
-
-        UIButton btnSave;
-
-        string _currentPassword = string.Empty;
-        string _newPassword = string.Empty;
-        string _confirmNewPassword = string.Empty;
+        private string _currentPassword = string.Empty
+            , _newPassword = string.Empty
+            , _confirmNewPassword = string.Empty;
 
         public override void ViewDidLoad()
         {
+            PageName = MyAccountConstants.Pagename_UpdatePassword;
             base.ViewDidLoad();
             SetNavigationBar();
             AddSaveButton();
@@ -59,7 +47,7 @@ namespace myTNB
             base.ViewWillAppear(animated);
         }
 
-        internal void SetSubviews()
+        private void SetSubviews()
         {
             //Password
             float additionalYValue = 0;
@@ -70,24 +58,28 @@ namespace myTNB
             UIView viewPassword = new UIView((new CGRect(18, 80 + additionalYValue, View.Frame.Width - 36, 51)));
             viewPassword.BackgroundColor = UIColor.Clear;
 
-            lblPasswordTitle = new UILabel(new CGRect(0, 0, viewPassword.Frame.Width, 12));
-            lblPasswordTitle.Text = "Common_CurrentPassword".Translate().ToUpper();
-            lblPasswordTitle.Font = MyTNBFont.MuseoSans9_300;
-            lblPasswordTitle.TextColor = MyTNBColor.SilverChalice;
-            lblPasswordTitle.Hidden = true;
+            lblPasswordTitle = new UILabel(new CGRect(0, 0, viewPassword.Frame.Width, 12))
+            {
+                Text = GetI18NValue(MyAccountConstants.I18N_CurrentPassword).ToUpper(),
+                Font = MyTNBFont.MuseoSans9_300,
+                TextColor = MyTNBColor.SilverChalice,
+                Hidden = true
+            };
 
-            lblPasswordError = new UILabel(new CGRect(0, 37, viewPassword.Frame.Width, 14));
-            lblPasswordError.Font = MyTNBFont.MuseoSans9_300;
-            lblPasswordError.TextAlignment = UITextAlignment.Left;
-            lblPasswordError.TextColor = MyTNBColor.Tomato;
-            lblPasswordError.Text = "Invalid_OldPassword".Translate();
-            lblPasswordError.Hidden = true;
+            lblPasswordError = new UILabel(new CGRect(0, 37, viewPassword.Frame.Width, 14))
+            {
+                Font = MyTNBFont.MuseoSans9_300,
+                TextAlignment = UITextAlignment.Left,
+                TextColor = MyTNBColor.Tomato,
+                Text = GetErrorI18NValue(Constants.Error_InvalidPassword),
+                Hidden = true
+            };
 
             txtFieldPassword = new UITextField
             {
                 Frame = new CGRect(0, 12, viewPassword.Frame.Width - 30, 24),
                 AttributedPlaceholder = new NSAttributedString(
-                    "Common_CurrentPassword".Translate()
+                     GetI18NValue(MyAccountConstants.I18N_CurrentPassword)
                     , font: MyTNBFont.MuseoSans16_300
                     , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
@@ -98,10 +90,14 @@ namespace myTNB
 
             viewLinePassword = GenericLine.GetLine(new CGRect(0, 36, viewPassword.Frame.Width, 1));
 
-            viewShowPassword = new UIView(new CGRect(viewPassword.Frame.Width - 30, 12, 24, 24));
-            viewShowPassword.Hidden = true;
-            UIImageView imgShowPassword = new UIImageView(new CGRect(0, 0, 24, 24));
-            imgShowPassword.Image = UIImage.FromBundle("IC-Action-Show-Password");
+            viewShowPassword = new UIView(new CGRect(viewPassword.Frame.Width - 30, 12, 24, 24))
+            {
+                Hidden = true
+            };
+            UIImageView imgShowPassword = new UIImageView(new CGRect(0, 0, 24, 24))
+            {
+                Image = UIImage.FromBundle(Constants.IMG_ShowPassword)
+            };
             viewShowPassword.AddSubview(imgShowPassword);
             viewShowPassword.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
@@ -109,27 +105,33 @@ namespace myTNB
             }));
 
             //New Password
-            UIView viewNewPassword = new UIView((new CGRect(18, 137 + additionalYValue, View.Frame.Width - 36, 51)));
-            viewNewPassword.BackgroundColor = UIColor.Clear;
+            UIView viewNewPassword = new UIView((new CGRect(18, 137 + additionalYValue, View.Frame.Width - 36, 51)))
+            {
+                BackgroundColor = UIColor.Clear
+            };
 
-            lblNewPasswordTitle = new UILabel(new CGRect(0, 0, viewNewPassword.Frame.Width, 12));
-            lblNewPasswordTitle.Text = "Common_NewPassword".Translate().ToUpper();
-            lblNewPasswordTitle.Font = MyTNBFont.MuseoSans9_300;
-            lblNewPasswordTitle.TextColor = MyTNBColor.SilverChalice;
-            lblNewPasswordTitle.Hidden = true;
+            lblNewPasswordTitle = new UILabel(new CGRect(0, 0, viewNewPassword.Frame.Width, 12))
+            {
+                Text = GetI18NValue(MyAccountConstants.I18N_NewPassword).ToUpper(),
+                Font = MyTNBFont.MuseoSans9_300,
+                TextColor = MyTNBColor.SilverChalice,
+                Hidden = true
+            };
 
-            lblNewPasswordError = new UILabel(new CGRect(0, 37, viewNewPassword.Frame.Width, 14));
-            lblNewPasswordError.Font = MyTNBFont.MuseoSans9_300;
-            lblNewPasswordError.TextAlignment = UITextAlignment.Left;
-            lblNewPasswordError.TextColor = MyTNBColor.Tomato;
-            lblNewPasswordError.Text = "Hint_Password".Translate();
-            lblNewPasswordError.Hidden = true;
+            lblNewPasswordError = new UILabel(new CGRect(0, 37, viewNewPassword.Frame.Width, 14))
+            {
+                Font = MyTNBFont.MuseoSans9_300,
+                TextAlignment = UITextAlignment.Left,
+                TextColor = MyTNBColor.Tomato,
+                Text = GetErrorI18NValue(Constants.Error_InvalidPassword),
+                Hidden = true
+            };
 
             txtFieldNewPassword = new UITextField
             {
                 Frame = new CGRect(0, 12, viewNewPassword.Frame.Width - 30, 24),
                 AttributedPlaceholder = new NSAttributedString(
-                    "Common_NewPassword".Translate()
+                    GetI18NValue(MyAccountConstants.I18N_NewPassword)
                     , font: MyTNBFont.MuseoSans16_300
                     , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
@@ -146,7 +148,7 @@ namespace myTNB
             };
             UIImageView imgShowNewPassword = new UIImageView(new CGRect(0, 0, 24, 24))
             {
-                Image = UIImage.FromBundle("IC-Action-Show-Password")
+                Image = UIImage.FromBundle(Constants.IMG_ShowPassword)
             };
             viewShowNewPassword.AddSubview(imgShowNewPassword);
             viewShowNewPassword.AddGestureRecognizer(new UITapGestureRecognizer(() =>
@@ -155,27 +157,33 @@ namespace myTNB
             }));
 
             //Confirm Password
-            UIView viewConfirmPassword = new UIView((new CGRect(18, 194 + additionalYValue, View.Frame.Width - 36, 51)));
-            viewConfirmPassword.BackgroundColor = UIColor.Clear;
+            UIView viewConfirmPassword = new UIView((new CGRect(18, 194 + additionalYValue, View.Frame.Width - 36, 51)))
+            {
+                BackgroundColor = UIColor.Clear
+            };
 
-            lblConfirmNewPasswordTitle = new UILabel(new CGRect(0, 0, viewConfirmPassword.Frame.Width, 12));
-            lblConfirmNewPasswordTitle.Text = "Common_ConfirmPassword".Translate().ToUpper();
-            lblConfirmNewPasswordTitle.Font = MyTNBFont.MuseoSans9_300;
-            lblConfirmNewPasswordTitle.TextColor = MyTNBColor.SilverChalice;
-            lblConfirmNewPasswordTitle.Hidden = true;
+            lblConfirmNewPasswordTitle = new UILabel(new CGRect(0, 0, viewConfirmPassword.Frame.Width, 12))
+            {
+                Text = GetI18NValue(MyAccountConstants.I18N_ConfirmNewPassword).ToUpper(),
+                Font = MyTNBFont.MuseoSans9_300,
+                TextColor = MyTNBColor.SilverChalice,
+                Hidden = true
+            };
 
-            lblConfirmNewPasswordError = new UILabel(new CGRect(0, 37, viewConfirmPassword.Frame.Width, 14));
-            lblConfirmNewPasswordError.Text = "Error_MismatchedPassword".Translate();
-            lblConfirmNewPasswordError.Font = MyTNBFont.MuseoSans9_300;
-            lblConfirmNewPasswordError.TextAlignment = UITextAlignment.Left;
-            lblConfirmNewPasswordError.TextColor = MyTNBColor.Tomato;
-            lblConfirmNewPasswordError.Hidden = true;
+            lblConfirmNewPasswordError = new UILabel(new CGRect(0, 37, viewConfirmPassword.Frame.Width, 14))
+            {
+                Text = GetErrorI18NValue(Constants.Error_MismatchedPassword),
+                Font = MyTNBFont.MuseoSans9_300,
+                TextAlignment = UITextAlignment.Left,
+                TextColor = MyTNBColor.Tomato,
+                Hidden = true
+            };
 
             txtFieldConfirmNewPassword = new UITextField
             {
                 Frame = new CGRect(0, 12, viewConfirmPassword.Frame.Width - 30, 24),
                 AttributedPlaceholder = new NSAttributedString(
-                    "Common_ConfirmPassword".Translate()
+                    GetI18NValue(MyAccountConstants.I18N_ConfirmNewPassword)
                     , font: MyTNBFont.MuseoSans16_300
                     , foregroundColor: MyTNBColor.SilverChalice
                     , strokeWidth: 0
@@ -192,7 +200,7 @@ namespace myTNB
             };
             UIImageView imgShowConfirmNewPassword = new UIImageView(new CGRect(0, 0, 24, 24))
             {
-                Image = UIImage.FromBundle("IC-Action-Show-Password")
+                Image = UIImage.FromBundle(Constants.IMG_ShowPassword)
             };
             viewShowConfirmNewPassword.AddSubview(imgShowConfirmNewPassword);
             viewShowConfirmNewPassword.AddGestureRecognizer(new UITapGestureRecognizer(() =>
@@ -218,7 +226,7 @@ namespace myTNB
             SetTextFieldEvents(txtFieldConfirmNewPassword, lblConfirmNewPasswordTitle, lblConfirmNewPasswordError, viewLineConfirmNewPassword, PASSWORD_PATTERN);
         }
 
-        void DisplayEyeIcon(UITextField textField)
+        private void DisplayEyeIcon(UITextField textField)
         {
             if (textField == txtFieldPassword)
             {
@@ -234,7 +242,7 @@ namespace myTNB
             }
         }
 
-        internal void SetTextFieldEvents(UITextField textField, UILabel lblTitle, UILabel lblError, UIView viewLine, string pattern)
+        private void SetTextFieldEvents(UITextField textField, UILabel lblTitle, UILabel lblError, UIView viewLine, string pattern)
         {
             _textFieldHelper.SetKeyboard(textField);
             textField.EditingChanged += (sender, e) =>
@@ -256,8 +264,8 @@ namespace myTNB
                 if (textField == txtFieldConfirmNewPassword)
                 {
                     bool isMatch = txtFieldNewPassword.Text.Equals(txtFieldConfirmNewPassword.Text);
-                    string err = isValid ? "Error_MismatchedPassword".Translate()
-                        : "Hint_Password".Translate();
+                    string err = isValid ? GetErrorI18NValue(Constants.Error_MismatchedPassword)
+                        : GetErrorI18NValue(Constants.Error_InvalidPassword);
                     lblError.Text = err;
                     isValid = isValid && isMatch;
                 }
@@ -285,7 +293,7 @@ namespace myTNB
             };
         }
 
-        internal void SetSaveButtonEnable()
+        private void SetSaveButtonEnable()
         {
             bool isValidPW = txtFieldPassword.Text.Length > 0;
             bool isValidNewPW = _textFieldHelper.ValidateTextField(txtFieldNewPassword.Text, PASSWORD_PATTERN);
@@ -298,14 +306,14 @@ namespace myTNB
             btnSave.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
         }
 
-        internal void SetNavigationBar()
+        private void SetNavigationBar()
         {
             NavigationController.NavigationBar.Hidden = true;
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 64, true);
             UIView headerView = gradientViewComponent.GetUI();
             TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("Manage_PasswordTitle".Translate());
+            titleBarComponent.SetTitle(GetI18NValue(MyAccountConstants.I18N_Title));
             titleBarComponent.SetPrimaryVisibility(true);
             titleBarComponent.SetBackVisibility(false);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
@@ -316,17 +324,19 @@ namespace myTNB
             View.AddSubview(headerView);
         }
 
-        internal void AddSaveButton()
+        private void AddSaveButton()
         {
-            btnSave = new UIButton(UIButtonType.Custom);
-            btnSave.Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution()
-                ? 96 : DeviceHelper.GetScaledHeight(72)), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48));
-            btnSave.Layer.CornerRadius = 4;
-            btnSave.BackgroundColor = MyTNBColor.SilverChalice;
-            btnSave.SetTitle("Common_Save".Translate(), UIControlState.Normal);
-            btnSave.Font = MyTNBFont.MuseoSans16;
+            btnSave = new UIButton(UIButtonType.Custom)
+            {
+                Frame = new CGRect(18, View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution()
+                    ? 96 : DeviceHelper.GetScaledHeight(72)), View.Frame.Width - 36, DeviceHelper.GetScaledHeight(48)),
+                Enabled = false,
+                Font = MyTNBFont.MuseoSans16,
+                BackgroundColor = MyTNBColor.SilverChalice
+            };
+            btnSave.SetTitle(GetCommonI18NValue(Constants.Common_Save), UIControlState.Normal);
             btnSave.SetTitleColor(UIColor.White, UIControlState.Normal);
-            btnSave.Enabled = false;
+            btnSave.Layer.CornerRadius = 4;
             btnSave.TouchUpInside += (sender, e) =>
             {
                 ActivityIndicator.Show();
@@ -339,7 +349,7 @@ namespace myTNB
                     {
                         if (NetworkUtility.isReachable)
                         {
-                            Task[] taskList = new Task[] { Save() };
+                            Task[] taskList = { Save() };
                             Task.WaitAll(taskList);
                             if (ServiceCall.ValidateBaseResponse(_saveResponse))
                             {
@@ -353,12 +363,12 @@ namespace myTNB
                                 //txtFieldPassword.TextColor = myTNBColor.Tomato;
                                 //btnSave.Enabled = false;
                                 //btnSave.BackgroundColor = myTNBColor.SilverChalice;
-                                AlertHandler.DisplayServiceError(this, _saveResponse?.d?.message);
+                                DisplayServiceError(_saveResponse?.d?.message ?? string.Empty);
                             }
                         }
                         else
                         {
-                            AlertHandler.DisplayNoDataAlert(this);
+                            DisplayNoDataAlert();
                         }
                         ActivityIndicator.Hide();
                     });
@@ -367,7 +377,7 @@ namespace myTNB
             View.AddSubview(btnSave);
         }
 
-        internal Task Save()
+        private Task Save()
         {
             return Task.Factory.StartNew(() =>
             {
@@ -386,7 +396,7 @@ namespace myTNB
                     newPassword = _newPassword,
                     confirmNewPassword = _confirmNewPassword
                 };
-                _saveResponse = serviceManager.BaseServiceCall("ChangeNewPassword", requestParameter);
+                _saveResponse = serviceManager.BaseServiceCall(MyAccountConstants.Service_ChangePassword, requestParameter);
             });
         }
     }
