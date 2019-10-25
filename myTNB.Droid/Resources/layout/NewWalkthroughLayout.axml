@@ -5,14 +5,15 @@
   android:layout_height="match_parent"
   android:background="@color/white"
                 android:id="@+id/rootView">
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <android.support.v4.view.ViewPager
-            android:id="@+id/viewPager"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-  </FrameLayout>
+      <FrameLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+          <android.support.v4.view.ViewPager
+              android:id="@+id/viewPager"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:overScrollMode="never"/>
+    </FrameLayout>
     <Button
         android:id="@+id/btnStart"
         android:layout_height="wrap_content"

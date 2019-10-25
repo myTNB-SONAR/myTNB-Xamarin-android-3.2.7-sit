@@ -56,15 +56,6 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
 
         public override View OnCreateView(string name, Context context, IAttributeSet attrs)
         {
-            /*if (Build.VERSION.SdkInt >= BuildVersionCodes.Lollipop)
-            {
-
-                //Drawable background = (R.drawable.gradient_theme);
-                Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
-                Window.SetStatusBarColor(Resources.GetColor(Android.Resource.Color.Transparent));
-                //Window.SetNavigationBarColor(Resources.GetColor(Android.Resource.Color.Transparent));
-                Window.SetBackgroundDrawable(GetDrawable(Resource.Drawable.status_bar_gradient));
-            }*/
             return base.OnCreateView(name, context, attrs);
         }
 

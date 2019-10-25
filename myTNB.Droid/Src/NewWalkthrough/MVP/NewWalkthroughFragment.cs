@@ -48,7 +48,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             string title = Arguments.GetString(TITLE, "");
             string description = Arguments.GetString(DESCRIPTION, "");
             ViewGroup viewGroup = (ViewGroup)inflater.Inflate(Resource.Layout.NewWalkthroughFragmentLayout, container, false);
-            ScrollView bgLayout = viewGroup.FindViewById(Resource.Id.walkthrough_layout) as ScrollView;
+            LinearLayout bgLayout = viewGroup.FindViewById(Resource.Id.walkthrough_layout) as LinearLayout;
             ImageView imageSource = viewGroup.FindViewById(Resource.Id.img_display) as ImageView;
             TextView titleView = viewGroup.FindViewById(Resource.Id.txtTitle) as TextView;
             TextView descriptionView = viewGroup.FindViewById(Resource.Id.txtMessage) as TextView;
@@ -61,7 +61,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 case "walkthrough_img_install_1":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_1);
                     bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFirstBg);
-                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int) DPUtils.ConvertDPToPx(75f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
+                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int) DPUtils.ConvertDPToPx(70f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
                     LinearLayout.LayoutParams imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
                     
@@ -74,7 +74,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 case "walkthrough_img_install_2":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_2);
                     bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughSecondBg);
-                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(84f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
+                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(79f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
                     LinearLayout.LayoutParams secondImgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
 
@@ -89,7 +89,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_3);
                     bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughThirdBg);
                     LinearLayout.LayoutParams thirdImgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
-                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(115.7f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
+                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
                     int thirdImgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
                     float thirdHeightRatio = 175f / 250f;
@@ -100,7 +100,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 case "walkthrough_img_update_1":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_update_1);
                     bgLayout.SetBackgroundResource(Resource.Drawable.UpdateWalkthroughFirstBg);
-                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(102f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
+                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(97f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
                     LinearLayout.LayoutParams updateImgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
 
@@ -113,7 +113,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                 default:
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_1);
                     bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFirstBg);
-                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(75f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
+                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(70f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
                     LinearLayout.LayoutParams defaultImgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
 

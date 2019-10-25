@@ -1,4 +1,6 @@
-﻿namespace myTNB_Android.Src.NewWalkthrough.MVP
+﻿using System.Collections.Generic;
+
+namespace myTNB_Android.Src.NewWalkthrough.MVP
 {
     public class NewWalkthroughContract
     {
@@ -9,7 +11,7 @@
 
         public interface IPresenter
         {
-
+            List<NewWalkthroughModel> GenerateNewWalkthroughList(string currentAppNavigation);
         }
     }
 }
