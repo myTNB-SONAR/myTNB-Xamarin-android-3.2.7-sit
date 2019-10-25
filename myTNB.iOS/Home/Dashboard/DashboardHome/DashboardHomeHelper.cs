@@ -343,7 +343,7 @@ namespace myTNB
         {
             get
             {
-                var result = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindAll(x => x.IsNormalMeter);
+                var result = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindAll(x => x.IsNormalMeter && !x.IsREAccount);
                 return result?.Count > 0;
             }
         }
@@ -352,7 +352,16 @@ namespace myTNB
         {
             get
             {
-                var result = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindAll(x => x.IsNormalMeter);
+                var result = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindAll(x => x.IsNormalMeter && !x.IsREAccount);
+                return result?.Count > 1;
+            }
+        }
+
+        public bool HasMultipleREAccounts
+        {
+            get
+            {
+                var result = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindAll(x => x.IsREAccount);
                 return result?.Count > 1;
             }
         }
