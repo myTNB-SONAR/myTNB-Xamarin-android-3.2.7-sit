@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Net;
 using RestSharp;
 
 namespace myTNB
@@ -7,32 +9,42 @@ namespace myTNB
     {
         const string CONTENT_TYPE = "Content-Type";
         const string APPLICATION_JSON = "application/json";
-        const int TIMEOUT = 60000;
-        bool _isPayment;
-        string _paymentURL = string.Empty;
 
-        readonly Dictionary<string, string> DomainDictionary = new Dictionary<string, string>
+        const int MaxRetryCount = 2;
+        private int Timeout = 60000;
+        private int RetryTimeout = 2000;
+        private int _retryCount = 1;
+
+        private bool _isPayment;
+        private string _paymentURL = string.Empty;
+
+        private readonly Dictionary<string, string> DomainDictionary = new Dictionary<string, string>
         {
             { "DEV", "http://10.215.128.191:89"}
             , { "SIT", "https://mobiletestingws.tnb.com.my" }
             , { "PROD", "https://mytnbapp.tnb.com.my"}
         };
 
-        readonly Dictionary<string, string> EndPointDictionaryDev = new Dictionary<string, string>
+        private readonly Dictionary<string, string> EndPointDictionaryDev = new Dictionary<string, string>
         {
             {"V4", "/v5/my_billingssp.asmx/"}
             , {"V5", "/v5/my_billingssp.asmx/"}
             , {"V6", "/v6/mytnbappws.asmx/"}
         };
 
-        readonly Dictionary<string, string> EndPointDictionaryProd = new Dictionary<string, string>
+        private readonly Dictionary<string, string> EndPointDictionaryProd = new Dictionary<string, string>
         {
             {"V4", "/v5/my_billingssp.asmx/"}
             , {"V5", "/v5/my_billingssp.asmx/"}
             , {"V6", "/v6/mytnbappws.asmx/"}
         };
 
-        string GetURLEndpoint(APIVersion version)
+        private Dictionary<string, int> TimeOutDictionary = new Dictionary<string, int> {
+            { "GetAppLaunchMasterData", 3000},
+            { "GetCustomerBillingAccountList", 8000}
+        };
+
+        private string GetURLEndpoint(APIVersion version)
         {
             string ver = version.ToString();
             if (TNBGlobal.IsProduction)
@@ -52,27 +64,49 @@ namespace myTNB
         /// <param name="suffix">The name of the API.</param>
         /// <param name="requestParams">Request parameters.</param>
         /// <param name="version">Version of API to be used.</param>
-        public RestResponse ExecuteWebservice(string suffix, object requestParams, APIVersion version, APIEnvironment env)
+        public RestResponse ExecuteWebservice(string suffix, object requestParams, APIVersion version, APIEnvironment env, bool isRetry = false)
         {
             //SIT Test
             //env = APIEnvironment.SIT;
             string domain = GetDomain(env);
             string url = domain + GetURLEndpoint(version) + suffix;
 
+            _retryCount += isRetry ? 1 : 0;
+
+            if (!string.IsNullOrEmpty(suffix) && !string.IsNullOrWhiteSpace(suffix)
+                && TimeOutDictionary != null && TimeOutDictionary.Count > 0 && TimeOutDictionary.ContainsKey(suffix))
+            {
+                Timeout = TimeOutDictionary[suffix];
+            }
+
             var client = new RestClient(url)
             {
-                Timeout = TIMEOUT
+                Timeout = isRetry ? RetryTimeout : Timeout
             };
 
             var request = new RestRequest
             {
                 Method = Method.POST,
-                Timeout = TIMEOUT
+                Timeout = isRetry ? RetryTimeout : Timeout
             };
+
             request.AddHeader(CONTENT_TYPE, APPLICATION_JSON);
             request.AddJsonBody(requestParams);
 
             RestResponse response = (RestResponse)client.Execute(request);
+
+            WebException responseException = (WebException)response.ErrorException;
+            if (responseException != null
+                && responseException.Status == WebExceptionStatus.Timeout
+                && suffix == "GetAppLaunchMasterData")
+            {
+                isRetry = true;
+                if (isRetry && _retryCount <= MaxRetryCount)
+                {
+                    response = ExecuteWebservice(suffix, requestParams, version, env, isRetry);
+                }
+            }
+
             return response;
         }
 
