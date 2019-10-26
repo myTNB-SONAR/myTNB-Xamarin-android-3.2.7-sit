@@ -40,8 +40,8 @@ namespace myTNB
         };
 
         private Dictionary<string, int> TimeOutDictionary = new Dictionary<string, int> {
-            { "GetAppLaunchMasterData", 3000},
-            { "GetCustomerBillingAccountList", 8000}
+            { "GetAppLaunchMasterData", 3000}//,
+            //{ "GetCustomerBillingAccountList", 8000}
         };
 
         private string GetURLEndpoint(APIVersion version)
