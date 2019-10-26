@@ -96,8 +96,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.summaryNestScrollView)]
         NestedScrollView summaryNestScrollView;
 
-        [BindView(Resource.Id.summaryRootView)]
-        CoordinatorLayout summaryRootView;
+        [BindView(Resource.Id.rootView)]
+        CoordinatorLayout rootView;
 
         [BindView(Resource.Id.shimmerFAQView)]
         ShimmerFrameLayout shimmerFAQView;
@@ -252,9 +252,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             base.OnAttach(context);
             try
             {
-                mCallBack = context as ISummaryFragmentToDashBoardActivtyListener;
                 FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Home");
-                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.AppLanchGradientBackground);
+                mCallBack = context as ISummaryFragmentToDashBoardActivtyListener;
             }
             catch (Java.Lang.ClassCastException e)
             {
@@ -423,6 +422,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     topRootView.RequestFocus();
                     ViewTreeObserver observer = summaryNestScrollView.ViewTreeObserver;
                     observer.AddOnGlobalLayoutListener(this);
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+
+                try
+                {
+                    ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.AppLanchGradientBackground);
                 }
                 catch (System.Exception e)
                 {
@@ -661,6 +669,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             EditText searchText = searchEditText.FindViewById<EditText>(searchEditText.Context.Resources.GetIdentifier("android:id/search_src_text", null, null));
             searchText.SetTextColor(Resources.GetColor(Resource.Color.white));
             searchText.SetHintTextColor(Resources.GetColor(Resource.Color.sixty_opacity_white));
+            searchText.SetTextSize(ComplexUnitType.Dip, 12f);
             TextViewUtils.SetMuseoSans500Typeface(searchText);
             searchText.SetPadding((int) DPUtils.ConvertDPToPx(34f), 0, 0, 0);
 
@@ -913,7 +922,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 msg = GetString(Resource.String.my_service_error);
             }
 
-            mMyServiceRetrySnakebar = Snackbar.Make(summaryRootView, msg, Snackbar.LengthIndefinite)
+            mMyServiceRetrySnakebar = Snackbar.Make(rootView, msg, Snackbar.LengthIndefinite)
             .SetAction(GetString(Resource.String.my_service_btn_retry), delegate
             {
 
@@ -1026,6 +1035,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     if (mCallBack != null)
                     {
                         mCallBack.NavigateToDashBoardFragment();
+                    }
+                    else
+                    {
+                        try
+                        {
+                            ((DashboardHomeActivity)Activity).NavigateToDashBoardFragment();
+                        }
+                        catch (System.Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
                     }
                 }
             }
@@ -1825,7 +1845,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     mLoadBillSnackBar.Dismiss();
                 }
 
-                mLoadBillSnackBar = Snackbar.Make(summaryRootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
+                mLoadBillSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
                 .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate
                 {
                     mLoadBillSnackBar.Dismiss();

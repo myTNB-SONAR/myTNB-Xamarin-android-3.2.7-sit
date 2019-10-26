@@ -239,8 +239,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             itemisedBillingInfoShimmer.StartShimmer();
 
             base.OnViewCreated(view, savedInstanceState);
-            ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
-            ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.bg_smr);
 
 
             TextViewUtils.SetMuseoSans500Typeface(accountSelection, itemisedBillingInfoNote,
@@ -249,6 +247,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             RenderUI();
 
             mPresenter.GetBillingHistoryDetails(mSelectedAccountData.AccountNum, mSelectedAccountData.IsOwner, (mSelectedAccountData.AccountCategoryId != "2") ? "UTIL" : "RE");
+
+            try
+            {
+                ((DashboardHomeActivity)Activity).SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
+                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.bg_smr);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public void RenderUI()
@@ -436,13 +444,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             btnPayBill.Enabled = isEnable;
             if (isEnable)
             {
-                btnViewDetails.SetTextColor(new Color(ContextCompat.GetColor(Context, Resource.Color.freshGreen)));
+                btnViewDetails.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.freshGreen)));
                 btnViewDetails.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_button_background);
                 btnPayBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.green_button_background);
             }
             else
             {
-                btnViewDetails.SetTextColor(new Color(ContextCompat.GetColor(Context, Resource.Color.silverChalice)));
+                btnViewDetails.SetTextColor(new Color(ContextCompat.GetColor(this.Activity, Resource.Color.silverChalice)));
                 btnViewDetails.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.light_button_background_disabled);
                 btnPayBill.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_background);
             }
