@@ -2583,6 +2583,7 @@
     </Compile>
     <Compile Include="Sitecore CMS\Model\Onboarding\OnboardingModel.cs" />
     <Compile Include="Onboarding\OnboardingConstants.cs" />
+    <Compile Include="Session Cache\PushNotificationCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
