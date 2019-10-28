@@ -575,12 +575,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         else
                         {
-                            txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
+                            txtRefreshMsg = GetLabelCommonByLanguage("refreshDescription");
                         }
                     }
                     catch (System.Exception e)
                     {
-                        txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
+                        txtRefreshMsg = GetLabelCommonByLanguage("refreshDescription");
                         Utility.LoggingNonFatalError(e);
                     }
                     try
@@ -591,12 +591,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         else
                         {
-                            txtBtnRefreshTitle = "Reload Now";
+                            txtBtnRefreshTitle = GetLabelCommonByLanguage("refreshNow");
                         }
                     }
                     catch (System.Exception e)
                     {
-                        txtBtnRefreshTitle = "Reload Now";
+                        txtBtnRefreshTitle = GetLabelCommonByLanguage("refreshNow");
                         Utility.LoggingNonFatalError(e);
                     }
                 }
@@ -626,12 +626,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         else
                         {
-                            txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
+                            txtRefreshMsg = GetLabelCommonByLanguage("refreshDescription");
                         }
                     }
                     catch (System.Exception e)
                     {
-                        txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
+                        txtRefreshMsg = GetLabelCommonByLanguage("refreshDescription");
                         Utility.LoggingNonFatalError(e);
                     }
                     try
@@ -642,12 +642,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         else
                         {
-                            txtBtnRefreshTitle = "Reload Now";
+                            txtBtnRefreshTitle = GetLabelCommonByLanguage("refreshNow");
                         }
                     }
                     catch (System.Exception e)
                     {
-                        txtBtnRefreshTitle = "Reload Now";
+                        txtBtnRefreshTitle = GetLabelCommonByLanguage("refreshNow");
                         Utility.LoggingNonFatalError(e);
                     }
                 }
@@ -665,8 +665,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 isUsageLoadedNeeded = true;
                 selectedHistoryData = null;
                 selectedSMHistoryData = null;
-                txtRefreshMsg = "Uh oh, looks like this page is unplugged. Reload to stay plugged in!";
-                txtBtnRefreshTitle = "Reload Now";
+                txtRefreshMsg = GetLabelCommonByLanguage("refreshDescription");
+                txtBtnRefreshTitle = GetLabelCommonByLanguage("refreshNow");
             }
 
             errorMSG = "";
