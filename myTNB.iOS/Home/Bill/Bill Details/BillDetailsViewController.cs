@@ -353,8 +353,15 @@ namespace myTNB
             string result = string.Empty;
             if (_charges.DueDate != null)
             {
-                result = DateTime.ParseExact(_charges.DueDate
+                try
+                {
+                    result = DateTime.ParseExact(_charges.DueDate
                    , BillConstants.Format_DateParse, CultureInfo.InvariantCulture).ToString(BillConstants.Format_Date);
+                }
+                catch (FormatException)
+                {
+                    Debug.WriteLine("Unable to parse '{0}'", _charges.DueDate);
+                }
             }
             UILabel lblDue = new UILabel(new CGRect(BaseMargin, lblStatus.Frame.GetMaxY(), BaseMarginedWidth / 2, GetScaledHeight(20)))
             {
