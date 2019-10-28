@@ -587,11 +587,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             StartActivity(viewReceipt);
         }
 
-        public override ViewGroup GetRootView()
-        {
-            return rootView;
-        }
-
         public void ShowUnavailableBillContent(bool isShowRefresh)
         {
             billingHistoryDetailsContent.Visibility = ViewStates.Gone;

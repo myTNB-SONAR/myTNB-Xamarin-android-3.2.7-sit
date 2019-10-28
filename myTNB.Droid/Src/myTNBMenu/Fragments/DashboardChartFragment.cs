@@ -63,7 +63,7 @@ using static myTNB_Android.Src.myTNBMenu.Models.GetInstallationDetailsResponse;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments
 {
-    public class DashboardChartFragment : BaseFragment, DashboardChartContract.IView, NMRESMDashboardScrollViewListener, ViewTreeObserver.IOnGlobalLayoutListener, MikePhil.Charting.Listener.IOnChartValueSelectedListenerSupport, View.IOnTouchListener
+    public class DashboardChartFragment : BaseFragmentCustom, DashboardChartContract.IView, NMRESMDashboardScrollViewListener, ViewTreeObserver.IOnGlobalLayoutListener, MikePhil.Charting.Listener.IOnChartValueSelectedListenerSupport, View.IOnTouchListener
     {
 
         [BindView(Resource.Id.totalPayableLayout)]
@@ -530,6 +530,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         ScaleGestureDetector mScaleDetector;
 
+        const string PAGE_ID = "Usage";
+
         public override int ResourceId()
         {
             return Resource.Layout.DashboardNewChartView;
@@ -822,9 +824,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         ssmrHistoryContainer.Visibility = ViewStates.Gone;
                         btnPay.Visibility = ViewStates.Gone;
                         energyTipsView.Visibility = ViewStates.Gone;
-                        btnViewBill.Text = GetString(Resource.String.dashboard_chart_view_payment_advice);
+                        btnViewBill.Text = GetLabelByLanguage("viewPaymentAdvice");
+                        reTotalPayableTitle.Text = GetLabelByLanguage("myEarnings");
+                        btnReView.Text = GetLabelByLanguage("viewPaymentAdvice");
                         // txtUsageHistory.Visibility = ViewStates.Gone;
-                        txtTotalPayableTitle.Text = GetString(Resource.String.title_payment_advice_amount);
+                        txtTotalPayableTitle.Text = GetLabelByLanguage("myEarnings");// GetString(Resource.String.title_payment_advice_amount);
                         graphToggleSelection.Visibility = ViewStates.Gone;
                         isChangeVirtualHeightNeed = true;
                         SetVirtualHeightParams(6f);
@@ -839,8 +843,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         SetVirtualHeightParams(6f);
                         isREAccount = false;
                         reContainer.Visibility = ViewStates.Gone;
+                        btnPay.Text = GetLabelByLanguage("pay");
                         btnPay.Visibility = ViewStates.Visible;
-                        btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
+                        btnViewBill.Text = GetLabelByLanguage("viewDetails");
                         graphToggleSelection.Visibility = ViewStates.Visible;
                         energyTipsView.Visibility = ViewStates.Visible;
                         scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
@@ -877,9 +882,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         isREAccount = false;
                         reContainer.Visibility = ViewStates.Gone;
+                        txtTotalPayableTitle.Text = GetLabelByLanguage("needToPay");
+                        btnPay.Text = GetLabelByLanguage("pay");
                         btnPay.Visibility = ViewStates.Visible;
                         layoutSMSegmentGroup.Visibility = ViewStates.Gone;
-                        btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
+                        btnViewBill.Text = GetLabelByLanguage("viewDetails"); //GetString(Resource.String.dashboard_chartview_view_bill);
                         graphToggleSelection.Visibility = ViewStates.Visible;
                         energyTipsView.Visibility = ViewStates.Visible;
                     }
@@ -1188,8 +1195,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
-                string textMessage = Activity.GetString(Resource.String.tooltip_sm_what_are_these_message);
-                string btnLabel = Activity.GetString(Resource.String.tooltip_btnLabel);
+                string textMessage = GetLabelByLanguage("projectedCostMsg");
+                string btnLabel = GetLabelByLanguage("gotIt");
 
                 if (selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.ToolTips != null && selectedSMHistoryData.ToolTips.Count > 0)
                 {
@@ -1537,12 +1544,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (!isToggleTariff)
                 {
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye);
-                    txtTarifToggle.Text = "Show Tariff";
+                    txtTarifToggle.Text = GetLabelByLanguage("showTariff");
                 }
                 else
                 {
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye_hide);
-                    txtTarifToggle.Text = "Hide Tariff";
+                    txtTarifToggle.Text = GetLabelByLanguage("hideTariff");
                 }
 
                 if (!isSMAccount)
@@ -1559,7 +1566,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 tarifToggle.Enabled = false;
                 OnGenerateTariffLegendValue(0, isToggleTariff);
                 imgTarifToggle.SetImageResource(Resource.Drawable.eye_disable);
-                txtTarifToggle.Text = "Show Tariff";
+                txtTarifToggle.Text = GetLabelByLanguage("showTariff");
                 txtTarifToggle.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
             }
 
@@ -4415,7 +4422,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (isToggleTariff)
                 {
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye);
-                    txtTarifToggle.Text = "Show Tariff";
+                    txtTarifToggle.Text = GetLabelByLanguage("showTariff");
                     isToggleTariff = false;
                     if (isChangeBackgroundNeeded)
                     {
@@ -4432,7 +4439,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 else
                 {
                     imgTarifToggle.SetImageResource(Resource.Drawable.eye_hide);
-                    txtTarifToggle.Text = "Hide Tariff";
+                    txtTarifToggle.Text = GetLabelByLanguage("hideTariff");
                     isToggleTariff = true;
                     if (isChangeBackgroundNeeded)
                     {
@@ -4743,7 +4750,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         ShowSMStatisticCard();
                         energyTipsView.Visibility = ViewStates.Gone;
 
-                        string defaultMessage = Activity.GetString(Resource.String.new_account_view);
+                        string defaultMessage = GetLabelByLanguage("emptyDataMsg");
 
                         if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                         {
@@ -4905,9 +4912,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextView btnGotIt = mDialog.FindViewById<TextView>(Resource.Id.txtBtnFirst);
                 txtMessage.MovementMethod = new ScrollingMovementMethod();
 
-                txtMessage.Text = "What does this mean?";
-                txtTitle.Text = "Your full usage for this particular day has not been retrieved yet. Check back in a while.";
-                btnGotIt.Text = "Got It!";
+                txtMessage.Text = GetLabelByLanguage("missedReadTitle");
+                txtTitle.Text = GetLabelByLanguage("missedReadMsg");
+                btnGotIt.Text = GetLabelByLanguage("SMOverlayBtnTxt");
 
 
                 foreach (SMUsageHistoryData.SmartMeterToolTips costValue in selectedSMHistoryData.ToolTips)
@@ -5390,8 +5397,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         }
                                         else
                                         {
-                                            txtDueDate.Text = "I will get by " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(newDate));
-                                            reDueDate.Text = "I will get by " + dateString;
+                                            txtDueDate.Text = GetLabelByLanguage("iWillGetBy") + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(newDate));
+                                            reDueDate.Text = GetLabelByLanguage("iWillGetBy") + dateString;
                                         }
                                     }
                                     else
@@ -5415,13 +5422,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             noPayableLayout.Visibility = ViewStates.Visible;
                                             if (System.Math.Abs(calAmt) < 0.0001)
                                             {
-                                                txtNoPayableTitle.Text = "I’ve cleared all bills";
+                                                txtNoPayableTitle.Text = GetLabelByLanguage("clearedAllBills");
                                                 txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
                                                 txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
                                             }
                                             else
                                             {
-                                                txtNoPayableTitle.Text = "I’ve paid extra";
+                                                txtNoPayableTitle.Text = GetLabelByLanguage("paidExtra");
                                                 txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
                                                 txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
                                             }
@@ -5430,9 +5437,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         }
                                         else
                                         {
+                                            txtNoPayableTitle.Text = GetLabelByLanguage("needToPay");
                                             totalPayableLayout.Visibility = ViewStates.Visible;
                                             noPayableLayout.Visibility = ViewStates.Gone;
-                                            txtDueDate.Text = "by " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(d));
+                                            txtDueDate.Text = GetLabelByLanguage("by") + " " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(d));
                                         }
                                     }
                                 }
@@ -5515,7 +5523,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                             totalPayableLayout.Visibility = ViewStates.Gone;
                                             noPayableLayout.Visibility = ViewStates.Visible;
                                             txtTotalPayable.Text = decimalFormat.Format(accountDueAmount.AmountDue);
-                                            txtNoPayableTitle.Text = "I’ve cleared all bills";
+                                            txtNoPayableTitle.Text = GetLabelByLanguage("clearedAllBills");
                                             txtNoPayable.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
                                             txtNoPayableCurrency.SetTextColor(Resources.GetColor(Resource.Color.charcoalGrey));
                                             txtNoPayable.Text = decimalFormat.Format(System.Math.Abs(accountDueAmount.AmountDue));
@@ -5715,10 +5723,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 if (!string.IsNullOrEmpty(accountStatusData.DisconnectionStatus) && accountStatusData.DisconnectionStatus.ToUpper() != Constants.ENERGY_DISCONNECTION_KEY)
                 {
                     energyDisconnectionButton.Visibility = ViewStates.Visible;
-                    string accountStatusMessage = accountStatusData?.AccountStatusMessage ?? "Your electricity is currently disconnected.";
-                    string whatDoesThisMeanLabel = accountStatusData?.AccountStatusModalTitle ?? "What does this mean?";
-                    string whatDoesThisToolTipMessage = accountStatusData?.AccountStatusModalMessage ?? "<strong>What does this mean?</strong><br/><br/>Your electricity has been disconnected and is unavailable. This was not caused by a power outage.<br/><br/>If you’ve made a payment, please give us some time for this to be reflected.";
-                    string whatDoesThisToolTipBtnLabel = accountStatusData?.AccountStatusModalBtnText ?? "Got It!";
+                    string accountStatusMessage = accountStatusData?.AccountStatusMessage ?? GetLabelCommonByLanguage("disconnectionMsg");
+                    string whatDoesThisMeanLabel = accountStatusData?.AccountStatusModalTitle ?? GetLabelByLanguage("missedReadTitle");
+                    string whatDoesThisToolTipMessage = accountStatusData?.AccountStatusModalMessage ?? GetLabelByLanguage("disconnectionMsg");
+                    string whatDoesThisToolTipBtnLabel = accountStatusData?.AccountStatusModalBtnText ?? GetLabelByLanguage("gotIt");
                     if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
                     {
                         txtEnergyDisconnection.TextFormatted = Html.FromHtml(accountStatusMessage, FromHtmlOptions.ModeLegacy);
@@ -6745,7 +6753,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         smStatisticPredictTitle.Text = "My bill may reach";
                         smStatisticPredictSubTitle.Text = "- -";
                         smStatisticPredict.Text = "- -";
-                        txtSmStatisticTooltip.Text = "What are these?";
+                        txtSmStatisticTooltip.Text = GetLabelByLanguage("projectedCostTitle");
                         if ((selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.CostData != null))
                         {
                             foreach (SMUsageHistoryData.Stats costValue in selectedSMHistoryData.OtherUsageMetrics.CostData)
@@ -7046,6 +7054,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private void SetDayViewMonthText(string str)
         {
             txtDayViewZoomInIndicator.Text = str;
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
 
         private class OnBarChartTouchLister : BarLineChartTouchListener

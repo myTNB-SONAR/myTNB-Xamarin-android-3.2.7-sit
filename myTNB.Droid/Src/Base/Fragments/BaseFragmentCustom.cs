@@ -420,24 +420,24 @@ namespace myTNB_Android.Src.Base.Fragments
             return scaledInPixel;
         }
 
-        public abstract ViewGroup GetRootView();
+        //public abstract ViewGroup GetRootView();
 
-        private Snackbar mGenericExceptionSnackbar;
-        public void ShowGenericExceptionSnackBar()
-        {
-            if (mGenericExceptionSnackbar != null && mGenericExceptionSnackbar.IsShown)
-            {
-                mGenericExceptionSnackbar.Dismiss();
-            }
+        //private Snackbar mGenericExceptionSnackbar;
+        //public void ShowGenericExceptionSnackBar()
+        //{
+        //    if (mGenericExceptionSnackbar != null && mGenericExceptionSnackbar.IsShown)
+        //    {
+        //        mGenericExceptionSnackbar.Dismiss();
+        //    }
 
-            mGenericExceptionSnackbar = Snackbar.Make(GetRootView(), "Something went wrong! Please try again later", Snackbar.LengthIndefinite)
-            .SetAction("Close", delegate
-            {
-                mGenericExceptionSnackbar.Dismiss();
-            }
-            );
-            mGenericExceptionSnackbar.Show();
-        }
+        //    mGenericExceptionSnackbar = Snackbar.Make(GetRootView(), "Something went wrong! Please try again later", Snackbar.LengthIndefinite)
+        //    .SetAction("Close", delegate
+        //    {
+        //        mGenericExceptionSnackbar.Dismiss();
+        //    }
+        //    );
+        //    mGenericExceptionSnackbar.Show();
+        //}
 
         public ISpanned GetFormattedText(string stringValue)
         {
