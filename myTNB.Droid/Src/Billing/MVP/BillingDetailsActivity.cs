@@ -165,6 +165,7 @@ namespace myTNB_Android.Src.Billing.MVP
             TextViewUtils.SetMuseoSans500Typeface(accountName, myBillDetailsLabel, accountChargeLabel, accountChargeValue, btnViewBill, btnPayBill,
                 accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel, accountPayAmountCurrency, accountMinChargeLabel);
             billingDetailsPresenter = new BillingDetailsPresenter(this);
+            myBillDetailsLabel.Text = GetLabelByLanguage("billDetails");
             accountBillThisMonthLabel.Text = GetLabelByLanguage("billThisMonth");
             accountMinChargeLabel.Text = GetLabelByLanguage("minimumChargeDescription");
             btnViewBill.Text = GetLabelCommonByLanguage("viewBill");
