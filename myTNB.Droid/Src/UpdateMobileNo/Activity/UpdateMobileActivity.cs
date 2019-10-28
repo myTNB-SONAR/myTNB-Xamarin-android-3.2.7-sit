@@ -25,7 +25,7 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
     [Activity(Label = "@string/update_mobile_activity_title"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.UpdateMobile")]
-    public class UpdateMobileActivity : BaseToolbarAppCompatActivity, UpdateMobileContract.IView
+    public class UpdateMobileActivity : BaseActivityCustom, UpdateMobileContract.IView
     {
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
@@ -53,6 +53,8 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
         private UserAuthenticationRequest loginRequest;
 
         private bool fromAppLaunch = false;
+
+        const string PAGE_ID = "UpdateMobileNumber";
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -91,6 +93,8 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
                 TextViewUtils.SetMuseoSans500Typeface(btnSave);
                 TextViewUtils.SetMuseoSans300Typeface(lblVerifyMobileNo);
 
+                lblVerifyMobileNo.Text = GetLabelByLanguage("details");
+                btnSave.Text = GetLabelCommonByLanguage("next");
                 progress = new MaterialDialog.Builder(this)
                     .Title(GetString(Resource.String.update_mobile_progress_title))
                     .Content(GetString(Resource.String.update_mobile_progress_content))
@@ -422,6 +426,11 @@ namespace myTNB_Android.Src.UpdateMobileNo.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

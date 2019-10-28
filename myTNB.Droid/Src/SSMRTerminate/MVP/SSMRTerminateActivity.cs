@@ -30,7 +30,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
     [Activity(Label = "Self Meter Reading"
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.SSMRMeterHistoryStyle")]
-    public class SSMRTerminateActivity : BaseToolbarAppCompatActivity, SSMRTerminateContract.IView, View.IOnTouchListener
+    public class SSMRTerminateActivity : BaseActivityCustom, SSMRTerminateContract.IView, View.IOnTouchListener
     {
         LoadingOverlay loadingOverlay;
 
@@ -120,6 +120,8 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
         public CAContactDetailsModel contactDetails;
 
+        const string PAGE_ID = "SSMRApplication";
+
         public override int ResourceId()
         {
             return Resource.Layout.SSMRDiscontinueApplicationLayout;
@@ -198,16 +200,17 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             TextViewUtils.SetMuseoSans500Typeface(btnDisconnectionSubmit, disconnectionTtile, disconnectionAccountTtile, contactDetailTtile, terminationReasonTitle);
             TextViewUtils.SetMuseoSans300Typeface(disconnectionAccountAddress, contactDetailConsent, txtTermsConditions, txtEmail, txtMobileNo, txtSelectReason, txtReason);
 
-            // SetStatusBarGradientBackground();
-            // SetToolbarGradientBackground();
+            terminationReasonTitle.Text = GetLabelByLanguage("terminateTitle");
+            txtInputLayoutReason.Hint = GetLabelByLanguage("selectReason");
+            txtInputLayoutTxtReason.Hint = GetLabelByLanguage("stateReason");
 
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
             {
-                txtTermsConditions.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_terms_conditions), FromHtmlOptions.ModeLegacy);
+                txtTermsConditions.TextFormatted = Html.FromHtml(GetLabelByLanguage("tncUnsubscribe"), FromHtmlOptions.ModeLegacy);
             }
             else
             {
-                txtTermsConditions.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_terms_conditions));
+                txtTermsConditions.TextFormatted = Html.FromHtml(GetLabelByLanguage("tncUnsubscribe"));
             }
 
             contactDetailConsent.Visibility = ViewStates.Gone;
@@ -270,14 +273,14 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         {
             if (SMR_ACTION == Constants.SMR_ENABLE_FLAG)
             {
-                disconnectionTtile.Text = "I am starting for:";
+                disconnectionTtile.Text = GetLabelByLanguage("applyingFor");
                 terminationReasonTitle.Visibility = ViewStates.Gone;
                 reasonDetailContainer.Visibility = ViewStates.Gone;
                 ShowContactDetails();
             }
             else
             {
-                disconnectionTtile.Text = "I am stopping for:";
+                disconnectionTtile.Text = GetLabelByLanguage("terminateFor");
                 terminationReasonTitle.Visibility = ViewStates.Visible;
                 reasonDetailContainer.Visibility = ViewStates.Visible;
 
@@ -748,5 +751,9 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             base.OnPause();
         }
 
+        public override string GetPageId()
+        {
+            return PAGE_ID;
+        }
     }
 }
