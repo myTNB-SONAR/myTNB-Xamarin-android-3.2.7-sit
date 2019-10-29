@@ -321,11 +321,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                             bool isHasREAccount = MyTNBAccountManagement.GetInstance().IsHasREAccountCount() > 0;
                             bool isHasMoreThanOneREAccount = MyTNBAccountManagement.GetInstance().IsHasREAccountCount() > 1;
 
-                            string newStringValue = "View My<br/>e-Bill";
+                            string newStringValue = "View My<br/>Bill";
 
                             if (isHasNonREAccount && isHasREAccount)
                             {
-                                newStringValue = "View My<br/>e-Bills / Advices";
+                                newStringValue = "View My<br/>Bills / Advices";
                             }
                             else if (isHasREAccount && !isHasNonREAccount)
                             {
