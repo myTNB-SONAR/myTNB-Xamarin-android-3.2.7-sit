@@ -60,6 +60,7 @@ namespace myTNB
             };
 
             AddSubviews(new UIView[] { lblName, imgLeaf, lblAccountNumber, viewCTA, viewLine });
+            SelectionStyle = UITableViewCellSelectionStyle.None;
         }
     }
 }

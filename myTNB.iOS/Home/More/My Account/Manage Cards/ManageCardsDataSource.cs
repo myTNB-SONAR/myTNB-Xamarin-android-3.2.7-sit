@@ -10,10 +10,9 @@ namespace myTNB.Home.More.MyAccount.ManageCards
 {
     public class ManageCardsDataSource : UITableViewSource
     {
-        ManageCardViewController _controller;
-        List<RegisteredCardsDataModel> _registeredCards = new List<RegisteredCardsDataModel>();
-
-        Dictionary<string, int[]> cardFormatPattern = new Dictionary<string, int[]>
+        private ManageCardViewController _controller;
+        private List<RegisteredCardsDataModel> _registeredCards = new List<RegisteredCardsDataModel>();
+        private Dictionary<string, int[]> cardFormatPattern = new Dictionary<string, int[]>
         {
             {"V", new int[] { 4, 4, 4, 4 }},
             {"M", new int[] { 4, 4, 4, 4 }},
@@ -24,9 +23,10 @@ namespace myTNB.Home.More.MyAccount.ManageCards
         public ManageCardsDataSource(ManageCardViewController controller)
         {
             _controller = controller;
-            if(DataManager.DataManager.SharedInstance.RegisteredCards != null
+            if (DataManager.DataManager.SharedInstance.RegisteredCards != null
                && DataManager.DataManager.SharedInstance.RegisteredCards.d != null
-               && DataManager.DataManager.SharedInstance.RegisteredCards.d.data != null){
+               && DataManager.DataManager.SharedInstance.RegisteredCards.d.data != null)
+            {
                 _registeredCards = DataManager.DataManager.SharedInstance.RegisteredCards.d.data;
             }
         }
@@ -48,7 +48,7 @@ namespace myTNB.Home.More.MyAccount.ManageCards
             string cardType = _registeredCards[indexPath.Row].CardType;
             string formattedCardNo = FormatCard(maskedCardNo, cardType);
 
-            var cell = tableView.DequeueReusableCell("ManageCardViewCell", indexPath) as ManageCardViewCell;
+            ManageCardViewCell cell = tableView.DequeueReusableCell("ManageCardViewCell", indexPath) as ManageCardViewCell;
             cell.Frame = new CGRect(cell.Frame.X, cell.Frame.Y, tableView.Frame.Width, 58);
             cell.lblCardNo.Text = formattedCardNo;
             cell.imgViewCC.Image = UIImage.FromBundle(GetCardIcon(cardType));
@@ -66,7 +66,7 @@ namespace myTNB.Home.More.MyAccount.ManageCards
             _controller.HandleDeleteCardEvent(indexPath.Row);
         }
 
-        internal string GetCardIcon(string cardType)
+        private string GetCardIcon(string cardType)
         {
             string cardIcon = string.Empty;
             switch (cardType)
@@ -96,14 +96,15 @@ namespace myTNB.Home.More.MyAccount.ManageCards
                         cardIcon = string.Empty;
                         break;
                     }
-            };
+            }
             return cardIcon;
         }
 
-        internal string FormatCard(string cardNo, string cardType)
+        private string FormatCard(string cardNo, string cardType)
         {
             Debug.WriteLine("cardType: " + cardType);
-            if(string.IsNullOrEmpty(cardType)){
+            if (string.IsNullOrEmpty(cardType))
+            {
                 return cardNo;
             }
             int[] format = cardFormatPattern[cardType];
@@ -111,7 +112,7 @@ namespace myTNB.Home.More.MyAccount.ManageCards
             int length = 0;
             string result = string.Empty;
 
-            string cardNoHolder = cardNo.Replace(" ", "");
+            string cardNoHolder = cardNo.Replace(" ", string.Empty);
             for (int i = 0; i < format.Length && cardNoHolder.Length != 0; i++)
             {
                 length = format[i];

@@ -495,9 +495,6 @@
     <ImageAsset Include="Assets.xcassets\Direction.imageset\ic_button_direction%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Empty.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\icEmptyCreditcards.png" />
-    <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\icEmptyCreditcards%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\icEmptyCreditcards%403x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Feedback.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IC-Feedback.imageset\icFieldText.png" />
     <ImageAsset Include="Assets.xcassets\IC-Feedback.imageset\icFieldText%402x.png" />
@@ -1264,6 +1261,8 @@
     <ImageAsset Include="Assets.xcassets\RE-Leaf-Large.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\RE-Leaf-Large.imageset\RE-Leaf-Large%402x.png" />
     <ImageAsset Include="Assets.xcassets\RE-Leaf-Large.imageset\RE-Leaf-Large%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\noCard%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\noCard%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />

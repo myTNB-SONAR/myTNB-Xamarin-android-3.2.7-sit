@@ -95,8 +95,7 @@ namespace myTNB.Home.More.MyAccount
                 cell.lblDetail.TextColor = MyTNBColor.SilverChalice;
 
                 SQLite.SQLiteDataManager.UserEntity userInfo = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
-                                          ? DataManager.DataManager.SharedInstance.UserEntity[0]
-                                          : new SQLite.SQLiteDataManager.UserEntity();
+                    ? DataManager.DataManager.SharedInstance.UserEntity[0] : new SQLite.SQLiteDataManager.UserEntity();
                 if (indexPath.Row == 0)
                 {
                     cell.lblDetail.Text = userInfo?.displayName;
@@ -122,7 +121,7 @@ namespace myTNB.Home.More.MyAccount
                     cell.lblDetail.TextColor = MyTNBColor.TunaGrey();
                     cell.lblCTA.Text = GetCommonI18NValue(Constants.Common_Update);
                     cell.viewCTA.Hidden = false;
-                    cell.viewCTA.AddGestureRecognizer(new UITapGestureRecognizer(_controller.UpdateMobileNumber));
+                    cell.AddGestureRecognizer(new UITapGestureRecognizer(_controller.UpdateMobileNumber));
                 }
                 else if (indexPath.Row == 4)
                 {
@@ -130,7 +129,7 @@ namespace myTNB.Home.More.MyAccount
                     cell.lblDetail.TextColor = MyTNBColor.TunaGrey();
                     cell.lblCTA.Text = GetCommonI18NValue(Constants.Common_Update);
                     cell.viewCTA.Hidden = false;
-                    cell.viewCTA.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                    cell.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                     {
                         _controller.UpdatePassword();
                     }));
@@ -147,18 +146,17 @@ namespace myTNB.Home.More.MyAccount
                     });
                     if (cardCount > 0)
                     {
-                        cell.viewCTA.AddGestureRecognizer(manageCards);
+                        cell.AddGestureRecognizer(manageCards);
                     }
                     else
                     {
-                        cell.viewCTA.AddGestureRecognizer(new UITapGestureRecognizer(() => { }));
+                        cell.AddGestureRecognizer(new UITapGestureRecognizer(() => { }));
                     }
                     cell.lblCTA.TextColor = cardCount > 0
                         ? MyTNBColor.PowerBlue : MyTNBColor.SilverChalice;
                     cell.viewCTA.Hidden = false;
                 }
                 cell.viewLine.Hidden = !(indexPath.Row < detailCount - 1);
-                cell.SelectionStyle = UITableViewCellSelectionStyle.None;
                 return cell;
             }
             else if (indexPath.Section == 1)
@@ -169,7 +167,6 @@ namespace myTNB.Home.More.MyAccount
                 cell.lblAccountNumber.Text = GetAccountModel(indexPath.Row).accNum;
                 //cell.lblUsers.Text = "2 Users";
                 cell.lblCTA.Text = GetCommonI18NValue(Constants.Common_Manage);
-                cell.SelectionStyle = UITableViewCellSelectionStyle.None;
 
                 nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
                 CGSize newLabelSize = GetLabelSize(cell.lblName, cellWidth - 110, 18);

@@ -7,6 +7,7 @@
         public static string Pagename_UpdatePassword = "UpdatePassword";
         public static string Pagename_UpdateNickname = "UpdateNickname";
         public static string Pagename_ManageAccount = "ManageAccount";
+        public static string Pagename_ManageCards = "ManageCards";
 
         //I18N
         public static string I18N_Title = "title";
@@ -32,6 +33,12 @@
         public static string I18N_NicknameUpdateSuccess = "nicknameUpdateSuccess";
         public static string I18N_RemoveAccount = "removeAccount";
 
+        public static string I18N_NoCards = "noCards";
+        public static string I18N_CardRemoveSuccess = "cardRemoveSuccess";
+        public static string I18N_RemoveCardMessage = "removeCardMessage";
+        public static string I18N_RemoveCardTitle = "removeCardTitle";
+        public static string I18N_CardNotRemovedMessage = "cardNotRemovedMessage";
+
         public static string Popup_RemoveAccountTitle = "popupremoveAccountTitle";
         public static string Popup_RemoveAccountMessage = "popupremoveAccountMessage";
 
@@ -39,6 +46,7 @@
         public static string Service_UpdateNickname = "UpdateLinkedAccountNickName";
         public static string Service_ChangePassword = "ChangeNewPassword";
         public static string Service_RemoveAccount = "RemoveTNBAccountForUserFav";
+        public static string Service_RemoveRegisteredCard = "RemoveRegisteredCard";
 
         //Table View Cell
         public static string Cell_Details = "DetailsViewCell";
