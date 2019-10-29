@@ -68,8 +68,9 @@ namespace myTNB.SitecoreCMS.Extensions
             return mediaId;
         }
 
-        public static string GetImageUrlFromMediaField(this ISitecoreItem item, string mediafieldName, string websiteUrl = null)
+        public static string GetImageUrlFromMediaField(this ISitecoreItem item, string imgSize, string websiteUrl = null)
         {
+            string mediafieldName = GetImageFieldName(imgSize);
             XElement xmlElement = GetXElement(item, mediafieldName);
 
             if (xmlElement == null)
@@ -294,6 +295,19 @@ namespace myTNB.SitecoreCMS.Extensions
                 return null;
 
             return XElement.Parse(fieldValue);
+        }
+
+        public static string GetImageFieldName(string imgSize)
+        {
+            switch (imgSize)
+            {
+                case "2x":
+                    return Constants.Sitecore.Fields.ImageName.Image2X;
+                case "3x":
+                    return Constants.Sitecore.Fields.ImageName.Image3X;
+                default:
+                    return Constants.Sitecore.Fields.ImageName.Image;
+            }
         }
     }
 }

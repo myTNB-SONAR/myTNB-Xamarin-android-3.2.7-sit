@@ -112,6 +112,13 @@
                     public const string EndDateTime = "EndDateTime";
                     public const string ShowForSeconds = "ShowForSeconds";
                 }
+
+                public struct ImageName
+                {
+                    public const string Image = "Image";
+                    public const string Image2X = "image_2x";
+                    public const string Image3X = "image_3x";
+                }
             }
 
             public struct ItemID

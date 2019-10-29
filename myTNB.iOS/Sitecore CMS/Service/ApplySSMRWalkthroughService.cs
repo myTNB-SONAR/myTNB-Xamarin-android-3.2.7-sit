@@ -61,7 +61,7 @@ namespace myTNB.SitecoreCMS.Service
                     {
                         Title = item.GetValueFromField(Constants.Sitecore.Fields.ApplySSMRWalkthrough.Title),
                         Description = item.GetValueFromField(Constants.Sitecore.Fields.ApplySSMRWalkthrough.Description),
-                        Image = item.GetImageUrlFromItemWithSize(Constants.Sitecore.Fields.ApplySSMRWalkthrough.Image, _os, _imgSize, _websiteURL, _language).Replace(" ", "%20"),
+                        Image = item.GetImageUrlFromMediaField(_imgSize, _websiteURL),//item.GetImageUrlFromItemWithSize(Constants.Sitecore.Fields.ApplySSMRWalkthrough.Image, _os, _imgSize, _websiteURL, _language).Replace(" ", "%20"),
                         ID = item.Id
                     });
                 }
