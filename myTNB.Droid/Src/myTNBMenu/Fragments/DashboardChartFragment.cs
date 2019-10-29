@@ -34,6 +34,7 @@ using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Fragments;
+using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.FAQ.Activity;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
@@ -45,6 +46,7 @@ using myTNB_Android.Src.myTNBMenu.Charts.SelectedMarkerView;
 using myTNB_Android.Src.myTNBMenu.Listener;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
+using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.Notifications.Activity;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
@@ -7046,6 +7048,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private void SetDayViewMonthText(string str)
         {
             txtDayViewZoomInIndicator.Text = str;
+        }
+
+        public void ShowBillDetails(AccountData accountData, List<AccountChargeModel> selectedAccountChargesModelList)
+        {
+            Intent intent = new Intent(Activity, typeof(BillingDetailsActivity));
+            intent.PutExtra("SELECTED_ACCOUNT", JsonConvert.SerializeObject(accountData));
+            intent.PutExtra("SELECTED_BILL_DETAILS", JsonConvert.SerializeObject(selectedAccountChargesModelList[0]));
+            StartActivity(intent);
         }
 
         private class OnBarChartTouchLister : BarLineChartTouchListener

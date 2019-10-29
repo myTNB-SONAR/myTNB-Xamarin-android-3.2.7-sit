@@ -2,11 +2,17 @@
 using Android.Util;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.myTNBMenu.Requests;
+using myTNB_Android.Src.MyTNBService.Billing;
+using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.MyTNBService.Parser;
+using myTNB_Android.Src.MyTNBService.Request;
+using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.SSMR.SMRApplication.MVP;
 using myTNB_Android.Src.Utils;
 using Newtonsoft.Json;
@@ -18,6 +24,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using static myTNB_Android.Src.MyTNBService.Response.AccountChargesResponse;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -25,6 +32,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
     {
         private DashboardChartContract.IView mView;
         CancellationTokenSource cts;
+        BillingApiImpl billingApi;
 
         private bool isBillAvailable = true;
 
@@ -32,6 +40,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
         {
             this.mView = mView;
             this.mView.SetPresenter(this);
+            billingApi = new BillingApiImpl();
         }
 
         public void OnByDay()
@@ -591,9 +600,54 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         public void OnViewBill(AccountData selectedAccount)
         {
-            LoadingBillsHistory(selectedAccount);
+            //LoadingBillsHistory(selectedAccount);
+            ShowBillDetails(selectedAccount);
         }
 
+        private async void ShowBillDetails(AccountData selectedAccount)
+        {
+            try
+            {
+                this.mView.ShowProgress();
+                List<string> accountList = new List<string>();
+                accountList.Add(selectedAccount.AccountNum);
+                List<AccountChargeModel> accountChargeModelList = new List<AccountChargeModel>();
+                AccountsChargesRequest accountChargeseRequest = new AccountsChargesRequest(
+                    accountList,
+                    selectedAccount.IsOwner
+                    );
+                AccountChargesResponse accountChargeseResponse = await billingApi.GetAccountsCharges<AccountChargesResponse>(accountChargeseRequest);
+                this.mView.HideProgress();
+                if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "7200")
+                {
+                    accountChargeModelList = BillingResponseParser.GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges);
+                    MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
+                    this.mView.ShowBillDetails(selectedAccount, accountChargeModelList);
+                }
+                else
+                {
+                    this.mView.ShowLoadBillRetryOptions();
+                }
+            }
+            catch (System.OperationCanceledException e)
+            {
+                this.mView.HideProgress();
+                this.mView.ShowLoadBillRetryOptions();
+                Utility.LoggingNonFatalError(e);
+            }
+            catch (ApiException apiException)
+            {
+                this.mView.HideProgress();
+                this.mView.ShowLoadBillRetryOptions();
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception e)
+            {
+                this.mView.HideProgress();
+                this.mView.ShowLoadBillRetryOptions();
+                Utility.LoggingNonFatalError(e);
+            }
+        }
 
         private async void LoadingBillsHistory(AccountData selectedAccount)
         {
