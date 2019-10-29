@@ -193,6 +193,15 @@ namespace myTNB
             }
         }
 
+        public bool HasSmartMeterAccounts
+        {
+            get
+            {
+                var result = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindAll(x => !x.IsREAccount && !x.IsNormalMeter);
+                return result?.Count > 0;
+            }
+        }
+
         public bool IsEmptyAccount
         {
             get

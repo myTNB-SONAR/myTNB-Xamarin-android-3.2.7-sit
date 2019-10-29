@@ -58,7 +58,7 @@ namespace myTNB
             NavigationItem.LeftBarButtonItem = btnBack;
         }
 
-        public void ShowBillScreen(int index)
+        public void ShowBillScreen()
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -72,7 +72,6 @@ namespace myTNB
                         if (viewController != null)
                         {
                             viewController.IsFromHome = true;
-                            viewController.selectedIndex = index;
                             NavigationController.PushViewController(viewController, true);
                         }
                     }
