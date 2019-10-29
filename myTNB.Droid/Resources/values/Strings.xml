@@ -415,8 +415,8 @@ You acknowledge that you have been provided with and have read and understood th
   <string name="where_is_my_account_no">Where is my account no. ?</string>
   <string name="where_is_my_account_no_text">Your 12 digit account no. can be found on the top left corner of your monthly paper bill.</string>
   <string name="add_electricity_account_title">Add Electricity Account</string>
-  <string name="no_account_found">No accounts found! Please add an account</string>
-  <string name="account_nickname_info">Please tap on the button below...</string>
+  <string name="no_account_found">No accounts found!</string>
+  <string name="account_nickname_info">Please tap on the button below to add your TNB electricity account.</string>
   <!-- End of Add Account Form-->
 
   <!-- Barcode -->
@@ -1473,4 +1473,15 @@ Please try again later.]]>
 <string name="smr_contact_not_available_btn">Got It!</string>
 
 <string name="smr_manual_reading_title">Please enter your meter reading for the unit(s) below.</string>
+
+<string name="walkthrough_install_title_1">Welcome to myTNB!</string>
+<string name="walkthrough_install_title_2">Bills at Your Fingertips.</string>
+<string name="walkthrough_install_title_3">Pay Your Bills Anytime, Anywhere.</string>
+<string name="walkthrough_install_msg_1">Track, monitor and stay on top of your electricity usage!</string>
+<string name="walkthrough_install_msg_2">Have easy access to the PDF version of your bills for the past 6 months, all in one place!</string>
+<string name="walkthrough_install_msg_3">Pay your electricity bills while at home, on holiday, on the train – whenever you want to. Say goodbye to late charges and queuing up!</string>
+<string name="walkthrough_update_title_1">Enhanced View for Better Experiences.</string>
+<string name="walkthrough_update_msg_1">We’ve revamped the Home, Bills and Usage screens! It’s not just prettier, it’s way more helpful with more details (including block tariffs so you can stay informed on all things usage-related).</string>
+<string name="walkthrough_btn_done">Let\'s get started!</string>
+<string name="walkthrough_btn_skip">Skip</string>
 </resources>

@@ -6,6 +6,7 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Runtime;
 using Android.Views;
@@ -21,7 +22,9 @@ using Newtonsoft.Json;
 
 namespace myTNB_Android.Src.SSMRTerminate.MVP
 {
-    [Activity(Label = "TerminateSMRAccountFailedActivity", Theme = "@style/Theme.BillRelated")]
+    [Activity(Label = "TerminateSMRAccountFailedActivity",
+        ScreenOrientation = ScreenOrientation.Portrait,
+        Theme = "@style/Theme.BillRelated")]
     public class TerminateSMRAccountFailedActivity : BaseAppCompatActivity
     {
         [BindView(Resource.Id.txtTitleInfoError)]

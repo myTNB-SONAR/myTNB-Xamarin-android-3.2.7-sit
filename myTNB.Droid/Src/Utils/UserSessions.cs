@@ -92,6 +92,18 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
+        public static System.Boolean HasUpdateSkipped(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasUpdateSkipped", false);
+        }
+
+        public static void DoUpdateSkipped(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasUpdateSkipped", true);
+            editor.Apply();
+        }
+
         internal static void DoFlagResetPassword(ISharedPreferences mSharedPref)
         {
             ISharedPreferencesEditor editor = mSharedPref.Edit();

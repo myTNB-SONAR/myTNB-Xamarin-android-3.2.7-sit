@@ -37,6 +37,8 @@ using myTNB.SitecoreCMS.Model;
 using System.Threading;
 using System.Globalization;
 using Android.Graphics.Drawables;
+using myTNB_Android.Src.NewWalkthrough.MVP;
+using myTNB_Android.Src.Base;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -130,7 +132,9 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
                 {
                     isAppLaunchDone = true;
-                    userActionsListener.GetSavedTimeStamp();
+                    Intent WalkthroughIntent = new Intent(this, typeof(NewWalkthroughActivity));
+                    WalkthroughIntent.PutExtra(Constants.APP_NAVIGATION_KEY, AppLaunchNavigation.Walkthrough.ToString());
+                    StartActivity(WalkthroughIntent);
                 }
             }
             catch (Exception e)
@@ -208,9 +212,18 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
             {
                 isAppLaunchDone = true;
-                Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
-                DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                StartActivity(DashboardIntent);
+                if (UserSessions.HasUpdateSkipped(PreferenceManager.GetDefaultSharedPreferences(this)))
+                {
+                    Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+                    DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                    StartActivity(DashboardIntent);
+                }
+                else
+                {
+                    Intent WalkthroughIntent = new Intent(this, typeof(NewWalkthroughActivity));
+                    WalkthroughIntent.PutExtra(Constants.APP_NAVIGATION_KEY, AppLaunchNavigation.Dashboard.ToString());
+                    StartActivity(WalkthroughIntent);
+                }
             }
         }
 
@@ -219,9 +232,18 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
             {
                 isAppLaunchDone = true;
-                Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
-                PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                StartActivity(PreLoginIntent);
+                if (UserSessions.HasUpdateSkipped(PreferenceManager.GetDefaultSharedPreferences(this)))
+                {
+                    Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
+                    PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                    StartActivity(PreLoginIntent);
+                }
+                else
+                {
+                    Intent WalkthroughIntent = new Intent(this, typeof(NewWalkthroughActivity));
+                    WalkthroughIntent.PutExtra(Constants.APP_NAVIGATION_KEY, AppLaunchNavigation.PreLogin.ToString());
+                    StartActivity(WalkthroughIntent);
+                }
             }
         }
 
@@ -634,9 +656,19 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
                 {
                     isAppLaunchDone = true;
-                    ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
-                    Intent logout = new Intent(this, typeof(LoginActivity));
-                    StartActivity(logout);
+                    if (UserSessions.HasUpdateSkipped(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    {
+                        ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
+                        Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
+                        PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                        StartActivity(PreLoginIntent);
+                    }
+                    else
+                    {
+                        Intent WalkthroughIntent = new Intent(this, typeof(NewWalkthroughActivity));
+                        WalkthroughIntent.PutExtra(Constants.APP_NAVIGATION_KEY, AppLaunchNavigation.Logout.ToString());
+                        StartActivity(WalkthroughIntent);
+                    }
                 }
             }
             catch (Exception e)
