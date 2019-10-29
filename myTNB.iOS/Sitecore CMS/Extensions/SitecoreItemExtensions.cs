@@ -83,9 +83,9 @@ namespace myTNB.SitecoreCMS.Extensions
             Guid id = Guid.Parse(mediaId);
 
             if (string.IsNullOrWhiteSpace(websiteUrl))
-                return String.Format("-/media/{0}.ashx", id.ToString("N"));
+                return String.Format("-/media/{0}.ashx", id.ToString("N")).Replace(" ", "%20");
 
-            return String.Format("{0}/-/media/{1}.ashx", websiteUrl, id.ToString("N"));
+            return String.Format("{0}/-/media/{1}.ashx", websiteUrl, id.ToString("N")).Replace(" ", "%20");
         }
 
         public static string GetImageUrlFromMediaId(this string mediaId, string websiteUrl = null)
@@ -302,9 +302,19 @@ namespace myTNB.SitecoreCMS.Extensions
             switch (imgSize)
             {
                 case "2x":
-                    return Constants.Sitecore.Fields.ImageName.Image2X;
+                    return Constants.Sitecore.Fields.ImageName.Image_2X;
                 case "3x":
-                    return Constants.Sitecore.Fields.ImageName.Image3X;
+                    return Constants.Sitecore.Fields.ImageName.Image_3X;
+                case "hdpi":
+                    return Constants.Sitecore.Fields.ImageName.Image_HDPI;
+                case "mdpi":
+                    return Constants.Sitecore.Fields.ImageName.Image_MDPI;
+                case "xhdpi":
+                    return Constants.Sitecore.Fields.ImageName.Image_XHDPI;
+                case "xxhdpi":
+                    return Constants.Sitecore.Fields.ImageName.Image_XXHDPI;
+                case "xxxhdpi":
+                    return Constants.Sitecore.Fields.ImageName.Image_XXXHDPI;
                 default:
                     return Constants.Sitecore.Fields.ImageName.Image;
             }
