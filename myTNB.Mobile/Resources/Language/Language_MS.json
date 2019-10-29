@@ -67,7 +67,7 @@
     "manage": "Uruskan",
     "update": "Kemas kini",
     "logout": "Log Keluar",
-    "idNumber": "IC / ROC / Passport No.", //missing
+    "idNumber": "Nombor KP / ROC / Pasport",
     "password": "Kata Laluan",
     "mobileNo": "No. Mudah Alih",
     "email": "Emel",
@@ -310,7 +310,7 @@
     "pay": "Bayar",
     "mdmsUnavailable": "Currently Unavailable",
     "mdmsUnavailableMsg": "Your daily usage information is currently unavailable. Check back in a while!",
-    "beenPaidExtra": "I’ve been paid extra"
+    "beenPaidExtra": "Saya telah dibayar lebih"
   },
   "Bills": {
     "navTitle": "Bil",
@@ -322,7 +322,7 @@
     "getBy": "dapat pada",
     "myEarnings": "Pendapatan saya",
     "myHistory": "Sejarah Saya",
-    "beenPaidExtra": "I’ve been paid extra", //missing
+    "beenPaidExtra": "Saya telah dibayar lebih",
     "noHistoryData": "Nampaknya anda belum lagi mempunyai bil! Setelah ada, bil dan sejarah pembayaran anda akan dipaparkan di sini.",
     "bcrmDownMessage": "Nampaknya skrin ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
     "pay": "Bayar"
