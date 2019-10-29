@@ -173,24 +173,21 @@ namespace myTNB
         internal void OpenDirections(AnnotationModel annotation)
         {
             Dictionary<string, string> schemaDictionary = new Dictionary<string, string>();
-            string appleMapsSchema = string.Format("maps://?saddr=&daddr={0},{1}&directionsmode=driving"
-                                                   , annotation.Coordinate.Latitude
-                                                   , annotation.Coordinate.Longitude);
-            string googleMapsSchema = string.Format("comgooglemaps://?saddr=&daddr={0},{1}&directionsmode=driving"
-                                                   , annotation.Coordinate.Latitude
-                                                   , annotation.Coordinate.Longitude);
-            string wazeSchema = string.Format("waze://?ll={0},{1}&navigate=yes"
-                                                   , annotation.Coordinate.Latitude
-                                                   , annotation.Coordinate.Longitude);
-            if (UIApplication.SharedApplication.CanOpenUrl(new NSUrl("maps://")))
+            string appleMapsSchema = string.Format(FindUsConstants.Schema_Apple
+                , annotation.Coordinate.Latitude, annotation.Coordinate.Longitude);
+            string googleMapsSchema = string.Format(FindUsConstants.Schema_Google
+                , annotation.Coordinate.Latitude, annotation.Coordinate.Longitude);
+            string wazeSchema = string.Format(FindUsConstants.Schema_Waze
+                , annotation.Coordinate.Latitude, annotation.Coordinate.Longitude);
+            if (UIApplication.SharedApplication.CanOpenUrl(new NSUrl(FindUsConstants.URL_Apple)))
             {
                 schemaDictionary.Add("Maps", appleMapsSchema);
             }
-            if (UIApplication.SharedApplication.CanOpenUrl(new NSUrl("comgooglemaps://")))
+            if (UIApplication.SharedApplication.CanOpenUrl(new NSUrl(FindUsConstants.URL_Google)))
             {
                 schemaDictionary.Add("Google Maps", googleMapsSchema);
             }
-            if (UIApplication.SharedApplication.CanOpenUrl(new NSUrl("waze://")))
+            if (UIApplication.SharedApplication.CanOpenUrl(new NSUrl(FindUsConstants.URL_Waze)))
             {
                 schemaDictionary.Add("Waze", wazeSchema);
             }

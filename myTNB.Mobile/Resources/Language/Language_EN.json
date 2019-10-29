@@ -469,13 +469,15 @@
   },
   "LocationDetails": {
     "address": "ADDRESS",
-    "phone": "PHONE",
+    "phone": "Phone",
     "openingHours": "OPENING HOURS",
     "services": "SERVICES",
     "mapSelection": "Map Selection",
     "selectApplication": "Select navigation application",
     "openIn": "Open in",
-    "noSupportedApp": "No supported map application is installed"
+    "noSupportedApp": "No supported map application is installed",
+    "serviceDescription": "•\tPayment of electricity bills and other utility bills",
+    "operationHours": "Open 24 Hours"
   },
   "MyAccount": {
     "title": "My Account",
@@ -497,7 +499,7 @@
     "quickAccess": "Quick Actions",
     "findUs": "Find Us",
     "callUs": "Call Us",
-    "feedback": "Submit Feedback"
+    "feedback": "Give Us Feedback"
   },
   "Login": {
     "title": "myTNB Account Login",

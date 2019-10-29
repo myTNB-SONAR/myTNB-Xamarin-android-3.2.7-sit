@@ -31,7 +31,7 @@ namespace myTNB.Home.More.FindUs.LocationDetails
             _dataDictionary.Add("ADDRESS", _annotation.Subtitle);
             if (_annotation.is7E)
             {
-                _dataDictionary.Add("FindUs_Phone".Translate(), _annotation.ConvinientStoreItem.PhoneNumber);
+                _dataDictionary.Add(GetI18NValue(FindUsConstants.I18N_Phone).ToUpper(), _annotation.ConvinientStoreItem.PhoneNumber);
             }
             else
             {
@@ -41,12 +41,12 @@ namespace myTNB.Home.More.FindUs.LocationDetails
                     foreach (Model.PhoneModel item in _annotation.KTItem.Phones)
                     {
                         phoneCount++;
-                        _dataDictionary.Add(string.Format("{0} {1}", "FindUs_Phone".Translate(), phoneCount), item.PhoneNumber);
+                        _dataDictionary.Add(string.Format("{0} {1}", GetI18NValue(FindUsConstants.I18N_Phone).ToUpper(), phoneCount), item.PhoneNumber);
                     }
                 }
                 else
                 {
-                    _dataDictionary.Add("FindUs_Phone".Translate(), _annotation.KTItem.Phones[0].PhoneNumber);
+                    _dataDictionary.Add(GetI18NValue(FindUsConstants.I18N_Phone).ToUpper(), _annotation.KTItem.Phones[0].PhoneNumber);
                 }
 
             }
@@ -97,11 +97,11 @@ namespace myTNB.Home.More.FindUs.LocationDetails
                     , cell.viewDirections.Frame.Height);
                 return cell;
             }
-            else if (key.ToLower().Contains("FindUs_Phone".Translate().ToLower()))
+            else if (key.ToLower().Contains(GetI18NValue(FindUsConstants.I18N_Phone).ToLower()))
             {
                 ContactUsViewCell cell = tableView.DequeueReusableCell("ContactUsViewCell", indexPath) as ContactUsViewCell;
                 cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-                cell.lblTitle.Text = GetI18NValue(FindUsConstants.I18N_Phone);
+                cell.lblTitle.Text = GetI18NValue(FindUsConstants.I18N_Phone).ToUpper();
                 string number = string.Empty;
                 if (!_annotation.is7E)
                 {
@@ -132,7 +132,7 @@ namespace myTNB.Home.More.FindUs.LocationDetails
                 cell.lblTitle.Text = GetI18NValue(FindUsConstants.I18N_OpeningHours);
                 if (_annotation.is7E)
                 {
-                    cell.lbl7EOperation.Text = "FindUs_Open24Hours".Translate();
+                    cell.lbl7EOperation.Text = GetI18NValue(FindUsConstants.I18N_OperationHours);
                 }
                 else
                 {
@@ -205,7 +205,7 @@ namespace myTNB.Home.More.FindUs.LocationDetails
                 string services = string.Empty;
                 if (_annotation.is7E)
                 {
-                    services += "FindUs_ServicesDescription".Translate();
+                    services += GetI18NValue(FindUsConstants.I18N_ServiceDescription);
                 }
                 else
                 {
@@ -282,7 +282,7 @@ namespace myTNB.Home.More.FindUs.LocationDetails
         {
             if (_annotation.is7E)
             {
-                services = "FindUs_ServicesDescription".Translate();
+                services = GetI18NValue(FindUsConstants.I18N_ServiceDescription);
             }
             else
             {

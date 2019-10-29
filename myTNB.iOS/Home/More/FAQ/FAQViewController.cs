@@ -17,7 +17,7 @@ namespace myTNB
 {
     public partial class FAQViewController : CustomUIViewController
     {
-        FAQModel _faq = new FAQModel();
+        private FAQModel _faq = new FAQModel();
         private string _imageSize = string.Empty;
         public string faqId;
         public FAQViewController(IntPtr handle) : base(handle)
@@ -73,8 +73,7 @@ namespace myTNB
                     }
                     else
                     {
-                        Debug.WriteLine("No Network");
-                        AlertHandler.DisplayNoDataAlert(this);
+                        DisplayNoDataAlert();
                     }
                 });
             });
@@ -120,7 +119,7 @@ namespace myTNB
                     && !string.IsNullOrEmpty(faqTimeStamp.Data[0].Timestamp)
                     && !string.IsNullOrWhiteSpace(faqTimeStamp.Data[0].Timestamp))
                 {
-                    var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                    NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
                     string currentTS = sharedPreference.StringForKey("SiteCoreFAQTimeStamp");
                     if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
                     {
@@ -153,7 +152,6 @@ namespace myTNB
                         wsManager.DeleteTable();
                         wsManager.CreateTable();
                         wsManager.InsertListOfItems(faqResponse.Data);
-                        var x = wsManager.GetAllItems();
                     }
                 }
             });

@@ -72,11 +72,11 @@
     "mobileNo": "No. Mudah Alih",
     "email": "Emel",
     "addAnotherAcct": "Masukkan Satu Lagi Akaun",
-    "setAppLanguage": "Set App Langugage",
-    "setAppLanguageDescription": "Select Your Preferred Language",
+    "setAppLanguage": "Tetapkan Bahasa Aplikasi",
+    "setAppLanguageDescription": "Pilih Bahasa",
     "english": "English",
     "bahasa": "Bahasa Malaysia",
-    "saveChanges": "Save Changes",
+    "saveChanges": "Simpan",
     "gotIt": "Faham!",
     "login": "Log masuk",
     "next": "Seterusnya",
@@ -107,15 +107,15 @@
     "invalid_mismatchedPassword": "Your new password do not match."
   },
   "DashboardHome": {
-    "greeting_afternoon": "Good Afternoon,",
-    "greeting_evening": "Good Evening,",
+    "greeting_afternoon": "Good Afternoon,", //missing
+    "greeting_evening": "Good Evening,", //missing
     "greeting_morning": "Selamat Pagi,",
     "myAccounts": "Akaun Saya",
     "myServices": "Perkhidmatan Saya",
     "needHelp": "Perlu Bantuan?",
     "promotions": "Promosi",
     "addElectricityAcct": "Tambah Akaun Elektrik",
-    "searchPlaceholder": "Masukkan nama atau nombor akaun",
+    "searchPlaceholder": "Cari mengikut nama ringkas atau nombor",
     "refreshMessage": "Nampaknya sambungan bagi skrin ini telah terputus. Refresh untuk sambung semula!",
     "refreshBtnText": "Refresh Sekarang",
     "paidExtra": "bayaran ekstra",
@@ -124,9 +124,9 @@
     "payBy": "tarikh akhir",
     "add": "Tambah",
     "search": "Cari",
-    "showLess": "Show Less", //missing
+    "showLess": "Kurangkan Paparan",
     "moreAccts": "Tambah Akaun",
-    "rearrangeAccts": "Rearrange Accounts" //missing
+    "rearrangeAccts": "Susun Akaun"
   },
   "Tabbar": {
     "home": "Utama",
@@ -187,14 +187,14 @@
   },
   "SSMRReadingHistory": {
     "navTitle": "Self Meter Reading",
-    "headerTitle": "Rekod Bacaan Meter Saya",
+    "headerTitle": "Sejarah Bacaan Meter Saya",
     "subTitle": "Saya ingin membaca meter sendiri untuk:",
     "disableSSMRCTA": "Hentikan Self Meter Reading",
     "enableSSMRCTA": "Aktifkan Self Meter Reading",
     "enableSSMRDescription": "Akaun elektrik ini belum diaktifkan untuk bacaan meter sendiri, tekan butang di bawah untuk memulakan!",
     "noEligibleAccount": "Maaf, akaun anda tidak layak untuk memulakan perkhidmatan Self Meter Reading",
     "selectAccountNavTitle": "Pilih Akaun Elektrik",
-    "noHistoryData": "Looks like you have no meter reading history at the moment." //missing
+    "noHistoryData": "Nampaknya anda tiada rekod bacaan meter buat masa ini."
   },
   "SSMRReadingHistory_selector": {
     "SMREligibiltyPopUpDetails": [
@@ -446,7 +446,7 @@
     "shareDescription": "Kongsi aplikasi ini",
     "tnc": "Terma & Syarat",
     "findUs": "Temui Kami",
-    "setAppLanguage": "Set App Language" //missing
+    "setAppLanguage": "Tetapkan Bahasa Aplikasi"
   },
   "NotificationSettings": {
     "title": "Tetapan Pemberitahuan",
@@ -469,13 +469,15 @@
   },
   "LocationDetails": {
     "address": "ALAMAT",
-    "phone": "NOMBOR TELEFON",
+    "phone": "Nombor Telefon",
     "openingHours": "MASA OPERASI",
     "services": "PERKHIDMATAN",
     "mapSelection": "Map Selection", //missing
     "selectApplication": "Select navigation application", //missing
     "openIn": "Open in", //missing
-    "noSupportedApp": "No supported map application is installed" //missing
+    "noSupportedApp": "No supported map application is installed", //missing
+    "serviceDescription": "•\tPayment of electricity bills and other utility bills",
+    "operationHours": "Open 24 Hours"
   },
   "MyAccount": {
     "title": "Akaun Saya",
@@ -490,21 +492,21 @@
     "addAccountMessage": "Masukkan Akaun Bekalan Elektrik TNB sedia ada anda untuk melihat butiran penggunaan dan transaksi."
   },
   "Prelogin": {
-    "welcomeTitle": "Welcome to myTNB",
-    "tagline": "A whole new world with shockingly amazing possibilities.",
+    "welcomeTitle": "Selamat datang ke myTNB",
+    "tagline": "Wajah baru penuh bertenaga dan  ceria.",
     "register": "Daftar",
     "login": "Log masuk",
     "quickAccess": "Quick Actions",
     "findUs": "Temui Kami",
     "callUs": "Hubungi Kami",
-    "feedback": "Submit Feedback"
+    "feedback": "Beri Maklumbalas"
   },
   "Login": {
     "title": "Log Masuk Akaun myTNB",
-    "rememberEmail": "Ingat alamat emel saya",
-    "forgotPassword": "Lupa Kata Laluan?",
-    "dontHaveAcct": "Tiada akaun myTNB?",
-    "registerAcctNow": "Daftar sekarang!",
+    "rememberEmail": "Ingat emel saya",
+    "forgotPassword": "Terlupa kata laluan?",
+    "dontHaveAcct": "Tidak mempunyai akaun myTNB?",
+    "registerAcctNow": "Daftar akaun anda sekarang.",
     "login": "Log masuk"
   },
   "ForgotPassword": {

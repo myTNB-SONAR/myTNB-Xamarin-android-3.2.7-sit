@@ -19,5 +19,17 @@
         public static string I18N_SelectApplication = "selectApplication";
         public static string I18N_OpenIn = "openIn";
         public static string I18N_NoSupportedApp = "noSupportedApp";
+        public static string I18N_ServiceDescription = "serviceDescription";
+        public static string I18N_OperationHours = "operationHours";
+
+        //Schema
+        public static string Schema_Apple = "maps://?saddr=&daddr={0},{1}&directionsmode=driving";
+        public static string Schema_Google = "comgooglemaps://?saddr=&daddr={0},{1}&directionsmode=driving";
+        public static string Schema_Waze = "waze://?ll={0},{1}&navigate=yes";
+
+        //URL
+        public static string URL_Apple = "maps://";
+        public static string URL_Google = "comgooglemaps://";
+        public static string URL_Waze = "waze://";
     }
 }
