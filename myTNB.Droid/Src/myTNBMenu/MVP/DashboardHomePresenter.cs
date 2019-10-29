@@ -548,9 +548,9 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
         {
             if (PromotionsEntityV2.HasUnread())
             {
-                if (isPromoClicked && !MyTNBAccountManagement.GetInstance().IsWhatNewShown())
+                if (isPromoClicked && !UserSessions.HasWhatNewShown(mSharedPref))
                 {
-                    MyTNBAccountManagement.GetInstance().UpdateIsWhatNewShown();
+                    UserSessions.DoWhatNewShown(mSharedPref);
                 }
 
                 this.mView.ShowUnreadPromotions();

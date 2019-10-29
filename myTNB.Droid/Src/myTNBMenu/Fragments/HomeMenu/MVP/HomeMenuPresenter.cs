@@ -60,6 +60,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private static bool isSMRApplyAllowFlag = true;
         int billingAccoutCount = 0;
         int curentLoadMoreCount = 0;
+        static int trackCurrentLoadMoreCount = 0;
+        bool isQuery = false;
 
         private bool isMyServiceExpanded = false;
 
@@ -650,16 +652,121 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             this.mView.SetHeaderActionVisiblity(summaryDashboardInfoList);
 
+            if (isQuery)
+            {
+                isQuery = false;
+                trackCurrentLoadMoreCount = 0;
+            }
+
             if (billingAccoutCount > 0)
             {
-                curentLoadMoreCount = 0;
-                FetchAccountSummary(true, true);
+                if (trackCurrentLoadMoreCount > 0)
+                {
+                    RestoreCachedAccountList();
+                }
+                else
+                {
+                    curentLoadMoreCount = 0;
+                    FetchAccountSummary(true, true);
+                }
             }
 
             if (smrAccountList.Count > 0)
             {
                 _ = OnStartCheckSMRAccountStatus(smrAccountList);
             }
+        }
+
+        private void RestoreCachedAccountList()
+        {
+            try
+            {
+                isQuery = false;
+                updateDashboardInfoList = new List<SummaryDashBoardDetails>();
+                this.mView.SetAccountListCardsFromLocal(updateDashboardInfoList);
+                curentLoadMoreCount = trackCurrentLoadMoreCount;
+
+                int forLoopCount = 0;
+
+                int i = 0;
+
+                if (billingAccoutCount > 3)
+                {
+                    forLoopCount = (curentLoadMoreCount == 1) ? 3 : (curentLoadMoreCount * Constants.SUMMARY_DASHBOARD_PAGE_COUNT) - 2;
+                    if (billingAccoutCount < forLoopCount)
+                    {
+                        int diff = forLoopCount - billingAccoutCount;
+                        diff = Constants.SUMMARY_DASHBOARD_PAGE_COUNT - diff;
+                        forLoopCount = i + diff;
+                    }
+                }
+                else
+                {
+                    forLoopCount = billingAccoutCount;
+                }
+
+                bool isLoadNeed = false;
+
+                List<string> accounts = new List<string>();
+                for (; i < forLoopCount; i++)
+                {
+                    if (!string.IsNullOrEmpty(summaryDashboardInfoList[i].AccNumber))
+                    {
+                        accounts.Add(summaryDashboardInfoList[i].AccNumber);
+                        CustomerBillingAccount selected = CustomerBillingAccount.FindByAccNum(summaryDashboardInfoList[i].AccNumber);
+                        if (selected.billingDetails != null)
+                        {
+                            SummaryDashBoardDetails cached = JsonConvert.DeserializeObject<SummaryDashBoardDetails>(selected.billingDetails);
+                            cached.IsTaggedSMR = selected.IsTaggedSMR;
+                            summaryDashboardInfoList[i] = cached;
+                        }
+                        else
+                        {
+                            isLoadNeed = true;
+                        }
+                        updateDashboardInfoList.Add(summaryDashboardInfoList[i]);
+                    }
+                }
+
+                if (isLoadNeed)
+                {
+                    this.mView.SetAccountListCards(updateDashboardInfoList);
+                    this.mView.UpdateAccountListCards(updateDashboardInfoList);
+                    LoadSummaryDetails(accounts);
+                }
+                else
+                {
+                    this.mView.SetAccountListCardsFromLocal(updateDashboardInfoList);
+                    LoadSummaryDetailsBackground(accounts);
+
+                    if (billingAccoutCount > 3)
+                    {
+                        if (billingAccoutCount == updateDashboardInfoList.Count())
+                        {
+                            this.mView.IsLoadMoreButtonVisible(true, true);
+                        }
+                        else if (billingAccoutCount > updateDashboardInfoList.Count())
+                        {
+                            this.mView.IsLoadMoreButtonVisible(true, false);
+                        }
+                    }
+                    else
+                    {
+                        this.mView.IsLoadMoreButtonVisible(false, false);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+        }
+
+        public void SetQueryClose()
+        {
+            isQuery = false;
+            trackCurrentLoadMoreCount = 0;
         }
 
         public void LoadQueryAccounts(string searchText)
@@ -707,6 +814,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             billingAccoutCount = summaryDashboardInfoList.Count;
 
             curentLoadMoreCount = 0;
+
+            if (string.IsNullOrEmpty(searchText))
+            {
+                isQuery = false;
+                trackCurrentLoadMoreCount = 0;
+            }
+            else
+            {
+                isQuery = true;
+            }
 
             try
             {
@@ -807,6 +924,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 if (isReset)
                 {
                     curentLoadMoreCount = 0;
+                    trackCurrentLoadMoreCount = 0;
                     updateDashboardInfoList = new List<SummaryDashBoardDetails>();
                     this.mView.SetAccountListCardsFromLocal(updateDashboardInfoList);
                 }
@@ -825,6 +943,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     if (billingAccoutCount > 3)
                     {
                         curentLoadMoreCount = curentLoadMoreCount + 1;
+                    }
+
+                    if (!isQuery)
+                    {
+                        trackCurrentLoadMoreCount = curentLoadMoreCount;
                     }
 
                     if (billingAccoutCount > 3)
@@ -959,6 +1082,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 else
                 {
                     forLoopCount = billingAccoutCount;
+                }
+
+                if (!isQuery)
+                {
+                    trackCurrentLoadMoreCount = curentLoadMoreCount;
                 }
 
                 bool isLoadNeed = false;

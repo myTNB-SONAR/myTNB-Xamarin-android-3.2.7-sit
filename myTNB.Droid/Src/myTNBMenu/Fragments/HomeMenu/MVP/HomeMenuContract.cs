@@ -125,6 +125,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void LoadingBillsHistory(CustomerBillingAccount selectedAccount);
 
             void GetUserNotifications();
+
+            void SetQueryClose();
         }
 
         public interface IHomeMenuService

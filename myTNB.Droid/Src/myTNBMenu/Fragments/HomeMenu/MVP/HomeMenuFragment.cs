@@ -43,6 +43,7 @@ using myTNB_Android.Src.SelectSupplyAccount.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using Newtonsoft.Json;
 using myTNB_Android.Src.ViewBill.Activity;
+using Android.Preferences;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -802,22 +803,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             {
                                 applySMRIntent = new Intent(this.Activity, typeof(OnBoardingActivity));
                             }
+
+                            if (!UserSessions.HasSMROnboardingShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+                            {
+                                UserSessions.DoSMROnboardingShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+                            }
+
                             StartActivityForResult(applySMRIntent, SSMR_METER_HISTORY_ACTIVITY_CODE);
                         }
                         else if (selectedService.ServiceCategoryId == "1004" && (!isBCRMDown && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsPayBillEnabledNeeded()))
                         {
-                            if (!MyTNBAccountManagement.GetInstance().IsPayBillShown())
+                            if (!UserSessions.HasPayBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                             {
-                                MyTNBAccountManagement.GetInstance().UpdateIsPayBillShown();
+                                UserSessions.DoPayBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
                             }
                             Intent payment_activity = new Intent(this.Activity, typeof(SelectAccountsActivity));
                             StartActivity(payment_activity);
                         }
                         else if (selectedService.ServiceCategoryId == "1005" && (!isBCRMDown && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsViewBillEnabledNeeded()))
                         {
-                            if (!MyTNBAccountManagement.GetInstance().IsViewBillShown())
+                            if (!UserSessions.HasViewBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                             {
-                                MyTNBAccountManagement.GetInstance().UpdateIsViewBillShown();
+                                UserSessions.DoViewBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
                             }
                             CustomerBillingAccount.RemoveSelected();
                             Intent supplyAccount = new Intent(this.Activity, typeof(SelectSupplyAccountActivity));
@@ -1106,6 +1113,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             {
                                 Utility.LoggingNonFatalError(e);
                             }
+                            this.presenter.SetQueryClose();
                         }
                         searchEditText.ClearFocus();
                         OnUpdateAccountListChanged(true);
@@ -1274,8 +1282,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             accountListRefreshContainer.Visibility = ViewStates.Visible;
             accountListViewContainer.Visibility = ViewStates.Gone;
-            string refreshMsg = string.IsNullOrEmpty(contentMsg) ? "Uh oh, looks like this page is unplugged. Reload to stay plugged in!" : contentMsg;
-            string refreshBtnTxt = string.IsNullOrEmpty(buttonMsg) ? "Reload Now" : buttonMsg;
+            string refreshMsg = string.IsNullOrEmpty(contentMsg) ? "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!" : contentMsg;
+            string refreshBtnTxt = string.IsNullOrEmpty(buttonMsg) ? "Refresh Now" : buttonMsg;
             btnRefresh.Text = refreshBtnTxt;
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
             {
