@@ -696,6 +696,10 @@ namespace myTNB
                         await LoadMeterReadSSMRWalkthrough();
                         await LoadMeterReadSSMRWalkthroughV2();
                         await LoadBillDetailsTooltip();
+
+                        NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                        sharedPreference.SetBool(AppLaunchMasterCache.IsOCRDown, "IsOCRDown");
+                        sharedPreference.Synchronize();
                     });
                 }
                 else if (response.d.IsMaintenance)
@@ -769,10 +773,18 @@ namespace myTNB
                 MeterReadSSMRTimeStampResponseModel timeStamp = iService.GetMeterReadSSMRWalkthroughTimestampItem();
 
                 bool needsUpdate = true;
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                var isORCDown = sharedPreference.BoolForKey("IsOCRDown");
+
+                if (AppLaunchMasterCache.IsOCRDown != isORCDown)
+                {
+                    sharedPreference.SetString(string.Empty, "SiteCoreMeterReadSSMRWalkthroughTimeStamp");
+                    sharedPreference.Synchronize();
+                }
+
                 if (timeStamp != null && timeStamp.Data != null && timeStamp.Data.Count > 0 && timeStamp.Data[0] != null
                     && !string.IsNullOrEmpty(timeStamp.Data[0].Timestamp))
                 {
-                    NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
                     string currentTS = sharedPreference.StringForKey("SiteCoreMeterReadSSMRWalkthroughTimeStamp");
                     if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
                     {
@@ -816,10 +828,18 @@ namespace myTNB
                 MeterReadSSMRTimeStampResponseModel timeStamp = iService.GetMeterReadSSMRWalkthroughTimestampItemV2();
 
                 bool needsUpdate = true;
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                var isORCDown = sharedPreference.BoolForKey("IsOCRDown");
+
+                if (AppLaunchMasterCache.IsOCRDown != isORCDown)
+                {
+                    sharedPreference.SetString(string.Empty, "SiteCoreMeterReadSSMRWalkthroughTimeStampV2");
+                    sharedPreference.Synchronize();
+                }
+
                 if (timeStamp != null && timeStamp.Data != null && timeStamp.Data.Count > 0 && timeStamp.Data[0] != null
                     && !string.IsNullOrEmpty(timeStamp.Data[0].Timestamp))
                 {
-                    NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
                     string currentTS = sharedPreference.StringForKey("SiteCoreMeterReadSSMRWalkthroughTimeStampV2");
                     if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
                     {
