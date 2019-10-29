@@ -10,7 +10,7 @@ namespace myTNB
     {
         public List<OnboardingItemModel> model = new List<OnboardingItemModel>();
         public OnboardingEnum onboardingEnum;
-        public bool isLogin;
+        public bool isLogin, isToUpdateMobileNo;
         public OnboardingViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
@@ -34,6 +34,9 @@ namespace myTNB
             if (onboardingEnum == OnboardingEnum.FreshInstall)
                 return NavigateToPreLogin;
 
+            if (isToUpdateMobileNo)
+                return ShowUpdateMobileNumber;
+
             if (isLogin)
                 return NavigateToHome;
 
@@ -55,6 +58,21 @@ namespace myTNB
             preLoginVC.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
             preLoginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             PresentViewController(preLoginVC, true, null);
+        }
+
+        private void ShowUpdateMobileNumber()
+        {
+            UIStoryboard storyBoard = UIStoryboard.FromName("UpdateMobileNumber", null);
+            UpdateMobileNumberViewController viewController =
+                storyBoard.InstantiateViewController("UpdateMobileNumberViewController") as UpdateMobileNumberViewController;
+            if (viewController != null)
+            {
+                viewController.WillHideBackButton = true;
+                viewController.IsFromLogin = true;
+                UINavigationController navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                PresentViewController(navController, true, null);
+            }
         }
     }
 }

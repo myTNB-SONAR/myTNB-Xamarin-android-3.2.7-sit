@@ -37,6 +37,8 @@ namespace myTNB
 
         UITextField txtFieldEmail, txtFieldPassword;
         UIImageView imgViewCheckBox;
+        UIScrollView ScrollView;
+        CGRect scrollViewFrame;
 
         public LoginViewController(IntPtr handle) : base(handle) { }
 
@@ -47,6 +49,8 @@ namespace myTNB
             InitializeSubViews();
             Setevents();
             SetupSubViews();
+            NotifCenterUtility.AddObserver(UIKeyboard.WillHideNotification, OnKeyboardNotification);
+            NotifCenterUtility.AddObserver(UIKeyboard.WillShowNotification, OnKeyboardNotification);
         }
 
         public override void TouchesBegan(NSSet touches, UIEvent evt)
@@ -58,6 +62,7 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+
         }
 
         public override void ViewWillDisappear(bool animated)
@@ -67,6 +72,13 @@ namespace myTNB
 
         void InitializeSubViews()
         {
+            ScrollView = new UIScrollView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height))
+            {
+                BackgroundColor = UIColor.Clear,
+                Bounces = false
+            };
+            View.AddSubview(ScrollView);
+
             UIImageView imgLogo = new UIImageView(new CGRect(GetXLocationToCenterObject(GetScaledWidth(40F), View)
                    , DeviceHelper.GetStatusBarHeight() + GetScaledHeight(16F), GetScaledWidth(40F), GetScaledHeight(40F)))
             {
@@ -97,7 +109,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_16_500
             };
 
-            View.AddSubviews(new UIView[] { imgHeader, btnBack, imgLogo, lblTitle });
+            ScrollView.AddSubviews(new UIView[] { imgHeader, btnBack, imgLogo, lblTitle });
 
             viewEmail = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(lblTitle.Frame, 6F), ViewWidth - (BaseMarginWidth16 * 2), GetScaledHeight(51F)));
 
@@ -231,7 +243,7 @@ namespace myTNB
                 txtFieldEmail.Text = emailString;
                 txtFieldEmail.LeftViewMode = UITextFieldViewMode.Never;
             }
-            View.AddSubviews(new UIView[] { viewEmail, viewRememberMe, viewPassword, viewForgotPassword });
+            ScrollView.AddSubviews(new UIView[] { viewEmail, viewRememberMe, viewPassword, viewForgotPassword });
 
             UIButton btnLogin = new UIButton(UIButtonType.Custom)
             {
@@ -271,7 +283,36 @@ namespace myTNB
                 UserInteractionEnabled = true
             };
             View.AddSubview(descLbl);
+            ViewHelper.AdjustFrameSetHeight(ScrollView, View.Frame.Height - (View.Frame.Height - descLbl.Frame.GetMinY()));
+            ScrollView.ContentSize = new CGRect(0, 0, View.Frame.Width, View.Frame.Height - (View.Frame.Height - descLbl.Frame.GetMinY())).Size;
+            scrollViewFrame = ScrollView.Frame;
         }
+
+        void OnKeyboardNotification(NSNotification notification)
+        {
+            if (!IsViewLoaded)
+                return;
+
+            bool visible = notification.Name == UIKeyboard.WillShowNotification;
+            UIView.BeginAnimations("AnimateForKeyboard");
+            UIView.SetAnimationBeginsFromCurrentState(true);
+            UIView.SetAnimationDuration(UIKeyboard.AnimationDurationFromNotification(notification));
+            UIView.SetAnimationCurve((UIViewAnimationCurve)UIKeyboard.AnimationCurveFromNotification(notification));
+
+            if (visible && txtFieldPassword.IsFirstResponder)
+            {
+                CGRect r = UIKeyboard.BoundsFromNotification(notification);
+                CGRect viewFrame = View.Bounds;
+                nfloat currentViewHeight = viewFrame.Height - r.Height;
+                ScrollView.Frame = new CGRect(0, -DeviceHelper.GetStatusBarHeight(), ScrollView.Frame.Width, currentViewHeight);
+            }
+            else
+            {
+                ScrollView.Frame = scrollViewFrame;
+            }
+            UIView.CommitAnimations();
+        }
+
         /// <summary>
         /// Method to remember or not the email based user selection when logging in
         /// </summary>
