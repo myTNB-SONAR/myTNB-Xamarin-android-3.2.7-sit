@@ -47,7 +47,7 @@ namespace myTNB.Payment.SelectBills
             cell._txtFieldAmount.Placeholder = _controller.GetI18NValue(PaymentConstants.I18N_EnterAmount);
             cell._txtFieldAmount.Text = _accounts[indexPath.Row].Amount > 0
                 ? _accounts[indexPath.Row].Amount.ToString("N2", CultureInfo.InvariantCulture) : string.Empty;
-
+            cell._lblAmountTitle.Hidden = _accounts[indexPath.Row].Amount <= 0;
             cell.AmountTitle = _controller.GetI18NValue(PaymentConstants.I18N_IAmPaying);
             cell.AmountError = _controller.GetErrorI18NValue(Constants.Error_MinimumPayAmount);
 
@@ -80,17 +80,12 @@ namespace myTNB.Payment.SelectBills
                     UpdateUIForInputError(true, cell);
                 }
             }));
-            bool isValidAmount = NewMethod(acctNumber);
+            bool isValidAmount = _amountStatus.ContainsKey(acctNumber) ? _amountStatus[acctNumber] : true;
             cell._txtFieldAmount.TextColor = isValidAmount ? MyTNBColor.TunaGrey() : MyTNBColor.Tomato;
             cell._lblAmountError.Hidden = isValidAmount;
             cell._viewLineAmount.BackgroundColor = isValidAmount ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
             SetTextField(cell._txtFieldAmount, cell._lblAmountError, cell);
             return cell;
-        }
-
-        private bool NewMethod(string acctNumber)
-        {
-            return _amountStatus.ContainsKey(acctNumber) ? _amountStatus[acctNumber] : true;
         }
 
         public override nint RowsInSection(UITableView tableview, nint section)
@@ -155,6 +150,8 @@ namespace myTNB.Payment.SelectBills
                     UnSelectBill(cell, index);
                     _controller.UpDateTotalAmount();
                 }
+                cell._lblAmountTitle.Hidden = string.IsNullOrEmpty(cell._txtFieldAmount.Text)
+                    || string.IsNullOrWhiteSpace(cell._txtFieldAmount.Text);
             };
             textField.EditingDidBegin += (sender, e) =>
             {
@@ -226,6 +223,11 @@ namespace myTNB.Payment.SelectBills
                 {
                     double.TryParse(cell._txtFieldAmount.Text, out double parsedAmount);
                     cell._txtFieldAmount.Text = parsedAmount.ToString("N2", CultureInfo.InvariantCulture);
+                    cell._lblAmountTitle.Hidden = false;
+                }
+                else
+                {
+                    cell._lblAmountTitle.Hidden = true;
                 }
                 ShowErrorMessage(error, index, cell, true);
             };
