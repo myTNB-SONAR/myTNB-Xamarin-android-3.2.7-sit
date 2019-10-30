@@ -126,7 +126,17 @@
     "search": "Cari",
     "showLess": "Kurangkan Paparan",
     "moreAccts": "Tambah Akaun",
-    "rearrangeAccts": "Susun Akaun"
+    "rearrangeAccts": "Susun Akaun",
+    "showMore": "Selebihnya",
+    "viewAdvice": "View My<br>Advice",
+    "viewAdvices": "View My<br>Advices",
+    "viewEBill": "Lihat Bil Saya", // "View <br>My e-Bill",
+    "viewEBills": "Lihat Bil Saya", //"View <br>My e-Bills",
+    "payBill": "Lihat Makluman Saya", //"Pay<br>My Bill",
+    "payBills": "Lihat Makluman Saya", //"Pay<br>My Bill",
+    "submitFeedback": "Hantar<br>Maklum Balas", //"Submit<br>Feedback",
+    "selfMeterReading": "Self<br>Meter Reading",
+    "viewEBillAndAdvice": "Lihat Bil / Makluman Saya" //"View My<br>e-Bills / Advices"
   },
   "Tabbar": {
     "home": "Utama",

@@ -20,7 +20,6 @@ namespace myTNB
         private bool _isServicesShimmering, _isHelpShimmering, _showRefreshScreen;
         private List<PromotionsModelV2> _promotions;
         public Action<int> _onReloadCell;
-        public Func<string, string> _getI18NValue;
 
         public DashboardHomeDataSource(DashboardHomeViewController controller,
             AccountListViewController accountListViewController,
@@ -31,8 +30,7 @@ namespace myTNB
             bool isHelpShimmering,
             bool showRefreshScreen,
             RefreshScreenComponent refreshScreenComponent,
-            Action<int> onReloadCell,
-            Func<string, string> getI18NValue)
+            Action<int> onReloadCell)
         {
             _controller = controller;
             _accountListViewController = accountListViewController;
@@ -44,7 +42,6 @@ namespace myTNB
             _showRefreshScreen = showRefreshScreen;
             _refreshScreenComponent = refreshScreenComponent;
             _onReloadCell = onReloadCell;
-            _getI18NValue = getI18NValue;
         }
 
         public override nint NumberOfSections(UITableView tableView)
@@ -98,7 +95,7 @@ namespace myTNB
             if (indexPath.Row == 1)
             {
                 ServicesTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Services) as ServicesTableViewCell;
-                cell.GetI18NValue = _getI18NValue;
+                cell.GetI18NValue = _controller.GetI18NValue;
                 cell.IsLoading = _isServicesShimmering;
                 cell.ReloadCell = _onReloadCell;
                 cell.AddCards(_services, _controller._servicesActionDictionary, _isServicesShimmering);

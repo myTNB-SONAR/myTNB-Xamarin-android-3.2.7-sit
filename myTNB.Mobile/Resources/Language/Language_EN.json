@@ -126,7 +126,17 @@
     "search": "Search",
     "showLess": "Show Less",
     "moreAccts": "More Accounts",
-    "rearrangeAccts": "Rearrange Accounts"
+    "rearrangeAccts": "Rearrange Accounts",
+    "showMore": "Show More",
+    "viewAdvice": "View My<br>Advice",
+    "viewAdvices": "View My<br>Advices",
+    "viewEBill": "View <br>My e-Bill",
+    "viewEBills": "View <br>My e-Bills",
+    "payBill": "Pay<br>My Bill",
+    "payBills": "Pay<br>My Bill",
+    "submitFeedback": "Submit<br>Feedback",
+    "selfMeterReading": "Self<br>Meter Reading",
+    "viewEBillAndAdvice": "View My<br>e-Bills / Advices"
   },
   "Tabbar": {
     "home": "Home",
@@ -587,6 +597,6 @@
     "cardRemoveSuccess": "Credit / debit card ending with {0} has been removed successfully.",
     "removeCardMessage": "You are about to remove credit / debit card ending with {0}.",
     "removeCardTitle": "Remove Credit / Debit Card",
-    "cardNotRemovedMessage":"Credit / Debit Card ending with {0} was not removed. Please try again."
+    "cardNotRemovedMessage": "Credit / Debit Card ending with {0} was not removed. Please try again."
   }
 }

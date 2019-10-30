@@ -19,9 +19,11 @@ namespace myTNB
         private nfloat xLoc;
         private Dictionary<string, Action> _actionsDictionary;
         private nfloat _cardHeight = ScaleUtility.GetScaledHeight(84F);
-        public Action<int> ReloadCell;
         private CustomUIView _moreLessContainer;
+
+        public Action<int> ReloadCell;
         public bool IsLoading;
+
         public ServicesTableViewCell(IntPtr handle) : base(handle)
         {
             _view = new UIView(new CGRect(BaseMarginWidth16, 0, cellWidth - (BaseMarginWidth16 * 2), _cardHeight))
@@ -138,12 +140,12 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = isShowMore ? "Show More" : "Show Less"
+                Text = GetI18NValue(isShowMore ? DashboardHomeConstants.I18N_ShowMore : DashboardHomeConstants.I18N_ShowLess)
             };
             moreLessView.AddSubview(moreAcctsLabel);
             UIImageView arrowUpDown = new UIImageView(new CGRect(moreAcctsLabel.Frame.GetMaxX(), 0, GetScaledWidth(16F), GetScaledHeight(16F)))
             {
-                Image = UIImage.FromBundle(isShowMore ? "Arrow-Down-Blue-Small" : "Arrow-Up-Blue-Small")
+                Image = UIImage.FromBundle(isShowMore ? DashboardHomeConstants.Img_ArrowDownBlue : DashboardHomeConstants.Img_ArrowUpBlue)
             };
             moreLessView.AddSubview(arrowUpDown);
 
@@ -297,60 +299,61 @@ namespace myTNB
                 switch (serviceItem.ServiceType)
                 {
                     case ServiceEnum.VIEWBILL:
-                        name = "View <br>My e-Bill";
+                        name = DashboardHomeConstants.I18N_ViewEBill;
                         if (_dashboardHomeHelper.HasNormalAccounts && _dashboardHomeHelper.HasREAccounts)
                         {
-                            name = "View My<br>e-Bills / Advices";
+                            name = DashboardHomeConstants.I18N_ViewEBillAndAdvice;
                         }
                         else if (_dashboardHomeHelper.HasREAccounts)
                         {
                             if (_dashboardHomeHelper.HasMultipleREAccounts)
                             {
-                                name = "View My<br>Advices";
+                                name = DashboardHomeConstants.I18N_ViewAdvices;
                             }
                             else
                             {
-                                name = "View My<br>Advice";
+                                name = DashboardHomeConstants.I18N_ViewAdvice;
                             }
                         }
                         else if (_dashboardHomeHelper.HasNormalAccounts)
                         {
                             if (_dashboardHomeHelper.HasMultipleNormalAccounts)
                             {
-                                name = "View <br>My e-Bills";
+                                name = DashboardHomeConstants.I18N_ViewEBills;
                             }
                             else
                             {
-                                name = "View <br>My e-Bill";
+                                name = DashboardHomeConstants.I18N_ViewEBill;
                             }
                         }
                         break;
                     case ServiceEnum.PAYBILL:
-                        name = "Pay<br>My Bill";
+                        name = DashboardHomeConstants.I18N_PayBill;
                         if (_dashboardHomeHelper.HasNormalAccounts)
                         {
                             if (_dashboardHomeHelper.HasMultipleNormalAccounts)
                             {
-                                name = "Pay<br>My Bills";
+                                name = DashboardHomeConstants.I18N_PayBills;
                             }
                             else
                             {
-                                name = "Pay<br>My Bill";
+                                name = DashboardHomeConstants.I18N_PayBill;
                             }
                         }
                         break;
                     case ServiceEnum.SUBMITFEEDBACK:
-                        name = "Submit<br>Feedback";
+                        name = DashboardHomeConstants.I18N_SubmitFeedback;
                         break;
                     case ServiceEnum.SELFMETERREADING:
-                        name = "Self<br>Meter Reading";
+                        name = DashboardHomeConstants.I18N_SelfMeterReading;
                         break;
                     default:
                         name = serviceItem.ServiceName;
                         break;
                 }
             }
-            return name;
+
+            return GetI18NValue(name) ?? name;
         }
 
         private void SetIndicatorFlag(string key)

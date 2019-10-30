@@ -43,6 +43,16 @@ namespace myTNB
         public static string I18N_ShowLess = "showLess";
         public static string I18N_MoreAccts = "moreAccts";
         public static string I18N_RearrangeAccts = "rearrangeAccts";
+        public static string I18N_ShowMore = "showMore";
+        public static string I18N_ViewAdvice = "viewAdvice";
+        public static string I18N_ViewAdvices = "viewAdvices";
+        public static string I18N_ViewEBill = "viewEBill";
+        public static string I18N_ViewEBills = "viewEBills";
+        public static string I18N_PayBill = "payBill";
+        public static string I18N_PayBills = "payBills";
+        public static string I18N_SubmitFeedback = "submitFeedback";
+        public static string I18N_SelfMeterReading = "selfMeterReading";
+        public static string I18N_ViewEBillAndAdvice = "viewEBillAndAdvice";
 
         //Image
         public static string Img_Notification = "Notification";
@@ -61,6 +71,8 @@ namespace myTNB
         public static string Img_ArrowDownWhite = "Arrow-Down-White-Small";
         public static string Img_RearrangeIcon = "Rearrange-Icon";
         public static string Img_RELeaf = "RE-Leaf";
+        public static string Img_ArrowDownBlue = "Arrow-Down-Blue-Small";
+        public static string Img_ArrowUpBlue = "Arrow-Up-Blue-Small";
 
         //PageName
         public static string PageName = "DashboardHome";

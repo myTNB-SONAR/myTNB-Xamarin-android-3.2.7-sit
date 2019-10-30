@@ -241,7 +241,7 @@ namespace myTNB
             _homeTableView.Source = new DashboardHomeDataSource(this, _accountListViewController,
                 DataManager.DataManager.SharedInstance.ServicesList, _promotions, _helpList,
                 _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent,
-                OnUpdateCellWithoutReload, GetI18NValue);
+                OnUpdateCellWithoutReload);
             _homeTableView.ReloadData();
             UpdateFooterBG();
         }
@@ -562,7 +562,7 @@ namespace myTNB
             _homeTableView.Source = new DashboardHomeDataSource(this, _accountListViewController
                 , DataManager.DataManager.SharedInstance.ServicesList, _promotions, _helpList,
                 _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent,
-                OnUpdateCellWithoutReload, GetI18NValue);
+                OnUpdateCellWithoutReload);
             NSIndexPath indexPath = NSIndexPath.Create(0, row);
             _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
             _homeTableView.EndUpdates();
@@ -614,7 +614,7 @@ namespace myTNB
                     _homeTableView.BeginUpdates();
                     _homeTableView.Source = new DashboardHomeDataSource(this, null, DataManager.DataManager.SharedInstance.ServicesList,
                         _promotions, _helpList, _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent,
-                        OnUpdateCellWithoutReload, GetI18NValue);
+                        OnUpdateCellWithoutReload);
                     NSIndexPath indexPath = NSIndexPath.Create(0, 0);
                     _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
                     _homeTableView.EndUpdates();
