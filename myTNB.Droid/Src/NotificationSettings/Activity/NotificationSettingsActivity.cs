@@ -24,7 +24,7 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
       //, MainLauncher = true
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.Notification")]
-    public class NotificationSettingsActivity : BaseToolbarAppCompatActivity, NotificationSettingsContract.IView
+    public class NotificationSettingsActivity : BaseActivityCustom, NotificationSettingsContract.IView
     {
 
         [BindView(Resource.Id.rootView)]
@@ -53,6 +53,8 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
 
 
         MaterialDialog progressUpdateType, progressUpdateChannel;
+
+        const string PAGE_ID = "NotificationSettings";
 
         public bool IsActive()
         {
@@ -95,6 +97,9 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                 Console.WriteLine("NotificationSettingsActivity OnCreate");
 
                 TextViewUtils.SetMuseoSans500Typeface(txtNotificationTypeTitle, txtNotificationChannelTitle);
+
+                txtNotificationTypeTitle.Text = GetLabelByLanguage("typeDescription");
+                txtNotificationChannelTitle.Text = GetLabelByLanguage("modeDescription");
 
                 notificationChannelLayoutManager = new LinearLayoutManager(this);
                 notificationTypeLayoutManager = new LinearLayoutManager(this);
@@ -375,6 +380,11 @@ namespace myTNB_Android.Src.NotificationSettings.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }
