@@ -607,16 +607,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Activity.RunOnUiThread(() =>
                 {
-                    shimmerFAQView.StopShimmer();
-                    newFAQShimmerAdapter = new NewFAQShimmerAdapter(null, this.Activity);
-                    newFAQShimmerList.SetAdapter(newFAQShimmerAdapter);
-                    newFAQShimmerView.Visibility = ViewStates.Gone;
-                    newFAQView.Visibility = ViewStates.Visible;
-                    newFAQAdapter = new NewFAQAdapter(list, this.Activity);
-                    newFAQListRecycleView.SetAdapter(newFAQAdapter);
-                    currentNewFAQList.Clear();
-                    currentNewFAQList.AddRange(list);
-                    newFAQAdapter.ClickChanged += OnFAQClickChanged;
+                    if (list != null && list.Count > 0)
+                    {
+                        shimmerFAQView.StopShimmer();
+                        newFAQShimmerAdapter = new NewFAQShimmerAdapter(null, this.Activity);
+                        newFAQShimmerList.SetAdapter(newFAQShimmerAdapter);
+                        newFAQShimmerView.Visibility = ViewStates.Gone;
+                        newFAQView.Visibility = ViewStates.Visible;
+                        newFAQAdapter = new NewFAQAdapter(list, this.Activity);
+                        newFAQListRecycleView.SetAdapter(newFAQAdapter);
+                        currentNewFAQList.Clear();
+                        currentNewFAQList.AddRange(list);
+                        newFAQAdapter.ClickChanged += OnFAQClickChanged;
+                    }
                 });
             }
             catch (System.Exception e)
@@ -1391,6 +1394,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 UserSessions.SetRealSMREligibilityAccountList(eligibleSmrAccountList);
             }
 
+            searchEditText.SetQuery("", false);
             OnLoadAccount();
         }
 
