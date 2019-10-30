@@ -27,6 +27,8 @@ namespace myTNB
         public static string IMG_TrendDownIcon = "Trend-Down-Icon";
         public static string IMG_ArrowLeftBlueIcon = "Arrow-Left-Blue";
         public static string IMG_ShowPassword = "IC-Action-Show-Password";
+        public static string IMG_HidePassword = "IC-Action-Hide-Password";
+
 
         //Common I18N
         public static string Common_RefreshNow = "refreshNow";
@@ -90,6 +92,7 @@ namespace myTNB
         public static string Error_DuplicateNickname = "duplicateNickname";
         public static string Error_InvalidFullname = "invalid_fullname";
         public static string Error_InvalidIDNumber = "invalid_idnumber";
+        public static string Error_MismatchedEmail = "invalid_mismatchedEmail";
 
         //Hint I18N
         public static string Hint_EmptyAcctSelector = "emptyAcctSelector";

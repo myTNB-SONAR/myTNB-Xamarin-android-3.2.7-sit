@@ -9,7 +9,7 @@ using UIKit;
 
 namespace myTNB.Registration
 {
-    public partial class AddAccountViewController : UIViewController
+    public partial class AddAccountViewController : CustomUIViewController
     {
         UIButton btnAddAccount;
 
@@ -26,9 +26,7 @@ namespace myTNB.Registration
         UITextField txtFieldAccountNo, txtFieldNickname, txtFieldICNo;
         //UITextField txtFieldMaidenName;
 
-        public AddAccountViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public AddAccountViewController(IntPtr handle) : base(handle) { }
 
         TextFieldHelper _textFieldHelper = new TextFieldHelper();
         AddAccountListModel _addAccountList = new AddAccountListModel();

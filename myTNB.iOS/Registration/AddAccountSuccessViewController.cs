@@ -37,8 +37,10 @@ namespace myTNB
             AccountsTableView.SeparatorStyle = UITableViewCellSeparatorStyle.None;
             AccountsTableView.Bounces = false;
 
-            var headerView = new UIView((new CGRect(0, 0, ViewWidth - GetScaledWidth(32), GetScaledHeight(HeaderViewHeight))));
-            headerView.BackgroundColor = UIColor.White;
+            UIView headerView = new UIView((new CGRect(0, 0, ViewWidth - GetScaledWidth(32), GetScaledHeight(HeaderViewHeight))))
+            {
+                BackgroundColor = UIColor.White
+            };
 
             nfloat imgWidth = GetScaledWidth(64);
             nfloat imgXLoc = (headerView.Frame.Width - imgWidth) / 2;
@@ -47,7 +49,7 @@ namespace myTNB
                 Image = UIImage.FromBundle(AddAccountConstants.IMG_CircleGreen)
             };
 
-            var lblPasswordSuccess = new UILabel
+            UILabel lblPasswordSuccess = new UILabel
             {
                 Frame = new CGRect(GetScaledWidth(18), imgViewSuccess.Frame.GetMaxY() + GetScaledHeight(10), headerView.Frame.Width - GetScaledWidth(36), GetScaledHeight(18)),
                 AttributedText = new NSAttributedString(GetI18NValue(AddAccountConstants.I18N_AddAcctSuccessMsg)
@@ -63,12 +65,14 @@ namespace myTNB
 
             AccountsTableView.TableHeaderView = headerView;
 
-            UIButton btnStart = new UIButton(new CGRect(GetScaledWidth(18), View.Frame.Height - GetScaledHeight(48) - GetScaledHeight(24), ViewWidth - (GetScaledWidth(18) * 2), GetScaledHeight(48)));
+            UIButton btnStart = new UIButton(new CGRect(GetScaledWidth(18), View.Frame.Height - GetScaledHeight(48) - GetScaledHeight(24), ViewWidth - (GetScaledWidth(18) * 2), GetScaledHeight(48)))
+            {
+                BackgroundColor = MyTNBColor.FreshGreen,
+                Font = TNBFont.MuseoSans_16_500
+            };
+            btnStart.Layer.CornerRadius = GetScaledHeight(5.0f);
             btnStart.SetTitle(GetCommonI18NValue(AddAccountConstants.I18N_Done), UIControlState.Normal);
             btnStart.SetTitleColor(UIColor.White, UIControlState.Normal);
-            btnStart.BackgroundColor = MyTNBColor.FreshGreen;
-            btnStart.Font = TNBFont.MuseoSans_16_500;
-            btnStart.Layer.CornerRadius = GetScaledHeight(5.0f);
 
             btnStart.TouchUpInside += (object sender, EventArgs e) =>
             {
@@ -127,7 +131,7 @@ namespace myTNB
             }
         }
 
-        internal void GetStarted()
+        private void GetStarted()
         {
             ActivityIndicator.Show();
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
@@ -148,9 +152,8 @@ namespace myTNB
         }
 
 
-        internal void ExecuteGetCustomerRecordsCall()
+        private void ExecuteGetCustomerRecordsCall()
         {
-
             if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
                && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null)
             {
@@ -182,24 +185,15 @@ namespace myTNB
             ActivityIndicator.Hide();
         }
 
-        internal void SetupSuperViewBackground()
+        private void SetupSuperViewBackground()
         {
-            var startColor = MyTNBColor.GradientPurpleDarkElement;
-            var endColor = MyTNBColor.GradientPurpleLightElement;
-            var gradientLayer = new CAGradientLayer();
+            UIColor startColor = MyTNBColor.GradientPurpleDarkElement;
+            UIColor endColor = MyTNBColor.GradientPurpleLightElement;
+            CAGradientLayer gradientLayer = new CAGradientLayer();
             gradientLayer.Colors = new[] { startColor.CGColor, endColor.CGColor };
             gradientLayer.Locations = new NSNumber[] { 0, 1 };
             gradientLayer.Frame = View.Bounds;
             View.Layer.InsertSublayer(gradientLayer, 0);
-        }
-
-        internal void ShowPrelogin()
-        {
-            UIStoryboard loginStoryboard = UIStoryboard.FromName("Login", null);
-            UIViewController preloginVC = (UIViewController)loginStoryboard.InstantiateViewController("PreloginViewController");
-            preloginVC.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
-            preloginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-            PresentViewController(preloginVC, true, null);
         }
     }
 }

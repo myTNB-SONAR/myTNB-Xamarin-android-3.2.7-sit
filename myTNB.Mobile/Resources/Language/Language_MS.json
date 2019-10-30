@@ -109,7 +109,8 @@
     "invalid_password": "Password must have at least 8 alphanumeric characters.",
     "invalid_mismatchedPassword": "Your new password do not match.",
     "invalid_fullname": "Invalid full name",
-    "invalid_idnumber": "Invalid IC, ROC or Passport No."
+    "invalid_idnumber": "Invalid IC, ROC or Passport No.",
+    "invalid_mismatchedEmail": "Your email and confirmation email do not match."
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,", //missing

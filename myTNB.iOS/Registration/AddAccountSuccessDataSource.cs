@@ -7,7 +7,7 @@ namespace myTNB.Registration
 {
     public class AddAccountSuccessDataSource : UITableViewSource
     {
-        CustomerAccountRecordListModel _GetStartedList = new CustomerAccountRecordListModel();
+        private CustomerAccountRecordListModel _GetStartedList = new CustomerAccountRecordListModel();
 
         public AddAccountSuccessDataSource(CustomerAccountRecordListModel getStartedList)
         {
@@ -23,7 +23,7 @@ namespace myTNB.Registration
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            var cell = tableView.DequeueReusableCell("SuccessfullyAddedAccountCell", indexPath) as SuccessfullyAddedAccountCell;
+            SuccessfullyAddedAccountCell cell = tableView.DequeueReusableCell("SuccessfullyAddedAccountCell", indexPath) as SuccessfullyAddedAccountCell;
             if (_GetStartedList?.d?.Count > 0)
             {
                 CustomerAccountRecordModel account = indexPath.Row < _GetStartedList?.d?.Count

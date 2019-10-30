@@ -38,7 +38,6 @@ namespace myTNB.Registration
         const string EMAIL_PATTERN = @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$";
         const string PASSWORD_PATTERN = @"^.{8,}$"; //@"(?!^[0-9]*$)(?!^[a-zA-Z]*$)^([a-zA-Z0-9]{8,})$";
         const string MOBILE_NO_PATTERN = @"^[0-9 \+]+$";
-        const string TOKEN_PATTERN = @"^[0-9]{4,4}$";
 
         public override void ViewDidLoad()
         {
@@ -168,13 +167,7 @@ namespace myTNB.Registration
             };
 
             lblConfirmEmailTitle = GetTitleLabel(GetI18NValue(RegisterConstants.I18N_ConfirmEmail));
-
-            lblConfirmEmailError = new UILabel(new CGRect(0, 37, viewConfirmEmail.Frame.Width, 14))
-            {
-                Font = MyTNBFont.MuseoSans11_300,
-                TextAlignment = UITextAlignment.Left,
-                TextColor = MyTNBColor.Tomato
-            };
+            lblConfirmEmailError = GetErrorLabel(GetErrorI18NValue(Constants.Error_InvalidEmailAddress));
 
             txtFieldConfirmEmail = GetUITextField(GetI18NValue(RegisterConstants.I18N_ConfirmEmail));
             viewLineConfirmEmail = GenericLine.GetLine(new CGRect(0, 36, viewConfirmEmail.Frame.Width, 1));
@@ -214,14 +207,14 @@ namespace myTNB.Registration
             };
             UIImageView imgShowPassword = new UIImageView(new CGRect(0, 0, 24, 24))
             {
-                Image = UIImage.FromBundle("IC-Action-Show-Password")
+                Image = UIImage.FromBundle(Constants.IMG_ShowPassword)
             };
             viewShowPassword.AddSubview(imgShowPassword);
             viewShowPassword.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 txtFieldPassword.SecureTextEntry = !txtFieldPassword.SecureTextEntry;
                 imgShowPassword.Image = UIImage.FromBundle(txtFieldPassword.SecureTextEntry
-                    ? "IC-Action-Hide-Password" : "IC-Action-Show-Password");
+                    ? Constants.IMG_HidePassword : Constants.IMG_ShowPassword);
             }));
             viewLinePassword = GenericLine.GetLine(new CGRect(0, 36, viewPassword.Frame.Width, 1));
             viewPassword.AddSubviews(new UIView[] { lblPasswordTitle, lblPasswordError
@@ -237,7 +230,7 @@ namespace myTNB.Registration
 
             lblConfirmPasswordError = new UILabel(new CGRect(0, 37, viewConfirmEmail.Frame.Width, 14))
             {
-                Font = MyTNBFont.MuseoSans11_300,
+                Font = MyTNBFont.MuseoSans10_300,
                 TextAlignment = UITextAlignment.Left,
                 TextColor = MyTNBColor.Tomato
             };
@@ -257,14 +250,14 @@ namespace myTNB.Registration
             };
             UIImageView imgShowConfirmPassword = new UIImageView(new CGRect(0, 0, 24, 24))
             {
-                Image = UIImage.FromBundle("IC-Action-Show-Password")
+                Image = UIImage.FromBundle(Constants.IMG_ShowPassword)
             };
             viewShowConfirmPassword.AddSubview(imgShowConfirmPassword);
             viewConfirmPassword.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 txtFieldConfirmPassword.SecureTextEntry = !txtFieldConfirmPassword.SecureTextEntry;
                 imgShowConfirmPassword.Image = UIImage.FromBundle(txtFieldConfirmPassword.SecureTextEntry
-                    ? "IC-Action-Hide-Password" : "IC-Action-Show-Password");
+                    ? Constants.IMG_HidePassword : Constants.IMG_ShowPassword);
             }));
             viewLineConfirmPassword = GenericLine.GetLine(new CGRect(0, 36, viewConfirmPassword.Frame.Width, 1));
             viewConfirmPassword.AddSubview(viewLineConfirmPassword);
@@ -280,7 +273,7 @@ namespace myTNB.Registration
             //Terms Details
             NSError htmlBodyError = null;
             NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(RegisterConstants.I18N_TNC)
-                        , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(12F));
+                , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(12F));
             NSMutableAttributedString mutableHTMLFooter = new NSMutableAttributedString(htmlBody);
 
             UIStringAttributes linkAttributes = new UIStringAttributes
@@ -296,7 +289,6 @@ namespace myTNB.Registration
             }, new NSRange(0, htmlBody.Length));
             txtViewDetails = new UITextView
             {
-                //    Frame = new CGRect(18, 485, View.Frame.Width - 36, 51),
                 Editable = false,
                 ScrollEnabled = true,
                 AttributedText = mutableHTMLBody,
@@ -411,7 +403,7 @@ namespace myTNB.Registration
 
         private void AddBackButton()
         {
-            UIImage backImg = UIImage.FromBundle("Back-White");
+            UIImage backImg = UIImage.FromBundle(Constants.IMG_Back);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 DismissViewController(true, null);
@@ -521,8 +513,8 @@ namespace myTNB.Registration
                 if (textField == txtFieldConfirmEmail)
                 {
                     bool isMatch = txtFieldEmail.Text.Equals(txtFieldConfirmEmail.Text);
-                    lblError.Text = isValid ? "Error_MismatchedEmail".Translate()
-                        : "Invalid_Email".Translate();
+                    lblError.Text = isValid ? GetErrorI18NValue(Constants.Error_MismatchedEmail)
+                        : GetErrorI18NValue(Constants.Error_InvalidEmailAddress);
                     isValid = isValid && isMatch;
                 }
                 //Handling for Confirm Password
@@ -530,7 +522,7 @@ namespace myTNB.Registration
                 {
                     bool isMatch = txtFieldPassword.Text.Equals(txtFieldConfirmPassword.Text);
                     lblError.Text = isValid ? GetErrorI18NValue(Constants.Error_MismatchedPassword)
-                        : "Hint_Password".Translate();
+                        : GetHintI18NValue(Constants.Hint_Password);
                     isValid = isValid && isMatch;
                 }
                 else if (textField == txtFieldMobileNo)
