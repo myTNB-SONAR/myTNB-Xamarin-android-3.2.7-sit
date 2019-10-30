@@ -129,7 +129,15 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public override bool CameraPermissionRequired()
         {
-            return true;
+            MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
+            if (currentMasterData.IsOCRDown)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         [OnClick(Resource.Id.btnSubmitReading)]
