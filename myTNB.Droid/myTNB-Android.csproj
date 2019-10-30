@@ -3687,6 +3687,46 @@
     <Compile Include="Src\NewWalkthrough\MVP\NewWalkthroughContract.cs" />
     <Compile Include="Src\NewWalkthrough\MVP\NewWalkthroughAdapter.cs" />
     <Compile Include="Src\NewWalkthrough\MVP\NewWalkthroughFragment.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_reward_toggled_unread.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_menu_reward_unread.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_menu_reward_toggled_unread.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_menu_reward_unread.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_reward_toggled_unread.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_menu_reward_unread.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_reward_toggled_unread.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_menu_reward_unread.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_reward_toggled_unread.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_menu_reward_unread.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

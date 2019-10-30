@@ -1,4 +1,5 @@
 ﻿using Android.Graphics;
+using Android.Preferences;
 using Android.Support.V7.Widget;
 using Android.Text;
 using Android.Util;
@@ -256,7 +257,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                     {
                         case "1001":
                             vh.serviceImg.SetImageResource(Resource.Drawable.submit_meter);
-                            if (MyTNBAccountManagement.GetInstance().IsSMROnboardingShown())
+                            if (UserSessions.HasSMROnboardingShown(PreferenceManager.GetDefaultSharedPreferences(this.mActivity)))
                             {
                                 vh.newLabel.Visibility = ViewStates.Gone;
                             }
@@ -300,7 +301,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                                     vh.serviceTitle.TextFormatted = Html.FromHtml("Pay<br/>My Bill");
                                 }
                             }
-                            if (MyTNBAccountManagement.GetInstance().IsPayBillShown())
+                            if (UserSessions.HasPayBillShown(PreferenceManager.GetDefaultSharedPreferences(this.mActivity)))
                             {
                                 vh.newLabel.Visibility = ViewStates.Gone;
                             }
@@ -315,17 +316,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                                 vh.serviceImg.SetImageResource(Resource.Drawable.pdf_bill_disabled);
                             }
 
-                            string newStringValue = "View My<br/>e - Bill";
+                            bool isHasNonREAccount = MyTNBAccountManagement.GetInstance().IsHasNonREAccountCount() > 0;
+                            bool isHasMoreThanOneNonREAccount = MyTNBAccountManagement.GetInstance().IsHasNonREAccountCount() > 1;
+                            bool isHasREAccount = MyTNBAccountManagement.GetInstance().IsHasREAccountCount() > 0;
+                            bool isHasMoreThanOneREAccount = MyTNBAccountManagement.GetInstance().IsHasREAccountCount() > 1;
 
-                            if (MyTNBAccountManagement.GetInstance().IsHasNonREAccountCount() > 1)
+                            string newStringValue = "View My<br/>Bill";
+
+                            if (isHasNonREAccount && isHasREAccount)
+                            {
+                                newStringValue = "View My<br/>Bills / Advices";
+                            }
+                            else if (isHasREAccount && !isHasNonREAccount)
+                            {
+                                newStringValue = "View My<br/>Advice";
+                                if (isHasMoreThanOneREAccount)
+                                {
+                                    newStringValue += "s";
+                                }
+                            }
+                            else if (isHasNonREAccount && isHasMoreThanOneNonREAccount && !isHasREAccount)
                             {
                                 newStringValue += "s";
                             }
 
-                            if (MyTNBAccountManagement.GetInstance().IsHasREAccountCount() > 0)
-                            {
-                                newStringValue += " / Advice";
-                            }
 
                             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
                             {
@@ -336,7 +350,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Adapter
                                 vh.serviceTitle.TextFormatted = Html.FromHtml(newStringValue);
                             }
 
-                            if (MyTNBAccountManagement.GetInstance().IsViewBillShown())
+                            if (UserSessions.HasViewBillShown(PreferenceManager.GetDefaultSharedPreferences(this.mActivity)))
                             {
                                 vh.newLabel.Visibility = ViewStates.Gone;
                             }

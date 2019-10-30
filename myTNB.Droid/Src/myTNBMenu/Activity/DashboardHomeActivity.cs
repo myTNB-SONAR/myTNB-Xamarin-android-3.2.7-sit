@@ -578,7 +578,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem promotionMenuItem = bottomMenu.FindItem(Resource.Id.menu_promotion);
                 if (promotionMenuItem != null)
                 {
-                    if (MyTNBAccountManagement.GetInstance().IsWhatNewShown())
+                    if (UserSessions.HasWhatNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                     {
                         promotionMenuItem.SetIcon(Resource.Drawable.ic_menu_promotions_unread_selector);
                     }
