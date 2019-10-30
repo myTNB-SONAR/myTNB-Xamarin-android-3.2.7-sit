@@ -69,6 +69,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void ShowNotificationCount(int count);
 
+            void OnSavedSSMRMeterReadingNoOCRTimeStamp(string mSavedTimeStamp);
+
+            void CheckSSMRMeterReadingNoOCRTimeStamp();
+
+            void OnSavedSSMRMeterReadingThreePhaseNoOCRTimeStamp(string mSavedTimeStamp);
+
+            void CheckSSMRMeterReadingThreePhaseNoOCRTimeStamp();
+
         }
 
         public interface IHomeMenuPresenter
@@ -127,6 +135,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             void GetUserNotifications();
 
             void SetQueryClose();
+
+            void GetSmartMeterReadingWalkthroughtNoOCRTimeStamp();
+
+            Task OnGetSmartMeterReadingWalkthroughtNoOCRTimeStamp();
+
+            Task OnGetSSMRMeterReadingScreensNoOCR();
+
+            void GetSmartMeterReadingThreePhaseWalkthroughtNoOCRTimeStamp();
+
+            Task OnGetSmartMeterReadingThreePhaseWalkthroughtNoOCRTimeStamp();
+
+            Task OnGetSSMRMeterReadingThreePhaseScreensNoOCR();
         }
 
         public interface IHomeMenuService

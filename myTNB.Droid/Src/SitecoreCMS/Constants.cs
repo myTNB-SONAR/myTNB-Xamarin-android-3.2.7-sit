@@ -134,6 +134,21 @@
                     public const string Description = "Description";
                     public const string Image = "Image";
                 }
+
+
+                public struct ImageName
+                {
+                    //iOS
+                    public const string Image = "Image";
+                    public const string Image_2X = "image_2x";
+                    public const string Image_3X = "image_3x";
+                    //Android
+                    public const string Image_HDPI = "image_hdpi";
+                    public const string Image_MDPI = "image_mdpi";
+                    public const string Image_XHDPI = "image_xhdpi";
+                    public const string Image_XXHDPI = "image_xxhdpi";
+                    public const string Image_XXXHDPI = "image_xxxhdpi";
+                }
             }
 
             public struct ItemID
