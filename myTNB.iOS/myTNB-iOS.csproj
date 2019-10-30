@@ -1703,6 +1703,7 @@
     <Folder Include="Assets.xcassets\Onboarding-Image-4.imageset\" />
     <Folder Include="Assets.xcassets\Onboarding-Image-5.imageset\" />
     <Folder Include="Assets.xcassets\RE-Leaf-Large.imageset\" />
+    <Folder Include="Registration\Add Accounts\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1778,10 +1779,6 @@
     </Compile>
     <Compile Include="Registration\Customer Accounts\AccountRecordDataSource.cs" />
     <Compile Include="Helpers\LoadingOverlay.cs" />
-    <Compile Include="Registration\AddAccountViewController.cs" />
-    <Compile Include="Registration\AddAccountViewController.designer.cs">
-      <DependentUpon>AddAccountViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Model\AddAccountModel.cs" />
     <Compile Include="Model\AddAccountListModel.cs" />
     <Compile Include="Helpers\TextFieldHelper.cs" />
@@ -1820,10 +1817,6 @@
     <Compile Include="Sitecore CMS\Service\TimestampService.cs" />
     <Compile Include="SQLite\SQLite Data Manager\WalkthroughScreensEntity.cs" />
     <Compile Include="Helpers\DeviceHelper.cs" />
-    <Compile Include="Registration\BarcodeScannerViewController.cs" />
-    <Compile Include="Registration\BarcodeScannerViewController.designer.cs">
-      <DependentUpon>BarcodeScannerViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Registration\TermsAndConditionViewController.cs" />
     <Compile Include="Registration\TermsAndConditionViewController.designer.cs">
       <DependentUpon>TermsAndConditionViewController.cs</DependentUpon>
@@ -2025,11 +2018,6 @@
     <Compile Include="Model\AddMultipleSupplyAccountsToUserReg\AddMultipleSupplyAccountsResponseModel.cs" />
     <Compile Include="Model\ValidateManualAccountLinking\ValidateManualAccountLinkingModel.cs" />
     <Compile Include="Model\ValidateManualAccountLinking\ValidateManualAccountLinkingResponseModel.cs" />
-    <Compile Include="Registration\AddAccountSuccessDataSource.cs" />
-    <Compile Include="Registration\AddAccountSuccessViewController.cs" />
-    <Compile Include="Registration\AddAccountSuccessViewController.designer.cs">
-      <DependentUpon>AddAccountSuccessViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Registration\SuccessfullyAddedAccountCell.cs" />
     <Compile Include="Registration\SuccessfullyAddedAccountCell.designer.cs">
       <DependentUpon>SuccessfullyAddedAccountCell.cs</DependentUpon>
@@ -2528,7 +2516,6 @@
     <Compile Include="Helpers\NotifCenterUtility.cs" />
     <Compile Include="Sitecore CMS\Model\AppLaunchImageResponseModel.cs" />
     <Compile Include="Sitecore CMS\Service\AppLaunchImageService.cs" />
-    <Compile Include="Registration\AddAccountConstants.cs" />
     <Compile Include="Components\Table View\NoDataViewCell.cs" />
     <Compile Include="Components\Usage View\EmptyUsageComponent.cs" />
     <Compile Include="Model\GetIsSmrApplyAllowed\GetIsSmrApplyAllowedResponse.cs" />
@@ -2567,6 +2554,20 @@
     <Compile Include="Onboarding\OnboardingConstants.cs" />
     <Compile Include="Home\Dashboard\View Bill\ViewBillConstants.cs" />
     <Compile Include="Registration\RegisterConstants.cs" />
+    <Compile Include="Registration\Customer Accounts\AddAccountConstants.cs" />
+    <Compile Include="Registration\Customer Accounts\AddAccountSuccessDataSource.cs" />
+    <Compile Include="Registration\Customer Accounts\AddAccountSuccessViewController.cs" />
+    <Compile Include="Registration\Customer Accounts\AddAccountSuccessViewController.designer.cs">
+      <DependentUpon>AddAccountSuccessViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registration\Add Accounts\AddAccountViewController.cs" />
+    <Compile Include="Registration\Add Accounts\AddAccountViewController.designer.cs">
+      <DependentUpon>AddAccountViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Registration\Add Accounts\BarcodeScannerViewController.cs" />
+    <Compile Include="Registration\Add Accounts\BarcodeScannerViewController.designer.cs">
+      <DependentUpon>BarcodeScannerViewController.cs</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
