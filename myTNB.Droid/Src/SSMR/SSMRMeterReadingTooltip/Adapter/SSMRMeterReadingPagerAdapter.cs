@@ -10,6 +10,7 @@ using Android.Widget;
 using myTNB.SitecoreCM.Models;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
+using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Utils;
 using Square.Picasso;
 using System;
@@ -17,6 +18,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
+using static myTNB_Android.Src.AppLaunch.Models.MasterDataResponse;
 
 namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.Adapter
 {
@@ -84,13 +86,28 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.Adapter
                     }
                     else if (list.Count == 2)
                     {
-                        if (position == 0)
+                        MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
+                        if (currentMasterData.IsOCRDown)
                         {
-                            tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_2);
+                            if (position == 0)
+                            {
+                                tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_1);
+                            }
+                            else
+                            {
+                                tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_3);
+                            }
                         }
                         else
                         {
-                            tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_3);
+                            if (position == 0)
+                            {
+                                tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_2);
+                            }
+                            else
+                            {
+                                tooltipImg.SetImageResource(Resource.Drawable.tooltip_bg_3);
+                            }
                         }
                     }
                     else if (list.Count == 3)
