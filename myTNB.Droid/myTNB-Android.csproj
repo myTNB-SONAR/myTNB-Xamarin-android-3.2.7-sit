@@ -3727,6 +3727,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\MyTNBService\Parser\BillingResponseParser.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4109,6 +4110,7 @@
     <Folder Include="Src\MyTNBService\Notification\" />
     <Folder Include="Src\NewWalkthrough\" />
     <Folder Include="Src\NewWalkthrough\MVP\" />
+    <Folder Include="Src\MyTNBService\Parser\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

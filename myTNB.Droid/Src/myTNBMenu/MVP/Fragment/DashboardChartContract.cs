@@ -8,6 +8,7 @@ using static myTNB_Android.Src.myTNBMenu.Models.GetInstallationDetailsResponse;
 using myTNB.SitecoreCMS.Model;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using myTNB_Android.Src.MyTNBService.Model;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -142,6 +143,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void ByZoomDayView();
 
             void ShowNewAccountView(string contentTxt);
+
+            void ShowBillDetails(AccountData accountData, List<AccountChargeModel> selectedAccountChargesModelList);
         }
 
         public interface IUserActionsListener : IBasePresenter
