@@ -9,6 +9,7 @@ using myTNB_Android.Src.myTNBMenu.Api;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Billing;
 using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.MyTNBService.Parser;
 using myTNB_Android.Src.MyTNBService.Request;
 using myTNB_Android.Src.MyTNBService.Response;
 using myTNB_Android.Src.Utils;
@@ -62,22 +63,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
             }
         }
 
-        private List<BillMandatoryChargesTooltipModel> GetMandatoryChargesTooltipModelList(List<MandatoryChargesPopUpDetail> mandatoryChargesPopUpDetailList)
-        {
-            List<BillMandatoryChargesTooltipModel> billMandatoryChargesTooltipModelList = new List<BillMandatoryChargesTooltipModel>();
-            BillMandatoryChargesTooltipModel model;
-            mandatoryChargesPopUpDetailList.ForEach(popupDetail =>
-            {
-                model = new BillMandatoryChargesTooltipModel();
-                model.Title = popupDetail.Title;
-                model.Description = popupDetail.Description;
-                model.Type = popupDetail.Type;
-                model.CTA = popupDetail.CTA;
-                billMandatoryChargesTooltipModelList.Add(model);
-            });
-            return billMandatoryChargesTooltipModelList;
-        }
-
         public async void GetAccountsCharges(List<string> accountList, string preSelectedAccount)
         {
             try
@@ -90,8 +75,8 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                 AccountChargesResponse accountChargeseResponse = await api.GetAccountsCharges<AccountChargesResponse>(accountChargeseRequest);
                 if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "7200")
                 {
-                    MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
-                    accountChargeModelList.AddRange(GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges));
+                    MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
+                    accountChargeModelList.AddRange(BillingResponseParser.GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges));
                     List<MPAccount> newAccountList = new List<MPAccount>();
                     accountChargeseResponse.Data.ResponseData.AccountCharges.ForEach(accountCharge =>
                     {
@@ -212,61 +197,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
                 this.mView.DisablePayButton();
             }
 
-        }
-
-        private List<AccountChargeModel> GetAccountCharges(List<AccountCharge> accountCharges)
-        {
-            List<AccountChargeModel> accountChargeModelList = new List<AccountChargeModel>();
-            accountCharges.ForEach(accountCharge =>
-            {
-                MandatoryCharge mandatoryCharge = accountCharge.MandatoryCharges;
-                List<ChargeModel> chargeModelList = new List<ChargeModel>();
-                mandatoryCharge.Charges.ForEach(charge =>
-                {
-                    ChargeModel chargeModel = new ChargeModel();
-                    chargeModel.Key = charge.Key;
-                    chargeModel.Title = charge.Title;
-                    chargeModel.Amount = charge.Amount;
-                    chargeModelList.Add(chargeModel);
-                });
-                MandatoryChargeModel mandatoryChargeModel = new MandatoryChargeModel();
-                mandatoryChargeModel.TotalAmount = mandatoryCharge.TotalAmount;
-                mandatoryChargeModel.ChargeModelList = chargeModelList;
-
-                AccountChargeModel accountChargeModel = new AccountChargeModel();
-                accountChargeModel.IsCleared = false;
-                accountChargeModel.IsNeedPay = false;
-                accountChargeModel.IsPaidExtra = false;
-                accountChargeModel.ContractAccount = accountCharge.ContractAccount;
-                accountChargeModel.CurrentCharges = accountCharge.CurrentCharges;
-                accountChargeModel.OutstandingCharges = accountCharge.OutstandingCharges;
-                accountChargeModel.AmountDue = accountCharge.AmountDue;
-                accountChargeModel.DueDate = accountCharge.DueDate;
-                accountChargeModel.BillDate = accountCharge.BillDate;
-                accountChargeModel.IncrementREDueDateByDays = accountCharge.IncrementREDueDateByDays;
-                accountChargeModel.MandatoryCharges = mandatoryChargeModel;
-                EvaluateAmountDue(accountChargeModel);
-                accountChargeModelList.Add(accountChargeModel);
-            });
-            return accountChargeModelList;
-        }
-
-        public void EvaluateAmountDue(AccountChargeModel accountChargeModel)
-        {
-            if (accountChargeModel.AmountDue > 0f)
-            {
-                accountChargeModel.IsNeedPay = true;
-            }
-
-            if (accountChargeModel.AmountDue < 0f)
-            {
-                accountChargeModel.IsPaidExtra = true;
-            }
-
-            if (accountChargeModel.AmountDue == 0f)
-            {
-                accountChargeModel.IsCleared = true;
-            }
         }
 
         public List<AccountChargeModel> GetSelectedAccountChargesModelList(List<MPAccount> mpAccountList)

@@ -1464,7 +1464,7 @@ Please try again later.]]>
 <string name="duplicate_account_message">This account number is already added on the list</string>
 <string name="duplicate_account_btn_ok">Ok</string>
 
-<string name="new_account_view">Welcome to your usage view! You’ll see your usage here soon.</string>
+<string name="new_account_view">Welcome! Your usage will be shown here after you receive your first bill.</string>
 
 <string name="smr_contact_not_available_title">Sorry, Self Meter Reading is currently unavailable for your account.</string>
 
