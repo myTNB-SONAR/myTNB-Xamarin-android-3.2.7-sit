@@ -44,9 +44,8 @@ namespace myTNB
         OnboardingEnum _onboardingEnum;
         int _timeOut = 4000;
         UIView maintenanceView;
-        public AppLaunchViewController(IntPtr handle) : base(handle)
-        {
-        }
+
+        public AppLaunchViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
         {
@@ -154,7 +153,6 @@ namespace myTNB
                 BillHistoryEntity.DeleteTable();
                 ChartEntity.DeleteTable();
                 DueEntity.DeleteTable();
-                GetAccountsForAppUpdate();
             }
         }
 
@@ -194,9 +192,18 @@ namespace myTNB
                                 DataManager.DataManager.SharedInstance.AccountRecordsList = new CustomerAccountRecordListModel();
                                 DataManager.DataManager.SharedInstance.AccountRecordsList.d = new List<CustomerAccountRecordModel>();
                             }
+                            ProcessOnboarding(_onboardingEnum);
+                        }
+                        else
+                        {
+                            ShowOnboardingWithNormalLaunch();
                         }
                     });
                 });
+            }
+            else
+            {
+                ProcessOnboarding(_onboardingEnum);
             }
         }
 
@@ -672,8 +679,16 @@ namespace myTNB
                     }
                     else
                     {
-                        ExecuteSiteCoreCall();
+                        ExecuteLaunch();
                     }
+
+                    InvokeInBackground(async () =>
+                    {
+                        await SitecoreServices.Instance.OnAppLaunchSitecoreCall();
+                        NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                        sharedPreference.SetBool(AppLaunchMasterCache.IsOCRDown, "IsOCRDown");
+                        sharedPreference.Synchronize();
+                    });
                 }
                 else if (response.d.IsMaintenance)
                 {
@@ -728,13 +743,14 @@ namespace myTNB
             DataManager.DataManager.SharedInstance.UserEntity = uManager.GetAllItems();
         }
 
-        internal void ShowOnboarding(List<OnboardingItemModel> model)
+        internal void ShowOnboarding(List<OnboardingItemModel> model, bool isToUpdateMobileNo = false)
         {
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var isLogin = sharedPreference.BoolForKey(TNBGlobal.PreferenceKeys.LoginState);
             UIStoryboard onboardingStoryboard = UIStoryboard.FromName("Onboarding", null);
             OnboardingViewController onboardingVC = onboardingStoryboard.InstantiateViewController("OnboardingViewController") as OnboardingViewController;
             onboardingVC.onboardingEnum = _onboardingEnum;
+            onboardingVC.isToUpdateMobileNo = isToUpdateMobileNo;
             onboardingVC.isLogin = isLogin;
             onboardingVC.model = model;
             onboardingVC.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
@@ -759,42 +775,20 @@ namespace myTNB
             ShowViewController(loginVC, this);
         }
 
-        internal async void ExecuteSiteCoreCall()
+        internal void ExecuteLaunch()
         {
-            if ((_onboardingEnum == OnboardingEnum.FreshInstall) || (_onboardingEnum == OnboardingEnum.AppUpdate))
+            if (_onboardingEnum == OnboardingEnum.AppUpdate)
+            {
+                GetAccountsForAppUpdate();
+            }
+            else if (_onboardingEnum == OnboardingEnum.FreshInstall)
             {
                 ProcessOnboarding(_onboardingEnum);
             }
             else
             {
-                var sharedPreference = NSUserDefaults.StandardUserDefaults;
-                var isLogin = sharedPreference.BoolForKey(TNBGlobal.PreferenceKeys.LoginState);
-                if (isLogin && DataManager.DataManager.SharedInstance.UserEntity != null && DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
-                {
-                    DataManager.DataManager.SharedInstance.User.UserID = DataManager.DataManager.SharedInstance.UserEntity[0]?.userID;
-
-                    bool isPhoneVerified = await GetPhoneVerificationStatus();
-
-                    if (isPhoneVerified)
-                    {
-                        ExecuteGetCutomerRecordsCall();
-                    }
-                    else
-                    {
-                        ShowUpdateMobileNumber(true);
-                    }
-                }
-                else
-                {
-                    ShowPrelogin();
-                    UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
-                }
+                ProceedOnNormalLaunch();
             }
-
-            InvokeInBackground(async () =>
-            {
-                await SitecoreServices.Instance.OnAppLaunchSitecoreCall();
-            });
         }
 
         /// <summary>
@@ -808,62 +802,13 @@ namespace myTNB
             DataManager.DataManager.SharedInstance.CreatePaymentHistoryTable();
         }
 
-        internal Task LoadTermsAndConditions()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                GetItemsService iService = new GetItemsService(TNBGlobal.OS, _imageSize, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
-                bool isValidTimeStamp = false;
-                string timeStampItems = iService.GetTimestampItem();
-                TimestampResponseModel timeStampResponse = JsonConvert.DeserializeObject<TimestampResponseModel>(timeStampItems);
-                if (timeStampResponse != null && timeStampResponse.Status.Equals("Success")
-                    && timeStampResponse.Data != null && timeStampResponse.Data.Count > 0
-                    && timeStampResponse.Data[0] != null)
-                {
-                    var sharedPreference = NSUserDefaults.StandardUserDefaults;
-                    string currentTS = sharedPreference.StringForKey("SiteCoreTimeStamp");
-                    if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
-                    {
-                        sharedPreference.SetString(timeStampResponse.Data[0].Timestamp, "SiteCoreTimeStamp");
-                        sharedPreference.Synchronize();
-                        isValidTimeStamp = true;
-                    }
-                    else
-                    {
-                        if (currentTS.Equals(timeStampResponse.Data[0].Timestamp))
-                        {
-                            isValidTimeStamp = false;
-                        }
-                        else
-                        {
-                            sharedPreference.SetString(timeStampResponse.Data[0].Timestamp, "SiteCoreTimeStamp");
-                            sharedPreference.Synchronize();
-                            isValidTimeStamp = true;
-                        }
-                    }
-                }
-                if (isValidTimeStamp)
-                {
-                    TermsAndConditionResponseModel tncResponse = iService.GetFullRTEPagesItems();
-                    if (tncResponse != null && tncResponse.Status.Equals("Success")
-                        && tncResponse.Data != null && tncResponse.Data.Count > 0)
-                    {
-                        TermsAndConditionEntity tncEntity = new TermsAndConditionEntity();
-                        tncEntity.DeleteTable();
-                        tncEntity.CreateTable();
-                        tncEntity.InsertListOfItems(tncResponse.Data);
-                    }
-                }
-            });
-        }
-
-        private void ProcessOnboarding(OnboardingEnum onboardingEnum)
+        private void ProcessOnboarding(OnboardingEnum onboardingEnum, bool isToUpdateMobileNo = false)
         {
             List<OnboardingItemModel> onboardingData = GetOnboardingData(onboardingEnum);
             if (onboardingData != null &&
                 onboardingData.Count > 0)
             {
-                ShowOnboarding(onboardingData);
+                ShowOnboarding(onboardingData, isToUpdateMobileNo);
             }
         }
 
@@ -939,30 +884,101 @@ namespace myTNB
             return result;
         }
 
-        internal void ExecuteGetCutomerRecordsCall()
+        internal void ShowOnboardingWithNormalLaunch()
+        {
+            InvokeInBackground(async () =>
+            {
+                bool isPhoneVerified = await GetPhoneVerificationStatus();
+                InvokeOnMainThread(() =>
+                {
+                    if (isPhoneVerified)
+                    {
+                        ExecuteGetCustomerRecordsCall(true);
+                    }
+                    else
+                    {
+                        ProcessOnboarding(_onboardingEnum, true);
+                    }
+                });
+            });
+        }
+
+        internal void ProceedOnNormalLaunch()
+        {
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            var isLogin = sharedPreference.BoolForKey(TNBGlobal.PreferenceKeys.LoginState);
+            if (isLogin && DataManager.DataManager.SharedInstance.UserEntity != null && DataManager.DataManager.SharedInstance.UserEntity?.Count > 0)
+            {
+                DataManager.DataManager.SharedInstance.User.UserID = DataManager.DataManager.SharedInstance.UserEntity[0]?.userID;
+
+                InvokeInBackground(async () =>
+                {
+                    bool isPhoneVerified = await GetPhoneVerificationStatus();
+                    InvokeOnMainThread(() =>
+                    {
+                        if (isPhoneVerified)
+                        {
+                            ExecuteGetCustomerRecordsCall(false);
+                        }
+                        else
+                        {
+                            ShowUpdateMobileNumber(true);
+                        }
+                    });
+                });
+            }
+            else
+            {
+                ShowPrelogin();
+                UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
+            }
+        }
+
+        internal void ExecuteGetCustomerRecordsCall(bool forGetAccountsFailed = false)
         {
             UserAccountsEntity uaManager = new UserAccountsEntity();
             DataManager.DataManager.SharedInstance.AccountRecordsList = uaManager.GetCustomerAccountRecordList();
-            //AccountManager.Instance.SetAccounts(uaManager.GetCustomerAccountRecordList());
             if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
                        && DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null
                        && DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count > 0)
             {
                 DataManager.DataManager.SharedInstance.SelectedAccount = DataManager.DataManager.SharedInstance.AccountRecordsList.d[0];
-                ShowDashboard();
+
+                if (forGetAccountsFailed)
+                {
+                    ProcessOnboarding(_onboardingEnum);
+                }
+                else
+                {
+                    ShowDashboard();
+                }
                 UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
             }
             else if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
               && DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null
               && DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count == 0)
             {
-                ShowDashboard();
+                if (forGetAccountsFailed)
+                {
+                    ProcessOnboarding(_onboardingEnum);
+                }
+                else
+                {
+                    ShowDashboard();
+                }
                 UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
             }
             else
             {
                 DataManager.DataManager.SharedInstance.ClearLoginState();
-                ShowPrelogin();
+                if (forGetAccountsFailed)
+                {
+                    ProcessOnboarding(_onboardingEnum);
+                }
+                else
+                {
+                    ShowPrelogin();
+                }
                 UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
             }
         }

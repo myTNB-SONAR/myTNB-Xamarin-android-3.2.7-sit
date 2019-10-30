@@ -14,6 +14,7 @@
 
         //Image
         public static string IMG_Back = "Back-White";
+        public static string IMG_FooterBG = "Home-Footer-BG";
         public static string IMG_BGNormal = "Usage-Bg-Normal";
         public static string IMG_BGLong = "Usage-Bg-Long";
         public static string IMG_BGRefresh = "Usage-Refresh-Bg";

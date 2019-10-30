@@ -1,15 +1,7 @@
 Sprint 2C SIT Build
 
-[User Story] 2514 [Walkthrough Screen and Tutorial Overlay] As an existing myTNB App user, I am able to see walkthrough screen for new features after the app is being updated.
-[User Story] 2565 [Walkthrough Screen and Tutorial Overlay] As a new register for myTNB App, I want to be able to see an introductory walkthrough screen.
-[Bug] 3181 iOS: Submit SSMR (Without OCR) - Misalignment of Copy, Spacing and Flow
-[Bug] 2814 Regression_iOS : Add Electricity Account Screen (Add Another Account Button)
-[Bug] 2836 Regression_iOS : Copy writing on "My Account" page
-[Bug] 3107 iOS: Pre-Log In - Misalignment in Copy
-[Bug] 3102 Regression_iOS: Add Electricity Account Inline Validation for CA should only allow 12 digits
-[Bug] 3146 Homepage Redesign_iOS: For user that have more than 1 account (NM/SM/SMR), copywriting view my bills plural tense
-[Bug] 3141 Homepage Redesign_iOS: For user that have only RE accounts, the pay my bills should be greyed out
-[Bug] 2839 SSMR Apply_iOS: Email Address title is not shown after the field is populated
-[Bug] 2412 Usage Dashboard_ios : User is observing different messages for RE account in Dashboard and Bill Screen
-[Bug] 2893 [Regression] Registration_iOS: Account no. Icon
-[Bug] 3150 Pre-Login_iOS - Copywriting is not expected
+[User Story] 2850 [SSMR] As a myTNB customer, I can submit my monthly meter reading manually via myTNB app and view submitted meter reading history. (without OCR)
+[Bug] 2819 Regression_iOS : Copy writing for the "Select Bill(s)" page
+[Bug] 3091 Notification_iOS: An account have notification but in the notifications page its' empty
+[Bug] 3112 iOS: Log In - Misalignment in Design
+[Bug] 3190 Homepage Redesign_iOS: Quick Action Services (Pay my bill, View my bill) should be greyed out

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
 using CoreGraphics;
+using Foundation;
 using UIKit;
 
 namespace myTNB.SSMR
@@ -53,8 +55,29 @@ namespace myTNB.SSMR
             lblDescription.Frame = new CGRect(lblDescription.Frame.X, lblDescription.Frame.Y, lblDescription.Frame.Width, size.Height);
             that.View.AddSubviews(new UIView[] { imgBackground, lblTitle, lblDescription });
 
-            UIImage displayImage = UIImage.FromBundle(SSMRDataObject.FallbackImage);             if (SSMRDataObject.IsSitecoreData && SSMRDataObject.NSDataImage != null)             {                 displayImage = UIImage.LoadFromData(SSMRDataObject.NSDataImage);
-            }
+            UIImage displayImage;             if (SSMRDataObject.IsSitecoreData)             {                 if (string.IsNullOrEmpty(SSMRDataObject.Image) || string.IsNullOrWhiteSpace(SSMRDataObject.Image))                 {                     displayImage = UIImage.FromBundle(string.Empty);                 }                 else                 {
+                    NSError error;
+                    try
+                    {
+                        displayImage = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(SSMRDataObject.Image), NSDataReadingOptions.MappedAlways, out error));
+                        if (error != null)
+                        {
+                            displayImage = UIImage.FromBundle(SSMRDataObject.FallbackImage);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine("Image load Error: " + e.Message);
+                        displayImage = UIImage.FromBundle(SSMRDataObject.FallbackImage);
+                    }                 }             }             else             {
+                if (string.IsNullOrEmpty(SSMRDataObject.Image) || string.IsNullOrWhiteSpace(SSMRDataObject.Image))
+                {
+                    displayImage = UIImage.FromBundle(string.Empty);
+                }
+                else
+                {
+                    displayImage = UIImage.FromBundle(SSMRDataObject.Image);
+                }             }
             imgBackground.Image = displayImage;
         }
     }

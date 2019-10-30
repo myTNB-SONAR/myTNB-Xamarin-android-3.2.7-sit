@@ -441,7 +441,7 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.WaterBlue,
-                Text = GetI18NValue(SSMRConstants.I18N_ImReady),
+                Text = LanguageUtility.GetCommonI18NValue(Constants.Common_GotIt),
                 TextAlignment = UITextAlignment.Center,
                 UserInteractionEnabled = true
             };
