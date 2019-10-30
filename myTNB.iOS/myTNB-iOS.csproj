@@ -2565,6 +2565,8 @@
     </Compile>
     <Compile Include="Sitecore CMS\Model\Onboarding\OnboardingModel.cs" />
     <Compile Include="Onboarding\OnboardingConstants.cs" />
+    <Compile Include="Home\Dashboard\View Bill\ViewBillConstants.cs" />
+    <Compile Include="Registration\RegisterConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

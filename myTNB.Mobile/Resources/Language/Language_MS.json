@@ -82,13 +82,16 @@
     "next": "Seterusnya",
     "resend": "Hantar semula",
     "retry": "Retry", //missing
-    "save": "Simpan"
+    "save": "Simpan",
+    "fullname": "Nama Penuh",
+    "confirmPassword": "Sahkan Kata Laluan"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
     "mobileNumberSample": "Contoh: +6012 345 6789",
     "emptyAcctSelector": "---",
-    "nickname": "e.g. My House, Parent's House"
+    "nickname": "e.g. My House, Parent's House",
+    "password": "Password must have at least 8 alphanumeric characters."
   },
   "Error": {
     "invalid_email": "Format emel tidak sah.",
@@ -104,7 +107,9 @@
     "invalid_amountTitle": "Invalid Amount",
     "invalid_code": "Kod tidak sah",
     "invalid_password": "Password must have at least 8 alphanumeric characters.",
-    "invalid_mismatchedPassword": "Your new password do not match."
+    "invalid_mismatchedPassword": "Your new password do not match.",
+    "invalid_fullname": "Invalid full name",
+    "invalid_idnumber": "Invalid IC, ROC or Passport No."
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,", //missing
@@ -128,12 +133,12 @@
     "moreAccts": "Tambah Akaun",
     "rearrangeAccts": "Susun Akaun",
     "showMore": "Selebihnya",
-    "viewAdvice": "View My<br>Advice",
-    "viewAdvices": "View My<br>Advices",
-    "viewEBill": "Lihat Bil Saya", // "View <br>My e-Bill",
-    "viewEBills": "Lihat Bil Saya", //"View <br>My e-Bills",
-    "payBill": "Lihat Makluman Saya", //"Pay<br>My Bill",
-    "payBills": "Lihat Makluman Saya", //"Pay<br>My Bill",
+    "viewAdvice": "Lihat<br>Makluman Saya", // "View My<br>Advice",
+    "viewAdvices": "Lihat<br>Makluman Saya", //"View My<br>Advices",
+    "viewEBill": "Lihat<br>Bil Saya", // "View <br>My e-Bill",
+    "viewEBills": "Lihat<br>Bil Saya", //"View <br>My e-Bills",
+    "payBill": "Lihat<br>Makluman Saya", //"Pay<br>My Bill",
+    "payBills": "Lihat<br>Makluman Saya", //"Pay<br>My Bill",
     "submitFeedback": "Hantar<br>Maklum Balas", //"Submit<br>Feedback",
     "selfMeterReading": "Self<br>Meter Reading",
     "viewEBillAndAdvice": "Lihat Bil / Makluman Saya" //"View My<br>e-Bills / Advices"
@@ -300,8 +305,8 @@
     "projectedCostMsg": "<strong>Bil saya setakat hari ini:</strong><br><br>Your bill amount so far is the amount you have used up until yesterday.<br><br><strong> My bill may reach:</strong><br><br>This is calculated based on your average daily consumption for the past one (1) month, your actual bill may differ. To find out more, please visit our <strong><a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">FAQ page.</a></strong><br><br>Note: The amount shown is before applicable taxes / additional charges.",
     "projectedCostTitle": "Apakah ini?",
     "missedReadTitle": "Maksudnya?",
-    "missedReadMsg": "Your full usage for this particular day has not been retrieved yet. Check back in a while.",
-    "emptyDataMsg": "Welcome to your usage view! You’ll see your usage here soon.",
+    "missedReadMsg": "Penggunaan lengkap anda untuk hari tersebut masih belum diterima. Sila semak kemudian.",
+    "emptyDataMsg": "Selamat datang! Penggunaan anda akan dipaparkan setelah bil pertama dikeluarkan.",
     "SMOverlayTitle": "Bagaimana cara untuk melihat penggunaan harian saya?",
     "SMOverlayMsg": "Gerakkan dua jari seperti di atas untuk zum masuk atau keluar! Zum masuk untuk melihat pecahan harian anda.",
     "SMOverlayBtnTxt": "Faham!",
@@ -542,7 +547,7 @@
     "details": "Ia akan menggantikan kata laluan sedia ada. Segala butiran akaun anda masih kekal.",
     "newPassword": "Masukkan kata laluan baharu",
     "confirmNewPassword": "Sahkan kata laluan baharu",
-    "confirmPassword": "Confirm Password"
+    "confirmPassword": "Sahkan Kata Laluan"
   },
   "UpdateMobileNumber": {
     "verifyDeviceTitle": "Sahkan No. Telefon",
@@ -598,5 +603,15 @@
     "removeCardMessage": "You are about to remove credit / debit card ending with {0}.",
     "removeCardTitle": "Remove Credit / Debit Card",
     "cardNotRemovedMessage": "Credit / Debit Card ending with {0} was not removed. Please try again."
+  },
+  "ViewBill": {
+    "titleBill": "Bil",
+    "titleAdvice": "Makluman"
+  },
+  "Register": {
+    "title": "Daftar",
+    "tnc": "Dengan mendaftar, anda bersetuju pada <a href=\"\\\"><strong>Terma dan Syarat TNB</strong></a>, <a href=\"\\\"><strong>Persetujuan Pengguna</strong></a> dan <a href=\"\\\"><strong>polisi Privasi</strong></a>.",
+    "ctaTitle": "Daftar",
+    "confirmEmail": "Sahkan Emel"
   }
 }

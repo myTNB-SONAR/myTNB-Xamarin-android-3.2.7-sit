@@ -18,7 +18,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Register" id="760"/>
+                    <navigationItem key="navigationItem" id="760"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="201" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -56,7 +56,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Add Supply Account" id="4257">
+                    <navigationItem key="navigationItem" id="4257">
                         <barButtonItem key="backBarButtonItem" title="Back" id="5628"/>
                     </navigationItem>
                 </viewController>
@@ -141,7 +141,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Add Supply Account" id="52293"/>
+                    <navigationItem key="navigationItem" id="52293"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="52222" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -176,7 +176,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Terms &amp; Condition" id="53162"/>
+                    <navigationItem key="navigationItem" id="53162"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="53147" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

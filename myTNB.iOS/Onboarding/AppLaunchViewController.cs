@@ -327,7 +327,6 @@ namespace myTNB
 
             base.ViewDidAppear(animated);
             GetUserEntity();
-            UIApplication.SharedApplication.NetworkActivityIndicatorVisible = true;
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
                 InvokeOnMainThread(async () =>
@@ -930,7 +929,6 @@ namespace myTNB
             else
             {
                 ShowPrelogin();
-                UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
             }
         }
 
@@ -952,7 +950,6 @@ namespace myTNB
                 {
                     ShowDashboard();
                 }
-                UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
             }
             else if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
               && DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null
@@ -966,7 +963,6 @@ namespace myTNB
                 {
                     ShowDashboard();
                 }
-                UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
             }
             else
             {
@@ -979,7 +975,6 @@ namespace myTNB
                 {
                     ShowPrelogin();
                 }
-                UIApplication.SharedApplication.NetworkActivityIndicatorVisible = false;
             }
         }
 

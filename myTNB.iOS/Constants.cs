@@ -71,6 +71,8 @@ namespace myTNB
         public static string Common_Ok = "ok";
         public static string Common_Save = "save";
         public static string Common_AccountNickname = "acctNickname";
+        public static string Common_Fullname = "fullname";
+        public static string Common_ConfirmPassword = "confirmPassword";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";
@@ -86,10 +88,13 @@ namespace myTNB
         public static string Error_InvalidMobileNumber = "invalid_mobileNumber";
         public static string Error_InvalidNickname = "invalidNickname";
         public static string Error_DuplicateNickname = "duplicateNickname";
+        public static string Error_InvalidFullname = "invalid_fullname";
+        public static string Error_InvalidIDNumber = "invalid_idnumber";
 
         //Hint I18N
         public static string Hint_EmptyAcctSelector = "emptyAcctSelector";
         public static string Hint_MobileNumber = "mobileNumberSample";
+        public static string Hint_Password = "password";
 
         //Table View Cell
         public static string Cell_NoHistoryData = "noHistoryDataTableViewCell";
