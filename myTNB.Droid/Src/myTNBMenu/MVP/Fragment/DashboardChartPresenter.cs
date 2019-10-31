@@ -420,6 +420,7 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
                 {
                     AccountNumber = this.mView.GetSelectedAccount().AccountNum,
                     isOwner = this.mView.GetSelectedAccount().IsOwner ? "true" : "false",
+                    accountType = this.mView.GetIsREAccount() ? "RE" : "NM",
                     userInterface = currentUsrInf
                 }, cts.Token);
 
@@ -600,9 +601,13 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         public void OnViewBill(AccountData selectedAccount)
         {
-            //LoadingBillsHistory(selectedAccount);
-            ShowBillDetails(selectedAccount);
+            LoadingBillsHistory(selectedAccount);
         }
+
+        public void OnViewBillDetails(AccountData selectedAccount)
+		{
+			ShowBillDetails(selectedAccount);
+		}
 
         private async void ShowBillDetails(AccountData selectedAccount)
         {

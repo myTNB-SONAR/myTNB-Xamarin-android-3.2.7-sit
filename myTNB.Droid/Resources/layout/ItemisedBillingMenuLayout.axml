@@ -7,7 +7,8 @@
     android:fitsSystemWindows="false"
     android:theme="@style/Theme.Dashboard"
     android:id="@+id/rootView">
-    <ScrollView
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/itemisedBillingScrollView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true"
@@ -357,5 +358,5 @@
                     style="@style/Theme.RefreshButton" />
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
+    </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

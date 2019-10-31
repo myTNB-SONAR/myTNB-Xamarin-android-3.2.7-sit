@@ -147,7 +147,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 this.mView.ShowProgressDialog();
                 bool isOCRDisabled = false;
                 MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
-                if (currentMasterData.IsOCRDown)
+                bool smrAccountOCRDown = SMRPopUpUtils.OnGetIsOCRDownFlag();
+                if (currentMasterData.IsOCRDown || smrAccountOCRDown)
                 {
                     isOCRDisabled = true;
                 }
@@ -223,7 +224,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 this.mView.ShowProgressDialog();
                 bool isOCRDisabled = false;
                 MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
-                if (currentMasterData.IsOCRDown)
+                bool smrAccountOCRDown = SMRPopUpUtils.OnGetIsOCRDownFlag();
+                if (currentMasterData.IsOCRDown || smrAccountOCRDown)
                 {
                     isOCRDisabled = true;
                 }

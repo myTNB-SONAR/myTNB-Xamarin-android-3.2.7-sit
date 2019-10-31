@@ -145,6 +145,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void ShowNewAccountView(string contentTxt);
 
             void ShowBillDetails(AccountData accountData, List<AccountChargeModel> selectedAccountChargesModelList);
+
+            bool GetIsREAccount();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -163,6 +165,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             /// Action to navigate to view bill
             /// </summary>
             void OnViewBill(AccountData selectedAccount);
+
+            /// <summary>
+            /// Action to navigate to view bill details
+            /// </summary>
+            void OnViewBillDetails(AccountData selectedAccount);
 
             /// <summary>
             /// Action to navigate to pay

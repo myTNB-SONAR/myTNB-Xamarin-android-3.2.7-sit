@@ -9,6 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
+using Android.Support.V4.Widget;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -100,6 +101,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         [BindView(Resource.Id.itemisedBillingInfoContainer)]
         LinearLayout itemisedBillingInfoContainer;
 
+        [BindView(Resource.Id.itemisedBillingScrollView)]
+        NestedScrollView itemisedBillingScrollView;
+
+        [BindView(Resource.Id.bills_list_title_container)]
+        LinearLayout bills_list_title_container;
+
         ItemisedBillingMenuPresenter mPresenter;
         AccountData mSelectedAccountData;
 
@@ -113,6 +120,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         SimpleDateFormat billPdfDateParser = new SimpleDateFormat("dd MMM yyyy");
         SimpleDateFormat billPdfDateFormatter = new SimpleDateFormat("dd/MM/yyyy");
+
+        IMenuItem billFilterMenuItem;
 
 
         const string SELECTED_ACCOUNT_KEY = "SELECTED_ACCOUNT";
@@ -132,6 +141,65 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         public override int ResourceId()
         {
             return Resource.Layout.ItemisedBillingMenuLayout;
+        }
+
+        public override bool OnOptionsItemSelected(IMenuItem item)
+        {
+            switch (item.ItemId)
+            {
+                case Resource.Id.action_notification:
+                    ShowSelectFilter();
+                    return true;
+            }
+            return base.OnOptionsItemSelected(item);
+        }
+
+        public void ShowBillFilterToolbar(bool isShow)
+        {
+            if (isShow)
+            {
+                ((DashboardHomeActivity)this.Activity).SetToolBarTitle("My History");
+                this.billFilterMenuItem.SetVisible(true);
+            }
+            else
+            {
+                ((DashboardHomeActivity)this.Activity).SetToolBarTitle("Bills");
+                this.billFilterMenuItem.SetVisible(false);
+            }
+        }
+
+        class BillOnScrollChangeListener : Java.Lang.Object, NestedScrollView.IOnScrollChangeListener
+        {
+            LinearLayout mBillHistoryTitle;
+            Action<bool> mOnScrollMethod;
+            public BillOnScrollChangeListener(Action<bool> onScrollMethod, LinearLayout billHistoryTitle)
+            {
+                mBillHistoryTitle = billHistoryTitle;
+                mOnScrollMethod = onScrollMethod;
+            }
+            public void OnScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY)
+            {
+                bool IsWidgetVisible = isViewVisible(v,mBillHistoryTitle);
+                mOnScrollMethod(IsWidgetVisible);
+            }
+
+            private bool isViewVisible(NestedScrollView v, View view)
+            {
+                Rect scrollBounds = new Rect();
+                v.GetDrawingRect(scrollBounds);
+
+                float top = view.GetY() + view.Height;
+                float bottom = top + view.Height;
+
+                if (scrollBounds.Top < top && scrollBounds.Bottom > bottom)
+                {
+                    return false;
+                }
+                else
+                {
+                    return true;
+                }
+            }
         }
 
         [OnClick(Resource.Id.btnViewDetails)]
@@ -172,8 +240,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
         }
 
-        [OnClick(Resource.Id.bill_filter_icon)]
-        void OnFilterBillHistory(object sender, EventArgs eventArgs)
+        private void ShowSelectFilter()
         {
             try
             {
@@ -185,10 +252,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                     StartActivityForResult(newIntent, 12345);
                 }
             }
-            catch (System.Exception e)
+            catch (Exception e)
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        [OnClick(Resource.Id.bill_filter_icon)]
+        void OnFilterBillHistory(object sender, EventArgs eventArgs)
+        {
+            ShowSelectFilter();
         }
 
         [OnClick(Resource.Id.btnRefresh)]
@@ -234,12 +307,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
+            base.OnViewCreated(view, savedInstanceState);
             itemisedBillingInfoShimmer = view.FindViewById<ShimmerFrameLayout>(Resource.Id.itemisedBillingInfoShimmer);
             itemisedBillingInfoShimmer.SetShimmer(ShimmerUtils.ShimmerBuilderConfig().Build());
             itemisedBillingInfoShimmer.StartShimmer();
 
-            base.OnViewCreated(view, savedInstanceState);
-
+            SetHasOptionsMenu(true);
+            itemisedBillingScrollView.SetOnScrollChangeListener(new BillOnScrollChangeListener(ShowBillFilterToolbar, bills_list_title_container));
 
             TextViewUtils.SetMuseoSans500Typeface(accountSelection, itemisedBillingInfoNote,
                 btnViewDetails, btnPayBill, itemisedBillingInfoAmountCurrency, myBillHistoryTitle, btnRefresh);
@@ -669,5 +743,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             base.OnPause();
         }
 
+        public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)
+        {
+            inflater.Inflate(Resource.Menu.DashboardToolbarMenu, menu);
+            billFilterMenuItem = menu.FindItem(Resource.Id.action_notification);
+            billFilterMenuItem.SetIcon(ContextCompat.GetDrawable(this.Activity, Resource.Drawable.bill_screen_filter_icon));
+            billFilterMenuItem.SetVisible(false);
+            base.OnCreateOptionsMenu(menu, inflater);
+        }
     }
 }

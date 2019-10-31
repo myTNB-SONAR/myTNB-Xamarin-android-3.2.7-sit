@@ -83,6 +83,8 @@ namespace myTNB_Android.Src.SSMR.SSMRBase.MVP
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
+                Intent intent = new Intent(this, typeof(SSMRMeterHistoryActivity));
+                StartActivity(intent);
                 Finish();
             }
         }

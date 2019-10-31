@@ -25,6 +25,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public EditText[] editTextArray;
         Context mContext;
         public SubmitMeterReadingContract.IView mOwnerView;
+        public METER_READING_TYPE mMeterType;
         private string mMeterId;
         OnMeterReadingValueChange onMeterReadingValueChange;
 
@@ -62,7 +63,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public void InitializeInputBoxes()
         {
             editTextArray = new EditText[8];
-            onMeterReadingValueChange = new OnMeterReadingValueChange(this);
+            onMeterReadingValueChange = new OnMeterReadingValueChange(this, mOwnerView, mMeterType);
 
             editText1 = new EditText(mContext);
             //editText1.SetTag(TAG_KEY, ".editText1");
@@ -227,9 +228,10 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 editText5.Text + editText6.Text + editText7.Text + editText8.Text);
         }
 
-        public void SetOnValidateInput(SubmitMeterReadingContract.IView view)
+        public void SetOnValidateInput(SubmitMeterReadingContract.IView view, METER_READING_TYPE meterType)
         {
             mOwnerView = view;
+            mMeterType = meterType;
         }
 
         public bool HasReadingInput()
@@ -258,10 +260,14 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         class OnMeterReadingValueChange : Java.Lang.Object, ITextWatcher
         {
             MeterReadingInputLayout mContainer;
+            SubmitMeterReadingContract.IView mOwnerView;
+            METER_READING_TYPE mMeterType;
 
-            public OnMeterReadingValueChange(MeterReadingInputLayout container)
+            public OnMeterReadingValueChange(MeterReadingInputLayout container, SubmitMeterReadingContract.IView ownerView, METER_READING_TYPE meterType)
             {
                 mContainer = container;
+                mOwnerView = ownerView;
+                mMeterType = meterType;
             }
 
             public void AfterTextChanged(IEditable s)
@@ -425,6 +431,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     ((EditText)mContainer.GetChildAt(1)).AddTextChangedListener(this);
                     ((EditText)mContainer.GetChildAt(0)).AddTextChangedListener(this);
                 }
+
+                mOwnerView.ClearMeterCardValidationError(mMeterType);
 
                 mContainer.UpdateSubmitReadingButton();
             }

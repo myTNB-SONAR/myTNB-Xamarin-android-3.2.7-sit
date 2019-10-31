@@ -853,7 +853,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
                         graphToggleSelection.Visibility = ViewStates.Visible;
                         energyTipsView.Visibility = ViewStates.Visible;
-                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
+                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
                         isChangeBackgroundNeeded = true;
                         layoutSMSegmentGroup.Visibility = ViewStates.Visible;
                         isSMR = false;
@@ -1860,7 +1860,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             SetData(DayViewRMData.Count);
 
                             // SETUP MARKER VIEW
-                            
+
                             SetUpMarkerRMView();
 
                             if (isZoomIn)
@@ -4359,10 +4359,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                this.userActionsListener.OnViewBill(selectedAccount);
+                this.userActionsListener.OnViewBillDetails(selectedAccount);
                 try
                 {
-                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "View Bill Buttom Clicked");
+                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "View Details Buttom Clicked");
                 }
                 catch (System.Exception ne)
                 {
@@ -4816,6 +4816,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         energyTipsView.Visibility = ViewStates.Gone;
 
                         string defaultMessage = Activity.GetString(Resource.String.new_account_view);
+
+                        if (isREAccount)
+                        {
+                            defaultMessage = "Welcome! You can track your generated electricity here after you receive your first Payment Advice.";
+                        }
 
                         if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                         {
@@ -7042,7 +7047,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     if (isSMR)
                     {
-                        newAccountContentParams.BottomMargin = (int)DPUtils.ConvertDPToPx(38f);
+                        newAccountContentParams.BottomMargin = (int)DPUtils.ConvertDPToPx(35f);
                     }
                     else if (isSMAccount)
                     {
@@ -7050,7 +7055,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                     else
                     {
-                        newAccountContentParams.BottomMargin = (int)DPUtils.ConvertDPToPx(24f);
+                        newAccountContentParams.BottomMargin = (int)DPUtils.ConvertDPToPx(3f);
                     }
                 }
                 newAccountContent.RequestLayout();
@@ -7127,7 +7132,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             mScaleDetector.OnTouchEvent(e);
             return false;
         }
-        
+
         public void ByZoomDayView()
         {
             mChart.Visibility = ViewStates.Visible;
@@ -7605,6 +7610,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                 }
             }
+        }
+
+        public bool GetIsREAccount()
+        {
+            return isREAccount;
         }
     }
 }

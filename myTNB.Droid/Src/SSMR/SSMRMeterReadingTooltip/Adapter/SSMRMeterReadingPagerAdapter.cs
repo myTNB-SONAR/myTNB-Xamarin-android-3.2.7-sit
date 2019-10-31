@@ -87,7 +87,8 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.Adapter
                     else if (list.Count == 2)
                     {
                         MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
-                        if (currentMasterData.IsOCRDown)
+                        bool smrAccountOCRDown = SMRPopUpUtils.OnGetIsOCRDownFlag();
+                        if (currentMasterData.IsOCRDown || smrAccountOCRDown)
                         {
                             if (position == 0)
                             {
