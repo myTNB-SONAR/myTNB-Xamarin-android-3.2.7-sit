@@ -64,8 +64,8 @@ namespace myTNB
                     ,GetI18NValue(ProfileConstants.I18N_CallUsBilling)
                     ,GetI18NValue(ProfileConstants.I18N_FAQ)
                     , GetI18NValue(ProfileConstants.I18N_TNC)}}
-                , {GetI18NValue(ProfileConstants.I18N_Share).Translate(), new List<string>{ GetI18NValue(ProfileConstants.I18N_ShareDescription)
-                    , GetI18NValue(ProfileConstants.I18N_Rate).Translate()}}
+                , {GetI18NValue(ProfileConstants.I18N_Share), new List<string>{ GetI18NValue(ProfileConstants.I18N_ShareDescription)
+                    , GetI18NValue(ProfileConstants.I18N_Rate)}}
             };
             if (_itemsDictionary.ContainsKey(GetI18NValue(ProfileConstants.I18N_HelpAndSupport)) && IsValidWeblinks())
             {

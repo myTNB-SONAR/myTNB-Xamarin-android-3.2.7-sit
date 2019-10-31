@@ -254,8 +254,10 @@ namespace myTNB.Registration.CustomerAccounts
                 var okCancelAlertController = UIAlertController.Create(GetI18NValue(AddAccountConstants.I18N_RemoveAcct)
                     , string.Format(GetI18NValue(AddAccountConstants.I18N_RemoveAcctMsg), nickName, accountNumber)
                     , UIAlertControllerStyle.Alert);
-                okCancelAlertController.AddAction(UIAlertAction.Create(LanguageUtility.GetCommonI18NValue(AddAccountConstants.I18N_Ok), UIAlertActionStyle.Default, alert => RemoveAccount(acount)));
-                okCancelAlertController.AddAction(UIAlertAction.Create(LanguageUtility.GetCommonI18NValue(AddAccountConstants.I18N_Cancel), UIAlertActionStyle.Cancel, alert => Debug.WriteLine("Cancel was clicked")));
+                okCancelAlertController.AddAction(UIAlertAction.Create(LanguageUtility.GetCommonI18NValue(AddAccountConstants.I18N_Ok)
+                    , UIAlertActionStyle.Default, alert => RemoveAccount(acount)));
+                okCancelAlertController.AddAction(UIAlertAction.Create(LanguageUtility.GetCommonI18NValue(AddAccountConstants.I18N_Cancel)
+                    , UIAlertActionStyle.Cancel, alert => Debug.WriteLine("Cancel was clicked")));
                 okCancelAlertController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 _controller?.PresentViewController(okCancelAlertController, true, null);
             };
