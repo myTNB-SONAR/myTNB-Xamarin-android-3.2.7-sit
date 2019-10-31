@@ -63,7 +63,7 @@ namespace myTNB
                 if (masterData?.NotificationTypes != null)
                 {
                     NotificationPreferenceModel allNotificationItem = new NotificationPreferenceModel();
-                    allNotificationItem.Title = LanguageUtility.GetCommonI18NValue(Constants.Common_AllNotifications);
+                    allNotificationItem.Title = "PushNotification_AllNotifications".Translate();
                     allNotificationItem.Id = "all";
                     if (DataManager.DataManager.SharedInstance.NotificationGeneralTypes != null)
                     {
