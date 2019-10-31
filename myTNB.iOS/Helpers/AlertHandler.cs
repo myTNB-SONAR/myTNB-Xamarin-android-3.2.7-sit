@@ -60,7 +60,7 @@ namespace myTNB
           , string actionTitle = null, Action handler = null)
         {
             DisplayCustomAlert(title, message, new Dictionary<string, Action>() {
-                { string.IsNullOrEmpty(actionTitle) ? "Common_Ok".Translate() : actionTitle, handler } }
+                { string.IsNullOrEmpty(actionTitle) ? LanguageUtility.GetCommonI18NValue(Constants.Common_Ok) : actionTitle, handler } }
                 , UITextAlignment.Center, UITextAlignment.Center, false, 0.105F);
         }
 

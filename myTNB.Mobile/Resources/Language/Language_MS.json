@@ -86,7 +86,8 @@
     "fullname": "Nama Penuh",
     "confirmPassword": "Sahkan Kata Laluan",
     "accountNo": "Account No.",
-    "accountType": "Account Type"
+    "accountType": "Account Type",
+    "allNotifications": "All Notifications"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",

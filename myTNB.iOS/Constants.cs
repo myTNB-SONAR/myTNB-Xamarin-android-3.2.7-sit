@@ -29,7 +29,6 @@ namespace myTNB
         public static string IMG_ShowPassword = "IC-Action-Show-Password";
         public static string IMG_HidePassword = "IC-Action-Hide-Password";
 
-
         //Common I18N
         public static string Common_RefreshNow = "refreshNow";
         public static string Common_Yes = "yes";
@@ -77,6 +76,7 @@ namespace myTNB
         public static string Common_ConfirmPassword = "confirmPassword";
         public static string Common_AccountNo = "accountNo";
         public static string Common_AccountType = "accountType";
+        public static string Common_AllNotifications = "allNotifications";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";
