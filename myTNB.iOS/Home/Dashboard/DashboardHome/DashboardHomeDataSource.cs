@@ -99,6 +99,7 @@ namespace myTNB
             {
                 ServicesTableViewCell cell = tableView.DequeueReusableCell(DashboardHomeConstants.Cell_Services) as ServicesTableViewCell;
                 cell.GetI18NValue = _getI18NValue;
+                cell.IsRefreshScreen = _showRefreshScreen;
                 cell.IsLoading = _isServicesShimmering;
                 cell.ReloadCell = _onReloadCell;
                 cell.AddCards(_services, _controller._servicesActionDictionary, _isServicesShimmering);

@@ -15,7 +15,6 @@ namespace myTNB
         internal Dictionary<string, string> I18NDictionary;
         internal string PageName;
         internal bool IsGradientRequired, IsFullGradient, IsReversedGradient, IsNewGradientRequired;
-        internal bool IsGradientImageRequired;
         internal UIImageView ImageViewGradientImage;
         internal UIView _statusBarView, _customNavBar;
         internal nfloat ViewWidth, ViewHeight, BaseMargin, BaseMarginedWidth;
@@ -47,10 +46,6 @@ namespace myTNB
             if (IsNewGradientRequired)
             {
                 CreateNewBackgroundGradient();
-            }
-            if (IsGradientImageRequired)
-            {
-                CreateImageGradient();
             }
             SetFrames();
             ConfigureNavigationBar();
@@ -307,16 +302,6 @@ namespace myTNB
             gradientLayer.Frame = gradientView.Bounds;
             gradientView.Layer.InsertSublayer(gradientLayer, 0);
             View.AddSubview(gradientView);
-        }
-
-        private void CreateImageGradient()
-        {
-            ImageViewGradientImage = new UIImageView(new CGRect(0, 0
-                , View.Frame.Width, UIApplication.SharedApplication.KeyWindow.Frame.Height * 0.61F))
-            {
-                Image = UIImage.FromBundle("Background-Home")
-            };
-            View.AddSubview(ImageViewGradientImage);
         }
 
         private void CreateNewBackgroundGradient()

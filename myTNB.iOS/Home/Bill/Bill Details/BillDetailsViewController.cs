@@ -272,7 +272,7 @@ namespace myTNB
             UIView viewOutstanding = GetCommonLabelView(GetScaledHeight(16), outstandingTilte
                 , Math.Abs(_charges.OutstandingCharges).ToString("N2", CultureInfo.InvariantCulture), isOutstandingOverpaid);
             UIView viewMonthBill = GetCommonLabelView(GetYLocationFromFrame(viewOutstanding.Frame, 16), GetI18NValue(BillConstants.I18N_BillThisMonth)
-                , Math.Abs(_charges.CurrentCharges).ToString("N2", CultureInfo.InvariantCulture));
+                , _charges.CurrentCharges.ToString("N2", CultureInfo.InvariantCulture));
 
             _viewMandatory = GetMandatoryView(GetYLocationFromFrame(viewMonthBill.Frame, 16));
 
@@ -353,8 +353,15 @@ namespace myTNB
             string result = string.Empty;
             if (_charges.DueDate != null)
             {
-                result = DateTime.ParseExact(_charges.DueDate
+                try
+                {
+                    result = DateTime.ParseExact(_charges.DueDate
                    , BillConstants.Format_DateParse, CultureInfo.InvariantCulture).ToString(BillConstants.Format_Date);
+                }
+                catch (FormatException)
+                {
+                    Debug.WriteLine("Unable to parse '{0}'", _charges.DueDate);
+                }
             }
             UILabel lblDue = new UILabel(new CGRect(BaseMargin, lblStatus.Frame.GetMaxY(), BaseMarginedWidth / 2, GetScaledHeight(20)))
             {

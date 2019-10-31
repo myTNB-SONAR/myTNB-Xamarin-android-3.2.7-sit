@@ -60,7 +60,7 @@ namespace myTNB.SSMR
                     try
                     {
                         displayImage = UIImage.LoadFromData(NSData.FromUrl(new NSUrl(SSMRDataObject.Image), NSDataReadingOptions.MappedAlways, out error));
-                        if (error == null)
+                        if (error != null)
                         {
                             displayImage = UIImage.FromBundle(SSMRDataObject.FallbackImage);
                         }

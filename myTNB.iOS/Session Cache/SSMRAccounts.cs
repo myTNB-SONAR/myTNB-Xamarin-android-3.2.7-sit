@@ -112,10 +112,14 @@ namespace myTNB
         {
             if (SSMRCombinedList != null && SSMRCombinedList.Count > 0)
             {
-                List<string> accountList = SSMRCombinedList.Select(x => x.accNum).ToList();
-                if (accountList != null)
+                var enumString = SSMRCombinedList.Select(x => x.accNum);
+                if (enumString != null)
                 {
-                    return accountList;
+                    List<string> accountList = enumString.ToList();
+                    if (accountList != null)
+                    {
+                        return accountList;
+                    }
                 }
             }
             return new List<string>();
