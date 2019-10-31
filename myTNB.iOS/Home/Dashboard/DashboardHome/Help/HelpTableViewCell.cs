@@ -10,6 +10,7 @@ namespace myTNB
 {
     public class HelpTableViewCell : CustomUITableViewCell
     {
+        private DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
         private UIScrollView _scrollView;
         private nfloat cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
         private nfloat cardWidth;
@@ -97,6 +98,9 @@ namespace myTNB
             _imgIndex = -1;
             for (int i = 0; i < helpList.Count; i++)
             {
+                if (!ShowItemForSmartMeter(helpList[i].TagType))
+                    continue;
+
                 string helpKey = helpList[i].TargetItem;
                 UIView helpCardView = new UIView(new CGRect(xLoc, 0, cardWidth, cardHeight)) { ClipsToBounds = true };
                 helpCardView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
@@ -201,6 +205,15 @@ namespace myTNB
             view.Layer.ShadowOffset = new CGSize(0, 4);
             view.Layer.ShadowRadius = 4;
             view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
+        }
+
+        private bool ShowItemForSmartMeter(TagEnum tagType)
+        {
+            if (tagType == TagEnum.SM)
+            {
+                return _dashboardHomeHelper.HasSmartMeterAccounts;
+            }
+            return true;
         }
     }
 }
