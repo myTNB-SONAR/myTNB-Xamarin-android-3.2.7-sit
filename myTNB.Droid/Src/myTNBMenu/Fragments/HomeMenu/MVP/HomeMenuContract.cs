@@ -118,8 +118,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void OnCancelToken();
 
-            Task InitiateGetApplySMR();
-
             void DoLoadMoreAccount();
 
             void RefreshAccountSummary();

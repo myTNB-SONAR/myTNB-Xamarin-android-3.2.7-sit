@@ -1254,11 +1254,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             energyTipsTokenSource.Cancel();
         }
 
-        public async Task InitiateGetApplySMR()
-        {
-            await GetIsSmrApplyAllowedService();
-        }
-
         public async Task InitiateMyService()
         {
             await GetMyServiceService();
@@ -1378,14 +1373,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     }
                 }
 
+                isSMRApplyAllowFlag = false;
+
                 if (smrAccountList.Count > 0)
                 {
                     await OnCheckSMRAccountStatus(smrAccountList);
                 }
 
-                if (!isSMRApplyAllowFlag)
+                if (!isSMRApplyAllowFlag && smrAccountList.Count > 0)
                 {
-                    await GetIsSmrApplyAllowedService();
+                    await GetIsSmrApplyAllowedService(smrAccountList);
                 }
 
                 GetServicesResponse getServicesResponse = await this.serviceApi.GetServices(new GetServiceRequests()
@@ -1505,7 +1502,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         }
 
 
-        private async Task GetIsSmrApplyAllowedService()
+        private async Task GetIsSmrApplyAllowedService(List<string> accountList)
         {
             try
             {
@@ -1525,17 +1522,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ses_param2 = ""
                 };
 
-                List<CustomerBillingAccount> eligibleSMRAccountList = CustomerBillingAccount.GetEligibleAndSMRAccountList();
-                List<string> smrEligibleAccountList = new List<string>();
-                eligibleSMRAccountList.ForEach(account =>
-                {
-                    smrEligibleAccountList.Add(account.AccNum);
-                });
-
                 GetIsSmrApplyAllowedResponse isSMRApplyResponse = await this.serviceApi.GetIsSmrApplyAllowed(new GetIsSmrApplyAllowedRequest()
                 {
                     usrInf = currentUsrInf,
-                    contractAccounts = smrEligibleAccountList
+                    contractAccounts = accountList
                 });
 
                 if (isSMRApplyResponse.Data.ErrorCode == "7200" && isSMRApplyResponse.Data.Data.Count > 0)
