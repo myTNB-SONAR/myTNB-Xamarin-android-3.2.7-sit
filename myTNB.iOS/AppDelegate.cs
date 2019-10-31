@@ -229,6 +229,7 @@ namespace myTNB
         public void DidReceiveNotificationResponse(UNUserNotificationCenter center, UNNotificationResponse response, Action completionHandler)
         {
             Debug.WriteLine(response?.Notification?.Request?.Content?.UserInfo);
+            PushNotificationCache.SetData(response);
             if (DataManager.DataManager.SharedInstance.IsLoggedIn())
             {
                 DataManager.DataManager.SharedInstance.IsFromPushNotification = true;
