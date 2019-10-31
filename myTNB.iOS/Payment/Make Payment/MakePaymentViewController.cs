@@ -96,7 +96,7 @@ namespace myTNB
 
         internal void AddBackButton()
         {
-            UIImage backImg = UIImage.FromBundle("Back-White");
+            UIImage backImg = UIImage.FromBundle(Constants.IMG_Back);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 var okCancelAlertController = UIAlertController.Create(GetI18NValue(PaymentConstants.I18N_AbortTitle)

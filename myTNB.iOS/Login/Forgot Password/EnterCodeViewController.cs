@@ -62,7 +62,7 @@ namespace myTNB
         {
             NavigationItem.HidesBackButton = true;
             NavigationItem.Title = GetI18NValue(ForgotPasswordConstants.I18N_Title);
-            UIImage backImg = UIImage.FromBundle("Back-White");
+            UIImage backImg = UIImage.FromBundle(Constants.IMG_Back);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 DismissViewController(true, null);

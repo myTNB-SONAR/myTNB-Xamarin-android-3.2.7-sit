@@ -4,9 +4,6 @@ namespace myTNB
 {
     public static class Constants
     {
-        // Float Values
-        public static nfloat PageControlHeight = ScaleUtility.GetScaledHeight(20f);
-
         //Common Images
         public static string IMG_Back = "Back-White";
         public static string IMG_Dropdown = "IC-Header-Dropdown";

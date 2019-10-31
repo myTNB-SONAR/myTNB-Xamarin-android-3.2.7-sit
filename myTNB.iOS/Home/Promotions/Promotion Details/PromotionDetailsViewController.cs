@@ -34,7 +34,7 @@ namespace myTNB
         {
             NavigationItem.HidesBackButton = true;
             NavigationItem.Title = "Promotion_Title".Translate();
-            UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle("Back-White"), UIBarButtonItemStyle.Done, (sender, e) =>
+            UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle(Constants.IMG_Back), UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 DismissViewController(true, null);
                 OnDone?.Invoke();

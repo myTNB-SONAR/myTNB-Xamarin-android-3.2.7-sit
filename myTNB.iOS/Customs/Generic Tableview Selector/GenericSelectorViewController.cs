@@ -39,7 +39,7 @@ namespace myTNB
         private void SetNavigationBar()
         {
             NavigationItem.HidesBackButton = true;
-            UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle("Back-White")
+            UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle(Constants.IMG_Back)
                 , UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 if (IsRootPage && NavigationController != null)

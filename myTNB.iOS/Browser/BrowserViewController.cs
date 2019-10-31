@@ -32,7 +32,7 @@ namespace myTNB
         void SetNavigationItems()
         {
             NavigationItem.Title = string.IsNullOrEmpty(NavigationTitle) ? "Browser" : NavigationTitle;
-            UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle("Back-White")
+            UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle(Constants.IMG_Back)
                 , UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 DismissViewController(true, null);

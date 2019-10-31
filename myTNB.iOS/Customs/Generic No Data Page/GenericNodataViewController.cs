@@ -55,7 +55,7 @@ namespace myTNB
 
             UIImageView imgBack = new UIImageView(new CGRect(0, 0, 24, 24))
             {
-                Image = UIImage.FromBundle("Back-White")
+                Image = UIImage.FromBundle(Constants.IMG_Back)
             };
             viewBack.AddSubview(imgBack);
             UILabel lblTitle = new UILabel(new CGRect(50, viewBack.Frame.Y, ViewWidth - 100, 24))

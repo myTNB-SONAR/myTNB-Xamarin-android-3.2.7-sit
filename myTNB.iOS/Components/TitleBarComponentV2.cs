@@ -35,7 +35,7 @@ namespace myTNB
             };
             _imgViewBack = new UIImageView(new CGRect(0, 0, iconWidth, iconWidth))
             {
-                Image = UIImage.FromBundle("Back-White")
+                Image = UIImage.FromBundle(Constants.IMG_Back)
             };
             _viewBack.AddSubview(_imgViewBack);
             _viewTitleBar.AddSubview(_viewBack);

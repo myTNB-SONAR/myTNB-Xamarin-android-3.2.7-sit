@@ -98,7 +98,7 @@ namespace myTNB
         {
             Title = GetI18NValue(ProfileConstants.I18N_NavTitle);
             NavigationItem.HidesBackButton = true;
-            UIImage backImg = UIImage.FromBundle("Back-White");
+            UIImage backImg = UIImage.FromBundle(Constants.IMG_Back);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 DismissViewController(true, null);
