@@ -135,6 +135,35 @@ namespace myTNB
             return accounts;
         }
 
+        /// <summary>
+        /// Returns the list of account numbers that is SSMR
+        /// </summary>
+        /// <param name="acctNoList"></param>
+        /// <param name="acctList"></param>
+        /// <returns></returns>
+        public List<string> FilterAccountNoForSSMR(List<string> acctNoList, List<CustomerAccountRecordModel> acctList)
+        {
+            List<string> accounts = new List<string>();
+
+            if (acctNoList.Count <= 0 || acctList.Count <= 0)
+                return accounts;
+
+            foreach (var acct in acctList)
+            {
+                foreach (string accNo in acctNoList)
+                {
+                    if (acct.accNum == accNo)
+                    {
+                        if (acct.IsNormalMeter && acct.IsOwnedAccount)
+                        {
+                            accounts.Add(accNo);
+                        }
+                    }
+                }
+            }
+            return accounts;
+        }
+
         public nfloat GetHeightForAccountList()
         {
             nfloat totalCellHeight;

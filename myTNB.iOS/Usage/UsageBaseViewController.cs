@@ -21,6 +21,7 @@ namespace myTNB
         TariffSelectionComponent _tariffSelectionComponent;
         UsageFooterViewComponent _footerViewComponent;
         REAmountComponent _rEAmountComponent;
+        public DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
 
         internal UIScrollView _scrollViewContent, _refreshScrollView;
         internal CustomUIView _navbarContainer, _accountSelectorContainer, _viewStatus
@@ -28,7 +29,7 @@ namespace myTNB
             , _chart, _tips, _RE, _RERefresh, _status, _sm, _ssmr, _ssmrRefresh, _tariff, _legend, _refresh, _lastView;
         internal UILabel _lblAddress, _RMLabel, _kWhLabel;
         internal UIImageView _footerRefreshBGImage, _footerBGImage, _scrollIndicatorView;
-        internal UIView _smOverlayParentView, _gradientView;
+        internal UIView _smOverlayParentView;
 
         internal bool _rmkWhFlag, _tariffIsVisible;
         internal RMkWhEnum _rMkWhEnum;
@@ -44,13 +45,15 @@ namespace myTNB
         protected BaseChartView _chartView;
         protected List<LegendItemModel> _tariffList;
 
+        public AccountUsageResponseModel _accountUsageResponse;
+        public SMRAccountActivityInfoResponseModel _smrAccountActivityInfoResponse;
+
         public override void ViewDidLoad()
         {
             PageName = UsageConstants.PageName;
             IsNewGradientRequired = true;
             base.ViewDidLoad();
             InitializeValues();
-            AddGradientBG();
             SetNavigation();
             PrepareRefreshView();
             AddScrollView();
@@ -148,7 +151,7 @@ namespace myTNB
             isNormalChart = DataManager.DataManager.SharedInstance.SelectedAccount.IsNormalMeter || isREAccount;
             isSmartMeterAccount = !isREAccount && !isNormalChart;
             isBcrmAvailable = DataManager.DataManager.SharedInstance.IsBcrmAvailable;
-            accountIsSSMR = UsageHelper.IsSSMR(DataManager.DataManager.SharedInstance.SelectedAccount);
+            accountIsSSMR = false;
         }
 
         private void ResetViews()
@@ -164,7 +167,6 @@ namespace myTNB
             }
 
             InitializeValues();
-            _gradientView.Hidden = isSmartMeterAccount || accountIsSSMR || isREAccount;
             _rmkWhFlag = false;
             _tariffIsVisible = false;
             _rMkWhEnum = RMkWhEnum.RM;
@@ -211,22 +213,6 @@ namespace myTNB
             View.AddSubview(_navbarContainer);
         }
 
-        private void AddGradientBG()
-        {
-            _gradientView = new UIView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height));
-            CGColor startColor = MyTNBColor.LightIndigo.CGColor;
-            CGColor endColor = MyTNBColor.ClearBlue.CGColor;
-            CAGradientLayer gradientLayer = new CAGradientLayer
-            {
-                Colors = new[] { startColor, endColor }
-            };
-            gradientLayer.Locations = new NSNumber[] { 0, 1 };
-            gradientLayer.Frame = _gradientView.Bounds;
-            _gradientView.Layer.InsertSublayer(gradientLayer, 0);
-            _gradientView.Hidden = true;
-            View.AddSubview(_gradientView);
-        }
-
         private void AddFooterBGImage(UIScrollView scrollView)
         {
             _footerBGImage = new UIImageView(new CGRect(0, View.Frame.Height, ViewWidth, GetScaledHeight(1000F)))
@@ -245,7 +231,7 @@ namespace myTNB
             scrollView.AddSubview(_footerRefreshBGImage);
         }
 
-        private void UpdateFooterBGImageYPos()
+        internal void UpdateFooterBGImageYPos()
         {
             if (isSmartMeterAccount)
             {
