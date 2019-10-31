@@ -4817,6 +4817,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                         string defaultMessage = Activity.GetString(Resource.String.new_account_view);
 
+                        if (isREAccount)
+                        {
+                            defaultMessage = "Welcome! You can track your generated electricity here after you receive your first Payment Advice.";
+                        }
+
                         if (Build.VERSION.SdkInt >= BuildVersionCodes.N)
                         {
                             if (string.IsNullOrEmpty(contentTxt))
@@ -7042,7 +7047,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 {
                     if (isSMR)
                     {
-                        newAccountContentParams.BottomMargin = (int)DPUtils.ConvertDPToPx(38f);
+                        newAccountContentParams.BottomMargin = (int)DPUtils.ConvertDPToPx(35f);
                     }
                     else if (isSMAccount)
                     {
@@ -7050,7 +7055,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                     else
                     {
-                        newAccountContentParams.BottomMargin = (int)DPUtils.ConvertDPToPx(24f);
+                        newAccountContentParams.BottomMargin = (int)DPUtils.ConvertDPToPx(3f);
                     }
                 }
                 newAccountContent.RequestLayout();
@@ -7605,6 +7610,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     }
                 }
             }
+        }
+
+        public bool GetIsREAccount()
+        {
+            return isREAccount;
         }
     }
 }

@@ -131,7 +131,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     }
                     else if (response.Data != null && response.Data.ErrorCode == "7200" && response.Data.data != null && response.Data.data.Count > 0)
                     {
-                        
+
                         List<SummaryDashBoardDetails> summaryDetails = response.Data.data;
                         List<SummaryDashBoardAccountEntity> billingDetails = new List<SummaryDashBoardAccountEntity>();
                         for (int i = 0; i < summaryDetails.Count; i++)
@@ -792,7 +792,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
 
             summaryDashboardInfoList = new List<SummaryDashBoardDetails>();
-            
+
             foreach (CustomerBillingAccount customerBillintAccount in customerBillingAccountList)
             {
                 SummaryDashBoardDetails summaryDashBoardDetails = new SummaryDashBoardDetails();
@@ -1068,7 +1068,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     previousCount = curentLoadMoreCount;
                     curentLoadMoreCount = curentLoadMoreCount + 1;
-                    forLoopCount = (curentLoadMoreCount == 1)? 3 : (curentLoadMoreCount * Constants.SUMMARY_DASHBOARD_PAGE_COUNT) - 2;
+                    forLoopCount = (curentLoadMoreCount == 1) ? 3 : (curentLoadMoreCount * Constants.SUMMARY_DASHBOARD_PAGE_COUNT) - 2;
                     i = previousCount * Constants.SUMMARY_DASHBOARD_PAGE_COUNT;
                     if (i > 0)
                     {
@@ -1686,16 +1686,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public Task OnGetFAQs()
         {
-            FAQTokenSource = new CancellationTokenSource();
             return Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    FAQTokenSource.Token.ThrowIfCancellationRequested();
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
                     HelpResponseModel responseModel = getItemsService.GetHelpItems();
-                    FAQTokenSource.Token.ThrowIfCancellationRequested();
                     if (responseModel.Status.Equals("Success"))
                     {
                         if (NewFAQManager == null)
@@ -1719,7 +1716,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }).ContinueWith((Task previous) =>
             {
-            }, FAQTokenSource.Token);
+            }, new CancellationTokenSource().Token);
         }
 
         public void GetSmartMeterReadingWalkthroughtTimeStamp()
@@ -1787,16 +1784,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public Task OnGetSSMRMeterReadingScreens()
         {
-            walkthroughTokenSource = new CancellationTokenSource();
             return Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    walkthroughTokenSource.Token.ThrowIfCancellationRequested();
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
                     SSMRMeterReadingResponseModel responseModel = getItemsService.GetSSMRMeterReadingOnePhaseWalkthroughItems();
-                    walkthroughTokenSource.Token.ThrowIfCancellationRequested();
                     if (responseModel.Status.Equals("Success"))
                     {
                         if (SSMRMeterReadingScreensManager == null)
@@ -1814,7 +1808,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }).ContinueWith((Task previous) =>
             {
-            }, walkthroughTokenSource.Token);
+            }, new CancellationTokenSource().Token);
         }
 
         public void GetSmartMeterReadingWalkthroughtNoOCRTimeStamp()
@@ -1882,16 +1876,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public Task OnGetSSMRMeterReadingScreensNoOCR()
         {
-            walkthroughNoOCRTokenSource = new CancellationTokenSource();
             return Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    walkthroughNoOCRTokenSource.Token.ThrowIfCancellationRequested();
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
                     SSMRMeterReadingResponseModel responseModel = getItemsService.GetSSMRMeterReadingOnePhaseOCROffWalkthroughItems();
-                    walkthroughNoOCRTokenSource.Token.ThrowIfCancellationRequested();
                     if (responseModel.Status.Equals("Success"))
                     {
                         if (SSMRMeterReadingScreensOCROffManager == null)
@@ -1909,7 +1900,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }).ContinueWith((Task previous) =>
             {
-            }, walkthroughNoOCRTokenSource.Token);
+            }, new CancellationTokenSource().Token);
         }
 
         public void GetSmartMeterReadingThreePhaseWalkthroughtTimeStamp()
@@ -1977,16 +1968,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public Task OnGetSSMRMeterReadingThreePhaseScreens()
         {
-            threePhaseWalkthroughTokenSource = new CancellationTokenSource();
             return Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    threePhaseWalkthroughTokenSource.Token.ThrowIfCancellationRequested();
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
                     SSMRMeterReadingResponseModel responseModel = getItemsService.GetSSMRMeterReadingThreePhaseWalkthroughItems();
-                    threePhaseWalkthroughTokenSource.Token.ThrowIfCancellationRequested();
                     if (responseModel.Status.Equals("Success"))
                     {
                         if (SSMRMeterReadingThreePhaseScreensManager == null)
@@ -2005,7 +1993,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }).ContinueWith((Task previous) =>
             {
-            }, threePhaseWalkthroughTokenSource.Token);
+            }, new CancellationTokenSource().Token);
         }
 
         public void GetSmartMeterReadingThreePhaseWalkthroughtNoOCRTimeStamp()
@@ -2073,16 +2061,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public Task OnGetSSMRMeterReadingThreePhaseScreensNoOCR()
         {
-            threePhaseWalkthroughNoOCRTokenSource = new CancellationTokenSource();
             return Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    threePhaseWalkthroughNoOCRTokenSource.Token.ThrowIfCancellationRequested();
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
                     SSMRMeterReadingResponseModel responseModel = getItemsService.GetSSMRMeterReadingThreePhaseOCROffWalkthroughItems();
-                    threePhaseWalkthroughNoOCRTokenSource.Token.ThrowIfCancellationRequested();
                     if (responseModel.Status.Equals("Success"))
                     {
                         if (SSMRMeterReadingThreePhaseScreensOCROffManager == null)
@@ -2101,7 +2086,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }).ContinueWith((Task previous) =>
             {
-            }, threePhaseWalkthroughNoOCRTokenSource.Token);
+            }, new CancellationTokenSource().Token);
         }
 
         public void GetEnergySavingTipsTimeStamp()
@@ -2169,16 +2154,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public Task OnGetEnergySavingTips()
         {
-            energyTipsTokenSource = new CancellationTokenSource();
             return Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    energyTipsTokenSource.Token.ThrowIfCancellationRequested();
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
                     EnergySavingTipsResponseModel responseModel = getItemsService.GetEnergySavingTipsItem();
-                    energyTipsTokenSource.Token.ThrowIfCancellationRequested();
                     if (responseModel.Status.Equals("Success"))
                     {
                         if (EnergySavingTipsManager == null)
@@ -2202,17 +2184,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }).ContinueWith((Task previous) =>
             {
-            }, energyTipsTokenSource.Token);
+            }, new CancellationTokenSource().Token);
         }
 
         public Task OnSetEnergySavingTipsToCache()
         {
-            energyTipsTokenSource = new CancellationTokenSource();
             return Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    energyTipsTokenSource.Token.ThrowIfCancellationRequested();
                     if (EnergySavingTipsManager == null)
                     {
                         EnergySavingTipsManager = new EnergySavingTipsEntity();
@@ -2232,7 +2212,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 isUpdateNeeded = true,
                                 ImageBitmap = null,
                                 ID = item.ID
-                            }); 
+                            });
                         }
                         EnergyTipsUtils.OnSetEnergyTipsList(savedList);
                     }
@@ -2243,7 +2223,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }).ContinueWith((Task previous) =>
             {
-            }, energyTipsTokenSource.Token);
+            }, new CancellationTokenSource().Token);
         }
 
         public async void LoadingBillsHistory(CustomerBillingAccount selectedAccount)
