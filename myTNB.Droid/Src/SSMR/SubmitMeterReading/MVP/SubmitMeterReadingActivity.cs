@@ -106,10 +106,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         private IMenu ssmrMenu;
         private static bool isFirstLaunch = true;
 
-        private bool isKWhValidationShown = false;
-        private bool isKWValidationShown = false;
-        private bool isKVARValidationShown = false;
-
         private List<SSMRMeterReadingModel> singlePhaseList;
         private List<SSMRMeterReadingModel> threePhaseList;
 
@@ -760,29 +756,35 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 LinearLayout linearLayoutContainer;
                 TextView inlineValidationMessage;
-                if (mType == METER_READING_TYPE.KWH && isKWhValidationShown)
+                if (mType == METER_READING_TYPE.KWH)
                 {
-                    isKWhValidationShown = false;
                     linearLayoutContainer = FindViewById(Resource.Id.kwhCard) as LinearLayout;
                     inlineValidationMessage = linearLayoutContainer.FindViewById<TextView>(Resource.Id.reading_error_validation_msg);
-                    inlineValidationMessage.Visibility = ViewStates.Gone;
-                    ResetCurrentReadingValuesColor(linearLayoutContainer);
+                    if (inlineValidationMessage.Visibility == ViewStates.Visible)
+                    {
+                        inlineValidationMessage.Visibility = ViewStates.Gone;
+                        ResetCurrentReadingValuesColor(linearLayoutContainer);
+                    }
                 }
-                else if (mType == METER_READING_TYPE.KW && isKWValidationShown)
+                else if (mType == METER_READING_TYPE.KW)
                 {
-                    isKWValidationShown = false;
                     linearLayoutContainer = FindViewById(Resource.Id.kwCard) as LinearLayout;
                     inlineValidationMessage = linearLayoutContainer.FindViewById<TextView>(Resource.Id.reading_error_validation_msg);
-                    inlineValidationMessage.Visibility = ViewStates.Gone;
-                    ResetCurrentReadingValuesColor(linearLayoutContainer);
+                    if (inlineValidationMessage.Visibility == ViewStates.Visible)
+                    {
+                        inlineValidationMessage.Visibility = ViewStates.Gone;
+                        ResetCurrentReadingValuesColor(linearLayoutContainer);
+                    }
                 }
-                else if (mType == METER_READING_TYPE.KVARH && isKVARValidationShown)
+                else if (mType == METER_READING_TYPE.KVARH)
                 {
-                    isKVARValidationShown = false;
                     linearLayoutContainer = FindViewById(Resource.Id.kVARhCard) as LinearLayout;
                     inlineValidationMessage = linearLayoutContainer.FindViewById<TextView>(Resource.Id.reading_error_validation_msg);
-                    inlineValidationMessage.Visibility = ViewStates.Gone;
-                    ResetCurrentReadingValuesColor(linearLayoutContainer);
+                    if (inlineValidationMessage.Visibility == ViewStates.Visible)
+                    {
+                        inlineValidationMessage.Visibility = ViewStates.Gone;
+                        ResetCurrentReadingValuesColor(linearLayoutContainer);
+                    }
                 }
             }
             catch (Exception e)
@@ -812,7 +814,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                             linearLayoutContainer = FindViewById(Resource.Id.kwhCard) as LinearLayout;
                             inlineValidationMessage = linearLayoutContainer.FindViewById<TextView>(Resource.Id.reading_error_validation_msg);
                             UpdateCurrentReadingValuesColor(linearLayoutContainer, validationData.isSuccess);
-                            isKWhValidationShown = true;
                             if (validationData.isSuccess)
                             {
                                 inlineValidationMessage.Visibility = ViewStates.Gone;
@@ -829,7 +830,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                             linearLayoutContainer = FindViewById(Resource.Id.kVARhCard) as LinearLayout;
                             inlineValidationMessage = linearLayoutContainer.FindViewById<TextView>(Resource.Id.reading_error_validation_msg);
                             UpdateCurrentReadingValuesColor(linearLayoutContainer, validationData.isSuccess);
-                            isKVARValidationShown = true;
                             if (validationData.isSuccess)
                             {
                                 inlineValidationMessage.Visibility = ViewStates.Gone;
@@ -846,7 +846,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                             linearLayoutContainer = FindViewById(Resource.Id.kwCard) as LinearLayout;
                             inlineValidationMessage = linearLayoutContainer.FindViewById<TextView>(Resource.Id.reading_error_validation_msg);
                             UpdateCurrentReadingValuesColor(linearLayoutContainer, validationData.isSuccess);
-                            isKWValidationShown = true;
                             if (validationData.isSuccess)
                             {
                                 inlineValidationMessage.Visibility = ViewStates.Gone;

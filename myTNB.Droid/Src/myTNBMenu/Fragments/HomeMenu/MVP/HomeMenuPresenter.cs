@@ -605,20 +605,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     FetchAccountSummary();
                 }
             }
-
-            List<string> smrAccountList = new List<string>();
-            for (int i = 0; i < customerBillingAccountList.Count; i++)
-            {
-                if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum) && customerBillingAccountList[i].isOwned && customerBillingAccountList[i].AccountCategoryId != "2" && customerBillingAccountList[i].SmartMeterCode == "0")
-                {
-                    smrAccountList.Add(customerBillingAccountList[i].AccNum);
-                }
-            }
-
-            if (smrAccountList.Count > 0)
-            {
-                _ = OnStartCheckSMRAccountStatus(smrAccountList);
-            }
         }
 
         public void LoadAccounts()
@@ -639,16 +625,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
 
             List<string> accountList = new List<string>();
-            List<string> smrAccountList = new List<string>();
             for (int i = 0; i < customerBillingAccountList.Count; i++)
             {
                 if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum))
                 {
                     accountList.Add(customerBillingAccountList[i].AccNum);
-                }
-                if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum) && customerBillingAccountList[i].isOwned && customerBillingAccountList[i].AccountCategoryId != "2" && customerBillingAccountList[i].SmartMeterCode == "0")
-                {
-                    smrAccountList.Add(customerBillingAccountList[i].AccNum);
                 }
             }
 
@@ -673,11 +654,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     curentLoadMoreCount = 0;
                     FetchAccountSummary(true, true);
                 }
-            }
-
-            if (smrAccountList.Count > 0)
-            {
-                _ = OnStartCheckSMRAccountStatus(smrAccountList);
             }
         }
 
@@ -993,16 +969,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
 
             List<string> accountList = new List<string>();
-            List<string> smrAccountList = new List<string>();
             for (int i = 0; i < customerBillingAccountList.Count; i++)
             {
                 if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum))
                 {
                     accountList.Add(customerBillingAccountList[i].AccNum);
-                }
-                if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum) && customerBillingAccountList[i].isOwned && customerBillingAccountList[i].AccountCategoryId != "2" && customerBillingAccountList[i].SmartMeterCode == "0")
-                {
-                    smrAccountList.Add(customerBillingAccountList[i].AccNum);
                 }
             }
 
@@ -1013,11 +984,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             if (billingAccoutCount > 0)
             {
                 FetchAccountSummary(true, true, true);
-            }
-
-            if (smrAccountList.Count > 0)
-            {
-                _ = OnStartCheckSMRAccountStatus(smrAccountList);
             }
         }
 
@@ -1176,6 +1142,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private async Task OnCheckSMRAccountStatus(List<string> accountList)
         {
+            isSMRApplyAllowFlag = false;
+
             List<AccountSMRStatus> updateSMRStatus = new List<AccountSMRStatus>();
             try
             {
@@ -1207,6 +1175,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         bool selectedUpdateIsTaggedSMR = false;
                         if (status.IsTaggedSMR == "true")
                         {
+                            isSMRApplyAllowFlag = true;
                             selectedUpdateIsTaggedSMR = true;
                         }
 
@@ -1230,14 +1199,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             catch (System.OperationCanceledException cancelledException)
             {
+                isSMRApplyAllowFlag = false;
                 Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
+                isSMRApplyAllowFlag = false;
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
+                isSMRApplyAllowFlag = false;
                 Utility.LoggingNonFatalError(unknownException);
             }
         }
@@ -1396,7 +1368,25 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ses_param2 = ""
                 };
 
-                await GetIsSmrApplyAllowedService();
+                List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetEligibleAndSMRAccountList();
+                List<string> smrAccountList = new List<string>();
+                for (int i = 0; i < customerBillingAccountList.Count; i++)
+                {
+                    if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum))
+                    {
+                        smrAccountList.Add(customerBillingAccountList[i].AccNum);
+                    }
+                }
+
+                if (smrAccountList.Count > 0)
+                {
+                    await OnCheckSMRAccountStatus(smrAccountList);
+                }
+
+                if (!isSMRApplyAllowFlag)
+                {
+                    await GetIsSmrApplyAllowedService();
+                }
 
                 GetServicesResponse getServicesResponse = await this.serviceApi.GetServices(new GetServiceRequests()
                 {
