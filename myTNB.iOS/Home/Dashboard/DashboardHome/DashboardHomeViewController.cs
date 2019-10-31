@@ -39,6 +39,7 @@ namespace myTNB
         private bool _isBCRMAvailable;
         private GetIsSmrApplyAllowedResponseModel _isSMRApplyAllowedResponse;
         private UIImageView _footerImageBG;
+        private UIView _tutorialContainer;
 
         public override void ViewDidLoad()
         {
@@ -65,6 +66,42 @@ namespace myTNB
             PrepareTableView();
             SetGreetingView();
             PrepareUsageStoryBoard();
+        }
+
+        private void ShowTutorialOverlay()
+        {
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            var tutorialOverlayHasShown = sharedPreference.BoolForKey(DashboardHomeConstants.Pref_TutorialOverlay);
+
+            //if (tutorialOverlayHasShown)
+            //    return;
+
+            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+            nfloat width = currentWindow.Frame.Width;
+            nfloat height = currentWindow.Frame.Height;
+            _tutorialContainer = new UIView(new CGRect(0, 0, width, height))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+            currentWindow.AddSubview(_tutorialContainer);
+            HomeTutorialOverlay tutorialView = new HomeTutorialOverlay(_tutorialContainer);
+            tutorialView.OnDismissAction = HideTutorialOverlay;
+            _tutorialContainer.AddSubview(tutorialView.GetView());
+
+            sharedPreference.SetBool(true, DashboardHomeConstants.Pref_TutorialOverlay);
+        }
+
+        private void HideTutorialOverlay()
+        {
+            if (_tutorialContainer != null)
+            {
+                _tutorialContainer.Alpha = 1F;
+                _tutorialContainer.Transform = CGAffineTransform.MakeIdentity();
+                UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseInOut, () =>
+                {
+                    _tutorialContainer.Alpha = 0F;
+                }, _tutorialContainer.RemoveFromSuperview);
+            }
         }
 
         private void AddFooterBG()
@@ -140,6 +177,7 @@ namespace myTNB
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
+            //ShowTutorialOverlay();
         }
 
         public override void ViewDidDisappear(bool animated)

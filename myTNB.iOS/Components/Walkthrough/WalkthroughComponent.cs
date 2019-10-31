@@ -219,7 +219,7 @@ namespace myTNB
             {
                 _pageControl.RemoveFromSuperview();
             }
-            _pageControl = new UIPageControl(new CGRect(0, 0, _toolTipFooterView.Frame.Width, Constants.PageControlHeight))
+            _pageControl = new UIPageControl(new CGRect(0, 0, _toolTipFooterView.Frame.Width, GetScaledHeight(8F)))
             {
                 BackgroundColor = UIColor.Clear,
                 TintColor = MyTNBColor.WaterBlue,
