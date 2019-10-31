@@ -84,13 +84,16 @@
     "retry": "Retry",
     "save": "Save",
     "fullname": "Fullname",
-    "confirmPassword": "Confirm Password"
+    "confirmPassword": "Confirm Password",
+    "accountNo": "Account No.",
+    "accountType": "Account Type"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
     "mobileNumberSample": "Example: +6012 345 6789",
     "emptyAcctSelector": "---",
     "nickname": "e.g. My House, Parent's House",
+    "businessNickname": "e.g. Bangsar Shopping Centre Branch",
     "password": "Password must have at least 8 alphanumeric characters."
   },
   "Error": {
@@ -110,7 +113,13 @@
     "invalid_mismatchedPassword": "Your new password do not match.",
     "invalid_fullname": "Invalid full name",
     "invalid_idnumber": "Invalid IC, ROC or Passport No.",
-    "invalid_mismatchedEmail": "Your email and confirmation email do not match."
+    "invalid_mismatchedEmail": "Your email and confirmation email do not match.",
+    "error_duplicateAccountMessage": "This account number is already added on the list",
+    "error_duplicateAccountTitle": "Duplicate Account",
+    "invalid_icNumber": "Invalid IC number.",
+    "invalid_rocNumber": "Invalid ROC number.",
+    "accountLength": "Please enter a valid 12-digit account no.",
+    "invalid_accountType": "Invalid Account Type"
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -444,7 +453,17 @@
     "additionalAccts": "Additional account(s)",
     "removeAcct": "Remove Account",
     "removeAcctMsg": "You are about to remove {0}, account number {1}.",
-    "addAcctSuccessMsg": "Add Account(s) Successful"
+    "addAcctSuccessMsg": "Add Account(s) Successful",
+    "ownerICNumber": "Owner's IC No.",
+    "rocNumber": "ROC No.",
+    "whereIsMyAccountTitle": "Where is my account no.?",
+    "whereIsMyAccountDetails": "Your 12-digit account no. can be found on the top left corner of your monthly paper bill.",
+    "selectAccountType": "Select Account Type",
+    "residential": "Residential",
+    "commercial": "Commercial",
+    "addAccountCTATitle": "Add Account",
+    "scanMessage": "Scan the barcode on your bill to retrieve account details.",
+    "invalidBarcode": "Invalid barcode."
   },
   "Profile": {
     "title": "Profile",

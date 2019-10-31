@@ -9,19 +9,18 @@ using ZXing.Mobile;
 
 namespace myTNB.Registration
 {
-    public partial class BarcodeScannerViewController : UIViewController
+    public partial class BarcodeScannerViewController : CustomUIViewController
     {
-        public BarcodeScannerViewController(IntPtr handle) : base(handle)
-        {
-        }
-        UIStatusBarStyle originalStatusBarStyle = UIStatusBarStyle.Default;
-        ZXingScannerView scannerView;
-        UIView scanLayerView;
-        UILabel lblScanStatus;
+        public BarcodeScannerViewController(IntPtr handle) : base(handle) { }
 
-        MobileBarcodeScanningOptions ScanningOptions { get; set; }
-        MobileBarcodeScanner Scanner { get; set; }
-        bool ContinuousScanning { get; set; }
+        private UIStatusBarStyle originalStatusBarStyle = UIStatusBarStyle.Default;
+        private ZXingScannerView scannerView;
+        private UIView scanLayerView;
+        private UILabel lblScanStatus;
+
+        private MobileBarcodeScanningOptions ScanningOptions { get; set; }
+        private MobileBarcodeScanner Scanner { get; set; }
+        private bool ContinuousScanning { get; set; }
 
         public UIViewController AsViewController()
         {
@@ -30,45 +29,48 @@ namespace myTNB.Registration
 
         public void Cancel()
         {
-            this.InvokeOnMainThread(scannerView.StopScanning);
+            InvokeOnMainThread(scannerView.StopScanning);
         }
-
 
         public override void ViewDidLoad()
         {
-            NavigationItem.Title = "Common_AddElectricityAccount".Translate();
+            PageName = AddAccountConstants.PageName;
+            base.ViewDidLoad();
+            NavigationItem.Title = GetI18NValue(AddAccountConstants.I18N_NavTitle);
             ActivityIndicator.Show();
             UIApplication.SharedApplication.StatusBarOrientation = UIInterfaceOrientation.Portrait;
-            this.NavigationItem.HidesBackButton = true;
+            NavigationItem.HidesBackButton = true;
             AddBackButton();
             SetScanningOptions();
             InitializeScanView();
         }
 
-        internal void SetScanningOptions()
+        private void SetScanningOptions()
         {
-            this.ScanningOptions = new MobileBarcodeScanningOptions();//options;
-            this.ScanningOptions.AutoRotate = false;
-            this.ScanningOptions.TryHarder = true;
-            this.ScanningOptions.TryInverted = true;
-            this.ScanningOptions.DelayBetweenContinuousScans = 2000;
+            ScanningOptions = new MobileBarcodeScanningOptions
+            {
+                AutoRotate = false,
+                TryHarder = true,
+                TryInverted = true,
+                DelayBetweenContinuousScans = 2000
+            };//options;
         }
 
-        internal void InitializeScanView()
+        private void InitializeScanView()
         {
             UILabel lblDescription = new UILabel
             {
                 Frame = new CGRect(16, 16, View.Frame.Width - 32, 60),
                 AttributedText = new NSAttributedString(
-                    "Registration_ScanMessage".Translate(),
+                    GetI18NValue(AddAccountConstants.I18N_ScanMessage),
                     font: MyTNBFont.MuseoSans16_300,
                     foregroundColor: MyTNBColor.TunaGrey(),
                     strokeWidth: 0
                 ),
-                TextAlignment = UITextAlignment.Left
+                TextAlignment = UITextAlignment.Left,
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
             };
-            lblDescription.Lines = 0;
-            lblDescription.LineBreakMode = UILineBreakMode.WordWrap;
             View.AddSubview(lblDescription);
 
 
@@ -107,7 +109,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, (overlayHeight / 2) + 20, overlayWidth, 16),
                 AttributedText = new NSAttributedString(
-                    "Invalid_Barcode".Translate(),
+                    GetI18NValue(AddAccountConstants.I18N_InvalidBarcode),
                     font: MyTNBFont.MuseoSans12,
                     foregroundColor: MyTNBColor.Tomato,
                     strokeWidth: 0
@@ -132,11 +134,11 @@ namespace myTNB.Registration
 
             scannerView.OnCancelButtonPressed += delegate
             {
-                this.NavigationController.PopViewController(true);
+                NavigationController.PopViewController(true);
             };
 
-            this.View.AddSubview(scannerView);
-            this.View.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
+            View.AddSubview(scannerView);
+            View.AutoresizingMask = UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;
         }
 
         public void Torch(bool on)
@@ -207,7 +209,7 @@ namespace myTNB.Registration
                                         lblScanStatus.Hidden = true;
 
                                         DataManager.DataManager.SharedInstance.AccountNumber = accountNumber;
-                                        this.NavigationController?.PopViewController(true);
+                                        NavigationController?.PopViewController(true);
                                     });
                                 }
                                 else
@@ -220,7 +222,7 @@ namespace myTNB.Registration
                                 }
                             }
                         }
-                    }, this.ScanningOptions));
+                    }, ScanningOptions));
                 });
             }
             catch (Exception e)
@@ -247,7 +249,7 @@ namespace myTNB.Registration
         {
             if (scannerView != null)
             {
-                scannerView.DidRotate(this.InterfaceOrientation);
+                scannerView.DidRotate(InterfaceOrientation);
             }
         }
         public override bool ShouldAutorotate()
@@ -264,7 +266,7 @@ namespace myTNB.Registration
             return UIInterfaceOrientationMask.Portrait;
         }
 
-        void HandleOnScannerSetupComplete()
+        private void HandleOnScannerSetupComplete()
         {
             BeginInvokeOnMainThread(() =>
             {
@@ -276,14 +278,14 @@ namespace myTNB.Registration
             });
         }
 
-        internal void AddBackButton()
+        private void AddBackButton()
         {
-            UIImage backImg = UIImage.FromBundle("Back-White");
+            UIImage backImg = UIImage.FromBundle(Constants.IMG_Back);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                this.NavigationController.PopViewController(true);
+                NavigationController.PopViewController(true);
             });
-            this.NavigationItem.LeftBarButtonItem = btnBack;
+            NavigationItem.LeftBarButtonItem = btnBack;
         }
     }
 }

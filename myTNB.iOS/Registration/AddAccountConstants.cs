@@ -2,6 +2,9 @@
 {
     public static class AddAccountConstants
     {
+        //PageName
+        public static string PageName = "AddAccount";
+
         //Int
         public static int Int_AccountLimit = 10;
 
@@ -9,9 +12,6 @@
         public static string IMG_Back = "Back-White";
         public static string IMG_LoadingCircle = "Loading-Circle";
         public static string IMG_CircleGreen = "Circle-With-Check-Green";
-
-        //PageName
-        public static string PageName = "AddAccount";
 
         //I18N Keys
         public static string I18N_NavTitle = "navTitle";
@@ -38,5 +38,17 @@
         public static string I18N_DuplicateNickname = "duplicateNickname";
         public static string I18N_AddAcctSuccessMsg = "addAcctSuccessMsg";
         public static string I18N_Done = "done";
+        public static string I18N_OwnerICNumber = "ownerICNumber";
+        public static string I18N_ROCNumber = "rocNumber";
+        public static string I18N_WhereIsMyAccountTitle = "whereIsMyAccountTitle";
+        public static string I18N_WhereIsMyAccountDetails = "whereIsMyAccountDetails";
+        public static string I18N_SelectAccountType = "selectAccountType";
+        public static string I18N_Residential = "residential";
+        public static string I18N_Commercial = "commercial";
+        public static string I18N_AddAccountCTATitle = "addAccountCTATitle";
+        public static string I18N_ScanMessage = "scanMessage";
+        public static string I18N_InvalidBarcode = "invalidBarcode";
+
+        public static string Service_ValidateManualAccountLinking = "ValidateManualAccountLinking";
     }
 }

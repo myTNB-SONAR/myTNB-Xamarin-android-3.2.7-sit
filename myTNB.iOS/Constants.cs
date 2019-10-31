@@ -75,6 +75,8 @@ namespace myTNB
         public static string Common_AccountNickname = "acctNickname";
         public static string Common_Fullname = "fullname";
         public static string Common_ConfirmPassword = "confirmPassword";
+        public static string Common_AccountNo = "accountNo";
+        public static string Common_AccountType = "accountType";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";
@@ -93,11 +95,19 @@ namespace myTNB
         public static string Error_InvalidFullname = "invalid_fullname";
         public static string Error_InvalidIDNumber = "invalid_idnumber";
         public static string Error_MismatchedEmail = "invalid_mismatchedEmail";
+        public static string Error_DuplicateAccountTitle = "error_duplicateAccountTitle";
+        public static string Error_DuplicateAccountMessage = "error_duplicateAccountMessage";
+        public static string Error_InvalidICNumber = "invalid_icNumber";
+        public static string Error_InvalidROCNumber = "invalid_rocNumber";
+        public static string Error_AccountLength = "accountLength";
+        public static string Error_InvalidAccountType = "invalid_accountType";
 
         //Hint I18N
         public static string Hint_EmptyAcctSelector = "emptyAcctSelector";
         public static string Hint_MobileNumber = "mobileNumberSample";
         public static string Hint_Password = "password";
+        public static string Hint_Nickname = "nickname";
+        public static string Hint_BusinessNickname = "businessNickname";
 
         //Table View Cell
         public static string Cell_NoHistoryData = "noHistoryDataTableViewCell";

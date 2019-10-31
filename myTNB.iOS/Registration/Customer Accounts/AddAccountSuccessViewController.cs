@@ -19,9 +19,7 @@ namespace myTNB
         const float HeaderViewHeight = 131f;
         CustomerAccountRecordListModel GetStartedList = new CustomerAccountRecordListModel();
 
-        public AddAccountSuccessViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public AddAccountSuccessViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
         {
