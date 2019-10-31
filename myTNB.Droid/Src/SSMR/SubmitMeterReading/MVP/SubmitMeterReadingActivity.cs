@@ -130,7 +130,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public override bool CameraPermissionRequired()
         {
             MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
-            if (currentMasterData.IsOCRDown)
+            bool smrAccountOCRDown = SMRPopUpUtils.OnGetIsOCRDownFlag();
+            if (currentMasterData.IsOCRDown || smrAccountOCRDown)
             {
                 return false;
             }
@@ -274,7 +275,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             bool isOCRDisabled = false;
             MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
-            if (currentMasterData.IsOCRDown)
+            bool smrAccountOCRDown = SMRPopUpUtils.OnGetIsOCRDownFlag();
+            if (currentMasterData.IsOCRDown || smrAccountOCRDown)
             {
                 isOCRDisabled = true;
             }
