@@ -600,9 +600,13 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 
         public void OnViewBill(AccountData selectedAccount)
         {
-            //LoadingBillsHistory(selectedAccount);
-            ShowBillDetails(selectedAccount);
+            LoadingBillsHistory(selectedAccount);
         }
+
+        public void OnViewBillDetails(AccountData selectedAccount)
+		{
+			ShowBillDetails(selectedAccount);
+		}
 
         private async void ShowBillDetails(AccountData selectedAccount)
         {

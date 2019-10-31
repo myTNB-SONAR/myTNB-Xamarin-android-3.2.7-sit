@@ -1860,7 +1860,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             SetData(DayViewRMData.Count);
 
                             // SETUP MARKER VIEW
-                            
+
                             SetUpMarkerRMView();
 
                             if (isZoomIn)
@@ -4359,10 +4359,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                this.userActionsListener.OnViewBill(selectedAccount);
+                this.userActionsListener.OnViewBillDetails(selectedAccount);
                 try
                 {
-                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "View Bill Buttom Clicked");
+                    FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "View Details Buttom Clicked");
                 }
                 catch (System.Exception ne)
                 {
@@ -7127,7 +7127,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             mScaleDetector.OnTouchEvent(e);
             return false;
         }
-        
+
         public void ByZoomDayView()
         {
             mChart.Visibility = ViewStates.Visible;

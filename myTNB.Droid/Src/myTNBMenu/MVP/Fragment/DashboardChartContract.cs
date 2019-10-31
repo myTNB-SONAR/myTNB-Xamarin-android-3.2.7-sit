@@ -165,6 +165,11 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void OnViewBill(AccountData selectedAccount);
 
             /// <summary>
+            /// Action to navigate to view bill details
+            /// </summary>
+            void OnViewBillDetails(AccountData selectedAccount);
+
+            /// <summary>
             /// Action to navigate to pay
             /// </summary>
             void OnPay();
