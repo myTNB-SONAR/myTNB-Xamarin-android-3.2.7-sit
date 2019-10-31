@@ -181,6 +181,54 @@ namespace myTNB
                 return sharedPreference.BoolForKey(TakePhotoToolTipKey);
             }
         }
+
+        public static bool RH_IsOCRDown
+        {
+            get
+            {
+                if (RH_MeterReadingHistory != null)
+                {
+                    return RH_MeterReadingHistory.IsOCRDown;
+                }
+                return true;
+            }
+        }
+
+        public static bool RH_IsOCRDisabled
+        {
+            get
+            {
+                if (RH_MeterReadingHistory != null)
+                {
+                    return RH_MeterReadingHistory.IsOCRDisabled;
+                }
+                return true;
+            }
+        }
+
+        public static bool DB_IsOCRDown
+        {
+            get
+            {
+                if (DB_MeterReadingHistory != null)
+                {
+                    return DB_MeterReadingHistory.IsOCRDown;
+                }
+                return true;
+            }
+        }
+
+        public static bool DB_IsOCRDisabled
+        {
+            get
+            {
+                if (DB_MeterReadingHistory != null)
+                {
+                    return DB_MeterReadingHistory.IsOCRDisabled;
+                }
+                return true;
+            }
+        }
         #endregion
     }
 }
