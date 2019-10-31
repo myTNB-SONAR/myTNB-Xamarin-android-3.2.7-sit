@@ -578,6 +578,21 @@ namespace myTNB_Android.Src.Database.Model
             //}
         }
 
+        public static List<CustomerBillingAccount> SMAccountList()
+        {
+            //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
+            //{
+            //using (var db = DBHelper.GetSQLiteConnection())
+            //{
+            var db = DBHelper.GetSQLiteConnection();
+            //return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
+            List<CustomerBillingAccount> eligibleSMRAccounts = new List<CustomerBillingAccount>();
+            eligibleSMRAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE SmartMeterCode != '0'").ToList().OrderBy(x => x.AccDesc).ToList();
+            //db.Close();
+            return eligibleSMRAccounts;
+            //}
+        }
+
         public static List<CustomerBillingAccount> GetEligibleAndSMRAccountList()
         {
             //using (var db = new SQLiteConnection(Constants.DB_PATH, SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create | SQLiteOpenFlags.FullMutex, true))
@@ -587,7 +602,7 @@ namespace myTNB_Android.Src.Database.Model
             var db = DBHelper.GetSQLiteConnection();
             //return db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE accountCategoryId != 2 ORDER BY accDesc ASC").ToList().OrderBy(x => x.AccDesc).ToList();
             List<CustomerBillingAccount> eligibleSMRAccounts = new List<CustomerBillingAccount>();
-            eligibleSMRAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE (accountCategoryId != 2 AND SmartMeterCode == '0' AND isOwned = 1) OR isTaggedSMR = 1").ToList().OrderBy(x => !x.IsTaggedSMR).ToList();
+            eligibleSMRAccounts = db.Query<CustomerBillingAccount>("SELECT * FROM CustomerBillingAccountEntity WHERE (accountCategoryId != 2 AND SmartMeterCode == '0' AND isOwned = 1)").ToList().OrderBy(x => !x.IsTaggedSMR).ToList();
             //db.Close();
             return eligibleSMRAccounts;
             //}

@@ -660,7 +660,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             if (billingAccoutCount > 0)
             {
-                if (trackCurrentLoadMoreCount > 0)
+                if (trackCurrentLoadMoreCount > 0 && !MyTNBAccountManagement.GetInstance().IsNeedUpdatedBillingDetails())
                 {
                     RestoreCachedAccountList();
                 }
@@ -695,9 +695,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     forLoopCount = (curentLoadMoreCount == 1) ? 3 : (curentLoadMoreCount * Constants.SUMMARY_DASHBOARD_PAGE_COUNT) - 2;
                     if (billingAccoutCount < forLoopCount)
                     {
-                        int diff = forLoopCount - billingAccoutCount;
-                        diff = Constants.SUMMARY_DASHBOARD_PAGE_COUNT - diff;
-                        forLoopCount = i + diff;
+                        forLoopCount = billingAccoutCount;
                     }
                 }
                 else
@@ -1318,27 +1316,51 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 cachedDBList = NewFAQManager.GetAll();
                 for (int i = 0; i < cachedDBList.Count; i++)
                 {
-                    currentNewFAQList.Add(new NewFAQ()
+                    if (cachedDBList[i].Tags == "SM")
                     {
-                        ID = cachedDBList[i].ID,
-                        Image = cachedDBList[i].Image,
-                        BGStartColor = cachedDBList[i].BGStartColor,
-                        BGEndColor = cachedDBList[i].BGEndColor,
-                        BGDirection = cachedDBList[i].BGDirection,
-                        Title = cachedDBList[i].Title,
-                        Description = cachedDBList[i].Description,
-                        TopicBodyTitle = cachedDBList[i].TopicBodyTitle,
-                        TopicBodyContent = cachedDBList[i].TopicBodyContent,
-                        CTA = cachedDBList[i].CTA,
-                        Tags = cachedDBList[i].Tags,
-                        TargetItem = cachedDBList[i].TargetItem
-                    });
+                        if (MyTNBAccountManagement.GetInstance().IsHasSMAccountCount() > 0)
+                        {
+                            currentNewFAQList.Add(new NewFAQ()
+                            {
+                                ID = cachedDBList[i].ID,
+                                Image = cachedDBList[i].Image,
+                                BGStartColor = cachedDBList[i].BGStartColor,
+                                BGEndColor = cachedDBList[i].BGEndColor,
+                                BGDirection = cachedDBList[i].BGDirection,
+                                Title = cachedDBList[i].Title,
+                                Description = cachedDBList[i].Description,
+                                TopicBodyTitle = cachedDBList[i].TopicBodyTitle,
+                                TopicBodyContent = cachedDBList[i].TopicBodyContent,
+                                CTA = cachedDBList[i].CTA,
+                                Tags = cachedDBList[i].Tags,
+                                TargetItem = cachedDBList[i].TargetItem
+                            });
+                        }
+                    }
+                    else
+                    {
+                        currentNewFAQList.Add(new NewFAQ()
+                        {
+                            ID = cachedDBList[i].ID,
+                            Image = cachedDBList[i].Image,
+                            BGStartColor = cachedDBList[i].BGStartColor,
+                            BGEndColor = cachedDBList[i].BGEndColor,
+                            BGDirection = cachedDBList[i].BGDirection,
+                            Title = cachedDBList[i].Title,
+                            Description = cachedDBList[i].Description,
+                            TopicBodyTitle = cachedDBList[i].TopicBodyTitle,
+                            TopicBodyContent = cachedDBList[i].TopicBodyContent,
+                            CTA = cachedDBList[i].CTA,
+                            Tags = cachedDBList[i].Tags,
+                            TargetItem = cachedDBList[i].TargetItem
+                        });
+                    }
                 }
                 this.mView.SetNewFAQResult(currentNewFAQList);
             }
             catch (Exception e)
             {
-                if (currentMyServiceList.Count > 0)
+                if (currentNewFAQList.Count > 0)
                 {
                     this.mView.SetNewFAQResult(currentNewFAQList);
                 }
