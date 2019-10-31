@@ -853,7 +853,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         btnViewBill.Text = GetString(Resource.String.dashboard_chartview_view_bill);
                         graphToggleSelection.Visibility = ViewStates.Visible;
                         energyTipsView.Visibility = ViewStates.Visible;
-                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
+                        scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
                         isChangeBackgroundNeeded = true;
                         layoutSMSegmentGroup.Visibility = ViewStates.Visible;
                         isSMR = false;
