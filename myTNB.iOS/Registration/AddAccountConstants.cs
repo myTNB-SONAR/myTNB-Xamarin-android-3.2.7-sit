@@ -48,6 +48,17 @@
         public static string I18N_AddAccountCTATitle = "addAccountCTATitle";
         public static string I18N_ScanMessage = "scanMessage";
         public static string I18N_InvalidBarcode = "invalidBarcode";
+        public static string I18N_AddByIDMessage = "addByIDMessage";
+        public static string I18N_AddByRightsMessage = "addByRightsMessage";
+        public static string I18N_AddAsOwnerMessage = "addAsOwnerMessage";
+        public static string I18N_AddAsTenantMessage = "addAsTenantMessage";
+        public static string I18N_AddAsTenantWithICMessage = "addAsTenantWithICMessage";
+        public static string I18N_AddAsTenantWithoutICMessage = "addAsTenantWithoutICMessage";
+        public static string I18N_OutstandingPayment = "outstandingPayment";
+        public static string I18N_UsageGraph = "usageGraph";
+        public static string I18N_PaymentHistory = "paymentHistory";
+        public static string I18N_CurrentBill = "currentBill";
+        public static string I18N_PastBills = "pastBills";
 
         public static string Service_ValidateManualAccountLinking = "ValidateManualAccountLinking";
     }

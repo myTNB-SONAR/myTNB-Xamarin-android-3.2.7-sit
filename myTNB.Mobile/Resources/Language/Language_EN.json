@@ -464,7 +464,18 @@
     "commercial": "Commercial",
     "addAccountCTATitle": "Add Account",
     "scanMessage": "Scan the barcode on your bill to retrieve account details.",
-    "invalidBarcode": "Invalid barcode."
+    "invalidBarcode": "Invalid barcode.",
+    "addByIDMessage": "Was this electricity supply account registered with your IC / ROC / Passport No.?",
+    "addByRightsMessage": "Do you have the rights to view all information related to this electricity supply account?",
+    "addAsOwnerMessage": "I'm the owner of this electricity supply account.",
+    "addAsTenantMessage": "I’m renting this place / it belongs to my parents.",
+    "addAsTenantWithICMessage": "I have the rights to view all information related to this electricity supply account.",
+    "addAsTenantWithoutICMessage": "I may not have the rights to view all information related to this electricity supply account.\r\n\r\nI may only view:",
+    "outstandingPayment": "Outstanding payment",
+    "usageGraph": "Usage graph",
+    "paymentHistory": "Payment history",
+    "currentBill": "Current bill",
+    "pastBills": "Past bills"
   },
   "Profile": {
     "title": "Profile",

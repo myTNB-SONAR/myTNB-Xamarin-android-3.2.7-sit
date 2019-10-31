@@ -12,15 +12,9 @@ namespace myTNB
         private UILabel lblTitle, lblYes, lblYesDescription, lblNo, lblNoDescription;
         private UIView viewYes, viewNo;
 
-        private List<string> rightsList = new List<string>(){
-                "Registration_OutstandingPayment".Translate()
-                , "Registration_UsageGraph".Translate()
-                , "Registration_PaymentHistory".Translate()
-                , "Registration_CurrentBill".Translate()
-                , "Registration_PastBills".Translate()
-            };
+        private List<string> rightsList;
 
-        private List<UIImage> imageList = new List<UIImage>()
+        private readonly List<UIImage> imageList = new List<UIImage>()
             {
                 UIImage.FromBundle("Check-Green")
                 , UIImage.FromBundle("Check-Green")
@@ -35,21 +29,28 @@ namespace myTNB
         {
             PageName = AddAccountConstants.PageName;
             base.ViewDidLoad();
+            rightsList = new List<string>(){
+                GetI18NValue(AddAccountConstants.I18N_OutstandingPayment)
+                , GetI18NValue(AddAccountConstants.I18N_UsageGraph)
+                , GetI18NValue(AddAccountConstants.I18N_PaymentHistory)
+                , GetI18NValue(AddAccountConstants.I18N_CurrentBill)
+                , GetI18NValue(AddAccountConstants.I18N_PastBills)
+            };
             InitializedSubviews();
             AddBackButton();
             SetUpGestures();
         }
 
-        internal void InitializedSubviews()
+        private void InitializedSubviews()
         {
-            NavigationItem.Title = "Common_AddElectricityAccount".Translate();
+            NavigationItem.Title = GetI18NValue(AddAccountConstants.I18N_NavTitle);
             View.BackgroundColor = MyTNBColor.LightGrayBG;
 
             lblTitle = new UILabel
             {
                 Frame = new CGRect(18, 16, View.Frame.Width - 36, 90),
                 AttributedText = new NSAttributedString(
-                    "Registration_RightsQuestion".Translate()
+                   GetI18NValue(AddAccountConstants.I18N_AddByRightsMessage)
                     , font: MyTNBFont.MuseoSans18_500
                     , foregroundColor: MyTNBColor.PowerBlue
                     , strokeWidth: 0
@@ -79,7 +80,7 @@ namespace myTNB
             {
                 Frame = new CGRect(16, 34, viewYes.Frame.Width - 32, 60),
                 AttributedText = new NSAttributedString(
-                    "Registration_RightsAnswer".Translate()
+                    GetI18NValue(AddAccountConstants.I18N_AddAsTenantWithICMessage)
                     , font: MyTNBFont.MuseoSans16_300
                     , foregroundColor: MyTNBColor.TunaGrey()
                     , strokeWidth: 0
@@ -109,7 +110,7 @@ namespace myTNB
             lblNoDescription = new UILabel
             {
                 Frame = new CGRect(16, 34, viewNo.Frame.Width - 32, 90),
-                AttributedText = new NSAttributedString("Registration_NoRightsAnswer".Translate()
+                AttributedText = new NSAttributedString(GetI18NValue(AddAccountConstants.I18N_AddAsTenantWithoutICMessage)
                     , font: MyTNBFont.MuseoSans16_300
                     , foregroundColor: MyTNBColor.TunaGrey()
                     , strokeWidth: 0),
@@ -123,13 +124,17 @@ namespace myTNB
             for (int i = 0; i < rightsList.Count; i++)
             {
                 UIView viewRights = new UIView(new CGRect(16, yLocation, viewNo.Frame.Width - 32, 16));
-                UIImageView img = new UIImageView(new CGRect(0, 0, 16, 16));
-                img.Image = imageList[i];
-                UILabel lblRights = new UILabel(new CGRect(24, 0, viewNo.Frame.Width - 24, 16));
-                lblRights.TextColor = MyTNBColor.TunaGrey();
-                lblRights.Font = MyTNBFont.MuseoSans14_300;
-                lblRights.TextAlignment = UITextAlignment.Left;
-                lblRights.Text = rightsList[i];
+                UIImageView img = new UIImageView(new CGRect(0, 0, 16, 16))
+                {
+                    Image = imageList[i]
+                };
+                UILabel lblRights = new UILabel(new CGRect(24, 0, viewNo.Frame.Width - 24, 16))
+                {
+                    TextColor = MyTNBColor.TunaGrey(),
+                    Font = MyTNBFont.MuseoSans14_300,
+                    TextAlignment = UITextAlignment.Left,
+                    Text = rightsList[i]
+                };
                 viewRights.AddSubviews(new UIView[] { img, lblRights });
                 viewNo.AddSubview(viewRights);
                 yLocation += 22;
@@ -139,26 +144,23 @@ namespace myTNB
             View.AddSubview(viewNo);
         }
 
-        internal void AddBackButton()
+        private void AddBackButton()
         {
             UIImage backImg = UIImage.FromBundle(Constants.IMG_Back);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                this.NavigationController?.PopViewController(true);
+                NavigationController?.PopViewController(true);
             });
-            if (this.NavigationItem != null)
+            if (NavigationItem != null)
             {
-                this.NavigationItem.LeftBarButtonItem = btnBack;
+                NavigationItem.LeftBarButtonItem = btnBack;
             }
         }
 
-        internal void NavigateToPage(string storyboardName, string viewControllerName, bool isOwner)
+        private void NavigateToPage(string storyboardName, string viewControllerName, bool isOwner)
         {
             UIStoryboard storyBoard = UIStoryboard.FromName(storyboardName, null);
-            UIViewController viewController =
-                storyBoard.InstantiateViewController(viewControllerName) as UIViewController;
-            AddAccountViewController addAccountVC =
-            storyBoard.InstantiateViewController("AddAccountViewController") as AddAccountViewController;
+            AddAccountViewController addAccountVC = storyBoard.InstantiateViewController("AddAccountViewController") as AddAccountViewController;
             if (addAccountVC != null)
             {
                 addAccountVC.isOwner = isOwner;
@@ -166,7 +168,7 @@ namespace myTNB
             }
         }
 
-        internal void SetUpGestures()
+        private void SetUpGestures()
         {
             UITapGestureRecognizer yes = new UITapGestureRecognizer(() =>
             {

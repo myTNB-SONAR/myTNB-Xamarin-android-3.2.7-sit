@@ -20,7 +20,7 @@ namespace myTNB.Registration
         //UILabel lblMaidenNameTitle, lblMaidenNameError;
 
         private UIView viewAccountNo, viewNickname, viewICNo, viewAccountType, viewLineAccountNo
-            , viewLineNickname, viewLineICNo, viewLineAccountType, viewInfoContainer;
+            , viewLineNickname, viewLineICNo, viewLineAccountType;
         //UIView viewMaidenName, viewLineMaidenName;
 
         private UITextField txtFieldAccountNo, txtFieldNickname, txtFieldICNo;
@@ -478,7 +478,7 @@ namespace myTNB.Registration
             {
                 Frame = new CGRect(0, 0, (viewAccountNo.Frame.Width / 4) * 3, 16),
                 AttributedText = new NSAttributedString(
-                    GetI18NValue(AddAccountConstants.I18N_NoAcctsTitle),
+                    GetI18NValue(AddAccountConstants.I18N_WhereIsMyAccountTitle),
                     font: MyTNBFont.MuseoSans14_500,
                     foregroundColor: MyTNBColor.PowerBlue,
                     strokeWidth: 0
@@ -488,62 +488,10 @@ namespace myTNB.Registration
 
             UITapGestureRecognizer tapInfo = new UITapGestureRecognizer(() =>
             {
-                if (viewInfoContainer == null)
-                {
-                    viewInfoContainer = new UIView(UIScreen.MainScreen.Bounds)
-                    {
-                        BackgroundColor = new UIColor(0, .75F),
-                        Hidden = true
-                    };
-
-                    UIView viewInfo = new UIView(new CGRect(18, (viewInfoContainer.Frame.Height / 2) - 147
-                        , viewInfoContainer.Frame.Width - 36, 294))
-                    {
-                        BackgroundColor = UIColor.White,
-                        Alpha = 1F
-                    };
-                    viewInfo.Layer.CornerRadius = 4;
-
-                    UIImageView imgInfo = new UIImageView(new CGRect(0, 0, viewInfo.Frame.Width, 120))
-                    {
-                        Image = UIImage.FromBundle("Find_Account_Number")
-                    };
-
-                    UILabel lblTitle = new UILabel(new CGRect(16, 137, viewInfo.Frame.Width - 32, 20))
-                    {
-                        TextAlignment = UITextAlignment.Left,
-                        TextColor = MyTNBColor.TunaGrey(),
-                        Font = MyTNBFont.MuseoSans14_500,
-                        Text = GetI18NValue(AddAccountConstants.I18N_WhereIsMyAccountTitle)
-                    };
-
-                    UILabel lblDetails = new UILabel(new CGRect(16, 162, viewInfo.Frame.Width - 32, 54))
-                    {
-                        TextAlignment = UITextAlignment.Left,
-                        TextColor = MyTNBColor.TunaGrey(),
-                        Font = MyTNBFont.MuseoSans14_500,
-                        Lines = 0,
-                        LineBreakMode = UILineBreakMode.WordWrap,
-                        Text = GetI18NValue(AddAccountConstants.I18N_WhereIsMyAccountDetails)
-                    };
-
-                    UIButton btnDismiss = new UIButton(UIButtonType.Custom)
-                    {
-                        Frame = new CGRect(0, viewInfo.Frame.Height - 30, viewInfo.Frame.Width, 20),
-                        Font = MyTNBFont.MuseoSans16_500
-                    };
-                    btnDismiss.SetTitle(GetCommonI18NValue(Constants.Common_GotIt), UIControlState.Normal);
-                    btnDismiss.SetTitleColor(MyTNBColor.PowerBlue, UIControlState.Normal);
-                    btnDismiss.TouchUpInside += (sender, e) =>
-                    {
-                        viewInfoContainer.Hidden = true;
-                    };
-                    viewInfo.AddSubviews(new UIView[] { imgInfo, lblTitle, lblDetails, btnDismiss });
-
-                    viewInfoContainer.AddSubview(viewInfo);
-                    UIApplication.SharedApplication.KeyWindow.AddSubview(viewInfoContainer);
-                }
-                viewInfoContainer.Hidden = false;
+                DisplayCustomAlert(GetI18NValue(AddAccountConstants.I18N_WhereIsMyAccountTitle)
+                    , GetI18NValue(AddAccountConstants.I18N_WhereIsMyAccountDetails)
+                    , new Dictionary<string, Action> { { GetCommonI18NValue(Constants.Common_GotIt), null } }
+                    , UIImage.FromBundle("Find_Account_Number"));
             });
 
             viewAccountInfo.AddSubview(lblAccountNoInfo);
