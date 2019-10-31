@@ -455,7 +455,7 @@
     "removeAcct": "Remove Account",
     "removeAcctMsg": "You are about to remove {0}, account number {1}.",
     "addAcctSuccessMsg": "Add Account(s) Successful",
-    "ownerICNumber": "Owner's IC No.",
+    "ownerICNumber": "Owner's IC / Passport Number",
     "rocNumber": "ROC No.",
     "whereIsMyAccountTitle": "Where is my account no.?",
     "whereIsMyAccountDetails": "Your 12-digit account no. can be found on the top left corner of your monthly paper bill.",
@@ -647,7 +647,22 @@
     "confirmEmail": "Confirm Email"
   },
   "AddCard": {
-    "title": "Add Card"
+    "title": "Add Card",
+    "acceptedCardsMessage": "Only credit / debit cards issued in Malaysia are accepted.",
+    "cardNumber": "Card Number",
+    "invalidCardNumber": "Invalid Card Number",
+    "nameOnCard": "Name on Card",
+    "invalidName": "Invalid name",
+    "cardExpiry": "Card Expiry",
+    "invalidCardExpiry": "Invalid card expiration date.",
+    "hintCardExpiry": "Card Expiry (MM/YY)",
+    "cvv": "CVV",
+    "invalidCVV": "Invalid CVV.",
+    "saveCardMessage": "I want to save this card for future use.",
+    "emptyCardNumberTitle": "Empty Card Number",
+    "emptyCardNumberMessage": "Please enter valid card number and try again.",
+    "savedCardTitle": "Valid card number",
+    "savedCardMessage": "Seems like you are paying with an already saved Credit / Debit Card. Do you want to continue?"
   },
   "CardScanner": {
     "title": "Add Card",

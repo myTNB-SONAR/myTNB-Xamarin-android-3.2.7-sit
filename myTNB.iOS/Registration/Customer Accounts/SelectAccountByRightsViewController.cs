@@ -92,7 +92,7 @@ namespace myTNB
 
             viewYes.AddSubviews(new UIView[] { lblYes, lblYesDescription });
 
-            viewNo = new UIView(new CGRect(18, viewYes.Frame.GetMaxY() + 10, View.Frame.Width - 36, 250));
+            viewNo = new UIView(new CGRect(18, viewYes.Frame.GetMaxY() + 10, View.Frame.Width - 36, 280));
             viewNo.BackgroundColor = UIColor.White;
             viewNo.Alpha = 1f;
             viewNo.Layer.CornerRadius = 4.0f;
@@ -109,7 +109,7 @@ namespace myTNB
 
             lblNoDescription = new UILabel
             {
-                Frame = new CGRect(16, 34, viewNo.Frame.Width - 32, 90),
+                Frame = new CGRect(16, 34, viewNo.Frame.Width - 32, 120),
                 AttributedText = new NSAttributedString(GetI18NValue(AddAccountConstants.I18N_AddAsTenantWithoutICMessage)
                     , font: MyTNBFont.MuseoSans16_300
                     , foregroundColor: MyTNBColor.TunaGrey()
@@ -120,7 +120,7 @@ namespace myTNB
             };
 
             viewNo.AddSubviews(new UIView[] { lblNo, lblNoDescription });
-            int yLocation = 131;
+            int yLocation = 161;
             for (int i = 0; i < rightsList.Count; i++)
             {
                 UIView viewRights = new UIView(new CGRect(16, yLocation, viewNo.Frame.Width - 32, 16));

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace myTNB
+﻿namespace myTNB
 {
     public static class Constants
     {
