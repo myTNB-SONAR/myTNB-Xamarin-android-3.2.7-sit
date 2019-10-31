@@ -129,7 +129,15 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public override bool CameraPermissionRequired()
         {
-            return true;
+            MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
+            if (currentMasterData.IsOCRDown)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         [OnClick(Resource.Id.btnSubmitReading)]
@@ -657,7 +665,16 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     meterReadingUnitList.Add(meterReadingModelList[i].meterReadingUnitDisplay);
                 }
                 string meterReadingListToString = String.Join(", ", meterReadingUnitList.ToArray());
-                threePhaseList[0].Description = String.Format(threePhaseList[0].Description, meterReadingUnitList.Count, meterReadingListToString);
+
+                try
+                {
+                    threePhaseList[0].Description = String.Format(threePhaseList[0].Description, meterReadingUnitList.Count, meterReadingListToString);
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+
                 SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(false, this, SupportFragmentManager, threePhaseList);
             }
             else

@@ -60,7 +60,7 @@ namespace myTNB.SitecoreCMS.Services
                     {
                         Title = item.GetValueFromField(Constants.Sitecore.Fields.SSMRMeterReadingWalkthrough.Title),
                         Description = item.GetValueFromField(Constants.Sitecore.Fields.SSMRMeterReadingWalkthrough.Description),
-                        Image = item.GetImageUrlFromItemWithSize(Constants.Sitecore.Fields.SSMRMeterReadingWalkthrough.Image, _os, _imgSize, _websiteURL, _language),
+                        Image = item.GetImageUrlFromMediaField(_imgSize, _websiteURL),
                         ID = item.Id
                     });
                 }
