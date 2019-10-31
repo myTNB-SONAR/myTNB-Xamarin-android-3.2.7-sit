@@ -159,6 +159,13 @@ namespace myTNB
                     descList.Add(str);
                 }
             }
+            else
+            {
+                if (!string.IsNullOrEmpty(description) && !string.IsNullOrWhiteSpace(description))
+                {
+                    descList.Add(description);
+                }
+            }
             return descList;
         }
 

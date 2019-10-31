@@ -19,12 +19,8 @@ namespace myTNB
 
         private UIWebView _webViewBill;
         private BillHistoryResponseModel _billHistory = new BillHistoryResponseModel();
-        private string _url = string.Empty;
-        private string _pdfFilePath = string.Empty;
-        private string _titleSuffix = string.Empty;
-        private string _formattedDate = string.Empty;
+        private string _url, _pdfFilePath, _titleSuffix, _formattedDate;
 
-        public int selectedIndex = -1;
         public bool IsFromUsage { set; private get; }
         public bool IsFromHome { set; private get; }
         public string BillingNumber { set; private get; } = string.Empty;
@@ -64,7 +60,7 @@ namespace myTNB
         private void SetNavigationItems()
         {
             NavigationItem.Title = _titleSuffix;
-            UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle("Back-White"), UIBarButtonItemStyle.Done, (sender, e) =>
+            UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle(Constants.IMG_Back), UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 OnDone?.Invoke();
 
@@ -130,7 +126,7 @@ namespace myTNB
             NavigationItem.RightBarButtonItem = btnDownload;
         }
 
-        private void SetSubviews()
+        internal void SetSubviews()
         {
             _webViewBill = new UIWebView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height))
             {
@@ -145,7 +141,7 @@ namespace myTNB
             View.AddSubview(_webViewBill);
         }
 
-        private Task GetUrlString()
+        internal Task GetUrlString()
         {
             return Task.Factory.StartNew(() =>
             {
@@ -167,13 +163,18 @@ namespace myTNB
             });
         }
 
-        private void GetFilePath()
+        internal void GetFilePath()
         {
-            string billingNo = selectedIndex > -1 && selectedIndex < _billHistory?.d?.data?.Count
-                ? _billHistory?.d?.data[selectedIndex]?.BillingNo
-                : _billHistory?.d?.data[0]?.BillingNo;
-            string pdfFileName = string.Format("{0}_{1}{2}.pdf"
-                , DataManager.DataManager.SharedInstance.SelectedAccount.accNum, billingNo, _formattedDate);
+            string billingNo;
+            if (IsFromHome || IsFromUsage)
+            {
+                billingNo = _billHistory.d.data[0].BillingNo;
+            }
+            else
+            {
+                billingNo = BillingNumber;
+            }
+            string pdfFileName = string.Format("{0}_{1}{2}.pdf", DataManager.DataManager.SharedInstance.SelectedAccount.accNum, billingNo, _formattedDate);
             string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             _pdfFilePath = Path.Combine(documentsPath, pdfFileName);
         }
@@ -185,10 +186,11 @@ namespace myTNB
             {
                 InvokeOnMainThread(async () =>
                 {
-                    if (_billHistory != null && _billHistory?.d != null
-                        && _billHistory.d.IsSuccess
-                        && _billHistory?.d?.data != null
-                        && _billHistory?.d?.data?.Count > 0)
+                    if (_billHistory != null &&
+                        _billHistory.d != null &&
+                        _billHistory.d.IsSuccess &&
+                        _billHistory.d.data != null &&
+                        _billHistory.d.data?.Count > 0)
                     {
                         SetNavigationTitle();
                         GetFilePath();
@@ -199,7 +201,7 @@ namespace myTNB
                     }
                     else
                     {
-                        DisplayServiceError(_billHistory?.d?.ErrorMessage, (obj) =>
+                        DisplayServiceError(_billHistory.d.ErrorMessage, (obj) =>
                        {
                            if (IsFromHome)
                            {
@@ -239,16 +241,37 @@ namespace myTNB
         private void SetNavigationTitle()
         {
             string formattedDate = string.Empty;
-            if (_billHistory != null && _billHistory?.d != null
-                && _billHistory?.d?.data != null && _billHistory?.d?.data?.Count > 0)
+            if (_billHistory != null &&
+                _billHistory.d != null &&
+                _billHistory.d.IsSuccess &&
+                _billHistory.d.data != null &&
+                _billHistory.d.data.Count > 0)
             {
-                string billDate = selectedIndex > -1 && selectedIndex < _billHistory?.d?.data?.Count
-                    ? _billHistory?.d?.data[selectedIndex]?.DtBill
-                    : _billHistory?.d?.data[0]?.DtBill;
+                string billDate = string.Empty;
+                if (IsFromHome || IsFromUsage)
+                {
+                    billDate = _billHistory.d.data[0].DtBill;
+                }
+                else
+                {
+                    if (!string.IsNullOrEmpty(BillingNumber) && !string.IsNullOrWhiteSpace(BillingNumber))
+                    {
+                        int indx = GetSelectedIndex(BillingNumber);
+                        if (indx > -1 && indx < _billHistory.d.data.Count)
+                        {
+                            billDate = _billHistory.d?.data[indx].DtBill;
+                        }
+                    }
+                }
                 formattedDate = DateHelper.GetFormattedDate(billDate, "MMM yyyy");
                 _formattedDate = DateHelper.GetFormattedDate(billDate, "MMMyyyy");
             }
             NavigationItem.Title = string.Format("{0} {1}", formattedDate, _titleSuffix);
+        }
+
+        private int GetSelectedIndex(string billNo)
+        {
+            return _billHistory.d.data.FindIndex(x => x.BillingNo.Equals(billNo));
         }
     }
 }
