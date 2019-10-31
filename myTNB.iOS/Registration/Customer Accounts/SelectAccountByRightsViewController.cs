@@ -9,16 +9,10 @@ namespace myTNB
 {
     public partial class SelectAccountByRightsViewController : CustomUIViewController
     {
-        UILabel lblTitle;
-        UIView viewYes;
-        UIView viewNo;
-        UILabel lblYes;
-        UILabel lblYesDescription;
-        UILabel lblNo;
-        UILabel lblNoDescription;
+        private UILabel lblTitle, lblYes, lblYesDescription, lblNo, lblNoDescription;
+        private UIView viewYes, viewNo;
 
-        List<string> rightsList = new List<string>()
-            {
+        private List<string> rightsList = new List<string>(){
                 "Registration_OutstandingPayment".Translate()
                 , "Registration_UsageGraph".Translate()
                 , "Registration_PaymentHistory".Translate()
@@ -26,7 +20,7 @@ namespace myTNB
                 , "Registration_PastBills".Translate()
             };
 
-        List<UIImage> imageList = new List<UIImage>()
+        private List<UIImage> imageList = new List<UIImage>()
             {
                 UIImage.FromBundle("Check-Green")
                 , UIImage.FromBundle("Check-Green")
@@ -35,12 +29,11 @@ namespace myTNB
                 , UIImage.FromBundle("X-Red")
             };
 
-        public SelectAccountByRightsViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public SelectAccountByRightsViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
         {
+            PageName = AddAccountConstants.PageName;
             base.ViewDidLoad();
             InitializedSubviews();
             AddBackButton();

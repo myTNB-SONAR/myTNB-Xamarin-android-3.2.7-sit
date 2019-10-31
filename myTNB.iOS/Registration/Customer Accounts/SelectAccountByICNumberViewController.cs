@@ -9,22 +9,17 @@ namespace myTNB
 {
     public partial class SelectAccountByICNumberViewController : CustomUIViewController
     {
-        UIView viewYes;
-        UIView viewNo;
-        UILabel lblTitle;
-        UILabel lblYes;
-        UILabel lblYesDescription;
-        UILabel lblNo;
-        UILabel lblNoDescription;
-        const float margin = 16f;
-        const float inlineMargin = 8f;
+        private UILabel lblTitle, lblYes, lblYesDescription, lblNo, lblNoDescription;
+        private UIView viewYes, viewNo;
 
-        public SelectAccountByICNumberViewController(IntPtr handle) : base(handle)
-        {
-        }
+        private const float margin = 16f;
+        private const float inlineMargin = 8f;
+
+        public SelectAccountByICNumberViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
         {
+            PageName = AddAccountConstants.PageName;
             base.ViewDidLoad();
             InitializedSubviews();
             AddBackButton();
