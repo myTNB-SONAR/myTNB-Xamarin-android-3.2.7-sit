@@ -2569,6 +2569,7 @@
     </Compile>
     <Compile Include="Registration\AddAccountConstants.cs" />
     <Compile Include="Payment\Add Card\AddCardConstants.cs" />
+    <Compile Include="Session Cache\PushNotificationCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

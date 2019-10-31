@@ -54,41 +54,43 @@ namespace myTNB
                 {
                     DataManager.DataManager.SharedInstance.IsFromPushNotification = false;
                     DataManager.DataManager.SharedInstance.NotificationNeedsUpdate = true;
-
-                    UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
-                    var viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
-                    var navController = new UINavigationController(viewController);
-
-                    var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
-                    var topVc = AppDelegate.GetTopViewController(baseRootVc);
-
-                    if (topVc != null)
+                    if (PushNotificationCache.IsODN || PushNotificationCache.IsValidEmail)
                     {
-                        if (!(topVc is DashboardHomeViewController) && !(topVc is DashboardViewController))
+                        UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
+                        var viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
+                        var navController = new UINavigationController(viewController);
+
+                        var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                        var topVc = AppDelegate.GetTopViewController(baseRootVc);
+
+                        if (topVc != null)
                         {
-                            var tabBar = ViewHelper.DismissControllersAndSelectTab(topVc, 0, false, true);
-
-                            if (tabBar != null)
+                            if (!(topVc is DashboardHomeViewController) && !(topVc is DashboardViewController))
                             {
-                                if (tabBar.SelectedViewController is DashboardNavigationController selVc)
-                                {
-                                    if (selVc != null && selVc.ViewControllers.Length > 0)
-                                    {
-                                        var vc = selVc.ViewControllers[0];
+                                var tabBar = ViewHelper.DismissControllersAndSelectTab(topVc, 0, false, true);
 
-                                        if ((vc is DashboardHomeViewController) || (vc is DashboardViewController))
+                                if (tabBar != null)
+                                {
+                                    if (tabBar.SelectedViewController is DashboardNavigationController selVc)
+                                    {
+                                        if (selVc != null && selVc.ViewControllers.Length > 0)
                                         {
-                                            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                                            vc.PresentViewController(navController, true, null);
+                                            var vc = selVc.ViewControllers[0];
+
+                                            if ((vc is DashboardHomeViewController) || (vc is DashboardViewController))
+                                            {
+                                                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                                                vc.PresentViewController(navController, true, null);
+                                            }
                                         }
                                     }
                                 }
                             }
-                        }
-                        else
-                        {
-                            navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                            topVc.PresentViewController(navController, true, null);
+                            else
+                            {
+                                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                                topVc.PresentViewController(navController, true, null);
+                            }
                         }
                     }
                 }
