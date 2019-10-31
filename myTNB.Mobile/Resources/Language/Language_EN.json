@@ -66,7 +66,7 @@
     "warning": "Warning",
     "manage": "Manage",
     "update": "Update",
-    "logout": "Logout",
+    "logout": "Log Out",
     "idNumber": "IC / ROC / Passport No.",
     "password": "Password",
     "mobileNo": "Mobile No.",
@@ -95,7 +95,7 @@
     "emptyAcctSelector": "---",
     "nickname": "e.g. My House, Parent's House",
     "businessNickname": "e.g. Bangsar Shopping Centre Branch",
-    "password": "Password must have at least 8 alphanumeric characters."
+    "password": "Your password must have at least 8 alphanumeric characters."
   },
   "Error": {
     "invalid_email": "Invalid email address",
@@ -110,8 +110,8 @@
     "invalid_amountMessage": "Kindly enter a non-zero/positive amount",
     "invalid_amountTitle": "Invalid Amount",
     "invalid_code": "Invalid code",
-    "invalid_password": "Password must have at least 8 alphanumeric characters.",
-    "invalid_mismatchedPassword": "Your new password do not match.",
+    "invalid_password": "Your password must have at least 8 alphanumeric characters.",
+    "invalid_mismatchedPassword": "Your new passwords do not match.",
     "invalid_fullname": "Invalid full name",
     "invalid_idnumber": "Invalid IC, ROC or Passport No.",
     "invalid_mismatchedEmail": "Your email and confirmation email do not match.",
@@ -397,23 +397,23 @@
     "enterAmount": "Enter Amount",
     "payMultiple": "Pay Bill ({0})",
     "paySingle": "Pay Bill",
-    "loadMore": "Load More",
+    "loadMore": "Show More",
     "selectBill": "Select Bill(s)",
     "iamPaying": "I AM PAYING (RM)"
   },
   "SelectPaymentMethod": {
     "title": "Select Payment Method",
-    "cvvFourDigitMessage": "Please enter the 4-digit CVV/CVC located at the front of your credit card.",
-    "cvvThreeDigitMessage": "Please enter the 3-digit CVV/CVC located at the back of your credit card.",
+    "cvvFourDigitMessage": "Please enter the 4 digit CVV/CVC located at the front of your credit card.",
+    "cvvThreeDigitMessage": "Please enter the 3 digit CVV/CVC located at the back of your credit card.",
     "otherPaymentMethods": "Other Payment Methods",
     "maxCCAmountMessage": "For payments more than RM 5000, please use FPX payment mode.",
     "addCard": "Add Card",
     "fpxTitle": "Online Banking via FPX"
   },
   "MakePayment": {
-    "enterOTP": "Enter OTP",
+    "enterOTP": "Enter the OTP",
     "onlineBanking": "Online Banking",
-    "abortTitle": "Abort Payment!",
+    "abortTitle": "Abort Payment",
     "abortMessage": "Are you sure you want to abort payment?"
   },
   "PushNotificationList": {
@@ -631,8 +631,8 @@
     "title": "Manage Credit / Debit Cards",
     "noCards": "Looks like you have no credit/debit cards stored. You may add a credit/debit card during payment.",
     "details": "You may only add a new credit / debit card when making payment.",
-    "cardRemoveSuccess": "Credit / debit card ending with {0} has been removed successfully.",
-    "removeCardMessage": "You are about to remove credit / debit card ending with {0}.",
+    "cardRemoveSuccess": "The credit / debit card ending with {0} has been removed successfully.",
+    "removeCardMessage": "You are about to remove the credit / debit card ending with {0}.",
     "removeCardTitle": "Remove Credit / Debit Card",
     "cardNotRemovedMessage": "Credit / Debit Card ending with {0} was not removed. Please try again."
   },
@@ -645,5 +645,12 @@
     "tnc": "By registering, you are agreeing to the <a href=\"\\\"><strong>TNB Terms and Conditions</strong></a>, <a href=\"\\\"><strong>User Agreement</strong></a> and <a href=\"\\\"><strong>Privacy policy</strong></a>.",
     "ctaTitle": "Register",
     "confirmEmail": "Confirm Email"
+  },
+  "AddCard": {
+    "title": "Add Card"
+  },
+  "CardScanner": {
+    "title": "Add Card",
+    "scanMessage": "Scan the front of your credit / debit card to retrieve card details."
   }
 }

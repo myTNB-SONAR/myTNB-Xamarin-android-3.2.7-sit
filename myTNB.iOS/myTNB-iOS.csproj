@@ -2568,6 +2568,7 @@
       <DependentUpon>BarcodeScannerViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Registration\AddAccountConstants.cs" />
+    <Compile Include="Payment\Add Card\AddCardConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

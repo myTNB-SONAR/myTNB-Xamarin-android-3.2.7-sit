@@ -10,14 +10,13 @@ using Foundation;
 using System.Globalization;
 using System.Diagnostics;
 using myTNB.Payment;
+using myTNB.Payment.AddCard;
 
 namespace myTNB
 {
     public partial class AddCardViewController : CustomUIViewController
     {
-        public AddCardViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public AddCardViewController(IntPtr handle) : base(handle) { }
 
         UIScrollView ScrollView;
         CGRect scrollViewFrame;
@@ -78,9 +77,9 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            PageName = AddCardConstants.Pagename_AddCard;
             base.ViewDidLoad();
             // Perform any additional setup after loading the view, typically from a nib.
-            NavigationItem.HidesBackButton = true;
             SetNavigationItems();
             SetSubviews();
 
@@ -105,16 +104,18 @@ namespace myTNB
             }
         }
 
-        internal void SetNavigationItems()
+        private void SetNavigationItems()
         {
+            NavigationItem.HidesBackButton = true;
             UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle(Constants.IMG_Back), UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 NavigationController.PopViewController(false);
             });
             NavigationItem.LeftBarButtonItem = btnBack;
+            Title = GetI18NValue(AddCardConstants.I18N_Title);
         }
 
-        internal void SetSubviews()
+        private void SetSubviews()
         {
             // setup scrollview
             ScrollView = new UIScrollView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height));
@@ -242,8 +243,8 @@ namespace myTNB
 
             txtFieldCardExpiry.AddTarget((sender, e) =>
             {
-                var theTextField = (UITextField)sender;
-                var textVal = theTextField.Text;
+                UITextField theTextField = (UITextField)sender;
+                string textVal = theTextField.Text;
 
                 if (textVal.Length == 2)
                 {
@@ -257,8 +258,8 @@ namespace myTNB
 
             txtFieldCardExpiry.ShouldChangeCharacters += (textField, range, replacement) =>
             {
-                var theTextField = (UITextField)textField;
-                var textVal = theTextField.Text;
+                UITextField theTextField = (UITextField)textField;
+                string textVal = theTextField.Text;
 
                 if (theTextField.Text.Length == 5 && range.Length == 0)
                 {
@@ -307,7 +308,7 @@ namespace myTNB
 
             txtFieldCVV.ShouldChangeCharacters += (textField, range, replacement) =>
             {
-                var theTextField = (UITextField)textField;
+                UITextField theTextField = (UITextField)textField;
                 return !(theTextField.Text.Length == MaxCvvLength && range.Length == 0);
             };
 
@@ -327,7 +328,7 @@ namespace myTNB
 
             btnCheckBox.TouchUpInside += (sender, e) =>
             {
-                var btn = ((UIButton)sender);
+                UIButton btn = ((UIButton)sender);
                 if (btn.Selected == true)
                 {
                     btn.Selected = false;
@@ -339,7 +340,7 @@ namespace myTNB
                 }
             };
 
-            var lblCheckBoxTitle = new UILabel(new CGRect(51, 324, View.Frame.Width - 69, 18));
+            UILabel lblCheckBoxTitle = new UILabel(new CGRect(51, 324, View.Frame.Width - 69, 18));
             lblCheckBoxTitle.TextColor = MyTNBColor.TunaGrey();
             lblCheckBoxTitle.Font = MyTNBFont.MuseoSans14;
             lblCheckBoxTitle.TextAlignment = UITextAlignment.Left;
@@ -408,14 +409,14 @@ namespace myTNB
         /// </summary>
         private void RemoveCachedAccountRecords()
         {
-            foreach (var item in AccountsForPayment)
+            foreach (CustomerAccountRecordModel item in AccountsForPayment)
             {
                 DataManager.DataManager.SharedInstance.DeleteDue(item.accNum);
                 DataManager.DataManager.SharedInstance.DeleteDetailsFromPaymentHistory(item.accNum);
             }
         }
 
-        internal void SetKeyboard(UITextField textField)
+        private void SetKeyboard(UITextField textField)
         {
             textField.AutocorrectionType = UITextAutocorrectionType.No;
             textField.AutocapitalizationType = UITextAutocapitalizationType.None;
@@ -423,7 +424,7 @@ namespace myTNB
             textField.ReturnKeyType = UIReturnKeyType.Done;
         }
 
-        internal void SetTextFieldEvents(UITextField textField, UILabel lblTitle
+        private void SetTextFieldEvents(UITextField textField, UILabel lblTitle
                                          , UILabel lblError, UIView viewLine, string pattern)
         {
             SetKeyboard(textField);
@@ -529,7 +530,7 @@ namespace myTNB
             }
         }
 
-        internal void SetNextButtonEnable()
+        private void SetNextButtonEnable()
         {
             bool isCardValid = ValidateCard(txtFieldCardNumber.Text.Replace(" ", string.Empty));
             bool isNameValid = IsValidName(txtFieldName.Text);
@@ -540,7 +541,7 @@ namespace myTNB
             btnNext.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
         }
 
-        internal void ExecuteRequestPayBillCall()
+        private void ExecuteRequestPayBillCall()
         {
             ActivityIndicator.Show();
             InvokeOnMainThread(async () =>
@@ -576,15 +577,17 @@ namespace myTNB
             });*/
         }
 
-        internal void NavigateToVC(GetPaymentTransactionIdResponseModel paymentTransactionIDResponseModel)
+        private void NavigateToVC(GetPaymentTransactionIdResponseModel paymentTransactionIDResponseModel)
         {
             UIStoryboard storyBoard = UIStoryboard.FromName("MakePayment", null);
             MakePaymentViewController makePaymentVC =
                 storyBoard.InstantiateViewController("MakePaymentViewController") as MakePaymentViewController;
 
-            var card = new CardModel();
-            card.CardNo = txtFieldCardNumber.Text.Replace(" ", string.Empty);
-            card.CardName = txtFieldName.Text;
+            CardModel card = new CardModel
+            {
+                CardNo = txtFieldCardNumber.Text.Replace(" ", string.Empty),
+                CardName = txtFieldName.Text
+            };
             card.CardType = GetCardTypeByPreffix(card.CardNo);
             card.CardCVV = txtFieldCVV.Text;
 
@@ -604,10 +607,10 @@ namespace myTNB
             }
         }
 
-        internal string GetCardTypeByPreffix(string cardPreffix)
+        private string GetCardTypeByPreffix(string cardPreffix)
         {
             string cardType = "M";
-            foreach (var item in cardPrefixPattern)
+            foreach (KeyValuePair<string, string> item in cardPrefixPattern)
             {
                 Regex regex = new Regex(item.Value);
                 Match match = regex.Match(cardPreffix);
@@ -619,7 +622,7 @@ namespace myTNB
             return cardType;
         }
 
-        internal bool LuhnVerification(string creditCardNumber)
+        private bool LuhnVerification(string creditCardNumber)
         {
             bool isValid = false;
             if (string.IsNullOrEmpty(creditCardNumber))
@@ -634,7 +637,7 @@ namespace myTNB
             return isValid;
         }
 
-        internal bool ValidateCard(string cardNo)
+        private bool ValidateCard(string cardNo)
         {
             return LuhnVerification(cardNo);
         }
@@ -668,7 +671,7 @@ namespace myTNB
             return false;
         }
 
-        internal string FormatCard(string cardNo)
+        private string FormatCard(string cardNo)
         {
             string cardType = GetCardTypeByPreffix(cardNo);
             Debug.WriteLine("cardType: " + cardType);
@@ -696,7 +699,7 @@ namespace myTNB
             return result;
         }
 
-        internal void VerifyCardSaveStatus()
+        private void VerifyCardSaveStatus()
         {
             bool isValid = ValidateCard(txtFieldCardNumber.Text.Replace(" ", string.Empty));
 
@@ -708,11 +711,11 @@ namespace myTNB
 
             if (isValid)
             {
-                foreach (var card in _registeredCards.d.data)
+                foreach (RegisteredCardsDataModel card in _registeredCards.d.data)
                 {
-                    var tmpToBeSavedCardNumber = txtFieldCardNumber.Text.Replace(" ", string.Empty);
-                    var toBeSavedCardExposedDigits = tmpToBeSavedCardNumber.Substring(0, 6) + tmpToBeSavedCardNumber.Substring(tmpToBeSavedCardNumber.Length - 4);
-                    var cardExposeDigits = GetCardExposedDigits(card);
+                    string tmpToBeSavedCardNumber = txtFieldCardNumber.Text.Replace(" ", string.Empty);
+                    string toBeSavedCardExposedDigits = tmpToBeSavedCardNumber.Substring(0, 6) + tmpToBeSavedCardNumber.Substring(tmpToBeSavedCardNumber.Length - 4);
+                    string cardExposeDigits = GetCardExposedDigits(card);
 
                     if (toBeSavedCardExposedDigits == cardExposeDigits)
                     {
@@ -732,7 +735,7 @@ namespace myTNB
             }
         }
 
-        internal string GetCardExposedDigits(RegisteredCardsDataModel card)
+        private string GetCardExposedDigits(RegisteredCardsDataModel card)
         {
             RegisteredCardsDataModel tempCard = card;
             tempCard.ExposedDigits = card.LastDigits.Substring(0, 6) + card.LastDigits.Substring(card.LastDigits.Length - 4);
