@@ -10,11 +10,7 @@ namespace myTNB_Android.Src.Base.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            string title = GetLabelByLanguage("navTitle");
-            if (title == "")
-            {
-                title = GetLabelByLanguage("title");
-            }
+            string title = GetLabelByLanguage("title");
             SetToolBarTitle(title);
         }
         /// <summary>

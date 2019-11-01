@@ -103,7 +103,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             Bundle extras = Intent.Extras;
             TextViewUtils.SetMuseoSans500Typeface(billFilterMessage, btnBillFilter);
             TextViewUtils.SetMuseoSans300Typeface(txtFilterLabel, txtFilterSelected);
-            SetToolBarTitle(GetLabelByLanguage("navTitle"));
             billFilterMessage.Text = GetLabelByLanguage("description");
             btnBillFilter.Text = GetLabelByLanguage("applyFilter");
             txtFilterLabel.Text = GetLabelByLanguage("filterBy");
