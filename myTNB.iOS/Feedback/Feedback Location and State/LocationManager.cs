@@ -33,7 +33,6 @@ namespace Location
 
                 //set the desired accuracy, in meters
                 LocMgr.DesiredAccuracy = 1;
-
                 LocMgr.LocationsUpdated += (object sender, CLLocationsUpdatedEventArgs e) =>
                 {
                     // fire our custom Location Updated event

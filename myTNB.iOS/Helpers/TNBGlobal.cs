@@ -53,23 +53,6 @@ namespace myTNB
         public static string ACCOUNT_NO_PATTERN = @"^[0-9]{12,14}$";
         public static string IC_NO_PATTERN = @"^[a-zA-Z0-9]+$";
 
-
-        public static string UNITENERGY
-        {
-            get
-            {
-                return "Global_UnitEnergy".Translate();
-            }
-        }
-
-        public static string UNITEMISSION
-        {
-            get
-            {
-                return "Global_UnitEmission".Translate();
-            }
-        }
-
         /// <summary>
         /// Gets the payment URL.
         /// </summary>

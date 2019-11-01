@@ -411,9 +411,9 @@ namespace myTNB.Dashboard.DashboardComponents
                     return string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, str);
                 case ChartModeEnum.Usage:
                 case ChartModeEnum.REUsage:
-                    return string.Format("{0} {1}", str, TNBGlobal.UNITENERGY);
+                    return string.Format("{0} {1}", str, Constants.UnitEnergy);
                 case ChartModeEnum.Emission:
-                    return string.Format("{0} {1}", str, TNBGlobal.UNITEMISSION);
+                    return string.Format("{0} {1}", str, Constants.UnitEmission);
             }
         }
 

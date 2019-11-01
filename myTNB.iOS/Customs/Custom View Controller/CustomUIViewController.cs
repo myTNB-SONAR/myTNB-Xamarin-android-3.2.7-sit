@@ -63,17 +63,6 @@ namespace myTNB
         }
         #endregion
         #region Widget Utilities
-        public UILabel GetUILabelField(CGRect lblFrame, string key, UITextAlignment txtAlignment = UITextAlignment.Left)
-        {
-            return CustomUILabel.GetUILabelField(lblFrame, key, txtAlignment);
-        }
-
-        public UILabel GetUILabelField(CGRect lblFrame, string key, UIFont font
-            , UIColor textColor, UITextAlignment txtAlignment = UITextAlignment.Left)
-        {
-            return CustomUILabel.GetUILabelField(lblFrame, key, font, textColor, txtAlignment);
-        }
-
         public CGSize GetLabelSize(UILabel label, nfloat width, nfloat height)
         {
             return CustomUILabel.GetLabelSize(label, width, height);
@@ -82,16 +71,6 @@ namespace myTNB
         public CGSize GetLabelSize(UILabel label, nfloat height)
         {
             return CustomUILabel.GetLabelSize(label, label.Frame.Width, height);
-        }
-
-        public UIButton GetUIButton(CGRect frame, string key)
-        {
-            return CustomUIButton.GetUIButton(frame, key);
-        }
-
-        public void MakeTopCornerRadius(UIButton button)
-        {
-            CustomUIButton.MakeTopCornerRadius(button);
         }
 
         public void SetFrames()

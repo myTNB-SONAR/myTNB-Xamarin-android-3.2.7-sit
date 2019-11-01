@@ -272,7 +272,7 @@ namespace myTNB.Dashboard.DashboardComponents
                         if (!string.IsNullOrEmpty(currUsageKWH))
                         {
                             _metricCmp1.ValueLabel.AttributedText = TextHelper.CreateValuePairString(TextHelper.ParseStringToDouble(currUsageKWH)
-                                .ToString("N2", CultureInfo.InvariantCulture), " " + TNBGlobal.UNITENERGY, false, MyTNBFont.MuseoSans16_300
+                                .ToString("N2", CultureInfo.InvariantCulture), " " + Constants.UnitEnergy, false, MyTNBFont.MuseoSans16_300
                                 , UIColor.White, MyTNBFont.MuseoSans12_300, UIColor.White);
                         }
                         _metricCmp2.Icon.Image = UIImage.FromBundle("IC-Avg-Elec-Usage");
@@ -302,7 +302,7 @@ namespace myTNB.Dashboard.DashboardComponents
                         _metricCmp1.SubTitleLabel.Text = GetDateRange(For, _usageMetrics?.FromCycleDate, _usageMetrics?.StatsByCo2?.First()?.AsOf);
                         string value = _usageMetrics?.StatsByCo2?.Count > 0 ?
                                                      _usageMetrics?.StatsByCo2?.Sum(item => TextHelper.ParseStringToDouble(item.Quantity)).ToString() : "0";
-                        _metricCmp1.ValueLabel.AttributedText = TextHelper.CreateValuePairString(value, " " + TNBGlobal.UNITEMISSION, false
+                        _metricCmp1.ValueLabel.AttributedText = TextHelper.CreateValuePairString(value, " " + Constants.UnitEmission, false
                             , MyTNBFont.MuseoSans16_300, UIColor.White, MyTNBFont.MuseoSans12_300, UIColor.White);
                     }
                     break;

@@ -19,4 +19,4 @@ using System; using UIKit; using CoreGraphics;  namespace myTNB {   
             {
                 BackgroundColor = MyTNBColor.SectionGrey,
                 Hidden = false
-            };              AddSubviews(new UIView[] { imgViewIcon, lblTitle, lblSubtTitle, lblCount, viewLine });         }     } }
+            };              AddSubviews(new UIView[] { imgViewIcon, lblTitle, lblSubtTitle, lblCount, viewLine });             SelectionStyle = UITableViewCellSelectionStyle.None;         }     } }

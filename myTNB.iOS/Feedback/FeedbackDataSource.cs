@@ -11,10 +11,10 @@ namespace myTNB.Home.Feedback
 {
     public class FeedbackDataSource : UITableViewSource
     {
-        readonly List<FeedbackRowModel> _feedbackList = new List<FeedbackRowModel>();
-        readonly List<SubmittedFeedbackDataModel> _submittedFeedbackList = new List<SubmittedFeedbackDataModel>();
-        readonly bool _isBcrmAvailable;
-        readonly FeedbackViewController _controller;
+        private readonly List<FeedbackRowModel> _feedbackList = new List<FeedbackRowModel>();
+        private readonly List<SubmittedFeedbackDataModel> _submittedFeedbackList = new List<SubmittedFeedbackDataModel>();
+        private readonly bool _isBcrmAvailable;
+        private readonly FeedbackViewController _controller;
 
         public FeedbackDataSource(FeedbackViewController controller, List<SubmittedFeedbackDataModel> submittedFeedbackList, bool isBcrmAvailable)
         {
@@ -22,9 +22,6 @@ namespace myTNB.Home.Feedback
             {
                 foreach (FeedbackCategoryDataModel f in DataManager.DataManager.SharedInstance.FeedbackCategory)
                 {
-                    Debug.WriteLine("FeedbackCategoryId: " + f.FeedbackCategoryId);
-                    Debug.WriteLine("FeedbackCategoryName: " + f.FeedbackCategoryName);
-
                     FeedbackRowModel feedBackRowModel = new FeedbackRowModel
                     {
                         Name = f.FeedbackCategoryName,
@@ -44,6 +41,9 @@ namespace myTNB.Home.Feedback
                             break;
                         case "10":
                             feedBackRowModel.Icon = "Feedback-Submitted";
+                            break;
+                        default:
+                            feedBackRowModel.Icon = string.Empty;
                             break;
                     }
                     _feedbackList.Add(feedBackRowModel);
@@ -66,8 +66,8 @@ namespace myTNB.Home.Feedback
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            var feedBack = _feedbackList[indexPath.Row];
-            var cell = tableView.DequeueReusableCell("FeedbackViewCell", indexPath) as FeedbackViewCell;
+            FeedbackRowModel feedBack = _feedbackList[indexPath.Row];
+            FeedbackViewCell cell = tableView.DequeueReusableCell("FeedbackViewCell", indexPath) as FeedbackViewCell;
 
             cell.lblTitle.Text = feedBack.Name;
             cell.lblSubtTitle.Text = feedBack.Subtitle;
@@ -80,14 +80,12 @@ namespace myTNB.Home.Feedback
                     cell.lblCount.Text = _submittedFeedbackList.Count.ToString();
                 }
             }
-            cell.SelectionStyle = UITableViewCellSelectionStyle.None;
-
             return cell;
         }
 
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
         {
-            var feedback = _feedbackList[indexPath.Row];
+            FeedbackRowModel feedback = _feedbackList[indexPath.Row];
             if (feedback.ID == "10")
             {
                 _controller.DisplaySubmittedFeedback(feedback.Name);
@@ -103,10 +101,10 @@ namespace myTNB.Home.Feedback
             }
         }
 
-        internal void ShowBRCMAlert()
+        private void ShowBRCMAlert()
         {
-            var status = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == SystemEnum.BCRM);
-            AlertHandler.DisplayServiceError(_controller, status?.DowntimeTextMessage);
+            DowntimeDataModel status = DataManager.DataManager.SharedInstance.SystemStatus?.Find(x => x.SystemType == SystemEnum.BCRM);
+            _controller.DisplayServiceError(status?.DowntimeTextMessage ?? string.Empty);
         }
     }
 }

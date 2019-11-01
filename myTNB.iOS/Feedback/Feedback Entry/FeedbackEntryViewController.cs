@@ -7,14 +7,13 @@ using System.Threading.Tasks;
 using myTNB.Model;
 using myTNB.Customs;
 using myTNB.Home.Feedback.FeedbackEntry;
+using myTNB.Feedback;
 
 namespace myTNB
 {
-    public partial class FeedbackEntryViewController : UIViewController
+    public partial class FeedbackEntryViewController : CustomUIViewController
     {
-        public FeedbackEntryViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public FeedbackEntryViewController(IntPtr handle) : base(handle) { }
 
         public string FeedbackID = string.Empty;
         public bool IsLoggedIn;
@@ -48,6 +47,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            PageName = FeedbackConstants.Pagename_FeedbackForm;
             base.ViewDidLoad();
             CheckMobileNumber();
             _otherFeedbackComponent = new OtherFeedbackComponent(this);
@@ -80,14 +80,14 @@ namespace myTNB
             }
         }
 
-        void CheckMobileNumber()
+        private void CheckMobileNumber()
         {
             isMobileNumberAvailable = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
                 && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.UserEntity[0]?.mobileNo)
                 && !string.IsNullOrEmpty(DataManager.DataManager.SharedInstance.UserEntity[0]?.mobileNo);
         }
 
-        void SetHeader()
+        private void SetHeader()
         {
             UIImage backImg = UIImage.FromBundle(Constants.IMG_Back);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
@@ -95,10 +95,10 @@ namespace myTNB
                 this.DismissViewController(true, null);
             });
             this.NavigationItem.LeftBarButtonItem = btnBack;
-            this.Title = DataManager.DataManager.SharedInstance.FeedbackCategory?.Find(x => x?.FeedbackCategoryId == FeedbackID)?.FeedbackCategoryName; ;
+            this.Title = DataManager.DataManager.SharedInstance.FeedbackCategory?.Find(x => x?.FeedbackCategoryId == FeedbackID)?.FeedbackCategoryName;
         }
 
-        void AddScrollView()
+        private void AddScrollView()
         {
             _svContainer = new UIScrollView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height))
             {
@@ -107,7 +107,7 @@ namespace myTNB
             View.AddSubview(_svContainer);
         }
 
-        void AddCTA()
+        private void AddCTA()
         {
             _btnSubmitContainer = new UIView(new CGRect(0, (View.Frame.Height - DeviceHelper.GetScaledHeight(145))
                 , View.Frame.Width, DeviceHelper.GetScaledHeight(100)))
@@ -119,7 +119,7 @@ namespace myTNB
             {
                 Frame = new CGRect(18, DeviceHelper.GetScaledHeight(18), _btnSubmitContainer.Frame.Width - 36, 48)
             };
-            _btnSubmit.SetTitle("Common_Submit".Translate(), UIControlState.Normal);
+            _btnSubmit.SetTitle(GetCommonI18NValue(Constants.Common_Submit), UIControlState.Normal);
             _btnSubmit.Font = MyTNBFont.MuseoSans18_300;
             _btnSubmit.Layer.CornerRadius = 5.0f;
             _btnSubmit.Enabled = false;
@@ -132,7 +132,7 @@ namespace myTNB
             View.AddSubview(_btnSubmitContainer);
         }
 
-        void CreatePhotoUploadWidget()
+        private void CreatePhotoUploadWidget()
         {
             //Photo View
             _viewUploadPhoto = new UIView((new CGRect(18, (nfloat)(GetPhotoWidgetYCoordinate() + VIEW_PHOTO_MARGIN)
@@ -144,16 +144,16 @@ namespace myTNB
             //Photo/s Title
             _lblPhotoTitle = new UILabel(new CGRect(0, 0, View.Frame.Width - 36, 14))
             {
-                Text = "Feedback_AttachPhotoMessage".Translate(),
+                Text = GetI18NValue(FeedbackConstants.I18N_AttachPhotoTitle),
                 TextColor = MyTNBColor.SilverChalice,
                 Font = MyTNBFont.MuseoSans11_300
             };
             _viewUploadPhoto.AddSubview(_lblPhotoTitle);
 
-            var lblPhotoSubTitle = new UILabel(new CGRect(0, _lblPhotoTitle.Frame.GetMaxY() + 108
+            UILabel lblPhotoSubTitle = new UILabel(new CGRect(0, _lblPhotoTitle.Frame.GetMaxY() + 108
                 , View.Frame.Width - 36, 14))
             {
-                Text = "Feedback_MaxFiles".Translate(),
+                Text = GetI18NValue(FeedbackConstants.I18N_MaxFile),
                 TextColor = MyTNBColor.SilverChalice,
                 Font = MyTNBFont.MuseoSans11_300
             };
@@ -162,7 +162,7 @@ namespace myTNB
             AddImageContainer();
         }
 
-        nfloat GetPhotoWidgetYCoordinate()
+        private nfloat GetPhotoWidgetYCoordinate()
         {
             nfloat yCoord = 0.0f;
             yCoord = GetFeedbackCategoryViewHeight();
@@ -170,7 +170,7 @@ namespace myTNB
             return yCoord;
         }
 
-        void AddImageContainer()
+        private void AddImageContainer()
         {
             if (capturedImageCount < MAX_IMAGE)
             {
@@ -218,21 +218,21 @@ namespace myTNB
 
                     UIAlertController alert = UIAlertController.Create(null, null, UIAlertControllerStyle.ActionSheet);
 
-                    alert.AddAction(UIAlertAction.Create("Feedback_Camera".Translate(), UIAlertActionStyle.Default, (obj) =>
+                    alert.AddAction(UIAlertAction.Create(GetI18NValue(FeedbackConstants.I18N_Camera), UIAlertActionStyle.Default, (obj) =>
                     {
                         imgPicker.SourceType = UIImagePickerControllerSourceType.Camera;
                         imgPicker.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                         PresentViewController(imgPicker, true, null);
                     }));
 
-                    alert.AddAction(UIAlertAction.Create("Feedback_CameraRoll".Translate(), UIAlertActionStyle.Default, (obj) =>
+                    alert.AddAction(UIAlertAction.Create(GetI18NValue(FeedbackConstants.I18N_CameraRoll), UIAlertActionStyle.Default, (obj) =>
                     {
                         imgPicker.SourceType = UIImagePickerControllerSourceType.PhotoLibrary;
                         imgPicker.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                         PresentViewController(imgPicker, true, null);
                     }));
 
-                    UIAlertAction cancelAction = UIAlertAction.Create("Common_Cancel".Translate(), UIAlertActionStyle.Cancel, null);
+                    UIAlertAction cancelAction = UIAlertAction.Create(GetCommonI18NValue(Constants.Common_Cancel), UIAlertActionStyle.Cancel, null);
                     alert.AddAction(cancelAction);
                     alert.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                     PresentViewController(alert, animated: true, completionHandler: null);
@@ -246,7 +246,7 @@ namespace myTNB
             }
         }
 
-        void RepositionImageContent()
+        private void RepositionImageContent()
         {
             imageWidth = 0;
             foreach (UIView view in imageContainerScroll.Subviews)
@@ -297,12 +297,12 @@ namespace myTNB
             ActivityIndicator.Hide();
         }
 
-        void UpdateContentSize()
+        private void UpdateContentSize()
         {
             _svContainer.ContentSize = new CGRect(0f, 0f, View.Frame.Width, GetScrollHeight()).Size;
         }
 
-        void CreateCommentSection()
+        private void CreateCommentSection()
         {
             _viewFeedback = new UIView((new CGRect(18, GetCommentSectionYCoordinate(), View.Frame.Width - 36, 51)))
             {
@@ -312,7 +312,8 @@ namespace myTNB
             _lblFeedbackTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewFeedback.Frame.Width, 12),
-                AttributedText = AttributedStringUtility.GetAttributedString("Feedback_Title", AttributedStringUtility.AttributedStringType.Title),
+                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetI18NValue(FeedbackConstants.I18N_Feedback)
+                    , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -335,19 +336,20 @@ namespace myTNB
                 Image = UIImage.FromBundle("IC-Feedback")
             };
 
-            _feedbackTextView.SetPlaceholder("Feedback_Title".Translate());
+            _feedbackTextView.SetPlaceholder(GetI18NValue(FeedbackConstants.I18N_Feedback));
             _feedbackTextView.CreateDoneButton();
 
             _feedbackTextView.ShouldChangeText = (txtView, range, replacementString) =>
             {
-                var newLength = txtView.Text.Length + replacementString.Length - range.Length;
+                nint newLength = txtView.Text.Length + replacementString.Length - range.Length;
                 return newLength <= 250;
             };
 
             _lblFeedbackError = new UILabel
             {
                 Frame = new CGRect(0, _feedbackTextView.Frame.Height, _feedbackTextView.Frame.Width - 36, 14),
-                AttributedText = AttributedStringUtility.GetAttributedString("Invalid_Feedback", AttributedStringUtility.AttributedStringType.Error),
+                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetI18NValue(FeedbackConstants.I18N_InvalidFeedback)
+                    , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -367,7 +369,7 @@ namespace myTNB
             _svContainer.AddSubview(_viewFeedback);
         }
 
-        internal void SetTextViewEvents(FeedbackTextView textView, UILabel lblTitle
+        private void SetTextViewEvents(FeedbackTextView textView, UILabel lblTitle
             , UILabel lblError, UIView viewLine, UILabel lblHint, string pattern)
         {
             if (lblHint == null)
@@ -381,7 +383,7 @@ namespace myTNB
                 if (txtView == _feedbackTextView)
                 {
                     HandleFeedbackTextViewChange();
-                    var frame = new CGRect();
+                    CGRect frame = new CGRect();
                     frame = _feedbackTextView.Frame;
                     frame.Height = _feedbackTextView.ContentSize.Height <= TNBGlobal.FEEDBACK_FIELD_MAX_HEIGHT
                         ? _feedbackTextView.ContentSize.Height : TNBGlobal.FEEDBACK_FIELD_MAX_HEIGHT;
@@ -404,7 +406,7 @@ namespace myTNB
             };
             textView.ShouldBeginEditing = (sender) =>
             {
-                var frame = new CGRect();
+                CGRect frame = new CGRect();
                 frame = _feedbackTextView.Frame;
                 _iconFeedback.Hidden = true;
                 frame.X = 0.0f;
@@ -428,7 +430,7 @@ namespace myTNB
 
                 if (textView.Text.Length == 0)
                 {
-                    var frame = new CGRect();
+                    CGRect frame = new CGRect();
                     frame = _feedbackTextView.Frame;
                     frame.X = 24f;
                     _feedbackTextView.Frame = frame;
@@ -442,31 +444,31 @@ namespace myTNB
             {
                 if (txtView == _feedbackTextView)
                 {
-                    var newLength = textView.Text.Length + replacementString.Length - range.Length;
+                    nint newLength = textView.Text.Length + replacementString.Length - range.Length;
                     return newLength <= TNBGlobal.FeedbackMaxCharCount;
                 }
                 return true;
             };
         }
 
-        void HandleFeedbackTextViewChange()
+        private void HandleFeedbackTextViewChange()
         {
             int charCount = TNBGlobal.FeedbackMaxCharCount - _feedbackTextView.Text.Length;
-            _lblFeedbackSubTitle.Text = string.Format(charCount > 1 ? "Feedback_CharactersLeft".Translate()
-                : "Feedback_CharacterLeft".Translate(), charCount);
+            _lblFeedbackSubTitle.Text = string.Format(charCount > 1 ? GetI18NValue(FeedbackConstants.I18N_CharactersLeft)
+                : GetI18NValue(FeedbackConstants.I18N_CharacterLeft), charCount);
         }
 
-        nfloat GetCommentSectionYCoordinate()
+        private nfloat GetCommentSectionYCoordinate()
         {
             return _feedbackCategoryView?.Frame.Height ?? 0.0f;
         }
 
-        nfloat GetScrollHeight()
+        private nfloat GetScrollHeight()
         {
             return (nfloat)((_viewUploadPhoto.Frame.GetMaxY() + (_btnSubmitContainer.Frame.Height + 50f)));
         }
 
-        void InitializeFeedbackComponents()
+        private void InitializeFeedbackComponents()
         {
             if (string.Compare(FeedbackID, "1") == 0)
             {
@@ -483,7 +485,7 @@ namespace myTNB
             _svContainer.AddSubview(_feedbackCategoryView);
         }
 
-        nfloat GetFeedbackCategoryViewHeight()
+        private nfloat GetFeedbackCategoryViewHeight()
         {
             return _feedbackCategoryView?.Frame.Height ?? 0;
         }
@@ -509,7 +511,7 @@ namespace myTNB
             _btnSubmit.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
         }
 
-        void ExecuteSubmitFeedback()
+        private void ExecuteSubmitFeedback()
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -537,8 +539,7 @@ namespace myTNB
                                 }
                                 else
                                 {
-                                    AlertHandler.DisplayGenericAlert(this, "Error_FeedbackTitle".Translate()
-                                        , _submitFeedback?.d?.message ?? "Error_DefaultMessage".Translate());
+                                    DisplayServiceError(_submitFeedback?.d?.message ?? string.Empty);
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -546,13 +547,13 @@ namespace myTNB
                     }
                     else
                     {
-                        AlertHandler.DisplayNoDataAlert(this);
+                        DisplayNoDataAlert();
                     }
                 });
             });
         }
 
-        object GetRequestParameters()
+        private object GetRequestParameters()
         {
             return new
             {
@@ -572,17 +573,17 @@ namespace myTNB
             };
         }
 
-        Task SubmitFeedback()
+        private Task SubmitFeedback()
         {
             object requestParameter = GetRequestParameters();
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
-                _submitFeedback = serviceManager.OnExecuteAPI<SubmitFeedbackResponseModel>("SubmitFeedback", requestParameter);
+                _submitFeedback = serviceManager.OnExecuteAPI<SubmitFeedbackResponseModel>(FeedbackConstants.Service_SubmitFeedback, requestParameter);
             });
         }
 
-        List<ImageDataModel> GetImageList()
+        private List<ImageDataModel> GetImageList()
         {
             List<ImageDataModel> capturedImageList = new List<ImageDataModel>();
             UIImageHelper _imageHelper = new UIImageHelper();
@@ -612,7 +613,7 @@ namespace myTNB
             return capturedImageList;
         }
 
-        string GetFeedbackTypeID()
+        private string GetFeedbackTypeID()
         {
             if (string.Compare(FeedbackID, "3") == 0
                 && DataManager.DataManager.SharedInstance.OtherFeedbackType != null)
@@ -623,7 +624,7 @@ namespace myTNB
             return string.Empty;
         }
 
-        string GetAccountNumber()
+        private string GetAccountNumber()
         {
             if (string.Compare(FeedbackID, "1") == 0)
             {
@@ -632,11 +633,11 @@ namespace myTNB
             return string.Empty;
         }
 
-        string GetName()
+        private string GetName()
         {
             if (IsLoggedIn)
             {
-                var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+                SQLite.SQLiteDataManager.UserEntity user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
                     ? DataManager.DataManager.SharedInstance.UserEntity[0]
                     : new SQLite.SQLiteDataManager.UserEntity();
                 return user?.userName ?? string.Empty;
@@ -658,11 +659,11 @@ namespace myTNB
             }
         }
 
-        string GetMobileNumber()
+        private string GetMobileNumber()
         {
             if (IsLoggedIn && isMobileNumberAvailable)
             {
-                var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+                SQLite.SQLiteDataManager.UserEntity user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
                     ? DataManager.DataManager.SharedInstance.UserEntity[0]
                     : new SQLite.SQLiteDataManager.UserEntity();
                 return user?.mobileNo ?? string.Empty;
@@ -684,11 +685,11 @@ namespace myTNB
             }
         }
 
-        string GetEmailAddress()
+        private string GetEmailAddress()
         {
             if (IsLoggedIn)
             {
-                var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+                SQLite.SQLiteDataManager.UserEntity user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
                     ? DataManager.DataManager.SharedInstance.UserEntity[0]
                     : new SQLite.SQLiteDataManager.UserEntity();
                 return user?.email ?? string.Empty;
@@ -710,7 +711,7 @@ namespace myTNB
             }
         }
 
-        string GetState()
+        private string GetState()
         {
             if (string.Compare(FeedbackID, "2") == 0)
             {
@@ -719,7 +720,7 @@ namespace myTNB
             return string.Empty;
         }
 
-        string GetLocation()
+        private string GetLocation()
         {
             if (string.Compare(FeedbackID, "2") == 0)
             {
@@ -728,7 +729,7 @@ namespace myTNB
             return string.Empty;
         }
 
-        string GetPoleNumber()
+        private string GetPoleNumber()
         {
             if (string.Compare(FeedbackID, "2") == 0)
             {

@@ -480,7 +480,7 @@ namespace myTNB
                     CustomUIView segmentView = scrollview.Subviews[index] as CustomUIView;
                     if (segmentView == null || index >= usageData.Count) { continue; }
                     string usageText = _consumptionState == RMkWhEnum.RM ? usageData[index].Amount.FormatAmountString(TNBGlobal.UNIT_CURRENCY)
-                        : string.Format(Format_Value, usageData[index].Consumption, TNBGlobal.UNITENERGY);
+                        : string.Format(Format_Value, usageData[index].Consumption, Constants.UnitEnergy);
                     UpdateRMKWHValues(segmentView, usageText);
                 }
             }

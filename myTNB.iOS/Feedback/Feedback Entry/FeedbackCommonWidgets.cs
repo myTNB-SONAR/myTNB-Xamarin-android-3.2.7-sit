@@ -40,7 +40,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblFullNameTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewFullName.Frame.Width, 12),
-                AttributedText = AttributedStringUtility.GetAttributedString("Common_Fullname"
+                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetCommonI18NValue(Constants.Common_Fullname)
                     , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
@@ -49,7 +49,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblFullNameError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewFullName.Frame.Width, 14),
-                AttributedText = AttributedStringUtility.GetAttributedString("Invalid_Fullname"
+                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetErrorI18NValue(Constants.Error_InvalidFullname)
                     , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
@@ -58,7 +58,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _txtFieldFullName = new UITextField
             {
                 Frame = new CGRect(0, 12, _viewFullName.Frame.Width, 24),
-                AttributedPlaceholder = AttributedStringUtility.GetAttributedString("Common_Fullname"
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedStringV2(GetCommonI18NValue(Constants.Common_Fullname)
                     , AttributedStringUtility.AttributedStringType.Value),
                 TextColor = MyTNBColor.TunaGrey()
             };
@@ -80,7 +80,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblEmailTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewEmail.Frame.Width, 12),
-                AttributedText = AttributedStringUtility.GetAttributedString("Common_Email"
+                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetCommonI18NValue(Constants.Common_Email)
                     , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
@@ -90,7 +90,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblEmailError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewEmail.Frame.Width, 14),
-                AttributedText = AttributedStringUtility.GetAttributedString("Invalid_Email"
+                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetErrorI18NValue(Constants.Error_InvalidEmailAddress)
                     , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
@@ -100,7 +100,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _txtFieldEmail = new UITextField
             {
                 Frame = new CGRect(0, 12, _viewEmail.Frame.Width, 24),
-                AttributedPlaceholder = AttributedStringUtility.GetAttributedString("Common_Email"
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedStringV2(GetCommonI18NValue(Constants.Common_Email)
                     , AttributedStringUtility.AttributedStringType.Value),
                 TextColor = MyTNBColor.TunaGrey()
             };
@@ -227,7 +227,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblMobileNoTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewMobileNo.Frame.Width, 12),
-                AttributedText = AttributedStringUtility.GetAttributedString("Common_MobileNumber"
+                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetCommonI18NValue(Constants.Common_MobileNo)
                     , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
@@ -236,7 +236,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblMobileNoError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewMobileNo.Frame.Width, 14),
-                AttributedText = AttributedStringUtility.GetAttributedString("Invalid_MobileNumber"
+                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetErrorI18NValue(Constants.Error_InvalidMobileNumber)
                     , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
@@ -245,7 +245,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblMobileNoHint = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewMobileNo.Frame.Width, 14),
-                AttributedText = AttributedStringUtility.GetAttributedString("Hint_MobileNumber"
+                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetHintI18NValue(Constants.Hint_MobileNumber)
                     , AttributedStringUtility.AttributedStringType.Hint),
                 TextAlignment = UITextAlignment.Left
             };
@@ -254,7 +254,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _txtFieldMobileNo = new UITextField
             {
                 Frame = new CGRect(0, 12, _viewMobileNo.Frame.Width, 24),
-                AttributedPlaceholder = AttributedStringUtility.GetAttributedString("Common_MobileNumber"
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedStringV2(GetCommonI18NValue(Constants.Common_MobileNo)
                     , AttributedStringUtility.AttributedStringType.Value),
                 TextColor = MyTNBColor.TunaGrey()
             };
@@ -324,6 +324,21 @@ namespace myTNB.Home.Feedback.FeedbackEntry
         public string GetFullName()
         {
             return _txtFieldFullName.Text ?? string.Empty;
+        }
+
+        private string GetCommonI18NValue(string key)
+        {
+            return LanguageUtility.GetCommonI18NValue(key);
+        }
+
+        private string GetHintI18NValue(string key)
+        {
+            return LanguageUtility.GetHintI18NValue(key);
+        }
+
+        private string GetErrorI18NValue(string key)
+        {
+            return LanguageUtility.GetErrorI18NValue(key);
         }
     }
 }

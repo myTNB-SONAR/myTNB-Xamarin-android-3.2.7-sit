@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CoreGraphics;
+using myTNB.Feedback;
 using myTNB.Model;
 using UIKit;
 
@@ -8,20 +9,20 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 {
     public class OtherFeedbackComponent
     {
-        UIView _mainContainer, _commonWidgets, _viewFeedbackType, _viewLineFeedbackType;
-        UILabel _lblFeedbackTypeTitle, _lblFeedbackTypeError, _lblFeedbackType;
-        UIImageView imgViewAccountNumber;
+        private UIView _mainContainer, _commonWidgets, _viewFeedbackType, _viewLineFeedbackType;
+        private UILabel _lblFeedbackTypeTitle, _lblFeedbackTypeError, _lblFeedbackType;
+        private UIImageView imgViewAccountNumber;
 
-        FeedbackCommonWidgets _feedbackCommonWidgets;
+        private FeedbackCommonWidgets _feedbackCommonWidgets;
 
-        readonly FeedbackEntryViewController _controller;
+        private readonly FeedbackEntryViewController _controller;
 
         public OtherFeedbackComponent(FeedbackEntryViewController viewController)
         {
             _controller = viewController;
         }
 
-        void ConstructOtherFeedbackWidget()
+        private void ConstructOtherFeedbackWidget()
         {
             _feedbackCommonWidgets = new FeedbackCommonWidgets(_controller.View);
             _feedbackCommonWidgets.SetValidationMethod(_controller.SetButtonEnable);
@@ -36,7 +37,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             }
         }
 
-        void ConstructLoginComponent()
+        private void ConstructLoginComponent()
         {
             ConstructFeedbackType();
             _mainContainer.AddSubview(_viewFeedbackType);
@@ -52,7 +53,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _mainContainer.Frame = new CGRect(0, 0, _controller.View.Frame.Width, 18 + 51 + mobileNumberHeight);
         }
 
-        void ConstructNonLoginComponent()
+        private void ConstructNonLoginComponent()
         {
             _commonWidgets = _feedbackCommonWidgets.GetCommonWidgets();
             ConstructFeedbackType();
@@ -60,7 +61,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _mainContainer.Frame = new CGRect(0, 0, _controller.View.Frame.Width, (18 + 51) * 4);
         }
 
-        void ConstructFeedbackType()
+        private void ConstructFeedbackType()
         {
             //Feedback Type
             _viewFeedbackType = new UIView((new CGRect(18, _controller.IsLoggedIn ? 16 : 217
@@ -72,14 +73,16 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblFeedbackTypeTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewFeedbackType.Frame.Width, 12),
-                AttributedText = AttributedStringUtility.GetAttributedString("Feedback_Type", AttributedStringUtility.AttributedStringType.Title),
+                AttributedText = AttributedStringUtility.GetAttributedStringV2(_controller.GetI18NValue(FeedbackConstants.I18N_FeedbackType)
+                    , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left
             };
 
             _lblFeedbackTypeError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewFeedbackType.Frame.Width, 14),
-                AttributedText = AttributedStringUtility.GetAttributedString("Invalid_FeedbackType", AttributedStringUtility.AttributedStringType.Error),
+                AttributedText = AttributedStringUtility.GetAttributedStringV2(_controller.GetI18NValue(FeedbackConstants.I18N_InvalidFeedbackType)
+                    , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -91,7 +94,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
             _lblFeedbackType = new UILabel(new CGRect(30, 12, _viewFeedbackType.Frame.Width, 24))
             {
-                AttributedText = AttributedStringUtility.GetAttributedString("Feedback_Type", AttributedStringUtility.AttributedStringType.Value),
+                AttributedText = AttributedStringUtility.GetAttributedStringV2(_controller.GetI18NValue(FeedbackConstants.I18N_FeedbackType), AttributedStringUtility.AttributedStringType.Value),
                 //Noted: Temp Number, will create a list for this later.
                 Font = MyTNBFont.MuseoSans18_300,
                 TextColor = MyTNBColor.TunaGrey()
@@ -113,7 +116,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
                 GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
                     .InstantiateViewController("GenericSelectorViewController");
-                viewController.Title = "Feedback_SelectFeedbackType".Translate();
+                viewController.Title = _controller.GetI18NValue(FeedbackConstants.I18N_SelectFeedbackType);
                 viewController.Items = GetFeedbackTypeList();
                 viewController.OnSelect = OnSelectAction;
                 viewController.SelectedIndex = DataManager.DataManager.SharedInstance.CurrentSelectedFeedbackTypeIndex;
@@ -123,12 +126,12 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             }));
         }
 
-        void OnSelectAction(int index)
+        private void OnSelectAction(int index)
         {
             DataManager.DataManager.SharedInstance.CurrentSelectedFeedbackTypeIndex = index;
         }
 
-        List<string> GetFeedbackTypeList()
+        private List<string> GetFeedbackTypeList()
         {
             if (DataManager.DataManager.SharedInstance.OtherFeedbackType != null
                 && DataManager.DataManager.SharedInstance.OtherFeedbackType.Count > 0)
@@ -151,7 +154,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
         public void SetFeedbackType()
         {
-            var currIndex = DataManager.DataManager.SharedInstance.CurrentSelectedFeedbackTypeIndex;
+            int currIndex = DataManager.DataManager.SharedInstance.CurrentSelectedFeedbackTypeIndex;
             if (DataManager.DataManager.SharedInstance.OtherFeedbackType != null
                 && currIndex < DataManager.DataManager.SharedInstance.OtherFeedbackType.Count)
             {

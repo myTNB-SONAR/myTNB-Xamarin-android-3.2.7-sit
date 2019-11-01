@@ -5,6 +5,7 @@ using CoreGraphics;
 using CoreLocation;
 using Foundation;
 using Location;
+using myTNB.Feedback;
 using myTNB.Model;
 using UIKit;
 
@@ -12,29 +13,29 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 {
     public class StreetLampFeedbackComponent
     {
-        readonly FeedbackEntryViewController _controller;
-        readonly TextFieldHelper _textFieldHelper = new TextFieldHelper();
+        private readonly FeedbackEntryViewController _controller;
+        private readonly TextFieldHelper _textFieldHelper = new TextFieldHelper();
 
-        const string ANY_PATTERN = @".*";
+        private const string ANY_PATTERN = @".*";
 
         private LocationManager LocManager { get; set; }
 
-        FeedbackCommonWidgets _feedbackCommonWidgets;
-        UIView _mainContainer, _bannerContainer, _commonWidgets, _viewState, _viewLineState
+        private FeedbackCommonWidgets _feedbackCommonWidgets;
+        private UIView _mainContainer, _bannerContainer, _commonWidgets, _viewState, _viewLineState
             , _detailsContainer, _viewLocation, _viewLineLocation, _viewPole, _viewLinePole;
-        UILabel _lblStateTitle, _lblStateError, _lblState, _lblLocationTitle, _lblLocationError
+        private UILabel _lblStateTitle, _lblStateError, _lblState, _lblLocationTitle, _lblLocationError
             , _lblPoleTitle, _lblPoleError;
-        UIImageView imgViewState;
-        UITextField _txtFieldLocation, _txtFieldPole;
+        private UIImageView imgViewState;
+        private UITextField _txtFieldLocation, _txtFieldPole;
 
-        nfloat imgViewFaultyLampHeight;
+        private nfloat imgViewFaultyLampHeight;
 
         public StreetLampFeedbackComponent(FeedbackEntryViewController viewController)
         {
             _controller = viewController;
         }
 
-        void ConstructOtherFeedbackWidget()
+        private void ConstructOtherFeedbackWidget()
         {
             _feedbackCommonWidgets = new FeedbackCommonWidgets(_controller.View);
             _feedbackCommonWidgets.SetValidationMethod(_controller.SetButtonEnable);
@@ -54,7 +55,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             }
         }
 
-        void ConstructLoginComponent()
+        private void ConstructLoginComponent()
         {
             _mainContainer.AddSubview(_detailsContainer);
             nfloat mobileNumberHeight = 0.0f;
@@ -71,7 +72,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 , _bannerContainer.Frame.Height + _detailsContainer.Frame.Height + mobileNumberHeight);
         }
 
-        void ConstructNonLoginComponent()
+        private void ConstructNonLoginComponent()
         {
             _commonWidgets = _feedbackCommonWidgets.GetCommonWidgets();
             _commonWidgets.Frame = new CGRect(0, _bannerContainer.Frame.Height
@@ -83,7 +84,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 , _commonWidgets.Frame.Height + _bannerContainer.Frame.Height + _detailsContainer.Frame.Height);
         }
 
-        void ConstructBanner()
+        private void ConstructBanner()
         {
             //Photo Header
             imgViewFaultyLampHeight = (_controller.View.Frame.Width * 121) / 320;
@@ -94,16 +95,16 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             };
 
             //Label
-            var lblReport = new UILabel(new CGRect(18, 23 + imgViewFaultyLampHeight, _controller.View.Frame.Width - 36, 18))
+            UILabel lblReport = new UILabel(new CGRect(18, 23 + imgViewFaultyLampHeight, _controller.View.Frame.Width - 36, 18))
             {
-                Text = "Feedback_FaultyLampTitle".Translate(),
+                Text = GetI18NValue(FeedbackConstants.I18N_FaultyLampTitle),
                 TextColor = MyTNBColor.PowerBlue,
                 Font = MyTNBFont.MuseoSans16_500
             };
 
             //Terms Details
             UITextView txtViewDetails = new UITextView(new CGRect(18, 47 + imgViewFaultyLampHeight, _controller.View.Frame.Width - 36, 78));
-            NSMutableAttributedString attributedString = new NSMutableAttributedString("Feedback_FaultyLampMessage".Translate());
+            NSMutableAttributedString attributedString = new NSMutableAttributedString(GetI18NValue(FeedbackConstants.I18N_FaultyLampMessage));
             UIStringAttributes firstAttributes = new UIStringAttributes
             {
                 ForegroundColor = MyTNBColor.TunaGrey(),
@@ -128,7 +129,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _bannerContainer.AddSubviews(new UIView[] { imgViewFaultyLamp, lblReport, txtViewDetails });
         }
 
-        void ConstructDetailFields()
+        private void ConstructDetailFields()
         {
             //State
             _viewState = new UIView((new CGRect(18, 16, _controller.View.Frame.Width - 36, 51)))
@@ -139,7 +140,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblStateTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewState.Frame.Width, 12),
-                AttributedText = AttributedStringUtility.GetAttributedString("Feedback_State", AttributedStringUtility.AttributedStringType.Title),
+                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetI18NValue(FeedbackConstants.I18N_State)
+                    , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -147,7 +149,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblStateError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewState.Frame.Width, 14),
-                AttributedText = AttributedStringUtility.GetAttributedString("Invalid_State", AttributedStringUtility.AttributedStringType.Error),
+                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetI18NValue(FeedbackConstants.I18N_InvalidState)
+                    , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -159,7 +162,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
             _lblState = new UILabel(new CGRect(30, 12, _viewState.Frame.Width, 24))
             {
-                AttributedText = AttributedStringUtility.GetAttributedString("Feedback_State", AttributedStringUtility.AttributedStringType.Value)
+                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetI18NValue(FeedbackConstants.I18N_State)
+                    , AttributedStringUtility.AttributedStringType.Value)
             };
 
             UIImageView imgDropDown = new UIImageView(new CGRect(_viewState.Frame.Width - 30, 12, 24, 24))
@@ -176,7 +180,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
                 GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
                     .InstantiateViewController("GenericSelectorViewController");
-                viewController.Title = "Feedback_SelectState".Translate();
+                viewController.Title = GetI18NValue(FeedbackConstants.I18N_SelectState);
                 viewController.Items = GetStateList();
                 viewController.OnSelect = OnSelectAction;
                 viewController.SelectedIndex = DataManager.DataManager.SharedInstance.CurrentSelectedStateForFeedbackIndex;
@@ -194,7 +198,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblLocationTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewLocation.Frame.Width, 12),
-                AttributedText = AttributedStringUtility.GetAttributedString("Feedback_Location", AttributedStringUtility.AttributedStringType.Title),
+                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetI18NValue(FeedbackConstants.I18N_Location)
+                    , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -202,7 +207,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblLocationError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewLocation.Frame.Width, 14),
-                AttributedText = AttributedStringUtility.GetAttributedString("Invalid_Location", AttributedStringUtility.AttributedStringType.Error),
+                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetI18NValue(FeedbackConstants.I18N_InvalidLocation)
+                    , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -210,7 +216,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _txtFieldLocation = new UITextField
             {
                 Frame = new CGRect(0, 12, _viewLocation.Frame.Width, 24),
-                AttributedPlaceholder = AttributedStringUtility.GetAttributedString("Feedback_Location", AttributedStringUtility.AttributedStringType.Value),
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedStringV2(GetI18NValue(FeedbackConstants.I18N_Location)
+                    , AttributedStringUtility.AttributedStringType.Value),
                 TextColor = MyTNBColor.TunaGrey()
             };
 
@@ -228,7 +235,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblPoleTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewPole.Frame.Width, 12),
-                AttributedText = AttributedStringUtility.GetAttributedString("Feedback_PoleNumber", AttributedStringUtility.AttributedStringType.Title),
+                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetI18NValue(FeedbackConstants.I18N_PoleNumber)
+                    , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -236,7 +244,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblPoleError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewPole.Frame.Width, 14),
-                AttributedText = AttributedStringUtility.GetAttributedString("Invalid_PoleNumber", AttributedStringUtility.AttributedStringType.Error),
+                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetI18NValue(FeedbackConstants.I18N_InvalidPoleNumber)
+                    , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -244,7 +253,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _txtFieldPole = new UITextField
             {
                 Frame = new CGRect(0, 12, _viewPole.Frame.Width, 24),
-                AttributedPlaceholder = AttributedStringUtility.GetAttributedString("Feedback_PoleNumber", AttributedStringUtility.AttributedStringType.Value),
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedStringV2(GetI18NValue(FeedbackConstants.I18N_PoleNumber)
+                    , AttributedStringUtility.AttributedStringType.Value),
                 TextColor = MyTNBColor.TunaGrey()
             };
 
@@ -262,13 +272,13 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 , null, ANY_PATTERN);
         }
 
-        void OnSelectAction(int index)
+        private void OnSelectAction(int index)
         {
             DataManager.DataManager.SharedInstance.CurrentSelectedStateForFeedbackIndex = index;
             _controller._streetLampRelatedFeedbackComponent.ValidateState();
         }
 
-        List<string> GetStateList()
+        private List<string> GetStateList()
         {
             if (DataManager.DataManager.SharedInstance.StatesForFeedBack != null
                 && DataManager.DataManager.SharedInstance.StatesForFeedBack.Count > 0)
@@ -342,7 +352,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 ? MyTNBColor.PlatinumGrey : MyTNBColor.Tomato;
         }
 
-        void CreateTextFieldRightView(UITextField textField, string imageName)
+        private void CreateTextFieldRightView(UITextField textField, string imageName)
         {
             UIView rightView = new UIView((new CGRect(0, 0, 24, 24)));
 
@@ -371,7 +381,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                         CLGeocoder geoCoder = new CLGeocoder();
                         geoCoder.ReverseGeocodeLocation(location, (CLPlacemark[] placemarks, NSError error) =>
                         {
-                            var reverseGeocodedAddress = string.Format("{0} {1} {2} {3} {4}"
+                            string reverseGeocodedAddress = string.Format("{0} {1} {2} {3} {4}"
                                 , placemarks[0].Thoroughfare
                                 , placemarks[0].Locality
                                 , placemarks[0].AdministrativeArea
@@ -388,13 +398,13 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                     }
                     else if (e.Status == CLAuthorizationStatus.Denied && !isFirstCall)
                     {
-                        var alertTitle = "Feedback_AccessTitle".Translate();
-                        var alertMessage = "Feedback_AccessMessage".Translate();
-                        var okCancelAlertController = UIAlertController.Create(alertTitle, alertMessage
+                        string alertTitle = GetI18NValue(FeedbackConstants.I18N_NoAccessTitle);
+                        string alertMessage = GetI18NValue(FeedbackConstants.I18N_NoAccessMessage);
+                        UIAlertController okCancelAlertController = UIAlertController.Create(alertTitle, alertMessage
                             , UIAlertControllerStyle.Alert);
-                        okCancelAlertController.AddAction(UIAlertAction.Create("Common_Cancel".Translate()
+                        okCancelAlertController.AddAction(UIAlertAction.Create(_controller.GetCommonI18NValue(Constants.Common_Cancel)
                             , UIAlertActionStyle.Cancel, alert => Debug.WriteLine("Cancel was clicked")));
-                        okCancelAlertController.AddAction(UIAlertAction.Create("Feedback_GoToSettings".Translate()
+                        okCancelAlertController.AddAction(UIAlertAction.Create(GetI18NValue(FeedbackConstants.I18N_GoToSettings)
                             , UIAlertActionStyle.Default, alert => NavigateToSettings()));
                         okCancelAlertController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                         _controller.PresentViewController(okCancelAlertController, true, null);
@@ -404,14 +414,14 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             rightView.AddGestureRecognizer(tapLocation);
         }
 
-        void NavigateToSettings()
+        private void NavigateToSettings()
         {
             UIApplication.SharedApplication.OpenUrl(new NSUrl(UIApplication.OpenSettingsUrlString));
         }
 
         public void SetState()
         {
-            var currIndex = DataManager.DataManager.SharedInstance.CurrentSelectedStateForFeedbackIndex;
+            int currIndex = DataManager.DataManager.SharedInstance.CurrentSelectedStateForFeedbackIndex;
             if (currIndex > -1)
             {
                 if (DataManager.DataManager.SharedInstance.StatesForFeedBack != null
@@ -421,7 +431,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                     _lblState.Text = DataManager.DataManager.SharedInstance.StatesForFeedBack[currIndex].StateName;
                     _lblStateTitle.Hidden = false;
                     imgViewState.Hidden = true;
-                    var frame = new CGRect();
+                    CGRect frame = new CGRect();
                     frame = _lblState.Frame;
                     frame.X = 0;
                     _lblState.Frame = frame;
@@ -490,6 +500,11 @@ namespace myTNB.Home.Feedback.FeedbackEntry
         public string GetPoleNumber()
         {
             return _txtFieldPole?.Text ?? string.Empty;
+        }
+
+        private string GetI18NValue(string key)
+        {
+            return _controller.GetI18NValue(key);
         }
     }
 }

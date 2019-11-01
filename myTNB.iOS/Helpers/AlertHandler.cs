@@ -16,7 +16,10 @@ namespace myTNB
         /// <param name="controller">Controller.</param>
         public static void DisplayNoDataAlert(UIViewController controller, Action<UIAlertAction> handler = null)
         {
-            DisplayAlert(controller, "Error_NoNetworkTitle".Translate(), "Error_NoNetworkMsg".Translate(), handler);
+            DisplayAlert(controller
+                , LanguageUtility.GetErrorI18NValue(Constants.Error_NoDataConnectionTitle)
+                , LanguageUtility.GetErrorI18NValue(Constants.Error_NoDataConnectionMessage)
+                , handler);
         }
 
         /// <summary>
@@ -26,7 +29,7 @@ namespace myTNB
         /// <param name="message">Message.</param>
         public static void DisplayServiceError(UIViewController controller, string message, Action<UIAlertAction> handler = null)
         {
-            DisplayAlert(controller, "Error_DefaultTitle".Translate(), message, handler);
+            DisplayAlert(controller, LanguageUtility.GetErrorI18NValue(Constants.Error_DefaultErrorTitle), message, handler);
         }
 
         /// <summary>
@@ -49,9 +52,10 @@ namespace myTNB
         /// <param name="handler">Handler.</param>
         private static void DisplayAlert(UIViewController controller, string title, string message, Action<UIAlertAction> handler = null)
         {
-            message = string.IsNullOrEmpty(message) || string.IsNullOrWhiteSpace(message) ? "Error_DefaultMessage".Translate() : message;
-            var alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
-            alert.AddAction(UIAlertAction.Create("Common_Ok".Translate(), UIAlertActionStyle.Cancel, handler));
+            message = string.IsNullOrEmpty(message) || string.IsNullOrWhiteSpace(message)
+                ? LanguageUtility.GetErrorI18NValue(Constants.Error_DefaultErrorMessage) : message;
+            UIAlertController alert = UIAlertController.Create(title, message, UIAlertControllerStyle.Alert);
+            alert.AddAction(UIAlertAction.Create(LanguageUtility.GetCommonI18NValue(Constants.Common_Ok), UIAlertActionStyle.Cancel, handler));
             alert.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
             controller.PresentViewController(alert, animated: true, completionHandler: null);
         }
@@ -60,7 +64,7 @@ namespace myTNB
           , string actionTitle = null, Action handler = null)
         {
             DisplayCustomAlert(title, message, new Dictionary<string, Action>() {
-                { string.IsNullOrEmpty(actionTitle) ? "Common_Ok".Translate() : actionTitle, handler } }
+                { string.IsNullOrEmpty(actionTitle) ? LanguageUtility.GetCommonI18NValue(Constants.Common_Ok) : actionTitle, handler } }
                 , UITextAlignment.Center, UITextAlignment.Center, false, 0.105F);
         }
 
@@ -153,7 +157,7 @@ namespace myTNB
                 ClipsToBounds = true
             };
             nfloat ctaItemWidth = (ctaContainer.Frame.Width / ctaButtons.Count) - 0.5F;
-            foreach (var item in ctaButtons)
+            foreach (KeyValuePair<string, Action> item in ctaButtons)
             {
                 UIView ctaBtn = new UIView(new CGRect(ctaItemX, 1, ctaItemWidth, 50))
                 {
@@ -233,8 +237,8 @@ namespace myTNB
                     else if (RedirectTypeList[whileCount] == RedirectTypeList[1])
                     {
                         string urlString = absURL.Split(RedirectTypeList[1])[1];
-                        var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
-                        var topVc = AppDelegate.GetTopViewController(baseRootVc);
+                        UIViewController baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                        UIViewController topVc = AppDelegate.GetTopViewController(baseRootVc);
                         if (topVc != null)
                         {
                             UIStoryboard storyBoard = UIStoryboard.FromName("Browser", null);
@@ -244,8 +248,10 @@ namespace myTNB
                             {
                                 viewController.URL = urlString;
                                 viewController.IsDelegateNeeded = false;
-                                var navController = new UINavigationController(viewController);
-                                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                                UINavigationController navController = new UINavigationController(viewController)
+                                {
+                                    ModalPresentationStyle = UIModalPresentationStyle.FullScreen
+                                };
                                 topVc.PresentViewController(navController, true, null);
                             }
                         }

@@ -124,7 +124,7 @@ namespace myTNB.SmartMeterView
                 segment.AddSubview(viewBar);
 
                 string displayText = ConsumptionState == RMkWhEnum.RM ? item.Amount.FormatAmountString(TNBGlobal.UNIT_CURRENCY) :
-                    string.Format(Format_Value, item.Consumption, TNBGlobal.UNITENERGY);
+                    string.Format(Format_Value, item.Consumption, Constants.UnitEnergy);
                 nfloat consumptionYLoc = yLoc - amountBarMargin - lblHeight;
                 UILabel lblConsumption = new UILabel(new CGRect(0, viewBar.Frame.GetMinY() - amountBarMargin - lblHeight
                     , GetWidthByScreenSize(100), lblHeight))

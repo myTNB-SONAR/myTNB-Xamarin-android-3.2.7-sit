@@ -1301,7 +1301,6 @@
     <Folder Include="Home\Dashboard\" />
     <Folder Include="Home\Bill\" />
     <Folder Include="Home\Promotions\" />
-    <Folder Include="Home\Feedback\" />
     <Folder Include="Home\More\" />
     <Folder Include="Home\Components\" />
     <Folder Include="Assets.xcassets\Download.imageset\" />
@@ -1396,7 +1395,6 @@
     <Folder Include="Model\GetPaymentHistory\" />
     <Folder Include="Model\GetSubmittedFeedbackList\" />
     <Folder Include="Model\GetSubmittedFeedbackDetails\" />
-    <Folder Include="Home\Feedback\Feedback Details\" />
     <Folder Include="Assets.xcassets\Loading-Circle.imageset\" />
     <Folder Include="Assets.xcassets\No-Internet-Connection.imageset\" />
     <Folder Include="Assets.xcassets\Empty-Current-Bill.imageset\" />
@@ -1439,7 +1437,6 @@
     <Folder Include="Assets.xcassets\IC-Payment-Card-Amex.imageset\" />
     <Folder Include="Payment\Select Bills\" />
     <Folder Include="Assets.xcassets\IC-Action-Show-PasswordWhite.imageset\" />
-    <Folder Include="Home\Feedback\Submitted Feedback\" />
     <Folder Include="Assets.xcassets\Feedback-Empty.imageset\" />
     <Folder Include="Assets.xcassets\IC-Charges.imageset\" />
     <Folder Include="Assets.xcassets\IC-Cost.imageset\" />
@@ -1472,9 +1469,6 @@
     <Folder Include="Assets.xcassets\Payment-Checkbox-White-Inactive.imageset\" />
     <Folder Include="Assets.xcassets\New-Launch-Logo.imageset\" />
     <Folder Include="Assets.xcassets\LogOut.imageset\" />
-    <Folder Include="Home\Feedback\Feedback Entry\" />
-    <Folder Include="Home\Feedback\Feedback Location and State\" />
-    <Folder Include="Home\Feedback\Feedback Image\" />
     <Folder Include="Home\More\Language\" />
     <Folder Include="Assets.xcassets\Notification-Check.imageset\" />
     <Folder Include="Assets.xcassets\Notification-MarkAsRead.imageset\" />
@@ -1704,6 +1698,7 @@
     <Folder Include="Assets.xcassets\Onboarding-Image-5.imageset\" />
     <Folder Include="Assets.xcassets\RE-Leaf-Large.imageset\" />
     <Folder Include="Registration\Add Accounts\" />
+    <Folder Include="Feedback\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -1731,9 +1726,7 @@
     <InterfaceDefinition Include="Home\More\Find Us\Select Store Type\SelectStoreType.storyboard" />
     <InterfaceDefinition Include="Browser\Browser.storyboard" />
     <InterfaceDefinition Include="Home\More\Find Us\Location Details\LocationDetails.storyboard" />
-    <InterfaceDefinition Include="Home\Feedback\Feedback.storyboard" />
     <InterfaceDefinition Include="Rating\Rating.storyboard" />
-    <InterfaceDefinition Include="Home\Feedback\Feedback Details\FeedbackDetails.storyboard" />
     <InterfaceDefinition Include="Home\More\FAQ\FAQ.storyboard" />
     <InterfaceDefinition Include="Home\Promotions\Promotion Details\PromotionDetails.storyboard" />
     <InterfaceDefinition Include="Customs\Generic Tableview Selector\GenericSelector.storyboard" />
@@ -1742,6 +1735,8 @@
     <InterfaceDefinition Include="Usage\Usage.storyboard" />
     <InterfaceDefinition Include="Home\Bill\Bill Details\BillDetails.storyboard" />
     <InterfaceDefinition Include="Logout\Logout.storyboard" />
+    <InterfaceDefinition Include="Feedback\Feedback Details\FeedbackDetails.storyboard" />
+    <InterfaceDefinition Include="Feedback\Feedback.storyboard" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Info.plist" />
@@ -1838,10 +1833,6 @@
     <Compile Include="Home\Promotions\PromotionsViewController.cs" />
     <Compile Include="Home\Promotions\PromotionsViewController.designer.cs">
       <DependentUpon>PromotionsViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Feedback\FeedbackViewController.cs" />
-    <Compile Include="Home\Feedback\FeedbackViewController.designer.cs">
-      <DependentUpon>FeedbackViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Home\More\MoreViewController.cs" />
     <Compile Include="Home\More\MoreViewController.designer.cs">
@@ -1959,11 +1950,6 @@
     <Compile Include="Home\More\My Account\SupplyAccountViewCell.cs" />
     <Compile Include="Home\More\My Account\SupplyAccountViewCell.designer.cs">
       <DependentUpon>SupplyAccountViewCell.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Feedback\FeedbackDataSource.cs" />
-    <Compile Include="Home\Feedback\FeedbackViewCell.cs" />
-    <Compile Include="Home\Feedback\FeedbackViewCell.designer.cs">
-      <DependentUpon>FeedbackViewCell.cs</DependentUpon>
     </Compile>
     <Compile Include="Home\More\My Account\MyAccountDataSource.cs" />
     <Compile Include="Home\More\My Account\Update Mobile Number\UpdateMobileNumberViewController.cs" />
@@ -2107,14 +2093,8 @@
     <Compile Include="Model\GetSubmittedFeedbackDetails\SubmittedFeedbackDetailsResponseModel.cs" />
     <Compile Include="Model\GetSubmittedFeedbackDetails\FeedbackImageModel.cs" />
     <Compile Include="Enums\FeedBackEnum.cs" />
-    <Compile Include="Home\Feedback\Feedback Details\FeedbackDetailsViewController.cs" />
-    <Compile Include="Home\Feedback\Feedback Details\FeedbackDetailsViewController.designer.cs">
-      <DependentUpon>FeedbackDetailsViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Feedback\Feedback Details\FeedbackDetailsDataSource.cs" />
     <Compile Include="Helpers\ScrollViewDelegate.cs" />
     <Compile Include="Helpers\LabelHelper.cs" />
-    <Compile Include="Home\Feedback\FeedbackFileNameHelper.cs" />
     <Compile Include="SQLite\SQLite Data Manager\TermsAndConditionEntity.cs" />
     <Compile Include="Home\More\FAQ\FAQViewController.cs" />
     <Compile Include="Home\More\FAQ\FAQViewController.designer.cs">
@@ -2152,23 +2132,6 @@
     <Compile Include="Payment\Select Bills\SelectBillsTableViewCell.cs" />
     <Compile Include="Payment\Select Bills\SelectBillsTableViewCell.designer.cs">
       <DependentUpon>SelectBillsTableViewCell.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Feedback\Submitted Feedback\SubmitFeedbackFailedViewController.cs" />
-    <Compile Include="Home\Feedback\Submitted Feedback\SubmitFeedbackFailedViewController.designer.cs">
-      <DependentUpon>SubmitFeedbackFailedViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Feedback\Submitted Feedback\SubmitFeedbackSuccessViewController.cs" />
-    <Compile Include="Home\Feedback\Submitted Feedback\SubmitFeedbackSuccessViewController.designer.cs">
-      <DependentUpon>SubmitFeedbackSuccessViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Feedback\Submitted Feedback\SubmittedFeedbackCell.cs" />
-    <Compile Include="Home\Feedback\Submitted Feedback\SubmittedFeedbackCell.designer.cs">
-      <DependentUpon>SubmittedFeedbackCell.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Feedback\Submitted Feedback\SubmittedFeedbackDataSource.cs" />
-    <Compile Include="Home\Feedback\Submitted Feedback\SubmittedFeedbackViewController.cs" />
-    <Compile Include="Home\Feedback\Submitted Feedback\SubmittedFeedbackViewController.designer.cs">
-      <DependentUpon>SubmittedFeedbackViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Home\Components\LineChartComponent.cs" />
     <Compile Include="Model\GetAccountUsageHistoryForGraph\ChartDataModelBase.cs" />
@@ -2240,33 +2203,11 @@
     </Compile>
     <Compile Include="Model\PhoneVerificationStatusResponseModel.cs" />
     <Compile Include="Model\PhoneVerificationStatusDataModel.cs" />
-    <Compile Include="Home\Feedback\Feedback Details\FeedbackDetailsViewImageCell.cs" />
-    <Compile Include="Home\Feedback\Feedback Details\FeedbackDetailsViewImageCell.designer.cs">
-      <DependentUpon>FeedbackDetailsViewImageCell.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Feedback\Feedback Details\FeedbackDetailsViewCell.cs" />
-    <Compile Include="Home\Feedback\Feedback Details\FeedbackDetailsViewCell.designer.cs">
-      <DependentUpon>FeedbackDetailsViewCell.cs</DependentUpon>
-    </Compile>
     <Compile Include="Enums\DashboardModeEnum.cs" />
     <Compile Include="Helpers\AlertHandler.cs" />
-    <Compile Include="Home\Feedback\Feedback Entry\FeedbackEntryViewController.cs" />
-    <Compile Include="Home\Feedback\Feedback Entry\FeedbackEntryViewController.designer.cs">
-      <DependentUpon>FeedbackEntryViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Home\Feedback\Feedback Entry\OtherFeedbackComponent.cs" />
-    <Compile Include="Home\Feedback\Feedback Entry\FeedbackCommonWidgets.cs" />
-    <Compile Include="Home\Feedback\Feedback Entry\BillRelatedFeedbackComponent.cs" />
-    <Compile Include="Home\Feedback\Feedback Entry\StreetLampFeedbackComponent.cs" />
     <Compile Include="Helpers\AttributedStringUtility.cs" />
-    <Compile Include="Home\Feedback\Feedback Location and State\LocationManager.cs" />
-    <Compile Include="Home\Feedback\Feedback Location and State\LocationUpdateEventArgs.cs" />
-    <Compile Include="Home\Feedback\Feedback Image\ImageDataModel.cs" />
-    <Compile Include="Home\Feedback\Feedback Image\ImagePickerDelegate.cs" />
-    <Compile Include="Home\Feedback\Feedback Image\UIImageHelper.cs" />
     <Compile Include="Home\More\Language\LanguageSettings.cs" />
     <Compile Include="Model\UpdateNotification\UpdateNotificationModel.cs" />
-    <Compile Include="Customs\CustomUIButton.cs" />
     <Compile Include="Customs\CustomUILabel.cs" />
     <Compile Include="Home\Components\RefreshViewComponent.cs" />
     <Compile Include="Model\GetAccountUsageHistoryForGraph\ToolTipsModel.cs" />
@@ -2572,6 +2513,60 @@
     <Compile Include="Components\Common\HomeTutorialOverlay.cs" />
     <Compile Include="Session Cache\PushNotificationCache.cs" />
     <Compile Include="Home\Bill\Receipt\ReceiptConstants.cs" />
+    <Compile Include="Feedback\Feedback Details\FeedbackDetailsDataSource.cs" />
+    <Compile Include="Feedback\Feedback Details\FeedbackDetailsViewCell.cs" />
+    <Compile Include="Feedback\Feedback Details\FeedbackDetailsViewCell.designer.cs">
+      <DependentUpon>..\..\Home\Feedback\Feedback Details\FeedbackDetailsViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Feedback\Feedback Details\FeedbackDetailsViewController.cs" />
+    <Compile Include="Feedback\Feedback Details\FeedbackDetailsViewController.designer.cs">
+      <DependentUpon>..\..\Home\Feedback\Feedback Details\FeedbackDetailsViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Feedback\Feedback Details\FeedbackDetailsViewImageCell.cs" />
+    <Compile Include="Feedback\Feedback Details\FeedbackDetailsViewImageCell.designer.cs">
+      <DependentUpon>..\..\Home\Feedback\Feedback Details\FeedbackDetailsViewImageCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Feedback\Feedback Entry\BillRelatedFeedbackComponent.cs" />
+    <Compile Include="Feedback\Feedback Entry\FeedbackCommonWidgets.cs" />
+    <Compile Include="Feedback\Feedback Entry\FeedbackEntryViewController.cs" />
+    <Compile Include="Feedback\Feedback Entry\FeedbackEntryViewController.designer.cs">
+      <DependentUpon>..\..\Home\Feedback\Feedback Entry\FeedbackEntryViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Feedback\Feedback Entry\OtherFeedbackComponent.cs" />
+    <Compile Include="Feedback\Feedback Entry\StreetLampFeedbackComponent.cs" />
+    <Compile Include="Feedback\Feedback Image\ImageDataModel.cs" />
+    <Compile Include="Feedback\Feedback Image\ImagePickerDelegate.cs" />
+    <Compile Include="Feedback\Feedback Image\UIImageHelper.cs" />
+    <Compile Include="Feedback\Feedback Location and State\LocationManager.cs" />
+    <Compile Include="Feedback\Feedback Location and State\LocationUpdateEventArgs.cs" />
+    <Compile Include="Feedback\FeedbackDataSource.cs" />
+    <Compile Include="Feedback\FeedbackFileNameHelper.cs" />
+    <Compile Include="Feedback\FeedbackViewCell.cs" />
+    <Compile Include="Feedback\FeedbackViewCell.designer.cs">
+      <DependentUpon>..\Home\Feedback\FeedbackViewCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Feedback\FeedbackViewController.cs" />
+    <Compile Include="Feedback\FeedbackViewController.designer.cs">
+      <DependentUpon>..\Home\Feedback\FeedbackViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Feedback\Submitted Feedback\SubmitFeedbackFailedViewController.cs" />
+    <Compile Include="Feedback\Submitted Feedback\SubmitFeedbackFailedViewController.designer.cs">
+      <DependentUpon>..\..\Home\Feedback\Submitted Feedback\SubmitFeedbackFailedViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Feedback\Submitted Feedback\SubmitFeedbackSuccessViewController.cs" />
+    <Compile Include="Feedback\Submitted Feedback\SubmitFeedbackSuccessViewController.designer.cs">
+      <DependentUpon>..\..\Home\Feedback\Submitted Feedback\SubmitFeedbackSuccessViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Feedback\Submitted Feedback\SubmittedFeedbackCell.cs" />
+    <Compile Include="Feedback\Submitted Feedback\SubmittedFeedbackCell.designer.cs">
+      <DependentUpon>..\..\Home\Feedback\Submitted Feedback\SubmittedFeedbackCell.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Feedback\Submitted Feedback\SubmittedFeedbackDataSource.cs" />
+    <Compile Include="Feedback\Submitted Feedback\SubmittedFeedbackViewController.cs" />
+    <Compile Include="Feedback\Submitted Feedback\SubmittedFeedbackViewController.designer.cs">
+      <DependentUpon>..\..\Home\Feedback\Submitted Feedback\SubmittedFeedbackViewController.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Feedback\FeedbackConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

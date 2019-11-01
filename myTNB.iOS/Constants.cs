@@ -73,6 +73,7 @@
         public static string Common_AccountNo = "accountNo";
         public static string Common_AccountType = "accountType";
         public static string Common_AllNotifications = "allNotifications";
+        public static string Common_SelectElectricityAccount = "selectElectricityAccount";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";
@@ -97,6 +98,10 @@
         public static string Error_InvalidROCNumber = "invalid_rocNumber";
         public static string Error_AccountLength = "accountLength";
         public static string Error_InvalidAccountType = "invalid_accountType";
+        public static string Error_NoDataConnectionTitle = "noDataConnectionTitle";
+        public static string Error_NoDataConnectionMessage = "noDataConnectionMessage";
+        public static string Error_DefaultErrorTitle = "defaultErrorTitle";
+        public static string Error_DefaultErrorMessage = "defaultErrorMessage";
 
         //Hint I18N
         public static string Hint_EmptyAcctSelector = "emptyAcctSelector";
@@ -107,5 +112,21 @@
 
         //Table View Cell
         public static string Cell_NoHistoryData = "noHistoryDataTableViewCell";
+
+        //Global Constants
+        public static string UnitEnergy
+        {
+            get
+            {
+                return LanguageUtility.GetCommonI18NValue("unitEnergy");
+            }
+        }
+        public static string UnitEmission
+        {
+            get
+            {
+                return LanguageUtility.GetCommonI18NValue("unitEmission");
+            }
+        }
     }
 }

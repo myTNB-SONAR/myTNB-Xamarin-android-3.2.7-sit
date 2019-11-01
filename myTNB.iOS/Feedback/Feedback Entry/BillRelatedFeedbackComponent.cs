@@ -9,21 +9,21 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 {
     public class BillRelatedFeedbackComponent
     {
-        readonly FeedbackEntryViewController _controller;
-        readonly TextFieldHelper _textFieldHelper = new TextFieldHelper();
+        private readonly FeedbackEntryViewController _controller;
+        private readonly TextFieldHelper _textFieldHelper = new TextFieldHelper();
 
-        UIView _mainContainer, _commonWidgets, _viewAccountNo, _viewLineAccountNo;
-        UILabel _lblAccountNoTitle, _lblAccountNoError, _lblAccountNumber;
-        UITextField _txtFieldAccountNo;
+        private UIView _mainContainer, _commonWidgets, _viewAccountNo, _viewLineAccountNo;
+        private UILabel _lblAccountNoTitle, _lblAccountNoError, _lblAccountNumber;
+        private UITextField _txtFieldAccountNo;
 
-        FeedbackCommonWidgets _feedbackCommonWidgets;
+        private FeedbackCommonWidgets _feedbackCommonWidgets;
 
         public BillRelatedFeedbackComponent(FeedbackEntryViewController viewController)
         {
             _controller = viewController;
         }
 
-        void ConstructOtherFeedbackWidget()
+        private void ConstructOtherFeedbackWidget()
         {
             _feedbackCommonWidgets = new FeedbackCommonWidgets(_controller.View);
             _feedbackCommonWidgets.SetValidationMethod(_controller.SetButtonEnable);
@@ -38,7 +38,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             }
         }
 
-        void ConstructLoginComponent()
+        private void ConstructLoginComponent()
         {
             ConstructAccountNumberSelector();
             _mainContainer.AddSubview(_viewAccountNo);
@@ -54,7 +54,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _mainContainer.Frame = new CGRect(0, 0, _controller.View.Frame.Width, 18 + 51 + mobileNumberHeight);
         }
 
-        void ConstructNonLoginComponent()
+        private void ConstructNonLoginComponent()
         {
             _commonWidgets = _feedbackCommonWidgets.GetCommonWidgets();
             ConstructAccountNumberField();
@@ -62,7 +62,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _mainContainer.Frame = new CGRect(0, 0, _controller.View.Frame.Width, (18 + 51) * 4);
         }
 
-        void ConstructAccountNumberSelector()
+        private void ConstructAccountNumberSelector()
         {
             _viewAccountNo = new UIView((new CGRect(18, 16, _controller.View.Frame.Width - 36, 51)))
             {
@@ -72,7 +72,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblAccountNoTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewAccountNo.Frame.Width, 12),
-                AttributedText = AttributedStringUtility.GetAttributedString("Common_AccountNo", AttributedStringUtility.AttributedStringType.Title),
+                AttributedText = AttributedStringUtility.GetAttributedStringV2(_controller.GetCommonI18NValue(Constants.Common_AccountNo)
+                , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -80,7 +81,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblAccountNoError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewAccountNo.Frame.Width, 14),
-                AttributedText = AttributedStringUtility.GetAttributedString("Invalid_AccountLength", AttributedStringUtility.AttributedStringType.Error),
+                AttributedText = AttributedStringUtility.GetAttributedStringV2(_controller.GetErrorI18NValue(Constants.Error_AccountLength)
+                    , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -95,7 +97,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             {
                 Font = MyTNBFont.MuseoSans16_300,
                 TextColor = MyTNBColor.TunaGrey(),
-                AttributedText = new NSAttributedString("Common_AccountNo".Translate()
+                AttributedText = new NSAttributedString(_controller.GetCommonI18NValue(Constants.Common_AccountNo)
                 , font: MyTNBFont.MuseoSans16
                 , foregroundColor: MyTNBColor.SilverChalice
                 , strokeWidth: 0
@@ -119,22 +121,22 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
                 GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
                     .InstantiateViewController("GenericSelectorViewController");
-                viewController.Title = "Feedback_SelectAccountNumber".Translate();
+                viewController.Title = _controller.GetCommonI18NValue(Constants.Common_SelectElectricityAccount);
                 viewController.Items = GetAccountList();
                 viewController.OnSelect = OnSelectAction;
                 viewController.SelectedIndex = DataManager.DataManager.SharedInstance.CurrentSelectedFeedAccountNoIndex;
-                var navController = new UINavigationController(viewController);
+                UINavigationController navController = new UINavigationController(viewController);
                 navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 _controller.PresentViewController(navController, true, null);
             }));
         }
 
-        void OnSelectAction(int index)
+        private void OnSelectAction(int index)
         {
             DataManager.DataManager.SharedInstance.CurrentSelectedFeedAccountNoIndex = index;
         }
 
-        List<string> GetAccountList()
+        private List<string> GetAccountList()
         {
             if (DataManager.DataManager.SharedInstance.AccountRecordsList.d != null
                 && DataManager.DataManager.SharedInstance.AccountRecordsList.d?.Count > 0)
@@ -149,7 +151,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             return new List<string>();
         }
 
-        void ConstructAccountNumberField()
+        private void ConstructAccountNumberField()
         {
             _viewAccountNo = new UIView((new CGRect(18, 217, _controller.View.Frame.Width - 36, 51)))
             {
@@ -159,7 +161,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblAccountNoTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewAccountNo.Frame.Width, 12),
-                AttributedText = AttributedStringUtility.GetAttributedString("Common_AccountNo", AttributedStringUtility.AttributedStringType.Title),
+                AttributedText = AttributedStringUtility.GetAttributedStringV2(_controller.GetCommonI18NValue(Constants.Common_AccountNo)
+                    , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -167,7 +170,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblAccountNoError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewAccountNo.Frame.Width, 14),
-                AttributedText = AttributedStringUtility.GetAttributedString("Invalid_AccountLength", AttributedStringUtility.AttributedStringType.Error),
+                AttributedText = AttributedStringUtility.GetAttributedStringV2(_controller.GetErrorI18NValue(Constants.Error_AccountLength)
+                    , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };
@@ -175,7 +179,8 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _txtFieldAccountNo = new UITextField
             {
                 Frame = new CGRect(0, 12, _viewAccountNo.Frame.Width, 24),
-                AttributedPlaceholder = AttributedStringUtility.GetAttributedString("Common_AccountNo", AttributedStringUtility.AttributedStringType.Value),
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedStringV2(_controller.GetCommonI18NValue(Constants.Common_AccountNo)
+                    , AttributedStringUtility.AttributedStringType.Value),
                 TextColor = MyTNBColor.TunaGrey()
             };
             _txtFieldAccountNo.KeyboardType = UIKeyboardType.NumberPad;
@@ -190,7 +195,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
                 , _viewLineAccountNo, null, TNBGlobal.ACCOUNT_NO_PATTERN);
         }
 
-        void SetTextFieldEvents(UITextField textField, UILabel lblTitle, UILabel lblError
+        private void SetTextFieldEvents(UITextField textField, UILabel lblTitle, UILabel lblError
             , UIView viewLine, UILabel lblHint, string pattern)
         {
             if (lblHint == null)
@@ -267,8 +272,9 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
         public void SetSelectedAccountNumber()
         {
-            var index = DataManager.DataManager.SharedInstance.CurrentSelectedFeedAccountNoIndex;
-            if (DataManager.DataManager.SharedInstance.AccountRecordsList?.d == null || DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count == 0)
+            int index = DataManager.DataManager.SharedInstance.CurrentSelectedFeedAccountNoIndex;
+            if (DataManager.DataManager.SharedInstance.AccountRecordsList?.d == null
+                || DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.Count == 0)
             {
                 return;
             }
@@ -281,7 +287,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
         {
             if (_controller.IsLoggedIn)
             {
-                var index = DataManager.DataManager.SharedInstance.CurrentSelectedFeedAccountNoIndex;
+                int index = DataManager.DataManager.SharedInstance.CurrentSelectedFeedAccountNoIndex;
                 if (DataManager.DataManager.SharedInstance.AccountRecordsList?.d.Count > 0)
                 {
                     return DataManager.DataManager.SharedInstance.AccountRecordsList?.d[index]?.accNum ?? string.Empty;

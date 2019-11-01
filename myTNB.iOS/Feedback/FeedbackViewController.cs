@@ -8,14 +8,13 @@ using myTNB.Model;
 using System.Collections.Generic;
 using Foundation;
 using System.Diagnostics;
+using myTNB.Feedback;
 
 namespace myTNB
 {
-    public partial class FeedbackViewController : UIViewController
+    public partial class FeedbackViewController : CustomUIViewController
     {
-        public FeedbackViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public FeedbackViewController(IntPtr handle) : base(handle) { }
 
         public bool isFromPreLogin;
         private TitleBarComponent _titleBarComponent;
@@ -24,13 +23,14 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            PageName = FeedbackConstants.Pagename_FeedbackList;
             base.ViewDidLoad();
             NotifCenterUtility.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
             if (isFromPreLogin == true)
             {
                 feedbackTableView.Frame = new CGRect(0, 0, View.Frame.Width, View.Frame.Height - (114 - 64));
                 AddBackButton();
-                Title = "Feedback_Title".Translate();
+                Title = GetI18NValue(FeedbackConstants.I18N_Title);
             }
             else
             {
@@ -43,7 +43,7 @@ namespace myTNB
         public void LanguageDidChange(NSNotification notification)
         {
             Debug.WriteLine("DEBUG >>> FEEDBACK LanguageDidChange");
-            _titleBarComponent?.SetTitle("Feedback_Title".Translate());
+            _titleBarComponent?.SetTitle(GetI18NValue(FeedbackConstants.I18N_Title));
         }
 
         public override void ViewWillAppear(bool animated)
@@ -80,7 +80,7 @@ namespace myTNB
                                     };
                                     _submittedFeedback.d.data = new List<SubmittedFeedbackDataModel>();
                                 }
-                                var viewHeaderHeight = (View.Frame.Width * 126) / 320;
+                                nfloat viewHeaderHeight = (View.Frame.Width * 126) / 320;
                                 UIView viewHeader = new UIView(new CGRect(0, 0, View.Frame.Width, viewHeaderHeight));
                                 UIImageView imgViewBackgroundPhoto = new UIImageView(viewHeader.Frame)
                                 {
@@ -103,7 +103,7 @@ namespace myTNB
                     }
                     else
                     {
-                        AlertHandler.DisplayNoDataAlert(this);
+                        DisplayNoDataAlert();
                     }
                 });
             });
@@ -121,11 +121,11 @@ namespace myTNB
 
         private void SetNavigationBar()
         {
-            GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 64, true); ;
+            GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 64, true);
             UIView headerView = gradientViewComponent.GetUI();
             _titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = _titleBarComponent.GetUI();
-            _titleBarComponent.SetTitle("Feedback_Title".Translate());
+            _titleBarComponent.SetTitle(GetI18NValue(FeedbackConstants.I18N_Title));
             _titleBarComponent.SetPrimaryVisibility(true);
             headerView.AddSubview(titleBarView);
             View.AddSubview(headerView);
@@ -177,7 +177,7 @@ namespace myTNB
                     email = _email,
                     deviceId = DataManager.DataManager.SharedInstance.UDID
                 };
-                _submittedFeedback = serviceManager.OnExecuteAPI<SubmittedFeedbackResponseModel>("GetSubmittedFeedbackList", requestParameter);
+                _submittedFeedback = serviceManager.OnExecuteAPI<SubmittedFeedbackResponseModel>(FeedbackConstants.Service_GetSubmittedFeedbackList, requestParameter);
             });
         }
     }
