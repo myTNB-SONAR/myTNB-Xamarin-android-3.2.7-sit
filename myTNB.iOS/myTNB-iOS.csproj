@@ -2549,14 +2549,6 @@
     <Compile Include="Feedback\FeedbackViewController.designer.cs">
       <DependentUpon>..\Home\Feedback\FeedbackViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Feedback\Submitted Feedback\SubmitFeedbackFailedViewController.cs" />
-    <Compile Include="Feedback\Submitted Feedback\SubmitFeedbackFailedViewController.designer.cs">
-      <DependentUpon>..\..\Home\Feedback\Submitted Feedback\SubmitFeedbackFailedViewController.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Feedback\Submitted Feedback\SubmitFeedbackSuccessViewController.cs" />
-    <Compile Include="Feedback\Submitted Feedback\SubmitFeedbackSuccessViewController.designer.cs">
-      <DependentUpon>..\..\Home\Feedback\Submitted Feedback\SubmitFeedbackSuccessViewController.cs</DependentUpon>
-    </Compile>
     <Compile Include="Feedback\Submitted Feedback\SubmittedFeedbackCell.cs" />
     <Compile Include="Feedback\Submitted Feedback\SubmittedFeedbackCell.designer.cs">
       <DependentUpon>..\..\Home\Feedback\Submitted Feedback\SubmittedFeedbackCell.cs</DependentUpon>
