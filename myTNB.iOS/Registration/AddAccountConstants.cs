@@ -14,7 +14,7 @@
         public static string IMG_CircleGreen = "Circle-With-Check-Green";
 
         //I18N Keys
-        public static string I18N_NavTitle = "navTitle";
+        public static string I18N_NavTitle = "title";
         public static string I18N_NoAcctFoundMsg = "noAcctFoundMsg";
         public static string I18N_SupplyAcctCount = "supplyAcctCount";
         public static string I18N_EmptyNickname = "emptyNickname";

@@ -6,7 +6,7 @@ namespace myTNB.Home.Dashboard.SelectAccounts
         public static string PageName = "SelectElectricityAccounts";
 
         //I18N
-        public static string I18N_NavTitle = "navTitle";
+        public static string I18N_NavTitle = "title";
         public static string I18N_AccountsMissing = "accountsMissing";
 
         //Images

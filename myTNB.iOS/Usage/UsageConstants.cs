@@ -27,7 +27,7 @@
         public static string IMG_MDMSDown = "MDMS-Down";
 
         //I18N Keys
-        public static string I18N_Usage = "navTitle";
+        public static string I18N_Usage = "title";
         public static string I18N_GotIt = "gotIt";
         public static string I18N_DisconnectionMessage = "disconnectionMsg";
         public static string I18N_ProjectedCostMessage = "projectedCostMsg";

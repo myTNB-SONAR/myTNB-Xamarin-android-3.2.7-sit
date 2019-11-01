@@ -43,7 +43,7 @@ namespace myTNB.SSMR
         public static string I18N_NoHistoryData = "noHistoryData";
 
         //Common
-        public static string I18N_NavTitle = "navTitle";
+        public static string I18N_NavTitle = "title";
         public static string I18N_Submit = "submit";
         public static string I18N_Account = "account";
         public static string I18N_MobileNumber = "mobileNumber";

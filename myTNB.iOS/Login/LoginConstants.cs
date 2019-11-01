@@ -16,7 +16,7 @@
         public static string IMG_RememberIcon = "Remember-Icon";
 
         //I18N Keys
-        public static string I18N_Title = "title";
+        public static string I18N_Title = "loginTitle";
         public static string I18N_RememberEmail = "rememberEmail";
         public static string I18N_ForgotPassword = "forgotPassword";
         public static string I18N_DontHaveAcct = "dontHaveAcct";

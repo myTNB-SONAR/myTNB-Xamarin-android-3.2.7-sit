@@ -28,7 +28,7 @@
 
         //I18N
         //Bill
-        public static string I18N_NavTitle = "navTitle";
+        public static string I18N_NavTitle = "title";
         public static string I18N_ClearedBills = "clearedBills";
         public static string I18N_ViewMore = "viewMore";
         public static string I18N_PaidExtra = "paidExtra";

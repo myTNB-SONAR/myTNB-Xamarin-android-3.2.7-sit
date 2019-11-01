@@ -171,7 +171,7 @@
     "startApplication": "Get Started!"
   },
   "SSMRApplication": {
-    "navTitle": "Self Meter Reading",
+    "title": "Self Meter Reading",
     "applyingFor": "I am starting for:",
     "terminateFor": "I am stopping for:",
     "contactDetails": "My contact details:",
@@ -213,7 +213,7 @@
     "ssmrViewReadHistory": "Back to Reading History"
   },
   "SSMRReadingHistory": {
-    "navTitle": "Self Meter Reading",
+    "title": "Self Meter Reading",
     "headerTitle": "My Meter Reading History",
     "subTitle": "I want to read my own meter for:",
     "disableSSMRCTA": "Stop Self Meter Reading",
@@ -234,7 +234,7 @@
     ]
   },
   "SSMRSubmitMeterReading": {
-    "navTitle": "Submit Meter Reading",
+    "title": "Submit Meter Reading",
     "dontShow": "Don’t show me again",
     "tooltipTitle1": "Alright, what do I need to read?",
     "tooltipTitle2": "But wait, how do I read my meter?",
@@ -306,11 +306,11 @@
     ]
   },
   "SelectElectricityAccounts": {
-    "navTitle": "Select Electricity Account",
+    "title": "Select Electricity Account",
     "accountsMissing": "Why are some of my accounts not here?"
   },
   "Usage": {
-    "navTitle": "Usage",
+    "title": "Usage",
     "accountsMissing": "Why are some of my accounts not here?",
     "gotIt": "Got it!",
     "disconnectionMsg": "<strong>What does this mean?</strong><br><br>Your electricity has been disconnected and is unavailable. This was not caused by a power outage.<br><br>If you’ve made a payment, please give us some time for this to be reflected.",
@@ -340,7 +340,7 @@
     "beenPaidExtra": "I’ve been paid extra"
   },
   "Bills": {
-    "navTitle": "Bills",
+    "title": "Bills",
     "clearedBills": "I’ve cleared all bills",
     "viewMore": "View Details",
     "paidExtra": "I’ve paid extra",
@@ -371,7 +371,7 @@
     ]
   },
   "BillDetails": {
-    "navTitle": "Bill Details",
+    "title": "Bill Details",
     "billDetails": "My Bill Details",
     "outstandingCharges": "My outstanding charges",
     "billThisMonth": "My latest bill",
@@ -388,7 +388,7 @@
     "pay": "Pay"
   },
   "BillFilter": {
-    "navTitle": "Filter Views",
+    "title": "Filter Views",
     "description": "View your invoiced bills, payment receipts or both.",
     "filterBy": "Filter By",
     "applyFilter": "Apply Filter",
@@ -443,7 +443,7 @@
     "viewReadingHistory": "View Reading History"
   },
   "AddAccount": {
-    "navTitle": "Add Electricity Account",
+    "title": "Add Electricity Account",
     "noAcctFoundMsg": "Please tap on the button below to add your TNB electricity account.",
     "supplyAcctCount": "electricity supply account(s) found!",
     "addAnotherAcct": "Add Another Account",
@@ -550,7 +550,7 @@
     "feedback": "Give Us Feedback"
   },
   "Login": {
-    "title": "myTNB Account Login",
+    "loginTitle": "myTNB Account Login",
     "rememberEmail": "Remember my email",
     "forgotPassword": "Forgot your password?",
     "dontHaveAcct": "Don’t have a myTNB account?",
@@ -596,7 +596,7 @@
     "otpRegistration": "Please enter the 4-digit activation pin that was sent to {0}."
   },
   "Logout": {
-    "title": "Thank you for using myTNB.",
+    "logoutTitle": "Thank you for using myTNB.",
     "message": "You are now logged out of the myTNB app.",
     "loginAgain": "Log In Again"
   },

@@ -171,7 +171,7 @@
     "startApplication": "Mulakan!"
   },
   "SSMRApplication": {
-    "navTitle": "Self Meter Reading",
+    "title": "Self Meter Reading",
     "applyingFor": "Saya memulakan untuk:",
     "terminateFor": "Saya ingin hentikan membuat bacaan untuk:",
     "contactDetails": "Maklumat saya:",
@@ -213,7 +213,7 @@
     "ssmrViewReadHistory": "Kembali ke Sejarah Bacaan"
   },
   "SSMRReadingHistory": {
-    "navTitle": "Self Meter Reading",
+    "title": "Self Meter Reading",
     "headerTitle": "Sejarah Bacaan Meter Saya",
     "subTitle": "Saya ingin membaca meter sendiri untuk:",
     "disableSSMRCTA": "Hentikan Self Meter Reading",
@@ -234,7 +234,7 @@
     ]
   },
   "SSMRSubmitMeterReading": {
-    "navTitle": "Hantar Bacaan Meter",
+    "title": "Hantar Bacaan Meter",
     "dontShow": "Don’t show me again",
     "tooltipTitle1": "Alright, what do I need to read?",
     "tooltipTitle2": "But wait, how do I read my meter?",
@@ -306,11 +306,11 @@
     ]
   },
   "SelectElectricityAccounts": {
-    "navTitle": "Pilih Akaun Elektrik",
+    "title": "Pilih Akaun Elektrik",
     "accountsMissing": "Mengapa akaun saya tiada di sini?"
   },
   "Usage": {
-    "navTitle": "Usage",
+    "title": "Usage",
     "accountsMissing": "Why are some of my accounts not here?",
     "gotIt": "Faham!",
     "disconnectionMsg": "<strong>Maksudnya? </strong><br><br>Bekalan elektrik anda telah dipotong. Ini bukan disebabkan terputus bekalan kuasa.<br><br>Bekalan elektrik anda telah dipotong. Ini bukan disebabkan terputus bekalan kuasa.",
@@ -340,7 +340,7 @@
     "beenPaidExtra": "Saya telah dibayar lebih"
   },
   "Bills": {
-    "navTitle": "Bil",
+    "title": "Bil",
     "clearedBills": "Saya telah jelaskan semua bil",
     "viewMore": "Lihat Butiran",
     "paidExtra": "Saya ada ekstra",
@@ -371,7 +371,7 @@
     ]
   },
   "BillDetails": {
-    "navTitle": "Butiran Bil",
+    "title": "Butiran Bil",
     "billDetails": "Butiran Bil Saya",
     "outstandingCharges": "Tunggakan saya",
     "billThisMonth": "Bil saya bulan ini",
@@ -388,7 +388,7 @@
     "pay": "Bayar"
   },
   "BillFilter": {
-    "navTitle": "Pilihan Paparan",
+    "title": "Pilihan Paparan",
     "description": "Lihat bil anda, resit pembayaran atau kedua-duanya.",
     "filterBy": "Pilihan Mengikut",
     "applyFilter": "Gunakan Pilihan",
@@ -443,7 +443,7 @@
     "viewReadingHistory": "Kembali ke Penggunaan"
   },
   "AddAccount": {
-    "navTitle": "Tambah Akaun Elektrik",
+    "title": "Tambah Akaun Elektrik",
     "noAcctFoundMsg": "Please tap on the button below to add your TNB electricity account.",
     "supplyAcctCount": "akaun bekalan elektrik ditemui!",
     "addAnotherAcct": "Masukkan Satu Lagi Akaun",
@@ -550,7 +550,7 @@
     "feedback": "Beri Maklumbalas"
   },
   "Login": {
-    "title": "Log Masuk Akaun myTNB",
+    "loginTitle": "Log Masuk Akaun myTNB",
     "rememberEmail": "Ingat emel saya",
     "forgotPassword": "Terlupa kata laluan?",
     "dontHaveAcct": "Tidak mempunyai akaun myTNB?",
@@ -596,7 +596,7 @@
     "otpRegistration": "Sila masukkan kod OTP 4 digit yang telah dihantar ke {0}."
   },
   "Logout": {
-    "title": "Terima kasih kerana menggunakan myTNB.",
+    "logoutTitle": "Terima kasih kerana menggunakan myTNB.",
     "message": "Anda telah log keluar daripada aplikasi myTNB.",
     "loginAgain": "Log Masuk Semula"
   },
