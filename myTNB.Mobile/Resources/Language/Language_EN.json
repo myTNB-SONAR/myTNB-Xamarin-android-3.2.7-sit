@@ -60,13 +60,14 @@
     "unselectAll": "Unselect All",
     "totalAmount": "Total Amount",
     "totalAmountRM": "Total Amount (RM)",
+    "amountRM": "Amount (RM)",
     "back": "Back",
     "cards": "Credit / Debit Cards",
     "abort": "Abort",
     "warning": "Warning",
     "manage": "Manage",
     "update": "Update",
-    "logout": "Logout",
+    "logout": "Log Out",
     "idNumber": "IC / ROC / Passport No.",
     "password": "Password",
     "mobileNo": "Mobile No.",
@@ -82,13 +83,20 @@
     "next": "Next",
     "resend": "Resend",
     "retry": "Retry",
-    "save": "Save"
+    "save": "Save",
+    "fullname": "Fullname",
+    "confirmPassword": "Confirm Password",
+    "accountNo": "Account No.",
+    "accountType": "Account Type",
+    "allNotifications": "All Notifications"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
     "mobileNumberSample": "Example: +6012 345 6789",
     "emptyAcctSelector": "---",
-    "nickname": "e.g. My House, Parent's House"
+    "nickname": "e.g. My House, Parent's House",
+    "businessNickname": "e.g. Bangsar Shopping Centre Branch",
+    "password": "Your password must have at least 8 alphanumeric characters."
   },
   "Error": {
     "invalid_email": "Invalid email address",
@@ -103,8 +111,17 @@
     "invalid_amountMessage": "Kindly enter a non-zero/positive amount",
     "invalid_amountTitle": "Invalid Amount",
     "invalid_code": "Invalid code",
-    "invalid_password": "Password must have at least 8 alphanumeric characters.",
-    "invalid_mismatchedPassword": "Your new password do not match."
+    "invalid_password": "Your password must have at least 8 alphanumeric characters.",
+    "invalid_mismatchedPassword": "Your new passwords do not match.",
+    "invalid_fullname": "Invalid full name",
+    "invalid_idnumber": "Invalid IC, ROC or Passport No.",
+    "invalid_mismatchedEmail": "Your email and confirmation email do not match.",
+    "error_duplicateAccountMessage": "This account number is already added on the list",
+    "error_duplicateAccountTitle": "Duplicate Account",
+    "invalid_icNumber": "Invalid IC number.",
+    "invalid_rocNumber": "Invalid ROC number.",
+    "accountLength": "Please enter a valid 12-digit account no.",
+    "invalid_accountType": "Invalid Account Type"
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -126,7 +143,17 @@
     "search": "Search",
     "showLess": "Show Less",
     "moreAccts": "More Accounts",
-    "rearrangeAccts": "Rearrange Accounts"
+    "rearrangeAccts": "Rearrange Accounts",
+    "showMore": "Show More",
+    "viewAdvice": "View My<br>Advice",
+    "viewAdvices": "View My<br>Advices",
+    "viewEBill": "View <br>My e-Bill",
+    "viewEBills": "View <br>My e-Bills",
+    "payBill": "Pay<br>My Bill",
+    "payBills": "Pay<br>My Bill",
+    "submitFeedback": "Submit<br>Feedback",
+    "selfMeterReading": "Self<br>Meter Reading",
+    "viewEBillAndAdvice": "View My<br>e-Bills / Advices"
   },
   "Tabbar": {
     "home": "Home",
@@ -144,7 +171,7 @@
     "startApplication": "Get Started!"
   },
   "SSMRApplication": {
-    "navTitle": "Self Meter Reading",
+    "title": "Self Meter Reading",
     "applyingFor": "I am starting for:",
     "terminateFor": "I am stopping for:",
     "contactDetails": "My contact details:",
@@ -186,7 +213,7 @@
     "ssmrViewReadHistory": "Back to Reading History"
   },
   "SSMRReadingHistory": {
-    "navTitle": "Self Meter Reading",
+    "title": "Self Meter Reading",
     "headerTitle": "My Meter Reading History",
     "subTitle": "I want to read my own meter for:",
     "disableSSMRCTA": "Stop Self Meter Reading",
@@ -207,7 +234,7 @@
     ]
   },
   "SSMRSubmitMeterReading": {
-    "navTitle": "Submit Meter Reading",
+    "title": "Submit Meter Reading",
     "dontShow": "Don’t show me again",
     "tooltipTitle1": "Alright, what do I need to read?",
     "tooltipTitle2": "But wait, how do I read my meter?",
@@ -279,11 +306,11 @@
     ]
   },
   "SelectElectricityAccounts": {
-    "navTitle": "Select Electricity Account",
+    "title": "Select Electricity Account",
     "accountsMissing": "Why are some of my accounts not here?"
   },
   "Usage": {
-    "navTitle": "Usage",
+    "title": "Usage",
     "accountsMissing": "Why are some of my accounts not here?",
     "gotIt": "Got it!",
     "disconnectionMsg": "<strong>What does this mean?</strong><br><br>Your electricity has been disconnected and is unavailable. This was not caused by a power outage.<br><br>If you’ve made a payment, please give us some time for this to be reflected.",
@@ -291,7 +318,7 @@
     "projectedCostTitle": "What are these?",
     "missedReadTitle": "What does this mean?",
     "missedReadMsg": "Your full usage for this particular day has not been retrieved yet. Check back in a while.",
-    "emptyDataMsg": "Welcome to your usage view! You’ll see your usage here soon.",
+    "emptyDataMsg": "Welcome to your usage view! Your usage will be shown here after you receive your first bill.",
     "SMOverlayTitle": "How do I view my daily usage?",
     "SMOverlayMsg": "Pinch to zoom in or out! Zoom in to view your daily breakdown.",
     "SMOverlayBtnTxt": "Got It!",
@@ -309,10 +336,11 @@
     "by": "by",
     "pay": "Pay",
     "mdmsUnavailable": "Currently Unavailable",
-    "mdmsUnavailableMsg": "Your daily usage information is currently unavailable. Check back in a while!"
+    "mdmsUnavailableMsg": "Your daily usage information is currently unavailable. Check back in a while!",
+    "beenPaidExtra": "I’ve been paid extra"
   },
   "Bills": {
-    "navTitle": "Bills",
+    "title": "Bills",
     "clearedBills": "I’ve cleared all bills",
     "viewMore": "View Details",
     "paidExtra": "I’ve paid extra",
@@ -343,7 +371,7 @@
     ]
   },
   "BillDetails": {
-    "navTitle": "Bill Details",
+    "title": "Bill Details",
     "billDetails": "My Bill Details",
     "outstandingCharges": "My outstanding charges",
     "billThisMonth": "My latest bill",
@@ -360,7 +388,7 @@
     "pay": "Pay"
   },
   "BillFilter": {
-    "navTitle": "Filter Views",
+    "title": "Filter Views",
     "description": "View your invoiced bills, payment receipts or both.",
     "filterBy": "Filter By",
     "applyFilter": "Apply Filter",
@@ -370,23 +398,23 @@
     "enterAmount": "Enter Amount",
     "payMultiple": "Pay Bill ({0})",
     "paySingle": "Pay Bill",
-    "loadMore": "Load More",
+    "loadMore": "Show More",
     "selectBill": "Select Bill(s)",
     "iamPaying": "I AM PAYING (RM)"
   },
   "SelectPaymentMethod": {
     "title": "Select Payment Method",
-    "cvvFourDigitMessage": "Please enter the 4-digit CVV/CVC located at the front of your credit card.",
-    "cvvThreeDigitMessage": "Please enter the 3-digit CVV/CVC located at the back of your credit card.",
+    "cvvFourDigitMessage": "Please enter the 4 digit CVV/CVC located at the front of your credit card.",
+    "cvvThreeDigitMessage": "Please enter the 3 digit CVV/CVC located at the back of your credit card.",
     "otherPaymentMethods": "Other Payment Methods",
     "maxCCAmountMessage": "For payments more than RM 5000, please use FPX payment mode.",
     "addCard": "Add Card",
     "fpxTitle": "Online Banking via FPX"
   },
   "MakePayment": {
-    "enterOTP": "Enter OTP",
+    "enterOTP": "Enter the OTP",
     "onlineBanking": "Online Banking",
-    "abortTitle": "Abort Payment!",
+    "abortTitle": "Abort Payment",
     "abortMessage": "Are you sure you want to abort payment?"
   },
   "PushNotificationList": {
@@ -415,7 +443,7 @@
     "viewReadingHistory": "View Reading History"
   },
   "AddAccount": {
-    "navTitle": "Add Electricity Account",
+    "title": "Add Electricity Account",
     "noAcctFoundMsg": "Please tap on the button below to add your TNB electricity account.",
     "supplyAcctCount": "electricity supply account(s) found!",
     "addAnotherAcct": "Add Another Account",
@@ -427,7 +455,28 @@
     "additionalAccts": "Additional account(s)",
     "removeAcct": "Remove Account",
     "removeAcctMsg": "You are about to remove {0}, account number {1}.",
-    "addAcctSuccessMsg": "Add Account(s) Successful"
+    "addAcctSuccessMsg": "Add Account(s) Successful",
+    "ownerICNumber": "Owner's IC / Passport Number",
+    "rocNumber": "ROC No.",
+    "whereIsMyAccountTitle": "Where is my account no.?",
+    "whereIsMyAccountDetails": "Your 12-digit account no. can be found on the top left corner of your monthly paper bill.",
+    "selectAccountType": "Select Account Type",
+    "residential": "Residential",
+    "commercial": "Commercial",
+    "addAccountCTATitle": "Add Account",
+    "scanMessage": "Scan the barcode on your bill to retrieve account details.",
+    "invalidBarcode": "Invalid barcode.",
+    "addByIDMessage": "Was this electricity supply account registered with your IC / ROC / Passport No.?",
+    "addByRightsMessage": "Do you have the rights to view all information related to this electricity supply account?",
+    "addAsOwnerMessage": "I'm the owner of this electricity supply account.",
+    "addAsTenantMessage": "I’m renting this place / it belongs to my parents.",
+    "addAsTenantWithICMessage": "I have the rights to view all information related to this electricity supply account.",
+    "addAsTenantWithoutICMessage": "I may not have the rights to view all information related to this electricity supply account.\r\n\r\nI may only view:",
+    "outstandingPayment": "Outstanding payment",
+    "usageGraph": "Usage graph",
+    "paymentHistory": "Payment history",
+    "currentBill": "Current bill",
+    "pastBills": "Past bills"
   },
   "Profile": {
     "title": "Profile",
@@ -468,13 +517,15 @@
   },
   "LocationDetails": {
     "address": "ADDRESS",
-    "phone": "PHONE",
+    "phone": "Phone",
     "openingHours": "OPENING HOURS",
     "services": "SERVICES",
     "mapSelection": "Map Selection",
     "selectApplication": "Select navigation application",
     "openIn": "Open in",
-    "noSupportedApp": "No supported map application is installed"
+    "noSupportedApp": "No supported map application is installed",
+    "serviceDescription": "•\tPayment of electricity bills and other utility bills",
+    "operationHours": "Open 24 Hours"
   },
   "MyAccount": {
     "title": "My Account",
@@ -493,13 +544,13 @@
     "tagline": "A whole new world with shockingly amazing possibilities.",
     "register": "Register",
     "login": "Log In",
-    "quickAccess": "Quick Access",
+    "quickAccess": "Quick Actions",
     "findUs": "Find Us",
     "callUs": "Call Us",
     "feedback": "Give Us Feedback"
   },
   "Login": {
-    "title": "myTNB Account Login",
+    "loginTitle": "myTNB Account Login",
     "rememberEmail": "Remember my email",
     "forgotPassword": "Forgot your password?",
     "dontHaveAcct": "Don’t have a myTNB account?",
@@ -545,7 +596,7 @@
     "otpRegistration": "Please enter the 4-digit activation pin that was sent to {0}."
   },
   "Logout": {
-    "title": "Thank you for using myTNB.",
+    "logoutTitle": "Thank you for using myTNB.",
     "message": "You are now logged out of the myTNB app.",
     "loginAgain": "Log In Again"
   },
@@ -564,5 +615,73 @@
     "removeAccount": "Remove This Account",
     "popupremoveAccountTitle": "Remove Account",
     "popupremoveAccountMessage": "You are about to remove <b>{0}</b>, Account Number: <b>{1}</b>.<br><br>Note: This does not close your electricity supply account. Visit the Self-Service Portal or Kedai Tenaga to close your electriity supply account."
+  },
+  "Onboarding": {
+    "letsStart": "Let's get started!",
+    "skip": "Skip",
+    "title1": "Welcome to myTNB!",
+    "title2": "Bills at Your Fingertips.",
+    "title3": "Pay Your Bills Anytime, Anywhere.",
+    "title4": "Enhanced View for Better Experiences.",
+    "description1": "Track, monitor and stay on top of your electricity usage!",
+    "description2": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",
+    "description3": "Pay your electricity bills while at home, on holiday, on the train – whenever you want to. Say goodbye to late charges and queuing up!",
+    "description4": "We’ve revamped the Home, Bills and Usage screens! It’s not just prettier, it’s way more helpful with more details (including block tariffs so you can stay informed on all things usage-related)."
+  },
+  "ManageCards": {
+    "title": "Manage Credit / Debit Cards",
+    "noCards": "Looks like you have no credit/debit cards stored. You may add a credit/debit card during payment.",
+    "details": "You may only add a new credit / debit card when making payment.",
+    "cardRemoveSuccess": "The credit / debit card ending with {0} has been removed successfully.",
+    "removeCardMessage": "You are about to remove the credit / debit card ending with {0}.",
+    "removeCardTitle": "Remove Credit / Debit Card",
+    "cardNotRemovedMessage": "Credit / Debit Card ending with {0} was not removed. Please try again."
+  },
+  "ViewBill": {
+    "titleBill": "Bill",
+    "titleAdvice": "Advice"
+  },
+  "Register": {
+    "title": "Register",
+    "tnc": "By registering, you are agreeing to the <a href=\"\\\"><strong>TNB Terms and Conditions</strong></a>, <a href=\"\\\"><strong>User Agreement</strong></a> and <a href=\"\\\"><strong>Privacy policy</strong></a>.",
+    "ctaTitle": "Register",
+    "confirmEmail": "Confirm Email"
+  },
+  "AddCard": {
+    "title": "Add Card",
+    "acceptedCardsMessage": "Only credit / debit cards issued in Malaysia are accepted.",
+    "cardNumber": "Card Number",
+    "invalidCardNumber": "Invalid Card Number",
+    "nameOnCard": "Name on Card",
+    "invalidName": "Invalid name",
+    "cardExpiry": "Card Expiry",
+    "invalidCardExpiry": "Invalid card expiration date.",
+    "hintCardExpiry": "Card Expiry (MM/YY)",
+    "cvv": "CVV",
+    "invalidCVV": "Invalid CVV.",
+    "saveCardMessage": "I want to save this card for future use.",
+    "emptyCardNumberTitle": "Empty Card Number",
+    "emptyCardNumberMessage": "Please enter valid card number and try again.",
+    "savedCardTitle": "Valid card number",
+    "savedCardMessage": "Seems like you are paying with an already saved Credit / Debit Card. Do you want to continue?"
+  },
+  "CardScanner": {
+    "title": "Add Card",
+    "scanMessage": "Scan the front of your credit / debit card to retrieve card details."
+  },
+  "Receipt": {
+    "title": "Payment Receipt",
+    "accountHolder": "Account Holder's Name",
+    "receiptFilename": "Receipt-{0}.pdf",
+    "fullMessage": "Thank you for using myTNB.\nWe are pleased to inform you that the following online payment via {0} is Successful:",
+    "messagePartOne": "Thank you for using myTNB.",
+    "messagePartTwo": "We are pleased to inform you that the following online payment via {0} is Successful:",
+    "noReceipt": "No Receipt Found",
+    "note": "NOTE: This receipt is computer generated and no signature is required.",
+    "referenceNumber": "Reference Number",
+    "salutation": "Dear Customer,",
+    "trnDate": "TRANSACTION DATE",
+    "trnID": "TRANSACTION ID",
+    "trnMethod": "RANSACTION METHOD"
   }
 }
