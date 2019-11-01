@@ -350,6 +350,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 txtAdd.Text = GetLabelByLanguage("addElectricityAcct");
                 newFAQTitle.Text = GetLabelByLanguage("needHelp");
                 rearrangeLabel.Text = GetLabelByLanguage("rearrangeAccts");
+                loadMoreLabel.Text = GetLabelByLanguage("moreAccts");
+                myServiceLoadMoreLabel.Text = GetLabelByLanguage("showMore");
 
                 addActionContainer.SetOnClickListener(null);
                 notificationHeaderIcon.SetOnClickListener(null);
@@ -1671,7 +1673,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                         loadMoreImg.StartAnimation(animSet);
 
-                        loadMoreLabel.Text = GetLabelByLanguage("showLess");
+                        loadMoreLabel.Text = GetLabelByLanguage("moreAccts");
                     }
 
                     IsRearrangeButtonVisible(true);
@@ -1696,7 +1698,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                         loadMoreImg.StartAnimation(animSet);
 
-                        loadMoreLabel.Text = Activity.GetString(Resource.String.load_more_accounts);
+                        loadMoreLabel.Text = GetLabelByLanguage("moreAccts");
 
                     }
 
@@ -1736,7 +1738,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                         myServiceLoadMoreImg.StartAnimation(animSet);
 
-                        myServiceLoadMoreLabel.Text = Activity.GetString(Resource.String.show_less);
+                        myServiceLoadMoreLabel.Text = GetLabelByLanguage("showLess");
                     }
                 }
                 else
@@ -1759,7 +1761,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                         myServiceLoadMoreImg.StartAnimation(animSet);
 
-                        myServiceLoadMoreLabel.Text = GetLabelByLanguage("moreAccts");
+                        myServiceLoadMoreLabel.Text = GetLabelByLanguage("showMore");
 
                     }
                 }

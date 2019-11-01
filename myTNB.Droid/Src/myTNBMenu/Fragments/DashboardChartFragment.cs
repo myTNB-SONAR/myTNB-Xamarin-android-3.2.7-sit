@@ -676,7 +676,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 errorMSG = extras.GetString(Constants.SELECTED_ERROR_MSG);
             }
 
-
             SetHasOptionsMenu(true);
             this.mPresenter = new DashboardChartPresenter(this);
         }
@@ -758,14 +757,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 currentDayViewIndex = 0;
                 dayViewTariffList = new List<BarEntry>();
 
-                TextViewUtils.SetMuseoSans300Typeface(txtAddress, txtTotalPayable, txtDueDate);
-                TextViewUtils.SetMuseoSans300Typeface(txtNewRefreshMessage, ssmrAccountStatusText);
-                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnNewRefresh, rmKwhLabel, kwhLabel, rmLabel, dashboardAccountName, btnTxtSsmrViewHistory, btnReadingHistory, txtEnergyDisconnection);
-                TextViewUtils.SetMuseoSans300Typeface(reTotalPayable, reTotalPayableCurrency, reDueDate, txtNoPayable);
-                TextViewUtils.SetMuseoSans500Typeface(reTotalPayableTitle, btnReView, txtTarifToggle, txtNoPayableTitle, txtNoPayableCurrency);
-                TextViewUtils.SetMuseoSans300Typeface(smStatisticBillSubTitle, smStatisticBill, smStatisticBillCurrency, smStatisticBillKwhUnit, smStatisticBillKwh, smStatisticPredictSubTitle, smStatisticPredict, smStatisticPredictCurrency, smStatisticTrendSubTitle, smStatisticTrend);
-                TextViewUtils.SetMuseoSans500Typeface(smStatisticBillTitle, smStatisticPredictTitle, txtSmStatisticTooltip, smStatisticTrendTitle);
-                TextViewUtils.SetMuseoSans300Typeface(btnToggleDay, btnToggleMonth, txtMdmsDayViewDown, txtDayViewZoomInIndicator, newAccountContent);
+                TextViewUtils.SetMuseoSans300Typeface(txtAddress, txtTotalPayable, txtDueDate, txtNewRefreshMessage, ssmrAccountStatusText, reTotalPayable, reTotalPayableCurrency, reDueDate, txtNoPayable,
+                    smStatisticBillSubTitle, smStatisticBill, smStatisticBillCurrency, smStatisticBillKwhUnit, smStatisticBillKwh, smStatisticPredictSubTitle, smStatisticPredict, smStatisticPredictCurrency,
+                    smStatisticTrendSubTitle, smStatisticTrend, btnToggleDay, btnToggleMonth, txtMdmsDayViewDown, txtDayViewZoomInIndicator, newAccountContent);
+                TextViewUtils.SetMuseoSans500Typeface(txtRange, txtTotalPayableTitle, txtTotalPayableCurrency, btnViewBill, btnPay, btnNewRefresh, rmKwhLabel, kwhLabel, rmLabel, dashboardAccountName, btnTxtSsmrViewHistory,
+                    btnReadingHistory, txtEnergyDisconnection, reTotalPayableTitle, btnReView, txtTarifToggle, txtNoPayableTitle, txtNoPayableCurrency, smStatisticBillTitle, smStatisticPredictTitle, txtSmStatisticTooltip, smStatisticTrendTitle);
+
+                txtTarifToggle.Text = GetLabelByLanguage("showTariff");
+                btnToggleDay.Text = GetLabelCommonByLanguage("day");
+                btnToggleMonth.Text = GetLabelCommonByLanguage("month");
 
                 DownTimeEntity bcrmEntity = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 DownTimeEntity pgCCEntity = DownTimeEntity.GetByCode(Constants.PG_CC_SYSTEM);
@@ -5397,8 +5397,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         }
                                         else
                                         {
-                                            txtDueDate.Text = GetLabelByLanguage("iWillGetBy") + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(newDate));
-                                            reDueDate.Text = GetLabelByLanguage("iWillGetBy") + dateString;
+                                            txtDueDate.Text = GetLabelByLanguage("iWillGetBy") + " " + GetString(Resource.String.dashboard_chartview_due_date_wildcard, dateFormatter.Format(newDate));
+                                            reDueDate.Text = GetLabelByLanguage("iWillGetBy") + " " + dateString;
                                         }
                                     }
                                     else
@@ -6747,10 +6747,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         smStatisticBillCurrency.Visibility = ViewStates.Visible;
                         smStatisticBillKwhUnit.Visibility = ViewStates.Gone;
                         smStatisticBillKwh.Visibility = ViewStates.Gone;
-                        smStatisticBillTitle.Text = "My bill amount so far";
+                        smStatisticBillTitle.Text = "My bill amount so far"; //TODO: Need to add fallback
                         smStatisticBillSubTitle.Text = "- -";
                         smStatisticBill.Text = "- -";
-                        smStatisticPredictTitle.Text = "My bill may reach";
+                        smStatisticPredictTitle.Text = "My bill may reach"; //TODO: Need to add fallback
                         smStatisticPredictSubTitle.Text = "- -";
                         smStatisticPredict.Text = "- -";
                         txtSmStatisticTooltip.Text = GetLabelByLanguage("projectedCostTitle");
@@ -6791,7 +6791,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 if (costValue.Type == Constants.PROJECTED_COST_KEY)
                                 {
-                                    txtSmStatisticTooltip.Text = string.IsNullOrEmpty(costValue.SMLink) ? "What are these?" : costValue.SMLink;
+                                    txtSmStatisticTooltip.Text = string.IsNullOrEmpty(costValue.SMLink) ? "What are these?" : costValue.SMLink; //TODO: Need to add fallback
                                 }
                             }
                         }
@@ -6805,10 +6805,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         smStatisticBillCurrency.Visibility = ViewStates.Gone;
                         smStatisticBillKwhUnit.Visibility = ViewStates.Visible;
                         smStatisticBillKwh.Visibility = ViewStates.Visible;
-                        smStatisticBillTitle.Text = "My current usage";
+                        smStatisticBillTitle.Text = "My current usage"; //TODO: Need to add fallback
                         smStatisticBillSubTitle.Text = "- -";
                         smStatisticBillKwh.Text = "- -";
-                        smStatisticTrendTitle.Text = "My current usage trend is";
+                        smStatisticTrendTitle.Text = "My current usage trend is"; //TODO: Need to add fallback
                         smStatisticTrendSubTitle.Text = "- -";
                         smStatisticTrend.Text = "- -%";
                         if ((selectedSMHistoryData != null && selectedSMHistoryData.OtherUsageMetrics != null && selectedSMHistoryData.OtherUsageMetrics.UsageData != null && selectedSMHistoryData.OtherUsageMetrics.UsageData.Count > 0))
