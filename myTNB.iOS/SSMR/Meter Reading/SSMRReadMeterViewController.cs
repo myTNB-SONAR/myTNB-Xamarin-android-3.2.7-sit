@@ -256,12 +256,15 @@ namespace myTNB
 
         private void PrepareManualInputView()
         {
-            if (!AppLaunchMasterCache.IsOCRDown)
+            bool ocrIsDown = IsFromDashboard ? SSMRActivityInfoCache.DB_IsOCRDown : SSMRActivityInfoCache.RH_IsOCRDown;
+            bool ocrIsDisabled = IsFromDashboard ? SSMRActivityInfoCache.DB_IsOCRDisabled : SSMRActivityInfoCache.RH_IsOCRDisabled;
+            if (!AppLaunchMasterCache.IsOCRDown && !ocrIsDown && !ocrIsDisabled)
                 return;
 
             _manualInputView = new UIView(new CGRect(BaseMarginWidth16, GetScaledHeight(16F), View.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(44F)))
             {
-                BackgroundColor = UIColor.Clear
+                BackgroundColor = UIColor.Clear,
+                Tag = 3
             };
             UILabel label = new UILabel(new CGRect(0, 0, _manualInputView.Frame.Width, _manualInputView.Frame.Height))
             {
@@ -277,7 +280,9 @@ namespace myTNB
 
         private void PrepareTakePhotoHeaderView()
         {
-            if (AppLaunchMasterCache.IsOCRDown)
+            bool ocrIsDown = IsFromDashboard ? SSMRActivityInfoCache.DB_IsOCRDown : SSMRActivityInfoCache.RH_IsOCRDown;
+            bool ocrIsDisabled = IsFromDashboard ? SSMRActivityInfoCache.DB_IsOCRDisabled : SSMRActivityInfoCache.RH_IsOCRDisabled;
+            if (AppLaunchMasterCache.IsOCRDown || ocrIsDown || ocrIsDisabled)
                 return;
 
             nfloat takePhotoViewHeight = View.Frame.Width * takePhotoViewRatio;
@@ -407,9 +412,11 @@ namespace myTNB
         {
             if (_previousMeterList != null)
             {
+                bool ocrIsDown = IsFromDashboard ? SSMRActivityInfoCache.DB_IsOCRDown : SSMRActivityInfoCache.RH_IsOCRDown;
+                bool ocrIsDisabled = IsFromDashboard ? SSMRActivityInfoCache.DB_IsOCRDisabled : SSMRActivityInfoCache.RH_IsOCRDisabled;
                 bool hasOCRError = false;
                 string errorMessage = string.Empty;
-                nfloat yPos = AppLaunchMasterCache.IsOCRDown ? _manualInputView.Frame.GetMaxY() + GetScaledHeight(16F) : _takePhotoView.Frame.GetMaxY() + _paddingY;
+                nfloat yPos = (AppLaunchMasterCache.IsOCRDown || ocrIsDown || ocrIsDisabled) ? _manualInputView.Frame.GetMaxY() + GetScaledHeight(16F) : _takePhotoView.Frame.GetMaxY() + _paddingY;
                 _meterCardComponentList.Clear();
                 foreach (var previousMeter in _previousMeterList)
                 {
@@ -622,7 +629,7 @@ namespace myTNB
             var subviews = _meterReadScrollView.Subviews;
             foreach (var view in subviews)
             {
-                if (view != null & view.Tag != 1 & view.Tag != 2)
+                if (view != null & view.Tag != 1 & view.Tag != 2 & view.Tag != 3)
                 {
                     view.RemoveFromSuperview();
                 }

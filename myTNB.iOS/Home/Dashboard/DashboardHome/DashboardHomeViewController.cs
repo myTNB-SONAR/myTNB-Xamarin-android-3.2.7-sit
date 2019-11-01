@@ -14,6 +14,7 @@ using myTNB.Registration.CustomerAccounts;
 using UIKit;
 using myTNB.Home.Components;
 using Newtonsoft.Json;
+using myTNB.DataManager;
 
 namespace myTNB
 {
@@ -39,6 +40,7 @@ namespace myTNB
         private bool _isBCRMAvailable;
         private GetIsSmrApplyAllowedResponseModel _isSMRApplyAllowedResponse;
         private UIImageView _footerImageBG;
+        private UIView _tutorialContainer;
 
         public override void ViewDidLoad()
         {
@@ -65,6 +67,42 @@ namespace myTNB
             PrepareTableView();
             SetGreetingView();
             PrepareUsageStoryBoard();
+        }
+
+        private void ShowTutorialOverlay()
+        {
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            var tutorialOverlayHasShown = sharedPreference.BoolForKey(DashboardHomeConstants.Pref_TutorialOverlay);
+
+            //if (tutorialOverlayHasShown)
+            //    return;
+
+            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+            nfloat width = currentWindow.Frame.Width;
+            nfloat height = currentWindow.Frame.Height;
+            _tutorialContainer = new UIView(new CGRect(0, 0, width, height))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+            currentWindow.AddSubview(_tutorialContainer);
+            HomeTutorialOverlay tutorialView = new HomeTutorialOverlay(_tutorialContainer);
+            tutorialView.OnDismissAction = HideTutorialOverlay;
+            _tutorialContainer.AddSubview(tutorialView.GetView());
+
+            sharedPreference.SetBool(true, DashboardHomeConstants.Pref_TutorialOverlay);
+        }
+
+        private void HideTutorialOverlay()
+        {
+            if (_tutorialContainer != null)
+            {
+                _tutorialContainer.Alpha = 1F;
+                _tutorialContainer.Transform = CGAffineTransform.MakeIdentity();
+                UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseInOut, () =>
+                {
+                    _tutorialContainer.Alpha = 0F;
+                }, _tutorialContainer.RemoveFromSuperview);
+            }
         }
 
         private void AddFooterBG()
@@ -140,6 +178,7 @@ namespace myTNB
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
+            //ShowTutorialOverlay();
         }
 
         public override void ViewDidDisappear(bool animated)
@@ -322,13 +361,46 @@ namespace myTNB
                 DataManager.DataManager.SharedInstance.ActiveServicesList = new List<ServiceItemModel>();
                 _servicesIsShimmering = true;
                 OnUpdateCell(DashboardHomeConstants.CellIndex_Services);
-                InvokeInBackground(() =>
+                bool hasExistingSSMR = false;
+                InvokeInBackground(async () =>
                {
+                   SSMRAccounts.SetFilteredEligibleAccounts();
+                   List<string> contractAccounts = SSMRAccounts.GetFilteredAccountNumberList();
+                   if (contractAccounts != null && contractAccounts.Count > 0)
+                   {
+                       SMRAccountStatusResponseModel response = await ServiceCall.GetAccountsSMRStatus(contractAccounts);
+                       InvokeOnMainThread(() =>
+                       {
+                           if (response != null &&
+                               response.d != null &&
+                               response.d.IsSuccess &&
+                               response.d.data != null &&
+                               response.d.data.Count > 0)
+                           {
+                               List<SMRAccountStatusModel> smrList = new List<SMRAccountStatusModel>(response.d.data);
+                               if (smrList != null && smrList.Count > 0)
+                               {
+                                   foreach (var item in smrList)
+                                   {
+                                       DataManager.DataManager.SharedInstance.UpdateDueIsSSMR(item.ContractAccount, item.IsTaggedSMR);
+                                       if (item.isTaggedSMR)
+                                       {
+                                           hasExistingSSMR = true;
+                                       }
+                                   }
+                               }
+                           }
+                       });
+                   }
+
                    List<Task> taskList = new List<Task>();
                    try
                    {
                        taskList.Add(GetServices());
-                       taskList.Add(GetIsSmrApplyAllowed());
+                       if (!hasExistingSSMR && contractAccounts != null && contractAccounts.Count > 0)
+                       {
+                           taskList.Add(GetIsSmrApplyAllowed());
+                       }
                        Task.WaitAll(taskList.ToArray());
                    }
                    catch (Exception e)
@@ -344,18 +416,25 @@ namespace myTNB
                            _services.d.data != null)
                        {
                            List<ServiceItemModel> services = new List<ServiceItemModel>(_services.d.data.services);
-                           if (_isSMRApplyAllowedResponse != null &&
-                               _isSMRApplyAllowedResponse.d != null &&
-                               _isSMRApplyAllowedResponse.d.IsSuccess &&
-                               _isSMRApplyAllowedResponse.d.data != null &&
-                               _isSMRApplyAllowedResponse.d.data.Count > 0)
+                           if (!hasExistingSSMR && contractAccounts != null && contractAccounts.Count > 0)
                            {
-                               if (!_isSMRApplyAllowedResponse.d.data[0].AllowApply)
+                               if (_isSMRApplyAllowedResponse != null &&
+                                   _isSMRApplyAllowedResponse.d != null &&
+                                   _isSMRApplyAllowedResponse.d.IsSuccess &&
+                                   _isSMRApplyAllowedResponse.d.data != null &&
+                                   _isSMRApplyAllowedResponse.d.data.Count > 0)
+                               {
+                                   if (!_isSMRApplyAllowedResponse.d.data[0].AllowApply)
+                                   {
+                                       services.RemoveAt(ServiceItemIndexToRemove(services));
+                                   }
+                               }
+                               else
                                {
                                    services.RemoveAt(ServiceItemIndexToRemove(services));
                                }
                            }
-                           else
+                           else if (!hasExistingSSMR)
                            {
                                services.RemoveAt(ServiceItemIndexToRemove(services));
                            }

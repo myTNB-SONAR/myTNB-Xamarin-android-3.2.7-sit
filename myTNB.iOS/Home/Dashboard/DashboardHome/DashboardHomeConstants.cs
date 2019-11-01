@@ -89,5 +89,8 @@ namespace myTNB
 
         //Format
         public static string Format_Date = "yyyyMMdd";
+
+        //Preference Key
+        public static string Pref_TutorialOverlay = "HomeTutorialOverlayV2.0.0";
     }
 }
