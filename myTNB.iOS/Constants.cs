@@ -32,6 +32,7 @@
         public static string Common_UnselectAll = "unselectAll";
         public static string Common_TotalAmount = "totalAmount";
         public static string Common_TotalAmountRM = "totalAmountRM";
+        public static string Common_AmountRM = "amountRM";
         public static string Common_Back = "back";
         public static string Common_Cards = "cards";
         public static string Common_Abort = "abort";

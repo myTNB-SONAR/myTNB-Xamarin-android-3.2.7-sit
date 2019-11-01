@@ -2571,6 +2571,7 @@
     <Compile Include="Payment\Add Card\AddCardConstants.cs" />
     <Compile Include="Components\Common\HomeTutorialOverlay.cs" />
     <Compile Include="Session Cache\PushNotificationCache.cs" />
+    <Compile Include="Home\Bill\Receipt\ReceiptConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

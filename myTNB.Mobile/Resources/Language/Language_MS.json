@@ -60,6 +60,7 @@
     "unselectAll": "Nyahpilih Semua",
     "totalAmount": "Jumlah Keseluruhan",
     "totalAmountRM": "Jumlah Keseluruhan (RM)",
+    "amountRM": "Amount (RM)",
     "back": "Back",
     "cards": "Kad Kredit / Debit",
     "abort": "Abort",
@@ -667,5 +668,20 @@
   "CardScanner": {
     "title": "Tambah kad",
     "scanMessage": "Scan the front of your credit / debit card to retrieve card details."
+  },
+  "Receipt": {
+    "title": "Payment Receipt",
+    "accountHolder": "Account Holder's Name",
+    "receiptFilename": "Receipt-{0}.pdf",
+    "fullMessage": "Thank you for using myTNB.\nWe are pleased to inform you that the following online payment via {0} is Successful:",
+    "messagePartOne": "Thank you for using myTNB.",
+    "messagePartTwo": "We are pleased to inform you that the following online payment via {0} is Successful:",
+    "noReceipt": "No Receipt Found",
+    "note": "NOTE: This receipt is computer generated and no signature is required.",
+    "referenceNumber": "Reference Number",
+    "salutation": "Dear Customer,",
+    "trnDate": "TRANSACTION DATE",
+    "trnID": "TRANSACTION ID",
+    "trnMethod": "RANSACTION METHOD"
   }
 }

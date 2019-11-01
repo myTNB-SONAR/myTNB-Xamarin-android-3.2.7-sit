@@ -13,14 +13,16 @@ using ITFont = iTextSharp.text.Font;
 
 namespace myTNB
 {
-    public partial class ReceiptViewController : UIViewController
+    public partial class ReceiptViewController : CustomUIViewController
     {
         public ReceiptViewController(IntPtr handle) : base(handle) { }
 
-        public Action OnDone
+        public Action OnDone { set; get; }
+
+        enum LabelType
         {
-            get;
-            set;
+            Title,
+            Value
         }
 
         private const float PADDING = 10f;
@@ -39,6 +41,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            PageName = ReceiptConstants.Pagename_Receipt;
             base.ViewDidLoad();
             SetNavigationBar();
         }
@@ -67,7 +70,7 @@ namespace myTNB
                                 }
                                 else
                                 {
-                                    AlertHandler.DisplayGenericAlert(this, "Receipt_NoReceipt".Translate(), string.Empty);
+                                    DisplayGenericAlert(string.Empty, GetI18NValue(ReceiptConstants.I18N_NoReceipt));
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -75,26 +78,26 @@ namespace myTNB
                     }
                     else
                     {
-                        AlertHandler.DisplayNoDataAlert(this);
+                        DisplayNoDataAlert();
                     }
                 });
             });
 
         }
 
-        internal void SetNavigationBar()
+        private void SetNavigationBar()
         {
             NavigationController.NavigationBar.Hidden = true;
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 64, true);
             UIView headerView = gradientViewComponent.GetUI();
             TitleBarComponent titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("Receipt_Title".Translate());
+            titleBarComponent.SetTitle(GetI18NValue(ReceiptConstants.I18N_Title));
             titleBarComponent.SetPrimaryVisibility(false);
             titleBarComponent.SetPrimaryImage("IC-Header-Share");
             titleBarComponent.SetPrimaryAction(new UITapGestureRecognizer(() =>
             {
-                var viewer = UIDocumentInteractionController.FromUrl(NSUrl.FromFilename(_pdfFilePath));
+                UIDocumentInteractionController viewer = UIDocumentInteractionController.FromUrl(NSUrl.FromFilename(_pdfFilePath));
                 UIBarButtonItem.AppearanceWhenContainedIn(new[] { typeof(UINavigationBar) }).TintColor = UIColor.White;
                 viewer.PresentOpenInMenu(new RectangleF(0, -260, 320, 320), this.View, true);
             }));
@@ -120,53 +123,49 @@ namespace myTNB
             View.AddSubview(headerView);
         }
 
-        internal void SetSubviews()
+        private void SetSubviews()
         {
             View.BackgroundColor = MyTNBColor.SilverChalice;
-            tableViewReceipt.Frame = new CGRect(0 + PADDING, DeviceHelper.IsIphoneXUpResolution() ? 86 + PADDING : 64 + PADDING, View.Frame.Width - (PADDING * 2), View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 86 + PADDING : 64 + PADDING));
+            tableViewReceipt.Frame = new CGRect(0 + PADDING, DeviceHelper.IsIphoneXUpResolution()
+                ? 86 + PADDING : 64 + PADDING, View.Frame.Width - (PADDING * 2)
+                , View.Frame.Height - (DeviceHelper.IsIphoneXUpResolution() ? 86 + PADDING : 64 + PADDING));
             tableViewReceipt.BackgroundColor = MyTNBColor.SilverChalice;
 
-            _headerView = new UIView(new CGRect(0, 0, tableViewReceipt.Frame.Width, 377));
-            _headerView.BackgroundColor = UIColor.White;
+            _headerView = new UIView(new CGRect(0, 0, tableViewReceipt.Frame.Width, 377))
+            {
+                BackgroundColor = UIColor.White
+            };
 
-            UIImageView imageView = new UIImageView(new CGRect(0, 0, _headerView.Frame.Width, DeviceHelper.GetScaledHeight(80)));
-            imageView.Image = UIImage.FromBundle("Receipt-Header");
+            UIImageView imageView = new UIImageView(new CGRect(0, 0, _headerView.Frame.Width, DeviceHelper.GetScaledHeight(80)))
+            {
+                Image = UIImage.FromBundle("Receipt-Header")
+            };
             //imageView.ContentMode = UIViewContentMode.ScaleToFill;
 
-            UILabel paymentTitle = new UILabel(new CGRect(INNER_PADDING, imageView.Frame.GetMaxY() + INNER_PADDING, _headerView.Frame.Width - LBL_WIDTH_PADDING, 26));
-            paymentTitle.TextAlignment = UITextAlignment.Left;
-            paymentTitle.Font = MyTNBFont.MuseoSans20_500;
-            paymentTitle.TextColor = MyTNBColor.PowerBlue;
-            paymentTitle.Text = "Receipt_Title".Translate();
+            UILabel paymentTitle = GetLabel(LabelType.Value
+                , new CGRect(INNER_PADDING, imageView.Frame.GetMaxY() + INNER_PADDING, _headerView.Frame.Width - LBL_WIDTH_PADDING, 26)
+                , GetI18NValue(ReceiptConstants.I18N_Title)
+                , MyTNBFont.MuseoSans20_500
+                , MyTNBColor.PowerBlue);
 
-            UILabel msgTitle = new UILabel(new CGRect(INNER_PADDING, paymentTitle.Frame.GetMaxY() + INNER_PADDING, _headerView.Frame.Width - LBL_WIDTH_PADDING, 16));
-            msgTitle.TextAlignment = UITextAlignment.Left;
-            msgTitle.Font = MyTNBFont.MuseoSans14_500;
-            msgTitle.TextColor = MyTNBColor.TunaGrey();
-            msgTitle.Text = "Receipt_Salutation".Translate();
+            UILabel msgTitle = GetLabel(LabelType.Value
+                , new CGRect(INNER_PADDING, paymentTitle.Frame.GetMaxY() + INNER_PADDING, _headerView.Frame.Width - LBL_WIDTH_PADDING, 16)
+                , GetI18NValue(ReceiptConstants.I18N_Salutation));
 
-            UILabel msgBody = new UILabel(new CGRect(INNER_PADDING, msgTitle.Frame.GetMaxY() + INNER_PADDING, _headerView.Frame.Width - LBL_WIDTH_PADDING, 80));
-            msgBody.TextAlignment = UITextAlignment.Left;
-            msgBody.Font = MyTNBFont.MuseoSans14_500;
-            msgBody.TextColor = MyTNBColor.TunaGrey();
-            msgBody.Text = string.Format("Receipt_MessageFull".Translate(), paymentMethod);
-            msgBody.Lines = 0;
-            msgBody.LineBreakMode = UILineBreakMode.WordWrap;
+            UILabel msgBody = GetLabel(LabelType.Value
+                , new CGRect(INNER_PADDING, msgTitle.Frame.GetMaxY() + INNER_PADDING, _headerView.Frame.Width - LBL_WIDTH_PADDING, 80)
+                , string.Format(GetI18NValue(ReceiptConstants.I18N_FullMessage), paymentMethod));
 
             UIView viewLineTop = new UIView(new CGRect(INNER_PADDING, msgBody.Frame.GetMaxY() + INNER_PADDING, _headerView.Frame.Width - LBL_WIDTH_PADDING, 1));
             viewLineTop.BackgroundColor = MyTNBColor.PlatinumGrey;
 
-            UILabel lblReference = new UILabel(new CGRect(INNER_PADDING, viewLineTop.Frame.GetMaxY() + INNER_PADDING, _headerView.Frame.Width - LBL_WIDTH_PADDING, 16));
-            lblReference.TextAlignment = UITextAlignment.Left;
-            lblReference.Font = MyTNBFont.MuseoSans10_500;
-            lblReference.TextColor = MyTNBColor.SilverChalice;
-            lblReference.Text = "Receipt_ReferenceNumber".Translate();
+            UILabel lblReference = GetLabel(LabelType.Title
+                , new CGRect(INNER_PADDING, viewLineTop.Frame.GetMaxY() + INNER_PADDING, _headerView.Frame.Width - LBL_WIDTH_PADDING, 16)
+                , GetI18NValue(ReceiptConstants.I18N_ReferenceNumber));
 
-            UILabel lblReferenceValue = new UILabel(new CGRect(INNER_PADDING, lblReference.Frame.GetMaxY(), _headerView.Frame.Width - LBL_WIDTH_PADDING, 16));
-            lblReferenceValue.TextAlignment = UITextAlignment.Left;
-            lblReferenceValue.Font = MyTNBFont.MuseoSans14_500;
-            lblReferenceValue.TextColor = MyTNBColor.TunaGrey();
-            lblReferenceValue.Text = _receipt?.d?.data?.referenceNum;
+            UILabel lblReferenceValue = GetLabel(LabelType.Value
+                , new CGRect(INNER_PADDING, lblReference.Frame.GetMaxY(), _headerView.Frame.Width - LBL_WIDTH_PADDING, 16)
+                , _receipt?.d?.data?.referenceNum);
 
             UIView viewLineBottom = new UIView(new CGRect(INNER_PADDING, lblReferenceValue.Frame.GetMaxY() + INNER_PADDING, _headerView.Frame.Width - LBL_WIDTH_PADDING, 1));
             viewLineBottom.BackgroundColor = MyTNBColor.PlatinumGrey;
@@ -177,73 +176,55 @@ namespace myTNB
             _footerView = new UIView(new CGRect(0, 0, tableViewReceipt.Frame.Width, 400));
             _footerView.BackgroundColor = UIColor.White;
 
-            UILabel lblTrxDate = new UILabel(new CGRect(INNER_PADDING, INNER_PADDING, _footerView.Frame.Width - LBL_WIDTH_PADDING, 16));
-            lblTrxDate.TextAlignment = UITextAlignment.Left;
-            lblTrxDate.Font = MyTNBFont.MuseoSans10_500;
-            lblTrxDate.TextColor = MyTNBColor.SilverChalice;
-            lblTrxDate.Text = "Receipt_TrnDate".Translate();
+            UILabel lblTrxDate = GetLabel(LabelType.Title
+               , new CGRect(INNER_PADDING, INNER_PADDING, _footerView.Frame.Width - LBL_WIDTH_PADDING, 16)
+               , GetI18NValue(ReceiptConstants.I18N_TrnDate));
 
-            UILabel lblTrxDateValue = new UILabel(new CGRect(INNER_PADDING, lblTrxDate.Frame.GetMaxY(), _footerView.Frame.Width - LBL_WIDTH_PADDING, 16));
-            lblTrxDateValue.TextAlignment = UITextAlignment.Left;
-            lblTrxDateValue.Font = MyTNBFont.MuseoSans14_500;
-            lblTrxDateValue.TextColor = MyTNBColor.TunaGrey();
-            lblTrxDateValue.Text = _receipt?.d?.data?.payTransDate;
+            UILabel lblTrxDateValue = GetLabel(LabelType.Value
+               , new CGRect(INNER_PADDING, lblTrxDate.Frame.GetMaxY(), _footerView.Frame.Width - LBL_WIDTH_PADDING, 16)
+               , _receipt?.d?.data?.payTransDate);
 
             UIView viewLine2 = new UIView(new CGRect(INNER_PADDING, lblTrxDateValue.Frame.GetMaxY() + INNER_PADDING, _footerView.Frame.Width - LBL_WIDTH_PADDING, 1));
             viewLine2.BackgroundColor = MyTNBColor.PlatinumGrey;
 
-            UILabel lblTrxID = new UILabel(new CGRect(INNER_PADDING, viewLine2.Frame.GetMaxY() + INNER_PADDING, _footerView.Frame.Width - LBL_WIDTH_PADDING, 16));
-            lblTrxID.TextAlignment = UITextAlignment.Left;
-            lblTrxID.Font = MyTNBFont.MuseoSans10_500;
-            lblTrxID.TextColor = MyTNBColor.SilverChalice;
-            lblTrxID.Text = "Receipt_TrnId".Translate();
+            UILabel lblTrxID = GetLabel(LabelType.Title
+              , new CGRect(INNER_PADDING, viewLine2.Frame.GetMaxY() + INNER_PADDING, _footerView.Frame.Width - LBL_WIDTH_PADDING, 16)
+              , GetI18NValue(ReceiptConstants.I18N_TrnID));
 
-            UILabel lblTrxIDValue = new UILabel(new CGRect(INNER_PADDING, lblTrxID.Frame.GetMaxY(), _footerView.Frame.Width - LBL_WIDTH_PADDING, 16));
-            lblTrxIDValue.TextAlignment = UITextAlignment.Left;
-            lblTrxIDValue.Font = MyTNBFont.MuseoSans14_500;
-            lblTrxIDValue.TextColor = MyTNBColor.TunaGrey();
-            lblTrxIDValue.Text = _receipt?.d?.data?.payTransID;
+            UILabel lblTrxIDValue = GetLabel(LabelType.Value
+               , new CGRect(INNER_PADDING, lblTrxID.Frame.GetMaxY(), _footerView.Frame.Width - LBL_WIDTH_PADDING, 16)
+               , _receipt?.d?.data?.payTransID);
 
             UIView viewLine3 = new UIView(new CGRect(INNER_PADDING, lblTrxIDValue.Frame.GetMaxY() + INNER_PADDING, _footerView.Frame.Width - LBL_WIDTH_PADDING, 1));
             viewLine3.BackgroundColor = MyTNBColor.PlatinumGrey;
 
-            UILabel lblTrxMethod = new UILabel(new CGRect(INNER_PADDING, viewLine3.Frame.GetMaxY() + INNER_PADDING, _footerView.Frame.Width - LBL_WIDTH_PADDING, 16));
-            lblTrxMethod.TextAlignment = UITextAlignment.Left;
-            lblTrxMethod.Font = MyTNBFont.MuseoSans10_500;
-            lblTrxMethod.TextColor = MyTNBColor.SilverChalice;
-            lblTrxMethod.Text = "Receipt_TrnMethod".Translate();
+            UILabel lblTrxMethod = GetLabel(LabelType.Title
+              , new CGRect(INNER_PADDING, viewLine3.Frame.GetMaxY() + INNER_PADDING, _footerView.Frame.Width - LBL_WIDTH_PADDING, 16)
+              , GetI18NValue(ReceiptConstants.I18N_TrnMethod));
 
-            UILabel lblTrxMethodValue = new UILabel(new CGRect(INNER_PADDING, lblTrxMethod.Frame.GetMaxY(), _footerView.Frame.Width - LBL_WIDTH_PADDING, 16));
-            lblTrxMethodValue.TextAlignment = UITextAlignment.Left;
-            lblTrxMethodValue.Font = MyTNBFont.MuseoSans14_500;
-            lblTrxMethodValue.TextColor = MyTNBColor.TunaGrey();
-            lblTrxMethodValue.Text = _receipt?.d?.data?.payMethod;
+            UILabel lblTrxMethodValue = GetLabel(LabelType.Value
+               , new CGRect(INNER_PADDING, lblTrxMethod.Frame.GetMaxY(), _footerView.Frame.Width - LBL_WIDTH_PADDING, 16)
+               , _receipt?.d?.data?.payMethod);
 
             UIView viewLine4 = new UIView(new CGRect(INNER_PADDING, lblTrxMethodValue.Frame.GetMaxY() + INNER_PADDING, _footerView.Frame.Width - LBL_WIDTH_PADDING, 1));
             viewLine4.BackgroundColor = MyTNBColor.PlatinumGrey;
 
-            UILabel lblTotalAmount = new UILabel(new CGRect(INNER_PADDING, viewLine4.Frame.GetMaxY() + (INNER_PADDING + 10), _footerView.Frame.Width - LBL_WIDTH_PADDING, 16));
-            lblTotalAmount.TextAlignment = UITextAlignment.Left;
-            lblTotalAmount.Font = MyTNBFont.MuseoSans14_500;
-            lblTotalAmount.TextColor = MyTNBColor.TunaGrey();
-            lblTotalAmount.Text = "Common_TotalAmount(RM)".Translate();
+            UILabel lblTotalAmount = GetLabel(LabelType.Value
+                , new CGRect(INNER_PADDING, viewLine4.Frame.GetMaxY() + (INNER_PADDING + 10), _footerView.Frame.Width - LBL_WIDTH_PADDING, 16)
+                , GetCommonI18NValue(Constants.Common_TotalAmountRM));
 
-            UILabel lblTotalAmountValue = new UILabel(new CGRect(INNER_PADDING, lblTotalAmount.Frame.GetMaxY(), _footerView.Frame.Width - LBL_WIDTH_PADDING, 26));
-            lblTotalAmountValue.TextAlignment = UITextAlignment.Left;
-            lblTotalAmountValue.Font = MyTNBFont.MuseoSans24_500;
-            lblTotalAmountValue.TextColor = MyTNBColor.TunaGrey();
-            lblTotalAmountValue.Text = _receipt?.d?.data?.payAmt;
+            UILabel lblTotalAmountValue = GetLabel(LabelType.Value
+                , new CGRect(INNER_PADDING, lblTotalAmount.Frame.GetMaxY(), _footerView.Frame.Width - LBL_WIDTH_PADDING, 26)
+                , _receipt?.d?.data?.payAmt
+                , MyTNBFont.MuseoSans24_500
+                , MyTNBColor.TunaGrey());
 
             UIView viewLine5 = new UIView(new CGRect(INNER_PADDING, lblTotalAmountValue.Frame.GetMaxY() + (INNER_PADDING + 10), _footerView.Frame.Width - LBL_WIDTH_PADDING, 1));
             viewLine5.BackgroundColor = MyTNBColor.PlatinumGrey;
 
-            UILabel lblNote = new UILabel(new CGRect(INNER_PADDING, viewLine5.Frame.GetMaxY() + INNER_PADDING, _footerView.Frame.Width - LBL_WIDTH_PADDING, 26));
-            lblNote.TextAlignment = UITextAlignment.Left;
-            lblNote.Font = MyTNBFont.MuseoSans10_500;
-            lblNote.TextColor = MyTNBColor.SilverChalice;
-            lblNote.Text = "Receipt_Note".Translate();
-            lblNote.Lines = 0;
-            lblNote.LineBreakMode = UILineBreakMode.WordWrap;
+            UILabel lblNote = GetLabel(LabelType.Title
+                , new CGRect(INNER_PADDING, viewLine5.Frame.GetMaxY() + INNER_PADDING, _footerView.Frame.Width - LBL_WIDTH_PADDING, 26)
+                , GetI18NValue(ReceiptConstants.I18N_Note));
 
             _footerView.AddSubviews(new UIView[] {lblTrxDate,lblTrxDateValue,viewLine2,lblTrxID
                 ,lblTrxIDValue,viewLine3,lblTrxMethod,lblTrxMethodValue,viewLine4,lblTotalAmount
@@ -256,18 +237,9 @@ namespace myTNB
             tableViewReceipt.ReloadData();
         }
 
-        void SetNewPage(ref Document document, ref PdfContentByte cb, ref int xLocation, BaseFont baseFont)
+        private void CreatePDF()
         {
-            xLocation = 770;
-            cb.EndText();
-            document.NewPage();
-            cb.BeginText();
-            cb.SetFontAndSize(baseFont, 24);
-        }
-
-        internal void CreatePDF()
-        {
-            string pdfFileName = string.Format("Receipt_Filename".Translate(), _receipt?.d?.data?.referenceNum);
+            string pdfFileName = string.Format(GetI18NValue(ReceiptConstants.I18N_ReceiptFilename), _receipt?.d?.data?.referenceNum);
             string documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
             _pdfFilePath = Path.Combine(documentsPath, pdfFileName);
             if (File.Exists(_pdfFilePath))
@@ -278,16 +250,16 @@ namespace myTNB
             Document document = new Document(PageSize.A4, 40, 40, 30, 30);
             PdfWriter writer = PdfWriter.GetInstance(document, fs);
 
-            var blueColour = new iTextSharp.text.Color(28.0f / 255.0f, 121.0f / 255.0f, 202.0f / 255.0f, 1.0f);
-            var tunaGreyColour = new iTextSharp.text.Color(73.0f / 255.0f, 73.0f / 255.0f, 74.0f / 255.0f, 1.0f);
-            var silverChaliceColour = new iTextSharp.text.Color(0.65f, 0.65f, 0.65f, 1.0f);
+            iTextSharp.text.Color blueColour = new iTextSharp.text.Color(28.0f / 255.0f, 121.0f / 255.0f, 202.0f / 255.0f, 1.0f);
+            iTextSharp.text.Color tunaGreyColour = new iTextSharp.text.Color(73.0f / 255.0f, 73.0f / 255.0f, 74.0f / 255.0f, 1.0f);
+            iTextSharp.text.Color silverChaliceColour = new iTextSharp.text.Color(0.65f, 0.65f, 0.65f, 1.0f);
             ITFont titleFont = new ITFont(FontFactory.GetFont(MyTNBFont.FONTNAME_500, 30f, blueColour));
             ITFont detailsFont = new ITFont(FontFactory.GetFont(MyTNBFont.FONTNAME_500, 24f, tunaGreyColour));
             ITFont labelFont = new ITFont(FontFactory.GetFont(MyTNBFont.FONTNAME_500, 18f, silverChaliceColour));
             ITFont totalAmounFont = new ITFont(FontFactory.GetFont(MyTNBFont.FONTNAME_500, 48f, tunaGreyColour));
 
             string filepath = Environment.CurrentDirectory;
-            var headerImage = iTextSharp.text.Image.GetInstance(filepath + "/tnbReceiptLogoHeader.jpg");
+            iTextSharp.text.Image headerImage = iTextSharp.text.Image.GetInstance(filepath + "/tnbReceiptLogoHeader.jpg");
 
             document.Open();
             PdfContentByte cb = writer.DirectContent;
@@ -304,32 +276,32 @@ namespace myTNB
             document.Add(new Paragraph(Environment.NewLine, titleFont));
             document.Add(new Paragraph(Environment.NewLine, titleFont));
             document.Add(new Paragraph(Environment.NewLine, detailsFont));
-            document.Add(new Paragraph("Receipt_Title".Translate(), titleFont));
+            document.Add(new Paragraph(GetI18NValue(ReceiptConstants.I18N_Title), titleFont));
             document.Add(new Paragraph(Environment.NewLine, titleFont));
-            document.Add(new Paragraph("Receipt_Salutation".Translate(), detailsFont));
+            document.Add(new Paragraph(GetI18NValue(ReceiptConstants.I18N_Salutation), detailsFont));
             document.Add(new Paragraph(Environment.NewLine, detailsFont));
-            document.Add(new Paragraph("Receipt_MessagePartOne".Translate(), detailsFont));
-            document.Add(new Paragraph(string.Format("Receipt_MessagePartTwo".Translate(), paymentMethod), detailsFont));
+            document.Add(new Paragraph(GetI18NValue(ReceiptConstants.I18N_MessagePartOne), detailsFont));
+            document.Add(new Paragraph(string.Format(GetI18NValue(ReceiptConstants.I18N_MessagePartTwo), paymentMethod), detailsFont));
 
             document.Add(new Paragraph(Environment.NewLine, titleFont));
             document.Add(grayLine);
             document.Add(new Paragraph(Environment.NewLine, labelFont));
-            document.Add(new Paragraph("Receipt_ReferenceNumber".Translate(), labelFont));
+            document.Add(new Paragraph(GetI18NValue(ReceiptConstants.I18N_ReferenceNumber), labelFont));
             document.Add(new Paragraph(_receipt?.d?.data?.referenceNum, detailsFont));
 
             document.Add(new Paragraph(Environment.NewLine, titleFont));
             document.Add(grayLine);
             document.Add(new Paragraph(Environment.NewLine, labelFont));
 
-            foreach (var item in _receipt?.d?.data?.accMultiPay)
+            foreach (MultiPayDataModel item in _receipt?.d?.data?.accMultiPay)
             {
-                document.Add(new Paragraph("Common_AccountNumber".Translate(), labelFont));
+                document.Add(new Paragraph(GetCommonI18NValue(Constants.Common_AccountNo), labelFont));
                 document.Add(new Paragraph(item.accountNum, detailsFont));
                 document.Add(new Paragraph(Environment.NewLine, labelFont));
-                document.Add(new Paragraph("Receipt_AccountName".Translate(), labelFont));
+                document.Add(new Paragraph(GetI18NValue(ReceiptConstants.I18N_AccountHolder), labelFont));
                 document.Add(new Paragraph(!string.IsNullOrEmpty(item.AccountOwnerName) ? item.AccountOwnerName : Environment.NewLine, detailsFont));
                 document.Add(new Paragraph(Environment.NewLine, labelFont));
-                document.Add(new Paragraph("Common_Amount(RM)".Translate(), labelFont));
+                document.Add(new Paragraph(GetCommonI18NValue(Constants.Common_AmountRM), labelFont));
                 document.Add(new Paragraph(item.itmAmt, detailsFont));
 
                 document.Add(new Paragraph(Environment.NewLine, titleFont));
@@ -337,35 +309,35 @@ namespace myTNB
                 document.Add(new Paragraph(Environment.NewLine, labelFont));
             }
 
-            document.Add(new Paragraph("Receipt_TrnDate".Translate(), labelFont));
+            document.Add(new Paragraph(GetI18NValue(ReceiptConstants.I18N_TrnDate), labelFont));
             document.Add(new Paragraph(_receipt?.d?.data?.payTransDate, detailsFont));
 
             document.Add(new Paragraph(Environment.NewLine, titleFont));
             document.Add(grayLine);
             document.Add(new Paragraph(Environment.NewLine, labelFont));
 
-            document.Add(new Paragraph("Receipt_TrnId".Translate(), labelFont));
+            document.Add(new Paragraph(GetI18NValue(ReceiptConstants.I18N_TrnID), labelFont));
             document.Add(new Paragraph(_receipt?.d?.data?.payTransID, detailsFont));
 
             document.Add(new Paragraph(Environment.NewLine, titleFont));
             document.Add(grayLine);
             document.Add(new Paragraph(Environment.NewLine, labelFont));
 
-            document.Add(new Paragraph("Receipt_TrnMethod".Translate(), labelFont));
+            document.Add(new Paragraph(GetI18NValue(ReceiptConstants.I18N_TrnMethod), labelFont));
             document.Add(new Paragraph(_receipt?.d?.data?.payMethod, detailsFont));
 
             document.Add(new Paragraph(Environment.NewLine, titleFont));
             document.Add(grayLine);
             document.Add(new Paragraph(Environment.NewLine, labelFont));
 
-            document.Add(new Paragraph("Common_TotalAmount(RM)".Translate(), detailsFont));
+            document.Add(new Paragraph(GetCommonI18NValue(Constants.Common_TotalAmountRM), detailsFont));
             document.Add(new Paragraph(_receipt?.d?.data?.payAmt, totalAmounFont));
 
             document.Add(new Paragraph(Environment.NewLine, titleFont));
             document.Add(grayLine);
             document.Add(new Paragraph(Environment.NewLine, labelFont));
 
-            document.Add(new Paragraph("Receipt_Note".Translate(), labelFont));
+            document.Add(new Paragraph(GetI18NValue(ReceiptConstants.I18N_Note), labelFont));
 
             document.Close();
             writer.Close();
@@ -404,7 +376,22 @@ namespace myTNB
                 detailedInfoNumber = DetailedInfoNumber,
                 showAllReceipts
             };
-            _receipt = serviceManager.OnExecuteAPIV6<GetPaymentReceiptResponseModel>("GetPaymentReceipt", request);
+            _receipt = serviceManager.OnExecuteAPIV6<GetPaymentReceiptResponseModel>(ReceiptConstants.Service_GetPaymentReceipt, request);
+        }
+
+        private UILabel GetLabel(LabelType type, CGRect frame, string text, UIFont font = null, UIColor txtColor = null)
+        {
+            bool isTitle = type == LabelType.Title;
+            return new UILabel
+            {
+                Frame = frame,
+                TextAlignment = UITextAlignment.Left,
+                Font = font != null ? font : (isTitle ? MyTNBFont.MuseoSans10_500 : MyTNBFont.MuseoSans14_500),
+                TextColor = txtColor != null ? txtColor : (isTitle ? MyTNBColor.SilverChalice : MyTNBColor.TunaGrey()),
+                Text = text,
+                Lines = 0,
+                LineBreakMode = UILineBreakMode.WordWrap
+            };
         }
     }
 }
