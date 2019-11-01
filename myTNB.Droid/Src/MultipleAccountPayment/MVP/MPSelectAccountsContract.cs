@@ -76,11 +76,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
 
         public interface IUserActionsListener : IBasePresenter
         {
-            /// <summary>
-            /// Get due amount for all accounts
-            /// </summary>
-            void GetMultiAccountDueAmount(string apiKeyID, List<string> accounts, string preSelectedAccount);
-
             void OnSelectAccount(CustomerBillingAccount selectedCustomerBilling);
             void GetAccountsCharges(List<string> accountList, string preSelectedAccount);
         }

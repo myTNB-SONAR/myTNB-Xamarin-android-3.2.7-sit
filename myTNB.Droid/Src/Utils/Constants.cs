@@ -15,8 +15,8 @@ namespace myTNB_Android.Src.Utils
         internal static readonly int INACTIVE = 0;
         internal static readonly int ACTIVE = 1;
 
+        // Activity Intent IDs
         internal static readonly string BARCODE_RESULT = ".barCodeResult";
-
         internal static readonly string SELECTED_ACCOUNT = ".selectedAccount";
         internal static readonly string SELECTED_FEEDBACK_STATE = ".selectedFeedbackState";
         internal static readonly string SELECTED_FEEDBACK_TYPE = ".selectedFeedbackType";
@@ -45,15 +45,14 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string SELECTED_RATING = ".selectedRating";
         internal static readonly string PROMOTIONS_LINK = ".promotionsLink";
         internal static readonly string SMART_METER_LINK = ".smartMeterLink";
-
         internal static readonly string RESPONSE_FEEDBACK_DATE = ".feedbackDate";
         internal static readonly string RESPONSE_FEEDBACK_ID = ".feedbackId";
-
         internal static readonly string ENTERED_USERNAME = ".enteredUsername";
         internal static readonly string ENTERED_PASSWORD = ".enteredPassword";
-
         internal static readonly string SELECTED_ERROR = ".errorMSg";
         internal static readonly string SELECTED_ERROR_MSG = ".errorMessage";
+        internal static readonly string APP_NAVIGATION_KEY = ".appNavigation";
+        internal static readonly string FROM_BILL_DETAILS_PAGE = ".fromBillDetailsPage";
 
         internal static readonly int VIEW_TYPE_REAL_RECORD = 0;
         internal static readonly int VIEW_TYPE_DUMMY_RECORD = 1;
@@ -111,10 +110,10 @@ namespace myTNB_Android.Src.Utils
         internal struct SERVER_URL
         {
 #if DEBUG || STUB
-            internal static readonly string END_POINT = "http://10.215.128.191:89";
-            internal static readonly string FPX_PAYMENT = "http://10.215.128.191:89/v5/PayRedirect.aspx?Param1=3&Param2=";
-            // internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
-            // internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
+            //internal static readonly string END_POINT = "http://10.215.128.191:89";
+            //internal static readonly string FPX_PAYMENT = "http://10.215.128.191:89/v5/PayRedirect.aspx?Param1=3&Param2=";
+            internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
+            internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
 #elif DEVELOP || SIT
             internal static readonly string END_POINT = "https://mobiletestingws.tnb.com.my";
             internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
@@ -284,8 +283,5 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_SMR_DISABLED_FAILED_ID = "53";
 
         public const string ACCOUNT_NICKNAME_PATTERN = "#accountNickname#";
-
-        internal static readonly string APP_NAVIGATION_KEY = ".appNavigation";
-
     }
 }
