@@ -40,6 +40,8 @@ namespace myTNB_Android.Src.SSMR.Util
             editTextArray[5] = editTextListVal[2];
             editTextArray[6] = editTextListVal[1];
             editTextArray[7] = editTextListVal[0];
+
+
         }
 
         public void SetEvent()

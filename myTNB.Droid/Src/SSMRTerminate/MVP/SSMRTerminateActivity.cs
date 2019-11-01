@@ -24,6 +24,7 @@ using Android.Runtime;
 using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.SSMR.SMRApplication.Api;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
+using static Android.Views.View;
 
 namespace myTNB_Android.Src.SSMRTerminate.MVP
 {
@@ -295,8 +296,12 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 contactDetailTtile.Visibility = ViewStates.Visible;
                 contactDetailContainer.Visibility = ViewStates.Visible;
 
+                checkForEditingInfo = false;
                 txtEmail.Text = contactDetails.email;
+                checkForEditingInfo = false;
                 txtMobileNo.Text = contactDetails.mobile;
+
+                contactDetailConsent.Visibility = ViewStates.Gone;
             }
             else
             {
@@ -430,7 +435,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         {
             try
             {
-                this.txtInputLayoutEmail.Error = GetString(Resource.String.login_validation_email_empty_error);
+                this.txtInputLayoutEmail.Error = "Invalid email address";
             }
             catch (Exception e)
             {
@@ -442,7 +447,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         {
             try
             {
-                this.txtInputLayoutEmail.Error = GetString(Resource.String.login_validation_email_invalid_error);
+                this.txtInputLayoutEmail.Error = "Invalid email address";
             }
             catch (Exception e)
             {
@@ -578,7 +583,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         {
             try
             {
-                txtInputLayoutMobileNo.Error = GetString(Resource.String.registration_form_errors_invalid_mobile_no);
+                txtInputLayoutMobileNo.Error = "Invalid mobile number";
             }
             catch (Exception e)
             {

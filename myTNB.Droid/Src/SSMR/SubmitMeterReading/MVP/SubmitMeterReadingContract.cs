@@ -31,6 +31,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             void HideProgressDialog();
 
             void OnUpdateSubmitMeterButton();
+
+            void ClearMeterCardValidationError(METER_READING_TYPE mType);
         }
 
         public interface IPresenter
