@@ -4,6 +4,7 @@
     {
         public static string Pagename_FeedbackList = "FeedbackList";
         public static string Pagename_FeedbackForm = "FeedbackForm";
+        public static string Pagename_FeedbackDetails = "FeedbackDetails";
 
         public static string I18N_Title = "title";
         public static string I18N_AttachPhotoTitle = "attachPhotoTitle";
@@ -31,6 +32,10 @@
         public static string I18N_NoAccessTitle = "noAccessTitle";
         public static string I18N_NoAccessMessage = "noAccessMessage";
         public static string I18N_GoToSettings = "goToSettings";
+        public static string I18N_FeedbackID = "feedbackID";
+        public static string I18N_FeedbackStatus = "feedbackStatus";
+        public static string I18N_DateTimeTitle = "dateTimeTitle";
+        public static string I18N_PhotoTitle = "photoTitle";
 
         public static string Service_GetSubmittedFeedbackList = "GetSubmittedFeedbackList";
         public static string Service_SubmitFeedback = "SubmitFeedback";

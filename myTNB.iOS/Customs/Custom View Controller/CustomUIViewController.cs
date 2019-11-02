@@ -127,7 +127,7 @@ namespace myTNB
         public void DisplayCustomAlert(string title, string message, string btnTitle, Action btnAction = null)
         {
             AlertHandler.DisplayCustomAlert(title, message, new Dictionary<string, Action>() {
-                { string.IsNullOrEmpty(btnTitle) ? "Common_Ok".Translate() : btnTitle, btnAction } }
+                { string.IsNullOrEmpty(btnTitle) ? GetCommonI18NValue(Constants.Common_Ok) : btnTitle, btnAction } }
             , UITextAlignment.Left, UITextAlignment.Left, true, 0.056F, false);
         }
 

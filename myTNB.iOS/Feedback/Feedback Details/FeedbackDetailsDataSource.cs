@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using CoreGraphics;
 using Foundation;
+using myTNB.Feedback;
 using myTNB.Model;
 using UIKit;
 
@@ -10,10 +11,10 @@ namespace myTNB.Home.Feedback.FeedbackDetails
 {
     public class FeedbackDetailsDataSource : UITableViewSource
     {
-        FeedbackDetailsViewController _controller;
-        SubmittedFeedbackDetailsDataModel _feedbackDetails;
+        private FeedbackDetailsViewController _controller;
+        private SubmittedFeedbackDetailsDataModel _feedbackDetails;
         public FeedbackDetailsDataSource(FeedbackDetailsViewController controller
-                                         , SubmittedFeedbackDetailsDataModel feedbackDetails)
+            , SubmittedFeedbackDetailsDataModel feedbackDetails)
         {
             _feedbackDetails = feedbackDetails;
             _controller = controller;
@@ -26,8 +27,8 @@ namespace myTNB.Home.Feedback.FeedbackDetails
 
         public override nint RowsInSection(UITableView tableview, nint section)
         {
-            int rowSection = 0;
             string feedbackCatId = _feedbackDetails.FeedbackCategoryId;
+            int rowSection;
             switch (feedbackCatId)
             {
                 case "1":
@@ -54,20 +55,20 @@ namespace myTNB.Home.Feedback.FeedbackDetails
         {
             if (indexPath.Row != 5 && indexPath.Row != 7)
             {
-                var cell = tableView.DequeueReusableCell("feedbackDetailsCell", indexPath) as FeedbackDetailsViewCell;
+                FeedbackDetailsViewCell cell = tableView.DequeueReusableCell("feedbackDetailsCell", indexPath) as FeedbackDetailsViewCell;
 
                 int rowIndex = indexPath.Row;
                 switch (rowIndex)
                 {
                     case 0:
                         {
-                            cell.lblTitle.Text = "Feedback_ID".Translate().ToUpper();
+                            cell.lblTitle.Text = GetI18NValue(FeedbackConstants.I18N_FeedbackID).ToUpper();
                             cell.lblValue.Text = _feedbackDetails.ServiceReqNo;
                             break;
                         }
                     case 1:
                         {
-                            cell.lblTitle.Text = "Feedback_Status".Translate().ToUpper();
+                            cell.lblTitle.Text = GetI18NValue(FeedbackConstants.I18N_FeedbackStatus).ToUpper();
                             cell.lblValue.Text = _feedbackDetails.StatusDesc;
 
                             string statusCode = _feedbackDetails.StatusCode;
@@ -104,13 +105,13 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                         }
                     case 2:
                         {
-                            cell.lblTitle.Text = "Feedback_DateTimeTitle".Translate().ToUpper();
+                            cell.lblTitle.Text = GetI18NValue(FeedbackConstants.I18N_DateTimeTitle).ToUpper();
                             cell.lblValue.Text = GetFormattedDate(_feedbackDetails.DateCreated);
                             break;
                         }
                     case 3:
                         {
-                            cell.lblTitle.Text = "Feedback_DateTimeTitle".Translate().ToUpper();
+                            cell.lblTitle.Text = GetI18NValue(FeedbackConstants.I18N_DateTimeTitle).ToUpper();
                             cell.lblValue.Text = GetFormattedDate(_feedbackDetails.DateCreated);
 
                             string feedbackCatId = _feedbackDetails.FeedbackCategoryId;
@@ -118,19 +119,19 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                             {
                                 case "1":
                                     {
-                                        cell.lblTitle.Text = "Common_AccountNo".Translate().ToUpper();
+                                        cell.lblTitle.Text = GetCommonI18NValue(Constants.Common_AccountNo).ToUpper();
                                         cell.lblValue.Text = _feedbackDetails.AccountNum;
                                         break;
                                     }
                                 case "2":
                                     {
-                                        cell.lblTitle.Text = "Feedback_State".Translate().ToUpper();
+                                        cell.lblTitle.Text = GetI18NValue(FeedbackConstants.I18N_State).ToUpper();
                                         cell.lblValue.Text = _feedbackDetails.StateName;
                                         break;
                                     }
                                 case "3":
                                     {
-                                        cell.lblTitle.Text = "Feedback_Type".Translate().ToUpper();
+                                        cell.lblTitle.Text = GetI18NValue(FeedbackConstants.I18N_FeedbackType).ToUpper();
                                         cell.lblValue.Text = _feedbackDetails.FeedbackTypeName;
                                         break;
                                     }
@@ -146,7 +147,7 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                                 case "1":
                                 case "3":
                                     {
-                                        cell.lblTitle.Text = "Feedback_Title".Translate().ToUpper();
+                                        cell.lblTitle.Text = GetI18NValue(FeedbackConstants.I18N_Feedback).ToUpper();
                                         cell.lblValue.Text = _feedbackDetails.FeedbackMessage;
                                         CGSize newSize = GetTitleLabelSize(_feedbackDetails.FeedbackMessage);
                                         cell.lblValue.Frame = new CGRect(18, 30, tableView.Frame.Width - 36, newSize.Height);
@@ -154,7 +155,7 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                                     }
                                 default:
                                     {
-                                        cell.lblTitle.Text = "Feedback_Location".Translate().ToUpper();
+                                        cell.lblTitle.Text = GetI18NValue(FeedbackConstants.I18N_Location).ToUpper();
                                         cell.lblValue.Text = _feedbackDetails.Location;
                                         break;
                                     }
@@ -164,7 +165,7 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                         }
                     case 6:
                         {
-                            cell.lblTitle.Text = "Feedback_Title".Translate().ToUpper();
+                            cell.lblTitle.Text = GetI18NValue(FeedbackConstants.I18N_Title).ToUpper();
                             cell.lblValue.Text = _feedbackDetails.FeedbackMessage;
                             CGSize newSize = GetTitleLabelSize(_feedbackDetails.FeedbackMessage);
                             cell.lblValue.Frame = new CGRect(18, 30, tableView.Frame.Width - 36, newSize.Height);
@@ -181,11 +182,11 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                 {
                     if (_feedbackDetails.FeedbackImage != null && _feedbackDetails.FeedbackImage.Count > 0)
                     {
-                        var cell = tableView.DequeueReusableCell("feedbackDetailsImageCell", indexPath) as FeedbackDetailsViewImageCell;
-                        cell.lblTitle.Text = "Feedback_Photo".Translate().ToUpper();
+                        FeedbackDetailsViewImageCell cell = tableView.DequeueReusableCell("feedbackDetailsImageCell", indexPath) as FeedbackDetailsViewImageCell;
+                        cell.lblTitle.Text = GetI18NValue(FeedbackConstants.I18N_PhotoTitle).ToUpper();
                         int x = 0;
                         UIImageHelper imgHelper = new UIImageHelper();
-                        foreach (var item in _feedbackDetails.FeedbackImage)
+                        foreach (FeedbackImageModel item in _feedbackDetails.FeedbackImage)
                         {
                             UIView viewContainer = new UIView(new CGRect(x, 0, 94, 94));
                             UIImageView imgView = new UIImageView(new CGRect(0, 0, 94, 94))
@@ -207,8 +208,8 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                 }
                 else
                 {
-                    var cell = tableView.DequeueReusableCell("feedbackDetailsCell", indexPath) as FeedbackDetailsViewCell;
-                    cell.lblTitle.Text = "Feedback_PoleNumber".Translate().ToUpper();
+                    FeedbackDetailsViewCell cell = tableView.DequeueReusableCell("feedbackDetailsCell", indexPath) as FeedbackDetailsViewCell;
+                    cell.lblTitle.Text = GetI18NValue(FeedbackConstants.I18N_PoleNumber).ToUpper();
                     cell.lblValue.Text = _feedbackDetails.PoleNum;
                     cell.SelectionStyle = UITableViewCellSelectionStyle.None;
                     return cell;
@@ -218,11 +219,11 @@ namespace myTNB.Home.Feedback.FeedbackDetails
             {
                 if (_feedbackDetails.FeedbackImage != null && _feedbackDetails.FeedbackImage.Count > 0)
                 {
-                    var cell = tableView.DequeueReusableCell("feedbackDetailsImageCell", indexPath) as FeedbackDetailsViewImageCell;
-                    cell.lblTitle.Text = "Feedback_Photo".Translate().ToUpper();
+                    FeedbackDetailsViewImageCell cell = tableView.DequeueReusableCell("feedbackDetailsImageCell", indexPath) as FeedbackDetailsViewImageCell;
+                    cell.lblTitle.Text = GetI18NValue(FeedbackConstants.I18N_PhotoTitle).ToUpper();
                     int x = 0;
                     UIImageHelper imgHelper = new UIImageHelper();
-                    foreach (var item in _feedbackDetails.FeedbackImage)
+                    foreach (FeedbackImageModel item in _feedbackDetails.FeedbackImage)
                     {
                         UIView viewContainer = new UIView(new CGRect(x, 0, 94, 94));
                         UIImageView imgView = new UIImageView(new CGRect(0, 0, 94, 94))
@@ -248,8 +249,7 @@ namespace myTNB.Home.Feedback.FeedbackDetails
 
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
         {
-            nfloat rowHeight = 50f;
-
+            nfloat rowHeight;
             int rowIndex = indexPath.Row;
             switch (rowIndex)
             {
@@ -309,7 +309,7 @@ namespace myTNB.Home.Feedback.FeedbackDetails
             return label.Text.StringSize(label.Font, new SizeF((float)label.Frame.Width, 1000F));
         }
 
-        internal string GetFormattedDate(string DateCreated)
+        private string GetFormattedDate(string DateCreated)
         {
             if (string.IsNullOrEmpty(DateCreated) || string.IsNullOrWhiteSpace(DateCreated))
             {
@@ -334,6 +334,16 @@ namespace myTNB.Home.Feedback.FeedbackDetails
                 Debug.WriteLine(e.Message);
                 return string.Empty;
             }
+        }
+
+        private string GetI18NValue(string key)
+        {
+            return _controller.GetI18NValue(key);
+        }
+
+        private string GetCommonI18NValue(string key)
+        {
+            return _controller.GetCommonI18NValue(key);
         }
     }
 }

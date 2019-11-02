@@ -3,20 +3,20 @@ using UIKit;
 using myTNB.Home.Feedback.FeedbackDetails;
 using myTNB.Model;
 using CoreGraphics;
+using myTNB.Feedback;
 
 namespace myTNB
 {
-    public partial class FeedbackDetailsViewController : UIViewController
+    public partial class FeedbackDetailsViewController : CustomUIViewController
     {
-        public FeedbackDetailsViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public FeedbackDetailsViewController(IntPtr handle) : base(handle) { }
 
         public SubmittedFeedbackDetailsDataModel FeedbackDetails = new SubmittedFeedbackDetailsDataModel();
-        UIView viewContainer;
+        private UIView viewContainer;
 
         public override void ViewDidLoad()
         {
+            PageName = FeedbackConstants.Pagename_FeedbackDetails;
             base.ViewDidLoad();
             AddBackButton();
         }
@@ -33,11 +33,11 @@ namespace myTNB
         /// <summary>
         /// Gets the nickname of the account number to be appended for display.
         /// </summary>
-        internal void GetNickName()
+        private void GetNickName()
         {
             if (FeedbackDetails.FeedbackCategoryId == "1" && !string.IsNullOrEmpty(FeedbackDetails.AccountNum))
             {
-                var index = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindIndex(x => x.accNum == FeedbackDetails.AccountNum) ?? -1;
+                int index = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindIndex(x => x.accNum == FeedbackDetails.AccountNum) ?? -1;
 
                 if (index >= 0)
                 {
@@ -47,15 +47,15 @@ namespace myTNB
             }
         }
 
-        void AddBackButton()
+        private void AddBackButton()
         {
             NavigationController.NavigationItem.HidesBackButton = true;
             UIImage backImg = UIImage.FromBundle(Constants.IMG_Back);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                this.DismissViewController(true, null);
+                DismissViewController(true, null);
             });
-            this.NavigationItem.LeftBarButtonItem = btnBack;
+            NavigationItem.LeftBarButtonItem = btnBack;
         }
 
         internal void OnImageClick(UIImage image, string fileName)
@@ -81,7 +81,7 @@ namespace myTNB
                 Font = MyTNBFont.MuseoSans16,
                 TextColor = UIColor.White,
                 TextAlignment = UITextAlignment.Right,
-                Text = "Common_Close".Translate()
+                Text = GetCommonI18NValue(Constants.Common_Close)
             };
             viewClose.AddSubview(lblClose);
             viewClose.AddGestureRecognizer(new UITapGestureRecognizer(() =>
@@ -140,9 +140,7 @@ namespace myTNB
                 }
 
                 UIImageView imgView = new UIImageView(new CGRect((viewContainer.Frame.Width / 2) - (imgWidth / 2)
-                                                                 , lblFileName.Frame.GetMaxY() + 10f
-                                                                 , imgWidth
-                                                                 , imgHeight))
+                    , lblFileName.Frame.GetMaxY() + 10f, imgWidth, imgHeight))
                 {
                     Image = image
                 };

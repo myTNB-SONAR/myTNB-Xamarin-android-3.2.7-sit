@@ -74,6 +74,7 @@
         public static string Common_AccountType = "accountType";
         public static string Common_AllNotifications = "allNotifications";
         public static string Common_SelectElectricityAccount = "selectElectricityAccount";
+        public static string Common_Close = "close";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";

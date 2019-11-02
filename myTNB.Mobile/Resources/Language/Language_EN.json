@@ -91,7 +91,8 @@
     "allNotifications": "All Notifications",
     "unitEmission": "kg",
     "unitEnergy": "kWH",
-    "selectElectricityAccount": "Select Electricity Account"
+    "selectElectricityAccount": "Select Electricity Account",
+    "close": "Close"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -703,7 +704,7 @@
     "characterLeft": "{0} character left",
     "charactersLeft": "{0} characters left",
     "invalidFeedback": "Invalid feedback",
-    //Not Supported Start
+    //Not Supported by MS Translation Start
     "feedbackType": "Feedback Type",
     "invalidFeedbackType": "Invalid feedback type",
     "selectFeedbackType": "Select Feedback Type",
@@ -719,6 +720,19 @@
     "noAccessTitle": "Location Access is not allowed",
     "noAccessMessage": "Turn On Location Services to allow \"myTNB\" to determine your location",
     "goToSettings": "Go to Settings"
-    //Not Supported End
+    //Not Supported by MS Translation End
+  },
+  "FeedbackDetails": {
+    "feedbackID": "Feedback ID",
+    "feedbackStatus": "Feedback Status",
+    "dateTimeTitle": "Feedback Date & Time",
+    "feedback": "Feedback",
+    "photoTitle": "Photo / Screenshot",
+    //Not Supported by MS Translation Start
+    "state": "State",
+    "feedbackType": "Feedback Type",
+    "location": "Location / Street Name",
+    "poleNumber": "Pole No."
+    //Not Supported by MS Translation End
   }
 }
