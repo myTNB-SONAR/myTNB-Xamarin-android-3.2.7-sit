@@ -15,6 +15,8 @@ using UIKit;
 using myTNB.Home.Components;
 using Newtonsoft.Json;
 using myTNB.DataManager;
+using static myTNB.HomeTutorialOverlay;
+using System.Timers;
 
 namespace myTNB
 {
@@ -24,7 +26,7 @@ namespace myTNB
 
         DashboardHomeHelper _dashboardHomeHelper = new DashboardHomeHelper();
 
-        private UITableView _homeTableView;
+        public UITableView _homeTableView;
         private AccountListViewController _accountListViewController;
         DashboardHomeHeader _dashboardHomeHeader;
         RefreshScreenComponent _refreshScreenComponent;
@@ -32,8 +34,9 @@ namespace myTNB
         public ServicesResponseModel _services;
         public List<HelpModel> _helpList;
         private List<PromotionsModelV2> _promotions;
-        private nfloat _previousScrollOffset;
+        public nfloat _previousScrollOffset;
         internal Dictionary<string, Action> _servicesActionDictionary;
+        public bool _accountListIsShimmering = true;
         private bool _servicesIsShimmering = true;
         private bool _helpIsShimmering = true;
         public bool _isRefreshScreenEnabled;
@@ -41,6 +44,7 @@ namespace myTNB
         private GetIsSmrApplyAllowedResponseModel _isSMRApplyAllowedResponse;
         private UIImageView _footerImageBG;
         private UIView _tutorialContainer;
+        private Timer tutorialOverlayTimer;
 
         public override void ViewDidLoad()
         {
@@ -67,42 +71,6 @@ namespace myTNB
             PrepareTableView();
             SetGreetingView();
             PrepareUsageStoryBoard();
-        }
-
-        private void ShowTutorialOverlay()
-        {
-            var sharedPreference = NSUserDefaults.StandardUserDefaults;
-            var tutorialOverlayHasShown = sharedPreference.BoolForKey(DashboardHomeConstants.Pref_TutorialOverlay);
-
-            //if (tutorialOverlayHasShown)
-            //    return;
-
-            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
-            nfloat width = currentWindow.Frame.Width;
-            nfloat height = currentWindow.Frame.Height;
-            _tutorialContainer = new UIView(new CGRect(0, 0, width, height))
-            {
-                BackgroundColor = UIColor.Clear
-            };
-            currentWindow.AddSubview(_tutorialContainer);
-            HomeTutorialOverlay tutorialView = new HomeTutorialOverlay(_tutorialContainer);
-            tutorialView.OnDismissAction = HideTutorialOverlay;
-            _tutorialContainer.AddSubview(tutorialView.GetView());
-
-            sharedPreference.SetBool(true, DashboardHomeConstants.Pref_TutorialOverlay);
-        }
-
-        private void HideTutorialOverlay()
-        {
-            if (_tutorialContainer != null)
-            {
-                _tutorialContainer.Alpha = 1F;
-                _tutorialContainer.Transform = CGAffineTransform.MakeIdentity();
-                UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseInOut, () =>
-                {
-                    _tutorialContainer.Alpha = 0F;
-                }, _tutorialContainer.RemoveFromSuperview);
-            }
         }
 
         private void AddFooterBG()
@@ -178,7 +146,7 @@ namespace myTNB
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            //ShowTutorialOverlay();
+            CheckTutorialOverlay();
         }
 
         public override void ViewDidDisappear(bool animated)
@@ -200,6 +168,119 @@ namespace myTNB
             _statusBarView.BackgroundColor = MyTNBColor.ClearBlue;
             _statusBarView.Hidden = true;
         }
+
+        #region Tutorial Overlay Methods
+        private void CheckTutorialOverlay()
+        {
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            var tutorialOverlayHasShown = sharedPreference.BoolForKey(DashboardHomeConstants.Pref_TutorialOverlay);
+
+            if (tutorialOverlayHasShown)
+                return;
+
+            tutorialOverlayTimer = new Timer
+            {
+                Interval = 500F,
+                AutoReset = true,
+                Enabled = true
+            };
+            tutorialOverlayTimer.Elapsed += TimerElapsed;
+        }
+
+        private void TimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            if (!_accountListIsShimmering && !_servicesIsShimmering && !_helpIsShimmering)
+            {
+                tutorialOverlayTimer.Enabled = false;
+                InvokeOnMainThread(() =>
+                {
+                    var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                    var topVc = AppDelegate.GetTopViewController(baseRootVc);
+                    if (topVc != null)
+                    {
+                        if (topVc is DashboardHomeViewController)
+                        {
+                            ShowTutorialOverlay();
+                        }
+                    }
+                });
+            }
+        }
+
+        private void ShowTutorialOverlay()
+        {
+            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+            nfloat width = currentWindow.Frame.Width;
+            nfloat height = currentWindow.Frame.Height;
+            _tutorialContainer = new UIView(new CGRect(0, 0, width, height))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+            currentWindow.AddSubview(_tutorialContainer);
+
+            HomeTutorialEnum tutorialType;
+
+            if (!_dashboardHomeHelper.HasAccounts)
+            {
+                tutorialType = HomeTutorialEnum.NOACCOUNT;
+            }
+            else if (_dashboardHomeHelper.HasMoreThanThreeAccts)
+            {
+                tutorialType = HomeTutorialEnum.MORETHANTHREEACCOUNTS;
+            }
+            else
+            {
+                tutorialType = HomeTutorialEnum.LESSTHANFOURACCOUNTS;
+            }
+
+            HomeTutorialOverlay tutorialView = new HomeTutorialOverlay(_tutorialContainer, this);
+            tutorialView.TutorialType = tutorialType;
+            tutorialView.OnDismissAction = HideTutorialOverlay;
+            tutorialView.ScrollTableToTheTop = ScrollTableToTheTop;
+            tutorialView.ScrollTableToTheBottom = ScrollTableToTheBottom;
+            _tutorialContainer.AddSubview(tutorialView.GetView());
+            ScrollTableToTheTop();
+            ResetTableView();
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            sharedPreference.SetBool(true, DashboardHomeConstants.Pref_TutorialOverlay);
+        }
+
+        private void HideTutorialOverlay()
+        {
+            if (_tutorialContainer != null)
+            {
+                _tutorialContainer.Alpha = 1F;
+                _tutorialContainer.Transform = CGAffineTransform.MakeIdentity();
+                UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseInOut, () =>
+                {
+                    _tutorialContainer.Alpha = 0F;
+                }, _tutorialContainer.RemoveFromSuperview);
+            }
+        }
+
+        public void ScrollTableToTheBottom()
+        {
+            _homeTableView.ScrollToRow(NSIndexPath.Create(0, DashboardHomeConstants.CellIndex_Help), UITableViewScrollPosition.Bottom, false);
+        }
+
+        public void ScrollTableToTheTop()
+        {
+            _homeTableView.SetContentOffset(new CGPoint(0, 0), false);
+        }
+
+        private void ResetTableView()
+        {
+            if (DataManager.DataManager.SharedInstance.ActiveAccountList.Count <= 3)
+                return;
+
+            DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
+            OnUpdateCellWithoutReload(DashboardHomeConstants.CellIndex_Services);
+            if (_accountListViewController != null)
+            {
+                _accountListViewController.PrepareAccountList(DataManager.DataManager.SharedInstance.CurrentAccountList);
+            }
+        }
+        #endregion
 
         #region Observer Methods
         private void NotificationDidChange(NSNotification notification)
