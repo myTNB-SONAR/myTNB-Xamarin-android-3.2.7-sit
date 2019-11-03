@@ -81,11 +81,21 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
             try
             {
-                if (Intent != null && Intent.Extras != null && Intent.Extras.ContainsKey("Email"))
+                if (Intent != null && Intent.Extras != null)
                 {
-                    string email = Intent.Extras.GetString("Email");
-                    UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
-                    UserSessions.SaveUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this), email);
+                    if (Intent.Extras.ContainsKey("Type"))
+                    {
+                        string notifType = Intent.Extras.GetString("Type");
+                        UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
+                        UserSessions.SaveNotificationType(PreferenceManager.GetDefaultSharedPreferences(this), notifType);
+                    }
+
+                    if (Intent.Extras.ContainsKey("Email"))
+                    {
+                        string email = Intent.Extras.GetString("Email");
+                        UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
+                        UserSessions.SaveUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this), email);
+                    }
                 }
             }
             catch (Exception e)
