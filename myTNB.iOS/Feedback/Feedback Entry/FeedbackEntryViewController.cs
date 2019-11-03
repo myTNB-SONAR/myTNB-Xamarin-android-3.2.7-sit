@@ -454,8 +454,8 @@ namespace myTNB
         private void HandleFeedbackTextViewChange()
         {
             int charCount = TNBGlobal.FeedbackMaxCharCount - _feedbackTextView.Text.Length;
-            _lblFeedbackSubTitle.Text = string.Format(charCount > 1 ? GetI18NValue(FeedbackConstants.I18N_CharactersLeft)
-                : GetI18NValue(FeedbackConstants.I18N_CharacterLeft), charCount);
+            _lblFeedbackSubTitle.Text = string.Format(GetCommonI18NValue(charCount > 1
+                ? Constants.Common_CharactersLeft : Constants.Common_CharacterLeft), charCount);
         }
 
         private nfloat GetCommentSectionYCoordinate()

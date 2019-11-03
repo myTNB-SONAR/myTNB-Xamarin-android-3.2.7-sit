@@ -2559,6 +2559,7 @@
       <DependentUpon>..\..\Home\Feedback\Submitted Feedback\SubmittedFeedbackViewController.cs</DependentUpon>
     </Compile>
     <Compile Include="Feedback\FeedbackConstants.cs" />
+    <Compile Include="Rating\RatingConstants.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

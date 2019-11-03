@@ -92,7 +92,10 @@
     "unitEmission": "kg",
     "unitEnergy": "kWH",
     "selectElectricityAccount": "Pilih Akaun Elektrik",
-    "close": "Close"
+    "close": "Close",
+    "characterLeft": "{0} character left",
+    "charactersLeft": "{0} characters left",
+    "comments": "Comments"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -701,8 +704,6 @@
     "camera": "Camera",
     "cameraRoll": "Camera Roll",
     "feedback": "Feedback",
-    "characterLeft": "{0} character left",
-    "charactersLeft": "{0} characters left",
     "invalidFeedback": "Invalid feedback",
     //Not Supported Start
     "feedbackType": "Feedback Type",
@@ -734,5 +735,14 @@
     "location": "Location / Street Name",
     "poleNumber": "Pole No."
     //Not Supported by MS Translation End
+  },
+  "Rating": {
+    "title": "Rating",
+    "pay": "Bayar"
+  },
+  "RatingResults": {
+    "description": "Your rating will help us serve you better.",
+    "thankyou": "Thank you.",
+    "backToDashboard": "Back to Dashboard"
   }
 }

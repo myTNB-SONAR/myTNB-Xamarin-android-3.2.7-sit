@@ -12,8 +12,6 @@
         public static string I18N_Camera = "camera";
         public static string I18N_CameraRoll = "cameraRoll";
         public static string I18N_Feedback = "feedback";
-        public static string I18N_CharacterLeft = "characterLeft";
-        public static string I18N_CharactersLeft = "charactersLeft";
         public static string I18N_InvalidFeedback = "invalidFeedback";
 
         //Not supported by MS Translation

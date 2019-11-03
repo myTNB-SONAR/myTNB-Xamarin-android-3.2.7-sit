@@ -8,10 +8,10 @@ namespace myTNB
 {
     public class RatingDataSource : UITableViewSource
     {
-        List<FeedbackQuestionModel> questions;
-        int defaultRating;
+        private List<FeedbackQuestionModel> questions;
+        private int defaultRating;
 
-        string CellIdentifier = "FeedbackInputCell";
+        private string CellIdentifier = "FeedbackInputCell";
 
         public RatingDataSource(List<FeedbackQuestionModel> inputQuestions, int defRating)
         {
@@ -27,8 +27,8 @@ namespace myTNB
         /// <param name="indexPath">Index path.</param>
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            var cell = tableView.DequeueReusableCell(CellIdentifier) as FeedbackInputCell;
-            var question = questions[indexPath.Row];
+            FeedbackInputCell cell = tableView.DequeueReusableCell(CellIdentifier) as FeedbackInputCell;
+            FeedbackQuestionModel question = questions[indexPath.Row];
             if (cell == null)
             {
                 cell = new FeedbackInputCell(CellIdentifier);
@@ -41,13 +41,12 @@ namespace myTNB
         /// Rowses the in section.
         /// </summary>
         /// <returns>The in section.</returns>
-        /// <param name="tableView">Table view.</param>
+        /// <param name="tableview">Table view.</param>
         /// <param name="section">Section.</param>
-        public override nint RowsInSection(UITableView tableView, nint section)
+        public override nint RowsInSection(UITableView tableview, nint section)
         {
             return questions?.Count ?? 0;
         }
-
         /// <summary>
         /// Rows the selected.
         /// </summary>
@@ -55,8 +54,7 @@ namespace myTNB
         /// <param name="indexPath">Index path.</param>
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
         {
-            var cell = tableView.CellAt(indexPath) as FeedbackInputCell;
-
+            FeedbackInputCell cell = tableView.CellAt(indexPath) as FeedbackInputCell;
             if (cell != null)
             {
                 if (cell.QuestionType == Enums.QuestionTypeEnum.MultilineComment)
@@ -73,8 +71,7 @@ namespace myTNB
         /// <param name="indexPath">Index path.</param>
         public override void RowDeselected(UITableView tableView, NSIndexPath indexPath)
         {
-            var cell = tableView.CellAt(indexPath) as FeedbackInputCell;
-
+            FeedbackInputCell cell = tableView.CellAt(indexPath) as FeedbackInputCell;
             if (cell != null)
             {
                 if (cell.QuestionType == Enums.QuestionTypeEnum.MultilineComment)
@@ -87,8 +84,7 @@ namespace myTNB
 
         public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
         {
-            var question = questions[indexPath.Row];
-
+            FeedbackQuestionModel question = questions[indexPath.Row];
             if (question.Kind == Enums.QuestionTypeEnum.Rating)
             {
                 return 140f;

@@ -8,33 +8,29 @@ using myTNB.Dashboard.DashboardComponents;
 using myTNB.DataManager;
 using myTNB.Enums;
 using myTNB.Model;
+using myTNB.Rating;
 using UIKit;
 
 namespace myTNB
 {
-    public partial class RatingViewController : UIViewController
+    public partial class RatingViewController : CustomUIViewController
     {
-        UIView _headerView;
-
-        string _message = string.Empty;
-        nfloat _contentHeight;
-        List<FeedbackQuestionModel> displayedQuestions;
+        private UIView _headerView;
+        private List<FeedbackQuestionModel> displayedQuestions;
 
         public int Rating = 5;
         public string TransId;
-
-        public RatingViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public RatingViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
         {
+            PageName = RatingConstants.Pagename_Rating;
             base.ViewDidLoad();
             SetNavigationBar();
             SetSubViews();
             NotifCenterUtility.AddObserver(UIKeyboard.DidShowNotification, (NSNotification obj) =>
             {
-                var userInfo = obj.UserInfo;
+                NSDictionary userInfo = obj.UserInfo;
                 NSValue keyboardFrame = userInfo.ValueForKey(UIKeyboard.FrameEndUserInfoKey) as NSValue;
                 CGRect keyboardRectangle = keyboardFrame.CGRectValue;
                 tableViewRating.Frame = new CGRect(0, 0, View.Frame.Width, View.Frame.Height - (keyboardRectangle.Height));
@@ -61,38 +57,36 @@ namespace myTNB
             });
         }
 
-        void SetNavigationBar()
+        private void SetNavigationBar()
         {
             NavigationController.NavigationBar.Hidden = true;
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 64, true);
             _headerView = gradientViewComponent.GetUI();
             TitleBarComponent titleBarComponent = new TitleBarComponent(_headerView);
             UIView titleBarView = titleBarComponent.GetUI();
-            titleBarComponent.SetTitle("Rating_Title".Translate());
+            titleBarComponent.SetTitle(GetI18NValue(RatingConstants.I18N_Title));
             titleBarComponent.SetPrimaryVisibility(true);
             titleBarComponent.SetBackVisibility(false);
             titleBarComponent.SetBackAction(new UITapGestureRecognizer(() =>
             {
-                this.DismissViewController(true, null);
+                DismissViewController(true, null);
             }));
             _headerView.AddSubview(titleBarView);
             View.AddSubview(_headerView);
         }
 
-        void SetSubViews()
+        private void SetSubViews()
         {
             SetDefaultTableFrame();
-            //tableViewRating.RowHeight = 200; //140;
             tableViewRating.RowHeight = UITableView.AutomaticDimension;
             tableViewRating.EstimatedRowHeight = 140;
             tableViewRating.SeparatorStyle = UITableViewCellSeparatorStyle.None;
-            //tableViewRating.AllowsSelection = false;
         }
 
         private void SetDefaultTableFrame()
         {
             nfloat svHeight = View.Frame.Height - _headerView.Frame.Height;
-            _contentHeight = svHeight;
+            // _contentHeight = svHeight;
             tableViewRating.Frame = new CGRect(0, _headerView.Frame.Height, View.Frame.Width, svHeight);
         }
 
@@ -106,7 +100,7 @@ namespace myTNB
             btnCTA.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
             btnCTA.BackgroundColor = MyTNBColor.FreshGreen;
             btnCTA.Layer.BorderWidth = 1;
-            btnCTA.SetTitle("Common_Submit".Translate(), UIControlState.Normal);
+            btnCTA.SetTitle(GetCommonI18NValue(Constants.Common_Submit), UIControlState.Normal);
             btnCTA.Font = MyTNBFont.MuseoSans16_500;
             btnCTA.SetTitleColor(UIColor.White, UIControlState.Normal);
             btnCTA.TouchUpInside += (sender, e) =>
@@ -128,7 +122,7 @@ namespace myTNB
                        }
                        else
                        {
-                           AlertHandler.DisplayNoDataAlert(this);
+                           DisplayNoDataAlert();
                        }
                    });
                });
@@ -144,18 +138,14 @@ namespace myTNB
         /// <param name="questions">Questions.</param>
         private bool AreRepliesComplete(List<FeedbackQuestionModel> questions)
         {
-#if DEBUG
-            foreach (var item in questions)
+            int emptyCount = 0;
+            if (questions != null)
             {
-                Debug.WriteLine("question: {0} answer: {1}", item.Question, item.Answer);
+                List<FeedbackQuestionModel> emptyMandatory = questions.FindAll(item => item.Active && item.Mandatory && string.IsNullOrEmpty(item.Answer));
+                emptyCount = emptyMandatory?.Count ?? 0;
             }
-#endif
-            var emptyMandatory = questions.FindAll(item => item.Active && item.Mandatory && string.IsNullOrEmpty(item.Answer));
-            var emptyCount = emptyMandatory?.Count ?? 0;
-            Debug.WriteLine("mandatory empty fields: " + emptyMandatory?.Count.ToString());
             return emptyCount == 0;
         }
-
 
         /// <summary>
         /// Loads the questions.
@@ -164,7 +154,7 @@ namespace myTNB
         private async Task LoadQuestions()
         {
             ActivityIndicator.Show();
-            var response = await ServiceCall.GetRateUsQuestions(QuestionCategoryEnum.Payment);
+            FeedbackQuestionRequestModel response = await ServiceCall.GetRateUsQuestions(QuestionCategoryEnum.Payment);
 
             if (response.didSucceed)
             {
@@ -177,39 +167,20 @@ namespace myTNB
             {
                 displayedQuestions = new List<FeedbackQuestionModel>();
             }
-
             ActivityIndicator.Hide();
         }
-
 
         /// <summary>
         /// Displaies the dashboard.
         /// </summary>
         private void OnRatingCompleted()
         {
-            var vc = this.Storyboard.InstantiateViewController("RatingResultsViewController") as RatingResultsViewController;
+            RatingResultsViewController vc = Storyboard.InstantiateViewController("RatingResultsViewController") as RatingResultsViewController;
             if (vc != null)
             {
-                this.NavigationController?.PushViewController(vc, true);
+                NavigationController?.PushViewController(vc, true);
                 return;
             }
-        }
-
-        Task SubmitExperienceRating()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                ServiceManager serviceManager = new ServiceManager();
-                object requestParameter = new
-                {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
-                    rating = Rating.ToString(),
-                    message = _message,
-                    ratingFor = "Common_Pay".Translate().ToUpper()
-                };
-                BaseResponseModel response = serviceManager.BaseServiceCall("SubmitExperienceRating", requestParameter);
-            });
         }
 
         /// <summary>
@@ -218,18 +189,18 @@ namespace myTNB
         /// <param name="questions">Questions.</param>
         private void SubmitRatings(List<FeedbackQuestionModel> questions)
         {
-            var answerDetails = new List<InputAnswerDetailsModel>();
+            List<InputAnswerDetailsModel> answerDetails = new List<InputAnswerDetailsModel>();
 
-            foreach (var item in questions)
+            foreach (FeedbackQuestionModel item in questions)
             {
-                var answer = new InputAnswerDetailsModel(item);
+                InputAnswerDetailsModel answer = new InputAnswerDetailsModel(item);
                 answerDetails.Add(answer);
             }
 
-            var inputAnswer = new InputAnswerModel
+            InputAnswerModel inputAnswer = new InputAnswerModel
             {
                 ReferenceId = !string.IsNullOrEmpty(TransId) ? TransId : string.Empty,
-                Email = DataManager.DataManager.SharedInstance.UserEntity[0].email,
+                Email = DataManager.DataManager.SharedInstance?.UserEntity[0]?.email ?? string.Empty,
                 DeviceId = DataManager.DataManager.SharedInstance.UDID,
                 InputAnswerDetails = answerDetails
             };
