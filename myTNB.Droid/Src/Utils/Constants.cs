@@ -287,5 +287,11 @@ namespace myTNB_Android.Src.Utils
 
         internal static readonly string APP_NAVIGATION_KEY = ".appNavigation";
 
+        //Timeout Duration
+        internal static readonly int SERVICE_TIMEOUT_DEFAULT = 60000;
+        internal static readonly int ACCOUNT_LIST_TIMEOUT = 8000;
+        internal static readonly int APP_LAUNCH_MASTER_DATA_TIMEOUT = 3000;
+        internal static readonly int APP_LAUNCH_MASTER_DATA_RETRY_TIMEOUT = 2000;
+
     }
 }
