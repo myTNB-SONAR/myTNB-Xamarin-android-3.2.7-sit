@@ -21,7 +21,7 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Left,
                 Font = MyTNBFont.MuseoSans10_500,
                 TextColor = MyTNBColor.SilverChalice,
-                Text = "Common_AccountNumber".Translate().ToUpper()
+                Text = LanguageUtility.GetCommonI18NValue(Constants.Common_AccountNo).ToUpper()
             };
 
             lblAcctNoValue = new UILabel(new CGRect(INNER_PADDING, lblAcctNo.Frame.GetMaxY(), cellWidth - LBL_WIDTH_PADDING, 16))
@@ -36,7 +36,7 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Left,
                 Font = MyTNBFont.MuseoSans10_500,
                 TextColor = MyTNBColor.SilverChalice,
-                Text = "Receipt_AccountName".Translate().ToUpper()
+                Text = LanguageUtility.GetCommonI18NValue(Constants.Common_AccountHolder).ToUpper()
             };
 
             lblAcctNameValue = new UILabel(new CGRect(INNER_PADDING, lblAcctName.Frame.GetMaxY(), cellWidth - LBL_WIDTH_PADDING, 16))
@@ -51,7 +51,7 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Left,
                 Font = MyTNBFont.MuseoSans10_500,
                 TextColor = MyTNBColor.SilverChalice,
-                Text = "Common_Amount(RM)".Translate().ToUpper()
+                Text = LanguageUtility.GetCommonI18NValue(Constants.Common_AmountRM).ToUpper()
             };
 
             lblAmountValue = new UILabel(new CGRect(INNER_PADDING, lblAmount.Frame.GetMaxY(), cellWidth - LBL_WIDTH_PADDING, 16))

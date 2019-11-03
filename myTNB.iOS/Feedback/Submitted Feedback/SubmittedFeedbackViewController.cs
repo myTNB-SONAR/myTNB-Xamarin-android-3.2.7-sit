@@ -4,14 +4,13 @@ using myTNB.Home.Feedback;
 using System.Threading.Tasks;
 using myTNB.Model;
 using CoreGraphics;
+using myTNB.Feedback;
 
 namespace myTNB
 {
-    public partial class SubmittedFeedbackViewController : UIViewController
+    public partial class SubmittedFeedbackViewController : CustomUIViewController
     {
-        public SubmittedFeedbackViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public SubmittedFeedbackViewController(IntPtr handle) : base(handle) { }
 
         public SubmittedFeedbackResponseModel SubmittedFeedback = new SubmittedFeedbackResponseModel();
         private SubmittedFeedbackDetailsResponseModel _feedbackDetails = new SubmittedFeedbackDetailsResponseModel();
@@ -21,6 +20,7 @@ namespace myTNB
 
         public override void ViewDidLoad()
         {
+            PageName = FeedbackConstants.Pagename_SubmittedFeedback;
             base.ViewDidLoad();
             AddBackButton();
         }
@@ -51,7 +51,7 @@ namespace myTNB
                     {
                         TextAlignment = UITextAlignment.Center,
                         Lines = 2,
-                        Text = "Feedback_NoFeedbackSubmittedMessage".Translate(),
+                        Text = GetI18NValue(FeedbackConstants.I18N_NoFeedback),
                         Font = MyTNBFont.MuseoSans12_300,
                         TextColor = MyTNBColor.SilverChalice
                     };

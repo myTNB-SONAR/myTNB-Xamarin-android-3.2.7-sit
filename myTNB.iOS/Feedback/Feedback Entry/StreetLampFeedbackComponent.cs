@@ -140,7 +140,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblStateTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewState.Frame.Width, 12),
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetI18NValue(FeedbackConstants.I18N_State)
+                AttributedText = AttributedStringUtility.GetAttributedString(GetI18NValue(FeedbackConstants.I18N_State)
                     , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
@@ -149,7 +149,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblStateError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewState.Frame.Width, 14),
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetI18NValue(FeedbackConstants.I18N_InvalidState)
+                AttributedText = AttributedStringUtility.GetAttributedString(GetI18NValue(FeedbackConstants.I18N_InvalidState)
                     , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
@@ -162,7 +162,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
             _lblState = new UILabel(new CGRect(30, 12, _viewState.Frame.Width, 24))
             {
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetI18NValue(FeedbackConstants.I18N_State)
+                AttributedText = AttributedStringUtility.GetAttributedString(GetI18NValue(FeedbackConstants.I18N_State)
                     , AttributedStringUtility.AttributedStringType.Value)
             };
 
@@ -198,7 +198,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblLocationTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewLocation.Frame.Width, 12),
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetI18NValue(FeedbackConstants.I18N_Location)
+                AttributedText = AttributedStringUtility.GetAttributedString(GetI18NValue(FeedbackConstants.I18N_Location)
                     , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
@@ -207,7 +207,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblLocationError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewLocation.Frame.Width, 14),
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetI18NValue(FeedbackConstants.I18N_InvalidLocation)
+                AttributedText = AttributedStringUtility.GetAttributedString(GetI18NValue(FeedbackConstants.I18N_InvalidLocation)
                     , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
@@ -216,7 +216,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _txtFieldLocation = new UITextField
             {
                 Frame = new CGRect(0, 12, _viewLocation.Frame.Width, 24),
-                AttributedPlaceholder = AttributedStringUtility.GetAttributedStringV2(GetI18NValue(FeedbackConstants.I18N_Location)
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetI18NValue(FeedbackConstants.I18N_Location)
                     , AttributedStringUtility.AttributedStringType.Value),
                 TextColor = MyTNBColor.TunaGrey()
             };
@@ -235,7 +235,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblPoleTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewPole.Frame.Width, 12),
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetI18NValue(FeedbackConstants.I18N_PoleNumber)
+                AttributedText = AttributedStringUtility.GetAttributedString(GetI18NValue(FeedbackConstants.I18N_PoleNumber)
                     , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
@@ -244,7 +244,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblPoleError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewPole.Frame.Width, 14),
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetI18NValue(FeedbackConstants.I18N_InvalidPoleNumber)
+                AttributedText = AttributedStringUtility.GetAttributedString(GetI18NValue(FeedbackConstants.I18N_InvalidPoleNumber)
                     , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
@@ -253,7 +253,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _txtFieldPole = new UITextField
             {
                 Frame = new CGRect(0, 12, _viewPole.Frame.Width, 24),
-                AttributedPlaceholder = AttributedStringUtility.GetAttributedStringV2(GetI18NValue(FeedbackConstants.I18N_PoleNumber)
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetI18NValue(FeedbackConstants.I18N_PoleNumber)
                     , AttributedStringUtility.AttributedStringType.Value),
                 TextColor = MyTNBColor.TunaGrey()
             };

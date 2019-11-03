@@ -14,10 +14,7 @@ namespace myTNB
 {
     public partial class MoreViewController : CustomUIViewController
     {
-        public MoreViewController(IntPtr handle) : base(handle)
-        {
-        }
-
+        public MoreViewController(IntPtr handle) : base(handle) { }
         private TitleBarComponent _titleBarComponent;
         private UILabel _lblAppVersion;
 
@@ -236,7 +233,7 @@ namespace myTNB
             }
             else
             {
-                string errorMessage = "Error_DefaultMessage".Translate();
+                string errorMessage = GetErrorI18NValue(Constants.Error_DefaultErrorMessage);
                 if (DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.didSucceed == false
                     && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.NotificationTypeResponse?.d?.message))
                 {
@@ -320,33 +317,6 @@ namespace myTNB
             return DataManager.DataManager.SharedInstance.WebLinks != null;
         }
 
-        private void ShowBrowser(string code)
-        {
-            if (IsValidWeblinks())
-            {
-                int index = DataManager.DataManager.SharedInstance.WebLinks.FindIndex(x => x.Code.ToLower().Equals(code.ToLower()));
-                if (index > -1)
-                {
-                    string title = DataManager.DataManager.SharedInstance.WebLinks[index].Title;
-                    string url = DataManager.DataManager.SharedInstance.WebLinks[index].Url;
-                    UIStoryboard storyBoard = UIStoryboard.FromName("Browser", null);
-                    BrowserViewController viewController =
-                        storyBoard.InstantiateViewController("BrowserViewController") as BrowserViewController;
-                    if (viewController != null)
-                    {
-                        viewController.NavigationTitle = title;
-                        viewController.URL = url;
-                        viewController.IsDelegateNeeded = false;
-                        UINavigationController navController = new UINavigationController(viewController);
-                        navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                        PresentViewController(navController, true, null);
-                    }
-                    return;
-                }
-            }
-            DisplayServiceError("Error_LinkNotAvailable".Translate());
-        }
-
         private void CallCustomerService(string code)
         {
             if (IsValidWeblinks())
@@ -363,7 +333,7 @@ namespace myTNB
                     }
                 }
             }
-            DisplayServiceError("Error_TelephoneNumberNotAvailable".Translate());
+            DisplayServiceError(GetErrorI18NValue(Constants.Error_NumberNotAvailable));
         }
 
         private void OpenAppStore()
@@ -381,7 +351,7 @@ namespace myTNB
                     }
                 }
             }
-            DisplayServiceError("Error_RatingNotAvailable".Translate());
+            DisplayServiceError(GetErrorI18NValue(Constants.Error_RatingNotAvailable));
         }
 
         private void Share()
@@ -403,7 +373,7 @@ namespace myTNB
                     return;
                 }
             }
-            DisplayServiceError("Error_ShareNotAvailable".Translate());
+            DisplayServiceError(GetErrorI18NValue(Constants.Error_ShareNotAvailable));
         }
     }
 }

@@ -78,6 +78,9 @@
         public static string Common_CharacterLeft = "characterLeft";
         public static string Common_CharactersLeft = "charactersLeft";
         public static string Common_Comments = "comments";
+        public static string Common_AccountHolder = "accountHolder";
+        public static string Common_Skip = "skip";
+        public static string Common_Details = "details";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";
@@ -106,6 +109,9 @@
         public static string Error_NoDataConnectionMessage = "noDataConnectionMessage";
         public static string Error_DefaultErrorTitle = "defaultErrorTitle";
         public static string Error_DefaultErrorMessage = "defaultErrorMessage";
+        public static string Error_NumberNotAvailable = "numberNotAvailable";
+        public static string Error_RatingNotAvailable = "ratingNotAvailable";
+        public static string Error_ShareNotAvailable = "shareNotAvailable";
 
         //Hint I18N
         public static string Hint_EmptyAcctSelector = "emptyAcctSelector";

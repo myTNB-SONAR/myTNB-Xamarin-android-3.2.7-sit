@@ -5,6 +5,8 @@
         public static string Pagename_FeedbackList = "FeedbackList";
         public static string Pagename_FeedbackForm = "FeedbackForm";
         public static string Pagename_FeedbackDetails = "FeedbackDetails";
+        public static string Pagename_SubmittedFeedback = "SubmittedFeedback";
+
 
         public static string I18N_Title = "title";
         public static string I18N_AttachPhotoTitle = "attachPhotoTitle";
@@ -13,6 +15,7 @@
         public static string I18N_CameraRoll = "cameraRoll";
         public static string I18N_Feedback = "feedback";
         public static string I18N_InvalidFeedback = "invalidFeedback";
+        public static string I18N_NoFeedback = "noFeedback";
 
         //Not supported by MS Translation
         public static string I18N_FeedbackType = "feedbackType";

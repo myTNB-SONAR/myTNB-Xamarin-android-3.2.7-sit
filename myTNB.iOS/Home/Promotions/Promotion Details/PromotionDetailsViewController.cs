@@ -2,24 +2,23 @@ using Foundation;
 using System;
 using UIKit;
 using CoreGraphics;
-using System.Drawing;
 using myTNB.SitecoreCMS.Model;
 using myTNB.Home.Components;
 using System.Diagnostics;
+using myTNB.Home.Promotions;
 
 namespace myTNB
 {
-    public partial class PromotionDetailsViewController : UIViewController
+    public partial class PromotionDetailsViewController : CustomUIViewController
     {
-        public PromotionDetailsViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public PromotionDetailsViewController(IntPtr handle) : base(handle) { }
 
         public PromotionsModelV2 Promotion = new PromotionsModelV2();
         public Action OnDone { get; set; }
 
         public override void ViewDidLoad()
         {
+            PageName = PromotionConstants.Pagename_Promotion;
             base.ViewDidLoad();
             SetNavigationBar();
             SetSubViews();
@@ -30,10 +29,10 @@ namespace myTNB
             base.ViewWillAppear(animated);
         }
 
-        void SetNavigationBar()
+        private void SetNavigationBar()
         {
             NavigationItem.HidesBackButton = true;
-            NavigationItem.Title = "Promotion_Title".Translate();
+            NavigationItem.Title = GetI18NValue(PromotionConstants.I18N_Title);
             UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle(Constants.IMG_Back), UIBarButtonItemStyle.Done, (sender, e) =>
             {
                 DismissViewController(true, null);
@@ -43,12 +42,12 @@ namespace myTNB
 
             UIBarButtonItem btnDownload = new UIBarButtonItem(UIImage.FromBundle("IC-Header-Share"), UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                var message = NSObject.FromObject(Promotion?.Title);
+                NSObject message = NSObject.FromObject(Promotion?.Title);
                 string url = Promotion?.GeneralLinkUrl;
-                var item = NSObject.FromObject(url);
-                var activityItems = new NSObject[] { message, item };
+                NSObject item = NSObject.FromObject(url);
+                NSObject[] activityItems = { message, item };
                 UIActivity[] applicationActivities = null;
-                var activityController = new UIActivityViewController(activityItems, applicationActivities);
+                UIActivityViewController activityController = new UIActivityViewController(activityItems, applicationActivities);
                 UIBarButtonItem.AppearanceWhenContainedIn(new[] { typeof(UINavigationBar) }).TintColor = UIColor.White;
                 activityController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(activityController, true, null);
@@ -56,7 +55,7 @@ namespace myTNB
             NavigationItem.RightBarButtonItem = btnDownload;
         }
 
-        void SetSubViews()
+        private void SetSubViews()
         {
             UIScrollView scrollViewContent = new UIScrollView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height - 64))
             {
@@ -106,17 +105,6 @@ namespace myTNB
             CGSize newLblTitleSize = GetLabelSize(lblTitle, lblTitle.Frame.Width, 1000);
             lblTitle.Frame = new CGRect(lblTitle.Frame.X, lblTitle.Frame.Y, lblTitle.Frame.Width, newLblTitleSize.Height);
 
-#if false
-            UILabel lblDetails = new UILabel(new CGRect(18, lblTitle.Frame.Height + lblTitle.Frame.Y + 16, View.Frame.Width - 36, 18));
-            lblDetails.TextAlignment = UITextAlignment.Left;
-            lblDetails.TextColor = myTNBColor.TunaGrey();
-            lblDetails.Font = myTNBFont.MuseoSans14_300;
-            lblDetails.Lines = 0;
-            lblDetails.LineBreakMode = UILineBreakMode.WordWrap;
-            lblDetails.Text = Promotion.SubText;
-            CGSize newLblDetailsSize = GetLabelSize(lblDetails, lblDetails.Frame.Width, 1000);
-            lblDetails.Frame = new CGRect(lblDetails.Frame.X, lblDetails.Frame.Y, lblDetails.Frame.Width, newLblDetailsSize.Height);
-#endif
             scrollViewContent.AddSubviews(new UIView[] { viewBanner, lblTitle });
 
             CGRect referenceFrame = lblTitle.Frame;
@@ -235,11 +223,6 @@ namespace myTNB
             }
             scrollViewContent.ContentSize = new CGSize(View.Frame.Width, referenceFrame.Height + referenceFrame.Y + 30);
             View.AddSubview(scrollViewContent);
-        }
-
-        CGSize GetLabelSize(UILabel label, nfloat width, nfloat height)
-        {
-            return label.Text.StringSize(label.Font, new SizeF((float)width, (float)height));
         }
     }
 }

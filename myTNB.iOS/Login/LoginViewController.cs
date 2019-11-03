@@ -1,10 +1,8 @@
 using System;
 using UIKit;
 using myTNB.Model;
-using CoreAnimation;
 using Foundation;
 using CoreGraphics;
-using Cirrious.FluentLayouts.Touch;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using myTNB.Login.ForgotPassword;
@@ -16,29 +14,29 @@ namespace myTNB
 {
     public partial class LoginViewController : CustomUIViewController
     {
-        readonly Regex EmailRegex = new Regex(@"[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" + "\\@"
+        private readonly Regex EmailRegex = new Regex(@"[a-zA-Z0-9\\+\\.\\_\\%\\-\\+]{1,256}" + "\\@"
                                                       + "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,64}"
                                                       + "("
                                                       + "\\."
                                                       + "[a-zA-Z0-9][a-zA-Z0-9\\-]{0,25}"
                                                       + ")+");
-        string _eMail = string.Empty;
-        string _password = string.Empty;
-        bool IsRememberMe = true;
+        private string _eMail = string.Empty;
+        private string _password = string.Empty;
+        private bool IsRememberMe = true;
 
-        UserAuthenticationResponseModel _authenticationList = new UserAuthenticationResponseModel();
-        BillingAccountDetailsResponseModel _billingAccountDetailsList = new BillingAccountDetailsResponseModel();
-        TextFieldHelper _textFieldHelper = new TextFieldHelper();
+        private UserAuthenticationResponseModel _authenticationList = new UserAuthenticationResponseModel();
+        private BillingAccountDetailsResponseModel _billingAccountDetailsList = new BillingAccountDetailsResponseModel();
+        private TextFieldHelper _textFieldHelper = new TextFieldHelper();
 
-        UIView viewEmail, viewPassword, viewRememberMe, viewForgotPassword, viewShowPassword
+        private UIView viewEmail, viewPassword, viewRememberMe, viewForgotPassword, viewShowPassword
             , viewLineEmail, viewLinePassword, viewCheckBox;
 
-        UILabel lblEmailTitle, lblPasswordTitle, lblRememberMe;
+        private UILabel lblEmailTitle, lblPasswordTitle, lblRememberMe;
 
-        UITextField txtFieldEmail, txtFieldPassword;
-        UIImageView imgViewCheckBox;
-        UIScrollView ScrollView;
-        CGRect scrollViewFrame;
+        private UITextField txtFieldEmail, txtFieldPassword;
+        private UIImageView imgViewCheckBox;
+        private UIScrollView ScrollView;
+        private CGRect scrollViewFrame;
 
         public LoginViewController(IntPtr handle) : base(handle) { }
 
@@ -70,7 +68,7 @@ namespace myTNB
             base.ViewWillDisappear(animated);
         }
 
-        void InitializeSubViews()
+        private void InitializeSubViews()
         {
             ScrollView = new UIScrollView(new CGRect(0, 0, View.Frame.Width, View.Frame.Height))
             {
@@ -236,8 +234,8 @@ namespace myTNB
             }));
             viewPassword.AddSubviews(new UIView[] { lblPasswordTitle, txtFieldPassword, viewShowPassword, viewLinePassword });
 
-            var sharedPreference = NSUserDefaults.StandardUserDefaults;
-            var emailString = sharedPreference.StringForKey(TNBGlobal.PreferenceKeys.RememberEmail);
+            NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+            string emailString = sharedPreference.StringForKey(TNBGlobal.PreferenceKeys.RememberEmail);
             if (!string.IsNullOrEmpty(emailString))
             {
                 txtFieldEmail.Text = emailString;
@@ -288,7 +286,7 @@ namespace myTNB
             scrollViewFrame = ScrollView.Frame;
         }
 
-        void OnKeyboardNotification(NSNotification notification)
+        private void OnKeyboardNotification(NSNotification notification)
         {
             if (!IsViewLoaded)
                 return;
@@ -318,7 +316,7 @@ namespace myTNB
         /// </summary>
         private void RememberMe()
         {
-            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
             if (IsRememberMe)
             {
                 sharedPreference.SetString(_eMail, TNBGlobal.PreferenceKeys.RememberEmail);
@@ -330,7 +328,7 @@ namespace myTNB
             sharedPreference.Synchronize();
         }
 
-        void Setevents()
+        private void Setevents()
         {
             viewForgotPassword.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
@@ -415,27 +413,27 @@ namespace myTNB
             };
         }
 
-        void ShowEmptyEmailError()
+        private void ShowEmptyEmailError()
         {
-            DisplayToast("Error_EmailRequired".Translate());
+            DisplayToast(GetI18NValue(LoginConstants.I18N_EmailRequired));
         }
 
-        void ShowInvalidEmailError()
+        private void ShowInvalidEmailError()
         {
-            DisplayToast("Invalid_Email".Translate());
+            DisplayToast(GetErrorI18NValue(Constants.Error_InvalidEmailAddress));
         }
 
-        void ShowEmptyPasswordError()
+        private void ShowEmptyPasswordError()
         {
-            DisplayToast("Error_PasswordRequired".Translate());
+            DisplayToast(GetI18NValue(LoginConstants.I18N_PasswordRequired));
         }
 
-        void ShowServerError(string errorMessage)
+        private void ShowServerError(string errorMessage)
         {
-            DisplayToast(errorMessage ?? "Error_DefaultMessage".Translate());
+            DisplayToast(errorMessage ?? GetErrorI18NValue(Constants.Error_DefaultErrorMessage));
         }
 
-        void OnLogin()
+        private void OnLogin()
         {
             _eMail = txtFieldEmail.Text.Trim();
             _password = txtFieldPassword.Text.Trim();
@@ -475,7 +473,7 @@ namespace myTNB
             });
         }
 
-        void SetLoginLocalData()
+        private void SetLoginLocalData()
         {
             DataManager.DataManager.SharedInstance.User.UserID = _authenticationList.d.data.userID;
             //For testing only
@@ -486,7 +484,7 @@ namespace myTNB
             DataManager.DataManager.SharedInstance.UserEntity = uManager.GetAllItems();
         }
 
-        void ExecuteLoginCall()
+        private void ExecuteLoginCall()
         {
             Login().ContinueWith(task =>
             {
@@ -494,12 +492,12 @@ namespace myTNB
                 {
                     if (_authenticationList != null && _authenticationList?.d != null)
                     {
-                        var userAuthenticationModel = _authenticationList.d;
+                        UserAuthenticationDataModel userAuthenticationModel = _authenticationList.d;
                         if (userAuthenticationModel?.isError == "false" && userAuthenticationModel?.status != "failed")
                         {
                             SetLoginLocalData();
-                            var sharedPreference = NSUserDefaults.StandardUserDefaults;
-                            var isPasswordResetCodeSent = sharedPreference.BoolForKey("isPasswordResetCodeSent");
+                            NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                            bool isPasswordResetCodeSent = sharedPreference.BoolForKey("isPasswordResetCodeSent");
                             if (isPasswordResetCodeSent)
                             {
                                 //Display Password Reset
@@ -568,11 +566,11 @@ namespace myTNB
             ActivityIndicator.Hide();
         }
 
-        Task Login()
+        private Task Login()
         {
             return Task.Factory.StartNew(() =>
             {
-                var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
                 DataManager.DataManager.SharedInstance.FCMToken = sharedPreference.StringForKey("FCMToken");
                 DataManager.DataManager.SharedInstance.UDID = UIDevice.CurrentDevice.IdentifierForVendor.AsString();
                 ServiceManager serviceManager = new ServiceManager();
@@ -597,7 +595,7 @@ namespace myTNB
             });
         }
 
-        void ExecuteGetBillAccountDetailsCall()
+        private void ExecuteGetBillAccountDetailsCall()
         {
             GetBillingAccountDetails().ContinueWith(task =>
             {
@@ -629,7 +627,7 @@ namespace myTNB
             });
         }
 
-        Task GetBillingAccountDetails()
+        private Task GetBillingAccountDetails()
         {
             return Task.Factory.StartNew(() =>
             {
@@ -643,20 +641,20 @@ namespace myTNB
             });
         }
 
-        void SetupSubViews()
+        private void SetupSubViews()
         {
             //Setup Corner Radius
             lblEmailTitle.Hidden = txtFieldEmail.Text.Length == 0;
             lblPasswordTitle.Hidden = txtFieldPassword.Text.Length == 0;
         }
 
-        void dismissKeyBoard()
+        private void dismissKeyBoard()
         {
             txtFieldEmail.ResignFirstResponder();
             txtFieldPassword.ResignFirstResponder();
         }
 
-        void ShowForgotPassword()
+        private void ShowForgotPassword()
         {
             UIStoryboard storyBoard = UIStoryboard.FromName("ForgotPassword", null);
             ForgotPasswordViewController viewController =
@@ -666,17 +664,17 @@ namespace myTNB
             PresentViewController(navController, true, null);
         }
 
-        void ShowRegister()
+        private void ShowRegister()
         {
             DisplayPage("Registration", "RegistrationViewController");
         }
 
-        void OnDismiss()
+        private void OnDismiss()
         {
             this.DismissViewController(true, null);
         }
 
-        void DisplayPage(string storyboardName, string storyboardID)
+        private void DisplayPage(string storyboardName, string storyboardID)
         {
             UIStoryboard storyBoard = UIStoryboard.FromName(storyboardName, null);
             UIViewController viewController =
@@ -686,7 +684,7 @@ namespace myTNB
             PresentViewController(navController, true, null);
         }
 
-        void ExecuteGetCutomerRecordsCall()
+        private void ExecuteGetCutomerRecordsCall()
         {
             ServiceCall.GetAccounts().ContinueWith(task =>
             {

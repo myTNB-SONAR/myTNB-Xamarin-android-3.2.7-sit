@@ -312,7 +312,7 @@ namespace myTNB
             _lblFeedbackTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewFeedback.Frame.Width, 12),
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetI18NValue(FeedbackConstants.I18N_Feedback)
+                AttributedText = AttributedStringUtility.GetAttributedString(GetI18NValue(FeedbackConstants.I18N_Feedback)
                     , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
@@ -348,7 +348,7 @@ namespace myTNB
             _lblFeedbackError = new UILabel
             {
                 Frame = new CGRect(0, _feedbackTextView.Frame.Height, _feedbackTextView.Frame.Width - 36, 14),
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetI18NValue(FeedbackConstants.I18N_InvalidFeedback)
+                AttributedText = AttributedStringUtility.GetAttributedString(GetI18NValue(FeedbackConstants.I18N_InvalidFeedback)
                     , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true

@@ -117,7 +117,7 @@ namespace myTNB.Registration
             txtFieldICNo = new UITextField
             {
                 Frame = new CGRect(0, 12, viewICNumber.Frame.Width, 24),
-                AttributedPlaceholder = AttributedStringUtility.GetAttributedStringV2(GetCommonI18NValue(Constants.Common_IDNumber)
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetCommonI18NValue(Constants.Common_IDNumber)
                     , AttributedStringUtility.AttributedStringType.Value),
                 TextColor = MyTNBColor.TunaGrey()
             };
@@ -136,7 +136,7 @@ namespace myTNB.Registration
             lblMobileNoHint = new UILabel
             {
                 Frame = new CGRect(0, 37, viewMobileNumber.Frame.Width, 14),
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetHintI18NValue(Constants.Hint_MobileNumber)
+                AttributedText = AttributedStringUtility.GetAttributedString(GetHintI18NValue(Constants.Hint_MobileNumber)
                     , AttributedStringUtility.AttributedStringType.Hint),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
@@ -186,7 +186,7 @@ namespace myTNB.Registration
             lblPasswordHint = new UILabel
             {
                 Frame = new CGRect(0, 37, viewPassword.Frame.Width, 14),
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetHintI18NValue(Constants.Hint_Password)
+                AttributedText = AttributedStringUtility.GetAttributedString(GetHintI18NValue(Constants.Hint_Password)
                     , AttributedStringUtility.AttributedStringType.Hint),
                 TextAlignment = UITextAlignment.Left
             };
@@ -195,7 +195,7 @@ namespace myTNB.Registration
             txtFieldPassword = new UITextField
             {
                 Frame = new CGRect(0, 12, viewPassword.Frame.Width - 30, 24),
-                AttributedPlaceholder = AttributedStringUtility.GetAttributedStringV2(GetCommonI18NValue(Constants.Common_Password)
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetCommonI18NValue(Constants.Common_Password)
                     , AttributedStringUtility.AttributedStringType.Value),
                 TextColor = MyTNBColor.TunaGrey()
             };
@@ -238,7 +238,7 @@ namespace myTNB.Registration
             txtFieldConfirmPassword = new UITextField
             {
                 Frame = new CGRect(0, 12, viewConfirmPassword.Frame.Width - 30, 24),
-                AttributedPlaceholder = AttributedStringUtility.GetAttributedStringV2(GetCommonI18NValue(Constants.Common_ConfirmPassword)
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetCommonI18NValue(Constants.Common_ConfirmPassword)
                     , AttributedStringUtility.AttributedStringType.Value),
                 TextColor = MyTNBColor.TunaGrey()
             };
@@ -693,7 +693,7 @@ namespace myTNB.Registration
             return new UILabel
             {
                 Frame = new CGRect(0, 0, View.Frame.Width - 36, 12),
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(key
+                AttributedText = AttributedStringUtility.GetAttributedString(key
                     , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left
             };
@@ -704,7 +704,7 @@ namespace myTNB.Registration
             return new UILabel
             {
                 Frame = new CGRect(0, 37, View.Frame.Width - 36, 14),
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(key
+                AttributedText = AttributedStringUtility.GetAttributedString(key
                     , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left
             };
@@ -714,7 +714,7 @@ namespace myTNB.Registration
             return new UITextField
             {
                 Frame = new CGRect(0, 12, View.Frame.Width - 36, 24),
-                AttributedPlaceholder = AttributedStringUtility.GetAttributedStringV2(key
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(key
                         , AttributedStringUtility.AttributedStringType.Value),
                 TextColor = MyTNBColor.TunaGrey()
             };

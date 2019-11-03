@@ -22,7 +22,7 @@ namespace myTNB
             base.ViewDidAppear(animated);
         }
 
-        void SetSubviews()
+        private void SetSubviews()
         {
             UIImageView imgLogo = new UIImageView(new CGRect(GetXLocationToCenterObject(GetScaledWidth(40F), View)
                 , DeviceHelper.GetStatusBarHeight() + GetScaledHeight(16F), GetScaledWidth(40F), GetScaledHeight(40F)))
@@ -186,16 +186,6 @@ namespace myTNB
 
             viewFeedback.AddSubviews(new UIView[] { imgFeedback, lblFeedback });
 
-            UILabel lblNote = new UILabel(new CGRect(0, GetYLocationFromFrame(viewCallUs.Frame, 19F), viewQuickAccess.Frame.Width, GetScaledHeight(18F)))
-            {
-                Text = "Login_Note".Translate(),
-                TextAlignment = UITextAlignment.Center,
-                TextColor = MyTNBColor.WaterBlueTwo,
-                Font = TNBFont.MuseoSans_12_500,
-                UserInteractionEnabled = true,
-                Hidden = true //TO DO: show label and set appropriate text and action
-            };
-
             viewFindUs.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 GoToFindUs();
@@ -211,12 +201,7 @@ namespace myTNB
                 CallCustomerService();
             }));
 
-            lblNote.AddGestureRecognizer(new UITapGestureRecognizer(() =>
-            {
-                Debug.WriteLine("tap on label action");
-            }));
-
-            viewQuickAccess.AddSubviews(new UIView[] { lblQuickAccess, viewFindUs, viewCallUs, viewFeedback, lblNote });
+            viewQuickAccess.AddSubviews(new UIView[] { lblQuickAccess, viewFindUs, viewCallUs, viewFeedback });
 
             View.AddSubviews(new UIView[] { imgHeader, imgLogo, lblWelcome
                 , lblSubtitle, viewCTA, viewLine, viewQuickAccess});
@@ -233,7 +218,7 @@ namespace myTNB
             view.Layer.ShadowPath = UIBezierPath.FromRect(view.Bounds).CGPath;
         }
 
-        internal void OnRegister()
+        private void OnRegister()
         {
             UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
             UIViewController viewController =
@@ -243,7 +228,7 @@ namespace myTNB
             PresentViewController(navController, true, null);
         }
 
-        internal void OnLogin()
+        private void OnLogin()
         {
             UIStoryboard storyBoard = UIStoryboard.FromName("Login", null);
             UIViewController loginVC = storyBoard.InstantiateViewController("LoginViewController") as UIViewController;
@@ -251,29 +236,7 @@ namespace myTNB
             ShowViewController(loginVC, this);
         }
 
-        void ShowBrowser(string url)
-        {
-            if (!string.IsNullOrEmpty(url) && !string.IsNullOrWhiteSpace(url))
-            {
-                string title = "Login_Promotions".Translate();
-                UIStoryboard storyBoard = UIStoryboard.FromName("Browser", null);
-                BrowserViewController viewController =
-                    storyBoard.InstantiateViewController("BrowserViewController") as BrowserViewController;
-                if (viewController != null)
-                {
-                    viewController.NavigationTitle = title;
-                    viewController.URL = url;
-                    viewController.IsDelegateNeeded = false;
-                    UINavigationController navController = new UINavigationController(viewController);
-                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                    PresentViewController(navController, true, null);
-                }
-                return;
-            }
-            AlertHandler.DisplayServiceError(this, string.Empty);
-        }
-
-        void CallCustomerService()
+        private void CallCustomerService()
         {
             if (DataManager.DataManager.SharedInstance.WebLinks != null)
             {
@@ -289,10 +252,10 @@ namespace myTNB
                     }
                 }
             }
-            AlertHandler.DisplayServiceError(this, string.Empty);
+            DisplayServiceError(string.Empty);
         }
 
-        void GoToFindUs()
+        private void GoToFindUs()
         {
             DataManager.DataManager.SharedInstance.CurrentStoreTypeIndex = 0;
             DataManager.DataManager.SharedInstance.PreviousStoreTypeIndex = 0;
@@ -306,7 +269,7 @@ namespace myTNB
             PresentViewController(navController, true, null);
         }
 
-        void GoToFeedback()
+        private void GoToFeedback()
         {
             DataManager.DataManager.SharedInstance.IsPreloginFeedback = true;
             UIStoryboard storyBoard = UIStoryboard.FromName("Dashboard", null);

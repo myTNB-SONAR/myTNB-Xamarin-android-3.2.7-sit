@@ -24,10 +24,10 @@ namespace myTNB
             UIApplication.SharedApplication.RegisterForRemoteNotifications();
             InstanceId.Notifications.ObserveTokenRefresh((sender, e) =>
             {
-                var token = InstanceId.SharedInstance.Token;
+                string token = InstanceId.SharedInstance.Token;
                 Debug.WriteLine("FCM Token: " + token);
                 DataManager.DataManager.SharedInstance.FCMToken = token;
-                var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
                 sharedPreference.SetString(token, "FCMToken");
                 sharedPreference.Synchronize();
                 ConnectToFCM();
@@ -57,25 +57,24 @@ namespace myTNB
                     if (PushNotificationCache.IsODN || PushNotificationCache.IsValidEmail)
                     {
                         UIStoryboard storyBoard = UIStoryboard.FromName("PushNotification", null);
-                        var viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
-                        var navController = new UINavigationController(viewController);
+                        PushNotificationViewController viewController = storyBoard.InstantiateViewController("PushNotificationViewController") as PushNotificationViewController;
+                        UINavigationController navController = new UINavigationController(viewController);
 
-                        var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
-                        var topVc = AppDelegate.GetTopViewController(baseRootVc);
+                        UIViewController baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                        UIViewController topVc = AppDelegate.GetTopViewController(baseRootVc);
 
                         if (topVc != null)
                         {
                             if (!(topVc is DashboardHomeViewController) && !(topVc is DashboardViewController))
                             {
-                                var tabBar = ViewHelper.DismissControllersAndSelectTab(topVc, 0, false, true);
-
+                                HomeTabBarController tabBar = ViewHelper.DismissControllersAndSelectTab(topVc, 0, false, true);
                                 if (tabBar != null)
                                 {
                                     if (tabBar.SelectedViewController is DashboardNavigationController selVc)
                                     {
                                         if (selVc != null && selVc.ViewControllers.Length > 0)
                                         {
-                                            var vc = selVc.ViewControllers[0];
+                                            UIViewController vc = selVc.ViewControllers[0];
 
                                             if ((vc is DashboardHomeViewController) || (vc is DashboardViewController))
                                             {
@@ -189,11 +188,11 @@ namespace myTNB
                 {
                     apiKeyID = TNBGlobal.API_KEY_ID
                 };
-                var response = serviceManager.OnExecuteAPI<NotificationTypeResponseModel>("GetAppNotificationTypes", requestParameter);
+                NotificationTypeResponseModel response = serviceManager.OnExecuteAPI<NotificationTypeResponseModel>("GetAppNotificationTypes", requestParameter);
                 DataManager.DataManager.SharedInstance.NotificationGeneralTypes = response?.d?.data;
                 NotificationPreferenceModel allNotificationItem = new NotificationPreferenceModel
                 {
-                    Title = "PushNotification_AllNotifications".Translate(),
+                    Title = LanguageUtility.GetCommonI18NValue(Constants.Common_AllNotifications),
                     Id = "all"
                 };
                 if (DataManager.DataManager.SharedInstance.NotificationGeneralTypes != null)

@@ -22,5 +22,7 @@
         public static string I18N_DontHaveAcct = "dontHaveAcct";
         public static string I18N_RegisterAcctNow = "registerAcctNow";
         public static string I18N_LogIn = "login";
+        public static string I18N_EmailRequired = "emailRequired";
+        public static string I18N_PasswordRequired = "passwordRequired";
     }
 }

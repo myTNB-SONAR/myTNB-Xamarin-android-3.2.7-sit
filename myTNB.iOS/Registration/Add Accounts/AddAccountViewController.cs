@@ -87,9 +87,9 @@ namespace myTNB.Registration
                 //viewMaidenName.Hidden = false;
                 lblICNoTitle.Text = GetI18NValue(AddAccountConstants.I18N_OwnerICNumber).ToUpper();
                 lblICNoError.Text = GetErrorI18NValue(Constants.Error_InvalidICNumber);
-                lblNicknameHint.AttributedText = AttributedStringUtility.GetAttributedStringV2(GetHintI18NValue(Constants.Hint_Nickname)
+                lblNicknameHint.AttributedText = AttributedStringUtility.GetAttributedString(GetHintI18NValue(Constants.Hint_Nickname)
                     , AttributedStringUtility.AttributedStringType.Hint);
-                txtFieldICNo.AttributedPlaceholder = AttributedStringUtility.GetAttributedStringV2(GetI18NValue(AddAccountConstants.I18N_OwnerICNumber)
+                txtFieldICNo.AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetI18NValue(AddAccountConstants.I18N_OwnerICNumber)
                     , AttributedStringUtility.AttributedStringType.Value);
             }
             else
@@ -97,9 +97,9 @@ namespace myTNB.Registration
                 //viewMaidenName.Hidden = true;
                 lblICNoTitle.Text = GetI18NValue(AddAccountConstants.I18N_ROCNumber).ToUpper();
                 lblICNoError.Text = GetErrorI18NValue(Constants.Error_InvalidROCNumber);
-                lblNicknameHint.AttributedText = AttributedStringUtility.GetAttributedStringV2(GetHintI18NValue(Constants.Hint_BusinessNickname)
+                lblNicknameHint.AttributedText = AttributedStringUtility.GetAttributedString(GetHintI18NValue(Constants.Hint_BusinessNickname)
                     , AttributedStringUtility.AttributedStringType.Hint);
-                txtFieldICNo.AttributedPlaceholder = AttributedStringUtility.GetAttributedStringV2(GetI18NValue(AddAccountConstants.I18N_ROCNumber)
+                txtFieldICNo.AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetI18NValue(AddAccountConstants.I18N_ROCNumber)
                     , AttributedStringUtility.AttributedStringType.Value);
             }
             //viewMaidenName.Hidden = true;
@@ -318,7 +318,7 @@ namespace myTNB.Registration
                     {
                         string errText = !isFormatValid ? GetErrorI18NValue(Constants.Error_InvalidNickname)
                             : GetErrorI18NValue(Constants.Error_DuplicateNickname);
-                        textFieldError.AttributedText = AttributedStringUtility.GetAttributedStringV2(errText
+                        textFieldError.AttributedText = AttributedStringUtility.GetAttributedString(errText
                             , AttributedStringUtility.AttributedStringType.Error);
                     }
                 }
@@ -427,7 +427,7 @@ namespace myTNB.Registration
             lblAccountNoTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, viewAccountNo.Frame.Width, 12),
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetCommonI18NValue(Constants.Common_AccountNo)
+                AttributedText = AttributedStringUtility.GetAttributedString(GetCommonI18NValue(Constants.Common_AccountNo)
                     , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left
             };
@@ -436,7 +436,7 @@ namespace myTNB.Registration
             lblAccountNoError = new UILabel
             {
                 Frame = new CGRect(0, 37, viewAccountNo.Frame.Width, 14),
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetErrorI18NValue(Constants.Error_AccountLength)
+                AttributedText = AttributedStringUtility.GetAttributedString(GetErrorI18NValue(Constants.Error_AccountLength)
                     , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left
             };
@@ -445,7 +445,7 @@ namespace myTNB.Registration
             txtFieldAccountNo = new UITextField
             {
                 Frame = new CGRect(0, 12, viewAccountNo.Frame.Width - 30, 24),
-                AttributedPlaceholder = AttributedStringUtility.GetAttributedStringV2(GetCommonI18NValue(Constants.Common_AccountNo)
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetCommonI18NValue(Constants.Common_AccountNo)
                     , AttributedStringUtility.AttributedStringType.Value),
                 TextColor = MyTNBColor.TunaGrey()
             };
@@ -507,7 +507,7 @@ namespace myTNB.Registration
             lblNicknameTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, viewNickname.Frame.Width, 12),
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetCommonI18NValue(Constants.Common_AccountNickname)
+                AttributedText = AttributedStringUtility.GetAttributedString(GetCommonI18NValue(Constants.Common_AccountNickname)
                     , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left
             };
@@ -516,7 +516,7 @@ namespace myTNB.Registration
             lblNicknameError = new UILabel
             {
                 Frame = new CGRect(0, 37, viewNickname.Frame.Width, 14),
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetErrorI18NValue(Constants.Error_InvalidNickname)
+                AttributedText = AttributedStringUtility.GetAttributedString(GetErrorI18NValue(Constants.Error_InvalidNickname)
                     , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left
             };
@@ -525,7 +525,7 @@ namespace myTNB.Registration
             lblNicknameHint = new UILabel
             {
                 Frame = new CGRect(0, 37, viewNickname.Frame.Width, 14),
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetHintI18NValue(Constants.Hint_Nickname)
+                AttributedText = AttributedStringUtility.GetAttributedString(GetHintI18NValue(Constants.Hint_Nickname)
                     , AttributedStringUtility.AttributedStringType.Hint),
                 TextAlignment = UITextAlignment.Left
             };
@@ -534,7 +534,7 @@ namespace myTNB.Registration
             txtFieldNickname = new UITextField
             {
                 Frame = new CGRect(0, 12, viewNickname.Frame.Width, 24),
-                AttributedPlaceholder = AttributedStringUtility.GetAttributedStringV2(GetCommonI18NValue(Constants.Common_AccountNickname)
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetCommonI18NValue(Constants.Common_AccountNickname)
                     , AttributedStringUtility.AttributedStringType.Value),
                 TextColor = MyTNBColor.TunaGrey()
             };
@@ -552,7 +552,7 @@ namespace myTNB.Registration
             lblAccountTypeTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, viewAccountType.Frame.Width, 12),
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetCommonI18NValue(Constants.Common_AccountType)
+                AttributedText = AttributedStringUtility.GetAttributedString(GetCommonI18NValue(Constants.Common_AccountType)
                     , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left
             };
@@ -561,7 +561,7 @@ namespace myTNB.Registration
             lblAccountTypeError = new UILabel
             {
                 Frame = new CGRect(0, 37, viewAccountType.Frame.Width, 14),
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(GetErrorI18NValue(Constants.Error_InvalidAccountType)
+                AttributedText = AttributedStringUtility.GetAttributedString(GetErrorI18NValue(Constants.Error_InvalidAccountType)
                     , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left
             };
@@ -634,7 +634,7 @@ namespace myTNB.Registration
             txtFieldICNo = new UITextField
             {
                 Frame = new CGRect(0, 12, viewICNo.Frame.Width, 24),
-                AttributedPlaceholder = AttributedStringUtility.GetAttributedStringV2(GetI18NValue(AddAccountConstants.I18N_OwnerICNumber)
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(GetI18NValue(AddAccountConstants.I18N_OwnerICNumber)
                     , AttributedStringUtility.AttributedStringType.Value),
                 TextColor = MyTNBColor.TunaGrey()
             };

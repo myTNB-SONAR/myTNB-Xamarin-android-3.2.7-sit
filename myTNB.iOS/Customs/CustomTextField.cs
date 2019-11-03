@@ -71,7 +71,7 @@ namespace myTNB
 
             LblTitle = new UILabel(new CGRect(0, 0, ViewContainer.Frame.Width, GetScaledHeight(12)))
             {
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(Title, AttributedStringUtility.AttributedStringType.Title),
+                AttributedText = AttributedStringUtility.GetAttributedString(Title, AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = !HasValue
             };
@@ -79,7 +79,7 @@ namespace myTNB
             TextField = new UITextField
             {
                 Frame = new CGRect(0, GetScaledHeight(12), ViewContainer.Frame.Width - GetScaledWidth(30), GetScaledHeight(24)),
-                AttributedPlaceholder = AttributedStringUtility.GetAttributedStringV2(Title, AttributedStringUtility.AttributedStringType.Value),
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(Title, AttributedStringUtility.AttributedStringType.Value),
                 TextColor = TextColor,
                 SecureTextEntry = IsSecureEntry,
                 KeyboardType = KeyboardType,
@@ -97,14 +97,14 @@ namespace myTNB
 
             LblError = new UILabel(new CGRect(0, GetScaledHeight(37), ViewContainer.Frame.Width, GetScaledHeight(14)))
             {
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(Error, AttributedStringUtility.AttributedStringType.Error),
+                AttributedText = AttributedStringUtility.GetAttributedString(Error, AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true,
             };
 
             LblHint = new UILabel(new CGRect(0, GetScaledHeight(37), ViewContainer.Frame.Width, GetScaledHeight(14)))
             {
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(Hint, AttributedStringUtility.AttributedStringType.Hint),
+                AttributedText = AttributedStringUtility.GetAttributedString(Hint, AttributedStringUtility.AttributedStringType.Hint),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
             };

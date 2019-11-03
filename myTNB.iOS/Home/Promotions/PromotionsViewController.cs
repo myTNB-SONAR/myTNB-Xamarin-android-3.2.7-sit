@@ -16,20 +16,19 @@ namespace myTNB
 {
     public partial class PromotionsViewController : CustomUIViewController
     {
-        public PromotionsViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public PromotionsViewController(IntPtr handle) : base(handle) { }
 
-        public bool IsDelegateNeeded = false;
-        UIImageView imgViewNoPromotions;
-        UILabel lblDetails;
-        TitleBarComponent _titleBarComponent;
+        public bool IsDelegateNeeded;
+        private UIImageView imgViewNoPromotions;
+        private UILabel lblDetails;
+        private TitleBarComponent _titleBarComponent;
 
-        string _imageSize = string.Empty;
-        bool isPromoDetailScreen = false;
+        private string _imageSize = string.Empty;
+        private bool isPromoDetailScreen;
 
         public override void ViewDidLoad()
         {
+            PageName = PromotionConstants.Pagename_Promotion;
             NavigationController.NavigationBarHidden = true;
             base.ViewDidLoad();
             Debug.WriteLine("PROMOTION DID LOAD");
@@ -42,7 +41,7 @@ namespace myTNB
         public void LanguageDidChange(NSNotification notification)
         {
             Debug.WriteLine("DEBUG >>> PROMOTIONS LanguageDidChange");
-            _titleBarComponent?.SetTitle("Promotion_Title".Translate());
+            _titleBarComponent?.SetTitle(GetI18NValue(PromotionConstants.I18N_Title));
         }
 
         public override void ViewWillAppear(bool animated)
@@ -76,7 +75,7 @@ namespace myTNB
                             }
                             else
                             {
-                                AlertHandler.DisplayNoDataAlert(this);
+                                DisplayNoDataAlert();
                             }
                         });
                     });
@@ -98,7 +97,7 @@ namespace myTNB
             base.ViewWillDisappear(animated);
         }
 
-        Task GetPromotions()
+        private Task GetPromotions()
         {
             return Task.Factory.StartNew(() =>
             {
@@ -111,7 +110,7 @@ namespace myTNB
                     && !string.IsNullOrEmpty(promotionTimeStamp.Data[0].Timestamp)
                     && !string.IsNullOrWhiteSpace(promotionTimeStamp.Data[0].Timestamp))
                 {
-                    var sharedPreference = NSUserDefaults.StandardUserDefaults;
+                    NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
                     string currentTS = sharedPreference.StringForKey("SiteCorePromotionTimeStamp");
                     if (string.IsNullOrEmpty(currentTS) || string.IsNullOrWhiteSpace(currentTS))
                     {
@@ -158,11 +157,11 @@ namespace myTNB
         private List<PromotionsModelV2> SetValueForNullEndDate(List<PromotionsModelV2> promotions)
         {
             List<PromotionsModelV2> promotionList = new List<PromotionsModelV2>();
-            foreach (var promo in promotions)
+            foreach (PromotionsModelV2 promo in promotions)
             {
                 if (string.IsNullOrEmpty(promo.PromoEndDate))
                 {
-                    var nowDate = DateTime.Today.Date;
+                    DateTime nowDate = DateTime.Today.Date;
                     DateTime endDate = nowDate.AddDays(90);
                     promo.PromoEndDate = endDate.ToString("yyyyMMdd");
                 }
@@ -171,19 +170,19 @@ namespace myTNB
             return promotionList;
         }
 
-        internal void SetNavigationBar()
+        private void SetNavigationBar()
         {
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, 64, true);
             UIView headerView = gradientViewComponent.GetUI();
             _titleBarComponent = new TitleBarComponent(headerView);
             UIView titleBarView = _titleBarComponent.GetUI();
-            _titleBarComponent.SetTitle("Promotion_Title".Translate());
+            _titleBarComponent.SetTitle(GetI18NValue(PromotionConstants.I18N_Title));
             _titleBarComponent.SetPrimaryVisibility(true);
             headerView.AddSubview(titleBarView);
             View.AddSubview(headerView);
         }
 
-        void SetSubViews()
+        private void SetSubViews()
         {
             if (imgViewNoPromotions != null)
             {
@@ -212,7 +211,7 @@ namespace myTNB
             }
         }
 
-        void SetNoPromotionScreen()
+        private void SetNoPromotionScreen()
         {
             imgViewNoPromotions = new UIImageView(new CGRect(DeviceHelper.GetScaledSizeByWidth(26.6f)
                 , DeviceHelper.GetScaledSizeByHeight(32.6f), DeviceHelper.GetScaledSizeByWidth(46.9f)
@@ -224,7 +223,7 @@ namespace myTNB
             lblDetails = new UILabel(new CGRect(44, DeviceHelper.GetScaledSizeByHeight(61.8f)
                 , View.Frame.Width - 88, 32))
             {
-                Text = "Promotion_NoPromotion".Translate(),
+                Text = GetI18NValue(PromotionConstants.I18N_NoPromotions),
                 TextColor = MyTNBColor.SilverChalice,
                 Font = MyTNBFont.MuseoSans12,
                 Lines = 2,

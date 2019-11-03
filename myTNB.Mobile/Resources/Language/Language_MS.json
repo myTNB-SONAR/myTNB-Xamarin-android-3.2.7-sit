@@ -95,7 +95,10 @@
     "close": "Close",
     "characterLeft": "{0} character left",
     "charactersLeft": "{0} characters left",
-    "comments": "Comments"
+    "comments": "Comments",
+    "accountHolder": "Account Holder's Name",
+    "skip": "Skip",
+    "details": "Details"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -132,7 +135,10 @@
     "noDataConnectionTitle": "No Internet Connection",
     "noDataConnectionMessage": "Please check your internet connection and try again.",
     "defaultErrorTitle": "Error",
-    "defaultErrorMessage": "Sorry, something went wrong. Please try again later."
+    "defaultErrorMessage": "Sorry, something went wrong. Please try again later.",
+    "numberNotAvailable": "Number is not available right now. Please try again later.",
+    "ratingNotAvailable": "Rating is not available right now. Please try again later.",
+    "shareNotAvailable": "Sharing is not available right now. Please try again later."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -566,7 +572,9 @@
     "forgotPassword": "Terlupa kata laluan?",
     "dontHaveAcct": "Tidak mempunyai akaun myTNB?",
     "registerAcctNow": "Daftar akaun anda sekarang.",
-    "login": "Log masuk"
+    "login": "Log masuk",
+    "emailRequired": "Email field is required.",
+    "passwordRequired": "Password field is required."
   },
   "ForgotPassword": {
     "title": "Set Semula Kata Laluan",
@@ -736,6 +744,9 @@
     "poleNumber": "Pole No."
     //Not Supported by MS Translation End
   },
+  "SubmittedFeedback": {
+    "noFeedback": "You have not submittted any feedback."
+  },
   "Rating": {
     "title": "Rating",
     "pay": "Bayar"
@@ -744,5 +755,9 @@
     "description": "Your rating will help us serve you better.",
     "thankyou": "Thank you.",
     "backToDashboard": "Back to Dashboard"
+  },
+  "Promotion": {
+    "title": "Promotions",
+    "noPromotions": "No promotions currently. Check back later!"
   }
 }

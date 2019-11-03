@@ -9,8 +9,8 @@ namespace myTNB.Home.Feedback
 {
     public class SubmittedFeedbackDataSource : UITableViewSource
     {
-        SubmittedFeedbackViewController _controller;
-        List<SubmittedFeedbackDataModel> _submittedFeedbacks = new List<SubmittedFeedbackDataModel>();
+        private SubmittedFeedbackViewController _controller;
+        private List<SubmittedFeedbackDataModel> _submittedFeedbacks = new List<SubmittedFeedbackDataModel>();
 
         public SubmittedFeedbackDataSource(SubmittedFeedbackViewController controller, List<SubmittedFeedbackDataModel> submittedFeedbacks)
         {
@@ -20,14 +20,13 @@ namespace myTNB.Home.Feedback
 
         public override UITableViewCell GetCell(UITableView tableView, NSIndexPath indexPath)
         {
-            var cell = tableView.DequeueReusableCell("SubmittedFeedbackCell", indexPath) as SubmittedFeedbackCell;
+            SubmittedFeedbackCell cell = tableView.DequeueReusableCell("SubmittedFeedbackCell", indexPath) as SubmittedFeedbackCell;
             cell.SeparatorInset = new UIEdgeInsets(0, 0, 0, 0);
             cell.LayoutMargins = new UIEdgeInsets(0, 0, 0, 0);
             cell.UpdateStyle();
             if (_submittedFeedbacks != null && _submittedFeedbacks.Count != 0)
             {
-                var feedback = _submittedFeedbacks[indexPath.Row];
-
+                SubmittedFeedbackDataModel feedback = _submittedFeedbacks[indexPath.Row];
                 cell.FeedbackTypeLabel.Text = feedback.FeedbackCategoryName;
                 cell.FeedbackDateLabel.Text = GetFormattedDate(feedback.DateCreated);
                 cell.FeedbackDetailsLabel.Text = feedback.FeedbackMessage;

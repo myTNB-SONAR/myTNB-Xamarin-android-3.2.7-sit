@@ -73,7 +73,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblFeedbackTypeTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewFeedbackType.Frame.Width, 12),
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(_controller.GetI18NValue(FeedbackConstants.I18N_FeedbackType)
+                AttributedText = AttributedStringUtility.GetAttributedString(_controller.GetI18NValue(FeedbackConstants.I18N_FeedbackType)
                     , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left
             };
@@ -81,7 +81,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblFeedbackTypeError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewFeedbackType.Frame.Width, 14),
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(_controller.GetI18NValue(FeedbackConstants.I18N_InvalidFeedbackType)
+                AttributedText = AttributedStringUtility.GetAttributedString(_controller.GetI18NValue(FeedbackConstants.I18N_InvalidFeedbackType)
                     , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
@@ -94,7 +94,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
 
             _lblFeedbackType = new UILabel(new CGRect(30, 12, _viewFeedbackType.Frame.Width, 24))
             {
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(_controller.GetI18NValue(FeedbackConstants.I18N_FeedbackType), AttributedStringUtility.AttributedStringType.Value),
+                AttributedText = AttributedStringUtility.GetAttributedString(_controller.GetI18NValue(FeedbackConstants.I18N_FeedbackType), AttributedStringUtility.AttributedStringType.Value),
                 //Noted: Temp Number, will create a list for this later.
                 Font = MyTNBFont.MuseoSans18_300,
                 TextColor = MyTNBColor.TunaGrey()

@@ -75,7 +75,7 @@ namespace myTNB
 
             UIButton btnSkip = new UIButton(UIButtonType.Custom);
             btnSkip.Frame = new CGRect(0, view.Frame.Height - buttonHeight, buttonWidth, buttonHeight);
-            btnSkip.SetAttributedTitle(LabelHelper.CreateAttributedString("Common_Skip".Translate()
+            btnSkip.SetAttributedTitle(LabelHelper.CreateAttributedString(LanguageUtility.GetCommonI18NValue(Constants.Common_Skip)
                 , MyTNBFont.MuseoSans14_300, MyTNBColor.PowerBlue), UIControlState.Normal);
             btnSkip.BackgroundColor = UIColor.White;
             btnSkip.TouchDown += OnTapSkip;
@@ -83,7 +83,7 @@ namespace myTNB
 
             UIButton btnDetails = new UIButton(UIButtonType.Custom);
             btnDetails.Frame = new CGRect(view.Frame.Width - buttonWidth, view.Frame.Height - buttonHeight, buttonWidth, buttonHeight);
-            btnDetails.SetAttributedTitle(LabelHelper.CreateAttributedString("Common_Details".Translate()
+            btnDetails.SetAttributedTitle(LabelHelper.CreateAttributedString(LanguageUtility.GetCommonI18NValue(Constants.Common_Details)
                 , MyTNBFont.MuseoSans14_300, MyTNBColor.PowerBlue), UIControlState.Normal);
             btnDetails.BackgroundColor = UIColor.White;
             btnDetails.TouchDown += OnTapDetails;

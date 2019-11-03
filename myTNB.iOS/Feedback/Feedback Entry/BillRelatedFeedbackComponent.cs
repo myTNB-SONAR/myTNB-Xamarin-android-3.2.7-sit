@@ -72,7 +72,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblAccountNoTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewAccountNo.Frame.Width, 12),
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(_controller.GetCommonI18NValue(Constants.Common_AccountNo)
+                AttributedText = AttributedStringUtility.GetAttributedString(_controller.GetCommonI18NValue(Constants.Common_AccountNo)
                 , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
@@ -81,7 +81,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblAccountNoError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewAccountNo.Frame.Width, 14),
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(_controller.GetErrorI18NValue(Constants.Error_AccountLength)
+                AttributedText = AttributedStringUtility.GetAttributedString(_controller.GetErrorI18NValue(Constants.Error_AccountLength)
                     , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
@@ -161,7 +161,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblAccountNoTitle = new UILabel
             {
                 Frame = new CGRect(0, 0, _viewAccountNo.Frame.Width, 12),
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(_controller.GetCommonI18NValue(Constants.Common_AccountNo)
+                AttributedText = AttributedStringUtility.GetAttributedString(_controller.GetCommonI18NValue(Constants.Common_AccountNo)
                     , AttributedStringUtility.AttributedStringType.Title),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
@@ -170,7 +170,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _lblAccountNoError = new UILabel
             {
                 Frame = new CGRect(0, 37, _viewAccountNo.Frame.Width, 14),
-                AttributedText = AttributedStringUtility.GetAttributedStringV2(_controller.GetErrorI18NValue(Constants.Error_AccountLength)
+                AttributedText = AttributedStringUtility.GetAttributedString(_controller.GetErrorI18NValue(Constants.Error_AccountLength)
                     , AttributedStringUtility.AttributedStringType.Error),
                 TextAlignment = UITextAlignment.Left,
                 Hidden = true
@@ -179,7 +179,7 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             _txtFieldAccountNo = new UITextField
             {
                 Frame = new CGRect(0, 12, _viewAccountNo.Frame.Width, 24),
-                AttributedPlaceholder = AttributedStringUtility.GetAttributedStringV2(_controller.GetCommonI18NValue(Constants.Common_AccountNo)
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(_controller.GetCommonI18NValue(Constants.Common_AccountNo)
                     , AttributedStringUtility.AttributedStringType.Value),
                 TextColor = MyTNBColor.TunaGrey()
             };
