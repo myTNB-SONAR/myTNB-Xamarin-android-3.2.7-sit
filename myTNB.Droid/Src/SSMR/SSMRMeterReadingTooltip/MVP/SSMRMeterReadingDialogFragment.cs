@@ -115,8 +115,9 @@ namespace myTNB_Android.Src.SSMR.SSMRMeterReadingTooltip.MVP
                     indicator.Visibility = ViewStates.Gone;
                     LinearLayout.LayoutParams pagerParam = pager.LayoutParameters as LinearLayout.LayoutParams;
                     pagerParam.Height = (int)DPUtils.ConvertDPToPx(300f);
-                    txtBtnLabel.Text = this.Activity.GetString(Resource.String.tooltip_btnLabel);
                 }
+
+                txtBtnLabel.Text = this.Activity.GetString(Resource.String.tooltip_btnLabel);
 
                 txtBtnFirst.Click += GotIt_Click;
 

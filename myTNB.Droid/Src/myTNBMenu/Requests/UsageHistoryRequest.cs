@@ -12,6 +12,9 @@ namespace myTNB_Android.Src.myTNBMenu.Requests
         [JsonProperty("isOwner")]
         public string isOwner { get; set; }
 
+        [JsonProperty("accountType")]
+        public string accountType { get; set; }
+
         [JsonProperty("usrInf")]
         public UserInterface userInterface { get; set; }
     }

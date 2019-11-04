@@ -233,6 +233,18 @@ namespace myTNB_Android.Src.Login.MVP
                         SelectBillsEntity.RemoveAll();
                         MyTNBAccountManagement.GetInstance().RemoveCustomerBillingDetails();
                         UserSessions.RemoveSessionData();
+                        NewFAQParentEntity NewFAQParentManager = new NewFAQParentEntity();
+                        NewFAQParentManager.DeleteTable();
+                        SSMRMeterReadingScreensParentEntity SSMRMeterReadingScreensParentManager = new SSMRMeterReadingScreensParentEntity();
+                        SSMRMeterReadingScreensParentManager.DeleteTable();
+                        SSMRMeterReadingScreensOCROffParentEntity SSMRMeterReadingScreensOCROffParentManager = new SSMRMeterReadingScreensOCROffParentEntity();
+                        SSMRMeterReadingScreensOCROffParentManager.DeleteTable();
+                        SSMRMeterReadingThreePhaseScreensParentEntity SSMRMeterReadingThreePhaseScreensParentManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
+                        SSMRMeterReadingThreePhaseScreensParentManager.DeleteTable();
+                        SSMRMeterReadingThreePhaseScreensOCROffParentEntity SSMRMeterReadingThreePhaseScreensOCROffParentManager = new SSMRMeterReadingThreePhaseScreensOCROffParentEntity();
+                        SSMRMeterReadingThreePhaseScreensOCROffParentManager.DeleteTable();
+                        EnergySavingTipsParentEntity EnergySavingTipsParentManager = new EnergySavingTipsParentEntity();
+                        EnergySavingTipsParentManager.DeleteTable();
                         try
                         {
                             UserEntity.UpdatePhoneNumber(userResponse.Data.User.MobileNo);
@@ -519,6 +531,18 @@ namespace myTNB_Android.Src.Login.MVP
                 AccountDataEntity.RemoveAll();
                 SummaryDashBoardAccountEntity.RemoveAll();
                 SelectBillsEntity.RemoveAll();
+                NewFAQParentEntity NewFAQParentManager = new NewFAQParentEntity();
+                NewFAQParentManager.DeleteTable();
+                SSMRMeterReadingScreensParentEntity SSMRMeterReadingScreensParentManager = new SSMRMeterReadingScreensParentEntity();
+                SSMRMeterReadingScreensParentManager.DeleteTable();
+                SSMRMeterReadingScreensOCROffParentEntity SSMRMeterReadingScreensOCROffParentManager = new SSMRMeterReadingScreensOCROffParentEntity();
+                SSMRMeterReadingScreensOCROffParentManager.DeleteTable();
+                SSMRMeterReadingThreePhaseScreensParentEntity SSMRMeterReadingThreePhaseScreensParentManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
+                SSMRMeterReadingThreePhaseScreensParentManager.DeleteTable();
+                SSMRMeterReadingThreePhaseScreensOCROffParentEntity SSMRMeterReadingThreePhaseScreensOCROffParentManager = new SSMRMeterReadingThreePhaseScreensOCROffParentEntity();
+                SSMRMeterReadingThreePhaseScreensOCROffParentManager.DeleteTable();
+                EnergySavingTipsParentEntity EnergySavingTipsParentManager = new EnergySavingTipsParentEntity();
+                EnergySavingTipsParentManager.DeleteTable();
             }
             catch (Exception e)
             {

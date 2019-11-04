@@ -129,7 +129,16 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
         public override bool CameraPermissionRequired()
         {
-            return true;
+            MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
+            bool smrAccountOCRDown = SMRPopUpUtils.OnGetIsOCRDownFlag();
+            if (currentMasterData.IsOCRDown || smrAccountOCRDown)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
         }
 
         [OnClick(Resource.Id.btnSubmitReading)]
@@ -266,7 +275,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
 
             bool isOCRDisabled = false;
             MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
-            if (currentMasterData.IsOCRDown)
+            bool smrAccountOCRDown = SMRPopUpUtils.OnGetIsOCRDownFlag();
+            if (currentMasterData.IsOCRDown || smrAccountOCRDown)
             {
                 isOCRDisabled = true;
             }
@@ -298,12 +308,22 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     linearLayoutContainer.Visibility = ViewStates.Visible;
                     meterReadingInputLayout = linearLayoutContainer.FindViewById<MeterReadingInputLayout>(Resource.Id.meterReadingInputContainer);
                     meterReadingInputLayout.SetMeterId(meterReadingModel.meterReadingUnit.ToUpper());
-                    meterReadingInputLayout.SetOnValidateInput(this);
+                    meterReadingInputLayout.SetOnValidateInput(this, METER_READING_TYPE.KWH);
                     meterReadingInputLayout.InitializeInputBoxes();
 
-
-
                     meterTypeView = (TextView)linearLayoutContainer.FindViewById(Resource.Id.reading_meter_type);
+                    TextView txtPreviousMeterReading = (TextView)linearLayoutContainer.FindViewById(Resource.Id.txtPreviousMeterReading);
+                    TextView txtPreviousMeterReading1 = (TextView)linearLayoutContainer.FindViewById(Resource.Id.previous_reading_1);
+                    TextView txtPreviousMeterReading2 = (TextView)linearLayoutContainer.FindViewById(Resource.Id.previous_reading_2);
+                    TextView txtPreviousMeterReading3 = (TextView)linearLayoutContainer.FindViewById(Resource.Id.previous_reading_3);
+                    TextView txtPreviousMeterReading4 = (TextView)linearLayoutContainer.FindViewById(Resource.Id.previous_reading_4);
+                    TextView txtPreviousMeterReading5 = (TextView)linearLayoutContainer.FindViewById(Resource.Id.previous_reading_5);
+                    TextView txtPreviousMeterReading6 = (TextView)linearLayoutContainer.FindViewById(Resource.Id.previous_reading_6);
+                    TextView txtPreviousMeterReading7 = (TextView)linearLayoutContainer.FindViewById(Resource.Id.previous_reading_7);
+                    TextView txtPreviousMeterReading8 = (TextView)linearLayoutContainer.FindViewById(Resource.Id.previous_reading_8);
+
+                    TextViewUtils.SetMuseoSans300Typeface(txtPreviousMeterReading, txtPreviousMeterReading1, txtPreviousMeterReading2, txtPreviousMeterReading3, txtPreviousMeterReading4, txtPreviousMeterReading5, txtPreviousMeterReading6, txtPreviousMeterReading7, txtPreviousMeterReading8);
+                    TextViewUtils.SetMuseoSans500Typeface(meterTypeView);
                     meterTypeView.Text = meterReadingModel.meterReadingUnitDisplay;
                     meterReadingInputLayoutList.Add(meterReadingInputLayout);
                     PopulatePreviousMeterReadingValues(linearLayoutContainer,meterReadingModel);
@@ -314,10 +334,22 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     linearLayoutContainer.Visibility = ViewStates.Visible;
                     meterReadingInputLayout = linearLayoutContainer.FindViewById<MeterReadingInputLayout>(Resource.Id.meterReadingInputContainer);
                     meterReadingInputLayout.SetMeterId(meterReadingModel.meterReadingUnit.ToUpper());
-                    meterReadingInputLayout.SetOnValidateInput(this);
+                    meterReadingInputLayout.SetOnValidateInput(this, METER_READING_TYPE.KW);
                     meterReadingInputLayout.InitializeInputBoxes();
 
                     meterTypeView = (TextView)linearLayoutContainer.FindViewById(Resource.Id.reading_meter_type);
+                    TextView txtPreviousMeterReading = (TextView)linearLayoutContainer.FindViewById(Resource.Id.txtPreviousMeterReading);
+                    TextView txtPreviousMeterReading1 = (TextView)linearLayoutContainer.FindViewById(Resource.Id.previous_reading_1);
+                    TextView txtPreviousMeterReading2 = (TextView)linearLayoutContainer.FindViewById(Resource.Id.previous_reading_2);
+                    TextView txtPreviousMeterReading3 = (TextView)linearLayoutContainer.FindViewById(Resource.Id.previous_reading_3);
+                    TextView txtPreviousMeterReading4 = (TextView)linearLayoutContainer.FindViewById(Resource.Id.previous_reading_4);
+                    TextView txtPreviousMeterReading5 = (TextView)linearLayoutContainer.FindViewById(Resource.Id.previous_reading_5);
+                    TextView txtPreviousMeterReading6 = (TextView)linearLayoutContainer.FindViewById(Resource.Id.previous_reading_6);
+                    TextView txtPreviousMeterReading7 = (TextView)linearLayoutContainer.FindViewById(Resource.Id.previous_reading_7);
+                    TextView txtPreviousMeterReading8 = (TextView)linearLayoutContainer.FindViewById(Resource.Id.previous_reading_8);
+
+                    TextViewUtils.SetMuseoSans300Typeface(txtPreviousMeterReading, txtPreviousMeterReading1, txtPreviousMeterReading2, txtPreviousMeterReading3, txtPreviousMeterReading4, txtPreviousMeterReading5, txtPreviousMeterReading6, txtPreviousMeterReading7, txtPreviousMeterReading8);
+                    TextViewUtils.SetMuseoSans500Typeface(meterTypeView);
                     meterTypeView.Text = meterReadingModel.meterReadingUnitDisplay;
                     meterReadingInputLayoutList.Add(meterReadingInputLayout);
                     PopulatePreviousMeterReadingValues(linearLayoutContainer, meterReadingModel);
@@ -328,10 +360,22 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     linearLayoutContainer.Visibility = ViewStates.Visible;
                     meterReadingInputLayout = linearLayoutContainer.FindViewById<MeterReadingInputLayout>(Resource.Id.meterReadingInputContainer);
                     meterReadingInputLayout.SetMeterId(meterReadingModel.meterReadingUnit.ToUpper());
-                    meterReadingInputLayout.SetOnValidateInput(this);
+                    meterReadingInputLayout.SetOnValidateInput(this, METER_READING_TYPE.KVARH);
                     meterReadingInputLayout.InitializeInputBoxes();
 
                     meterTypeView = (TextView)linearLayoutContainer.FindViewById(Resource.Id.reading_meter_type);
+                    TextView txtPreviousMeterReading = (TextView)linearLayoutContainer.FindViewById(Resource.Id.txtPreviousMeterReading);
+                    TextView txtPreviousMeterReading1 = (TextView)linearLayoutContainer.FindViewById(Resource.Id.previous_reading_1);
+                    TextView txtPreviousMeterReading2 = (TextView)linearLayoutContainer.FindViewById(Resource.Id.previous_reading_2);
+                    TextView txtPreviousMeterReading3 = (TextView)linearLayoutContainer.FindViewById(Resource.Id.previous_reading_3);
+                    TextView txtPreviousMeterReading4 = (TextView)linearLayoutContainer.FindViewById(Resource.Id.previous_reading_4);
+                    TextView txtPreviousMeterReading5 = (TextView)linearLayoutContainer.FindViewById(Resource.Id.previous_reading_5);
+                    TextView txtPreviousMeterReading6 = (TextView)linearLayoutContainer.FindViewById(Resource.Id.previous_reading_6);
+                    TextView txtPreviousMeterReading7 = (TextView)linearLayoutContainer.FindViewById(Resource.Id.previous_reading_7);
+                    TextView txtPreviousMeterReading8 = (TextView)linearLayoutContainer.FindViewById(Resource.Id.previous_reading_8);
+
+                    TextViewUtils.SetMuseoSans300Typeface(txtPreviousMeterReading, txtPreviousMeterReading1, txtPreviousMeterReading2, txtPreviousMeterReading3, txtPreviousMeterReading4, txtPreviousMeterReading5, txtPreviousMeterReading6, txtPreviousMeterReading7, txtPreviousMeterReading8);
+                    TextViewUtils.SetMuseoSans500Typeface(meterTypeView);
                     meterTypeView.Text = meterReadingModel.meterReadingUnitDisplay;
                     meterReadingInputLayoutList.Add(meterReadingInputLayout);
                     PopulatePreviousMeterReadingValues(linearLayoutContainer, meterReadingModel);
@@ -435,7 +479,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     linearLayoutContainer = FindViewById(Resource.Id.kwhCard) as LinearLayout;
                     meterReadingInputLayout = linearLayoutContainer.FindViewById<MeterReadingInputLayout>(Resource.Id.meterReadingInputContainer);
                     meterReadingInputLayout.SetMeterId(sMRMROValidateRegisterDetails.ReadingUnit.ToUpper());
-                    meterReadingInputLayout.SetOnValidateInput(this);
+                    meterReadingInputLayout.SetOnValidateInput(this, type);
                     meterReadingInputLayoutList.Add(meterReadingInputLayout);
                     linearLayoutContainer.SetOnTouchListener(new OnMeterCardTouchListener(this));
 
@@ -448,7 +492,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     linearLayoutContainer = FindViewById(Resource.Id.kVARhCard) as LinearLayout;
                     meterReadingInputLayout = linearLayoutContainer.FindViewById<MeterReadingInputLayout>(Resource.Id.meterReadingInputContainer);
                     meterReadingInputLayout.SetMeterId(sMRMROValidateRegisterDetails.ReadingUnit.ToUpper());
-                    meterReadingInputLayout.SetOnValidateInput(this);
+                    meterReadingInputLayout.SetOnValidateInput(this, type);
                     meterReadingInputLayoutList.Add(meterReadingInputLayout);
                     linearLayoutContainer.SetOnTouchListener(new OnMeterCardTouchListener(this));
 
@@ -461,7 +505,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     linearLayoutContainer = FindViewById(Resource.Id.kwCard) as LinearLayout;
                     meterReadingInputLayout = linearLayoutContainer.FindViewById<MeterReadingInputLayout>(Resource.Id.meterReadingInputContainer);
                     meterReadingInputLayout.SetMeterId(sMRMROValidateRegisterDetails.ReadingUnit.ToUpper());
-                    meterReadingInputLayout.SetOnValidateInput(this);
+                    meterReadingInputLayout.SetOnValidateInput(this, type);
                     meterReadingInputLayoutList.Add(meterReadingInputLayout);
                     linearLayoutContainer.SetOnTouchListener(new OnMeterCardTouchListener(this));
 
@@ -657,7 +701,16 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                     meterReadingUnitList.Add(meterReadingModelList[i].meterReadingUnitDisplay);
                 }
                 string meterReadingListToString = String.Join(", ", meterReadingUnitList.ToArray());
-                threePhaseList[0].Description = String.Format(threePhaseList[0].Description, meterReadingUnitList.Count, meterReadingListToString);
+
+                try
+                {
+                    threePhaseList[0].Description = String.Format(threePhaseList[0].Description, meterReadingUnitList.Count, meterReadingListToString);
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+
                 SMRPopUpUtils.OnShowSMRMeterReadingTooltipOnActivity(false, this, SupportFragmentManager, threePhaseList);
             }
             else
@@ -691,6 +744,49 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 if (loadingOverlay != null && loadingOverlay.IsShowing)
                 {
                     loadingOverlay.Dismiss();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void ClearMeterCardValidationError(METER_READING_TYPE mType)
+        {
+            try
+            {
+                LinearLayout linearLayoutContainer;
+                TextView inlineValidationMessage;
+                if (mType == METER_READING_TYPE.KWH)
+                {
+                    linearLayoutContainer = FindViewById(Resource.Id.kwhCard) as LinearLayout;
+                    inlineValidationMessage = linearLayoutContainer.FindViewById<TextView>(Resource.Id.reading_error_validation_msg);
+                    if (inlineValidationMessage.Visibility == ViewStates.Visible)
+                    {
+                        inlineValidationMessage.Visibility = ViewStates.Gone;
+                        ResetCurrentReadingValuesColor(linearLayoutContainer);
+                    }
+                }
+                else if (mType == METER_READING_TYPE.KW)
+                {
+                    linearLayoutContainer = FindViewById(Resource.Id.kwCard) as LinearLayout;
+                    inlineValidationMessage = linearLayoutContainer.FindViewById<TextView>(Resource.Id.reading_error_validation_msg);
+                    if (inlineValidationMessage.Visibility == ViewStates.Visible)
+                    {
+                        inlineValidationMessage.Visibility = ViewStates.Gone;
+                        ResetCurrentReadingValuesColor(linearLayoutContainer);
+                    }
+                }
+                else if (mType == METER_READING_TYPE.KVARH)
+                {
+                    linearLayoutContainer = FindViewById(Resource.Id.kVARhCard) as LinearLayout;
+                    inlineValidationMessage = linearLayoutContainer.FindViewById<TextView>(Resource.Id.reading_error_validation_msg);
+                    if (inlineValidationMessage.Visibility == ViewStates.Visible)
+                    {
+                        inlineValidationMessage.Visibility = ViewStates.Gone;
+                        ResetCurrentReadingValuesColor(linearLayoutContainer);
+                    }
                 }
             }
             catch (Exception e)
@@ -783,6 +879,14 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             meterReadingInput.SetInputColor(isSuccess ? Color.ParseColor("#20bd4c") : Color.ParseColor("#e44b21"));
             TextView meterTypeView = (TextView)linearLayout.FindViewById(Resource.Id.reading_meter_type);
             meterTypeView.SetBackgroundResource(isSuccess ? Resource.Drawable.meter_reading_label_background_ready : Resource.Drawable.meter_reading_label_background_error);
+        }
+
+        public void ResetCurrentReadingValuesColor(LinearLayout linearLayout)
+        {
+            MeterReadingInputLayout meterReadingInput = linearLayout.FindViewById<MeterReadingInputLayout>(Resource.Id.meterReadingInputContainer);
+            meterReadingInput.SetInputColor(Color.ParseColor("#424141"));
+            TextView meterTypeView = (TextView)linearLayout.FindViewById(Resource.Id.reading_meter_type);
+            meterTypeView.SetBackgroundResource(Resource.Drawable.meter_reading_label_background);
         }
 
         protected override void OnResume()

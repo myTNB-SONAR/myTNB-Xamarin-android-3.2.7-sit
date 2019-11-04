@@ -37,6 +37,8 @@ using myTNB.SitecoreCMS.Model;
 using System.Threading;
 using System.Globalization;
 using Android.Graphics.Drawables;
+using myTNB_Android.Src.NewWalkthrough.MVP;
+using myTNB_Android.Src.Base;
 
 namespace myTNB_Android.Src.AppLaunch.Activity
 {
@@ -79,11 +81,21 @@ namespace myTNB_Android.Src.AppLaunch.Activity
 
             try
             {
-                if (Intent != null && Intent.Extras != null && Intent.Extras.ContainsKey("Email"))
+                if (Intent != null && Intent.Extras != null)
                 {
-                    string email = Intent.Extras.GetString("Email");
-                    UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
-                    UserSessions.SaveUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this), email);
+                    if (Intent.Extras.ContainsKey("Type"))
+                    {
+                        string notifType = Intent.Extras.GetString("Type");
+                        UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
+                        UserSessions.SaveNotificationType(PreferenceManager.GetDefaultSharedPreferences(this), notifType);
+                    }
+
+                    if (Intent.Extras.ContainsKey("Email"))
+                    {
+                        string email = Intent.Extras.GetString("Email");
+                        UserSessions.SetHasNotification(PreferenceManager.GetDefaultSharedPreferences(this));
+                        UserSessions.SaveUserEmailNotification(PreferenceManager.GetDefaultSharedPreferences(this), email);
+                    }
                 }
             }
             catch (Exception e)
@@ -130,7 +142,9 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
                 {
                     isAppLaunchDone = true;
-                    userActionsListener.GetSavedTimeStamp();
+                    Intent WalkthroughIntent = new Intent(this, typeof(NewWalkthroughActivity));
+                    WalkthroughIntent.PutExtra(Constants.APP_NAVIGATION_KEY, AppLaunchNavigation.Walkthrough.ToString());
+                    StartActivity(WalkthroughIntent);
                 }
             }
             catch (Exception e)
@@ -208,9 +222,18 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
             {
                 isAppLaunchDone = true;
-                Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
-                DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                StartActivity(DashboardIntent);
+                if (UserSessions.HasUpdateSkipped(PreferenceManager.GetDefaultSharedPreferences(this)))
+                {
+                    Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+                    DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                    StartActivity(DashboardIntent);
+                }
+                else
+                {
+                    Intent WalkthroughIntent = new Intent(this, typeof(NewWalkthroughActivity));
+                    WalkthroughIntent.PutExtra(Constants.APP_NAVIGATION_KEY, AppLaunchNavigation.Dashboard.ToString());
+                    StartActivity(WalkthroughIntent);
+                }
             }
         }
 
@@ -219,9 +242,18 @@ namespace myTNB_Android.Src.AppLaunch.Activity
             if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
             {
                 isAppLaunchDone = true;
-                Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
-                PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-                StartActivity(PreLoginIntent);
+                if (UserSessions.HasUpdateSkipped(PreferenceManager.GetDefaultSharedPreferences(this)))
+                {
+                    Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
+                    PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                    StartActivity(PreLoginIntent);
+                }
+                else
+                {
+                    Intent WalkthroughIntent = new Intent(this, typeof(NewWalkthroughActivity));
+                    WalkthroughIntent.PutExtra(Constants.APP_NAVIGATION_KEY, AppLaunchNavigation.PreLogin.ToString());
+                    StartActivity(WalkthroughIntent);
+                }
             }
         }
 
@@ -634,9 +666,19 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 if (isAppLaunchSiteCoreDone && isAppLaunchLoadSuccessful && !isAppLaunchDone)
                 {
                     isAppLaunchDone = true;
-                    ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
-                    Intent logout = new Intent(this, typeof(LoginActivity));
-                    StartActivity(logout);
+                    if (UserSessions.HasUpdateSkipped(PreferenceManager.GetDefaultSharedPreferences(this)))
+                    {
+                        ME.Leolin.Shortcutbadger.ShortcutBadger.RemoveCount(this.ApplicationContext);
+                        Intent PreLoginIntent = new Intent(this, typeof(PreLoginActivity));
+                        PreLoginIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+                        StartActivity(PreLoginIntent);
+                    }
+                    else
+                    {
+                        Intent WalkthroughIntent = new Intent(this, typeof(NewWalkthroughActivity));
+                        WalkthroughIntent.PutExtra(Constants.APP_NAVIGATION_KEY, AppLaunchNavigation.Logout.ToString());
+                        StartActivity(WalkthroughIntent);
+                    }
                 }
             }
             catch (Exception e)
@@ -908,6 +950,26 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 SetDefaultAppLaunchImage();
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        private Snackbar mSomethingWrongExceptionSnackBar;
+        public void ShowSomethingWrongException()
+        {
+            if (mSomethingWrongExceptionSnackBar != null && mSomethingWrongExceptionSnackBar.IsShown)
+            {
+                mSomethingWrongExceptionSnackBar.Dismiss();
+
+            }
+
+            string msg = "Sorry, something went wrong. Please try again later.";
+
+            mSomethingWrongExceptionSnackBar = Snackbar.Make(rootView, msg, Snackbar.LengthIndefinite)
+            .SetAction("Ok", delegate
+            {
+                mSomethingWrongExceptionSnackBar.Dismiss();
+            }
+            );
+            mSomethingWrongExceptionSnackBar.Show();
         }
     }
 }

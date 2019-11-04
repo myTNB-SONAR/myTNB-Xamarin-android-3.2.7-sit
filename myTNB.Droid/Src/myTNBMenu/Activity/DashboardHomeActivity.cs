@@ -248,14 +248,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             base.OnPause();
         }
 
-        public void ShowNoAccountBillMenu()
-        {
-            ShowBackButton(false);
-            FragmentManager.BeginTransaction()
-                   .Replace(Resource.Id.content_layout, new BillingMenuNoTNBAccount())
-                   .CommitAllowingStateLoss();
-        }
-
         [OnClick(Resource.Id.txt_account_name)]
         void OnSelectSupplyAccount(object sender, EventArgs eventArgs)
         {
@@ -292,28 +284,6 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             currentFragment = new ItemisedBillingMenuFragment();
             FragmentManager.BeginTransaction()
                 .Replace(Resource.Id.content_layout, ItemisedBillingMenuFragment.NewInstance(selectedAccount))
-                .CommitAllowingStateLoss();
-        }
-
-        public void PreShowBillMenu(AccountData selectedAccount)
-        {
-            ShowBackButton(false);
-            this.SelectedAccountData = selectedAccount;
-            txtAccountName.Text = SelectedAccountData.AccountNickName;
-            currentFragment = new BillsMenuFragment();
-            FragmentManager.BeginTransaction()
-                .Replace(Resource.Id.content_layout, BillsMenuFragment.NewInstance(selectedAccount, "PRE_SHOW"))
-                .CommitAllowingStateLoss();
-        }
-
-        public void ShowBillMenuWithError(string contextTxt, string btnTxt, AccountData selectedAccount)
-        {
-            ShowBackButton(false);
-            currentFragment = new BillsMenuFragment();
-            this.SelectedAccountData = selectedAccount;
-            txtAccountName.Text = SelectedAccountData.AccountNickName;
-            FragmentManager.BeginTransaction()
-                .Replace(Resource.Id.content_layout, BillsMenuFragment.NewInstance(contextTxt, btnTxt, selectedAccount))
                 .CommitAllowingStateLoss();
         }
 
@@ -608,7 +578,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 IMenuItem promotionMenuItem = bottomMenu.FindItem(Resource.Id.menu_promotion);
                 if (promotionMenuItem != null)
                 {
-                    if (MyTNBAccountManagement.GetInstance().IsWhatNewShown())
+                    if (UserSessions.HasWhatNewShown(PreferenceManager.GetDefaultSharedPreferences(this)))
                     {
                         promotionMenuItem.SetIcon(Resource.Drawable.ic_menu_promotions_unread_selector);
                     }

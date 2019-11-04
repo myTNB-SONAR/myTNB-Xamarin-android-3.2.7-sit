@@ -44,7 +44,7 @@
                                     android:layout_width="132dp"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="48dp"
-                                    android:src="@drawable/refresh_1"
+                                    android:src="@drawable/refresh_white"
                                     android:id="@+id/refresh_image"
                                     android:layout_gravity="center"/>
                                 <TextView
@@ -57,7 +57,7 @@
                                     android:layout_marginRight="32dp"
                                     android:lineSpacingExtra="3dp"
                                     android:textSize="14dp"
-                                    android:textColor="#8b8b8b"
+                                    android:textColor="@color/white"
                                     android:layout_gravity="center"/>
                                 <Button
                                     android:layout_width="match_parent"
@@ -67,7 +67,7 @@
                                     android:layout_marginRight="16dp"
                                     android:layout_weight="1"
                                     android:id="@+id/btnRefresh"
-                                    style="@style/Theme.RefreshButton" />
+                                    style="@style/Theme.RefreshWhiteButton" />
 					        </LinearLayout>
 				        </LinearLayout>
                         <LinearLayout
@@ -314,6 +314,7 @@
 					        <TextView
 						        android:layout_height="wrap_content"
 						        android:layout_width="wrap_content"
+                                android:layout_marginTop="1dp"
 						        android:textSize="13dp"
 						        android:textStyle="bold"
                                 android:layout_gravity="center"
@@ -381,7 +382,7 @@
 						            android:visibility="visible" />
                                 <LinearLayout
 					                android:id="@+id/smDayViewZoomInIndicatorLayout"
-                                    android:layout_below="@id/bar_chart"
+                                    android:layout_below="@+id/bar_chart"
 					                android:layout_width="match_parent"
 					                android:layout_height="wrap_content"
 					                android:orientation="vertical"
@@ -416,6 +417,26 @@
                                     android:layout_below="@+id/bar_chart"
                                     android:layoutAnimation="@anim/layout_animation_fall_down"
                                     android:scrollIndicators="none" />
+                                <LinearLayout
+					                android:id="@+id/tariffBlockLegendDisclaimerLayout"
+                                    android:layout_below="@+id/tariffBlockLegendRecyclerView"
+					                android:layout_width="match_parent"
+					                android:layout_height="wrap_content"
+					                android:orientation="vertical"
+                                    android:layout_marginTop="10dp"
+                                    android:layout_marginLeft="24dp"
+                                    android:layout_marginRight="24dp"
+                                    android:layout_marginBottom="14dp"
+                                    android:visibility="gone">
+                                    <TextView
+                                        android:id="@+id/txtTariffBlockLegendDisclaimer"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:lineSpacingExtra="3dp"
+                                        android:textSize="11dp"
+                                        android:textColor="@color/white"
+                                        android:text="Note: The coloured blocks above represent your electricity rates. For a detailed breakdown, please refer to your bill."/>
+                                </LinearLayout>
                                 <RelativeLayout
                                     android:layout_width="65dp"
                                     android:layout_height="wrap_content"

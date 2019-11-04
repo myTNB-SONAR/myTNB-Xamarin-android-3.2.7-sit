@@ -159,6 +159,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
             void OnGoAppLaunchEvent();
 
             void SetAppLaunchSiteCoreDoneFlag(bool flag);
+
+            /// <summary>
+            /// Show something went wrong Snackbar
+            /// </summary>
+            void ShowSomethingWrongException();
         }
 
         public interface IUserActionsListener : IBasePresenter

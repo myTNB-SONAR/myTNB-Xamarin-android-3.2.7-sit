@@ -108,7 +108,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="17dp"
                     app:errorEnabled="true"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance">
                     <EditText
                         android:id="@+id/txtEmail"
                         android:layout_width="match_parent"
@@ -126,7 +126,7 @@
                     android:layout_height="wrap_content"
                     app:errorEnabled="true"
                     android:layout_marginRight="17dp"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance">
                     <EditText
                         android:id="@+id/txtMobileNo"
                         android:layout_width="match_parent"
@@ -148,7 +148,7 @@
                     android:layout_marginRight="16dp"
                     android:layout_marginBottom="18dp"
                     android:textSize="12dp"
-                    android:text="By editing you will update your myTNB profile and electricity account contact details."
+                    android:text="By editing, you will update your myTNB profile and electricity account contact details."
                     android:textColor="@color/tunaGrey"
                     android:layout_gravity="left"/>
             </LinearLayout>
@@ -184,7 +184,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         app:errorEnabled="true"
-                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
+                        app:hintTextAppearance="@style/TextInputLayout.TextAppearance">
                         <EditText
                             android:id="@+id/txtSelectReason"
                             android:layout_width="match_parent"
@@ -207,7 +207,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
                     app:errorEnabled="true"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.LightBackground">
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance">
                     <EditText
                         android:id="@+id/txtReason"
                         android:layout_width="match_parent"

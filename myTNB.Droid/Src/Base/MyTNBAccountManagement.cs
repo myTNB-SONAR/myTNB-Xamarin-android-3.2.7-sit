@@ -148,6 +148,11 @@ namespace myTNB_Android.Src.Base
             return CustomerBillingAccount.REAccountList().Count;
         }
 
+        public int IsHasSMAccountCount()
+        {
+            return CustomerBillingAccount.SMAccountList().Count;
+        }
+
         public void UpdateIsSMRMeterReadingOnePhaseOnboardingShown(bool flag)
         {
             if (flag)

@@ -30,5 +30,19 @@ namespace myTNB_Android.Src.Utils
         {
             smrResponse = response;
         }
+
+        public static bool OnGetIsOCRDownFlag()
+        {
+            bool isOCRDown = false;
+            if (smrResponse != null && smrResponse.Response != null)
+            {
+                if (smrResponse.Response.IsOCRDisabled || smrResponse.Response.IsOCRDown)
+                {
+                    isOCRDown = true;
+                }
+            }
+
+            return isOCRDown;
+        }
     }
 }

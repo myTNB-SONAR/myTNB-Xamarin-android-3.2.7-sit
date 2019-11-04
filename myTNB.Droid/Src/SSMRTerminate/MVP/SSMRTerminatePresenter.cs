@@ -246,9 +246,9 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         {
             try
             {
-                if (!TextUtils.IsEmpty(mobile_no) && !TextUtils.IsEmpty(email))
+                bool isError = false;
+                if (!TextUtils.IsEmpty(email))
                 {
-                    bool isError = false;
                     if (!Patterns.EmailAddress.Matcher(email).Matches())
                     {
                         this.mView.ShowInvalidEmailError();
@@ -259,21 +259,31 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                     {
                         this.mView.ClearEmailError();
                     }
+                }
+                else
+                {
+                    this.mView.DisableSubmitButton();
+                    isError = true;
+                }
 
+                if (TextUtils.IsEmpty(mobile_no) || mobile_no.Length < 3 || !mobile_no.Contains("+60"))
+                {
+                    this.mView.UpdateMobileNumber("+60");
+                    this.mView.ClearInvalidMobileError();
+                    this.mView.DisableSubmitButton();
+                    isError = true;
+                }
+                else if (mobile_no == "+60")
+                {
+                    this.mView.UpdateMobileNumber("+60");
+                    this.mView.ClearInvalidMobileError();
+                    this.mView.DisableSubmitButton();
+                    isError = true;
+                }
+                else if (mobile_no.Contains("+60") && mobile_no.IndexOf("+60") > 0)
+                {
+                    mobile_no = mobile_no.Substring(mobile_no.IndexOf("+60"));
                     if (mobile_no == "+60")
-                    {
-                        this.mView.UpdateMobileNumber(mobile_no);
-                        this.mView.DisableSubmitButton();
-                        isError = true;
-                    }
-
-                    if (mobile_no.Length == 3)
-                    {
-                        this.mView.ClearInvalidMobileError();
-                        this.mView.DisableSubmitButton();
-                        isError = true;
-                    }
-                    else if (mobile_no.Length < 3)
                     {
                         this.mView.UpdateMobileNumber("+60");
                         this.mView.ClearInvalidMobileError();
@@ -290,19 +300,28 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                     {
                         this.mView.ClearInvalidMobileError();
                     }
-
-                    if (isError == true)
-                    {
-                        return;
-                    }
-
-                    this.mView.ClearErrors();
-                    this.mView.EnableSubmitButton();
                 }
                 else
                 {
-                    this.mView.DisableSubmitButton();
+                    if (!Utility.IsValidMobileNumber(mobile_no))
+                    {
+                        this.mView.ShowInvalidMobileNoError();
+                        this.mView.DisableSubmitButton();
+                        isError = true;
+                    }
+                    else
+                    {
+                        this.mView.ClearInvalidMobileError();
+                    }
                 }
+
+                if (isError == true)
+                {
+                    return;
+                }
+
+                this.mView.ClearErrors();
+                this.mView.EnableSubmitButton();
             }
             catch (System.Exception e)
             {
