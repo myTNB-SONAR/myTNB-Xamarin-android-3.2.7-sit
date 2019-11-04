@@ -165,14 +165,24 @@ namespace myTNB
         }
         #endregion
         #region API Calls
-        private async Task<AccountUsageResponseModel> GetAccountUsage(CustomerAccountRecordModel account)
+        private string GetAccountType()
+        {
+            string accountType = UsageConstants.STR_NormalAccount;
+            if (isREAccount)
+            {
+                accountType = UsageConstants.STR_REAccount;
+            }
+            return accountType;
+        }
+        private async Task<AccountUsageResponseModel> GetAccountUsage(CustomerAccountRecordModel account, bool isSSMR = false)
         {
             ServiceManager serviceManager = new ServiceManager();
             object requestParameter = new
             {
                 contractAccount = account.accNum,
                 isOwner = account.isOwned,
-                serviceManager.usrInf
+                serviceManager.usrInf,
+                accountType = isSSMR ? UsageConstants.STR_SSMRAccount : GetAccountType()
             };
 
             _accountUsageResponse = await Task.Run(() =>
@@ -505,7 +515,7 @@ namespace myTNB
                     taskList.Add(GetSMRAccountActivityInfo(DataManager.DataManager.SharedInstance.SelectedAccount));
                     if (AccountUsageCache.IsRefreshNeeded(DataManager.DataManager.SharedInstance.SelectedAccount.accNum))
                     {
-                        taskList.Add(GetAccountUsage(DataManager.DataManager.SharedInstance.SelectedAccount));
+                        taskList.Add(GetAccountUsage(DataManager.DataManager.SharedInstance.SelectedAccount, true));
                     }
                     else
                     {

@@ -1,7 +1,3 @@
 Sprint 2C SIT Build
 
-[User Story] 2850 [SSMR] As a myTNB customer, I can submit my monthly meter reading manually via myTNB app and view submitted meter reading history. (without OCR)
-[Bug] 2819 Regression_iOS : Copy writing for the "Select Bill(s)" page
-[Bug] 3091 Notification_iOS: An account have notification but in the notifications page its' empty
-[Bug] 3112 iOS: Log In - Misalignment in Design
-[Bug] 3190 Homepage Redesign_iOS: Quick Action Services (Pay my bill, View my bill) should be greyed out
+- Added additional parameter to the GetAccountUsage API to cater for custom message based on account type

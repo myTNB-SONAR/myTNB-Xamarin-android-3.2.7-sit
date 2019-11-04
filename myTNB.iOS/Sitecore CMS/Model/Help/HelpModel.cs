@@ -37,7 +37,7 @@ namespace myTNB.SitecoreCMS.Model
         {
             get
             {
-                TagEnum tagType = default;
+                TagEnum tagType = default(TagEnum);
                 if (!string.IsNullOrEmpty(Tags) && !string.IsNullOrWhiteSpace(Tags))
                 {
                     var tagSplit = Tags.Split('|');

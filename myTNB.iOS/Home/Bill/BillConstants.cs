@@ -82,5 +82,8 @@
         //Event
         public static string Event_MandatoryChargesPopup = "MandatoryChargesPopup";
         public static string Event_MandatoryDetails = "ExpandCollapseMandatoryList";
+
+        //Preference Key
+        public static string Pref_TutorialOverlay = "BillTutorialOverlayV2.0.0";
     }
 }

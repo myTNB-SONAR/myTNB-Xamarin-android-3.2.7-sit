@@ -2565,6 +2565,7 @@
     <Compile Include="Feedback\FeedbackConstants.cs" />
     <Compile Include="Rating\RatingConstants.cs" />
     <Compile Include="Home\Promotions\PromotionConstants.cs" />
+    <Compile Include="Components\Common\BillTutorialOverlay.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />
