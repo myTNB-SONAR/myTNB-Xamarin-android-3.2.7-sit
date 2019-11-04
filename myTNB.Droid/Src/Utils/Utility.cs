@@ -118,5 +118,43 @@ namespace myTNB_Android.Src.Utils
             }
             return popupSelectorModels;
         }
+
+        /// <summary>
+        /// Gets the Error labels by key
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string GetLocalizedErrorLabel(string key)
+        {
+            string label = "";
+            try
+            {
+                label = LanguageManager.Instance.GetErrorValuePairs()[key];
+            }
+            catch (Exception e)
+            {
+                Log.Debug("DEBUG Error: ", e.Message);
+            }
+            return label;
+        }
+
+        /// <summary>
+        /// Gets the Hint labels by key
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string GetLocalizedHintLabel(string key)
+        {
+            string label = "";
+            try
+            {
+                label = LanguageManager.Instance.GetHintValuePairs()[key];
+            }
+            catch (Exception e)
+            {
+                Log.Debug("DEBUG Error: ", e.Message);
+            }
+            return label;
+        }
     }
 }
