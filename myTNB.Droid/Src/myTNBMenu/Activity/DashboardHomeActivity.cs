@@ -142,6 +142,35 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             currentFragment = fragment;
         }
 
+        private void SetBottomNavigationLabels()
+        {
+            try
+            {
+                bottomNavigationView.Menu.FindItem(Resource.Id.menu_bill);
+                IMenu bottomMenu = bottomNavigationView.Menu;
+                IMenuItem item;
+
+                item = bottomMenu.FindItem(Resource.Id.menu_dashboard);
+                item.SetTitle(Utility.GetLocalizedLabel("Tabbar", "home"));
+
+                item = bottomMenu.FindItem(Resource.Id.menu_bill);
+                item.SetTitle(Utility.GetLocalizedLabel("Tabbar", "bill"));
+
+                item = bottomMenu.FindItem(Resource.Id.menu_promotion);
+                item.SetTitle(Utility.GetLocalizedLabel("Tabbar", "promotion"));
+
+                item = bottomMenu.FindItem(Resource.Id.menu_reward);
+                item.SetTitle(Utility.GetLocalizedLabel("Tabbar", "rewards"));
+
+                item = bottomMenu.FindItem(Resource.Id.menu_more);
+                item.SetTitle(Utility.GetLocalizedLabel("Tabbar", "profile"));
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -159,6 +188,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                 urlSchemaData = data;
             }
 
+            SetBottomNavigationLabels();
             bottomNavigationView.SetShiftMode(false, false);
             bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
             bottomNavigationView.ItemIconTintList = null;
