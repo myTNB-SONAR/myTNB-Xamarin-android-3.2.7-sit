@@ -285,8 +285,13 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         BillHistoryEntity.RemoveAll();
                                         PaymentHistoryEntity.RemoveAll();
 
-                                        if (UserSessions.HasNotification(mSharedPref) && (loggedUser.Email.Equals(UserSessions.GetUserEmailNotification(mSharedPref)) ||
-                                            "ALL_MYTNB_USERS".Equals(UserSessions.GetUserEmailNotification(mSharedPref))))
+                                        //If has Notification
+                                        bool hasNotification = UserSessions.HasNotification(mSharedPref);
+                                        //If Notification Type is equals to ODN (On-Demand Notification)
+                                        bool isODNType = "ODN".Equals(UserSessions.GetNotificationType(mSharedPref));
+                                        //If Notification Email is equals to logged-in email
+                                        bool isLoggedInEmail = loggedUser.Email.Equals(UserSessions.GetUserEmailNotification(mSharedPref));
+                                        if (hasNotification && (isODNType || isLoggedInEmail))
                                         {
                                             UserSessions.RemoveNotificationSession(mSharedPref);
                                             this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Notification);
