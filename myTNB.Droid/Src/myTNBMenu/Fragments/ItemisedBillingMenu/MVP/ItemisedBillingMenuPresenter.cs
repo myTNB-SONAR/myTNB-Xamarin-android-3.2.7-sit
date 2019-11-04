@@ -19,6 +19,7 @@ using myTNB_Android.Src.Base.Models;
 using myTNB_Android.Src.Base;
 using Android.Util;
 using Android.Gms.Common.Apis;
+using myTNB_Android.Src.MyTNBService.Parser;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 {
@@ -55,8 +56,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                 AccountChargesResponse accountChargeseResponse = await api.GetAccountsCharges<AccountChargesResponse>(accountChargeseRequest);
                 if (accountChargeseResponse.Data != null && accountChargeseResponse.Data.ErrorCode == "7200")
                 {
-                    accountChargeModelList = GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges);
-                    MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
+                    accountChargeModelList = BillingResponseParser.GetAccountCharges(accountChargeseResponse.Data.ResponseData.AccountCharges);
+                    MyTNBAppToolTipData.GetInstance().SetBillMandatoryChargesTooltipModelList(BillingResponseParser.GetMandatoryChargesTooltipModelList(accountChargeseResponse.Data.ResponseData.MandatoryChargesPopUpDetails));
                 }
                 else
                 {
@@ -163,43 +164,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             }, new CancellationTokenSource().Token);
         }
 
-        private List<AccountChargeModel> GetAccountCharges(List<AccountCharge> accountCharges)
-        {
-            List<AccountChargeModel> accountChargeModelList = new List<AccountChargeModel>();
-            accountCharges.ForEach(accountCharge =>
-            {
-                MandatoryCharge mandatoryCharge = accountCharge.MandatoryCharges;
-                List<ChargeModel> chargeModelList = new List<ChargeModel>();
-                mandatoryCharge.Charges.ForEach(charge =>
-                {
-                    ChargeModel chargeModel = new ChargeModel();
-                    chargeModel.Key = charge.Key;
-                    chargeModel.Title = charge.Title;
-                    chargeModel.Amount = charge.Amount;
-                    chargeModelList.Add(chargeModel);
-                });
-                MandatoryChargeModel mandatoryChargeModel = new MandatoryChargeModel();
-                mandatoryChargeModel.TotalAmount = mandatoryCharge.TotalAmount;
-                mandatoryChargeModel.ChargeModelList = chargeModelList;
-
-                AccountChargeModel accountChargeModel = new AccountChargeModel();
-                accountChargeModel.IsCleared = false;
-                accountChargeModel.IsNeedPay = false;
-                accountChargeModel.IsPaidExtra = false;
-                accountChargeModel.ContractAccount = accountCharge.ContractAccount;
-                accountChargeModel.CurrentCharges = accountCharge.CurrentCharges;
-                accountChargeModel.OutstandingCharges = accountCharge.OutstandingCharges;
-                accountChargeModel.AmountDue = accountCharge.AmountDue;
-                accountChargeModel.DueDate = accountCharge.DueDate;
-                accountChargeModel.BillDate = accountCharge.BillDate;
-                accountChargeModel.IncrementREDueDateByDays = accountCharge.IncrementREDueDateByDays;
-                accountChargeModel.MandatoryCharges = mandatoryChargeModel;
-                EvaluateAmountDue(accountChargeModel);
-                accountChargeModelList.Add(accountChargeModel);
-            });
-            return accountChargeModelList;
-        }
-
         private List<AccountBillPayFilter> GetAccountBillPayFilterList(List<BillPayFilterData> billPayFilters)
         {
             List<AccountBillPayFilter> accountBillPayFilters = new List<AccountBillPayFilter>();
@@ -243,40 +207,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             });
 
             return modelList;
-        }
-
-        private List<BillMandatoryChargesTooltipModel> GetMandatoryChargesTooltipModelList(List<MandatoryChargesPopUpDetail> mandatoryChargesPopUpDetailList)
-        {
-            List<BillMandatoryChargesTooltipModel> billMandatoryChargesTooltipModelList = new List<BillMandatoryChargesTooltipModel>();
-            BillMandatoryChargesTooltipModel model;
-            mandatoryChargesPopUpDetailList.ForEach(popupDetail =>
-            {
-                model = new BillMandatoryChargesTooltipModel();
-                model.Title = popupDetail.Title;
-                model.Description = popupDetail.Description;
-                model.Type = popupDetail.Type;
-                model.CTA = popupDetail.CTA;
-                billMandatoryChargesTooltipModelList.Add(model);
-            });
-            return billMandatoryChargesTooltipModelList;
-        }
-
-        public void EvaluateAmountDue(AccountChargeModel accountChargeModel)
-        {
-            if (accountChargeModel.AmountDue > 0.00)
-            {
-                accountChargeModel.IsNeedPay = true;
-            }
-
-            if (accountChargeModel.AmountDue < 0.00)
-            {
-                accountChargeModel.IsPaidExtra = true;
-            }
-
-            if (accountChargeModel.AmountDue == 0.00)
-            {
-                accountChargeModel.IsCleared = true;
-            }
         }
 
         public bool IsEnableAccountSelection()

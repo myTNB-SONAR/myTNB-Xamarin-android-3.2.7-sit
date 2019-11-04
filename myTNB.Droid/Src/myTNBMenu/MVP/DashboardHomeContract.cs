@@ -21,8 +21,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			/// <param name="selectedAccount">AccountData</param>
 			void ShowBillMenu(AccountData selectedAccount);
 
-			void ShowBillMenuWithError(string contextTxt, string btnTxt, AccountData selectedAccount);
-
 			/// <summary>
 			/// Enable bill menu
 			/// </summary>
@@ -53,11 +51,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
 			/// Show select account activity
 			/// </summary>
 			void ShowSelectSupplyAccount();
-
-			/// <summary>
-			/// Show no account in bill menu
-			/// </summary>
-			void ShowNoAccountBillMenu();
 
             /// <summary>
             /// Set toolbar title
@@ -164,8 +157,6 @@ namespace myTNB_Android.Src.myTNBMenu.MVP
             void ShowHideActionBar(bool flag);
 
             void ShowToBeAddedToast();
-
-            void PreShowBillMenu(AccountData selectedAccount);
 
             void SetInnerDashboardToolbarBackground();
 

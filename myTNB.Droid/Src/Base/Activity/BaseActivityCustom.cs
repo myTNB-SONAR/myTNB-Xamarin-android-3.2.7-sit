@@ -1,6 +1,5 @@
 ﻿using System;
 using Android.OS;
-using Android.Util;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.Base.Activity
@@ -10,7 +9,8 @@ namespace myTNB_Android.Src.Base.Activity
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetToolBarTitle(GetLabelByLanguage("navTitle"));
+            string title = GetLabelByLanguage("title");
+            SetToolBarTitle(title);
         }
         /// <summary>
         /// Gets the Page Id. To be implemented by child activity.

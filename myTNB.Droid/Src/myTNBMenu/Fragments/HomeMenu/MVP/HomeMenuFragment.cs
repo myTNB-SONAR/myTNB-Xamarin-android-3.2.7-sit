@@ -43,6 +43,7 @@ using myTNB_Android.Src.SelectSupplyAccount.Activity;
 using myTNB_Android.Src.myTNBMenu.Models;
 using Newtonsoft.Json;
 using myTNB_Android.Src.ViewBill.Activity;
+using Android.Preferences;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -96,8 +97,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         [BindView(Resource.Id.summaryNestScrollView)]
         NestedScrollView summaryNestScrollView;
 
-        [BindView(Resource.Id.summaryRootView)]
-        CoordinatorLayout summaryRootView;
+        [BindView(Resource.Id.rootView)]
+        CoordinatorLayout rootView;
 
         [BindView(Resource.Id.shimmerFAQView)]
         ShimmerFrameLayout shimmerFAQView;
@@ -200,6 +201,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private string savedSSMRMeterReadingThreePhaseTimeStamp = "0000000";
 
+        private string savedSSMRMeterReadingNoOCRTimeStamp = "0000000";
+
+        private string savedSSMRMeterReadingThreePhaseNoOCRTimeStamp = "0000000";
+
         private string savedEnergySavingTipsTimeStamp = "0000000";
 
         public readonly static int SSMR_METER_HISTORY_ACTIVITY_CODE = 8796;
@@ -252,9 +257,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             base.OnAttach(context);
             try
             {
-                mCallBack = context as ISummaryFragmentToDashBoardActivtyListener;
                 FirebaseAnalyticsUtils.SetFragmentScreenName(this, "Home");
-                ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.AppLanchGradientBackground);
+                mCallBack = context as ISummaryFragmentToDashBoardActivtyListener;
             }
             catch (Java.Lang.ClassCastException e)
             {
@@ -399,6 +403,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 this.presenter.GetSmartMeterReadingThreePhaseWalkthroughtTimeStamp();
 
+                this.presenter.GetSmartMeterReadingWalkthroughtNoOCRTimeStamp();
+
+                this.presenter.GetSmartMeterReadingThreePhaseWalkthroughtNoOCRTimeStamp();
+
+
                 bool isGetEnergyTipsDisabled = false;
                 MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
                 if (currentMasterData.IsEnergyTipsDisabled)
@@ -429,6 +438,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     topRootView.RequestFocus();
                     ViewTreeObserver observer = summaryNestScrollView.ViewTreeObserver;
                     observer.AddOnGlobalLayoutListener(this);
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+
+                try
+                {
+                    ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.AppLanchGradientBackground);
                 }
                 catch (System.Exception e)
                 {
@@ -604,16 +622,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Activity.RunOnUiThread(() =>
                 {
-                    shimmerFAQView.StopShimmer();
-                    newFAQShimmerAdapter = new NewFAQShimmerAdapter(null, this.Activity);
-                    newFAQShimmerList.SetAdapter(newFAQShimmerAdapter);
-                    newFAQShimmerView.Visibility = ViewStates.Gone;
-                    newFAQView.Visibility = ViewStates.Visible;
-                    newFAQAdapter = new NewFAQAdapter(list, this.Activity);
-                    newFAQListRecycleView.SetAdapter(newFAQAdapter);
-                    currentNewFAQList.Clear();
-                    currentNewFAQList.AddRange(list);
-                    newFAQAdapter.ClickChanged += OnFAQClickChanged;
+                    if (list != null && list.Count > 0)
+                    {
+                        shimmerFAQView.StopShimmer();
+                        newFAQShimmerAdapter = new NewFAQShimmerAdapter(null, this.Activity);
+                        newFAQShimmerList.SetAdapter(newFAQShimmerAdapter);
+                        newFAQShimmerView.Visibility = ViewStates.Gone;
+                        newFAQView.Visibility = ViewStates.Visible;
+                        newFAQAdapter = new NewFAQAdapter(list, this.Activity);
+                        newFAQListRecycleView.SetAdapter(newFAQAdapter);
+                        currentNewFAQList.Clear();
+                        currentNewFAQList.AddRange(list);
+                        newFAQAdapter.ClickChanged += OnFAQClickChanged;
+                    }
                 });
             }
             catch (System.Exception e)
@@ -669,6 +690,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             EditText searchText = searchEditText.FindViewById<EditText>(searchEditText.Context.Resources.GetIdentifier("android:id/search_src_text", null, null));
             searchText.SetTextColor(Resources.GetColor(Resource.Color.white));
             searchText.SetHintTextColor(Resources.GetColor(Resource.Color.sixty_opacity_white));
+            searchText.SetTextSize(ComplexUnitType.Dip, 12f);
             TextViewUtils.SetMuseoSans500Typeface(searchText);
             searchText.SetPadding((int) DPUtils.ConvertDPToPx(34f), 0, 0, 0);
 
@@ -801,22 +823,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             {
                                 applySMRIntent = new Intent(this.Activity, typeof(OnBoardingActivity));
                             }
+
+                            if (!UserSessions.HasSMROnboardingShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
+                            {
+                                UserSessions.DoSMROnboardingShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
+                            }
+
                             StartActivityForResult(applySMRIntent, SSMR_METER_HISTORY_ACTIVITY_CODE);
                         }
                         else if (selectedService.ServiceCategoryId == "1004" && (!isBCRMDown && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsPayBillEnabledNeeded()))
                         {
-                            if (!MyTNBAccountManagement.GetInstance().IsPayBillShown())
+                            if (!UserSessions.HasPayBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                             {
-                                MyTNBAccountManagement.GetInstance().UpdateIsPayBillShown();
+                                UserSessions.DoPayBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
                             }
                             Intent payment_activity = new Intent(this.Activity, typeof(SelectAccountsActivity));
                             StartActivity(payment_activity);
                         }
                         else if (selectedService.ServiceCategoryId == "1005" && (!isBCRMDown && !isRefreshShown && MyTNBAccountManagement.GetInstance().IsViewBillEnabledNeeded()))
                         {
-                            if (!MyTNBAccountManagement.GetInstance().IsViewBillShown())
+                            if (!UserSessions.HasViewBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity)))
                             {
-                                MyTNBAccountManagement.GetInstance().UpdateIsViewBillShown();
+                                UserSessions.DoViewBillShown(PreferenceManager.GetDefaultSharedPreferences(this.Activity));
                             }
                             CustomerBillingAccount.RemoveSelected();
                             Intent supplyAccount = new Intent(this.Activity, typeof(SelectSupplyAccountActivity));
@@ -921,7 +949,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 msg = GetString(Resource.String.my_service_error);
             }
 
-            mMyServiceRetrySnakebar = Snackbar.Make(summaryRootView, msg, Snackbar.LengthIndefinite)
+            mMyServiceRetrySnakebar = Snackbar.Make(rootView, msg, Snackbar.LengthIndefinite)
             .SetAction(GetString(Resource.String.my_service_btn_retry), delegate
             {
 
@@ -1035,6 +1063,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
                         mCallBack.NavigateToDashBoardFragment();
                     }
+                    else
+                    {
+                        try
+                        {
+                            ((DashboardHomeActivity)Activity).NavigateToDashBoardFragment();
+                        }
+                        catch (System.Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                    }
                 }
             }
         }
@@ -1094,6 +1133,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                             {
                                 Utility.LoggingNonFatalError(e);
                             }
+                            this.presenter.SetQueryClose();
                         }
                         searchEditText.ClearFocus();
                         OnUpdateAccountListChanged(true);
@@ -1153,42 +1193,49 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
-                bool isOCRDisabled = false;
-                MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
-                if (currentMasterData.IsOCRDown)
+                SSMRMeterReadingScreensParentEntity wtManager = new SSMRMeterReadingScreensParentEntity();
+                List<SSMRMeterReadingScreensParentEntity> items = wtManager.GetAllItems();
+                if (items != null)
                 {
-                    isOCRDisabled = true;
-                }
-
-                if (isOCRDisabled)
-                {
-                    SSMRMeterReadingScreensOCROffParentEntity wtManager = new SSMRMeterReadingScreensOCROffParentEntity();
-                    List<SSMRMeterReadingScreensOCROffParentEntity> items = wtManager.GetAllItems();
-                    if (items != null)
+                    SSMRMeterReadingScreensParentEntity entity = items[0];
+                    if (entity != null)
                     {
-                        SSMRMeterReadingScreensOCROffParentEntity entity = items[0];
-                        if (entity != null)
+                        if (!entity.Timestamp.Equals(savedSSMRMeterReadingTimeStamp))
                         {
-                            if (!entity.Timestamp.Equals(savedSSMRMeterReadingTimeStamp))
-                            {
-                                this.presenter.OnGetSSMRMeterReadingScreens();
-                            }
+                            this.presenter.OnGetSSMRMeterReadingScreens();
                         }
                     }
                 }
-                else
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnSavedSSMRMeterReadingNoOCRTimeStamp(string mSavedTimeStamp)
+        {
+            if (mSavedTimeStamp != null)
+            {
+                this.savedSSMRMeterReadingNoOCRTimeStamp = mSavedTimeStamp;
+            }
+            this.presenter.OnGetSmartMeterReadingWalkthroughtNoOCRTimeStamp();
+        }
+
+        public void CheckSSMRMeterReadingNoOCRTimeStamp()
+        {
+            try
+            {
+                SSMRMeterReadingScreensOCROffParentEntity wtManager = new SSMRMeterReadingScreensOCROffParentEntity();
+                List<SSMRMeterReadingScreensOCROffParentEntity> items = wtManager.GetAllItems();
+                if (items != null)
                 {
-                    SSMRMeterReadingScreensParentEntity wtManager = new SSMRMeterReadingScreensParentEntity();
-                    List<SSMRMeterReadingScreensParentEntity> items = wtManager.GetAllItems();
-                    if (items != null)
+                    SSMRMeterReadingScreensOCROffParentEntity entity = items[0];
+                    if (entity != null)
                     {
-                        SSMRMeterReadingScreensParentEntity entity = items[0];
-                        if (entity != null)
+                        if (!entity.Timestamp.Equals(savedSSMRMeterReadingNoOCRTimeStamp))
                         {
-                            if (!entity.Timestamp.Equals(savedSSMRMeterReadingTimeStamp))
-                            {
-                                this.presenter.OnGetSSMRMeterReadingScreens();
-                            }
+                            this.presenter.OnGetSSMRMeterReadingScreensNoOCR();
                         }
                     }
                 }
@@ -1212,42 +1259,50 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
-                bool isOCRDisabled = false;
-                MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
-                if (currentMasterData.IsOCRDown)
+                SSMRMeterReadingThreePhaseScreensParentEntity wtManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
+                List<SSMRMeterReadingThreePhaseScreensParentEntity> items = wtManager.GetAllItems();
+                if (items != null)
                 {
-                    isOCRDisabled = true;
-                }
-
-                if (isOCRDisabled)
-                {
-                    SSMRMeterReadingThreePhaseScreensOCROffParentEntity wtManager = new SSMRMeterReadingThreePhaseScreensOCROffParentEntity();
-                    List<SSMRMeterReadingThreePhaseScreensOCROffParentEntity> items = wtManager.GetAllItems();
-                    if (items != null)
+                    SSMRMeterReadingThreePhaseScreensParentEntity entity = items[0];
+                    if (entity != null)
                     {
-                        SSMRMeterReadingThreePhaseScreensOCROffParentEntity entity = items[0];
-                        if (entity != null)
+                        if (!entity.Timestamp.Equals(savedSSMRMeterReadingThreePhaseTimeStamp))
                         {
-                            if (!entity.Timestamp.Equals(savedSSMRMeterReadingThreePhaseTimeStamp))
-                            {
-                                this.presenter.OnGetSSMRMeterReadingThreePhaseScreens();
-                            }
+                            this.presenter.OnGetSSMRMeterReadingThreePhaseScreens();
                         }
                     }
                 }
-                else
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+
+        public void OnSavedSSMRMeterReadingThreePhaseNoOCRTimeStamp(string mSavedTimeStamp)
+        {
+            if (mSavedTimeStamp != null)
+            {
+                this.savedSSMRMeterReadingThreePhaseNoOCRTimeStamp = mSavedTimeStamp;
+            }
+            this.presenter.OnGetSmartMeterReadingThreePhaseWalkthroughtNoOCRTimeStamp();
+        }
+
+        public void CheckSSMRMeterReadingThreePhaseNoOCRTimeStamp()
+        {
+            try
+            {
+                SSMRMeterReadingThreePhaseScreensOCROffParentEntity wtManager = new SSMRMeterReadingThreePhaseScreensOCROffParentEntity();
+                List<SSMRMeterReadingThreePhaseScreensOCROffParentEntity> items = wtManager.GetAllItems();
+                if (items != null)
                 {
-                    SSMRMeterReadingThreePhaseScreensParentEntity wtManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
-                    List<SSMRMeterReadingThreePhaseScreensParentEntity> items = wtManager.GetAllItems();
-                    if (items != null)
+                    SSMRMeterReadingThreePhaseScreensOCROffParentEntity entity = items[0];
+                    if (entity != null)
                     {
-                        SSMRMeterReadingThreePhaseScreensParentEntity entity = items[0];
-                        if (entity != null)
+                        if (!entity.Timestamp.Equals(savedSSMRMeterReadingThreePhaseNoOCRTimeStamp))
                         {
-                            if (!entity.Timestamp.Equals(savedSSMRMeterReadingThreePhaseTimeStamp))
-                            {
-                                this.presenter.OnGetSSMRMeterReadingThreePhaseScreens();
-                            }
+                            this.presenter.OnGetSSMRMeterReadingThreePhaseScreensNoOCR();
                         }
                     }
                 }
@@ -1262,8 +1317,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             accountListRefreshContainer.Visibility = ViewStates.Visible;
             accountListViewContainer.Visibility = ViewStates.Gone;
-            string refreshMsg = string.IsNullOrEmpty(contentMsg) ? "Uh oh, looks like this page is unplugged. Reload to stay plugged in!" : contentMsg;
-            string refreshBtnTxt = string.IsNullOrEmpty(buttonMsg) ? "Reload Now" : buttonMsg;
+            string refreshMsg = string.IsNullOrEmpty(contentMsg) ? "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!" : contentMsg;
+            string refreshBtnTxt = string.IsNullOrEmpty(buttonMsg) ? "Refresh Now" : buttonMsg;
             btnRefresh.Text = refreshBtnTxt;
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
             {
@@ -1371,6 +1426,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 UserSessions.SetRealSMREligibilityAccountList(eligibleSmrAccountList);
             }
 
+            searchEditText.SetQuery("", false);
             OnLoadAccount();
         }
 
@@ -1833,7 +1889,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     mLoadBillSnackBar.Dismiss();
                 }
 
-                mLoadBillSnackBar = Snackbar.Make(summaryRootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
+                mLoadBillSnackBar = Snackbar.Make(rootView, GetString(Resource.String.dashboard_chart_cancelled_exception_error), Snackbar.LengthIndefinite)
                 .SetAction(GetString(Resource.String.dashboard_chartview_data_not_available_no_internet_btn_close), delegate
                 {
                     mLoadBillSnackBar.Dismiss();

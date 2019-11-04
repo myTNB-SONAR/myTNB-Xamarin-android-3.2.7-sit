@@ -159,6 +159,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 if (SMRAccountActivityInfoResponse.Response.ErrorCode == "7200")
                 {
                     this.mView.HideProgressDialog();
+                    SMRPopUpUtils.OnSetSMRActivityInfoResponse(SMRAccountActivityInfoResponse);
                     this.mView.UpdateUIForSMR(SMRAccountActivityInfoResponse);
                 }
                 else

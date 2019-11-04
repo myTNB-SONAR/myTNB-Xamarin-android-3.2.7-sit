@@ -28,6 +28,12 @@ namespace myTNB_Android.Src.myTNBMenu.Models
 			[JsonProperty(PropertyName = "DisplayTitle")]
 			public string DisplayTitle { get; set; }
 
+			[JsonProperty(PropertyName = "IsOCRDisabled")]
+			public bool IsOCRDisabled { get; set; }
+
+			[JsonProperty(PropertyName = "IsOCRDown")]
+			public bool IsOCRDown { get; set; }
+
 			[JsonProperty(PropertyName = "data")]
 			public SMRDashboardHistory Data { get; set; }
 		}

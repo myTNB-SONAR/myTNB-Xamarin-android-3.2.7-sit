@@ -86,11 +86,15 @@ namespace myTNB_Android.Src.ManageSupplyAccount.MVP
                 if (!removeSupplyAccountApi.Data.IsError)
                 {
                     bool isSelectedAcc = false;
-                    if (CustomerBillingAccount.GetSelected() != null &&
-                       CustomerBillingAccount.GetSelected().AccNum.Equals(accountData.AccountNum))
+                    if (CustomerBillingAccount.HasSelected())
                     {
-                        isSelectedAcc = true;
+                        if (CustomerBillingAccount.GetSelected() != null &&
+                            CustomerBillingAccount.GetSelected().AccNum.Equals(accountData.AccountNum))
+                        {
+                            isSelectedAcc = true;
+                        }
                     }
+
                     CustomerBillingAccount.Remove(accountData.AccountNum);
                     if (isSelectedAcc && CustomerBillingAccount.Enumerate().ToList().Count() > 0)
                     {

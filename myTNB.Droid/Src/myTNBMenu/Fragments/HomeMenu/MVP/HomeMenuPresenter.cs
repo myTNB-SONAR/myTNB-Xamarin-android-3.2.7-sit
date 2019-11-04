@@ -60,6 +60,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         private static bool isSMRApplyAllowFlag = true;
         int billingAccoutCount = 0;
         int curentLoadMoreCount = 0;
+        static int trackCurrentLoadMoreCount = 0;
+        bool isQuery = false;
 
         private bool isMyServiceExpanded = false;
 
@@ -69,7 +71,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private CancellationTokenSource walkthroughTokenSource = new CancellationTokenSource();
 
+        private CancellationTokenSource walkthroughNoOCRTokenSource = new CancellationTokenSource();
+
         private CancellationTokenSource threePhaseWalkthroughTokenSource = new CancellationTokenSource();
+
+        private CancellationTokenSource threePhaseWalkthroughNoOCRTokenSource = new CancellationTokenSource();
 
         private CancellationTokenSource energyTipsTokenSource = new CancellationTokenSource();
 
@@ -125,7 +131,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     }
                     else if (response.Data != null && response.Data.ErrorCode == "7200" && response.Data.data != null && response.Data.data.Count > 0)
                     {
-                        
+
                         List<SummaryDashBoardDetails> summaryDetails = response.Data.data;
                         List<SummaryDashBoardAccountEntity> billingDetails = new List<SummaryDashBoardAccountEntity>();
                         for (int i = 0; i < summaryDetails.Count; i++)
@@ -599,20 +605,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     FetchAccountSummary();
                 }
             }
-
-            List<string> smrAccountList = new List<string>();
-            for (int i = 0; i < customerBillingAccountList.Count; i++)
-            {
-                if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum) && customerBillingAccountList[i].isOwned && customerBillingAccountList[i].AccountCategoryId != "2" && customerBillingAccountList[i].SmartMeterCode == "0")
-                {
-                    smrAccountList.Add(customerBillingAccountList[i].AccNum);
-                }
-            }
-
-            if (smrAccountList.Count > 0)
-            {
-                _ = OnStartCheckSMRAccountStatus(smrAccountList);
-            }
         }
 
         public void LoadAccounts()
@@ -633,16 +625,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
 
             List<string> accountList = new List<string>();
-            List<string> smrAccountList = new List<string>();
             for (int i = 0; i < customerBillingAccountList.Count; i++)
             {
                 if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum))
                 {
                     accountList.Add(customerBillingAccountList[i].AccNum);
-                }
-                if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum) && customerBillingAccountList[i].isOwned && customerBillingAccountList[i].AccountCategoryId != "2" && customerBillingAccountList[i].SmartMeterCode == "0")
-                {
-                    smrAccountList.Add(customerBillingAccountList[i].AccNum);
                 }
             }
 
@@ -650,16 +637,114 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             this.mView.SetHeaderActionVisiblity(summaryDashboardInfoList);
 
-            if (billingAccoutCount > 0)
+            if (isQuery)
             {
-                curentLoadMoreCount = 0;
-                FetchAccountSummary(true, true);
+                isQuery = false;
+                trackCurrentLoadMoreCount = 0;
             }
 
-            if (smrAccountList.Count > 0)
+            if (billingAccoutCount > 0)
             {
-                _ = OnStartCheckSMRAccountStatus(smrAccountList);
+                if (trackCurrentLoadMoreCount > 0 && !MyTNBAccountManagement.GetInstance().IsNeedUpdatedBillingDetails())
+                {
+                    RestoreCachedAccountList();
+                }
+                else
+                {
+                    curentLoadMoreCount = 0;
+                    FetchAccountSummary(true, true);
+                }
             }
+        }
+
+        private void RestoreCachedAccountList()
+        {
+            try
+            {
+                isQuery = false;
+                updateDashboardInfoList = new List<SummaryDashBoardDetails>();
+                this.mView.SetAccountListCardsFromLocal(updateDashboardInfoList);
+                curentLoadMoreCount = trackCurrentLoadMoreCount;
+
+                int forLoopCount = 0;
+
+                int i = 0;
+
+                if (billingAccoutCount > 3)
+                {
+                    forLoopCount = (curentLoadMoreCount == 1) ? 3 : (curentLoadMoreCount * Constants.SUMMARY_DASHBOARD_PAGE_COUNT) - 2;
+                    if (billingAccoutCount < forLoopCount)
+                    {
+                        forLoopCount = billingAccoutCount;
+                    }
+                }
+                else
+                {
+                    forLoopCount = billingAccoutCount;
+                }
+
+                bool isLoadNeed = false;
+
+                List<string> accounts = new List<string>();
+                for (; i < forLoopCount; i++)
+                {
+                    if (!string.IsNullOrEmpty(summaryDashboardInfoList[i].AccNumber))
+                    {
+                        accounts.Add(summaryDashboardInfoList[i].AccNumber);
+                        CustomerBillingAccount selected = CustomerBillingAccount.FindByAccNum(summaryDashboardInfoList[i].AccNumber);
+                        if (selected.billingDetails != null)
+                        {
+                            SummaryDashBoardDetails cached = JsonConvert.DeserializeObject<SummaryDashBoardDetails>(selected.billingDetails);
+                            cached.IsTaggedSMR = selected.IsTaggedSMR;
+                            summaryDashboardInfoList[i] = cached;
+                        }
+                        else
+                        {
+                            isLoadNeed = true;
+                        }
+                        updateDashboardInfoList.Add(summaryDashboardInfoList[i]);
+                    }
+                }
+
+                if (isLoadNeed)
+                {
+                    this.mView.SetAccountListCards(updateDashboardInfoList);
+                    this.mView.UpdateAccountListCards(updateDashboardInfoList);
+                    LoadSummaryDetails(accounts);
+                }
+                else
+                {
+                    this.mView.SetAccountListCardsFromLocal(updateDashboardInfoList);
+                    LoadSummaryDetailsBackground(accounts);
+
+                    if (billingAccoutCount > 3)
+                    {
+                        if (billingAccoutCount == updateDashboardInfoList.Count())
+                        {
+                            this.mView.IsLoadMoreButtonVisible(true, true);
+                        }
+                        else if (billingAccoutCount > updateDashboardInfoList.Count())
+                        {
+                            this.mView.IsLoadMoreButtonVisible(true, false);
+                        }
+                    }
+                    else
+                    {
+                        this.mView.IsLoadMoreButtonVisible(false, false);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+        }
+
+        public void SetQueryClose()
+        {
+            isQuery = false;
+            trackCurrentLoadMoreCount = 0;
         }
 
         public void LoadQueryAccounts(string searchText)
@@ -683,7 +768,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
 
             summaryDashboardInfoList = new List<SummaryDashBoardDetails>();
-            
+
             foreach (CustomerBillingAccount customerBillintAccount in customerBillingAccountList)
             {
                 SummaryDashBoardDetails summaryDashBoardDetails = new SummaryDashBoardDetails();
@@ -707,6 +792,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             billingAccoutCount = summaryDashboardInfoList.Count;
 
             curentLoadMoreCount = 0;
+
+            if (string.IsNullOrEmpty(searchText))
+            {
+                isQuery = false;
+                trackCurrentLoadMoreCount = 0;
+            }
+            else
+            {
+                isQuery = true;
+            }
 
             try
             {
@@ -807,6 +902,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 if (isReset)
                 {
                     curentLoadMoreCount = 0;
+                    trackCurrentLoadMoreCount = 0;
                     updateDashboardInfoList = new List<SummaryDashBoardDetails>();
                     this.mView.SetAccountListCardsFromLocal(updateDashboardInfoList);
                 }
@@ -825,6 +921,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     if (billingAccoutCount > 3)
                     {
                         curentLoadMoreCount = curentLoadMoreCount + 1;
+                    }
+
+                    if (!isQuery)
+                    {
+                        trackCurrentLoadMoreCount = curentLoadMoreCount;
                     }
 
                     if (billingAccoutCount > 3)
@@ -868,16 +969,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
 
             List<string> accountList = new List<string>();
-            List<string> smrAccountList = new List<string>();
             for (int i = 0; i < customerBillingAccountList.Count; i++)
             {
                 if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum))
                 {
                     accountList.Add(customerBillingAccountList[i].AccNum);
-                }
-                if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum) && customerBillingAccountList[i].isOwned && customerBillingAccountList[i].AccountCategoryId != "2" && customerBillingAccountList[i].SmartMeterCode == "0")
-                {
-                    smrAccountList.Add(customerBillingAccountList[i].AccNum);
                 }
             }
 
@@ -888,11 +984,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             if (billingAccoutCount > 0)
             {
                 FetchAccountSummary(true, true, true);
-            }
-
-            if (smrAccountList.Count > 0)
-            {
-                _ = OnStartCheckSMRAccountStatus(smrAccountList);
             }
         }
 
@@ -943,7 +1034,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     previousCount = curentLoadMoreCount;
                     curentLoadMoreCount = curentLoadMoreCount + 1;
-                    forLoopCount = (curentLoadMoreCount == 1)? 3 : (curentLoadMoreCount * Constants.SUMMARY_DASHBOARD_PAGE_COUNT) - 2;
+                    forLoopCount = (curentLoadMoreCount == 1) ? 3 : (curentLoadMoreCount * Constants.SUMMARY_DASHBOARD_PAGE_COUNT) - 2;
                     i = previousCount * Constants.SUMMARY_DASHBOARD_PAGE_COUNT;
                     if (i > 0)
                     {
@@ -959,6 +1050,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 else
                 {
                     forLoopCount = billingAccoutCount;
+                }
+
+                if (!isQuery)
+                {
+                    trackCurrentLoadMoreCount = curentLoadMoreCount;
                 }
 
                 bool isLoadNeed = false;
@@ -1046,6 +1142,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private async Task OnCheckSMRAccountStatus(List<string> accountList)
         {
+            isSMRApplyAllowFlag = false;
+
             List<AccountSMRStatus> updateSMRStatus = new List<AccountSMRStatus>();
             try
             {
@@ -1077,6 +1175,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         bool selectedUpdateIsTaggedSMR = false;
                         if (status.IsTaggedSMR == "true")
                         {
+                            isSMRApplyAllowFlag = true;
                             selectedUpdateIsTaggedSMR = true;
                         }
 
@@ -1100,14 +1199,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             catch (System.OperationCanceledException cancelledException)
             {
+                isSMRApplyAllowFlag = false;
                 Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
+                isSMRApplyAllowFlag = false;
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
+                isSMRApplyAllowFlag = false;
                 Utility.LoggingNonFatalError(unknownException);
             }
         }
@@ -1117,7 +1219,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             tokenSource = new CancellationTokenSource();
             FAQTokenSource = new CancellationTokenSource();
             walkthroughTokenSource = new CancellationTokenSource();
+            walkthroughNoOCRTokenSource = new CancellationTokenSource();
             threePhaseWalkthroughTokenSource = new CancellationTokenSource();
+            threePhaseWalkthroughNoOCRTokenSource = new CancellationTokenSource();
             energyTipsTokenSource = new CancellationTokenSource();
             queryTokenSource = new CancellationTokenSource();
             isMyServiceExpanded = false;
@@ -1130,7 +1234,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             tokenSource = new CancellationTokenSource();
             FAQTokenSource = new CancellationTokenSource();
             walkthroughTokenSource = new CancellationTokenSource();
+            walkthroughNoOCRTokenSource = new CancellationTokenSource();
             threePhaseWalkthroughTokenSource = new CancellationTokenSource();
+            threePhaseWalkthroughNoOCRTokenSource = new CancellationTokenSource();
             energyTipsTokenSource = new CancellationTokenSource();
             queryTokenSource = new CancellationTokenSource();
             isMyServiceExpanded = false;
@@ -1142,13 +1248,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             tokenSource.Cancel();
             FAQTokenSource.Cancel();
             walkthroughTokenSource.Cancel();
+            walkthroughNoOCRTokenSource.Cancel();
             threePhaseWalkthroughTokenSource.Cancel();
+            threePhaseWalkthroughNoOCRTokenSource.Cancel();
             energyTipsTokenSource.Cancel();
-        }
-
-        public async Task InitiateGetApplySMR()
-        {
-            await GetIsSmrApplyAllowedService();
         }
 
         public async Task InitiateMyService()
@@ -1190,27 +1293,51 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 cachedDBList = NewFAQManager.GetAll();
                 for (int i = 0; i < cachedDBList.Count; i++)
                 {
-                    currentNewFAQList.Add(new NewFAQ()
+                    if (cachedDBList[i].Tags == "SM")
                     {
-                        ID = cachedDBList[i].ID,
-                        Image = cachedDBList[i].Image,
-                        BGStartColor = cachedDBList[i].BGStartColor,
-                        BGEndColor = cachedDBList[i].BGEndColor,
-                        BGDirection = cachedDBList[i].BGDirection,
-                        Title = cachedDBList[i].Title,
-                        Description = cachedDBList[i].Description,
-                        TopicBodyTitle = cachedDBList[i].TopicBodyTitle,
-                        TopicBodyContent = cachedDBList[i].TopicBodyContent,
-                        CTA = cachedDBList[i].CTA,
-                        Tags = cachedDBList[i].Tags,
-                        TargetItem = cachedDBList[i].TargetItem
-                    });
+                        if (MyTNBAccountManagement.GetInstance().IsHasSMAccountCount() > 0)
+                        {
+                            currentNewFAQList.Add(new NewFAQ()
+                            {
+                                ID = cachedDBList[i].ID,
+                                Image = cachedDBList[i].Image,
+                                BGStartColor = cachedDBList[i].BGStartColor,
+                                BGEndColor = cachedDBList[i].BGEndColor,
+                                BGDirection = cachedDBList[i].BGDirection,
+                                Title = cachedDBList[i].Title,
+                                Description = cachedDBList[i].Description,
+                                TopicBodyTitle = cachedDBList[i].TopicBodyTitle,
+                                TopicBodyContent = cachedDBList[i].TopicBodyContent,
+                                CTA = cachedDBList[i].CTA,
+                                Tags = cachedDBList[i].Tags,
+                                TargetItem = cachedDBList[i].TargetItem
+                            });
+                        }
+                    }
+                    else
+                    {
+                        currentNewFAQList.Add(new NewFAQ()
+                        {
+                            ID = cachedDBList[i].ID,
+                            Image = cachedDBList[i].Image,
+                            BGStartColor = cachedDBList[i].BGStartColor,
+                            BGEndColor = cachedDBList[i].BGEndColor,
+                            BGDirection = cachedDBList[i].BGDirection,
+                            Title = cachedDBList[i].Title,
+                            Description = cachedDBList[i].Description,
+                            TopicBodyTitle = cachedDBList[i].TopicBodyTitle,
+                            TopicBodyContent = cachedDBList[i].TopicBodyContent,
+                            CTA = cachedDBList[i].CTA,
+                            Tags = cachedDBList[i].Tags,
+                            TargetItem = cachedDBList[i].TargetItem
+                        });
+                    }
                 }
                 this.mView.SetNewFAQResult(currentNewFAQList);
             }
             catch (Exception e)
             {
-                if (currentMyServiceList.Count > 0)
+                if (currentNewFAQList.Count > 0)
                 {
                     this.mView.SetNewFAQResult(currentNewFAQList);
                 }
@@ -1236,7 +1363,27 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ses_param2 = ""
                 };
 
-                await GetIsSmrApplyAllowedService();
+                List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetEligibleAndSMRAccountList();
+                List<string> smrAccountList = new List<string>();
+                for (int i = 0; i < customerBillingAccountList.Count; i++)
+                {
+                    if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum))
+                    {
+                        smrAccountList.Add(customerBillingAccountList[i].AccNum);
+                    }
+                }
+
+                isSMRApplyAllowFlag = false;
+
+                if (smrAccountList.Count > 0)
+                {
+                    await OnCheckSMRAccountStatus(smrAccountList);
+                }
+
+                if (!isSMRApplyAllowFlag && smrAccountList.Count > 0)
+                {
+                    await GetIsSmrApplyAllowedService(smrAccountList);
+                }
 
                 GetServicesResponse getServicesResponse = await this.serviceApi.GetServices(new GetServiceRequests()
                 {
@@ -1355,7 +1502,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         }
 
 
-        private async Task GetIsSmrApplyAllowedService()
+        private async Task GetIsSmrApplyAllowedService(List<string> accountList)
         {
             try
             {
@@ -1375,17 +1522,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     ses_param2 = ""
                 };
 
-                List<CustomerBillingAccount> eligibleSMRAccountList = CustomerBillingAccount.GetEligibleAndSMRAccountList();
-                List<string> smrEligibleAccountList = new List<string>();
-                eligibleSMRAccountList.ForEach(account =>
-                {
-                    smrEligibleAccountList.Add(account.AccNum);
-                });
-
                 GetIsSmrApplyAllowedResponse isSMRApplyResponse = await this.serviceApi.GetIsSmrApplyAllowed(new GetIsSmrApplyAllowedRequest()
                 {
                     usrInf = currentUsrInf,
-                    contractAccounts = smrEligibleAccountList
+                    contractAccounts = accountList
                 });
 
                 if (isSMRApplyResponse.Data.ErrorCode == "7200" && isSMRApplyResponse.Data.Data.Count > 0)
@@ -1526,16 +1666,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public Task OnGetFAQs()
         {
-            FAQTokenSource = new CancellationTokenSource();
             return Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    FAQTokenSource.Token.ThrowIfCancellationRequested();
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
                     HelpResponseModel responseModel = getItemsService.GetHelpItems();
-                    FAQTokenSource.Token.ThrowIfCancellationRequested();
                     if (responseModel.Status.Equals("Success"))
                     {
                         if (NewFAQManager == null)
@@ -1559,61 +1696,30 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }).ContinueWith((Task previous) =>
             {
-            }, FAQTokenSource.Token);
+            }, new CancellationTokenSource().Token);
         }
 
         public void GetSmartMeterReadingWalkthroughtTimeStamp()
         {
             try
             {
-                bool isOCRDisabled = false;
-                MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
-                if (currentMasterData.IsOCRDown)
+                if (SSMRMeterReadingScreensParentManager == null)
                 {
-                    isOCRDisabled = true;
+                    SSMRMeterReadingScreensParentManager = new SSMRMeterReadingScreensParentEntity();
                 }
-
-                if (isOCRDisabled)
+                List<SSMRMeterReadingScreensParentEntity> items = new List<SSMRMeterReadingScreensParentEntity>();
+                items = SSMRMeterReadingScreensParentManager.GetAllItems();
+                if (items != null && items.Count > 0)
                 {
-                    if (SSMRMeterReadingScreensOCROffParentManager == null)
+                    SSMRMeterReadingScreensParentEntity entity = items[0];
+                    if (entity != null && entity.Timestamp != null)
                     {
-                        SSMRMeterReadingScreensOCROffParentManager = new SSMRMeterReadingScreensOCROffParentEntity();
-                    }
-                    List<SSMRMeterReadingScreensOCROffParentEntity> items = new List<SSMRMeterReadingScreensOCROffParentEntity>();
-                    items = SSMRMeterReadingScreensOCROffParentManager.GetAllItems();
-                    if (items != null && items.Count > 0)
-                    {
-                        SSMRMeterReadingScreensOCROffParentEntity entity = items[0];
-                        if (entity != null && entity.Timestamp != null)
-                        {
-                            this.mView.OnSavedSSMRMeterReadingTimeStamp(entity?.Timestamp);
-                        }
-                    }
-                    else
-                    {
-                        this.mView.OnSavedSSMRMeterReadingTimeStamp(null);
+                        this.mView.OnSavedSSMRMeterReadingTimeStamp(entity?.Timestamp);
                     }
                 }
                 else
                 {
-                    if (SSMRMeterReadingScreensParentManager == null)
-                    {
-                        SSMRMeterReadingScreensParentManager = new SSMRMeterReadingScreensParentEntity();
-                    }
-                    List<SSMRMeterReadingScreensParentEntity> items = new List<SSMRMeterReadingScreensParentEntity>();
-                    items = SSMRMeterReadingScreensParentManager.GetAllItems();
-                    if (items != null && items.Count > 0)
-                    {
-                        SSMRMeterReadingScreensParentEntity entity = items[0];
-                        if (entity != null && entity.Timestamp != null)
-                        {
-                            this.mView.OnSavedSSMRMeterReadingTimeStamp(entity?.Timestamp);
-                        }
-                    }
-                    else
-                    {
-                        this.mView.OnSavedSSMRMeterReadingTimeStamp(null);
-                    }
+                    this.mView.OnSavedSSMRMeterReadingTimeStamp(null);
                 }
             }
             catch (Exception e)
@@ -1633,44 +1739,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     walkthroughTokenSource.Token.ThrowIfCancellationRequested();
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
-                    bool isOCRDisabled = false;
-                    MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
-                    if (currentMasterData.IsOCRDown)
+                    SSMRMeterReadingTimeStampResponseModel responseModel = getItemsService.GetSSMRMeterReadingOnePhaseWalkthroughTimestampItem();
+                    walkthroughTokenSource.Token.ThrowIfCancellationRequested();
+                    if (responseModel.Status.Equals("Success"))
                     {
-                        isOCRDisabled = true;
-                    }
-
-                    if (isOCRDisabled)
-                    {
-                        SSMRMeterReadingTimeStampResponseModel responseModel = getItemsService.GetSSMRMeterReadingOnePhaseOCROffWalkthroughTimestampItem();
-                        walkthroughTokenSource.Token.ThrowIfCancellationRequested();
-                        if (responseModel.Status.Equals("Success"))
+                        if (SSMRMeterReadingScreensParentManager == null)
                         {
-                            if (SSMRMeterReadingScreensOCROffParentManager == null)
-                            {
-                                SSMRMeterReadingScreensOCROffParentManager = new SSMRMeterReadingScreensOCROffParentEntity();
-                            }
-                            SSMRMeterReadingScreensOCROffParentManager.DeleteTable();
-                            SSMRMeterReadingScreensOCROffParentManager.CreateTable();
-                            SSMRMeterReadingScreensOCROffParentManager.InsertListOfItems(responseModel.Data);
-                            this.mView.CheckSSMRMeterReadingTimeStamp();
+                            SSMRMeterReadingScreensParentManager = new SSMRMeterReadingScreensParentEntity();
                         }
-                    }
-                    else
-                    {
-                        SSMRMeterReadingTimeStampResponseModel responseModel = getItemsService.GetSSMRMeterReadingOnePhaseWalkthroughTimestampItem();
-                        walkthroughTokenSource.Token.ThrowIfCancellationRequested();
-                        if (responseModel.Status.Equals("Success"))
-                        {
-                            if (SSMRMeterReadingScreensParentManager == null)
-                            {
-                                SSMRMeterReadingScreensParentManager = new SSMRMeterReadingScreensParentEntity();
-                            }
-                            SSMRMeterReadingScreensParentManager.DeleteTable();
-                            SSMRMeterReadingScreensParentManager.CreateTable();
-                            SSMRMeterReadingScreensParentManager.InsertListOfItems(responseModel.Data);
-                            this.mView.CheckSSMRMeterReadingTimeStamp();
-                        }
+                        SSMRMeterReadingScreensParentManager.DeleteTable();
+                        SSMRMeterReadingScreensParentManager.CreateTable();
+                        SSMRMeterReadingScreensParentManager.InsertListOfItems(responseModel.Data);
+                        this.mView.CheckSSMRMeterReadingTimeStamp();
                     }
                 }
                 catch (Exception e)
@@ -1684,50 +1764,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public Task OnGetSSMRMeterReadingScreens()
         {
-            walkthroughTokenSource = new CancellationTokenSource();
             return Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    walkthroughTokenSource.Token.ThrowIfCancellationRequested();
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
-                    bool isOCRDisabled = false;
-                    MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
-                    if (currentMasterData.IsOCRDown)
+                    SSMRMeterReadingResponseModel responseModel = getItemsService.GetSSMRMeterReadingOnePhaseWalkthroughItems();
+                    if (responseModel.Status.Equals("Success"))
                     {
-                        isOCRDisabled = true;
-                    }
-
-                    if (isOCRDisabled)
-                    {
-                        SSMRMeterReadingResponseModel responseModel = getItemsService.GetSSMRMeterReadingOnePhaseOCROffWalkthroughItems();
-                        walkthroughTokenSource.Token.ThrowIfCancellationRequested();
-                        if (responseModel.Status.Equals("Success"))
+                        if (SSMRMeterReadingScreensManager == null)
                         {
-                            if (SSMRMeterReadingScreensOCROffManager == null)
-                            {
-                                SSMRMeterReadingScreensOCROffManager = new SSMRMeterReadingScreensOCROffEntity();
-                            }
-                            SSMRMeterReadingScreensOCROffManager.DeleteTable();
-                            SSMRMeterReadingScreensOCROffManager.CreateTable();
-                            SSMRMeterReadingScreensOCROffManager.InsertListOfItems(responseModel.Data);
+                            SSMRMeterReadingScreensManager = new SSMRMeterReadingScreensEntity();
                         }
-                    }
-                    else
-                    {
-                        SSMRMeterReadingResponseModel responseModel = getItemsService.GetSSMRMeterReadingOnePhaseWalkthroughItems();
-                        walkthroughTokenSource.Token.ThrowIfCancellationRequested();
-                        if (responseModel.Status.Equals("Success"))
-                        {
-                            if (SSMRMeterReadingScreensManager == null)
-                            {
-                                SSMRMeterReadingScreensManager = new SSMRMeterReadingScreensEntity();
-                            }
-                            SSMRMeterReadingScreensManager.DeleteTable();
-                            SSMRMeterReadingScreensManager.CreateTable();
-                            SSMRMeterReadingScreensManager.InsertListOfItems(responseModel.Data);
-                        }
+                        SSMRMeterReadingScreensManager.DeleteTable();
+                        SSMRMeterReadingScreensManager.CreateTable();
+                        SSMRMeterReadingScreensManager.InsertListOfItems(responseModel.Data);
                     }
                 }
                 catch (Exception e)
@@ -1736,61 +1788,122 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }).ContinueWith((Task previous) =>
             {
-            }, walkthroughTokenSource.Token);
+            }, new CancellationTokenSource().Token);
+        }
+
+        public void GetSmartMeterReadingWalkthroughtNoOCRTimeStamp()
+        {
+            try
+            {
+                if (SSMRMeterReadingScreensOCROffParentManager == null)
+                {
+                    SSMRMeterReadingScreensOCROffParentManager = new SSMRMeterReadingScreensOCROffParentEntity();
+                }
+                List<SSMRMeterReadingScreensOCROffParentEntity> items = new List<SSMRMeterReadingScreensOCROffParentEntity>();
+                items = SSMRMeterReadingScreensOCROffParentManager.GetAllItems();
+                if (items != null && items.Count > 0)
+                {
+                    SSMRMeterReadingScreensOCROffParentEntity entity = items[0];
+                    if (entity != null && entity.Timestamp != null)
+                    {
+                        this.mView.OnSavedSSMRMeterReadingNoOCRTimeStamp(entity?.Timestamp);
+                    }
+                }
+                else
+                {
+                    this.mView.OnSavedSSMRMeterReadingNoOCRTimeStamp(null);
+                }
+            }
+            catch (Exception e)
+            {
+                this.mView.OnSavedSSMRMeterReadingNoOCRTimeStamp(null);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public Task OnGetSmartMeterReadingWalkthroughtNoOCRTimeStamp()
+        {
+            walkthroughNoOCRTokenSource = new CancellationTokenSource();
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    walkthroughNoOCRTokenSource.Token.ThrowIfCancellationRequested();
+                    string density = DPUtils.GetDeviceDensity(Application.Context);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    SSMRMeterReadingTimeStampResponseModel responseModel = getItemsService.GetSSMRMeterReadingOnePhaseOCROffWalkthroughTimestampItem();
+                    walkthroughNoOCRTokenSource.Token.ThrowIfCancellationRequested();
+                    if (responseModel.Status.Equals("Success"))
+                    {
+                        if (SSMRMeterReadingScreensOCROffParentManager == null)
+                        {
+                            SSMRMeterReadingScreensOCROffParentManager = new SSMRMeterReadingScreensOCROffParentEntity();
+                        }
+                        SSMRMeterReadingScreensOCROffParentManager.DeleteTable();
+                        SSMRMeterReadingScreensOCROffParentManager.CreateTable();
+                        SSMRMeterReadingScreensOCROffParentManager.InsertListOfItems(responseModel.Data);
+                        this.mView.CheckSSMRMeterReadingNoOCRTimeStamp();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }).ContinueWith((Task previous) =>
+            {
+            }, walkthroughNoOCRTokenSource.Token);
+        }
+
+        public Task OnGetSSMRMeterReadingScreensNoOCR()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    string density = DPUtils.GetDeviceDensity(Application.Context);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    SSMRMeterReadingResponseModel responseModel = getItemsService.GetSSMRMeterReadingOnePhaseOCROffWalkthroughItems();
+                    if (responseModel.Status.Equals("Success"))
+                    {
+                        if (SSMRMeterReadingScreensOCROffManager == null)
+                        {
+                            SSMRMeterReadingScreensOCROffManager = new SSMRMeterReadingScreensOCROffEntity();
+                        }
+                        SSMRMeterReadingScreensOCROffManager.DeleteTable();
+                        SSMRMeterReadingScreensOCROffManager.CreateTable();
+                        SSMRMeterReadingScreensOCROffManager.InsertListOfItems(responseModel.Data);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }).ContinueWith((Task previous) =>
+            {
+            }, new CancellationTokenSource().Token);
         }
 
         public void GetSmartMeterReadingThreePhaseWalkthroughtTimeStamp()
         {
             try
             {
-                bool isOCRDisabled = false;
-                MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
-                if (currentMasterData.IsOCRDown)
+                if (SSMRMeterReadingThreePhaseScreensParentManager == null)
                 {
-                    isOCRDisabled = true;
+                    SSMRMeterReadingThreePhaseScreensParentManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
                 }
-
-                if (isOCRDisabled)
+                List<SSMRMeterReadingThreePhaseScreensParentEntity> items = new List<SSMRMeterReadingThreePhaseScreensParentEntity>();
+                items = SSMRMeterReadingThreePhaseScreensParentManager.GetAllItems();
+                if (items != null && items.Count > 0)
                 {
-                    if (SSMRMeterReadingThreePhaseScreensOCROffParentManager == null)
+                    SSMRMeterReadingThreePhaseScreensParentEntity entity = items[0];
+                    if (entity != null && entity.Timestamp != null)
                     {
-                        SSMRMeterReadingThreePhaseScreensOCROffParentManager = new SSMRMeterReadingThreePhaseScreensOCROffParentEntity();
-                    }
-                    List<SSMRMeterReadingThreePhaseScreensOCROffParentEntity> items = new List<SSMRMeterReadingThreePhaseScreensOCROffParentEntity>();
-                    items = SSMRMeterReadingThreePhaseScreensOCROffParentManager.GetAllItems();
-                    if (items != null && items.Count > 0)
-                    {
-                        SSMRMeterReadingThreePhaseScreensOCROffParentEntity entity = items[0];
-                        if (entity != null && entity.Timestamp != null)
-                        {
-                            this.mView.OnSavedSSMRMeterReadingThreePhaseTimeStamp(entity?.Timestamp);
-                        }
-                    }
-                    else
-                    {
-                        this.mView.OnSavedSSMRMeterReadingThreePhaseTimeStamp(null);
+                        this.mView.OnSavedSSMRMeterReadingThreePhaseTimeStamp(entity?.Timestamp);
                     }
                 }
                 else
                 {
-                    if (SSMRMeterReadingThreePhaseScreensParentManager == null)
-                    {
-                        SSMRMeterReadingThreePhaseScreensParentManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
-                    }
-                    List<SSMRMeterReadingThreePhaseScreensParentEntity> items = new List<SSMRMeterReadingThreePhaseScreensParentEntity>();
-                    items = SSMRMeterReadingThreePhaseScreensParentManager.GetAllItems();
-                    if (items != null && items.Count > 0)
-                    {
-                        SSMRMeterReadingThreePhaseScreensParentEntity entity = items[0];
-                        if (entity != null && entity.Timestamp != null)
-                        {
-                            this.mView.OnSavedSSMRMeterReadingThreePhaseTimeStamp(entity?.Timestamp);
-                        }
-                    }
-                    else
-                    {
-                        this.mView.OnSavedSSMRMeterReadingThreePhaseTimeStamp(null);
-                    }
+                    this.mView.OnSavedSSMRMeterReadingThreePhaseTimeStamp(null);
                 }
             }
             catch (Exception e)
@@ -1810,44 +1923,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     threePhaseWalkthroughTokenSource.Token.ThrowIfCancellationRequested();
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
-                    bool isOCRDisabled = false;
-                    MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
-                    if (currentMasterData.IsOCRDown)
+                    SSMRMeterReadingTimeStampResponseModel responseModel = getItemsService.GetSSMRMeterReadingThreePhaseWalkthroughTimestampItem();
+                    threePhaseWalkthroughTokenSource.Token.ThrowIfCancellationRequested();
+                    if (responseModel.Status.Equals("Success"))
                     {
-                        isOCRDisabled = true;
-                    }
-
-                    if (isOCRDisabled)
-                    {
-                        SSMRMeterReadingTimeStampResponseModel responseModel = getItemsService.GetSSMRMeterReadingThreePhaseOCROffWalkthroughTimestampItem();
-                        threePhaseWalkthroughTokenSource.Token.ThrowIfCancellationRequested();
-                        if (responseModel.Status.Equals("Success"))
+                        if (SSMRMeterReadingThreePhaseScreensParentManager == null)
                         {
-                            if (SSMRMeterReadingThreePhaseScreensOCROffParentManager == null)
-                            {
-                                SSMRMeterReadingThreePhaseScreensOCROffParentManager = new SSMRMeterReadingThreePhaseScreensOCROffParentEntity();
-                            }
-                            SSMRMeterReadingThreePhaseScreensOCROffParentManager.DeleteTable();
-                            SSMRMeterReadingThreePhaseScreensOCROffParentManager.CreateTable();
-                            SSMRMeterReadingThreePhaseScreensOCROffParentManager.InsertListOfItems(responseModel.Data);
-                            this.mView.CheckSSMRMeterReadingThreePhaseTimeStamp();
+                            SSMRMeterReadingThreePhaseScreensParentManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
                         }
-                    }
-                    else
-                    {
-                        SSMRMeterReadingTimeStampResponseModel responseModel = getItemsService.GetSSMRMeterReadingThreePhaseWalkthroughTimestampItem();
-                        threePhaseWalkthroughTokenSource.Token.ThrowIfCancellationRequested();
-                        if (responseModel.Status.Equals("Success"))
-                        {
-                            if (SSMRMeterReadingThreePhaseScreensParentManager == null)
-                            {
-                                SSMRMeterReadingThreePhaseScreensParentManager = new SSMRMeterReadingThreePhaseScreensParentEntity();
-                            }
-                            SSMRMeterReadingThreePhaseScreensParentManager.DeleteTable();
-                            SSMRMeterReadingThreePhaseScreensParentManager.CreateTable();
-                            SSMRMeterReadingThreePhaseScreensParentManager.InsertListOfItems(responseModel.Data);
-                            this.mView.CheckSSMRMeterReadingThreePhaseTimeStamp();
-                        }
+                        SSMRMeterReadingThreePhaseScreensParentManager.DeleteTable();
+                        SSMRMeterReadingThreePhaseScreensParentManager.CreateTable();
+                        SSMRMeterReadingThreePhaseScreensParentManager.InsertListOfItems(responseModel.Data);
+                        this.mView.CheckSSMRMeterReadingThreePhaseTimeStamp();
                     }
                 }
                 catch (Exception e)
@@ -1861,52 +1948,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public Task OnGetSSMRMeterReadingThreePhaseScreens()
         {
-            threePhaseWalkthroughTokenSource = new CancellationTokenSource();
             return Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    threePhaseWalkthroughTokenSource.Token.ThrowIfCancellationRequested();
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
-                    bool isOCRDisabled = false;
-                    MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
-                    if (currentMasterData.IsOCRDown)
+                    SSMRMeterReadingResponseModel responseModel = getItemsService.GetSSMRMeterReadingThreePhaseWalkthroughItems();
+                    if (responseModel.Status.Equals("Success"))
                     {
-                        isOCRDisabled = true;
-                    }
-
-                    if (isOCRDisabled)
-                    {
-                        SSMRMeterReadingResponseModel responseModel = getItemsService.GetSSMRMeterReadingThreePhaseOCROffWalkthroughItems();
-                        threePhaseWalkthroughTokenSource.Token.ThrowIfCancellationRequested();
-                        if (responseModel.Status.Equals("Success"))
+                        if (SSMRMeterReadingThreePhaseScreensManager == null)
                         {
-                            if (SSMRMeterReadingThreePhaseScreensOCROffManager == null)
-                            {
-                                SSMRMeterReadingThreePhaseScreensOCROffManager = new SSMRMeterReadingThreePhaseScreensOCROffEntity();
-                            }
-                            SSMRMeterReadingThreePhaseScreensOCROffManager.DeleteTable();
-                            SSMRMeterReadingThreePhaseScreensOCROffManager.CreateTable();
-
-                            SSMRMeterReadingThreePhaseScreensOCROffManager.InsertListOfItems(responseModel.Data);
+                            SSMRMeterReadingThreePhaseScreensManager = new SSMRMeterReadingThreePhaseScreensEntity();
                         }
-                    }
-                    else
-                    {
-                        SSMRMeterReadingResponseModel responseModel = getItemsService.GetSSMRMeterReadingThreePhaseWalkthroughItems();
-                        threePhaseWalkthroughTokenSource.Token.ThrowIfCancellationRequested();
-                        if (responseModel.Status.Equals("Success"))
-                        {
-                            if (SSMRMeterReadingThreePhaseScreensManager == null)
-                            {
-                                SSMRMeterReadingThreePhaseScreensManager = new SSMRMeterReadingThreePhaseScreensEntity();
-                            }
-                            SSMRMeterReadingThreePhaseScreensManager.DeleteTable();
-                            SSMRMeterReadingThreePhaseScreensManager.CreateTable();
+                        SSMRMeterReadingThreePhaseScreensManager.DeleteTable();
+                        SSMRMeterReadingThreePhaseScreensManager.CreateTable();
 
-                            SSMRMeterReadingThreePhaseScreensManager.InsertListOfItems(responseModel.Data);
-                        }
+                        SSMRMeterReadingThreePhaseScreensManager.InsertListOfItems(responseModel.Data);
                     }
                 }
                 catch (Exception e)
@@ -1915,7 +1973,100 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }).ContinueWith((Task previous) =>
             {
-            }, threePhaseWalkthroughTokenSource.Token);
+            }, new CancellationTokenSource().Token);
+        }
+
+        public void GetSmartMeterReadingThreePhaseWalkthroughtNoOCRTimeStamp()
+        {
+            try
+            {
+                if (SSMRMeterReadingThreePhaseScreensOCROffParentManager == null)
+                {
+                    SSMRMeterReadingThreePhaseScreensOCROffParentManager = new SSMRMeterReadingThreePhaseScreensOCROffParentEntity();
+                }
+                List<SSMRMeterReadingThreePhaseScreensOCROffParentEntity> items = new List<SSMRMeterReadingThreePhaseScreensOCROffParentEntity>();
+                items = SSMRMeterReadingThreePhaseScreensOCROffParentManager.GetAllItems();
+                if (items != null && items.Count > 0)
+                {
+                    SSMRMeterReadingThreePhaseScreensOCROffParentEntity entity = items[0];
+                    if (entity != null && entity.Timestamp != null)
+                    {
+                        this.mView.OnSavedSSMRMeterReadingThreePhaseNoOCRTimeStamp(entity?.Timestamp);
+                    }
+                }
+                else
+                {
+                    this.mView.OnSavedSSMRMeterReadingThreePhaseNoOCRTimeStamp(null);
+                }
+            }
+            catch (Exception e)
+            {
+                this.mView.OnSavedSSMRMeterReadingThreePhaseNoOCRTimeStamp(null);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public Task OnGetSmartMeterReadingThreePhaseWalkthroughtNoOCRTimeStamp()
+        {
+            threePhaseWalkthroughNoOCRTokenSource = new CancellationTokenSource();
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    threePhaseWalkthroughNoOCRTokenSource.Token.ThrowIfCancellationRequested();
+                    string density = DPUtils.GetDeviceDensity(Application.Context);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    SSMRMeterReadingTimeStampResponseModel responseModel = getItemsService.GetSSMRMeterReadingThreePhaseOCROffWalkthroughTimestampItem();
+                    threePhaseWalkthroughNoOCRTokenSource.Token.ThrowIfCancellationRequested();
+                    if (responseModel.Status.Equals("Success"))
+                    {
+                        if (SSMRMeterReadingThreePhaseScreensOCROffParentManager == null)
+                        {
+                            SSMRMeterReadingThreePhaseScreensOCROffParentManager = new SSMRMeterReadingThreePhaseScreensOCROffParentEntity();
+                        }
+                        SSMRMeterReadingThreePhaseScreensOCROffParentManager.DeleteTable();
+                        SSMRMeterReadingThreePhaseScreensOCROffParentManager.CreateTable();
+                        SSMRMeterReadingThreePhaseScreensOCROffParentManager.InsertListOfItems(responseModel.Data);
+                        this.mView.CheckSSMRMeterReadingThreePhaseNoOCRTimeStamp();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }).ContinueWith((Task previous) =>
+            {
+            }, threePhaseWalkthroughNoOCRTokenSource.Token);
+        }
+
+        public Task OnGetSSMRMeterReadingThreePhaseScreensNoOCR()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    string density = DPUtils.GetDeviceDensity(Application.Context);
+                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
+                    SSMRMeterReadingResponseModel responseModel = getItemsService.GetSSMRMeterReadingThreePhaseOCROffWalkthroughItems();
+                    if (responseModel.Status.Equals("Success"))
+                    {
+                        if (SSMRMeterReadingThreePhaseScreensOCROffManager == null)
+                        {
+                            SSMRMeterReadingThreePhaseScreensOCROffManager = new SSMRMeterReadingThreePhaseScreensOCROffEntity();
+                        }
+                        SSMRMeterReadingThreePhaseScreensOCROffManager.DeleteTable();
+                        SSMRMeterReadingThreePhaseScreensOCROffManager.CreateTable();
+
+                        SSMRMeterReadingThreePhaseScreensOCROffManager.InsertListOfItems(responseModel.Data);
+                    }
+                }
+                catch (Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }).ContinueWith((Task previous) =>
+            {
+            }, new CancellationTokenSource().Token);
         }
 
         public void GetEnergySavingTipsTimeStamp()
@@ -1983,16 +2134,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public Task OnGetEnergySavingTips()
         {
-            energyTipsTokenSource = new CancellationTokenSource();
             return Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    energyTipsTokenSource.Token.ThrowIfCancellationRequested();
                     string density = DPUtils.GetDeviceDensity(Application.Context);
                     GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
                     EnergySavingTipsResponseModel responseModel = getItemsService.GetEnergySavingTipsItem();
-                    energyTipsTokenSource.Token.ThrowIfCancellationRequested();
                     if (responseModel.Status.Equals("Success"))
                     {
                         if (EnergySavingTipsManager == null)
@@ -2016,17 +2164,15 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }).ContinueWith((Task previous) =>
             {
-            }, energyTipsTokenSource.Token);
+            }, new CancellationTokenSource().Token);
         }
 
         public Task OnSetEnergySavingTipsToCache()
         {
-            energyTipsTokenSource = new CancellationTokenSource();
             return Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    energyTipsTokenSource.Token.ThrowIfCancellationRequested();
                     if (EnergySavingTipsManager == null)
                     {
                         EnergySavingTipsManager = new EnergySavingTipsEntity();
@@ -2046,7 +2192,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                                 isUpdateNeeded = true,
                                 ImageBitmap = null,
                                 ID = item.ID
-                            }); 
+                            });
                         }
                         EnergyTipsUtils.OnSetEnergyTipsList(savedList);
                     }
@@ -2057,7 +2203,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
             }).ContinueWith((Task previous) =>
             {
-            }, energyTipsTokenSource.Token);
+            }, new CancellationTokenSource().Token);
         }
 
         public async void LoadingBillsHistory(CustomerBillingAccount selectedAccount)

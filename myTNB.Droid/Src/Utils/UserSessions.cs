@@ -74,6 +74,18 @@ namespace myTNB_Android.Src.Utils
             return prefs.GetString("notificationEmail", null);
         }
 
+        public static void SaveNotificationType(ISharedPreferences prefs, string notifType)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutString("notificationType", notifType);
+            editor.Apply();
+        }
+
+        public static string GetNotificationType(ISharedPreferences prefs)
+        {
+            return prefs.GetString("notificationType", null);
+        }
+
         public static void RemoveNotificationSession(ISharedPreferences prefs)
         {
             ISharedPreferencesEditor editor = prefs.Edit();
@@ -89,6 +101,66 @@ namespace myTNB_Android.Src.Utils
         {
             ISharedPreferencesEditor editor = prefs.Edit();
             editor.PutBoolean("hasSkipped", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasUpdateSkipped(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasUpdateSkipped", false);
+        }
+
+        public static void DoUpdateSkipped(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasUpdateSkipped", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasSMROnboardingShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasSMROnboardingShown", false);
+        }
+
+        public static void DoSMROnboardingShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasSMROnboardingShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasPayBillShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasPayBillShown", false);
+        }
+
+        public static void DoPayBillShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasPayBillShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasViewBillShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasViewBillShown", false);
+        }
+
+        public static void DoViewBillShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasViewBillShown", true);
+            editor.Apply();
+        }
+
+        public static System.Boolean HasWhatNewShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasWhatNewShown", false);
+        }
+
+        public static void DoWhatNewShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasWhatNewShown", true);
             editor.Apply();
         }
 

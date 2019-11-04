@@ -46,18 +46,10 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         private MPSelectAccountsPresenter mPresenter;
         private MPSelectAccountsContract.IUserActionsListener userActionsListener;
         public static SelectAccountsActivity selectAccountsActivity;
-
         private Snackbar mErrorMessageSnackBar;
         private MaterialDialog mGetDueAmountDialog;
-
         private LoadingOverlay loadingOverlay;
-
-        RecyclerView.LayoutManager layoutManager;
-        SelectAccountListAdapter adapter;
-        List<MPAccount> accountList = new List<MPAccount>();
-
         private MaterialDialog mWhyThisAmtCardDialog;
-
         private int TOTAL_ACCOUNTS = 0;
         private int TOTAL_NUMBER_OF_ITEMS_TO_GET = 4;
         private int REMAINING_ITEM_COUNT = 0;
@@ -65,10 +57,13 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
         private int NO_OF_ITARATION = 0;
         private bool firstTime = false;
         private string preSelectedAccount = null;
+        private bool isMinimumAmountTooltipShown = false;
+
+        RecyclerView.LayoutManager layoutManager;
+        SelectAccountListAdapter adapter;
+        List<MPAccount> accountList = new List<MPAccount>();
         List<CustomerBillingAccount> registerdAccounts;
         AccountData selectedAccount;
-
-        private DecimalFormat payableFormatter = new DecimalFormat("###############0.00");
 
         [BindView(Resource.Id.account_list_recycler_view)]
         RecyclerView accountListRecyclerView;
@@ -130,6 +125,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                         selectedAccount = DeSerialze<AccountData>(extras.GetString(Constants.SELECTED_ACCOUNT));
                         preSelectedAccount = selectedAccount.AccountNum;
                     }
+
+                    if (extras.ContainsKey(Constants.FROM_BILL_DETAILS_PAGE))
+                    {
+                        mPresenter.isFromBillDetails = extras.GetBoolean(Constants.FROM_BILL_DETAILS_PAGE);
+                    }
                 }
 
                 registerdAccounts = CustomerBillingAccount.List();
@@ -182,7 +182,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                         custAccounts.Add(item.AccNum);
                     }
                     firstTime = true;
-                    //this.userActionsListener.GetMultiAccountDueAmount(Constants.APP_CONFIG.API_KEY_ID, custAccounts, preSelectedAccount);
                     this.userActionsListener.GetAccountsCharges(custAccounts, preSelectedAccount);
                 }
 
@@ -216,7 +215,6 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                         {
                             custAccounts.Add(item.AccNum);
                         }
-                        //this.userActionsListener.GetMultiAccountDueAmount(Constants.APP_CONFIG.API_KEY_ID, custAccounts, null);
                         this.userActionsListener.GetAccountsCharges(custAccounts, null);
                         NO_OF_ITARATION = NO_OF_ITARATION - 1;
                     }
@@ -787,11 +785,11 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
 
         public void ShowHasMinimumAmoutToPayTooltip(AccountChargeModel accountChargeModel)
         {
-            if (accountChargeModel.MandatoryCharges.TotalAmount > 0f)
+            if (!isMinimumAmountTooltipShown)
             {
-                BillMandatoryChargesTooltipModel mandatoryTooltipModel = MyTNBAppToolTipData.GetInstance().GetMandatoryChargesTooltipData("MandatoryPayment");
-                if (mandatoryTooltipModel != null)
+                if (accountChargeModel.MandatoryCharges.TotalAmount > 0f)
                 {
+                    BillMandatoryChargesTooltipModel mandatoryTooltipModel = MyTNBAppToolTipData.GetInstance().GetMandatoryChargesTooltipData("MandatoryPayment");
                     List<string> ctaList = mandatoryTooltipModel.CTA.Split(',').ToList();
                     MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
                         .SetTitle(mandatoryTooltipModel.Title)
@@ -801,6 +799,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.Activity
                         .SetSecondaryCTALabel(ctaList[1])
                         .Build().Show();
                 }
+                isMinimumAmountTooltipShown = true;
             }
         }
 
