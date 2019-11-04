@@ -86,7 +86,7 @@
     "save": "Simpan",
     "fullname": "Nama Penuh",
     "confirmPassword": "Sahkan Kata Laluan",
-    "accountNo": "Account No.",
+    "accountNo": "Akaun Nombor",
     "accountType": "Jenis Akaun",
     "allNotifications": "All Notifications",
     "unitEmission": "kg",
@@ -756,7 +756,7 @@
     "thankyou": "Thank you.",
     "backToDashboard": "Back to Dashboard"
   },
-  "Promotion": {
+  "Promotions": {
     "title": "Promotions",
     "noPromotions": "No promotions currently. Check back later!"
   }
