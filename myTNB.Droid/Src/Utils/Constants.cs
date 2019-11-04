@@ -119,7 +119,7 @@ namespace myTNB_Android.Src.Utils
             internal static readonly string FPX_PAYMENT = "https://mobiletestingws.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
             //internal static readonly string END_POINT = "https://mytnbapp.tnb.com.my";
             //internal static readonly string FPX_PAYMENT = "https://mytnbapp.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
-#else 
+#else
            internal static readonly string END_POINT = "https://mytnbapp.tnb.com.my";
             internal static readonly string FPX_PAYMENT = "https://mytnbapp.tnb.com.my/v5/PayRedirect.aspx?Param1=3&Param2=";
 
@@ -157,7 +157,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string FROM_APP_LAUNCH = ".fromAppLaunch";
         internal static readonly int REQUEST_VERIFICATION_SMS_TOEKN_CODE = 4812;
 
-        //Promotions 
+        //Promotions
 #if DEBUG || STUB || DEVELOP || SIT
         internal static readonly int PROMOTION_DAYS_COUNTER_LIMIT = 1;
 #else
@@ -173,7 +173,7 @@ namespace myTNB_Android.Src.Utils
         internal static readonly string DEVICE_ID_PARAM = ".deviceID";
         internal static readonly string MERCHANT_TRANS_ID = ".merchantTransId";
 
-        //Downtime 
+        //Downtime
         internal static readonly string BCRM_SYSTEM = "BCRM";
         internal static readonly string SSP_SYSTEM = "SSP";
         internal static readonly string SMART_METER_SYSTEM = "SmartMeter";
@@ -283,5 +283,11 @@ namespace myTNB_Android.Src.Utils
         public const string BCRM_NOTIFICATION_SMR_DISABLED_FAILED_ID = "53";
 
         public const string ACCOUNT_NICKNAME_PATTERN = "#accountNickname#";
+
+        //Timeout Duration
+        internal static readonly int SERVICE_TIMEOUT_DEFAULT = 60000;
+        internal static readonly int ACCOUNT_LIST_TIMEOUT = 8000;
+        internal static readonly int APP_LAUNCH_MASTER_DATA_TIMEOUT = 3000;
+        internal static readonly int APP_LAUNCH_MASTER_DATA_RETRY_TIMEOUT = 2000;
     }
 }

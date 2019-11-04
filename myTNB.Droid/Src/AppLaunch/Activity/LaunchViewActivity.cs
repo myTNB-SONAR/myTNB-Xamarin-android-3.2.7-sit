@@ -951,5 +951,25 @@ namespace myTNB_Android.Src.AppLaunch.Activity
                 Utility.LoggingNonFatalError(e);
             }
         }
+
+        private Snackbar mSomethingWrongExceptionSnackBar;
+        public void ShowSomethingWrongException()
+        {
+            if (mSomethingWrongExceptionSnackBar != null && mSomethingWrongExceptionSnackBar.IsShown)
+            {
+                mSomethingWrongExceptionSnackBar.Dismiss();
+
+            }
+
+            string msg = "Sorry, something went wrong. Please try again later.";
+
+            mSomethingWrongExceptionSnackBar = Snackbar.Make(rootView, msg, Snackbar.LengthIndefinite)
+            .SetAction("Ok", delegate
+            {
+                mSomethingWrongExceptionSnackBar.Dismiss();
+            }
+            );
+            mSomethingWrongExceptionSnackBar.Show();
+        }
     }
 }
