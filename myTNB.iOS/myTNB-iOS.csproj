@@ -1226,8 +1226,6 @@
     <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\noCard%402x.png" />
     <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\noCard%403x.png" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-5.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-5.imageset\Onboarding-Image-4%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-5.imageset\Onboarding-Image-4%403x.png" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-4.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-4.imageset\Onboarding-Image-3%402x.png" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-4.imageset\Onboarding-Image-3%403x.png" />
@@ -1240,6 +1238,8 @@
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-1.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-1.imageset\walkthrough1S3Install%402x.png" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-1.imageset\walkthrough1S3Install%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-5.imageset\walkthrough5S3Install%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-5.imageset\walkthrough5S3Install%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
