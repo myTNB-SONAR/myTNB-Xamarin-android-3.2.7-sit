@@ -69,8 +69,11 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo, btnTrackApplication, btnBackToHomeSuccess);
             TextViewUtils.SetMuseoSans300Typeface(txtMessageInfo, refNumberLabel, appliedOnDateLabel, refNumberValue, appliedOnDateValue);
 
-            btnBackToHomeSuccess.Text = "Back to My Usage";
-            btnTrackApplication.Text = "Track Application";
+            txtTitleInfo.Text = Utility.GetLocalizedLabel("Status", "ssmrApplySuccessTitle");
+            refNumberLabel.Text = Utility.GetLocalizedLabel("Status", "ssmrApplyReferenceTitle").ToUpper();
+            appliedOnDateLabel.Text = Utility.GetLocalizedLabel("Status", "ssmrApplyDateTitle").ToUpper();
+            btnBackToHomeSuccess.Text = Utility.GetLocalizedLabel("Status", "ssmrBackToUsage");
+            btnTrackApplication.Text = Utility.GetLocalizedLabel("Status", "ssmrTrackApplication");
 
             Bundle extras = Intent.Extras;
 
@@ -85,7 +88,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             }
 
             btnBackToHomeSuccess.Visibility = ViewStates.Gone;
-            btnTrackApplication.Text = "Back to Home";
+            btnTrackApplication.Text = Utility.GetLocalizedLabel("Common", "backToHome");
 
             if (extras != null && extras.ContainsKey(Constants.SELECTED_ACCOUNT))
             {
