@@ -5,22 +5,19 @@ namespace myTNB_Android.Src.Utils
 {
     public class CancellationTokenSourceWrapper
     {
-        private CancellationTokenSource cancellationTokenSource;
-        private int DEFAULT_DELAY_MILLISECONDS = Constants.SERVICE_TIMEOUT_DEFAULT;
-
-        public CancellationTokenSourceWrapper()
+        private CancellationTokenSourceWrapper()
         {
-            this.cancellationTokenSource = new CancellationTokenSource();
         }
 
         /// <summary>
         /// Gets the CancellationToken with default timeout
         /// </summary>
         /// <returns></returns>
-        public CancellationToken GetToken()
+        public static CancellationToken GetToken()
         {
-            this.cancellationTokenSource.CancelAfter(DEFAULT_DELAY_MILLISECONDS);
-            return this.cancellationTokenSource.Token;
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            cancellationTokenSource.CancelAfter(Constants.SERVICE_TIMEOUT_DEFAULT);
+            return cancellationTokenSource.Token;
         }
 
         /// <summary>
@@ -28,20 +25,22 @@ namespace myTNB_Android.Src.Utils
         /// </summary>
         /// <param name="millisecondsDelay"></param>
         /// <returns></returns>
-        public CancellationToken GetTokenWithDelay(int millisecondsDelay)
+        public static CancellationToken GetTokenWithDelay(int millisecondsDelay)
         {
-            this.cancellationTokenSource.CancelAfter(millisecondsDelay);
-            return this.cancellationTokenSource.Token;
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            cancellationTokenSource.CancelAfter(millisecondsDelay);
+            return cancellationTokenSource.Token;
         }
 
         /// <summary>
         /// Gets the CancellationTokenSource instance with default timeout
         /// </summary>
         /// <returns></returns>
-        public CancellationTokenSource GetCancellationTokenSource()
+        public static CancellationTokenSource GetCancellationTokenSource()
         {
-            this.cancellationTokenSource.CancelAfter(DEFAULT_DELAY_MILLISECONDS);
-            return this.cancellationTokenSource;
+            CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
+            cancellationTokenSource.CancelAfter(Constants.SERVICE_TIMEOUT_DEFAULT);
+            return cancellationTokenSource;
         }
     }
 }
