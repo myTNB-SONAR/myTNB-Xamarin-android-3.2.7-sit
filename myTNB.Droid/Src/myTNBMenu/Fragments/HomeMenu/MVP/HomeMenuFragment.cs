@@ -1319,8 +1319,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             accountListRefreshContainer.Visibility = ViewStates.Visible;
             accountListViewContainer.Visibility = ViewStates.Gone;
-            string refreshMsg = string.IsNullOrEmpty(contentMsg) ? "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!" : contentMsg;
-            string refreshBtnTxt = string.IsNullOrEmpty(buttonMsg) ? "Refresh Now" : buttonMsg;
+            string refreshMsg = string.IsNullOrEmpty(contentMsg) ? GetLabelByLanguage("refreshMessage") : contentMsg;
+            string refreshBtnTxt = string.IsNullOrEmpty(buttonMsg) ? GetLabelByLanguage("refreshBtnText") : buttonMsg;
             btnRefresh.Text = refreshBtnTxt;
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
             {
@@ -1729,7 +1729,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                         loadMoreImg.StartAnimation(animSet);
 
-                        loadMoreLabel.Text = GetLabelByLanguage("moreAccts");
+                        loadMoreLabel.Text = GetLabelByLanguage("showLess");
                     }
 
                     IsRearrangeButtonVisible(true);
