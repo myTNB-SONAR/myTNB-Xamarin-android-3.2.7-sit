@@ -49,14 +49,12 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         private string mApplySSMRSavedTimeStamp = "0000000";
         private int serviceCallCounter = 0;
         private int appLaunchMasterDataTimeout;
-        private CancellationTokenSourceWrapper ctsHelperAppLaunchMasterData;
 
         public AppLaunchPresenter(AppLaunchContract.IView mView, ISharedPreferences sharedPreferences)
         {
             this.mView = mView;
             this.mSharedPref = sharedPreferences;
             this.appLaunchMasterDataTimeout = Constants.APP_LAUNCH_MASTER_DATA_TIMEOUT;
-            ctsHelperAppLaunchMasterData = new CancellationTokenSourceWrapper();
             this.mView.SetPresenter(this);
         }
 
@@ -174,7 +172,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     deviceInf = currentDeviceInf,
                     usrInf = currentUsrInf
-                }, ctsHelperAppLaunchMasterData.GetTokenWithDelay(this.appLaunchMasterDataTimeout));
+                }, CancellationTokenSourceWrapper.GetTokenWithDelay(this.appLaunchMasterDataTimeout));
 
 
                 if (masterDataResponse != null && masterDataResponse.Data != null)
