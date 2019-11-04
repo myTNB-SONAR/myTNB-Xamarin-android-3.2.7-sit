@@ -2,7 +2,6 @@ using Foundation;
 using System;
 using UIKit;
 using CoreGraphics;
-using System.Diagnostics;
 
 namespace myTNB
 {
@@ -201,7 +200,30 @@ namespace myTNB
                 CallCustomerService();
             }));
 
-            viewQuickAccess.AddSubviews(new UIView[] { lblQuickAccess, viewFindUs, viewCallUs, viewFeedback });
+            CustomUIView changeLanguageView = new CustomUIView(new CGRect(0
+                , viewFeedback.Frame.GetMaxY() + GetScaledHeight(20), ViewWidth, GetScaledHeight(18)));
+
+            changeLanguageView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+            {
+                DisplayCustomAlert(GetI18NValue(PreloginConstants.I18N_ChangeLanguageTitle)
+                    , GetI18NValue(PreloginConstants.I18N_ChangeLanguageMessage)
+                    , new System.Collections.Generic.Dictionary<string, Action> {
+                        { GetI18NValue(PreloginConstants.I18N_ChangeLanguageNo), null}
+                        ,{ GetI18NValue(PreloginConstants.I18N_ChangeLanguageYes) ,null} }
+                    , UITextAlignment.Center
+                    , UITextAlignment.Center);
+            }));
+
+            UILabel lblChangeLanguage = new UILabel(new CGRect(new CGPoint(0, 0), changeLanguageView.Frame.Size))
+            {
+                Text = GetI18NValue(PreloginConstants.I18N_ChangeLanguage),
+                TextAlignment = UITextAlignment.Center,
+                TextColor = MyTNBColor.WaterBlueTwo,
+                Font = TNBFont.MuseoSans_12_500,
+                Lines = 0
+            };
+            changeLanguageView.AddSubview(lblChangeLanguage);
+            viewQuickAccess.AddSubviews(new UIView[] { lblQuickAccess, viewFindUs, viewCallUs, viewFeedback, changeLanguageView });
 
             View.AddSubviews(new UIView[] { imgHeader, imgLogo, lblWelcome
                 , lblSubtitle, viewCTA, viewLine, viewQuickAccess});

@@ -21,5 +21,10 @@
         public static string I18N_FindUs = "findUs";
         public static string I18N_CallUs = "callUs";
         public static string I18N_Feedback = "feedback";
+        public static string I18N_ChangeLanguage = "changeLanguage";
+        public static string I18N_ChangeLanguageTitle = "changeLanguageTitle";
+        public static string I18N_ChangeLanguageMessage = "changeLanguageMessage";
+        public static string I18N_ChangeLanguageYes = "changeLanguageYes";
+        public static string I18N_ChangeLanguageNo = "changeLanguageNo";
     }
 }

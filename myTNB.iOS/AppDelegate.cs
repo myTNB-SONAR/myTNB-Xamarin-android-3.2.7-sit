@@ -97,7 +97,7 @@ namespace myTNB
             }
             PushNotificationHelper.RegisterDevice();
             Crashlytics.Configure();
-            LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, LanguageManager.Language.MS);
+            LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, LanguageManager.Language.EN);
             ApplicationDelegate.SharedInstance.FinishedLaunching(application, launchOptions);
             return true;
         }

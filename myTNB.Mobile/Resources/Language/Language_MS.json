@@ -86,7 +86,7 @@
     "save": "Simpan",
     "fullname": "Nama Penuh",
     "confirmPassword": "Sahkan Kata Laluan",
-    "accountNo": "Akaun Nombor",
+    "accountNo": "Nombor Akaun",
     "accountType": "Jenis Akaun",
     "allNotifications": "All Notifications",
     "unitEmission": "kg",
@@ -97,7 +97,7 @@
     "charactersLeft": "{0} characters left",
     "comments": "Comments",
     "accountHolder": "Account Holder's Name",
-    "skip": "Skip",
+    "skip": "Langkau",
     "details": "Details"
   },
   "Hint": {
@@ -198,7 +198,7 @@
     "editContactInfo": "Dengan mengedit, anda akan mengemas kini profil myTNB dan maklumat akaun elektrik anda.",
     "selectReason": "Pilih Sebab",
     "stateReason": "Sila nyatakan sebab anda",
-    "selectAnAccount": "Select an account"
+    "selectAnAccount": "Pilih Akaun"
   },
   "Status": {
     "feedbackSuccessTitle": "Feedback Successful",
@@ -564,7 +564,12 @@
     "quickAccess": "Quick Actions",
     "findUs": "Temui Kami",
     "callUs": "Hubungi Kami",
-    "feedback": "Beri Maklumbalas"
+    "feedback": "Beri Maklumbalas",
+    "changeLanguage": "Change language to English",
+    "changeLanguageTitle": "Change language  to English?",
+    "changeLanguageMessage": "Are you sure you want to change the app language to English?",
+    "changeLanguageYes": "Yes",
+    "changeLanguageNo": "No"
   },
   "Login": {
     "loginTitle": "Log Masuk Akaun myTNB",
@@ -637,15 +642,17 @@
   },
   "Onboarding": {
     "letsStart": "Let's get started!",
-    "skip": "Skip",
+    "skip": "Langkau",
     "title1": "Welcome to myTNB!",
-    "title2": "Bills at Your Fingertips.",
-    "title3": "Pay Your Bills Anytime, Anywhere.",
-    "title4": "Enhanced View for Better Experiences.",
-    "description1": "Track, monitor and stay on top of your electricity usage!",
-    "description2": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",
-    "description3": "Pay your electricity bills while at home, on holiday, on the train – whenever you want to. Say goodbye to late charges and queuing up!",
-    "description4": "We’ve revamped the Home, Bills and Usage screens! It’s not just prettier, it’s way more helpful with more details (including block tariffs so you can stay informed on all things usage-related)."
+    "title2": "Selamat datang ke myTNB!",
+    "title3": "Bil di hujung jari anda",
+    "title4": "Bayar bil anda bila-bila masa, di mana sahaja",
+    "title5": "Enhanced View for Better Experiences.",
+    "description1": "We're excited for all you can do with this app! But first, choose your preferred language.<br><br>Banyak yang anda boleh manfaatkan dengan aplikasi ini. Sila pilih bahasa anda.",
+    "description2": "Ikuti, pantau dan ketahui penggunaan elektrik anda!",
+    "description3": "Akses bil versi PDF anda untuk 6 bulan dengan mudah, di satu lokasi!",
+    "description4": "Bayar bil elektrik anda semasa di rumah, bercuti, dalam keretapi - bila-bila masa. 'Goodbye' caj lewat dan beratur di kaunter!",
+    "description5": "We’ve revamped the Home, Bills and Usage screens! It’s not just prettier, it’s way more helpful with more details (including block tariffs so you can stay informed on all things usage-related)."
   },
   "ManageCards": {
     "title": "Urus Kad Kredit / Debit",
@@ -704,14 +711,14 @@
     "trnMethod": "RANSACTION METHOD"
   },
   "FeedbackList": {
-    "title": "Feedback"
+    "title": "Maklum Balas"
   },
   "FeedbackForm": {
     "attachPhotoTitle": "ATTACH PHOTO / SCREENSHOT (OPTIONAL)",
     "maxFile": "Max 2 files",
     "camera": "Camera",
     "cameraRoll": "Camera Roll",
-    "feedback": "Feedback",
+    "feedback": "Maklum Balas",
     "invalidFeedback": "Invalid feedback",
     //Not Supported Start
     "feedbackType": "Feedback Type",
@@ -735,7 +742,7 @@
     "feedbackID": "Feedback ID",
     "feedbackStatus": "Feedback Status",
     "dateTimeTitle": "Feedback Date & Time",
-    "feedback": "Feedback",
+    "feedback": "Maklum Balas",
     "photoTitle": "Photo / Screenshot",
     //Not Supported by MS Translation Start
     "state": "State",
@@ -757,7 +764,7 @@
     "backToDashboard": "Back to Dashboard"
   },
   "Promotions": {
-    "title": "Promotions",
+    "title": "Promosi",
     "noPromotions": "No promotions currently. Check back later!"
   }
 }

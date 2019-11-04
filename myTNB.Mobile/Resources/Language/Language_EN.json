@@ -564,7 +564,12 @@
     "quickAccess": "Quick Actions",
     "findUs": "Find Us",
     "callUs": "Call Us",
-    "feedback": "Give Us Feedback"
+    "feedback": "Give Us Feedback",
+    "changeLanguage": "Tukar kepada Bahasa Malaysia",
+    "changeLanguageTitle": "Tukar kepada Bahasa Malaysia?",
+    "changeLanguageMessage": "Anda pasti ingin menukar bahasa aplikasi myTNB kepada Bahasa Malaysia?",
+    "changeLanguageYes": "Ya",
+    "changeLanguageNo": "Tidak"
   },
   "Login": {
     "loginTitle": "myTNB Account Login",
@@ -639,13 +644,15 @@
     "letsStart": "Let's get started!",
     "skip": "Skip",
     "title1": "Welcome to myTNB!",
-    "title2": "Bills at Your Fingertips.",
-    "title3": "Pay Your Bills Anytime, Anywhere.",
-    "title4": "Enhanced View for Better Experiences.",
-    "description1": "Track, monitor and stay on top of your electricity usage!",
-    "description2": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",
-    "description3": "Pay your electricity bills while at home, on holiday, on the train – whenever you want to. Say goodbye to late charges and queuing up!",
-    "description4": "We’ve revamped the Home, Bills and Usage screens! It’s not just prettier, it’s way more helpful with more details (including block tariffs so you can stay informed on all things usage-related)."
+    "title2": "Welcome to myTNB!",
+    "title3": "Bills at Your Fingertips.",
+    "title4": "Pay Your Bills Anytime, Anywhere.",
+    "title5": "Enhanced View for Better Experiences.",
+    "description1": "We're excited for all you can do with this app! But first, choose your preferred language.<br><br>Banyak yang anda boleh manfaatkan dengan aplikasi ini. Sila pilih bahasa anda.",
+    "description2": "Track, monitor and stay on top of your electricity usage!",
+    "description3": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",
+    "description4": "Pay your electricity bills while at home, on holiday, on the train – whenever you want to. Say goodbye to late charges and queuing up!",
+    "description5": "We’ve revamped the Home, Bills and Usage screens! It’s not just prettier, it’s way more helpful with more details (including block tariffs so you can stay informed on all things usage-related)."
   },
   "ManageCards": {
     "title": "Manage Credit / Debit Cards",

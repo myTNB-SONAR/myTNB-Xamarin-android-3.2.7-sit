@@ -1220,23 +1220,26 @@
     <ImageAsset Include="Assets.xcassets\Remember-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Remember-Icon.imageset\Remember-Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\Remember-Icon.imageset\Remember-Icon%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-1.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-2.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-3.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-4.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-4.imageset\Onboarding-Image-4%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-4.imageset\Onboarding-Image-4%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-1.imageset\Onboarding-Image-1%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-1.imageset\Onboarding-Image-1%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-2.imageset\Onboarding-Image-2%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-2.imageset\Onboarding-Image-2%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-3.imageset\Onboarding-Image-3%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Onboarding-Image-3.imageset\Onboarding-Image-3%403x.png" />
     <ImageAsset Include="Assets.xcassets\RE-Leaf-Large.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\RE-Leaf-Large.imageset\RE-Leaf-Large%402x.png" />
     <ImageAsset Include="Assets.xcassets\RE-Leaf-Large.imageset\RE-Leaf-Large%403x.png" />
     <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\noCard%402x.png" />
     <ImageAsset Include="Assets.xcassets\Card-Empty.imageset\noCard%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-5.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-5.imageset\Onboarding-Image-4%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-5.imageset\Onboarding-Image-4%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-4.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-4.imageset\Onboarding-Image-3%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-4.imageset\Onboarding-Image-3%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-3.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-3.imageset\Onboarding-Image-2%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-3.imageset\Onboarding-Image-2%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-2.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-2.imageset\Onboarding-Image-1%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-2.imageset\Onboarding-Image-1%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-1.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-1.imageset\walkthrough1S3Install%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Onboarding-Image-1.imageset\walkthrough1S3Install%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1691,14 +1694,15 @@
     <Folder Include="Components\Walkthrough\" />
     <Folder Include="Sitecore CMS\Model\Onboarding\" />
     <Folder Include="Resources\JSON\" />
-    <Folder Include="Assets.xcassets\Onboarding-Image-1.imageset\" />
-    <Folder Include="Assets.xcassets\Onboarding-Image-2.imageset\" />
-    <Folder Include="Assets.xcassets\Onboarding-Image-3.imageset\" />
-    <Folder Include="Assets.xcassets\Onboarding-Image-4.imageset\" />
     <Folder Include="Assets.xcassets\Onboarding-Image-5.imageset\" />
     <Folder Include="Assets.xcassets\RE-Leaf-Large.imageset\" />
     <Folder Include="Registration\Add Accounts\" />
     <Folder Include="Feedback\" />
+    <Folder Include="Assets.xcassets\Onboarding-Image-5.imageset\" />
+    <Folder Include="Assets.xcassets\Onboarding-Image-4.imageset\" />
+    <Folder Include="Assets.xcassets\Onboarding-Image-3.imageset\" />
+    <Folder Include="Assets.xcassets\Onboarding-Image-2.imageset\" />
+    <Folder Include="Assets.xcassets\Onboarding-Image-1.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
