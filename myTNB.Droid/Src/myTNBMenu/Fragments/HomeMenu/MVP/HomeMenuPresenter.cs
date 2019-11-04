@@ -30,6 +30,8 @@ using System.Net.Http;
 using myTNB_Android.Src.myTNBMenu.Api;
 using static myTNB_Android.Src.AppLaunch.Models.MasterDataResponse;
 using myTNB_Android.Src.MyTNBService.Notification;
+using myTNB_Android.Src.NewAppTutorial.MVP;
+using Android.Content;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -81,10 +83,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private CancellationTokenSource queryTokenSource = new CancellationTokenSource();
 
+        private bool isSummaryDone = false;
+        private bool isMyServiceDone = false;
+        private bool isNeedHelpDone = false;
+        private bool isHomeMenuTutorialShown = false;
 
-        public HomeMenuPresenter(HomeMenuContract.IHomeMenuView view)
+        private ISharedPreferences mPref;
+
+        private CancellationTokenSource normalTokenSource = new CancellationTokenSource();
+
+        public HomeMenuPresenter(HomeMenuContract.IHomeMenuView view, ISharedPreferences pref)
         {
             this.mView = view;
+            this.mPref = pref;
             this.serviceApi = new HomeMenuServiceImpl();
         }
 
@@ -122,7 +133,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
-                SummaryDashBoardResponse response = await this.serviceApi.GetLinkedSummaryInfo(request);
+                normalTokenSource = new CancellationTokenSource();
+
+                SummaryDashBoardResponse response = await this.serviceApi.GetLinkedSummaryInfo(request, normalTokenSource.Token);
                 if (response != null)
                 {
                     if (response.Data != null && response.Data.ErrorCode != "7200")
@@ -177,6 +190,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         {
                             this.mView.IsLoadMoreButtonVisible(false, false);
                         }
+
+                        isSummaryDone = true;
+                        OnCheckToCallHomeMenuTutorial();
                     }
                     else
                     {
@@ -190,7 +206,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             catch (System.OperationCanceledException cancelledException)
             {
-                this.mView.ShowRefreshScreen(null, null);
+                // TODO: Add flag checking for hemu tutorial
+                if (isAllDone() && !isHomeMenuTutorialShown || UserSessions.HasHomeTutorialShown(mPref))
+                {
+                    this.mView.ShowRefreshScreen(null, null);
+                }
                 Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
@@ -350,7 +370,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             try
             {
-                SummaryDashBoardResponse response = await this.serviceApi.GetLinkedSummaryInfo(request);
+                normalTokenSource = new CancellationTokenSource();
+
+                SummaryDashBoardResponse response = await this.serviceApi.GetLinkedSummaryInfo(request, normalTokenSource.Token);
                 if (response != null && response.Data != null && response.Data.ErrorCode == "7200" && response.Data.data != null && response.Data.data.Count > 0)
                 {
 
@@ -655,6 +677,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     FetchAccountSummary(true, true);
                 }
             }
+            else
+            {
+                isSummaryDone = true;
+                OnCheckToCallHomeMenuTutorial();
+            }
         }
 
         private void RestoreCachedAccountList()
@@ -732,6 +759,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
                         this.mView.IsLoadMoreButtonVisible(false, false);
                     }
+
+                    isSummaryDone = true;
+                    OnCheckToCallHomeMenuTutorial();
                 }
             }
             catch (Exception e)
@@ -953,6 +983,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void RefreshAccountSummary()
         {
+            isSummaryDone = false;
+            isMyServiceDone = false;
+
             updateDashboardInfoList = new List<SummaryDashBoardDetails>();
             List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
             summaryDashboardInfoList = new List<SummaryDashBoardDetails>();
@@ -1106,6 +1139,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     {
                         this.mView.IsLoadMoreButtonVisible(false, false);
                     }
+
+                    isSummaryDone = true;
+                    OnCheckToCallHomeMenuTutorial();
                 }
             }
             catch (Exception e)
@@ -1334,13 +1370,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     }
                 }
                 this.mView.SetNewFAQResult(currentNewFAQList);
+
+                isNeedHelpDone = true;
+                OnCheckToCallHomeMenuTutorial();
             }
             catch (Exception e)
             {
-                if (currentNewFAQList.Count > 0)
-                {
-                    this.mView.SetNewFAQResult(currentNewFAQList);
-                }
                 Utility.LoggingNonFatalError(e);
             }
         }
@@ -1405,29 +1440,18 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     OnProcessMyServiceCards();
                     FirstTimeMyServiceInitiate = false;
                 }
-                else
-                {
-                    // ReadMyServiceFromCache();
-                    // this.mView.ShowMyServiceRetryOptions(getServicesResponse.Data.DisplayMessage);
-                }
 
             }
             catch (System.OperationCanceledException cancelledException)
             {
-                // ReadMyServiceFromCache();
-                // this.mView.ShowMyServiceRetryOptions(null);
                 Utility.LoggingNonFatalError(cancelledException);
             }
             catch (ApiException apiException)
             {
-                // ReadMyServiceFromCache();
-                // this.mView.ShowMyServiceRetryOptions(null);
                 Utility.LoggingNonFatalError(apiException);
             }
             catch (Exception unknownException)
             {
-                // ReadMyServiceFromCache();
-                // this.mView.ShowMyServiceRetryOptions(null);
                 Utility.LoggingNonFatalError(unknownException);
             }
         }
@@ -1467,6 +1491,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
                 this.mView.SetMyServiceResult(fetchList);
             }
+
+            isMyServiceDone = true;
+            OnCheckToCallHomeMenuTutorial();
         }
 
         public void DoMySerivceLoadMoreAccount()
@@ -2325,6 +2352,183 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Utility.LoggingNonFatalError(ne);
             }
+        }
+
+        private bool isAllDone()
+        {
+            return isSummaryDone && isMyServiceDone && isNeedHelpDone;
+        }
+
+        private void OnCheckToCallHomeMenuTutorial()
+        {
+            if (isAllDone() && !isHomeMenuTutorialShown)
+            {
+                isHomeMenuTutorialShown = true;
+
+                if (!UserSessions.HasHomeTutorialShown(this.mPref))
+                {
+                    normalTokenSource.Cancel();
+                    this.mView.OnSearchOutFocus(true);
+                    isQuery = false;
+                    trackCurrentLoadMoreCount = 0;
+                    updateDashboardInfoList = new List<SummaryDashBoardDetails>();
+                    List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
+                    summaryDashboardInfoList = new List<SummaryDashBoardDetails>();
+                    foreach (CustomerBillingAccount customerBillintAccount in customerBillingAccountList)
+                    {
+                        SummaryDashBoardDetails summaryDashBoardDetails = new SummaryDashBoardDetails();
+                        summaryDashBoardDetails.AccName = customerBillintAccount.AccDesc;
+                        summaryDashBoardDetails.AccNumber = customerBillintAccount.AccNum;
+                        summaryDashBoardDetails.AccType = customerBillintAccount.AccountCategoryId;
+                        summaryDashBoardDetails.SmartMeterCode = customerBillintAccount.SmartMeterCode;
+                        summaryDashBoardDetails.IsTaggedSMR = customerBillintAccount.IsTaggedSMR;
+                        summaryDashboardInfoList.Add(summaryDashBoardDetails);
+                    }
+
+                    List<string> accountList = new List<string>();
+                    for (int i = 0; i < customerBillingAccountList.Count; i++)
+                    {
+                        if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum))
+                        {
+                            accountList.Add(customerBillingAccountList[i].AccNum);
+                        }
+                    }
+
+                    billingAccoutCount = summaryDashboardInfoList.Count;
+
+                    this.mView.SetHeaderActionVisiblity(summaryDashboardInfoList);
+
+                    if (billingAccoutCount > 0)
+                    {
+                        FetchAccountSummary(true, true, true);
+                    }
+
+                    if (isMyServiceExpanded)
+                    {
+                        List<MyService> fetchList = new List<MyService>();
+                        isMyServiceExpanded = false;
+                        for (int i = 0; i < 3; i++)
+                        {
+                            fetchList.Add(currentMyServiceList[i]);
+                        }
+
+                        if (currentMyServiceList.Count > 3)
+                        {
+                            this.mView.IsMyServiceLoadMoreButtonVisible(true, false);
+                            this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
+                        }
+                        else
+                        {
+                            this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
+                            this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
+                        }
+                        this.mView.SetMyServiceResult(fetchList);
+                    }
+                    else
+                    {
+                        if (currentMyServiceList.Count > 3)
+                        {
+                            this.mView.IsMyServiceLoadMoreButtonVisible(true, false);
+                            this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
+                        }
+                        else
+                        {
+                            this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
+                            this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
+                        }
+                    }
+
+                    this.mView.ResetNewFAQScroll();
+
+                    this.mView.OnShowHomeMenuFragmentTutorialDialog();
+                }
+            }
+        }
+
+        public List<NewAppModel> OnGeneraNewAppTutorialList()
+        {
+            List<NewAppModel> newList = new List<NewAppModel>();
+
+            if (CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count > 3)
+            {
+                newList.Add(new NewAppModel()
+                {
+                    TargetPage = "HomeMenu",
+                    ContentShowPosition = ContentType.BottomLeft,
+                    ContentTitle = "Your Accounts at a glance.",
+                    ContentMessage = "View a summary of all your<br/>linked electricity accounts here.",
+                    AccountCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                    IsButtonShow = false
+                });
+
+                newList.Add(new NewAppModel()
+                {
+                    TargetPage = "HomeMenu",
+                    ContentShowPosition = ContentType.BottomRight,
+                    ContentTitle = "Quick account access.",
+                    ContentMessage = "Tap <strong>“Add”</strong> to link an account to<br/>myTNB. Use <strong>“Search”</strong> to look for a<br/>specific one! Just type in the<br/>nickname or account number.",
+                    AccountCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                    IsButtonShow = false
+                });
+            }
+            else if (CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count <= 3 && CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count > 1)
+            {
+                newList.Add(new NewAppModel()
+                {
+                    TargetPage = "HomeMenu",
+                    ContentShowPosition = ContentType.BottomLeft,
+                    ContentTitle = "Your Accounts at a glance.",
+                    ContentMessage = "View a summary of all your linked<br/>electricity accounts here. Tap “Add”<br/>to link an account to myTNB.",
+                    AccountCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                    IsButtonShow = false
+                });
+            }
+            else if (CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count == 1)
+            {
+                newList.Add(new NewAppModel()
+                {
+                    TargetPage = "HomeMenu",
+                    ContentShowPosition = ContentType.BottomLeft,
+                    ContentTitle = "Your Accounts at a glance.",
+                    ContentMessage = "View a summary of all your linked<br/>electricity accounts here.",
+                    AccountCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                    IsButtonShow = false
+                });
+            }
+            else
+            {
+                newList.Add(new NewAppModel()
+                {
+                    TargetPage = "HomeMenu",
+                    ContentShowPosition = ContentType.BottomLeft,
+                    ContentTitle = "Your Accounts at a glance.",
+                    ContentMessage = "Add an electricity account to myTNB<br/>and you’ll have access to your usage<br/>and all services offered.",
+                    AccountCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                    IsButtonShow = false
+                });
+            }
+
+            newList.Add(new NewAppModel()
+            {
+                TargetPage = "HomeMenu",
+                ContentShowPosition = ContentType.TopLeft,
+                ContentTitle = "Quick actions.",
+                ContentMessage = "Get all of the services myTNB has<br/>to offer. New features are<br/>highlighted so you don’t miss out<br/>on anything!",
+                AccountCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                IsButtonShow = false
+            });
+
+            newList.Add(new NewAppModel()
+            {
+                TargetPage = "HomeMenu",
+                ContentShowPosition = ContentType.TopLeft,
+                ContentTitle = "Need help?",
+                ContentMessage = "We’ve highlighted some of the<br/>most commonly asked questions<br/>for you to browse through.",
+                AccountCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                IsButtonShow = true
+            });
+
+            return newList;
         }
     }
 }

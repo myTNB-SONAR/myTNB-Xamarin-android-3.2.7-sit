@@ -152,6 +152,18 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
+        public static System.Boolean HasHomeTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasHomeTutorialShown", false);
+        }
+
+        public static void DoHomeTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasHomeTutorialShown", true);
+            editor.Apply();
+        }
+
         internal static void DoFlagResetPassword(ISharedPreferences mSharedPref)
         {
             ISharedPreferencesEditor editor = mSharedPref.Edit();

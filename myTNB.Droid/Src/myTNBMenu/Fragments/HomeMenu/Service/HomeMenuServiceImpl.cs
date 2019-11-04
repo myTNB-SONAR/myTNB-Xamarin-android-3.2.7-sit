@@ -37,9 +37,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.Service
 #endif
         }
 
-        public Task<SummaryDashBoardResponse> GetLinkedSummaryInfo(SummaryDashBordRequest request)
+        public Task<SummaryDashBoardResponse> GetLinkedSummaryInfo(SummaryDashBordRequest request, System.Threading.CancellationToken token)
         {
-            return summaryDashboardInfoApi.GetLinkedAccountsSummaryInfo(request,new System.Threading.CancellationToken());
+            return summaryDashboardInfoApi.GetLinkedAccountsSummaryInfo(request, token);
         }
 
         public Task<GetServicesResponse> GetServices(GetServiceRequests request)

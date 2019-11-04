@@ -3776,16 +3776,30 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\MyTNBService\Parser\BillingResponseParser.cs" />
-    <Compile Include="Src\HomeScreenWalkthrough\MVP\HomeScreenWalkthroughDialogFragment.cs" />
-    <AndroidResource Include="Resources\layout\HomeScreenWalkthroughLayout.axml">
-      <SubType></SubType>
-      <Generator></Generator>
-    </AndroidResource>
+    <Compile Include="Src\NewAppTutorial\MVP\NewAppTutorialDialogFragment.cs" />
     <AndroidResource Include="Resources\drawable\white_circle.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\white_circle_active.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\NewAppTutorialItemLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\CustomYellowRoundedCornerRect.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\NewAppTutorial\MVP\NewAppModel.cs" />
+    <Compile Include="Src\NewAppTutorial\Adapter\NewAppTutorialPagerAdapter.cs" />
+    <AndroidResource Include="Resources\layout\NewAppTutorialLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\yellow_circle_active.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
@@ -4172,8 +4186,9 @@
     <Folder Include="Src\NewWalkthrough\" />
     <Folder Include="Src\NewWalkthrough\MVP\" />
     <Folder Include="Src\MyTNBService\Parser\" />
-    <Folder Include="Src\HomeScreenWalkthrough\" />
-    <Folder Include="Src\HomeScreenWalkthrough\MVP\" />
+    <Folder Include="Src\NewAppTutorial\" />
+    <Folder Include="Src\NewAppTutorial\MVP\" />
+    <Folder Include="Src\NewAppTutorial\Adapter\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />
