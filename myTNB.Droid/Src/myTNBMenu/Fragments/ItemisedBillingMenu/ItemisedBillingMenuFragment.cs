@@ -751,5 +751,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             billFilterMenuItem.SetVisible(false);
             base.OnCreateOptionsMenu(menu, inflater);
         }
+
+        public override string GetPageId()
+        {
+            return "";
+        }
     }
 }

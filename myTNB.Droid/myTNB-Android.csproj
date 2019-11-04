@@ -3777,6 +3777,7 @@
     </AndroidResource>
     <Compile Include="Src\MyTNBService\Parser\BillingResponseParser.cs" />
     <Compile Include="Src\Utils\CancellationTokenSourceWrapper.cs" />
+    <Compile Include="Src\Base\Activity\BaseActivityCustom.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

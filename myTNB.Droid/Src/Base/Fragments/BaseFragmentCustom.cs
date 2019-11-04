@@ -454,5 +454,31 @@ namespace myTNB_Android.Src.Base.Fragments
         {
             return IsAdded && IsVisible && !IsDetached && !IsRemoving;
         }
+
+        /// <summary>
+        /// Gets the Page Id. To be implemented by child activity.
+        /// </summary>
+        /// <returns></returns>
+        public abstract string GetPageId();
+
+        /// <summary>
+        /// Gets the label based on selected language.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public string GetLabelByLanguage(string key)
+        {
+            return Utility.GetLocalizedLabel(GetPageId(), key);
+        }
+
+        /// <summary>
+        /// Gets the common labels
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public string GetLabelCommonByLanguage(string key)
+        {
+            return Utility.GetLocalizedLabel("Common", key);
+        }
     }
 }

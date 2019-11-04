@@ -1,7 +1,10 @@
 ﻿using Android.Content.PM;
 using Android.Text;
 using Android.Text.Style;
+using Android.Util;
+using myTNB;
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
 namespace myTNB_Android.Src.Utils
@@ -75,6 +78,45 @@ namespace myTNB_Android.Src.Utils
                 s.SetSpan(clickableSpan, startFAQLink, endFAQLink, SpanTypes.ExclusiveExclusive);
             }
             return s;
+        }
+
+        /// <summary>
+        /// Gets the label based on selected language.
+        /// </summary>
+        /// <param name="key"></param>
+        /// <returns></returns>
+        public static string GetLocalizedLabel(string pageId, string key)
+        {
+            string label = "";
+            try
+            {
+                label = LanguageManager.Instance.GetValuesByPage(pageId)[key];
+            }
+            catch (Exception e)
+            {
+                Log.Debug("DEBUG Error: ", e.Message);
+            }
+            return label;
+        }
+
+        /// <summary>
+        /// Gets the tooltip selector based on selected language.
+        /// </summary>
+        /// <param name="pageId"></param>
+        /// <param name="keyId"></param>
+        /// <returns></returns>
+        public static List<PopupSelectorModel> GetTooltipSelectorModel(string pageId, string keyId)
+        {
+            List<PopupSelectorModel> popupSelectorModels = new List<PopupSelectorModel>();
+            try
+            {
+                popupSelectorModels = LanguageManager.Instance.GetPopupSelectorsByPage(pageId)[keyId];
+            }
+            catch (Exception e)
+            {
+                Log.Debug("DEBUG Error: ", e.Message);
+            }
+            return popupSelectorModels;
         }
     }
 }
