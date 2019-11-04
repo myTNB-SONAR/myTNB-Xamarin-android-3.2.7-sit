@@ -817,7 +817,7 @@ namespace myTNB
             try
             {
                 string jsonFilename = onboardingEnum == OnboardingEnum.FreshInstall ? "JSON/FreshInstallOnboarding.json" : "JSON/AppUpdateOnboarding.json";
-                string dataJson = System.IO.File.ReadAllText(jsonFilename);
+                string dataJson = File.ReadAllText(jsonFilename);
                 OnboardingResponseModel respModel = JsonConvert.DeserializeObject<OnboardingResponseModel>(dataJson);
                 onboardingData = respModel?.Data;
             }

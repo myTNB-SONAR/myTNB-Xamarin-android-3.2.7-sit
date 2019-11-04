@@ -13,5 +13,6 @@ namespace myTNB.SitecoreCMS.Model
         public string Description { set; get; }
         public string Image { set; get; }
         public string ID { set; get; }
+        public bool IsLanguageEntry { set; get; }
     }
 }
