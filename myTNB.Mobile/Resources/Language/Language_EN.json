@@ -1,0 +1,763 @@
+﻿{
+  //Sample
+  "page": {
+    "title": "Title",
+    "submit": "Submit"
+  },
+  //Sample
+  "page_selector": {
+    "date": [
+      {
+        "id": "0",
+        "key": "hour",
+        "value": "Hourly",
+        "description": "Hourly Description"
+      },
+      {
+        "id": "1",
+        "key": "week",
+        "value": "Weekly",
+        "description": "Weekly Description"
+      }
+    ]
+  },
+  "Common": {
+    "account": "Account",
+    "emailAddress": "Email Address",
+    "mobileNumber": "Mobile Number",
+    "submit": "Submit",
+    "selectAccounts": "Select Accounts",
+    "selectAccount": "Select Account",
+    "backToHome": "Back to Home",
+    "tryAgain": "Try Again",
+    "settings": "Settings",
+    "cancel": "Cancel",
+    "cameraPermissionTitle": "\"myTNB\" Would like to Access the Camera",
+    "galleryPermissionTitle": "\"myTNB\" Would like to Access Your Photos",
+    "photoPermissionDescription": "Enable myTNB to access your camera roll to upload photos and save ones you’ve taken with the app.",
+    "delete": "Delete",
+    "refreshDescription": "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!",
+    "refreshNow": "Refresh Now",
+    "bcrmMessage": "BRCM will be down for maintenance purpose",
+    "disconnectionMsg": "Your electricity is currently disconnected.",
+    "months": "Months",
+    "days": "Days",
+    "viewBill": "View Bill",
+    "all": "All",
+    "maintenanceTitle": "We're fine-tuning!",
+    "maintenanceMsg": "System is under maintenance. Please try again later. We apologize for the inconvenience. Thank you.",
+    "day": "Day",
+    "month": "Month",
+    "customerAccountNumber": "Customer Account Number {0}",
+    "confirm": "Confirm",
+    "ok": "Ok",
+    "acctNickname": "Account Nickname",
+    "name": "Name",
+    "done": "Done",
+    "yes": "Yes",
+    "no": "No",
+    "selectAll": "Select All",
+    "unselectAll": "Unselect All",
+    "totalAmount": "Total Amount",
+    "totalAmountRM": "Total Amount (RM)",
+    "amountRM": "Amount (RM)",
+    "back": "Back",
+    "cards": "Credit / Debit Cards",
+    "abort": "Abort",
+    "warning": "Warning",
+    "manage": "Manage",
+    "update": "Update",
+    "logout": "Log Out",
+    "idNumber": "IC / ROC / Passport No.",
+    "password": "Password",
+    "mobileNo": "Mobile No.",
+    "email": "Email",
+    "addAnotherAcct": "Add Another Account",
+    "setAppLanguage": "Set App Langugage",
+    "setAppLanguageDescription": "Select Your Preferred Language",
+    "english": "English",
+    "bahasa": "Bahasa Malaysia",
+    "saveChanges": "Save Changes",
+    "gotIt": "Got It!",
+    "login": "Log In",
+    "next": "Next",
+    "resend": "Resend",
+    "retry": "Retry",
+    "save": "Save",
+    "fullname": "Fullname",
+    "confirmPassword": "Confirm Password",
+    "accountNo": "Account No.",
+    "accountType": "Account Type",
+    "allNotifications": "All Notifications",
+    "unitEmission": "kg",
+    "unitEnergy": "kWH",
+    "selectElectricityAccount": "Select Electricity Account",
+    "close": "Close",
+    "characterLeft": "{0} character left",
+    "charactersLeft": "{0} characters left",
+    "comments": "Comments",
+    "accountHolder": "Account Holder's Name",
+    "skip": "Skip",
+    "details": "Details"
+  },
+  "Hint": {
+    "mobileNumber": "Please include the country code of your phone number.",
+    "mobileNumberSample": "Example: +6012 345 6789",
+    "emptyAcctSelector": "---",
+    "nickname": "e.g. My House, Parent's House",
+    "businessNickname": "e.g. Bangsar Shopping Centre Branch",
+    "password": "Your password must have at least 8 alphanumeric characters."
+  },
+  "Error": {
+    "invalid_email": "Invalid email address",
+    "invalid_mobileNumber": "Invalid mobile number",
+    "minimumMandatoryPayment": "Minimum amount must be at least {0}",
+    "minimumPayAmount": "Minimum amount cannot be lower than RM 1.00",
+    "emptyNickname": "Account nickname cannot be empty. Please enter valid nickname and try adding your account again.",
+    "invalidNickname": "Invalid characters. Use letters or numbers only.",
+    "duplicateNickname": "Nickname already used. Please create a new one.",
+    "refreshMessage": "This page must be tired. Tap the button below to help it out.",
+    "serviceErrorDefaultMessage": "Sorry, something went wrong. Please try again later.",
+    "invalid_amountMessage": "Kindly enter a non-zero/positive amount",
+    "invalid_amountTitle": "Invalid Amount",
+    "invalid_code": "Invalid code",
+    "invalid_password": "Your password must have at least 8 alphanumeric characters.",
+    "invalid_mismatchedPassword": "Your new passwords do not match.",
+    "invalid_fullname": "Invalid full name",
+    "invalid_idnumber": "Invalid IC, ROC or Passport No.",
+    "invalid_mismatchedEmail": "Your email and confirmation email do not match.",
+    "error_duplicateAccountMessage": "This account number is already added on the list",
+    "error_duplicateAccountTitle": "Duplicate Account",
+    "invalid_icNumber": "Invalid IC number.",
+    "invalid_rocNumber": "Invalid ROC number.",
+    "accountLength": "Please enter a valid 12-digit account no.",
+    "invalid_accountType": "Invalid Account Type",
+    "noDataConnectionTitle": "No Internet Connection",
+    "noDataConnectionMessage": "Please check your internet connection and try again.",
+    "defaultErrorTitle": "Error",
+    "defaultErrorMessage": "Sorry, something went wrong. Please try again later.",
+    "numberNotAvailable": "Number is not available right now. Please try again later.",
+    "ratingNotAvailable": "Rating is not available right now. Please try again later.",
+    "shareNotAvailable": "Sharing is not available right now. Please try again later."
+  },
+  "DashboardHome": {
+    "greeting_afternoon": "Good Afternoon,",
+    "greeting_evening": "Good Evening,",
+    "greeting_morning": "Good Morning,",
+    "myAccounts": "My Accounts",
+    "myServices": "My Services",
+    "needHelp": "Need Help?",
+    "promotions": "Promotions",
+    "addElectricityAcct": "Add an Electricity Account",
+    "searchPlaceholder": "Search by nickname or number",
+    "refreshMessage": "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!",
+    "refreshBtnText": "Refresh Now",
+    "paidExtra": "paid extra",
+    "allCleared": "all cleared",
+    "getBy": "get by",
+    "payBy": "pay by",
+    "add": "Add",
+    "search": "Search",
+    "showLess": "Show Less",
+    "moreAccts": "More Accounts",
+    "rearrangeAccts": "Rearrange Accounts",
+    "showMore": "Show More",
+    "viewAdvice": "View My<br>Advice",
+    "viewAdvices": "View My<br>Advices",
+    "viewEBill": "View <br>My e-Bill",
+    "viewEBills": "View <br>My e-Bills",
+    "payBill": "Pay<br>My Bill",
+    "payBills": "Pay<br>My Bill",
+    "submitFeedback": "Submit<br>Feedback",
+    "selfMeterReading": "Self<br>Meter Reading",
+    "viewEBillAndAdvice": "View My<br>e-Bills / Advices"
+  },
+  "Tabbar": {
+    "home": "Home",
+    "bill": "Bills",
+    "promotion": "What's New",
+    "rewards": "Rewards",
+    "profile": "Profile"
+  },
+  "SSMROnboarding": {
+    "skip": "Skip",
+    "onboardingTitle1": "What is Self Meter Reading?",
+    "onboardingTitle2": "Why should I enable this service?",
+    "onboardingDescription1": "Self Meter Reading is a service you can enable to easily read and submit your own meter readings. We will send you a reminder when it's time to submit.",
+    "onboardingDescription2": "You get estimated bills when TNB meter readers can’t get access to your meter. With this service, you will always get bills with accurate readings.",
+    "startApplication": "Get Started!"
+  },
+  "SSMRApplication": {
+    "title": "Self Meter Reading",
+    "applyingFor": "I am starting for:",
+    "terminateFor": "I am stopping for:",
+    "contactDetails": "My contact details:",
+    "terminateTitle": "We’re sorry to see you go! Can you tell us why you want to stop this service?",
+    "tncUnsubscribe": "By submitting, you are agreeing to the <a href=\"\\\"><strong>TNB’s Terms of Use</strong></a>, <a href=\"\\\"><strong>Privacy policy</strong></a>, <a href=\"\\\"><strong>Anti-Spam Policy</strong></a> and <a href=\"\\\"><strong>Personal Data Protection Policy</strong></a>.",
+    "tncSubscribe": "By submitting, you are agreeing to the <a href=\"\\\"><strong>Self Meter Reading Terms and Conditions</strong></a>, <a href=\"\\\"><strong>TNB’s Terms of Use</strong></a>, <a href=\"\\\"><strong>Privacy policy</strong></a>, <a href=\"\\\"><strong>Anti-Spam Policy</strong></a> and <a href=\"\\\"><strong>Personal Data Protection Policy</strong></a>.",
+    "editContactInfo": "By editing, you will update your myTNB profile and electricity account contact details.",
+    "selectReason": "Select Reason",
+    "stateReason": "Please state your reason",
+    "selectAnAccount": "Select an account"
+  },
+  "Status": {
+    "feedbackSuccessTitle": "Feedback Successful",
+    "feedbackFailTitle": "Feedback Unsuccessful",
+    "feedbackSuccessMessage": "Thank you for your feedback.",
+    "feedbackFailMessage": "Your feedback didn't go through.",
+    "feedbackReferenceTitle": "Feedback ID",
+    "feedbackDateTitle": "Feedback Date & Time",
+    "ssmrApplySuccessTitle": "Application Submitted",
+    "ssmrApplyFailTitle": "Please Try Again",
+    "ssmrApplySuccessMessage": "We have received your request to starting the Self Meter Reading service. You’ll receive a notification when your request is successful!",
+    "ssmrApplyFailMessage": "It looks like we can't process your application at the moment.",
+    "ssmrApplyReferenceTitle": "Service Request number",
+    "ssmrApplyDateTitle": "Applied on",
+    "ssmrDiscontinueSuccessTitle": "Application Submitted",
+    "ssmrDiscontinueFailTitle": "Please Try Again",
+    "ssmrDiscontinueSuccessMessage": "We have received your request to stop this service. For your reference you may keep the service request number below.",
+    "ssmrDiscontinueFailMessage": "It looks like we can't process your application at the moment.",
+    "ssmrDiscontinueReferenceTitle": "Service Request number",
+    "ssmrDiscontinueDateTitle": "Applied on",
+    "ssmrReadingSuccessTitle": "Reading Submitted",
+    "ssmrReadingFailTitle": "Please Try Again",
+    "ssmrReadingSuccessMessage": "Thank you for your meter reading submission. We’ll notify you when your bill is ready.",
+    "ssmrReadingFailMessage": "It looks like we can’t validate your meter reading at the moment.",
+    "backToFeedback": "Back to Feedback",
+    "ssmrTrackApplication": "Track Application",
+    "ssmrBackToUsage": "Back to My Usage",
+    "ssmrTrackUsage": "Track Application Usage",
+    "ssmrViewReadHistory": "Back to Reading History"
+  },
+  "SSMRReadingHistory": {
+    "title": "Self Meter Reading",
+    "headerTitle": "My Meter Reading History",
+    "subTitle": "I want to read my own meter for:",
+    "disableSSMRCTA": "Stop Self Meter Reading",
+    "enableSSMRCTA": "Start Self Meter Reading",
+    "enableSSMRDescription": "This electricity account is not enabled for self meter reading yet, tap below to start!",
+    "noEligibleAccount": "Looks like your accounts aren’t eligible to start Self Meter Reading service",
+    "selectAccountNavTitle": "Select Electricity Account",
+    "noHistoryData": "Looks like you have no meter reading history at the moment."
+  },
+  "SSMRReadingHistory_selector": {
+    "SMREligibiltyPopUpDetails": [
+      {
+        "Title": "Why are some of my accounts not here?",
+        "Description": "We took the liberty to only show you electricity accounts that are eligble for the Self Meter Reading service. <a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">Click here</a> to learn more about its eligibility.",
+        "CTA": "Got It!",
+        "Type": "Not_SMR_CA"
+      }
+    ]
+  },
+  "SSMRSubmitMeterReading": {
+    "title": "Submit Meter Reading",
+    "dontShow": "Don’t show me again",
+    "tooltipTitle1": "Alright, what do I need to read?",
+    "tooltipTitle2": "But wait, how do I read my meter?",
+    "tooltipTitle3": "How do I enter these values?",
+    "tooltipDescription1": "You'll need to read 3 reading values (kWh, kVARh, kW). Your meter will automatically flash one after the other.",
+    "tooltipDescription2": "You can enter each reading manually or just take/upload a photo, and we’ll do the reading for you.",
+    "tooltipDescription3": "Enter the numbers according to its unit in the input. You’ll see your previous month's reading as a reference.",
+    "tooltipDescription4": "Your meter will display the kWh reading by default. Enter the reading manually or just take/upload a photo, and we’ll do the reading for you.",
+    "tooltipDescription5": "For manual reading, enter the kWh numbers in the input. You’ll see your previous month's reading as a reference.",
+    "headerDescription": "<b>Take or upload photos</b>, or <b>manually enter</b> your meter reading for each respective unit.",
+    "imReady": "I'm Ready!",
+    "note": "Note: Please <b>round up</b> the numbers if the reading values are showing decimal points on your meter.",
+    "previousMeterReading": "Previous Meter Reading",
+    "submitReading": "Submit Reading",
+    "takeOrUploadPhoto": "Take Or Upload Photo",
+    "manualInputTitle": "Please enter your meter reading for the unit(s) below."
+  },
+  "SSMRCaptureMeter": {
+    "ocrReading": "Please wait for a moment while we read your photos...",
+    "navTitleTakePhoto": "Take Photo",
+    "singleTakePhotoDescription": "Take a photo of the reading value you see on your meter.",
+    "editDescription": "You can select a photo to delete and retake or adjust it before submission.",
+    "multiTakePhotoDescription": "There will be {0} different units. Take a photo of the 1st unit you see.",
+    "multiTakeNextPhotoDescription": "Great! Now take a photo of the next unit you see.",
+    "singularDone": "You're done with {0}!",
+    "pluralDone": "You're done with {0} and {1}!",
+    "singularOnto": "On to the final unit {0} now.",
+    "pluralOnto": "On to the next units {0} and {1}.",
+    "deletePhoto": "Delete Photo"
+  },
+  "SSMRCaptureMeter_selector": {
+    "SMRPhotoPopUpDetails": [
+      {
+        "Title": "Uploading from your album?",
+        "Description": "Be sure to upload <strong>a straight-facing photo containing the value</strong>. You don’t need a photo of the whole meter. Ensure the numbers are clear and there is no glare, shadow or distortion.",
+        "CTA": "Got it!",
+        "Type": "Single_UploadPhoto"
+      },
+      {
+        "Title": "How do I take these photos?",
+        "Description": "You'll need to submit {0} different meter reading values <strong>({1})</strong>.<br><br>Stand close to your meter. You don’t need a photo of the whole meter. Just capture <strong>the box containing the values with your camera directly facing it</strong>. Ensure the numbers are clear and there is no glare, shadow or distortion.",
+        "CTA": "Got it!",
+        "Type": "Multi_TakePhoto"
+      },
+      {
+        "Title": "How do I take this photo?",
+        "Description": "Stand close to your meter. You don’t need a photo of the whole meter. Just capture <strong>the box containing the value with your camera directly facing it</strong>. Ensure the numbers are clear and there is no glare, shadow or distortion. ",
+        "CTA": "Got it!",
+        "Type": "Single_TakePhoto"
+      },
+      {
+        "Title": "Uploading from your album?",
+        "Description": "You'll need to submit {0} different meter reading values <strong>({1})</strong>.<br><br>Be sure to upload <strong>straight-facing photos containing the values</strong>. You don’t need a photo of the whole meter. Ensure the numbers are clear and there is no glare, shadow or distortion.",
+        "CTA": "Got it!",
+        "Type": "Multi_UploadPhoto"
+      },
+      {
+        "Title": "How do I take these photos?",
+        "Description": "Stand close to your meter. You don’t need a photo of the whole meter. Just capture <strong>the box containing the values with your camera directly facing it</strong>. Ensure the numbers are clear and there is no glare, shadow or distortion.",
+        "CTA": "Got it!",
+        "Type": "Multi_TakePhoto_One_Missing"
+      },
+      {
+        "Title": "Uploading from your album?",
+        "Description": "Be sure to upload <strong>straight-facing photos containing the values</strong>. You don’t need a photo of the whole meter. Ensure the numbers are clear and there is no glare, shadow or distortion.",
+        "CTA": "Got it!",
+        "Type": "Multi_UploadPhoto_One_Missing"
+      }
+    ]
+  },
+  "SelectElectricityAccounts": {
+    "title": "Select Electricity Account",
+    "accountsMissing": "Why are some of my accounts not here?"
+  },
+  "Usage": {
+    "title": "Usage",
+    "accountsMissing": "Why are some of my accounts not here?",
+    "gotIt": "Got it!",
+    "disconnectionMsg": "<strong>What does this mean?</strong><br><br>Your electricity has been disconnected and is unavailable. This was not caused by a power outage.<br><br>If you’ve made a payment, please give us some time for this to be reflected.",
+    "projectedCostMsg": "<strong>My bill amount so far:</strong><br><br>Your bill amount so far is the amount you have used up until yesterday.<br><br><strong> My bill may reach:</strong><br><br>This is calculated based on your average daily consumption for the past one (1) month, your actual bill may differ. To find out more, please visit our <strong><a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">FAQ page.</a></strong><br><br>Note: The amount shown is before applicable taxes / additional charges.",
+    "projectedCostTitle": "What are these?",
+    "missedReadTitle": "What does this mean?",
+    "missedReadMsg": "Your full usage for this particular day has not been retrieved yet. Check back in a while.",
+    "emptyDataMsg": "Welcome to your usage view! Your usage will be shown here after you receive your first bill.",
+    "SMOverlayTitle": "How do I view my daily usage?",
+    "SMOverlayMsg": "Pinch to zoom in or out! Zoom in to view your daily breakdown.",
+    "SMOverlayBtnTxt": "Got It!",
+    "viewReadHistory": "View Reading History",
+    "showTariff": "Show Tariff",
+    "hideTariff": "Hide Tariff",
+    "myEarnings": "My Earnings",
+    "viewPaymentAdvice": "View Payment Advice",
+    "iWillGetBy": "I will get by",
+    "emptyDateAmount": "- -",
+    "viewDetails": "View Details",
+    "needToPay": "I need to pay",
+    "paidExtra": "I've paid extra",
+    "clearedAllBills": "I've cleared all bills",
+    "by": "by",
+    "pay": "Pay",
+    "mdmsUnavailable": "Currently Unavailable",
+    "mdmsUnavailableMsg": "Your daily usage information is currently unavailable. Check back in a while!",
+    "beenPaidExtra": "I’ve been paid extra"
+  },
+  "Bills": {
+    "title": "Bills",
+    "clearedBills": "I’ve cleared all bills",
+    "viewMore": "View Details",
+    "paidExtra": "I’ve paid extra",
+    "needToPay": "I need to pay",
+    "by": "by",
+    "getBy": "get by",
+    "myEarnings": "My earnings",
+    "myHistory": "My History",
+    "beenPaidExtra": "I’ve been paid extra",
+    "noHistoryData": "Looks like you have no bills yet! Once you do, your bills and payment history will appear here.",
+    "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while.",
+    "pay": "Pay"
+  },
+  "Bills_selector": {
+    "MandatoryChargesPopUpDetails": [
+      {
+        "Title": "This account has a minimum amount to be paid.",
+        "Description": "Your <b>service charges</b> like Security Deposit, Processing Fee, Stamp Duty and Meter Cost are required to be cleared first and will be your account’s minimum payment.",
+        "CTA": "Got It!",
+        "Type": "MandatoryCharges"
+      },
+      {
+        "Title": "This account has a minimum amount to be paid.",
+        "Description": "You are required to clear <b>{0}</b> from your service charges first.<br><br>You may view a breakdown in your bill details.",
+        "CTA": "View Details,Got It!",
+        "Type": "MandatoryPayment"
+      }
+    ]
+  },
+  "BillDetails": {
+    "title": "Bill Details",
+    "billDetails": "My Bill Details",
+    "outstandingCharges": "My outstanding charges",
+    "billThisMonth": "My latest bill",
+    "needToPay": "I need to pay",
+    "by": "by",
+    "paidExtra": "I’ve paid extra",
+    "clearedBills": "I’ve cleared all bills",
+    "minimumChargeDescription": "This account has a minimum charge.",
+    "applicationCharges": "My one-time charges",
+    "tooltiptitle1": "Items from your paper/PDF bill",
+    "tooltiptitle2": "Items from your demand letter",
+    "tooltipdesc1": "I need to pay|My outstanding charges|My bill this month (electricity usage only)",
+    "tooltipdesc2": "Security Deposit|Stamp Duty|Processing Fee|Meter Fee",
+    "pay": "Pay"
+  },
+  "BillFilter": {
+    "title": "Filter Views",
+    "description": "View your invoiced bills, payment receipts or both.",
+    "filterBy": "Filter By",
+    "applyFilter": "Apply Filter",
+    "selectFilter": "Select Filter"
+  },
+  "SelectBills": {
+    "enterAmount": "Enter Amount",
+    "payMultiple": "Pay Bill ({0})",
+    "paySingle": "Pay Bill",
+    "loadMore": "Show More",
+    "selectBill": "Select Bill(s)",
+    "iamPaying": "I AM PAYING (RM)"
+  },
+  "SelectPaymentMethod": {
+    "title": "Select Payment Method",
+    "cvvFourDigitMessage": "Please enter the 4 digit CVV/CVC located at the front of your credit card.",
+    "cvvThreeDigitMessage": "Please enter the 3 digit CVV/CVC located at the back of your credit card.",
+    "otherPaymentMethods": "Other Payment Methods",
+    "maxCCAmountMessage": "For payments more than RM 5000, please use FPX payment mode.",
+    "addCard": "Add Card",
+    "fpxTitle": "Online Banking via FPX"
+  },
+  "MakePayment": {
+    "enterOTP": "Enter the OTP",
+    "onlineBanking": "Online Banking",
+    "abortTitle": "Abort Payment",
+    "abortMessage": "Are you sure you want to abort payment?"
+  },
+  "PushNotificationList": {
+    "allNotifications": "All Notifications",
+    "deleteMessage": "Are you sure you want to delete this notification?",
+    "deleteTitle": "Delete Notification",
+    "deleteAllMessage": "Are you sure you want to delete all notifications?",
+    "deleteAllTitle": "Delete All Notifications",
+    "deleteMessageMultiple": "Are you sure you want to delete these notifications?",
+    "deleteTitleMultiple": "Delete Multiple Notifications",
+    "noNotification": "Looks like you have no notifications at the moment.",
+    "notificationDeleted": "Notification deleted.",
+    "notificationsDeleted": "Notifications deleted.",
+    "select": "Select",
+    "selected": "Selected ({0})",
+    "selectNotification": "Select Notification",
+    "title": "Notifications"
+  },
+  "PushNotificationDetails": {
+    "contactTNB": "Contact TNB",
+    "viewBill": "View Details",
+    "payNow": "Pay Now",
+    "viewMyUsage": "View Usage",
+    "submitMeterReading": "Submit Meter Reading",
+    "reenableSSMR": "Re-start Self Meter Reading",
+    "viewReadingHistory": "View Reading History"
+  },
+  "AddAccount": {
+    "title": "Add Electricity Account",
+    "noAcctFoundMsg": "Please tap on the button below to add your TNB electricity account.",
+    "supplyAcctCount": "electricity supply account(s) found!",
+    "addAnotherAcct": "Add Another Account",
+    "addAccount": "Adding {0} Account",
+    "addAccounts": "Adding {0} Accounts",
+    "addAccountMsg": "This may take a while as we are\r\nadding your TNB account.",
+    "addAccountsMsg": "This may take a while as we are\r\nadding your TNB accounts.",
+    "noAccountsTitle": "No accounts found!",
+    "additionalAccts": "Additional account(s)",
+    "removeAcct": "Remove Account",
+    "removeAcctMsg": "You are about to remove {0}, account number {1}.",
+    "addAcctSuccessMsg": "Add Account(s) Successful",
+    "ownerICNumber": "Owner's IC / Passport Number",
+    "rocNumber": "ROC No.",
+    "whereIsMyAccountTitle": "Where is my account no.?",
+    "whereIsMyAccountDetails": "Your 12-digit account no. can be found on the top left corner of your monthly paper bill.",
+    "selectAccountType": "Select Account Type",
+    "residential": "Residential",
+    "commercial": "Commercial",
+    "addAccountCTATitle": "Add Account",
+    "scanMessage": "Scan the barcode on your bill to retrieve account details.",
+    "invalidBarcode": "Invalid barcode.",
+    "addByIDMessage": "Was this electricity supply account registered with your IC / ROC / Passport No.?",
+    "addByRightsMessage": "Do you have the rights to view all information related to this electricity supply account?",
+    "addAsOwnerMessage": "I'm the owner of this electricity supply account.",
+    "addAsTenantMessage": "I’m renting this place / it belongs to my parents.",
+    "addAsTenantWithICMessage": "I have the rights to view all information related to this electricity supply account.",
+    "addAsTenantWithoutICMessage": "I may not have the rights to view all information related to this electricity supply account.\r\n\r\nI may only view:",
+    "outstandingPayment": "Outstanding payment",
+    "usageGraph": "Usage graph",
+    "paymentHistory": "Payment history",
+    "currentBill": "Current bill",
+    "pastBills": "Past bills"
+  },
+  "Profile": {
+    "title": "Profile",
+    "appVersion": "App Version",
+    "callUsBilling": "Call Us (Billing Enquiries)",
+    "callUsOutagesAndBreakdown": "Call Us (Outages & Breakdown)",
+    "faq": "FAQ",
+    "helpAndSupport": "Help & Support",
+    "myAccount": "My Account",
+    "notifications": "Notifications",
+    "rate": "Rate this app",
+    "settings": "Settings",
+    "share": "Share",
+    "shareMessage": "New myTNB app is now available in App Store.",
+    "shareDescription": "Share this app",
+    "tnc": "Terms & Conditions",
+    "findUs": "Find Us",
+    "setAppLanguage": "Set App Language"
+  },
+  "NotificationSettings": {
+    "title": "Notification Settings",
+    "typeDescription": "Select the type of notifications you wish to receive from TNB",
+    "modeDescription": "Select how you wish to receive your notifications"
+  },
+  "FAQ": {
+    "title": "FAQ"
+  },
+  "TnC": {
+    "title": "Terms & Conditions"
+  },
+  "FindUs": {
+    "title": "Find Us",
+    "searchPlaceholder": "Search via street name or area",
+    "zeroLocations": "0 Locations",
+    "noKTFound": "No Kedai Tenaga Found",
+    "no711Found": "No 7-Eleven Found",
+    "show": "Show"
+  },
+  "LocationDetails": {
+    "address": "ADDRESS",
+    "phone": "Phone",
+    "openingHours": "OPENING HOURS",
+    "services": "SERVICES",
+    "mapSelection": "Map Selection",
+    "selectApplication": "Select navigation application",
+    "openIn": "Open in",
+    "noSupportedApp": "No supported map application is installed",
+    "serviceDescription": "•\tPayment of electricity bills and other utility bills",
+    "operationHours": "Open 24 Hours"
+  },
+  "MyAccount": {
+    "title": "My Account",
+    "detailSectionTitle": "myTNB Account",
+    "accountSectionTitle": "TNB Electricity Supply Accounts",
+    "logout": "Log Out",
+    "logoutMessage": "Are you sure you want to log out from the myTNB app?",
+    "mobileNumberVerified": "Your mobile number has been verified successfully.",
+    "accountDeleteSuccess": "Your electricity supply account has been removed from myTNB account.",
+    "passwordUpdateSuccess": "Your password has been changed successfully.",
+    "noAccounts": "No Electricity Account",
+    "addAccountMessage": "Add your existing TNB Electricity Supply Account to view usage and transaction details."
+  },
+  "Prelogin": {
+    "welcomeTitle": "Welcome to myTNB",
+    "tagline": "A whole new world with shockingly amazing possibilities.",
+    "register": "Register",
+    "login": "Log In",
+    "quickAccess": "Quick Actions",
+    "findUs": "Find Us",
+    "callUs": "Call Us",
+    "feedback": "Give Us Feedback"
+  },
+  "Login": {
+    "loginTitle": "myTNB Account Login",
+    "rememberEmail": "Remember my email",
+    "forgotPassword": "Forgot your password?",
+    "dontHaveAcct": "Don’t have a myTNB account?",
+    "registerAcctNow": "Register for an account now.",
+    "login": "Log In",
+    "emailRequired": "Email field is required.",
+    "passwordRequired": "Password field is required."
+  },
+  "ForgotPassword": {
+    "title": "Reset Password",
+    "subTitle": "Please enter your email address.",
+    "details": "A 4 digit verification code will be sent to this email address."
+  },
+  "EnterCode": {
+    "title": "Enter Code",
+    "details": "Please enter the 4 digit code that was sent to {0}",
+    "emailNotReceived": "Didn't receive the email?",
+    "resendPinMessage": "An Email containing the activation pin has been sent to your email address."
+  },
+  "PasswordResetSuccess": {
+    "title": "Password Reset Successful",
+    "details": "Log in using the 8 digit temporary password that was sent to {0}.\r\n\r\nYou may change your password after logging in.",
+    "proceedToLogin": "Proceed to Log In",
+    "resetSuccessMessage": "Your password has been changed successfully. You may proceed to login with the new password."
+  },
+  "ResetPassword": {
+    "title": "Reset Password",
+    "subTitle": "Please enter your new password.",
+    "details": "This will replace your current one. All your account details will remain unchanged.",
+    "newPassword": "Enter new password",
+    "confirmNewPassword": "Confirm new password",
+    "confirmPassword": "Confirm Password"
+  },
+  "UpdateMobileNumber": {
+    "verifyDeviceTitle": "Verify Device",
+    "verifyDeviceMessage": "Please take a moment to verify your device.",
+    "details": "For security purposes, please enter your mobile number to verify this device.",
+    "updateMobileNumberTitle": "Update Mobile No."
+  },
+  "VerifyPin": {
+    "title": "Verify Device",
+    "smsNotReceived": "Didn't receive the SMS?",
+    "resendPinMessage": "An SMS containing the activation pin has been sent to your number.",
+    "otpMobileUpdate": "An OTP has been sent to {0}, please enter it below.",
+    "otpRegistration": "Please enter the 4-digit activation pin that was sent to {0}."
+  },
+  "Logout": {
+    "logoutTitle": "Thank you for using myTNB.",
+    "message": "You are now logged out of the myTNB app.",
+    "loginAgain": "Log In Again"
+  },
+  "UpdatePassword": {
+    "title": "Update Password",
+    "currentPassword": "Current Password",
+    "newPassword": "New Password",
+    "confirmNewPassword": "Confirm New Password"
+  },
+  "UpdateNickname": {
+    "title": "Update Account Nickname"
+  },
+  "ManageAccount": {
+    "title": "Manage Electricity Account",
+    "nicknameUpdateSuccess": "Account nickname has been updated successfully.",
+    "removeAccount": "Remove This Account",
+    "popupremoveAccountTitle": "Remove Account",
+    "popupremoveAccountMessage": "You are about to remove <b>{0}</b>, Account Number: <b>{1}</b>.<br><br>Note: This does not close your electricity supply account. Visit the Self-Service Portal or Kedai Tenaga to close your electriity supply account."
+  },
+  "Onboarding": {
+    "letsStart": "Let's get started!",
+    "skip": "Skip",
+    "title1": "Welcome to myTNB!",
+    "title2": "Bills at Your Fingertips.",
+    "title3": "Pay Your Bills Anytime, Anywhere.",
+    "title4": "Enhanced View for Better Experiences.",
+    "description1": "Track, monitor and stay on top of your electricity usage!",
+    "description2": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",
+    "description3": "Pay your electricity bills while at home, on holiday, on the train – whenever you want to. Say goodbye to late charges and queuing up!",
+    "description4": "We’ve revamped the Home, Bills and Usage screens! It’s not just prettier, it’s way more helpful with more details (including block tariffs so you can stay informed on all things usage-related)."
+  },
+  "ManageCards": {
+    "title": "Manage Credit / Debit Cards",
+    "noCards": "Looks like you have no credit/debit cards stored. You may add a credit/debit card during payment.",
+    "details": "You may only add a new credit / debit card when making payment.",
+    "cardRemoveSuccess": "The credit / debit card ending with {0} has been removed successfully.",
+    "removeCardMessage": "You are about to remove the credit / debit card ending with {0}.",
+    "removeCardTitle": "Remove Credit / Debit Card",
+    "cardNotRemovedMessage": "Credit / Debit Card ending with {0} was not removed. Please try again."
+  },
+  "ViewBill": {
+    "titleBill": "Bill",
+    "titleAdvice": "Advice"
+  },
+  "Register": {
+    "title": "Register",
+    "tnc": "By registering, you are agreeing to the <a href=\"\\\"><strong>TNB Terms and Conditions</strong></a>, <a href=\"\\\"><strong>User Agreement</strong></a> and <a href=\"\\\"><strong>Privacy policy</strong></a>.",
+    "ctaTitle": "Register",
+    "confirmEmail": "Confirm Email"
+  },
+  "AddCard": {
+    "title": "Add Card",
+    "acceptedCardsMessage": "Only credit / debit cards issued in Malaysia are accepted.",
+    "cardNumber": "Card Number",
+    "invalidCardNumber": "Invalid Card Number",
+    "nameOnCard": "Name on Card",
+    "invalidName": "Invalid name",
+    "cardExpiry": "Card Expiry",
+    "invalidCardExpiry": "Invalid card expiration date.",
+    "hintCardExpiry": "Card Expiry (MM/YY)",
+    "cvv": "CVV",
+    "invalidCVV": "Invalid CVV.",
+    "saveCardMessage": "I want to save this card for future use.",
+    "emptyCardNumberTitle": "Empty Card Number",
+    "emptyCardNumberMessage": "Please enter valid card number and try again.",
+    "savedCardTitle": "Valid card number",
+    "savedCardMessage": "Seems like you are paying with an already saved Credit / Debit Card. Do you want to continue?"
+  },
+  "CardScanner": {
+    "title": "Add Card",
+    "scanMessage": "Scan the front of your credit / debit card to retrieve card details."
+  },
+  "Receipt": {
+    "title": "Payment Receipt",
+    "accountHolder": "Account Holder's Name",
+    "receiptFilename": "Receipt-{0}.pdf",
+    "fullMessage": "Thank you for using myTNB.\nWe are pleased to inform you that the following online payment via {0} is Successful:",
+    "messagePartOne": "Thank you for using myTNB.",
+    "messagePartTwo": "We are pleased to inform you that the following online payment via {0} is Successful:",
+    "noReceipt": "No Receipt Found",
+    "note": "NOTE: This receipt is computer generated and no signature is required.",
+    "referenceNumber": "Reference Number",
+    "salutation": "Dear Customer,",
+    "trnDate": "TRANSACTION DATE",
+    "trnID": "TRANSACTION ID",
+    "trnMethod": "RANSACTION METHOD"
+  },
+  "FeedbackList": {
+    "title": "Feedback"
+  },
+  "FeedbackForm": {
+    "attachPhotoTitle": "ATTACH PHOTO / SCREENSHOT (OPTIONAL)",
+    "maxFile": "Max 2 files",
+    "camera": "Camera",
+    "cameraRoll": "Camera Roll",
+    "feedback": "Feedback",
+    "invalidFeedback": "Invalid feedback",
+    //Not Supported by MS Translation Start
+    "feedbackType": "Feedback Type",
+    "invalidFeedbackType": "Invalid feedback type",
+    "selectFeedbackType": "Select Feedback Type",
+    "faultyLampTitle": "Reporting faulty street lamps?",
+    "faultyLampMessage": "You may only report faulty TNB street lamps. Look out for TNB’s blue and red or the logo as shown above. Use the pole no. (e.g. 17493 8E 1) to specify the lamp.",
+    "state": "State",
+    "invalidState": "Invalid state",
+    "selectState": "Select State",
+    "location": "Location / Street Name",
+    "invalidLocation": "Invalid location / Street name",
+    "poleNumber": "Pole No.",
+    "invalidPoleNumber": "Invalid pole number",
+    "noAccessTitle": "Location Access is not allowed",
+    "noAccessMessage": "Turn On Location Services to allow \"myTNB\" to determine your location",
+    "goToSettings": "Go to Settings"
+    //Not Supported by MS Translation End
+  },
+  "FeedbackDetails": {
+    "feedbackID": "Feedback ID",
+    "feedbackStatus": "Feedback Status",
+    "dateTimeTitle": "Feedback Date & Time",
+    "feedback": "Feedback",
+    "photoTitle": "Photo / Screenshot",
+    //Not Supported by MS Translation Start
+    "state": "State",
+    "feedbackType": "Feedback Type",
+    "location": "Location / Street Name",
+    "poleNumber": "Pole No."
+    //Not Supported by MS Translation End
+  },
+  "SubmittedFeedback": {
+    "noFeedback": "You have not submittted any feedback."
+  },
+  "Rating": {
+    "title": "Rating",
+    "pay": "Pay"
+  },
+  "RatingResults": {
+    "description": "Your rating will help us serve you better.",
+    "thankyou": "Thank you.",
+    "backToDashboard": "Back to Dashboard"
+  },
+  "Promotions": {
+    "title": "Promotions",
+    "noPromotions": "No promotions currently. Check back later!"
+  }
+}
