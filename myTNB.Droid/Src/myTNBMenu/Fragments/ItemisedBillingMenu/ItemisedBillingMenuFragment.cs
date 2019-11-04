@@ -758,7 +758,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         public override string GetPageId()
         {
-            return "";
+            return PAGE_ID;
         }
     }
 }

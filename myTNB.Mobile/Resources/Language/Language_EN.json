@@ -416,7 +416,7 @@
     "payMultiple": "Pay Bill ({0})",
     "paySingle": "Pay Bill",
     "loadMore": "Show More",
-    "selectBill": "Select Bill(s)",
+    "title": "Select Bill(s)",
     "iamPaying": "I AM PAYING (RM)"
   },
   "SelectPaymentMethod": {
