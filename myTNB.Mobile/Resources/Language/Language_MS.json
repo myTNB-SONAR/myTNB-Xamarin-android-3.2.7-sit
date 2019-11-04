@@ -98,7 +98,11 @@
     "comments": "Comments",
     "accountHolder": "Account Holder's Name",
     "skip": "Langkau",
-    "details": "Details"
+    "details": "Details",
+    "changeLanguageTitle": "Change language  to English?",
+    "changeLanguageMessage": "Are you sure you want to change the app language to English?",
+    "changeLanguageYes": "Yes",
+    "changeLanguageNo": "No"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -416,7 +420,7 @@
     "payMultiple": "Bayar Bil ({0})",
     "paySingle": "Bayar Bil",
     "loadMore": "Selebihnya",
-    "selectBill": "Pilih Bil",
+    "title": "Pilih Bil",
     "iamPaying": "JUMLAH BAYARAN (RM)"
   },
   "SelectPaymentMethod": {
@@ -565,11 +569,7 @@
     "findUs": "Temui Kami",
     "callUs": "Hubungi Kami",
     "feedback": "Beri Maklumbalas",
-    "changeLanguage": "Change language to English",
-    "changeLanguageTitle": "Change language  to English?",
-    "changeLanguageMessage": "Are you sure you want to change the app language to English?",
-    "changeLanguageYes": "Yes",
-    "changeLanguageNo": "No"
+    "changeLanguage": "Change language to English"
   },
   "Login": {
     "loginTitle": "Log Masuk Akaun myTNB",

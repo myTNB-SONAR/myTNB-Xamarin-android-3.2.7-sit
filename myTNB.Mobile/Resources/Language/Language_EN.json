@@ -98,7 +98,11 @@
     "comments": "Comments",
     "accountHolder": "Account Holder's Name",
     "skip": "Skip",
-    "details": "Details"
+    "details": "Details",
+    "changeLanguageTitle": "Tukar kepada Bahasa Malaysia?",
+    "changeLanguageMessage": "Anda pasti ingin menukar bahasa aplikasi myTNB kepada Bahasa Malaysia?",
+    "changeLanguageYes": "Ya",
+    "changeLanguageNo": "Tidak"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -416,7 +420,7 @@
     "payMultiple": "Pay Bill ({0})",
     "paySingle": "Pay Bill",
     "loadMore": "Show More",
-    "selectBill": "Select Bill(s)",
+    "title": "Select Bill(s)",
     "iamPaying": "I AM PAYING (RM)"
   },
   "SelectPaymentMethod": {
@@ -565,11 +569,7 @@
     "findUs": "Find Us",
     "callUs": "Call Us",
     "feedback": "Give Us Feedback",
-    "changeLanguage": "Tukar kepada Bahasa Malaysia",
-    "changeLanguageTitle": "Tukar kepada Bahasa Malaysia?",
-    "changeLanguageMessage": "Anda pasti ingin menukar bahasa aplikasi myTNB kepada Bahasa Malaysia?",
-    "changeLanguageYes": "Ya",
-    "changeLanguageNo": "Tidak"
+    "changeLanguage": "Tukar kepada Bahasa Malaysia"
   },
   "Login": {
     "loginTitle": "myTNB Account Login",

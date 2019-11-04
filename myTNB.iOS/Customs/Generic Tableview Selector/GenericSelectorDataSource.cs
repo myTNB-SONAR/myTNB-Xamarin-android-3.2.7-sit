@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using CoreGraphics;
 using Foundation;
 using UIKit;
@@ -7,7 +8,7 @@ namespace myTNB
 {
     public class GenericSelectorDataSource : UITableViewSource
     {
-        readonly GenericSelectorViewController _controller;
+        private readonly GenericSelectorViewController _controller;
 
         public GenericSelectorDataSource(GenericSelectorViewController controller)
         {
@@ -69,6 +70,7 @@ namespace myTNB
             cell.TextLabel.Lines = 0;
             cell.TextLabel.LineBreakMode = UILineBreakMode.WordWrap;
             cell.TextLabel.BackgroundColor = UIColor.Clear;
+            cell.BackgroundColor = UIColor.White;
             nfloat accWidth = ScaleUtility.GetScaledWidth(24);
             if (_controller.SelectedIndex > -1 && indexPath.Row == _controller.SelectedIndex)
             {
@@ -82,13 +84,7 @@ namespace myTNB
             }
             else
             {
-                if (cell != null && cell.AccessoryView != null && cell.AccessoryView.Subviews != null)
-                {
-                    foreach (var subView in cell.AccessoryView.Subviews)
-                    {
-                        subView.RemoveFromSuperview();
-                    }
-                }
+                RemoveAccessory(cell);
             }
             UIView viewLine = new UIView(new CGRect(0, cell.Frame.Height - ScaleUtility.GetScaledHeight(1)
                 , tableView.Frame.Width, ScaleUtility.GetScaledHeight(1)))
@@ -96,12 +92,13 @@ namespace myTNB
                 BackgroundColor = MyTNBColor.PlatinumGrey
             };
             cell.AddSubview(viewLine);
+            cell.SelectionStyle = UITableViewCellSelectionStyle.None;
             return cell;
         }
 
         public override void RowSelected(UITableView tableView, NSIndexPath indexPath)
         {
-            if (_controller?.OnSelect != null)
+            if (_controller?.OnSelect != null && !_controller.HasCTA)
             {
                 _controller?.OnSelect(indexPath.Row);
                 if (_controller.IsRootPage && _controller.NavigationController != null)
@@ -111,6 +108,52 @@ namespace myTNB
                 else
                 {
                     _controller?.DismissViewController(true, null);
+                }
+            }
+            else
+            {
+                _controller.SelectedIndex = indexPath.Row;
+                int count = _controller.Items != null ? _controller.Items.Count : 0;
+                for (int i = 0; i < count; i++)
+                {
+                    try
+                    {
+                        RemoveAccessory(tableView.CellAt(NSIndexPath.Create(0, i)));
+                    }
+                    catch (Exception e) { Debug.WriteLine("Error in RemoveAccessory: " + e.Message); }
+                }
+                UITableViewCell cell = tableView.CellAt(indexPath);
+                if (_controller.SelectedIndex > -1 && indexPath.Row == _controller.SelectedIndex)
+                {
+                    nfloat accWidth = ScaleUtility.GetScaledWidth(24);
+                    cell.Accessory = UITableViewCellAccessory.None;
+                    cell.AccessoryView = new UIView(new CGRect(0, 0, accWidth, accWidth));
+                    UIImageView imgViewTick = new UIImageView(new CGRect(0, 0, accWidth, accWidth))
+                    {
+                        Image = UIImage.FromBundle("Table-Tick")
+                    };
+                    cell.AccessoryView.AddSubview(imgViewTick);
+                }
+                else
+                {
+                    RemoveAccessory(cell);
+                }
+                _controller.SetCTAState();
+            }
+        }
+
+        public override nfloat GetHeightForRow(UITableView tableView, NSIndexPath indexPath)
+        {
+            return ScaleUtility.GetScaledHeight(57);
+        }
+
+        private void RemoveAccessory(UITableViewCell cell)
+        {
+            if (cell != null && cell.AccessoryView != null && cell.AccessoryView.Subviews != null)
+            {
+                foreach (var subView in cell.AccessoryView.Subviews)
+                {
+                    subView.RemoveFromSuperview();
                 }
             }
         }

@@ -153,7 +153,6 @@ namespace myTNB
                 description.Frame = new CGRect(description.Frame.Location, new CGSize(description.Frame.Width, size.Height));
                 viewContainer.AddSubview(description);
 
-
                 if (OnboardingModel[i].IsLanguageEntry)
                 {
                     UIView toggleView = new UIView(new CGRect(0, GetYLocationFromFrame(description.Frame, 18)
@@ -165,24 +164,21 @@ namespace myTNB
                     nfloat toggleWidth = GetScaledWidth(122);
                     nfloat toggleHeight = GetScaledHeight(26);
 
-                    UITextAttributes attr = new UITextAttributes
-                    {
-                        Font = TNBFont.MuseoSans_12_300,
-                        TextColor = MyTNBColor.WaterBlue
-                    };
-                    UITextAttributes attrSelected = new UITextAttributes
-                    {
-                        Font = TNBFont.MuseoSans_12_300,
-                        TextColor = UIColor.White
-                    };
-
                     UISegmentedControl _toggleBar = new UISegmentedControl(new CGRect(GetXLocationToCenterObject(toggleWidth, viewContainer)
                         , 0, toggleWidth, toggleHeight));
                     _toggleBar.InsertSegment("EN", 0, false);
                     _toggleBar.InsertSegment("BM", 1, false);
                     _toggleBar.TintColor = MyTNBColor.WaterBlue;
-                    _toggleBar.SetTitleTextAttributes(attr, UIControlState.Normal);
-                    _toggleBar.SetTitleTextAttributes(attrSelected, UIControlState.Selected);
+                    _toggleBar.SetTitleTextAttributes(new UITextAttributes
+                    {
+                        Font = TNBFont.MuseoSans_12_300,
+                        TextColor = MyTNBColor.WaterBlue
+                    }, UIControlState.Normal);
+                    _toggleBar.SetTitleTextAttributes(new UITextAttributes
+                    {
+                        Font = TNBFont.MuseoSans_12_300,
+                        TextColor = UIColor.White
+                    }, UIControlState.Selected);
                     _toggleBar.Layer.CornerRadius = toggleHeight / 2;
                     _toggleBar.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
                     _toggleBar.Layer.BorderWidth = GetScaledHeight(1);
@@ -190,6 +186,13 @@ namespace myTNB
                     _toggleBar.ValueChanged += (sender, e) =>
                     {
                         Debug.WriteLine("selected index: " + ((UISegmentedControl)sender).SelectedSegment);
+                        AlertHandler.DisplayCustomAlert(GetCommonI18NValue(Constants.Common_ChangeLanguageTitle)
+                         , GetCommonI18NValue(Constants.Common_ChangeLanguageMessage)
+                         , new Dictionary<string, Action> {
+                            { GetCommonI18NValue(Constants.Common_ChangeLanguageNo), null}
+                            ,{ GetCommonI18NValue(Constants.Common_ChangeLanguageYes) ,null} }
+                         , UITextAlignment.Center
+                         , UITextAlignment.Center);
                     };
                     _toggleBar.SelectedSegment = 0;
                     _toggleBar.Enabled = true;

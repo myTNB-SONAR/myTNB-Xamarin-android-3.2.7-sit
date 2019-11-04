@@ -38,7 +38,7 @@ namespace myTNB
         {
             PageName = PaymentConstants.Pagename_SelectBills;
             base.ViewDidLoad();
-            Title = GetI18NValue(PaymentConstants.I18N_SelectBill);
+            Title = GetI18NValue(PaymentConstants.I18N_Title);
             AccountChargesCache.Clear();
             SetDefaultTableFrame();
             InitializedSubViews();

@@ -17,7 +17,6 @@
         public static string I18N_PayMultiple = "payMultiple";
         public static string I18N_PaySingle = "paySingle";
         public static string I18N_LoadMore = "loadMore";
-        public static string I18N_SelectBill = "selectBill";
         public static string I18N_Title = "title";
         public static string I18N_CVVThree = "cvvThreeDigitMessage";
         public static string I18N_CVVFour = "cvvFourDigitMessage";

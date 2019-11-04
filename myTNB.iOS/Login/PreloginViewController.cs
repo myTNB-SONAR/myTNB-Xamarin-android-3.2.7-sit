@@ -205,11 +205,11 @@ namespace myTNB
 
             changeLanguageView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                DisplayCustomAlert(GetI18NValue(PreloginConstants.I18N_ChangeLanguageTitle)
-                    , GetI18NValue(PreloginConstants.I18N_ChangeLanguageMessage)
+                DisplayCustomAlert(GetCommonI18NValue(Constants.Common_ChangeLanguageTitle)
+                    , GetCommonI18NValue(Constants.Common_ChangeLanguageMessage)
                     , new System.Collections.Generic.Dictionary<string, Action> {
-                        { GetI18NValue(PreloginConstants.I18N_ChangeLanguageNo), null}
-                        ,{ GetI18NValue(PreloginConstants.I18N_ChangeLanguageYes) ,null} }
+                        { GetCommonI18NValue(Constants.Common_ChangeLanguageNo), null}
+                        ,{ GetCommonI18NValue(Constants.Common_ChangeLanguageYes) ,null} }
                     , UITextAlignment.Center
                     , UITextAlignment.Center);
             }));

@@ -249,25 +249,45 @@ namespace myTNB
             }
         }
 
+        private GenericSelectorViewController languageViewController;
         private void GoToLanguageSetting()
         {
             UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
-            GenericSelectorViewController viewController = (GenericSelectorViewController)storyBoard
+            languageViewController = (GenericSelectorViewController)storyBoard
                 .InstantiateViewController("GenericSelectorViewController");
-            if (viewController != null)
+            if (languageViewController != null)
             {
-                viewController.Title = LanguageSettings.Title;
-                viewController.Items = LanguageSettings.SupportedLanguage;
-                viewController.HasSectionTitle = true;
-                viewController.SectionTitle = LanguageSettings.SectionTitle;
-                viewController.HasCTA = true;
-                viewController.CTATitle = LanguageSettings.CTATitle;
-                viewController.OnSelect = LanguageSettings.OnSelect;
-                viewController.SelectedIndex = LanguageSettings.SelectedLanguageIndex;
-                UINavigationController navController = new UINavigationController(viewController);
+                languageViewController.Title = LanguageSettings.Title;
+                languageViewController.Items = LanguageSettings.SupportedLanguage;
+                languageViewController.HasSectionTitle = true;
+                languageViewController.SectionTitle = LanguageSettings.SectionTitle;
+                languageViewController.HasCTA = true;
+                languageViewController.CTATitle = LanguageSettings.CTATitle;
+                languageViewController.OnSelect = OnSelectLanguage;
+                languageViewController.SelectedIndex = LanguageSettings.SelectedLanguageIndex;
+                UINavigationController navController = new UINavigationController(languageViewController);
                 navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
                 PresentViewController(navController, true, null);
             }
+        }
+
+        private void OnSelectLanguage(int index)
+        {
+            Debug.WriteLine("Selected Index: " + index);
+            DisplayCustomAlert(GetCommonI18NValue(Constants.Common_ChangeLanguageTitle)
+                  , GetCommonI18NValue(Constants.Common_ChangeLanguageMessage)
+                  , new Dictionary<string, Action> {
+                        { GetCommonI18NValue(Constants.Common_ChangeLanguageNo), null}
+                        ,{ GetCommonI18NValue(Constants.Common_ChangeLanguageYes)
+                            , ()=>{ OnChangeLanguage(); } } }
+                  , UITextAlignment.Center
+                  , UITextAlignment.Center);
+        }
+
+        private void OnChangeLanguage()
+        {
+            //Todo: Do service calls and set lang
+            languageViewController.DismissViewController(true, null);
         }
 
         private void GoToMyAccount()

@@ -81,6 +81,10 @@
         public static string Common_AccountHolder = "accountHolder";
         public static string Common_Skip = "skip";
         public static string Common_Details = "details";
+        public static string Common_ChangeLanguageTitle = "changeLanguageTitle";
+        public static string Common_ChangeLanguageMessage = "changeLanguageMessage";
+        public static string Common_ChangeLanguageYes = "changeLanguageYes";
+        public static string Common_ChangeLanguageNo = "changeLanguageNo";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";

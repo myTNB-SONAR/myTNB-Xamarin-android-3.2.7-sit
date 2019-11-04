@@ -14,16 +14,8 @@ namespace myTNB
     [Register ("GenericSelectorViewController")]
     partial class GenericSelectorViewController
     {
-        [Outlet]
-        [GeneratedCode ("iOS Designer", "1.0")]
-        UIKit.UITableView genericTableView { get; set; }
-
         void ReleaseDesignerOutlets ()
         {
-            if (genericTableView != null) {
-                genericTableView.Dispose ();
-                genericTableView = null;
-            }
         }
     }
 }
