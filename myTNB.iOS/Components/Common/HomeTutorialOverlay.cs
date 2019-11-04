@@ -307,10 +307,11 @@ namespace myTNB
             circle.Layer.CornerRadius = GetScaledWidth(8F) / 2;
             bottomView.AddSubview(circle);
 
+            nfloat textYPos = circle.Frame.GetMinY() + (circle.Frame.Height / 2) - (GetScaledHeight(20F) / 2);
             nfloat textXPos = GetXLocationFromFrame(circle.Frame, 12F);
             nfloat textPadding = GetScaledWidth(29F);
             nfloat textWidth = width - (textXPos + textPadding);
-            UILabel title = new UILabel(new CGRect(textXPos, GetYLocationFromFrame(bottomLine.Frame, 23F), textWidth, GetScaledHeight(20F)))
+            UILabel title = new UILabel(new CGRect(textXPos, textYPos, textWidth, GetScaledHeight(20F)))
             {
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
@@ -365,7 +366,7 @@ namespace myTNB
             {
                 BackgroundColor = MyTNBColor.Black75
             };
-            UIView boxView = new UIView(new CGRect(GetScaledWidth(169F), topView.Frame.GetMaxY() - GetScaledHeight(1F), width - (GetScaledWidth(169F) + GetScaledWidth(8F)), GetScaledHeight(45f) + GetScaledHeight(2F)))
+            UIView boxView = new UIView(new CGRect(width - (GetScaledWidth(143F) + GetScaledWidth(8F)), topView.Frame.GetMaxY() - GetScaledHeight(1F), GetScaledWidth(143F), GetScaledHeight(45f) + GetScaledHeight(2F)))
             {
                 BackgroundColor = UIColor.Clear
             };
@@ -377,7 +378,7 @@ namespace myTNB
             {
                 BackgroundColor = MyTNBColor.Black75
             };
-            UIView verticalLine = new UIView(new CGRect(GetScaledWidth(275.5F), 0, GetScaledWidth(1F), GetScaledHeight(32.3F)))
+            UIView verticalLine = new UIView(new CGRect(boxView.Frame.GetMinX() + GetScaledWidth(106.5F), 0, GetScaledWidth(1F), GetScaledHeight(32.3F)))
             {
                 BackgroundColor = MyTNBColor.ButterScotch
             };
@@ -390,7 +391,7 @@ namespace myTNB
             bottomView.AddSubview(circle);
             nfloat textXPos = GetScaledWidth(24F);
             nfloat textYPos = circle.Frame.GetMinY() + (circle.Frame.Height / 2) - (GetScaledHeight(20F) / 2);
-            nfloat textPadding = GetScaledWidth(60F);
+            nfloat textPadding = width - circle.Frame.GetMinX() + GetScaledWidth(12F);
             nfloat textWidth = width - (textXPos + textPadding);
             UILabel title = new UILabel(new CGRect(textXPos, textYPos, textWidth, GetScaledHeight(20F)))
             {
@@ -424,7 +425,7 @@ namespace myTNB
             CGSize cGSize = desc.SizeThatFits(new CGSize(textWidth, GetScaledHeight(270F)));
             ViewHelper.AdjustFrameSetHeight(desc, cGSize.Height);
             bottomView.AddSubviews(new UIView { title, desc });
-            UIView leftView = new UIView(new CGRect(0, topView.Frame.GetMaxY(), GetScaledWidth(169F) + GetScaledWidth(1F), boxView.Frame.Height - GetScaledHeight(2F)))
+            UIView leftView = new UIView(new CGRect(0, topView.Frame.GetMaxY(), width - (GetScaledWidth(143F) + GetScaledWidth(8F)) + GetScaledWidth(1F), boxView.Frame.Height - GetScaledHeight(2F)))
             {
                 BackgroundColor = MyTNBColor.Black75
             };
@@ -557,7 +558,7 @@ namespace myTNB
             topView.AddSubview(circle);
             nfloat textXPos = GetXLocationFromFrame(circle.Frame, 12F);
             nfloat textYPos = circle.Frame.GetMinY() + (circle.Frame.Height / 2) - (GetScaledHeight(20F) / 2);
-            nfloat textPadding = GetScaledWidth(42F);
+            nfloat textPadding = GetScaledWidth(20F);
             nfloat textWidth = width - (textXPos + textPadding);
             UILabel title = new UILabel(new CGRect(textXPos, textYPos, textWidth, GetScaledHeight(20F)))
             {
@@ -594,7 +595,8 @@ namespace myTNB
             {
                 Frame = new CGRect(textXPos, GetYLocationFromFrame(desc.Frame, 16F), GetScaledWidth(142F), GetScaledHeight(48F)),
                 Font = TNBFont.MuseoSans_16_500,
-                BackgroundColor = UIColor.White
+                BackgroundColor = UIColor.White,
+                UserInteractionEnabled = true
             };
             btnGotIt.SetTitleColor(MyTNBColor.WaterBlue, UIControlState.Normal);
             btnGotIt.SetTitle("Got it!", UIControlState.Normal);
