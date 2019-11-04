@@ -93,13 +93,15 @@ namespace myTNB
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            //CheckTutorialOverlay();
+            CheckTutorialOverlay();
         }
 
         private void OnEnterForeground(NSNotification notification)
         {
             ViewWillAppear(true);
         }
+        #endregion
+
         #region Tutorial Overlay Methods
         private void CheckTutorialOverlay()
         {
@@ -150,7 +152,9 @@ namespace myTNB
             currentWindow.AddSubview(_tutorialContainer);
             BillTutorialOverlay tutorialView = new BillTutorialOverlay(_tutorialContainer, this);
             tutorialView.NavigationHeight = DeviceHelper.GetStatusBarHeight() + _navBarHeight;
-            tutorialView.HeaderViewHeight = _historyTableView.TableHeaderView.Frame.Height; //_lblDate.Frame.GetMaxY();
+            tutorialView.HeaderViewHeight = _headerViewContainer.Frame.Height;
+            tutorialView.DateAmountMaxY = _headerView.Frame.GetMinY() + (_lblDate.Hidden ? _viewAmount.Frame.GetMaxY() : _lblDate.Frame.GetMaxY());
+            tutorialView.IsREAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount;
             tutorialView.OnDismissAction = HideTutorialOverlay;
             _tutorialContainer.AddSubview(tutorialView.GetView());
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
@@ -169,7 +173,6 @@ namespace myTNB
                 }, _tutorialContainer.RemoveFromSuperview);
             }
         }
-        #endregion
         #endregion
 
         #region Navigation
@@ -608,7 +611,6 @@ namespace myTNB
                                {
                                    AccountChargesCache.SetData(_accountCharges);
                                    UpdateHeaderData(_accountCharges.d.data.AccountCharges[0]);
-                                   isGetAcctChargesLoading = false;
                                }
                                else
                                {
@@ -700,6 +702,7 @@ namespace myTNB
                 , new CGSize(_headerViewContainer.Frame.Width, _headerView.Frame.GetMaxY()));
             _historyTableView.ReloadData();
             OnResetBGRect();
+            isGetAcctChargesLoading = false;
         }
 
         #region Table
