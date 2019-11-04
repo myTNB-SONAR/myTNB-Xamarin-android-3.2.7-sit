@@ -86,9 +86,19 @@
     "save": "Simpan",
     "fullname": "Nama Penuh",
     "confirmPassword": "Sahkan Kata Laluan",
-    "accountNo": "Account No.",
+    "accountNo": "Akaun Nombor",
     "accountType": "Jenis Akaun",
-    "allNotifications": "All Notifications"
+    "allNotifications": "All Notifications",
+    "unitEmission": "kg",
+    "unitEnergy": "kWH",
+    "selectElectricityAccount": "Pilih Akaun Elektrik",
+    "close": "Close",
+    "characterLeft": "{0} character left",
+    "charactersLeft": "{0} characters left",
+    "comments": "Comments",
+    "accountHolder": "Account Holder's Name",
+    "skip": "Skip",
+    "details": "Details"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -121,7 +131,14 @@
     "invalid_icNumber": "Invalid IC number.",
     "invalid_rocNumber": "Invalid ROC number.",
     "accountLength": "Sila masukkan nombor akaun 12 digit yang sah.",
-    "invalid_accountType": "Invalid Account Type"
+    "invalid_accountType": "Invalid Account Type",
+    "noDataConnectionTitle": "No Internet Connection",
+    "noDataConnectionMessage": "Please check your internet connection and try again.",
+    "defaultErrorTitle": "Error",
+    "defaultErrorMessage": "Sorry, something went wrong. Please try again later.",
+    "numberNotAvailable": "Number is not available right now. Please try again later.",
+    "ratingNotAvailable": "Rating is not available right now. Please try again later.",
+    "shareNotAvailable": "Sharing is not available right now. Please try again later."
   },
   "DashboardHome": {
     "greeting_afternoon": "Selamat Tengah Hari,",
@@ -555,7 +572,9 @@
     "forgotPassword": "Terlupa kata laluan?",
     "dontHaveAcct": "Tidak mempunyai akaun myTNB?",
     "registerAcctNow": "Daftar akaun anda sekarang.",
-    "login": "Log masuk"
+    "login": "Log masuk",
+    "emailRequired": "Email field is required.",
+    "passwordRequired": "Password field is required."
   },
   "ForgotPassword": {
     "title": "Set Semula Kata Laluan",
@@ -683,5 +702,62 @@
     "trnDate": "TRANSACTION DATE",
     "trnID": "TRANSACTION ID",
     "trnMethod": "RANSACTION METHOD"
+  },
+  "FeedbackList": {
+    "title": "Feedback"
+  },
+  "FeedbackForm": {
+    "attachPhotoTitle": "ATTACH PHOTO / SCREENSHOT (OPTIONAL)",
+    "maxFile": "Max 2 files",
+    "camera": "Camera",
+    "cameraRoll": "Camera Roll",
+    "feedback": "Feedback",
+    "invalidFeedback": "Invalid feedback",
+    //Not Supported Start
+    "feedbackType": "Feedback Type",
+    "invalidFeedbackType": "Invalid feedback type",
+    "selectFeedbackType": "Select Feedback Type",
+    "faultyLampTitle": "Reporting faulty street lamps?",
+    "faultyLampMessage": "You may only report faulty TNB street lamps. Look out for TNB’s blue and red or the logo as shown above. Use the pole no. (e.g. 17493 8E 1) to specify the lamp.",
+    "state": "State",
+    "invalidState": "Invalid state",
+    "selectState": "Select State",
+    "location": "Location / Street Name",
+    "invalidLocation": "Invalid location / Street name",
+    "poleNumber": "Pole No.",
+    "invalidPoleNumber": "Invalid pole number",
+    "noAccessTitle": "Location Access is not allowed",
+    "noAccessMessage": "Turn On Location Services to allow \"myTNB\" to determine your location",
+    "goToSettings": "Go to Settings"
+    //Not Supported End
+  },
+  "FeedbackDetails": {
+    "feedbackID": "Feedback ID",
+    "feedbackStatus": "Feedback Status",
+    "dateTimeTitle": "Feedback Date & Time",
+    "feedback": "Feedback",
+    "photoTitle": "Photo / Screenshot",
+    //Not Supported by MS Translation Start
+    "state": "State",
+    "feedbackType": "Feedback Type",
+    "location": "Location / Street Name",
+    "poleNumber": "Pole No."
+    //Not Supported by MS Translation End
+  },
+  "SubmittedFeedback": {
+    "noFeedback": "You have not submittted any feedback."
+  },
+  "Rating": {
+    "title": "Rating",
+    "pay": "Bayar"
+  },
+  "RatingResults": {
+    "description": "Your rating will help us serve you better.",
+    "thankyou": "Thank you.",
+    "backToDashboard": "Back to Dashboard"
+  },
+  "Promotions": {
+    "title": "Promotions",
+    "noPromotions": "No promotions currently. Check back later!"
   }
 }
