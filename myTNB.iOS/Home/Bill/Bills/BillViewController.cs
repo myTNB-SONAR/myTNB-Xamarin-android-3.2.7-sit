@@ -11,6 +11,7 @@ using myTNB.Home.Bill;
 using myTNB.Model;
 using myTNB.SSMR;
 using UIKit;
+using System.Timers;
 
 namespace myTNB
 {
@@ -37,6 +38,9 @@ namespace myTNB
         private List<string> FilterKeys = new List<string>();
         private int FilterIndex = 0;
         public bool NeedsUpdate = true;
+        private UIView _tutorialContainer;
+        private bool isGetAcctChargesLoading = true, isGetAcctBillPayHistoryLoading = true;
+        private Timer tutorialOverlayTimer;
 
         public BillViewController(IntPtr handle) : base(handle) { }
 
@@ -74,6 +78,11 @@ namespace myTNB
                     DisplayRefresh();
                 }
             }
+            else
+            {
+                isGetAcctChargesLoading = false;
+                isGetAcctBillPayHistoryLoading = false;
+            }
         }
 
         public override void ViewWillDisappear(bool animated)
@@ -81,10 +90,86 @@ namespace myTNB
             base.ViewWillDisappear(animated);
         }
 
+        public override void ViewDidAppear(bool animated)
+        {
+            base.ViewDidAppear(animated);
+            //CheckTutorialOverlay();
+        }
+
         private void OnEnterForeground(NSNotification notification)
         {
             ViewWillAppear(true);
         }
+        #region Tutorial Overlay Methods
+        private void CheckTutorialOverlay()
+        {
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            var tutorialOverlayHasShown = sharedPreference.BoolForKey(BillConstants.Pref_TutorialOverlay);
+
+            //if (tutorialOverlayHasShown)
+            //    return;
+
+            tutorialOverlayTimer = new Timer
+            {
+                Interval = 500F,
+                AutoReset = true,
+                Enabled = true
+            };
+            tutorialOverlayTimer.Elapsed += TimerElapsed;
+        }
+
+        private void TimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            if (!isGetAcctChargesLoading && !isGetAcctBillPayHistoryLoading)
+            {
+                tutorialOverlayTimer.Enabled = false;
+                InvokeOnMainThread(() =>
+                {
+                    var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                    var topVc = AppDelegate.GetTopViewController(baseRootVc);
+                    if (topVc != null)
+                    {
+                        if (topVc is BillViewController)
+                        {
+                            ShowTutorialOverlay();
+                        }
+                    }
+                });
+            }
+        }
+
+        private void ShowTutorialOverlay()
+        {
+            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+            nfloat width = currentWindow.Frame.Width;
+            nfloat height = currentWindow.Frame.Height;
+            _tutorialContainer = new UIView(new CGRect(0, 0, width, height))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+            currentWindow.AddSubview(_tutorialContainer);
+            BillTutorialOverlay tutorialView = new BillTutorialOverlay(_tutorialContainer, this);
+            tutorialView.NavigationHeight = DeviceHelper.GetStatusBarHeight() + _navBarHeight;
+            tutorialView.HeaderViewHeight = _historyTableView.TableHeaderView.Frame.Height; //_lblDate.Frame.GetMaxY();
+            tutorialView.OnDismissAction = HideTutorialOverlay;
+            _tutorialContainer.AddSubview(tutorialView.GetView());
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            sharedPreference.SetBool(true, DashboardHomeConstants.Pref_TutorialOverlay);
+        }
+
+        private void HideTutorialOverlay()
+        {
+            if (_tutorialContainer != null)
+            {
+                _tutorialContainer.Alpha = 1F;
+                _tutorialContainer.Transform = CGAffineTransform.MakeIdentity();
+                UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseInOut, () =>
+                {
+                    _tutorialContainer.Alpha = 0F;
+                }, _tutorialContainer.RemoveFromSuperview);
+            }
+        }
+        #endregion
         #endregion
 
         #region Navigation
@@ -512,6 +597,7 @@ namespace myTNB
                        };
                        InvokeInBackground(async () =>
                        {
+                           isGetAcctChargesLoading = true;
                            _accountCharges = await GetAccountsCharges();
                            InvokeOnMainThread(() =>
                            {
@@ -522,6 +608,7 @@ namespace myTNB
                                {
                                    AccountChargesCache.SetData(_accountCharges);
                                    UpdateHeaderData(_accountCharges.d.data.AccountCharges[0]);
+                                   isGetAcctChargesLoading = false;
                                }
                                else
                                {
@@ -532,6 +619,7 @@ namespace myTNB
                        });
                        InvokeInBackground(async () =>
                        {
+                           isGetAcctBillPayHistoryLoading = true;
                            _billHistory = await GetAccountBillPayHistory();
                            InvokeOnMainThread(() =>
                            {
@@ -550,6 +638,7 @@ namespace myTNB
                                        OnShowFilter = ShowFilterScreen
                                    };
                                    _historyTableView.ReloadData();
+                                   isGetAcctBillPayHistoryLoading = false;
                                }
                                else
                                {

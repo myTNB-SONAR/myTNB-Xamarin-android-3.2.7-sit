@@ -146,7 +146,7 @@ namespace myTNB
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            CheckTutorialOverlay();
+            //CheckTutorialOverlay();
         }
 
         public override void ViewDidDisappear(bool animated)
@@ -175,8 +175,8 @@ namespace myTNB
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var tutorialOverlayHasShown = sharedPreference.BoolForKey(DashboardHomeConstants.Pref_TutorialOverlay);
 
-            if (tutorialOverlayHasShown)
-                return;
+            //if (tutorialOverlayHasShown)
+            //    return;
 
             tutorialOverlayTimer = new Timer
             {
