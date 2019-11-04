@@ -34,8 +34,27 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 	[Activity(Label = "@string/ssmr_meter_history_activity_title"
 		  , ScreenOrientation = ScreenOrientation.Portrait
 		  , Theme = "@style/Theme.SSMRMeterHistoryStyle")]
-	public class SSMRMeterHistoryActivity : BaseToolbarAppCompatActivity, SSMRMeterHistoryContract.IView
+	public class SSMRMeterHistoryActivity : BaseActivityCustom, SSMRMeterHistoryContract.IView
 	{
+        private string SMR_ACTION_KEY;
+        private SMRActivityInfoResponse smrResponse;
+        private AccountData selectedAccount;
+        private SMRAccount selectedEligibleAccount;
+        private string selectedAccountNickName;
+        private MaterialDialog SSMRMenuDialog;
+        private bool IsFromUsage = false;
+        private List<SSMRMeterHistoryMenuModel> ssmrMeterHistoryMenuList = new List<SSMRMeterHistoryMenuModel>();
+        public readonly static int SSMR_METER_HISTORY_ACTIVITY_CODE = 8796;
+        public readonly static int SSMR_SUBMIT_METER_ACTIVITY_CODE = 8797;
+        public readonly static int SSMR_SELECT_ACCOUNT_ACTIVITY_CODE = 8798;
+        private SSMRMeterHistoryContract.IPresenter mPresenter;
+        private string selectedAccountNumber;
+        private List<SMRAccount> smrAccountList = new List<SMRAccount>();
+        const string PAGE_ID = "SSMRReadingHistory";
+
+        LoadingOverlay loadingOverlay;
+        SSMRMeterHistoryMenuAdapter meterHistoryMenuAdapter;
+
         [BindView(Resource.Id.smr_submitted_img)]
         ImageView SMRMainImg;
 
@@ -99,32 +118,6 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [BindView(Resource.Id.accountListRefreshContainer)]
         LinearLayout smrAccountListRefreshContainer;
 
-        private string SMR_ACTION_KEY;
-
-        private SMRActivityInfoResponse smrResponse;
-
-        private AccountData selectedAccount;
-        private SMRAccount selectedEligibleAccount;
-        private string selectedAccountNickName;
-
-        private MaterialDialog SSMRMenuDialog;
-
-        private bool IsFromUsage = false;
-
-        LoadingOverlay loadingOverlay;
-
-        SSMRMeterHistoryMenuAdapter meterHistoryMenuAdapter;
-
-        private List<SSMRMeterHistoryMenuModel> ssmrMeterHistoryMenuList = new List<SSMRMeterHistoryMenuModel>();
-
-        public readonly static int SSMR_METER_HISTORY_ACTIVITY_CODE = 8796;
-        public readonly static int SSMR_SUBMIT_METER_ACTIVITY_CODE = 8797;
-        public readonly static int SSMR_SELECT_ACCOUNT_ACTIVITY_CODE = 8798;
-
-        private SSMRMeterHistoryContract.IPresenter mPresenter;
-        private string selectedAccountNumber;
-        private List<SMRAccount> smrAccountList = new List<SMRAccount>();
-
         public override int ResourceId()
 		{
 			return Resource.Layout.SSMRMeterHistoryLayout;
@@ -146,6 +139,12 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 TextViewUtils.SetMuseoSans500Typeface(SMRMainTitle, SMRListHeader, SMRMessageTitle, btnSubmitMeter, btnEnableSubmitMeter, btnDisableSubmitMeter);
                 TextViewUtils.SetMuseoSans300Typeface(SMRMainContent, SMRAccountTitle, SMRAccountSelected, NonSMRNoteContent, EmptySMRHistoryMessage);
 
+                SMRMessageTitle.Text = GetLabelByLanguage("subTitle");
+                SMRAccountTitle.Text = GetLabelCommonByLanguage("account").ToUpper();
+                SMRAccountSelected.Text = GetLabelCommonByLanguage("selectAccount");
+                SMRListHeader.Text = GetLabelByLanguage("headerTitle");
+                btnEnableSubmitMeter.Text = GetLabelByLanguage("enableSSMRCTA");
+                btnDisableSubmitMeter.Text = GetLabelByLanguage("disableSSMRCTA");
                 EmptySMRHistoryMessage.Text = GetString(Resource.String.ssmr_empty_history_message);
 
                 mPresenter = new SSMRMeterHistoryPresenter(this);
@@ -678,6 +677,11 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         public string GetSMRActionKey()
         {
             return SMR_ACTION_KEY;
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }
