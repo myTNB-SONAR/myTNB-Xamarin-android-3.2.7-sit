@@ -67,18 +67,23 @@ namespace myTNB.SitecoreCMS.Service
         private async Task<AppLaunchImageTimestamp> GenerateTimestamp(ScItemsResponse itemsResponse, string websiteUrl = null, string language = "en")
         {
             AppLaunchImageTimestamp listlItem = new AppLaunchImageTimestamp();
-
-            for (int i = 0; i < itemsResponse.ResultCount; i++)
+            try
             {
-                ISitecoreItem item = itemsResponse[i];
+                for (int i = 0; i < itemsResponse.ResultCount; i++)
+                {
+                    ISitecoreItem item = itemsResponse[i];
 
-                if (item == null)
-                    continue;
+                    if (item == null)
+                        continue;
 
-                listlItem.Timestamp = item.GetValueFromField(Constants.Sitecore.Fields.Timestamp.TimestampField);
-                listlItem.ID = item.Id;
+                    listlItem.Timestamp = item.GetValueFromField(Constants.Sitecore.Fields.Timestamp.TimestampField);
+                    listlItem.ID = item.Id;
+                }
             }
-
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception: " + e.Message);
+            }
             return listlItem;
         }
     }

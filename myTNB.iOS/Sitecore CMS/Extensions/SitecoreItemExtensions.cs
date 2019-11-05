@@ -5,6 +5,7 @@ using Sitecore.MobileSDK.API.Request.Parameters;
 using System.Collections.Generic;
 using System.Xml.Linq;
 using myTNB.SitecoreCMS.Services;
+using System.Diagnostics;
 
 namespace myTNB.SitecoreCMS.Extensions
 {
@@ -183,9 +184,10 @@ namespace myTNB.SitecoreCMS.Extensions
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                throw ex;
+                Debug.WriteLine("Exception: " + e.Message);
+                return null;
             }
 
             return item.GetImageUrlFromMediaField("Image");
@@ -245,9 +247,10 @@ namespace myTNB.SitecoreCMS.Extensions
 
                 return droplinkFieldNameValue;
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                throw ex;
+                Debug.WriteLine("Exception: " + e.Message);
+                return string.Empty;
             }
         }
 
@@ -272,12 +275,12 @@ namespace myTNB.SitecoreCMS.Extensions
 
                     multilistFieldNameList.Add(multilistFieldNameValue);
                 }
-                catch (Exception ex)
+                catch (Exception e)
                 {
-                    throw ex;
+                    Debug.WriteLine("Exception: " + e.Message);
+                    return new List<string>();
                 }
             }
-
             return multilistFieldNameList;
         }
 
