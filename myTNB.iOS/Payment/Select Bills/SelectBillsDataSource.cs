@@ -56,19 +56,28 @@ namespace myTNB.Payment.SelectBills
             {
                 if (_controller.IsFromBillDetails)
                 {
-                    if (indexPath.Row > 0 && _accounts[indexPath.Row].HasMandatory && !_accounts[indexPath.Row].IsAccountSelected && _accounts[indexPath.Row].IsValidAmount)
+                    if (indexPath.Row > 0 && _accounts[indexPath.Row].HasMandatory
+                        && !_accounts[indexPath.Row].IsAccountSelected
+                        && _accounts[indexPath.Row].IsValidAmount)
                     {
                         _controller.OnShowItemisedTooltip(_accounts[indexPath.Row].accNum);
                     }
                 }
                 else
                 {
-                    if (_accounts[indexPath.Row].HasMandatory && !_accounts[indexPath.Row].IsAccountSelected && _accounts[indexPath.Row].IsValidAmount)
+                    if (_accounts[indexPath.Row].HasMandatory
+                        && !_accounts[indexPath.Row].IsAccountSelected
+                        && _accounts[indexPath.Row].IsValidAmount)
                     {
-                        _controller.OnShowItemisedTooltip(_accounts[indexPath.Row].accNum);
+                        bool isExist = _controller._displayedPopup.FindIndex(x => x == acctNumber) > -1;
+                        if (!isExist)
+                        {
+                            _controller.OnShowItemisedTooltip(_accounts[indexPath.Row].accNum);
+                        }
                     }
                 }
-                if (_accounts[indexPath.Row].Amount >= _accounts[indexPath.Row].MinimumAmount || _accounts[indexPath.Row].IsAccountSelected)
+                if (_accounts[indexPath.Row].Amount >= _accounts[indexPath.Row].MinimumAmount
+                    || _accounts[indexPath.Row].IsAccountSelected)
                 {
                     UpdateCheckBox(cell);
                     UpdateUIForInputError(false, cell);

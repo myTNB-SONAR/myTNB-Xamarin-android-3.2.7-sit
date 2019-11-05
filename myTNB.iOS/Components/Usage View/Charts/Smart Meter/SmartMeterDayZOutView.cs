@@ -26,7 +26,7 @@ namespace myTNB.SmartMeterView
             nfloat missingReadingBarMargin = GetHeightByScreenSize(10);
 
             List<DayItemModel> usageData = AccountUsageSmartCache.FlatDays;
-            List<string> valueList = usageData.Select(x => x.Amount).ToList();
+            List<string> valueList = usageData.Select(x => x.Consumption).ToList();
             double maxValue = GetMaxValue(RMkWhEnum.RM, valueList);
             double divisor = maxValue > 0 ? maxBarHeight / maxValue : 0;
             for (int i = 0; i < usageData.Count; i++)
