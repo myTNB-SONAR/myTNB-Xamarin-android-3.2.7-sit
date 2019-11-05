@@ -279,12 +279,12 @@ namespace myTNB
                   , new Dictionary<string, Action> {
                         { GetCommonI18NValue(Constants.Common_ChangeLanguageNo), null}
                         ,{ GetCommonI18NValue(Constants.Common_ChangeLanguageYes)
-                            , ()=>{ OnChangeLanguage(); } } }
+                            , ()=>{ OnChangeLanguage(index); } } }
                   , UITextAlignment.Center
                   , UITextAlignment.Center);
         }
 
-        private void OnChangeLanguage()
+        private void OnChangeLanguage(int index)
         {
             //Todo: Do service calls and set lang
             languageViewController.DismissViewController(true, null);

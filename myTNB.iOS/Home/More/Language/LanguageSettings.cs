@@ -7,22 +7,22 @@ namespace myTNB
 {
     public static class LanguageSettings
     {
-        const string LANGUAGE_KEY = "languageIndex";
-        const string DID_USER_SET_KEY = "didUserSetLanguage";
+        private const string LANGUAGE_KEY = "languageIndex";
+        private const string DID_USER_SET_KEY = "didUserSetLanguage";
 
-        readonly static List<string> _supportedLanguageCode = new List<string>()
+        private readonly static List<string> _supportedLanguageCode = new List<string>()
         {
             "EN", "MS"
         };
 
-        static int _selectedLanguageIndex;
-        static NSBundle _languageBundle;
+        private static int _selectedLanguageIndex;
+        private static NSBundle _languageBundle;
 
         public static List<string> SupportedLanguage
         {
             get
             {
-                return new List<string>(){
+                return new List<string>{
                     LanguageUtility.GetCommonI18NValue(Constants.Common_English)
                     , LanguageUtility.GetCommonI18NValue(Constants.Common_Bahasa)
                 };
@@ -132,9 +132,31 @@ namespace myTNB
                         */
         }
 
+        public static void SetLanguageV2(int index)
+        {
+            index = index > -1 ? index : 0;
+            SelectedLanguageIndex = index;
+
+            if (SelectedLanguageIndex < SupportedLanguageCode.Count)
+            {
+                string langCode = SupportedLanguageCode[index];
+                if (langCode.ToUpper() == LanguageManager.Language.EN.ToString().ToUpper())
+                {
+                    LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, LanguageManager.Language.EN);
+                }
+                else
+                {
+
+                    LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, LanguageManager.Language.MS);
+                }
+            }
+            DataManager.DataManager.SharedInstance.CommonI18NDictionary = LanguageManager.Instance.GetCommonValuePairs();
+            DataManager.DataManager.SharedInstance.HintI18NDictionary = LanguageManager.Instance.GetHintValuePairs();
+            DataManager.DataManager.SharedInstance.ErrorI18NDictionary = LanguageManager.Instance.GetErrorValuePairs();
+        }
+
         public static void InitializeLanguage()
         {
-
             NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
             int index = (int)sharedPreference.IntForKey(LANGUAGE_KEY);
             string lang = NSLocale.CurrentLocale.LocaleIdentifier;
