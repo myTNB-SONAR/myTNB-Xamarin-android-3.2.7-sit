@@ -617,14 +617,14 @@ namespace myTNB
             };
             bottomView.AddSubview(bottomLine);
             parentView.AddSubviews(new UIView { topView, bottomView });
-            _swipeText.Hidden = bottomView.Frame.Y >= _footerView.Frame.Y;
+            _swipeText.Hidden = true;
             return parentView;
         }
 
         private void CreateFooterView()
         {
             nfloat width = _parentView.Frame.Width;
-            nfloat yPos = _parentView.Frame.Height - GetScaledHeight(88F);
+            nfloat yPos = _parentView.Frame.Height - GetScaledHeight(88F) - (DeviceHelper.IsIphoneXUpResolution() ? 20F : 0F);
             _footerView = new UIView(new CGRect(0, yPos, width, GetScaledHeight(88F)))
             {
                 BackgroundColor = UIColor.Clear
