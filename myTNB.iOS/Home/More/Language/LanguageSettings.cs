@@ -150,9 +150,8 @@ namespace myTNB
                     LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, LanguageManager.Language.MS);
                 }
             }
-            DataManager.DataManager.SharedInstance.CommonI18NDictionary = LanguageManager.Instance.GetCommonValuePairs();
-            DataManager.DataManager.SharedInstance.HintI18NDictionary = LanguageManager.Instance.GetHintValuePairs();
-            DataManager.DataManager.SharedInstance.ErrorI18NDictionary = LanguageManager.Instance.GetErrorValuePairs();
+
+            LanguageUtility.SetLanguageGlobals();
         }
 
         public static void InitializeLanguage()

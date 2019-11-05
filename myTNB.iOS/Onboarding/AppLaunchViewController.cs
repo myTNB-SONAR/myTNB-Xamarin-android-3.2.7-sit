@@ -79,9 +79,7 @@ namespace myTNB
             NotifCenterUtility.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
             GradientViewComponent gradientViewComponent = new GradientViewComponent(View, true, (float)UIScreen.MainScreen.Bounds.Height, false);
             maintenanceView = gradientViewComponent.GetUI();
-            DataManager.DataManager.SharedInstance.CommonI18NDictionary = LanguageManager.Instance.GetCommonValuePairs();
-            DataManager.DataManager.SharedInstance.HintI18NDictionary = LanguageManager.Instance.GetHintValuePairs();
-            DataManager.DataManager.SharedInstance.ErrorI18NDictionary = LanguageManager.Instance.GetErrorValuePairs();
+            LanguageUtility.SetLanguageGlobals();
             DataManager.DataManager.SharedInstance.ImageSize = DeviceHelper.GetImageSize();
         }
 
@@ -350,7 +348,8 @@ namespace myTNB
                         var tasks = new List<Task>
                         {
                             Task.Run(DelayTask),
-                            Task.Run(LoadMasterData)
+                            Task.Run(LoadMasterData),
+                            Task.Run(LoadLanguage)
                         };
                         await Task.WhenAll(tasks);
                     }
@@ -714,6 +713,11 @@ namespace myTNB
             AppLaunchMasterCache.AddAppLaunchResponseData(response);
             _isLoadMasterDataDone = true;
             LoadMasterDataCompletion();
+        }
+
+        private async Task LoadLanguage()
+        {
+            await SitecoreServices.Instance.LoadLanguage();
         }
 
         private void OpenUpdateLink()

@@ -20,5 +20,12 @@
                 && DataManager.DataManager.SharedInstance.ErrorI18NDictionary.ContainsKey(key)
                 ? DataManager.DataManager.SharedInstance.ErrorI18NDictionary[key] : string.Empty;
         }
+
+        public static void SetLanguageGlobals()
+        {
+            DataManager.DataManager.SharedInstance.CommonI18NDictionary = LanguageManager.Instance.GetCommonValuePairs();
+            DataManager.DataManager.SharedInstance.HintI18NDictionary = LanguageManager.Instance.GetHintValuePairs();
+            DataManager.DataManager.SharedInstance.ErrorI18NDictionary = LanguageManager.Instance.GetErrorValuePairs();
+        }
     }
 }

@@ -24,7 +24,6 @@ namespace myTNB.SitecoreCMS
             taskList.Add(LoadBillDetailsTooltip());
             taskList.Add(LoadSSMRWalkthrough());
             taskList.Add(LoadTermsAndCondition());
-            taskList.Add(LoadLanguage());
             if (!AppLaunchMasterCache.IsEnergyTipsDisabled)
             {
                 taskList.Add(LoadEnergyTips());
@@ -358,7 +357,7 @@ namespace myTNB.SitecoreCMS
             });
         }
 
-        private Task LoadLanguage()
+        public Task LoadLanguage()
         {
             return Task.Factory.StartNew(() =>
             {
@@ -392,8 +391,13 @@ namespace myTNB.SitecoreCMS
                         if (!string.IsNullOrEmpty(item.LanguageFile) && !string.IsNullOrWhiteSpace(item.LanguageFile))
                         {
                             string content = GetDataFromFile(item.LanguageFile);
-                            //Todo: Save to pref
+
                             LanguageManager.Instance.SetLanguage(content ?? string.Empty);
+                            LanguageUtility.SetLanguageGlobals();
+
+                            NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                            sharedPreference.SetString(content, "LanguageContent");
+                            sharedPreference.Synchronize();
                         }
                         Debug.WriteLine("Lang End");
                     }
