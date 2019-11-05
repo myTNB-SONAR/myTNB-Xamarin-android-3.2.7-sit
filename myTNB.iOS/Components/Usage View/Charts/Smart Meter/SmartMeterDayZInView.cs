@@ -68,7 +68,7 @@ namespace myTNB.SmartMeterView
             nfloat amountBarMargin = GetHeightByScreenSize(4);
 
             _usageData = AccountUsageSmartCache.FlatDays;
-            List<string> valueList = _usageData.Select(x => x.Amount).ToList();
+            List<string> valueList = _usageData.Select(x => x.Consumption).ToList();
             double maxValue = GetMaxValue(RMkWhEnum.RM, valueList);
             double divisor = maxValue > 0 ? maxBarHeight / maxValue : 0;
             CGPoint lastSegment = new CGPoint();

@@ -34,10 +34,13 @@ namespace myTNB
         private bool _isViewDidLoad;
         private bool _isLoadmore;
 
+        internal List<string> _displayedPopup;
+
         public override void ViewDidLoad()
         {
             PageName = PaymentConstants.Pagename_SelectBills;
             base.ViewDidLoad();
+            _displayedPopup = new List<string>();
             Title = GetI18NValue(PaymentConstants.I18N_SelectBill);
             AccountChargesCache.Clear();
             SetDefaultTableFrame();
@@ -259,6 +262,11 @@ namespace myTNB
 
         internal void OnShowItemisedTooltip(string accNum)
         {
+            bool isExist = _displayedPopup.FindIndex(x => x == accNum) > -1;
+            if (!isExist)
+            {
+                _displayedPopup.Add(accNum);
+            }
             PopupModel popupData = AccountChargesCache.GetPopupDetailsByType(BillConstants.Popup_MandatoryPaymentKey);
             MandatoryChargesModel mandatoryCharges = AccountChargesCache.GetMandatoryCharges(accNum);
             _selectedAccountNumber = accNum;
