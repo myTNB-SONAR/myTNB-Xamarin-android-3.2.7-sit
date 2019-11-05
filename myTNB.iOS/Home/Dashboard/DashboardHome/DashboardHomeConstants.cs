@@ -50,10 +50,6 @@ namespace myTNB
         public static string Img_SearchIconBlue = "Search-Icon-Blue";
         public static string Img_SearchCancelIcon = "Search-Cancel-Icon";
         public static string Img_AddAcctIconWhite = "Add-Account-Icon-White";
-        public static string Img_SMIcon = "Accounts-Smart-Meter-Icon";
-        public static string Img_REIcon = "Accounts-RE-Icon";
-        public static string Img_SMRIcon = "Accounts-SMR-Icon";
-        public static string Img_NormalIcon = "Accounts-Normal-Icon";
         public static string Img_RefreshIcon = "Refresh-Icon";
         public static string Img_SearchIconWhite = "Search-Icon-White";
         public static string Img_SearchActiveIconWhite = "Search-Active-Icon-White";
@@ -81,5 +77,8 @@ namespace myTNB
 
         //Format
         public static string Format_Date = "yyyyMMdd";
+
+        //Preference Key
+        public static string Pref_TutorialOverlay = "HomeTutorialOverlayV2.0.0";
     }
 }

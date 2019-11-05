@@ -105,7 +105,7 @@ namespace myTNB.Dashboard.SelectAccounts
                     DataManager.DataManager.SharedInstance.IsSameAccount = DataManager.DataManager.SharedInstance.GetAccountsCount() > 1
                         && string.Compare(selected.accNum, DataManager.DataManager.SharedInstance.SelectedAccount?.accNum) == 0;
                     DataManager.DataManager.SharedInstance.SelectAccount(selected.accNum);
-                    _controller.ShowBillScreen(indexPath.Row);
+                    _controller.ShowBillScreen();
                 }
                 return;
             }

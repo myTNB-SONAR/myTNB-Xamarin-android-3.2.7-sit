@@ -8,12 +8,16 @@
         //String
         public static string STR_MissingReading = "MISSINGREADING";
         public static string STR_PinchInOutFilename = "Dashboard Zoom.json";
+        public static string STR_NormalAccount = "NM";
+        public static string STR_REAccount = "RE";
+        public static string STR_SSMRAccount = "SMR";
 
         //Energy Tips
         public static int MaxRandomTips = 3;
 
         //Image
         public static string IMG_Back = "Back-White";
+        public static string IMG_FooterBG = "Home-Footer-BG";
         public static string IMG_BGNormal = "Usage-Bg-Normal";
         public static string IMG_BGLong = "Usage-Bg-Long";
         public static string IMG_BGRefresh = "Usage-Refresh-Bg";

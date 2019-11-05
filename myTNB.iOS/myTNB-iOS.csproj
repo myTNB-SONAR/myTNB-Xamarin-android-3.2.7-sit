@@ -864,22 +864,6 @@
     <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\home.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\home%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Home.imageset\home%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Background-Home.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Background-Home.imageset\fluidBackground%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Background-Home.imageset\fluidBackground%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Background-Home.imageset\fluidBackground.png" />
-    <ImageAsset Include="Assets.xcassets\Accounts-RE-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Accounts-RE-Icon.imageset\Accounts-RE-Icon.png" />
-    <ImageAsset Include="Assets.xcassets\Accounts-RE-Icon.imageset\Accounts-RE-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Accounts-RE-Icon.imageset\Accounts-RE-Icon%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Accounts-Normal-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Accounts-Normal-Icon.imageset\Accounts-Normal-Icon.png" />
-    <ImageAsset Include="Assets.xcassets\Accounts-Normal-Icon.imageset\Accounts-Normal-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Accounts-Normal-Icon.imageset\Accounts-Normal-Icon%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\icDisplaySmartMeter.png" />
-    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\icDisplaySmartMeter%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Accounts-Smart-Meter-Icon.imageset\icDisplaySmartMeter%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Select.imageset\icActionSelectAll%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\SSMR_Background_1.imageset\Contents.json" />
@@ -895,10 +879,6 @@
     <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\oval.png" />
     <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\oval%402x.png" />
     <ImageAsset Include="Assets.xcassets\Camera-Thumb.imageset\oval%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Accounts-SMR-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Accounts-SMR-Icon.imageset\Accounts-SMR-Icon.png" />
-    <ImageAsset Include="Assets.xcassets\Accounts-SMR-Icon.imageset\Accounts-SMR-Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Accounts-SMR-Icon.imageset\Accounts-SMR-Icon%403x.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\IC-Info.imageset\infoWhiteFull.png" />
     <ImageAsset Include="Assets.xcassets\IC-Info.imageset\infoWhiteFull%402x.png" />
@@ -972,8 +952,6 @@
     <ImageAsset Include="Assets.xcassets\SSMR-Refresh.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\SSMR-Refresh.imageset\bgApplicationStatus%402x.png" />
     <ImageAsset Include="Assets.xcassets\SSMR-Refresh.imageset\bgApplicationStatus%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Usage-Bg-Normal.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Usage-Bg-Long.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\ocrReading%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\OCR-Reading.imageset\ocrReading%403x-1.png" />
     <ImageAsset Include="Assets.xcassets\Calendar-Icon.imageset\Contents.json" />
@@ -1083,10 +1061,6 @@
     <ImageAsset Include="Assets.xcassets\Notification-Banner-SSMR-Remainder.imageset\group6%403x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\delete%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-Delete.imageset\delete%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Usage-Bg-Normal.imageset\Usage-Bg-Normal%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Usage-Bg-Normal.imageset\Usage-Bg-Normal%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Usage-Bg-Long.imageset\Usage-Bg-Long%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Usage-Bg-Long.imageset\Usage-Bg-Long%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tariff-Eye-Disable-Icon.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\deleteDisabled%402x.png" />
     <ImageAsset Include="Assets.xcassets\Notification-DeleteDisabled.imageset\deleteDisabled%403x.png" />
@@ -2583,6 +2557,9 @@
     </Compile>
     <Compile Include="Sitecore CMS\Model\Onboarding\OnboardingModel.cs" />
     <Compile Include="Onboarding\OnboardingConstants.cs" />
+    <Compile Include="Components\Common\HomeTutorialOverlay.cs" />
+    <Compile Include="Session Cache\PushNotificationCache.cs" />
+    <Compile Include="Components\Common\BillTutorialOverlay.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

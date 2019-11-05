@@ -109,23 +109,52 @@ namespace myTNB
         /// <summary>
         /// Returns the list of account numbers that is SSMR
         /// </summary>
+        /// <param name="acctNoList"></param>
         /// <param name="acctList"></param>
-        /// <param name="groupedAcctList"></param>
         /// <returns></returns>
-        public List<string> FilterAccountNoForSSMR(List<string> acctList, List<DueAmountDataModel> groupedAcctList)
+        public List<string> FilterAccountNoForSSMR(List<string> acctNoList, List<DueAmountDataModel> acctList)
         {
             List<string> accounts = new List<string>();
 
-            if (acctList.Count <= 0 || groupedAcctList.Count <= 0)
+            if (acctNoList.Count <= 0 || acctList.Count <= 0)
                 return accounts;
 
-            foreach (var acct in groupedAcctList)
+            foreach (var acct in acctList)
             {
-                foreach (string accNo in acctList)
+                foreach (string accNo in acctNoList)
                 {
                     if (acct.accNum == accNo)
                     {
                         if (acct.IsNormalAccount && acct.IsOwnedAccount)
+                        {
+                            accounts.Add(accNo);
+                        }
+                    }
+                }
+            }
+            return accounts;
+        }
+
+        /// <summary>
+        /// Returns the list of account numbers that is SSMR
+        /// </summary>
+        /// <param name="acctNoList"></param>
+        /// <param name="acctList"></param>
+        /// <returns></returns>
+        public List<string> FilterAccountNoForSSMR(List<string> acctNoList, List<CustomerAccountRecordModel> acctList)
+        {
+            List<string> accounts = new List<string>();
+
+            if (acctNoList.Count <= 0 || acctList.Count <= 0)
+                return accounts;
+
+            foreach (var acct in acctList)
+            {
+                foreach (string accNo in acctNoList)
+                {
+                    if (acct.accNum == accNo)
+                    {
+                        if (acct.IsNormalMeter && acct.IsOwnedAccount)
                         {
                             accounts.Add(accNo);
                         }
@@ -160,7 +189,11 @@ namespace myTNB
             {
                 var allAcctList = DataManager.DataManager.SharedInstance.CurrentAccountList;
                 var activeAcctList = DataManager.DataManager.SharedInstance.ActiveAccountList;
-                return activeAcctList.Count == allAcctList.Count;
+                if (allAcctList != null && activeAcctList != null)
+                {
+                    return activeAcctList.Count == allAcctList.Count;
+                }
+                return false;
             }
         }
 
@@ -185,6 +218,15 @@ namespace myTNB
             get
             {
                 var result = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindAll(x => x.IsREAccount);
+                return result?.Count > 0;
+            }
+        }
+
+        public bool HasSmartMeterAccounts
+        {
+            get
+            {
+                var result = DataManager.DataManager.SharedInstance.AccountRecordsList?.d?.FindAll(x => !x.IsREAccount && !x.IsNormalMeter);
                 return result?.Count > 0;
             }
         }

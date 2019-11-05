@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace myTNB.SitecoreCMS.Model
 {
@@ -31,11 +32,49 @@ namespace myTNB.SitecoreCMS.Model
         public string TargetItem { set; get; }
 
         public string ID { set; get; }
+        [JsonIgnore]
+        public TagEnum TagType
+        {
+            get
+            {
+                TagEnum tagType = default(TagEnum);
+                if (!string.IsNullOrEmpty(Tags) && !string.IsNullOrWhiteSpace(Tags))
+                {
+                    var tagSplit = Tags.Split('|');
+                    if (tagSplit.Length > 0)
+                    {
+                        foreach (string str in tagSplit)
+                        {
+                            if (str.Equals("SM"))
+                            {
+                                tagType = TagEnum.SM;
+                                break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (Tags.Equals("SM"))
+                        {
+                            tagType = TagEnum.SM;
+                        }
+                    }
+
+                }
+                return tagType;
+            }
+        }
     }
 
     public class HelpTimeStamp
     {
         public string Timestamp { set; get; }
         public string ID { set; get; }
+    }
+
+    public enum TagEnum
+    {
+        None = 0,
+        SM
     }
 }

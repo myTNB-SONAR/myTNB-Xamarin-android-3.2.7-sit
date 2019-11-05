@@ -21,7 +21,7 @@ namespace myTNB
         private nfloat _cardHeight = ScaleUtility.GetScaledHeight(84F);
         public Action<int> ReloadCell;
         private CustomUIView _moreLessContainer;
-        public bool IsLoading;
+        public bool IsLoading, IsRefreshScreen;
         public ServicesTableViewCell(IntPtr handle) : base(handle)
         {
             _view = new UIView(new CGRect(BaseMarginWidth16, 0, cellWidth - (BaseMarginWidth16 * 2), _cardHeight))
@@ -458,17 +458,31 @@ namespace myTNB
                 switch (serviceItem.ServiceType)
                 {
                     case ServiceEnum.PAYBILL:
-                        if (_dashboardHomeHelper.IsEmptyAccount)
+                        if (IsRefreshScreen)
                         {
                             res = true;
                         }
                         else
                         {
-                            res = !_dashboardHomeHelper.HasNormalAccounts;
+                            if (_dashboardHomeHelper.IsEmptyAccount)
+                            {
+                                res = true;
+                            }
+                            else
+                            {
+                                res = !_dashboardHomeHelper.HasNormalAccounts;
+                            }
                         }
                         break;
                     case ServiceEnum.VIEWBILL:
-                        res = _dashboardHomeHelper.IsEmptyAccount;
+                        if (IsRefreshScreen)
+                        {
+                            res = true;
+                        }
+                        else
+                        {
+                            res = _dashboardHomeHelper.IsEmptyAccount;
+                        }
                         break;
                     default:
                         res = false;

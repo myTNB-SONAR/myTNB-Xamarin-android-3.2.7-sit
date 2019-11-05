@@ -8,30 +8,6 @@ namespace myTNB
     public static class UsageServiceCall
     {
         /// <summary>
-        /// API Call for GetAccountUsage
-        /// </summary>
-        /// <param name="account"></param>
-        /// <returns></returns>
-        public static async Task<AccountUsageResponseModel> GetAccountUsage(CustomerAccountRecordModel account)
-        {
-            AccountUsageResponseModel accountUsageResponse = null;
-            ServiceManager serviceManager = new ServiceManager();
-            object requestParameter = new
-            {
-                contractAccount = account.accNum,
-                isOwner = account.isOwned,
-                serviceManager.usrInf
-            };
-
-            accountUsageResponse = await Task.Run(() =>
-            {
-                return serviceManager.OnExecuteAPIV6<AccountUsageResponseModel>("GetAccountUsage", requestParameter);
-            });
-
-            return accountUsageResponse;
-        }
-
-        /// <summary>
         /// API Call for GetAccountStatus
         /// </summary>
         /// <param name="account"></param>
