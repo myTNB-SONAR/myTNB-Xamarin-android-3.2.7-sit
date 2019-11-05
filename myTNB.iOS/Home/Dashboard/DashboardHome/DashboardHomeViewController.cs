@@ -135,7 +135,7 @@ namespace myTNB
                 {
                     DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
                     AmountDueCache.Reset();
-                    _accountListViewController.PrepareAccountList();
+                    _accountListViewController.PrepareAccountList(null, false, true);
                 }
                 DataManager.DataManager.SharedInstance.SummaryNeedsRefresh = false;
             }
