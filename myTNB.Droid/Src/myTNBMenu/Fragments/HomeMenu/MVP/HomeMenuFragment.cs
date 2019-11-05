@@ -562,6 +562,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Activity.RunOnUiThread(() =>
                 {
+                    myServiceAdapter = new MyServiceAdapter(list, this.Activity, isBCRMDown, isRefreshShown);
+                    myServiceListRecycleView.SetAdapter(myServiceAdapter);
+                    currentMyServiceList.Clear();
+                    currentMyServiceList.AddRange(list);
+                    myServiceAdapter.ClickChanged += OnClickChanged;
+                    this.SetIsClicked(false);
                     try
                     {
                         myServiceShimmerAdapter = new MyServiceShimmerAdapter(null, this.Activity);
@@ -573,12 +579,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                     }
                     myServiceShimmerView.Visibility = ViewStates.Gone;
                     myServiceView.Visibility = ViewStates.Visible;
-                    myServiceAdapter = new MyServiceAdapter(list, this.Activity, isBCRMDown, isRefreshShown);
-                    myServiceListRecycleView.SetAdapter(myServiceAdapter);
-                    currentMyServiceList.Clear();
-                    currentMyServiceList.AddRange(list);
-                    myServiceAdapter.ClickChanged += OnClickChanged;
-                    this.SetIsClicked(false);
                 });
             }
             catch (System.Exception e)
@@ -626,6 +626,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     if (list != null && list.Count > 0)
                     {
+                        newFAQAdapter = new NewFAQAdapter(list, this.Activity);
+                        newFAQListRecycleView.SetAdapter(newFAQAdapter);
+                        currentNewFAQList.Clear();
+                        currentNewFAQList.AddRange(list);
+                        newFAQAdapter.ClickChanged += OnFAQClickChanged;
                         try
                         {
                             shimmerFAQView.StopShimmer();
@@ -638,11 +643,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                         }
                         newFAQShimmerView.Visibility = ViewStates.Gone;
                         newFAQView.Visibility = ViewStates.Visible;
-                        newFAQAdapter = new NewFAQAdapter(list, this.Activity);
-                        newFAQListRecycleView.SetAdapter(newFAQAdapter);
-                        currentNewFAQList.Clear();
-                        currentNewFAQList.AddRange(list);
-                        newFAQAdapter.ClickChanged += OnFAQClickChanged;
                     }
                 });
             }
@@ -1961,7 +1961,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 summaryNestScrollView.RequestLayout();
             });
 
-            NewAppTutorialDialogFragment dialogFragmnet = new NewAppTutorialDialogFragment(this.Activity, this, "HomeMenu", this.presenter.OnGeneraNewAppTutorialList());
+            NewAppTutorialDialogFragment dialogFragmnet = new NewAppTutorialDialogFragment(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), "HomeMenu", this.presenter.OnGeneraNewAppTutorialList());
             dialogFragmnet.Cancelable = false;
             dialogFragmnet.Show(((AppCompatActivity)this.Activity).SupportFragmentManager, "NewAppTutorial Dialog");
             return dialogFragmnet;
@@ -2009,6 +2009,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public int CheckNewFaqList()
+        {
+            int count = 0;
+
+            try
+            {
+                count = newFAQAdapter.ItemCount;
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return count;
         }
 
         public int OnGetEndOfScrollView()

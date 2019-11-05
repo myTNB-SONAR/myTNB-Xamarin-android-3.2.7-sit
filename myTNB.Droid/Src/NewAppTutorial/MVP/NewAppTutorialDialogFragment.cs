@@ -30,8 +30,9 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
         private List<NewAppModel> NewAppTutorialList = new List<NewAppModel>();
         private GestureDetector mGeatureDetector;
         private Android.App.Fragment mFragment;
+        private ISharedPreferences mPref;
 
-        public NewAppTutorialDialogFragment(Context ctx, Android.App.Fragment fragment, string targetPage, List<NewAppModel> list)
+        public NewAppTutorialDialogFragment(Context ctx, Android.App.Fragment fragment, ISharedPreferences pref, string targetPage, List<NewAppModel> list)
         {
             this.mContext = ctx;
             this.mTargetPage = targetPage;
@@ -40,6 +41,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                 this.NewAppTutorialList = list;
             }
             this.mFragment = fragment;
+            this.mPref = pref;
         }
 
         public override void OnStart()
@@ -161,7 +163,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                         }
                     }
 
-                    adapter = new NewAppTutorialPagerAdapter(mContext, mFragment, this, NewAppTutorialList);
+                    adapter = new NewAppTutorialPagerAdapter(mContext, mFragment, mPref, this, NewAppTutorialList);
                     pager.Adapter = adapter;
 
                     if (NewAppTutorialList.Count > 1)
@@ -252,7 +254,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     swipeDoubleTapLayout.Visibility = ViewStates.Gone;
                 }
 
-                mGeatureDetector = new GestureDetector(mContext, new DialogTapDetector(this, this.mFragment));
+                mGeatureDetector = new GestureDetector(mContext, new DialogTapDetector(this, this.mFragment, this.mPref));
                 pager.SetOnTouchListener(this);
                 pager.SetPageTransformer(false, this);
 
@@ -297,11 +299,13 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
         {
             DialogFragment mDialog;
             Android.App.Fragment mFragment;
+            ISharedPreferences mPref;
 
-            public DialogTapDetector(DialogFragment dialog, Android.App.Fragment fragment)
+            public DialogTapDetector(DialogFragment dialog, Android.App.Fragment fragment, ISharedPreferences pref)
             {
                 this.mDialog = dialog;
                 this.mFragment = fragment;
+                this.mPref = pref;
             }
 
             public override bool OnDoubleTap(MotionEvent e)
@@ -310,6 +314,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                 if (this.mFragment is HomeMenuFragment)
                 {
                     ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
+                    UserSessions.DoHomeTutorialShown(this.mPref);
                 }
                 return true;
             }

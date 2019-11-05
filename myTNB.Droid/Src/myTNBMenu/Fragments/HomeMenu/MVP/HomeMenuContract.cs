@@ -90,6 +90,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             int OnGetEndOfScrollView();
 
+            int CheckNewFaqList();
+
         }
 
         public interface IHomeMenuPresenter

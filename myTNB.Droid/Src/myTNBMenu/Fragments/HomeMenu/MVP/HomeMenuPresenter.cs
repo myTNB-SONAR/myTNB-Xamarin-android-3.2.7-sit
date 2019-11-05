@@ -206,7 +206,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
             catch (System.OperationCanceledException cancelledException)
             {
-                // TODO: Add flag checking for hemu tutorial
                 if (isAllDone() && !isHomeMenuTutorialShown || UserSessions.HasHomeTutorialShown(mPref))
                 {
                     this.mView.ShowRefreshScreen(null, null);
@@ -2368,82 +2367,91 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 isHomeMenuTutorialShown = true;
 
-                if (!UserSessions.HasHomeTutorialShown(this.mPref))
+                if (this.mView.CheckNewFaqList() <= 0)
                 {
-                    normalTokenSource.Cancel();
-                    this.mView.OnSearchOutFocus(true);
-                    isQuery = false;
-                    trackCurrentLoadMoreCount = 0;
-                    updateDashboardInfoList = new List<SummaryDashBoardDetails>();
-                    List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
-                    summaryDashboardInfoList = new List<SummaryDashBoardDetails>();
-                    foreach (CustomerBillingAccount customerBillintAccount in customerBillingAccountList)
+                    isHomeMenuTutorialShown = false;
+                    isNeedHelpDone = false;
+                    ReadNewFAQFromCache();
+                }
+                else
+                {
+                    if (!UserSessions.HasHomeTutorialShown(this.mPref))
                     {
-                        SummaryDashBoardDetails summaryDashBoardDetails = new SummaryDashBoardDetails();
-                        summaryDashBoardDetails.AccName = customerBillintAccount.AccDesc;
-                        summaryDashBoardDetails.AccNumber = customerBillintAccount.AccNum;
-                        summaryDashBoardDetails.AccType = customerBillintAccount.AccountCategoryId;
-                        summaryDashBoardDetails.SmartMeterCode = customerBillintAccount.SmartMeterCode;
-                        summaryDashBoardDetails.IsTaggedSMR = customerBillintAccount.IsTaggedSMR;
-                        summaryDashboardInfoList.Add(summaryDashBoardDetails);
-                    }
-
-                    List<string> accountList = new List<string>();
-                    for (int i = 0; i < customerBillingAccountList.Count; i++)
-                    {
-                        if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum))
+                        normalTokenSource.Cancel();
+                        this.mView.OnSearchOutFocus(true);
+                        isQuery = false;
+                        trackCurrentLoadMoreCount = 0;
+                        updateDashboardInfoList = new List<SummaryDashBoardDetails>();
+                        List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
+                        summaryDashboardInfoList = new List<SummaryDashBoardDetails>();
+                        foreach (CustomerBillingAccount customerBillintAccount in customerBillingAccountList)
                         {
-                            accountList.Add(customerBillingAccountList[i].AccNum);
-                        }
-                    }
-
-                    billingAccoutCount = summaryDashboardInfoList.Count;
-
-                    this.mView.SetHeaderActionVisiblity(summaryDashboardInfoList);
-
-                    if (billingAccoutCount > 0)
-                    {
-                        FetchAccountSummary(true, true, true);
-                    }
-
-                    if (isMyServiceExpanded)
-                    {
-                        List<MyService> fetchList = new List<MyService>();
-                        isMyServiceExpanded = false;
-                        for (int i = 0; i < 3; i++)
-                        {
-                            fetchList.Add(currentMyServiceList[i]);
+                            SummaryDashBoardDetails summaryDashBoardDetails = new SummaryDashBoardDetails();
+                            summaryDashBoardDetails.AccName = customerBillintAccount.AccDesc;
+                            summaryDashBoardDetails.AccNumber = customerBillintAccount.AccNum;
+                            summaryDashBoardDetails.AccType = customerBillintAccount.AccountCategoryId;
+                            summaryDashBoardDetails.SmartMeterCode = customerBillintAccount.SmartMeterCode;
+                            summaryDashBoardDetails.IsTaggedSMR = customerBillintAccount.IsTaggedSMR;
+                            summaryDashboardInfoList.Add(summaryDashBoardDetails);
                         }
 
-                        if (currentMyServiceList.Count > 3)
+                        List<string> accountList = new List<string>();
+                        for (int i = 0; i < customerBillingAccountList.Count; i++)
                         {
-                            this.mView.IsMyServiceLoadMoreButtonVisible(true, false);
-                            this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
+                            if (!string.IsNullOrEmpty(customerBillingAccountList[i].AccNum))
+                            {
+                                accountList.Add(customerBillingAccountList[i].AccNum);
+                            }
+                        }
+
+                        billingAccoutCount = summaryDashboardInfoList.Count;
+
+                        this.mView.SetHeaderActionVisiblity(summaryDashboardInfoList);
+
+                        if (billingAccoutCount > 0)
+                        {
+                            FetchAccountSummary(true, true, true);
+                        }
+
+                        if (isMyServiceExpanded)
+                        {
+                            List<MyService> fetchList = new List<MyService>();
+                            isMyServiceExpanded = false;
+                            for (int i = 0; i < 3; i++)
+                            {
+                                fetchList.Add(currentMyServiceList[i]);
+                            }
+
+                            if (currentMyServiceList.Count > 3)
+                            {
+                                this.mView.IsMyServiceLoadMoreButtonVisible(true, false);
+                                this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
+                            }
+                            else
+                            {
+                                this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
+                                this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
+                            }
+                            this.mView.SetMyServiceResult(fetchList);
                         }
                         else
                         {
-                            this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
-                            this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
+                            if (currentMyServiceList.Count > 3)
+                            {
+                                this.mView.IsMyServiceLoadMoreButtonVisible(true, false);
+                                this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
+                            }
+                            else
+                            {
+                                this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
+                                this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
+                            }
                         }
-                        this.mView.SetMyServiceResult(fetchList);
-                    }
-                    else
-                    {
-                        if (currentMyServiceList.Count > 3)
-                        {
-                            this.mView.IsMyServiceLoadMoreButtonVisible(true, false);
-                            this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
-                        }
-                        else
-                        {
-                            this.mView.IsMyServiceLoadMoreButtonVisible(false, false);
-                            this.mView.SetBottomLayoutBackground(isMyServiceExpanded);
-                        }
-                    }
 
-                    this.mView.ResetNewFAQScroll();
+                        this.mView.ResetNewFAQScroll();
 
-                    this.mView.OnShowHomeMenuFragmentTutorialDialog();
+                        this.mView.OnShowHomeMenuFragmentTutorialDialog();
+                    }
                 }
             }
         }

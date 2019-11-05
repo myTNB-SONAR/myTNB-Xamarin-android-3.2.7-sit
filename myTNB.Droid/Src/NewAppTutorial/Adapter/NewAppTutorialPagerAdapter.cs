@@ -24,13 +24,15 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
         private List<NewAppModel> list = new List<NewAppModel>();
         private Android.Support.V4.App.DialogFragment mDialog;
         private Android.App.Fragment mFragment;
+        private ISharedPreferences mPref;
 
-        public NewAppTutorialPagerAdapter(Context ctx, Android.App.Fragment fragment, Android.Support.V4.App.DialogFragment dialog, List<NewAppModel> items)
+        public NewAppTutorialPagerAdapter(Context ctx, Android.App.Fragment fragment, ISharedPreferences pref, Android.Support.V4.App.DialogFragment dialog, List<NewAppModel> items)
         {
             this.mContext = ctx;
             this.list = items;
             this.mDialog = dialog;
             this.mFragment = fragment;
+            this.mPref = pref;
         }
 
         public NewAppTutorialPagerAdapter()
@@ -1132,6 +1134,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             if (this.mFragment is HomeMenuFragment)
             {
                 ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
+                UserSessions.DoHomeTutorialShown(this.mPref);
             }
         }
 
