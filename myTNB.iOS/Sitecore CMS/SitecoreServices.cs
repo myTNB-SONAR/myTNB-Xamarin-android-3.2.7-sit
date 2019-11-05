@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Net;
 using System.Threading.Tasks;
 using Foundation;
 using myTNB.SitecoreCMS.Model;
@@ -21,6 +24,7 @@ namespace myTNB.SitecoreCMS
             taskList.Add(LoadBillDetailsTooltip());
             taskList.Add(LoadSSMRWalkthrough());
             taskList.Add(LoadTermsAndCondition());
+            taskList.Add(LoadLanguage());
             if (!AppLaunchMasterCache.IsEnergyTipsDisabled)
             {
                 taskList.Add(LoadEnergyTips());
@@ -34,6 +38,20 @@ namespace myTNB.SitecoreCMS
             NSData data = NSData.FromUrl(url, NSDataReadingOptions.Uncached, out NSError error);
             if (error != null) { data = null; }
             return data;
+        }
+
+        private string GetDataFromFile(string url)
+        {
+            string content = string.Empty;
+            WebRequest webRequest = WebRequest.Create(url);
+            using (WebResponse response = webRequest.GetResponse())
+            using (Stream responseStream = response.GetResponseStream())
+            using (StreamReader reader = new StreamReader(responseStream))
+            {
+                content = reader.ReadToEnd();
+            }
+            Debug.WriteLine("Content: " + content);
+            return content;
         }
 
         private void UpdateTimeStamp(string sitecoreTS, string key, ref bool needsUpdate)
@@ -335,6 +353,49 @@ namespace myTNB.SitecoreCMS
                         tncEntity.CreateTable();
                         tncEntity.InsertListOfItems(tncResponse.Data);
                         var test = tncEntity.GetAllItems();
+                    }
+                }
+            });
+        }
+
+        private Task LoadLanguage()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS
+                    , DataManager.DataManager.SharedInstance.ImageSize
+                    , TNBGlobal.SITECORE_URL
+                    , TNBGlobal.DEFAULT_LANGUAGE);
+
+                LanguageTimeStampResponseModel timeStamp = iService.GetLanguageTimestampItem();
+                bool needsUpdate = true;
+
+                if (timeStamp == null || timeStamp.Data == null || timeStamp.Data.Count == 0
+                     || string.IsNullOrEmpty(timeStamp.Data[0].Timestamp)
+                     || string.IsNullOrWhiteSpace(timeStamp.Data[0].Timestamp))
+                {
+                    timeStamp = new LanguageTimeStampResponseModel();
+                    timeStamp.Data = new List<LanguageTimeStamp> { new LanguageTimeStamp { Timestamp = string.Empty } };
+                }
+
+                UpdateTimeStamp(timeStamp.Data[0].Timestamp, "LanguageTimeStamp", ref needsUpdate);
+                needsUpdate = true;
+                if (needsUpdate)
+                {
+                    LanguageResponseModel languageItems = iService.GetLanguageItems();
+                    if (languageItems != null
+                        && languageItems.Data != null
+                        && languageItems.Data.Count > 0
+                        && languageItems.Data[0] != null)
+                    {
+                        LanguageModel item = languageItems.Data[0];
+                        if (!string.IsNullOrEmpty(item.LanguageFile) && !string.IsNullOrWhiteSpace(item.LanguageFile))
+                        {
+                            string content = GetDataFromFile(item.LanguageFile);
+                            //Todo: Save to pref
+                            LanguageManager.Instance.SetLanguage(content ?? string.Empty);
+                        }
+                        Debug.WriteLine("Lang End");
                     }
                 }
             });

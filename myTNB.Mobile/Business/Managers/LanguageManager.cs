@@ -69,6 +69,15 @@ namespace myTNB
                 //Todo: Add sitecore logic
             }
         }
+
+        public void SetLanguage(string content)
+        {
+            if (!string.IsNullOrEmpty(content) && ! string.IsNullOrWhiteSpace(content))
+            {
+                JSONLang = content;
+            }
+        }
+
         /// <summary>
         /// Gets the commonly used strings within the app like "OK", "Cancel".
         /// Advised to call this when app was launched.

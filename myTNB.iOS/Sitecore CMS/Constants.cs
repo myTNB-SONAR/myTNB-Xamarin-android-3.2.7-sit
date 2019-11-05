@@ -125,7 +125,11 @@
                     public const string Image_XHDPI = "image_xhdpi";
                     public const string Image_XXHDPI = "image_xxhdpi";
                     public const string Image_XXXHDPI = "image_xxxhdpi";
+                }
 
+                public struct Language
+                {
+                    public const string LanguageFile = "Language File";
                 }
             }
 
@@ -159,6 +163,9 @@
                 public const string EnergyTips = "/sitecore/content/myTNBapp/Contents/Energy Saving Tips";
                 public const string BillDetailsTooltip = "/sitecore/content/myTNBapp/Contents/Itemised Billing Tooltip";
                 public const string AppLaunchImage = "/sitecore/content/myTNBapp/Contents/App Launch Image";
+
+                public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json/App Language Json";
+                public const string LanguageTimestamp = "/sitecore/content/myTNBapp/Contents/App Language Json";
             }
         }
     }

@@ -1703,6 +1703,7 @@
     <Folder Include="Assets.xcassets\Onboarding-Image-3.imageset\" />
     <Folder Include="Assets.xcassets\Onboarding-Image-2.imageset\" />
     <Folder Include="Assets.xcassets\Onboarding-Image-1.imageset\" />
+    <Folder Include="Sitecore CMS\Model\Language\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2566,6 +2567,8 @@
     <Compile Include="Rating\RatingConstants.cs" />
     <Compile Include="Home\Promotions\PromotionConstants.cs" />
     <Compile Include="Components\Common\BillTutorialOverlay.cs" />
+    <Compile Include="Sitecore CMS\Model\Language\LanguageModel.cs" />
+    <Compile Include="Sitecore CMS\Service\LanguageService.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

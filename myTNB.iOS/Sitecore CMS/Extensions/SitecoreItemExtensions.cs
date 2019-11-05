@@ -300,7 +300,24 @@ namespace myTNB.SitecoreCMS.Extensions
             return XElement.Parse(fieldValue);
         }
 
-        public static string GetImageFieldName(string imgSize)
+        public static string GetFileURLFromFieldName(this ISitecoreItem item, string fieldName, string websiteUrl = null)
+        {
+            XElement xmlElement = GetXElement(item, fieldName);
+
+            if (xmlElement == null) { return string.Empty; }
+
+            XAttribute attribute = xmlElement.Attributes().FirstOrDefault(attr => attr.Name == "mediaid");
+            string mediaId = attribute.Value;
+            Guid id = Guid.Parse(mediaId);
+
+            if (string.IsNullOrWhiteSpace(websiteUrl))
+            {
+                return string.Format("-/media/{0}.ashx", id.ToString("N")).Replace(" ", "%20");
+            }
+            return string.Format("{0}/-/media/{1}.ashx", websiteUrl, id.ToString("N")).Replace(" ", "%20");
+        }
+
+        private static string GetImageFieldName(string imgSize)
         {
             switch (imgSize)
             {
