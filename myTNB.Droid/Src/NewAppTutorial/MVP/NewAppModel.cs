@@ -10,11 +10,11 @@
 
     public class NewAppModel
     {
-        public string TargetPage { get; set; }
         public ContentType ContentShowPosition { get; set; }
         public string ContentTitle { get; set; }
         public string ContentMessage { get; set; }
-        public int AccountCount { get; set; }
+        public int ItemCount { get; set; }
         public bool IsButtonShow { get; set; }
+        public string DisplayMode { get; set; }
     }
 }

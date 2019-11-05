@@ -2367,7 +2367,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 isHomeMenuTutorialShown = true;
 
-                if (this.mView.CheckNewFaqList() <= 0)
+                if (this.mView.CheckMyServiceList() <= 0)
+                {
+                    isHomeMenuTutorialShown = false;
+                    isMyServiceDone = false;
+                    isMyServiceExpanded = false;
+                    OnProcessMyServiceCards();
+                }
+                else if (this.mView.CheckNewFaqList() <= 0)
                 {
                     isHomeMenuTutorialShown = false;
                     isNeedHelpDone = false;
@@ -2464,21 +2471,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 newList.Add(new NewAppModel()
                 {
-                    TargetPage = "HomeMenu",
                     ContentShowPosition = ContentType.BottomLeft,
                     ContentTitle = "Your Accounts at a glance.",
                     ContentMessage = "View a summary of all your<br/>linked electricity accounts here.",
-                    AccountCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                    ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                     IsButtonShow = false
                 });
 
                 newList.Add(new NewAppModel()
                 {
-                    TargetPage = "HomeMenu",
                     ContentShowPosition = ContentType.BottomRight,
                     ContentTitle = "Quick account access.",
                     ContentMessage = "Tap <strong>“Add”</strong> to link an account to<br/>myTNB. Use <strong>“Search”</strong> to look for a<br/>specific one! Just type in the<br/>nickname or account number.",
-                    AccountCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                    ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                     IsButtonShow = false
                 });
             }
@@ -2486,11 +2491,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 newList.Add(new NewAppModel()
                 {
-                    TargetPage = "HomeMenu",
                     ContentShowPosition = ContentType.BottomLeft,
                     ContentTitle = "Your Accounts at a glance.",
                     ContentMessage = "View a summary of all your linked<br/>electricity accounts here. Tap “Add”<br/>to link an account to myTNB.",
-                    AccountCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                    ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                     IsButtonShow = false
                 });
             }
@@ -2498,11 +2502,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 newList.Add(new NewAppModel()
                 {
-                    TargetPage = "HomeMenu",
                     ContentShowPosition = ContentType.BottomLeft,
                     ContentTitle = "Your Accounts at a glance.",
                     ContentMessage = "View a summary of all your linked<br/>electricity accounts here.",
-                    AccountCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                    ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                     IsButtonShow = false
                 });
             }
@@ -2510,32 +2513,29 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 newList.Add(new NewAppModel()
                 {
-                    TargetPage = "HomeMenu",
                     ContentShowPosition = ContentType.BottomLeft,
                     ContentTitle = "Your Accounts at a glance.",
                     ContentMessage = "Add an electricity account to myTNB<br/>and you’ll have access to your usage<br/>and all services offered.",
-                    AccountCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                    ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                     IsButtonShow = false
                 });
             }
 
             newList.Add(new NewAppModel()
             {
-                TargetPage = "HomeMenu",
                 ContentShowPosition = ContentType.TopLeft,
                 ContentTitle = "Quick actions.",
                 ContentMessage = "Get all of the services myTNB has<br/>to offer. New features are<br/>highlighted so you don’t miss out<br/>on anything!",
-                AccountCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                 IsButtonShow = false
             });
 
             newList.Add(new NewAppModel()
             {
-                TargetPage = "HomeMenu",
                 ContentShowPosition = ContentType.TopLeft,
                 ContentTitle = "Need help?",
                 ContentMessage = "We’ve highlighted some of the<br/>most commonly asked questions<br/>for you to browse through.",
-                AccountCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
+                ItemCount = CustomerBillingAccount.GetSortedCustomerBillingAccounts().Count,
                 IsButtonShow = true
             });
 

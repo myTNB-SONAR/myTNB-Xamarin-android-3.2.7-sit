@@ -6,10 +6,12 @@ using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Support.V4.Widget;
+using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -23,6 +25,7 @@ using myTNB_Android.Src.myTNBMenu.Activity;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.ViewBill.Activity;
 using myTNB_Android.Src.ViewReceipt.Activity;
@@ -129,7 +132,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            mPresenter = new ItemisedBillingMenuPresenter(this);
+            mPresenter = new ItemisedBillingMenuPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
             Bundle extras = Arguments;
 
             if (extras.ContainsKey(SELECTED_ACCOUNT_KEY))
@@ -750,6 +753,52 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             billFilterMenuItem.SetIcon(ContextCompat.GetDrawable(this.Activity, Resource.Drawable.bill_screen_filter_icon));
             billFilterMenuItem.SetVisible(false);
             base.OnCreateOptionsMenu(menu, inflater);
+        }
+
+        public NewAppTutorialDialogFragment OnShowItemizedFragmentTutorialDialog()
+        {
+            Activity.RunOnUiThread(() =>
+            {
+                itemisedBillingScrollView.ScrollTo(0, 0);
+                itemisedBillingScrollView.RequestLayout();
+            });
+            NewAppTutorialDialogFragment dialogFragmnet = new NewAppTutorialDialogFragment(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList(GetString(Resource.String.tutorial_arrow_down)));
+            dialogFragmnet.Cancelable = false;
+            dialogFragmnet.Show(((AppCompatActivity)this.Activity).SupportFragmentManager, "NewAppTutorial Dialog");
+            return dialogFragmnet;
+        }
+
+        public void ItemizedBillingCustomScrolling(int yPosition)
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    itemisedBillingScrollView.ScrollTo(0, yPosition);
+                    itemisedBillingScrollView.RequestLayout();
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public bool CheckIsScrollable()
+        {
+            View child = (View)itemisedBillingScrollView.GetChildAt(0);
+
+            return itemisedBillingScrollView.Height < child.Height + itemisedBillingScrollView.PaddingTop + itemisedBillingScrollView.PaddingBottom;
+        }
+
+        public int GetButtonWidth()
+        {
+            return btnPayBill.Width;
+        }
+
+        public int GetButtonHeight()
+        {
+            return btnPayBill.Height;
         }
     }
 }

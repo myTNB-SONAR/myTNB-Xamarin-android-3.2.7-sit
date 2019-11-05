@@ -92,6 +92,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             int CheckNewFaqList();
 
+            int CheckMyServiceList();
+
         }
 
         public interface IHomeMenuPresenter

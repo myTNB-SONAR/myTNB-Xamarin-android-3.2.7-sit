@@ -20,6 +20,8 @@ using myTNB_Android.Src.Base;
 using Android.Util;
 using Android.Gms.Common.Apis;
 using myTNB_Android.Src.MyTNBService.Parser;
+using myTNB_Android.Src.NewAppTutorial.MVP;
+using Android.Content;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 {
@@ -28,12 +30,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
         BillingApiImpl api;
         ItemisedBillingContract.IView mView;
         AccountChargesModel mAccountChargesModel;
+        string storedAccountTypeValue = "";
+        List<AccountBillPayHistoryModel> mainBillingHistoryList = new List<AccountBillPayHistoryModel>();
+        List<AccountChargeModel> mainAccountChargeModelList = new List<AccountChargeModel>();
+        private ISharedPreferences mPref;
 
-
-        public ItemisedBillingMenuPresenter(ItemisedBillingContract.IView view)
+        public ItemisedBillingMenuPresenter(ItemisedBillingContract.IView view, ISharedPreferences pref)
         {
             mView = view;
             api = new BillingApiImpl();
+            mPref = pref;
         }
 
         public async void GetBillingHistoryDetails(string contractAccountValue, bool isOwnedAccountValue, string accountTypeValue)
@@ -41,6 +47,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             try
             {
                 //Get Account Charges Service Call
+                storedAccountTypeValue = accountTypeValue;
                 bool showRefreshState = false;
                 List<string> accountList = new List<string>();
                 List<AccountChargeModel> accountChargeModelList = new List<AccountChargeModel>();
@@ -96,6 +103,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     }
                     else
                     {
+                        mainBillingHistoryList = billingHistoryList;
+                        mainAccountChargeModelList = accountChargeModelList;
+                        OnCheckToCallItemizedTutorial();
                         mView.PopulateAccountCharge(accountChargeModelList);
                         mView.PopulateBillingHistoryList(billingHistoryList, billPayFilterList);
                         OnGetBillTooltipContent();
@@ -278,6 +288,103 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 
 
             return modelList;
+        }
+
+        private void OnCheckToCallItemizedTutorial()
+        {
+            if (!UserSessions.HasItemizedBillingTutorialShown(this.mPref))
+            {
+                this.mView.OnShowItemizedFragmentTutorialDialog();
+            }
+        }
+
+        public List<NewAppModel> OnGeneraNewAppTutorialList(string downArrow)
+        {
+            List<NewAppModel> newList = new List<NewAppModel>();
+
+            string DisplayMode = "NoExtra";
+
+            int ItemCount = 0;
+
+            for(int i = 0; i < mainBillingHistoryList.Count; i++)
+            {
+                ItemCount += mainBillingHistoryList[i].BillingHistoryDataList.Count;
+            }
+
+            AccountChargeModel accountChargeModel = mainAccountChargeModelList[0];
+            if (accountChargeModel.IsNeedPay)
+            {
+                DisplayMode = "NoExtra";
+            }
+            else
+            {
+                DisplayMode = "Extra";
+            }
+
+            if (storedAccountTypeValue == "RE")
+            {
+                newList.Add(new NewAppModel()
+                {
+                    ContentShowPosition = ContentType.BottomLeft,
+                    ContentTitle = "Your advice overview.",
+                    ContentMessage = "Tap “ ” to switch between<br/>different accounts. You’ll see how<br/>much you have earned or if you’ve <br/>been paid extra.",
+                    ItemCount = ItemCount,
+                    IsButtonShow = false
+                });
+
+                newList.Add(new NewAppModel()
+                {
+                    ContentShowPosition = ContentType.TopLeft,
+                    ContentTitle = "Keep track of payments.",
+                    ContentMessage = "View and access your advices and<br/>payment receipts from the<br/>previous six months. Use the filter<br/>to see only advices or receipts.",
+                    ItemCount = ItemCount,
+                    IsButtonShow = true
+                });
+            }
+            else
+            {
+                newList.Add(new NewAppModel()
+                {
+                    ContentShowPosition = ContentType.BottomLeft,
+                    ContentTitle = "Your bill overview.",
+                    ContentMessage = "Tap “ ” to switch between<br/>different accounts. You’ll see how<br/>much is due, if you’ve cleared your<br/>bill or if you’ve paid extra.",
+                    ItemCount = ItemCount,
+                    DisplayMode = DisplayMode,
+                    IsButtonShow = false
+                });
+
+                newList.Add(new NewAppModel()
+                {
+                    ContentShowPosition = ContentType.TopRight,
+                    ContentTitle = "Pay without hassle.",
+                    ContentMessage = "Tap here to pay your bill.",
+                    ItemCount = ItemCount,
+                    DisplayMode = DisplayMode,
+                    IsButtonShow = false
+                });
+
+                newList.Add(new NewAppModel()
+                {
+                    ContentShowPosition = ContentType.TopLeft,
+                    ContentTitle = "Understand your bill.",
+                    ContentMessage = "‘View Details’ to review your<br/>bill breakdown.",
+                    ItemCount = ItemCount,
+                    DisplayMode = DisplayMode,
+                    IsButtonShow = false
+                });
+
+                newList.Add(new NewAppModel()
+                {
+                    ContentShowPosition = ContentType.TopLeft,
+                    ContentTitle = "Keep track of your charges.",
+                    ContentMessage = "View and access your bills and<br/>payment receipts from the<br/>previous six months. Use the<br/>filter to see only bills or receipts.",
+                    ItemCount = ItemCount,
+                    DisplayMode = DisplayMode,
+                    IsButtonShow = true
+                });
+            }
+
+            return newList;
         }
     }
 }

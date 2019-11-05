@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.NewAppTutorial.MVP;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 {
@@ -18,6 +19,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             void ShowAvailableBillContent();
             void ShowEmptyState();
             void ShowDowntimeSnackbar(string message);
+            NewAppTutorialDialogFragment OnShowItemizedFragmentTutorialDialog();
+            void ItemizedBillingCustomScrolling(int yPosition);
         }
     }
 }

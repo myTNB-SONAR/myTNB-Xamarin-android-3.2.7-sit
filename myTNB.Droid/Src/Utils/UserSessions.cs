@@ -164,6 +164,18 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
+        public static System.Boolean HasItemizedBillingTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasItemizedBillingTutorialShown", false);
+        }
+
+        public static void DoItemizedBillingTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasItemizedBillingTutorialShown", true);
+            editor.Apply();
+        }
+
         internal static void DoFlagResetPassword(ISharedPreferences mSharedPref)
         {
             ISharedPreferencesEditor editor = mSharedPref.Edit();

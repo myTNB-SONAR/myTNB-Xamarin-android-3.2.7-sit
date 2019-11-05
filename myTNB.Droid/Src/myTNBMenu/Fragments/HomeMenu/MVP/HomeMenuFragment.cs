@@ -1961,7 +1961,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 summaryNestScrollView.RequestLayout();
             });
 
-            NewAppTutorialDialogFragment dialogFragmnet = new NewAppTutorialDialogFragment(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), "HomeMenu", this.presenter.OnGeneraNewAppTutorialList());
+            NewAppTutorialDialogFragment dialogFragmnet = new NewAppTutorialDialogFragment(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
             dialogFragmnet.Cancelable = false;
             dialogFragmnet.Show(((AppCompatActivity)this.Activity).SupportFragmentManager, "NewAppTutorial Dialog");
             return dialogFragmnet;
@@ -2018,6 +2018,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             try
             {
                 count = newFAQAdapter.ItemCount;
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return count;
+        }
+
+        public int CheckMyServiceList()
+        {
+            int count = 0;
+
+            try
+            {
+                count = myServiceAdapter.ItemCount;
             }
             catch (System.Exception e)
             {
