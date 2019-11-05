@@ -380,7 +380,7 @@ namespace myTNB.SitecoreCMS.Services
             LanguageResponseModel respModel = new LanguageResponseModel();
             try
             {
-                LanguageService service = new LanguageService(OS, ImageSize, WebsiteUrl, "MS");
+                LanguageService service = new LanguageService(OS, ImageSize, WebsiteUrl, Language);
                 var data = service.GetItems();
                 var resp = CheckData(data.ToList<object>());
                 string serializedObj = JsonConvert.SerializeObject(resp);
@@ -398,7 +398,7 @@ namespace myTNB.SitecoreCMS.Services
             LanguageTimeStampResponseModel respModel = new LanguageTimeStampResponseModel();
             try
             {
-                LanguageService service = new LanguageService(OS, ImageSize, WebsiteUrl, "MS");
+                LanguageService service = new LanguageService(OS, ImageSize, WebsiteUrl, Language);
                 var data = service.GetTimeStamp();
                 var listData = AddDataToList(data);
                 var resp = CheckData(listData);
