@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 using Sitecore.MobileSDK.API.Request;
 using Sitecore.MobileSDK.API.Request.Parameters;
 using System.Collections.Generic;
-using Sitecore.MobileSDK.API.Exceptions;
 using System.Linq;
 using System.IO;
 using Sitecore.MobileSDK.PasswordProvider;
+using System.Diagnostics;
 
 namespace myTNB.SitecoreCMS.Services
 {
@@ -29,14 +29,11 @@ namespace myTNB.SitecoreCMS.Services
                     return await session.ReadItemAsync(request);
                 }
             }
-            catch (SitecoreMobileSdkException ex)
+            catch (Exception e)
             {
-                throw ex;
+                Debug.WriteLine("Exception: " + e.Message);
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return null;
         }
 
         public async Task<ScItemsResponse> GetItemById(string itemId, PayloadType itemLoadType, List<ScopeType> itemScopeTypes, string websiteUrl = null, string itemLanguage = "en")
@@ -53,14 +50,11 @@ namespace myTNB.SitecoreCMS.Services
                     return await session.ReadItemAsync(request);
                 }
             }
-            catch (SitecoreMobileSdkException ex)
+            catch (Exception e)
             {
-                throw ex;
+                Debug.WriteLine("Exception: " + e.Message);
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return null;
         }
 
         public async Task<Byte[]> GetMediaByUrl(string mediaUrl)
@@ -84,14 +78,11 @@ namespace myTNB.SitecoreCMS.Services
                     }
                 }
             }
-            catch (SitecoreMobileSdkException ex)
+            catch (Exception e)
             {
-                throw ex;
+                Debug.WriteLine("Exception: " + e.Message);
             }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            return null;
         }
 
         async Task<IList<ScItemsResponse>> GetDataSourceFromFieldName(ISitecoreItem sitecoreItem, string fieldName)
@@ -178,10 +169,11 @@ namespace myTNB.SitecoreCMS.Services
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                throw ex;
+                Debug.WriteLine("Exception: " + e.Message);
             }
+            return null;
         }
     }
 }
