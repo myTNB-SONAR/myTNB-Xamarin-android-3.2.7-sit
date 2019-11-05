@@ -20,6 +20,7 @@ using myTNB_Android.Src.NotificationSettings.Activity;
 using myTNB_Android.Src.TermsAndConditions.Activity;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
+using myTNB_Android.Src.Profile.Activity;
 using Refit;
 using System;
 
@@ -49,6 +50,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
 
         [BindView(Resource.Id.txt_more_fragment_settings_my_account)]
         TextView txt_more_fragment_settings_my_account;
+
+        [BindView(Resource.Id.txt_more_fragment_settings_app_language)]
+        TextView txt_more_fragment_settings_app_language;
 
 
         [BindView(Resource.Id.txt_more_fragment_help_support_find_us)]
@@ -114,7 +118,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
 
 
             TextViewUtils.SetMuseoSans500Typeface(txt_more_fragment_help_support_title, txt_more_fragment_settings_title, txt_more_fragment_share_title);
-            TextViewUtils.SetMuseoSans300Typeface(txt_more_fragment_settings_notifications,
+            TextViewUtils.SetMuseoSans300Typeface(txt_more_fragment_settings_notifications, txt_more_fragment_settings_app_language,
                 txt_more_fragment_settings_my_account,
                 txt_more_fragment_help_support_find_us,
                 txt_more_fragment_help_support_call_us,
@@ -202,6 +206,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                 this.userActionsListener.OnNotification(this.DeviceId());
             }
         }
+
         [OnClick(Resource.Id.txt_more_fragment_settings_my_account)]
         void OnMyAccountClick(object sender, EventArgs e)
         {
@@ -209,6 +214,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
             {
                 this.SetIsClicked(true);
                 this.userActionsListener.OnMyAccount();
+            }
+        }
+
+        [OnClick(Resource.Id.txt_more_fragment_settings_app_language)]
+        void OnAppLanguageClick(object sender, EventArgs e)
+        {
+            if (!this.GetIsClicked())
+            {
+                Intent nextIntent = new Intent(this.Activity, typeof(AppLanguageActivity));
+                StartActivity(nextIntent);
             }
         }
 

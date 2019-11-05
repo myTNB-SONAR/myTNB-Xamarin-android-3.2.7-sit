@@ -43,6 +43,9 @@ namespace myTNB_Android.Src.Database.Model
         [Column("deviceId")]
         public string DeviceId { get; set; }
 
+        [Column("selectedLanguage")]
+        public string SelectedLanguage { get; set; }
+
 
         public static int CreateTable()
         {
@@ -138,7 +141,18 @@ namespace myTNB_Android.Src.Database.Model
 
         }
 
+        public static int UpdateSelectedLanguage(string language)
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            return db.Execute("UPDATE UserEntity SET selectedLanguage = ?", language);
+        }
 
+        public static string GetSelectedLanguage()
+        {
+            var db = DBHelper.GetSQLiteConnection();
+            List<UserEntity> userEntityList = db.Query<UserEntity>("select selectedLanguage from UserEntity");
+            return userEntityList[0].SelectedLanguage;
+        }
 
         public static int RemoveActive()
         {

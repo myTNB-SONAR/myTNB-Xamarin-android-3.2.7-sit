@@ -17,6 +17,7 @@ using Facebook.Shimmer;
 using Java.Text;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Billing.MVP;
+using myTNB_Android.Src.Common;
 using myTNB_Android.Src.CompoundView;
 using myTNB_Android.Src.MultipleAccountPayment.Activity;
 using myTNB_Android.Src.myTNBMenu.Activity;

@@ -2561,8 +2561,6 @@
     <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\SelectItemActivity.cs" />
     <AndroidResource Include="Resources\layout\SelectItemLayout.axml" />
     <AndroidResource Include="Resources\layout\SelectItemListLayout.axml" />
-    <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\SelectItemAdapter.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\Item.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\FilterBillHistoryActivity.cs" />
     <AndroidResource Include="Resources\layout\FilterBillHistoryLayout.axml" />
     <Compile Include="Src\myTNBMenu\Fragments\ItemisedBillingMenu\MVP\BillDetailsTooltipModel.cs" />
@@ -3778,6 +3776,10 @@
     <Compile Include="Src\MyTNBService\Parser\BillingResponseParser.cs" />
     <Compile Include="Src\Utils\CancellationTokenSourceWrapper.cs" />
     <Compile Include="Src\Base\Activity\BaseActivityCustom.cs" />
+    <Compile Include="Src\Profile\Activity\AppLanguageActivity.cs" />
+    <AndroidResource Include="Resources\layout\AppLanguageLayout.axml" />
+    <Compile Include="Src\Common\Adapter\SelectItemAdapter.cs" />
+    <Compile Include="Src\Common\Model\Item.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4161,6 +4163,11 @@
     <Folder Include="Src\NewWalkthrough\" />
     <Folder Include="Src\NewWalkthrough\MVP\" />
     <Folder Include="Src\MyTNBService\Parser\" />
+    <Folder Include="Src\Profile\" />
+    <Folder Include="Src\Profile\Activity\" />
+    <Folder Include="Src\Common\" />
+    <Folder Include="Src\Common\Adapter\" />
+    <Folder Include="Src\Common\Model\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

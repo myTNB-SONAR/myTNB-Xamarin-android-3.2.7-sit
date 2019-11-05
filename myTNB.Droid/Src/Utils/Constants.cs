@@ -267,6 +267,11 @@ namespace myTNB_Android.Src.Utils
             EVENING
         }
 
+        public enum SUPPORTED_LANGUAGES
+        {
+            EN,MS
+        }
+
         //User Notification BCRM IDs
 		public const string BCRM_NOTIFICATION_NEW_BILL_ID = "01";
 		public const string BCRM_NOTIFICATION_BILL_DUE_ID = "02";
