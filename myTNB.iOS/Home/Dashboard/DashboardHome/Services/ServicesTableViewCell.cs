@@ -470,7 +470,7 @@ namespace myTNB
                             }
                             else
                             {
-                                res = !_dashboardHomeHelper.HasNormalAccounts;
+                                res = !(_dashboardHomeHelper.HasNormalAccounts || _dashboardHomeHelper.HasSmartMeterAccounts);
                             }
                         }
                         break;
