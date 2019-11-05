@@ -65,10 +65,12 @@ namespace myTNB
                 if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZOut && pinchScale > 1)
                 {
                     CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZIn);
+                    _pinchIcon.Image = UIImage.FromBundle(UsageConstants.IMG_PinchIn);
                 }
                 else if (_viewType == SmartMeterConstants.SmartMeterViewType.DayZIn && pinchScale < 1)
                 {
                     CreateSegment(SmartMeterConstants.SmartMeterViewType.DayZOut);
+                    _pinchIcon.Image = UIImage.FromBundle(UsageConstants.IMG_PinchOut);
                 }
             }
 #pragma warning restore XI0003 // Notifies you when using a deprecated, obsolete or unavailable Apple API
