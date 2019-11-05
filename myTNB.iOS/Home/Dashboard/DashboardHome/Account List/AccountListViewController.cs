@@ -48,8 +48,19 @@ namespace myTNB
         }
 
         #region Initialization Methods
-        public void PrepareAccountList(List<CustomerAccountRecordModel> linkedCAs = null, bool isFromSearch = false)
+        public void PrepareAccountList(List<CustomerAccountRecordModel> linkedCAs = null, bool isFromSearch = false, bool isFromNeedRefresh = false)
         {
+            if (isFromNeedRefresh)
+            {
+                SetViewForActiveSearch(false);
+                if (_textFieldSearch != null)
+                {
+                    if (_textFieldSearch.Text.Length > 0)
+                    {
+                        _textFieldSearch.Text = string.Empty;
+                    }
+                }
+            }
             if (_parentView == null)
             {
                 SetParentView();
@@ -246,20 +257,7 @@ namespace myTNB
             };
             cancelIcon.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                SetViewForActiveSearch(false);
-                if (_textFieldSearch != null)
-                {
-                    if (_textFieldSearch.Text.Length > 0)
-                    {
-                        _textFieldSearch.Text = string.Empty;
-                        DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
-                        if (_homeViewController != null)
-                        {
-                            _homeViewController.OnUpdateCellWithoutReload(DashboardHomeConstants.CellIndex_Services);
-                        }
-                        PrepareAccountList();
-                    }
-                }
+                OnCancelSearch();
             }));
             _searchView.AddSubview(cancelIcon);
 
@@ -423,17 +421,30 @@ namespace myTNB
         {
             _isOnSearchMode = isSearchMode;
             DataManager.DataManager.SharedInstance.IsOnSearchMode = isSearchMode;
-            if (isSearchMode)
+            if (_textFieldSearch != null)
             {
-                _textFieldSearch.BecomeFirstResponder();
+                if (isSearchMode)
+                {
+                    _textFieldSearch.BecomeFirstResponder();
+                }
+                else
+                {
+                    _textFieldSearch.ResignFirstResponder();
+                }
             }
-            else
+
+            if (_headerTitle != null)
             {
-                _textFieldSearch.ResignFirstResponder();
+                _headerTitle.Hidden = isSearchMode;
             }
-            _headerTitle.Hidden = isSearchMode;
-            _addAccountView.Hidden = isSearchMode;
-            _searchView.Hidden = !isSearchMode;
+            if (_addAccountView != null)
+            {
+                _addAccountView.Hidden = isSearchMode;
+            }
+            if (_searchView != null)
+            {
+                _searchView.Hidden = !isSearchMode;
+            }
         }
 
         private void SetTextFieldEvents(UITextField textField)
@@ -467,6 +478,24 @@ namespace myTNB
             var accountsList = DataManager.DataManager.SharedInstance.AccountRecordsList.d;
             var searchResults = accountsList.FindAll(x => x.accountNickName.ToLower().Contains(searchString.ToLower()) || x.accNum.Contains(searchString));
             PrepareAccountList(searchResults, true);
+        }
+
+        private void OnCancelSearch()
+        {
+            SetViewForActiveSearch(false);
+            if (_textFieldSearch != null)
+            {
+                if (_textFieldSearch.Text.Length > 0)
+                {
+                    _textFieldSearch.Text = string.Empty;
+                    DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
+                    if (_homeViewController != null)
+                    {
+                        _homeViewController.OnUpdateCellWithoutReload(DashboardHomeConstants.CellIndex_Services);
+                    }
+                    PrepareAccountList();
+                }
+            }
         }
         #endregion
 
