@@ -76,10 +76,11 @@ namespace myTNB
             _txtFieldAmount = new UITextField
             {
                 Frame = new CGRect(0, 12, _viewAmount.Frame.Width, 24),
-                AttributedPlaceholder = new NSAttributedString(TNBGlobal.DEFAULT_VALUE
+                AttributedPlaceholder = AttributedStringUtility.GetAttributedString(TNBGlobal.DEFAULT_VALUE
+                        , AttributedStringUtility.AttributedStringType.Value),/* new NSAttributedString(TNBGlobal.DEFAULT_VALUE
                     , font: MyTNBFont.MuseoSans16_300
                     , foregroundColor: MyTNBColor.SilverChalice
-                    , strokeWidth: 0),
+                    , strokeWidth: 0),*/
                 TextColor = MyTNBColor.TunaGrey(),
                 Font = MyTNBFont.MuseoSans16_300
             };
