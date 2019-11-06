@@ -24,7 +24,7 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
     [Activity(Label = "@string/update_account_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait
     , Theme = "@style/Theme.UpdateMobile")]
-    public class UpdateNicknameActivity : BaseToolbarAppCompatActivity, UpdateNicknameContract.IView
+    public class UpdateNicknameActivity : BaseActivityCustom, UpdateNicknameContract.IView
     {
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
@@ -45,6 +45,7 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
 
         MaterialDialog progress;
         private LoadingOverlay loadingOverlay;
+        const string PAGE_ID = "UpdateNickname";
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -75,6 +76,9 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutAccountNickname);
                 TextViewUtils.SetMuseoSans300Typeface(txtAccountNickname);
                 TextViewUtils.SetMuseoSans500Typeface(btnSave);
+
+                txtInputLayoutAccountNickname.Hint = GetLabelCommonByLanguage("acctNickname");
+                btnSave.Text = GetLabelCommonByLanguage("save");
 
                 txtAccountNickname.AddTextChangedListener(new InputFilterFormField(txtAccountNickname, txtInputLayoutAccountNickname));
 
@@ -340,6 +344,11 @@ namespace myTNB_Android.Src.UpdateNickname.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

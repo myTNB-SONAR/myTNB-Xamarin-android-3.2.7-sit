@@ -170,6 +170,21 @@ namespace myTNB_Android.Src.MyAccount.Activity
                     btnTextUpdateCards,
                     txtTnBSupplyAccountTitle);
 
+                txtMyAccountTitle.Text = GetLabelByLanguage("detailSectionTitle");
+                txtTnBSupplyAccountTitle.Text = GetLabelByLanguage("accountSectionTitle");
+                btnAddAnotherAccount.Text = GetLabelCommonByLanguage("addAnotherAcct");
+                btnLogout.Text = GetLabelByLanguage("logout");
+                btnTextUpdateMobileNo.Text = GetLabelCommonByLanguage("update");
+                btnTextUpdateCards.Text = GetLabelCommonByLanguage("manage");
+                btnTextUpdatePassword.Text = GetLabelCommonByLanguage("update");
+
+                textInputLayoutFullName.Hint = GetLabelCommonByLanguage("name");
+                textInputLayoutIcNo.Hint = GetLabelCommonByLanguage("idNumber");
+                txtInputLayoutEmail.Hint = GetLabelCommonByLanguage("email");
+                txtInputLayoutMobileNo.Hint = GetLabelCommonByLanguage("mobileNo");
+                txtInputLayoutPassword.Hint = GetLabelCommonByLanguage("password");
+                txtInputLayoutCards.Hint = GetLabelCommonByLanguage("password");
+
                 adapter = new MyAccountAdapter(this, false);
                 listView.Adapter = adapter;
                 listView.SetNoScroll();

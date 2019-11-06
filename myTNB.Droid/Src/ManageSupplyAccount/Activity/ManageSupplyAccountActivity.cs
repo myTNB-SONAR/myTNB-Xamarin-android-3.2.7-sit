@@ -24,7 +24,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
     [Activity(Label = "@string/manage_supply_account_activity_title"
     , ScreenOrientation = ScreenOrientation.Portrait
     , Theme = "@style/Theme.ManageSupplyAccount")]
-    public class ManageSupplyAccountActivity : BaseToolbarAppCompatActivity, ManageSupplyAccountContract.IView
+    public class ManageSupplyAccountActivity : BaseActivityCustom, ManageSupplyAccountContract.IView
     {
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
@@ -57,6 +57,7 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
         MaterialDialog progress;
 
         private LoadingOverlay loadingOverlay;
+        const string PAGE_ID = "ManageAccount";
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -95,6 +96,10 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 txtAccountAddress.Text = accountData.AddStreet;
 
                 txtNickName.Text = accountData.AccountNickName;
+
+                txtInputLayoutNickName.Hint = GetLabelCommonByLanguage("acctNickname");
+                btnTextUpdateNickName.Text = GetLabelCommonByLanguage("update");
+                btnRemoveAccount.Text = GetLabelByLanguage("removeAccount");
 
 
                 mPresenter = new ManageSupplyAccountPresenter(this, accountData);
@@ -369,6 +374,11 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }
