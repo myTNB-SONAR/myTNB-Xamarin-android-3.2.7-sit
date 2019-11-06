@@ -18,6 +18,8 @@ using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Database.Model;
 using Android.Support.V4.Content;
 using myTNB;
+using myTNB_Android.Src.myTNBMenu.Activity;
+using Android.Preferences;
 
 namespace myTNB_Android.Src.Profile.Activity
 {
@@ -94,7 +96,7 @@ namespace myTNB_Android.Src.Profile.Activity
         {
             base.OnCreate(savedInstanceState);
             TextViewUtils.SetMuseoSans500Typeface(appLanguageMessage,btnSaveChanges);
-            savedLanguage = UserEntity.GetSelectedLanguage();
+            savedLanguage = UserSessions.GetSelectedLanguage(PreferenceManager.GetDefaultSharedPreferences(this));
             languageItemList = new List<Item>();
 
             foreach (string languageName in Enum.GetNames(typeof(Constants.SUPPORTED_LANGUAGES)))
@@ -128,20 +130,20 @@ namespace myTNB_Android.Src.Profile.Activity
         void OnSaveChanges(object sender, EventArgs eventArgs)
         {
             Item selectedItem = languageItemList.Find(item => { return item.selected;});
-            LanguageManager.Language language;
-
-            if (selectedItem.type == "MS")
+            string currentLanguage = UserSessions.GetSelectedLanguage(PreferenceManager.GetDefaultSharedPreferences(this));
+            Utility.ShowChangeLanguageDialog(this, currentLanguage, ()=>
             {
-                language = LanguageManager.Language.MS;
-            }
-            else
-            {
-                language = LanguageManager.Language.EN;
-            }
+                UserSessions.SaveSelectedLanguage(PreferenceManager.GetDefaultSharedPreferences(this), selectedItem.type);
+                Utility.UpdateSavedLanguage(selectedItem.type);
+                UpdateLanguage();
+            });
+        }
 
-            LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, language);
-            UserEntity.UpdateSelectedLanguage(selectedItem.type);
-            Finish();
+        private void UpdateLanguage()
+        {
+            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
+            DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
+            StartActivity(DashboardIntent);
         }
 
         public void EnableDisableButton()

@@ -396,5 +396,17 @@ namespace myTNB_Android.Src.Utils
             }
             return selectAccountList;
         }
+
+        public static void SaveSelectedLanguage(ISharedPreferences prefs, string language)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutString("selectedLanguage", language);
+            editor.Apply();
+        }
+
+        public static string GetSelectedLanguage(ISharedPreferences preferences)
+        {
+            return preferences.GetString("selectedLanguage", "");
+        }
     }
 }

@@ -449,6 +449,8 @@ namespace myTNB_Android.Src.Login.MVP
                                 this.mView.ShowNotificationCount(UserNotificationEntity.Count());
                             }
                             //UserSessions.SavePhoneVerified(mSharedPref, true);
+                            UserSessions.SaveSelectedLanguage(this.mSharedPref, "MS");
+                            Utility.UpdateSavedLanguage("MS");
                             this.mView.ShowDashboard();
 
                         }

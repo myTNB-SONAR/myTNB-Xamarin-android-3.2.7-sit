@@ -174,9 +174,10 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     deviceInf = currentDeviceInf,
                     usrInf = currentUsrInf
                 }, CancellationTokenSourceWrapper.GetTokenWithDelay(this.appLaunchMasterDataTimeout));
-                OnGetLanguage();
-                LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, LanguageManager.Language.MS);
-                UserEntity.UpdateSelectedLanguage(Constants.SUPPORTED_LANGUAGES.MS.ToString());
+                UserSessions.SaveSelectedLanguage(this.mSharedPref, "EN");
+                Utility.UpdateSavedLanguage("EN");
+				string language = Utility.GetDeviceLanguage();
+
                 if (masterDataResponse != null && masterDataResponse.Data != null)
                 {
                     if (masterDataResponse.Data.ErrorCode == "7200" && masterDataResponse.Data.ErrorCode != "7000")
@@ -933,42 +934,5 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 }
             });
         }
-
-        public void OnGetLanguage()
-        {
-            Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    string density = DPUtils.GetDeviceDensity(Application.Context);
-                    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, SiteCoreConfig.DEFAULT_LANGUAGE);
-                    LanguageResponseModel responseModel = getItemsService.GetLanguageItems();
-                    //SitecoreCmsEntity.InsertSiteCoreItem(SitecoreCmsEntity.SITE_CORE_ID.LANGUAGE_URL, JsonConvert.SerializeObject(responseModel.Data), "");
-
-
-                    string content = string.Empty;
-                    WebRequest webRequest = WebRequest.Create(responseModel.Data[0].LanguageFile);
-                    using (WebResponse response = webRequest.GetResponse())
-                    using (Stream responseStream = response.GetResponseStream())
-                    using (StreamReader reader = new StreamReader(responseStream))
-                    {
-                        content = reader.ReadToEnd();
-                    }
-
-                    System.Diagnostics.Debug.WriteLine("Content: " + content);
-                }
-                catch (Exception e)
-                {
-                    Utility.LoggingNonFatalError(e);
-                }
-            }).ContinueWith((Task previous) =>
-            {
-            }, new CancellationTokenSource().Token);
-        }
-
     }
-
-
-
-
 }

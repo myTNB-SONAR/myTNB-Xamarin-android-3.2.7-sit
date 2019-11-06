@@ -135,6 +135,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
             txt_more_fragment_settings_title.Text = GetLabelByLanguage("settings");
             txt_more_fragment_settings_my_account.Text = GetLabelByLanguage("myAccount");
             txt_more_fragment_settings_notifications.Text = GetLabelByLanguage("notifications");
+            txt_more_fragment_settings_app_language.Text = GetLabelByLanguage("setAppLanguage");
             txt_more_fragment_help_support_title.Text = GetLabelByLanguage("helpAndSupport");
             txt_more_fragment_help_support_find_us.Text = GetLabelByLanguage("findUs");
             txt_more_fragment_help_support_call_us.Text = GetLabelByLanguage("callUsOutagesAndBreakdown");
@@ -184,6 +185,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                     // SETS THE WINDOW BACKGROUND TO HORIZONTAL GRADIENT AS PER UI ALIGNMENT
                     activity.Window.SetBackgroundDrawable(Activity.GetDrawable(Resource.Drawable.HorizontalGradientBackground));
                     activity.UnsetToolbarBackground();
+                    ((DashboardHomeActivity)Activity).SetToolBarTitle(GetLabelByLanguage("title"));
                 }
                 FirebaseAnalyticsUtils.SetFragmentScreenName(this, "More");
             }

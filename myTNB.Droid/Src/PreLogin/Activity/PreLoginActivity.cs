@@ -3,12 +3,14 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Graphics.Drawables;
 using Android.OS;
+using Android.Preferences;
 using Android.Support.V7.Widget;
 using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
+using myTNB;
 using myTNB.SitecoreCMS.Model;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB_Android.Src.Base.Activity;
@@ -18,6 +20,7 @@ using myTNB_Android.Src.FindUs.Activity;
 using myTNB_Android.Src.Login.Activity;
 using myTNB_Android.Src.PreLogin.MVP;
 using myTNB_Android.Src.RegistrationForm.Activity;
+using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
@@ -62,6 +65,9 @@ namespace myTNB_Android.Src.PreLogin.Activity
         [BindView(Resource.Id.txtFindUs)]
         TextView txtFindUs;
 
+        [BindView(Resource.Id.txtChangeLanguage)]
+        TextView txtChangeLanguage;
+
         [BindView(Resource.Id.cardview_call_us)]
         CardView cardCallUs;
 
@@ -92,18 +98,25 @@ namespace myTNB_Android.Src.PreLogin.Activity
         [BindView(Resource.Id.img_display)]
         ImageView img_display;
 
-
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             try
             {
                 mPresenter = new PreLoginPresenter(this);
-                TextViewUtils.SetMuseoSans500Typeface(txtWelcome, txtLikeToday, txtFindUs, txtFeedback, txtCallUs);
-
+                TextViewUtils.SetMuseoSans500Typeface(txtWelcome, txtLikeToday, txtFindUs, txtFeedback, txtCallUs, txtChangeLanguage);
                 TextViewUtils.SetMuseoSans300Typeface(txtManageAccount, txtPromotion);
-
                 TextViewUtils.SetMuseoSans500Typeface(btnLogin, btnRegister);
+
+                txtWelcome.Text = Utility.GetLocalizedLabel("Prelogin","welcomeTitle");
+                txtManageAccount.Text = Utility.GetLocalizedLabel("Prelogin", "tagline");
+                btnRegister.Text = Utility.GetLocalizedLabel("Prelogin", "register");
+                btnLogin.Text = Utility.GetLocalizedLabel("Prelogin", "login");
+                txtLikeToday.Text = Utility.GetLocalizedLabel("Prelogin", "quickAccess");
+                txtFindUs.Text = Utility.GetLocalizedLabel("Prelogin", "findUs");
+                txtCallUs.Text = Utility.GetLocalizedLabel("Prelogin", "callUs");
+                txtFeedback.Text = Utility.GetLocalizedLabel("Prelogin", "feedback");
+                txtChangeLanguage.Text = Utility.GetLocalizedLabel("Prelogin", "changeLanguage");
 
                 GenerateTopLayoutLayout();
                 GenerateFindUsCardLayout();
@@ -266,6 +279,32 @@ namespace myTNB_Android.Src.PreLogin.Activity
             {
                 Utility.LoggingNonFatalError(ex);
             }
+        }
+
+        [OnClick(Resource.Id.txtChangeLanguage)]
+        void OnChangeLanguage(object sender, EventArgs eventArgs)
+        {
+            string selectedLanguage = UserSessions.GetSelectedLanguage(PreferenceManager.GetDefaultSharedPreferences(this));
+            if (selectedLanguage == "MS")
+            {
+                selectedLanguage = "EN";
+            }
+            else
+            {
+                selectedLanguage = "MS";
+            }
+            Utility.ShowChangeLanguageDialog(this, selectedLanguage, ()=>
+            {
+                UserSessions.SaveSelectedLanguage(PreferenceManager.GetDefaultSharedPreferences(this), selectedLanguage);
+                Utility.UpdateSavedLanguage(selectedLanguage);
+                UpdateLanguage();
+            });
+        }
+
+        private void UpdateLanguage()
+        {
+            Finish();
+            StartActivity(Intent);
         }
 
         public void ShowPreLoginPromotion(bool success)

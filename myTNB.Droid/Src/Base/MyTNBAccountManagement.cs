@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using myTNB;
 using myTNB_Android.Src.AppLaunch.Models;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.SummaryDashBoard.Models;
@@ -15,6 +16,7 @@ namespace myTNB_Android.Src.Base
         private bool IsNeeUpdate = false;
         private static MasterDataResponse currentMasterDataRes = null;
         private List<string> UpdatedAccountNumberList = new List<string>();
+        private LanguageManager.Language selectedLanguage;
         private MyTNBAccountManagement()
         {
         }

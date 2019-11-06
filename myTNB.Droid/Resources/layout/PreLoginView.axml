@@ -216,6 +216,15 @@
                 <TextView
                     android:layout_height="wrap_content"
                     android:layout_width="match_parent"
+                    android:textSize="12sp"
+                    android:paddingTop="19dp"
+                    android:textColor="@color/powerBlue"
+                    android:gravity="center_horizontal"
+                    android:text="Tukar kepada Bahasa Malaysia"
+                    android:id="@+id/txtChangeLanguage" />
+                <TextView
+                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
                     android:textSize="14sp"
                     android:paddingRight="32dp"
                     android:paddingLeft="32dp"

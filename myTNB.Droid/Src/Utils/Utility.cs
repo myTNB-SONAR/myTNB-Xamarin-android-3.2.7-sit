@@ -1,11 +1,20 @@
-﻿using Android.Content.PM;
+﻿using Android.App;
+using Android.Content;
+using Android.Content.PM;
 using Android.Text;
 using Android.Text.Style;
 using Android.Util;
 using myTNB;
+using myTNB.SitecoreCMS.Model;
+using myTNB.SitecoreCMS.Services;
+using myTNB_Android.Src.SiteCore;
+using myTNB_Android.Src.SSMR.Util;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace myTNB_Android.Src.Utils
 {
@@ -139,6 +148,85 @@ namespace myTNB_Android.Src.Utils
                 Log.Debug("DEBUG Error: ", e.Message);
             }
             return label;
+        }
+
+        public static string GetDeviceLanguage()
+        {
+            string deviceLanguage = Java.Util.Locale.Default.Language;
+            if (deviceLanguage.ToUpper() == Constants.SUPPORTED_LANGUAGES.MS.ToString())
+            {
+                deviceLanguage = Java.Util.Locale.Default.Language;
+            }
+            else
+            {
+                deviceLanguage = Constants.SUPPORTED_LANGUAGES.EN.ToString();
+            }
+            return deviceLanguage.ToUpper();
+        }
+
+        public static void SaveSelectedLanguage(ISharedPreferences preferences, string language)
+        {
+            if (language == "MS")
+            {
+                UserSessions.SaveSelectedLanguage(preferences,"EN");
+            }
+            else
+            {
+                UserSessions.SaveSelectedLanguage(preferences, "MS");
+            }
+        }
+
+        public static void ShowChangeLanguageDialog(Context context, string selectedLanguage, Action confirmAction)
+        {
+            MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                        .SetTitle(Utility.GetLocalizedLabel("Common", "changeLanguageTitle_" + selectedLanguage))
+                        .SetMessage(Utility.GetLocalizedLabel("Common", "changeLanguageMessage_" + selectedLanguage))
+                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "changeLanguageNo_" + selectedLanguage))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "changeLanguageYes_" + selectedLanguage))
+                        .SetSecondaryCTAaction(()=>
+                        {
+                            confirmAction();
+                        })
+                        .Build().Show();
+        }
+
+        public static void UpdateSavedLanguage(string selectedLanguage)
+        {
+            LanguageManager.Language language;
+            if (selectedLanguage == "MS")
+            {
+                language = LanguageManager.Language.MS;
+            }
+            else
+            {
+                language = LanguageManager.Language.EN;
+            }
+
+            //try
+            //{
+            //    string density = DPUtils.GetDeviceDensity(Application.Context);
+            //    GetItemsService getItemsService = new GetItemsService(SiteCoreConfig.OS, density, SiteCoreConfig.SITECORE_URL, selectedLanguage.ToLower());// SiteCoreConfig.DEFAULT_LANGUAGE);
+            //    //LanguageResponseModel responseModel = getItemsService.GetLanguageItems();
+            //    var timestamp = getItemsService.GetLanguageTimestampItem();
+            //    //SitecoreCmsEntity.InsertSiteCoreItem(SitecoreCmsEntity.SITE_CORE_ID.LANGUAGE_URL, JsonConvert.SerializeObject(responseModel.Data), "");
+            //    string content = string.Empty;
+            //    //WebRequest webRequest = WebRequest.Create(responseModel.Data[0].LanguageFile);
+            //    //using (WebResponse response = webRequest.GetResponse())
+            //    //using (Stream responseStream = response.GetResponseStream())
+            //    //using (StreamReader reader = new StreamReader(responseStream))
+            //    //{
+            //    //    content = reader.ReadToEnd();
+            //    //}
+
+            //    //System.Diagnostics.Debug.WriteLine("Content: " + content);
+            //    //LanguageManager.Instance.SetLanguage(content);
+            //}
+            //catch (Exception e)
+            //{
+            //    Utility.LoggingNonFatalError(e);
+            //}
+
+            LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, language);
         }
     }
 }
