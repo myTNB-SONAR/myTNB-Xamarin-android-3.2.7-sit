@@ -15,9 +15,7 @@ namespace myTNB
 {
     public partial class HomeTabBarController : UITabBarController
     {
-        public HomeTabBarController(IntPtr handle) : base(handle)
-        {
-        }
+        public HomeTabBarController(IntPtr handle) : base(handle) { }
 
         private string _imageSize = string.Empty;
         private Dictionary<string, string> I18NDictionary;
@@ -420,7 +418,8 @@ namespace myTNB
 
                     if (ShowNewIndicator("2"))
                     {
-                        imageStr = isSelected ? TabbarConstants.Img_PromotionsSelected + "-New" : TabbarConstants.Img_Promotions + "-New";
+                        imageStr = isSelected ? TabbarConstants.Img_PromotionsSelected : TabbarConstants.Img_Promotions;
+                        imageStr += "-New-" + TNBGlobal.APP_LANGUAGE.ToUpper();
                     }
                     else
                     {
@@ -434,7 +433,8 @@ namespace myTNB
                 case TabEnum.REWARDS:
                     if (ShowNewIndicator("3"))
                     {
-                        imageStr = isSelected ? TabbarConstants.Img_RewardsSelected + "-New" : TabbarConstants.Img_Rewards + "-New";
+                        imageStr = isSelected ? TabbarConstants.Img_RewardsSelected : TabbarConstants.Img_Rewards;
+                        imageStr += "-New-" + TNBGlobal.APP_LANGUAGE.ToUpper();
                     }
                     else
                     {

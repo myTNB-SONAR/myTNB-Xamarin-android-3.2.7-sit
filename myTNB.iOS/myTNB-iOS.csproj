@@ -1178,18 +1178,6 @@
     <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Active.imageset\whatSNewSelectedNotification%402x-1.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\whatSNewNotification%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Promotions-Unread-Inactive.imageset\whatSNewNotification%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-New.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected-New.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-New.imageset\whatSNewNotificationNew%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-New.imageset\whatSNewNotificationNew%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected-New.imageset\whatSNewNotificationNewSelected%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected-New.imageset\whatSNewNotificationNewSelected%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Rewards-New.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected-New.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\Tab-Rewards-New.imageset\rewardsNew%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Rewards-New.imageset\rewardsNew%403x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected-New.imageset\rewardsNewSelected%402x.png" />
-    <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected-New.imageset\rewardsNewSelected%403x.png" />
     <ImageAsset Include="Assets.xcassets\TNB-Logo.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\TNB-Logo.imageset\TNB-Logo%402x.png" />
     <ImageAsset Include="Assets.xcassets\TNB-Logo.imageset\TNB-Logo%403x.png" />
@@ -1240,6 +1228,30 @@
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-1.imageset\walkthrough1S3Install%403x.png" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-5.imageset\walkthrough5S3Install%402x.png" />
     <ImageAsset Include="Assets.xcassets\Onboarding-Image-5.imageset\walkthrough5S3Install%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-New-EN.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-New-EN.imageset\whatSNewNotificationNew%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-New-EN.imageset\whatSNewNotificationNew%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected-New-EN.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected-New-EN.imageset\whatSNewNotificationNewSelected%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected-New-EN.imageset\whatSNewNotificationNewSelected%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected-New-EN.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected-New-EN.imageset\rewardsNewSelected%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected-New-EN.imageset\rewardsNewSelected%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-New-EN.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-New-EN.imageset\rewardsNew%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-New-EN.imageset\rewardsNew%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-New-MS.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected-New-MS.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-New-MS.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected-New-MS.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-New-MS.imageset\whatSNewNotificationNew%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-New-MS.imageset\whatSNewNotificationNew%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected-New-MS.imageset\whatSNewNotificationNewSelected%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Promotions-Selected-New-MS.imageset\whatSNewNotificationNewSelected%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-New-MS.imageset\rewardsNew%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-New-MS.imageset\rewardsNew%403x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected-New-MS.imageset\rewardsNewSelected%402x.png" />
+    <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected-New-MS.imageset\rewardsNewSelected%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1673,12 +1685,8 @@
     <Folder Include="Assets.xcassets\Home-Footer-BG.imageset\" />
     <Folder Include="Assets.xcassets\Services-View-Bills-Disabled.imageset\" />
     <Folder Include="Assets.xcassets\Services-Pay-Bills-Disabled.imageset\" />
-    <Folder Include="Assets.xcassets\Tab-Promotions-New.imageset\" />
-    <Folder Include="Assets.xcassets\Tab-Promotions-Selected-New.imageset\" />
     <Folder Include="Assets.xcassets\Tab-Promotions-Unread-Active-New.imageset\" />
     <Folder Include="Assets.xcassets\Tab-Promotions-Unread-Inactive-New.imageset\" />
-    <Folder Include="Assets.xcassets\Tab-Rewards-New.imageset\" />
-    <Folder Include="Assets.xcassets\Tab-Rewards-Selected-New.imageset\" />
     <Folder Include="Assets.xcassets\TNB-Logo.imageset\" />
     <Folder Include="Assets.xcassets\Prelogin-Header.imageset\" />
     <Folder Include="Assets.xcassets\Find-Us-Icon.imageset\" />
@@ -1704,6 +1712,14 @@
     <Folder Include="Assets.xcassets\Onboarding-Image-2.imageset\" />
     <Folder Include="Assets.xcassets\Onboarding-Image-1.imageset\" />
     <Folder Include="Sitecore CMS\Model\Language\" />
+    <Folder Include="Assets.xcassets\Tab-Promotions-New-EN.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Promotions-Selected-New-EN.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Rewards-Selected-New-EN.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Rewards-New-EN.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Promotions-New-MS.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Promotions-Selected-New-MS.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Rewards-New-MS.imageset\" />
+    <Folder Include="Assets.xcassets\Tab-Rewards-Selected-New-MS.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
