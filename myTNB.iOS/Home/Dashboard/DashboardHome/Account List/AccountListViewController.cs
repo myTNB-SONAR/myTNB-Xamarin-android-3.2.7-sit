@@ -23,7 +23,7 @@ namespace myTNB
 
         private UIView _parentView, _headerView, _addAccountView, _searchView;
         private CustomUIView _footerView;
-        private UILabel _headerTitle;
+        private UILabel _headerTitle, _searchLbl, _addLbl, _moreAcctsLabel, _rearrangeLabel;
         private UITableView _accountListTableView;
         private UITextField _textFieldSearch;
         private bool _isOnSearchMode;
@@ -38,6 +38,7 @@ namespace myTNB
         {
             PageName = DashboardHomeConstants.PageName;
             base.ViewDidLoad();
+            NotifCenterUtility.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
             SetParentView();
             PrepareAccountList();
         }
@@ -45,6 +46,42 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+        }
+
+        protected override void LanguageDidChange(NSNotification notification)
+        {
+            base.LanguageDidChange(notification);
+            if (_searchLbl != null)
+            {
+                _searchLbl.Text = GetI18NValue(DashboardHomeConstants.I18N_Search);
+            }
+            if (_headerTitle != null)
+            {
+                _headerTitle.Text = GetI18NValue(DashboardHomeConstants.I18N_MyAccts);
+            }
+            if (_addLbl != null)
+            {
+                _addLbl.Text = GetI18NValue(DashboardHomeConstants.I18N_Add);
+            }
+            if (_textFieldSearch != null)
+            {
+                _textFieldSearch.AttributedPlaceholder = new NSAttributedString(
+                   GetI18NValue(DashboardHomeConstants.I18N_SearchPlaceholder)
+                   , font: TNBFont.MuseoSans_12_500
+                   , foregroundColor: UIColor.FromWhiteAlpha(1, 0.6F)
+                   , strokeWidth: 0
+               );
+            }
+            if (_moreAcctsLabel != null)
+            {
+                _moreAcctsLabel.Text = _dashboardHomeHelper.AllAccountsAreVisible
+                    ? GetI18NValue(DashboardHomeConstants.I18N_ShowLess)
+                    : GetI18NValue(DashboardHomeConstants.I18N_MoreAccts);
+            }
+            if (_rearrangeLabel != null)
+            {
+                _rearrangeLabel.Text = GetI18NValue(DashboardHomeConstants.I18N_RearrangeAccts);
+            }
         }
 
         #region Initialization Methods
@@ -156,23 +193,23 @@ namespace myTNB
                 };
                 searchView.AddSubview(searchIcon);
 
-                UILabel searchLbl = new UILabel(new CGRect(0, 0, 0, GetScaledHeight(16F)))
+                _searchLbl = new UILabel(new CGRect(0, 0, 0, GetScaledHeight(16F)))
                 {
                     Font = TNBFont.MuseoSans_12_500,
                     TextColor = UIColor.White,
                     Text = GetI18NValue(DashboardHomeConstants.I18N_Search),
                     BackgroundColor = UIColor.Clear
                 };
-                searchView.AddSubview(searchLbl);
+                searchView.AddSubview(_searchLbl);
 
-                CGSize searchSize = searchLbl.SizeThatFits(new CGSize(1000F, 1000F));
-                ViewHelper.AdjustFrameSetWidth(searchLbl, searchSize.Width);
+                CGSize searchSize = _searchLbl.SizeThatFits(new CGSize(1000F, 1000F));
+                ViewHelper.AdjustFrameSetWidth(_searchLbl, searchSize.Width);
 
-                ViewHelper.AdjustFrameSetWidth(searchView, GetScaledWidth(12F) + searchIcon.Frame.Width + GetScaledWidth(4F) + searchLbl.Frame.Width);
+                ViewHelper.AdjustFrameSetWidth(searchView, GetScaledWidth(12F) + searchIcon.Frame.Width + GetScaledWidth(4F) + _searchLbl.Frame.Width);
                 ViewHelper.AdjustFrameSetX(searchView, _addAccountView.Frame.Width - searchView.Frame.Width - GetScaledWidth(16F));
 
-                ViewHelper.AdjustFrameSetX(searchLbl, searchView.Frame.Width - searchLbl.Frame.Width);
-                ViewHelper.AdjustFrameSetX(searchIcon, searchLbl.Frame.GetMinX() - GetScaledWidth(4F) - searchIcon.Frame.Width);
+                ViewHelper.AdjustFrameSetX(_searchLbl, searchView.Frame.Width - _searchLbl.Frame.Width);
+                ViewHelper.AdjustFrameSetX(searchIcon, _searchLbl.Frame.GetMinX() - GetScaledWidth(4F) - searchIcon.Frame.Width);
 
                 UIView pipeView = new UIView(new CGRect(searchView.Frame.GetMinX() - GetScaledWidth(1F), 0, GetScaledWidth(1F), GetScaledHeight(20F)))
                 {
@@ -197,23 +234,23 @@ namespace myTNB
                 };
                 addView.AddSubview(addIcon);
 
-                UILabel addLbl = new UILabel(new CGRect(0, 0, 0, GetScaledHeight(16F)))
+                _addLbl = new UILabel(new CGRect(0, 0, 0, GetScaledHeight(16F)))
                 {
                     Font = TNBFont.MuseoSans_12_500,
                     TextColor = UIColor.White,
                     Text = GetI18NValue(DashboardHomeConstants.I18N_Add),
                     BackgroundColor = UIColor.Clear
                 };
-                addView.AddSubview(addLbl);
+                addView.AddSubview(_addLbl);
 
-                CGSize addSize = addLbl.SizeThatFits(new CGSize(1000F, 1000F));
-                ViewHelper.AdjustFrameSetWidth(addLbl, addSize.Width);
+                CGSize addSize = _addLbl.SizeThatFits(new CGSize(1000F, 1000F));
+                ViewHelper.AdjustFrameSetWidth(_addLbl, addSize.Width);
 
-                ViewHelper.AdjustFrameSetWidth(addView, addIcon.Frame.Width + GetScaledWidth(4F) + addLbl.Frame.Width + GetScaledWidth(_dashboardHomeHelper.HasMoreThanThreeAccts ? 12F : 0F));
+                ViewHelper.AdjustFrameSetWidth(addView, addIcon.Frame.Width + GetScaledWidth(4F) + _addLbl.Frame.Width + GetScaledWidth(_dashboardHomeHelper.HasMoreThanThreeAccts ? 12F : 0F));
                 ViewHelper.AdjustFrameSetX(addView, _dashboardHomeHelper.HasMoreThanThreeAccts ? pipeView.Frame.GetMinX() - addView.Frame.Width : _headerView.Frame.Width - addView.Frame.Width - BaseMarginWidth16);
 
                 ViewHelper.AdjustFrameSetX(addIcon, 0);
-                ViewHelper.AdjustFrameSetX(addLbl, addIcon.Frame.GetMaxX() + GetScaledWidth(4F));
+                ViewHelper.AdjustFrameSetX(_addLbl, addIcon.Frame.GetMaxX() + GetScaledWidth(4F));
             }
         }
 
@@ -241,7 +278,7 @@ namespace myTNB
                    , font: TNBFont.MuseoSans_12_500
                    , foregroundColor: UIColor.FromWhiteAlpha(1, 0.6F)
                    , strokeWidth: 0
-               ),
+                ),
                 BackgroundColor = UIColor.Clear,
                 TintColor = UIColor.White
             };
@@ -306,24 +343,24 @@ namespace myTNB
                 BackgroundColor = UIColor.Clear
             };
 
-            UILabel moreAcctsLabel = new UILabel(new CGRect(0, 0, 0, GetScaledHeight(16F)))
+            _moreAcctsLabel = new UILabel(new CGRect(0, 0, 0, GetScaledHeight(16F)))
             {
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = UIColor.White,
                 Text = allAcctsAreVisible ? GetI18NValue(DashboardHomeConstants.I18N_ShowLess) : GetI18NValue(DashboardHomeConstants.I18N_MoreAccts)
             };
-            moreLessView.AddSubview(moreAcctsLabel);
-            UIImageView arrowUpDown = new UIImageView(new CGRect(moreAcctsLabel.Frame.GetMaxX(), 0, GetScaledWidth(16F), GetScaledHeight(16F)))
+            moreLessView.AddSubview(_moreAcctsLabel);
+            UIImageView arrowUpDown = new UIImageView(new CGRect(_moreAcctsLabel.Frame.GetMaxX(), 0, GetScaledWidth(16F), GetScaledHeight(16F)))
             {
                 Image = UIImage.FromBundle(allAcctsAreVisible ? DashboardHomeConstants.Img_ArrowUpWhite : DashboardHomeConstants.Img_ArrowDownWhite)
             };
             moreLessView.AddSubview(arrowUpDown);
 
-            CGSize lblSize = moreAcctsLabel.SizeThatFits(new CGSize(1000F, 1000F));
-            ViewHelper.AdjustFrameSetWidth(moreAcctsLabel, lblSize.Width);
-            ViewHelper.AdjustFrameSetX(arrowUpDown, moreAcctsLabel.Frame.GetMaxX() + GetScaledWidth(4F));
+            CGSize lblSize = _moreAcctsLabel.SizeThatFits(new CGSize(1000F, 1000F));
+            ViewHelper.AdjustFrameSetWidth(_moreAcctsLabel, lblSize.Width);
+            ViewHelper.AdjustFrameSetX(arrowUpDown, _moreAcctsLabel.Frame.GetMaxX() + GetScaledWidth(4F));
 
-            ViewHelper.AdjustFrameSetWidth(moreLessView, moreAcctsLabel.Frame.Width + GetScaledWidth(4F) + arrowUpDown.Frame.Width);
+            ViewHelper.AdjustFrameSetWidth(moreLessView, _moreAcctsLabel.Frame.Width + GetScaledWidth(4F) + arrowUpDown.Frame.Width);
             ViewHelper.AdjustFrameSetX(moreLessView, GetXLocationToCenterObject(moreLessView.Frame.Width, moreLessContainer));
 
             moreLessContainer.AddSubview(moreLessView);
@@ -353,19 +390,19 @@ namespace myTNB
                     Image = UIImage.FromBundle(DashboardHomeConstants.Img_RearrangeIcon)
                 };
                 rearrangeView.AddSubview(iconR);
-                UILabel rearrangeLabel = new UILabel(new CGRect(0, 0, 0, GetScaledHeight(16F)))
+                _rearrangeLabel = new UILabel(new CGRect(0, 0, 0, GetScaledHeight(16F)))
                 {
                     Font = TNBFont.MuseoSans_12_500,
                     TextColor = UIColor.White,
                     Text = GetI18NValue(DashboardHomeConstants.I18N_RearrangeAccts)
                 };
-                rearrangeView.AddSubview(rearrangeLabel);
+                rearrangeView.AddSubview(_rearrangeLabel);
 
-                CGSize lblRSize = rearrangeLabel.SizeThatFits(new CGSize(1000F, 1000F));
-                ViewHelper.AdjustFrameSetWidth(rearrangeLabel, lblRSize.Width);
-                ViewHelper.AdjustFrameSetX(rearrangeLabel, iconR.Frame.GetMaxX() + GetScaledWidth(8F));
+                CGSize lblRSize = _rearrangeLabel.SizeThatFits(new CGSize(1000F, 1000F));
+                ViewHelper.AdjustFrameSetWidth(_rearrangeLabel, lblRSize.Width);
+                ViewHelper.AdjustFrameSetX(_rearrangeLabel, iconR.Frame.GetMaxX() + GetScaledWidth(8F));
 
-                ViewHelper.AdjustFrameSetWidth(rearrangeView, iconR.Frame.Width + GetScaledWidth(8F) + rearrangeLabel.Frame.Width);
+                ViewHelper.AdjustFrameSetWidth(rearrangeView, iconR.Frame.Width + GetScaledWidth(8F) + _rearrangeLabel.Frame.Width);
                 ViewHelper.AdjustFrameSetX(rearrangeView, GetXLocationToCenterObject(rearrangeView.Frame.Width, rearrangeContainer));
 
                 rearrangeContainer.AddSubview(rearrangeView);

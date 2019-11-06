@@ -38,9 +38,10 @@ namespace myTNB
                 , View.Frame.Width, View.Frame.Height - 49 - (DeviceHelper.IsIphoneXUpResolution() ? 88 : 64));
         }
 
-        public void LanguageDidChange(NSNotification notification)
+        protected override void LanguageDidChange(NSNotification notification)
         {
             Debug.WriteLine("DEBUG >>> PROMOTIONS LanguageDidChange");
+            base.LanguageDidChange(notification);
             _titleBarComponent?.SetTitle(GetI18NValue(PromotionConstants.I18N_Title));
         }
 

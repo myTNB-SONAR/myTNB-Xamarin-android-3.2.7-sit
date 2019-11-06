@@ -392,7 +392,7 @@ namespace myTNB.SitecoreCMS
                 }
 
                 UpdateTimeStamp(timeStamp.Data[0].Timestamp, "LanguageTimeStamp", ref needsUpdate);
-
+                needsUpdate = true;
                 if (needsUpdate)
                 {
                     LanguageResponseModel languageItems = iService.GetLanguageItems();

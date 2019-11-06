@@ -61,6 +61,13 @@ namespace myTNB
         {
             base.ViewDidAppear(animated);
         }
+
+        protected virtual void LanguageDidChange(NSNotification notification)
+        {
+            Debug.WriteLine("DEBUG >>> LanguageDidChange: " + PageName);
+            I18NDictionary = LanguageManager.Instance.GetValuesByPage(PageName);
+        }
+
         #endregion
         #region Widget Utilities
         public CGSize GetLabelSize(UILabel label, nfloat width, nfloat height)

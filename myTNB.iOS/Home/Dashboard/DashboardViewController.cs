@@ -97,9 +97,10 @@ namespace myTNB.Dashboard
             PushNotificationHelper.UpdateApplicationBadge();
         }
 
-        public void LanguageDidChange(NSNotification notification)
+        protected override void LanguageDidChange(NSNotification notification)
         {
             Debug.WriteLine("DEBUG >>> INNER DASHBOARD LanguageDidChange");
+            base.LanguageDidChange(notification);
         }
 
         internal void HandleAppWillEnterForeground(NSNotification notification)

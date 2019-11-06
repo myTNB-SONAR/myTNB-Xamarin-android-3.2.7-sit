@@ -293,11 +293,19 @@ namespace myTNB
             PushNotificationHelper.UpdateApplicationBadge();
         }
 
-        private void LanguageDidChange(NSNotification notification)
+        protected override void LanguageDidChange(NSNotification notification)
         {
-            Debug.WriteLine("DEBUG >>> SUMMARY DASHBOARD LanguageDidChange");
+            Debug.WriteLine("DEBUG >>> Home LanguageDidChange");
+            base.LanguageDidChange(notification);
+            UpdateGreeting(GetGreeting());
+            if (_accountListViewController != null)
+            {
+                DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
+                AmountDueCache.Reset();
+                _accountListViewController.PrepareAccountList();
+            }
+            OnLoadHomeData();
         }
-        #endregion
 
         private void OnEnterForeground(NSNotification notification)
         {
@@ -318,6 +326,7 @@ namespace myTNB
                 }
             }
         }
+        #endregion
 
         private void OnLoadHomeData()
         {

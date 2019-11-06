@@ -40,9 +40,10 @@ namespace myTNB
             }
         }
 
-        public void LanguageDidChange(NSNotification notification)
+        protected override void LanguageDidChange(NSNotification notification)
         {
             Debug.WriteLine("DEBUG >>> FEEDBACK LanguageDidChange");
+            base.LanguageDidChange(notification);
             _titleBarComponent?.SetTitle(GetI18NValue(FeedbackConstants.I18N_Title));
         }
 

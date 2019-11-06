@@ -44,9 +44,10 @@ namespace myTNB
             base.ViewWillDisappear(animated);
         }
 
-        public void LanguageDidChange(NSNotification notification)
+        protected override void LanguageDidChange(NSNotification notification)
         {
             Debug.WriteLine("DEBUG >>> MORE LanguageDidChange");
+            base.LanguageDidChange(notification);
             _titleBarComponent?.SetTitle(GetI18NValue(ProfileConstants.I18N_NavTitle));
             _lblAppVersion.Text = string.Format("{0} {1}", GetI18NValue(ProfileConstants.I18N_AppVersion), AppVersionHelper.GetAppShortVersion());
             if (!TNBGlobal.IsProduction)
