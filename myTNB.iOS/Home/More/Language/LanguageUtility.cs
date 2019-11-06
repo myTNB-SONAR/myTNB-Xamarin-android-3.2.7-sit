@@ -67,6 +67,14 @@ namespace myTNB
             TNBGlobal.APP_LANGUAGE = lang;
         }
 
+        public static void SetAppLanguageByIndex(int index)
+        {
+            if (index > -1 && index < SupportedLanguage.Count)
+            {
+                SetAppLanguage(SupportedLanguage[index]);
+            }
+        }
+
         public static void InitializeLanguage()
         {
             SetAppLanguage(IsLanguageSet ? CurrentSavedLanguage : CurrentDeviceLanguage);

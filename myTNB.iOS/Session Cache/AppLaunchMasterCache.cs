@@ -28,12 +28,12 @@ namespace myTNB
                 masterData = new MasterDataModel();
             }
             response = resp;
-            if (response != null &&
-                response.d != null &&
-                response.d.data != null)
+            if (response != null && response.d != null &&
+                response.d.data != null && response.d.IsSuccess)
             {
                 dataModel = response.d;
                 masterData = response.d.data;
+                IsSuccess = response.d.IsSuccess;
 
                 DataManager.DataManager.SharedInstance.LatestAppVersion = masterData?.ForceUpdateInfo?.iOSLatestVersion;
                 DataManager.DataManager.SharedInstance.SystemStatus = masterData?.SystemStatus ?? new List<DowntimeDataModel>();
@@ -126,5 +126,11 @@ namespace myTNB
                 return true;
             }
         }
+
+        public static bool IsSuccess
+        {
+            private set;
+            get;
+        } = false;
     }
 }

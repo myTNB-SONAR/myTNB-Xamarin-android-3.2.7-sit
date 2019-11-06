@@ -19,12 +19,15 @@ namespace myTNB
         public MoreViewController(IntPtr handle) : base(handle) { }
         private TitleBarComponent _titleBarComponent;
         private UILabel _lblAppVersion;
+        private bool _isSitecoreDone, _isMasterDataDone;
 
         public override void ViewDidLoad()
         {
             PageName = ProfileConstants.Pagename_Profile;
             NavigationController.NavigationBarHidden = true;
             base.ViewDidLoad();
+            _isSitecoreDone = false;
+            _isMasterDataDone = false;
             NotifCenterUtility.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
             SetSubviews();
         }
@@ -286,30 +289,29 @@ namespace myTNB
                   , UITextAlignment.Center);
         }
 
+        /*Todo: Do service calls and set lang
+         * 1. Call site core
+         * 2. Call Applaunch master data
+         * 3. Clear Usage cache
+        */
         private void OnChangeLanguage(int index)
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                InvokeOnMainThread(async () =>
+                InvokeOnMainThread(() =>
                 {
                     if (NetworkUtility.isReachable)
                     {
-                        /*Todo: Do service calls and set lang
-                            1. Call site core
-                            2. Call Applaunch master data
-                            3. Clear Usage cache
-                        */
                         ActivityIndicator.Show();
-
-                        List<Task> taskList = new List<Task>{
-                            OnGetAppLaunchMasterData(),
-                            OnExecuteSiteCore()
-                        };
-                        await Task.WhenAll(taskList.ToArray());
-                        languageViewController.DismissViewController(true, null);
-                        Debug.WriteLine("Change Language Done");
-                        ActivityIndicator.Hide();
-
+                        LanguageUtility.SetAppLanguageByIndex(index);
+                        InvokeOnMainThread(async () =>
+                        {
+                            List<Task> taskList = new List<Task>{
+                                OnGetAppLaunchMasterData(),
+                                OnExecuteSiteCore()
+                           };
+                            await Task.WhenAll(taskList.ToArray());
+                        });
                     }
                     else
                     {
@@ -319,12 +321,36 @@ namespace myTNB
             });
         }
 
+        private void ChangeLanguageCallback()
+        {
+            if (_isMasterDataDone && _isSitecoreDone)
+            {
+                InvokeOnMainThread(() =>
+                {
+                    //Todo: Check success and fail States
+                    ClearCache();
+                    languageViewController.DismissViewController(true, null);
+                    Debug.WriteLine("Change Language Done");
+                    NotifCenterUtility.PostNotificationName("LanguageDidChange", new NSObject());
+                    ActivityIndicator.Hide();
+                });
+            }
+        }
+
+        private void ClearCache()
+        {
+            AccountUsageCache.ClearCache();
+            AccountUsageSmartCache.ClearCache();
+        }
+
         private Task OnGetAppLaunchMasterData()
         {
-            return Task.Factory.StartNew(async () =>
+            return Task.Factory.StartNew(() =>
             {
-                AppLaunchResponseModel response = await ServiceCall.GetAppLaunchMasterData();
+                AppLaunchResponseModel response = ServiceCall.GetAppLaunchMasterData().Result;
                 AppLaunchMasterCache.AddAppLaunchResponseData(response);
+                _isMasterDataDone = true;
+                ChangeLanguageCallback();
             });
         }
 
@@ -333,6 +359,8 @@ namespace myTNB
             return Task.Factory.StartNew(async () =>
             {
                 await SitecoreServices.Instance.OnExecuteSitecoreCall(true);
+                _isSitecoreDone = true;
+                ChangeLanguageCallback();
             });
         }
 

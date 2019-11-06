@@ -95,7 +95,7 @@
         public static string Error_MinimumPayAmount = "minimumPayAmount";
         public static string Error_MinimumMandatoryAmount = "minimumMandatoryPayment";
         public static string Error_InvalidEmailAddress = "invalid_email";
-        public static string Error_InvalidCode = "invalid_code";
+        public static string Error_InvalidCode = "invalid_pin";
         public static string Error_InvalidPassword = "invalid_password";
         public static string Error_MismatchedPassword = "invalid_mismatchedPassword";
         public static string Error_InvalidMobileNumber = "invalid_mobileNumber";

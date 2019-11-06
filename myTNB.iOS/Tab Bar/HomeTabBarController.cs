@@ -40,7 +40,7 @@ namespace myTNB
         public void LanguageDidChange(NSNotification notification)
         {
             Debug.WriteLine("DEBUG >>> HOME TAB BAR LanguageDidChange");
-            SetTabbarTitle();
+            //SetTabbarTitle();
         }
 
         public override void ViewWillAppear(bool animated)
