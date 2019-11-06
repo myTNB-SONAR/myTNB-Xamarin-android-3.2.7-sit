@@ -76,7 +76,7 @@
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                     android:id="@+id/txtInputLayoutEmail"
                     android:layout_marginRight="17dp"
                     app:errorEnabled="true">
@@ -107,7 +107,7 @@
                 <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance"
+                    app:hintTextAppearance="@style/TextInputLayout.TextAppearance.Small"
                     android:id="@+id/txtInputLayoutPassword"
                     app:errorEnabled="true"
                     android:layout_marginTop="10dp"
