@@ -35,7 +35,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
         //, MainLauncher = true
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.MyAccount")]
-    public class MyAccountActivity : BaseToolbarAppCompatActivity, MyAccountContract.IView
+    public class MyAccountActivity : BaseActivityCustom, MyAccountContract.IView
     {
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
@@ -111,6 +111,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         MaterialDialog accountRetrieverDialog, logoutProgressDialog;
         private LoadingOverlay loadingOverlay;
+        const string PAGE_ID = "MyAccount";
 
         public override int ResourceId()
         {
@@ -136,10 +137,10 @@ namespace myTNB_Android.Src.MyAccount.Activity
                     .Build();
 
                 logoutProgressDialog = new MaterialDialog.Builder(this)
-                    .Title(GetString(Resource.String.logout_activity_title))
-                    .Content(GetString(Resource.String.logout_app_question))
-                    .PositiveText(GetString(Resource.String.manage_cards_btn_ok))
-                    .NeutralText(GetString(Resource.String.bill_related_feedback_selection_cancel))
+                    .Title(GetLabelByLanguage("logout"))
+                    .Content(GetLabelByLanguage("logoutMessage"))
+                    .PositiveText(GetLabelCommonByLanguage("ok"))
+                    .NeutralText(GetLabelCommonByLanguage("cancel"))
                     .OnPositive((dialog, which) => this.userActionsListener.OnLogout(this.DeviceId()))
                     .OnNeutral((dialog, which) => dialog.Dismiss())
                     .Build();
@@ -809,6 +810,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

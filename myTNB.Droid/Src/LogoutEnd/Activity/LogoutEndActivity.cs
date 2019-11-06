@@ -40,7 +40,10 @@ namespace myTNB_Android.Src.LogoutEnd.Activity
             base.OnCreate(savedInstanceState);
             TextViewUtils.SetMuseoSans300Typeface(txtContentInfo);
             TextViewUtils.SetMuseoSans500Typeface(btnBackToHome, txtTitleInfo);
-            // Create your application here
+            txtTitleInfo.Text = Utility.GetLocalizedLabel("Logout","logoutTitle");
+            txtContentInfo.Text = Utility.GetLocalizedLabel("Logout", "message");
+            btnBackToHome.Text = Utility.GetLocalizedLabel("Logout", "loginAgain");
+
             mSharedPref = PreferenceManager.GetDefaultSharedPreferences(this);
             UserSessions.SavePhoneVerified(mSharedPref, false);
         }
