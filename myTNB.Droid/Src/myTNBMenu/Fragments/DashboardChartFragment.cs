@@ -7167,7 +7167,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             txtDayViewZoomInIndicator.Text = str;
         }
-        
+
         public override string GetPageId()
         {
             return PAGE_ID;
@@ -7628,6 +7628,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public bool GetIsREAccount()
         {
             return isREAccount;
+        }
+
+        public override string GetPageId()
+        {
+            return "";
         }
     }
 }
