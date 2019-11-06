@@ -120,7 +120,7 @@
     "serviceErrorDefaultMessage": "Sorry, something went wrong. Please try again later.",
     "invalid_amountMessage": "Kindly enter a non-zero/positive amount",
     "invalid_amountTitle": "Invalid Amount",
-    "invalid_code": "Invalid code",
+    "invalid_pin": "Invalid PIN",
     "invalid_password": "Your password must have at least 8 alphanumeric characters.",
     "invalid_mismatchedPassword": "Your new passwords do not match.",
     "invalid_fullname": "Invalid full name",
@@ -608,7 +608,7 @@
     "updateMobileNumberTitle": "Update Mobile No."
   },
   "VerifyPin": {
-    "title": "Verify Device",
+    "title": "Verify PIN",
     "smsNotReceived": "Didn't receive the SMS?",
     "resendPinMessage": "An SMS containing the activation pin has been sent to your number.",
     "otpMobileUpdate": "An OTP has been sent to {0}, please enter it below.",

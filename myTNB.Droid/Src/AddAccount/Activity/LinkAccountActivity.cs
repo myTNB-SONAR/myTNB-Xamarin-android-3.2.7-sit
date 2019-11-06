@@ -464,14 +464,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     ACCOUNT_COUNT = CustomerBillingAccount.List().Count() + 1;
                     if (response.Count > 0)
                     {
-                        if (response.Count == 1)
-                        {
-                            textNoOfAcoount.Text = response.Count + " electricity supply account found!";
-                        }
-                        else
-                        {
-                            textNoOfAcoount.Text = response.Count + " electricity supply accounts found!";
-                        }
+                        textNoOfAcoount.Text = response.Count + GetLabelByLanguage("supplyAcctCount");
 
                         labelAccountLabel.Visibility = ViewStates.Visible;
                         for (int i = 0; i < response.Count; i++)

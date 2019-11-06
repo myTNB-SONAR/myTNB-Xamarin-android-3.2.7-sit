@@ -120,7 +120,7 @@
     "serviceErrorDefaultMessage": "Sorry, something went wrong. Please try again later.",
     "invalid_amountMessage": "Kindly enter a non-zero/positive amount",
     "invalid_amountTitle": "Invalid Amount",
-    "invalid_code": "Kod tidak sah",
+    "invalid_pin": "PIN tidak sah",
     "invalid_password": "Kata laluan anda mesti mempunyai sekurang-kurangnya 8 aksara (abjad dan angka).",
     "invalid_mismatchedPassword": "Kata laluan baru anda tidak sepadan.",
     "invalid_fullname": "Invalid full name",
@@ -608,7 +608,7 @@
     "updateMobileNumberTitle": "Kemaskini Nombor Telefon"
   },
   "VerifyPin": {
-    "title": "Sahkan No. Telefon",
+    "title": "Sahkan PIN",
     "smsNotReceived": "Tidak terima SMS?",
     "resendPinMessage": "SMS mengandungi pin pengaktifan telah dihantar ke nombor anda.",
     "otpMobileUpdate": "Sila masukkan kod OTP 4 digit yang telah dihantar ke {0}.",

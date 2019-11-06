@@ -337,7 +337,7 @@ namespace myTNB_Android.Src.RegistrationForm.Activity
 
         public void ShowPasswordMinimumOf6CharactersError()
         {
-            textInputLayoutPassword.Error = Utility.GetLocalizedErrorLabel("invalid_mismatchedEmail");
+            textInputLayoutPassword.Error = Utility.GetLocalizedErrorLabel("invalid_password");
             textInputLayoutPassword.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
         }
 
