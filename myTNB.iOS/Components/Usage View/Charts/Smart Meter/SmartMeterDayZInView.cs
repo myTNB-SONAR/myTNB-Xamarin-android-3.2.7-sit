@@ -98,7 +98,7 @@ namespace myTNB.SmartMeterView
                 _segmentScrollView.AddSubview(segment);
                 xLoc += segmentWidth + segmentMargin;
 
-                double.TryParse(item.Amount, out double value);
+                double.TryParse(item.Consumption, out double value);
                 nfloat barHeight = (nfloat)(divisor * value);
                 nfloat yLoc = GetHeightByScreenSize(34) + maxBarHeight - barHeight;
 
