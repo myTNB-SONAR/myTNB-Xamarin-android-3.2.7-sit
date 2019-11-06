@@ -16,14 +16,23 @@ namespace myTNB.SitecoreCMS
         private static readonly Lazy<SitecoreServices> lazy = new Lazy<SitecoreServices>(() => new SitecoreServices());
         public static SitecoreServices Instance { get { return lazy.Value; } }
 
-        public async Task OnAppLaunchSitecoreCall()
+        private static bool _isForcedUpdate;
+
+        public async Task OnExecuteSitecoreCall(bool isforcedUpdate = false)
         {
-            List<Task> taskList = new List<Task>();
-            taskList.Add(LoadMeterReadSSMRWalkthrough());
-            taskList.Add(LoadMeterReadSSMRWalkthroughV2());
-            taskList.Add(LoadBillDetailsTooltip());
-            taskList.Add(LoadSSMRWalkthrough());
-            taskList.Add(LoadTermsAndCondition());
+            _isForcedUpdate = isforcedUpdate;
+            List<Task> taskList = new List<Task>
+            {
+                LoadMeterReadSSMRWalkthrough(),
+                LoadMeterReadSSMRWalkthroughV2(),
+                LoadBillDetailsTooltip(),
+                LoadSSMRWalkthrough(),
+                LoadTermsAndCondition()
+            };
+            if (_isForcedUpdate)
+            {
+                taskList.Add(LoadLanguage());
+            }
             if (!AppLaunchMasterCache.IsEnergyTipsDisabled)
             {
                 taskList.Add(LoadEnergyTips());
@@ -58,7 +67,7 @@ namespace myTNB.SitecoreCMS
             NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
             string currentTS = sharedPreference.StringForKey(key);
 
-            if (currentTS != null && currentTS.Equals(sitecoreTS))
+            if (currentTS != null && currentTS.Equals(sitecoreTS) && !_isForcedUpdate)
             {
                 needsUpdate = false;
             }

@@ -682,7 +682,7 @@ namespace myTNB
 
                     InvokeInBackground(async () =>
                     {
-                        await SitecoreServices.Instance.OnAppLaunchSitecoreCall();
+                        await SitecoreServices.Instance.OnExecuteSitecoreCall();
                         NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
                         sharedPreference.SetBool(AppLaunchMasterCache.IsOCRDown, "IsOCRDown");
                         sharedPreference.Synchronize();

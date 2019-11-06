@@ -39,6 +39,7 @@ namespace myTNB.PushNotification
         {
             PageName = PushNotificationConstants.Pagename_PushNotificationList;
             base.ViewDidLoad();
+            UpdateNotificationTypes();
             NotifCenterUtility.AddObserver((NSString)"OnNotificationFilterDidChange", OnNotificationFilterDidChange);
             NotifCenterUtility.AddObserver((NSString)"OnReceiveNotificationFromDashboard", OnReceiveNotificationFromDashboard);
             SetNavigationBar();
@@ -57,6 +58,16 @@ namespace myTNB.PushNotification
             OnReset();
             SetNavigationBar();
             pushNotificationTableView.TableHeaderView = null;
+        }
+
+        private void UpdateNotificationTypes()
+        {
+            if (DataManager.DataManager.SharedInstance.NotificationGeneralTypes.Count > 0
+                && DataManager.DataManager.SharedInstance.NotificationGeneralTypes[0].Id == "all")
+            {
+                DataManager.DataManager.SharedInstance.NotificationGeneralTypes[0].Title
+                    = GetCommonI18NValue(Constants.Common_AllNotifications);
+            }
         }
 
         private void OnReset()
