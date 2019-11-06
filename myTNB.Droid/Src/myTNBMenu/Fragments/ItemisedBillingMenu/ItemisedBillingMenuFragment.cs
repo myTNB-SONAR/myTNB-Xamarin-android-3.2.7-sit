@@ -126,7 +126,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         IMenuItem billFilterMenuItem;
 
-        private NewAppTutorialDialogFragment mDiaLog;
+        private static bool isTutorialShow = false;
 
 
         const string SELECTED_ACCOUNT_KEY = "SELECTED_ACCOUNT";
@@ -184,8 +184,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             }
             public void OnScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY)
             {
-                bool IsWidgetVisible = isViewVisible(v,mBillHistoryTitle);
-                mOnScrollMethod(IsWidgetVisible);
+                if (!isTutorialShow)
+                {
+                    bool IsWidgetVisible = isViewVisible(v, mBillHistoryTitle);
+                    mOnScrollMethod(IsWidgetVisible);
+                }
             }
 
             private bool isViewVisible(NestedScrollView v, View view)
@@ -336,6 +339,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             {
                 Utility.LoggingNonFatalError(e);
             }
+
+            isTutorialShow = false;
         }
 
         public void RenderUI()
@@ -757,19 +762,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         public override void OnPause()
         {
             base.OnPause();
-            if (mDiaLog != null)
-            {
-                try
-                {
-                    mDiaLog.Dismiss();
-                    mDiaLog = null;
-                }
-                catch (Exception e)
-                {
-                    mDiaLog = null;
-                    Utility.LoggingNonFatalError(e);
-                }
-            }
+            isTutorialShow = false;
         }
 
         public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)
@@ -791,7 +784,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             NewAppTutorialDialogFragment dialogFragmnet = new NewAppTutorialDialogFragment(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList(GetString(Resource.String.tutorial_arrow_down)));
             dialogFragmnet.Cancelable = false;
             dialogFragmnet.Show(((AppCompatActivity)this.Activity).SupportFragmentManager, "NewAppTutorial Dialog");
-            mDiaLog = dialogFragmnet;
+            isTutorialShow = true;
             return dialogFragmnet;
         }
 
@@ -835,12 +828,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             return child.Height + itemisedBillingScrollView.PaddingTop + itemisedBillingScrollView.PaddingBottom;
         }
 
-        public void OnDisposeDialog()
+        public void OnUnsetIsTutorialShownFlag()
         {
-            if (mDiaLog != null)
-            {
-                mDiaLog = null;
-            }
+            isTutorialShow = false;
         }
     }
 }

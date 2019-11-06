@@ -309,7 +309,27 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                         }
                                         else
                                         {
-                                            ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                                            if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
+                                            {
+                                                int topHeight = (int)DPUtils.ConvertDPToPx(55f);
+                                                int middleHeight = (int)DPUtils.ConvertDPToPx(285f);
+                                                if (DisplayMode == "Extra")
+                                                {
+                                                    middleHeight = (int)DPUtils.ConvertDPToPx(265f);
+                                                }
+                                                if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                                {
+                                                    ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling((int)DPUtils.ConvertDPToPx(30f));
+                                                }
+                                                else
+                                                {
+                                                    ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                                            }
                                         }
                                     }
                                     else
@@ -377,6 +397,24 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                                 ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
                                             }
                                         }
+                                        else if (e.Position == 0)
+                                        {
+                                            int topHeight = (int)DPUtils.ConvertDPToPx(55f);
+                                            int middleHeight = (int)DPUtils.ConvertDPToPx(285f);
+                                            if (DisplayMode == "Extra")
+                                            {
+                                                middleHeight = (int)DPUtils.ConvertDPToPx(265f);
+                                            }
+
+                                            if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                            {
+                                                ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling((int)DPUtils.ConvertDPToPx(30f));
+                                            }
+                                            else
+                                            {
+                                                ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                                            }
+                                        }
                                         else
                                         {
                                             ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
@@ -409,9 +447,25 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
             base.OnCreate(savedInstanceState);
         }
 
+        public override void OnPause()
+        {
+            base.OnPause();
+            this.DismissAllowingStateLoss();
+            if (this.mFragment is HomeMenuFragment)
+            {
+                ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
+            }
+            else if (this.mFragment is ItemisedBillingMenuFragment)
+            {
+                ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                ((ItemisedBillingMenuFragment)this.mFragment).OnUnsetIsTutorialShownFlag();
+            }
+        }
+
         bool View.IOnTouchListener.OnTouch(View v, MotionEvent e)
         {
             return mGeatureDetector.OnTouchEvent(e);
+
         }
 
         void ViewPager.IPageTransformer.TransformPage(View page, float position)
@@ -447,17 +501,16 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
 
             public override bool OnDoubleTap(MotionEvent e)
             {
-                this.mDialog.Dismiss();
+                this.mDialog.DismissAllowingStateLoss();
                 if (this.mFragment is HomeMenuFragment)
                 {
                     ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
-                    ((HomeMenuFragment)this.mFragment).OnDisposeDialog();
                     UserSessions.DoHomeTutorialShown(this.mPref);
                 }
                 else if (this.mFragment is ItemisedBillingMenuFragment)
                 {
                     ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
-                    ((ItemisedBillingMenuFragment)this.mFragment).OnDisposeDialog();
+                    ((ItemisedBillingMenuFragment)this.mFragment).OnUnsetIsTutorialShownFlag();
                 }
                 return true;
             }
@@ -470,6 +523,19 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
             public override bool OnDown(MotionEvent e)
             {
                 return true;
+            }
+
+
+            public override void OnLongPress(MotionEvent e)
+            {
+                try
+                {
+                    base.OnLongPress(e);
+                }
+                catch (Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
             }
 
         }

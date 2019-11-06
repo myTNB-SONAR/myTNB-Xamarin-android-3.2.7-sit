@@ -1096,19 +1096,11 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         {
                             middleHeight = (int)DPUtils.ConvertDPToPx(265f);
                         }
-                        /*if (this.mFragment is HomeMenuFragment)
-                        {
-                            if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
-                            {
-                                int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
-                                int halfScroll = topHeight / 2;
 
-                                if (diffHeight < halfScroll)
-                                {
-                                    topHeight = topHeight / 2;
-                                }
-                            }
-                        }*/
+                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                        {
+                            topHeight -= (int)DPUtils.ConvertDPToPx(30f);
+                        }
 
                         LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
                         topLayoutParam.Height = topHeight;
@@ -1229,19 +1221,11 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         {
                             middleHeight = (int)DPUtils.ConvertDPToPx(265f);
                         }
-                        /*if (this.mFragment is HomeMenuFragment)
-                        {
-                            if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
-                            {
-                                int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
-                                int halfScroll = topHeight / 2;
 
-                                if (diffHeight < halfScroll)
-                                {
-                                    topHeight = topHeight / 2;
-                                }
-                            }
-                        }*/
+                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                        {
+                            topHeight -= (int)DPUtils.ConvertDPToPx(30f);
+                        }
 
                         LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
                         topLayoutParam.Height = topHeight;
@@ -1440,17 +1424,16 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
 
         private void BtnGotIt_Click(object sender, EventArgs e)
         {
-            this.mDialog.Dismiss();
+            this.mDialog.DismissAllowingStateLoss();
             if (this.mFragment is HomeMenuFragment)
             {
                 ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
-                ((HomeMenuFragment)this.mFragment).OnDisposeDialog();
                 UserSessions.DoHomeTutorialShown(this.mPref);
             }
             else if (this.mFragment is ItemisedBillingMenuFragment)
             {
                 ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
-                ((ItemisedBillingMenuFragment)this.mFragment).OnDisposeDialog();
+                ((ItemisedBillingMenuFragment)this.mFragment).OnUnsetIsTutorialShownFlag();
             }
         }
 
