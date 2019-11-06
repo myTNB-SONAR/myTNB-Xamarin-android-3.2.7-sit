@@ -12,8 +12,8 @@ namespace myTNB
         /// <param name="key">Key.</param>
         public static string Translate(this string key)
         {
-            NSBundle languageBundle = LanguageSettings.LanguageBundle ?? NSBundle.MainBundle;
-            return languageBundle.GetLocalizedString(key, "", "");
+            //NSBundle languageBundle = LanguageSettings.LanguageBundle ?? NSBundle.MainBundle;
+            return key;//languageBundle.GetLocalizedString(key, "", "");
         }
 
         public static string FormatAmountString(this string amount, string currency)

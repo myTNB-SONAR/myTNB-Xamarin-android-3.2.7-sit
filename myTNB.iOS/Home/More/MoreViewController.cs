@@ -274,11 +274,11 @@ namespace myTNB
         private void OnSelectLanguage(int index)
         {
             Debug.WriteLine("Selected Index: " + index);
-            DisplayCustomAlert(GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageTitle, TNBGlobal.DEFAULT_LANGUAGE))
-                  , GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageMessage, TNBGlobal.DEFAULT_LANGUAGE))
+            DisplayCustomAlert(GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageTitle, TNBGlobal.APP_LANGUAGE))
+                  , GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageMessage, TNBGlobal.APP_LANGUAGE))
                   , new Dictionary<string, Action> {
-                        { GetCommonI18NValue(string.Format("{0}_{1}",Constants.Common_ChangeLanguageNo, TNBGlobal.DEFAULT_LANGUAGE)), null}
-                        ,{ GetCommonI18NValue(string.Format("{0}_{1}",Constants.Common_ChangeLanguageYes, TNBGlobal.DEFAULT_LANGUAGE))
+                        { GetCommonI18NValue(string.Format("{0}_{1}",Constants.Common_ChangeLanguageNo, TNBGlobal.APP_LANGUAGE)), null}
+                        ,{ GetCommonI18NValue(string.Format("{0}_{1}",Constants.Common_ChangeLanguageYes, TNBGlobal.APP_LANGUAGE))
                             , ()=>{ OnChangeLanguage(index); } } }
                   , UITextAlignment.Center
                   , UITextAlignment.Center);

@@ -153,52 +153,7 @@ namespace myTNB
                 description.Frame = new CGRect(description.Frame.Location, new CGSize(description.Frame.Width, size.Height));
                 viewContainer.AddSubview(description);
 
-                if (OnboardingModel[i].IsLanguageEntry)
-                {
-                    UIView toggleView = new UIView(new CGRect(0, GetYLocationFromFrame(description.Frame, 18)
-                        , viewContainer.Frame.Width, GetScaledHeight(26)))
-                    {
-                        BackgroundColor = UIColor.Clear,
-                        UserInteractionEnabled = true
-                    };
-                    nfloat toggleWidth = GetScaledWidth(122);
-                    nfloat toggleHeight = GetScaledHeight(26);
-
-                    UISegmentedControl _toggleBar = new UISegmentedControl(new CGRect(GetXLocationToCenterObject(toggleWidth, viewContainer)
-                        , 0, toggleWidth, toggleHeight));
-                    _toggleBar.InsertSegment("EN", 0, false);
-                    _toggleBar.InsertSegment("BM", 1, false);
-                    _toggleBar.TintColor = MyTNBColor.WaterBlue;
-                    _toggleBar.SetTitleTextAttributes(new UITextAttributes
-                    {
-                        Font = TNBFont.MuseoSans_12_300,
-                        TextColor = MyTNBColor.WaterBlue
-                    }, UIControlState.Normal);
-                    _toggleBar.SetTitleTextAttributes(new UITextAttributes
-                    {
-                        Font = TNBFont.MuseoSans_12_300,
-                        TextColor = UIColor.White
-                    }, UIControlState.Selected);
-                    _toggleBar.Layer.CornerRadius = toggleHeight / 2;
-                    _toggleBar.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
-                    _toggleBar.Layer.BorderWidth = GetScaledHeight(1);
-                    _toggleBar.Layer.MasksToBounds = true;
-                    _toggleBar.ValueChanged += (sender, e) =>
-                    {
-                        Debug.WriteLine("selected index: " + ((UISegmentedControl)sender).SelectedSegment);
-                        AlertHandler.DisplayCustomAlert(GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageTitle, TNBGlobal.DEFAULT_LANGUAGE))
-                         , GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageMessage, TNBGlobal.DEFAULT_LANGUAGE))
-                         , new Dictionary<string, Action> {
-                            { GetCommonI18NValue(string.Format("{0}_{1}",Constants.Common_ChangeLanguageNo, TNBGlobal.DEFAULT_LANGUAGE)), null}
-                            ,{ GetCommonI18NValue(string.Format("{0}_{1}",Constants.Common_ChangeLanguageYes, TNBGlobal.DEFAULT_LANGUAGE)) ,null} }
-                         , UITextAlignment.Center
-                         , UITextAlignment.Center);
-                    };
-                    _toggleBar.SelectedSegment = 0;
-                    _toggleBar.Enabled = true;
-                    toggleView.AddSubview(_toggleBar);
-                    viewContainer.AddSubview(toggleView);
-                }
+                AddToggleBar(OnboardingModel[i].IsLanguageEntry, viewContainer, description.Frame);
 
                 if (OnboardingModel.Count > 1 && i == OnboardingModel.Count - 1)
                 {
@@ -222,6 +177,57 @@ namespace myTNB
                 _scrollView.AddSubview(viewContainer);
             }
             _scrollView.ContentSize = new CGSize(_scrollView.Frame.Width * OnboardingModel.Count, _scrollView.Frame.Height);
+        }
+
+        private void AddToggleBar(bool isLanguageEntry, UIView viewContainer, CGRect refFrame)
+        {
+            if (isLanguageEntry)
+            {
+                UIView toggleView = new UIView(new CGRect(0, GetYLocationFromFrame(refFrame, 18)
+                    , viewContainer.Frame.Width, GetScaledHeight(26)))
+                {
+                    BackgroundColor = UIColor.Clear,
+                    UserInteractionEnabled = true
+                };
+                nfloat toggleWidth = GetScaledWidth(122);
+                nfloat toggleHeight = GetScaledHeight(26);
+
+                UISegmentedControl _toggleBar = new UISegmentedControl(new CGRect(GetXLocationToCenterObject(toggleWidth, viewContainer)
+                    , 0, toggleWidth, toggleHeight));
+                _toggleBar.InsertSegment("EN", 0, false);
+                _toggleBar.InsertSegment("BM", 1, false);
+                _toggleBar.TintColor = MyTNBColor.WaterBlue;
+                _toggleBar.SetTitleTextAttributes(new UITextAttributes
+                {
+                    Font = TNBFont.MuseoSans_12_300,
+                    TextColor = MyTNBColor.WaterBlue
+                }, UIControlState.Normal);
+                _toggleBar.SetTitleTextAttributes(new UITextAttributes
+                {
+                    Font = TNBFont.MuseoSans_12_300,
+                    TextColor = UIColor.White
+                }, UIControlState.Selected);
+                _toggleBar.Layer.CornerRadius = toggleHeight / 2;
+                _toggleBar.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+                _toggleBar.Layer.BorderWidth = GetScaledHeight(1);
+                _toggleBar.Layer.MasksToBounds = true;
+                _toggleBar.ValueChanged += (sender, e) =>
+                {
+                    Debug.WriteLine("selected index: " + ((UISegmentedControl)sender).SelectedSegment);
+                    AlertHandler.DisplayCustomAlert(GetCommonI18NValue(string.Format("{0}_{1}"
+                        , Constants.Common_ChangeLanguageTitle, TNBGlobal.APP_LANGUAGE))
+                     , GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageMessage, TNBGlobal.APP_LANGUAGE))
+                     , new Dictionary<string, Action> {
+                            { GetCommonI18NValue(string.Format("{0}_{1}",Constants.Common_ChangeLanguageNo, TNBGlobal.APP_LANGUAGE)), null}
+                            ,{ GetCommonI18NValue(string.Format("{0}_{1}",Constants.Common_ChangeLanguageYes, TNBGlobal.APP_LANGUAGE)) ,null} }
+                     , UITextAlignment.Center
+                     , UITextAlignment.Center);
+                };
+                _toggleBar.SelectedSegment = 0;
+                _toggleBar.Enabled = true;
+                toggleView.AddSubview(_toggleBar);
+                viewContainer.AddSubview(toggleView);
+            }
         }
 
         private void SetScrollView(UIView bottomView)

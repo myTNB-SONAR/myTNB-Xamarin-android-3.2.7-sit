@@ -16,7 +16,6 @@ namespace myTNB
         };
 
         private static int _selectedLanguageIndex;
-        private static NSBundle _languageBundle;
 
         public static List<string> SupportedLanguage
         {
@@ -84,18 +83,6 @@ namespace myTNB
             }
         }
 
-        public static NSBundle LanguageBundle
-        {
-            set
-            {
-                _languageBundle = value;
-            }
-            get
-            {
-                return _languageBundle;
-            }
-        }
-
         static void OnSelectAction(int index)
         {
             SetLanguage(index);
@@ -119,17 +106,9 @@ namespace myTNB
                 }
                 else
                 {
-
                     LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, LanguageManager.Language.MS);
                 }
             }
-
-            /*
-                        string pathName = SupportedLanguageCode[index].ToLower();
-                        pathName = string.Compare(pathName, "en") == 0 ? "Base" : pathName;
-                        var path = NSBundle.MainBundle.PathForResource(pathName, "lproj");
-                        LanguageBundle = NSBundle.FromPath(path);
-                        */
         }
 
         public static void SetLanguageV2(int index)
@@ -152,23 +131,6 @@ namespace myTNB
             }
 
             LanguageUtility.SetLanguageGlobals();
-        }
-
-        public static void InitializeLanguage()
-        {
-            NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
-            int index = (int)sharedPreference.IntForKey(LANGUAGE_KEY);
-            string lang = NSLocale.CurrentLocale.LocaleIdentifier;
-            if (!sharedPreference.BoolForKey(DID_USER_SET_KEY))
-            {
-                index = SupportedLanguageCode.FindIndex(x => lang.ToLower().Contains(x.ToLower()));
-            }
-            SetLanguage(index);
-        }
-
-        public static string GetLanguageCode()
-        {
-            return string.Empty;
         }
     }
 }

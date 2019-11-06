@@ -148,7 +148,7 @@ namespace myTNB
                 ServiceManager serviceManager = new ServiceManager();
                 Dictionary<string, string> requestParams = new Dictionary<string, string>{
                         {"apiKeyID", TNBGlobal.API_KEY_ID},
-                        {"lang", TNBGlobal.DEFAULT_LANGUAGE}
+                        {"lang", TNBGlobal.APP_LANGUAGE}
                     };
                 if (IsFromUsage || IsFromHome)
                 {

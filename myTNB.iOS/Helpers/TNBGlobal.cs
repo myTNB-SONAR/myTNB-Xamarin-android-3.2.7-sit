@@ -13,7 +13,7 @@ namespace myTNB
 #endif
         public static bool IsChartEmissionEnabled = false;
         public static string OS = "ios";
-        public static string DEFAULT_LANGUAGE = "EN";
+        public static string APP_LANGUAGE = "EN";
         public static string DB_NAME = "myTNB.db";
 
         public static string API_KEY_ID = GetAPIKeyID;

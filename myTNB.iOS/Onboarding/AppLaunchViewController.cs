@@ -837,7 +837,7 @@ namespace myTNB
             bool result = false;
             await Task.Run(() =>
             {
-                GetItemsService iService = new GetItemsService(TNBGlobal.OS, _imageSize, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS, _imageSize, TNBGlobal.SITECORE_URL, TNBGlobal.APP_LANGUAGE);
                 bool isValidTimeStamp = false;
                 string appLaunchImageTS = iService.GetAppLaunchImageTimestampItem();
                 TimestampResponseModel timestamp = JsonConvert.DeserializeObject<TimestampResponseModel>(appLaunchImageTS);

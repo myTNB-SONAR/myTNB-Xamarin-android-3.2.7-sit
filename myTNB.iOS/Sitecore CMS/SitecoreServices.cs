@@ -76,7 +76,7 @@ namespace myTNB.SitecoreCMS
                GetItemsService iService = new GetItemsService(TNBGlobal.OS
                    , DataManager.DataManager.SharedInstance.ImageSize
                    , TNBGlobal.SITECORE_URL
-                   , TNBGlobal.DEFAULT_LANGUAGE);
+                   , TNBGlobal.APP_LANGUAGE);
 
                ApplySSMRTimeStampResponseModel timeStamp = iService.GetApplySSMRWalkthroughTimestampItem();
                bool needsUpdate = true;
@@ -126,7 +126,7 @@ namespace myTNB.SitecoreCMS
             return Task.Factory.StartNew(() =>
             {
                 GetItemsService iService = new GetItemsService(TNBGlobal.OS
-                    , DataManager.DataManager.SharedInstance.ImageSize, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
+                    , DataManager.DataManager.SharedInstance.ImageSize, TNBGlobal.SITECORE_URL, TNBGlobal.APP_LANGUAGE);
                 MeterReadSSMRTimeStampResponseModel timeStamp = iService.GetMeterReadSSMRWalkthroughTimestampItem();
 
                 bool needsUpdate = true;
@@ -176,7 +176,7 @@ namespace myTNB.SitecoreCMS
             return Task.Factory.StartNew(() =>
             {
                 GetItemsService iService = new GetItemsService(TNBGlobal.OS
-                    , DataManager.DataManager.SharedInstance.ImageSize, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
+                    , DataManager.DataManager.SharedInstance.ImageSize, TNBGlobal.SITECORE_URL, TNBGlobal.APP_LANGUAGE);
                 MeterReadSSMRTimeStampResponseModel timeStamp = iService.GetMeterReadSSMRWalkthroughTimestampItemV2();
 
                 bool needsUpdate = true;
@@ -226,7 +226,7 @@ namespace myTNB.SitecoreCMS
             return Task.Factory.StartNew(() =>
             {
                 GetItemsService iService = new GetItemsService(TNBGlobal.OS
-                    , DataManager.DataManager.SharedInstance.ImageSize, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
+                    , DataManager.DataManager.SharedInstance.ImageSize, TNBGlobal.SITECORE_URL, TNBGlobal.APP_LANGUAGE);
                 BillDetailsTooltipTimeStampResponseModel timeStamp = iService.GetBillDetailsTooltipTimestampItem();
 
                 bool needsUpdate = true;
@@ -276,7 +276,7 @@ namespace myTNB.SitecoreCMS
             return Task.Factory.StartNew(() =>
             {
                 GetItemsService iService = new GetItemsService(TNBGlobal.OS
-                    , DataManager.DataManager.SharedInstance.ImageSize, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
+                    , DataManager.DataManager.SharedInstance.ImageSize, TNBGlobal.SITECORE_URL, TNBGlobal.APP_LANGUAGE);
                 EnergyTipsTimeStampResponseModel timeStamp = iService.GetEnergyTipsTimestampItem();
 
                 bool needsUpdate = true;
@@ -326,7 +326,7 @@ namespace myTNB.SitecoreCMS
             return Task.Factory.StartNew(() =>
             {
                 GetItemsService iService = new GetItemsService(TNBGlobal.OS, DataManager.DataManager.SharedInstance.ImageSize
-                    , TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
+                    , TNBGlobal.SITECORE_URL, TNBGlobal.APP_LANGUAGE);
                 TimestampResponseModel timeStamp = iService.GetTimestampItemV2();
 
                 bool needsUpdate = false;
@@ -364,7 +364,7 @@ namespace myTNB.SitecoreCMS
                 GetItemsService iService = new GetItemsService(TNBGlobal.OS
                     , DataManager.DataManager.SharedInstance.ImageSize
                     , TNBGlobal.SITECORE_URL
-                    , TNBGlobal.DEFAULT_LANGUAGE);
+                    , TNBGlobal.APP_LANGUAGE);
 
                 LanguageTimeStampResponseModel timeStamp = iService.GetLanguageTimestampItem();
                 bool needsUpdate = true;

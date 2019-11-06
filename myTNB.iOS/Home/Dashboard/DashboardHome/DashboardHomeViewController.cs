@@ -536,7 +536,7 @@ namespace myTNB
             return Task.Factory.StartNew(() =>
             {
                 GetItemsService iService = new GetItemsService(TNBGlobal.OS
-                    , string.Empty, TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
+                    , string.Empty, TNBGlobal.SITECORE_URL, TNBGlobal.APP_LANGUAGE);
                 HelpTimeStampResponseModel timeStamp = iService.GetHelpTimestampItem();
                 bool needsUpdate = true;
                 if (timeStamp != null && timeStamp.Data != null && timeStamp.Data.Count > 0 && timeStamp.Data[0] != null
@@ -602,7 +602,7 @@ namespace myTNB
             return Task.Factory.StartNew(() =>
             {
                 GetItemsService iService = new GetItemsService(TNBGlobal.OS, DataManager.DataManager.SharedInstance.ImageSize
-                    , TNBGlobal.SITECORE_URL, TNBGlobal.DEFAULT_LANGUAGE);
+                    , TNBGlobal.SITECORE_URL, TNBGlobal.APP_LANGUAGE);
                 bool isValidTimeStamp = false;
                 string promotionTS = iService.GetPromotionsTimestampItem();
                 PromotionsTimestampResponseModel promotionTimeStamp = JsonConvert.DeserializeObject<PromotionsTimestampResponseModel>(promotionTS);

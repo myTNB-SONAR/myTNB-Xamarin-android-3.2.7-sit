@@ -304,7 +304,7 @@ namespace myTNB.DataManager
                 AppVersion = AppVersionHelper.GetAppShortVersion(),
                 OsType = TNBGlobal.DEVICE_PLATFORM_IOS,
                 OsVersion = DeviceHelper.GetOSVersion(),
-                DeviceDesc = TNBGlobal.DEFAULT_LANGUAGE
+                DeviceDesc = TNBGlobal.APP_LANGUAGE
             };
 
             object requestParameter = new

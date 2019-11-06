@@ -205,7 +205,7 @@ namespace myTNB
 
             changeLanguageView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                string langSuffix = TNBGlobal.DEFAULT_LANGUAGE == "EN" ? "MS" : "EN";
+                string langSuffix = TNBGlobal.APP_LANGUAGE == "EN" ? "MS" : "EN";
                 DisplayCustomAlert(GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageTitle, langSuffix))
                     , GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageMessage, langSuffix))
                     , new System.Collections.Generic.Dictionary<string, Action> {
