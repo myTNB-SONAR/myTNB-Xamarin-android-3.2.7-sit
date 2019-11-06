@@ -133,14 +133,14 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
 
                 removeDialog = new AlertDialog.Builder(this)
 
-                    .SetTitle(Resource.String.manage_supply_account_remove_dialog_title)
-                    .SetMessage(GetString(Resource.String.manage_supply_account_remove_dialog_content_wildcard, accountData.AccountNickName, accountData.AccountNum))
-                    .SetNegativeButton(Resource.String.manage_cards_btn_cancel,
+                    .SetTitle(GetLabelByLanguage("popupremoveAccountTitle"))
+                    .SetMessage(string.Format(GetLabelByLanguage("popupremoveAccountMessage"), accountData.AccountNickName, accountData.AccountNum))
+                    .SetNegativeButton(GetLabelCommonByLanguage("cancel"),
                     delegate
                     {
                         removeDialog.Dismiss();
                     })
-                    .SetPositiveButton(Resource.String.manage_cards_btn_ok,
+                    .SetPositiveButton(GetLabelCommonByLanguage("ok"),
                     delegate
                     {
                         this.userActionsListener.OnRemoveAccount(accountData);
@@ -226,8 +226,8 @@ namespace myTNB_Android.Src.ManageSupplyAccount.Activity
                 this.accountData = accountData;
                 txtNickName.Text = accountData.AccountNickName;
 
-                Snackbar.Make(rootView, GetString(Resource.String.manage_supply_account_update_nickname_success), Snackbar.LengthIndefinite)
-                .SetAction(GetString(Resource.String.manage_supply_account_btn_close),
+                Snackbar.Make(rootView, GetLabelByLanguage("nicknameUpdateSuccess"), Snackbar.LengthIndefinite)
+                .SetAction(GetLabelCommonByLanguage("close"),
                  (view) =>
                  {
 

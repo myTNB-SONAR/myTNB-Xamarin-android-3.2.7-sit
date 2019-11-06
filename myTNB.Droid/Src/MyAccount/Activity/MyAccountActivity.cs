@@ -177,6 +177,9 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 btnTextUpdateMobileNo.Text = GetLabelCommonByLanguage("update");
                 btnTextUpdateCards.Text = GetLabelCommonByLanguage("manage");
                 btnTextUpdatePassword.Text = GetLabelCommonByLanguage("update");
+                txtMyAccountNoAccountTitle.Text = GetLabelByLanguage("noAccounts");
+                txtMyAccountNoAccountContent.Text = GetLabelByLanguage("addAccountMessage");
+                btnAddAccount.Text = Utility.GetLocalizedLabel("AddAccount", "addAccountCTATitle");
 
                 textInputLayoutFullName.Hint = GetLabelCommonByLanguage("name");
                 textInputLayoutIcNo.Hint = GetLabelCommonByLanguage("idNumber");
@@ -601,8 +604,8 @@ namespace myTNB_Android.Src.MyAccount.Activity
             try
             {
                 txtMobileNo.Text = newPhone;
-                Snackbar updatePhoneSnackBar = Snackbar.Make(rootView, GetString(Resource.String.my_account_successful_update_mobile_no), Snackbar.LengthIndefinite)
-                            .SetAction(GetString(Resource.String.my_account_successful_update_mobile_no_btn),
+                Snackbar updatePhoneSnackBar = Snackbar.Make(rootView, GetLabelByLanguage("mobileNumberVerified"), Snackbar.LengthIndefinite)
+                            .SetAction(GetLabelCommonByLanguage("close"),
                              (view) =>
                              {
 
@@ -805,8 +808,8 @@ namespace myTNB_Android.Src.MyAccount.Activity
         {
             try
             {
-                Snackbar updatePassWordBar = Snackbar.Make(rootView, GetString(Resource.String.manage_supply_account_removed_success), Snackbar.LengthIndefinite)
-                            .SetAction(GetString(Resource.String.my_account_successful_update_password_btn),
+                Snackbar updatePassWordBar = Snackbar.Make(rootView, GetLabelByLanguage("accountDeleteSuccess"), Snackbar.LengthIndefinite)
+                            .SetAction(GetLabelCommonByLanguage("close"),
                              (view) =>
                              {
 
