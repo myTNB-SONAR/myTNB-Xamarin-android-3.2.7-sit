@@ -106,7 +106,7 @@ namespace myTNB
                     response = ExecuteWebservice(suffix, requestParams, version, env, isRetry);
                 }
             }
-
+            Debug.WriteLine("Service ------> " + suffix);
             return response;
         }
 

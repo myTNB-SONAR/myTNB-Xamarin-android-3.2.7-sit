@@ -21,6 +21,7 @@ namespace myTNB
         {
             get
             {
+                //This arrangement should be the same as SupportedLanguage in LanguageUtility
                 return new List<string>{
                     LanguageUtility.GetCommonI18NValue(Constants.Common_English)
                     , LanguageUtility.GetCommonI18NValue(Constants.Common_Bahasa)
@@ -70,29 +71,22 @@ namespace myTNB
 
         public static int SelectedLanguageIndex
         {
-            set
-            {
-                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
-                sharedPreference.SetInt(value, LANGUAGE_KEY);
-                sharedPreference.Synchronize();
-                _selectedLanguageIndex = value;
-            }
             get
             {
-                return _selectedLanguageIndex;
+                return LanguageUtility.CurrentLanguageIndex;
             }
         }
 
         static void OnSelectAction(int index)
         {
-            SetLanguage(index);
+           // SetLanguage(index);
             NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
             sharedPreference.SetBool(true, DID_USER_SET_KEY);
             sharedPreference.Synchronize();
             NotifCenterUtility.PostNotificationName("LanguageDidChange", new NSObject());
         }
 
-        public static void SetLanguage(int index)
+       /* public static void SetLanguage(int index)
         {
             index = index > -1 ? index : 0;
             SelectedLanguageIndex = index;
@@ -109,9 +103,9 @@ namespace myTNB
                     LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, LanguageManager.Language.MS);
                 }
             }
-        }
+        }*/
 
-        public static void SetLanguageV2(int index)
+        /*public static void SetLanguageV2(int index)
         {
             index = index > -1 ? index : 0;
             SelectedLanguageIndex = index;
@@ -131,6 +125,6 @@ namespace myTNB
             }
 
             LanguageUtility.SetLanguageGlobals();
-        }
+        }*/
     }
 }

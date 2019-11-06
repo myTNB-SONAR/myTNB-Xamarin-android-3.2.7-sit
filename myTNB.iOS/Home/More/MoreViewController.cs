@@ -9,6 +9,8 @@ using myTNB.Registration;
 using myTNB.DataManager;
 using System.Diagnostics;
 using myTNB.Profile;
+using System.Threading.Tasks;
+using myTNB.SitecoreCMS;
 
 namespace myTNB
 {
@@ -139,7 +141,7 @@ namespace myTNB
                                     }
                                     else
                                     {
-                                        GoToLanguageSetting();
+                                        GoToLanguageSettings();
                                     }
                                     break;
                                 }
@@ -250,7 +252,7 @@ namespace myTNB
         }
 
         private GenericSelectorViewController languageViewController;
-        private void GoToLanguageSetting()
+        private void GoToLanguageSettings()
         {
             UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
             languageViewController = (GenericSelectorViewController)storyBoard
@@ -286,8 +288,52 @@ namespace myTNB
 
         private void OnChangeLanguage(int index)
         {
-            //Todo: Do service calls and set lang
-            languageViewController.DismissViewController(true, null);
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(async () =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        /*Todo: Do service calls and set lang
+                            1. Call site core
+                            2. Call Applaunch master data
+                            3. Clear Usage cache
+                        */
+                        ActivityIndicator.Show();
+
+                        List<Task> taskList = new List<Task>{
+                            OnGetAppLaunchMasterData(),
+                            OnExecuteSiteCore()
+                        };
+                        await Task.WhenAll(taskList.ToArray());
+                        languageViewController.DismissViewController(true, null);
+                        Debug.WriteLine("Change Language Done");
+                        ActivityIndicator.Hide();
+
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
+        private Task OnGetAppLaunchMasterData()
+        {
+            return Task.Factory.StartNew(async () =>
+            {
+                AppLaunchResponseModel response = await ServiceCall.GetAppLaunchMasterData();
+                AppLaunchMasterCache.AddAppLaunchResponseData(response);
+            });
+        }
+
+        private Task OnExecuteSiteCore()
+        {
+            return Task.Factory.StartNew(async () =>
+            {
+                await SitecoreServices.Instance.OnExecuteSitecoreCall(true);
+            });
         }
 
         private void GoToMyAccount()

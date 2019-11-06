@@ -2374,7 +2374,6 @@
     <Compile Include="Components\Usage View\UsageFooterViewComponent.cs" />
     <Compile Include="Components\Usage View\AccountSelector.cs" />
     <Compile Include="Components\BaseComponent.cs" />
-    <Compile Include="Helpers\LanguageUtility.cs" />
     <Compile Include="Usage\UsageServiceCall.cs" />
     <Compile Include="Components\Usage View\Charts\NormalChartView.cs" />
     <Compile Include="Components\Usage View\Charts\BaseChartView.cs" />
@@ -2540,6 +2539,7 @@
     <Compile Include="Components\Common\BillTutorialOverlay.cs" />
     <Compile Include="Sitecore CMS\Model\Language\LanguageModel.cs" />
     <Compile Include="Sitecore CMS\Service\LanguageService.cs" />
+    <Compile Include="Home\More\Language\LanguageUtility.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

@@ -72,6 +72,30 @@ namespace myTNB
             SetAppLanguage(IsLanguageSet ? CurrentSavedLanguage : CurrentDeviceLanguage);
         }
 
+        public static int CurrentLanguageIndex
+        {
+            get
+            {
+                if (IsLanguageSet)
+                {
+                    int index = SupportedLanguage.FindIndex(x => CurrentSavedLanguage.ToLower().Contains(x.ToLower()));
+                    if (index > -1 && index < SupportedLanguage.Count)
+                    {
+                        return index;
+                    }
+                }
+                else
+                {
+                    int index = SupportedLanguage.FindIndex(x => CurrentDeviceLanguage.ToLower().Contains(x.ToLower()));
+                    if (index > -1 && index < SupportedLanguage.Count)
+                    {
+                        return index;
+                    }
+                }
+                return 0;
+            }
+        }
+
         #endregion
 
         #region I18N Settings

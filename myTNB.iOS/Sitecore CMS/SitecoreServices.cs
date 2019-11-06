@@ -58,7 +58,7 @@ namespace myTNB.SitecoreCMS
             {
                 content = reader.ReadToEnd();
             }
-            Debug.WriteLine("Content: " + content);
+            //Debug.WriteLine("Content: " + content);
             return content;
         }
 
@@ -81,53 +81,54 @@ namespace myTNB.SitecoreCMS
         private Task LoadSSMRWalkthrough()
         {
             return Task.Factory.StartNew(() =>
-           {
-               GetItemsService iService = new GetItemsService(TNBGlobal.OS
-                   , DataManager.DataManager.SharedInstance.ImageSize
-                   , TNBGlobal.SITECORE_URL
-                   , TNBGlobal.APP_LANGUAGE);
+            {
+                GetItemsService iService = new GetItemsService(TNBGlobal.OS
+                    , DataManager.DataManager.SharedInstance.ImageSize
+                    , TNBGlobal.SITECORE_URL
+                    , TNBGlobal.APP_LANGUAGE);
 
-               ApplySSMRTimeStampResponseModel timeStamp = iService.GetApplySSMRWalkthroughTimestampItem();
-               bool needsUpdate = true;
+                ApplySSMRTimeStampResponseModel timeStamp = iService.GetApplySSMRWalkthroughTimestampItem();
+                bool needsUpdate = true;
 
-               if (timeStamp == null || timeStamp.Data == null || timeStamp.Data.Count == 0
-                    || string.IsNullOrEmpty(timeStamp.Data[0].Timestamp)
-                    || string.IsNullOrWhiteSpace(timeStamp.Data[0].Timestamp))
-               {
-                   timeStamp = new ApplySSMRTimeStampResponseModel();
-                   timeStamp.Data = new List<ApplySSMRTimeStamp> { new ApplySSMRTimeStamp { Timestamp = string.Empty } };
-               }
+                if (timeStamp == null || timeStamp.Data == null || timeStamp.Data.Count == 0
+                     || string.IsNullOrEmpty(timeStamp.Data[0].Timestamp)
+                     || string.IsNullOrWhiteSpace(timeStamp.Data[0].Timestamp))
+                {
+                    timeStamp = new ApplySSMRTimeStampResponseModel();
+                    timeStamp.Data = new List<ApplySSMRTimeStamp> { new ApplySSMRTimeStamp { Timestamp = string.Empty } };
+                }
 
-               UpdateTimeStamp(timeStamp.Data[0].Timestamp, "SiteCoreApplySSMRWalkthroughTimeStamp", ref needsUpdate);
+                UpdateTimeStamp(timeStamp.Data[0].Timestamp, "SiteCoreApplySSMRWalkthroughTimeStamp", ref needsUpdate);
 
-               if (needsUpdate)
-               {
-                   ApplySSMRResponseModel applySSMrWalkthroughItems = iService.GetApplySSMRWalkthroughItems();
-                   if (applySSMrWalkthroughItems != null && applySSMrWalkthroughItems.Data != null && applySSMrWalkthroughItems.Data.Count > 0)
-                   {
-                       List<Task<NSData>> GetImagesTask = new List<Task<NSData>>();
-                       for (int i = 0; i < applySSMrWalkthroughItems.Data.Count; i++)
-                       {
-                           ApplySSMRModel item = applySSMrWalkthroughItems.Data[i];
-                           GetImagesTask.Add(GetImageFromURL(item.Image));
-                       }
+                if (needsUpdate)
+                {
+                    ApplySSMRResponseModel applySSMrWalkthroughItems = iService.GetApplySSMRWalkthroughItems();
+                    if (applySSMrWalkthroughItems != null && applySSMrWalkthroughItems.Data != null && applySSMrWalkthroughItems.Data.Count > 0)
+                    {
+                        List<Task<NSData>> GetImagesTask = new List<Task<NSData>>();
+                        for (int i = 0; i < applySSMrWalkthroughItems.Data.Count; i++)
+                        {
+                            ApplySSMRModel item = applySSMrWalkthroughItems.Data[i];
+                            GetImagesTask.Add(GetImageFromURL(item.Image));
+                        }
 
-                       Task.WaitAll(GetImagesTask.ToArray());
+                        Task.WaitAll(GetImagesTask.ToArray());
 
-                       for (int j = 0; j < GetImagesTask.Count; j++)
-                       {
-                           if (GetImagesTask[j] == null || GetImagesTask[j].Result == null) { continue; }
-                           byte[] data = GetImagesTask[j].Result.ToByteArray();
-                           applySSMrWalkthroughItems.Data[j].ImageByteArray = data;
-                       }
+                        for (int j = 0; j < GetImagesTask.Count; j++)
+                        {
+                            if (GetImagesTask[j] == null || GetImagesTask[j].Result == null) { continue; }
+                            byte[] data = GetImagesTask[j].Result.ToByteArray();
+                            applySSMrWalkthroughItems.Data[j].ImageByteArray = data;
+                        }
 
-                       ApplySSMRWalkthroughEntity wsManager = new ApplySSMRWalkthroughEntity();
-                       wsManager.DeleteTable();
-                       wsManager.CreateTable();
-                       wsManager.InsertListOfItems(applySSMrWalkthroughItems.Data);
-                   }
-               }
-           });
+                        ApplySSMRWalkthroughEntity wsManager = new ApplySSMRWalkthroughEntity();
+                        wsManager.DeleteTable();
+                        wsManager.CreateTable();
+                        wsManager.InsertListOfItems(applySSMrWalkthroughItems.Data);
+                        Debug.WriteLine("LoadSSMRWalkthrough Done");
+                    }
+                }
+            });
         }
 
         private Task LoadMeterReadSSMRWalkthrough()
@@ -175,6 +176,7 @@ namespace myTNB.SitecoreCMS
                         wsManager.DeleteTable();
                         wsManager.CreateTable();
                         wsManager.InsertListOfItems(meterReadSSMrWalkthroughItems.Data);
+                        Debug.WriteLine("LoadMeterReadSSMRWalkthrough Done");
                     }
                 }
             });
@@ -225,6 +227,7 @@ namespace myTNB.SitecoreCMS
                         wsManager.DeleteTable();
                         wsManager.CreateTable();
                         wsManager.InsertListOfItems(meterReadSSMrWalkthroughItems.Data);
+                        Debug.WriteLine("LoadMeterReadSSMRWalkthroughV2 Done");
                     }
                 }
             });
@@ -275,6 +278,7 @@ namespace myTNB.SitecoreCMS
                         wsManager.DeleteTable();
                         wsManager.CreateTable();
                         wsManager.InsertListOfItems(tooltipsItems.Data);
+                        Debug.WriteLine("LoadBillDetailsTooltip Done");
                     }
                 }
             });
@@ -325,6 +329,7 @@ namespace myTNB.SitecoreCMS
                         wsManager.DeleteTable();
                         wsManager.CreateTable();
                         wsManager.InsertListOfItems(energyTipsItems.Data);
+                        Debug.WriteLine("LoadEnergyTips Done");
                     }
                 }
             });
@@ -360,7 +365,7 @@ namespace myTNB.SitecoreCMS
                         tncEntity.DeleteTable();
                         tncEntity.CreateTable();
                         tncEntity.InsertListOfItems(tncResponse.Data);
-                        var test = tncEntity.GetAllItems();
+                        Debug.WriteLine("LoadTermsAndCondition Done");
                     }
                 }
             });
@@ -403,11 +408,11 @@ namespace myTNB.SitecoreCMS
 
                             LanguageManager.Instance.SetLanguage(content ?? string.Empty);
                             LanguageUtility.SetLanguageGlobals();
-                            Debug.WriteLine("Lang End: " + content);
 
                             NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
                             sharedPreference.SetString(content, "LanguageContent");
                             sharedPreference.Synchronize();
+                            Debug.WriteLine("LoadLanguage Done");
                         }
                     }
                 }
