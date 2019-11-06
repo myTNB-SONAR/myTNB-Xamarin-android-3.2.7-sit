@@ -17,6 +17,7 @@ using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Database.Model;
 using Android.Support.V4.Content;
+using myTNB;
 
 namespace myTNB_Android.Src.Profile.Activity
 {
@@ -127,6 +128,18 @@ namespace myTNB_Android.Src.Profile.Activity
         void OnSaveChanges(object sender, EventArgs eventArgs)
         {
             Item selectedItem = languageItemList.Find(item => { return item.selected;});
+            LanguageManager.Language language;
+
+            if (selectedItem.type == "MS")
+            {
+                language = LanguageManager.Language.MS;
+            }
+            else
+            {
+                language = LanguageManager.Language.EN;
+            }
+
+            LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, language);
             UserEntity.UpdateSelectedLanguage(selectedItem.type);
             Finish();
         }

@@ -7629,10 +7629,5 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             return isREAccount;
         }
-
-        public override string GetPageId()
-        {
-            return "";
-        }
     }
 }
