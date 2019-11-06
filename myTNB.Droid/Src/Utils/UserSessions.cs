@@ -74,6 +74,18 @@ namespace myTNB_Android.Src.Utils
             return prefs.GetString("notificationEmail", null);
         }
 
+        public static void SaveNotificationType(ISharedPreferences prefs, string notifType)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutString("notificationType", notifType);
+            editor.Apply();
+        }
+
+        public static string GetNotificationType(ISharedPreferences prefs)
+        {
+            return prefs.GetString("notificationType", null);
+        }
+
         public static void RemoveNotificationSession(ISharedPreferences prefs)
         {
             ISharedPreferencesEditor editor = prefs.Edit();

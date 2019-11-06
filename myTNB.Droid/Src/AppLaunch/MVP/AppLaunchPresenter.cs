@@ -47,11 +47,14 @@ namespace myTNB_Android.Src.AppLaunch.MVP
         private int AppLaunchTimeOutMillisecond = AppLaunchDefaultTimeOutMillisecond;
         private bool IsOnGetPhotoRunning = false;
         private string mApplySSMRSavedTimeStamp = "0000000";
+        private int serviceCallCounter = 0;
+        private int appLaunchMasterDataTimeout;
 
         public AppLaunchPresenter(AppLaunchContract.IView mView, ISharedPreferences sharedPreferences)
         {
             this.mView = mView;
             this.mSharedPref = sharedPreferences;
+            this.appLaunchMasterDataTimeout = Constants.APP_LAUNCH_MASTER_DATA_TIMEOUT;
             this.mView.SetPresenter(this);
         }
 
@@ -169,7 +172,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                 {
                     deviceInf = currentDeviceInf,
                     usrInf = currentUsrInf
-                }, cts.Token);
+                }, CancellationTokenSourceWrapper.GetTokenWithDelay(this.appLaunchMasterDataTimeout));
 
 
                 if (masterDataResponse != null && masterDataResponse.Data != null)
@@ -178,30 +181,11 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     {
                         new MasterApiDBOperation(masterDataResponse, mSharedPref).ExecuteOnExecutor(AsyncTask.ThreadPoolExecutor, "");
 
-                        bool proceed = false;
+                        bool proceed = true;
 
                         bool appUpdateAvailable = false;
                         if (masterDataResponse.Data.MasterData.AppVersionList != null && masterDataResponse.Data.MasterData.AppVersionList.Count > 0)
                         {
-                            //foreach (AppVersionList versionList in masterDataResponse.Data.MasterData.AppVersionList)
-                            //{
-                            //    int serverVerison;
-                            //    if (versionList.Platform.Equals("1") || versionList.Platform.Equals("Android"))
-                            //    {
-                            //        if (string.IsNullOrEmpty(versionList.Version))
-                            //        {
-                            //            appUpdateAvailable = false;
-                            //        }
-                            //        else if (int.TryParse(versionList.Version, out serverVerison))
-                            //        {
-                            //            serverVerison = int.Parse(versionList.Version);
-                            //            if (serverVerison > DeviceIdUtils.GetAppVersionCode())
-                            //            {
-                            //                appUpdateAvailable = true;
-                            //            }
-                            //        }
-                            //    }
-                            //}
                             appUpdateAvailable = IsAppNeedsUpdate(masterDataResponse.Data.MasterData);
                             if (appUpdateAvailable)
                             {
@@ -285,8 +269,13 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                                         BillHistoryEntity.RemoveAll();
                                         PaymentHistoryEntity.RemoveAll();
 
-                                        if (UserSessions.HasNotification(mSharedPref) && (loggedUser.Email.Equals(UserSessions.GetUserEmailNotification(mSharedPref)) ||
-                                            "ALL_MYTNB_USERS".Equals(UserSessions.GetUserEmailNotification(mSharedPref))))
+                                        //If has Notification
+                                        bool hasNotification = UserSessions.HasNotification(mSharedPref);
+                                        //If Notification Type is equals to ODN (On-Demand Notification)
+                                        bool isODNType = "ODN".Equals(UserSessions.GetNotificationType(mSharedPref));
+                                        //If Notification Email is equals to logged-in email
+                                        bool isLoggedInEmail = loggedUser.Email.Equals(UserSessions.GetUserEmailNotification(mSharedPref));
+                                        if (hasNotification && (isODNType || isLoggedInEmail))
                                         {
                                             UserSessions.RemoveNotificationSession(mSharedPref);
                                             this.mView.SetAppLaunchSuccessfulFlag(true, AppLaunchNavigation.Notification);
@@ -351,7 +340,7 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         }
                         else
                         {
-                            this.mView.ShowRetryOptionApiException(null);
+                            EvaluateServiceRetry();
                         }
                     }
                     else if (masterDataResponse.Data.ErrorCode == "7000")
@@ -363,37 +352,57 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                         }
                         else
                         {
-                            this.mView.ShowRetryOptionApiException(null);
+                            EvaluateServiceRetry();
                         }
                     }
                     else
                     {
-                        Console.WriteLine("Excution time enters else");
-                        this.mView.ShowRetryOptionApiException(null);
+                        EvaluateServiceRetry();
                     }
                 }
                 else
                 {
-                    this.mView.ShowRetryOptionApiException(null);
+                    EvaluateServiceRetry();
                 }
             }
             catch (ApiException apiException)
             {
-
-                this.mView.ShowRetryOptionApiException(apiException);
                 Utility.LoggingNonFatalError(apiException);
+                EvaluateServiceRetry();
             }
             catch (Newtonsoft.Json.JsonReaderException e)
             {
-
-                this.mView.ShowRetryOptionUknownException(e);
                 Utility.LoggingNonFatalError(e);
+                EvaluateServiceRetry();
             }
             catch (Exception e)
             {
-
-                this.mView.ShowRetryOptionUknownException(e);
                 Utility.LoggingNonFatalError(e);
+                EvaluateServiceRetry();
+            }
+        }
+
+        /// <summary>
+        /// Evaluate failed AppLaunchMasterData service for retry.
+        /// </summary>
+        private void EvaluateServiceRetry()
+        {
+            serviceCallCounter++;
+            Log.Debug(TAG, string.Format("AppLaunchMasterData Service failed in {0} seconds: Retry: {1} ", this.appLaunchMasterDataTimeout, serviceCallCounter));
+            if (serviceCallCounter == 1)//If first failed, do auto-retry.
+            {
+                this.appLaunchMasterDataTimeout = Constants.APP_LAUNCH_MASTER_DATA_RETRY_TIMEOUT;
+                LoadAccounts();
+            }
+            if (serviceCallCounter == 2)//If still failed, do auto-retry.
+            {
+                this.appLaunchMasterDataTimeout = Constants.APP_LAUNCH_MASTER_DATA_RETRY_TIMEOUT;
+                LoadAccounts();
+            }
+            if (serviceCallCounter == 3)//If still failed after auto-retry, inform the user.
+            {
+                this.mView.ShowSomethingWrongException();
+                serviceCallCounter = 0;
             }
         }
 

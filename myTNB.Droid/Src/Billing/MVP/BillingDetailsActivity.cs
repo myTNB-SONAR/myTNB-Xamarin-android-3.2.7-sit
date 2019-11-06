@@ -130,6 +130,7 @@ namespace myTNB_Android.Src.Billing.MVP
                     this.SetIsClicked(true);
                     Intent payment_activity = new Intent(this, typeof(SelectAccountsActivity));
                     payment_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccountData));
+                    payment_activity.PutExtra(Constants.FROM_BILL_DETAILS_PAGE, true);
                     StartActivity(payment_activity);
                 }
                 

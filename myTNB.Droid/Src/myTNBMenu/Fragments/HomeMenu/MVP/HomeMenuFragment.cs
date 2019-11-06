@@ -735,6 +735,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 ShowBackButton(false);
                 ShowSearchAction(false);
                 DownTimeEntity bcrmDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
+                SMRPopUpUtils.SetFromUsageFlag(false);
+                SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
                 if (bcrmDownTime != null && bcrmDownTime.IsDown)
                 {
                     isBCRMDown = true;
@@ -750,6 +752,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
                 else
                 {
+                    IsLoadMoreButtonVisible(false, false);
+
+                    IsMyServiceLoadMoreButtonVisible(false, false);
+
+                    IsRearrangeButtonVisible(false);
+
                     ShowRefreshScreen(bcrmDownTime.DowntimeMessage, null);
                 }
 
