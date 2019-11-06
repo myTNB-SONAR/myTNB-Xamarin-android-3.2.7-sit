@@ -107,7 +107,7 @@ namespace myTNB
         private void CheckTutorialOverlay()
         {
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
-            var tutorialOverlayHasShown = sharedPreference.BoolForKey(BillConstants.Pref_TutorialOverlay);
+            var tutorialOverlayHasShown = sharedPreference.BoolForKey(BillConstants.Pref_BillTutorialOverlay);
 
             if (tutorialOverlayHasShown)
                 return;
@@ -173,7 +173,7 @@ namespace myTNB
             _tutorialContainer.AddSubview(tutorialView.GetView());
 
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
-            sharedPreference.SetBool(true, BillConstants.Pref_TutorialOverlay);
+            sharedPreference.SetBool(true, BillConstants.Pref_BillTutorialOverlay);
         }
 
         private void HideTutorialOverlay()

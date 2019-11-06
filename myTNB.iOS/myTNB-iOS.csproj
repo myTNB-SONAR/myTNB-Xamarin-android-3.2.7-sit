@@ -2560,6 +2560,7 @@
     <Compile Include="Components\Common\HomeTutorialOverlay.cs" />
     <Compile Include="Session Cache\PushNotificationCache.cs" />
     <Compile Include="Components\Common\BillTutorialOverlay.cs" />
+    <Compile Include="Components\Common\BillDetailsTutorialOverlay.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

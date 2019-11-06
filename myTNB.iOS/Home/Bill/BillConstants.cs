@@ -84,6 +84,7 @@
         public static string Event_MandatoryDetails = "ExpandCollapseMandatoryList";
 
         //Preference Key
-        public static string Pref_TutorialOverlay = "BillTutorialOverlayV2.0.0";
+        public static string Pref_BillTutorialOverlay = "BillTutorialOverlayV2.0.0";
+        public static string Pref_BillDetailsTutorialOverlay = "BillDetailsTutorialOverlayV2.0.0";
     }
 }
