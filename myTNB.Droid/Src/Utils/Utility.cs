@@ -72,10 +72,13 @@ namespace myTNB_Android.Src.Utils
             Java.Lang.Object[] urlSpans = s.GetSpans(0, s.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
             if (urlSpans.Length != 0)
             {
-                int startFAQLink = s.GetSpanStart(urlSpans[0]);
-                int endFAQLink = s.GetSpanEnd(urlSpans[0]);
-                s.RemoveSpan(urlSpans[0]);
-                s.SetSpan(clickableSpan, startFAQLink, endFAQLink, SpanTypes.ExclusiveExclusive);
+                foreach (Java.Lang.Object obj in urlSpans)
+                {
+                    int startFAQLink = s.GetSpanStart(obj);
+                    int endFAQLink = s.GetSpanEnd(obj);
+                    s.RemoveSpan(obj);
+                    s.SetSpan(clickableSpan, startFAQLink, endFAQLink, SpanTypes.ExclusiveExclusive);
+                }
             }
             return s;
         }
