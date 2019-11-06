@@ -6655,6 +6655,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     RelativeLayout.LayoutParams param = shimmrtGraphView.LayoutParameters as RelativeLayout.LayoutParams;
                     param.Height = (int)DPUtils.ConvertDPToPx(170);
                 }
+                else if (isREAccount)
+                {
+                    RelativeLayout.LayoutParams param = shimmrtGraphView.LayoutParameters as RelativeLayout.LayoutParams;
+                    param.Height = (int)DPUtils.ConvertDPToPx(200);
+                }
+                else
+                {
+                    RelativeLayout.LayoutParams param = shimmrtGraphView.LayoutParameters as RelativeLayout.LayoutParams;
+                    param.Height = (int)DPUtils.ConvertDPToPx(210);
+                }
             }
             catch (System.Exception e)
             {
