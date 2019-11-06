@@ -129,7 +129,7 @@
     "serviceErrorDefaultMessage": "Sorry, something went wrong. Please try again later.",
     "invalid_amountMessage": "Kindly enter a non-zero/positive amount",
     "invalid_amountTitle": "Invalid Amount",
-    "invalid_code": "Invalid code",
+    "invalid_pin": "Invalid PIN",
     "invalid_password": "Your password must have at least 8 alphanumeric characters.",
     "invalid_mismatchedPassword": "Your new passwords do not match.",
     "invalid_fullname": "Invalid full name",
@@ -595,7 +595,7 @@
     "title": "Enter Code",
     "details": "Please enter the 4 digit code that was sent to {0}",
     "emailNotReceived": "Didn't receive the email?",
-    "resendPinMessage": "An Email containing the activation pin has been sent to your email address."
+    "resendPinMessage": "An Email containing the activation PIN has been sent to your email address."
   },
   "PasswordResetSuccess": {
     "title": "Password Reset Successful",
@@ -618,11 +618,11 @@
     "updateMobileNumberTitle": "Update Mobile No."
   },
   "VerifyPin": {
-    "title": "Verify Device",
+    "title": "Verify PIN",
     "smsNotReceived": "Didn't receive the SMS?",
-    "resendPinMessage": "An SMS containing the activation pin has been sent to your number.",
+    "resendPinMessage": "An SMS containing the activation PIN has been sent to your number.",
     "otpMobileUpdate": "An OTP has been sent to {0}, please enter it below.",
-    "otpRegistration": "Please enter the 4-digit activation pin that was sent to {0}."
+    "otpRegistration": "Please enter the 4-digit activation PIN that was sent to {0}."
   },
   "Logout": {
     "logoutTitle": "Thank you for using myTNB.",
