@@ -747,7 +747,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         {
             inflater.Inflate(Resource.Menu.DashboardToolbarMenu, menu);
             billFilterMenuItem = menu.FindItem(Resource.Id.action_notification);
-            billFilterMenuItem.SetIcon(ContextCompat.GetDrawable(this.Activity, Resource.Drawable.bill_screen_filter_icon));
+            billFilterMenuItem.SetIcon(ContextCompat.GetDrawable(this.Activity, Resource.Drawable.filter_filled));
             billFilterMenuItem.SetVisible(false);
             base.OnCreateOptionsMenu(menu, inflater);
         }
