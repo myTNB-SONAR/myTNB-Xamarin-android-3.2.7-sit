@@ -1391,6 +1391,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             ssmr_history_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
             ssmr_history_activity.PutExtra(Constants.SMR_RESPONSE_KEY, JsonConvert.SerializeObject(smrResponse));
             ssmr_history_activity.PutExtra("fromUsage", true);
+            SMRPopUpUtils.SetFromUsageFlag(true);
             StartActivityForResult(ssmr_history_activity, SSMR_METER_HISTORY_ACTIVITY_CODE);
         }
 
@@ -1399,6 +1400,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             Intent ssmr_submit_meter_activity = new Intent(this.Activity, typeof(SubmitMeterReadingActivity));
             ssmr_submit_meter_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(selectedAccount));
             ssmr_submit_meter_activity.PutExtra(Constants.SMR_RESPONSE_KEY, JsonConvert.SerializeObject(smrResponse));
+            SMRPopUpUtils.SetFromUsageFlag(true);
             StartActivityForResult(ssmr_submit_meter_activity, SSMR_SUBMIT_METER_ACTIVITY_CODE);
         }
 
@@ -1639,6 +1641,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         selectedSMHistoryData = selectedSMHistoryData,
                         currentContext = Activity,
+                        currentActivity = Activity,
                         isStacked = true,
                         isZoomIn = isZoomIn,
                         currentChartType = ChartType,
@@ -1656,6 +1659,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         selectedSMHistoryData = selectedSMHistoryData,
                         currentContext = Activity,
+                        currentActivity = Activity,
                         isStacked = false,
                         isZoomIn = isZoomIn,
                         currentChartType = ChartType,
@@ -1677,7 +1681,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     renderer = new StackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
                     {
                         selectedHistoryData = selectedHistoryData,
-                        currentContext = Activity
+                        currentContext = Activity,
+                        currentActivity = Activity
                     };
                     mChart.Renderer = renderer;
                 }
@@ -1686,7 +1691,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     renderer = new StackedBarChartRenderer(mChart, mChart.Animator, mChart.ViewPortHandler)
                     {
                         selectedHistoryData = selectedHistoryData,
-                        currentContext = Activity
+                        currentContext = Activity,
+                        currentActivity = Activity
                     };
                     mChart.Renderer = renderer;
                 }
@@ -1980,12 +1986,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             if (selectedAccount.AccountCategoryId.Equals("2"))
             {
                 graphTopPadding = 40;
-                mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(240f);
+                mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(230f);
             }
             else if (ChartType == ChartType.Day && isZoomIn)
             {
                 graphBottomPadding = 6;
-                mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(196f);
+                mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(216f);
             }
             else if (isSMR)
             {
@@ -1993,7 +1999,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
             else
             {
-                mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(220f);
+                mChart.LayoutParameters.Height = (int)DPUtils.ConvertDPToPx(240f);
             }
 
 
@@ -4608,6 +4614,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_bg);
                                 }
                             }
+                            else if (isSMAccount)
+                            {
+                                if (newTariffList.Count >= 0 && newTariffList.Count < 2)
+                                {
+                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                                }
+                                else if (newTariffList.Count >= 2 && newTariffList.Count < 4)
+                                {
+                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
+                                }
+                                else
+                                {
+                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_extended_bg);
+                                }
+                            }
 
                             Context context = tariffBlockLegendRecyclerView.Context;
                             LayoutAnimationController controller =
@@ -4625,6 +4646,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             if (isSMR)
                             {
                                 scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
+                            }
+                            else if (isSMAccount)
+                            {
+                                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
                             }
                         }
                     }
@@ -4677,6 +4702,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             tariffBlockLegendAdapter = new TariffBlockLegendAdapter(newTariffList, this.Activity, false);
                             tariffBlockLegendRecyclerView.SetAdapter(tariffBlockLegendAdapter);
 
+                            if (isSMAccount)
+                            {
+                                if (newTariffList.Count >= 0 && newTariffList.Count < 2)
+                                {
+                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                                }
+                                else if (newTariffList.Count >= 2 && newTariffList.Count < 4)
+                                {
+                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_extended_extended_bg);
+                                }
+                                else
+                                {
+                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_extended_bg);
+                                }
+                            }
+
                             Context context = tariffBlockLegendRecyclerView.Context;
                             LayoutAnimationController controller =
                                     AnimationUtils.LoadLayoutAnimation(context, Resource.Animation.layout_animation_fall_down);
@@ -4689,6 +4730,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                             tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Gone;
+
+                            if (isSMAccount)
+                            {
+                                scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                            }
                         }
                     }
                     else
@@ -4812,7 +4858,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         StopAddressShimmer();
                         StopRangeShimmer();
                         StopGraphShimmer();
-                        ShowSMStatisticCard();
+                        HideSMStatisticCard();
                         energyTipsView.Visibility = ViewStates.Gone;
 
                         string defaultMessage = Activity.GetString(Resource.String.new_account_view);
@@ -5325,6 +5371,31 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
             var actionBar = act.SupportActionBar;
             actionBar.Show();
+
+            try
+            {
+                if (SMRPopUpUtils.GetFromUsageFlag())
+                {
+                    SMRPopUpUtils.SetFromUsageFlag(false);
+                    if (SMRPopUpUtils.GetFromUsageSubmitSuccessfulFlag())
+                    {
+                        SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
+                        this.userActionsListener.OnTapRefresh();
+                    }
+                }
+                else
+                {
+                    if (SMRPopUpUtils.GetFromUsageSubmitSuccessfulFlag())
+                    {
+                        SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
+                    }
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -6221,6 +6292,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         void IOnChartValueSelectedListenerSupport.OnNothingSelected()
         {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    DoNothingSelected();
+                });
+            }
+            catch (System.Exception err)
+            {
+                DoNothingSelected();
+                Utility.LoggingNonFatalError(err);
+            }
+        }
+
+        private void DoNothingSelected()
+        {
             CurrentParentIndex = -1;
             try
             {
@@ -6246,6 +6333,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         // Lin Siong Note: Will have vibration effect when selected
         // Lin Siong Note: if isToggleTariff = true then it will force the entry to be hightlighted to most upper one
         void IOnChartValueSelectedListenerSupport.OnValueSelected(Entry e, Highlight h)
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    DoValueSelected(e, h);
+                });
+            }
+            catch (System.Exception err)
+            {
+                DoValueSelected(e, h);
+                Utility.LoggingNonFatalError(err);
+            }
+        }
+
+        private void DoValueSelected(Entry e, Highlight h)
         {
             try
             {
@@ -6342,12 +6445,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 Vibrator vibrator = (Vibrator)this.Activity.GetSystemService(Context.VibratorService);
                                 if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.O)
                                 {
-                                    vibrator.Vibrate(VibrationEffect.CreateOneShot(200, 12));
+                                    vibrator.Vibrate(VibrationEffect.CreateOneShot(150, 10));
 
                                 }
                                 else
                                 {
-                                    vibrator.Vibrate(200);
+                                    vibrator.Vibrate(150);
 
                                 }
                             }
@@ -6355,6 +6458,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
                             Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
                             mChart.HighlightValue(centerBar, false);
+                            SetDayViewMonthText(dayViewMonthList[currentDayViewIndex]);
 
                             if (missingReadingList[currentDayViewIndex])
                             {
@@ -6831,6 +6935,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             }
         }
 
+        public void HideSMStatisticCard()
+        {
+            if (isSMAccount)
+            {
+                StopSMStatisticShimmer();
+                smStatisticContainer.Visibility = ViewStates.Gone;
+            }
+            else
+            {
+                smStatisticContainer.Visibility = ViewStates.Gone;
+            }
+        }
+
         public void ShowSMStatisticCard()
         {
             try
@@ -7020,20 +7137,28 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             try
             {
+                if (isSMAccount)
+                {
+                    rootView.SetBackgroundResource(0);
+                    scrollViewContent.SetBackgroundResource(0);
+                    try
+                    {
+                        ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
+                        ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                }
+
                 LinearLayout.LayoutParams newAccountImageParams = newAccountImage.LayoutParameters as LinearLayout.LayoutParams;
 
                 newAccountImageParams.Width = GetDeviceHorizontalScaleInPixel(0.30f);
                 newAccountImageParams.Height = GetDeviceHorizontalScaleInPixel(0.30f);
-                if (isREAccount || isSMR || isSMAccount)
+                if (isREAccount || isSMR)
                 {
-                    if (isSMAccount)
-                    {
-                        newAccountImageParams.TopMargin = (int)DPUtils.ConvertDPToPx(76f);
-                    }
-                    else
-                    {
-                        newAccountImageParams.TopMargin = (int)DPUtils.ConvertDPToPx(32f);
-                    }
+                    newAccountImageParams.TopMargin = (int)DPUtils.ConvertDPToPx(32f);
                 }
                 else
                 {
@@ -7043,15 +7168,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                 LinearLayout.LayoutParams newAccountContentParams = newAccountContent.LayoutParameters as LinearLayout.LayoutParams;
                 newAccountContentParams.TopMargin = (int)DPUtils.ConvertDPToPx(24f);
-                if (isREAccount || isSMR || isSMAccount)
+                if (isREAccount || isSMR)
                 {
                     if (isSMR)
                     {
                         newAccountContentParams.BottomMargin = (int)DPUtils.ConvertDPToPx(35f);
-                    }
-                    else if (isSMAccount)
-                    {
-                        newAccountContentParams.BottomMargin = (int)DPUtils.ConvertDPToPx(76f);
                     }
                     else
                     {
@@ -7194,6 +7315,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             public override void StopDeceleration()
             {
                 base.StopDeceleration();
+                try
+                {
+                    currentFragment.Activity.RunOnUiThread(() =>
+                    {
+                        OnStopDeceleration();
+                    });
+                }
+                catch (System.Exception e)
+                {
+                    OnStopDeceleration();
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+
+            private void OnStopDeceleration()
+            {
                 if (currentChartType == ChartType.Day && currentIsZoomIn)
                 {
                     if (!isShowLog && isDayViewFirstMove)
@@ -7290,6 +7427,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             public override void EndAction(MotionEvent p0)
             {
                 base.EndAction(p0);
+                try
+                {
+                    currentFragment.Activity.RunOnUiThread(() =>
+                    {
+                        OnEndAction(p0);
+                    });
+                }
+                catch (System.Exception e)
+                {
+                    OnEndAction(p0);
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+
+            private void OnEndAction(MotionEvent p0)
+            {
                 if (currentChartType == ChartType.Day && currentIsZoomIn)
                 {
                     if (p0.Action == MotionEventActions.Up)
@@ -7388,7 +7541,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             public override void ComputeScroll()
             {
                 base.ComputeScroll();
+                try
+                {
+                    currentFragment.Activity.RunOnUiThread(() =>
+                    {
+                        OnComputeScroll();
+                    });
+                }
+                catch (System.Exception e)
+                {
+                    OnComputeScroll();
+                    Utility.LoggingNonFatalError(e);
+                }
 
+            }
+
+            private void OnComputeScroll()
+            {
                 if (currentChartType == ChartType.Day && currentIsZoomIn)
                 {
                     if (!isDayViewFirstMove)
@@ -7440,7 +7609,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             int checkPoint = (int)(trackingLowestVisibleX * 100);
                             checkPoint = checkPoint % 100;
 
-                            int tempDayViewIndex = (int) trackingLowestVisibleX + 5;
+                            int tempDayViewIndex = (int)trackingLowestVisibleX + 5;
 
                             if (roundedLowestVisibleX == 0 && (checkPoint <= -50 || (checkPoint > 0 && checkPoint <= 25)))
                             {
@@ -7522,7 +7691,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     resultLowestVisibleX = roundedLowestVisibleX + 1.5f;
                                 }
 
-                                currentDayViewIndex = (int) (resultLowestVisibleX + 4.5f);
+                                currentDayViewIndex = (int)(resultLowestVisibleX + 4.5f);
 
                                 if (roundedLowestVisibleX == 0 && (checkPoint <= -50 || (checkPoint > 0 && checkPoint <= 25)))
                                 {

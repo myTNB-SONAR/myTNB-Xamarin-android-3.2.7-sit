@@ -17,6 +17,8 @@ namespace myTNB_Android.Src.Utils
     public class SMRPopUpUtils
     {
         private static SMRActivityInfoResponse smrResponse;
+        private static bool fromUsage = false;
+        private static bool fromUsageSubmitSuccessful = false;
 
         public static SSMRMeterReadingDialogFragment OnShowSMRMeterReadingTooltipOnActivity(bool isSinglePhase, Android.App.Activity mActivity, Android.Support.V4.App.FragmentManager mManager, List<SSMRMeterReadingModel> list)
         {
@@ -43,6 +45,26 @@ namespace myTNB_Android.Src.Utils
             }
 
             return isOCRDown;
+        }
+
+        public static void SetFromUsageFlag(bool flag)
+        {
+            fromUsage = flag;
+        }
+
+        public static bool GetFromUsageFlag()
+        {
+            return fromUsage;
+        }
+
+        public static void SetFromUsageSubmitSuccessfulFlag(bool flag)
+        {
+            fromUsageSubmitSuccessful = flag;
+        }
+
+        public static bool GetFromUsageSubmitSuccessfulFlag()
+        {
+            return fromUsageSubmitSuccessful;
         }
     }
 }
