@@ -85,6 +85,7 @@
         public static string Common_ChangeLanguageMessage = "changeLanguageMessage";
         public static string Common_ChangeLanguageYes = "changeLanguageYes";
         public static string Common_ChangeLanguageNo = "changeLanguageNo";
+        public static string Common_New = "new";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";

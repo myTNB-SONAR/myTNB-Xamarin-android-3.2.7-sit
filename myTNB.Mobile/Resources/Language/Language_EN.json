@@ -106,7 +106,8 @@
     "changeLanguageTitle_EN": "Change language to Bahasa Malaysia?",
     "changeLanguageMessage_EN": "Are you sure you want to change the app language to Bahasa Malaysia?",
     "changeLanguageYes_EN": "Yes",
-    "changeLanguageNo_EN": "No"
+    "changeLanguageNo_EN": "No",
+    "new": "New"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",

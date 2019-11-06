@@ -277,7 +277,7 @@ namespace myTNB
                     TextAlignment = UITextAlignment.Center,
                     TextColor = MyTNBColor.GreyishBrown,
                     Font = TNBFont.MuseoSans_8_500,
-                    Text = "New"
+                    Text = LanguageUtility.GetCommonI18NValue(Constants.Common_New)
                 };
                 indicatorView.AddSubview(newLbl);
 
@@ -446,7 +446,8 @@ namespace myTNB
                 {
                     if (ServicesConstants.ImageDictionary.ContainsKey(serviceItem.ServiceId))
                     {
-                        imageName = ServicesConstants.ImageDictionary[serviceItem.ServiceId] + (ServiceIsDisabled(serviceItem) ? "-Disabled" : string.Empty);
+                        imageName = ServicesConstants.ImageDictionary[serviceItem.ServiceId]
+                            + (ServiceIsDisabled(serviceItem) ? "-Disabled" : string.Empty);
                     }
                 }
             }

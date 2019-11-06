@@ -106,7 +106,8 @@
     "changeLanguageTitle_EN": "Change language to English?",
     "changeLanguageMessage_EN": "Are you sure you want to change the app language to English?",
     "changeLanguageYes_EN": "Yes",
-    "changeLanguageNo_EN": "No"
+    "changeLanguageNo_EN": "No",
+    "new": "Baru"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
