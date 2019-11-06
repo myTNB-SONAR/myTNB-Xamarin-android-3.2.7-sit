@@ -3794,6 +3794,7 @@
       <Generator></Generator>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable-xxxhdpi\filter_filled.png">
+    <AndroidResource Include="Resources\drawable\usage_bottom_sheet_bg.xml">
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>

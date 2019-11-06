@@ -28,6 +28,8 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
 
         public Context currentContext { get; set; }
 
+        public Android.App.Activity currentActivity { get; set; }
+
         public ChartType currentChartType { get; set; }
 
         public ChartDataType currentChartDataType { get; set; }
@@ -92,6 +94,22 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
         }
 
         public override void DrawExtras(Canvas canvas)
+        {
+            try
+            {
+                currentActivity.RunOnUiThread(() =>
+                {
+                    OnDrawExtras(canvas);
+                });
+            }
+            catch (Exception e)
+            {
+                OnDrawExtras(canvas);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void OnDrawExtras(Canvas canvas)
         {
             try
             {
@@ -199,10 +217,25 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
             {
                 Utility.LoggingNonFatalError(e);
             }
-
         }
 
         protected override void DrawDataSet(Canvas canvas, IBarDataSet dataSet, int index)
+        {
+            try
+            {
+                currentActivity.RunOnUiThread(() =>
+                {
+                    OnDrawDataSet(canvas, dataSet, index);
+                });
+            }
+            catch (Exception e)
+            {
+                OnDrawDataSet(canvas, dataSet, index);
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        private void OnDrawDataSet(Canvas canvas, IBarDataSet dataSet, int index)
         {
             try
             {
@@ -392,7 +425,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                             currentItem = left;
 
                             isFirstTime = false;
-                           
+
                             int nextIndex = j + 4;
                             // Lin Siong Note: check if need to hightlight the entry
                             // Lin Siong Note: if yes then set alpha to 255
