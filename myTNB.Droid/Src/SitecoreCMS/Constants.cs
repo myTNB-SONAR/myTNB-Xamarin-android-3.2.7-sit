@@ -149,6 +149,11 @@
                     public const string Image_XXHDPI = "image_xxhdpi";
                     public const string Image_XXXHDPI = "image_xxxhdpi";
                 }
+
+                public struct Language
+                {
+                    public const string LanguageFile = "Language File";
+                }
             }
 
             public struct ItemID
@@ -187,6 +192,9 @@
 
                 public const string SSMRMeterReadingOnePhaseWalkthroughOCROff = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead OnePhase OCR Off";
                 public const string SSMRMeterReadingThreePhaseWalkthroughOCROff = "/sitecore/content/myTNBapp/Contents/Walkthrough SSMR MeterRead ThreePhase OCR Off";
+
+                public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json/App Language Json";
+                public const string LanguageTimestamp = "/sitecore/content/myTNBapp/Contents/App Language Json";
             }
         }
     }

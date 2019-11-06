@@ -3780,6 +3780,8 @@
     <AndroidResource Include="Resources\layout\AppLanguageLayout.axml" />
     <Compile Include="Src\Common\Adapter\SelectItemAdapter.cs" />
     <Compile Include="Src\Common\Model\Item.cs" />
+    <Compile Include="Src\SitecoreCMS\Service\LanguageService.cs" />
+    <Compile Include="Src\SitecoreCMS\Model\LanguageModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

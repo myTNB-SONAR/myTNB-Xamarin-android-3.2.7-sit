@@ -18,7 +18,8 @@ namespace myTNB_Android.Src.Database.Model
         public enum SITE_CORE_ID
         {
             APPLY_SSMR_WALKTHROUGH,
-            BILL_TOOLTIP
+            BILL_TOOLTIP,
+            LANGUAGE_URL
         }
 
         public static void CreateTable()

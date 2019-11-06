@@ -82,6 +82,11 @@
                 {
                     public const string TimestampField = "Timestamp";
                 }
+
+                public struct Language
+                {
+                    public const string LanguageFile = "Language File";
+                }
             }
 
             public struct ItemID
@@ -105,6 +110,9 @@
                 public const string Timestamp = "/sitecore/content/myTNBapp/Timestamp";
                 public const string WalkthroughScreens = "/sitecore/content/myTNBapp/Contents/Walkthrough Screens";
                 public const string FullRTEPages = "/sitecore/content/myTNBapp/Contents/Full RTE Pages/Terms Condition";
+
+                public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json/App Language Json";
+                public const string LanguageTimestamp = "/sitecore/content/myTNBapp/Contents/App Language Json";
             }
         }
     }

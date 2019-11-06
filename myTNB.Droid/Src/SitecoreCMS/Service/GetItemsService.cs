@@ -475,5 +475,42 @@ namespace myTNB.SitecoreCMS.Services
             listData.Add(data);
             return listData;
         }
+
+        public LanguageResponseModel GetLanguageItems()
+        {
+            LanguageResponseModel respModel = new LanguageResponseModel();
+            try
+            {
+                LanguageService service = new LanguageService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetItems();
+                var resp = CheckData(data.ToList<object>());
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<LanguageResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetLanguageItems: " + e.Message);
+            }
+            return respModel;
+        }
+
+        public LanguageTimeStampResponseModel GetLanguageTimestampItem()
+        {
+            LanguageTimeStampResponseModel respModel = new LanguageTimeStampResponseModel();
+            try
+            {
+                LanguageService service = new LanguageService(OS, ImageSize, WebsiteUrl, Language);
+                var data = service.GetTimeStamp();
+                var listData = AddDataToList(data);
+                var resp = CheckData(listData);
+                string serializedObj = JsonConvert.SerializeObject(resp);
+                respModel = JsonConvert.DeserializeObject<LanguageTimeStampResponseModel>(serializedObj);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Exception in GetItemsService/GetLanguageTimestampItem: " + e.Message);
+            }
+            return respModel;
+        }
     }
 }
