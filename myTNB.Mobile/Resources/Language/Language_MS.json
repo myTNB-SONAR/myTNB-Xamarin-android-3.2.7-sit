@@ -86,7 +86,7 @@
     "save": "Simpan",
     "fullname": "Nama Penuh",
     "confirmPassword": "Sahkan Kata Laluan",
-    "accountNo": "Akaun Nombor",
+    "accountNo": "Nombor Akaun",
     "accountType": "Jenis Akaun",
     "allNotifications": "All Notifications",
     "unitEmission": "kg",
@@ -97,8 +97,17 @@
     "charactersLeft": "{0} characters left",
     "comments": "Comments",
     "accountHolder": "Account Holder's Name",
-    "skip": "Skip",
-    "details": "Details"
+    "skip": "Langkau",
+    "details": "Details",
+    "changeLanguageTitle_MS": "Tukar kepada English?",
+    "changeLanguageMessage_MS": "Anda pasti ingin menukar bahasa aplikasi myTNB kepada English?",
+    "changeLanguageYes_MS": "Ya",
+    "changeLanguageNo_MS": "Tidak",
+    "changeLanguageTitle_EN": "Change language to English?",
+    "changeLanguageMessage_EN": "Are you sure you want to change the app language to English?",
+    "changeLanguageYes_EN": "Yes",
+    "changeLanguageNo_EN": "No",
+    "new": "Baru"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -198,7 +207,7 @@
     "editContactInfo": "Dengan mengedit, anda akan mengemas kini profil myTNB dan maklumat akaun elektrik anda.",
     "selectReason": "Pilih Sebab",
     "stateReason": "Sila nyatakan sebab anda",
-    "selectAnAccount": "Select an account"
+    "selectAnAccount": "Pilih Akaun"
   },
   "Status": {
     "feedbackSuccessTitle": "Feedback Successful",
@@ -564,7 +573,8 @@
     "quickAccess": "Quick Actions",
     "findUs": "Temui Kami",
     "callUs": "Hubungi Kami",
-    "feedback": "Beri Maklumbalas"
+    "feedback": "Beri Maklumbalas",
+    "changeLanguage": "Change language to English"
   },
   "Login": {
     "loginTitle": "Log Masuk Akaun myTNB",
@@ -585,7 +595,7 @@
     "title": "Masukkan Kod",
     "details": "Sila masukkan kod 4 digit yang telah dihantar ke {0}",
     "emailNotReceived": "Tidak terima emel?",
-    "resendPinMessage": "Email containing the activation pin has been sent to your email address." //missing
+    "resendPinMessage": "Email containing the activation PIN has been sent to your email address." //missing
   },
   "PasswordResetSuccess": {
     "title": "Berjaya Set Semula Kata Laluan",
@@ -610,7 +620,7 @@
   "VerifyPin": {
     "title": "Sahkan PIN",
     "smsNotReceived": "Tidak terima SMS?",
-    "resendPinMessage": "SMS mengandungi pin pengaktifan telah dihantar ke nombor anda.",
+    "resendPinMessage": "SMS mengandungi PIN pengaktifan telah dihantar ke nombor anda.",
     "otpMobileUpdate": "Sila masukkan kod OTP 4 digit yang telah dihantar ke {0}.",
     "otpRegistration": "Sila masukkan kod OTP 4 digit yang telah dihantar ke {0}."
   },
@@ -637,15 +647,17 @@
   },
   "Onboarding": {
     "letsStart": "Let's get started!",
-    "skip": "Skip",
-    "title1": "Welcome to myTNB!",
-    "title2": "Bills at Your Fingertips.",
-    "title3": "Pay Your Bills Anytime, Anywhere.",
-    "title4": "Enhanced View for Better Experiences.",
-    "description1": "Track, monitor and stay on top of your electricity usage!",
-    "description2": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",
-    "description3": "Pay your electricity bills while at home, on holiday, on the train – whenever you want to. Say goodbye to late charges and queuing up!",
-    "description4": "We’ve revamped the Home, Bills and Usage screens! It’s not just prettier, it’s way more helpful with more details (including block tariffs so you can stay informed on all things usage-related)."
+    "skip": "Langkau",
+    "title1": "Selamat datang ke myTNB!",
+    "title2": "Ketahui penggunaan terkini anda",
+    "title3": "Bil di hujung jari anda",
+    "title4": "Bayar bil anda bila-bila masa, di mana sahaja",
+    "title5": "Nikmati Pelbagai Ganjaran Melalui myTNB!",
+    "description1": "We're excited for all you can do with this app! But first, choose your preferred language.<br><br>Banyak yang anda boleh manfaatkan dengan aplikasi ini. Sila pilih bahasa anda.",
+    "description2": "Kesan, pantau dan ketahui penggunaan terkini elektrik anda!",
+    "description3": "Akses bil versi PDF anda untuk 6 bulan dengan mudah, di satu lokasi!",
+    "description4": "Bayar bil elektrik anda semasa di rumah, bercuti, dalam keretapi - bila-bila masa. 'Goodbye' caj lewat dan beratur di kaunter!",
+    "description5": "Ya, kini kami berikan hadiah dan ganjaran - segalanya PERCUMA untuk pengguna myTNB! Pergi ke ikon 'Ganjaran' untuk tebus ganjaran anda sekarang!"
   },
   "ManageCards": {
     "title": "Urus Kad Kredit / Debit",
@@ -704,14 +716,14 @@
     "trnMethod": "RANSACTION METHOD"
   },
   "FeedbackList": {
-    "title": "Feedback"
+    "title": "Maklum Balas"
   },
   "FeedbackForm": {
     "attachPhotoTitle": "ATTACH PHOTO / SCREENSHOT (OPTIONAL)",
     "maxFile": "Max 2 files",
     "camera": "Camera",
     "cameraRoll": "Camera Roll",
-    "feedback": "Feedback",
+    "feedback": "Maklum Balas",
     "invalidFeedback": "Invalid feedback",
     //Not Supported Start
     "feedbackType": "Feedback Type",
@@ -735,7 +747,7 @@
     "feedbackID": "Feedback ID",
     "feedbackStatus": "Feedback Status",
     "dateTimeTitle": "Feedback Date & Time",
-    "feedback": "Feedback",
+    "feedback": "Maklum Balas",
     "photoTitle": "Photo / Screenshot",
     //Not Supported by MS Translation Start
     "state": "State",
@@ -757,7 +769,7 @@
     "backToDashboard": "Back to Dashboard"
   },
   "Promotions": {
-    "title": "Promotions",
+    "title": "Promosi",
     "noPromotions": "No promotions currently. Check back later!"
   }
 }

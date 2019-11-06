@@ -98,7 +98,16 @@
     "comments": "Comments",
     "accountHolder": "Account Holder's Name",
     "skip": "Skip",
-    "details": "Details"
+    "details": "Details",
+    "changeLanguageTitle_MS": "Tukar kepada Bahasa Malaysia?",
+    "changeLanguageMessage_MS": "Anda pasti ingin menukar bahasa aplikasi myTNB kepada Bahasa Malaysia?",
+    "changeLanguageYes_MS": "Ya",
+    "changeLanguageNo_MS": "Tidak",
+    "changeLanguageTitle_EN": "Change language to Bahasa Malaysia?",
+    "changeLanguageMessage_EN": "Are you sure you want to change the app language to Bahasa Malaysia?",
+    "changeLanguageYes_EN": "Yes",
+    "changeLanguageNo_EN": "No",
+    "new": "New"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -564,7 +573,8 @@
     "quickAccess": "Quick Actions",
     "findUs": "Find Us",
     "callUs": "Call Us",
-    "feedback": "Give Us Feedback"
+    "feedback": "Give Us Feedback",
+    "changeLanguage": "Tukar kepada Bahasa Malaysia"
   },
   "Login": {
     "loginTitle": "myTNB Account Login",
@@ -585,7 +595,7 @@
     "title": "Enter Code",
     "details": "Please enter the 4 digit code that was sent to {0}",
     "emailNotReceived": "Didn't receive the email?",
-    "resendPinMessage": "An Email containing the activation pin has been sent to your email address."
+    "resendPinMessage": "An Email containing the activation PIN has been sent to your email address."
   },
   "PasswordResetSuccess": {
     "title": "Password Reset Successful",
@@ -610,9 +620,9 @@
   "VerifyPin": {
     "title": "Verify PIN",
     "smsNotReceived": "Didn't receive the SMS?",
-    "resendPinMessage": "An SMS containing the activation pin has been sent to your number.",
+    "resendPinMessage": "An SMS containing the activation PIN has been sent to your number.",
     "otpMobileUpdate": "An OTP has been sent to {0}, please enter it below.",
-    "otpRegistration": "Please enter the 4-digit activation pin that was sent to {0}."
+    "otpRegistration": "Please enter the 4-digit activation PIN that was sent to {0}."
   },
   "Logout": {
     "logoutTitle": "Thank you for using myTNB.",
@@ -639,13 +649,15 @@
     "letsStart": "Let's get started!",
     "skip": "Skip",
     "title1": "Welcome to myTNB!",
-    "title2": "Bills at Your Fingertips.",
-    "title3": "Pay Your Bills Anytime, Anywhere.",
-    "title4": "Enhanced View for Better Experiences.",
-    "description1": "Track, monitor and stay on top of your electricity usage!",
-    "description2": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",
-    "description3": "Pay your electricity bills while at home, on holiday, on the train – whenever you want to. Say goodbye to late charges and queuing up!",
-    "description4": "We’ve revamped the Home, Bills and Usage screens! It’s not just prettier, it’s way more helpful with more details (including block tariffs so you can stay informed on all things usage-related)."
+    "title2": "Stay current with your usage",
+    "title3": "Bills at Your Fingertips.",
+    "title4": "Pay Your Bills Anytime, Anywhere.",
+    "title5": "Say Hi to myTNB Rewards!",
+    "description1": "We're excited for all you can do with this app! But first, choose your preferred language.<br><br>Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.",
+    "description2": "Track, monitor and stay on top of your electricity usage!",
+    "description3": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",
+    "description4": "Pay your electricity bills while at home, on holiday, on the train – whenever you want to. Say goodbye to late charges and queuing up!",
+    "description5": "That's right, we're bringing you exclusive perks and freebies - all of this just for myTNB users! Check out the new Rewards section to claim something now!"
   },
   "ManageCards": {
     "title": "Manage Credit / Debit Cards",
