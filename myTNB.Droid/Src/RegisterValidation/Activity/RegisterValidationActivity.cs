@@ -31,7 +31,7 @@ namespace myTNB_Android.Src.RegisterValidation
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.RegisterValidation")]
-    public class RegisterValidationActivity : BaseToolbarAppCompatActivity, RegistrationValidationContract.IView, ProgressGenerator.OnProgressListener
+    public class RegisterValidationActivity : BaseActivityCustom, RegistrationValidationContract.IView, ProgressGenerator.OnProgressListener
     {
 
         private RegistrationValidationPresenter mPresenter;
@@ -81,6 +81,7 @@ namespace myTNB_Android.Src.RegisterValidation
 
         MaterialDialog registrationDialog;
         private LoadingOverlay loadingOverlay;
+        const string PAGE_ID = "VerifyPin";
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -119,7 +120,8 @@ namespace myTNB_Android.Src.RegisterValidation
                 TextViewUtils.SetMuseoSans300Typeface(txtNumber_1, txtNumber_2, txtNumber_3, txtNumber_4);
                 TextViewUtils.SetMuseoSans500Typeface(btnResend, OnCompleteResend);
 
-                txtInfoTitle.Text = GetString(Resource.String.registration_validation_pin_info_wildcard, entity.MobileNo);
+                txtInfoTitle.Text = string.Format(GetLabelByLanguage("otpRegistration"), entity.MobileNo);
+                txtDidntReceive.Text = GetLabelByLanguage("smsNotReceived");
 
                 txtNumber_1.TextChanged += TxtNumber_1_TextChanged;
                 txtNumber_2.TextChanged += TxtNumber_2_TextChanged;
@@ -451,22 +453,22 @@ namespace myTNB_Android.Src.RegisterValidation
 
         public void ShowEmptyErrorPin_1()
         {
-            txtInputLayoutNumber_1.Error = GetString(Resource.String.registration_validation_empty_error_1);
+            txtInputLayoutNumber_1.Error = Utility.GetLocalizedErrorLabel("invalid_pin");
         }
 
         public void ShowEmptyErrorPin_2()
         {
-            txtInputLayoutNumber_2.Error = GetString(Resource.String.registration_validation_empty_error_2);
+            txtInputLayoutNumber_2.Error = Utility.GetLocalizedErrorLabel("invalid_pin");
         }
 
         public void ShowEmptyErrorPin_3()
         {
-            txtInputLayoutNumber_3.Error = GetString(Resource.String.registration_validation_empty_error_3);
+            txtInputLayoutNumber_3.Error = Utility.GetLocalizedErrorLabel("invalid_pin");
         }
 
         public void ShowEmptyErrorPin_4()
         {
-            txtInputLayoutNumber_4.Error = GetString(Resource.String.registration_validation_empty_error_4);
+            txtInputLayoutNumber_4.Error = Utility.GetLocalizedErrorLabel("invalid_pin");
         }
 
         public void ClearErrors()
@@ -696,6 +698,11 @@ namespace myTNB_Android.Src.RegisterValidation
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

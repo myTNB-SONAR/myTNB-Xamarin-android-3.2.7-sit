@@ -167,6 +167,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="12sp"
                     android:id="@+id/txtTermsConditions"
+                    android:textColorLink="@color/powerBlue"
                     android:gravity="bottom" />
                 <Button
                     android:layout_width="fill_parent"

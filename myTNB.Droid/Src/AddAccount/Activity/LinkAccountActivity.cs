@@ -28,7 +28,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
 {
     [Activity(Label = "Add Electricity Account"
         , ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.LinkAccount")]
-    public class LinkAccountActivity : BaseToolbarAppCompatActivity, LinkAccountContract.IView
+    public class LinkAccountActivity : BaseActivityCustom, LinkAccountContract.IView
     {
 
         RecyclerView.LayoutManager layoutManager;
@@ -78,11 +78,17 @@ namespace myTNB_Android.Src.AddAccount.Activity
         [BindView(Resource.Id.no_account_layout)]
         LinearLayout NoAccountLayout;
 
+        [BindView(Resource.Id.btnAddAnotherAccount)]
+        Button btnAddAnotherAccount;
+
+        [BindView(Resource.Id.btnConfirm)]
+        Button btnConfirm;
+
         private LinkAccountPresenter mPresenter;
         private LinkAccountContract.IUserActionsListener userActionsListener;
-        private Button done;
 
         private bool fromDashboard = false;
+        const string PAGE_ID = "AddAccount";
 
         public bool IsActive()
         {
@@ -183,7 +189,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 }
                 else
                 {
-                    textNoOfAcoount.Text = "No accounts found!";
+                    textNoOfAcoount.Text = GetLabelByLanguage("noAccountsTitle");
                     labelAccountLabel.Visibility = ViewStates.Gone;
                     mNoAccountFoundDialog = new AlertDialog.Builder(this)
                     .SetTitle("Sorry")
@@ -224,7 +230,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                       int totalAccountAdded = adapter.GetAccountList().Count() + additionalAdapter.GetAccountList().Count();
                       if (accountList != null && totalAccountAdded < Constants.ADD_ACCOUNT_LIMIT)
                       {
-                          done.Visibility = ViewStates.Visible;
+                          btnAddAnotherAccount.Visibility = ViewStates.Visible;
                       }
                       mDeleteDialog.Dismiss();
                   })
@@ -268,7 +274,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                       int totalAccountAdded = adapter.GetAccountList().Count + additionalAdapter.GetAccountList().Count();
                       if (accountList != null && totalAccountAdded < Constants.ADD_ACCOUNT_LIMIT)
                       {
-                          done.Visibility = ViewStates.Visible;
+                          btnAddAnotherAccount.Visibility = ViewStates.Visible;
                       }
                       mDeleteDialog.Dismiss();
                   })
@@ -314,8 +320,13 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     fromDashboard = Intent.Extras.GetBoolean("fromDashboard", false);
                 }
 
-                TextViewUtils.SetMuseoSans500Typeface(textNoOfAcoount);
+                TextViewUtils.SetMuseoSans500Typeface(textNoOfAcoount, btnAddAnotherAccount, btnConfirm);
                 TextViewUtils.SetMuseoSans300Typeface(labelAccountLabel);
+
+                textNoOfAcoount.Text = GetLabelByLanguage("noAccountsTitle");
+                labelAccountLabel.Text = GetLabelByLanguage("noAcctFoundMsg");
+                btnAddAnotherAccount.Text = GetLabelByLanguage("addAnotherAcct");
+                btnConfirm.Text = GetLabelCommonByLanguage("confirm");
 
                 adapter = new AccountListAdapter(this, accountList);
                 layoutManager = new LinearLayoutManager(this, LinearLayoutManager.Vertical, false);
@@ -346,8 +357,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 }
                 userActionsListener.GetAccountByIC(Constants.APP_CONFIG.API_KEY_ID, currentLinkedAccounts, email, idNumber);
 
-                done = FindViewById<Button>(Resource.Id.btnAddAnotherAccount);
-                done.Click += delegate
+                btnAddAnotherAccount.Click += delegate
                 {
                     if (!this.GetIsClicked())
                     {
@@ -357,8 +367,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
 
                 };
 
-                Button confirm = FindViewById<Button>(Resource.Id.btnConfirm);
-                confirm.Click += delegate
+                btnConfirm.Click += delegate
                 {
                     if (!this.GetIsClicked())
                     {
@@ -379,8 +388,6 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         }
                     }
                 };
-
-                TextViewUtils.SetMuseoSans500Typeface(done, confirm);
 
                 AddAccountUtils.ClearList();
             }
@@ -457,14 +464,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     ACCOUNT_COUNT = CustomerBillingAccount.List().Count() + 1;
                     if (response.Count > 0)
                     {
-                        if (response.Count == 1)
-                        {
-                            textNoOfAcoount.Text = response.Count + " electricity supply account found!";
-                        }
-                        else
-                        {
-                            textNoOfAcoount.Text = response.Count + " electricity supply accounts found!";
-                        }
+                        textNoOfAcoount.Text = response.Count + GetLabelByLanguage("supplyAcctCount");
 
                         labelAccountLabel.Visibility = ViewStates.Visible;
                         for (int i = 0; i < response.Count; i++)
@@ -499,13 +499,13 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     }
                     else
                     {
-                        textNoOfAcoount.Text = "No accounts found!";
+                        textNoOfAcoount.Text = GetLabelByLanguage("noAccountsTitle");
                         ShowAddAnotherAccountScreen();
                     }
                 }
                 else
                 {
-                    textNoOfAcoount.Text = "No accounts found!";
+                    textNoOfAcoount.Text = GetLabelByLanguage("noAccountsTitle");
                     ShowAddAnotherAccountScreen();
                 }
             }
@@ -890,7 +890,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                         int totalAccountAdded = adapter.GetAccountList().Count() + additionalAdapter.GetAccountList().Count();
                         if (accountList != null && totalAccountAdded >= Constants.ADD_ACCOUNT_LIMIT)
                         {
-                            done.Visibility = ViewStates.Gone;
+                            btnAddAnotherAccount.Visibility = ViewStates.Gone;
                         }
                     }
                 }
@@ -1174,6 +1174,11 @@ namespace myTNB_Android.Src.AddAccount.Activity
         public string GetDeviceId()
         {
             return this.DeviceId();
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

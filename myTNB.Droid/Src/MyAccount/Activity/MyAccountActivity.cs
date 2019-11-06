@@ -35,7 +35,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
         //, MainLauncher = true
         , ScreenOrientation = ScreenOrientation.Portrait
         , Theme = "@style/Theme.MyAccount")]
-    public class MyAccountActivity : BaseToolbarAppCompatActivity, MyAccountContract.IView
+    public class MyAccountActivity : BaseActivityCustom, MyAccountContract.IView
     {
         [BindView(Resource.Id.rootView)]
         LinearLayout rootView;
@@ -111,6 +111,7 @@ namespace myTNB_Android.Src.MyAccount.Activity
 
         MaterialDialog accountRetrieverDialog, logoutProgressDialog;
         private LoadingOverlay loadingOverlay;
+        const string PAGE_ID = "MyAccount";
 
         public override int ResourceId()
         {
@@ -136,10 +137,10 @@ namespace myTNB_Android.Src.MyAccount.Activity
                     .Build();
 
                 logoutProgressDialog = new MaterialDialog.Builder(this)
-                    .Title(GetString(Resource.String.logout_activity_title))
-                    .Content(GetString(Resource.String.logout_app_question))
-                    .PositiveText(GetString(Resource.String.manage_cards_btn_ok))
-                    .NeutralText(GetString(Resource.String.bill_related_feedback_selection_cancel))
+                    .Title(GetLabelByLanguage("logout"))
+                    .Content(GetLabelByLanguage("logoutMessage"))
+                    .PositiveText(GetLabelCommonByLanguage("ok"))
+                    .NeutralText(GetLabelCommonByLanguage("cancel"))
                     .OnPositive((dialog, which) => this.userActionsListener.OnLogout(this.DeviceId()))
                     .OnNeutral((dialog, which) => dialog.Dismiss())
                     .Build();
@@ -168,6 +169,24 @@ namespace myTNB_Android.Src.MyAccount.Activity
                     btnTextUpdateMobileNo,
                     btnTextUpdateCards,
                     txtTnBSupplyAccountTitle);
+
+                txtMyAccountTitle.Text = GetLabelByLanguage("detailSectionTitle");
+                txtTnBSupplyAccountTitle.Text = GetLabelByLanguage("accountSectionTitle");
+                btnAddAnotherAccount.Text = GetLabelCommonByLanguage("addAnotherAcct");
+                btnLogout.Text = GetLabelByLanguage("logout");
+                btnTextUpdateMobileNo.Text = GetLabelCommonByLanguage("update");
+                btnTextUpdateCards.Text = GetLabelCommonByLanguage("manage");
+                btnTextUpdatePassword.Text = GetLabelCommonByLanguage("update");
+                txtMyAccountNoAccountTitle.Text = GetLabelByLanguage("noAccounts");
+                txtMyAccountNoAccountContent.Text = GetLabelByLanguage("addAccountMessage");
+                btnAddAccount.Text = Utility.GetLocalizedLabel("AddAccount", "addAccountCTATitle");
+
+                textInputLayoutFullName.Hint = GetLabelCommonByLanguage("name");
+                textInputLayoutIcNo.Hint = GetLabelCommonByLanguage("idNumber");
+                txtInputLayoutEmail.Hint = GetLabelCommonByLanguage("email");
+                txtInputLayoutMobileNo.Hint = GetLabelCommonByLanguage("mobileNo");
+                txtInputLayoutPassword.Hint = GetLabelCommonByLanguage("password");
+                txtInputLayoutCards.Hint = GetLabelCommonByLanguage("password");
 
                 adapter = new MyAccountAdapter(this, false);
                 listView.Adapter = adapter;
@@ -585,8 +604,8 @@ namespace myTNB_Android.Src.MyAccount.Activity
             try
             {
                 txtMobileNo.Text = newPhone;
-                Snackbar updatePhoneSnackBar = Snackbar.Make(rootView, GetString(Resource.String.my_account_successful_update_mobile_no), Snackbar.LengthIndefinite)
-                            .SetAction(GetString(Resource.String.my_account_successful_update_mobile_no_btn),
+                Snackbar updatePhoneSnackBar = Snackbar.Make(rootView, GetLabelByLanguage("mobileNumberVerified"), Snackbar.LengthIndefinite)
+                            .SetAction(GetLabelCommonByLanguage("close"),
                              (view) =>
                              {
 
@@ -789,8 +808,8 @@ namespace myTNB_Android.Src.MyAccount.Activity
         {
             try
             {
-                Snackbar updatePassWordBar = Snackbar.Make(rootView, GetString(Resource.String.manage_supply_account_removed_success), Snackbar.LengthIndefinite)
-                            .SetAction(GetString(Resource.String.my_account_successful_update_password_btn),
+                Snackbar updatePassWordBar = Snackbar.Make(rootView, GetLabelByLanguage("accountDeleteSuccess"), Snackbar.LengthIndefinite)
+                            .SetAction(GetLabelCommonByLanguage("close"),
                              (view) =>
                              {
 
@@ -809,6 +828,11 @@ namespace myTNB_Android.Src.MyAccount.Activity
                 this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }
