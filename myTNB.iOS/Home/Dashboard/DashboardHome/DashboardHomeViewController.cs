@@ -297,7 +297,11 @@ namespace myTNB
         {
             Debug.WriteLine("DEBUG >>> Home LanguageDidChange");
             base.LanguageDidChange(notification);
-            UpdateGreeting(GetGreeting());
+            if (_homeTableView != null && _dashboardHomeHeader != null)
+            {
+                UpdateGreeting(GetGreeting());
+                _homeTableView.TableHeaderView = _dashboardHomeHeader.GetUI();
+            }
             if (_accountListViewController != null)
             {
                 DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
