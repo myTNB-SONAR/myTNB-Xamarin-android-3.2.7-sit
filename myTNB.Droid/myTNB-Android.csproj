@@ -3823,6 +3823,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\Utils\CancellationTokenSourceWrapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
