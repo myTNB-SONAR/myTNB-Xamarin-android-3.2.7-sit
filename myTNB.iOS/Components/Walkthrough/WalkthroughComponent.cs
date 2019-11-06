@@ -186,11 +186,11 @@ namespace myTNB
                     _toggleBar.ValueChanged += (sender, e) =>
                     {
                         Debug.WriteLine("selected index: " + ((UISegmentedControl)sender).SelectedSegment);
-                        AlertHandler.DisplayCustomAlert(GetCommonI18NValue(Constants.Common_ChangeLanguageTitle)
-                         , GetCommonI18NValue(Constants.Common_ChangeLanguageMessage)
+                        AlertHandler.DisplayCustomAlert(GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageTitle, TNBGlobal.DEFAULT_LANGUAGE))
+                         , GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageMessage, TNBGlobal.DEFAULT_LANGUAGE))
                          , new Dictionary<string, Action> {
-                            { GetCommonI18NValue(Constants.Common_ChangeLanguageNo), null}
-                            ,{ GetCommonI18NValue(Constants.Common_ChangeLanguageYes) ,null} }
+                            { GetCommonI18NValue(string.Format("{0}_{1}",Constants.Common_ChangeLanguageNo, TNBGlobal.DEFAULT_LANGUAGE)), null}
+                            ,{ GetCommonI18NValue(string.Format("{0}_{1}",Constants.Common_ChangeLanguageYes, TNBGlobal.DEFAULT_LANGUAGE)) ,null} }
                          , UITextAlignment.Center
                          , UITextAlignment.Center);
                     };

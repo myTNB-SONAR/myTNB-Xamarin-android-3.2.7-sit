@@ -394,12 +394,12 @@ namespace myTNB.SitecoreCMS
 
                             LanguageManager.Instance.SetLanguage(content ?? string.Empty);
                             LanguageUtility.SetLanguageGlobals();
+                            Debug.WriteLine("Lang End: " + content);
 
                             NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
                             sharedPreference.SetString(content, "LanguageContent");
                             sharedPreference.Synchronize();
                         }
-                        Debug.WriteLine("Lang End");
                     }
                 }
             });

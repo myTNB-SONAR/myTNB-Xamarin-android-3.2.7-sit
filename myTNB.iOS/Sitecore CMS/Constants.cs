@@ -164,8 +164,7 @@
                 public const string BillDetailsTooltip = "/sitecore/content/myTNBapp/Contents/Itemised Billing Tooltip";
                 public const string AppLaunchImage = "/sitecore/content/myTNBapp/Contents/App Launch Image";
 
-                public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json/App Language Json";
-                public const string LanguageTimestamp = "/sitecore/content/myTNBapp/Contents/App Language Json";
+                public const string Language = "/sitecore/content/myTNBapp/Contents/App Language Json";
             }
         }
     }

@@ -99,10 +99,14 @@
     "accountHolder": "Account Holder's Name",
     "skip": "Skip",
     "details": "Details",
-    "changeLanguageTitle": "Tukar kepada Bahasa Malaysia?",
-    "changeLanguageMessage": "Anda pasti ingin menukar bahasa aplikasi myTNB kepada Bahasa Malaysia?",
-    "changeLanguageYes": "Ya",
-    "changeLanguageNo": "Tidak"
+    "changeLanguageTitle_MS": "Tukar kepada Bahasa Malaysia?",
+    "changeLanguageMessage_MS": "Anda pasti ingin menukar bahasa aplikasi myTNB kepada Bahasa Malaysia?",
+    "changeLanguageYes_MS": "Ya",
+    "changeLanguageNo_MS": "Tidak",
+    "changeLanguageTitle_EN": "Change language to Bahasa Malaysia?",
+    "changeLanguageMessage_EN": "Are you sure you want to change the app language to Bahasa Malaysia?",
+    "changeLanguageYes_EN": "Yes",
+    "changeLanguageNo_EN": "No"
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",

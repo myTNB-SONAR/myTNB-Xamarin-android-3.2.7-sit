@@ -205,11 +205,12 @@ namespace myTNB
 
             changeLanguageView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
-                DisplayCustomAlert(GetCommonI18NValue(Constants.Common_ChangeLanguageTitle)
-                    , GetCommonI18NValue(Constants.Common_ChangeLanguageMessage)
+                string langSuffix = TNBGlobal.DEFAULT_LANGUAGE == "EN" ? "MS" : "EN";
+                DisplayCustomAlert(GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageTitle, langSuffix))
+                    , GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageMessage, langSuffix))
                     , new System.Collections.Generic.Dictionary<string, Action> {
-                        { GetCommonI18NValue(Constants.Common_ChangeLanguageNo), null}
-                        ,{ GetCommonI18NValue(Constants.Common_ChangeLanguageYes) ,null} }
+                        { GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageNo, langSuffix)), null}
+                        ,{ GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageYes, langSuffix)) ,null} }
                     , UITextAlignment.Center
                     , UITextAlignment.Center);
             }));
