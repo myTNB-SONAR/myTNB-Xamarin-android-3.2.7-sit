@@ -126,6 +126,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
         IMenuItem billFilterMenuItem;
 
+        private NewAppTutorialDialogFragment mDiaLog;
+
 
         const string SELECTED_ACCOUNT_KEY = "SELECTED_ACCOUNT";
 
@@ -739,11 +741,35 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         public override void OnResume()
         {
             base.OnResume();
+            try
+            {
+                if (this.mPresenter != null && this.mPresenter.IsTutorialShowNeeded())
+                {
+                    this.mPresenter.OnCheckToCallItemizedTutorial();
+                }
+            }
+            catch (Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
 
         public override void OnPause()
         {
             base.OnPause();
+            if (mDiaLog != null)
+            {
+                try
+                {
+                    mDiaLog.Dismiss();
+                    mDiaLog = null;
+                }
+                catch (Exception e)
+                {
+                    mDiaLog = null;
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
         }
 
         public override void OnCreateOptionsMenu(IMenu menu, MenuInflater inflater)
@@ -765,6 +791,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             NewAppTutorialDialogFragment dialogFragmnet = new NewAppTutorialDialogFragment(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList(GetString(Resource.String.tutorial_arrow_down)));
             dialogFragmnet.Cancelable = false;
             dialogFragmnet.Show(((AppCompatActivity)this.Activity).SupportFragmentManager, "NewAppTutorial Dialog");
+            mDiaLog = dialogFragmnet;
             return dialogFragmnet;
         }
 
@@ -799,6 +826,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
         public int GetButtonHeight()
         {
             return btnPayBill.Height;
+        }
+
+        public int OnGetEndOfScrollView()
+        {
+            View child = (View)itemisedBillingScrollView.GetChildAt(0);
+
+            return child.Height + itemisedBillingScrollView.PaddingTop + itemisedBillingScrollView.PaddingBottom;
+        }
+
+        public void OnDisposeDialog()
+        {
+            if (mDiaLog != null)
+            {
+                mDiaLog = null;
+            }
         }
     }
 }

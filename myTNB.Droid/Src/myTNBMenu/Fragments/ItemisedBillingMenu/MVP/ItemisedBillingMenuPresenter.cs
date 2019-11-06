@@ -31,8 +31,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
         ItemisedBillingContract.IView mView;
         AccountChargesModel mAccountChargesModel;
         string storedAccountTypeValue = "";
-        List<AccountBillPayHistoryModel> mainBillingHistoryList = new List<AccountBillPayHistoryModel>();
-        List<AccountChargeModel> mainAccountChargeModelList = new List<AccountChargeModel>();
+        List<AccountBillPayHistoryModel> mainBillingHistoryList;
+        List<AccountChargeModel> mainAccountChargeModelList;
         private ISharedPreferences mPref;
 
         public ItemisedBillingMenuPresenter(ItemisedBillingContract.IView view, ISharedPreferences pref)
@@ -103,8 +103,22 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
                     }
                     else
                     {
-                        mainBillingHistoryList = billingHistoryList;
-                        mainAccountChargeModelList = accountChargeModelList;
+                        if (billingHistoryList != null)
+                        {
+                            mainBillingHistoryList = billingHistoryList;
+                        }
+                        else
+                        {
+                            mainBillingHistoryList = new List<AccountBillPayHistoryModel>();
+                        }
+                        if (accountChargeModelList != null)
+                        {
+                            mainAccountChargeModelList = accountChargeModelList;
+                        }
+                        else
+                        {
+                            mainAccountChargeModelList = new List<AccountChargeModel>();
+                        }
                         OnCheckToCallItemizedTutorial();
                         mView.PopulateAccountCharge(accountChargeModelList);
                         mView.PopulateBillingHistoryList(billingHistoryList, billPayFilterList);
@@ -290,12 +304,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             return modelList;
         }
 
-        private void OnCheckToCallItemizedTutorial()
+        public void OnCheckToCallItemizedTutorial()
         {
             if (!UserSessions.HasItemizedBillingTutorialShown(this.mPref))
             {
                 this.mView.OnShowItemizedFragmentTutorialDialog();
             }
+        }
+
+        public bool IsTutorialShowNeeded()
+        {
+            return mainBillingHistoryList != null;
         }
 
         public List<NewAppModel> OnGeneraNewAppTutorialList(string downArrow)

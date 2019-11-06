@@ -1287,7 +1287,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             threePhaseWalkthroughTokenSource.Cancel();
             threePhaseWalkthroughNoOCRTokenSource.Cancel();
             energyTipsTokenSource.Cancel();
-        }
+            isSummaryDone = false;
+            isMyServiceDone = false;
+            isNeedHelpDone = false;
+            isHomeMenuTutorialShown = false;
+
+    }
 
         public async Task InitiateMyService()
         {

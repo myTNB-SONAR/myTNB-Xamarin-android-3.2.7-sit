@@ -196,6 +196,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         AccountsRecyclerViewAdapter accountsAdapter;
 
+        NewAppTutorialDialogFragment mDialog;
+
         private string mSavedTimeStamp = "0000000";
 
         private string savedSSMRMeterReadingTimeStamp = "0000000";
@@ -656,6 +658,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             base.OnPause();
             this.presenter.OnCancelToken();
+            if (mDialog != null)
+            {
+                try
+                {
+                    mDialog.Dismiss();
+                    mDialog = null;
+                }
+                catch (System.Exception e)
+                {
+                    mDialog = null;
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
         }
 
         public void ShowSearchAction(bool isShow)
@@ -1964,6 +1979,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             NewAppTutorialDialogFragment dialogFragmnet = new NewAppTutorialDialogFragment(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
             dialogFragmnet.Cancelable = false;
             dialogFragmnet.Show(((AppCompatActivity)this.Activity).SupportFragmentManager, "NewAppTutorial Dialog");
+            mDialog = dialogFragmnet;
             return dialogFragmnet;
         }
 
@@ -2048,6 +2064,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             View child = (View)summaryNestScrollView.GetChildAt(0);
 
             return child.Height + summaryNestScrollView.PaddingTop + summaryNestScrollView.PaddingBottom;
+        }
+
+        public void OnDisposeDialog()
+        {
+            if (mDialog != null)
+            {
+                mDialog = null;
+            }
         }
     }
 }
