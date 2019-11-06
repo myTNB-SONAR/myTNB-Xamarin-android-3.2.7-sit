@@ -30,7 +30,7 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
               , Icon = "@drawable/ic_launcher"
     , ScreenOrientation = ScreenOrientation.Portrait
     , Theme = "@style/Theme.Dashboard")]
-    public class SelectSupplyAccountActivity : BaseToolbarAppCompatActivity, SelectSupplyAccountContract.IView
+    public class SelectSupplyAccountActivity : BaseActivityCustom, SelectSupplyAccountContract.IView
     {
 
         private SelectSupplyAccountContract.IUserActionsListener userActionsListener;
@@ -45,6 +45,8 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
 
         MaterialDialog materialDialog;
         private LoadingOverlay loadingOverlay;
+
+        const string PAGE_ID = "SelectElectricityAccounts";
 
         private bool isFromQuickAction = false;
 
@@ -403,6 +405,11 @@ namespace myTNB_Android.Src.SelectSupplyAccount.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

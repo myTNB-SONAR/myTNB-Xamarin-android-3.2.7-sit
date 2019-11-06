@@ -47,7 +47,7 @@ using Android.Preferences;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
-    public class HomeMenuFragment : BaseFragment, HomeMenuContract.IHomeMenuView, ViewTreeObserver.IOnGlobalLayoutListener, View.IOnFocusChangeListener
+    public class HomeMenuFragment : BaseFragmentCustom, HomeMenuContract.IHomeMenuView, ViewTreeObserver.IOnGlobalLayoutListener, View.IOnFocusChangeListener
     {
         [BindView(Resource.Id.newFAQShimmerView)]
         LinearLayout newFAQShimmerView;
@@ -244,7 +244,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         private LoadingOverlay loadingOverlay;
 
-
+        const string PAGE_ID = "DashboardHome";
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -275,13 +275,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             switch (greeting)
             {
                 case Constants.GREETING.MORNING:
-                    accountGreeting.Text = GetString(Resource.String.greeting_text_morning);
+                    accountGreeting.Text = GetLabelByLanguage("greeting_morning");
                     break;
                 case Constants.GREETING.AFTERNOON:
-                    accountGreeting.Text = GetString(Resource.String.greeting_text_afternoon);
+                    accountGreeting.Text = GetLabelByLanguage("greeting_afternoon");
                     break;
                 default:
-                    accountGreeting.Text = GetString(Resource.String.greeting_text_evening);
+                    accountGreeting.Text = GetLabelByLanguage("greeting_evening");
                     break;
             }
         }
@@ -348,6 +348,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 SetupNewFAQView();
                 TextViewUtils.SetMuseoSans300Typeface(txtRefreshMsg);
                 TextViewUtils.SetMuseoSans500Typeface(newFAQTitle, btnRefresh, txtAdd, addActionLabel, searchActionLabel, loadMoreLabel, rearrangeLabel, myServiceLoadMoreLabel);
+
+                addActionLabel.Text = GetLabelByLanguage("add");
+                searchActionLabel.Text = GetLabelByLanguage("search");
+                txtAdd.Text = GetLabelByLanguage("addElectricityAcct");
+                newFAQTitle.Text = GetLabelByLanguage("needHelp");
+                rearrangeLabel.Text = GetLabelByLanguage("rearrangeAccts");
+                loadMoreLabel.Text = GetLabelByLanguage("moreAccts");
+                myServiceLoadMoreLabel.Text = GetLabelByLanguage("showMore");
 
                 addActionContainer.SetOnClickListener(null);
                 notificationHeaderIcon.SetOnClickListener(null);
@@ -677,6 +685,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             param.RightMargin = (int)DPUtils.ConvertDPToPx(16f);
 
             TextViewUtils.SetMuseoSans500Typeface(accountHeaderTitle, accountGreeting, accountGreetingName);
+            accountHeaderTitle.Text = GetLabelByLanguage("myAccounts");
+            searchEditText.SetQueryHint(GetLabelByLanguage("searchPlaceholder"));
             searchEditText.SetOnQueryTextListener(new AccountsSearchOnQueryTextListener(this,accountsAdapter));
             searchEditText.SetOnQueryTextFocusChangeListener(this);
             EditText searchText = searchEditText.FindViewById<EditText>(searchEditText.Context.Resources.GetIdentifier("android:id/search_src_text", null, null));
@@ -1309,8 +1319,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         {
             accountListRefreshContainer.Visibility = ViewStates.Visible;
             accountListViewContainer.Visibility = ViewStates.Gone;
-            string refreshMsg = string.IsNullOrEmpty(contentMsg) ? "Uh oh, looks like this page is unplugged. Refresh to stay plugged in!" : contentMsg;
-            string refreshBtnTxt = string.IsNullOrEmpty(buttonMsg) ? "Refresh Now" : buttonMsg;
+            string refreshMsg = string.IsNullOrEmpty(contentMsg) ? GetLabelByLanguage("refreshMessage") : contentMsg;
+            string refreshBtnTxt = string.IsNullOrEmpty(buttonMsg) ? GetLabelByLanguage("refreshBtnText") : buttonMsg;
             btnRefresh.Text = refreshBtnTxt;
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
             {
@@ -1719,7 +1729,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                         loadMoreImg.StartAnimation(animSet);
 
-                        loadMoreLabel.Text = Activity.GetString(Resource.String.show_less_accounts);
+                        loadMoreLabel.Text = GetLabelByLanguage("showLess");
                     }
 
                     IsRearrangeButtonVisible(true);
@@ -1744,7 +1754,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                         loadMoreImg.StartAnimation(animSet);
 
-                        loadMoreLabel.Text = Activity.GetString(Resource.String.load_more_accounts);
+                        loadMoreLabel.Text = GetLabelByLanguage("moreAccts");
 
                     }
 
@@ -1784,7 +1794,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                         myServiceLoadMoreImg.StartAnimation(animSet);
 
-                        myServiceLoadMoreLabel.Text = Activity.GetString(Resource.String.show_less);
+                        myServiceLoadMoreLabel.Text = GetLabelByLanguage("showLess");
                     }
                 }
                 else
@@ -1807,7 +1817,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                         myServiceLoadMoreImg.StartAnimation(animSet);
 
-                        myServiceLoadMoreLabel.Text = Activity.GetString(Resource.String.show_more);
+                        myServiceLoadMoreLabel.Text = GetLabelByLanguage("showMore");
 
                     }
                 }
@@ -1929,6 +1939,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

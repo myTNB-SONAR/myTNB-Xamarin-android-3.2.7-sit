@@ -34,7 +34,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 	[Activity(Label = "@string/ssmr_meter_history_activity_title"
 		  , ScreenOrientation = ScreenOrientation.Portrait
 		  , Theme = "@style/Theme.SSMRMeterHistoryStyle")]
-	public class SSMRMeterHistoryActivity : BaseToolbarAppCompatActivity, SSMRMeterHistoryContract.IView
+	public class SSMRMeterHistoryActivity : BaseActivityCustom, SSMRMeterHistoryContract.IView
 	{
         [BindView(Resource.Id.smr_submitted_img)]
         ImageView SMRMainImg;
@@ -99,6 +99,12 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         [BindView(Resource.Id.accountListRefreshContainer)]
         LinearLayout smrAccountListRefreshContainer;
 
+        [BindView(Resource.Id.refreshMsg)]
+        TextView refreshMsg;
+
+        [BindView(Resource.Id.btnRefresh)]
+        Button btnRefresh;
+
         private string SMR_ACTION_KEY;
 
         private SMRActivityInfoResponse smrResponse;
@@ -125,6 +131,8 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         private string selectedAccountNumber;
         private List<SMRAccount> smrAccountList = new List<SMRAccount>();
 
+        const string PAGE_ID = "SSMRApplication";
+
         public override int ResourceId()
 		{
 			return Resource.Layout.SSMRMeterHistoryLayout;
@@ -143,11 +151,12 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
                 SetStatusBarBackground(Resource.Drawable.bg_smr);
 
-                TextViewUtils.SetMuseoSans500Typeface(SMRMainTitle, SMRListHeader, SMRMessageTitle, btnSubmitMeter, btnEnableSubmitMeter, btnDisableSubmitMeter);
-                TextViewUtils.SetMuseoSans300Typeface(SMRMainContent, SMRAccountTitle, SMRAccountSelected, NonSMRNoteContent, EmptySMRHistoryMessage);
+                TextViewUtils.SetMuseoSans500Typeface(SMRMainTitle, SMRListHeader, SMRMessageTitle, btnSubmitMeter, btnEnableSubmitMeter, btnDisableSubmitMeter, btnRefresh);
+                TextViewUtils.SetMuseoSans300Typeface(SMRMainContent, SMRAccountTitle, SMRAccountSelected, NonSMRNoteContent, EmptySMRHistoryMessage, refreshMsg);
 
                 EmptySMRHistoryMessage.Text = GetString(Resource.String.ssmr_empty_history_message);
-
+                refreshMsg.Text = GetLabelCommonByLanguage("refreshDescription");
+                btnRefresh.Text = GetLabelCommonByLanguage("refreshNow");
                 mPresenter = new SSMRMeterHistoryPresenter(this);
                 mSMRRecyclerView.SetLayoutManager(new LinearLayoutManager(this));
                 smrAccountList = this.mPresenter.GetEligibleSMRAccountList();
@@ -678,6 +687,11 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         public string GetSMRActionKey()
         {
             return SMR_ACTION_KEY;
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

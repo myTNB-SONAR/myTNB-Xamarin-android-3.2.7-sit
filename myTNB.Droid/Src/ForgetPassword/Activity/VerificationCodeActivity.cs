@@ -27,7 +27,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.RegisterValidation")]
-    public class VerificationCodeActivity : BaseToolbarAppCompatActivity, ForgetPasswordContract.IView, ProgressGenerator.OnProgressListener
+    public class VerificationCodeActivity : BaseActivityCustom, ForgetPasswordContract.IView, ProgressGenerator.OnProgressListener
     {
         private ForgetPasswordPresenter mPresenter;
         private ForgetPasswordContract.IUserActionsListener userActionsListener;
@@ -83,6 +83,8 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         private string email;
         private bool resendCalled = false;
 
+        const string PAGE_ID = "EnterCode";
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -100,11 +102,12 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 Bundle extras = Intent.Extras;
                 email = extras.GetString("email");
 
-                txtInfoTitle.Text = GetString(Resource.String.forget_password_verification_code_text, email);
+                txtInfoTitle.Text = string.Format(GetLabelByLanguage("details"),email);
                 TextViewUtils.SetMuseoSans300Typeface(txtInfoTitle, txtDidntReceive);
                 TextViewUtils.SetMuseoSans300Typeface(txtNumber_1, txtNumber_2, txtNumber_3, txtNumber_4);
                 TextViewUtils.SetMuseoSans500Typeface(btnResend, OnCompleteResend);
 
+                txtDidntReceive.Text = GetLabelByLanguage("emailNotReceived");
 
                 txtNumber_1.TextChanged += TxtNumber_1_TextChanged;
                 txtNumber_2.TextChanged += TxtNumber_2_TextChanged;
@@ -523,11 +526,11 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         {
             try
             {
-                btnResend.Text = GetString(Resource.String.registration_validation_btn_resend) + "(30)";
+                btnResend.Text = Utility.GetLocalizedLabel("Common","resend") + "(30)";
                 //btnResend.SetCompoundDrawablesWithIntrinsicBounds(GetDrawable(Resource.Drawable.ic_button_resend_loaded), null, null, null);
                 btnResend.Visibility = ViewStates.Gone;
                 OnCompleteResend.Visibility = ViewStates.Visible;
-                btnResend.Text = GetString(Resource.String.registration_validation_btn_resend);
+                btnResend.Text = Utility.GetLocalizedLabel("Common", "resend");
                 btnResend.SetCompoundDrawablesWithIntrinsicBounds(GetDrawable(Resource.Drawable.ic_button_resend_loading), null, null, null);
                 btnResend.SetTextColor(Resources.GetColor(Resource.Color.freshGreen));
                 progressGenerator.Progress = 0;
@@ -558,7 +561,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
             //    btnResend.SetTextColor(Resources.GetColor(Resource.Color.white));
 
             //}
-            btnResend.Text = GetString(Resource.String.registration_validation_btn_resend) + "(" + Math.Abs(count - 30) + ")";
+            btnResend.Text = Utility.GetLocalizedLabel("Common", "resend") + "(" + Math.Abs(count - 30) + ")";
         }
 
         public void StartProgress()
@@ -606,6 +609,11 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

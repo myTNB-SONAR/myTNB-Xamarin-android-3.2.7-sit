@@ -26,7 +26,7 @@ using System;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
 {
-    public class MoreMenuFragment : BaseFragment, MoreFragmentContract.IView
+    public class MoreMenuFragment : BaseFragmentCustom, MoreFragmentContract.IView
     {
 
         [BindView(Resource.Id.rootView)]
@@ -98,6 +98,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
 
         private bool mobileNoUpdated = false;
 
+        const string PAGE_ID = "Profile";
+
         public override int ResourceId()
         {
             return Resource.Layout.MoreMenuView;
@@ -130,6 +132,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                 txt_more_fragment_share_rate_this_app,
                 txt_app_version);
 
+            txt_more_fragment_settings_title.Text = GetLabelByLanguage("settings");
+            txt_more_fragment_settings_my_account.Text = GetLabelByLanguage("myAccount");
+            txt_more_fragment_settings_notifications.Text = GetLabelByLanguage("notifications");
+            txt_more_fragment_help_support_title.Text = GetLabelByLanguage("helpAndSupport");
+            txt_more_fragment_help_support_find_us.Text = GetLabelByLanguage("findUs");
+            txt_more_fragment_help_support_call_us.Text = GetLabelByLanguage("callUsOutagesAndBreakdown");
+            txt_more_fragment_help_support_call_us_1.Text = GetLabelByLanguage("callUsBilling");
+            txt_more_fragment_help_support_faq.Text = GetLabelByLanguage("faq");
+            txt_more_fragment_help_support_TC.Text = GetLabelByLanguage("tnc");
+            txt_more_fragment_share_title.Text = GetLabelByLanguage("share");
+            txt_more_fragment_share_share_this_app.Text = GetLabelByLanguage("shareDescription");
+            txt_more_fragment_share_rate_this_app.Text = GetLabelByLanguage("rate");
+
             try
             {
                 Context context = Activity.ApplicationContext;
@@ -137,7 +152,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                 var code = context.PackageManager.GetPackageInfo(context.PackageName, 0).VersionCode;
                 if (name != null)
                 {
-                    txt_app_version.Text = GetString(Resource.String.text_app_version) + " " + name;
+                    txt_app_version.Text = GetLabelByLanguage("appVersion") + " " + name;
                 }
             }
             catch (System.Exception e)
@@ -594,6 +609,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
                 StartActivity(intent);
                 //}
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

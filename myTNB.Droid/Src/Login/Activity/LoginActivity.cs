@@ -30,7 +30,7 @@ namespace myTNB_Android.Src.Login.Activity
               , Icon = "@drawable/ic_launcher"
       , ScreenOrientation = ScreenOrientation.Portrait
       , Theme = "@style/Theme.Login")]
-    public class LoginActivity : BaseToolbarAppCompatActivity, LoginContract.IView
+    public class LoginActivity : BaseActivityCustom, LoginContract.IView
     {
         public readonly static string TAG = typeof(LoginActivity).Name;
         private LoginPresenter mPresenter;
@@ -81,6 +81,8 @@ namespace myTNB_Android.Src.Login.Activity
 
         private LoadingOverlay loadingOverlay;
 
+        const string PAGE_ID = "Login";
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -107,6 +109,16 @@ namespace myTNB_Android.Src.Login.Activity
                 TextViewUtils.SetMuseoSans500Typeface(txtRegisterAccount, txtAccountLogin, txtForgotPassword);
                 TextViewUtils.SetMuseoSans500Typeface(btnLogin);
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail, txtInputLayoutPassword);
+
+                txtAccountLogin.Text = GetLabelByLanguage("title");
+                chkRemeberMe.Text = GetLabelByLanguage("rememberEmail");
+                txtForgotPassword.Text = GetLabelByLanguage("forgotPassword");
+                txtNoAccount.Text = GetLabelByLanguage("dontHaveAcct");
+                txtRegisterAccount.Text = GetLabelByLanguage("registerAcctNow");
+                btnLogin.Text = GetLabelByLanguage("login");
+
+                txtInputLayoutEmail.Hint = GetLabelCommonByLanguage("email");
+                txtInputLayoutPassword.Hint = GetLabelCommonByLanguage("password");
 
                 txtPassword.TextChanged += TextChange;
                 txtPassword.AddTextChangedListener(new InputFilterFormField(txtPassword, txtInputLayoutPassword));
@@ -647,6 +659,11 @@ namespace myTNB_Android.Src.Login.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

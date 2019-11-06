@@ -16,7 +16,7 @@ namespace myTNB_Android.Src.TermsAndConditions.Activity
 {
     [Activity(Label = "@string/terms_conditions_activity_title",
         ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.TnC")]
-    public class TermsAndConditionActivity : BaseToolbarAppCompatActivity, TermsAndConditionContract.IView
+    public class TermsAndConditionActivity : BaseActivityCustom, TermsAndConditionContract.IView
     {
         private TermsAndConditionPresenter mPresenter;
         private TermsAndConditionContract.IUserActionsListener userActionsListener;
@@ -26,6 +26,8 @@ namespace myTNB_Android.Src.TermsAndConditions.Activity
         //TextView txtTnCHtml;
 
         WebView tncWebView;
+
+        const string PAGE_ID = "TnC";
 
         [BindView(Resource.Id.progressBar)]
         ProgressBar progressBar;
@@ -202,6 +204,11 @@ namespace myTNB_Android.Src.TermsAndConditions.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
 
 

@@ -7,6 +7,7 @@ using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Text;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using CheeseBind;
@@ -419,24 +420,24 @@ namespace myTNB_Android.Src.Base.Fragments
             return scaledInPixel;
         }
 
-        public abstract ViewGroup GetRootView();
+        //public abstract ViewGroup GetRootView();
 
-        private Snackbar mGenericExceptionSnackbar;
-        public void ShowGenericExceptionSnackBar()
-        {
-            if (mGenericExceptionSnackbar != null && mGenericExceptionSnackbar.IsShown)
-            {
-                mGenericExceptionSnackbar.Dismiss();
-            }
+        //private Snackbar mGenericExceptionSnackbar;
+        //public void ShowGenericExceptionSnackBar()
+        //{
+        //    if (mGenericExceptionSnackbar != null && mGenericExceptionSnackbar.IsShown)
+        //    {
+        //        mGenericExceptionSnackbar.Dismiss();
+        //    }
 
-            mGenericExceptionSnackbar = Snackbar.Make(GetRootView(), "Something went wrong! Please try again later", Snackbar.LengthIndefinite)
-            .SetAction("Close", delegate
-            {
-                mGenericExceptionSnackbar.Dismiss();
-            }
-            );
-            mGenericExceptionSnackbar.Show();
-        }
+        //    mGenericExceptionSnackbar = Snackbar.Make(GetRootView(), "Something went wrong! Please try again later", Snackbar.LengthIndefinite)
+        //    .SetAction("Close", delegate
+        //    {
+        //        mGenericExceptionSnackbar.Dismiss();
+        //    }
+        //    );
+        //    mGenericExceptionSnackbar.Show();
+        //}
 
         public ISpanned GetFormattedText(string stringValue)
         {

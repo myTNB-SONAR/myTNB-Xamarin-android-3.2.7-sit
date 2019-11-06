@@ -20,7 +20,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
               , Icon = "@drawable/ic_launcher"
    , ScreenOrientation = ScreenOrientation.Portrait
    , Theme = "@style/Theme.ForgetPassword")]
-    public class ForgetPasswordActivity : BaseToolbarAppCompatActivity, ForgetPasswordContract.IView
+    public class ForgetPasswordActivity : BaseActivityCustom, ForgetPasswordContract.IView
     {
 
         private ForgetPasswordPresenter mPresenter;
@@ -58,6 +58,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
         Button btnSubmit;
 
         private Snackbar mSnackBar;
+        const string PAGE_ID = "ForgotPassword";
 
         public void ClearErrorMessages()
         {
@@ -142,7 +143,7 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
 
         public void ShowInvalidEmailError()
         {
-            txtInputLayoutEmail.Error = GetString(Resource.String.forget_password_invalid_email_error);
+            txtInputLayoutEmail.Error = Utility.GetLocalizedLabel("Error", "invalid_email");
         }
 
         public void ShowCodeVerifiedSuccess()
@@ -180,6 +181,11 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutEmail, textInputLayoutVerificationCode);
 
                 TextViewUtils.SetMuseoSans500Typeface(btnSubmit);
+
+                txtEmailTitle.Text = GetLabelByLanguage("subTitle");
+                txtEmailLinkInfo.Text = GetLabelByLanguage("details");
+                txtInputLayoutEmail.Hint = GetLabelCommonByLanguage("email");
+                btnSubmit.Text = GetLabelCommonByLanguage("submit");
             }
             catch (Exception e)
             {
@@ -453,6 +459,11 @@ namespace myTNB_Android.Src.ForgetPassword.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

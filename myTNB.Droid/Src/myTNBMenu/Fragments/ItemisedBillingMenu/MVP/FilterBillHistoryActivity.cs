@@ -20,7 +20,7 @@ using Newtonsoft.Json;
 namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 {
     [Activity(Label = "Filter Views", ScreenOrientation = ScreenOrientation.Portrait, Theme = "@style/Theme.Dashboard")]
-    public class FilterBillHistoryActivity : BaseToolbarAppCompatActivity
+    public class FilterBillHistoryActivity : BaseActivityCustom
     {
         [BindView(Resource.Id.billFilterMessage)]
         TextView billFilterMessage;
@@ -36,6 +36,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
 
         const int SELECT_FILTER = 10001;
         List<Item> itemFilterList;
+
+        private const string PAGE_ID = "BillFilter";
 
         [OnClick(Resource.Id.btnBillFilter)]
         void OnApplyFilter(object sender, EventArgs eventArgs)
@@ -102,6 +104,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             Bundle extras = Intent.Extras;
             TextViewUtils.SetMuseoSans500Typeface(billFilterMessage, btnBillFilter);
             TextViewUtils.SetMuseoSans300Typeface(txtFilterLabel, txtFilterSelected);
+            billFilterMessage.Text = GetLabelByLanguage("description");
+            btnBillFilter.Text = GetLabelByLanguage("applyFilter");
+            txtFilterLabel.Text = GetLabelByLanguage("filterBy");
             txtFilterSelected.Text = "";
             if (extras != null)
             {
@@ -147,6 +152,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

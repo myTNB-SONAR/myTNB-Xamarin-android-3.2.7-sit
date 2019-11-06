@@ -5,7 +5,7 @@ namespace myTNB_Android.Src.Base.Fragments
 {
     public interface IBaseFragmentCustomView
     {
-        void ShowGenericExceptionSnackBar();
+        //void ShowGenericExceptionSnackBar();
         bool IsActive();
     }
 }

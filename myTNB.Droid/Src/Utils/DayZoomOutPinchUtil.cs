@@ -45,6 +45,10 @@ namespace myTNB_Android.Src.Utils
             TextViewUtils.SetMuseoSans500Typeface(txtTitle, txtBtnFirst);
             TextViewUtils.SetMuseoSans300Typeface(txtMessage);
 
+            txtTitle.Text = Utility.GetLocalizedLabel("Usage", "SMOverlayTitle");
+            txtMessage.Text = Utility.GetLocalizedLabel("Usage", "SMOverlayMsg");
+            txtBtnFirst.Text = Utility.GetLocalizedLabel("Usage", "SMOverlayBtnTxt");
+
             try
             {
                 lottiePinchImage.Progress = 0f;

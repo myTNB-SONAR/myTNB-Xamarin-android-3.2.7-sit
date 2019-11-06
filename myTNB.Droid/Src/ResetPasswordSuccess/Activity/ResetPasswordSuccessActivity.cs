@@ -18,7 +18,7 @@ namespace myTNB_Android.Src.ResetPasswordSuccess.Activity
               , Icon = "@drawable/ic_launcher"
           , ScreenOrientation = ScreenOrientation.Portrait
           , Theme = "@style/Theme.ResetPasswordSuccess")]
-    public class ResetPasswordSuccessActivity : BaseAppCompatActivity, ResetPasswordSuccessContract.IView
+    public class ResetPasswordSuccessActivity : BaseActivityCustom, ResetPasswordSuccessContract.IView
     {
 
         private ResetPasswordSuccessContract.IUserActionsListener userActionsListener;
@@ -36,6 +36,8 @@ namespace myTNB_Android.Src.ResetPasswordSuccess.Activity
         [BindView(Resource.Id.btnClose)]
         ImageView btnClose;
 
+        const string PAGE_ID = "PasswordResetSuccess";
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -47,6 +49,10 @@ namespace myTNB_Android.Src.ResetPasswordSuccess.Activity
                 TextViewUtils.SetMuseoSans500Typeface(txtTitleInfo);
                 TextViewUtils.SetMuseoSans300Typeface(txtContentInfo);
                 TextViewUtils.SetMuseoSans500Typeface(btnLogin);
+
+                txtTitleInfo.Text = GetLabelByLanguage("title");
+                txtContentInfo.Text = GetLabelByLanguage("resetSuccessMessage");
+                btnLogin.Text = GetLabelCommonByLanguage("login");
             }
             catch (Exception e)
             {
@@ -132,6 +138,16 @@ namespace myTNB_Android.Src.ResetPasswordSuccess.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
+        }
+
+        public override bool ShowCustomToolbarTitle()
+        {
+            return false;
         }
     }
 }

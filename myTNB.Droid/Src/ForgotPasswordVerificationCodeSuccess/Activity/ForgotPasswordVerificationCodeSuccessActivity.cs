@@ -18,7 +18,7 @@ namespace myTNB_Android.Src.ForgotPasswordVerificationCodeSuccess.Activity
               , Icon = "@drawable/ic_launcher"
           , ScreenOrientation = ScreenOrientation.Portrait
           , Theme = "@style/Theme.ResetPasswordSuccess")]
-    public class ForgotPasswordVerificationCodeSuccessActivity : BaseAppCompatActivity, ForgotPasswordVerificationCodeSuccessContract.IView
+    public class ForgotPasswordVerificationCodeSuccessActivity : BaseActivityCustom, ForgotPasswordVerificationCodeSuccessContract.IView
     {
 
         private ForgotPasswordVerificationCodeSuccessContract.IUserActionsListener userActionsListener;
@@ -41,6 +41,8 @@ namespace myTNB_Android.Src.ForgotPasswordVerificationCodeSuccess.Activity
         [BindView(Resource.Id.btnClose)]
         ImageView btnClose;
 
+        const string PAGE_ID = "PasswordResetSuccess";
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -52,8 +54,10 @@ namespace myTNB_Android.Src.ForgotPasswordVerificationCodeSuccess.Activity
                 TextViewUtils.SetMuseoSans500Typeface(verifyCodeTxtTitleInfo);
                 TextViewUtils.SetMuseoSans300Typeface(verifyCodeTxtContentInfo);
                 TextViewUtils.SetMuseoSans300Typeface(verifyCodeTxtContentInfo2);
-
                 TextViewUtils.SetMuseoSans500Typeface(verifyCodeBtnLogin);
+
+                verifyCodeTxtTitleInfo.Text = GetLabelByLanguage("title");
+                verifyCodeBtnLogin.Text = GetLabelByLanguage("proceedToLogin");
 
                 Bundle extras = Intent.Extras;
 
@@ -142,6 +146,16 @@ namespace myTNB_Android.Src.ForgotPasswordVerificationCodeSuccess.Activity
                     GC.Collect();
                     break;
             }
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
+        }
+
+        public override bool ShowCustomToolbarTitle()
+        {
+            return false;
         }
     }
 }

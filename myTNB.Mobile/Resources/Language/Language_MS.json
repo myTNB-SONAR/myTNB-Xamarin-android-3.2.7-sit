@@ -416,7 +416,7 @@
     "payMultiple": "Bayar Bil ({0})",
     "paySingle": "Bayar Bil",
     "loadMore": "Selebihnya",
-    "selectBill": "Pilih Bil",
+    "title": "Pilih Bil",
     "iamPaying": "JUMLAH BAYARAN (RM)"
   },
   "SelectPaymentMethod": {

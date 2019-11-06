@@ -28,7 +28,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
               , Icon = "@drawable/ic_launcher"
        , ScreenOrientation = ScreenOrientation.Portrait
        , Theme = "@style/Theme.ResetPassword")]
-    public class ResetPasswordActivity : BaseToolbarAppCompatActivity, ResetPasswordContract.IView
+    public class ResetPasswordActivity : BaseActivityCustom, ResetPasswordContract.IView
     {
         [BindView(Resource.Id.txtResetPasswordTitle)]
         TextView txtResetPasswordTitle;
@@ -63,6 +63,7 @@ namespace myTNB_Android.Src.ResetPassword.Activity
         private ResetPasswordContract.IUserActionsListener userActionsListener;
 
         string enteredPassword, enteredUserName;
+        const string PAGE_ID = "ResetPassword";
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -82,6 +83,12 @@ namespace myTNB_Android.Src.ResetPassword.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtTitleInfo, txtNewPassword, txtConfirmNewPassword);
 
                 TextViewUtils.SetMuseoSans300Typeface(txtInputLayoutNewPassword, txtInputLayoutConfirmNewPassword);
+
+                txtResetPasswordTitle.Text = GetLabelByLanguage("subTitle");
+                txtTitleInfo.Text = GetLabelByLanguage("details");
+                txtInputLayoutNewPassword.Hint = GetLabelByLanguage("newPassword");
+                txtInputLayoutConfirmNewPassword.Hint = GetLabelByLanguage("confirmNewPassword");
+                btnSubmit.Text = GetLabelByLanguage("submit");
 
                 mProgressDialog = new AlertDialog.Builder(this)
                     .SetTitle(GetString(Resource.String.reset_password_alert_dialog_title))
@@ -529,5 +536,9 @@ namespace myTNB_Android.Src.ResetPassword.Activity
             }
         }
 
+        public override string GetPageId()
+        {
+            return PAGE_ID;
+        }
     }
 }
