@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using myTNB;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.Base.Activity;
 using myTNB_Android.Src.Base.Models;
@@ -152,21 +153,32 @@ namespace myTNB_Android.Src.Base
 
         public SMREligibiltyPopUpDetailData GetSMREligibiltyPopUpDetails()
         {
-            SMREligibiltyPopUpDetailData eligibiltyPopUpDetails = new SMREligibiltyPopUpDetailData();
+            SMREligibiltyPopUpDetailData eligibiltyPopUpDetails = null;
             if (mSMREligibilityPopupDetailList.Count > 0)
             {
                 SMREligibiltyPopUpDetails details = mSMREligibilityPopupDetailList.Find(x => {
                     return x.Type == "Not_SMR_CA";
                 });
-                eligibiltyPopUpDetails.title = details.Title;
-                eligibiltyPopUpDetails.description = details.Description;
-                eligibiltyPopUpDetails.cta = details.CTA;
+                if (details != null)
+                {
+                    eligibiltyPopUpDetails = new SMREligibiltyPopUpDetailData();
+                    eligibiltyPopUpDetails.title = details.Title;
+                    eligibiltyPopUpDetails.description = details.Description;
+                    eligibiltyPopUpDetails.cta = details.CTA;
+                }
             }
             else
             {
-                eligibiltyPopUpDetails.title = "Why are some of my accounts not here?";
-                eligibiltyPopUpDetails.description = "We took the liberty to only show you electricity accounts that are eligble for the Self Meter Reading service. <a style=\"text-decoration:none\" href =\"faqid={B8EBBADE-0918-43B7-8093-BB2B19614033}\">Click here</a> to learn more about its eligibility.";
-                eligibiltyPopUpDetails.cta = "Got It!";
+                Utility.GetTooltipSelectorModel("SSMRReadingHistory", "SMREligibiltyPopUpDetails").ForEach(tooltipModel =>
+                {
+                    if (tooltipModel.Type == "Not_SMR_CA")
+                    {
+                        eligibiltyPopUpDetails = new SMREligibiltyPopUpDetailData();
+                        eligibiltyPopUpDetails.title = tooltipModel.Title;
+                        eligibiltyPopUpDetails.description = tooltipModel.Description;
+                        eligibiltyPopUpDetails.cta = tooltipModel.CTA;
+                    }
+                });
             }
             return eligibiltyPopUpDetails;
         }

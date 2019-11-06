@@ -137,24 +137,5 @@ namespace myTNB_Android.Src.Utils
             }
             return label;
         }
-
-        /// <summary>
-        /// Gets the Hint labels by key
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
-        public static string GetLocalizedHintLabel(string key)
-        {
-            string label = "";
-            try
-            {
-                label = LanguageManager.Instance.GetHintValuePairs()[key];
-            }
-            catch (Exception e)
-            {
-                Log.Debug("DEBUG Error: ", e.Message);
-            }
-            return label;
-        }
     }
 }

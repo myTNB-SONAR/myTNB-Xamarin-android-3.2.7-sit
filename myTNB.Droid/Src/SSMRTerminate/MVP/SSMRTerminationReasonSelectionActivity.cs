@@ -56,6 +56,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 adapter.ClickChanged += OnClickChanged;
             }
 
+            SetToolBarTitle(Utility.GetLocalizedLabel("SSMRApplication", "selectReason"));
             // SetStatusBarGradientBackground();
             // SetToolbarGradientBackground();
 

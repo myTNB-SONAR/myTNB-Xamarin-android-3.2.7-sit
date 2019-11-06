@@ -34,8 +34,23 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
     public class SSMRTerminateActivity : BaseActivityCustom, SSMRTerminateContract.IView, View.IOnTouchListener
     {
         LoadingOverlay loadingOverlay;
-
         private AccountData selectedAccount;
+        SSMRTerminatePresenter mPresenter;
+        bool isOtherReasonSelected = false;
+        bool isFetchCAComplete = false;
+        bool isFetchTerminationListComplete = false;
+        bool checkForEditingInfo = false;
+        private TerminationReasonModel selectedReason;
+        private List<TerminationReasonModel> terminationList = new List<TerminationReasonModel>();
+        private static string oldEmail = "";
+        private static string oldPhoneNumber = "";
+        private static string newEmail = "";
+        private static string newPhoneNumber = "";
+        private static int SELECT_TERMINATION_ACTIVITY_CODE = 4321;
+        public readonly static int SSMR_METER_HISTORY_ACTIVITY_CODE = 8796;
+        public string SMR_ACTION = "";
+        public CAContactDetailsModel contactDetails;
+        const string PAGE_ID = "SSMRApplication";
 
         [BindView(Resource.Id.txtInputLayoutEmail)]
         TextInputLayout txtInputLayoutEmail;
@@ -83,45 +98,13 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         TextView terminationReasonTitle;
 
         [BindView(Resource.Id.btnDisconnectionSubmit)]
-        Button btnDisconnectionSubmit; 
+        Button btnDisconnectionSubmit;
 
         [BindView(Resource.Id.contactDetailContainer)]
-        LinearLayout contactDetailContainer; 
+        LinearLayout contactDetailContainer;
 
         [BindView(Resource.Id.reasonDetailContainer)]
         LinearLayout reasonDetailContainer;
-
-        SSMRTerminatePresenter mPresenter;
-
-        bool isOtherReasonSelected = false;
-
-        bool isFetchCAComplete = false;
-
-        bool isFetchTerminationListComplete = false;
-
-        bool checkForEditingInfo = false;
-
-        private TerminationReasonModel selectedReason;
-
-        private List<TerminationReasonModel> terminationList = new List<TerminationReasonModel>();
-
-        private static string oldEmail = "";
-
-        private static string oldPhoneNumber = "";
-
-        private static string newEmail = "";
-
-        private static string newPhoneNumber = "";
-
-        private static int SELECT_TERMINATION_ACTIVITY_CODE = 4321;
-
-        public readonly static int SSMR_METER_HISTORY_ACTIVITY_CODE = 8796;
-
-        public string SMR_ACTION = "";
-
-        public CAContactDetailsModel contactDetails;
-
-        const string PAGE_ID = "SSMRApplication";
 
         public override int ResourceId()
         {
@@ -201,17 +184,21 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
             TextViewUtils.SetMuseoSans500Typeface(btnDisconnectionSubmit, disconnectionTtile, disconnectionAccountTtile, contactDetailTtile, terminationReasonTitle);
             TextViewUtils.SetMuseoSans300Typeface(disconnectionAccountAddress, contactDetailConsent, txtTermsConditions, txtEmail, txtMobileNo, txtSelectReason, txtReason);
 
+            contactDetailTtile.Text = GetLabelByLanguage("contactDetails");
+            txtInputLayoutEmail.Hint = GetLabelCommonByLanguage("emailAddress");
+            txtInputLayoutMobileNo.Hint = GetLabelCommonByLanguage("mobileNumber");
+            contactDetailConsent.Text = GetLabelByLanguage("editContactInfo");
             terminationReasonTitle.Text = GetLabelByLanguage("terminateTitle");
             txtInputLayoutReason.Hint = GetLabelByLanguage("selectReason");
-            txtInputLayoutTxtReason.Hint = GetLabelByLanguage("stateReason");
+            btnDisconnectionSubmit.Text = GetLabelCommonByLanguage("submit");
 
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
             {
-                txtTermsConditions.TextFormatted = Html.FromHtml(GetLabelByLanguage("tncUnsubscribe"), FromHtmlOptions.ModeLegacy);
+                txtTermsConditions.TextFormatted = Html.FromHtml(GetLabelByLanguage("tncSubscribe"), FromHtmlOptions.ModeLegacy);
             }
             else
             {
-                txtTermsConditions.TextFormatted = Html.FromHtml(GetLabelByLanguage("tncUnsubscribe"));
+                txtTermsConditions.TextFormatted = Html.FromHtml(GetLabelByLanguage("tncSubscribe"));
             }
 
             contactDetailConsent.Visibility = ViewStates.Gone;
@@ -438,7 +425,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         {
             try
             {
-                this.txtInputLayoutEmail.Error = "Invalid email address";
+                this.txtInputLayoutEmail.Error = Utility.GetLocalizedErrorLabel("invalid_email");
             }
             catch (Exception e)
             {
@@ -450,7 +437,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         {
             try
             {
-                this.txtInputLayoutEmail.Error = "Invalid email address";
+                this.txtInputLayoutEmail.Error = Utility.GetLocalizedErrorLabel("invalid_email");
             }
             catch (Exception e)
             {
@@ -502,7 +489,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                     terminationReason = selectedReason.ReasonName;
                 }
             }
-            
+
             this.mPresenter.OnSubmitApplication(selectedAccount.AccountNum,
                 oldEmail, FormatMobileNumberForSubmit(oldPhoneNumber), newEmail, FormatMobileNumberForSubmit(newPhoneNumber), terminationReason, smrMode);
         }
@@ -586,7 +573,7 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
         {
             try
             {
-                txtInputLayoutMobileNo.Error = "Invalid mobile number";
+                txtInputLayoutMobileNo.Error = Utility.GetLocalizedErrorLabel("invalid_mobileNumber");
             }
             catch (Exception e)
             {
