@@ -1,3 +1,4 @@
 Sprint 2C SIT Build
 
 - Added additional parameter to the GetAccountUsage API to cater for custom message based on account type
+[Bug] 3267: SSMR Termination : User is not able to terminate his SMR account.
