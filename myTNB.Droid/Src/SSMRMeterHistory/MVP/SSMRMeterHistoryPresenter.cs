@@ -16,6 +16,7 @@ using myTNB_Android.Src.myTNBMenu.Requests;
 using Refit;
 using static myTNB_Android.Src.SSMR.SMRApplication.Api.GetAccountsSMREligibilityResponse;
 using myTNB_Android.Src.SSMRTerminate.Api;
+using myTNB_Android.Src.NewAppTutorial.MVP;
 
 namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 {
@@ -289,6 +290,23 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 smrEligibleAccountList.Add(smrEligibleAccount);
             });
             return smrEligibleAccountList;
+        }
+
+        public List<NewAppModel> OnGeneraNewAppTutorialList()
+        {
+            List<NewAppModel> newList = new List<NewAppModel>();
+
+            newList.Add(new NewAppModel()
+            {
+                ContentShowPosition = ContentType.TopLeft,
+                ContentTitle = "Your reading status at a glance.",
+                ContentMessage = "Switch between your accounts<br/>and get an overview of your<br/>meter reading status here.",
+                ItemCount = 0,
+                DisplayMode = "",
+                IsButtonShow = true
+            });
+
+            return newList;
         }
     }
 }

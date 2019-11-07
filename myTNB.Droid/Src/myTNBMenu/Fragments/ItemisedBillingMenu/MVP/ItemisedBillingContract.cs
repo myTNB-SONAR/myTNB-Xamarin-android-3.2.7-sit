@@ -19,7 +19,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP
             void ShowAvailableBillContent();
             void ShowEmptyState();
             void ShowDowntimeSnackbar(string message);
-            NewAppTutorialDialogFragment OnShowItemizedFragmentTutorialDialog();
+            void OnShowItemizedFragmentTutorialDialog();
             void ItemizedBillingCustomScrolling(int yPosition);
         }
     }

@@ -339,6 +339,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             base.OnViewCreated(view, savedInstanceState);
             try
             {
+                summaryNestScrollView.SmoothScrollingEnabled = true;
                 isSearchClose = true;
                 isFirstInitiate = true;
                 UpdateGreetingsHeader(this.presenter.GetGreeting());
@@ -750,6 +751,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 actionBar.Hide();
                 ShowBackButton(false);
                 ShowSearchAction(false);
+                NewAppTutorialUtils.ForceCloseNewAppTutorial();
                 DownTimeEntity bcrmDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 SMRPopUpUtils.SetFromUsageFlag(false);
                 SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
@@ -1696,8 +1698,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 if (isFirstInitiate)
                 {
                     isFirstInitiate = false;
-                    summaryNestScrollView.ScrollTo(0, 0);
-                    summaryNestScrollView.RequestLayout();
+                    StopScrolling();
                 }
 
                 if (searchEditText != null)
@@ -1962,18 +1963,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        public NewAppTutorialDialogFragment OnShowHomeMenuFragmentTutorialDialog()
+        public void OnShowHomeMenuFragmentTutorialDialog()
         {
             Activity.RunOnUiThread(() =>
             {
-                summaryNestScrollView.ScrollTo(0, 0);
-                summaryNestScrollView.RequestLayout();
+                StopScrolling();
             });
 
-            NewAppTutorialDialogFragment dialogFragmnet = new NewAppTutorialDialogFragment(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
-            dialogFragmnet.Cancelable = false;
-            dialogFragmnet.Show(((AppCompatActivity)this.Activity).SupportFragmentManager, "NewAppTutorial Dialog");
-            return dialogFragmnet;
+            NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
         }
 
         public void HomeMenuCustomScrolling(int yPosition)
@@ -2057,6 +2054,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             View child = (View)summaryNestScrollView.GetChildAt(0);
 
             return child.Height + summaryNestScrollView.PaddingTop + summaryNestScrollView.PaddingBottom;
+        }
+
+        public void StopScrolling()
+        {
+            try
+            {
+                summaryNestScrollView.SmoothScrollBy(0, 0);
+                summaryNestScrollView.ScrollTo(0, 0);
+                summaryNestScrollView.RequestLayout();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

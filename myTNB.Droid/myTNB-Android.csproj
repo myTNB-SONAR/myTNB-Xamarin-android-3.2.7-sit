@@ -3848,6 +3848,7 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\Utils\NewAppTutorialUtils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

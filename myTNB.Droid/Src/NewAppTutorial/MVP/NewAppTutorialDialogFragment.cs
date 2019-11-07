@@ -8,6 +8,7 @@ using Android.Support.V4.View;
 using Android.Views;
 using Android.Widget;
 using myTNB_Android.Src.Base.Fragments;
+using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
 using myTNB_Android.Src.NewAppTutorial.Adapter;
@@ -20,7 +21,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
     public class NewAppTutorialDialogFragment : DialogFragment, View.IOnTouchListener, ViewPager.IPageTransformer
     {
 
-        private Context mContext;
+        private Android.App.Activity mContext;
         private ViewPager pager;
         private NewAppTutorialPagerAdapter adapter;
         private LinearLayout swipeDoubleTapLayout;
@@ -32,7 +33,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
         private Android.App.Fragment mFragment;
         private ISharedPreferences mPref;
 
-        public NewAppTutorialDialogFragment(Context ctx, Android.App.Fragment fragment, ISharedPreferences pref, List<NewAppModel> list)
+        public NewAppTutorialDialogFragment(Android.App.Activity ctx, Android.App.Fragment fragment, ISharedPreferences pref, List<NewAppModel> list)
         {
             this.mContext = ctx;
             if (list != null && list.Count > 0)
@@ -85,22 +86,29 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
 
                 TextViewUtils.SetMuseoSans300Typeface(txtSwipeSeeMore, txtDoubleTapDismiss);
 
-                if (this.mFragment is HomeMenuFragment)
+                if (this.mFragment != null)
                 {
-                    if (NewAppTutorialList.Count > 0)
+                    if (this.mFragment is HomeMenuFragment)
                     {
-                        int ItemCount = NewAppTutorialList[0].ItemCount;
-                        if (ItemCount > 1)
+                        if (NewAppTutorialList.Count > 0)
                         {
-                            int topHeight = (int)DPUtils.ConvertDPToPx(65f);
-                            if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
+                            int ItemCount = NewAppTutorialList[0].ItemCount;
+                            if (ItemCount > 1)
                             {
-                                int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
-                                int halfScroll = topHeight / 2;
-
-                                if (diffHeight < halfScroll)
+                                int topHeight = (int)DPUtils.ConvertDPToPx(65f);
+                                if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                                 {
-                                    ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(topHeight / 2);
+                                    int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
+                                    int halfScroll = topHeight / 2;
+
+                                    if (diffHeight < halfScroll)
+                                    {
+                                        ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(topHeight / 2);
+                                    }
+                                    else
+                                    {
+                                        ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
+                                    }
                                 }
                                 else
                                 {
@@ -117,35 +125,34 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                             ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
                         }
                     }
-                    else
+                    else if (this.mFragment is ItemisedBillingMenuFragment)
                     {
-                        ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
-                    }
-                }
-                else if (this.mFragment is ItemisedBillingMenuFragment)
-                {
-                    string DisplayMode = NewAppTutorialList[0].DisplayMode;
-                    if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
-                    {
-                        int topHeight = (int)DPUtils.ConvertDPToPx(55f);
-                        int middleHeight = (int)DPUtils.ConvertDPToPx(285f);
-                        if (DisplayMode == "Extra")
+                        string DisplayMode = NewAppTutorialList[0].DisplayMode;
+                        if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                         {
-                            middleHeight = (int)DPUtils.ConvertDPToPx(265f);
-                        }
+                            int topHeight = (int)DPUtils.ConvertDPToPx(55f);
+                            int middleHeight = (int)DPUtils.ConvertDPToPx(285f);
+                            int checkPoint = (int)DPUtils.ConvertDPToPx(200f);
+                            if (DisplayMode == "Extra")
+                            {
+                                middleHeight = (int)DPUtils.ConvertDPToPx(265f);
+                                checkPoint = (int)DPUtils.ConvertDPToPx(180f);
+                            }
 
-                        if (((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(200f))))
-                        {
-                            ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling((int)DPUtils.ConvertDPToPx(15f));
+
+                            if (((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
+                            {
+                                ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling((int)DPUtils.ConvertDPToPx(15f));
+                            }
+                            else
+                            {
+                                ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                            }
                         }
                         else
                         {
                             ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
                         }
-                    }
-                    else
-                    {
-                        ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
                     }
                 }
 
@@ -163,7 +170,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                         swipeDoubleTapLayout.Visibility = ViewStates.Gone;
                     }
 
-                    if (this.mFragment is ItemisedBillingMenuFragment)
+                    if (this.mFragment != null && this.mFragment is ItemisedBillingMenuFragment)
                     {
                         string DisplayMode = NewAppTutorialList[0].DisplayMode;
                         if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
@@ -244,35 +251,42 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                 txtDoubleTapDismiss.Visibility = ViewStates.Visible;
                             }
 
-                            if (this.mFragment is HomeMenuFragment)
+                            if (this.mFragment != null)
                             {
-                                if (NewAppTutorialList.Count > 0)
+                                if (this.mFragment is HomeMenuFragment)
                                 {
-                                    if (e.Position == NewAppTutorialList.Count - 1)
+                                    if (NewAppTutorialList.Count > 0)
                                     {
-                                        if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
+                                        if (e.Position == NewAppTutorialList.Count - 1)
                                         {
-                                            ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
+                                            if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
+                                            {
+                                                ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
+                                            }
+                                            else
+                                            {
+                                                ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
+                                            }
                                         }
                                         else
                                         {
-                                            ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
-                                        }
-                                    }
-                                    else
-                                    {
-                                        int ItemCount = NewAppTutorialList[0].ItemCount;
-                                        if (ItemCount > 1)
-                                        {
-                                            int topHeight = (int)DPUtils.ConvertDPToPx(65f);
-                                            if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
+                                            int ItemCount = NewAppTutorialList[0].ItemCount;
+                                            if (ItemCount > 1)
                                             {
-                                                int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
-                                                int halfScroll = topHeight / 2;
-
-                                                if (diffHeight < halfScroll)
+                                                int topHeight = (int)DPUtils.ConvertDPToPx(65f);
+                                                if (((HomeMenuFragment)this.mFragment).CheckIsScrollable())
                                                 {
-                                                    ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(topHeight / 2);
+                                                    int diffHeight = (this.mContext.Resources.DisplayMetrics.HeightPixels - ((HomeMenuFragment)this.mFragment).OnGetEndOfScrollView());
+                                                    int halfScroll = topHeight / 2;
+
+                                                    if (diffHeight < halfScroll)
+                                                    {
+                                                        ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(topHeight / 2);
+                                                    }
+                                                    else
+                                                    {
+                                                        ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
+                                                    }
                                                 }
                                                 else
                                                 {
@@ -284,55 +298,92 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                                 ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
                                             }
                                         }
-                                        else
-                                        {
-                                            ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
-                                        }
                                     }
                                 }
-                            }
-                            else if (this.mFragment is ItemisedBillingMenuFragment)
-                            {
-                                if (NewAppTutorialList.Count >= 2)
+                                else if (this.mFragment is ItemisedBillingMenuFragment)
                                 {
-                                    int ItemCount = NewAppTutorialList[0].ItemCount;
-                                    string DisplayMode = NewAppTutorialList[0].DisplayMode;
-                                    if (NewAppTutorialList.Count == 2)
+                                    if (NewAppTutorialList.Count >= 2)
                                     {
-                                        if (e.Position == NewAppTutorialList.Count - 1)
+                                        int ItemCount = NewAppTutorialList[0].ItemCount;
+                                        string DisplayMode = NewAppTutorialList[0].DisplayMode;
+                                        if (NewAppTutorialList.Count == 2)
                                         {
-                                            if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
+                                            if (e.Position == NewAppTutorialList.Count - 1)
                                             {
-                                                int topHeight = (int)DPUtils.ConvertDPToPx(375f);
-                                                int middleHeight = (int)DPUtils.ConvertDPToPx(210f);
+                                                if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
+                                                {
+                                                    int topHeight = (int)DPUtils.ConvertDPToPx(375f);
+                                                    int middleHeight = (int)DPUtils.ConvertDPToPx(210f);
 
-                                                if (ItemCount == 0)
-                                                {
-                                                    if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                                    if (ItemCount == 0)
                                                     {
-                                                        ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(((ItemisedBillingMenuFragment)this.mFragment).OnGetEndOfScrollView());
+                                                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                                        {
+                                                            ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(((ItemisedBillingMenuFragment)this.mFragment).OnGetEndOfScrollView());
+                                                        }
+                                                        else
+                                                        {
+                                                            ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                                                        }
+                                                    }
+                                                    else if (ItemCount == 1)
+                                                    {
+                                                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                                        {
+                                                            ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(((ItemisedBillingMenuFragment)this.mFragment).OnGetEndOfScrollView());
+                                                        }
+                                                        else
+                                                        {
+                                                            ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                                                        }
+                                                    }
+                                                    else if (ItemCount == 2)
+                                                    {
+                                                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                                        {
+                                                            ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(((ItemisedBillingMenuFragment)this.mFragment).OnGetEndOfScrollView());
+                                                        }
+                                                        else
+                                                        {
+                                                            ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                                                        }
                                                     }
                                                     else
                                                     {
-                                                        ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                                                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                                        {
+                                                            int diff = (topHeight + middleHeight) - (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)) + (int)DPUtils.ConvertDPToPx(20f);
+                                                            ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(diff);
+                                                        }
+                                                        else
+                                                        {
+                                                            ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                                                        }
                                                     }
                                                 }
-                                                else if (ItemCount == 1)
+                                                else
                                                 {
-                                                    if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
-                                                    {
-                                                        ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(((ItemisedBillingMenuFragment)this.mFragment).OnGetEndOfScrollView());
-                                                    }
-                                                    else
-                                                    {
-                                                        ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
-                                                    }
+                                                    ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
                                                 }
-                                                else if (ItemCount == 2)
+                                            }
+                                            else
+                                            {
+                                                if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                                                 {
-                                                    if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                                    int topHeight = (int)DPUtils.ConvertDPToPx(55f);
+                                                    int middleHeight = (int)DPUtils.ConvertDPToPx(285f);
+                                                    int checkPoint = (int)DPUtils.ConvertDPToPx(200f);
+                                                    if (DisplayMode == "Extra")
                                                     {
-                                                        ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(((ItemisedBillingMenuFragment)this.mFragment).OnGetEndOfScrollView());
+                                                        middleHeight = (int)DPUtils.ConvertDPToPx(265f);
+                                                        checkPoint = (int)DPUtils.ConvertDPToPx(180f);
+                                                    }
+
+                                                    if (((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
+                                                    {
+                                                        ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling((int)DPUtils.ConvertDPToPx(15f));
+                                                        txtSwipeSeeMore.Visibility = ViewStates.Gone;
+                                                        txtDoubleTapDismiss.Visibility = ViewStates.Gone;
                                                     }
                                                     else
                                                     {
@@ -341,34 +392,87 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                                 }
                                                 else
                                                 {
-                                                    if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
-                                                    {
-                                                        int diff = (topHeight + middleHeight) - (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)) + (int)DPUtils.ConvertDPToPx(20f);
-                                                        ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(diff);
-                                                    }
-                                                    else
-                                                    {
-                                                        ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
-                                                    }
+                                                    ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
                                                 }
-                                            }
-                                            else
-                                            {
-                                                ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
                                             }
                                         }
                                         else
                                         {
-                                            if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
+                                            if (e.Position == NewAppTutorialList.Count - 1)
+                                            {
+                                                if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
+                                                {
+                                                    int topHeight = (int)DPUtils.ConvertDPToPx(430f);
+                                                    int middleHeight = (int)DPUtils.ConvertDPToPx(210f);
+
+                                                    if (DisplayMode == "Extra")
+                                                    {
+                                                        topHeight = (int)DPUtils.ConvertDPToPx(405f);
+                                                    }
+
+                                                    if (ItemCount == 0)
+                                                    {
+                                                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                                        {
+                                                            ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(((ItemisedBillingMenuFragment)this.mFragment).OnGetEndOfScrollView());
+                                                        }
+                                                        else
+                                                        {
+                                                            ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                                                        }
+                                                    }
+                                                    else if (ItemCount == 1)
+                                                    {
+                                                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                                        {
+                                                            ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(((ItemisedBillingMenuFragment)this.mFragment).OnGetEndOfScrollView());
+                                                        }
+                                                        else
+                                                        {
+                                                            ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                                                        }
+                                                    }
+                                                    else if (ItemCount == 2)
+                                                    {
+                                                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                                        {
+                                                            ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(((ItemisedBillingMenuFragment)this.mFragment).OnGetEndOfScrollView());
+                                                        }
+                                                        else
+                                                        {
+                                                            ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                                                        {
+                                                            int diff = (topHeight + middleHeight) - (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)) + (int)DPUtils.ConvertDPToPx(20f);
+                                                            ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(diff);
+                                                        }
+                                                        else
+                                                        {
+                                                            ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                                                        }
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                                                }
+                                            }
+                                            else if (e.Position == 0)
                                             {
                                                 int topHeight = (int)DPUtils.ConvertDPToPx(55f);
                                                 int middleHeight = (int)DPUtils.ConvertDPToPx(285f);
+                                                int checkPoint = (int)DPUtils.ConvertDPToPx(200f);
                                                 if (DisplayMode == "Extra")
                                                 {
                                                     middleHeight = (int)DPUtils.ConvertDPToPx(265f);
+                                                    checkPoint = (int)DPUtils.ConvertDPToPx(180f);
                                                 }
 
-                                                if (((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(200f))))
+                                                if (((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
                                                 {
                                                     ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling((int)DPUtils.ConvertDPToPx(15f));
                                                     txtSwipeSeeMore.Visibility = ViewStates.Gone;
@@ -385,96 +489,6 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                                             }
                                         }
                                     }
-                                    else
-                                    {
-                                        if (e.Position == NewAppTutorialList.Count - 1)
-                                        {
-                                            if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
-                                            {
-                                                int topHeight = (int)DPUtils.ConvertDPToPx(430f);
-                                                int middleHeight = (int)DPUtils.ConvertDPToPx(210f);
-
-                                                if (DisplayMode == "Extra")
-                                                {
-                                                    topHeight = (int)DPUtils.ConvertDPToPx(405f);
-                                                }
-
-                                                if (ItemCount == 0)
-                                                {
-                                                    if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
-                                                    {
-                                                        ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(((ItemisedBillingMenuFragment)this.mFragment).OnGetEndOfScrollView());
-                                                    }
-                                                    else
-                                                    {
-                                                        ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
-                                                    }
-                                                }
-                                                else if (ItemCount == 1)
-                                                {
-                                                    if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
-                                                    {
-                                                        ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(((ItemisedBillingMenuFragment)this.mFragment).OnGetEndOfScrollView());
-                                                    }
-                                                    else
-                                                    {
-                                                        ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
-                                                    }
-                                                }
-                                                else if (ItemCount == 2)
-                                                {
-                                                    if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
-                                                    {
-                                                        ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(((ItemisedBillingMenuFragment)this.mFragment).OnGetEndOfScrollView());
-                                                    }
-                                                    else
-                                                    {
-                                                        ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
-                                                    }
-                                                }
-                                                else
-                                                {
-                                                    if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int) DPUtils.ConvertDPToPx(52f)))
-                                                    {
-                                                        int diff = (topHeight + middleHeight) - (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)) + (int)DPUtils.ConvertDPToPx(20f);
-                                                        ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(diff);
-                                                    }
-                                                    else
-                                                    {
-                                                        ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
-                                                    }
-                                                }
-                                            }
-                                            else
-                                            {
-                                                ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
-                                            }
-                                        }
-                                        else if (e.Position == 0)
-                                        {
-                                            int topHeight = (int)DPUtils.ConvertDPToPx(55f);
-                                            int middleHeight = (int)DPUtils.ConvertDPToPx(285f);
-                                            if (DisplayMode == "Extra")
-                                            {
-                                                middleHeight = (int)DPUtils.ConvertDPToPx(265f);
-                                            }
-
-                                            if (((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(200f))))
-                                            {
-                                                ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling((int)DPUtils.ConvertDPToPx(15f));
-                                                txtSwipeSeeMore.Visibility = ViewStates.Gone;
-                                                txtDoubleTapDismiss.Visibility = ViewStates.Gone;
-                                            }
-                                            else
-                                            {
-                                                ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
-                                            }
-                                        }
-                                        else
-                                        {
-                                            ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
-                                        }
-                                    }
                                 }
                             }
                         };
@@ -485,7 +499,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     swipeDoubleTapLayout.Visibility = ViewStates.Gone;
                 }
 
-                mGeatureDetector = new GestureDetector(mContext, new DialogTapDetector(this, this.mFragment, this.mPref));
+                mGeatureDetector = new GestureDetector(mContext, new DialogTapDetector(this, this.mFragment, this.mContext, this.mPref));
                 pager.SetOnTouchListener(this);
                 pager.SetPageTransformer(false, this);
 
@@ -505,14 +519,33 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
         public override void OnPause()
         {
             base.OnPause();
-            this.DismissAllowingStateLoss();
-            if (this.mFragment is HomeMenuFragment)
+            NewAppTutorialUtils.ForceCloseNewAppTutorial();
+            if (this.mFragment != null)
             {
-                ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
+                if (this.mFragment is HomeMenuFragment)
+                {
+                    ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
+                }
+                else if (this.mFragment is ItemisedBillingMenuFragment)
+                {
+                    ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                }
             }
-            else if (this.mFragment is ItemisedBillingMenuFragment)
+        }
+
+        public void CloseDialog()
+        {
+            this.DismissAllowingStateLoss();
+            if (this.mFragment != null)
             {
-                ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                if (this.mFragment is HomeMenuFragment)
+                {
+                    ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
+                }
+                else if (this.mFragment is ItemisedBillingMenuFragment)
+                {
+                    ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                }
             }
         }
 
@@ -544,26 +577,40 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
         {
             DialogFragment mDialog;
             Android.App.Fragment mFragment;
+            Android.App.Activity mActivity;
             ISharedPreferences mPref;
 
-            public DialogTapDetector(DialogFragment dialog, Android.App.Fragment fragment, ISharedPreferences pref)
+            public DialogTapDetector(DialogFragment dialog, Android.App.Fragment fragment, Android.App.Activity activity, ISharedPreferences pref)
             {
                 this.mDialog = dialog;
                 this.mFragment = fragment;
+                this.mActivity = activity;
                 this.mPref = pref;
             }
 
             public override bool OnDoubleTap(MotionEvent e)
             {
                 this.mDialog.DismissAllowingStateLoss();
-                if (this.mFragment is HomeMenuFragment)
+                NewAppTutorialUtils.CloseNewAppTutorial();
+                if (this.mFragment != null)
                 {
-                    ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
-                    UserSessions.DoHomeTutorialShown(this.mPref);
+                    if (this.mFragment is HomeMenuFragment)
+                    {
+                        ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
+                        // UserSessions.DoHomeTutorialShown(this.mPref);
+                    }
+                    else if (this.mFragment is ItemisedBillingMenuFragment)
+                    {
+                        ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                        // UserSessions.DoItemizedBillingTutorialShown(this.mPref);
+                    }
                 }
-                else if (this.mFragment is ItemisedBillingMenuFragment)
+                else
                 {
-                    ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                    if (this.mActivity is BillingDetailsActivity)
+                    {
+                        // UserSessions.DoItemizedBillingDetailTutorialShown(this.mPref);
+                    }
                 }
                 return true;
             }

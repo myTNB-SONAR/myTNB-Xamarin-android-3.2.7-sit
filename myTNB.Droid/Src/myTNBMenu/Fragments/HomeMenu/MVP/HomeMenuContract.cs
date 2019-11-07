@@ -78,7 +78,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
             void CheckSSMRMeterReadingThreePhaseNoOCRTimeStamp();
 
-            NewAppTutorialDialogFragment OnShowHomeMenuFragmentTutorialDialog();
+            void OnShowHomeMenuFragmentTutorialDialog();
 
             void HomeMenuCustomScrolling(int xPosition);
 

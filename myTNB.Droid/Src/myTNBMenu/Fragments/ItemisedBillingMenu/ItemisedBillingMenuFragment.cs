@@ -740,6 +740,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             base.OnResume();
             try
             {
+                NewAppTutorialUtils.ForceCloseNewAppTutorial();
                 if (this.mPresenter != null && this.mPresenter.IsTutorialShowNeeded())
                 {
                     this.mPresenter.OnCheckToCallItemizedTutorial();
@@ -765,17 +766,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             base.OnCreateOptionsMenu(menu, inflater);
         }
 
-        public NewAppTutorialDialogFragment OnShowItemizedFragmentTutorialDialog()
+        public void OnShowItemizedFragmentTutorialDialog()
         {
             Activity.RunOnUiThread(() =>
             {
-                itemisedBillingScrollView.ScrollTo(0, 0);
-                // itemisedBillingScrollView.RequestLayout();
+                StopScrolling();
             });
-            NewAppTutorialDialogFragment dialogFragmnet = new NewAppTutorialDialogFragment(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList(GetString(Resource.String.tutorial_arrow_down)));
-            dialogFragmnet.Cancelable = false;
-            dialogFragmnet.Show(((AppCompatActivity)this.Activity).SupportFragmentManager, "NewAppTutorial Dialog");
-            return dialogFragmnet;
+            NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList(GetString(Resource.String.tutorial_arrow_down)));
         }
 
         public void ItemizedBillingCustomScrolling(int yPosition)
@@ -785,7 +782,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
                 Activity.RunOnUiThread(() =>
                 {
                     itemisedBillingScrollView.ScrollTo(0, yPosition);
-                    // itemisedBillingScrollView.RequestLayout();
+                    itemisedBillingScrollView.RequestLayout();
                 });
             }
             catch (System.Exception e)
@@ -816,6 +813,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             View child = (View)itemisedBillingScrollView.GetChildAt(0);
 
             return child.Height + itemisedBillingScrollView.PaddingTop + itemisedBillingScrollView.PaddingBottom;
+        }
+
+        public void StopScrolling()
+        {
+            try
+            {
+                itemisedBillingScrollView.SmoothScrollBy(0, 0);
+                itemisedBillingScrollView.ScrollTo(0, 0);
+                itemisedBillingScrollView.RequestLayout();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }
