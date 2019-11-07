@@ -98,6 +98,7 @@ namespace myTNB
 
         private void OnEnterForeground(NSNotification notification)
         {
+            NeedsUpdate = true;
             ViewWillAppear(true);
         }
         #region Tutorial Overlay Methods
