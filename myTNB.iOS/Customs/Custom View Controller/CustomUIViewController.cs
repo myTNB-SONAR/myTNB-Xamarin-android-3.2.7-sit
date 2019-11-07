@@ -49,6 +49,7 @@ namespace myTNB
             }
             SetFrames();
             ConfigureNavigationBar();
+            NotifCenterUtility.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
         }
 
         public override void ViewWillAppear(bool animated)

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using CoreGraphics;
 using Foundation;
-using myTNB.Home.Components;
 using myTNB.SitecoreCMS.Model;
 using UIKit;
 
@@ -18,10 +17,11 @@ namespace myTNB
         private int _currentPageIndex;
         private UIPageControl _pageControl;
         private UILabel _skipLabel;
-        public Func<string, string> GetI18NValue;
-        public Action DismissAction;
         private nfloat ViewHeight;
+
         public List<OnboardingItemModel> OnboardingModel;
+        public Action DismissAction;
+        public Action<int> ChangeLanguageAction { set; private get; }
 
         public WalkthroughComponent(UIView parent, nfloat viewHeight)
         {
@@ -103,7 +103,10 @@ namespace myTNB
         {
             for (int i = 0; i < OnboardingModel.Count; i++)
             {
-                UIView viewContainer = new UIView(_scrollView.Bounds);
+                UIView viewContainer = new UIView(_scrollView.Bounds)
+                {
+                    Tag = 1000 + i
+                };
                 viewContainer.UserInteractionEnabled = true;
                 nfloat width = viewContainer.Frame.Width;
                 viewContainer.BackgroundColor = UIColor.Clear;
@@ -121,7 +124,8 @@ namespace myTNB
                     TextColor = MyTNBColor.WaterBlue,
                     TextAlignment = UITextAlignment.Center,
                     LineBreakMode = UILineBreakMode.TailTruncation,
-                    Text = GetI18NValue(OnboardingModel[i].Title)
+                    Text = GetI18NValue(OnboardingModel[i].Title),
+                    Tag = 2002
                 };
                 viewContainer.AddSubview(title);
 
@@ -146,7 +150,8 @@ namespace myTNB
                     AttributedText = mutableHTMLBody,
                     TextAlignment = UITextAlignment.Center,
                     UserInteractionEnabled = false,
-                    ContentInset = new UIEdgeInsets(0, -5, 0, -5)
+                    ContentInset = new UIEdgeInsets(0, -5, 0, -5),
+                    Tag = 2003
                 };
                 description.ScrollIndicatorInsets = UIEdgeInsets.Zero;
                 CGSize size = description.SizeThatFits(new CGSize(description.Frame.Width, GetScaledHeight(86F)));
@@ -162,7 +167,8 @@ namespace myTNB
                         Frame = new CGRect(BaseMarginWidth16, viewContainer.Frame.Height - GetScaledHeight(48F) - GetScaledHeight(16F), width - GetScaledWidth(32F), GetScaledHeight(48F)),
                         Enabled = true,
                         BackgroundColor = MyTNBColor.FreshGreen,
-                        Font = TNBFont.MuseoSans_16_500
+                        Font = TNBFont.MuseoSans_16_500,
+                        Tag = 2004
                     };
                     btnStart.SetTitle(GetI18NValue(OnboardingConstants.I18N_LetsStart), UIControlState.Normal);
                     btnStart.AddGestureRecognizer(new UITapGestureRecognizer(() =>
@@ -177,57 +183,6 @@ namespace myTNB
                 _scrollView.AddSubview(viewContainer);
             }
             _scrollView.ContentSize = new CGSize(_scrollView.Frame.Width * OnboardingModel.Count, _scrollView.Frame.Height);
-        }
-
-        private void AddToggleBar(bool isLanguageEntry, UIView viewContainer, CGRect refFrame)
-        {
-            if (isLanguageEntry)
-            {
-                UIView toggleView = new UIView(new CGRect(0, GetYLocationFromFrame(refFrame, 18)
-                    , viewContainer.Frame.Width, GetScaledHeight(26)))
-                {
-                    BackgroundColor = UIColor.Clear,
-                    UserInteractionEnabled = true
-                };
-                nfloat toggleWidth = GetScaledWidth(122);
-                nfloat toggleHeight = GetScaledHeight(26);
-
-                UISegmentedControl _toggleBar = new UISegmentedControl(new CGRect(GetXLocationToCenterObject(toggleWidth, viewContainer)
-                    , 0, toggleWidth, toggleHeight));
-                _toggleBar.InsertSegment("EN", 0, false);
-                _toggleBar.InsertSegment("BM", 1, false);
-                _toggleBar.TintColor = MyTNBColor.WaterBlue;
-                _toggleBar.SetTitleTextAttributes(new UITextAttributes
-                {
-                    Font = TNBFont.MuseoSans_12_300,
-                    TextColor = MyTNBColor.WaterBlue
-                }, UIControlState.Normal);
-                _toggleBar.SetTitleTextAttributes(new UITextAttributes
-                {
-                    Font = TNBFont.MuseoSans_12_300,
-                    TextColor = UIColor.White
-                }, UIControlState.Selected);
-                _toggleBar.Layer.CornerRadius = toggleHeight / 2;
-                _toggleBar.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
-                _toggleBar.Layer.BorderWidth = GetScaledHeight(1);
-                _toggleBar.Layer.MasksToBounds = true;
-                _toggleBar.ValueChanged += (sender, e) =>
-                {
-                    Debug.WriteLine("selected index: " + ((UISegmentedControl)sender).SelectedSegment);
-                    AlertHandler.DisplayCustomAlert(GetCommonI18NValue(string.Format("{0}_{1}"
-                        , Constants.Common_ChangeLanguageTitle, TNBGlobal.APP_LANGUAGE))
-                     , GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageMessage, TNBGlobal.APP_LANGUAGE))
-                     , new Dictionary<string, Action> {
-                            { GetCommonI18NValue(string.Format("{0}_{1}",Constants.Common_ChangeLanguageNo, TNBGlobal.APP_LANGUAGE)), null}
-                            ,{ GetCommonI18NValue(string.Format("{0}_{1}",Constants.Common_ChangeLanguageYes, TNBGlobal.APP_LANGUAGE)) ,null} }
-                     , UITextAlignment.Center
-                     , UITextAlignment.Center);
-                };
-                _toggleBar.SelectedSegment = 0;
-                _toggleBar.Enabled = true;
-                toggleView.AddSubview(_toggleBar);
-                viewContainer.AddSubview(toggleView);
-            }
         }
 
         private void SetScrollView(UIView bottomView)
@@ -300,6 +255,120 @@ namespace myTNB
             }
         }
 
+        #region Language
+        private void AddToggleBar(bool isLanguageEntry, UIView viewContainer, CGRect refFrame)
+        {
+            if (isLanguageEntry)
+            {
+                UIView toggleView = new UIView(new CGRect(0, GetYLocationFromFrame(refFrame, 18)
+                    , viewContainer.Frame.Width, GetScaledHeight(26)))
+                {
+                    BackgroundColor = UIColor.Clear,
+                    UserInteractionEnabled = true
+                };
+                nfloat toggleWidth = GetScaledWidth(122);
+                nfloat toggleHeight = GetScaledHeight(26);
+
+                UISegmentedControl _toggleBar = new UISegmentedControl(new CGRect(GetXLocationToCenterObject(toggleWidth, viewContainer)
+                    , 0, toggleWidth, toggleHeight));
+                _toggleBar.InsertSegment(LanguageUtility.GetLanguageCodeByIndex(0), 0, false);
+                _toggleBar.InsertSegment(LanguageUtility.GetLanguageCodeByIndex(1), 1, false);
+                _toggleBar.TintColor = MyTNBColor.WaterBlue;
+                _toggleBar.SetTitleTextAttributes(new UITextAttributes
+                {
+                    Font = TNBFont.MuseoSans_12_300,
+                    TextColor = MyTNBColor.WaterBlue
+                }, UIControlState.Normal);
+                _toggleBar.SetTitleTextAttributes(new UITextAttributes
+                {
+                    Font = TNBFont.MuseoSans_12_300,
+                    TextColor = UIColor.White
+                }, UIControlState.Selected);
+                _toggleBar.Layer.CornerRadius = toggleHeight / 2;
+                _toggleBar.Layer.BorderColor = MyTNBColor.WaterBlue.CGColor;
+                _toggleBar.Layer.BorderWidth = GetScaledHeight(1);
+                _toggleBar.Layer.MasksToBounds = true;
+                _toggleBar.ValueChanged += (sender, e) =>
+                {
+                    Debug.WriteLine("selected index: " + ((UISegmentedControl)sender).SelectedSegment);
+                    AlertHandler.DisplayCustomAlert(GetCommonI18NValue(string.Format("{0}_{1}"
+                        , Constants.Common_ChangeLanguageTitle, TNBGlobal.APP_LANGUAGE))
+                     , GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageMessage, TNBGlobal.APP_LANGUAGE))
+                     , new Dictionary<string, Action> {
+                            { GetCommonI18NValue(string.Format("{0}_{1}",Constants.Common_ChangeLanguageNo, TNBGlobal.APP_LANGUAGE)), null}
+                            ,{ GetCommonI18NValue(string.Format("{0}_{1}",Constants.Common_ChangeLanguageYes, TNBGlobal.APP_LANGUAGE))
+                            ,()=>{
+                                if (ChangeLanguageAction!=null)
+                                {
+                                    ChangeLanguageAction.Invoke((int)((UISegmentedControl)sender).SelectedSegment);
+                                }
+                            } } }
+                     , UITextAlignment.Center
+                     , UITextAlignment.Center);
+                };
+                _toggleBar.SelectedSegment = LanguageUtility.CurrentLanguageIndex;
+                _toggleBar.Enabled = true;
+                toggleView.AddSubview(_toggleBar);
+                viewContainer.AddSubview(toggleView);
+            }
+        }
+
+        /*
+         *  Tags
+         *  1001 - parent view
+         *  1002 - title label
+         *  1003 - description text view
+         *  1004 - UI button Get started
+         */
+        public void RefreshContent()
+        {
+            if (_scrollView == null) { return; }
+            int dataCount = OnboardingModel.Count;
+            for (int i = 0; i < _scrollView.Subviews.Length; i++)
+            {
+                int viewIndex = 1000 + i;
+                UIView view = _scrollView.Subviews[i];
+                if (view != null)
+                {
+                    UILabel lblTitle = view.ViewWithTag(2002) as UILabel;
+                    if (lblTitle != null)
+                    {
+                        lblTitle.Text = GetI18NValue(OnboardingModel[i].Title);
+                        Debug.WriteLine("Title: " + i + " " + lblTitle.Text);
+                    }
+                    else
+                    {
+                        Debug.WriteLine("Title null in index: " + i);
+                    }
+
+                    UITextView txtViewDescription = view.ViewWithTag(2003) as UITextView;
+                    if (txtViewDescription != null)
+                    {
+                        NSError htmlBodyError = null;
+                        NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(OnboardingModel[i].Description)
+                            , ref htmlBodyError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(12F));
+                        NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
+                        mutableHTMLBody.AddAttributes(new UIStringAttributes
+                        {
+                            ForegroundColor = MyTNBColor.WarmGrey,
+                            ParagraphStyle = new NSMutableParagraphStyle
+                            {
+                                LineSpacing = 3.0f
+                            }
+                        }, new NSRange(0, htmlBody.Length));
+                        txtViewDescription.AttributedText = mutableHTMLBody;
+                    }
+
+                    UIButton ctaButton = view.ViewWithTag(2004) as UIButton;
+                    if (ctaButton != null)
+                    {
+                        ctaButton.SetTitle(GetI18NValue(OnboardingConstants.I18N_LetsStart), UIControlState.Normal);
+                    }
+                }
+            }
+            _skipLabel.Text = GetI18NValue(OnboardingConstants.I18N_Skip);
+        }
+        #endregion
         private class WalkthroughDelegate : UIScrollViewDelegate
         {
             WalkthroughComponent _controller;

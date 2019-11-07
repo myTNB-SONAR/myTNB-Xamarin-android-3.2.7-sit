@@ -23,7 +23,6 @@ namespace myTNB
         {
             PageName = PreloginConstants.PageName;
             base.ViewDidLoad();
-            NotifCenterUtility.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
             SetSubviews();
         }
 

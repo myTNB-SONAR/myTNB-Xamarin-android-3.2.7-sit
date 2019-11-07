@@ -29,7 +29,6 @@ namespace myTNB
             base.ViewDidLoad();
             _isSitecoreDone = false;
             _isMasterDataDone = false;
-            NotifCenterUtility.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
             SetSubviews();
         }
 

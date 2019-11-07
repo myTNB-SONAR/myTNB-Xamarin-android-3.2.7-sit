@@ -61,7 +61,6 @@ namespace myTNB
             DataManager.DataManager.SharedInstance.CurrentAccountList = DataManager.DataManager.SharedInstance.AccountRecordsList?.d;
             NotifCenterUtility.AddObserver((NSString)"NotificationDidChange", NotificationDidChange);
             NotifCenterUtility.AddObserver((NSString)"OnReceiveNotificationFromDashboard", NotificationDidChange);
-            NotifCenterUtility.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
             NotifCenterUtility.AddObserver(UIApplication.WillEnterForegroundNotification, OnEnterForeground);
             _services = new ServicesResponseModel();
             _helpList = new List<HelpModel>();

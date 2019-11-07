@@ -133,6 +133,15 @@ namespace myTNB
             }
         }
 
+        public static string GetLanguageCodeByIndex(int index)
+        {
+            if (index > -1 && index < SupportedLanguage.Count)
+            {
+                return SupportedLanguage[index];
+            }
+            return string.Empty;
+        }
+
         #endregion
 
         #region I18N Settings

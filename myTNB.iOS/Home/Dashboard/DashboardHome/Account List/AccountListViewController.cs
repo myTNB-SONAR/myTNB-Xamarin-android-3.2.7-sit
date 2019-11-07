@@ -36,7 +36,6 @@ namespace myTNB
         {
             PageName = DashboardHomeConstants.PageName;
             base.ViewDidLoad();
-            NotifCenterUtility.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
             SetParentView();
             PrepareAccountList();
         }

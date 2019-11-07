@@ -47,7 +47,6 @@ namespace myTNB.Dashboard
                 appDelegate._dashboardVC = this;
             }
 
-            NotifCenterUtility.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
             NotifCenterUtility.AddObserver((NSString)"NotificationDidChange", NotificationDidChange);
             NotifCenterUtility.AddObserver(UIApplication.WillEnterForegroundNotification, HandleAppWillEnterForeground);
 
