@@ -1097,9 +1097,9 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             middleHeight = (int)DPUtils.ConvertDPToPx(265f);
                         }
 
-                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                        if (((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(200f))))
                         {
-                            topHeight -= (int)DPUtils.ConvertDPToPx(30f);
+                            topHeight -= (int)DPUtils.ConvertDPToPx(15f);
                         }
 
                         LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
@@ -1222,9 +1222,9 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                             middleHeight = (int)DPUtils.ConvertDPToPx(265f);
                         }
 
-                        if ((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(52f)))
+                        if (((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(200f))))
                         {
-                            topHeight -= (int)DPUtils.ConvertDPToPx(30f);
+                            topHeight -= (int)DPUtils.ConvertDPToPx(15f);
                         }
 
                         LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
@@ -1433,7 +1433,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             else if (this.mFragment is ItemisedBillingMenuFragment)
             {
                 ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
-                ((ItemisedBillingMenuFragment)this.mFragment).OnUnsetIsTutorialShownFlag();
             }
         }
 
