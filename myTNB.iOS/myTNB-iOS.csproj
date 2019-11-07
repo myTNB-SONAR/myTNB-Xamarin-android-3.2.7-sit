@@ -967,9 +967,6 @@
     <ImageAsset Include="Assets.xcassets\Usage-MissingReading.imageset\missingCopy%402x.png" />
     <ImageAsset Include="Assets.xcassets\Usage-MissingReading.imageset\missingCopy%403x.png" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Filter.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Filter.imageset\filterCopy1%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Filter.imageset\filterCopy1%403x.png" />
     <ImageAsset Include="Assets.xcassets\Arrow-Expand.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Arrow-Expand.imageset\expandRight16X16%402x.png" />
     <ImageAsset Include="Assets.xcassets\Arrow-Expand.imageset\expandRight16X16%403x.png" />
@@ -1238,6 +1235,18 @@
     <ImageAsset Include="Assets.xcassets\RE-Leaf-Large.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\RE-Leaf-Large.imageset\RE-Leaf-Large%402x.png" />
     <ImageAsset Include="Assets.xcassets\RE-Leaf-Large.imageset\RE-Leaf-Large%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Unfiltered.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Unfiltered.imageset\filterCopy1%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Unfiltered.imageset\filterCopy1%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Filtered.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Filtered.imageset\filterBlue%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Filtered.imageset\filterBlue%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Nav-Filtered.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Nav-Filtered.imageset\filterFilled%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Nav-Filtered.imageset\filterFilled%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Nav-Unfiltered.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Nav-Unfiltered.imageset\filterWhite%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Nav-Unfiltered.imageset\filterWhite%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1618,6 +1627,7 @@
     <Folder Include="Assets.xcassets\BCRM-Down-Icon.imageset\" />
     <Folder Include="Assets.xcassets\IC-Action-Filter.imageset\" />
     <Folder Include="Components\Tutorial Overlay\" />
+    <Folder Include="Components\Common\" />
     <Folder Include="Assets.xcassets\Arrow-Expand.imageset\" />
     <Folder Include="Assets.xcassets\Bills-Cleared-Banner.imageset\" />
     <Folder Include="Assets.xcassets\Bills-NeedToPay-Banner.imageset\" />
@@ -1703,7 +1713,10 @@
     <Folder Include="Assets.xcassets\Onboarding-Image-4.imageset\" />
     <Folder Include="Assets.xcassets\Onboarding-Image-5.imageset\" />
     <Folder Include="Assets.xcassets\RE-Leaf-Large.imageset\" />
-    <Folder Include="Components\Common\" />
+    <Folder Include="Assets.xcassets\IC-Action-Unfiltered.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Filtered.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Nav-Filtered.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Nav-Unfiltered.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />

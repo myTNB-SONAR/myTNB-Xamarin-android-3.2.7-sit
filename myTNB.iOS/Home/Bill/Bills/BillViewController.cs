@@ -19,7 +19,7 @@ namespace myTNB
     {
         private UIView _headerViewContainer, _headerView, _navbarView
             , _shimmerView, _viewRefreshContainer;
-        private UIImageView _bgImageView;
+        private UIImageView _bgImageView, _imgFilter;
         private CAGradientLayer _gradientLayer;
         private CustomUIView _accountSelectorContainer, _viewFilter;
         private nfloat _navBarHeight;
@@ -259,15 +259,15 @@ namespace myTNB
             _viewFilter = new CustomUIView(new CGRect(_navbarView.Frame.Width - GetScaledWidth(32), 0
                 , GetScaledWidth(16), GetScaledWidth(16)))
             { Hidden = true };
-            UIImageView imgFilter = new UIImageView(new CGRect(0, 0, GetScaledWidth(16), GetScaledWidth(16)))
+            _imgFilter = new UIImageView(new CGRect(0, 0, GetScaledWidth(24), GetScaledWidth(24)))
             {
-                Image = UIImage.FromBundle("IC-Action-Filter")
+                Image = UIImage.FromBundle("IC-Action-Nav-Unfiltered")
             };
             _viewFilter.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 ShowFilterScreen();
             }));
-            _viewFilter.AddSubview(imgFilter);
+            _viewFilter.AddSubview(_imgFilter);
             viewTitleBar.AddSubview(_lblNavTitle);
             viewTitleBar.AddSubview(_viewFilter);
             _navbarView.AddSubview(viewTitleBar);
@@ -625,6 +625,10 @@ namespace myTNB
 
         private void OnSelectAccount(int index)
         {
+            if (_imgFilter != null)
+            {
+                _imgFilter.Image = UIImage.FromBundle("IC-Action-Nav-Unfiltered");
+            }
             if (_accountSelector != null)
             {
                 _accountSelector.Title = DataManager.DataManager.SharedInstance.SelectedAccount.accountNickName;
@@ -1010,9 +1014,12 @@ namespace myTNB
                 GetI18NValue = GetI18NValue,
                 OnSelectBill = DisplayBillPDF,
                 OnSelectPayment = DisplayReceipt,
-                OnShowFilter = ShowFilterScreen
+                OnShowFilter = ShowFilterScreen,
+                IsFiltered = index > 0
             };
             _historyTableView.ReloadData();
+
+            _imgFilter.Image = UIImage.FromBundle(index > 0 ? "IC-Action-Nav-Filtered" : "IC-Action-Nav-Unfiltered");
         }
 
         #endregion

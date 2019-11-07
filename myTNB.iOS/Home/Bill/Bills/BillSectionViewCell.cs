@@ -9,6 +9,7 @@ namespace myTNB.Home.Bill
     {
         private UIView _view, _viewFilter, _viewParent;
         private UILabel _lblTitle;
+        private UIImageView _imgFilter;
         private nfloat _cellWidth = UIApplication.SharedApplication.KeyWindow.Frame.Width;
         private nfloat _baseHMargin = ScaleUtility.GetScaledWidth(16);
 
@@ -25,11 +26,11 @@ namespace myTNB.Home.Bill
 
             _viewFilter = new UIView(new CGRect(_cellWidth - ScaleUtility.GetScaledWidth(32), ScaleUtility.GetScaledHeight(20)
                 , scaled16, scaled16));
-            UIImageView imgFilter = new UIImageView(new CGRect(0, 0, scaled16, scaled16))
+            _imgFilter = new UIImageView(new CGRect(0, 0, scaled16, scaled16))
             {
-                Image = UIImage.FromBundle("IC-Action-Filter")
+                Image = UIImage.FromBundle("IC-Action-Unfiltered")
             };
-            _viewFilter.AddSubview(imgFilter);
+            _viewFilter.AddSubview(_imgFilter);
 
             _view.AddSubview(_lblTitle);
             _view.AddSubview(_viewFilter);
@@ -109,6 +110,11 @@ namespace myTNB.Home.Bill
                     }));
                 }
             }
+        }
+
+        public void SetFilterImage(bool isFiltered)
+        {
+            _imgFilter.Image = UIImage.FromBundle(isFiltered ? "IC-Action-Filtered" : "IC-Action-Unfiltered");
         }
     }
 }
