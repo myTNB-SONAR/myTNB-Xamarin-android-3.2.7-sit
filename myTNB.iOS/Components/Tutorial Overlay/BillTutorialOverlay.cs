@@ -579,6 +579,7 @@ namespace myTNB
                 OnDismissAction?.Invoke();
             };
             topView.AddSubviews(new UIView { title, description, btnGotIt });
+            topView.AddSubview(btnGotIt);
             UIView bottomView = new UIView(new CGRect(0, height - TabBarHeight, width, TabBarHeight))
             {
                 BackgroundColor = MyTNBColor.Black75
@@ -588,7 +589,8 @@ namespace myTNB
                 BackgroundColor = MyTNBColor.ButterScotch
             };
             bottomView.AddSubview(bottomLine);
-            parentView.AddSubviews(new UIView { topView, bottomView });
+            parentView.AddSubview(topView);
+            parentView.AddSubview(bottomView);
             _swipeText.Hidden = true;
             return parentView;
         }

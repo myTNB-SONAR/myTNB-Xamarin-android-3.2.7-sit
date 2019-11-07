@@ -145,7 +145,8 @@ namespace myTNB
             };
             topView.AddSubviews(new UIView { title, description });
             topView.AddSubview(btnGotIt);
-            parentView.AddSubviews(new UIView { topView, bottomView, leftView, rightView, boxView });
+            parentView.AddSubview(topView);
+            parentView.AddSubviews(new UIView { bottomView, leftView, rightView, boxView });
             return parentView;
         }
     }

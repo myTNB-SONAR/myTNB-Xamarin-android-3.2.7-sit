@@ -124,7 +124,8 @@ namespace myTNB
             {
                 OnDismissAction?.Invoke();
             };
-            topView.AddSubviews(new UIView { title, description, btnGotIt });
+            topView.AddSubviews(new UIView { title, description });
+            topView.AddSubview(btnGotIt);
             nfloat bottomViewYPos = topView.Frame.GetMaxY() + HeaderHeight - GetScaledHeight(15F);
             UIView bottomView = new UIView(new CGRect(0, bottomViewYPos, width, height - bottomViewYPos))
             {
@@ -135,7 +136,8 @@ namespace myTNB
                 BackgroundColor = MyTNBColor.ButterScotch
             };
             bottomView.AddSubview(bottomLine);
-            parentView.AddSubviews(new UIView { topView, bottomView });
+            parentView.AddSubview(topView);
+            parentView.AddSubviews(bottomView);
             return parentView;
         }
     }

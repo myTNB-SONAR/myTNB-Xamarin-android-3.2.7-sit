@@ -119,7 +119,8 @@ namespace myTNB
             {
                 OnDismissAction?.Invoke();
             };
-            topView.AddSubviews(new UIView { title, description, btnGotIt });
+            topView.AddSubviews(new UIView { title, description });
+            topView.AddSubview(btnGotIt);
             nfloat boxViewXPos = GetScaledWidth(12F);
             nfloat boxViewWidth = width / 2 - GetScaledWidth(10F);
             UIView boxView = new UIView(new CGRect(boxViewXPos, topView.Frame.GetMaxY() - GetScaledHeight(1F), boxViewWidth, ButtonHeight + GetScaledHeight(8F) + GetScaledHeight(2F)))
@@ -142,7 +143,8 @@ namespace myTNB
             {
                 BackgroundColor = MyTNBColor.Black75
             };
-            parentView.AddSubviews(new UIView { topView, bottomView, leftView, rightView, boxView });
+            parentView.AddSubview(topView);
+            parentView.AddSubviews(new UIView { bottomView, leftView, rightView, boxView });
             return parentView;
         }
     }
