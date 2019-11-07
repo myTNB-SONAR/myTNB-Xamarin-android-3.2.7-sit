@@ -194,7 +194,7 @@ namespace myTNB
             };
             currentWindow.AddSubview(_tutorialContainer);
 
-            BillDetailsTutorialOverlay tutorialView = new BillDetailsTutorialOverlay(_tutorialContainer, this)
+            BillDetailsTutorialOverlay tutorialView = new BillDetailsTutorialOverlay(_tutorialContainer)
             {
                 NavigationHeight = DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height,
                 OnDismissAction = HideTutorialOverlay,

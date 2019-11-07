@@ -1,11 +1,13 @@
 using CoreAnimation;
 using CoreGraphics;
+using Foundation;
 using myTNB.Home.Bill;
 using myTNB.Model;
 using myTNB.SSMR;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Timers;
 using UIKit;
 
 namespace myTNB
@@ -35,6 +37,11 @@ namespace myTNB
         public bool IsFromNotification;
         public bool FromStatusPage;
         public bool IsRoot;
+
+        private UIView _tutorialContainer;
+        private bool IsLoading = true;
+        private Timer tutorialOverlayTimer;
+
         public SSMRReadingHistoryViewController(IntPtr handle) : base(handle) { }
 
         public override void ViewDidLoad()
@@ -53,6 +60,7 @@ namespace myTNB
         public override void ViewWillAppear(bool animated)
         {
             base.ViewWillAppear(animated);
+            IsLoading = true;
             _rootNavigation = false;
             NavigationController.SetNavigationBarHidden(true, true);
             SetNoSSMR();
@@ -114,6 +122,7 @@ namespace myTNB
                     _currAcc = DataManager.DataManager.SharedInstance.SelectedAccount;
                     _ssmrHeaderComponent.AccountName = DataManager.DataManager.SharedInstance.SelectedAccount.accountNickName;
                     UpdateTable();
+                    IsLoading = false;
                 }
             }
         }
@@ -129,6 +138,12 @@ namespace myTNB
             {
                 NavigationController.SetNavigationBarHidden(false, true);
             }
+        }
+
+        public override void ViewDidAppear(bool animated)
+        {
+            base.ViewDidAppear(animated);
+            CheckTutorialOverlay();
         }
 
         private void EvaluateEntry()
@@ -170,7 +185,88 @@ namespace myTNB
             _readingHistoryTableView.TableFooterView = null;
             _readingHistoryTableView.Source = new SSMRReadingHistoryDataSource(OnTableViewScrolled, null, false);
             _readingHistoryTableView.ReloadData();
+            IsLoading = false;
         }
+
+        #region Tutorial Overlay Methods
+        private void CheckTutorialOverlay()
+        {
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            var tutorialOverlayHasShown = sharedPreference.BoolForKey(SSMRConstants.Pref_SSMRHistoryTutorialOverlay);
+
+            //if (tutorialOverlayHasShown)
+            //    return;
+
+            tutorialOverlayTimer = new Timer
+            {
+                Interval = 500F,
+                AutoReset = true,
+                Enabled = true
+            };
+            tutorialOverlayTimer.Elapsed += TimerElapsed;
+        }
+
+        private void TimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            if (!IsLoading)
+            {
+                tutorialOverlayTimer.Enabled = false;
+                InvokeOnMainThread(() =>
+                {
+                    var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                    var topVc = AppDelegate.GetTopViewController(baseRootVc);
+                    if (topVc != null)
+                    {
+                        if (topVc is SSMRReadingHistoryViewController)
+                        {
+                            ShowTutorialOverlay();
+                        }
+                    }
+                });
+            }
+        }
+
+        private void ShowTutorialOverlay()
+        {
+            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+
+            nfloat width = currentWindow.Frame.Width;
+            nfloat height = currentWindow.Frame.Height;
+            if (_tutorialContainer != null)
+            {
+                _tutorialContainer.RemoveFromSuperview();
+            }
+            _tutorialContainer = new UIView(new CGRect(0, 0, width, height))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+            currentWindow.AddSubview(_tutorialContainer);
+
+            SSMRHistoryTutorialOverlay tutorialView = new SSMRHistoryTutorialOverlay(_tutorialContainer)
+            {
+                TopViewYPos = _bgImageView.Frame.Height,
+                OnDismissAction = HideTutorialOverlay,
+                HeaderHeight = _ssmrHeaderComponent?.GetView()?.Frame.Height ?? 0
+            };
+            _tutorialContainer.AddSubview(tutorialView.GetView());
+
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            sharedPreference.SetBool(true, SSMRConstants.Pref_SSMRHistoryTutorialOverlay);
+        }
+
+        private void HideTutorialOverlay()
+        {
+            if (_tutorialContainer != null)
+            {
+                _tutorialContainer.Alpha = 1F;
+                _tutorialContainer.Transform = CGAffineTransform.MakeIdentity();
+                UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseInOut, () =>
+                {
+                    _tutorialContainer.Alpha = 0F;
+                }, _tutorialContainer.RemoveFromSuperview);
+            }
+        }
+        #endregion
 
         #region Navigation
         private void SetNavigation()
@@ -540,6 +636,7 @@ namespace myTNB
                         _readingHistoryTableView.Hidden = true;
                         DisplayRefresh();
                     }
+                    IsLoading = false;
                     ActivityIndicator.Hide();
                 });
             });

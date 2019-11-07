@@ -155,5 +155,9 @@ namespace myTNB.SSMR
         public static string EVENT_Refresh = "Refresh";
 
         public static int Max_ReasonCharacterCount = 550;
+
+        //Preference Key
+        public static string Pref_SSMRHistoryTutorialOverlay = "SSMRHistoryTutorialOverlayV2.0.0";
+        public static string Pref_SSMRReadTutorialOverlay = "SSMRReadTutorialOverlayV2.0.0";
     }
 }

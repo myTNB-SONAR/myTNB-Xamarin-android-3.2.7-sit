@@ -59,5 +59,8 @@
         public static string I18N_MDMSUnavailable = "mdmsUnavailable";
         public static string I18N_MDMSUnavailableMsg = "mdmsUnavailableMsg";
         public static string I18N_BeenPaidExtra = "beenPaidExtra";
+
+        //Preference Key
+        public static string Pref_UsageSSMRTutorialOverlay = "UsageSSMRTutorialOverlayV2.0.0";
     }
 }

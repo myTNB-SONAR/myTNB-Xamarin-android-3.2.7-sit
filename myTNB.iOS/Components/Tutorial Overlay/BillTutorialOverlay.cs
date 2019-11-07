@@ -238,7 +238,7 @@ namespace myTNB
             };
             topView.AddSubview(topLine);
             nfloat bottomViewYPos = topView.Frame.GetMaxY() + _controller.GetDateAmountMaxY;
-            UIView bottomView = new UIView(new CGRect(0, topView.Frame.GetMaxY() + _controller.GetDateAmountMaxY, width, height - bottomViewYPos))
+            UIView bottomView = new UIView(new CGRect(0, bottomViewYPos, width, height - bottomViewYPos))
             {
                 BackgroundColor = MyTNBColor.Black75
             };
