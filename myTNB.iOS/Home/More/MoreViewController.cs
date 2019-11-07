@@ -293,7 +293,7 @@ namespace myTNB
         /*Todo: Do service calls and set lang
          * 1. Call site core
          * 2. Call Applaunch master data
-         * 3. Clear Usage cache
+         * 3. Clear Usage cache for service call content
         */
         private void OnChangeLanguage(int index)
         {

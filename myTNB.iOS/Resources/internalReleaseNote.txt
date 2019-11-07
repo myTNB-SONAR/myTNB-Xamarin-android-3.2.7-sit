@@ -1,4 +1,10 @@
-Sprint 2C SIT Build
+Sprint 3 SIT Build
 
-- Added additional parameter to the GetAccountUsage API to cater for custom message based on account type
-[Bug] 3267: SSMR Termination : User is not able to terminate his SMR account.
+1. This contains the sitecore call for content.
+2. Can be tested by changing device language and setting language in setting BUT the language settings is not saved.
+3. Please take note of UI issues and raise to dev instead of creating a defect since the story is not yet finished based on timeline
+4. For service messages, please consult BE team.
+5. Change language UI is there in walkthrough, prelogin, and settings but the funtionality is not yet done.
+6. Please try to upgrade from Sprint 2C Build and take note of the result and try fresh install as well.
+7. Don't connect to Accenture WiFi as it restricts reading of language file.
+8. Some translations are still pending

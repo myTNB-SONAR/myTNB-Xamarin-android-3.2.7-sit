@@ -412,6 +412,12 @@ namespace myTNB.SitecoreCMS
                         }
                     }
                 }
+                else
+                {
+                    string content = LanguageUtility.LanguageContent;
+                    LanguageManager.Instance.SetLanguage(content ?? string.Empty);
+                    LanguageUtility.SetLanguageGlobals();
+                }
             });
         }
     }
