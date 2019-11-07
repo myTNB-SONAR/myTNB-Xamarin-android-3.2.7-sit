@@ -12,6 +12,8 @@ namespace myTNB.Home.Bill
         public Action<string> OnSelectBill;
         public Action<string> OnSelectPayment;
         public Action OnShowFilter;
+        public bool IsFiltered;
+
         private List<BillPayHistoryModel> _historyResponseList;
         private List<BillPayHistoryDataModel> _historyList = new List<BillPayHistoryDataModel>();
         private Dictionary<int, string> _historyDictionary = new Dictionary<int, string>();
@@ -68,6 +70,7 @@ namespace myTNB.Home.Bill
                 cell.filterAction = OnShowFilter;
                 cell.IsLoading = _isLoading;
                 cell.Layer.ZPosition = 1;
+                cell.SetFilterImage(IsFiltered);
                 return cell;
             }
             else
