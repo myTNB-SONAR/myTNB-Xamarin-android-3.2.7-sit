@@ -157,18 +157,20 @@ namespace myTNB.Home.Feedback.FeedbackEntry
             {
                 bool isValid = true;
                 bool isEmptyAllowed = true;
+                bool isEmptyNumber = false;
                 if (textField == _txtFieldMobileNo)
                 {
                     if (textField.Text.Length < 4)
                     {
                         textField.Text = string.Empty;
+                        isEmptyNumber = true;
                     }
                     isValid = _textFieldHelper.ValidateMobileNumberLength(textField.Text);
                     isEmptyAllowed = false;
                 }
                 lblTitle.Hidden = textField.Text.Length == 0;
                 isValid = isValid && _textFieldHelper.ValidateTextField(textField.Text, pattern);
-
+                isValid |= (textField == _txtFieldMobileNo && isEmptyNumber);
                 bool isNormal = isValid || (textField.Text.Length == 0 && isEmptyAllowed);
                 lblError.Hidden = isNormal;
                 lblHint.Hidden = true;

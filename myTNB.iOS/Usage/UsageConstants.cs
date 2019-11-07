@@ -59,5 +59,10 @@
         public static string I18N_MDMSUnavailable = "mdmsUnavailable";
         public static string I18N_MDMSUnavailableMsg = "mdmsUnavailableMsg";
         public static string I18N_BeenPaidExtra = "beenPaidExtra";
+        public static string I18N_TutorialSMRTitle = "tutorialSMRTitle";
+        public static string I18N_TutorialSMRDesc = "tutorialSMRDesc";
+
+        //Preference Key
+        public static string Pref_UsageSSMRTutorialOverlay = "UsageSSMRTutorialOverlayV2.0.0";
     }
 }

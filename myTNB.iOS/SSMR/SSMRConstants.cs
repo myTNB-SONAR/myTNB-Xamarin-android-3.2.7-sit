@@ -107,6 +107,9 @@ namespace myTNB.SSMR
         public static string I18N_EnableSSMRCTA = "enableSSMRCTA";
         public static string I18N_EnableSSMRDescription = "enableSSMRDescription";
         public static string I18N_SelectAccountNavTitle = "selectAccountNavTitle";
+        public static string I18N_TutorialHeaderTitle = "tutorialHeaderTitle";
+        public static string I18N_TutorialHeaderDesc = "tutorialHeaderDesc";
+        public static string I18N_TutorialGotIt = "tutorialGotIt";
 
         //Capture Meter
         public static string I18N_OCRReading = "ocrReading";
@@ -138,6 +141,9 @@ namespace myTNB.SSMR
         public static string I18N_SubmitReading = "submitReading";
         public static string I18N_TakeOrUploadPhoto = "takeOrUploadPhoto";
         public static string I18N_ManualInputTitle = "manualInputTitle";
+        public static string I18N_TutorialReadMeterTitle = "tutorialReadMeterTitle";
+        public static string I18N_TutorialReadMeterDesc = "tutorialReadMeterDesc";
+        public static string I18N_TutorialReadMeterGotIt = "tutorialReadMeterGotIt";
 
         //Patterns
         public static string Pattern_ImageName = "MYTNBAPP_SSMR_OCR_{0}_{1}";
@@ -155,5 +161,9 @@ namespace myTNB.SSMR
         public static string EVENT_Refresh = "Refresh";
 
         public static int Max_ReasonCharacterCount = 550;
+
+        //Preference Key
+        public static string Pref_SSMRHistoryTutorialOverlay = "SSMRHistoryTutorialOverlayV2.0.0";
+        public static string Pref_SSMRReadTutorialOverlay = "SSMRReadTutorialOverlayV2.0.0";
     }
 }

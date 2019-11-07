@@ -43,6 +43,17 @@
         public static string I18N_BcrmDownMessage = "bcrmDownMessage";
         public static string I18N_ViewBill = "viewBill";
         public static string I18N_All = "all";
+        public static string I18N_TutorialBillTitle = "tutorialBillTitle";
+        public static string I18N_TutorialPayTitle = "tutorialPayTitle";
+        public static string I18N_TutorialViewDetailsTitle = "tutorialViewDetailsTitle";
+        public static string I18N_TutorialHistoryTitle = "tutorialHistoryTitle";
+        public static string I18N_TutorialBillREAcctDesc = "tutorialBillREAcctDesc";
+        public static string I18N_TutorialBillNormalAcctDesc = "tutorialBillNormalAcctDesc";
+        public static string I18N_TutorialPayDesc = "tutorialPayDesc";
+        public static string I18N_TutorialViewDetailsDesc = "tutorialViewDetailsDesc";
+        public static string I18N_TutorialHistoryNormalAcctDesc = "tutorialHistoryNormalAcctDesc";
+        public static string I18N_TutorialHistoryREAcctDesc = "tutorialHistoryREAcctDesc";
+        public static string I18N_GotIt = "gotIt";
 
         //Bill Details
         public static string I18N_BillDetails = "billDetails";
@@ -54,6 +65,8 @@
         public static string I18N_ToolTipDesc1 = "tooltipdesc1";
         public static string I18N_ToolTipTitle2 = "tooltiptitle2";
         public static string I18N_ToolTipDesc2 = "tooltipdesc2";
+        public static string I18N_TutorialTitle = "tutorialTitle";
+        public static string I18N_TutorialDesc = "tutorialDesc";
 
         //Bill Filter
         public static string I18N_FilterDescription = "description";
@@ -84,6 +97,7 @@
         public static string Event_MandatoryDetails = "ExpandCollapseMandatoryList";
 
         //Preference Key
-        public static string Pref_TutorialOverlay = "BillTutorialOverlayV2.0.0";
+        public static string Pref_BillTutorialOverlay = "BillTutorialOverlayV2.0.0";
+        public static string Pref_BillDetailsTutorialOverlay = "BillDetailsTutorialOverlayV2.0.0";
     }
 }

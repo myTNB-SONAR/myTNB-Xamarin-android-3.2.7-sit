@@ -919,9 +919,6 @@
     <ImageAsset Include="Assets.xcassets\Usage-MissingReading.imageset\missingCopy%402x.png" />
     <ImageAsset Include="Assets.xcassets\Usage-MissingReading.imageset\missingCopy%403x.png" />
     <ImageAsset Include="Assets.xcassets\BCRM-Down-Icon.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Filter.imageset\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Filter.imageset\filterCopy1%402x.png" />
-    <ImageAsset Include="Assets.xcassets\IC-Action-Filter.imageset\filterCopy1%403x.png" />
     <ImageAsset Include="Assets.xcassets\Arrow-Expand.imageset\Contents.json" />
     <ImageAsset Include="Assets.xcassets\Arrow-Expand.imageset\expandRight16X16%402x.png" />
     <ImageAsset Include="Assets.xcassets\Arrow-Expand.imageset\expandRight16X16%403x.png" />
@@ -1207,6 +1204,18 @@
     <ImageAsset Include="Assets.xcassets\Tab-Rewards-New-MS.imageset\rewardsNew%403x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected-New-MS.imageset\rewardsNewSelected%402x.png" />
     <ImageAsset Include="Assets.xcassets\Tab-Rewards-Selected-New-MS.imageset\rewardsNewSelected%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Unfiltered.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Unfiltered.imageset\filterCopy1%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Unfiltered.imageset\filterCopy1%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Filtered.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Filtered.imageset\filterBlue%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Filtered.imageset\filterBlue%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Nav-Filtered.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Nav-Filtered.imageset\filterFilled%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Nav-Filtered.imageset\filterFilled%403x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Nav-Unfiltered.imageset\Contents.json" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Nav-Unfiltered.imageset\filterWhite%402x.png" />
+    <ImageAsset Include="Assets.xcassets\IC-Action-Nav-Unfiltered.imageset\filterWhite%403x.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Resources\" />
@@ -1579,6 +1588,7 @@
     <Folder Include="Assets.xcassets\Usage-MissingReading.imageset\" />
     <Folder Include="Assets.xcassets\BCRM-Down-Icon.imageset\" />
     <Folder Include="Assets.xcassets\IC-Action-Filter.imageset\" />
+    <Folder Include="Components\Tutorial Overlay\" />
     <Folder Include="Components\Common\" />
     <Folder Include="Assets.xcassets\Arrow-Expand.imageset\" />
     <Folder Include="Assets.xcassets\Bills-Cleared-Banner.imageset\" />
@@ -1675,6 +1685,10 @@
     <Folder Include="Assets.xcassets\Tab-Promotions-Selected-New-MS.imageset\" />
     <Folder Include="Assets.xcassets\Tab-Rewards-New-MS.imageset\" />
     <Folder Include="Assets.xcassets\Tab-Rewards-Selected-New-MS.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Unfiltered.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Filtered.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Nav-Filtered.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Nav-Unfiltered.imageset\" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="LaunchScreen.storyboard" />
@@ -2380,7 +2394,6 @@
     <Compile Include="Components\Usage View\Charts\REChartView.cs" />
     <Compile Include="Components\Usage View\REAmountComponent.cs" />
     <Compile Include="Home\Bill\BillConstants.cs" />
-    <Compile Include="Components\Common\PaginatedTooltipComponent.cs" />
     <Compile Include="Model\GetAccountsCharges\GetAccountsChargesResponseModel.cs" />
     <Compile Include="Home\Bill\Bills\BillHistorySource.cs" />
     <Compile Include="Home\Bill\Bills\BillHistoryViewCell.cs" />
@@ -2485,8 +2498,6 @@
     </Compile>
     <Compile Include="Registration\AddAccountConstants.cs" />
     <Compile Include="Payment\Add Card\AddCardConstants.cs" />
-    <Compile Include="Components\Common\HomeTutorialOverlay.cs" />
-    <Compile Include="Session Cache\PushNotificationCache.cs" />
     <Compile Include="Home\Bill\Receipt\ReceiptConstants.cs" />
     <Compile Include="Feedback\Feedback Details\FeedbackDetailsDataSource.cs" />
     <Compile Include="Feedback\Feedback Details\FeedbackDetailsViewCell.cs" />
@@ -2536,10 +2547,17 @@
     <Compile Include="Feedback\FeedbackConstants.cs" />
     <Compile Include="Rating\RatingConstants.cs" />
     <Compile Include="Home\Promotions\PromotionConstants.cs" />
-    <Compile Include="Components\Common\BillTutorialOverlay.cs" />
     <Compile Include="Sitecore CMS\Model\Language\LanguageModel.cs" />
     <Compile Include="Sitecore CMS\Service\LanguageService.cs" />
     <Compile Include="Home\More\Language\LanguageUtility.cs" />
+    <Compile Include="Components\Tutorial Overlay\HomeTutorialOverlay.cs" />
+    <Compile Include="Session Cache\PushNotificationCache.cs" />
+    <Compile Include="Components\Tutorial Overlay\BillTutorialOverlay.cs" />
+    <Compile Include="Components\Tutorial Overlay\BillDetailsTutorialOverlay.cs" />
+    <Compile Include="Components\Tutorial Overlay\SSMRHistoryTutorialOverlay.cs" />
+    <Compile Include="Components\Tutorial Overlay\SSMReadTutorialOveraly.cs" />
+    <Compile Include="Components\Common\PaginatedTooltipComponent.cs" />
+    <Compile Include="Components\Tutorial Overlay\UsageSSMRTutorialOverlay.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

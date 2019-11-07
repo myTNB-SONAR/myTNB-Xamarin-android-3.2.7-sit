@@ -107,7 +107,8 @@
     "changeLanguageMessage_EN": "Are you sure you want to change the app language to English?",
     "changeLanguageYes_EN": "Yes",
     "changeLanguageNo_EN": "No",
-    "new": "Baru"
+    "new": "Baru",
+    "tutorialSwipeText": "Swipe to see more,<br>double tap to dismiss."
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -179,7 +180,19 @@
     "payBills": "Lihat<br>Makluman Saya",
     "submitFeedback": "Hantar<br>Maklum Balas",
     "selfMeterReading": "Self<br>Meter Reading",
-    "viewEBillAndAdvice": "Lihat Bil / Makluman Saya"
+    "viewEBillAndAdvice": "Lihat Bil / Makluman Saya",
+    "tutorialAccountTitle": "Your Accounts at a glance.",
+    "tutorialQuickAccessTitle": "Quick account access.",
+    "tutorialQuickActionTitle": "Quick actions.",
+    "tutorialNeedHelpTitle": "Need help?",
+    "tutorialNoAcctDesc": "Add an electricity account to myTNB and you’ll have access to your usage and all services offered.",
+    "tutorialSingleAcctDesc": "View a summary of all your linked electricity accounts here.",
+    "tutorialThreeAcctsDesc": "View a summary of all your linked electricity accounts here. Tap “Add” to link an account to myTNB.",
+    "tutorialMoreAcctsDesc": "View a summary of all your linked electricity accounts here.",
+    "tutorialQuickAccessDesc": "Tap <b>“Add”</b> to link an account to  myTNB. Use <b>“Search”</b> to look for a specific one! Just type in the nickname or account number.",
+    "tutorialQuickActionDesc": "Get all of the services myTNB has to offer. New features are highlighted so you don’t miss out on anything!",
+    "tutorialNeedHelpDesc": "We’ve highlighted some of the most commonly asked questions for you to browse through.",
+    "gotIt": "Faham!"
   },
   "Tabbar": {
     "home": "Utama",
@@ -247,7 +260,10 @@
     "enableSSMRDescription": "Akaun elektrik ini belum diaktifkan untuk bacaan meter sendiri, tekan butang di bawah untuk memulakan!",
     "noEligibleAccount": "Maaf, akaun anda tidak layak untuk memulakan perkhidmatan Self Meter Reading",
     "selectAccountNavTitle": "Pilih Akaun Elektrik",
-    "noHistoryData": "Nampaknya anda tiada rekod bacaan meter buat masa ini."
+    "noHistoryData": "Nampaknya anda tiada rekod bacaan meter buat masa ini.",
+    "tutorialHeaderTitle": "Your reading status at a glance.",
+    "tutorialHeaderDesc": "Switch between your accounts and get an overview of your meter reading status here.",
+    "tutorialGotIt": "Faham!"
   },
   "SSMRReadingHistory_selector": {
     "SMREligibiltyPopUpDetails": [
@@ -276,7 +292,10 @@
     "previousMeterReading": "Bacaan Meter Sebelum",
     "submitReading": "Hantar Bacaan",
     "takeOrUploadPhoto": "Tangkap / Muat Naik Gambar",
-    "manualInputTitle": "Please enter your meter reading for the unit(s) below."
+    "manualInputTitle": "Please enter your meter reading for the unit(s) below.",
+    "tutorialReadMeterTitle": "Enter your meter reading here.",
+    "tutorialReadMeterDesc": "Enter according to its unit(s). You’ll see your previous month's reading as a reference.",
+    "tutorialReadMeterGotIt": "Faham!"
   },
   "SSMRCaptureMeter": {
     "ocrReading": "Sila tunggu sebentar sementara kami membaca gambar anda...",
@@ -363,7 +382,9 @@
     "pay": "Bayar",
     "mdmsUnavailable": "Currently Unavailable",
     "mdmsUnavailableMsg": "Your daily usage information is currently unavailable. Check back in a while!",
-    "beenPaidExtra": "Saya telah dibayar lebih"
+    "beenPaidExtra": "Saya telah dibayar lebih",
+    "tutorialSMRTitle": "Your reading status at a glance.",
+    "tutorialSMRDesc": "Get an overview of your reading status here. We’ll also tell you when it’s time to submit your readings."
   },
   "Bills": {
     "title": "Bil",
@@ -378,7 +399,18 @@
     "beenPaidExtra": "Saya telah dibayar lebih",
     "noHistoryData": "Nampaknya anda belum lagi mempunyai bil! Setelah ada, bil dan sejarah pembayaran anda akan dipaparkan di sini.",
     "bcrmDownMessage": "Nampaknya skrin ini tidak dapat dipaparkan buat masa ini. Sila cuba semula sebentar lagi.",
-    "pay": "Bayar"
+    "pay": "Bayar",
+    "tutorialBillTitle": "Your bill overview.",
+    "tutorialPayTitle": "Pay without hassle.",
+    "tutorialViewDetailsTitle": "Understand your bill.",
+    "tutorialHistoryTitle": "Keep track of your charges.",
+    "tutorialBillREAcctDesc": "Tap “ ” to switch between different accounts. You’ll see how much you have earned or if you’ve been paid extra.",
+    "tutorialBillNormalAcctDesc": "Tap “ ” to switch between different accounts. You’ll see how much is due, if you’ve cleared your bill or if you’ve paid extra.",
+    "tutorialPayDesc": "Tap here to pay your bill.",
+    "tutorialViewDetailsDesc": "‘View Details’ to review your bill breakdown.",
+    "tutorialHistoryNormalAcctDesc": "View and access your bills and payment receipts from the previous six months. Use the filter to see only bills or receipts.",
+    "tutorialHistoryREAcctDesc": "View and access your advices and payment receipts from the previous six months. Use the filter to see only advices or receipts.",
+    "gotIt": "Faham!"
   },
   "Bills_selector": {
     "MandatoryChargesPopUpDetails": [
@@ -411,7 +443,10 @@
     "tooltiptitle2": "Butiran daripada surat tuntutan anda",
     "tooltipdesc1": "Jumlah perlu dibayar|Tunggakan|Caj Semasa (penggunaan elektrik sahaja)",
     "tooltipdesc2": "Wang Cagaran|Duti Setem|Caj Pemprosesan|Caj Meter",
-    "pay": "Bayar"
+    "pay": "Bayar",
+    "tutorialTitle": "View your e-bill",
+    "tutorialDesc": "Tap here to acess the PDF version of your bill.",
+    "gotIt": "Faham!"
   },
   "BillFilter": {
     "title": "Pilihan Paparan",

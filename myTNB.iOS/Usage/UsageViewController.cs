@@ -548,6 +548,7 @@ namespace myTNB
                             SetTariffLegendComponent();
                             SetChartView(false);
                             SetSSMRComponent(false, false);
+                            CheckTutorialOverlay();
                         }
                         else if (AccountUsageCache.IsSuccess || usageIsCached)
                         {
@@ -562,6 +563,7 @@ namespace myTNB
                             {
                                 SetEmptyDataComponent(AccountUsageCache.EmptyDataMessage);
                                 SetSSMRComponent(false, false);
+                                CheckTutorialOverlay();
                             }
                             else
                             {
