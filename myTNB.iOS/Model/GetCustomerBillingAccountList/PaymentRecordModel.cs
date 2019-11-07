@@ -9,7 +9,7 @@ namespace myTNB.Model
         {
             get
             {
-                return MandatoryCharges.TotalAmount > 0 ? MandatoryCharges.TotalAmount : TNBGlobal.PaymentMinAmnt;
+                return TNBGlobal.PaymentMinAmnt;//MandatoryCharges.TotalAmount > 0 ? MandatoryCharges.TotalAmount : TNBGlobal.PaymentMinAmnt;
             }
         }
         public bool HasMandatory
@@ -31,11 +31,11 @@ namespace myTNB.Model
             get
             {
                 string inlineErrorMessage = LanguageUtility.GetErrorI18NValue(Constants.Error_MinimumPayAmount);
-                if (HasMandatory)
+                /*if (HasMandatory)
                 {
                     inlineErrorMessage = string.Format(LanguageUtility.GetErrorI18NValue(Constants.Error_MinimumMandatoryAmount)
                         , string.Format("{0} {1}", TNBGlobal.UNIT_CURRENCY, MandatoryCharges.TotalAmount.ToString("N2", CultureInfo.InvariantCulture)));
-                }
+                }*/
                 return inlineErrorMessage;
             }
         }
