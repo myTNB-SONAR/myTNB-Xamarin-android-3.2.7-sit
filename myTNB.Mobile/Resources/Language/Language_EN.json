@@ -64,7 +64,8 @@
         "gotIt": "Got It!",
         "login": "Log In",
         "email": "Email",
-        "password": "Password"
+        "password": "Password",
+        "tutorialSwipeText": "Swipe to see more,<br>double tap to dismiss."
     },
     "Hint": {
         "mobileNumber": "Please include the country code of your phone number.",
@@ -105,7 +106,19 @@
         "search": "Search",
         "showLess": "Show Less",
         "moreAccts": "More Accounts",
-        "rearrangeAccts": "Rearrange Accounts"
+        "rearrangeAccts": "Rearrange Accounts",
+        "tutorialAccountTitle": "Your Accounts at a glance.",
+        "tutorialQuickAccessTitle": "Quick account access.",
+        "tutorialQuickActionTitle": "Quick actions.",
+        "tutorialNeedHelpTitle": "Need help?",
+        "tutorialNoAcctDesc": "Add an electricity account to myTNB and you’ll have access to your usage and all services offered.",
+        "tutorialSingleAcctDesc": "View a summary of all your linked electricity accounts here.",
+        "tutorialThreeAcctsDesc": "View a summary of all your linked electricity accounts here. Tap “Add” to link an account to myTNB.",
+        "tutorialMoreAcctsDesc": "View a summary of all your linked electricity accounts here.",
+        "tutorialQuickAccessDesc": "Tap <b>“Add”</b> to link an account to  myTNB. Use <b>“Search”</b> to look for a specific one! Just type in the nickname or account number.",
+        "tutorialQuickActionDesc": "Get all of the services myTNB has to offer. New features are highlighted so you don’t miss out on anything!",
+        "tutorialNeedHelpDesc": "We’ve highlighted some of the most commonly asked questions for you to browse through.",
+        "gotIt": "Got it!"
     },
     "Tabbar": {
         "home": "Home",
@@ -173,7 +186,10 @@
         "enableSSMRDescription": "Self meter reading service has not been started for this electricity account yet. Tap below to start!",
         "noEligibleAccount": "Looks like your accounts aren’t eligible to start Self Meter Reading service",
         "selectAccountNavTitle": "Select Electricity Account",
-        "noHistoryData": "Looks like you have no meter reading history at the moment."
+        "noHistoryData": "Looks like you have no meter reading history at the moment.",
+        "tutorialHeaderTitle": "Your reading status at a glance.",
+        "tutorialHeaderDesc": "Switch between your accounts and get an overview of your meter reading status here.",
+        "tutorialGotIt": "Got it!"
     },
     "SSMRReadingHistory_selector": {
         "SMREligibiltyPopUpDetails": [
@@ -202,7 +218,10 @@
         "previousMeterReading": "Previous Meter Reading",
         "submitReading": "Submit Reading",
         "takeOrUploadPhoto": "Take Or Upload Photo",
-        "manualInputTitle": "Please enter your meter reading for the unit(s) below."
+        "manualInputTitle": "Please enter your meter reading for the unit(s) below.",
+        "tutorialReadMeterTitle": "Enter your meter reading here.",
+        "tutorialReadMeterDesc": "Enter according to its unit(s). You’ll see your previous month's reading as a reference.",
+        "tutorialReadMeterGotIt": "Got it!"
     },
     "SSMRCaptureMeter": {
         "ocrReading": "Please wait for a moment while we read your photos…",
@@ -289,7 +308,9 @@
         "pay": "Pay",
         "mdmsUnavailable": "Currently Unavailable",
         "mdmsUnavailableMsg": "Your daily usage information is currently unavailable. Check back in a while!",
-        "beenPaidExtra": "I’ve been paid extra"
+        "beenPaidExtra": "I’ve been paid extra",
+        "tutorialSMRTitle": "Your reading status at a glance.",
+        "tutorialSMRDesc": "Get an overview of your reading status here. We’ll also tell you when it’s time to submit your readings."
     },
     "Bills": {
         "navTitle": "Bills",
@@ -304,7 +325,18 @@
         "beenPaidExtra": "I’ve been paid extra",
         "noHistoryData": "Looks like you have no bills yet! Once you do, your bills and payment history will appear here.",
         "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while.",
-        "pay": "Pay"
+        "pay": "Pay",
+        "tutorialBillTitle": "Your bill overview.",
+        "tutorialPayTitle": "Pay without hassle.",
+        "tutorialViewDetailsTitle": "Understand your bill.",
+        "tutorialHistoryTitle": "Keep track of your charges.",
+        "tutorialBillREAcctDesc": "Tap “ ” to switch between different accounts. You’ll see how much you have earned or if you’ve been paid extra.",
+        "tutorialBillNormalAcctDesc": "Tap “ ” to switch between different accounts. You’ll see how much is due, if you’ve cleared your bill or if you’ve paid extra.",
+        "tutorialPayDesc": "Tap here to pay your bill.",
+        "tutorialViewDetailsDesc": "‘View Details’ to review your bill breakdown.",
+        "tutorialHistoryNormalAcctDesc": "View and access your bills and payment receipts from the previous six months. Use the filter to see only bills or receipts.",
+        "tutorialHistoryREAcctDesc": "View and access your advices and payment receipts from the previous six months. Use the filter to see only advices or receipts.",
+        "gotIt": "Got it!"
     },
     "Bills_selector": {
         "MandatoryChargesPopUpDetails": [
@@ -337,7 +369,10 @@
         "tooltiptitle2": "Items from your demand letter",
         "tooltipdesc1": "I need to pay|My outstanding charges|My bill this month (electricity usage only)",
         "tooltipdesc2": "Security Deposit|Stamp Duty|Processing Fee|Meter Fee",
-        "pay": "Pay"
+        "pay": "Pay",
+        "tutorialTitle": "View your e-bill",
+        "tutorialDesc": "Tap here to acess the PDF version of your bill.",
+        "gotIt": "Got it!"
     },
     "BillFilter": {
         "navTitle": "Filter Views",

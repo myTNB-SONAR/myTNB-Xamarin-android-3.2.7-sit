@@ -22,9 +22,10 @@ namespace myTNB
         private UIImageView _bgImageView, _imgFilter;
         private CAGradientLayer _gradientLayer;
         private CustomUIView _accountSelectorContainer, _viewFilter;
-        private nfloat _navBarHeight, _previousScrollOffset;
+        private nfloat _navBarHeight;
+        public nfloat _previousScrollOffset;
         private nfloat _tableViewOffset;
-        private UITableView _historyTableView;
+        public UITableView _historyTableView;
         private UILabel _lblPaymentStatus, _lblCurrency, _lblAmount, _lblDate, _lblNavTitle;
         private UIView _viewAmount, _viewCTA;
         private CustomUIButtonV2 _btnMore, _btnPay;
@@ -93,21 +94,23 @@ namespace myTNB
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            //CheckTutorialOverlay();
+            CheckTutorialOverlay();
         }
 
         private void OnEnterForeground(NSNotification notification)
         {
             ViewWillAppear(true);
         }
+        #endregion
+
         #region Tutorial Overlay Methods
         private void CheckTutorialOverlay()
         {
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
-            var tutorialOverlayHasShown = sharedPreference.BoolForKey(BillConstants.Pref_TutorialOverlay);
+            var tutorialOverlayHasShown = sharedPreference.BoolForKey(BillConstants.Pref_BillTutorialOverlay);
 
-            //if (tutorialOverlayHasShown)
-            //    return;
+            if (tutorialOverlayHasShown)
+                return;
 
             tutorialOverlayTimer = new Timer
             {
@@ -140,25 +143,43 @@ namespace myTNB
 
         private void ShowTutorialOverlay()
         {
+            ScrollTableToTheTop();
             UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+
             nfloat width = currentWindow.Frame.Width;
             nfloat height = currentWindow.Frame.Height;
+            if (_tutorialContainer != null)
+            {
+                _tutorialContainer.RemoveFromSuperview();
+            }
             _tutorialContainer = new UIView(new CGRect(0, 0, width, height))
             {
                 BackgroundColor = UIColor.Clear
             };
             currentWindow.AddSubview(_tutorialContainer);
-            BillTutorialOverlay tutorialView = new BillTutorialOverlay(_tutorialContainer, this);
-            tutorialView.NavigationHeight = DeviceHelper.GetStatusBarHeight() + _navBarHeight;
-            tutorialView.HeaderViewHeight = _historyTableView.TableHeaderView.Frame.Height; //_lblDate.Frame.GetMaxY();
-            tutorialView.OnDismissAction = HideTutorialOverlay;
+
+            BillTutorialOverlay tutorialView = new BillTutorialOverlay(_tutorialContainer, this)
+            {
+                GetI18NValue = GetI18NValue,
+                TabBarHeight = TabBarController.TabBar.Frame.Height,
+                NavigationHeight = DeviceHelper.GetStatusBarHeight() + _navBarHeight,
+                HeaderViewHeight = _headerViewContainer.Frame.Height,
+                ViewCTA = _viewCTA,
+                ViewCTAMinY = _headerView.Frame.GetMinY() + _viewCTA.Frame.GetMinY(),
+                IsREAccount = DataManager.DataManager.SharedInstance.SelectedAccount.IsREAccount,
+                OnDismissAction = HideTutorialOverlay,
+                ScrollTableToTheTop = ScrollTableToTheTop,
+                ScrollToHistorySection = ScrollToHistorySection
+            };
             _tutorialContainer.AddSubview(tutorialView.GetView());
+
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
-            sharedPreference.SetBool(true, DashboardHomeConstants.Pref_TutorialOverlay);
+            sharedPreference.SetBool(true, BillConstants.Pref_BillTutorialOverlay);
         }
 
         private void HideTutorialOverlay()
         {
+            ScrollTableToTheTop();
             if (_tutorialContainer != null)
             {
                 _tutorialContainer.Alpha = 1F;
@@ -169,7 +190,37 @@ namespace myTNB
                 }, _tutorialContainer.RemoveFromSuperview);
             }
         }
-        #endregion
+
+        public void ScrollTableToTheTop()
+        {
+            _historyTableView.SetContentOffset(new CGPoint(0, 0), false);
+        }
+
+        private void ScrollToHistorySection()
+        {
+            var count = _billHistory?.d?.data?.BillPayHistories?.Count ?? 0;
+            if (count > 1)
+            {
+                _historyTableView.ScrollToRow(NSIndexPath.FromRowSection(2, 0), UITableViewScrollPosition.Bottom, false);
+            }
+            else if (count > 0)
+            {
+                _historyTableView.ScrollToRow(NSIndexPath.FromRowSection(1, 0), UITableViewScrollPosition.Bottom, false);
+            }
+            else
+            {
+                _historyTableView.ScrollToRow(NSIndexPath.FromRowSection(0, 0), UITableViewScrollPosition.Top, false);
+            }
+        }
+
+        public nfloat GetDateAmountMaxY
+        {
+            get
+            {
+                return _headerView.Frame.GetMinY() + (_lblDate.Hidden ? _viewAmount.Frame.GetMaxY() : _lblDate.Frame.GetMaxY());
+            }
+        }
+
         #endregion
 
         #region Navigation
@@ -612,7 +663,6 @@ namespace myTNB
                                {
                                    AccountChargesCache.SetData(_accountCharges);
                                    UpdateHeaderData(_accountCharges.d.data.AccountCharges[0]);
-                                   isGetAcctChargesLoading = false;
                                }
                                else
                                {
@@ -704,6 +754,7 @@ namespace myTNB
                 , new CGSize(_headerViewContainer.Frame.Width, _headerView.Frame.GetMaxY()));
             _historyTableView.ReloadData();
             OnResetBGRect();
+            isGetAcctChargesLoading = false;
         }
 
         #region Table

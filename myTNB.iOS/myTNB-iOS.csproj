@@ -1625,6 +1625,8 @@
     <Folder Include="Assets.xcassets\IC-Action-Zoom.imageset\" />
     <Folder Include="Assets.xcassets\Usage-MissingReading.imageset\" />
     <Folder Include="Assets.xcassets\BCRM-Down-Icon.imageset\" />
+    <Folder Include="Assets.xcassets\IC-Action-Filter.imageset\" />
+    <Folder Include="Components\Tutorial Overlay\" />
     <Folder Include="Components\Common\" />
     <Folder Include="Assets.xcassets\Arrow-Expand.imageset\" />
     <Folder Include="Assets.xcassets\Bills-Cleared-Banner.imageset\" />
@@ -2496,7 +2498,6 @@
     <Compile Include="Components\Usage View\Charts\REChartView.cs" />
     <Compile Include="Components\Usage View\REAmountComponent.cs" />
     <Compile Include="Home\Bill\BillConstants.cs" />
-    <Compile Include="Components\Common\PaginatedTooltipComponent.cs" />
     <Compile Include="Model\GetAccountsCharges\GetAccountsChargesResponseModel.cs" />
     <Compile Include="Home\Bill\Bills\BillHistorySource.cs" />
     <Compile Include="Home\Bill\Bills\BillHistoryViewCell.cs" />
@@ -2569,9 +2570,14 @@
     </Compile>
     <Compile Include="Sitecore CMS\Model\Onboarding\OnboardingModel.cs" />
     <Compile Include="Onboarding\OnboardingConstants.cs" />
-    <Compile Include="Components\Common\HomeTutorialOverlay.cs" />
+    <Compile Include="Components\Tutorial Overlay\HomeTutorialOverlay.cs" />
     <Compile Include="Session Cache\PushNotificationCache.cs" />
-    <Compile Include="Components\Common\BillTutorialOverlay.cs" />
+    <Compile Include="Components\Tutorial Overlay\BillTutorialOverlay.cs" />
+    <Compile Include="Components\Tutorial Overlay\BillDetailsTutorialOverlay.cs" />
+    <Compile Include="Components\Tutorial Overlay\SSMRHistoryTutorialOverlay.cs" />
+    <Compile Include="Components\Tutorial Overlay\SSMReadTutorialOveraly.cs" />
+    <Compile Include="Components\Common\PaginatedTooltipComponent.cs" />
+    <Compile Include="Components\Tutorial Overlay\UsageSSMRTutorialOverlay.cs" />
   </ItemGroup>
   <ItemGroup>
     <BundleResource Include="Resources\TermsAndCondition.txt" />

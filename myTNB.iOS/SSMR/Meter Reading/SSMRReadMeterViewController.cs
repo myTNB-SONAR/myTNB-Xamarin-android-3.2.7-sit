@@ -41,6 +41,9 @@ namespace myTNB
         private bool _isKeyboardActive;
         private List<SSMRMeterCardComponent> _meterCardComponentList = new List<SSMRMeterCardComponent>();
 
+        private UIView _tutorialContainer;
+        private nfloat manualInputCardYPos;
+
         public class MeterReadingRequest
         {
             public string MroID { set; get; }
@@ -84,7 +87,67 @@ namespace myTNB
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
+            CheckTutorialOverlay();
         }
+
+        #region Tutorial Overlay Methods
+        private void CheckTutorialOverlay()
+        {
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            var tutorialOverlayHasShown = sharedPreference.BoolForKey(SSMRConstants.Pref_SSMRReadTutorialOverlay);
+
+            if (tutorialOverlayHasShown)
+                return;
+
+            ShowTutorialOverlay();
+        }
+
+        private void ShowTutorialOverlay()
+        {
+            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+
+            nfloat width = currentWindow.Frame.Width;
+            nfloat height = currentWindow.Frame.Height;
+            if (_tutorialContainer != null)
+            {
+                _tutorialContainer.RemoveFromSuperview();
+            }
+            _tutorialContainer = new UIView(new CGRect(0, 0, width, height))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+            currentWindow.AddSubview(_tutorialContainer);
+
+            bool ocrIsDown = IsFromDashboard ? SSMRActivityInfoCache.DB_IsOCRDown : SSMRActivityInfoCache.RH_IsOCRDown;
+            bool ocrIsDisabled = IsFromDashboard ? SSMRActivityInfoCache.DB_IsOCRDisabled : SSMRActivityInfoCache.RH_IsOCRDisabled;
+
+            SSMReadTutorialOveraly tutorialView = new SSMReadTutorialOveraly(_tutorialContainer)
+            {
+                GetI18NValue = GetI18NValue,
+                NavigationHeight = DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height,
+                ManualInputCardYPos = manualInputCardYPos,
+                OnDismissAction = HideTutorialOverlay,
+                OCRIsDown = AppLaunchMasterCache.IsOCRDown || ocrIsDown || ocrIsDisabled
+            };
+            _tutorialContainer.AddSubview(tutorialView.GetView());
+
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            sharedPreference.SetBool(true, SSMRConstants.Pref_SSMRReadTutorialOverlay);
+        }
+
+        private void HideTutorialOverlay()
+        {
+            if (_tutorialContainer != null)
+            {
+                _tutorialContainer.Alpha = 1F;
+                _tutorialContainer.Transform = CGAffineTransform.MakeIdentity();
+                UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseInOut, () =>
+                {
+                    _tutorialContainer.Alpha = 0F;
+                }, _tutorialContainer.RemoveFromSuperview);
+            }
+        }
+        #endregion
 
         private void SetNavigation()
         {
@@ -417,6 +480,7 @@ namespace myTNB
                 bool hasOCRError = false;
                 string errorMessage = string.Empty;
                 nfloat yPos = (AppLaunchMasterCache.IsOCRDown || ocrIsDown || ocrIsDisabled) ? _manualInputView.Frame.GetMaxY() + GetScaledHeight(16F) : _takePhotoView.Frame.GetMaxY() + _paddingY;
+                manualInputCardYPos = yPos;
                 _meterCardComponentList.Clear();
                 foreach (var previousMeter in _previousMeterList)
                 {

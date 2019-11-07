@@ -1,32 +1,26 @@
 ﻿using System;
 using CoreGraphics;
 using Foundation;
+using myTNB.Home.Bill;
 using UIKit;
 
 namespace myTNB
 {
-    public class HomeTutorialOverlay : BaseComponent
+    public class BillTutorialOverlay : BaseComponent
     {
-        DashboardHomeViewController _controller;
+        BillViewController _controller;
         UIView _parentView, _containerView, _footerView;
         UIPageControl _pageControl;
         int _currentPageIndex = 1;
         int _totalViews;
         UITextView _swipeText;
-        public Action OnDismissAction;
-        public Action ScrollTableToTheTop;
-        public Action ScrollTableToTheBottom;
-        public HomeTutorialEnum TutorialType;
+        public Func<string, string> GetI18NValue;
+        public Action OnDismissAction, ScrollTableToTheTop, ScrollToHistorySection;
+        public nfloat NavigationHeight, HeaderViewHeight, TabBarHeight, ViewCTAMinY;
+        public UIView ViewCTA;
+        public bool IsREAccount;
 
-        public enum HomeTutorialEnum
-        {
-            None = 0,
-            NOACCOUNT,
-            MORETHANTHREEACCOUNTS,
-            LESSTHANFOURACCOUNTS,
-        }
-
-        public HomeTutorialOverlay(UIView parent, DashboardHomeViewController controller)
+        public BillTutorialOverlay(UIView parent, BillViewController controller)
         {
             _parentView = parent;
             _controller = controller;
@@ -54,31 +48,23 @@ namespace myTNB
             doubleTap.NumberOfTapsRequired = 2;
             _containerView.AddGestureRecognizer(doubleTap);
 
-            UIView firstView = new UIView(_parentView.Bounds);
-            firstView.AddSubview(GetFirstView());
-            firstView.Tag = 1;
-            _totalViews++;
+            nfloat totalPages = IsREAccount ? 2 : 4;
 
-            UIView secondView = new UIView(_parentView.Bounds);
-            secondView.Tag = 2;
-            secondView.Alpha = 0F;
-            _totalViews++;
-
-            UIView thirdView = new UIView(_parentView.Bounds);
-            thirdView.Tag = 3;
-            thirdView.Alpha = 0F;
-            _totalViews++;
-            _containerView.AddSubviews(new UIView { firstView, secondView, thirdView });
-
-            if (TutorialType == HomeTutorialEnum.MORETHANTHREEACCOUNTS)
+            for (int i = 1; i <= totalPages; i++)
             {
-                UIView fourthView = new UIView(_parentView.Bounds);
-                fourthView.Tag = 4;
-                fourthView.Alpha = 0F;
+                UIView view = new UIView(_parentView.Bounds);
+                if (i == 1)
+                {
+                    view.AddSubview(GetViewForAccountSelection());
+                }
+                else
+                {
+                    view.Alpha = 0F;
+                }
+                view.Tag = i;
                 _totalViews++;
-                _containerView.AddSubview(fourthView);
+                _containerView.AddSubview(view);
             }
-
             CreateFooterView();
         }
 
@@ -111,20 +97,31 @@ namespace myTNB
                 }
             }
 
-            switch (_currentPageIndex - 1)
+            if (IsREAccount)
             {
-                case 3:
-                    UIView tView = TutorialType == HomeTutorialEnum.MORETHANTHREEACCOUNTS ? GetSecondView(_controller._previousScrollOffset) : GetThirdView(_controller._previousScrollOffset);
-                    nextView.AddSubview(tView);
-                    break;
-                case 2:
-                    UIView sView = TutorialType == HomeTutorialEnum.MORETHANTHREEACCOUNTS ? GetSecondViewForMorethan3Accounts() : GetSecondView(_controller._previousScrollOffset);
+                if (_currentPageIndex - 1 == 1)
+                {
+                    UIView sView = GetViewForAccountSelection();
                     nextView.AddSubview(sView);
-                    break;
-                case 1:
-                    UIView fView = GetFirstView();
-                    nextView.AddSubview(fView);
-                    break;
+                }
+            }
+            else
+            {
+                switch (_currentPageIndex - 1)
+                {
+                    case 1:
+                        UIView fView = GetViewForAccountSelection();
+                        nextView.AddSubview(fView);
+                        break;
+                    case 2:
+                        UIView sView = GetPayView();
+                        nextView.AddSubview(sView);
+                        break;
+                    case 3:
+                        UIView tView = GetViewDetailsView();
+                        nextView.AddSubview(tView);
+                        break;
+                }
             }
 
             FadeAnimation(nextView, true, 0.3);
@@ -136,6 +133,7 @@ namespace myTNB
         {
             if (_currentPageIndex >= _totalViews)
                 return;
+
             UIView currentView = _containerView.ViewWithTag(_currentPageIndex);
             FadeAnimation(currentView, false, 0.3);
 
@@ -150,20 +148,31 @@ namespace myTNB
                 }
             }
 
-            switch (_currentPageIndex + 1)
+            if (IsREAccount)
             {
-                case 2:
-                    UIView sView = TutorialType == HomeTutorialEnum.MORETHANTHREEACCOUNTS ? GetSecondViewForMorethan3Accounts() : GetSecondView(_controller._previousScrollOffset);
+                if (_currentPageIndex + 1 == 2)
+                {
+                    UIView sView = GetHistoryView(_controller._previousScrollOffset);
                     nextView.AddSubview(sView);
-                    break;
-                case 3:
-                    UIView tView = TutorialType == HomeTutorialEnum.MORETHANTHREEACCOUNTS ? GetSecondView(_controller._previousScrollOffset) : GetThirdView(_controller._previousScrollOffset);
-                    nextView.AddSubview(tView);
-                    break;
-                case 4:
-                    UIView fView = GetThirdView(_controller._previousScrollOffset);
-                    nextView.AddSubview(fView);
-                    break;
+                }
+            }
+            else
+            {
+                switch (_currentPageIndex + 1)
+                {
+                    case 2:
+                        UIView sView = GetPayView();
+                        nextView.AddSubview(sView);
+                        break;
+                    case 3:
+                        UIView tView = GetViewDetailsView();
+                        nextView.AddSubview(tView);
+                        break;
+                    case 4:
+                        UIView fView = GetHistoryView(_controller._previousScrollOffset);
+                        nextView.AddSubview(fView);
+                        break;
+                }
             }
 
             FadeAnimation(nextView, true, 0.3);
@@ -175,88 +184,53 @@ namespace myTNB
         {
             if (isSwipeRight)
             {
-                if (_currentPageIndex - 1 == 1)
+                if (IsREAccount)
                 {
-                    ScrollTableToTheTop?.Invoke();
-                }
-
-                if (TutorialType == HomeTutorialEnum.MORETHANTHREEACCOUNTS)
-                {
-                    if (_currentPageIndex - 1 == 2)
+                    if (_currentPageIndex - 1 == 1)
                     {
                         ScrollTableToTheTop?.Invoke();
-                    }
-                    else if (_currentPageIndex - 1 == 3 || _currentPageIndex - 1 == 4)
-                    {
-                        ScrollTableToTheBottom?.Invoke();
                     }
                 }
                 else
                 {
-                    if (_currentPageIndex - 1 == 2)
+                    if (_currentPageIndex - 1 == 1 || _currentPageIndex - 1 == 2 || _currentPageIndex - 1 == 3)
                     {
-                        ScrollTableToTheBottom?.Invoke();
-                    }
-                    if (_currentPageIndex - 1 == 3)
-                    {
-                        ScrollTableToTheBottom?.Invoke();
+                        ScrollTableToTheTop?.Invoke();
                     }
                 }
             }
             else
             {
-                if (_currentPageIndex + 1 == 1)
-                {
-                    ScrollTableToTheTop?.Invoke();
-                }
-
-                if (TutorialType == HomeTutorialEnum.MORETHANTHREEACCOUNTS)
+                if (IsREAccount)
                 {
                     if (_currentPageIndex + 1 == 2)
                     {
-                        ScrollTableToTheTop?.Invoke();
-                    }
-                    else if (_currentPageIndex + 1 == 3 || _currentPageIndex + 1 == 4)
-                    {
-                        ScrollTableToTheBottom?.Invoke();
+                        ScrollToHistorySection?.Invoke();
                     }
                 }
                 else
                 {
-                    if (_currentPageIndex + 1 == 2)
+                    if (_currentPageIndex + 1 == 2 || _currentPageIndex + 1 == 3)
                     {
-                        ScrollTableToTheBottom?.Invoke();
+                        ScrollTableToTheTop?.Invoke();
                     }
-                    if (_currentPageIndex + 1 == 3)
+                    else if (_currentPageIndex + 1 == 4)
                     {
-                        ScrollTableToTheBottom?.Invoke();
+                        ScrollToHistorySection?.Invoke();
                     }
                 }
             }
         }
 
-        public static void FadeAnimation(UIView view, bool isVisible, double duration = 0.3)
+        private UIView GetViewForAccountSelection()
         {
-            nfloat minAlpha = 0F;
-            nfloat maxAlpha = 1F;
-            view.Alpha = isVisible ? minAlpha : maxAlpha;
-            view.Transform = CGAffineTransform.MakeIdentity();
-            UIView.Animate(duration, 0, UIViewAnimationOptions.CurveEaseInOut, () =>
-            {
-                view.Alpha = isVisible ? maxAlpha : minAlpha;
-            }, null);
-        }
-
-        private UIView GetFirstView()
-        {
-            nfloat searchViewYPos = DeviceHelper.GetStatusBarHeight() + _controller._homeTableView.TableHeaderView.Frame.Height + GetScaledHeight(12F);
             UIView parentView = new UIView(_parentView.Bounds)
             {
                 BackgroundColor = UIColor.Clear
             };
             nfloat width = parentView.Frame.Width;
             nfloat height = parentView.Frame.Height;
-            UIView topView = new UIView(new CGRect(0, 0, width, searchViewYPos))
+            UIView topView = new UIView(new CGRect(0, 0, width, NavigationHeight))
             {
                 BackgroundColor = MyTNBColor.Black75
             };
@@ -265,26 +239,8 @@ namespace myTNB
                 BackgroundColor = MyTNBColor.ButterScotch
             };
             topView.AddSubview(topLine);
-
-            nfloat bottomViewYPos = 0;
-            string descText = string.Empty;
-            switch (TutorialType)
-            {
-                case HomeTutorialEnum.NOACCOUNT:
-                    bottomViewYPos = 118F;
-                    descText = "Add an electricity account to myTNB and you’ll have access to your usage and all services offered.";
-                    break;
-                case HomeTutorialEnum.LESSTHANFOURACCOUNTS:
-                    var activeAcctList = DataManager.DataManager.SharedInstance.ActiveAccountList;
-                    bottomViewYPos = 61F * activeAcctList.Count + 49F;
-                    descText = activeAcctList.Count > 1 ? "View a summary of all your linked electricity accounts here. Tap “Add” to link an account to myTNB." : "View a summary of all your linked electricity accounts here.";
-                    break;
-                case HomeTutorialEnum.MORETHANTHREEACCOUNTS:
-                    bottomViewYPos = 61F * 3 + 93F;
-                    descText = "View a summary of all your linked electricity accounts here.";
-                    break;
-            }
-            UIView bottomView = new UIView(new CGRect(0, GetYLocationFromFrame(topView.Frame, bottomViewYPos), width, height - GetYLocationFromFrame(topView.Frame, bottomViewYPos)))
+            nfloat bottomViewYPos = topView.Frame.GetMaxY() + _controller.GetDateAmountMaxY;
+            UIView bottomView = new UIView(new CGRect(0, bottomViewYPos, width, height - bottomViewYPos))
             {
                 BackgroundColor = MyTNBColor.Black75
             };
@@ -293,8 +249,7 @@ namespace myTNB
                 BackgroundColor = MyTNBColor.ButterScotch
             };
             bottomView.AddSubview(bottomLine);
-
-            UIView verticalLine = new UIView(new CGRect(GetScaledWidth(35.5F), bottomLine.Frame.GetMaxY(), GetScaledWidth(1F), GetScaledHeight(30.5F)))
+            UIView verticalLine = new UIView(new CGRect(GetScaledWidth(35.5F), bottomLine.Frame.GetMaxY(), GetScaledWidth(1F), GetScaledHeight(32.5F)))
             {
                 BackgroundColor = MyTNBColor.ButterScotch
             };
@@ -306,21 +261,28 @@ namespace myTNB
             };
             circle.Layer.CornerRadius = GetScaledWidth(8F) / 2;
             bottomView.AddSubview(circle);
-
             nfloat textYPos = circle.Frame.GetMinY() + (circle.Frame.Height / 2) - (GetScaledHeight(20F) / 2);
             nfloat textXPos = GetXLocationFromFrame(circle.Frame, 12F);
-            nfloat textPadding = GetScaledWidth(29F);
+            nfloat textPadding = GetScaledWidth(40F);
             nfloat textWidth = width - (textXPos + textPadding);
             UILabel title = new UILabel(new CGRect(textXPos, textYPos, textWidth, GetScaledHeight(20F)))
             {
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Left,
-                Text = "Your Accounts at a glance."
+                Text = GetI18NValue(BillConstants.I18N_TutorialBillTitle)
             };
-
+            string desc;
+            if (IsREAccount)
+            {
+                desc = GetI18NValue(BillConstants.I18N_TutorialBillREAcctDesc);
+            }
+            else
+            {
+                desc = GetI18NValue(BillConstants.I18N_TutorialBillNormalAcctDesc);
+            }
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(descText
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(desc
                 , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(14F));
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
@@ -333,7 +295,7 @@ namespace myTNB
                 }
             }, new NSRange(0, htmlBody.Length));
 
-            UITextView desc = new UITextView(new CGRect(textXPos, GetYLocationFromFrame(title.Frame, 8F), textWidth, GetScaledHeight(60F)))
+            UITextView description = new UITextView(new CGRect(textXPos, GetYLocationFromFrame(title.Frame, 8F), textWidth, GetScaledHeight(80F)))
             {
                 BackgroundColor = UIColor.Clear,
                 Editable = false,
@@ -341,55 +303,44 @@ namespace myTNB
                 AttributedText = mutableHTMLBody,
                 UserInteractionEnabled = false
             };
-            CGSize cGSize = desc.SizeThatFits(new CGSize(textWidth, GetScaledHeight(500F)));
-            ViewHelper.AdjustFrameSetHeight(desc, cGSize.Height);
+            CGSize cGSize = description.SizeThatFits(new CGSize(textWidth, GetScaledHeight(100F)));
+            ViewHelper.AdjustFrameSetHeight(description, cGSize.Height);
 
-            bottomView.AddSubviews(new UIView { title, desc });
+            bottomView.AddSubviews(new UIView { title, description });
             parentView.AddSubviews(new UIView { topView, bottomView });
             if (_swipeText != null)
             {
                 _swipeText.Hidden = false;
             }
+            parentView.AddSubviews(new UIView { topView, bottomView });
             return parentView;
         }
 
-        private UIView GetSecondViewForMorethan3Accounts()
+        private UIView GetPayView()
         {
-            nfloat searchViewYPos = DeviceHelper.GetStatusBarHeight() + _controller._homeTableView.TableHeaderView.Frame.Height + GetScaledHeight(12F);
             UIView parentView = new UIView(_parentView.Bounds)
             {
                 BackgroundColor = UIColor.Clear
             };
             nfloat width = parentView.Frame.Width;
             nfloat height = parentView.Frame.Height;
-            UIView topView = new UIView(new CGRect(0, 0, width, searchViewYPos))
+            UIView topView = new UIView(new CGRect(0, 0, width, NavigationHeight + ViewCTAMinY - GetScaledHeight(4)))
             {
                 BackgroundColor = MyTNBColor.Black75
             };
-            UIView boxView = new UIView(new CGRect(width - (GetScaledWidth(143F) + GetScaledWidth(8F)), topView.Frame.GetMaxY() - GetScaledHeight(1F), GetScaledWidth(143F), GetScaledHeight(45f) + GetScaledHeight(2F)))
-            {
-                BackgroundColor = UIColor.Clear
-            };
-            boxView.Layer.CornerRadius = GetScaledHeight(4F);
-            boxView.Layer.BorderColor = MyTNBColor.ButterScotch.CGColor;
-            boxView.Layer.BorderWidth = GetScaledWidth(1F);
-            nfloat bottomViewYPos = boxView.Frame.GetMaxY() - GetScaledHeight(1F);
-            UIView bottomView = new UIView(new CGRect(0, bottomViewYPos, width, height - bottomViewYPos))
-            {
-                BackgroundColor = MyTNBColor.Black75
-            };
-            UIView verticalLine = new UIView(new CGRect(boxView.Frame.GetMinX() + GetScaledWidth(106.5F), 0, GetScaledWidth(1F), GetScaledHeight(32.3F)))
+            UIView verticalLine = new UIView(new CGRect(width - GetScaledWidth(50.5F), topView.Frame.GetMaxY() - GetScaledHeight(69F), GetScaledWidth(1F), GetScaledHeight(69F)))
             {
                 BackgroundColor = MyTNBColor.ButterScotch
             };
-            bottomView.AddSubview(verticalLine);
-            UIView circle = new UIView(new CGRect(verticalLine.Frame.GetMinX() + GetScaledWidth(1F) - GetScaledWidth(4F), verticalLine.Frame.GetMaxY(), GetScaledWidth(8F), GetScaledHeight(8F)))
+            topView.AddSubview(verticalLine);
+
+            UIView circle = new UIView(new CGRect(verticalLine.Frame.GetMinX() - GetScaledWidth(4F) + GetScaledWidth(.5F), verticalLine.Frame.GetMinY(), GetScaledWidth(8F), GetScaledHeight(8F)))
             {
                 BackgroundColor = MyTNBColor.ButterScotch
             };
             circle.Layer.CornerRadius = GetScaledWidth(8F) / 2;
-            bottomView.AddSubview(circle);
-            nfloat textXPos = GetScaledWidth(24F);
+            topView.AddSubview(circle);
+            nfloat textXPos = GetScaledWidth(20F);
             nfloat textYPos = circle.Frame.GetMinY() + (circle.Frame.Height / 2) - (GetScaledHeight(20F) / 2);
             nfloat textPadding = width - circle.Frame.GetMinX() + GetScaledWidth(12F);
             nfloat textWidth = width - (textXPos + textPadding);
@@ -398,10 +349,10 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Right,
-                Text = "Quick account access."
+                Text = GetI18NValue(BillConstants.I18N_TutorialPayTitle)
             };
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont("Tap <b>“Add”</b> to link an account to  myTNB. Use <b>“Search”</b> to look for a specific one! Just type in the nickname or account number."
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(BillConstants.I18N_TutorialPayDesc)
                 , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(14F));
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
@@ -414,7 +365,7 @@ namespace myTNB
                 }
             }, new NSRange(0, htmlBody.Length));
 
-            UITextView desc = new UITextView(new CGRect(textXPos, GetYLocationFromFrame(title.Frame, 8F), textWidth, GetScaledHeight(80F)))
+            UITextView desc = new UITextView(new CGRect(textXPos, GetYLocationFromFrame(title.Frame, 8F), textWidth, GetScaledHeight(20F)))
             {
                 BackgroundColor = UIColor.Clear,
                 Editable = false,
@@ -422,14 +373,28 @@ namespace myTNB
                 AttributedText = mutableHTMLBody,
                 UserInteractionEnabled = false
             };
-            CGSize cGSize = desc.SizeThatFits(new CGSize(textWidth, GetScaledHeight(270F)));
+            CGSize cGSize = desc.SizeThatFits(new CGSize(textWidth, GetScaledHeight(40F)));
             ViewHelper.AdjustFrameSetHeight(desc, cGSize.Height);
-            bottomView.AddSubviews(new UIView { title, desc });
-            UIView leftView = new UIView(new CGRect(0, topView.Frame.GetMaxY(), width - (GetScaledWidth(143F) + GetScaledWidth(8F)) + GetScaledWidth(1F), boxView.Frame.Height - GetScaledHeight(2F)))
+            topView.AddSubviews(new UIView { title, desc });
+            nfloat boxViewXPos = width / 2 - GetScaledWidth(2F);
+            nfloat boxViewWidth = width / 2 - GetScaledWidth(10F);
+            UIView boxView = new UIView(new CGRect(boxViewXPos, topView.Frame.GetMaxY() - GetScaledHeight(1F), boxViewWidth, ViewCTA.Frame.Height + GetScaledHeight(8F) + GetScaledHeight(2F)))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+            boxView.Layer.CornerRadius = GetScaledHeight(4F);
+            boxView.Layer.BorderColor = MyTNBColor.ButterScotch.CGColor;
+            boxView.Layer.BorderWidth = GetScaledWidth(1F);
+            nfloat bottomViewYPos = boxView.Frame.GetMaxY() - GetScaledHeight(1F);
+            UIView bottomView = new UIView(new CGRect(0, bottomViewYPos, width, height - bottomViewYPos))
             {
                 BackgroundColor = MyTNBColor.Black75
             };
-            UIView rightView = new UIView(new CGRect(boxView.Frame.GetMaxX() - GetScaledWidth(1F), topView.Frame.GetMaxY(), GetScaledWidth(9F), boxView.Frame.Height - GetScaledHeight(2F)))
+            UIView leftView = new UIView(new CGRect(0, topView.Frame.GetMaxY(), width / 2 - GetScaledWidth(1F), boxView.Frame.Height - GetScaledHeight(2F)))
+            {
+                BackgroundColor = MyTNBColor.Black75
+            };
+            UIView rightView = new UIView(new CGRect(boxView.Frame.GetMaxX() - GetScaledWidth(1F), topView.Frame.GetMaxY(), GetScaledWidth(13F), boxView.Frame.Height - GetScaledHeight(2F)))
             {
                 BackgroundColor = MyTNBColor.Black75
             };
@@ -438,45 +403,43 @@ namespace myTNB
             return parentView;
         }
 
-        private UIView GetSecondView(nfloat tableViewContentOffsetY)
+        private UIView GetViewDetailsView()
         {
-            CGRect servicesCellRect = _controller._homeTableView.RectForRowAtIndexPath(NSIndexPath.Create(0, DashboardHomeConstants.CellIndex_Services));
-            nfloat quickActionsYPos = DeviceHelper.GetStatusBarHeight() + servicesCellRect.Y;
-
             UIView parentView = new UIView(_parentView.Bounds)
             {
                 BackgroundColor = UIColor.Clear
             };
             nfloat width = parentView.Frame.Width;
             nfloat height = parentView.Frame.Height;
-            UIView topView = new UIView(new CGRect(0, 0, width, quickActionsYPos - tableViewContentOffsetY))
+            UIView topView = new UIView(new CGRect(0, 0, width, NavigationHeight + ViewCTAMinY - GetScaledHeight(4)))
             {
                 BackgroundColor = MyTNBColor.Black75
             };
-            UIView verticalLine = new UIView(new CGRect(GetScaledWidth(35.5F), topView.Frame.GetMaxY() - GetScaledHeight(1F) - GetScaledHeight(121.7F), GetScaledWidth(1F), GetScaledHeight(121.7F)))
+            UIView verticalLine = new UIView(new CGRect(GetScaledWidth(34.5F), topView.Frame.GetMaxY() - GetScaledHeight(88F), GetScaledWidth(1F), GetScaledHeight(88F)))
             {
                 BackgroundColor = MyTNBColor.ButterScotch
             };
             topView.AddSubview(verticalLine);
-            UIView circle = new UIView(new CGRect(GetScaledWidth(32F), verticalLine.Frame.GetMinY(), GetScaledWidth(8F), GetScaledHeight(8F)))
+
+            UIView circle = new UIView(new CGRect(verticalLine.Frame.GetMinX() - GetScaledWidth(4F) + GetScaledWidth(.5F), verticalLine.Frame.GetMinY(), GetScaledWidth(8F), GetScaledHeight(8F)))
             {
                 BackgroundColor = MyTNBColor.ButterScotch
             };
             circle.Layer.CornerRadius = GetScaledWidth(8F) / 2;
             topView.AddSubview(circle);
-            nfloat textXPos = GetXLocationFromFrame(circle.Frame, 12F);
             nfloat textYPos = circle.Frame.GetMinY() + (circle.Frame.Height / 2) - (GetScaledHeight(20F) / 2);
-            nfloat textPadding = GetScaledWidth(38F);
+            nfloat textXPos = GetXLocationFromFrame(circle.Frame, 12F);
+            nfloat textPadding = GetScaledWidth(46F);
             nfloat textWidth = width - (textXPos + textPadding);
             UILabel title = new UILabel(new CGRect(textXPos, textYPos, textWidth, GetScaledHeight(20F)))
             {
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Left,
-                Text = "Quick actions."
+                Text = GetI18NValue(BillConstants.I18N_TutorialViewDetailsTitle)
             };
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont("Get all of the services myTNB has to offer. New features are highlighted so you don’t miss out on anything!"
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(BillConstants.I18N_TutorialViewDetailsDesc)
                 , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(14F));
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
@@ -489,7 +452,7 @@ namespace myTNB
                 }
             }, new NSRange(0, htmlBody.Length));
 
-            UITextView desc = new UITextView(new CGRect(textXPos, GetYLocationFromFrame(title.Frame, 8F), textWidth, GetScaledHeight(60F)))
+            UITextView description = new UITextView(new CGRect(textXPos, GetYLocationFromFrame(title.Frame, 8F), textWidth, GetScaledHeight(40F)))
             {
                 BackgroundColor = UIColor.Clear,
                 Editable = false,
@@ -497,26 +460,28 @@ namespace myTNB
                 AttributedText = mutableHTMLBody,
                 UserInteractionEnabled = false
             };
-            CGSize cGSize = desc.SizeThatFits(new CGSize(textWidth, GetScaledHeight(90F)));
-            ViewHelper.AdjustFrameSetHeight(desc, cGSize.Height);
-            topView.AddSubviews(new UIView { title, desc });
-            UIView bottomView = new UIView(new CGRect(0, GetYLocationFromFrame(topView.Frame, 83F), width, height - GetYLocationFromFrame(topView.Frame, 83F)))
-            {
-                BackgroundColor = MyTNBColor.Black75
-            };
-            UIView boxView = new UIView(new CGRect(BaseMarginWidth16, topView.Frame.GetMaxY() - GetScaledHeight(1F), width - (BaseMarginWidth16 * 2), GetScaledHeight(85F)))
+            CGSize cGSize = description.SizeThatFits(new CGSize(textWidth, GetScaledHeight(60F)));
+            ViewHelper.AdjustFrameSetHeight(description, cGSize.Height);
+            topView.AddSubviews(new UIView { title, description });
+            nfloat boxViewXPos = GetScaledWidth(12F);
+            nfloat boxViewWidth = width / 2 - GetScaledWidth(10F);
+            UIView boxView = new UIView(new CGRect(boxViewXPos, topView.Frame.GetMaxY() - GetScaledHeight(1F), boxViewWidth, ViewCTA.Frame.Height + GetScaledHeight(8F) + GetScaledHeight(2F)))
             {
                 BackgroundColor = UIColor.Clear
             };
             boxView.Layer.CornerRadius = GetScaledHeight(4F);
             boxView.Layer.BorderColor = MyTNBColor.ButterScotch.CGColor;
             boxView.Layer.BorderWidth = GetScaledWidth(1F);
-
-            UIView leftView = new UIView(new CGRect(0, topView.Frame.GetMaxY(), GetScaledWidth(17F), boxView.Frame.Height - GetScaledHeight(2F)))
+            nfloat bottomViewYPos = boxView.Frame.GetMaxY() - GetScaledHeight(1F);
+            UIView bottomView = new UIView(new CGRect(0, bottomViewYPos, width, height - bottomViewYPos))
             {
                 BackgroundColor = MyTNBColor.Black75
             };
-            UIView rightView = new UIView(new CGRect(boxView.Frame.GetMaxX() - GetScaledWidth(1F), topView.Frame.GetMaxY(), GetScaledWidth(17F), boxView.Frame.Height - GetScaledHeight(2F)))
+            UIView leftView = new UIView(new CGRect(0, topView.Frame.GetMaxY(), GetScaledWidth(12F) + GetScaledWidth(1F), boxView.Frame.Height - GetScaledHeight(2F)))
+            {
+                BackgroundColor = MyTNBColor.Black75
+            };
+            UIView rightView = new UIView(new CGRect(boxView.Frame.GetMaxX() - GetScaledWidth(1F), topView.Frame.GetMaxY(), width / 2 - GetScaledWidth(1F), boxView.Frame.Height - GetScaledHeight(2F)))
             {
                 BackgroundColor = MyTNBColor.Black75
             };
@@ -525,18 +490,16 @@ namespace myTNB
             return parentView;
         }
 
-        private UIView GetThirdView(nfloat tableViewContentOffsetY)
+        private UIView GetHistoryView(nfloat tableViewContentOffsetY)
         {
-            CGRect helpCellRect = _controller._homeTableView.RectForRowAtIndexPath(NSIndexPath.Create(0, DashboardHomeConstants.CellIndex_Help));
-            nfloat needHelpYPos = DeviceHelper.GetStatusBarHeight() + helpCellRect.Y - GetScaledHeight(5F);
-
             UIView parentView = new UIView(_parentView.Bounds)
             {
                 BackgroundColor = UIColor.Clear
             };
             nfloat width = parentView.Frame.Width;
             nfloat height = parentView.Frame.Height;
-            UIView topView = new UIView(new CGRect(0, 0, width, needHelpYPos - tableViewContentOffsetY))
+            CGRect historyRect = _controller._historyTableView.RectForRowAtIndexPath(NSIndexPath.Create(0, 0));
+            UIView topView = new UIView(new CGRect(0, 0, width, historyRect.Y + NavigationHeight - tableViewContentOffsetY))
             {
                 BackgroundColor = MyTNBColor.Black75
             };
@@ -545,7 +508,7 @@ namespace myTNB
                 BackgroundColor = MyTNBColor.ButterScotch
             };
             topView.AddSubview(topLine);
-            UIView verticalLine = new UIView(new CGRect(GetScaledWidth(35.5F), topView.Frame.GetMaxY() - GetScaledHeight(173.5F), GetScaledWidth(1F), GetScaledHeight(173.5F)))
+            UIView verticalLine = new UIView(new CGRect(GetScaledWidth(35.5F), topView.Frame.GetMaxY() - GetScaledHeight(195F), GetScaledWidth(1F), GetScaledHeight(195F)))
             {
                 BackgroundColor = MyTNBColor.ButterScotch
             };
@@ -565,10 +528,19 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Left,
-                Text = "Need help?"
+                Text = GetI18NValue(BillConstants.I18N_TutorialHistoryTitle)
             };
+            string desc;
+            if (IsREAccount)
+            {
+                desc = GetI18NValue(BillConstants.I18N_TutorialHistoryREAcctDesc);
+            }
+            else
+            {
+                desc = GetI18NValue(BillConstants.I18N_TutorialHistoryNormalAcctDesc);
+            }
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont("We’ve highlighted some of the most commonly asked questions for you to browse through."
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(desc
                 , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(14F));
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
@@ -581,7 +553,7 @@ namespace myTNB
                 }
             }, new NSRange(0, htmlBody.Length));
 
-            UITextView desc = new UITextView(new CGRect(textXPos, GetYLocationFromFrame(title.Frame, 8F), textWidth, GetScaledHeight(60F)))
+            UITextView description = new UITextView(new CGRect(textXPos, GetYLocationFromFrame(title.Frame, 8F), textWidth, GetScaledHeight(60F)))
             {
                 BackgroundColor = UIColor.Clear,
                 Editable = false,
@@ -589,25 +561,26 @@ namespace myTNB
                 AttributedText = mutableHTMLBody,
                 UserInteractionEnabled = false
             };
-            CGSize cGSize = desc.SizeThatFits(new CGSize(textWidth, GetScaledHeight(70F)));
-            ViewHelper.AdjustFrameSetHeight(desc, cGSize.Height);
+            CGSize cGSize = description.SizeThatFits(new CGSize(textWidth, GetScaledHeight(70F)));
+            ViewHelper.AdjustFrameSetHeight(description, cGSize.Height);
             UIButton btnGotIt = new UIButton(UIButtonType.Custom)
             {
-                Frame = new CGRect(textXPos, GetYLocationFromFrame(desc.Frame, 16F), GetScaledWidth(142F), GetScaledHeight(48F)),
+                Frame = new CGRect(textXPos, GetYLocationFromFrame(description.Frame, 16F), GetScaledWidth(142F), GetScaledHeight(48F)),
                 Font = TNBFont.MuseoSans_16_500,
                 BackgroundColor = UIColor.White,
                 UserInteractionEnabled = true
             };
             btnGotIt.SetTitleColor(MyTNBColor.WaterBlue, UIControlState.Normal);
-            btnGotIt.SetTitle("Got it!", UIControlState.Normal);
+            btnGotIt.SetTitle(GetI18NValue(BillConstants.I18N_GotIt), UIControlState.Normal);
             btnGotIt.Layer.CornerRadius = GetScaledHeight(4F);
             btnGotIt.Layer.BorderColor = UIColor.White.CGColor;
             btnGotIt.TouchUpInside += (sender, e) =>
             {
                 OnDismissAction?.Invoke();
             };
-            topView.AddSubviews(new UIView { title, desc, btnGotIt });
-            UIView bottomView = new UIView(new CGRect(0, GetYLocationFromFrame(topView.Frame, 100F), width, height - GetYLocationFromFrame(topView.Frame, 100F)))
+            topView.AddSubviews(new UIView { title, description, btnGotIt });
+            topView.AddSubview(btnGotIt);
+            UIView bottomView = new UIView(new CGRect(0, height - TabBarHeight, width, TabBarHeight))
             {
                 BackgroundColor = MyTNBColor.Black75
             };
@@ -616,23 +589,36 @@ namespace myTNB
                 BackgroundColor = MyTNBColor.ButterScotch
             };
             bottomView.AddSubview(bottomLine);
-            parentView.AddSubviews(new UIView { topView, bottomView });
-            _swipeText.Hidden = bottomView.Frame.Y >= _footerView.Frame.Y;
+            parentView.AddSubview(topView);
+            parentView.AddSubview(bottomView);
+            _swipeText.Hidden = true;
             return parentView;
+        }
+
+        public static void FadeAnimation(UIView view, bool isVisible, double duration = 0.3)
+        {
+            nfloat minAlpha = 0F;
+            nfloat maxAlpha = 1F;
+            view.Alpha = isVisible ? minAlpha : maxAlpha;
+            view.Transform = CGAffineTransform.MakeIdentity();
+            UIView.Animate(duration, 0, UIViewAnimationOptions.CurveEaseInOut, () =>
+            {
+                view.Alpha = isVisible ? maxAlpha : minAlpha;
+            }, null);
         }
 
         private void CreateFooterView()
         {
             nfloat width = _parentView.Frame.Width;
-            nfloat yPos = _parentView.Frame.Height - GetScaledHeight(88F);
-            _footerView = new UIView(new CGRect(0, yPos, width, GetScaledHeight(88F)))
+            nfloat yPos = _parentView.Frame.Height - GetScaledHeight(80F) - (DeviceHelper.IsIphoneXUpResolution() ? 20F : 0F);
+            _footerView = new UIView(new CGRect(0, yPos, width, GetScaledHeight(80F)))
             {
                 BackgroundColor = UIColor.Clear
             };
             _containerView.AddSubview(_footerView);
 
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont("Swipe to see more,<br>double tap to dismiss."
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(LanguageUtility.GetCommonI18NValue(Constants.Common_SwipeText)
                 , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(12F));
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes

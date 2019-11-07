@@ -146,7 +146,7 @@ namespace myTNB
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
-            //CheckTutorialOverlay();
+            CheckTutorialOverlay();
         }
 
         public override void ViewDidDisappear(bool animated)
@@ -175,8 +175,8 @@ namespace myTNB
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var tutorialOverlayHasShown = sharedPreference.BoolForKey(DashboardHomeConstants.Pref_TutorialOverlay);
 
-            //if (tutorialOverlayHasShown)
-            //    return;
+            if (tutorialOverlayHasShown)
+                return;
 
             tutorialOverlayTimer = new Timer
             {
@@ -209,9 +209,15 @@ namespace myTNB
 
         private void ShowTutorialOverlay()
         {
+            ScrollTableToTheTop();
+            ResetTableView();
             UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
             nfloat width = currentWindow.Frame.Width;
             nfloat height = currentWindow.Frame.Height;
+            if (_tutorialContainer != null)
+            {
+                _tutorialContainer.RemoveFromSuperview();
+            }
             _tutorialContainer = new UIView(new CGRect(0, 0, width, height))
             {
                 BackgroundColor = UIColor.Clear
@@ -233,20 +239,23 @@ namespace myTNB
                 tutorialType = HomeTutorialEnum.LESSTHANFOURACCOUNTS;
             }
 
-            HomeTutorialOverlay tutorialView = new HomeTutorialOverlay(_tutorialContainer, this);
-            tutorialView.TutorialType = tutorialType;
-            tutorialView.OnDismissAction = HideTutorialOverlay;
-            tutorialView.ScrollTableToTheTop = ScrollTableToTheTop;
-            tutorialView.ScrollTableToTheBottom = ScrollTableToTheBottom;
+            HomeTutorialOverlay tutorialView = new HomeTutorialOverlay(_tutorialContainer, this)
+            {
+                TutorialType = tutorialType,
+                OnDismissAction = HideTutorialOverlay,
+                ScrollTableToTheTop = ScrollTableToTheTop,
+                ScrollTableToTheBottom = ScrollTableToTheBottom,
+                GetI18NValue = GetI18NValue
+            };
             _tutorialContainer.AddSubview(tutorialView.GetView());
-            ScrollTableToTheTop();
-            ResetTableView();
+
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             sharedPreference.SetBool(true, DashboardHomeConstants.Pref_TutorialOverlay);
         }
 
         private void HideTutorialOverlay()
         {
+            ScrollTableToTheTop();
             if (_tutorialContainer != null)
             {
                 _tutorialContainer.Alpha = 1F;
