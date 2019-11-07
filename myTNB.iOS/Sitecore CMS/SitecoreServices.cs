@@ -393,7 +393,7 @@ namespace myTNB.SitecoreCMS
 
                 UpdateTimeStamp(timeStamp.Data[0].Timestamp, "LanguageTimeStamp", ref needsUpdate);
                 needsUpdate = true;
-                if (needsUpdate)
+                if (needsUpdate || !LanguageUtility.HasSavedContent)
                 {
                     LanguageResponseModel languageItems = iService.GetLanguageItems();
                     if (languageItems != null
@@ -405,15 +405,10 @@ namespace myTNB.SitecoreCMS
                         if (!string.IsNullOrEmpty(item.LanguageFile) && !string.IsNullOrWhiteSpace(item.LanguageFile))
                         {
                             string content = GetDataFromFile(item.LanguageFile);
-
                             LanguageManager.Instance.SetLanguage(content ?? string.Empty);
                             LanguageUtility.SetLanguageGlobals();
-
-                            NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
-                            sharedPreference.SetString(content, "LanguageContent");
-                            sharedPreference.Synchronize();
+                            LanguageUtility.SaveLanguageContent(content);
                             Debug.WriteLine("LoadLanguage Done");
-                            //NotifCenterUtility.PostNotificationName("LanguageDidChange", new NSObject());
                         }
                     }
                 }

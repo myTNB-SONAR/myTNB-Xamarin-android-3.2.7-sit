@@ -9,6 +9,7 @@ namespace myTNB
         private static readonly string IsLanguageSetKey = "isLanguageSet";
         private static readonly string CurrentLanguageKey = "currentLanguage";
         private static readonly List<string> SupportedLanguage = new List<string> { "EN", "MS" };
+        private static readonly string LanguageContentKey = "LanguageContent";
 
         public static bool IsLanguageSet
         {
@@ -101,6 +102,34 @@ namespace myTNB
                     }
                 }
                 return 0;
+            }
+        }
+
+        public static void SaveLanguageContent(string content)
+        {
+            if (!string.IsNullOrEmpty(content) && !string.IsNullOrWhiteSpace(content))
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                sharedPreference.SetString(content, LanguageContentKey);
+                sharedPreference.Synchronize();
+            }
+        }
+
+        public static string LanguageContent
+        {
+            get
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                string content = sharedPreference.StringForKey(LanguageContentKey);
+                return content ?? string.Empty;
+            }
+        }
+
+        public static bool HasSavedContent
+        {
+            get
+            {
+                return !string.IsNullOrEmpty(LanguageContent) && !string.IsNullOrWhiteSpace(LanguageContent);
             }
         }
 
