@@ -392,7 +392,7 @@ namespace myTNB.SitecoreCMS
                 }
 
                 UpdateTimeStamp(timeStamp.Data[0].Timestamp, "LanguageTimeStamp", ref needsUpdate);
-                needsUpdate = true;
+
                 if (needsUpdate || !LanguageUtility.HasSavedContent)
                 {
                     LanguageResponseModel languageItems = iService.GetLanguageItems();
@@ -408,6 +408,10 @@ namespace myTNB.SitecoreCMS
                             LanguageManager.Instance.SetLanguage(content ?? string.Empty);
                             LanguageUtility.SetLanguageGlobals();
                             LanguageUtility.SaveLanguageContent(content);
+                            if (_isForcedUpdate)
+                            {
+                                LanguageUtility.SetLanguage(TNBGlobal.APP_LANGUAGE);
+                            }
                             Debug.WriteLine("LoadLanguage Done");
                         }
                     }

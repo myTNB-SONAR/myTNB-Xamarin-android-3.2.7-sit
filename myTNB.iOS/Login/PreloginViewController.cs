@@ -2,6 +2,11 @@ using Foundation;
 using System;
 using UIKit;
 using CoreGraphics;
+using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Collections.Generic;
+using myTNB.DataManager;
+using myTNB.SitecoreCMS;
 
 namespace myTNB
 {
@@ -9,16 +14,47 @@ namespace myTNB
     {
         public PreloginViewController(IntPtr handle) : base(handle) { }
 
+        private UILabel _lblWelcome, _lblSubtitle, _lblQuickAccess, _lblFindUs
+            , _lblCallUs, _lblFeedback, _lblChangeLanguage;
+        private CustomUIButtonV2 _btnRegister, _btnLogin;
+        private bool _isMasterDataDone, _isSitecoreDone;
+
         public override void ViewDidLoad()
         {
             PageName = PreloginConstants.PageName;
             base.ViewDidLoad();
+            NotifCenterUtility.AddObserver((NSString)"LanguageDidChange", LanguageDidChange);
             SetSubviews();
         }
 
         public override void ViewDidAppear(bool animated)
         {
             base.ViewDidAppear(animated);
+        }
+
+        protected override void LanguageDidChange(NSNotification notification)
+        {
+            base.LanguageDidChange(notification);
+            _lblWelcome.Text = GetI18NValue(PreloginConstants.I18N_WelcomeTitle);
+            _lblSubtitle.Text = GetI18NValue(PreloginConstants.I18N_Tagline);
+            _lblQuickAccess.Text = GetI18NValue(PreloginConstants.I18N_QuickAccess);
+            _lblFindUs.Text = GetI18NValue(PreloginConstants.I18N_FindUs);
+            _lblCallUs.Text = GetI18NValue(PreloginConstants.I18N_CallUs);
+
+            if (DataManager.DataManager.SharedInstance.WebLinks != null)
+            {
+                int index = DataManager.DataManager.SharedInstance.WebLinks.FindIndex(x => x.Code.ToLower().Equals("tnbcl"));
+                if (index > -1)
+                {
+                    _lblCallUs.Text = DataManager.DataManager.SharedInstance.WebLinks[index].Title;
+                }
+            }
+            _lblFeedback.Text = GetI18NValue(PreloginConstants.I18N_Feedback);
+            _lblChangeLanguage.Text = GetI18NValue(PreloginConstants.I18N_ChangeLanguage);
+            _btnRegister.SetTitle(GetI18NValue(PreloginConstants.I18N_Register), UIControlState.Normal);
+            _btnLogin.SetTitle(GetI18NValue(PreloginConstants.I18N_Login), UIControlState.Normal);
+            _isMasterDataDone = false;
+            _isSitecoreDone = false;
         }
 
         private void SetSubviews()
@@ -35,7 +71,7 @@ namespace myTNB
                 ContentMode = UIViewContentMode.ScaleAspectFill
             };
 
-            UILabel lblWelcome = new UILabel(new CGRect(0, GetYLocationFromFrame(imgHeader.Frame, 12F), ViewWidth, GetScaledHeight(24F)))
+            _lblWelcome = new UILabel(new CGRect(0, GetYLocationFromFrame(imgHeader.Frame, 12F), ViewWidth, GetScaledHeight(24F)))
             {
                 Text = GetI18NValue(PreloginConstants.I18N_WelcomeTitle),
                 TextAlignment = UITextAlignment.Center,
@@ -43,7 +79,8 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_16_500
             };
 
-            UILabel lblSubtitle = new UILabel(new CGRect(GetScaledWidth(24F), GetYLocationFromFrame(lblWelcome.Frame, 4F), ViewWidth - (GetScaledWidth(24F) * 2), GetScaledHeight(32F)))
+            _lblSubtitle = new UILabel(new CGRect(GetScaledWidth(24F), GetYLocationFromFrame(_lblWelcome.Frame, 4F)
+                , ViewWidth - (GetScaledWidth(24F) * 2), GetScaledHeight(32F)))
             {
                 Text = GetI18NValue(PreloginConstants.I18N_Tagline),
                 TextAlignment = UITextAlignment.Center,
@@ -52,40 +89,42 @@ namespace myTNB
                 Lines = 0
             };
 
-            UIView viewCTA = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(lblSubtitle.Frame, 20F), ViewWidth - (BaseMarginWidth16 * 2), GetScaledHeight(48F)));
+            UIView viewCTA = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(_lblSubtitle.Frame, 20F)
+                , ViewWidth - (BaseMarginWidth16 * 2), GetScaledHeight(48F)));
 
-            UIButton btnRegister = new UIButton(UIButtonType.Custom)
+            _btnRegister = new CustomUIButtonV2()
             {
-                Frame = new CGRect(0, 0, (viewCTA.Frame.Width / 2) - GetScaledWidth(2F), GetScaledHeight(48F))
+                Frame = new CGRect(0, 0, (viewCTA.Frame.Width / 2) - GetScaledWidth(2F), GetScaledHeight(48F)),
+                BackgroundColor = UIColor.White,
+                Font = TNBFont.MuseoSans_16_500
             };
-            btnRegister.Font = TNBFont.MuseoSans_16_500;
-            btnRegister.SetTitle(GetI18NValue(PreloginConstants.I18N_Register), UIControlState.Normal);
-            btnRegister.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
-            btnRegister.Layer.CornerRadius = GetScaledHeight(4F);
-            btnRegister.Layer.BorderWidth = GetScaledWidth(1F);
-            btnRegister.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
-            btnRegister.BackgroundColor = UIColor.White;
-            btnRegister.TouchUpInside += (sender, e) =>
+            _btnRegister.SetTitle(GetI18NValue(PreloginConstants.I18N_Register), UIControlState.Normal);
+            _btnRegister.SetTitleColor(MyTNBColor.FreshGreen, UIControlState.Normal);
+            _btnRegister.Layer.CornerRadius = GetScaledHeight(4F);
+            _btnRegister.Layer.BorderWidth = GetScaledWidth(1F);
+            _btnRegister.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
+            _btnRegister.TouchUpInside += (sender, e) =>
             {
                 OnRegister();
             };
 
-            UIButton btnLogin = new UIButton(UIButtonType.Custom)
+            _btnLogin = new CustomUIButtonV2()
             {
-                Frame = new CGRect(btnRegister.Frame.GetMaxX() + GetScaledWidth(4F), 0, (viewCTA.Frame.Width / 2) - GetScaledWidth(2F), GetScaledHeight(48F))
+                Frame = new CGRect(_btnRegister.Frame.GetMaxX() + GetScaledWidth(4F)
+                    , 0, (viewCTA.Frame.Width / 2) - GetScaledWidth(2F), GetScaledHeight(48F)),
+                Font = TNBFont.MuseoSans_16_500,
+                BackgroundColor = MyTNBColor.FreshGreen
             };
-            btnLogin.Font = TNBFont.MuseoSans_16_500;
-            btnLogin.SetTitle(GetI18NValue(PreloginConstants.I18N_Login), UIControlState.Normal);
-            btnLogin.Layer.CornerRadius = GetScaledHeight(4F);
-            btnLogin.Layer.BorderWidth = GetScaledWidth(1F);
-            btnLogin.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
-            btnLogin.BackgroundColor = MyTNBColor.FreshGreen;
-            btnLogin.TouchUpInside += (sender, e) =>
+            _btnLogin.SetTitle(GetI18NValue(PreloginConstants.I18N_Login), UIControlState.Normal);
+            _btnLogin.Layer.CornerRadius = GetScaledHeight(4F);
+            _btnLogin.Layer.BorderWidth = GetScaledWidth(1F);
+            _btnLogin.Layer.BorderColor = MyTNBColor.FreshGreen.CGColor;
+            _btnLogin.TouchUpInside += (sender, e) =>
             {
                 OnLogin();
             };
 
-            viewCTA.AddSubviews(new UIView[] { btnRegister, btnLogin });
+            viewCTA.AddSubviews(new UIView[] { _btnRegister, _btnLogin });
 
             UIView viewLine = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(viewCTA.Frame, 15.5F), ViewWidth - (BaseMarginWidth16 * 2), GetScaledHeight(1F)))
             {
@@ -98,7 +137,7 @@ namespace myTNB
                 ClipsToBounds = false
             };
 
-            UILabel lblQuickAccess = new UILabel(new CGRect(0, 0, ViewWidth, GetScaledHeight(24F)))
+            _lblQuickAccess = new UILabel(new CGRect(0, 0, ViewWidth, GetScaledHeight(24F)))
             {
                 Text = GetI18NValue(PreloginConstants.I18N_QuickAccess),
                 TextAlignment = UITextAlignment.Center,
@@ -106,7 +145,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_16_500
             };
 
-            UIView viewFindUs = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(lblQuickAccess.Frame, 8F)
+            UIView viewFindUs = new UIView(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(_lblQuickAccess.Frame, 8F)
                 , viewQuickAccess.Frame.Width / 3 - GetScaledWidth(18.67F), GetScaledHeight(84F)))
             {
                 ClipsToBounds = false
@@ -115,12 +154,14 @@ namespace myTNB
             viewFindUs.BackgroundColor = UIColor.White;
             AddCardShadow(ref viewFindUs);
 
-            UIImageView imgFindUs = new UIImageView(new CGRect(GetXLocationToCenterObject(GetScaledWidth(28F), viewFindUs), GetScaledHeight(12F), GetScaledWidth(28F), GetScaledHeight(28F)))
+            UIImageView imgFindUs = new UIImageView(new CGRect(GetXLocationToCenterObject(GetScaledWidth(28F)
+                , viewFindUs), GetScaledHeight(12F), GetScaledWidth(28F), GetScaledHeight(28F)))
             {
                 Image = UIImage.FromBundle(PreloginConstants.IMG_FindUsIcon)
             };
 
-            UILabel lblFindUs = new UILabel(new CGRect(0, GetYLocationFromFrame(imgFindUs.Frame, 12F), viewFindUs.Frame.Width, GetScaledHeight(14F)))
+            _lblFindUs = new UILabel(new CGRect(0, GetYLocationFromFrame(imgFindUs.Frame, 12F)
+               , viewFindUs.Frame.Width, GetScaledHeight(14F)))
             {
                 Text = GetI18NValue(PreloginConstants.I18N_FindUs),
                 TextAlignment = UITextAlignment.Center,
@@ -128,9 +169,9 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_10_500
             };
 
-            viewFindUs.AddSubviews(new UIView[] { imgFindUs, lblFindUs });
+            viewFindUs.AddSubviews(new UIView[] { imgFindUs, _lblFindUs });
 
-            UIView viewCallUs = new UIView(new CGRect(GetXLocationFromFrame(viewFindUs.Frame, 12F), GetYLocationFromFrame(lblQuickAccess.Frame, 8F)
+            UIView viewCallUs = new UIView(new CGRect(GetXLocationFromFrame(viewFindUs.Frame, 12F), GetYLocationFromFrame(_lblQuickAccess.Frame, 8F)
                , viewQuickAccess.Frame.Width / 3 - GetScaledWidth(18.67F), GetScaledHeight(84F)))
             {
                 ClipsToBounds = false
@@ -144,7 +185,7 @@ namespace myTNB
                 Image = UIImage.FromBundle(PreloginConstants.IMG_CallUsIcon)
             };
 
-            UILabel lblCallUs = new UILabel(new CGRect(0, GetYLocationFromFrame(imgCallUs.Frame, 12F), viewCallUs.Frame.Width, GetScaledHeight(14F)))
+            _lblCallUs = new UILabel(new CGRect(0, GetYLocationFromFrame(imgCallUs.Frame, 12F), viewCallUs.Frame.Width, GetScaledHeight(14F)))
             {
                 Text = GetI18NValue(PreloginConstants.I18N_CallUs),
                 TextAlignment = UITextAlignment.Center,
@@ -157,13 +198,13 @@ namespace myTNB
                 int index = DataManager.DataManager.SharedInstance.WebLinks.FindIndex(x => x.Code.ToLower().Equals("tnbcl"));
                 if (index > -1)
                 {
-                    lblCallUs.Text = DataManager.DataManager.SharedInstance.WebLinks[index].Title;
+                    _lblCallUs.Text = DataManager.DataManager.SharedInstance.WebLinks[index].Title;
                 }
             }
 
-            viewCallUs.AddSubviews(new UIView[] { imgCallUs, lblCallUs });
+            viewCallUs.AddSubviews(new UIView[] { imgCallUs, _lblCallUs });
 
-            UIView viewFeedback = new UIView(new CGRect(GetXLocationFromFrame(viewCallUs.Frame, 12F), GetYLocationFromFrame(lblQuickAccess.Frame, 8F)
+            UIView viewFeedback = new UIView(new CGRect(GetXLocationFromFrame(viewCallUs.Frame, 12F), GetYLocationFromFrame(_lblQuickAccess.Frame, 8F)
                 , viewQuickAccess.Frame.Width / 3 - GetScaledWidth(18.67F), GetScaledHeight(84F)));
             viewFeedback.Layer.CornerRadius = GetScaledHeight(5F);
             viewFeedback.BackgroundColor = UIColor.White;
@@ -174,7 +215,7 @@ namespace myTNB
                 Image = UIImage.FromBundle(PreloginConstants.IMG_FeedbackIcon)
             };
 
-            UILabel lblFeedback = new UILabel(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(imgFeedback.Frame, 4F), viewFeedback.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(28F)))
+            _lblFeedback = new UILabel(new CGRect(BaseMarginWidth16, GetYLocationFromFrame(imgFeedback.Frame, 4F), viewFeedback.Frame.Width - (BaseMarginWidth16 * 2), GetScaledHeight(28F)))
             {
                 Text = GetI18NValue(PreloginConstants.I18N_Feedback),
                 TextAlignment = UITextAlignment.Center,
@@ -183,7 +224,7 @@ namespace myTNB
                 Lines = 0
             };
 
-            viewFeedback.AddSubviews(new UIView[] { imgFeedback, lblFeedback });
+            viewFeedback.AddSubviews(new UIView[] { imgFeedback, _lblFeedback });
 
             viewFindUs.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
@@ -208,14 +249,15 @@ namespace myTNB
                 string langSuffix = TNBGlobal.APP_LANGUAGE == "EN" ? "MS" : "EN";
                 DisplayCustomAlert(GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageTitle, langSuffix))
                     , GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageMessage, langSuffix))
-                    , new System.Collections.Generic.Dictionary<string, Action> {
+                    , new Dictionary<string, Action> {
                         { GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageNo, langSuffix)), null}
-                        ,{ GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageYes, langSuffix)) ,null} }
+                        ,{ GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageYes, langSuffix))
+                        ,()=>{ OnChangeLanguage(); } } }
                     , UITextAlignment.Center
                     , UITextAlignment.Center);
             }));
 
-            UILabel lblChangeLanguage = new UILabel(new CGRect(new CGPoint(0, 0), changeLanguageView.Frame.Size))
+            _lblChangeLanguage = new UILabel(new CGRect(new CGPoint(0, 0), changeLanguageView.Frame.Size))
             {
                 Text = GetI18NValue(PreloginConstants.I18N_ChangeLanguage),
                 TextAlignment = UITextAlignment.Center,
@@ -223,11 +265,11 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_12_500,
                 Lines = 0
             };
-            changeLanguageView.AddSubview(lblChangeLanguage);
-            viewQuickAccess.AddSubviews(new UIView[] { lblQuickAccess, viewFindUs, viewCallUs, viewFeedback, changeLanguageView });
+            changeLanguageView.AddSubview(_lblChangeLanguage);
+            viewQuickAccess.AddSubviews(new UIView[] { _lblQuickAccess, viewFindUs, viewCallUs, viewFeedback, changeLanguageView });
 
-            View.AddSubviews(new UIView[] { imgHeader, imgLogo, lblWelcome
-                , lblSubtitle, viewCTA, viewLine, viewQuickAccess});
+            View.AddSubviews(new UIView[] { imgHeader, imgLogo, _lblWelcome
+                , _lblSubtitle, viewCTA, viewLine, viewQuickAccess});
         }
 
         private void AddCardShadow(ref UIView view)
@@ -306,5 +348,86 @@ namespace myTNB
                 PresentViewController(navController, true, null);
             }
         }
+
+        #region Language
+        /*Todo: Do service calls and set lang
+         * 1. Call site core
+         * 2. Call Applaunch master data
+         * 3. Clear Usage cache for service call content
+        */
+        private void OnChangeLanguage()
+        {
+            int index = 0;
+            if (TNBGlobal.APP_LANGUAGE == "EN")
+            {
+                index = 1;
+            }
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        ActivityIndicator.Show();
+                        LanguageUtility.SetAppLanguageByIndex(index);
+                        InvokeOnMainThread(async () =>
+                        {
+                            List<Task> taskList = new List<Task>{
+                                OnGetAppLaunchMasterData(),
+                                OnExecuteSiteCore()
+                           };
+                            await Task.WhenAll(taskList.ToArray());
+                        });
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
+        private void ChangeLanguageCallback()
+        {
+            if (_isMasterDataDone && _isSitecoreDone)
+            {
+                InvokeOnMainThread(() =>
+                {
+                    //Todo: Check success and fail States
+                    ClearCache();
+                    Debug.WriteLine("Change Language Done");
+                    NotifCenterUtility.PostNotificationName("LanguageDidChange", new NSObject());
+                    ActivityIndicator.Hide();
+                });
+            }
+        }
+
+        private void ClearCache()
+        {
+            AccountUsageCache.ClearCache();
+            AccountUsageSmartCache.ClearCache();
+        }
+
+        private Task OnGetAppLaunchMasterData()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                AppLaunchResponseModel response = ServiceCall.GetAppLaunchMasterData().Result;
+                AppLaunchMasterCache.AddAppLaunchResponseData(response);
+                _isMasterDataDone = true;
+                ChangeLanguageCallback();
+            });
+        }
+
+        private Task OnExecuteSiteCore()
+        {
+            return Task.Factory.StartNew(async () =>
+            {
+                await SitecoreServices.Instance.OnExecuteSitecoreCall(true);
+                _isSitecoreDone = true;
+                ChangeLanguageCallback();
+            });
+        }
+        #endregion
     }
 }

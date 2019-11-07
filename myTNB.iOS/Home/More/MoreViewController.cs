@@ -20,6 +20,7 @@ namespace myTNB
         private TitleBarComponent _titleBarComponent;
         private UILabel _lblAppVersion;
         private bool _isSitecoreDone, _isMasterDataDone;
+        private GenericSelectorViewController languageViewController;
 
         public override void ViewDidLoad()
         {
@@ -255,7 +256,7 @@ namespace myTNB
             }
         }
 
-        private GenericSelectorViewController languageViewController;
+        #region Language
         private void GoToLanguageSettings()
         {
             UIStoryboard storyBoard = UIStoryboard.FromName("GenericSelector", null);
@@ -364,6 +365,7 @@ namespace myTNB
                 ChangeLanguageCallback();
             });
         }
+        #endregion
 
         private void GoToMyAccount()
         {
