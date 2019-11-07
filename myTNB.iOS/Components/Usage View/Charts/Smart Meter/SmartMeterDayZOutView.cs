@@ -40,7 +40,7 @@ namespace myTNB.SmartMeterView
                 view.AddSubview(segment);
                 xLoc += segmentWidth + segmentMargin;
 
-                double.TryParse(item.Amount, out double value);
+                double.TryParse(item.Consumption, out double value);
                 nfloat barHeight = (nfloat)(divisor * value);
                 nfloat yLoc = maxBarHeight - barHeight + missingReadingBarMargin;
 

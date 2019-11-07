@@ -548,10 +548,13 @@ namespace myTNB
 
         private void OnGetInfo()
         {
-            _isAllowEdit = ContactDetails.d.data.isAllowEdit;
             if (!IsApplication)
             {
                 _isAllowEdit = false;
+            }
+            else
+            {
+                _isAllowEdit = ContactDetails.d.data.isAllowEdit;
             }
             if (_isAllowEdit)
             {
