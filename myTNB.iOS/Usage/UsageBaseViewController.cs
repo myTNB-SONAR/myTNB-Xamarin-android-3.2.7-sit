@@ -583,6 +583,7 @@ namespace myTNB
 
             UsageSSMRTutorialOverlay tutorialView = new UsageSSMRTutorialOverlay(_tutorialContainer)
             {
+                GetI18NValue = GetI18NValue,
                 NavigationHeight = _navbarContainer.Frame.Height,
                 SSMRCardYPos = _smrCardYPos + GetScaledHeight(8F) + addtl,
                 SSMRCardHeight = _smrCardHeight,

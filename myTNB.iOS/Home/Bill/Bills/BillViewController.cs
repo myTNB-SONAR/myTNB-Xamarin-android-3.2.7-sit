@@ -160,6 +160,7 @@ namespace myTNB
 
             BillTutorialOverlay tutorialView = new BillTutorialOverlay(_tutorialContainer, this)
             {
+                GetI18NValue = GetI18NValue,
                 TabBarHeight = TabBarController.TabBar.Frame.Height,
                 NavigationHeight = DeviceHelper.GetStatusBarHeight() + _navBarHeight,
                 HeaderViewHeight = _headerViewContainer.Frame.Height,

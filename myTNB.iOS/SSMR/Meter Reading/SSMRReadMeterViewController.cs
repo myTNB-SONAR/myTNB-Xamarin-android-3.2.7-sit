@@ -123,6 +123,7 @@ namespace myTNB
 
             SSMReadTutorialOveraly tutorialView = new SSMReadTutorialOveraly(_tutorialContainer)
             {
+                GetI18NValue = GetI18NValue,
                 NavigationHeight = DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height,
                 ManualInputCardYPos = manualInputCardYPos,
                 OnDismissAction = HideTutorialOverlay,

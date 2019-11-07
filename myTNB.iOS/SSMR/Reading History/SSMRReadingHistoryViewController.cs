@@ -194,8 +194,8 @@ namespace myTNB
             var sharedPreference = NSUserDefaults.StandardUserDefaults;
             var tutorialOverlayHasShown = sharedPreference.BoolForKey(SSMRConstants.Pref_SSMRHistoryTutorialOverlay);
 
-            //if (tutorialOverlayHasShown)
-            //    return;
+            if (tutorialOverlayHasShown)
+                return;
 
             tutorialOverlayTimer = new Timer
             {
@@ -244,6 +244,7 @@ namespace myTNB
 
             SSMRHistoryTutorialOverlay tutorialView = new SSMRHistoryTutorialOverlay(_tutorialContainer)
             {
+                GetI18NValue = GetI18NValue,
                 TopViewYPos = _bgImageView.Frame.Height,
                 OnDismissAction = HideTutorialOverlay,
                 HeaderHeight = _ssmrHeaderComponent?.GetView()?.Frame.Height ?? 0

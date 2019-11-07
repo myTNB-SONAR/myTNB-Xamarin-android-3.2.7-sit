@@ -1,6 +1,7 @@
 ﻿using System;
 using CoreGraphics;
 using Foundation;
+using myTNB.SSMR;
 using UIKit;
 
 namespace myTNB
@@ -8,6 +9,7 @@ namespace myTNB
     public class SSMReadTutorialOveraly : BaseComponent
     {
         UIView _parentView, _containerView;
+        public Func<string, string> GetI18NValue;
         public Action OnDismissAction;
         public nfloat NavigationHeight, ManualInputCardYPos;
         public bool OCRIsDown;
@@ -112,10 +114,10 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Left,
-                Text = "Enter your meter reading here."
+                Text = GetI18NValue(SSMRConstants.I18N_TutorialReadMeterTitle)
             };
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont("Enter according to its unit(s). You’ll see your previous month's reading as a reference."
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(SSMRConstants.I18N_TutorialReadMeterDesc)
                 , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(14F));
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
@@ -146,7 +148,7 @@ namespace myTNB
                 UserInteractionEnabled = true
             };
             btnGotIt.SetTitleColor(MyTNBColor.WaterBlue, UIControlState.Normal);
-            btnGotIt.SetTitle("Got it!", UIControlState.Normal);
+            btnGotIt.SetTitle(GetI18NValue(SSMRConstants.I18N_TutorialReadMeterGotIt), UIControlState.Normal);
             btnGotIt.Layer.CornerRadius = GetScaledHeight(4F);
             btnGotIt.Layer.BorderColor = UIColor.White.CGColor;
             btnGotIt.TouchUpInside += (sender, e) =>

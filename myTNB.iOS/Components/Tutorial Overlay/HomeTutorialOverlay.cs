@@ -13,6 +13,7 @@ namespace myTNB
         int _currentPageIndex = 1;
         int _totalViews;
         UITextView _swipeText;
+        public Func<string, string> GetI18NValue;
         public Action OnDismissAction;
         public Action ScrollTableToTheTop;
         public Action ScrollTableToTheBottom;
@@ -42,33 +43,39 @@ namespace myTNB
                 UserInteractionEnabled = true
             };
 
-            UISwipeGestureRecognizer rightSwipe = new UISwipeGestureRecognizer(OnSwipeRightAction);
-            rightSwipe.Direction = UISwipeGestureRecognizerDirection.Right;
+            UISwipeGestureRecognizer rightSwipe = new UISwipeGestureRecognizer(OnSwipeRightAction)
+            {
+                Direction = UISwipeGestureRecognizerDirection.Right
+            };
             _containerView.AddGestureRecognizer(rightSwipe);
 
-            UISwipeGestureRecognizer leftSwipe = new UISwipeGestureRecognizer(OnSwipeLeftAction);
-            leftSwipe.Direction = UISwipeGestureRecognizerDirection.Left;
+            UISwipeGestureRecognizer leftSwipe = new UISwipeGestureRecognizer(OnSwipeLeftAction)
+            {
+                Direction = UISwipeGestureRecognizerDirection.Left
+            };
             _containerView.AddGestureRecognizer(leftSwipe);
 
-            UITapGestureRecognizer doubleTap = new UITapGestureRecognizer(OnDoubleTapAction);
-            doubleTap.NumberOfTapsRequired = 2;
+            UITapGestureRecognizer doubleTap = new UITapGestureRecognizer(OnDoubleTapAction)
+            {
+                NumberOfTapsRequired = 2
+            };
             _containerView.AddGestureRecognizer(doubleTap);
 
-            UIView firstView = new UIView(_parentView.Bounds);
-            firstView.AddSubview(GetFirstView());
-            firstView.Tag = 1;
-            _totalViews++;
-
-            UIView secondView = new UIView(_parentView.Bounds);
-            secondView.Tag = 2;
-            secondView.Alpha = 0F;
-            _totalViews++;
-
-            UIView thirdView = new UIView(_parentView.Bounds);
-            thirdView.Tag = 3;
-            thirdView.Alpha = 0F;
-            _totalViews++;
-            _containerView.AddSubviews(new UIView { firstView, secondView, thirdView });
+            for (int i = 1; i <= 3; i++)
+            {
+                UIView view = new UIView(_parentView.Bounds);
+                if (i == 1)
+                {
+                    view.AddSubview(GetFirstView());
+                }
+                else
+                {
+                    view.Alpha = 0F;
+                }
+                view.Tag = i;
+                _totalViews++;
+                _containerView.AddSubview(view);
+            }
 
             if (TutorialType == HomeTutorialEnum.MORETHANTHREEACCOUNTS)
             {
@@ -272,16 +279,16 @@ namespace myTNB
             {
                 case HomeTutorialEnum.NOACCOUNT:
                     bottomViewYPos = 118F;
-                    descText = "Add an electricity account to myTNB and you’ll have access to your usage and all services offered.";
+                    descText = GetI18NValue(DashboardHomeConstants.I18N_TutorialNoAcctDesc);
                     break;
                 case HomeTutorialEnum.LESSTHANFOURACCOUNTS:
                     var activeAcctList = DataManager.DataManager.SharedInstance.ActiveAccountList;
                     bottomViewYPos = 61F * activeAcctList.Count + 49F;
-                    descText = activeAcctList.Count > 1 ? "View a summary of all your linked electricity accounts here. Tap “Add” to link an account to myTNB." : "View a summary of all your linked electricity accounts here.";
+                    descText = activeAcctList.Count > 1 ? GetI18NValue(DashboardHomeConstants.I18N_TutorialThreeAcctsDesc) : GetI18NValue(DashboardHomeConstants.I18N_TutorialSingleAcctDesc);
                     break;
                 case HomeTutorialEnum.MORETHANTHREEACCOUNTS:
                     bottomViewYPos = 61F * 3 + 93F;
-                    descText = "View a summary of all your linked electricity accounts here.";
+                    descText = GetI18NValue(DashboardHomeConstants.I18N_TutorialMoreAcctsDesc);
                     break;
             }
             UIView bottomView = new UIView(new CGRect(0, GetYLocationFromFrame(topView.Frame, bottomViewYPos), width, height - GetYLocationFromFrame(topView.Frame, bottomViewYPos)))
@@ -316,7 +323,7 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Left,
-                Text = "Your Accounts at a glance."
+                Text = GetI18NValue(DashboardHomeConstants.I18N_TutorialAccountTitle)
             };
 
             NSError htmlBodyError = null;
@@ -398,10 +405,10 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Right,
-                Text = "Quick account access."
+                Text = GetI18NValue(DashboardHomeConstants.I18N_TutorialQuickAccessTitle)
             };
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont("Tap <b>“Add”</b> to link an account to  myTNB. Use <b>“Search”</b> to look for a specific one! Just type in the nickname or account number."
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(DashboardHomeConstants.I18N_TutorialQuickAccessDesc)
                 , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(14F));
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
@@ -473,10 +480,10 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Left,
-                Text = "Quick actions."
+                Text = GetI18NValue(DashboardHomeConstants.I18N_TutorialQuickActionTitle)
             };
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont("Get all of the services myTNB has to offer. New features are highlighted so you don’t miss out on anything!"
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(DashboardHomeConstants.I18N_TutorialQuickActionDesc)
                 , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(14F));
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
@@ -565,10 +572,10 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Left,
-                Text = "Need help?"
+                Text = GetI18NValue(DashboardHomeConstants.I18N_TutorialNeedHelpTitle)
             };
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont("We’ve highlighted some of the most commonly asked questions for you to browse through."
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(DashboardHomeConstants.I18N_TutorialNeedHelpDesc)
                 , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(14F));
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
@@ -599,7 +606,7 @@ namespace myTNB
                 UserInteractionEnabled = true
             };
             btnGotIt.SetTitleColor(MyTNBColor.WaterBlue, UIControlState.Normal);
-            btnGotIt.SetTitle("Got it!", UIControlState.Normal);
+            btnGotIt.SetTitle(GetI18NValue(DashboardHomeConstants.I18N_GotIt), UIControlState.Normal);
             btnGotIt.Layer.CornerRadius = GetScaledHeight(4F);
             btnGotIt.Layer.BorderColor = UIColor.White.CGColor;
             btnGotIt.TouchUpInside += (sender, e) =>
@@ -632,7 +639,7 @@ namespace myTNB
             _containerView.AddSubview(_footerView);
 
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont("Swipe to see more,<br>double tap to dismiss."
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(LanguageUtility.GetCommonI18NValue(Constants.Common_SwipeText)
                 , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(12F));
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes

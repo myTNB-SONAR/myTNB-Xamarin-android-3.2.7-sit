@@ -51,6 +51,7 @@ namespace myTNB
         public static string Common_GotIt = "gotIt";
         public static string Common_Email = "email";
         public static string Common_Password = "password";
+        public static string Common_SwipeText = "tutorialSwipeText";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";

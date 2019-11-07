@@ -1,6 +1,7 @@
 ﻿using System;
 using CoreGraphics;
 using Foundation;
+using myTNB.Home.Bill;
 using UIKit;
 
 namespace myTNB
@@ -8,6 +9,7 @@ namespace myTNB
     public class BillDetailsTutorialOverlay : BaseComponent
     {
         UIView _parentView, _containerView;
+        public Func<string, string> GetI18NValue;
         public Action OnDismissAction;
         public nfloat NavigationHeight, ViewCTAContainerYPos, ButtonHeight;
 
@@ -76,10 +78,10 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Left,
-                Text = "View your e-bill"
+                Text = GetI18NValue(BillConstants.I18N_TutorialTitle)
             };
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont("Tap here to acess the PDF version of your bill."
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(BillConstants.I18N_TutorialDesc)
                 , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(14F));
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
@@ -110,7 +112,7 @@ namespace myTNB
                 UserInteractionEnabled = true
             };
             btnGotIt.SetTitleColor(MyTNBColor.WaterBlue, UIControlState.Normal);
-            btnGotIt.SetTitle("Got it!", UIControlState.Normal);
+            btnGotIt.SetTitle(GetI18NValue(BillConstants.I18N_GotIt), UIControlState.Normal);
             btnGotIt.Layer.CornerRadius = GetScaledHeight(4F);
             btnGotIt.Layer.BorderColor = UIColor.White.CGColor;
             btnGotIt.TouchUpInside += (sender, e) =>

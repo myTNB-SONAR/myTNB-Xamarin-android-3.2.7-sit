@@ -1,6 +1,7 @@
 ﻿using System;
 using CoreGraphics;
 using Foundation;
+using myTNB.Home.Bill;
 using UIKit;
 
 namespace myTNB
@@ -13,6 +14,7 @@ namespace myTNB
         int _currentPageIndex = 1;
         int _totalViews;
         UITextView _swipeText;
+        public Func<string, string> GetI18NValue;
         public Action OnDismissAction, ScrollTableToTheTop, ScrollToHistorySection;
         public nfloat NavigationHeight, HeaderViewHeight, TabBarHeight, ViewCTAMinY;
         public UIView ViewCTA;
@@ -268,16 +270,16 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Left,
-                Text = "Your bill overview."
+                Text = GetI18NValue(BillConstants.I18N_TutorialBillTitle)
             };
             string desc;
             if (IsREAccount)
             {
-                desc = "Tap “ ” to switch between different accounts. You’ll see how much you have earned or if you’ve been paid extra.";
+                desc = GetI18NValue(BillConstants.I18N_TutorialBillREAcctDesc);
             }
             else
             {
-                desc = "Tap “ ” to switch between different accounts. You’ll see how much is due, if you’ve cleared your bill or if you’ve paid extra.";
+                desc = GetI18NValue(BillConstants.I18N_TutorialBillNormalAcctDesc);
             }
             NSError htmlBodyError = null;
             NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(desc
@@ -347,10 +349,10 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Right,
-                Text = "Pay without hassle."
+                Text = GetI18NValue(BillConstants.I18N_TutorialPayTitle)
             };
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont("Tap here to pay your bill."
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(BillConstants.I18N_TutorialPayDesc)
                 , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(14F));
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
@@ -434,10 +436,10 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Left,
-                Text = "Understand your bill."
+                Text = GetI18NValue(BillConstants.I18N_TutorialViewDetailsTitle)
             };
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont("‘View Details’ to review your bill breakdown."
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(BillConstants.I18N_TutorialViewDetailsDesc)
                 , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(14F));
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes
@@ -526,16 +528,16 @@ namespace myTNB
                 Font = TNBFont.MuseoSans_14_500,
                 TextColor = MyTNBColor.ButterScotch,
                 TextAlignment = UITextAlignment.Left,
-                Text = "Keep track of your charges."
+                Text = GetI18NValue(BillConstants.I18N_TutorialHistoryTitle)
             };
             string desc;
             if (IsREAccount)
             {
-                desc = "View and access your advices and payment receipts from the previous six months. Use the filter to see only advices or receipts.";
+                desc = GetI18NValue(BillConstants.I18N_TutorialHistoryREAcctDesc);
             }
             else
             {
-                desc = "View and access your bills and payment receipts from the previous six months. Use the filter to see only bills or receipts.";
+                desc = GetI18NValue(BillConstants.I18N_TutorialHistoryNormalAcctDesc);
             }
             NSError htmlBodyError = null;
             NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(desc
@@ -569,7 +571,7 @@ namespace myTNB
                 UserInteractionEnabled = true
             };
             btnGotIt.SetTitleColor(MyTNBColor.WaterBlue, UIControlState.Normal);
-            btnGotIt.SetTitle("Got it!", UIControlState.Normal);
+            btnGotIt.SetTitle(GetI18NValue(BillConstants.I18N_GotIt), UIControlState.Normal);
             btnGotIt.Layer.CornerRadius = GetScaledHeight(4F);
             btnGotIt.Layer.BorderColor = UIColor.White.CGColor;
             btnGotIt.TouchUpInside += (sender, e) =>
@@ -614,7 +616,7 @@ namespace myTNB
             _containerView.AddSubview(_footerView);
 
             NSError htmlBodyError = null;
-            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont("Swipe to see more,<br>double tap to dismiss."
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(LanguageUtility.GetCommonI18NValue(Constants.Common_SwipeText)
                 , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(12F));
             NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
             mutableHTMLBody.AddAttributes(new UIStringAttributes

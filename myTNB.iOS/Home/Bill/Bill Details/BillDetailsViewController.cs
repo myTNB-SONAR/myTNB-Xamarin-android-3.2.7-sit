@@ -196,6 +196,7 @@ namespace myTNB
 
             BillDetailsTutorialOverlay tutorialView = new BillDetailsTutorialOverlay(_tutorialContainer)
             {
+                GetI18NValue = GetI18NValue,
                 NavigationHeight = DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height,
                 OnDismissAction = HideTutorialOverlay,
                 ViewCTAContainerYPos = _viewCTAContainer.Frame.Y,

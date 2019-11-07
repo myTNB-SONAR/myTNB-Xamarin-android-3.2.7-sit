@@ -244,7 +244,8 @@ namespace myTNB
                 TutorialType = tutorialType,
                 OnDismissAction = HideTutorialOverlay,
                 ScrollTableToTheTop = ScrollTableToTheTop,
-                ScrollTableToTheBottom = ScrollTableToTheBottom
+                ScrollTableToTheBottom = ScrollTableToTheBottom,
+                GetI18NValue = GetI18NValue
             };
             _tutorialContainer.AddSubview(tutorialView.GetView());
 
