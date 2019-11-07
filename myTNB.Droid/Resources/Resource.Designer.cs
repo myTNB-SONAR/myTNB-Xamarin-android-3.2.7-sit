@@ -18605,6 +18605,9 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0a0200
 			public const int TextInputLayout_TextAppearance_Dark = 2131362304;
 			
+			// aapt resource value: 0x7f0a0200
+			public const int TextInputLayout_TextAppearance_Dark = 2131362304;
+			
 			// aapt resource value: 0x7f0a01ff
 			public const int TextInputLayout_TextAppearance_LightBackground = 2131362303;
 			
