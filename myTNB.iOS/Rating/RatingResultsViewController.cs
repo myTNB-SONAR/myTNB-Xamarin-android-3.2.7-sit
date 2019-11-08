@@ -76,7 +76,7 @@ namespace myTNB
                 Font = MyTNBFont.MuseoSans16,
                 BackgroundColor = MyTNBColor.FreshGreen
             };
-            _btnDashBoard.SetTitle(GetI18NValue(RatingConstants.I18N_BackToDashboard), UIControlState.Normal);
+            _btnDashBoard.SetTitle(GetI18NValue(RatingConstants.I18N_BackToHome), UIControlState.Normal);
             _btnDashBoard.Layer.CornerRadius = 5.0f;
             View.AddSubview(_btnDashBoard);
         }

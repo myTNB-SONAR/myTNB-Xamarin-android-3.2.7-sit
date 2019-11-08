@@ -44,7 +44,6 @@
         public static string Common_RefreshBtnText = "refreshNow";
         public static string Common_BCRMMessage = "bcrmMessage";
         public static string Common_All = "all";
-        public static string Common_Warning = "warning";
         public static string Common_Manage = "manage";
         public static string Common_Update = "update";
         public static string Common_Logout = "logout";

@@ -9,6 +9,6 @@
         public static string I18N_Pay = "pay";
         public static string I18N_Description = "description";
         public static string I18N_Thankyou = "thankyou";
-        public static string I18N_BackToDashboard = "backToDashboard";
+        public static string I18N_BackToHome = "backToHome";
     }
 }

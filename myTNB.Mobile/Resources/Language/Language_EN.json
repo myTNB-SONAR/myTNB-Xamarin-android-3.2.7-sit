@@ -64,7 +64,6 @@
     "back": "Back",
     "cards": "Credit / Debit Cards",
     "abort": "Abort",
-    "warning": "Warning",
     "manage": "Manage",
     "update": "Update",
     "logout": "Log Out",
@@ -135,8 +134,8 @@
     "invalid_mismatchedPassword": "Your new passwords do not match.",
     "invalid_fullname": "Invalid full name",
     "invalid_idnumber": "Invalid IC, ROC or Passport No.",
-    "invalid_mismatchedEmail": "Your email and confirmation email do not match.",
-    "error_duplicateAccountMessage": "This account number is already added on the list",
+    "invalid_mismatchedEmail": "The email addresses you entered do not match.",
+    "error_duplicateAccountMessage": "This account number has already been added to the list.",
     "error_duplicateAccountTitle": "Duplicate Account",
     "invalid_icNumber": "Invalid IC number.",
     "invalid_rocNumber": "Invalid ROC number.",
@@ -146,9 +145,9 @@
     "noDataConnectionMessage": "Please check your internet connection and try again.",
     "defaultErrorTitle": "Error",
     "defaultErrorMessage": "Sorry, something went wrong. Please try again later.",
-    "numberNotAvailable": "Number is not available right now. Please try again later.",
-    "ratingNotAvailable": "Rating is not available right now. Please try again later.",
-    "shareNotAvailable": "Sharing is not available right now. Please try again later."
+    "numberNotAvailable": "We're sorry but we can't find the number. Please try again in a while.",
+    "ratingNotAvailable": "We're sorry but we can't seem to perform this action. Please try again in a while.",
+    "shareNotAvailable": "We're sorry but sharing is currently unavailable. Please try again in a while."
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -404,10 +403,10 @@
     "tutorialPayTitle": "Pay without hassle.",
     "tutorialViewDetailsTitle": "Understand your bill.",
     "tutorialHistoryTitle": "Keep track of your charges.",
-    "tutorialBillREAcctDesc": "Tap “ ” to switch between different accounts. You’ll see how much you have earned or if you’ve been paid extra.",
-    "tutorialBillNormalAcctDesc": "Tap “ ” to switch between different accounts. You’ll see how much is due, if you’ve cleared your bill or if you’ve paid extra.",
+    "tutorialBillREAcctDesc": "Tap \"...\" to switch between different accounts. You’ll see how much you have earned or if you’ve been paid extra.",
+    "tutorialBillNormalAcctDesc": "Tap \"...\" to switch between different accounts. You’ll see how much is due, if you’ve cleared your bill or if you’ve paid extra.",
     "tutorialPayDesc": "Tap here to pay your bill.",
-    "tutorialViewDetailsDesc": "‘View Details’ to review your bill breakdown.",
+    "tutorialViewDetailsDesc": "\"View Details\" to review your bill breakdown.",
     "tutorialHistoryNormalAcctDesc": "View and access your bills and payment receipts from the previous six months. Use the filter to see only bills or receipts.",
     "tutorialHistoryREAcctDesc": "View and access your advices and payment receipts from the previous six months. Use the filter to see only advices or receipts.",
     "gotIt": "Got it!"
@@ -618,8 +617,8 @@
     "dontHaveAcct": "Don’t have a myTNB account?",
     "registerAcctNow": "Register for an account now.",
     "login": "Log In",
-    "emailRequired": "Email field is required.",
-    "passwordRequired": "Password field is required."
+    "emailRequired": "Please enter an email address.",
+    "passwordRequired": "Please enter a password."
   },
   "ForgotPassword": {
     "title": "Reset Password",
@@ -720,15 +719,15 @@
     "invalidCardNumber": "Invalid Card Number",
     "nameOnCard": "Name on Card",
     "invalidName": "Invalid name",
-    "cardExpiry": "Card Expiry",
+    "cardExpiry": "Card Expiration Date",
     "invalidCardExpiry": "Invalid card expiration date.",
-    "hintCardExpiry": "Card Expiry (MM/YY)",
+    "hintCardExpiry": "Card Expiration Date (MM/YY)",
     "cvv": "CVV",
     "invalidCVV": "Invalid CVV.",
     "saveCardMessage": "I want to save this card for future use.",
-    "emptyCardNumberTitle": "Empty Card Number",
-    "emptyCardNumberMessage": "Please enter valid card number and try again.",
-    "savedCardTitle": "Valid card number",
+    "emptyCardNumberTitle": "Card Number Invalid",
+    "emptyCardNumberMessage": "Please enter a valid card number and try again.",
+    "savedCardTitle": "This Card Was Saved Before",
     "savedCardMessage": "Seems like you are paying with an already saved Credit / Debit Card. Do you want to continue?"
   },
   "CardScanner": {
@@ -801,7 +800,7 @@
   "RatingResults": {
     "description": "Your rating will help us serve you better.",
     "thankyou": "Thank you.",
-    "backToDashboard": "Back to Dashboard"
+    "backToHome": "Back to Home"
   },
   "Promotions": {
     "title": "Promotions",

@@ -211,7 +211,7 @@ namespace myTNB
             }
             else
             {
-                DisplayGenericAlert(GetCommonI18NValue(Constants.Common_Warning), GetI18NValue(FindUsConstants.I18N_NoSupportedApp));
+                DisplayGenericAlert(GetErrorI18NValue(Constants.Error_DefaultErrorTitle), GetI18NValue(FindUsConstants.I18N_NoSupportedApp));
             }
         }
     }
