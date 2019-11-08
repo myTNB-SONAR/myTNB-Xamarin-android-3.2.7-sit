@@ -450,16 +450,16 @@ namespace myTNB
             UIView viewShimmerContent = new UIView(new CGRect(new CGPoint(0, 0), viewParent.Frame.Size)) { BackgroundColor = UIColor.Clear };
             viewParent.AddSubviews(new UIView[] { viewShimmerParent, viewShimmerContent });
 
-            UIView viewStatus = new UIView(new CGRect((BaseMarginedWidth - ScaleUtility.GetWidthByScreenSize(120)) / 2
-                , GetScaledHeight(16), ScaleUtility.GetWidthByScreenSize(120), GetScaledHeight(20)))
+            UIView viewStatus = new UIView(new CGRect((BaseMarginedWidth - ScaleUtility.GetWidthByScreenSize(104)) / 2
+                , GetScaledHeight(16), ScaleUtility.GetWidthByScreenSize(104), GetScaledHeight(20)))
             { BackgroundColor = MyTNBColor.PaleGrey };
 
-            UIView viewAmt = new UIView(new CGRect((BaseMarginedWidth - ScaleUtility.GetWidthByScreenSize(260)) / 2
-                , GetYLocationFromFrame(viewStatus.Frame, 8), ScaleUtility.GetWidthByScreenSize(260), GetScaledHeight(36)))
+            UIView viewAmt = new UIView(new CGRect((BaseMarginedWidth - ScaleUtility.GetWidthByScreenSize(192)) / 2
+                , GetYLocationFromFrame(viewStatus.Frame, 8), ScaleUtility.GetWidthByScreenSize(192), GetScaledHeight(36)))
             { BackgroundColor = MyTNBColor.PaleGrey };
 
-            UIView viewDate = new UIView(new CGRect((BaseMarginedWidth - ScaleUtility.GetWidthByScreenSize(120)) / 2
-                , GetYLocationFromFrame(viewAmt.Frame, 8), ScaleUtility.GetWidthByScreenSize(120), GetScaledHeight(20)))
+            UIView viewDate = new UIView(new CGRect((BaseMarginedWidth - ScaleUtility.GetWidthByScreenSize(104)) / 2
+                , GetYLocationFromFrame(viewAmt.Frame, 8), ScaleUtility.GetWidthByScreenSize(104), GetScaledHeight(20)))
             { BackgroundColor = MyTNBColor.PaleGrey };
 
             viewShimmerContent.AddSubviews(new UIView[] { viewStatus, viewAmt, viewDate });
