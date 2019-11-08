@@ -238,8 +238,15 @@ namespace myTNB
         {
             if (isSmartMeterAccount)
             {
-                _footerBGImage.Hidden = false;
-                ViewHelper.AdjustFrameSetY(_footerBGImage, GetYPosForBG(_viewSmartMeter));
+                if (!_viewSmartMeter.Hidden)
+                {
+                    _footerBGImage.Hidden = false;
+                    ViewHelper.AdjustFrameSetY(_footerBGImage, GetYPosForBG(_viewSmartMeter));
+                }
+                else
+                {
+                    _footerBGImage.Hidden = true;
+                }
             }
             else if (isREAccount)
             {
@@ -286,7 +293,7 @@ namespace myTNB
 
             AddFooterBGImage(_scrollViewContent);
 
-            _lblAddress = new UILabel(new CGRect(GetScaledWidth(50F), 0, ViewWidth - (GetScaledWidth(50F) * 2), 0))
+            _lblAddress = new UILabel(new CGRect(GetScaledWidth(32F), 0, ViewWidth - (GetScaledWidth(32F) * 2), 0))
             {
                 LineBreakMode = UILineBreakMode.WordWrap,
                 Lines = 0,
@@ -330,7 +337,7 @@ namespace myTNB
 
         private void SetContentView()
         {
-            _lblAddress.Frame = new CGRect(new CGPoint(GetScaledWidth(50F), 0), _lblAddress.Frame.Size);
+            _lblAddress.Frame = new CGRect(new CGPoint(GetScaledWidth(32F), 0), _lblAddress.Frame.Size);
             if (!_isEmptyData)
             {
                 if (!AccountStatusCache.AccountStatusIsAvailable() && !_viewStatus.Hidden)
@@ -402,14 +409,22 @@ namespace myTNB
                 }
                 else
                 {
-                    if (_viewSSMR.Hidden)
+                    if (isREAccount)
                     {
-                        _lastView = _viewChart;
+                        _viewRE.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, 24F)), _viewRE.Frame.Size);
+                        _lastView = _viewRE;
                     }
                     else
                     {
-                        _viewSSMR.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, 16F)), _viewSSMR.Frame.Size);
-                        _lastView = _viewSSMR;
+                        if (_viewSSMR.Hidden)
+                        {
+                            _lastView = _viewChart;
+                        }
+                        else
+                        {
+                            _viewSSMR.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, 32F)), _viewSSMR.Frame.Size);
+                            _lastView = _viewSSMR;
+                        }
                     }
                 }
             }
@@ -620,8 +635,9 @@ namespace myTNB
         internal void SetEmptyDataComponent(string message)
         {
             _isEmptyData = true;
-            ViewHelper.AdjustFrameSetHeight(_viewChart, GetHeightByScreenSize(229));
-            EmptyUsageComponent emptyUsageComponent = new EmptyUsageComponent(_viewChart)
+            _viewChart.BackgroundColor = UIColor.Clear;
+            var yPos = isREAccount || accountIsSSMR ? GetHeightByScreenSize(16F) : GetHeightByScreenSize(50F);
+            EmptyUsageComponent emptyUsageComponent = new EmptyUsageComponent(_viewChart, yPos)
             {
                 GetI18NValue = GetI18NValue
             };
@@ -630,6 +646,7 @@ namespace myTNB
                 _chart.RemoveFromSuperview();
             }
             _chart = emptyUsageComponent.GetUI(message);
+            ViewHelper.AdjustFrameSetHeight(_viewChart, emptyUsageComponent.GetView().Frame.Height);
             _viewChart.AddSubview(_chart);
             _viewToggle.Hidden = _isEmptyData;
             SetContentView();
@@ -738,6 +755,12 @@ namespace myTNB
                 toolTipTitle = toolTipItem.Title;
                 DisplayCustomAlert(toolTipTitle, toolTipMsg, toolTipBtnTitle, null);
             }
+        }
+
+        internal void HideSmartMeterComponent()
+        {
+            ViewHelper.AdjustFrameSetHeight(_viewSmartMeter, 0);
+            _viewSmartMeter.Hidden = true;
         }
         #endregion
         #region SSMR Methods
@@ -872,12 +895,12 @@ namespace myTNB
 
         internal virtual void OnReadHistoryTap()
         {
-            DataManager.DataManager.SharedInstance.IsSameAccount = true;
+            DataManager.DataManager.SharedInstance.IsSameAccount = false;
         }
 
         internal virtual void OnSubmitMeterTap()
         {
-            DataManager.DataManager.SharedInstance.IsSameAccount = true;
+            DataManager.DataManager.SharedInstance.IsSameAccount = false;
         }
 
         private void AddSSMRViewShadow(ref CustomUIView view)
