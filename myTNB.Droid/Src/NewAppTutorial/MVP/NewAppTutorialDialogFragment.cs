@@ -12,6 +12,7 @@ using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
 using myTNB_Android.Src.NewAppTutorial.Adapter;
+using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
@@ -155,6 +156,38 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                         }
                     }
                 }
+                else
+                {
+                    if (this.mContext is SSMRMeterHistoryActivity)
+                    {
+                        if (((SSMRMeterHistoryActivity)mContext).CheckIsScrollable())
+                        {
+                            string DisplayMode = NewAppTutorialList[0].DisplayMode;
+                            int topHeight = (int)DPUtils.ConvertDPToPx(255f);
+                            int middleHeight = (int)DPUtils.ConvertDPToPx(245f);
+                            int checkPoint = (int)DPUtils.ConvertDPToPx(50f);
+                            if (DisplayMode == "NONSMR")
+                            {
+                                middleHeight = (int)DPUtils.ConvertDPToPx(235f);
+                                checkPoint = (int)DPUtils.ConvertDPToPx(40f);
+                            }
+
+                            if (((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
+                            {
+                                ((SSMRMeterHistoryActivity)mContext).MeterHistoryCustomScrolling((int)DPUtils.ConvertDPToPx(30f));
+                            }
+                            else
+                            {
+                                ((SSMRMeterHistoryActivity)mContext).MeterHistoryCustomScrolling(0);
+                            }
+
+                        }
+                        else
+                        {
+                            ((SSMRMeterHistoryActivity)mContext).MeterHistoryCustomScrolling(0);
+                        }
+                    }
+                }
 
                 if (NewAppTutorialList.Count > 0)
                 {
@@ -177,12 +210,14 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                         {
                             int topHeight = (int)DPUtils.ConvertDPToPx(55f);
                             int middleHeight = (int)DPUtils.ConvertDPToPx(285f);
+                            int checkPoint = (int)DPUtils.ConvertDPToPx(200f);
                             if (DisplayMode == "Extra")
                             {
                                 middleHeight = (int)DPUtils.ConvertDPToPx(265f);
+                                checkPoint = (int)DPUtils.ConvertDPToPx(180f);
                             }
 
-                            if (((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - (int)DPUtils.ConvertDPToPx(200f))))
+                            if (((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
                             {
                                 txtSwipeSeeMore.Visibility = ViewStates.Gone;
                                 txtDoubleTapDismiss.Visibility = ViewStates.Gone;
@@ -531,6 +566,14 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
                 }
             }
+            else
+            {
+                if (this.mContext is SSMRMeterHistoryActivity)
+                {
+                    ((SSMRMeterHistoryActivity)mContext).MeterHistoryCustomScrolling(0);
+                }
+            }
+
         }
 
         public void CloseDialog()
@@ -545,6 +588,13 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                 else if (this.mFragment is ItemisedBillingMenuFragment)
                 {
                     ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                }
+            }
+            else
+            {
+                if (this.mContext is SSMRMeterHistoryActivity)
+                {
+                    ((SSMRMeterHistoryActivity)mContext).MeterHistoryCustomScrolling(0);
                 }
             }
         }
@@ -610,6 +660,11 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     if (this.mActivity is BillingDetailsActivity)
                     {
                         // UserSessions.DoItemizedBillingDetailTutorialShown(this.mPref);
+                    }
+                    else if (this.mActivity is SSMRMeterHistoryActivity)
+                    {
+                        ((SSMRMeterHistoryActivity)this.mActivity).MeterHistoryCustomScrolling(0);
+                        // UserSessions.DoSMRMeterHistoryTutorialShown(this.mPref);
                     }
                 }
                 return true;

@@ -200,6 +200,18 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
+        public static System.Boolean HasSMRMeterHistoryTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasSMRMeterHistoryTutorialShown", false);
+        }
+
+        public static void DoSMRMeterHistoryTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasSMRMeterHistoryTutorialShown", true);
+            editor.Apply();
+        }
+
         internal static void DoFlagResetPassword(ISharedPreferences mSharedPref)
         {
             ISharedPreferencesEditor editor = mSharedPref.Edit();

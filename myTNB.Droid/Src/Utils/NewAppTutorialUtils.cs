@@ -3,6 +3,7 @@ using Android.Support.V7.App;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
 using myTNB_Android.Src.NewAppTutorial.MVP;
+using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using System.Collections.Generic;
 
 namespace myTNB_Android.Src.Utils
@@ -28,6 +29,13 @@ namespace myTNB_Android.Src.Utils
                 else if (fragment is ItemisedBillingMenuFragment)
                 {
                     ((ItemisedBillingMenuFragment)fragment).StopScrolling();
+                }
+            }
+            else
+            {
+                if (ctx is SSMRMeterHistoryActivity)
+                {
+                    ((SSMRMeterHistoryActivity)ctx).StopScrolling();
                 }
             }
 

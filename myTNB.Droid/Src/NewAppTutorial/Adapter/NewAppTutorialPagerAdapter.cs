@@ -15,6 +15,7 @@ using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
 using myTNB_Android.Src.NewAppTutorial.MVP;
+using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
 using System;
 using System.Collections.Generic;
@@ -28,7 +29,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
         private Android.Support.V4.App.DialogFragment mDialog;
         private Android.App.Fragment mFragment;
         private ISharedPreferences mPref;
-        private bool isInitiate = false;
 
         public NewAppTutorialPagerAdapter(Activity ctx, Android.App.Fragment fragment, ISharedPreferences pref, Android.Support.V4.App.DialogFragment dialog, List<NewAppModel> items)
         {
@@ -247,11 +247,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 if (diffHeight < halfScroll)
                                 {
                                     topHeight = topHeight / 2;
-                                    if (!isInitiate)
-                                    {
-                                        ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(topHeight);
-                                        isInitiate = true;
-                                    }
                                 }
                             }
 
@@ -471,11 +466,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 if (diffHeight < halfScroll)
                                 {
                                     topHeight = topHeight / 2;
-                                    if (!isInitiate)
-                                    {
-                                        ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(topHeight);
-                                        isInitiate = true;
-                                    }
                                 }
                             }
 
@@ -642,11 +632,6 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 if (diffHeight < halfScroll)
                                 {
                                     topHeight = topHeight / 2;
-                                    if (!isInitiate)
-                                    {
-                                        ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(topHeight);
-                                        isInitiate = true;
-                                    }
                                 }
                             }
 
@@ -1118,13 +1103,11 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 checkPoint = (int)DPUtils.ConvertDPToPx(180f);
                             }
 
-                            if (((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
+                            if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                             {
-                                topHeight -= (int)DPUtils.ConvertDPToPx(15f);
-                                if (!isInitiate)
+                                if (((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
                                 {
-                                    ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling((int)DPUtils.ConvertDPToPx(15f));
-                                    isInitiate = true;
+                                    topHeight -= (int)DPUtils.ConvertDPToPx(15f);
                                 }
                             }
 
@@ -1250,13 +1233,11 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                                 checkPoint = (int)DPUtils.ConvertDPToPx(180f);
                             }
 
-                            if (((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
+                            if (((ItemisedBillingMenuFragment)this.mFragment).CheckIsScrollable())
                             {
-                                topHeight -= (int)DPUtils.ConvertDPToPx(15f);
-                                if (!isInitiate)
+                                if (((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
                                 {
-                                    ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling((int)DPUtils.ConvertDPToPx(15f));
-                                    isInitiate = true;
+                                    topHeight -= (int)DPUtils.ConvertDPToPx(15f);
                                 }
                             }
 
@@ -1487,6 +1468,50 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 innerTopLayout.RequestLayout();
 
             }
+            else if (this.mContext is SSMRMeterHistoryActivity)
+            {
+                int topHeight = (int)DPUtils.ConvertDPToPx(255f);
+                int middleHeight = (int)DPUtils.ConvertDPToPx(245f);
+                int checkPoint = (int)DPUtils.ConvertDPToPx(50f);
+                if (model.DisplayMode == "NONSMR")
+                {
+                    middleHeight = (int)DPUtils.ConvertDPToPx(235f);
+                    checkPoint = (int)DPUtils.ConvertDPToPx(40f);
+                }
+
+                if (((SSMRMeterHistoryActivity)this.mContext).CheckIsScrollable())
+                {
+                    if (((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
+                    {
+                        topHeight -= (int)DPUtils.ConvertDPToPx(30f);
+                    }
+                }
+
+                LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                topLayoutParam.Height = topHeight;
+                topLayout.RequestLayout();
+                LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                middleLayoutParam.Height = middleHeight;
+                middleLayout.RequestLayout();
+                LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                highlightedLeftLayout.RequestLayout();
+                LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels + (int)DPUtils.ConvertDPToPx(10f);
+                highlightedLayout.RequestLayout();
+                LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(0f);
+                highlightedRightLayout.RequestLayout();
+                LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                bottomLayout.RequestLayout();
+
+                RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(180f);
+                innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                innerTopLayout.RequestLayout();
+            }
 
             container.AddView(rootView);
             return rootView;
@@ -1514,6 +1539,11 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 if (this.mContext is BillingDetailsActivity)
                 {
                     // UserSessions.DoItemizedBillingDetailTutorialShown(this.mPref);
+                }
+                else if (this.mContext is SSMRMeterHistoryActivity)
+                {
+                    ((SSMRMeterHistoryActivity)this.mContext).MeterHistoryCustomScrolling(0);
+                    // UserSessions.DoSMRMeterHistoryTutorialShown(this.mPref);
                 }
             }
         }

@@ -162,6 +162,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     this.mView.HideProgressDialog();
                     SMRPopUpUtils.OnSetSMRActivityInfoResponse(SMRAccountActivityInfoResponse);
                     this.mView.UpdateUIForSMR(SMRAccountActivityInfoResponse);
+                    this.mView.OnShowSMRMeterReadingDialog();
                 }
                 else
                 {
@@ -292,7 +293,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             return smrEligibleAccountList;
         }
 
-        public List<NewAppModel> OnGeneraNewAppTutorialList()
+        public List<NewAppModel> OnGeneraNewAppTutorialList(bool isSMR)
         {
             List<NewAppModel> newList = new List<NewAppModel>();
 
@@ -302,7 +303,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 ContentTitle = "Your reading status at a glance.",
                 ContentMessage = "Switch between your accounts<br/>and get an overview of your<br/>meter reading status here.",
                 ItemCount = 0,
-                DisplayMode = "",
+                DisplayMode = isSMR? "SMR" : "NONSMR",
                 IsButtonShow = true
             });
 
