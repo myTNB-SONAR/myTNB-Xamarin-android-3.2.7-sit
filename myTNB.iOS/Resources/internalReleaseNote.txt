@@ -1,4 +1,8 @@
-Sprint 2C SIT Build
+Sprint 2 SIT Build
 
-- Added additional parameter to the GetAccountUsage API to cater for custom message based on account type
-[Bug] 3267: SSMR Termination : User is not able to terminate his SMR account.
+[User Story] 2566 [Walkthrough Screen and Tutorial Overlay] As a myTNB app user, I want to see the tutorial overlay for home screen, SSMR, bills & payment and SSMR on usage updates.
+[Bug] 2827 iOS: RE Usage Dashboard - Misalignment in Copy, Padding and Background Image
+[Bug] 3167 Homepage Redesign_iOS: Quick Actions and Need Help are not displaying in the home screen after payment
+[Bug] 3226 Homepage : Quick Action section is taking too much time to load on homepage
+[Bug] 3263 Regression_Sprint 2 : Without entering/ by clearing mobile number, Still user is observing validation error of invalid mobile number on Logged Out Submit Feedbacl
+[Bug] 3282 SMR Meter Reading : Submit Meter Reading on usage dashboard should be refresh after reading is submitted
