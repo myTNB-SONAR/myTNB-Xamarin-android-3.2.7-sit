@@ -1630,35 +1630,35 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 if (this.mFragment is HomeMenuFragment)
                 {
                     ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
-                    // UserSessions.DoHomeTutorialShown(this.mPref);
+                    UserSessions.DoHomeTutorialShown(this.mPref);
                 }
                 else if (this.mFragment is ItemisedBillingMenuFragment)
                 {
                     ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
-                    // UserSessions.DoItemizedBillingTutorialShown(this.mPref);
+                    UserSessions.DoItemizedBillingTutorialShown(this.mPref);
                 }
                 else if (this.mFragment is DashboardChartFragment)
                 {
                     ((DashboardChartFragment)this.mFragment).DashboardCustomScrolling(0);
                     ((DashboardChartFragment)this.mFragment).ShowBottomSheet();
-                    // UserSessions.DoSMRDashboardTutorialShown(this.mPref);
+                    UserSessions.DoSMRDashboardTutorialShown(this.mPref);
                 }
             }
             else
             {
                 if (this.mContext is BillingDetailsActivity)
                 {
-                    // UserSessions.DoItemizedBillingDetailTutorialShown(this.mPref);
+                    UserSessions.DoItemizedBillingDetailTutorialShown(this.mPref);
                 }
                 else if (this.mContext is SSMRMeterHistoryActivity)
                 {
                     ((SSMRMeterHistoryActivity)this.mContext).MeterHistoryCustomScrolling(0);
-                    // UserSessions.DoSMRMeterHistoryTutorialShown(this.mPref);
+                    UserSessions.DoSMRMeterHistoryTutorialShown(this.mPref);
                 }
                 if (this.mContext is SubmitMeterReadingActivity)
                 {
                     ((SubmitMeterReadingActivity)mContext).SubmitMeterCustomScrolling(0);
-                    // UserSessions.DoSMRSubmitMeterTutorialShown(this.mPref);
+                    UserSessions.DoSMRSubmitMeterTutorialShown(this.mPref);
                 }
             }
         }

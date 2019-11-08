@@ -693,35 +693,35 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     if (this.mFragment is HomeMenuFragment)
                     {
                         ((HomeMenuFragment)this.mFragment).HomeMenuCustomScrolling(0);
-                        // UserSessions.DoHomeTutorialShown(this.mPref);
+                        UserSessions.DoHomeTutorialShown(this.mPref);
                     }
                     else if (this.mFragment is ItemisedBillingMenuFragment)
                     {
                         ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
-                        // UserSessions.DoItemizedBillingTutorialShown(this.mPref);
+                        UserSessions.DoItemizedBillingTutorialShown(this.mPref);
                     }
                     else if (this.mFragment is DashboardChartFragment)
                     {
                         ((DashboardChartFragment)this.mFragment).DashboardCustomScrolling(0);
                         ((DashboardChartFragment)this.mFragment).ShowBottomSheet();
-                        // UserSessions.DoSMRDashboardTutorialShown(this.mPref);
+                        UserSessions.DoSMRDashboardTutorialShown(this.mPref);
                     }
                 }
                 else
                 {
                     if (this.mActivity is BillingDetailsActivity)
                     {
-                        // UserSessions.DoItemizedBillingDetailTutorialShown(this.mPref);
+                        UserSessions.DoItemizedBillingDetailTutorialShown(this.mPref);
                     }
                     else if (this.mActivity is SSMRMeterHistoryActivity)
                     {
                         ((SSMRMeterHistoryActivity)this.mActivity).MeterHistoryCustomScrolling(0);
-                        // UserSessions.DoSMRMeterHistoryTutorialShown(this.mPref);
+                        UserSessions.DoSMRMeterHistoryTutorialShown(this.mPref);
                     }
                     else if (this.mActivity is SubmitMeterReadingActivity)
                     {
                         ((SubmitMeterReadingActivity)mActivity).SubmitMeterCustomScrolling(0);
-                        // UserSessions.DoSMRSubmitMeterTutorialShown(this.mPref);
+                        UserSessions.DoSMRSubmitMeterTutorialShown(this.mPref);
                     }
                 }
                 return true;

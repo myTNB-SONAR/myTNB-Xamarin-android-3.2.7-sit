@@ -7826,6 +7826,49 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 StopScrolling();
             });
+
+            if (ChartDataType != ChartDataType.RM)
+            {
+                rmKwhSelectDropdown.Visibility = ViewStates.Gone;
+                rmKwhLabel.Text = "RM  ";
+                rmLabel.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
+                kwhLabel.SetTextColor(Resources.GetColor(Resource.Color.new_grey));
+                isShowAnimationDisable = true;
+                ShowByRM();
+            }
+
+            if (tarifToggle.Enabled && isToggleTariff)
+            {
+                try
+                {
+                    imgTarifToggle.SetImageResource(Resource.Drawable.eye);
+                    txtTarifToggle.Text = "Show Tariff";
+                    isToggleTariff = false;
+                    if (isChangeBackgroundNeeded)
+                    {
+                        if (isSMAccount)
+                        {
+                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                        }
+                        else if (isSMR)
+                        {
+                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
+                        }
+                        else
+                        {
+                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                        }
+                    }
+
+                    mChart.Clear();
+                    SetUp();
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
+            }
+
             NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList());
         }
 
