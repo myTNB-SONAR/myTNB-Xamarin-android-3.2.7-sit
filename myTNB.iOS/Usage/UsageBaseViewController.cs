@@ -895,12 +895,12 @@ namespace myTNB
 
         internal virtual void OnReadHistoryTap()
         {
-            DataManager.DataManager.SharedInstance.IsSameAccount = true;
+            DataManager.DataManager.SharedInstance.IsSameAccount = false;
         }
 
         internal virtual void OnSubmitMeterTap()
         {
-            DataManager.DataManager.SharedInstance.IsSameAccount = true;
+            DataManager.DataManager.SharedInstance.IsSameAccount = false;
         }
 
         private void AddSSMRViewShadow(ref CustomUIView view)
