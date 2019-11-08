@@ -1,5 +1,6 @@
 ﻿using Android.Content;
 using Android.Support.V7.App;
+using myTNB_Android.Src.myTNBMenu.Fragments;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
 using myTNB_Android.Src.NewAppTutorial.MVP;
@@ -30,6 +31,10 @@ namespace myTNB_Android.Src.Utils
                 else if (fragment is ItemisedBillingMenuFragment)
                 {
                     ((ItemisedBillingMenuFragment)fragment).StopScrolling();
+                }
+                else if (fragment is DashboardChartFragment)
+                {
+                    ((DashboardChartFragment)fragment).StopScrolling();
                 }
             }
             else

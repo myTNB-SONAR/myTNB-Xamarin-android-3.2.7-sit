@@ -9,6 +9,7 @@ using myTNB.SitecoreCMS.Model;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.NewAppTutorial.MVP;
 
 namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
 {
@@ -147,6 +148,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void ShowBillDetails(AccountData accountData, List<AccountChargeModel> selectedAccountChargesModelList);
 
             bool GetIsREAccount();
+
+            void OnShowDashboardFragmentTutorialDialog();
         }
 
         public interface IUserActionsListener : IBasePresenter
@@ -205,6 +208,8 @@ namespace myTNB_Android.Src.myTNBMenu.MVP.Fragment
             void OnByMonth();
 
             void OnByZoom();
+
+            List<NewAppModel> OnGeneraNewAppTutorialList();
         }
     }
 }

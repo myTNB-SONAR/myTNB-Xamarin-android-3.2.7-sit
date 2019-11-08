@@ -12,6 +12,7 @@ using Android.Views;
 using Android.Widget;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Billing.MVP;
+using myTNB_Android.Src.myTNBMenu.Fragments;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
 using myTNB_Android.Src.NewAppTutorial.MVP;
@@ -1432,6 +1433,37 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                         }
                     }
                 }
+                else if (this.mFragment is DashboardChartFragment)
+                {
+                    int topHeight = ((DashboardChartFragment)this.mFragment).GetSMRCardLocation() + (int)DPUtils.ConvertDPToPx(63f);
+                    int middleHeight = ((DashboardChartFragment)this.mFragment).GetSMRCardHeight() - (int)DPUtils.ConvertDPToPx(13f);
+
+                    LinearLayout.LayoutParams topLayoutParam = topLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    topLayoutParam.Height = topHeight;
+                    topLayout.RequestLayout();
+                    LinearLayout.LayoutParams middleLayoutParam = middleLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    middleLayoutParam.Height = middleHeight;
+                    middleLayout.RequestLayout();
+                    LinearLayout.LayoutParams highlightedLeftLayoutParam = highlightedLeftLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    highlightedLeftLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
+                    highlightedLeftLayout.RequestLayout();
+                    LinearLayout.LayoutParams highlightedLayoutParam = highlightedLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    highlightedLayoutParam.Width = this.mContext.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(32f);
+                    highlightedLayout.RequestLayout();
+                    LinearLayout.LayoutParams highlightedRightLayoutParam = highlightedRightLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    highlightedRightLayoutParam.Width = (int)DPUtils.ConvertDPToPx(16f);
+                    highlightedRightLayout.RequestLayout();
+                    LinearLayout.LayoutParams bottomLayoutParam = bottomLayout.LayoutParameters as LinearLayout.LayoutParams;
+                    bottomLayoutParam.Height = ViewGroup.LayoutParams.MatchParent;
+                    bottomLayout.RequestLayout();
+
+                    RelativeLayout.LayoutParams innerTopLayoutParam = innerTopLayout.LayoutParameters as RelativeLayout.LayoutParams;
+                    innerTopLayoutParam.Height = (int)DPUtils.ConvertDPToPx(180f);
+                    innerTopLayoutParam.LeftMargin = (int)DPUtils.ConvertDPToPx(32f);
+                    innerTopLayoutParam.RightMargin = (int)DPUtils.ConvertDPToPx(0f);
+                    innerTopLayout.RequestLayout();
+
+                }
             }
             else if (this.mContext is BillingDetailsActivity)
             {
@@ -1604,6 +1636,12 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                 {
                     ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
                     // UserSessions.DoItemizedBillingTutorialShown(this.mPref);
+                }
+                else if (this.mFragment is DashboardChartFragment)
+                {
+                    ((DashboardChartFragment)this.mFragment).DashboardCustomScrolling(0);
+                    ((DashboardChartFragment)this.mFragment).ShowBottomSheet();
+                    // UserSessions.DoSMRDashboardTutorialShown(this.mPref);
                 }
             }
             else

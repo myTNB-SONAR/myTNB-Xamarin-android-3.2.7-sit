@@ -9,6 +9,7 @@ using Android.Views;
 using Android.Widget;
 using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Billing.MVP;
+using myTNB_Android.Src.myTNBMenu.Fragments;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
 using myTNB_Android.Src.NewAppTutorial.Adapter;
@@ -154,6 +155,18 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                         else
                         {
                             ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                        }
+                    }
+                    else if (this.mFragment is DashboardChartFragment)
+                    {
+                        if (((DashboardChartFragment)this.mFragment).CheckIsScrollable())
+                        {
+                            ((DashboardChartFragment)this.mFragment).DashboardCustomScrolling(((DashboardChartFragment)this.mFragment).OnGetEndOfScrollView());
+                        }
+                        else
+                        {
+                            ((DashboardChartFragment)this.mFragment).DashboardCustomScrolling(0);
+                            ((DashboardChartFragment)this.mFragment).HideBottomSheet();
                         }
                     }
                 }
@@ -580,6 +593,11 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                 {
                     ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
                 }
+                else if (this.mFragment is DashboardChartFragment)
+                {
+                    ((DashboardChartFragment)this.mFragment).DashboardCustomScrolling(0);
+                    ((DashboardChartFragment)this.mFragment).ShowBottomSheet();
+                }
             }
             else
             {
@@ -607,6 +625,11 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                 else if (this.mFragment is ItemisedBillingMenuFragment)
                 {
                     ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
+                }
+                else if (this.mFragment is DashboardChartFragment)
+                {
+                    ((DashboardChartFragment)this.mFragment).DashboardCustomScrolling(0);
+                    ((DashboardChartFragment)this.mFragment).ShowBottomSheet();
                 }
             }
             else
@@ -676,6 +699,12 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     {
                         ((ItemisedBillingMenuFragment)this.mFragment).ItemizedBillingCustomScrolling(0);
                         // UserSessions.DoItemizedBillingTutorialShown(this.mPref);
+                    }
+                    else if (this.mFragment is DashboardChartFragment)
+                    {
+                        ((DashboardChartFragment)this.mFragment).DashboardCustomScrolling(0);
+                        ((DashboardChartFragment)this.mFragment).ShowBottomSheet();
+                        // UserSessions.DoSMRDashboardTutorialShown(this.mPref);
                     }
                 }
                 else

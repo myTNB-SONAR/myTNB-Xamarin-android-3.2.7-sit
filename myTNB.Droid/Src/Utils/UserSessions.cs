@@ -224,6 +224,18 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
+        public static System.Boolean HasSMRDashboardTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasSMRDashboardTutorialShown", false);
+        }
+
+        public static void DoSMRDashboardTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasSMRDashboardTutorialShown", true);
+            editor.Apply();
+        }
+
         internal static void DoFlagResetPassword(ISharedPreferences mSharedPref)
         {
             ISharedPreferencesEditor editor = mSharedPref.Edit();
