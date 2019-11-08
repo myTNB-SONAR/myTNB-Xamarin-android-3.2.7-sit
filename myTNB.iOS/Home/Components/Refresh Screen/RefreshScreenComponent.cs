@@ -43,8 +43,8 @@ namespace myTNB.Home.Components
                 Image = UIImage.FromBundle(_isBCRMDown ? Constants.IMG_BCRMDownIcon : Constants.IMG_RefreshIcon)
             };
 
-            var descMsg = !string.IsNullOrEmpty(_descriptionMessage) || !string.IsNullOrWhiteSpace(_descriptionMessage) ? _descriptionMessage : GetCommonI18NValue(Constants.Common_RefreshMessage);
-            var btnText = (!string.IsNullOrEmpty(_buttonText)) || !string.IsNullOrWhiteSpace(_buttonText) ? _buttonText : GetCommonI18NValue(Constants.Common_RefreshBtnText);
+            var descMsg = !string.IsNullOrEmpty(_descriptionMessage) && !string.IsNullOrWhiteSpace(_descriptionMessage) ? _descriptionMessage : GetCommonI18NValue(Constants.Common_RefreshMessage);
+            var btnText = (!string.IsNullOrEmpty(_buttonText)) && !string.IsNullOrWhiteSpace(_buttonText) ? _buttonText : GetCommonI18NValue(Constants.Common_RefreshBtnText);
 
             NSMutableParagraphStyle msgParagraphStyle = new NSMutableParagraphStyle
             {
@@ -73,7 +73,7 @@ namespace myTNB.Home.Components
             nfloat buttonWidth = (float)(_viewContainer.Frame.Width - (buttonPadding * 2));
             nfloat buttonHeight = GetScaledHeight(48f);
 
-            _txtDescription = new UITextView(new CGRect(descPadding, _iconView.Frame.GetMaxY() + GetScaledHeight(18f), labelWidth, 90f))
+            _txtDescription = new UITextView(new CGRect(descPadding, _iconView.Frame.GetMaxY() + GetScaledHeight(18F), labelWidth, 0))
             {
                 BackgroundColor = UIColor.Clear,
                 Editable = false,
@@ -84,7 +84,7 @@ namespace myTNB.Home.Components
             NSError htmlError = null;
             try
             {
-                NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(descMsg, ref htmlError, MyTNBFont.FONTNAME_300, 12f);
+                NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(descMsg, ref htmlError, TNBFont.FONTNAME_300, (float)TNBFont.GetFontSize(14F));
                 if (htmlBody != null)
                 {
                     NSMutableAttributedString mutableDowntime = new NSMutableAttributedString(htmlBody);
@@ -138,12 +138,12 @@ namespace myTNB.Home.Components
                     }));
             }
 
-            CGSize cGSize = _txtDescription.SizeThatFits(new CGSize(labelWidth, 1000f));
-            _txtDescription.Frame = new CGRect(descPadding, _iconView.Frame.GetMaxY() + BaseMarginWidth16, labelWidth, cGSize.Height);
+            CGSize cGSize = _txtDescription.SizeThatFits(new CGSize(labelWidth, 1000F));
+            ViewHelper.AdjustFrameHeight(_txtDescription, cGSize.Height);
 
             _btnRefresh = new UIButton(UIButtonType.Custom)
             {
-                Frame = new CGRect(buttonPadding, _txtDescription.Frame.GetMaxY() + buttonPadding, buttonWidth, buttonHeight),
+                Frame = new CGRect(buttonPadding, _txtDescription.Frame.GetMaxY() + GetScaledHeight(12F), buttonWidth, buttonHeight),
                 Hidden = _isBtnHidden,
                 BackgroundColor = UIColor.White,
                 Font = TNBFont.MuseoSans_16_500
