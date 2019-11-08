@@ -125,6 +125,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
 
 
         const string SELECTED_ACCOUNT_KEY = "SELECTED_ACCOUNT";
+        private bool isFiltered = false;
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -159,12 +160,13 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             if (isShow)
             {
                 ((DashboardHomeActivity)this.Activity).SetToolBarTitle("My History");
-                this.billFilterMenuItem.SetVisible(true);
+                billFilterMenuItem.SetVisible(true);
+                UpdateFilterIcon();
             }
             else
             {
                 ((DashboardHomeActivity)this.Activity).SetToolBarTitle("Bills");
-                this.billFilterMenuItem.SetVisible(false);
+                billFilterMenuItem.SetVisible(false);
             }
         }
 
@@ -367,6 +369,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             {
                 filterItem.selected = (filterItem.type == selectedFilter.type) ? true : false;
             });
+            isFiltered = (selectedFilter.type == "ALL") ? false : true;
             RenderBillingHistoryList(selectedFilter.type);
         }
 
@@ -375,6 +378,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             itemisedBillingList.RemoveAllViews();
             ItemisedBillingGroupComponent itemisedBillingGroupComponent;
             List<AccountBillPayHistoryModel> filteredBillingList = new List<AccountBillPayHistoryModel>();
+            UpdateFilterIcon();
             if (string.IsNullOrEmpty(historyType) || historyType == "ALL")
             {
                 filteredBillingList.AddRange(selectedBillingHistoryModelList);
@@ -750,6 +754,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu
             billFilterMenuItem.SetIcon(ContextCompat.GetDrawable(this.Activity, Resource.Drawable.bill_screen_filter_icon));
             billFilterMenuItem.SetVisible(false);
             base.OnCreateOptionsMenu(menu, inflater);
+        }
+
+        private void UpdateFilterIcon()
+        {
+            if (isFiltered)
+            {
+                billFilterMenuItem.SetIcon(Resource.Drawable.filter_filled);
+                billFilterIcon.SetImageResource(Resource.Drawable.filter_blue);
+            }
+            else
+            {
+                billFilterMenuItem.SetIcon(Resource.Drawable.filter_white);
+                billFilterIcon.SetImageResource(Resource.Drawable.bill_screen_filter_icon);
+            }
         }
     }
 }
