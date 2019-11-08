@@ -66,15 +66,28 @@ namespace myTNB
         internal override void OnSubmitMeterTap()
         {
             base.OnSubmitMeterTap();
-            UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
-            SSMRReadMeterViewController viewController =
-                storyBoard.InstantiateViewController("SSMRReadMeterViewController") as SSMRReadMeterViewController;
-            if (viewController != null)
+            if (SSMRActivityInfoCache.DashboardPreviousReading != null &&
+                SSMRActivityInfoCache.DashboardPreviousReading.Count > 0)
             {
-                viewController.IsFromDashboard = true;
-                UINavigationController navController = new UINavigationController(viewController);
-                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                PresentViewController(navController, true, null);
+                UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+                SSMRReadMeterViewController viewController =
+                    storyBoard.InstantiateViewController("SSMRReadMeterViewController") as SSMRReadMeterViewController;
+                if (viewController != null)
+                {
+                    viewController.IsFromDashboard = true;
+                    UINavigationController navController = new UINavigationController(viewController);
+                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                    PresentViewController(navController, true, null);
+                }
+            }
+            else
+            {
+                var title = SSMRActivityInfoCache.DashboardDataModel.DisplayTitle;
+                var msg = SSMRActivityInfoCache.DashboardDataModel.DisplayMessage;
+                string displayTitle = (!string.IsNullOrEmpty(title) && !string.IsNullOrWhiteSpace(title)) ? title : "Sorry, we are unable to perform this action right now.";
+                string displayMsg = (!string.IsNullOrEmpty(msg) && !string.IsNullOrWhiteSpace(msg)) ? msg : "Please try again later. If this problem persists, contact the <b><a href=\"tel: 1300885454\">TNB Careline</a></b> and we will help you.";
+
+                DisplayCustomAlert(displayTitle, displayMsg, GetCommonI18NValue(Constants.Common_GotIt), null);
             }
         }
         internal override void OnViewDetailsButtonTap()

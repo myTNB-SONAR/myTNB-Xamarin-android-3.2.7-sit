@@ -16,11 +16,13 @@ namespace myTNB
         private static List<PopupSelectorModel> SMRPhotoPopUpList;
 
         //Dashboard Cache
+        private static SMRAccountActivityInfoDataModel DB_DataModel = new SMRAccountActivityInfoDataModel();
         private static MeterReadingHistoryModel DB_MeterReadingHistory = new MeterReadingHistoryModel();
         private static List<MeterReadingHistoryItemModel> DB_ReadingHistoryList = new List<MeterReadingHistoryItemModel>();
         private static List<SMRMROValidateRegisterDetailsInfoModel> DB_SSMRPreviousMeterReadingList = new List<SMRMROValidateRegisterDetailsInfoModel>();
 
         //Reading History Cache
+        private static SMRAccountActivityInfoDataModel RH_DataModel = new SMRAccountActivityInfoDataModel();
         private static MeterReadingHistoryModel RH_MeterReadingHistory = new MeterReadingHistoryModel();
         private static List<MeterReadingHistoryItemModel> RH_ReadingHistoryList = new List<MeterReadingHistoryItemModel>();
         private static List<SMRMROValidateRegisterDetailsInfoModel> RH_SSMRPreviousMeterReadingList = new List<SMRMROValidateRegisterDetailsInfoModel>();
@@ -31,6 +33,7 @@ namespace myTNB
 
         public static void SetDashboardCache(SMRAccountActivityInfoResponseModel data, CustomerAccountRecordModel account)
         {
+            DB_DataModel = data.d.DeepClone();
             DB_MeterReadingHistory = data.d.data.DeepClone();
             DB_ReadingHistoryList = data.d.data.MeterReadingHistory.DeepClone();
             DB_SSMRPreviousMeterReadingList = data.d.data.SMRMROValidateRegisterDetails.DeepClone();
@@ -40,6 +43,7 @@ namespace myTNB
 
         public static void SetReadingHistoryCache(SMRAccountActivityInfoResponseModel data, CustomerAccountRecordModel account)
         {
+            RH_DataModel = data.d.DeepClone();
             RH_MeterReadingHistory = data.d.data.DeepClone();
             RH_ReadingHistoryList = data.d.data.MeterReadingHistory.DeepClone();
             RH_SSMRPreviousMeterReadingList = data.d.data.SMRMROValidateRegisterDetails.DeepClone();
@@ -52,6 +56,22 @@ namespace myTNB
         public static CustomerAccountRecordModel DashboardAccount { get; private set; } = new CustomerAccountRecordModel();
 
         public static CustomerAccountRecordModel ViewHistoryAccount { get; private set; } = new CustomerAccountRecordModel();
+
+        public static SMRAccountActivityInfoDataModel DashboardDataModel
+        {
+            get
+            {
+                return DB_DataModel ?? new SMRAccountActivityInfoDataModel();
+            }
+        }
+
+        public static SMRAccountActivityInfoDataModel ViewDataModel
+        {
+            get
+            {
+                return RH_DataModel ?? new SMRAccountActivityInfoDataModel();
+            }
+        }
 
         public static MeterReadingHistoryModel DashboardMeterReadingHistory
         {
