@@ -180,6 +180,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                             {
                                 smrResponse = JsonConvert.DeserializeObject<SMRActivityInfoResponse>(extras.GetString(Constants.SMR_RESPONSE_KEY));
                                 UpdateUIForSMR(smrResponse);
+                                this.mPresenter.CheckIsBtnSubmitHide(smrResponse);
                                 isSMR = true;
                                 isTutorialShown = true;
                             }

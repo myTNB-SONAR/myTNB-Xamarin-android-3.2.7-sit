@@ -212,6 +212,18 @@ namespace myTNB_Android.Src.Utils
             editor.Apply();
         }
 
+        public static System.Boolean HasSMRSubmitMeterTutorialShown(ISharedPreferences prefs)
+        {
+            return prefs.GetBoolean("hasSMRSubmitMeterTutorialShown", false);
+        }
+
+        public static void DoSMRSubmitMeterTutorialShown(ISharedPreferences prefs)
+        {
+            ISharedPreferencesEditor editor = prefs.Edit();
+            editor.PutBoolean("hasSMRSubmitMeterTutorialShown", true);
+            editor.Apply();
+        }
+
         internal static void DoFlagResetPassword(ISharedPreferences mSharedPref)
         {
             ISharedPreferencesEditor editor = mSharedPref.Edit();

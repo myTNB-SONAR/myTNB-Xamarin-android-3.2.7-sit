@@ -12,6 +12,7 @@ using myTNB_Android.Src.Billing.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
 using myTNB_Android.Src.NewAppTutorial.Adapter;
+using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
 using System;
@@ -163,6 +164,7 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                         if (((SSMRMeterHistoryActivity)mContext).CheckIsScrollable())
                         {
                             string DisplayMode = NewAppTutorialList[0].DisplayMode;
+                            int ItemCount = NewAppTutorialList[0].ItemCount;
                             int topHeight = (int)DPUtils.ConvertDPToPx(255f);
                             int middleHeight = (int)DPUtils.ConvertDPToPx(245f);
                             int checkPoint = (int)DPUtils.ConvertDPToPx(50f);
@@ -170,6 +172,12 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                             {
                                 middleHeight = (int)DPUtils.ConvertDPToPx(235f);
                                 checkPoint = (int)DPUtils.ConvertDPToPx(40f);
+                            }
+
+                            if (ItemCount == 1)
+                            {
+                                middleHeight = (int)DPUtils.ConvertDPToPx(190f);
+                                checkPoint = 0;
                             }
 
                             if (((topHeight + middleHeight) > (this.mContext.Resources.DisplayMetrics.HeightPixels - checkPoint)))
@@ -185,6 +193,13 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                         else
                         {
                             ((SSMRMeterHistoryActivity)mContext).MeterHistoryCustomScrolling(0);
+                        }
+                    }
+                    else if (this.mContext is SubmitMeterReadingActivity)
+                    {
+                        if (((SubmitMeterReadingActivity)mContext).CheckIsScrollable())
+                        {
+                            ((SubmitMeterReadingActivity)mContext).SubmitMeterCustomScrolling(0);
                         }
                     }
                 }
@@ -572,6 +587,10 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                 {
                     ((SSMRMeterHistoryActivity)mContext).MeterHistoryCustomScrolling(0);
                 }
+                else if (this.mContext is SubmitMeterReadingActivity)
+                {
+                    ((SubmitMeterReadingActivity)mContext).SubmitMeterCustomScrolling(0);
+                }
             }
 
         }
@@ -595,6 +614,10 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                 if (this.mContext is SSMRMeterHistoryActivity)
                 {
                     ((SSMRMeterHistoryActivity)mContext).MeterHistoryCustomScrolling(0);
+                }
+                else if (this.mContext is SubmitMeterReadingActivity)
+                {
+                    ((SubmitMeterReadingActivity)mContext).SubmitMeterCustomScrolling(0);
                 }
             }
         }
@@ -665,6 +688,11 @@ namespace myTNB_Android.Src.NewAppTutorial.MVP
                     {
                         ((SSMRMeterHistoryActivity)this.mActivity).MeterHistoryCustomScrolling(0);
                         // UserSessions.DoSMRMeterHistoryTutorialShown(this.mPref);
+                    }
+                    else if (this.mActivity is SubmitMeterReadingActivity)
+                    {
+                        ((SubmitMeterReadingActivity)mActivity).SubmitMeterCustomScrolling(0);
+                        // UserSessions.DoSMRSubmitMeterTutorialShown(this.mPref);
                     }
                 }
                 return true;

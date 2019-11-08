@@ -3,6 +3,7 @@ using Android.Support.V7.App;
 using myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu;
 using myTNB_Android.Src.NewAppTutorial.MVP;
+using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using System.Collections.Generic;
 
@@ -36,6 +37,10 @@ namespace myTNB_Android.Src.Utils
                 if (ctx is SSMRMeterHistoryActivity)
                 {
                     ((SSMRMeterHistoryActivity)ctx).StopScrolling();
+                }
+                else if (ctx is SubmitMeterReadingActivity)
+                {
+                    ((SubmitMeterReadingActivity)ctx).StopScrolling();
                 }
             }
 

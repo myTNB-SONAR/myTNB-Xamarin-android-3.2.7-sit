@@ -26,6 +26,9 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         SMRregistrationApi api;
         SSMRTerminateImpl terminationApi;
         CancellationTokenSource cts;
+
+        private bool isSubmitButtonHide = false;
+
         public SSMRMeterHistoryPresenter(SSMRMeterHistoryContract.IView view)
         {
             mView = view;
@@ -162,6 +165,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     this.mView.HideProgressDialog();
                     SMRPopUpUtils.OnSetSMRActivityInfoResponse(SMRAccountActivityInfoResponse);
                     this.mView.UpdateUIForSMR(SMRAccountActivityInfoResponse);
+                    CheckIsBtnSubmitHide(SMRAccountActivityInfoResponse);
                     this.mView.OnShowSMRMeterReadingDialog();
                 }
                 else
@@ -293,6 +297,19 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             return smrEligibleAccountList;
         }
 
+        public void CheckIsBtnSubmitHide(SMRActivityInfoResponse SMRAccountActivityInfoResponse)
+        {
+            if (SMRAccountActivityInfoResponse.Response.Data.DashboardCTAType == Constants.SMR_SUBMIT_METER_KEY && SMRAccountActivityInfoResponse.Response.Data.isCurrentPeriodSubmitted == "false"
+                && SMRAccountActivityInfoResponse.Response.Data.isDashboardCTADisabled == "false")
+            {
+                isSubmitButtonHide = false;
+            }
+            else
+            {
+                isSubmitButtonHide = true;
+            }
+        }
+
         public List<NewAppModel> OnGeneraNewAppTutorialList(bool isSMR)
         {
             List<NewAppModel> newList = new List<NewAppModel>();
@@ -302,7 +319,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 ContentShowPosition = ContentType.TopLeft,
                 ContentTitle = "Your reading status at a glance.",
                 ContentMessage = "Switch between your accounts<br/>and get an overview of your<br/>meter reading status here.",
-                ItemCount = 0,
+                ItemCount = isSubmitButtonHide ? 1 : 0,
                 DisplayMode = isSMR? "SMR" : "NONSMR",
                 IsButtonShow = true
             });

@@ -30,6 +30,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             void GetSSMRAccountStatus(string accountNumber);
             void GetCARegisteredContactInfoAsync(AccountData selectedAccount);
             List<NewAppModel> OnGeneraNewAppTutorialList(bool isSMR);
+            void CheckIsBtnSubmitHide(SMRActivityInfoResponse SMRAccountActivityInfoResponse);
         }
 
         public interface IApiNotification

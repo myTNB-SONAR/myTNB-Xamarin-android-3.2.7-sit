@@ -7,6 +7,7 @@ using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Database.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.SSMR.SSMRBase.MVP;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.Api;
 using myTNB_Android.Src.Utils;
@@ -368,6 +369,32 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 meterReadingModelList.Add(meterReadingModel);
             });
             return meterReadingModelList;
+        }
+
+        public List<NewAppModel> OnGeneraNewAppTutorialList()
+        {
+            List<NewAppModel> newList = new List<NewAppModel>();
+
+            bool isOCRDown = false;
+
+            MasterDataObj currentMasterData = MyTNBAccountManagement.GetInstance().GetCurrentMasterData().Data;
+            bool smrAccountOCRDown = SMRPopUpUtils.OnGetIsOCRDownFlag();
+            if (currentMasterData.IsOCRDown || smrAccountOCRDown)
+            {
+                isOCRDown = true;
+            }
+
+            newList.Add(new NewAppModel()
+            {
+                ContentShowPosition = isOCRDown ? ContentType.BottomLeft : ContentType.TopLeft,
+                ContentTitle = "Enter your meter reading here.",
+                ContentMessage = "Enter according to its unit(s).<br/>You’ll see your previous month's<br/>reading as a reference.",
+                ItemCount = 0,
+                DisplayMode = isOCRDown ? "DOWN" : "UP",
+                IsButtonShow = true
+            });
+
+            return newList;
         }
     }
 }
