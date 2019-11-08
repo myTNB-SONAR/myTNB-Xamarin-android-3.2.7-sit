@@ -232,38 +232,8 @@ namespace myTNB_Android.Src.AddAccount.Fragment
                     string accountLabel = edtAccountLabel.Text.Trim();
                     if (e.HasFocus)
                     {
-
-                        if (!string.IsNullOrEmpty(accountLabel))
-                        {
-                            if (!Utility.isAlphaNumeric(accountLabel))
-                            {
-                                ShowEnterValidAccountName();
-                            }
-                            else
-                            {
-                                textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
-                                textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
-                            }
-                        }
-                        else
-                        {
-                            textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
-                            textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
-                        }
-
-                    }
-                    else
-                    {
-
-                        if (!string.IsNullOrEmpty(accountLabel))
-                        {
-                            if (!Utility.isAlphaNumeric(accountLabel))
-                            {
-                                ShowEnterValidAccountName();
-                            }
-                        }
-
-
+                        textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutFeedbackCount);
+                        textInputLayoutAccountLabel.Error = "e.g. My House, Parent's House";
                     }
                 };
 
@@ -589,7 +559,6 @@ namespace myTNB_Android.Src.AddAccount.Fragment
 
         public void RemoveNameErrorMessage()
         {
-            textInputLayoutAccountLabel.SetErrorTextAppearance(Resource.Style.TextInputLayoutBottomErrorHint);
             textInputLayoutAccountLabel.Error = "";
         }
 
