@@ -87,6 +87,9 @@ namespace myTNB_Android.Src.Billing.MVP
         [BindView(Resource.Id.btnViewBill)]
         Button btnViewBill;
 
+        [BindView(Resource.Id.bottomLayout)]
+        LinearLayout bottomLayout;
+
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
 
@@ -404,7 +407,12 @@ namespace myTNB_Android.Src.Billing.MVP
 
         public void OnShowItemizedBillingTutorialDialog()
         {
-            NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.billingDetailsPresenter.OnGeneraNewAppTutorialList());
+            Handler h = new Handler();
+            Action myAction = () =>
+            {
+                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.billingDetailsPresenter.OnGeneraNewAppTutorialList());
+            };
+            h.PostDelayed(myAction, 100);
         }
 
         public int GetViewBillButtonHeight()
@@ -419,6 +427,30 @@ namespace myTNB_Android.Src.Billing.MVP
             btnViewBill.Measure(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
             int width = btnViewBill.MeasuredWidth;
             return width;
+        }
+
+        public int GetTopHeight()
+        {
+            int i = 0;
+
+            try
+            {
+                Rect offsetViewBounds = new Rect();
+                //returns the visible bounds
+                bottomLayout.GetDrawingRect(offsetViewBounds);
+                // calculates the relative coordinates to the parent
+
+                rootView.OffsetDescendantRectToMyCoords(bottomLayout, offsetViewBounds);
+
+                i = offsetViewBounds.Top + (int) DPUtils.ConvertDPToPx(8f);
+
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
         }
     }
 }

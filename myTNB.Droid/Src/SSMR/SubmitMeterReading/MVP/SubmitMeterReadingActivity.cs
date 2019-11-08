@@ -11,10 +11,12 @@ using Android.Graphics;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
+using Android.Text;
 using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
 using CheeseBind;
+
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
@@ -1035,6 +1037,36 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+
+            return i;
+        }
+
+        public int CheckManualTextViewHeight()
+        {
+            int i = 2;
+
+            meterReadingManualTitle.Measure(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+            meterReadingManualTitle.OnPreDraw();
+
+            TextPaint textPaint = new TextPaint();
+            try
+            {
+                Typeface plain = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500);
+                textPaint.SetTypeface(plain);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            textPaint.TextSize = meterReadingManualTitle.TextSize;
+            textPaint.TextAlign = Paint.Align.Left;
+
+            string text = GetString(Resource.String.smr_manual_reading_title);
+            Java.Lang.ICharSequence textConverted = new Java.Lang.String(text);
+
+            StaticLayout staticLayout = new StaticLayout(textConverted, textPaint, this.Resources.DisplayMetrics.WidthPixels - (int) DPUtils.ConvertDPToPx(32f), Layout.Alignment.AlignNormal, 3f, 0f, true);
+
+            i = staticLayout.LineCount;
 
             return i;
         }

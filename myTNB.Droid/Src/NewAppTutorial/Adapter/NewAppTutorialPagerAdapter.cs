@@ -1468,8 +1468,7 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
             else if (this.mContext is BillingDetailsActivity)
             {
                 int middleHeight = ((BillingDetailsActivity)this.mContext).GetViewBillButtonHeight() + (int)DPUtils.ConvertDPToPx(8f);
-                int bottomHeight = (int)DPUtils.ConvertDPToPx(31f);
-                int topHeight = this.mContext.Resources.DisplayMetrics.HeightPixels - middleHeight - bottomHeight;
+                int topHeight = ((BillingDetailsActivity)this.mContext).GetTopHeight();
 
                 int leftWidth = (int)DPUtils.ConvertDPToPx(14f);
                 int middleWidth = ((this.mContext.Resources.DisplayMetrics.WidthPixels - (int)DPUtils.ConvertDPToPx(3f) - (int)DPUtils.ConvertDPToPx(24f)) / 2) + (int)DPUtils.ConvertDPToPx(2f);
@@ -1562,12 +1561,25 @@ namespace myTNB_Android.Src.NewAppTutorial.Adapter
                     }
                     else
                     {
+                        int lineCount = ((SubmitMeterReadingActivity)this.mContext).CheckManualTextViewHeight();
                         topHeight = (int)DPUtils.ConvertDPToPx(135f);
+                        if (lineCount == 1)
+                        {
+                            topHeight = (int)DPUtils.ConvertDPToPx(115f);
+                        }
                     }
                 }
                 else
                 {
-                    topHeight = ((SubmitMeterReadingActivity)this.mContext).GetTopLocation() - (int)DPUtils.ConvertDPToPx(18f);
+                    int lineCount = ((SubmitMeterReadingActivity)this.mContext).CheckManualTextViewHeight();
+                    if (lineCount == 1)
+                    {
+                        topHeight = ((SubmitMeterReadingActivity)this.mContext).GetTopLocation() - (int)DPUtils.ConvertDPToPx(35f);
+                    }
+                    else
+                    {
+                        topHeight = ((SubmitMeterReadingActivity)this.mContext).GetTopLocation() - (int)DPUtils.ConvertDPToPx(18f);
+                    }
                 }
 
                 int middleHeight = (int)DPUtils.ConvertDPToPx(150f);
