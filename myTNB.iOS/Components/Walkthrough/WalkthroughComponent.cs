@@ -118,15 +118,19 @@ namespace myTNB
                 };
                 viewContainer.AddSubview(imageView);
 
-                UILabel title = new UILabel(new CGRect(0, GetYLocationFromFrame(imageView.Frame, 22F), width, GetScaledHeight(24F)))
+                UILabel title = new UILabel(new CGRect(GetScaledWidth(16)
+                    , GetYLocationFromFrame(imageView.Frame, 22F), width - GetScaledWidth(32), GetScaledHeight(48F)))
                 {
                     Font = TNBFont.MuseoSans_16_500,
                     TextColor = MyTNBColor.WaterBlue,
                     TextAlignment = UITextAlignment.Center,
-                    LineBreakMode = UILineBreakMode.TailTruncation,
+                    LineBreakMode = UILineBreakMode.WordWrap,
+                    Lines = 0,
                     Text = GetI18NValue(OnboardingModel[i].Title),
                     Tag = 2002
                 };
+                nfloat newTitleHeight = title.GetLabelHeight(GetScaledHeight(48));
+                title.Frame = new CGRect(title.Frame.Location, new CGSize(title.Frame.Width, newTitleHeight));
                 viewContainer.AddSubview(title);
 
                 NSError htmlBodyError = null;
@@ -334,11 +338,8 @@ namespace myTNB
                     if (lblTitle != null)
                     {
                         lblTitle.Text = GetI18NValue(OnboardingModel[i].Title);
-                        Debug.WriteLine("Title: " + i + " " + lblTitle.Text);
-                    }
-                    else
-                    {
-                        Debug.WriteLine("Title null in index: " + i);
+                        nfloat newTitleHeight = lblTitle.GetLabelHeight(GetScaledHeight(48));
+                        lblTitle.Frame = new CGRect(lblTitle.Frame.Location, new CGSize(lblTitle.Frame.Width, newTitleHeight));
                     }
 
                     UITextView txtViewDescription = view.ViewWithTag(2003) as UITextView;
@@ -357,6 +358,18 @@ namespace myTNB
                             }
                         }, new NSRange(0, htmlBody.Length));
                         txtViewDescription.AttributedText = mutableHTMLBody;
+                        txtViewDescription.TextAlignment = UITextAlignment.Center;
+                        txtViewDescription.ScrollIndicatorInsets = UIEdgeInsets.Zero;
+
+                        nfloat yLocation = txtViewDescription.Frame.Y;
+                        if (lblTitle != null)
+                        {
+                            yLocation = lblTitle.Frame.GetMaxY() + GetScaledHeight(12);
+                        }
+
+                        CGSize size = txtViewDescription.SizeThatFits(new CGSize(txtViewDescription.Frame.Width, GetScaledHeight(100F)));
+                        txtViewDescription.Frame = new CGRect(new CGPoint(txtViewDescription.Frame.X, yLocation)
+                            , new CGSize(txtViewDescription.Frame.Width, size.Height));
                     }
 
                     UIButton ctaButton = view.ViewWithTag(2004) as UIButton;

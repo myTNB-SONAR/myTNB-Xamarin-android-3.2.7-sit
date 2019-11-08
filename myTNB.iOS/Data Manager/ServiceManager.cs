@@ -125,12 +125,14 @@ namespace myTNB
                 {
                     email = DataManager.DataManager.SharedInstance.UserEntity[0].email ?? string.Empty;
                 }
+                string fcmToken = DataManager.DataManager.SharedInstance.FCMToken != null
+                    ? DataManager.DataManager.SharedInstance.FCMToken : string.Empty;
                 return new
                 {
                     eid = email,
                     sspuid = DataManager.DataManager.SharedInstance.User.UserID,
                     did = DataManager.DataManager.SharedInstance.UDID,
-                    ft = DataManager.DataManager.SharedInstance.FCMToken,
+                    ft = fcmToken,
                     lang = TNBGlobal.APP_LANGUAGE,
                     sec_auth_k1 = TNBGlobal.API_KEY_ID,
                     sec_auth_k2 = string.Empty,

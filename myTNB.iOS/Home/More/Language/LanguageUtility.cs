@@ -1,5 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Threading.Tasks;
 using Foundation;
+using myTNB.Model;
+using myTNB.Model.Language;
 
 namespace myTNB
 {
@@ -170,6 +174,37 @@ namespace myTNB
             DataManager.DataManager.SharedInstance.HintI18NDictionary = LanguageManager.Instance.GetHintValuePairs();
             DataManager.DataManager.SharedInstance.ErrorI18NDictionary = LanguageManager.Instance.GetErrorValuePairs();
         }
+        #endregion
+
+        #region Services
+        private static readonly string Service_SaveLanguage = "SaveLanguagePreference";
+        private static readonly string Service_GetLanguage = "GetLanguagePreference";
+        public static LanguageResponseModel GetLanguageResponse { private set; get; } = new LanguageResponseModel();
+
+        public static async Task<LanguageResponseModel> SaveLanguagePreference()
+        {
+            ServiceManager serviceManager = new ServiceManager();
+            object requestParameter = new
+            {
+                serviceManager.usrInf,
+                langPref = TNBGlobal.APP_LANGUAGE
+            };
+            LanguageResponseModel response = serviceManager.OnExecuteAPIV6<LanguageResponseModel>(Service_SaveLanguage, requestParameter);
+            return response;
+        }
+
+        public async static Task<LanguageResponseModel> GetLanguagePreference()
+        {
+            ServiceManager serviceManager = new ServiceManager();
+            object requestParameter = new
+            {
+                serviceManager.usrInf
+            };
+            LanguageResponseModel response = serviceManager.OnExecuteAPIV6<LanguageResponseModel>(Service_GetLanguage, requestParameter);
+            Debug.WriteLine("GetLanguagePreference END");
+            return response;
+        }
+
         #endregion
     }
 }

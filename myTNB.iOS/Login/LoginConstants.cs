@@ -24,5 +24,7 @@
         public static string I18N_LogIn = "login";
         public static string I18N_EmailRequired = "emailRequired";
         public static string I18N_PasswordRequired = "passwordRequired";
+
+        public static string Service_Login = "IsUserAuthenticate";
     }
 }

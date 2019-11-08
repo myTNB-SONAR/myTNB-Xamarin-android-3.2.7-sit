@@ -41,7 +41,7 @@ namespace myTNB
         string _endDateStr = string.Empty;
         double _delay;
         bool _isGetDynamicDone, _isTaskDelayDone, _isLoadMasterDataDone, _splashIsShown, _hasProceeded, _splashDelayIsDone;
-        OnboardingEnum _onboardingEnum = OnboardingEnum.FreshInstall;
+        OnboardingEnum _onboardingEnum;
         int _timeOut = 4000;
         UIView maintenanceView;
 
