@@ -316,9 +316,7 @@ namespace myTNB
                                         }
                                         else if (AccountUsageSmartCache.IsDataEmpty)
                                         {
-                                            AccountUsageSmartCache.SetUsageMetrics(accountUsageSmartResponse);
-                                            OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
-                                            SetSmartMeterComponent(false, model.Cost);
+                                            HideSmartMeterComponent();
                                             SetEmptyDataComponent(AccountUsageSmartCache.EmptyDataMessage);
                                         }
                                         else

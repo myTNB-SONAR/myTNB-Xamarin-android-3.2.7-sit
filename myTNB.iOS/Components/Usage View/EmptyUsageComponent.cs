@@ -10,9 +10,11 @@ namespace myTNB
         UIImageView _icon;
         UILabel _messageLbl;
         public Func<string, string> GetI18NValue;
-        public EmptyUsageComponent(CustomUIView parentView)
+        private nfloat _yPos;
+        public EmptyUsageComponent(CustomUIView parentView, nfloat yPos)
         {
             _parentView = parentView;
+            _yPos = yPos;
         }
 
         private void CreateComponent(string msg)
@@ -25,7 +27,7 @@ namespace myTNB
             };
             nfloat iconWidth = GetScaledWidth(96);
             nfloat iconHeight = GetScaledHeight(98);
-            _icon = new UIImageView(new CGRect(GetXLocationToCenterObject(iconWidth, _containerView), 0, iconWidth, iconHeight))
+            _icon = new UIImageView(new CGRect(GetXLocationToCenterObject(iconWidth, _containerView), _yPos, iconWidth, iconHeight))
             {
                 Image = UIImage.FromBundle(UsageConstants.IMG_EmpyUsage)
             };
@@ -49,14 +51,18 @@ namespace myTNB
 
             CGSize lblSize = _messageLbl.SizeThatFits(new CGSize(_messageLbl.Frame.Width, 1000F));
             ViewHelper.AdjustFrameSetHeight(_messageLbl, lblSize.Height);
-            nfloat totalHeight = iconHeight + GetScaledHeight(24) + lblSize.Height;
+            nfloat totalHeight = _messageLbl.Frame.GetMaxY();
             ViewHelper.AdjustFrameSetHeight(_containerView, totalHeight);
-            ViewHelper.AdjustFrameSetY(_containerView, GetYLocationToCenterObject(totalHeight, _parentView));
         }
 
         public CustomUIView GetUI(string msg)
         {
             CreateComponent(msg);
+            return _containerView;
+        }
+
+        public CustomUIView GetView()
+        {
             return _containerView;
         }
     }
