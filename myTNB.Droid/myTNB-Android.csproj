@@ -3849,6 +3849,16 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\Utils\NewAppTutorialUtils.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\filter_blue.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\filter_white.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\filter_blue.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\filter_white.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\filter_blue.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\filter_white.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\filter_blue.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\filter_white.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\filter_blue.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\filter_white.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

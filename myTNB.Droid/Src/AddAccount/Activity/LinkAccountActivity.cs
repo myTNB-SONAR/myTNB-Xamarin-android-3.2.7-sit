@@ -602,7 +602,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                 {
                     if (!string.IsNullOrEmpty(item.accountLabel))
                     {
-                        if (item.accountLabel.Equals(EG_ACCOUNT_LABEL) || item.accountLabel.Contains("eg.") || item.accountLabel.Contains("(") || item.accountLabel.Contains(")") || String.IsNullOrEmpty(item.accountLabel))
+                        if (String.IsNullOrEmpty(item.accountLabel))
                         {
                             flag = false;
                             if (currentItemIndex < list.Count())
@@ -708,7 +708,7 @@ namespace myTNB_Android.Src.AddAccount.Activity
                     if (!string.IsNullOrEmpty(item.accountLabel))
                     {
 
-                        if (item.accountLabel.Equals(EG_ACCOUNT_LABEL) || item.accountLabel.Contains("eg.") || item.accountLabel.Contains("(") || item.accountLabel.Contains(")") || String.IsNullOrEmpty(item.accountLabel))
+                        if (String.IsNullOrEmpty(item.accountLabel))
                         {
                             flag = false;
                             if (currentItemIndex < aditionallist.Count())
