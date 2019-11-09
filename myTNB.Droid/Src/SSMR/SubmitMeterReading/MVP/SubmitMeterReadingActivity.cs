@@ -1017,21 +1017,18 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
                 if (kwhCard.Visibility == ViewStates.Visible)
                 {
                     int[] location = new int[2];
-                    kwhCard.Measure(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
                     kwhCard.GetLocationOnScreen(location);
                     i = location[1];
                 }
                 else if (kwCard.Visibility == ViewStates.Visible)
                 {
                     int[] location = new int[2];
-                    kwCard.Measure(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
                     kwCard.GetLocationOnScreen(location);
                     i = location[1];
                 }
                 else if (kvarhCard.Visibility == ViewStates.Visible)
                 {
                     int[] location = new int[2];
-                    kvarhCard.Measure(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
                     kvarhCard.GetLocationOnScreen(location);
                     i = location[1];
                 }
@@ -1047,9 +1044,6 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         public int CheckManualTextViewHeight()
         {
             int i = 2;
-
-            meterReadingManualTitle.Measure(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
-            meterReadingManualTitle.OnPreDraw();
 
             TextPaint textPaint = new TextPaint();
             try
