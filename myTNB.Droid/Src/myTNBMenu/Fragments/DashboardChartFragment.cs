@@ -6049,7 +6049,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
                         shadowLayout.SetBackgroundResource(Resource.Drawable.scroll_indicator);
 
-                        if (!isToggleTariff)
+                        // Lin Siong TODO: uncomment this once confirm effect
+                        /*if (!isToggleTariff)
                         {
                             if (isSMAccount || isSMR)
                             {
@@ -6130,7 +6131,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     }
                                 }
                             }
-                        }
+                        }*/
 
                     }
                     else if (scrollPosition > 0 || scrollPosition < 0)
@@ -6139,7 +6140,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
                         shadowLayout.SetBackgroundResource(0);
 
-                        if (!isToggleTariff)
+                        // Lin Siong TODO: uncomment this once confirm effect
+                        /*if (!isToggleTariff)
                         {
                             if (isSMAccount || isSMR)
                             {
@@ -6180,7 +6182,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                     }
                                 }
                             }
-                        }
+                        }*/
                     }
                 }
             }
@@ -6367,7 +6369,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     shadowLayout.SetBackgroundResource(Resource.Drawable.scroll_indicator);
                     bottomSheet.RequestLayout();
 
-                    if (!isToggleTariff)
+                    // Lin Siong TODO: uncomment this once confirm effect
+                    /*if (!isToggleTariff)
                     {
                         if (isSMAccount || isSMR)
                         {
@@ -6448,7 +6451,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 }
                             }
                         }
-                    }
+                    }*/
                 }
                 else if (!isScrollIndicatorShowNeed && isChangeVirtualHeightNeed)
                 {
@@ -7802,11 +7805,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                         BarEntry dayViewTariff = dayViewTariffList[currentDayViewIndex];
                         Highlight centerBar = new Highlight(currentDayViewIndex, 0, dayViewTariff.GetYVals().Length - 1);
-                        currentChart.HighlightValue(centerBar, false);
+                        currentChart.HighlightValue(centerBar, true);
                         isDayViewFirstMove = true;
                         isShowLog = true;
 
                         currentFragment.SetDayViewMonthText(dayViewMonthList[currentDayViewIndex]);
+
+                        currentChart.DispatchTouchEvent(MotionEvent.Obtain(SystemClock.UptimeMillis(), SystemClock.UptimeMillis(), (int)MotionEventActions.Down, currentChart.Resources.DisplayMetrics.WidthPixels / 2, 0, 0));
+                        currentChart.DispatchTouchEvent(MotionEvent.Obtain(SystemClock.UptimeMillis(), SystemClock.UptimeMillis(), (int)MotionEventActions.Up, currentChart.Resources.DisplayMetrics.WidthPixels / 2, 0, 0));
                     }
                     else
                     {
@@ -7868,6 +7874,9 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             currentChart.HighlightValue(centerBar, false);
 
                             currentFragment.SetDayViewMonthText(dayViewMonthList[currentDayViewIndex]);
+
+                            currentChart.DispatchTouchEvent(MotionEvent.Obtain(SystemClock.UptimeMillis(), SystemClock.UptimeMillis(), (int)MotionEventActions.Down, currentChart.Resources.DisplayMetrics.WidthPixels / 2, 0, 0));
+                            currentChart.DispatchTouchEvent(MotionEvent.Obtain(SystemClock.UptimeMillis(), SystemClock.UptimeMillis(), (int)MotionEventActions.Up, currentChart.Resources.DisplayMetrics.WidthPixels / 2, 0, 0));
                         }
                         else
                         {
