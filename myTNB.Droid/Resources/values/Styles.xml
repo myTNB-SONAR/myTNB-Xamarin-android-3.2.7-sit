@@ -5,6 +5,12 @@
     <item name="android:windowFullscreen">true</item>
   </style>
 
+    <style name="FullScreenDialog" parent="@style/App.BaseTheme" >
+	    <item name="android:windowNoTitle">true</item>
+	    <item name="android:windowFullscreen">true</item>
+	    <item name="android:windowIsFloating">false</item>
+    </style>
+
   <style name="App.ScreenTheme" parent="@style/App.BaseTheme">
     <item name="android:windowFullscreen">false</item>
     <!--<item name="android:editTextStyle">@style/myTNB.EditTextStyle</item>-->

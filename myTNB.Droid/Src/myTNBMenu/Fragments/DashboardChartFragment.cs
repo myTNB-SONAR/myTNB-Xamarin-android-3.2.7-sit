@@ -5,6 +5,7 @@ using Android.Content;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
@@ -539,6 +540,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private bool isShowAnimationDisable = false;
 
+        private static bool isTutorialShow = false;
+
         ScaleGestureDetector mScaleDetector;
 
         public override int ResourceId()
@@ -687,7 +690,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
 
             SetHasOptionsMenu(true);
-            this.mPresenter = new DashboardChartPresenter(this);
+            this.mPresenter = new DashboardChartPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
         }
 
         internal static DashboardChartFragment NewInstance(UsageHistoryResponse usageHistoryResponse, AccountData accountData, string error, string errorMessage)
@@ -740,6 +743,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
 
                 smDayViewZoomInIndicatorLayout.Visibility = ViewStates.Gone;
+
+                isTutorialShow = false;
 
                 BitmapFactory.Options opt = new BitmapFactory.Options();
                 opt.InMutable = true;
@@ -5394,6 +5399,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 Utility.LoggingNonFatalError(e);
             }
 
+            try
+            {
+                NewAppTutorialUtils.ForceCloseNewAppTutorial();
+                if (this.mPresenter != null)
+                {
+                    this.mPresenter.OnCheckToCallDashboardTutorial();
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)
@@ -6046,9 +6064,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     if (t == 0)
                     {
                         requireScroll = false;
-                        bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
-                        shadowLayout.SetBackgroundResource(Resource.Drawable.scroll_indicator);
-
+                        if (!isTutorialShow)
+                        {
+                            bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                            shadowLayout.SetBackgroundResource(Resource.Drawable.scroll_indicator);
                         // Lin Siong TODO: uncomment this once confirm effect
                         /*if (!isToggleTariff)
                         {
@@ -6132,7 +6151,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 }
                             }
                         }*/
-
+                        }
                     }
                     else if (scrollPosition > 0 || scrollPosition < 0)
                     {
@@ -6211,7 +6230,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         if (newState == BottomSheetBehavior.StateHidden || newState == BottomSheetBehavior.StateCollapsed)
                         {
-                            bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                            if (!isTutorialShow)
+                            {
+                                bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+                            }
                         }
                     }
                     else if (requireScroll)
@@ -8023,6 +8045,145 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         public bool GetIsREAccount()
         {
             return isREAccount;
+        }
+
+        public void OnShowDashboardFragmentTutorialDialog()
+        {
+            Activity.RunOnUiThread(() =>
+            {
+                StopScrolling();
+            });
+
+            if (ChartDataType != ChartDataType.RM)
+            {
+                rmKwhSelectDropdown.Visibility = ViewStates.Gone;
+                rmKwhLabel.Text = "RM  ";
+                rmLabel.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
+                kwhLabel.SetTextColor(Resources.GetColor(Resource.Color.new_grey));
+                isShowAnimationDisable = true;
+                ShowByRM();
+            }
+
+            if (tarifToggle.Enabled && isToggleTariff)
+            {
+                try
+                {
+                    imgTarifToggle.SetImageResource(Resource.Drawable.eye);
+                    txtTarifToggle.Text = "Show Tariff";
+                    isToggleTariff = false;
+                    if (isChangeBackgroundNeeded)
+                    {
+                        if (isSMAccount)
+                        {
+                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                        }
+                        else if (isSMR)
+                        {
+                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_smr_bg);
+                        }
+                        else
+                        {
+                            scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_bg);
+                        }
+                    }
+
+                    mChart.Clear();
+                    SetUp();
+                }
+                catch (System.Exception ne)
+                {
+                    Utility.LoggingNonFatalError(ne);
+                }
+            }
+
+            NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.mPresenter.OnGeneraNewAppTutorialList());
+        }
+
+        public void DashboardCustomScrolling(int yPosition)
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    scrollView.ScrollTo(0, yPosition);
+                    scrollView.RequestLayout();
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+
+
+        public bool CheckIsScrollable()
+        {
+            View child = (View)scrollView.GetChildAt(0);
+
+            return scrollView.Height < child.Height + scrollView.PaddingTop + scrollView.PaddingBottom;
+        }
+
+        public int GetSMRCardHeight()
+        {
+            return ssmrHistoryContainer.Height;
+        }
+
+        public int GetSMRCardLocation()
+        {
+            int i = 0;
+
+            try
+            {
+                Rect offsetViewBounds = new Rect();
+                //returns the visible bounds
+                ssmrHistoryContainer.GetDrawingRect(offsetViewBounds);
+                // calculates the relative coordinates to the parent
+
+                rootView.OffsetDescendantRectToMyCoords(ssmrHistoryContainer, offsetViewBounds);
+
+                i = offsetViewBounds.Top;
+
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
+        }
+
+        public int OnGetEndOfScrollView()
+        {
+            View child = (View)scrollView.GetChildAt(0);
+
+            return child.Height + scrollView.PaddingTop + scrollView.PaddingBottom;
+        }
+
+        public void StopScrolling()
+        {
+            try
+            {
+                scrollView.SmoothScrollBy(0, 0);
+                scrollView.ScrollTo(0, 0);
+                scrollView.RequestLayout();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void HideBottomSheet()
+        {
+            isTutorialShow = true;
+            bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
+        }
+
+        public void ShowBottomSheet()
+        {
+            isTutorialShow = false;
+            bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
         }
     }
 }

@@ -5,6 +5,7 @@ using Android.Content.PM;
 using Android.Graphics;
 using Android.Graphics.Drawables;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Widget;
@@ -124,6 +125,9 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         private SSMRMeterHistoryContract.IPresenter mPresenter;
         private string selectedAccountNumber;
         private List<SMRAccount> smrAccountList = new List<SMRAccount>();
+        ISharedPreferences mPref;
+        private bool isTutorialShown = false;
+        private bool isSMR = false;
 
         public override int ResourceId()
 		{
@@ -140,6 +144,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 			base.OnCreate(savedInstanceState);
 			try
 			{
+                isSMR = false;
                 SetToolbarBackground(Resource.Drawable.CustomGradientToolBar);
                 SetStatusBarBackground(Resource.Drawable.bg_smr);
 
@@ -149,6 +154,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 EmptySMRHistoryMessage.Text = GetString(Resource.String.ssmr_empty_history_message);
 
                 mPresenter = new SSMRMeterHistoryPresenter(this);
+                mPref = PreferenceManager.GetDefaultSharedPreferences(this);
                 mSMRRecyclerView.SetLayoutManager(new LinearLayoutManager(this));
                 smrAccountList = this.mPresenter.GetEligibleSMRAccountList();
 
@@ -174,6 +180,9 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                             {
                                 smrResponse = JsonConvert.DeserializeObject<SMRActivityInfoResponse>(extras.GetString(Constants.SMR_RESPONSE_KEY));
                                 UpdateUIForSMR(smrResponse);
+                                this.mPresenter.CheckIsBtnSubmitHide(smrResponse);
+                                isSMR = true;
+                                isTutorialShown = true;
                             }
                         }
                         else
@@ -182,13 +191,29 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                             {
                                 return account.isTaggedSMR;
                             });
+
+                            if (smrSelectedAccount == null)
+                            {
+                                smrSelectedAccount = smrAccountList[0];
+                            }
+
                             selectedAccountNumber = smrSelectedAccount.accountNumber;
                             CustomerBillingAccount.RemoveSelected();
                             CustomerBillingAccount.SetSelected(smrSelectedAccount.accountNumber);
                             if (smrSelectedAccount != null)
                             {
                                 selectedAccountNickName = smrSelectedAccount.accountName;
-                                this.mPresenter.GetSSMRAccountStatus(smrSelectedAccount.accountNumber);
+                                if (smrSelectedAccount.isTaggedSMR)
+                                {
+                                    isSMR = true;
+                                    this.mPresenter.GetSSMRAccountStatus(smrSelectedAccount.accountNumber);
+                                }
+                                else
+                                {
+                                    UpdateUIForNonSMR();
+                                    isSMR = false;
+                                    isTutorialShown = true;
+                                }
                             }
                             else
                             {
@@ -212,13 +237,29 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                         SMRAccount smrSelectedAccount = smrAccountList.Find(account => {
                             return account.isTaggedSMR;
                         });
+
+                        if (smrSelectedAccount == null)
+                        {
+                            smrSelectedAccount = smrAccountList[0];
+                        }
+
                         selectedAccountNumber = smrSelectedAccount.accountNumber;
                         CustomerBillingAccount.RemoveSelected();
                         CustomerBillingAccount.SetSelected(smrSelectedAccount.accountNumber);
                         if (smrSelectedAccount != null)
                         {
                             selectedAccountNickName = smrSelectedAccount.accountName;
-                            this.mPresenter.GetSSMRAccountStatus(smrSelectedAccount.accountNumber);
+                            if (smrSelectedAccount.isTaggedSMR)
+                            {
+                                isSMR = true;
+                                this.mPresenter.GetSSMRAccountStatus(smrSelectedAccount.accountNumber);
+                            }
+                            else
+                            {
+                                UpdateUIForNonSMR();
+                                isSMR = false;
+                                isTutorialShown = true;
+                            }
                         }
                         else
                         {
@@ -256,6 +297,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             ShowRefreshScreen(false);
             SMRAccountSelected.Text = selectedAccountNickName;
             ShowNonSMRVisible(true,true);
+
         }
 
         protected override void OnStart()
@@ -322,6 +364,8 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             {
                 if (resultCode == Result.Ok)
                 {
+                    isTutorialShown = false;
+                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
                     SetResult(Result.Ok);
                     Finish();
                 }
@@ -330,6 +374,7 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             {
                 if (resultCode == Result.Ok)
                 {
+                    NewAppTutorialUtils.ForceCloseNewAppTutorial();
                     selectedAccountNumber = data.GetStringExtra("SELECTED_ACCOUNT_NUMBER");
                     foreach(SMRAccount account in smrAccountList)
                     {
@@ -348,10 +393,13 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     CustomerBillingAccount.SetSelected(selectedEligibleAccount.accountNumber);
                     if (selectedEligibleAccount.isTaggedSMR)
                     {
+                        isTutorialShown = false;
+                        isSMR = true;
                         this.mPresenter.GetSSMRAccountStatus(selectedAccountNumber);
                     }
                     else
                     {
+                        isSMR = false;
                         UpdateUIForNonSMR();
                     }
                 }
@@ -610,6 +658,12 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+
+            NewAppTutorialUtils.ForceCloseNewAppTutorial();
+            if (isTutorialShown)
+            {
+                OnShowSMRMeterReadingDialog();
+            }
         }
 
         protected override void OnPause()
@@ -678,6 +732,52 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         public string GetSMRActionKey()
         {
             return SMR_ACTION_KEY;
+        }
+
+        public void OnShowSMRMeterReadingDialog()
+        {
+            if (!UserSessions.HasSMRMeterHistoryTutorialShown(this.mPref))
+            {
+                isTutorialShown = true;
+                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.mPresenter.OnGeneraNewAppTutorialList(isSMR));
+            }
+        }
+
+        public void MeterHistoryCustomScrolling(int yPosition)
+        {
+            try
+            {
+                RunOnUiThread(() =>
+                {
+                    NestedScrollViewContent.ScrollTo(0, yPosition);
+                    NestedScrollViewContent.RequestLayout();
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void StopScrolling()
+        {
+            try
+            {
+                NestedScrollViewContent.SmoothScrollBy(0, 0);
+                NestedScrollViewContent.ScrollTo(0, 0);
+                NestedScrollViewContent.RequestLayout();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public bool CheckIsScrollable()
+        {
+            View child = (View)NestedScrollViewContent.GetChildAt(0);
+
+            return NestedScrollViewContent.Height < child.Height + NestedScrollViewContent.PaddingTop + NestedScrollViewContent.PaddingBottom;
         }
     }
 }

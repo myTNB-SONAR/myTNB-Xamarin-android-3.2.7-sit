@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="@null"
+                android:id="@+id/rootView">
+      <FrameLayout
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
+          <android.support.v4.view.ViewPager
+              android:id="@+id/viewPager"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:overScrollMode="never"/>
+    </FrameLayout>
+    <LinearLayout
+        android:id="@+id/swipeDoubleTapLayout"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingBottom="32dp">
+        <TextView
+            android:id="@+id/txtSwipeSeeMore"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Swipe to see more,"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:layout_marginBottom="2dp"
+            android:textSize="12dp"/>
+            <TextView
+                android:id="@+id/txtDoubleTapDismiss"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="double tap to dismiss."
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:layout_marginBottom="18dp"
+                android:textSize="12dp"/>
+        <LinearLayout
+            android:id="@+id/indicatorContainer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:orientation="horizontal" />
+    </LinearLayout>     
+</RelativeLayout>

@@ -9,11 +9,14 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
+using Android.Text;
 using Android.Views;
 using Android.Views.InputMethods;
 using Android.Widget;
 using CheeseBind;
+
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.Base;
 using myTNB_Android.Src.Base.Activity;
@@ -101,10 +104,17 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         [BindView(Resource.Id.meterReadingManualTitle)]
         TextView meterReadingManualTitle;
 
+        [BindView(Resource.Id.meterReadingScrollLayout)]
+        ScrollView meterReadingScrollLayout;
+        
+
         public readonly static int SSMR_SUBMIT_METER_ACTIVITY_CODE = 8796;
         public readonly static int SSMR_SUBMIT_METER_OCR_SUBMIT_CODE = 8797;
         private IMenu ssmrMenu;
         private static bool isFirstLaunch = true;
+
+        ISharedPreferences mPref;
+        private bool isTutorialShown = false;
 
         private List<SSMRMeterReadingModel> singlePhaseList;
         private List<SSMRMeterReadingModel> threePhaseList;
@@ -245,6 +255,7 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         {
             base.OnCreate(savedInstanceState);
             mPresenter = new SubmitMeterReadingPresenter(this);
+            mPref = PreferenceManager.GetDefaultSharedPreferences(this);
             InitializePage();
             isFirstLaunch = true;
 
@@ -292,6 +303,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             SetMeterReadingCards();
             OnGenerateTooltipData();
             OnUpdateSubmitMeterButton();
+
+            isTutorialShown = true;
         }
 
         private void SetMeterReadingCards()
@@ -900,6 +913,12 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             {
                 Utility.LoggingNonFatalError(e);
             }
+
+            NewAppTutorialUtils.ForceCloseNewAppTutorial();
+            if (isTutorialShown)
+            {
+                OnShowSMRSubmitMeterDialog();
+            }
         }
 
         protected override void OnPause()
@@ -932,6 +951,124 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             });
 
             EnableSubmitButton(hasInputAll);
+        }
+
+        public void OnShowSMRSubmitMeterDialog()
+        {
+            if (!UserSessions.HasSMRSubmitMeterTutorialShown(this.mPref))
+            {
+                ShowProgressDialog();
+                isTutorialShown = true;
+                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.mPresenter.OnGeneraNewAppTutorialList());
+                HideProgressDialog();
+            }
+        }
+
+        public void SubmitMeterCustomScrolling(int yPosition)
+        {
+            try
+            {
+                RunOnUiThread(() =>
+                {
+                    meterReadingScrollLayout.ScrollTo(0, yPosition);
+                    meterReadingScrollLayout.RequestLayout();
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void StopScrolling()
+        {
+            try
+            {
+                meterReadingScrollLayout.SmoothScrollBy(0, 0);
+                meterReadingScrollLayout.ScrollTo(0, 0);
+                meterReadingScrollLayout.RequestLayout();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public bool CheckIsScrollable()
+        {
+            View child = (View)meterReadingScrollLayout.GetChildAt(0);
+
+            return meterReadingScrollLayout.Height < child.Height + meterReadingScrollLayout.PaddingTop + meterReadingScrollLayout.PaddingBottom;
+        }
+
+        public int GetTopLocation()
+        {
+            int i = 0;
+
+            try
+            {
+                LinearLayout kwhCard = FindViewById(Resource.Id.kwhCard) as LinearLayout;
+                LinearLayout kwCard = FindViewById(Resource.Id.kwCard) as LinearLayout;
+                LinearLayout kvarhCard = FindViewById(Resource.Id.kVARhCard) as LinearLayout;
+
+                if (kwhCard.Visibility == ViewStates.Visible)
+                {
+                    int[] location = new int[2];
+                    kwhCard.Measure(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+                    kwhCard.GetLocationOnScreen(location);
+                    i = location[1];
+                }
+                else if (kwCard.Visibility == ViewStates.Visible)
+                {
+                    int[] location = new int[2];
+                    kwCard.Measure(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+                    kwCard.GetLocationOnScreen(location);
+                    i = location[1];
+                }
+                else if (kvarhCard.Visibility == ViewStates.Visible)
+                {
+                    int[] location = new int[2];
+                    kvarhCard.Measure(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+                    kvarhCard.GetLocationOnScreen(location);
+                    i = location[1];
+                }
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
+        }
+
+        public int CheckManualTextViewHeight()
+        {
+            int i = 2;
+
+            meterReadingManualTitle.Measure(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+            meterReadingManualTitle.OnPreDraw();
+
+            TextPaint textPaint = new TextPaint();
+            try
+            {
+                Typeface plain = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500);
+                textPaint.SetTypeface(plain);
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+            textPaint.TextSize = meterReadingManualTitle.TextSize;
+            textPaint.TextAlign = Paint.Align.Left;
+
+            string text = GetString(Resource.String.smr_manual_reading_title);
+            Java.Lang.ICharSequence textConverted = new Java.Lang.String(text);
+
+            StaticLayout staticLayout = new StaticLayout(textConverted, textPaint, this.Resources.DisplayMetrics.WidthPixels - (int) DPUtils.ConvertDPToPx(32f), Layout.Alignment.AlignNormal, 3f, 0f, true);
+
+            i = staticLayout.LineCount;
+
+            return i;
         }
     }
 }
