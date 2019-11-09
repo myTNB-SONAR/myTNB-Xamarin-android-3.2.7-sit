@@ -11,6 +11,8 @@ using Android.Support.Design.Widget;
 using Android.Support.V4.Widget;
 using Android.Support.V7.Widget;
 using Android.Text;
+using Android.Text.Method;
+using Android.Text.Style;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
@@ -532,14 +534,23 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             if (!this.GetIsClicked())
             {
                 this.SetIsClicked(true);
-                AccountData accountData = new AccountData();
-                SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
-                accountData.AccountNum = selectedAccountNumber;
+                if (smrResponse != null && smrResponse.Response != null && smrResponse.Response.Data != null &&
+                    smrResponse.Response.Data.SMRMROValidateRegisterDetails != null && smrResponse.Response.Data.SMRMROValidateRegisterDetails.Count > 0)
+                {
+                    AccountData accountData = new AccountData();
+                    SMRAccount eligibleAccount = smrAccountList.Find(account => { return account.accountNumber == selectedAccountNumber; });
+                    accountData.AccountNum = selectedAccountNumber;
 
-                Intent ssmr_submit_meter_activity = new Intent(this, typeof(SubmitMeterReadingActivity));
-                ssmr_submit_meter_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
-                ssmr_submit_meter_activity.PutExtra(Constants.SMR_RESPONSE_KEY, JsonConvert.SerializeObject(smrResponse));
-                StartActivityForResult(ssmr_submit_meter_activity, SSMR_SUBMIT_METER_ACTIVITY_CODE);
+                    Intent ssmr_submit_meter_activity = new Intent(this, typeof(SubmitMeterReadingActivity));
+                    ssmr_submit_meter_activity.PutExtra(Constants.SELECTED_ACCOUNT, JsonConvert.SerializeObject(accountData));
+                    ssmr_submit_meter_activity.PutExtra(Constants.SMR_RESPONSE_KEY, JsonConvert.SerializeObject(smrResponse));
+                    StartActivityForResult(ssmr_submit_meter_activity, SSMR_SUBMIT_METER_ACTIVITY_CODE);
+                }
+                else
+                {
+                    ShowEmptyMeterValidationPopup();
+                    this.SetIsClicked(false);
+                }
             }
         }
 
@@ -778,6 +789,111 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
             View child = (View)NestedScrollViewContent.GetChildAt(0);
 
             return NestedScrollViewContent.Height < child.Height + NestedScrollViewContent.PaddingTop + NestedScrollViewContent.PaddingBottom;
+        }
+
+        class ClickSpan : ClickableSpan
+        {
+            public Action<View> Click;
+            public Color textColor { get; set; }
+            public Typeface typeFace { get; set; }
+
+            public override void OnClick(View widget)
+            {
+                if (Click != null)
+                {
+                    Click(widget);
+                }
+            }
+
+            public override void UpdateDrawState(TextPaint ds)
+            {
+                base.UpdateDrawState(ds);
+                ds.Color = textColor;
+                ds.SetTypeface(typeFace);
+                ds.UnderlineText = false;
+            }
+        }
+
+        private void ShowEmptyMeterValidationPopup()
+        {
+            try
+            {
+                MaterialDialog materialDialog = new MaterialDialog.Builder(this)
+                        .CustomView(Resource.Layout.CustomToolTipWithHeaderLayout, false)
+                        .Cancelable(false)
+                        .CanceledOnTouchOutside(false)
+                        .Build();
+
+                View dialogView = materialDialog.Window.DecorView;
+                dialogView.SetBackgroundResource(Android.Resource.Color.Transparent);
+                WindowManagerLayoutParams wlp = materialDialog.Window.Attributes;
+                wlp.Gravity = GravityFlags.Center;
+                wlp.Width = ViewGroup.LayoutParams.MatchParent;
+                wlp.Height = ViewGroup.LayoutParams.WrapContent;
+                materialDialog.Window.Attributes = wlp;
+
+                TextView tooltipTitle = materialDialog.FindViewById<TextView>(Resource.Id.txtToolTipTitle);
+                TextView tooltipMessage = materialDialog.FindViewById<TextView>(Resource.Id.txtToolTipMessage);
+                TextView tooltipCTA = materialDialog.FindViewById<TextView>(Resource.Id.txtToolTipCTA);
+
+                TextViewUtils.SetMuseoSans300Typeface(tooltipMessage);
+                TextViewUtils.SetMuseoSans500Typeface(tooltipTitle, tooltipCTA);
+
+                tooltipCTA.Text = "Got It!";
+                tooltipCTA.Click += delegate
+                {
+                    materialDialog.Dismiss();
+                };
+
+                tooltipTitle.Text = SMRPopUpUtils.GetTitle();
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                {
+                    tooltipMessage.TextFormatted = Html.FromHtml(SMRPopUpUtils.GetMessage(), FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    tooltipMessage.TextFormatted = Html.FromHtml(SMRPopUpUtils.GetMessage());
+                }
+
+                SpannableString s = new SpannableString(tooltipMessage.TextFormatted);
+                var clickableSpan = new ClickSpan()
+                {
+                    textColor = Resources.GetColor(Resource.Color.powerBlue),
+                    typeFace = Typeface.CreateFromAsset(this.Assets, "fonts/" + TextViewUtils.MuseoSans500)
+                };
+                clickableSpan.Click += v =>
+                {
+                    if (SMRPopUpUtils.GetMessage() != null && SMRPopUpUtils.GetMessage().Contains("tel:"))
+                    {
+                        //Lauch FAQ
+                        int startIndex = SMRPopUpUtils.GetMessage().LastIndexOf("\"tel") + 1;
+                        int lastIndex = SMRPopUpUtils.GetMessage().LastIndexOf("\">") - 1;
+                        int lengthOfId = (lastIndex - startIndex) + 1;
+                        if (lengthOfId < SMRPopUpUtils.GetMessage().Length)
+                        {
+                            string phone = SMRPopUpUtils.GetMessage().Substring(startIndex, lengthOfId);
+                            if (!string.IsNullOrEmpty(phone))
+                            {
+                                var uri = Android.Net.Uri.Parse(phone);
+                                var intent = new Intent(Intent.ActionDial, uri);
+                                StartActivity(intent);
+                            }
+                        }
+                    }
+                };
+                var urlSpans = s.GetSpans(0, s.Length(), Java.Lang.Class.FromType(typeof(URLSpan)));
+                int startFAQLink = s.GetSpanStart(urlSpans[0]);
+                int endFAQLink = s.GetSpanEnd(urlSpans[0]);
+                s.RemoveSpan(urlSpans[0]);
+                s.SetSpan(clickableSpan, startFAQLink, endFAQLink, SpanTypes.ExclusiveExclusive);
+                tooltipMessage.TextFormatted = s;
+                tooltipMessage.MovementMethod = new LinkMovementMethod();
+                materialDialog.Show();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
         }
     }
 }

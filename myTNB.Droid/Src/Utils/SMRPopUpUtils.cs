@@ -66,5 +66,31 @@ namespace myTNB_Android.Src.Utils
         {
             return fromUsageSubmitSuccessful;
         }
+
+        public static string GetTitle()
+        {
+            string title = "Sorry, we are unable to perform this action right now.";
+
+            if (smrResponse != null && smrResponse.Response != null && !string.IsNullOrEmpty(smrResponse.Response.DisplayTitle))
+            {
+                title = smrResponse.Response.DisplayTitle;
+            }
+
+            return title;
+
+        }
+
+        public static string GetMessage()
+        {
+            string message = "Please try again later. If this problem persists, contact the <b><a href=\"tel:1300885454\">TNB Careline</a></b> and we will help you.";
+
+            if (smrResponse != null && smrResponse.Response != null && !string.IsNullOrEmpty(smrResponse.Response.DisplayMessage))
+            {
+                message = smrResponse.Response.DisplayMessage;
+            }
+
+            return message;
+
+        }
     }
 }
