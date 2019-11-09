@@ -3776,6 +3776,53 @@
       <Generator></Generator>
     </AndroidResource>
     <Compile Include="Src\MyTNBService\Parser\BillingResponseParser.cs" />
+    <Compile Include="Src\NewAppTutorial\MVP\NewAppTutorialDialogFragment.cs" />
+    <AndroidResource Include="Resources\drawable\white_circle.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\white_circle_active.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\NewAppTutorialItemLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\CustomYellowRoundedCornerRect.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <Compile Include="Src\NewAppTutorial\MVP\NewAppModel.cs" />
+    <Compile Include="Src\NewAppTutorial\Adapter\NewAppTutorialPagerAdapter.cs" />
+    <AndroidResource Include="Resources\layout\NewAppTutorialLayout.axml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable\yellow_circle_active.xml">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-hdpi\ic_display_dropdown.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-mdpi\ic_display_dropdown.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xhdpi\ic_display_dropdown.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxhdpi\ic_display_dropdown.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
+    <AndroidResource Include="Resources\drawable-xxxhdpi\ic_display_dropdown.png">
+      <SubType></SubType>
+      <Generator></Generator>
+    </AndroidResource>
     <Compile Include="Src\Utils\CancellationTokenSourceWrapper.cs" />
     <AndroidResource Include="Resources\drawable-hdpi\filter_filled.png">
       <SubType></SubType>
@@ -3801,6 +3848,17 @@
       <SubType></SubType>
       <Generator></Generator>
     </AndroidResource>
+    <Compile Include="Src\Utils\NewAppTutorialUtils.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\filter_blue.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\filter_white.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\filter_blue.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\filter_white.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\filter_blue.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\filter_white.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\filter_blue.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\filter_white.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\filter_blue.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\filter_white.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -4184,6 +4242,9 @@
     <Folder Include="Src\NewWalkthrough\" />
     <Folder Include="Src\NewWalkthrough\MVP\" />
     <Folder Include="Src\MyTNBService\Parser\" />
+    <Folder Include="Src\NewAppTutorial\" />
+    <Folder Include="Src\NewAppTutorial\MVP\" />
+    <Folder Include="Src\NewAppTutorial\Adapter\" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\GradientStatusBar.xml" />

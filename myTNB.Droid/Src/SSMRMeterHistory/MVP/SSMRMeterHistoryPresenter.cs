@@ -16,6 +16,7 @@ using myTNB_Android.Src.myTNBMenu.Requests;
 using Refit;
 using static myTNB_Android.Src.SSMR.SMRApplication.Api.GetAccountsSMREligibilityResponse;
 using myTNB_Android.Src.SSMRTerminate.Api;
+using myTNB_Android.Src.NewAppTutorial.MVP;
 
 namespace myTNB_Android.Src.SSMRMeterHistory.MVP
 {
@@ -25,6 +26,9 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
         SMRregistrationApi api;
         SSMRTerminateImpl terminationApi;
         CancellationTokenSource cts;
+
+        private bool isSubmitButtonHide = false;
+
         public SSMRMeterHistoryPresenter(SSMRMeterHistoryContract.IView view)
         {
             mView = view;
@@ -161,6 +165,8 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                     this.mView.HideProgressDialog();
                     SMRPopUpUtils.OnSetSMRActivityInfoResponse(SMRAccountActivityInfoResponse);
                     this.mView.UpdateUIForSMR(SMRAccountActivityInfoResponse);
+                    CheckIsBtnSubmitHide(SMRAccountActivityInfoResponse);
+                    this.mView.OnShowSMRMeterReadingDialog();
                 }
                 else
                 {
@@ -289,6 +295,36 @@ namespace myTNB_Android.Src.SSMRMeterHistory.MVP
                 smrEligibleAccountList.Add(smrEligibleAccount);
             });
             return smrEligibleAccountList;
+        }
+
+        public void CheckIsBtnSubmitHide(SMRActivityInfoResponse SMRAccountActivityInfoResponse)
+        {
+            if (SMRAccountActivityInfoResponse.Response.Data.DashboardCTAType == Constants.SMR_SUBMIT_METER_KEY && SMRAccountActivityInfoResponse.Response.Data.isCurrentPeriodSubmitted == "false"
+                && SMRAccountActivityInfoResponse.Response.Data.isDashboardCTADisabled == "false")
+            {
+                isSubmitButtonHide = false;
+            }
+            else
+            {
+                isSubmitButtonHide = true;
+            }
+        }
+
+        public List<NewAppModel> OnGeneraNewAppTutorialList(bool isSMR)
+        {
+            List<NewAppModel> newList = new List<NewAppModel>();
+
+            newList.Add(new NewAppModel()
+            {
+                ContentShowPosition = ContentType.TopLeft,
+                ContentTitle = "Your reading status at a glance.",
+                ContentMessage = "Switch between your accounts<br/>and get an overview of your<br/>meter reading status here.",
+                ItemCount = isSubmitButtonHide ? 1 : 0,
+                DisplayMode = isSMR? "SMR" : "NONSMR",
+                IsButtonShow = true
+            });
+
+            return newList;
         }
     }
 }
