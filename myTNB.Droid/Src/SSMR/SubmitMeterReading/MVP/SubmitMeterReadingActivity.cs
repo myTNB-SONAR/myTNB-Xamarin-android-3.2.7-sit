@@ -957,10 +957,13 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
         {
             if (!UserSessions.HasSMRSubmitMeterTutorialShown(this.mPref))
             {
-                ShowProgressDialog();
-                isTutorialShown = true;
-                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.mPresenter.OnGeneraNewAppTutorialList());
-                HideProgressDialog();
+                Handler h = new Handler();
+                Action myAction = () =>
+                {
+                    isTutorialShown = true;
+                    NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.mPresenter.OnGeneraNewAppTutorialList());
+                };
+                h.PostDelayed(myAction, 100);
             }
         }
 
