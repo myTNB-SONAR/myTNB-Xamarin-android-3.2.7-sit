@@ -1149,30 +1149,80 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             }
         }
 
-        private async Task OnStartCheckSMRAccountStatus(List<string> accountList)
+        private async Task OnStartCheckSMRAccountStatus(List<List<string>> accountList)
         {
-            await OnCheckSMRAccountStatus(accountList);
-            /*List<SummaryDashBoardDetails> updateSummaryDashboardInfoList = new List<SummaryDashBoardDetails>();
-            if (loadedSummaryList != null && loadedSummaryList.Count > 0)
+            for (int j = 0; j < accountList.Count; j++)
             {
-                List<CustomerBillingAccount> customerBillingAccountList = CustomerBillingAccount.GetSortedCustomerBillingAccounts();
-                foreach (CustomerBillingAccount customerBillintAccount in customerBillingAccountList)
-                {
-                    string findAcc = loadedSummaryList.Find(x => x == customerBillintAccount.AccNum);
+                await OnCheckSMRAccountStatusBatch(accountList[j]);
+            }
+        }
 
-                    if (!string.IsNullOrEmpty(findAcc) && customerBillintAccount.billingDetails != null)
-                    {
-                        SummaryDashBoardDetails summaryDashBoardDetails = new SummaryDashBoardDetails();
-                        summaryDashBoardDetails = JsonConvert.DeserializeObject<SummaryDashBoardDetails>(customerBillintAccount.billingDetails);
-                        summaryDashBoardDetails.IsTaggedSMR = customerBillintAccount.IsTaggedSMR;
-                        updateSummaryDashboardInfoList.Add(summaryDashBoardDetails);
-                    }
-                }
-                if (updateSummaryDashboardInfoList.Count > 0)
+        private async Task OnCheckSMRAccountStatusBatch(List<string> accountList)
+        {
+            List<AccountSMRStatus> updateSMRStatus = new List<AccountSMRStatus>();
+            try
+            {
+                UserInterface currentUsrInf = new UserInterface()
                 {
-                    this.mView.UpdateAccountListCards(updateSummaryDashboardInfoList);
+                    eid = UserEntity.GetActive().Email,
+                    sspuid = UserEntity.GetActive().UserID,
+                    did = this.mView.GetDeviceId(),
+                    ft = FirebaseTokenEntity.GetLatest().FBToken,
+                    lang = Constants.DEFAULT_LANG.ToUpper(),
+                    sec_auth_k1 = Constants.APP_CONFIG.API_KEY_ID,
+                    sec_auth_k2 = "",
+                    ses_param1 = "",
+                    ses_param2 = ""
+                };
+
+                AccountSMRStatusResponse accountSMRResponse = await this.serviceApi.GetSMRAccountStatus(new AccountsSMRStatusRequest()
+                {
+                    ContractAccounts = accountList,
+                    UserInterface = currentUsrInf
+                });
+
+                if (accountSMRResponse.Response.ErrorCode == "7200" && accountSMRResponse.Response.Data.Count > 0)
+                {
+                    updateSMRStatus = accountSMRResponse.Response.Data;
+                    foreach (AccountSMRStatus status in updateSMRStatus)
+                    {
+                        CustomerBillingAccount cbAccount = CustomerBillingAccount.FindByAccNum(status.ContractAccount);
+                        bool selectedUpdateIsTaggedSMR = false;
+                        if (status.IsTaggedSMR == "true")
+                        {
+                            selectedUpdateIsTaggedSMR = true;
+                        }
+
+                        if (selectedUpdateIsTaggedSMR != cbAccount.IsTaggedSMR)
+                        {
+                            CustomerBillingAccount.UpdateIsSMRTagged(status.ContractAccount, selectedUpdateIsTaggedSMR);
+                            cbAccount.IsTaggedSMR = selectedUpdateIsTaggedSMR;
+                            for (int i = 0; i < summaryDashboardInfoList.Count; i++)
+                            {
+                                if (summaryDashboardInfoList[i].AccNumber == status.ContractAccount)
+                                {
+                                    summaryDashboardInfoList[i].IsTaggedSMR = cbAccount.IsTaggedSMR;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                    this.mView.UpdateCurrentSMRAccountList();
+                    this.mView.UpdateEligibilitySMRAccountList();
                 }
-            }*/
+            }
+            catch (System.OperationCanceledException cancelledException)
+            {
+                Utility.LoggingNonFatalError(cancelledException);
+            }
+            catch (ApiException apiException)
+            {
+                Utility.LoggingNonFatalError(apiException);
+            }
+            catch (Exception unknownException)
+            {
+                Utility.LoggingNonFatalError(unknownException);
+            }
         }
 
         private async Task OnCheckSMRAccountStatus(List<string> accountList)
@@ -1417,14 +1467,46 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
                 isSMRApplyAllowFlag = false;
 
+                List<List<string>> splitList = new List<List<string>>();
+
                 if (smrAccountList.Count > 0)
                 {
-                    await OnCheckSMRAccountStatus(smrAccountList);
+                    for (int i = 0; i < smrAccountList.Count; i+=5)
+                    {
+                        List<string> tempList = new List<string>();
+                        tempList.AddRange(smrAccountList.GetRange(i, Math.Min(5, smrAccountList.Count - i)));
+                        splitList.Add(tempList);
+                    }
+
+                    for (int j = 0; j < splitList.Count; j++)
+                    {
+                        await OnCheckSMRAccountStatus(splitList[j]);
+                        if (isSMRApplyAllowFlag)
+                        {
+                            List<List<string>> remainingList = new List<List<string>>();
+                            for (int k = j + 1; k < splitList.Count; k++)
+                            {
+                                remainingList.Add(splitList[k]);
+                            }
+                            if (remainingList.Count > 0)
+                            {
+                                _ = OnStartCheckSMRAccountStatus(remainingList);
+                            }
+                            break;
+                        }
+                    }
                 }
 
                 if (!isSMRApplyAllowFlag && smrAccountList.Count > 0)
                 {
-                    await GetIsSmrApplyAllowedService(smrAccountList);
+                    for (int j = 0; j < splitList.Count; j++)
+                    {
+                        await GetIsSmrApplyAllowedService(splitList[j]);
+                        if (isSMRApplyAllowFlag)
+                        {
+                            break;
+                        }
+                    }
                 }
 
                 GetServicesResponse getServicesResponse = await this.serviceApi.GetServices(new GetServiceRequests()
