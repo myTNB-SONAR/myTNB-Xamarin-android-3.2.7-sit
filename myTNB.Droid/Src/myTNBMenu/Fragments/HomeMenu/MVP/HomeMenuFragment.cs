@@ -44,6 +44,7 @@ using myTNB_Android.Src.myTNBMenu.Models;
 using Newtonsoft.Json;
 using myTNB_Android.Src.ViewBill.Activity;
 using Android.Preferences;
+using myTNB_Android.Src.NewAppTutorial.MVP;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 {
@@ -195,6 +196,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         AccountsRecyclerViewAdapter accountsAdapter;
 
+
         private string mSavedTimeStamp = "0000000";
 
         private string savedSSMRMeterReadingTimeStamp = "0000000";
@@ -249,7 +251,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
         public override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            presenter = new HomeMenuPresenter(this);
+            presenter = new HomeMenuPresenter(this, PreferenceManager.GetDefaultSharedPreferences(this.Activity));
         }
 
         public override void OnAttach(Context context)
@@ -337,6 +339,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             base.OnViewCreated(view, savedInstanceState);
             try
             {
+                summaryNestScrollView.SmoothScrollingEnabled = true;
                 isSearchClose = true;
                 isFirstInitiate = true;
                 UpdateGreetingsHeader(this.presenter.GetGreeting());
@@ -561,16 +564,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
             {
                 Activity.RunOnUiThread(() =>
                 {
-                    myServiceShimmerAdapter = new MyServiceShimmerAdapter(null, this.Activity);
-                    myServiceShimmerList.SetAdapter(myServiceShimmerAdapter);
-                    myServiceShimmerView.Visibility = ViewStates.Gone;
-                    myServiceView.Visibility = ViewStates.Visible;
                     myServiceAdapter = new MyServiceAdapter(list, this.Activity, isBCRMDown, isRefreshShown);
                     myServiceListRecycleView.SetAdapter(myServiceAdapter);
                     currentMyServiceList.Clear();
                     currentMyServiceList.AddRange(list);
                     myServiceAdapter.ClickChanged += OnClickChanged;
                     this.SetIsClicked(false);
+                    try
+                    {
+                        myServiceShimmerAdapter = new MyServiceShimmerAdapter(null, this.Activity);
+                        myServiceShimmerList.SetAdapter(myServiceShimmerAdapter);
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                    myServiceShimmerView.Visibility = ViewStates.Gone;
+                    myServiceView.Visibility = ViewStates.Visible;
                 });
             }
             catch (System.Exception e)
@@ -618,16 +628,23 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 {
                     if (list != null && list.Count > 0)
                     {
-                        shimmerFAQView.StopShimmer();
-                        newFAQShimmerAdapter = new NewFAQShimmerAdapter(null, this.Activity);
-                        newFAQShimmerList.SetAdapter(newFAQShimmerAdapter);
-                        newFAQShimmerView.Visibility = ViewStates.Gone;
-                        newFAQView.Visibility = ViewStates.Visible;
                         newFAQAdapter = new NewFAQAdapter(list, this.Activity);
                         newFAQListRecycleView.SetAdapter(newFAQAdapter);
                         currentNewFAQList.Clear();
                         currentNewFAQList.AddRange(list);
                         newFAQAdapter.ClickChanged += OnFAQClickChanged;
+                        try
+                        {
+                            shimmerFAQView.StopShimmer();
+                            newFAQShimmerAdapter = new NewFAQShimmerAdapter(null, this.Activity);
+                            newFAQShimmerList.SetAdapter(newFAQShimmerAdapter);
+                        }
+                        catch (System.Exception e)
+                        {
+                            Utility.LoggingNonFatalError(e);
+                        }
+                        newFAQShimmerView.Visibility = ViewStates.Gone;
+                        newFAQView.Visibility = ViewStates.Visible;
                     }
                 });
             }
@@ -734,6 +751,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 actionBar.Hide();
                 ShowBackButton(false);
                 ShowSearchAction(false);
+                NewAppTutorialUtils.ForceCloseNewAppTutorial();
                 DownTimeEntity bcrmDownTime = DownTimeEntity.GetByCode(Constants.BCRM_SYSTEM);
                 SMRPopUpUtils.SetFromUsageFlag(false);
                 SMRPopUpUtils.SetFromUsageSubmitSuccessfulFlag(false);
@@ -1680,7 +1698,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 if (isFirstInitiate)
                 {
                     isFirstInitiate = false;
-                    summaryNestScrollView.SmoothScrollTo(0, 0);
+                    StopScrolling();
                 }
 
                 if (searchEditText != null)
@@ -1769,61 +1787,64 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void IsMyServiceLoadMoreButtonVisible(bool isVisible, bool isRotate)
         {
-            if (isVisible)
+            Activity.RunOnUiThread(() =>
             {
-                myServiceLoadMoreContainer.Visibility = ViewStates.Visible;
-                if (isRotate)
+                if (isVisible)
                 {
-                    if (!isMyServiceAlreadyRotated)
+                    myServiceLoadMoreContainer.Visibility = ViewStates.Visible;
+                    if (isRotate)
                     {
-                        isMyServiceAlreadyRotated = true;
-                        AnimationSet animSet = new AnimationSet(true);
-                        animSet.Interpolator = new DecelerateInterpolator();
-                        animSet.FillAfter = true;
-                        animSet.FillEnabled = true;
+                        if (!isMyServiceAlreadyRotated)
+                        {
+                            isMyServiceAlreadyRotated = true;
+                            AnimationSet animSet = new AnimationSet(true);
+                            animSet.Interpolator = new DecelerateInterpolator();
+                            animSet.FillAfter = true;
+                            animSet.FillEnabled = true;
 
-                        RotateAnimation animRotate = new RotateAnimation(0.0f, -180.0f,
-                            Dimension.RelativeToSelf, 0.5f,
-                            Dimension.RelativeToSelf, 0.5f);
+                            RotateAnimation animRotate = new RotateAnimation(0.0f, -180.0f,
+                                Dimension.RelativeToSelf, 0.5f,
+                                Dimension.RelativeToSelf, 0.5f);
 
-                        animRotate.Duration = 500;
-                        animRotate.FillAfter = true;
-                        animSet.AddAnimation(animRotate);
+                            animRotate.Duration = 500;
+                            animRotate.FillAfter = true;
+                            animSet.AddAnimation(animRotate);
 
-                        myServiceLoadMoreImg.StartAnimation(animSet);
+                            myServiceLoadMoreImg.StartAnimation(animSet);
 
-                        myServiceLoadMoreLabel.Text = Activity.GetString(Resource.String.show_less);
+                            myServiceLoadMoreLabel.Text = Activity.GetString(Resource.String.show_less);
+                        }
+                    }
+                    else
+                    {
+                        if (isMyServiceAlreadyRotated)
+                        {
+                            isMyServiceAlreadyRotated = false;
+                            AnimationSet animSet = new AnimationSet(true);
+                            animSet.Interpolator = new DecelerateInterpolator();
+                            animSet.FillAfter = true;
+                            animSet.FillEnabled = true;
+
+                            RotateAnimation animRotate = new RotateAnimation(-180.0f, 0,
+                                Dimension.RelativeToSelf, 0.5f,
+                                Dimension.RelativeToSelf, 0.5f);
+
+                            animRotate.Duration = 500;
+                            animRotate.FillAfter = true;
+                            animSet.AddAnimation(animRotate);
+
+                            myServiceLoadMoreImg.StartAnimation(animSet);
+
+                            myServiceLoadMoreLabel.Text = Activity.GetString(Resource.String.show_more);
+
+                        }
                     }
                 }
                 else
                 {
-                    if (isMyServiceAlreadyRotated)
-                    {
-                        isMyServiceAlreadyRotated = false;
-                        AnimationSet animSet = new AnimationSet(true);
-                        animSet.Interpolator = new DecelerateInterpolator();
-                        animSet.FillAfter = true;
-                        animSet.FillEnabled = true;
-
-                        RotateAnimation animRotate = new RotateAnimation(-180.0f, 0,
-                            Dimension.RelativeToSelf, 0.5f,
-                            Dimension.RelativeToSelf, 0.5f);
-
-                        animRotate.Duration = 500;
-                        animRotate.FillAfter = true;
-                        animSet.AddAnimation(animRotate);
-
-                        myServiceLoadMoreImg.StartAnimation(animSet);
-
-                        myServiceLoadMoreLabel.Text = Activity.GetString(Resource.String.show_more);
-
-                    }
+                    myServiceLoadMoreContainer.Visibility = ViewStates.Gone;
                 }
-            }
-            else
-            {
-                myServiceLoadMoreContainer.Visibility = ViewStates.Gone;
-            }
+            });
         }
 
         public void IsRearrangeButtonVisible(bool isVisible)
@@ -1868,14 +1889,17 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
 
         public void SetBottomLayoutBackground(bool isMyServiceExpand)
         {
-            if (isMyServiceExpand)
+            Activity.RunOnUiThread(() =>
             {
-                bottomContainer.SetBackgroundResource(Resource.Drawable.dashboard_botton_sheet_bg_expanded);
-            }
-            else
-            {
-                bottomContainer.SetBackgroundResource(Resource.Drawable.dashboard_botton_sheet_bg);
-            }
+                if (isMyServiceExpand)
+                {
+                    bottomContainer.SetBackgroundResource(Resource.Drawable.dashboard_botton_sheet_bg_expanded);
+                }
+                else
+                {
+                    bottomContainer.SetBackgroundResource(Resource.Drawable.dashboard_botton_sheet_bg);
+                }
+            });
         }
 
         private Snackbar mLoadBillSnackBar;
@@ -1932,6 +1956,113 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.HomeMenu.MVP
                 }
 
                 SetNotificationIndicator();
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public void OnShowHomeMenuFragmentTutorialDialog()
+        {
+            Activity.RunOnUiThread(() =>
+            {
+                StopScrolling();
+            });
+
+            NewAppTutorialUtils.OnShowNewAppTutorial(this.Activity, this, PreferenceManager.GetDefaultSharedPreferences(this.Activity), this.presenter.OnGeneraNewAppTutorialList());
+        }
+
+        public void HomeMenuCustomScrolling(int yPosition)
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    summaryNestScrollView.ScrollTo(0, yPosition);
+                    summaryNestScrollView.RequestLayout();
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public bool IsMyServiceLoadMoreVisible()
+        {
+            return myServiceLoadMoreContainer.Visibility == ViewStates.Visible;
+        }
+
+        public bool CheckIsScrollable()
+        {
+            View child = (View)summaryNestScrollView.GetChildAt(0);
+
+            return summaryNestScrollView.Height < child.Height + summaryNestScrollView.PaddingTop + summaryNestScrollView.PaddingBottom;
+        }
+
+        public void ResetNewFAQScroll()
+        {
+            try
+            {
+                Activity.RunOnUiThread(() =>
+                {
+                    LinearLayoutManager layoutManager = newFAQListRecycleView.GetLayoutManager() as LinearLayoutManager;
+                    layoutManager.ScrollToPositionWithOffset(0, 0);
+                });
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+        }
+
+        public int CheckNewFaqList()
+        {
+            int count = 0;
+
+            try
+            {
+                count = newFAQAdapter.ItemCount;
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return count;
+        }
+
+        public int CheckMyServiceList()
+        {
+            int count = 0;
+
+            try
+            {
+                count = myServiceAdapter.ItemCount;
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return count;
+        }
+
+        public int OnGetEndOfScrollView()
+        {
+            View child = (View)summaryNestScrollView.GetChildAt(0);
+
+            return child.Height + summaryNestScrollView.PaddingTop + summaryNestScrollView.PaddingBottom;
+        }
+
+        public void StopScrolling()
+        {
+            try
+            {
+                summaryNestScrollView.SmoothScrollBy(0, 0);
+                summaryNestScrollView.ScrollTo(0, 0);
+                summaryNestScrollView.RequestLayout();
             }
             catch (System.Exception e)
             {

@@ -9,6 +9,7 @@ using Android.Content;
 using Android.Content.PM;
 using Android.Graphics;
 using Android.OS;
+using Android.Preferences;
 using Android.Support.Design.Widget;
 using Android.Support.V4.Content;
 using Android.Views;
@@ -24,6 +25,7 @@ using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.Adapter;
 using myTNB_Android.Src.myTNBMenu.Fragments.ItemisedBillingMenu.MVP;
 using myTNB_Android.Src.myTNBMenu.Models;
 using myTNB_Android.Src.MyTNBService.Model;
+using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.ProgressDialog;
@@ -85,6 +87,9 @@ namespace myTNB_Android.Src.Billing.MVP
         [BindView(Resource.Id.btnViewBill)]
         Button btnViewBill;
 
+        [BindView(Resource.Id.bottomLayout)]
+        LinearLayout bottomLayout;
+
         SimpleDateFormat dateParser = new SimpleDateFormat("yyyyMMdd");
         SimpleDateFormat dateFormatter = new SimpleDateFormat("dd MMM yyyy");
 
@@ -97,6 +102,9 @@ namespace myTNB_Android.Src.Billing.MVP
         BillingDetailsContract.IPresenter billingDetailsPresenter;
         private LoadingOverlay loadingOverlay;
 		private bool fromSelectAccountPage;
+        ISharedPreferences mPref;
+        private bool isTutorialShown = false;
+
 
         [OnClick(Resource.Id.btnViewBill)]
         void OnViewBill(object sender, EventArgs eventArgs)
@@ -162,6 +170,7 @@ namespace myTNB_Android.Src.Billing.MVP
             TextViewUtils.SetMuseoSans500Typeface(accountName, myBillDetailsLabel, accountChargeLabel, accountChargeValue,
                 accountBillThisMonthLabel, accountBillThisMonthValue, accountPayAmountLabel, accountPayAmountCurrency, accountMinChargeLabel);
             billingDetailsPresenter = new BillingDetailsPresenter(this);
+            mPref = PreferenceManager.GetDefaultSharedPreferences(this);
             Bundle extras = Intent.Extras;
             if (extras.ContainsKey("SELECTED_ACCOUNT"))
             {
@@ -302,6 +311,11 @@ namespace myTNB_Android.Src.Billing.MVP
         protected override void OnResume()
         {
             base.OnResume();
+            NewAppTutorialUtils.ForceCloseNewAppTutorial();
+            if (!UserSessions.HasItemizedBillingDetailTutorialShown(this.mPref))
+            {
+                OnShowItemizedBillingTutorialDialog();
+            }
         }
 
         protected override void OnPause()
@@ -389,6 +403,54 @@ namespace myTNB_Android.Src.Billing.MVP
                 this.SetIsClicked(false);
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public void OnShowItemizedBillingTutorialDialog()
+        {
+            Handler h = new Handler();
+            Action myAction = () =>
+            {
+                NewAppTutorialUtils.OnShowNewAppTutorial(this, null, mPref, this.billingDetailsPresenter.OnGeneraNewAppTutorialList());
+            };
+            h.PostDelayed(myAction, 100);
+        }
+
+        public int GetViewBillButtonHeight()
+        {
+            btnViewBill.Measure(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+            int height = btnViewBill.MeasuredHeight;
+            return height;
+        }
+
+        public int GetViewBillButtonWidth()
+        {
+            btnViewBill.Measure(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
+            int width = btnViewBill.MeasuredWidth;
+            return width;
+        }
+
+        public int GetTopHeight()
+        {
+            int i = 0;
+
+            try
+            {
+                Rect offsetViewBounds = new Rect();
+                //returns the visible bounds
+                bottomLayout.GetDrawingRect(offsetViewBounds);
+                // calculates the relative coordinates to the parent
+
+                rootView.OffsetDescendantRectToMyCoords(bottomLayout, offsetViewBounds);
+
+                i = offsetViewBounds.Top + (int) DPUtils.ConvertDPToPx(8f);
+
+            }
+            catch (System.Exception e)
+            {
+                Utility.LoggingNonFatalError(e);
+            }
+
+            return i;
         }
     }
 }

@@ -1484,4 +1484,6 @@ Please try again later.]]>
 <string name="walkthrough_update_msg_1">We’ve revamped the Home, Bills and Usage screens! It’s not just prettier, it’s way more helpful with more details (including block tariffs so you can stay informed on all things usage-related).</string>
 <string name="walkthrough_btn_done">Let\'s get started!</string>
 <string name="walkthrough_btn_skip">Skip</string>
+
+<string name="tutorial_arrow_down"><![CDATA[<font style="color:#ffffff;font-size="5px"">&#x25BC;</font>]]></string>
 </resources>

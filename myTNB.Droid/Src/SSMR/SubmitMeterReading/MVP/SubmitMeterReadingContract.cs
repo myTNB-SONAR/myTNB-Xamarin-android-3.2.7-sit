@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using myTNB.SitecoreCMS.Model;
 using myTNB_Android.Src.myTNBMenu.Models;
+using myTNB_Android.Src.NewAppTutorial.MVP;
 using myTNB_Android.Src.SSMR.SSMRBase.MVP;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.Api;
 using static myTNB_Android.Src.SSMR.SubmitMeterReading.Api.GetMeterReadingOCRResponse;
@@ -42,6 +43,8 @@ namespace myTNB_Android.Src.SSMR.SubmitMeterReading.MVP
             Task OnGetOnePhaseData();
 
             Task OnGetThreePhaseData();
+
+            List<NewAppModel> OnGeneraNewAppTutorialList();
         }
     }
 }
