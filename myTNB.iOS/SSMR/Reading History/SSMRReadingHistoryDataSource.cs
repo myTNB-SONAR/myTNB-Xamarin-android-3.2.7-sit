@@ -42,7 +42,7 @@ namespace myTNB
                 SSMRReadingHistoryCell cell = tableView.DequeueReusableCell(SSMRConstants.Cell_ReadingHistory) as SSMRReadingHistoryCell;
                 cell._dateLabel.Text = readingHistory?.ReadingDate ?? string.Empty;
                 cell._descLabel.Text = readingHistory?.ReadingType ?? string.Empty;
-                cell._kwhLabel.Text = readingHistory?.Consumption ?? string.Empty;
+                cell._kwhLabel.Text = readingHistory?.ReadingValue ?? string.Empty;
                 cell._monthYearLabel.Text = readingHistory?.ReadingForMonth ?? string.Empty;
                 cell.UpdateCell(_sSMRHelper.IsEstimatedReading(readingHistory.ReadingType));
                 return cell;

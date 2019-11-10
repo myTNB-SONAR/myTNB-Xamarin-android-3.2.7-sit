@@ -40,13 +40,13 @@ namespace myTNB
             view.AddSubview(_scrollView);
             AddSubview(view);
             BackgroundColor = UIColor.Clear;
-            if (view != null)
-            {
-                view.LeftAnchor.ConstraintEqualTo(LeftAnchor).Active = true;
-                view.RightAnchor.ConstraintEqualTo(RightAnchor).Active = true;
-                view.TopAnchor.ConstraintEqualTo(TopAnchor).Active = true;
-                view.BottomAnchor.ConstraintEqualTo(BottomAnchor).Active = true;
-            }
+            //if (view != null)
+            //{
+            //    view.LeftAnchor.ConstraintEqualTo(LeftAnchor).Active = true;
+            //    view.RightAnchor.ConstraintEqualTo(RightAnchor).Active = true;
+            //    view.TopAnchor.ConstraintEqualTo(TopAnchor).Active = true;
+            //    view.BottomAnchor.ConstraintEqualTo(BottomAnchor).Active = true;
+            //}
             SelectionStyle = UITableViewCellSelectionStyle.None;
         }
 
