@@ -805,7 +805,23 @@ namespace myTNB
         }
         private void OnShowMoreAction()
         {
-            PrepareAccounts(DataManager.DataManager.SharedInstance.CurrentAccountList);
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                if (NetworkUtility.isReachable)
+                {
+                    InvokeOnMainThread(() =>
+                    {
+                        PrepareAccounts(DataManager.DataManager.SharedInstance.CurrentAccountList);
+                    });
+                }
+                else
+                {
+                    InvokeOnMainThread(() =>
+                    {
+                        DisplayNoDataAlert();
+                    });
+                }
+            });
         }
         private void OnShowLessAction()
         {

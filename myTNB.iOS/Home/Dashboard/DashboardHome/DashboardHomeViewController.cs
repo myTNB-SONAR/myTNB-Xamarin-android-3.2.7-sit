@@ -311,21 +311,37 @@ namespace myTNB
         private void OnEnterForeground(NSNotification notification)
         {
             Debug.WriteLine("On Enter Foreground");
-            var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
-            var topVc = AppDelegate.GetTopViewController(baseRootVc);
-            if (topVc != null)
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                if (topVc is DashboardHomeViewController)
+                if (NetworkUtility.isReachable)
                 {
-                    if (_accountListViewController != null)
+                    InvokeOnMainThread(() =>
                     {
-                        DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
-                        AmountDueCache.Reset();
-                        _accountListViewController.PrepareAccountList();
-                    }
-                    OnLoadHomeData();
+                        var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                        var topVc = AppDelegate.GetTopViewController(baseRootVc);
+                        if (topVc != null)
+                        {
+                            if (topVc is DashboardHomeViewController)
+                            {
+                                if (_accountListViewController != null)
+                                {
+                                    DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
+                                    AmountDueCache.Reset();
+                                    _accountListViewController.PrepareAccountList();
+                                }
+                                OnLoadHomeData();
+                            }
+                        }
+                    });
                 }
-            }
+                else
+                {
+                    InvokeOnMainThread(() =>
+                    {
+                        DisplayNoDataAlert();
+                    });
+                }
+            });
         }
 
         private void OnLoadHomeData()
