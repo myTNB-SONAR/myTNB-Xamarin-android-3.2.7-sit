@@ -447,6 +447,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         [BindView(Resource.Id.new_account_image)]
         ImageView newAccountImage;
 
+        [BindView(Resource.Id.ssmr_account_message)]
+        RelativeLayout ssmr_account_message;
+
+        [BindView(Resource.Id.ssmr_shimmer_layout)]
+        RelativeLayout ssmr_shimmer_layout;
+
+        [BindView(Resource.Id.shimmerSSMRImg)]
+        ShimmerFrameLayout shimmerSSMRImg;
+
+        [BindView(Resource.Id.shimmerSSMRTitle)]
+        ShimmerFrameLayout shimmerSSMRTitle;
+
+        [BindView(Resource.Id.shimmerSSMRMessage)]
+        ShimmerFrameLayout shimmerSSMRMessage;
+
         private static bool isZoomIn = false;
 
         TariffBlockLegendAdapter tariffBlockLegendAdapter;
@@ -832,6 +847,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     txtAddress.Text = selectedAccount.AddStreet;
                     if (selectedAccount.AccountCategoryId.Equals("2"))
                     {
+                        HideSSMRDashboardView();
                         bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
                         isREAccount = true;
                         reContainer.Visibility = ViewStates.Visible;
@@ -851,6 +867,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     else if (isSMAccount)
                     {
                         // Smart Meter
+                        HideSSMRDashboardView();
                         isChangeVirtualHeightNeed = true;
                         SetVirtualHeightParams(6f);
                         isREAccount = false;
@@ -870,6 +887,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         isSMR = this.mPresenter.IsOwnedSMR(selectedAccount.AccountNum);
                         if (isSMR)
                         {
+                            StartSSMRDashboardViewShimmer();
                             isChangeVirtualHeightNeed = true;
                             SetVirtualHeightParams(6f);
                             isChangeBackgroundNeeded = true;
@@ -877,6 +895,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         }
                         else
                         {
+                            HideSSMRDashboardView();
                             isChangeVirtualHeightNeed = true;
                             rootView.SetBackgroundResource(0);
                             scrollViewContent.SetBackgroundResource(0);
@@ -944,6 +963,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
                 else
                 {
+                    HideSSMRDashboardView();
                     rootView.SetBackgroundResource(0);
                     scrollViewContent.SetBackgroundResource(0);
                     isChangeVirtualHeightNeed = true;
@@ -1044,8 +1064,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     DisableViewBillButton();
 
                     energyDisconnectionButton.Visibility = ViewStates.Gone;
-
-                    HideSSMRDashboardView();
 
                     if (isUsageLoadedNeeded)
                     {
@@ -5934,7 +5952,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             Utility.LoggingNonFatalError(e);
                         }
+                        isSMR = false;
                         isChangeBackgroundNeeded = false;
+                        isChangeVirtualHeightNeed = true;
+                        SetVirtualHeightParams(6f);
                     }
                 }
                 else
@@ -5956,6 +5977,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 if (response != null && response.Response != null && response.Response.Data != null)
                 {
+                    StopSSMRDashboardViewShimmer();
                     smrResponse = response;
                     MyTNBAccountManagement.GetInstance().SetAccountActivityInfo(new SMRAccountActivityInfo(selectedAccount.AccountNum, smrResponse));
                     SMRPopUpUtils.OnSetSMRActivityInfoResponse(response);
@@ -6044,7 +6066,69 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         public void HideSSMRDashboardView()
         {
+            StopSSMRDashboardViewShimmer();
             ssmrHistoryContainer.Visibility = ViewStates.Gone;
+            if (isSMR)
+            {
+                isSMR = false;
+                isChangeBackgroundNeeded = false;
+                rootView.SetBackgroundResource(0);
+                scrollViewContent.SetBackgroundResource(0);
+                isChangeVirtualHeightNeed = true;
+                SetVirtualHeightParams(6f);
+                try
+                {
+                    ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.NewHorizontalGradientBackground);
+                    ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                }
+                catch (System.Exception e)
+                {
+                    Utility.LoggingNonFatalError(e);
+                }
+            }
+        }
+
+        private void StartSSMRDashboardViewShimmer()
+        {
+            ssmrHistoryContainer.Visibility = ViewStates.Visible;
+            ssmr_account_message.Visibility = ViewStates.Gone;
+            btnReadingHistory.Enabled = false;
+            btnReadingHistory.Background = ContextCompat.GetDrawable(this.Activity, Resource.Drawable.silver_chalice_button_outline);
+            btnReadingHistory.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
+            btnReadingHistory.Text = this.Activity.GetString(Resource.String.ssmr_view_meter);
+            // Start SSMR Shimmer
+            var shimmerBuilder = ShimmerUtils.ShimmerBuilderConfig();
+            if (shimmerBuilder != null)
+            {
+                shimmerSSMRImg.SetShimmer(shimmerBuilder?.Build());
+                shimmerSSMRTitle.SetShimmer(shimmerBuilder?.Build());
+                shimmerSSMRMessage.SetShimmer(shimmerBuilder?.Build());
+            }
+            shimmerSSMRImg.StartShimmer();
+            shimmerSSMRTitle.StartShimmer();
+            shimmerSSMRMessage.StartShimmer();
+
+            ssmr_shimmer_layout.Visibility = ViewStates.Visible;
+        }
+
+        private void StopSSMRDashboardViewShimmer()
+        {
+            ssmr_shimmer_layout.Visibility = ViewStates.Gone;
+            // Stop SSMR Shimmer
+            if (shimmerSSMRImg.IsShimmerStarted)
+            {
+                shimmerSSMRImg.StopShimmer();
+            }
+            if (shimmerSSMRTitle.IsShimmerStarted)
+            {
+                shimmerSSMRTitle.StopShimmer();
+            }
+            if (shimmerSSMRMessage.IsShimmerStarted)
+            {
+                shimmerSSMRMessage.StopShimmer();
+            }
+
+            ssmr_account_message.Visibility = ViewStates.Visible;
         }
 
         public string GetDeviceId()
