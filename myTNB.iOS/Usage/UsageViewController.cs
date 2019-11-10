@@ -29,21 +29,19 @@ namespace myTNB
             if (!DataManager.DataManager.SharedInstance.IsSameAccount)
             {
                 var accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
-                if (isNormalChart)
+                if (isREAccount)
                 {
                     CallGetAccountStatusAPI(accNum);
+                    CallGetAccountUsageAPI(accNum);
+                }
+                else if (isSmartMeterAccount)
+                {
+                    CallGetAccountStatusAPI(accNum);
+                    CallGetAccountUsageSmartAPI(accNum);
                 }
                 else
                 {
                     CallGetAccountStatusAPI(accNum);
-                    if (isSmartMeterAccount)
-                    {
-                        CallGetAccountUsageSmartAPI(accNum);
-                    }
-                    else
-                    {
-                        CallGetAccountUsageAPI(accNum);
-                    }
                 }
                 CallGetAccountDueAmountAPI(accNum);
             }
@@ -440,7 +438,7 @@ namespace myTNB
                                 SetDisconnectionComponent(false);
 
                                 accountIsSSMR = false;
-                                if (AccountStatusCache.AccountStatusIsAvailable() && isNormalChart)
+                                if (AccountStatusCache.AccountStatusIsAvailable() && isNormalChart && !isSmartMeterAccount && !isREAccount)
                                 {
                                     List<string> accounts = new List<string>
                                     {
@@ -498,7 +496,7 @@ namespace myTNB
                                         CallGetAccountUsageAPI(accNum);
                                     }
                                 }
-                                else if (isNormalChart)
+                                else if (isNormalChart && !isSmartMeterAccount && !isREAccount)
                                 {
                                     CallGetAccountUsageAPI(accNum);
                                 }

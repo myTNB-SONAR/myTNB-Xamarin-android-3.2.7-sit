@@ -311,21 +311,37 @@ namespace myTNB
         private void OnEnterForeground(NSNotification notification)
         {
             Debug.WriteLine("On Enter Foreground");
-            var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
-            var topVc = AppDelegate.GetTopViewController(baseRootVc);
-            if (topVc != null)
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                if (topVc is DashboardHomeViewController)
+                if (NetworkUtility.isReachable)
                 {
-                    if (_accountListViewController != null)
+                    InvokeOnMainThread(() =>
                     {
-                        DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
-                        AmountDueCache.Reset();
-                        _accountListViewController.PrepareAccountList();
-                    }
-                    OnLoadHomeData();
+                        var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                        var topVc = AppDelegate.GetTopViewController(baseRootVc);
+                        if (topVc != null)
+                        {
+                            if (topVc is DashboardHomeViewController)
+                            {
+                                if (_accountListViewController != null)
+                                {
+                                    DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
+                                    AmountDueCache.Reset();
+                                    _accountListViewController.PrepareAccountList();
+                                }
+                                OnLoadHomeData();
+                            }
+                        }
+                    });
                 }
-            }
+                else
+                {
+                    InvokeOnMainThread(() =>
+                    {
+                        DisplayNoDataAlert();
+                    });
+                }
+            });
         }
 
         private void OnLoadHomeData()
@@ -341,7 +357,7 @@ namespace myTNB
                     InvokeOnMainThread(() =>
                     {
                         _helpIsShimmering = true;
-                        OnUpdateCell(DashboardHomeConstants.CellIndex_Help);
+                        OnUpdateTable();
                         OnGetHelpInfo().ContinueWith(task =>
                         {
                             InvokeOnMainThread(() =>
@@ -349,7 +365,7 @@ namespace myTNB
                                 _helpList = new HelpEntity().GetAllItems();
                                 DataManager.DataManager.SharedInstance.HelpList = _helpList;
                                 _helpIsShimmering = false;
-                                OnUpdateCell(DashboardHomeConstants.CellIndex_Help);
+                                OnUpdateTable();
                             });
                         });
                     });
@@ -357,7 +373,6 @@ namespace myTNB
                 else
                 {
                     DisplayNoDataAlert();
-                    Debug.WriteLine("No data connection");
                 }
             });
         }
@@ -450,7 +465,7 @@ namespace myTNB
             {
                 DataManager.DataManager.SharedInstance.ActiveServicesList = new List<ServiceItemModel>();
                 _servicesIsShimmering = true;
-                OnUpdateCell(DashboardHomeConstants.CellIndex_Services);
+                OnUpdateTable();
                 bool hasExistingSSMR = false;
                 InvokeInBackground(async () =>
                {
@@ -534,7 +549,7 @@ namespace myTNB
                        {
                            DataManager.DataManager.SharedInstance.ServicesList.Clear();
                        }
-                       OnUpdateCell(DashboardHomeConstants.CellIndex_Services);
+                       OnUpdateTable();
                    });
                });
             });
@@ -601,7 +616,7 @@ namespace myTNB
                 _promotions = entity.GetAllItemsV2();
                 InvokeOnMainThread(() =>
                 {
-                    OnUpdateCell(DashboardHomeConstants.CellIndex_Promotion);
+                    OnUpdateTable();
                 });
             });
         }
@@ -725,16 +740,13 @@ namespace myTNB
             _servicesActionDictionary = actions.GetActionsDictionary();
         }
 
-        public void OnUpdateCell(int row)
+        public void OnUpdateTable()
         {
-            _homeTableView.BeginUpdates();
             _homeTableView.Source = new DashboardHomeDataSource(this, _accountListViewController
                 , DataManager.DataManager.SharedInstance.ServicesList, _promotions, _helpList,
                 _servicesIsShimmering, _helpIsShimmering, _isRefreshScreenEnabled, _refreshScreenComponent,
                 OnUpdateCellWithoutReload, GetI18NValue);
-            NSIndexPath indexPath = NSIndexPath.Create(0, row);
-            _homeTableView.ReloadRows(new NSIndexPath[] { indexPath }, UITableViewRowAnimation.None);
-            _homeTableView.EndUpdates();
+            _homeTableView.ReloadData();
             UpdateFooterBG();
         }
 
@@ -800,17 +812,39 @@ namespace myTNB
 
         private void RefreshViewForAccounts()
         {
-            if (_refreshScreenComponent != null)
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
-                if (_refreshScreenComponent.GetView() != null)
+                if (NetworkUtility.isReachable)
                 {
-                    _refreshScreenComponent.GetView().RemoveFromSuperview();
-                    _refreshScreenComponent = null;
+                    InvokeOnMainThread(() =>
+                    {
+                        if (_refreshScreenComponent != null)
+                        {
+                            if (_refreshScreenComponent.GetView() != null)
+                            {
+                                _refreshScreenComponent.GetView().RemoveFromSuperview();
+                                _refreshScreenComponent = null;
+                            }
+                        }
+                        _isRefreshScreenEnabled = false;
+                        SetAccountListViewController();
+                        if (_accountListViewController != null)
+                        {
+                            DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
+                            AmountDueCache.Reset();
+                            _accountListViewController.PrepareAccountList(null, false, true);
+                        }
+                        OnUpdateTable();
+                    });
                 }
-            }
-            _isRefreshScreenEnabled = false;
-            SetAccountListViewController();
-            OnUpdateCell(DashboardHomeConstants.CellIndex_Accounts);
+                else
+                {
+                    InvokeOnMainThread(() =>
+                    {
+                        DisplayNoDataAlert();
+                    });
+                }
+            });
         }
 
         public void DismissActiveKeyboard()

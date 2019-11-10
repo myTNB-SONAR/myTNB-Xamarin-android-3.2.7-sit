@@ -763,7 +763,7 @@ namespace myTNB
             {
                 if (_homeViewController != null)
                 {
-                    _homeViewController.OnUpdateCell(0);
+                    _homeViewController.OnUpdateTable();
                 }
             }
             else
@@ -805,14 +805,30 @@ namespace myTNB
         }
         private void OnShowMoreAction()
         {
-            PrepareAccounts(DataManager.DataManager.SharedInstance.CurrentAccountList);
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                if (NetworkUtility.isReachable)
+                {
+                    InvokeOnMainThread(() =>
+                    {
+                        PrepareAccounts(DataManager.DataManager.SharedInstance.CurrentAccountList);
+                    });
+                }
+                else
+                {
+                    InvokeOnMainThread(() =>
+                    {
+                        DisplayNoDataAlert();
+                    });
+                }
+            });
         }
         private void OnShowLessAction()
         {
             DataManager.DataManager.SharedInstance.AccountListIsLoaded = false;
             if (_homeViewController != null)
             {
-                _homeViewController.OnUpdateCellWithoutReload(DashboardHomeConstants.CellIndex_Services);
+                _homeViewController.ScrollTableToTheTop();
             }
             PrepareAccountList(DataManager.DataManager.SharedInstance.CurrentAccountList);
         }
