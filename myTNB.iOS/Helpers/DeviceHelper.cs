@@ -78,6 +78,11 @@ namespace myTNB
             return UIScreen.MainScreen.NativeBounds.Height >= 1334;
         }
 
+        public static bool IsIphone678PlusResolution()
+        {
+            return UIScreen.MainScreen.NativeBounds.Height > 1334 && !IsIphoneXUpResolution();
+        }
+
         /// <summary>
         /// Checks if device is iPhone 6, 7 or 8
         /// </summary>

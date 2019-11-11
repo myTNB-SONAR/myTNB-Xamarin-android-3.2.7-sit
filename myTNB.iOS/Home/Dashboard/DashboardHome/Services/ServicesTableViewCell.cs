@@ -33,13 +33,13 @@ namespace myTNB
             //AddCardShadow(ref _view);
             AddSubview(_view);
             BackgroundColor = UIColor.Clear;
-            if (_view != null)
-            {
-                _view.LeftAnchor.ConstraintEqualTo(LeftAnchor).Active = true;
-                _view.RightAnchor.ConstraintEqualTo(RightAnchor).Active = true;
-                _view.TopAnchor.ConstraintEqualTo(TopAnchor).Active = true;
-                _view.BottomAnchor.ConstraintEqualTo(BottomAnchor).Active = true;
-            }
+            //if (_view != null)
+            //{
+            //    _view.LeftAnchor.ConstraintEqualTo(LeftAnchor).Active = true;
+            //    _view.RightAnchor.ConstraintEqualTo(RightAnchor).Active = true;
+            //    _view.TopAnchor.ConstraintEqualTo(TopAnchor).Active = true;
+            //    _view.BottomAnchor.ConstraintEqualTo(BottomAnchor).Active = true;
+            //}
             SelectionStyle = UITableViewCellSelectionStyle.None;
         }
 

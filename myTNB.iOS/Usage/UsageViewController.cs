@@ -29,21 +29,19 @@ namespace myTNB
             if (!DataManager.DataManager.SharedInstance.IsSameAccount)
             {
                 var accNum = DataManager.DataManager.SharedInstance.SelectedAccount.accNum;
-                if (isNormalChart)
+                if (isREAccount)
                 {
                     CallGetAccountStatusAPI(accNum);
+                    CallGetAccountUsageAPI(accNum);
+                }
+                else if (isSmartMeterAccount)
+                {
+                    CallGetAccountStatusAPI(accNum);
+                    CallGetAccountUsageSmartAPI(accNum);
                 }
                 else
                 {
                     CallGetAccountStatusAPI(accNum);
-                    if (isSmartMeterAccount)
-                    {
-                        CallGetAccountUsageSmartAPI(accNum);
-                    }
-                    else
-                    {
-                        CallGetAccountUsageAPI(accNum);
-                    }
                 }
                 CallGetAccountDueAmountAPI(accNum);
             }
@@ -66,15 +64,28 @@ namespace myTNB
         internal override void OnSubmitMeterTap()
         {
             base.OnSubmitMeterTap();
-            UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
-            SSMRReadMeterViewController viewController =
-                storyBoard.InstantiateViewController("SSMRReadMeterViewController") as SSMRReadMeterViewController;
-            if (viewController != null)
+            if (SSMRActivityInfoCache.DashboardPreviousReading != null &&
+                SSMRActivityInfoCache.DashboardPreviousReading.Count > 0)
             {
-                viewController.IsFromDashboard = true;
-                UINavigationController navController = new UINavigationController(viewController);
-                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                PresentViewController(navController, true, null);
+                UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+                SSMRReadMeterViewController viewController =
+                    storyBoard.InstantiateViewController("SSMRReadMeterViewController") as SSMRReadMeterViewController;
+                if (viewController != null)
+                {
+                    viewController.IsFromDashboard = true;
+                    UINavigationController navController = new UINavigationController(viewController);
+                    navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                    PresentViewController(navController, true, null);
+                }
+            }
+            else
+            {
+                var title = SSMRActivityInfoCache.DashboardDataModel.DisplayTitle;
+                var msg = SSMRActivityInfoCache.DashboardDataModel.DisplayMessage;
+                string displayTitle = (!string.IsNullOrEmpty(title) && !string.IsNullOrWhiteSpace(title)) ? title : "Sorry, we are unable to perform this action right now.";
+                string displayMsg = (!string.IsNullOrEmpty(msg) && !string.IsNullOrWhiteSpace(msg)) ? msg : "Please try again later. If this problem persists, contact the <b><a href=\"tel: 1300885454\">TNB Careline</a></b> and we will help you.";
+
+                DisplayCustomAlert(displayTitle, displayMsg, GetCommonI18NValue(Constants.Common_GotIt), null);
             }
         }
         internal override void OnViewDetailsButtonTap()
@@ -303,9 +314,7 @@ namespace myTNB
                                         }
                                         else if (AccountUsageSmartCache.IsDataEmpty)
                                         {
-                                            AccountUsageSmartCache.SetUsageMetrics(accountUsageSmartResponse);
-                                            OtherUsageMetricsModel model = AccountUsageSmartCache.GetUsageMetrics();
-                                            SetSmartMeterComponent(false, model.Cost);
+                                            HideSmartMeterComponent();
                                             SetEmptyDataComponent(AccountUsageSmartCache.EmptyDataMessage);
                                         }
                                         else
@@ -429,7 +438,7 @@ namespace myTNB
                                 SetDisconnectionComponent(false);
 
                                 accountIsSSMR = false;
-                                if (AccountStatusCache.AccountStatusIsAvailable() && isNormalChart)
+                                if (AccountStatusCache.AccountStatusIsAvailable() && isNormalChart && !isSmartMeterAccount && !isREAccount)
                                 {
                                     List<string> accounts = new List<string>
                                     {
@@ -487,7 +496,7 @@ namespace myTNB
                                         CallGetAccountUsageAPI(accNum);
                                     }
                                 }
-                                else if (isNormalChart)
+                                else if (isNormalChart && !isSmartMeterAccount && !isREAccount)
                                 {
                                     CallGetAccountUsageAPI(accNum);
                                 }
@@ -548,6 +557,7 @@ namespace myTNB
                             SetTariffLegendComponent();
                             SetChartView(false);
                             SetSSMRComponent(false, false);
+                            CheckTutorialOverlay();
                         }
                         else if (AccountUsageCache.IsSuccess || usageIsCached)
                         {
@@ -562,6 +572,7 @@ namespace myTNB
                             {
                                 SetEmptyDataComponent(AccountUsageCache.EmptyDataMessage);
                                 SetSSMRComponent(false, false);
+                                CheckTutorialOverlay();
                             }
                             else
                             {

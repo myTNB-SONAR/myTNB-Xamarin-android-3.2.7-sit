@@ -43,6 +43,18 @@ namespace myTNB
         public static string I18N_ShowLess = "showLess";
         public static string I18N_MoreAccts = "moreAccts";
         public static string I18N_RearrangeAccts = "rearrangeAccts";
+        public static string I18N_TutorialAccountTitle = "tutorialAccountTitle";
+        public static string I18N_TutorialQuickAccessTitle = "tutorialQuickAccessTitle";
+        public static string I18N_TutorialQuickActionTitle = "tutorialQuickActionTitle";
+        public static string I18N_TutorialNeedHelpTitle = "tutorialNeedHelpTitle";
+        public static string I18N_TutorialNoAcctDesc = "tutorialNoAcctDesc";
+        public static string I18N_TutorialSingleAcctDesc = "tutorialSingleAcctDesc";
+        public static string I18N_TutorialThreeAcctsDesc = "tutorialThreeAcctsDesc";
+        public static string I18N_TutorialMoreAcctsDesc = "tutorialMoreAcctsDesc";
+        public static string I18N_TutorialQuickAccessDesc = "tutorialQuickAccessDesc";
+        public static string I18N_TutorialQuickActionDesc = "tutorialQuickActionDesc";
+        public static string I18N_TutorialNeedHelpDesc = "tutorialNeedHelpDesc";
+        public static string I18N_GotIt = "gotIt";
 
         //Image
         public static string Img_Notification = "Notification";

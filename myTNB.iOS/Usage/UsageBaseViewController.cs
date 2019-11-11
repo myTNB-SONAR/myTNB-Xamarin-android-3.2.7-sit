@@ -48,6 +48,9 @@ namespace myTNB
         public AccountUsageResponseModel _accountUsageResponse;
         public SMRAccountActivityInfoResponseModel _smrAccountActivityInfoResponse;
 
+        private UIView _tutorialContainer;
+        private nfloat _smrCardYPos, _smrCardHeight;
+
         public override void ViewDidLoad()
         {
             PageName = UsageConstants.PageName;
@@ -165,7 +168,7 @@ namespace myTNB
             {
                 _scrollViewContent.Hidden = false;
             }
-
+            ScrollToTop();
             InitializeValues();
             _rmkWhFlag = false;
             _tariffIsVisible = false;
@@ -235,8 +238,15 @@ namespace myTNB
         {
             if (isSmartMeterAccount)
             {
-                _footerBGImage.Hidden = false;
-                ViewHelper.AdjustFrameSetY(_footerBGImage, GetYPosForBG(_viewSmartMeter));
+                if (!_viewSmartMeter.Hidden)
+                {
+                    _footerBGImage.Hidden = false;
+                    ViewHelper.AdjustFrameSetY(_footerBGImage, GetYPosForBG(_viewSmartMeter));
+                }
+                else
+                {
+                    _footerBGImage.Hidden = true;
+                }
             }
             else if (isREAccount)
             {
@@ -283,7 +293,7 @@ namespace myTNB
 
             AddFooterBGImage(_scrollViewContent);
 
-            _lblAddress = new UILabel(new CGRect(GetScaledWidth(50F), 0, ViewWidth - (GetScaledWidth(50F) * 2), 0))
+            _lblAddress = new UILabel(new CGRect(GetScaledWidth(32F), 0, ViewWidth - (GetScaledWidth(32F) * 2), 0))
             {
                 LineBreakMode = UILineBreakMode.WordWrap,
                 Lines = 0,
@@ -327,7 +337,7 @@ namespace myTNB
 
         private void SetContentView()
         {
-            _lblAddress.Frame = new CGRect(new CGPoint(GetScaledWidth(50F), 0), _lblAddress.Frame.Size);
+            _lblAddress.Frame = new CGRect(new CGPoint(GetScaledWidth(32F), 0), _lblAddress.Frame.Size);
             if (!_isEmptyData)
             {
                 if (!AccountStatusCache.AccountStatusIsAvailable() && !_viewStatus.Hidden)
@@ -399,14 +409,22 @@ namespace myTNB
                 }
                 else
                 {
-                    if (_viewSSMR.Hidden)
+                    if (isREAccount)
                     {
-                        _lastView = _viewChart;
+                        _viewRE.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, 24F)), _viewRE.Frame.Size);
+                        _lastView = _viewRE;
                     }
                     else
                     {
-                        _viewSSMR.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, 16F)), _viewSSMR.Frame.Size);
-                        _lastView = _viewSSMR;
+                        if (_viewSSMR.Hidden)
+                        {
+                            _lastView = _viewChart;
+                        }
+                        else
+                        {
+                            _viewSSMR.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, 32F)), _viewSSMR.Frame.Size);
+                            _lastView = _viewSSMR;
+                        }
                     }
                 }
             }
@@ -427,6 +445,7 @@ namespace myTNB
             }
             UpdateFooterBGImageYPos();
             _scrollViewContent.ContentSize = new CGSize(ViewWidth, isREAccount ? _viewRE.Frame.GetMaxY() : GetAdditionalHeight(_lastView.Frame.GetMaxY()));
+            _smrCardYPos = (nfloat)_viewSSMR?.Frame.Y;
         }
 
         private nfloat GetAdditionalHeight(nfloat maxYPos)
@@ -534,12 +553,91 @@ namespace myTNB
             ViewHelper.AdjustFrameSetHeight(_viewChart, _chart.Frame.Height);
         }
 
+        #region TUTORIAL OVERLAY Methods
+        public void CheckTutorialOverlay()
+        {
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            var tutorialOverlayHasShown = sharedPreference.BoolForKey(UsageConstants.Pref_UsageSSMRTutorialOverlay);
+
+            if (tutorialOverlayHasShown)
+                return;
+
+            if (accountIsSSMR)
+            {
+                ShowTutorialOverlay();
+            }
+        }
+
+        private void ShowTutorialOverlay()
+        {
+            ScrollToTop();
+            AnimateFooterToHideAndShow(true);
+            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+
+            nfloat width = currentWindow.Frame.Width;
+            nfloat height = currentWindow.Frame.Height;
+            if (_tutorialContainer != null)
+            {
+                _tutorialContainer.RemoveFromSuperview();
+            }
+            _tutorialContainer = new UIView(new CGRect(0, 0, width, height))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+            currentWindow.AddSubview(_tutorialContainer);
+
+            nfloat addtl = 0;
+            if (DeviceHelper.IsIphone5())
+            {
+                addtl = -GetScaledHeight(8F);
+            }
+            else if (DeviceHelper.IsIphone678PlusResolution())
+            {
+                addtl = GetScaledHeight(3F);
+            }
+
+            UsageSSMRTutorialOverlay tutorialView = new UsageSSMRTutorialOverlay(_tutorialContainer)
+            {
+                GetI18NValue = GetI18NValue,
+                NavigationHeight = _navbarContainer.Frame.Height,
+                SSMRCardYPos = _smrCardYPos + GetScaledHeight(8F) + addtl,
+                SSMRCardHeight = _smrCardHeight,
+                OnDismissAction = HideTutorialOverlay
+            };
+            _tutorialContainer.AddSubview(tutorialView.GetView());
+
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            sharedPreference.SetBool(true, UsageConstants.Pref_UsageSSMRTutorialOverlay);
+        }
+
+        private void HideTutorialOverlay()
+        {
+            AnimateFooterToHideAndShow(false);
+            if (_tutorialContainer != null)
+            {
+                _tutorialContainer.Alpha = 1F;
+                _tutorialContainer.Transform = CGAffineTransform.MakeIdentity();
+                UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseInOut, () =>
+                {
+                    _tutorialContainer.Alpha = 0F;
+                }, _tutorialContainer.RemoveFromSuperview);
+            }
+        }
+
+        private void ScrollToTop()
+        {
+            CGPoint topOffset = new CGPoint(0, 0);
+            _scrollViewContent.SetContentOffset(topOffset, true);
+        }
+        #endregion
+
         #region EMPTY DATA Methods
         internal void SetEmptyDataComponent(string message)
         {
             _isEmptyData = true;
-            ViewHelper.AdjustFrameSetHeight(_viewChart, GetHeightByScreenSize(229));
-            EmptyUsageComponent emptyUsageComponent = new EmptyUsageComponent(_viewChart)
+            _viewChart.BackgroundColor = UIColor.Clear;
+            var yPos = isREAccount || accountIsSSMR ? GetHeightByScreenSize(16F) : GetHeightByScreenSize(50F);
+            EmptyUsageComponent emptyUsageComponent = new EmptyUsageComponent(_viewChart, yPos)
             {
                 GetI18NValue = GetI18NValue
             };
@@ -548,6 +646,7 @@ namespace myTNB
                 _chart.RemoveFromSuperview();
             }
             _chart = emptyUsageComponent.GetUI(message);
+            ViewHelper.AdjustFrameSetHeight(_viewChart, emptyUsageComponent.GetView().Frame.Height);
             _viewChart.AddSubview(_chart);
             _viewToggle.Hidden = _isEmptyData;
             SetContentView();
@@ -657,6 +756,12 @@ namespace myTNB
                 DisplayCustomAlert(toolTipTitle, toolTipMsg, toolTipBtnTitle, null);
             }
         }
+
+        internal void HideSmartMeterComponent()
+        {
+            ViewHelper.AdjustFrameSetHeight(_viewSmartMeter, 0);
+            _viewSmartMeter.Hidden = true;
+        }
         #endregion
         #region SSMR Methods
         internal void SetSSMRComponent(bool isUpdating, bool forRefreshScreen = false)
@@ -744,6 +849,7 @@ namespace myTNB
                                 SetContentViewForRefresh();
                             }
                         }
+                        _smrCardHeight = sSMRComponent.GetContainerHeight();
                     }
                 }
             }
@@ -789,12 +895,12 @@ namespace myTNB
 
         internal virtual void OnReadHistoryTap()
         {
-            DataManager.DataManager.SharedInstance.IsSameAccount = true;
+            DataManager.DataManager.SharedInstance.IsSameAccount = false;
         }
 
         internal virtual void OnSubmitMeterTap()
         {
-            DataManager.DataManager.SharedInstance.IsSameAccount = true;
+            DataManager.DataManager.SharedInstance.IsSameAccount = false;
         }
 
         private void AddSSMRViewShadow(ref CustomUIView view)

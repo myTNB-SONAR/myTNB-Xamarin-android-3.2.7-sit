@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Threading.Tasks;
+using System.Timers;
 using CoreGraphics;
+using Foundation;
 using myTNB.Home.Bill;
 using myTNB.Model;
 using myTNB.SitecoreCMS.Model;
@@ -29,6 +31,9 @@ namespace myTNB
         public bool IsRoot { set; private get; } = false;
         public string AccountNumber { set; private get; } = string.Empty;
         public bool IsFromBillSelection { set; private get; }
+        private UIView _tutorialContainer;
+        private bool IsLoading = true;
+        private Timer tutorialOverlayTimer;
 
         public BillDetailsViewController(IntPtr handle) : base(handle) { }
 
@@ -40,6 +45,7 @@ namespace myTNB
             View.BackgroundColor = MyTNBColor.LightGrayBG;
             SetNavigation();
             AddCTAs();
+            IsLoading = true;
             if (IsFreshCall)
             {
                 OnRefreshCall();
@@ -60,6 +66,7 @@ namespace myTNB
             UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle(BillConstants.IMG_BackIcon)
             , UIBarButtonItemStyle.Done, (sender, e) =>
             {
+                HideTutorialOverlay();
                 if (IsRoot)
                 {
                     NavigationController.PopViewController(true);
@@ -124,7 +131,96 @@ namespace myTNB
             AddSectionTitle();
             AddBreakdown();
             SetEvents();
+            IsLoading = false;
         }
+
+        public override void ViewWillAppear(bool animated)
+        {
+            base.ViewWillAppear(animated);
+            CheckTutorialOverlay();
+        }
+
+        #region Tutorial Overlay Methods
+        private void CheckTutorialOverlay()
+        {
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            var tutorialOverlayHasShown = sharedPreference.BoolForKey(BillConstants.Pref_BillDetailsTutorialOverlay);
+
+            if (tutorialOverlayHasShown)
+                return;
+
+            tutorialOverlayTimer = new Timer
+            {
+                Interval = 500F,
+                AutoReset = true,
+                Enabled = true
+            };
+            tutorialOverlayTimer.Elapsed += TimerElapsed;
+        }
+
+        private void TimerElapsed(object sender, ElapsedEventArgs e)
+        {
+            if (!IsLoading)
+            {
+                tutorialOverlayTimer.Enabled = false;
+                InvokeOnMainThread(() =>
+                {
+                    var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+                    var topVc = AppDelegate.GetTopViewController(baseRootVc);
+                    if (topVc != null)
+                    {
+                        if (topVc is BillDetailsViewController)
+                        {
+                            ShowTutorialOverlay();
+                        }
+                    }
+                });
+            }
+        }
+
+        private void ShowTutorialOverlay()
+        {
+            UIWindow currentWindow = UIApplication.SharedApplication.KeyWindow;
+
+            nfloat width = currentWindow.Frame.Width;
+            nfloat height = currentWindow.Frame.Height;
+            if (_tutorialContainer != null)
+            {
+                _tutorialContainer.RemoveFromSuperview();
+            }
+            _tutorialContainer = new UIView(new CGRect(0, 0, width, height))
+            {
+                BackgroundColor = UIColor.Clear
+            };
+            currentWindow.AddSubview(_tutorialContainer);
+
+            BillDetailsTutorialOverlay tutorialView = new BillDetailsTutorialOverlay(_tutorialContainer)
+            {
+                GetI18NValue = GetI18NValue,
+                NavigationHeight = DeviceHelper.GetStatusBarHeight() + NavigationController.NavigationBar.Frame.Height,
+                OnDismissAction = HideTutorialOverlay,
+                ViewCTAContainerYPos = _viewCTAContainer.Frame.Y,
+                ButtonHeight = _btnViewBill.Frame.Height
+            };
+            _tutorialContainer.AddSubview(tutorialView.GetView());
+
+            var sharedPreference = NSUserDefaults.StandardUserDefaults;
+            sharedPreference.SetBool(true, BillConstants.Pref_BillDetailsTutorialOverlay);
+        }
+
+        private void HideTutorialOverlay()
+        {
+            if (_tutorialContainer != null)
+            {
+                _tutorialContainer.Alpha = 1F;
+                _tutorialContainer.Transform = CGAffineTransform.MakeIdentity();
+                UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseInOut, () =>
+                {
+                    _tutorialContainer.Alpha = 0F;
+                }, _tutorialContainer.RemoveFromSuperview);
+            }
+        }
+        #endregion
 
         #region Tooltip
         private void SetTooltipFallbackData()
