@@ -204,11 +204,11 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
 
             if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
             {
-                txtTermsConditions.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_terms_conditions), FromHtmlOptions.ModeLegacy);
+                txtTermsConditions.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_subscribe_terms_conditions), FromHtmlOptions.ModeLegacy);
             }
             else
             {
-                txtTermsConditions.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_terms_conditions));
+                txtTermsConditions.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_subscribe_terms_conditions));
             }
 
             contactDetailConsent.Visibility = ViewStates.Gone;
@@ -274,6 +274,14 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 disconnectionTtile.Text = "I am starting for:";
                 terminationReasonTitle.Visibility = ViewStates.Gone;
                 reasonDetailContainer.Visibility = ViewStates.Gone;
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                {
+                    txtTermsConditions.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_subscribe_terms_conditions), FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtTermsConditions.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_subscribe_terms_conditions));
+                }
                 ShowContactDetails();
             }
             else
@@ -285,6 +293,14 @@ namespace myTNB_Android.Src.SSMRTerminate.MVP
                 contactDetailTtile.Visibility = ViewStates.Gone;
                 contactDetailContainer.Visibility = ViewStates.Gone;
                 this.mPresenter.InitiateTerminationReasonsList();
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.Build.VERSION_CODES.N)
+                {
+                    txtTermsConditions.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_terminate_terms_conditions), FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtTermsConditions.TextFormatted = Html.FromHtml(GetString(Resource.String.ssmr_terminate_terms_conditions));
+                }
                 EnableSubmitButton();
             }
         }

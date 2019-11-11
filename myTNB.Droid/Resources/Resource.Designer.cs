@@ -17348,7 +17348,7 @@ namespace myTNB_Android
 			public const int ssmr_subscribe_terms_conditions = 2131297370;
 			
 			// aapt resource value: 0x7f090459
-			public const int ssmr_terms_conditions = 2131297369;
+			public const int ssmr_terminate_terms_conditions = 2131297369;
 			
 			// aapt resource value: 0x7f09045d
 			public const int ssmr_view_meter = 2131297373;
