@@ -297,6 +297,10 @@ namespace myTNB
                         tableViewCellHeight += ScaleUtility.GetScaledHeight(16F);
                     }
                 }
+                else
+                {
+                    tableViewCellHeight = ScaleUtility.GetScaledHeight(100F);
+                }
             }
             return tableViewCellHeight;
         }

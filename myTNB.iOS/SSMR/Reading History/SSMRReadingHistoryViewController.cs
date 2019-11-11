@@ -470,12 +470,24 @@ namespace myTNB
 
         private void ShowSubmitMeterView()
         {
-            UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
-            SSMRReadMeterViewController viewController =
-                storyBoard.InstantiateViewController("SSMRReadMeterViewController") as SSMRReadMeterViewController;
-            viewController.IsRoot = true;
-            _rootNavigation = true;
-            NavigationController.PushViewController(viewController, true);
+            if (SSMRActivityInfoCache.ViewPreviousReading != null &&
+                SSMRActivityInfoCache.ViewPreviousReading.Count > 0)
+            {
+                UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+                SSMRReadMeterViewController viewController =
+                    storyBoard.InstantiateViewController("SSMRReadMeterViewController") as SSMRReadMeterViewController;
+                viewController.IsRoot = true;
+                _rootNavigation = true;
+                NavigationController.PushViewController(viewController, true);
+            }
+            else
+            {
+                var title = SSMRActivityInfoCache.ViewDataModel.DisplayTitle;
+                var msg = SSMRActivityInfoCache.ViewDataModel.DisplayMessage;
+                string displayTitle = (!string.IsNullOrEmpty(title) && !string.IsNullOrWhiteSpace(title)) ? title : "Sorry, we are unable to perform this action right now.";
+                string displayMsg = (!string.IsNullOrEmpty(msg) && !string.IsNullOrWhiteSpace(msg)) ? msg : "Please try again later. If this problem persists, contact the <b><a href=\"tel: 1300885454\">TNB Careline</a></b> and we will help you.";
+                DisplayCustomAlert(displayTitle, displayMsg, GetCommonI18NValue(Constants.Common_GotIt), null);
+            }
         }
 
         private void OnTapDropDown()

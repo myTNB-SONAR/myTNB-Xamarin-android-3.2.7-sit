@@ -102,6 +102,8 @@ namespace myTNB
                 UserInteractionEnabled = false,
                 ContentInset = new UIEdgeInsets(0, -5, 0, -5)
             };
+            _txtDesc.TextContainerInset = UIEdgeInsets.Zero;
+
             _btnSubmit = new CustomUIButtonV2
             {
                 Frame = new CGRect(_padding, _txtDesc.Frame.GetMaxY() + ScaleUtility.GetScaledHeight(16)

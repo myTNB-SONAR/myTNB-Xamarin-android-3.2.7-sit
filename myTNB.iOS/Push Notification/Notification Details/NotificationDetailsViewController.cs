@@ -626,13 +626,25 @@ namespace myTNB
                                 {
                                     SSMRActivityInfoCache.SetReadingHistoryCache(_smrActivityInfoResponse
                                         , DataManager.DataManager.SharedInstance.SelectedAccount);
-                                    UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
-                                    SSMRReadMeterViewController viewController =
-                                        storyBoard.InstantiateViewController("SSMRReadMeterViewController") as SSMRReadMeterViewController;
-                                    if (viewController != null)
+                                    if (SSMRActivityInfoCache.ViewPreviousReading != null &&
+                                        SSMRActivityInfoCache.ViewPreviousReading.Count > 0)
                                     {
-                                        viewController.IsRoot = true;
-                                        NavigationController.PushViewController(viewController, true);
+                                        UIStoryboard storyBoard = UIStoryboard.FromName("SSMR", null);
+                                        SSMRReadMeterViewController viewController =
+                                            storyBoard.InstantiateViewController("SSMRReadMeterViewController") as SSMRReadMeterViewController;
+                                        if (viewController != null)
+                                        {
+                                            viewController.IsRoot = true;
+                                            NavigationController.PushViewController(viewController, true);
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var title = SSMRActivityInfoCache.ViewDataModel.DisplayTitle;
+                                        var msg = SSMRActivityInfoCache.ViewDataModel.DisplayMessage;
+                                        string displayTitle = (!string.IsNullOrEmpty(title) && !string.IsNullOrWhiteSpace(title)) ? title : "Sorry, we are unable to perform this action right now.";
+                                        string displayMsg = (!string.IsNullOrEmpty(msg) && !string.IsNullOrWhiteSpace(msg)) ? msg : "Please try again later. If this problem persists, contact the <b><a href=\"tel: 1300885454\">TNB Careline</a></b> and we will help you.";
+                                        DisplayCustomAlert(displayTitle, displayMsg, GetCommonI18NValue(Constants.Common_GotIt), null);
                                     }
                                 }
                                 else
