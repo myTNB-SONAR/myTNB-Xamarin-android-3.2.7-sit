@@ -71,7 +71,7 @@ namespace myTNB_Android.Src.MultipleAccountPayment.MVP
 
             void SetAccountsDueAmountResult(List<MPAccount> updatedAccountList);
 
-            void ShowHasMinimumAmoutToPayTooltip(AccountChargeModel accountChargeModel);
+            void ShowHasMinimumAmoutToPayTooltip(MPAccount accounts, AccountChargeModel accountChargeModel);
         }
 
         public interface IUserActionsListener : IBasePresenter
