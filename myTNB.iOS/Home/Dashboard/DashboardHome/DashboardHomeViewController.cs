@@ -504,7 +504,7 @@ namespace myTNB
                        taskList.Add(GetServices());
                        if (!hasExistingSSMR && contractAccounts != null && contractAccounts.Count > 0)
                        {
-                           taskList.Add(GetIsSmrApplyAllowed());
+                           taskList.Add(BatchCallForSSMRApplyAllowed());
                        }
                        Task.WaitAll(taskList.ToArray());
                    }
@@ -682,15 +682,73 @@ namespace myTNB
             return response;
         }
 
-        private async Task<GetIsSmrApplyAllowedResponseModel> GetIsSmrApplyAllowed()
+        private async Task<GetIsSmrApplyAllowedResponseModel> GetIsSmrApplyAllowed(List<string> accounts)
         {
             ServiceManager serviceManager = new ServiceManager();
-            SSMRAccounts.SetFilteredEligibleAccounts();
-            List<string> contractAccounts = SSMRAccounts.GetFilteredAccountNumberList();
+            List<string> contractAccounts = accounts;
             object request = new { serviceManager.usrInf, contractAccounts };
             GetIsSmrApplyAllowedResponseModel response = serviceManager.OnExecuteAPIV6<GetIsSmrApplyAllowedResponseModel>("GetIsSmrApplyAllowed", request);
-            _isSMRApplyAllowedResponse = response;
             return response;
+        }
+
+        private async Task<bool> BatchCallForSSMRApplyAllowed()
+        {
+            SSMRAccounts.SetFilteredEligibleAccounts();
+            List<string> allAccounts = SSMRAccounts.GetFilteredAccountNumberList();
+
+            bool res = false;
+            if (allAccounts != null)
+            {
+                if (allAccounts.Count > 5)
+                {
+                    var batchNoMax = Math.Ceiling((double)allAccounts.Count / 5);
+                    for (int batchNo = 0; batchNo < batchNoMax; batchNo++)
+                    {
+                        List<string> batchAccounts = GetBatchAccounts(allAccounts, batchNo);
+                        if (!IsShowApplySSMR() && batchAccounts != null && batchAccounts.Count > 0)
+                        {
+                            _isSMRApplyAllowedResponse = await GetIsSmrApplyAllowed(batchAccounts);
+                        }
+                    }
+                    res = true;
+                }
+                else if (allAccounts.Count > 0)
+                {
+                    _isSMRApplyAllowedResponse = await GetIsSmrApplyAllowed(allAccounts);
+                    res = true;
+                }
+            }
+            return res;
+        }
+
+        private List<string> GetBatchAccounts(List<string> allAccts, int batchNo)
+        {
+            List<string> batchAccounts = new List<string>();
+            int maxLimit = 5;
+            int indx = batchNo * maxLimit;
+
+            for (; indx < allAccts.Count; indx++)
+            {
+                if (batchAccounts.Count < maxLimit)
+                {
+                    batchAccounts.Add(allAccts[indx]);
+                }
+            }
+            return batchAccounts;
+        }
+
+        private bool IsShowApplySSMR()
+        {
+            bool res = false;
+            if (_isSMRApplyAllowedResponse != null &&
+                _isSMRApplyAllowedResponse.d != null &&
+                _isSMRApplyAllowedResponse.d.IsSuccess &&
+                _isSMRApplyAllowedResponse.d.data != null &&
+                _isSMRApplyAllowedResponse.d.data.Count > 0)
+            {
+                res = _isSMRApplyAllowedResponse.d.data[0].AllowApply;
+            }
+            return res;
         }
 
         private int ServiceItemIndexToRemove(List<ServiceItemModel> services)
