@@ -173,6 +173,8 @@ namespace myTNB
                 WeakLinkTextAttributes = linkAttributes.Dictionary,
                 TextAlignment = UITextAlignment.Left
             };
+            txtFieldInfo.TextContainerInset = UIEdgeInsets.Zero;
+
             txtFieldInfo.Delegate = new TextViewDelegate(new Action<NSUrl>((url) =>
             {
                 UIStoryboard storyBoard = UIStoryboard.FromName("Registration", null);
