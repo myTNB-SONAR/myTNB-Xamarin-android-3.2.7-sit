@@ -174,10 +174,9 @@ namespace myTNB_Android.Src.AppLaunch.MVP
                     deviceInf = currentDeviceInf,
                     usrInf = currentUsrInf
                 }, CancellationTokenSourceWrapper.GetTokenWithDelay(this.appLaunchMasterDataTimeout));
-                UserSessions.SaveSelectedLanguage(this.mSharedPref, "EN");
-                Utility.UpdateSavedLanguage("EN");
-				string language = Utility.GetDeviceLanguage();
-
+                string language = LanguageUtil.GetAppLanguage();
+                LanguageUtil.SaveAppLanguage("MS");
+                string language2 = LanguageUtil.GetAppLanguage();
                 if (masterDataResponse != null && masterDataResponse.Data != null)
                 {
                     if (masterDataResponse.Data.ErrorCode == "7200" && masterDataResponse.Data.ErrorCode != "7000")

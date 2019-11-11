@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Android.App;
 using Android.Content;
 using Java.Lang;
 using Java.Text;
@@ -25,6 +26,11 @@ namespace myTNB_Android.Src.Utils
         //    editor.PutBoolean("hasSkipped", true);
         //    editor.Apply();
         //}
+
+        private UserSessions()
+        {
+
+        }
 
         private static ISharedPreferences mPreferences;
 
@@ -407,6 +413,20 @@ namespace myTNB_Android.Src.Utils
         public static string GetSelectedLanguage(ISharedPreferences preferences)
         {
             return preferences.GetString("selectedLanguage", "");
+        }
+
+        public static void SaveAppLanguage(string language)
+        {
+            ISharedPreferences sharedPreferences =  Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
+            ISharedPreferencesEditor editor = sharedPreferences.Edit();
+            editor.PutString(Constants.SHARED_PREF_LANGUAGE_KEY, language);
+            editor.Apply();
+        }
+
+        public static string GetAppLanguage()
+        {
+            ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
+            return sharedPreferences.GetString(Constants.SHARED_PREF_LANGUAGE_KEY,null);
         }
     }
 }

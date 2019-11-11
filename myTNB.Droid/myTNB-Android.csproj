@@ -3782,6 +3782,7 @@
     <Compile Include="Src\Common\Model\Item.cs" />
     <Compile Include="Src\SitecoreCMS\Service\LanguageService.cs" />
     <Compile Include="Src\SitecoreCMS\Model\LanguageModel.cs" />
+    <Compile Include="Src\Utils\LanguageUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
