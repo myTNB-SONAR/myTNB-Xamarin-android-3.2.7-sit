@@ -47,7 +47,8 @@ namespace myTNB
             {
                 Font = TNBFont.MuseoSans_16_500,
                 TextColor = MyTNBColor.SunGlow,
-                Text = _strGreeting
+                Text = _strGreeting,
+                Tag = 9001
             };
 
             _accountName = new UILabel(new CGRect(padding, _greetingLabel.Frame.GetMaxY(), _greetingView.Frame.Width - (imageWidth + (padding * 3))

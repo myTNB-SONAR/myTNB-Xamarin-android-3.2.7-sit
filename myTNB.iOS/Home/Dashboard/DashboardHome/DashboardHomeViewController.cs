@@ -307,8 +307,12 @@ namespace myTNB
             base.LanguageDidChange(notification);
             if (_homeTableView != null && _dashboardHomeHeader != null)
             {
-                UpdateGreeting(GetGreeting());
-                _homeTableView.TableHeaderView = _dashboardHomeHeader.GetUI();
+                string greeting = GetGreeting();
+                UILabel lblGreeting = _homeTableView.TableHeaderView.ViewWithTag(9001) as UILabel;
+                if (lblGreeting != null)
+                {
+                    lblGreeting.Text = greeting;
+                }
             }
             if (_accountListViewController != null)
             {
