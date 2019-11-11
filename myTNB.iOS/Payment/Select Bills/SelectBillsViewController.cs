@@ -270,8 +270,20 @@ namespace myTNB
             PopupModel popupData = AccountChargesCache.GetPopupDetailsByType(BillConstants.Popup_MandatoryPaymentKey);
             MandatoryChargesModel mandatoryCharges = AccountChargesCache.GetMandatoryCharges(accNum);
             _selectedAccountNumber = accNum;
-            string description = string.Format(popupData.Description
-                , string.Format("{0}{1}", TNBGlobal.UNIT_CURRENCY, mandatoryCharges.TotalAmount.ToString("N2", CultureInfo.InvariantCulture)));
+            string amount = string.Format("{0}{1}", TNBGlobal.UNIT_CURRENCY, mandatoryCharges.TotalAmount.ToString("N2", CultureInfo.InvariantCulture));
+            string nickname = accNum;
+            if (DataManager.DataManager.SharedInstance.AccountRecordsList != null
+                && DataManager.DataManager.SharedInstance.AccountRecordsList.d != null
+                && DataManager.DataManager.SharedInstance.AccountRecordsList.d.Count > 0)
+            {
+                int accIndex = DataManager.DataManager.SharedInstance.AccountRecordsList.d.FindIndex(x => x.accNum == accNum);
+                if (accIndex > -1 && !string.IsNullOrEmpty(DataManager.DataManager.SharedInstance.AccountRecordsList.d[accIndex].accountNickName)
+                    && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.AccountRecordsList.d[accIndex].accountNickName))
+                {
+                    nickname = DataManager.DataManager.SharedInstance.AccountRecordsList.d[accIndex].accountNickName;
+                }
+            }
+            string description = string.Format(popupData.Description, amount, nickname);
             string[] cta = popupData.CTA.Split(',');
             Dictionary<string, Action> ctaDictionary = new Dictionary<string, Action>();
             for (int i = 0; i < cta.Length; i++)
