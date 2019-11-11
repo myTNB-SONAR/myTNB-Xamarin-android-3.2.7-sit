@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CoreGraphics;
 using Foundation;
 using myTNB.Model;
 using UIKit;
@@ -37,6 +38,8 @@ namespace myTNB.Registration
                 cell.NickNameLabel.Text = account.accountNickName != null ? account.accountNickName : string.Empty;
                 cell.AccountNumberLabel.Text = account.accNum != null ? account.accNum : string.Empty;
                 cell.AddressTextView.Text = account.accountStAddress != null ? account.accountStAddress : string.Empty;
+                CGSize addressSize = cell.AddressTextView.SizeThatFits(new CGSize(cell.AddressTextView.Frame.Width, 1000F));
+                ViewHelper.AdjustFrameHeight(cell.AddressTextView, addressSize.Height);
             }
             return cell;
         }

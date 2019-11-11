@@ -89,7 +89,7 @@ namespace myTNB
             {
                 nfloat navBarHeight = NavigationController.NavigationBar.GetFrame().Height;
                 NavigationController.NavigationBar.Frame = new CGRect(NavigationController.NavigationBar.Frame.Location
-                    , new CGSize(NavigationController.NavigationBar.Frame.Width, GetScaledHeight(navBarHeight)));
+                    , new CGSize(NavigationController.NavigationBar.Frame.Width, navBarHeight));// GetScaledHeight(navBarHeight)));
                 ViewHeight -= NavigationController.NavigationBar.Frame.Height;
             }
             if (TabBarController != null && TabBarController.TabBar != null && !TabBarController.TabBar.Hidden)
