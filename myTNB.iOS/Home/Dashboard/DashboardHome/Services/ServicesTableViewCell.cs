@@ -297,10 +297,10 @@ namespace myTNB
                 switch (serviceItem.ServiceType)
                 {
                     case ServiceEnum.VIEWBILL:
-                        name = "View <br>My e-Bill";
+                        name = "View <br>My Bill";
                         if (_dashboardHomeHelper.HasNormalAccounts && _dashboardHomeHelper.HasREAccounts)
                         {
-                            name = "View My<br>e-Bills / Advices";
+                            name = "View My<br>Bills / Advices";
                         }
                         else if (_dashboardHomeHelper.HasREAccounts)
                         {
@@ -317,11 +317,11 @@ namespace myTNB
                         {
                             if (_dashboardHomeHelper.HasMultipleNormalAccounts)
                             {
-                                name = "View <br>My e-Bills";
+                                name = "View <br>My Bills";
                             }
                             else
                             {
-                                name = "View <br>My e-Bill";
+                                name = "View <br>My Bill";
                             }
                         }
                         break;
