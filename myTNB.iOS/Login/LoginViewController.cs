@@ -9,6 +9,9 @@ using myTNB.Login.ForgotPassword;
 using myTNB.SQLite.SQLiteDataManager;
 using myTNB.DataManager;
 using System.Collections.Generic;
+using System.Diagnostics;
+using myTNB.Model.Language;
+using myTNB.SitecoreCMS;
 
 namespace myTNB
 {
@@ -496,39 +499,32 @@ namespace myTNB
                         if (userAuthenticationModel?.isError == "false" && userAuthenticationModel?.status != "failed")
                         {
                             SetLoginLocalData();
-                            NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
-                            bool isPasswordResetCodeSent = sharedPreference.BoolForKey("isPasswordResetCodeSent");
-                            if (isPasswordResetCodeSent)
+                            if (LanguageUtility.DidUserChangeLanguage)
                             {
-                                //Display Password Reset
-                                UIStoryboard storyBoard = UIStoryboard.FromName("ForgotPassword", null);
-                                ResetPasswordViewController viewController =
-                                    storyBoard.InstantiateViewController("ResetPasswordViewController") as ResetPasswordViewController;
-                                viewController._username = _eMail;
-                                viewController._currentPassword = _password;
-                                UINavigationController navController = new UINavigationController(viewController);
-                                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-                                PresentViewController(navController, true, null);
-                                ActivityIndicator.Hide();
-                                txtFieldEmail.Text = string.Empty;
-                                txtFieldPassword.Text = string.Empty;
+                                LanguageUtility.SaveLanguagePreference().ContinueWith(langTask=> {
+                                    InvokeOnMainThread(() =>
+                                    {
+                                        LanguageUtility.DidUserChangeLanguage = false;
+                                        ProcessLogin((bool)userAuthenticationModel?.data?.IsVerifiedPhone);
+                                    });
+                                });
                             }
                             else
                             {
-                                //TODO: RRA, remove temp code isVerified. 
-                                //bool isVerified = false;
-                                //if (isVerified)
-                                if ((bool)userAuthenticationModel?.data?.IsVerifiedPhone)
+                                LanguageUtility.GetLanguagePreference().ContinueWith(langTask =>
                                 {
-                                    sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.LoginState);
-                                    sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.PhoneVerification);
-                                    sharedPreference.Synchronize();
-                                    ExecuteGetCutomerRecordsCall();
-                                }
-                                else
-                                {
-                                    ShowUpdateMobileNumber(false);
-                                }
+                                    InvokeOnMainThread(() =>
+                                    {
+                                        if (!LanguageUtility.IsSameAsCurrentLanguage)
+                                        {
+                                            OnChangeLanguage((bool)userAuthenticationModel?.data?.IsVerifiedPhone);
+                                        }
+                                        else
+                                        {
+                                            ProcessLogin((bool)userAuthenticationModel?.data?.IsVerifiedPhone);
+                                        }
+                                    });
+                                });
                             }
                         }
                         else
@@ -544,6 +540,44 @@ namespace myTNB
                     }
                 });
             });
+        }
+
+        private void ProcessLogin(bool isPhoneVerified)
+        {
+            NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+            bool isPasswordResetCodeSent = sharedPreference.BoolForKey("isPasswordResetCodeSent");
+            if (isPasswordResetCodeSent)
+            {
+                //Display Password Reset
+                UIStoryboard storyBoard = UIStoryboard.FromName("ForgotPassword", null);
+                ResetPasswordViewController viewController =
+                    storyBoard.InstantiateViewController("ResetPasswordViewController") as ResetPasswordViewController;
+                viewController._username = _eMail;
+                viewController._currentPassword = _password;
+                UINavigationController navController = new UINavigationController(viewController);
+                navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
+                PresentViewController(navController, true, null);
+                ActivityIndicator.Hide();
+                txtFieldEmail.Text = string.Empty;
+                txtFieldPassword.Text = string.Empty;
+            }
+            else
+            {
+                //TODO: RRA, remove temp code isVerified. 
+                //bool isVerified = false;
+                //if (isVerified)
+                if (isPhoneVerified)
+                {
+                    sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.LoginState);
+                    sharedPreference.SetBool(true, TNBGlobal.PreferenceKeys.PhoneVerification);
+                    sharedPreference.Synchronize();
+                    ExecuteGetCutomerRecordsCall();
+                }
+                else
+                {
+                    ShowUpdateMobileNumber(false);
+                }
+            }
         }
 
         /// <summary>
@@ -753,5 +787,86 @@ namespace myTNB
                 });
             });
         }
+
+        #region Language
+        /*Todo: Do service calls and set lang
+         * 1. Call site core
+         * 2. Call Applaunch master data
+         * 3. Clear Usage cache for service call content
+        */
+        private bool _isMasterDataDone, _isSitecoreDone;
+        private void OnChangeLanguage(bool isPhoneVerified)
+        {
+            int index = 0;
+            if (TNBGlobal.APP_LANGUAGE == "EN")
+            {
+                index = 1;
+            }
+            NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
+            {
+                InvokeOnMainThread(() =>
+                {
+                    if (NetworkUtility.isReachable)
+                    {
+                        LanguageUtility.SetAppLanguageByIndex(index);
+                        InvokeOnMainThread(async () =>
+                        {
+                            List<Task> taskList = new List<Task>{
+                                OnGetAppLaunchMasterData(isPhoneVerified),
+                                OnExecuteSiteCore(isPhoneVerified)
+                           };
+                            await Task.WhenAll(taskList.ToArray());
+                        });
+                    }
+                    else
+                    {
+                        DisplayNoDataAlert();
+                    }
+                });
+            });
+        }
+
+        private void ChangeLanguageCallback(bool isPhoneVerified)
+        {
+            if (_isMasterDataDone && _isSitecoreDone)
+            {
+                InvokeOnMainThread(() =>
+                {
+                    //Todo: Check success and fail States
+                    ClearCache();
+                    Debug.WriteLine("Change Language Done");
+                    NotifCenterUtility.PostNotificationName("LanguageDidChange", new NSObject());
+                    ProcessLogin(isPhoneVerified);
+                });
+            }
+        }
+
+        private void ClearCache()
+        {
+            AccountUsageCache.ClearCache();
+            AccountUsageSmartCache.ClearCache();
+        }
+
+        private Task OnGetAppLaunchMasterData(bool isPhoneVerified)
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                AppLaunchResponseModel response = ServiceCall.GetAppLaunchMasterData().Result;
+                AppLaunchMasterCache.AddAppLaunchResponseData(response);
+                _isMasterDataDone = true;
+                ChangeLanguageCallback(isPhoneVerified);
+            });
+        }
+
+        private Task OnExecuteSiteCore(bool isPhoneVerified)
+        {
+            return Task.Factory.StartNew(async () =>
+            {
+                await SitecoreServices.Instance.OnExecuteSitecoreCall(true);
+                _isSitecoreDone = true;
+                ChangeLanguageCallback(isPhoneVerified);
+            });
+        }
+        #endregion
     }
 }

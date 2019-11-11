@@ -77,33 +77,33 @@ namespace myTNB
             }
         }
 
-        static void OnSelectAction(int index)
+        private static void OnSelectAction(int index)
         {
-           // SetLanguage(index);
+            // SetLanguage(index);
             NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
             sharedPreference.SetBool(true, DID_USER_SET_KEY);
             sharedPreference.Synchronize();
             NotifCenterUtility.PostNotificationName("LanguageDidChange", new NSObject());
         }
 
-       /* public static void SetLanguage(int index)
-        {
-            index = index > -1 ? index : 0;
-            SelectedLanguageIndex = index;
+        /* public static void SetLanguage(int index)
+         {
+             index = index > -1 ? index : 0;
+             SelectedLanguageIndex = index;
 
-            if (SelectedLanguageIndex < SupportedLanguageCode.Count)
-            {
-                string langCode = SupportedLanguageCode[index];
-                if (langCode.ToUpper() == LanguageManager.Language.EN.ToString().ToUpper())
-                {
-                    LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, LanguageManager.Language.EN);
-                }
-                else
-                {
-                    LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, LanguageManager.Language.MS);
-                }
-            }
-        }*/
+             if (SelectedLanguageIndex < SupportedLanguageCode.Count)
+             {
+                 string langCode = SupportedLanguageCode[index];
+                 if (langCode.ToUpper() == LanguageManager.Language.EN.ToString().ToUpper())
+                 {
+                     LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, LanguageManager.Language.EN);
+                 }
+                 else
+                 {
+                     LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, LanguageManager.Language.MS);
+                 }
+             }
+         }*/
 
         /*public static void SetLanguageV2(int index)
         {

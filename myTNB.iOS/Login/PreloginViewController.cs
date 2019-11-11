@@ -396,6 +396,7 @@ namespace myTNB
                     ClearCache();
                     Debug.WriteLine("Change Language Done");
                     NotifCenterUtility.PostNotificationName("LanguageDidChange", new NSObject());
+                    LanguageUtility.DidUserChangeLanguage = true;
                     ActivityIndicator.Hide();
                 });
             }

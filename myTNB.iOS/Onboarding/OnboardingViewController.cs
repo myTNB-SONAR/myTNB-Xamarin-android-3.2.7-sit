@@ -142,6 +142,7 @@ namespace myTNB
                     {
                         _component.RefreshContent();
                     }
+                    LanguageUtility.DidUserChangeLanguage = true;
                     ActivityIndicator.Hide();
                 });
             }

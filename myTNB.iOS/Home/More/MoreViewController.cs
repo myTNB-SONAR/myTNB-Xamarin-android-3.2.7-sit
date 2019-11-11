@@ -326,14 +326,17 @@ namespace myTNB
         {
             if (_isMasterDataDone && _isSitecoreDone)
             {
-                InvokeOnMainThread(() =>
+                LanguageUtility.SaveLanguagePreference().ContinueWith(langTask =>
                 {
+                    InvokeOnMainThread(() =>
+                    {
                     //Todo: Check success and fail States
                     ClearCache();
-                    languageViewController.DismissViewController(true, null);
-                    Debug.WriteLine("Change Language Done");
-                    NotifCenterUtility.PostNotificationName("LanguageDidChange", new NSObject());
-                    ActivityIndicator.Hide();
+                        languageViewController.DismissViewController(true, null);
+                        Debug.WriteLine("Change Language Done");
+                        NotifCenterUtility.PostNotificationName("LanguageDidChange", new NSObject());
+                        ActivityIndicator.Hide();
+                    });
                 });
             }
         }

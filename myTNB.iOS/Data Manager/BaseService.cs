@@ -20,7 +20,7 @@ namespace myTNB
 
         private readonly Dictionary<string, string> DomainDictionary = new Dictionary<string, string>
         {
-            { "DEV", "http://10.215.128.191:89"}//"http://10.215.128.191:88"
+            { "DEV", "http://10.215.128.191:88"}//"http://10.215.128.191:89"
             , { "SIT", "https://mobiletestingws.tnb.com.my" }
             , { "PROD", "https://mytnbapp.tnb.com.my"}
         };
@@ -67,7 +67,7 @@ namespace myTNB
         public RestResponse ExecuteWebservice(string suffix, object requestParams, APIVersion version, APIEnvironment env, bool isRetry = false)
         {
             //SIT Test
-            env = APIEnvironment.SIT;
+            //env = APIEnvironment.SIT;
             string domain = GetDomain(env);
             string url = domain + GetURLEndpoint(version) + suffix;
 

@@ -180,31 +180,87 @@ namespace myTNB
         private static readonly string Service_SaveLanguage = "SaveLanguagePreference";
         private static readonly string Service_GetLanguage = "GetLanguagePreference";
         public static LanguageResponseModel GetLanguageResponse { private set; get; } = new LanguageResponseModel();
+        public static LanguageResponseModel SaveLanguageResponse { private set; get; } = new LanguageResponseModel();
+        private static readonly string DidUserChangeLanguageKey = "didUserChangeLanguage";
 
-        public static async Task<LanguageResponseModel> SaveLanguagePreference()
+        public static bool DidUserChangeLanguage
         {
-            ServiceManager serviceManager = new ServiceManager();
-            object requestParameter = new
+            set
             {
-                serviceManager.usrInf,
-                langPref = TNBGlobal.APP_LANGUAGE
-            };
-            LanguageResponseModel response = serviceManager.OnExecuteAPIV6<LanguageResponseModel>(Service_SaveLanguage, requestParameter);
-            return response;
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                sharedPreference.SetBool(value, DidUserChangeLanguageKey);
+                sharedPreference.Synchronize();
+            }
+            get
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                return sharedPreference.BoolForKey(DidUserChangeLanguageKey);
+            }
         }
 
-        public async static Task<LanguageResponseModel> GetLanguagePreference()
+        public static bool IsGetSuccess
         {
-            ServiceManager serviceManager = new ServiceManager();
-            object requestParameter = new
+            get
             {
-                serviceManager.usrInf
-            };
-            LanguageResponseModel response = serviceManager.OnExecuteAPIV6<LanguageResponseModel>(Service_GetLanguage, requestParameter);
-            Debug.WriteLine("GetLanguagePreference END");
-            return response;
+                return GetLanguageResponse != null && GetLanguageResponse.d != null && GetLanguageResponse.d.IsSuccess;
+            }
         }
 
+        public static bool IsSaveSuccess
+        {
+            get
+            {
+                return SaveLanguageResponse != null && SaveLanguageResponse.d != null && SaveLanguageResponse.d.IsSuccess;
+            }
+        }
+
+        public static string ServiceLanguage
+        {
+            get
+            {
+                string lang = TNBGlobal.APP_LANGUAGE;
+                if (IsGetSuccess)
+                {
+                    lang = GetLanguageResponse.d.data.lang;
+                }
+                return lang ?? TNBGlobal.APP_LANGUAGE;
+            }
+        }
+
+        public static bool IsSameAsCurrentLanguage
+        {
+            get
+            {
+                return TNBGlobal.APP_LANGUAGE == ServiceLanguage;
+            }
+        }
+
+        public static Task SaveLanguagePreference()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                ServiceManager serviceManager = new ServiceManager();
+                object requestParameter = new
+                {
+                    serviceManager.usrInf,
+                    langPref = TNBGlobal.APP_LANGUAGE
+                };
+                SaveLanguageResponse = serviceManager.OnExecuteAPIV6<LanguageResponseModel>(Service_SaveLanguage, requestParameter);
+            });
+        }
+
+        public static Task GetLanguagePreference()
+        {
+            return Task.Factory.StartNew(() =>
+            {
+                ServiceManager serviceManager = new ServiceManager();
+                object requestParameter = new
+                {
+                    serviceManager.usrInf
+                };
+                GetLanguageResponse = serviceManager.OnExecuteAPIV6<LanguageResponseModel>(Service_GetLanguage, requestParameter);
+            });
+        }
         #endregion
     }
 }
