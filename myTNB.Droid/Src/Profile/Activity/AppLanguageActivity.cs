@@ -46,7 +46,7 @@ namespace myTNB_Android.Src.Profile.Activity
 
         public override int ResourceId()
         {
-            return Resource.Layout.AppLanguageLayout;    
+            return Resource.Layout.AppLanguageLayout;
         }
 
         public override bool ShowCustomToolbarTitle()
@@ -96,7 +96,7 @@ namespace myTNB_Android.Src.Profile.Activity
         {
             base.OnCreate(savedInstanceState);
             TextViewUtils.SetMuseoSans500Typeface(appLanguageMessage,btnSaveChanges);
-            savedLanguage = UserSessions.GetSelectedLanguage(PreferenceManager.GetDefaultSharedPreferences(this));
+            savedLanguage = LanguageUtil.GetAppLanguage();
             languageItemList = new List<Item>();
 
             foreach (string languageName in Enum.GetNames(typeof(Constants.SUPPORTED_LANGUAGES)))
@@ -130,20 +130,18 @@ namespace myTNB_Android.Src.Profile.Activity
         void OnSaveChanges(object sender, EventArgs eventArgs)
         {
             Item selectedItem = languageItemList.Find(item => { return item.selected;});
-            string currentLanguage = UserSessions.GetSelectedLanguage(PreferenceManager.GetDefaultSharedPreferences(this));
+            string currentLanguage = LanguageUtil.GetAppLanguage();
             Utility.ShowChangeLanguageDialog(this, currentLanguage, ()=>
             {
-                UserSessions.SaveSelectedLanguage(PreferenceManager.GetDefaultSharedPreferences(this), selectedItem.type);
-                Utility.UpdateSavedLanguage(selectedItem.type);
+                LanguageUtil.SaveAppLanguage(selectedItem.type);
                 UpdateLanguage();
             });
         }
 
         private void UpdateLanguage()
         {
-            Intent DashboardIntent = new Intent(this, typeof(DashboardHomeActivity));
-            DashboardIntent.SetFlags(ActivityFlags.ClearTop | ActivityFlags.ClearTask | ActivityFlags.NewTask);
-            StartActivity(DashboardIntent);
+            LanguageUtil.SetIsLanguageChanged(true);
+            Recreate();
         }
 
         public void EnableDisableButton()
@@ -167,6 +165,13 @@ namespace myTNB_Android.Src.Profile.Activity
             {
                 Utility.LoggingNonFatalError(e);
             }
+        }
+
+        public override void OnBackPressed()
+        {
+            SetResult(Result.Ok);
+            Finish();
+            base.OnBackPressed();
         }
     }
 }

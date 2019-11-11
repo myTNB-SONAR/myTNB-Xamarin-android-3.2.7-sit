@@ -150,37 +150,12 @@ namespace myTNB_Android.Src.Utils
             return label;
         }
 
-        public static string GetDeviceLanguage()
-        {
-            string deviceLanguage = Java.Util.Locale.Default.Language;
-            if (deviceLanguage.ToUpper() == Constants.SUPPORTED_LANGUAGES.MS.ToString())
-            {
-                deviceLanguage = Java.Util.Locale.Default.Language;
-            }
-            else
-            {
-                deviceLanguage = Constants.SUPPORTED_LANGUAGES.EN.ToString();
-            }
-            return deviceLanguage.ToUpper();
-        }
-
-        public static void SaveSelectedLanguage(ISharedPreferences preferences, string language)
-        {
-            if (language == "MS")
-            {
-                UserSessions.SaveSelectedLanguage(preferences,"EN");
-            }
-            else
-            {
-                UserSessions.SaveSelectedLanguage(preferences, "MS");
-            }
-        }
-
         public static void ShowChangeLanguageDialog(Context context, string selectedLanguage, Action confirmAction)
         {
             MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
                         .SetTitle(Utility.GetLocalizedLabel("Common", "changeLanguageTitle_" + selectedLanguage))
                         .SetMessage(Utility.GetLocalizedLabel("Common", "changeLanguageMessage_" + selectedLanguage))
+                        .SetContentGravity(Android.Views.GravityFlags.Center)
                         .SetCTALabel(Utility.GetLocalizedLabel("Common", "changeLanguageNo_" + selectedLanguage))
                         .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "changeLanguageYes_" + selectedLanguage))
                         .SetSecondaryCTAaction(()=>

@@ -403,18 +403,6 @@ namespace myTNB_Android.Src.Utils
             return selectAccountList;
         }
 
-        public static void SaveSelectedLanguage(ISharedPreferences prefs, string language)
-        {
-            ISharedPreferencesEditor editor = prefs.Edit();
-            editor.PutString("selectedLanguage", language);
-            editor.Apply();
-        }
-
-        public static string GetSelectedLanguage(ISharedPreferences preferences)
-        {
-            return preferences.GetString("selectedLanguage", "");
-        }
-
         public static void SaveAppLanguage(string language)
         {
             ISharedPreferences sharedPreferences =  Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
@@ -427,6 +415,20 @@ namespace myTNB_Android.Src.Utils
         {
             ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
             return sharedPreferences.GetString(Constants.SHARED_PREF_LANGUAGE_KEY,null);
+        }
+
+        public static void SaveIsAppLanguageChanged(bool isChanged)
+        {
+            ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
+            ISharedPreferencesEditor editor = sharedPreferences.Edit();
+            editor.PutBoolean(Constants.SHARED_PREF_LANGUAGE_IS_CHANGE_KEY, isChanged);
+            editor.Apply();
+        }
+
+        public static bool GetIsAppLanguageChanged()
+        {
+            ISharedPreferences sharedPreferences = Application.Context.GetSharedPreferences(Constants.ACCOUNT_SHARED_PREF_ID, FileCreationMode.Private);
+            return sharedPreferences.GetBoolean(Constants.SHARED_PREF_LANGUAGE_IS_CHANGE_KEY, false);
         }
     }
 }

@@ -284,27 +284,26 @@ namespace myTNB_Android.Src.PreLogin.Activity
         [OnClick(Resource.Id.txtChangeLanguage)]
         void OnChangeLanguage(object sender, EventArgs eventArgs)
         {
-            string selectedLanguage = UserSessions.GetSelectedLanguage(PreferenceManager.GetDefaultSharedPreferences(this));
+            string selectedLanguage = LanguageUtil.GetAppLanguage();
+            string tooltipLanguage;
             if (selectedLanguage == "MS")
             {
-                selectedLanguage = "EN";
+                tooltipLanguage = "EN";
             }
             else
             {
-                selectedLanguage = "MS";
+                tooltipLanguage = "MS";
             }
-            Utility.ShowChangeLanguageDialog(this, selectedLanguage, ()=>
+            Utility.ShowChangeLanguageDialog(this, tooltipLanguage, ()=>
             {
-                UserSessions.SaveSelectedLanguage(PreferenceManager.GetDefaultSharedPreferences(this), selectedLanguage);
-                Utility.UpdateSavedLanguage(selectedLanguage);
+                LanguageUtil.SaveAppLanguage(tooltipLanguage);
                 UpdateLanguage();
             });
         }
 
         private void UpdateLanguage()
         {
-            Finish();
-            StartActivity(Intent);
+            Recreate();
         }
 
         public void ShowPreLoginPromotion(bool success)

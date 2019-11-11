@@ -23,6 +23,7 @@ using myTNB_Android.Src.Utils.Custom.ProgressDialog;
 using myTNB_Android.Src.Profile.Activity;
 using Refit;
 using System;
+using Android.Runtime;
 
 namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
 {
@@ -240,7 +241,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
             if (!this.GetIsClicked())
             {
                 Intent nextIntent = new Intent(this.Activity, typeof(AppLanguageActivity));
-                StartActivity(nextIntent);
+                StartActivityForResult(nextIntent, 1234908);
             }
         }
 
@@ -616,6 +617,11 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments.MoreMenu
         public override string GetPageId()
         {
             return PAGE_ID;
+        }
+
+        public override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+        {
+            ((DashboardHomeActivity)Activity).ReloadProfileMenu();
         }
     }
 }

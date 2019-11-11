@@ -69,7 +69,8 @@ namespace myTNB_Android.Src.Utils
                 savedLanguage = language;
             }
             UserSessions.SaveAppLanguage(savedLanguage);
-		}
+            UpdateSavedLanguage(savedLanguage);
+        }
 
         public static string GetAppLanguage()
         {
@@ -120,5 +121,22 @@ namespace myTNB_Android.Src.Utils
 
 			LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE, language);
 		}
-	}
+
+        public static void SetInitialAppLanguage()
+        {
+            string language = GetAppLanguage();
+            UpdateSavedLanguage(language);
+            SetIsLanguageChanged(false);
+        }
+
+        public static void SetIsLanguageChanged(bool isChanged)
+        {
+            UserSessions.SaveIsAppLanguageChanged(isChanged);
+        }
+
+        public static bool IsLanguageChanged()
+        {
+            return UserSessions.GetIsAppLanguageChanged();
+        }
+    }
 }

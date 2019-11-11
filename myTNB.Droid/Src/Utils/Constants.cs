@@ -298,5 +298,6 @@ namespace myTNB_Android.Src.Utils
         //SharedPreference ids
         public const string ACCOUNT_SHARED_PREF_ID = "myTNB.account.pref";
         public const string SHARED_PREF_LANGUAGE_KEY = "myTNB.account.pref.language";
+        public const string SHARED_PREF_LANGUAGE_IS_CHANGE_KEY = "myTNB.account.pref.language.is.changed";
     }
 }

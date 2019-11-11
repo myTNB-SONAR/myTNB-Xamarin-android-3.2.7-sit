@@ -270,7 +270,7 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
             if (this.mPresenter != null)
             {
                 this.mPresenter.OnValidateData();
-            }            
+            }
         }
 
         protected override void OnPause()
@@ -941,6 +941,12 @@ namespace myTNB_Android.Src.myTNBMenu.Activity
                     bottomNavigationView.SetImageFontSize(this, 28, 3, 10f);
                 }
             }
+        }
+
+        public void ReloadProfileMenu()
+        {
+            bottomNavigationView.SelectedItemId = Resource.Id.menu_more;
+            SetBottomNavigationLabels();
         }
     }
 }
