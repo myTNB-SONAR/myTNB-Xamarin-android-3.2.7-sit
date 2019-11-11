@@ -562,9 +562,17 @@ namespace myTNB
             if (tutorialOverlayHasShown)
                 return;
 
-            if (accountIsSSMR)
+            var baseRootVc = UIApplication.SharedApplication.KeyWindow?.RootViewController;
+            var topVc = AppDelegate.GetTopViewController(baseRootVc);
+            if (topVc != null)
             {
-                ShowTutorialOverlay();
+                if (topVc is UsageViewController)
+                {
+                    if (accountIsSSMR)
+                    {
+                        ShowTutorialOverlay();
+                    }
+                }
             }
         }
 
