@@ -303,7 +303,6 @@ namespace myTNB_Android.Src.RegistrationForm.MVP
             try
             {
                 this.mView.DisableRegisterButton();
-                this.mView.ClearFields();
 
                 bool isGranted = this.mView.IsGrantedSMSReceivePermission();
                 if (!isGranted)

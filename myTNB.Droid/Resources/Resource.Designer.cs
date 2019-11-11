@@ -6756,26 +6756,26 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f020057
 			public const int avd_hide_password = 2130837591;
 			
-			// aapt resource value: 0x7f020341
-			public const int avd_hide_password_1 = 2130838337;
-			
 			// aapt resource value: 0x7f020342
-			public const int avd_hide_password_2 = 2130838338;
+			public const int avd_hide_password_1 = 2130838338;
 			
 			// aapt resource value: 0x7f020343
-			public const int avd_hide_password_3 = 2130838339;
+			public const int avd_hide_password_2 = 2130838339;
+			
+			// aapt resource value: 0x7f020344
+			public const int avd_hide_password_3 = 2130838340;
 			
 			// aapt resource value: 0x7f020058
 			public const int avd_show_password = 2130837592;
 			
-			// aapt resource value: 0x7f020344
-			public const int avd_show_password_1 = 2130838340;
-			
 			// aapt resource value: 0x7f020345
-			public const int avd_show_password_2 = 2130838341;
+			public const int avd_show_password_1 = 2130838341;
 			
 			// aapt resource value: 0x7f020346
-			public const int avd_show_password_3 = 2130838342;
+			public const int avd_show_password_2 = 2130838342;
+			
+			// aapt resource value: 0x7f020347
+			public const int avd_show_password_3 = 2130838343;
 			
 			// aapt resource value: 0x7f020059
 			public const int bg_application_status = 2130837593;
@@ -8553,11 +8553,11 @@ namespace myTNB_Android
 			// aapt resource value: 0x7f0202a8
 			public const int notification_smr_generic_banner = 2130838184;
 			
-			// aapt resource value: 0x7f02033f
-			public const int notification_template_icon_bg = 2130838335;
-			
 			// aapt resource value: 0x7f020340
-			public const int notification_template_icon_low_bg = 2130838336;
+			public const int notification_template_icon_bg = 2130838336;
+			
+			// aapt resource value: 0x7f020341
+			public const int notification_template_icon_low_bg = 2130838337;
 			
 			// aapt resource value: 0x7f0202a9
 			public const int notification_tile_bg = 2130838185;
@@ -8935,79 +8935,82 @@ namespace myTNB_Android
 			public const int usage_view_empty = 2130838309;
 			
 			// aapt resource value: 0x7f020326
-			public const int visa = 2130838310;
+			public const int UsageGradientBackground = 2130838310;
 			
 			// aapt resource value: 0x7f020327
-			public const int walkthrough_bg_install_1 = 2130838311;
+			public const int visa = 2130838311;
 			
 			// aapt resource value: 0x7f020328
-			public const int walkthrough_bg_install_2 = 2130838312;
+			public const int walkthrough_bg_install_1 = 2130838312;
 			
 			// aapt resource value: 0x7f020329
-			public const int walkthrough_bg_install_3 = 2130838313;
+			public const int walkthrough_bg_install_2 = 2130838313;
 			
 			// aapt resource value: 0x7f02032a
-			public const int walkthrough_bg_update_1 = 2130838314;
+			public const int walkthrough_bg_install_3 = 2130838314;
 			
 			// aapt resource value: 0x7f02032b
-			public const int walkthrough_img_install_1 = 2130838315;
+			public const int walkthrough_bg_update_1 = 2130838315;
 			
 			// aapt resource value: 0x7f02032c
-			public const int walkthrough_img_install_2 = 2130838316;
+			public const int walkthrough_img_install_1 = 2130838316;
 			
 			// aapt resource value: 0x7f02032d
-			public const int walkthrough_img_install_3 = 2130838317;
+			public const int walkthrough_img_install_2 = 2130838317;
 			
 			// aapt resource value: 0x7f02032e
-			public const int walkthrough_img_update_1 = 2130838318;
+			public const int walkthrough_img_install_3 = 2130838318;
 			
 			// aapt resource value: 0x7f02032f
-			public const int welcome_illustration = 2130838319;
+			public const int walkthrough_img_update_1 = 2130838319;
 			
 			// aapt resource value: 0x7f020330
-			public const int what_s_new_notification_new = 2130838320;
+			public const int welcome_illustration = 2130838320;
 			
 			// aapt resource value: 0x7f020331
-			public const int what_s_new_notification_new_selected = 2130838321;
+			public const int what_s_new_notification_new = 2130838321;
 			
 			// aapt resource value: 0x7f020332
-			public const int whatsNewNewTagRead = 2130838322;
+			public const int what_s_new_notification_new_selected = 2130838322;
 			
 			// aapt resource value: 0x7f020333
-			public const int whatsNewNewTagUnread = 2130838323;
+			public const int whatsNewNewTagRead = 2130838323;
 			
 			// aapt resource value: 0x7f020334
-			public const int white_background_rect = 2130838324;
+			public const int whatsNewNewTagUnread = 2130838324;
 			
 			// aapt resource value: 0x7f020335
-			public const int white_button_background = 2130838325;
+			public const int white_background_rect = 2130838325;
 			
 			// aapt resource value: 0x7f020336
-			public const int white_button_stroke_background = 2130838326;
+			public const int white_button_background = 2130838326;
 			
 			// aapt resource value: 0x7f020337
-			public const int white_circle = 2130838327;
+			public const int white_button_stroke_background = 2130838327;
 			
 			// aapt resource value: 0x7f020338
-			public const int white_circle_active = 2130838328;
+			public const int white_circle = 2130838328;
 			
 			// aapt resource value: 0x7f020339
-			public const int white_filled_button_background = 2130838329;
+			public const int white_circle_active = 2130838329;
 			
 			// aapt resource value: 0x7f02033a
-			public const int white_radius = 2130838330;
+			public const int white_filled_button_background = 2130838330;
 			
 			// aapt resource value: 0x7f02033b
-			public const int white_rounded_button_selector = 2130838331;
+			public const int white_radius = 2130838331;
 			
 			// aapt resource value: 0x7f02033c
-			public const int white_selector_pressable = 2130838332;
+			public const int white_rounded_button_selector = 2130838332;
 			
 			// aapt resource value: 0x7f02033d
-			public const int yellow_circle_active = 2130838333;
+			public const int white_selector_pressable = 2130838333;
 			
 			// aapt resource value: 0x7f02033e
-			public const int zoom_out = 2130838334;
+			public const int yellow_circle_active = 2130838334;
+			
+			// aapt resource value: 0x7f02033f
+			public const int zoom_out = 2130838335;
 			
 			static Drawable()
 			{
