@@ -417,15 +417,13 @@ namespace myTNB_Android.Src.Billing.MVP
 
         public int GetViewBillButtonHeight()
         {
-            btnViewBill.Measure(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
-            int height = btnViewBill.MeasuredHeight;
+            int height = btnViewBill.Height;
             return height;
         }
 
         public int GetViewBillButtonWidth()
         {
-            btnViewBill.Measure(ViewGroup.LayoutParams.WrapContent, ViewGroup.LayoutParams.WrapContent);
-            int width = btnViewBill.MeasuredWidth;
+            int width = btnViewBill.Width;
             return width;
         }
 
