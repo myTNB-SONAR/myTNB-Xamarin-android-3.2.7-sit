@@ -4525,8 +4525,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_extended_bg);
                         }
                     }
-                    
-                    DashboardCustomScrolling(0);
 
                     isClickedShowTariff = true;
                 }
@@ -8048,8 +8046,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                         currentFragment.SetDayViewMonthText(dayViewMonthList[currentDayViewIndex]);
 
-                        currentChart.DispatchTouchEvent(MotionEvent.Obtain(SystemClock.UptimeMillis(), SystemClock.UptimeMillis(), (int)MotionEventActions.Down, (currentChart.Resources.DisplayMetrics.WidthPixels / 2) + (int) DPUtils.ConvertDPToPx(10f), 0, 0));
-                        currentChart.DispatchTouchEvent(MotionEvent.Obtain(SystemClock.UptimeMillis(), SystemClock.UptimeMillis(), (int)MotionEventActions.Up, (currentChart.Resources.DisplayMetrics.WidthPixels / 2) + (int)DPUtils.ConvertDPToPx(10f), 0, 0));
+                        currentChart.DispatchTouchEvent(MotionEvent.Obtain(SystemClock.UptimeMillis(), SystemClock.UptimeMillis(), (int)MotionEventActions.Down, (currentChart.Resources.DisplayMetrics.WidthPixels / 2) + (int) DPUtils.ConvertDPToPx(20f), 0, 0));
+                        currentChart.DispatchTouchEvent(MotionEvent.Obtain(SystemClock.UptimeMillis(), SystemClock.UptimeMillis(), (int)MotionEventActions.Up, (currentChart.Resources.DisplayMetrics.WidthPixels / 2) + (int)DPUtils.ConvertDPToPx(20f), 0, 0));
                     }
                     else
                     {
@@ -8112,8 +8110,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                             currentFragment.SetDayViewMonthText(dayViewMonthList[currentDayViewIndex]);
 
-                            currentChart.DispatchTouchEvent(MotionEvent.Obtain(SystemClock.UptimeMillis(), SystemClock.UptimeMillis(), (int)MotionEventActions.Down, (currentChart.Resources.DisplayMetrics.WidthPixels / 2) + (int)DPUtils.ConvertDPToPx(10f), 0, 0));
-                            currentChart.DispatchTouchEvent(MotionEvent.Obtain(SystemClock.UptimeMillis(), SystemClock.UptimeMillis(), (int)MotionEventActions.Up, (currentChart.Resources.DisplayMetrics.WidthPixels / 2) + (int)DPUtils.ConvertDPToPx(10f), 0, 0));
+                            currentChart.DispatchTouchEvent(MotionEvent.Obtain(SystemClock.UptimeMillis(), SystemClock.UptimeMillis(), (int)MotionEventActions.Down, (currentChart.Resources.DisplayMetrics.WidthPixels / 2) + (int)DPUtils.ConvertDPToPx(20f), 0, 0));
+                            currentChart.DispatchTouchEvent(MotionEvent.Obtain(SystemClock.UptimeMillis(), SystemClock.UptimeMillis(), (int)MotionEventActions.Up, (currentChart.Resources.DisplayMetrics.WidthPixels / 2) + (int)DPUtils.ConvertDPToPx(20f), 0, 0));
                         }
                         else
                         {
