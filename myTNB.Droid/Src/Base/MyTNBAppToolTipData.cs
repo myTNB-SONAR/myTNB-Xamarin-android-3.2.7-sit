@@ -208,18 +208,36 @@ namespace myTNB_Android.Src.Base
 
         public BillMandatoryChargesTooltipModel GetMandatoryChargesTooltipData()
         {
-            return mBillMandatoryChargesTooltipModelList.Find(model =>
+            BillMandatoryChargesTooltipModel tooltipModel = mBillMandatoryChargesTooltipModelList.Find(model =>
             {
                 return model.Type == "MandatoryCharges";
             });
+
+            if (tooltipModel == null)
+            {
+                tooltipModel = new BillMandatoryChargesTooltipModel();
+                tooltipModel.CTA = "Got It!";
+                tooltipModel.Title = "We strongly advise clearing your one-time charges first.";
+                tooltipModel.Description = "Your <b>one-time charges</b> like Security Deposit, Processing Fee, Stamp Duty and Meter Cost should be cleared first to ensure the start/continuation of your electricity.";
+            }
+            return tooltipModel;
         }
 
         public BillMandatoryChargesTooltipModel GetMandatoryPaymentTooltipData()
         {
-            return mBillMandatoryChargesTooltipModelList.Find(model =>
+            BillMandatoryChargesTooltipModel tooltipModel = mBillMandatoryChargesTooltipModelList.Find(model =>
             {
                 return model.Type == "MandatoryPayment";
             });
+
+            if (tooltipModel == null)
+            {
+                tooltipModel = new BillMandatoryChargesTooltipModel();
+                tooltipModel.CTA = "View Details,Got It!";
+                tooltipModel.Title = "We strongly advise clearing your one-time charges first.";
+                tooltipModel.Description = "Clearing the <b>{0}</b> from your one-time charges for <b>{1}</b> will ensure the start/continuation of your electricity.<br><br>You may view a breakdown in your bill details.";
+            }
+            return tooltipModel;
         }
 
 
