@@ -150,9 +150,9 @@ namespace myTNB_Android.Src.Utils
             return label;
         }
 
-        public static void ShowChangeLanguageDialog(Context context, string selectedLanguage, Action confirmAction)
+        public static void ShowChangeLanguageDialog(Context context, string selectedLanguage, Action confirmAction, Action cancelAction = null)
         {
-            MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(context, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
                         .SetTitle(Utility.GetLocalizedLabel("Common", "changeLanguageTitle_" + selectedLanguage))
                         .SetMessage(Utility.GetLocalizedLabel("Common", "changeLanguageMessage_" + selectedLanguage))
                         .SetContentGravity(Android.Views.GravityFlags.Center)
@@ -162,7 +162,19 @@ namespace myTNB_Android.Src.Utils
                         {
                             confirmAction();
                         })
-                        .Build().Show();
+                        .Build();
+            tooltipBuilder.SetCTAaction(() =>
+            {
+                if (cancelAction != null)
+                {
+                    cancelAction();
+                    tooltipBuilder.DismissDialog();
+                }
+                else
+                {
+                    tooltipBuilder.DismissDialog();
+                }
+            }).Show();
         }
 
         public static void UpdateSavedLanguage(string selectedLanguage)

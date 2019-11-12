@@ -143,6 +143,11 @@ namespace myTNB_Android.Src.SSMR.Util
             return this;
         }
 
+        public void DismissDialog()
+        {
+            this.dialog.Dismiss();
+        }
+
         public MyTNBAppToolTipBuilder Build()
         {
             if (this.toolTipType == ToolTipType.IMAGE_HEADER)

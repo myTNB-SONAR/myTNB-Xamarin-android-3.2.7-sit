@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Android.Support.V4.App;
+using Java.Lang;
 
 namespace myTNB_Android.Src.NewWalkthrough.MVP
 {
@@ -20,6 +21,11 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         {
             NewWalkthroughModel model = this.newWalkthroughModelList[position];
             return NewWalkthroughFragment.Instance(model);
+        }
+
+        public override int GetItemPosition(Object @object)
+        {
+            return PositionNone;
         }
     }
 }

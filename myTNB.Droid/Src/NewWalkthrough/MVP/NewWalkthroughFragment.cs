@@ -11,16 +11,42 @@ using Android.Support.V4.App;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using CheeseBind;
 using myTNB.SitecoreCMS.Model;
+using myTNB_Android.Src.Base.Fragments;
 using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.NewWalkthrough.MVP
 {
-    public class NewWalkthroughFragment : Fragment
+    public class NewWalkthroughFragment : BaseFragmentV4Custom
     {
         private static string TITLE = "slide_title";
         private static string DESCRIPTION = "slide_description";
         private static string IMAGE = "image";
+        private string appLanguage;
+        const string PAGE_ID = "";
+
+        [BindView(Resource.Id.walkthrough_layout)]
+        LinearLayout bgLayout;
+
+        [BindView(Resource.Id.img_display)]
+        ImageView imageSource;
+
+        [BindView(Resource.Id.txtTitle)]
+        TextView titleView;
+
+        [BindView(Resource.Id.txtMessage)]
+        TextView descriptionView;
+
+        [BindView(Resource.Id.btnToggleEN)]
+        RadioButton btnToggleEN;
+
+        [BindView(Resource.Id.btnToggleMS)]
+        RadioButton btnToggleMS;
+
+        [BindView(Resource.Id.btnToggleContainer)]
+        RelativeLayout btnToggleContainer;
+
 
         public override void OnCreate(Bundle savedInstanceState)
         {
@@ -40,34 +66,63 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             return fragment;
         }
 
-        public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        public override void OnViewCreated(View view, Bundle savedInstanceState)
         {
             // Use this to return your custom view for this Fragment
             // return inflater.Inflate(Resource.Layout.YourFragment, container, false);
+            base.OnViewCreated(view, savedInstanceState);
             string imageUrl = Arguments.GetString(IMAGE, "");
             string title = Arguments.GetString(TITLE, "");
             string description = Arguments.GetString(DESCRIPTION, "");
-            ViewGroup viewGroup = (ViewGroup)inflater.Inflate(Resource.Layout.NewWalkthroughFragmentLayout, container, false);
-            LinearLayout bgLayout = viewGroup.FindViewById(Resource.Id.walkthrough_layout) as LinearLayout;
-            ImageView imageSource = viewGroup.FindViewById(Resource.Id.img_display) as ImageView;
-            TextView titleView = viewGroup.FindViewById(Resource.Id.txtTitle) as TextView;
-            TextView descriptionView = viewGroup.FindViewById(Resource.Id.txtMessage) as TextView;
 
             TextViewUtils.SetMuseoSans500Typeface(titleView);
-            TextViewUtils.SetMuseoSans300Typeface(descriptionView);
+            TextViewUtils.SetMuseoSans300Typeface(descriptionView, btnToggleEN, btnToggleMS);
 
+            appLanguage = LanguageUtil.GetAppLanguage();
+
+            if (appLanguage == Constants.DEFAULT_LANG)
+            {
+                btnToggleEN.Checked = true;
+                btnToggleEN.Selected = true;
+                btnToggleMS.Selected = false;
+            }
+            else
+            {
+                btnToggleMS.Checked = true;
+                btnToggleMS.Selected = true;
+                btnToggleEN.Selected = false;
+            }
+
+            LinearLayout.LayoutParams imgParam;
+            int imgWidth, imgHeight;
+            float heightRatio;
+            btnToggleContainer.Visibility = ViewStates.Gone;
             switch (imageUrl)
             {
+                case "walkthrough_img_install_0":
+                    btnToggleContainer.Visibility = ViewStates.Visible;
+                    imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_0);
+                    bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughZeroBg);
+                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(70f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
+
+                    imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
+
+                    imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
+                    heightRatio = 216f / 250f;
+                    imgHeight = (int)(imgWidth * (heightRatio));
+                    imgParam.Width = imgWidth;
+                    imgParam.Height = imgHeight;
+                    break;
                 case "walkthrough_img_install_1":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_1);
                     bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFirstBg);
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int) DPUtils.ConvertDPToPx(70f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
-                    LinearLayout.LayoutParams imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
+                    imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
                     
-                    int imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
-                    float heightRatio = 216f / 250f;
-                    int imgHeight = (int)(imgWidth * (heightRatio));
+                    imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
+                    heightRatio = 216f / 250f;
+                    imgHeight = (int)(imgWidth * (heightRatio));
                     imgParam.Width = imgWidth;
                     imgParam.Height = imgHeight;
                     break;
@@ -76,70 +131,119 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughSecondBg);
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(79f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
-                    LinearLayout.LayoutParams secondImgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
+                    imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
 
-                    int secondImgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
-                    float secondHeightRatio = 207f / 250f;
-                    int secondImgHeight = (int)(secondImgWidth * (secondHeightRatio));
+                    imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
+                    heightRatio = 207f / 250f;
+                    imgHeight = (int)(imgWidth * (heightRatio));
 
-                    secondImgParam.Width = secondImgWidth;
-                    secondImgParam.Height = secondImgHeight;
+                    imgParam.Width = imgWidth;
+                    imgParam.Height = imgHeight;
                     break;
                 case "walkthrough_img_install_3":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_3);
                     bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughThirdBg);
-                    LinearLayout.LayoutParams thirdImgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
+                    imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
-                    int thirdImgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
-                    float thirdHeightRatio = 175f / 250f;
-                    int thirdImgHeight = (int)(thirdImgWidth * (thirdHeightRatio));
-                    thirdImgParam.Width = thirdImgWidth;
-                    thirdImgParam.Height = thirdImgHeight;
+                    imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
+                    heightRatio = 175f / 250f;
+                    imgHeight = (int)(imgWidth * (heightRatio));
+                    imgParam.Width = imgWidth;
+                    imgParam.Height = imgHeight;
+                    break;
+                case "walkthrough_img_install_4":
+                    imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_4);
+                    bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughForthBg);
+                    imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
+                    bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(111f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
+
+                    imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
+                    heightRatio = 175f / 250f;
+                    imgHeight = (int)(imgWidth * (heightRatio));
+                    imgParam.Width = imgWidth;
+                    imgParam.Height = imgHeight;
                     break;
                 case "walkthrough_img_update_1":
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_update_1);
                     bgLayout.SetBackgroundResource(Resource.Drawable.UpdateWalkthroughFirstBg);
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(97f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
-                    LinearLayout.LayoutParams updateImgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
+                    imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
 
-                    int updateImgWidth = GetDeviceHorizontalScaleInPixel(0.841f);
-                    float updateHeightRatio = 189f / 269f;
-                    int updateImgHeight = (int)(updateImgWidth * (updateHeightRatio));
-                    updateImgParam.Width = updateImgWidth;
-                    updateImgParam.Height = updateImgHeight;
+                    imgWidth = GetDeviceHorizontalScaleInPixel(0.841f);
+                    heightRatio = 189f / 269f;
+                    imgHeight = (int)(imgWidth * (heightRatio));
+                    imgParam.Width = imgWidth;
+                    imgParam.Height = imgHeight;
                     break;
                 default:
                     imageSource.SetImageResource(Resource.Drawable.walkthrough_img_install_1);
                     bgLayout.SetBackgroundResource(Resource.Drawable.InstallWalkthroughFirstBg);
                     bgLayout.SetPadding(bgLayout.PaddingLeft, (int)DPUtils.ConvertDPToPx(70f), bgLayout.PaddingRight, bgLayout.PaddingBottom);
 
-                    LinearLayout.LayoutParams defaultImgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
+                    imgParam = imageSource.LayoutParameters as LinearLayout.LayoutParams;
 
-                    int defaultImgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
-                    float defaultHeightRatio = 216f / 250f;
-                    int defaultImgHeight = (int)(defaultImgWidth * (defaultHeightRatio));
-                    defaultImgParam.Width = defaultImgWidth;
-                    defaultImgParam.Height = defaultImgHeight;
+                    imgWidth = GetDeviceHorizontalScaleInPixel(0.781f);
+                    heightRatio = 216f / 250f;
+                    imgHeight = (int)(imgWidth * (heightRatio));
+                    imgParam.Width = imgWidth;
+                    imgParam.Height = imgHeight;
                     break;
             }
 
             titleView.Text = title;
-            descriptionView.Text = description;
-            return viewGroup;
+            descriptionView.TextFormatted = GetFormattedText(description);
         }
 
-        public int GetDeviceHorizontalScaleInPixel(float percentageValue)
+        [OnClick(Resource.Id.btnToggleEN)]
+        void OnToggleEN(object sender, EventArgs eventArgs)
         {
-            var deviceWidth = Resources.DisplayMetrics.WidthPixels;
-            return GetScaleInPixel(deviceWidth, percentageValue);
+            if (btnToggleEN.Selected != true)
+            {
+                Utility.ShowChangeLanguageDialog(Context, appLanguage, () =>
+                {
+                    LanguageUtil.SaveAppLanguage("EN");
+                    ((NewWalkthroughActivity)Activity).UpdateContent();
+                }, () =>
+                {
+                    btnToggleMS.Checked = true;
+                    btnToggleMS.Selected = true;
+                    btnToggleEN.Selected = false;
+                });
+                btnToggleMS.Selected = false;
+                btnToggleEN.Selected = true;
+            }
         }
 
-        public int GetScaleInPixel(int basePixel, float percentageValue)
+        [OnClick(Resource.Id.btnToggleMS)]
+        void OnToggleMS(object sender, EventArgs eventArgs)
         {
-            int scaledInPixel = (int)((float)basePixel * percentageValue);
-            return scaledInPixel;
+            if (btnToggleMS.Selected != true)
+            {
+                Utility.ShowChangeLanguageDialog(Context, appLanguage, () =>
+                {
+                    LanguageUtil.SaveAppLanguage("MS");
+                    ((NewWalkthroughActivity)Activity).UpdateContent();
+                }, () =>
+                {
+                    btnToggleEN.Checked = true;
+                    btnToggleMS.Selected = false;
+                    btnToggleEN.Selected = true;
+                });
+                btnToggleMS.Selected = true;
+                btnToggleEN.Selected = false;
+            }
+        }
+
+        public override int ResourceId()
+        {
+            return Resource.Layout.NewWalkthroughFragmentLayout;
+        }
+
+        public override string GetPageId()
+        {
+            return PAGE_ID;
         }
     }
 }

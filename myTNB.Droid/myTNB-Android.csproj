@@ -3865,6 +3865,27 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\filter_white.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\filter_blue.png" />
     <AndroidResource Include="Resources\drawable-xxxhdpi\filter_white.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_bg_install_0.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_img_install_0.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_bg_install_0.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_img_install_0.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_bg_install_0.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_img_install_0.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_bg_install_0.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_img_install_0.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_bg_install_0.png" />
+    <AndroidResource Include="Resources\drawable-xxxhdpi\walkthrough_img_install_0.png" />
+    <AndroidResource Include="Resources\drawable\InstallWalkthroughZeroBg.xml" />
+    <Compile Include="Src\Base\Fragments\BaseFragmentV4Custom.cs" />
+    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_bg_install_4.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\walkthrough_img_install_4.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_bg_install_4.png" />
+    <AndroidResource Include="Resources\drawable-mdpi\walkthrough_img_install_4.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_bg_install_4.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\walkthrough_img_install_4.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_bg_install_4.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\walkthrough_img_install_4.png" />
+    <AndroidResource Include="Resources\drawable\InstallWalkthroughForthBg.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

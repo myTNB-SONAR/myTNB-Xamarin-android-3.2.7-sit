@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using myTNB_Android.Src.AppLaunch.Models;
+using myTNB_Android.Src.Utils;
 
 namespace myTNB_Android.Src.NewWalkthrough.MVP
 {
@@ -21,23 +22,37 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             {
                 newWalkthroughList.Add(new NewWalkthroughModel()
                 {
-                    Title = this.mView.GetAppString(Resource.String.walkthrough_install_title_1),
-                    Description = this.mView.GetAppString(Resource.String.walkthrough_install_msg_1),
+                    Title = Utility.GetLocalizedLabel("Onboarding","title1"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description1"),
+                    Image = "walkthrough_img_install_0"
+                });
+
+                newWalkthroughList.Add(new NewWalkthroughModel()
+                {
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title2"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description2"),
                     Image = "walkthrough_img_install_1"
                 });
 
                 newWalkthroughList.Add(new NewWalkthroughModel()
                 {
-                    Title = this.mView.GetAppString(Resource.String.walkthrough_install_title_2),
-                    Description = this.mView.GetAppString(Resource.String.walkthrough_install_msg_2),
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title3"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description3"),
                     Image = "walkthrough_img_install_2"
                 });
 
                 newWalkthroughList.Add(new NewWalkthroughModel()
                 {
-                    Title = this.mView.GetAppString(Resource.String.walkthrough_install_title_3),
-                    Description = this.mView.GetAppString(Resource.String.walkthrough_install_msg_3),
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title4"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description4"),
                     Image = "walkthrough_img_install_3"
+                });
+
+                newWalkthroughList.Add(new NewWalkthroughModel()
+                {
+                    Title = Utility.GetLocalizedLabel("Onboarding", "title5"),
+                    Description = Utility.GetLocalizedLabel("Onboarding", "description5"),
+                    Image = "walkthrough_img_install_4"
                 });
             }
             else

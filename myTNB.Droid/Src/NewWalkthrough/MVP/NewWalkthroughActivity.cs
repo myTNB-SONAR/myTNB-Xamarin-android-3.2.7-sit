@@ -1,12 +1,12 @@
 ﻿
 using System;
-
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.Graphics.Drawables;
 using Android.OS;
 using Android.Preferences;
+using Android.Support.V4.App;
 using Android.Support.V4.View;
 using Android.Util;
 using Android.Views;
@@ -73,7 +73,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         {
             if (!string.IsNullOrEmpty(currentAppNavigation) && currentAppNavigation == AppLaunchNavigation.Walkthrough.ToString())
             {
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < newWalkthroughAdapter.Count; i++)
                 {
                     ImageView selectedDot = (ImageView)indicatorContainer.GetChildAt(i);
                     if (position == i)
@@ -86,7 +86,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
                     }
                 }
 
-                if (position == 2)
+                if (position == (newWalkthroughAdapter.Count - 1))
                 {
                     ShowSubmitButton(true);
                 }
@@ -143,6 +143,8 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             };
 
             TextViewUtils.SetMuseoSans500Typeface(btnSkip, btnStart);
+            btnSkip.Text = Utility.GetLocalizedLabel("Onboarding", "skip");
+            btnStart.Text = Utility.GetLocalizedLabel("Onboarding", "letsStart");
         }
 
         private void ShowSubmitButton(bool isShow)
@@ -164,7 +166,7 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
             if (!string.IsNullOrEmpty(currentAppNavigation) && currentAppNavigation == AppLaunchNavigation.Walkthrough.ToString())
             {
                 indicatorContainer.Visibility = ViewStates.Visible;
-                for (int i = 0; i < 3; i++)
+                for (int i = 0; i < newWalkthroughAdapter.Count; i++)
                 {
                     ImageView image = new ImageView(this);
                     image.Id = i;
@@ -270,6 +272,14 @@ namespace myTNB_Android.Src.NewWalkthrough.MVP
         public string GetAppString(int id)
         {
             return this.GetString(id);
+        }
+
+        public void UpdateContent()
+        {
+            btnSkip.Text = Utility.GetLocalizedLabel("Onboarding", "skip");
+            newWalkthroughAdapter.SetData(this.presenter.GenerateNewWalkthroughList(currentAppNavigation));
+            newWalkthroughAdapter.NotifyDataSetChanged();
+            viewPager.Invalidate();
         }
     }
 }
