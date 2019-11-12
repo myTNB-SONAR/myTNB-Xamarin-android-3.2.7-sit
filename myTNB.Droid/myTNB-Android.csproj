@@ -723,11 +723,6 @@
     <Compile Include="Src\myTNBMenu\Charts\Formatter\SMChartsHourFormatter.cs" />
     <Compile Include="Src\myTNBMenu\Charts\Formatter\SMChartsMonthFormatter.cs" />
     <Compile Include="Src\myTNBMenu\Charts\SelectedMarkerView\SMSelectedMarkerView.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\BillsMenu\BillingListFragment.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\BillsMenu\BillingMenuNoTNBAccount.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\BillsMenu\BillingPaymentNoInternetConnection.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\BillsMenu\BillsMenuFragment.cs" />
-    <Compile Include="Src\myTNBMenu\Fragments\BillsMenu\PaymentListFragment.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\FeedbackMenu\FeedbackMenuFragment.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\MoreMenu\MoreMenuFragment.cs" />
     <Compile Include="Src\myTNBMenu\Fragments\PromotionsMenu\PromotionsMenuFragment.cs" />
@@ -755,8 +750,6 @@
     <Compile Include="Src\myTNBMenu\Models\UserNotificationChannelResponse.cs" />
     <Compile Include="Src\myTNBMenu\Models\UserNotificationType.cs" />
     <Compile Include="Src\myTNBMenu\Models\UserNotificationTypeResponse.cs" />
-    <Compile Include="Src\myTNBMenu\MVP\Fragment\BillsPaymentFragmentContract.cs" />
-    <Compile Include="Src\myTNBMenu\MVP\Fragment\BillsPaymentFragmentPresenter.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\FeedbackMenuContract.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\FeedbackMenuPresenter.cs" />
     <Compile Include="Src\myTNBMenu\MVP\Fragment\MoreFragmentContract.cs" />
@@ -3921,9 +3914,6 @@
     <AndroidResource Include="Resources\layout\ViewBillView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\BillsView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\GetAccessFormView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -3934,18 +3924,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\PaymentRowView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\BillingListFragmentView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\PaymentListFragmentView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\PaymentListFragmentFooterView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\BillingListFragmentFooterView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\drawable\dashed_border_background.xml" />
@@ -4119,9 +4097,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\PaymentSuccessExperienceRatingView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\BillsPaymentTabNoInternetConnectionView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\SmartMeterLearnMoreView.axml" />
