@@ -762,17 +762,11 @@
     <Compile Include="Src\myTNBMenu\Requests\UserNotificationChannelRequest.cs" />
     <Compile Include="Src\myTNBMenu\Requests\UserNotificationTypeRequest.cs" />
     <Compile Include="Src\NotificationDetails\Activity\Base\BaseNotificationDetailActivity.cs" />
-    <Compile Include="Src\NotificationDetails\Activity\NotificationDetailActivity.cs" />
-    <Compile Include="Src\NotificationDetails\Activity\NotificationDetailsNewBillActivity.cs" />
     <Compile Include="Src\NotificationDetails\Api\INotificationDetailsApi.cs" />
     <Compile Include="Src\NotificationDetails\Models\NotificationDetails.cs" />
     <Compile Include="Src\NotificationDetails\Models\NotificationDetailsDeleteResponse.cs" />
     <Compile Include="Src\NotificationDetails\Models\NotificationDetailsResponse.cs" />
     <Compile Include="Src\NotificationDetails\MVP\NotificationDetailContract.cs" />
-    <Compile Include="Src\NotificationDetails\MVP\NotificationDetailNewBillContract.cs" />
-    <Compile Include="Src\NotificationDetails\MVP\NotificationDetailNewBillPresenter.cs" />
-    <Compile Include="Src\NotificationDetails\MVP\NotificationDetailPayableViewableContract.cs" />
-    <Compile Include="Src\NotificationDetails\MVP\NotificationDetailPayableViewablePresenter.cs" />
     <Compile Include="Src\NotificationDetails\MVP\NotificationDetailPresenter.cs" />
     <Compile Include="Src\NotificationDetails\Requests\NotificationDetailsDeleteRequest.cs" />
     <Compile Include="Src\NotificationDetails\Requests\NotificationDetailsDeleteRequestV2.cs" />
@@ -3958,12 +3952,6 @@
     <AndroidResource Include="Resources\layout\NotificationFilterRow.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\layout\NotificationDetailsView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\layout\NewBillNotificationView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\NotificationNewBillViewDetailsView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
@@ -6134,81 +6122,6 @@
     <AndroidResource Include="Resources\drawable\checkbox_selector.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\img_notifications_disconnection.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\img_notifications_dunning.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\img_notifications_reconnection.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\img_notifications_disconnection.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\img_notifications_dunning.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\img_notifications_reconnection.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\img_notifications_disconnection.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\img_notifications_dunning.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\img_notifications_reconnection.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\img_notifications_disconnection.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\img_notifications_dunning.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\img_notifications_reconnection.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\img_notifications_disconnection.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\img_notifications_dunning.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\img_notifications_reconnection.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\img_notifications_bill_due.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\img_notifications_new_bill.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\img_notifications_bill_due.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\img_notifications_new_bill.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\img_notifications_bill_due.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\img_notifications_new_bill.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\img_notifications_bill_due.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\img_notifications_new_bill.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\img_notifications_bill_due.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\img_notifications_new_bill.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\ic_display_RE_Dashboard.png" />
   </ItemGroup>
   <ItemGroup>
@@ -6404,15 +6317,6 @@
     <AndroidResource Include="Resources\drawable-hdpi\ic_rm.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\img_notification_maintenance.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\img_notification_news.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-hdpi\img_notification_promotions.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-hdpi\logo_white.png" />
   </ItemGroup>
   <ItemGroup>
@@ -6447,15 +6351,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\ic_rm.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\img_notification_maintenance.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\img_notification_news.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-mdpi\img_notification_promotions.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-mdpi\logo_white.png" />
@@ -6494,15 +6389,6 @@
     <AndroidResource Include="Resources\drawable-xhdpi\ic_rm.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\img_notification_maintenance.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\img_notification_news.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xhdpi\img_notification_promotions.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xhdpi\logo_white.png" />
   </ItemGroup>
   <ItemGroup>
@@ -6539,15 +6425,6 @@
     <AndroidResource Include="Resources\drawable-xxhdpi\ic_rm.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\img_notification_maintenance.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\img_notification_news.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxhdpi\img_notification_promotions.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxhdpi\logo_white.png" />
   </ItemGroup>
   <ItemGroup>
@@ -6582,15 +6459,6 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\ic_rm.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\img_notification_maintenance.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\img_notification_news.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable-xxxhdpi\img_notification_promotions.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable-xxxhdpi\logo_white.png" />
