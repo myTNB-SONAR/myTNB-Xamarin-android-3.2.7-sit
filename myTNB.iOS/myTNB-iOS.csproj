@@ -2014,8 +2014,6 @@
     <Compile Include="Browser\BrowserViewController.designer.cs">
       <DependentUpon>BrowserViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\IsUserAuthenticate\UserAuthenticationDataModel.cs" />
-    <Compile Include="Model\IsUserAuthenticate\UserAuthenticationModel.cs" />
     <Compile Include="Model\IsUserAuthenticate\UserAuthenticationResponseModel.cs" />
     <Compile Include="Model\GetLocationTypes\LocationTypeDataModel.cs" />
     <Compile Include="Model\GetLocationTypes\LocationTypesModel.cs" />

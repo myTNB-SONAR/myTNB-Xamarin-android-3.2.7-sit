@@ -662,14 +662,14 @@ namespace myTNB.Registration
                         }
                         else
                         {
-                            DisplayServiceError(_authenticationList?.d?.message ?? string.Empty);
+                            DisplayServiceError(_authenticationList?.d?.ErrorMessage ?? string.Empty);
                             ClearTokenField();
                         }
                         ActivityIndicator.Hide();
                     }
                     else
                     {
-                        DisplayServiceError(_authenticationList?.d?.message ?? string.Empty);
+                        DisplayServiceError(_authenticationList?.d?.ErrorMessage ?? string.Empty);
                         ClearTokenField();
                     }
                     ActivityIndicator.Hide();
@@ -684,22 +684,33 @@ namespace myTNB.Registration
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    userName = DataManager.DataManager.SharedInstance.User.Email,
-                    password = DataManager.DataManager.SharedInstance.User.Password,
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    ipAddress = TNBGlobal.API_KEY_ID,
+                    usrInf = new
+                    {
+                        eid = DataManager.DataManager.SharedInstance.User.Email,
+                        sspuid = string.Empty,
+                        did = DataManager.DataManager.SharedInstance.UDID,
+                        ft = DataManager.DataManager.SharedInstance.FCMToken != null
+                            && !string.IsNullOrEmpty(DataManager.DataManager.SharedInstance.FCMToken)
+                            && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.FCMToken)
+                                ? DataManager.DataManager.SharedInstance.FCMToken : string.Empty,
+                        lang = TNBGlobal.APP_LANGUAGE,
+                        sec_auth_k1 = TNBGlobal.API_KEY_ID,
+                        sec_auth_k2 = string.Empty,
+                        ses_param1 = string.Empty,
+                        ses_param2 = string.Empty
+                    },
+                    deviceInf = new
+                    {
+                        DeviceId = DataManager.DataManager.SharedInstance.UDID,
+                        AppVersion = AppVersionHelper.GetAppShortVersion(),
+                        OsType = TNBGlobal.DEVICE_PLATFORM_IOS,
+                        OsVersion = DeviceHelper.GetOSVersion(),
+                        DeviceDesc = TNBGlobal.APP_LANGUAGE
+                    },
                     clientType = AppVersionHelper.GetBuildVersion(),
-                    activeUserName = TNBGlobal.API_KEY_ID,
-                    devicePlatform = TNBGlobal.DEVICE_PLATFORM_IOS,
-                    deviceVersion = DeviceHelper.GetOSVersion(),
-                    deviceCordova = TNBGlobal.API_KEY_ID,
-                    deviceId = DataManager.DataManager.SharedInstance.UDID,
-                    fcmToken = DataManager.DataManager.SharedInstance.FCMToken != null
-                        && !string.IsNullOrEmpty(DataManager.DataManager.SharedInstance.FCMToken)
-                        && !string.IsNullOrWhiteSpace(DataManager.DataManager.SharedInstance.FCMToken)
-                            ? DataManager.DataManager.SharedInstance.FCMToken : string.Empty
+                    password = DataManager.DataManager.SharedInstance.User.Password
                 };
-                _authenticationList = serviceManager.OnExecuteAPI<UserAuthenticationResponseModel>("IsUserAuthenticate", requestParameter);
+                _authenticationList = serviceManager.OnExecuteAPIV6<UserAuthenticationResponseModel>(LoginConstants.Service_Login, requestParameter);
             });
         }
 
