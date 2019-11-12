@@ -14,9 +14,7 @@ namespace myTNB
 {
     public partial class SelectBillsViewController : CustomUIViewController
     {
-        public SelectBillsViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public SelectBillsViewController(IntPtr handle) : base(handle) { }
 
         public double SelectedAccountDueAmount;
         public List<CustomerAccountRecordModel> _accountsForPayment = new List<CustomerAccountRecordModel>();
@@ -418,29 +416,37 @@ namespace myTNB
 
             _viewAmount = new UIView(new CGRect(18, 20, View.Frame.Width - 36, 24));
 
-            UILabel lblTotalAmountTitle = new UILabel(new CGRect(0, 6, 120, 18));
-            lblTotalAmountTitle.TextColor = MyTNBColor.TunaGrey();
-            lblTotalAmountTitle.Font = MyTNBFont.MuseoSans14_500;
-            lblTotalAmountTitle.Text = GetCommonI18NValue(Constants.Common_TotalAmount);
+            UILabel lblTotalAmountTitle = new UILabel(new CGRect(0, 6, _viewAmount.Frame.Width / 2, 18))
+            {
+                TextColor = MyTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans14_500,
+                Text = GetCommonI18NValue(Constants.Common_TotalAmount)
+            };
 
-            _lblCurrency = new UILabel(new CGRect(0, 6, 24, 18));
-            _lblCurrency.TextColor = MyTNBColor.TunaGrey();
-            _lblCurrency.Font = MyTNBFont.MuseoSans14_500;
-            _lblCurrency.Text = TNBGlobal.UNIT_CURRENCY;
-            _lblCurrency.TextAlignment = UITextAlignment.Right;
+            _lblCurrency = new UILabel(new CGRect(0, 6, 24, 18))
+            {
+                TextColor = MyTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans14_500,
+                Text = TNBGlobal.UNIT_CURRENCY,
+                TextAlignment = UITextAlignment.Right
+            };
 
-            _lblTotalAmountValue = new UILabel(new CGRect(0, 0, (View.Frame.Width - 36) / 2, 24));
-            _lblTotalAmountValue.TextColor = MyTNBColor.TunaGrey();
-            _lblTotalAmountValue.Font = MyTNBFont.MuseoSans24_500;
-            _lblTotalAmountValue.Text = TNBGlobal.DEFAULT_VALUE;
-            _lblTotalAmountValue.TextAlignment = UITextAlignment.Right;
+            _lblTotalAmountValue = new UILabel(new CGRect(0, 0, (View.Frame.Width - 36) / 2, 24))
+            {
+                TextColor = MyTNBColor.TunaGrey(),
+                Font = MyTNBFont.MuseoSans24_500,
+                Text = TNBGlobal.DEFAULT_VALUE,
+                TextAlignment = UITextAlignment.Right
+            };
 
             _viewAmount.AddSubviews(lblTotalAmountTitle, _lblCurrency, _lblTotalAmountValue);
             AdjustAmountFrame();
             BottomContainerView.AddSubview(_viewAmount);
 
-            _viewFooter = new UIView(new CGRect(0, 0, View.Frame.Width, 40));
-            _viewFooter.BackgroundColor = MyTNBColor.LightGrayBG;
+            _viewFooter = new UIView(new CGRect(0, 0, View.Frame.Width, 40))
+            {
+                BackgroundColor = MyTNBColor.LightGrayBG
+            };
             _viewFooter.AddGestureRecognizer(new UITapGestureRecognizer(() =>
             {
                 OnLoadMore();

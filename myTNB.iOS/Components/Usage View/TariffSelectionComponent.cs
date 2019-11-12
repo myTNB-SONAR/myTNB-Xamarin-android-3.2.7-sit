@@ -7,12 +7,13 @@ namespace myTNB
 {
     public class TariffSelectionComponent : BaseComponent
     {
-        CustomUIView _containerView;
-        UIView _parentView, _rmKwhSelectionView, _tariffSelectionView, _monthDayView;
-        UIImageView _tariffIcon, _rmKwhIcon, _monthDayIcon;
-        UILabel _rmKwhLabel, _tariffLabel, _monthDayLabel;
-        nfloat containerHeight = ScaleUtility.GetScaledHeight(24f);
-        SmartMeterViewEnum _smViewEnum;
+        private CustomUIView _containerView;
+        private UIView _parentView, _rmKwhSelectionView, _tariffSelectionView, _monthDayView;
+        private UIImageView _tariffIcon, _rmKwhIcon, _monthDayIcon;
+        private UILabel _rmKwhLabel, _tariffLabel, _monthDayLabel;
+        private nfloat containerHeight = ScaleUtility.GetScaledHeight(24f);
+        private SmartMeterViewEnum _smViewEnum;
+
         public bool isTariffDisabled;
 
         public TariffSelectionComponent(UIView parentView, SmartMeterViewEnum smViewEnum = SmartMeterViewEnum.Month)
@@ -95,8 +96,7 @@ namespace myTNB
             nfloat tarrifIconXPos = GetScaledWidth(12f);
             nfloat tarrifIconYPos = GetScaledHeight(4f);
             nfloat tariffIconWidth = GetScaledWidth(16f);
-            nfloat tariffIconHeight = GetScaledHeight(16f);
-            _tariffIcon = new UIImageView(new CGRect(tarrifIconXPos, tarrifIconYPos, tariffIconWidth, tariffIconHeight))
+            _tariffIcon = new UIImageView(new CGRect(tarrifIconXPos, tarrifIconYPos, tariffIconWidth, tariffIconWidth))
             {
                 Image = UIImage.FromBundle(Constants.IMG_TariffEyeOpenIcon)
             };
@@ -113,6 +113,16 @@ namespace myTNB
                 TextAlignment = UITextAlignment.Left,
                 Text = GetI18NValue(UsageConstants.I18N_ShowTariff)
             };
+
+            //Resize
+            nfloat newLabelWidth = _tariffLabel.GetLabelWidth(width / 2);
+            _tariffLabel.Frame = new CGRect(_tariffLabel.Frame.Location, new CGSize(newLabelWidth, _tariffLabel.Frame.Height));
+
+            nfloat newFrameWidth = newLabelWidth + GetScaledWidth(44);
+
+            _tariffSelectionView.Frame = new CGRect(width - newFrameWidth - BaseMarginHeight16
+                , _tariffSelectionView.Frame.Y, newFrameWidth, _tariffSelectionView.Frame.Height);
+
             _tariffSelectionView.AddSubview(_tariffLabel);
         }
 
