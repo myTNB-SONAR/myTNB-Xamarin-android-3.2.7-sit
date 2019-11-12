@@ -295,12 +295,11 @@ namespace myTNB
                 _toggleBar.ValueChanged += (sender, e) =>
                 {
                     Debug.WriteLine("selected index: " + ((UISegmentedControl)sender).SelectedSegment);
-                    AlertHandler.DisplayCustomAlert(GetCommonI18NValue(string.Format("{0}_{1}"
-                        , Constants.Common_ChangeLanguageTitle, TNBGlobal.APP_LANGUAGE))
-                     , GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageMessage, TNBGlobal.APP_LANGUAGE))
+                    AlertHandler.DisplayCustomAlert(GetFormattedString(Constants.Common_ChangeLanguageTitle)
+                     , GetFormattedString(Constants.Common_ChangeLanguageMessage)
                      , new Dictionary<string, Action> {
-                            { GetCommonI18NValue(string.Format("{0}_{1}",Constants.Common_ChangeLanguageNo, TNBGlobal.APP_LANGUAGE)), null}
-                            ,{ GetCommonI18NValue(string.Format("{0}_{1}",Constants.Common_ChangeLanguageYes, TNBGlobal.APP_LANGUAGE))
+                            { GetFormattedString(Constants.Common_ChangeLanguageNo), ()=>{_toggleBar.SelectedSegment = LanguageUtility.CurrentLanguageIndex; } }
+                            ,{ GetFormattedString(Constants.Common_ChangeLanguageYes)
                             ,()=>{
                                 if (ChangeLanguageAction!=null)
                                 {
@@ -315,6 +314,11 @@ namespace myTNB
                 toggleView.AddSubview(_toggleBar);
                 viewContainer.AddSubview(toggleView);
             }
+        }
+
+        private string GetFormattedString(string preffix)
+        {
+            return GetCommonI18NValue(string.Format("{0}_{1}", preffix, TNBGlobal.APP_LANGUAGE));
         }
 
         /*

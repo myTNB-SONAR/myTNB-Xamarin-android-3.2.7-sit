@@ -280,12 +280,12 @@ namespace myTNB
 
         private void OnLanguageBack(int index)
         {
-            DisplayCustomAlert(GetCommonI18NValue(GetFormattedLangKey(Constants.Common_ChangeLanguageTitle))
+            DisplayCustomAlert(GetFormattedLangKey(Constants.Common_ChangeLanguageTitle)
                   , GetCommonI18NValue(Constants.Common_SaveLanguageMessage)
                   , new Dictionary<string, Action> {
-                        { GetCommonI18NValue(GetFormattedLangKey(Constants.Common_ChangeLanguageNo))
+                        { GetFormattedLangKey(Constants.Common_ChangeLanguageNo)
                             , ()=>{ DismissViewController(true, null);} }
-                        ,{ GetCommonI18NValue(GetFormattedLangKey(Constants.Common_ChangeLanguageYes))
+                        ,{ GetFormattedLangKey(Constants.Common_ChangeLanguageYes)
                             , ()=>{ OnChangeLanguage(index); } } }
                   , UITextAlignment.Center
                   , UITextAlignment.Center);
@@ -293,11 +293,11 @@ namespace myTNB
 
         private void OnSelectLanguage(int index)
         {
-            DisplayCustomAlert(GetCommonI18NValue(GetFormattedLangKey(Constants.Common_ChangeLanguageTitle))
-                  , GetCommonI18NValue(GetFormattedLangKey(Constants.Common_ChangeLanguageMessage))
+            DisplayCustomAlert(GetFormattedLangKey(Constants.Common_ChangeLanguageTitle)
+                  , GetFormattedLangKey(Constants.Common_ChangeLanguageMessage)
                   , new Dictionary<string, Action> {
-                        { GetCommonI18NValue(GetFormattedLangKey(Constants.Common_ChangeLanguageNo)), null}
-                        ,{ GetCommonI18NValue(GetFormattedLangKey(Constants.Common_ChangeLanguageYes))
+                        { GetFormattedLangKey(Constants.Common_ChangeLanguageNo), null}
+                        ,{ GetFormattedLangKey(Constants.Common_ChangeLanguageYes)
                             , ()=>{ OnChangeLanguage(index); } } }
                   , UITextAlignment.Center
                   , UITextAlignment.Center);
@@ -305,7 +305,7 @@ namespace myTNB
 
         private string GetFormattedLangKey(string key)
         {
-            return string.Format("{0}_{1}", key, TNBGlobal.APP_LANGUAGE);
+            return GetCommonI18NValue(string.Format("{0}_{1}", key, TNBGlobal.APP_LANGUAGE));
         }
 
         /*Todo: Do service calls and set lang

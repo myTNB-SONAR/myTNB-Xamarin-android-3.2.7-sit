@@ -71,10 +71,24 @@ namespace myTNB.SitecoreCMS
             {
                 needsUpdate = false;
             }
-            else
+            /*else
             {
                 sharedPreference.SetString(sitecoreTS, key);
                 sharedPreference.Synchronize();
+            }*/
+        }
+
+        private void UpdateSharedPreference(string key, string value)
+        {
+            try
+            {
+                NSUserDefaults sharedPreference = NSUserDefaults.StandardUserDefaults;
+                sharedPreference.SetString(value, key);
+                sharedPreference.Synchronize();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("Error in ClearSharedPreference: " + e.Message);
             }
         }
 
@@ -125,6 +139,7 @@ namespace myTNB.SitecoreCMS
                         wsManager.DeleteTable();
                         wsManager.CreateTable();
                         wsManager.InsertListOfItems(applySSMrWalkthroughItems.Data);
+                        UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreApplySSMRWalkthroughTimeStamp");
                         Debug.WriteLine("LoadSSMRWalkthrough Done");
                     }
                 }
@@ -176,6 +191,7 @@ namespace myTNB.SitecoreCMS
                         wsManager.DeleteTable();
                         wsManager.CreateTable();
                         wsManager.InsertListOfItems(meterReadSSMrWalkthroughItems.Data);
+                        UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreMeterReadSSMRWalkthroughTimeStamp");
                         Debug.WriteLine("LoadMeterReadSSMRWalkthrough Done");
                     }
                 }
@@ -227,6 +243,7 @@ namespace myTNB.SitecoreCMS
                         wsManager.DeleteTable();
                         wsManager.CreateTable();
                         wsManager.InsertListOfItems(meterReadSSMrWalkthroughItems.Data);
+                        UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreMeterReadSSMRWalkthroughTimeStampV2");
                         Debug.WriteLine("LoadMeterReadSSMRWalkthroughV2 Done");
                     }
                 }
@@ -278,6 +295,7 @@ namespace myTNB.SitecoreCMS
                         wsManager.DeleteTable();
                         wsManager.CreateTable();
                         wsManager.InsertListOfItems(tooltipsItems.Data);
+                        UpdateSharedPreference(timeStamp.Data[0].Timestamp, "BillDetailsTooltipTimeStamp");
                         Debug.WriteLine("LoadBillDetailsTooltip Done");
                     }
                 }
@@ -329,6 +347,7 @@ namespace myTNB.SitecoreCMS
                         wsManager.DeleteTable();
                         wsManager.CreateTable();
                         wsManager.InsertListOfItems(energyTipsItems.Data);
+                        UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreEnergyTipsTimeStamp");
                         Debug.WriteLine("LoadEnergyTips Done");
                     }
                 }
@@ -365,6 +384,7 @@ namespace myTNB.SitecoreCMS
                         tncEntity.DeleteTable();
                         tncEntity.CreateTable();
                         tncEntity.InsertListOfItems(tncResponse.Data);
+                        UpdateSharedPreference(timeStamp.Data[0].Timestamp, "SiteCoreTimeStamp");
                         Debug.WriteLine("LoadTermsAndCondition Done");
                     }
                 }
@@ -412,6 +432,7 @@ namespace myTNB.SitecoreCMS
                             {
                                 LanguageUtility.SetLanguage(TNBGlobal.APP_LANGUAGE);
                             }
+                            UpdateSharedPreference(timeStamp.Data[0].Timestamp, "LanguageTimeStamp");
                             Debug.WriteLine("LoadLanguage Done");
                         }
                     }
@@ -419,7 +440,15 @@ namespace myTNB.SitecoreCMS
                 else
                 {
                     string content = LanguageUtility.LanguageContent;
-                    LanguageManager.Instance.SetLanguage(content ?? string.Empty);
+                    if (string.IsNullOrEmpty(content) || string.IsNullOrWhiteSpace(content))
+                    {
+                        LanguageManager.Instance.SetLanguage(LanguageManager.Source.FILE
+                            , TNBGlobal.APP_LANGUAGE == "EN" ? LanguageManager.Language.EN : LanguageManager.Language.MS);
+                    }
+                    else
+                    {
+                        LanguageManager.Instance.SetLanguage(content ?? string.Empty);
+                    }
                     LanguageUtility.SetLanguageGlobals();
                 }
             });

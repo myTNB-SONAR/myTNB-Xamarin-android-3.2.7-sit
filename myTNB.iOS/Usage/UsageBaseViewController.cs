@@ -10,6 +10,7 @@ using myTNB.SQLite.SQLiteDataManager;
 using UIKit;
 using CoreAnimation;
 using Foundation;
+using System.Diagnostics;
 
 namespace myTNB
 {
