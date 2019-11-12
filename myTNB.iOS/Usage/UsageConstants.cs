@@ -61,6 +61,7 @@
         public static string I18N_BeenPaidExtra = "beenPaidExtra";
         public static string I18N_TutorialSMRTitle = "tutorialSMRTitle";
         public static string I18N_TutorialSMRDesc = "tutorialSMRDesc";
+        public static string I18N_TariffLegendNote = "tariffLegendNote";
 
         //Preference Key
         public static string Pref_UsageSSMRTutorialOverlay = "UsageSSMRTutorialOverlayV2.0.0";
