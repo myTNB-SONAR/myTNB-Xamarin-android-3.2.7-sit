@@ -31,5 +31,9 @@
         public static string URL_Apple = "maps://";
         public static string URL_Google = "comgooglemaps://";
         public static string URL_Waze = "waze://";
+
+        //Services
+        public static string Service_GetLocationsByKeyword = "GetLocationsByKeyword";
+        public static string Service_GetLocations = "GetLocations";
     }
 }

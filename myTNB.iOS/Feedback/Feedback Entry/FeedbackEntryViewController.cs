@@ -526,8 +526,7 @@ namespace myTNB
                             InvokeOnMainThread(() =>
                             {
                                 if (_submitFeedback != null && _submitFeedback?.d != null
-                                   && _submitFeedback?.d?.didSucceed == true
-                                   && _submitFeedback?.d?.data != null)
+                                   && _submitFeedback.d.IsSuccess && _submitFeedback?.d?.data != null)
                                 {
                                     UIStoryboard storyBoard = UIStoryboard.FromName("Feedback", null);
                                     GenericStatusPageViewController status = storyBoard.InstantiateViewController("GenericStatusPageViewController") as GenericStatusPageViewController;
@@ -539,7 +538,7 @@ namespace myTNB
                                 }
                                 else
                                 {
-                                    DisplayServiceError(_submitFeedback?.d?.message ?? string.Empty);
+                                    DisplayServiceError(_submitFeedback?.d?.ErrorMessage ?? string.Empty);
                                 }
                                 ActivityIndicator.Hide();
                             });
@@ -555,16 +554,16 @@ namespace myTNB
 
         private object GetRequestParameters()
         {
+            ServiceManager serviceManager = new ServiceManager();
             return new
             {
-                apiKeyID = TNBGlobal.API_KEY_ID, //Common
+                serviceManager.usrInf,
+                serviceManager.deviceInf,
                 feedbackCategoryId = FeedbackID,
                 feedbackTypeId = GetFeedbackTypeID(),
                 accountNum = GetAccountNumber(),
                 name = GetName(),
                 phoneNum = GetMobileNumber(),
-                email = GetEmailAddress(),
-                deviceId = DataManager.DataManager.SharedInstance.UDID, //Common
                 feedbackMesage = _feedbackTextView.Text, //Common
                 stateId = GetState(),
                 location = GetLocation(),
@@ -579,7 +578,7 @@ namespace myTNB
             return Task.Factory.StartNew(() =>
             {
                 ServiceManager serviceManager = new ServiceManager();
-                _submitFeedback = serviceManager.OnExecuteAPI<SubmitFeedbackResponseModel>(FeedbackConstants.Service_SubmitFeedback, requestParameter);
+                _submitFeedback = serviceManager.OnExecuteAPIV6<SubmitFeedbackResponseModel>(FeedbackConstants.Service_SubmitFeedback, requestParameter);
             });
         }
 

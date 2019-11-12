@@ -17,9 +17,7 @@ namespace myTNB
 {
     public partial class FindUsViewController : CustomUIViewController
     {
-        public FindUsViewController(IntPtr handle) : base(handle)
-        {
-        }
+        public FindUsViewController(IntPtr handle) : base(handle) { }
 
         private CLLocationManager _locationManager;
         private TextFieldHelper _textFieldHelper = new TextFieldHelper();
@@ -502,14 +500,14 @@ namespace myTNB
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
+                    serviceManager.usrInf,
                     latitude = latt,//"3.1365952399077304",//
-                    longitude = longt,//"101.69228553771973",//
+                    longitude = longt,//"101.69228553771973",/
                     locationType = locType,
                     keyword = isSearch ? _searchLoc : string.Empty
                 };
-                _locations = serviceManager.OnExecuteAPI<GetLocationsResponseModel>(isSearch
-                    ? "GetLocationsByKeyword" : "GetLocations", requestParameter);
+                _locations = serviceManager.OnExecuteAPIV6<GetLocationsResponseModel>(isSearch
+                    ? FindUsConstants.Service_GetLocationsByKeyword : FindUsConstants.Service_GetLocations, requestParameter);
             });
         }
     }

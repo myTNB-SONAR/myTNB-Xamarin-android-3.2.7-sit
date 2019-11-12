@@ -271,8 +271,8 @@ namespace myTNB.Registration.CustomerAccounts
             {
                 InvokeOnMainThread(() =>
                 {
-                    if (_customerAccountResponseModel?.d != null
-                       && _customerAccountResponseModel?.d?.didSucceed == true)
+                    if (_customerAccountResponseModel != null && _customerAccountResponseModel?.d != null
+                       && _customerAccountResponseModel.d.IsSuccess)
                     {
                         DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d = _customerAccountResponseModel?.d?.data;
                         int currentCount = ServiceCall.GetAccountListCount();
@@ -392,7 +392,7 @@ namespace myTNB.Registration.CustomerAccounts
                             {
                                 if (_addMultipleSupplyAccountsResponseModel != null && _addMultipleSupplyAccountsResponseModel?.d != null
                                     && _addMultipleSupplyAccountsResponseModel?.d?.data != null
-                                    && _addMultipleSupplyAccountsResponseModel?.d?.didSucceed == true)
+                                    && _addMultipleSupplyAccountsResponseModel.d.IsSuccess)
                                 {
                                     var count = DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d?.Count;
                                     DataManager.DataManager.SharedInstance.AccountsToBeAddedList.d = _addMultipleSupplyAccountsResponseModel?.d?.data;

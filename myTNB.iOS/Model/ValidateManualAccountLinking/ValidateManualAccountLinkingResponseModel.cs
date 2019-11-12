@@ -12,14 +12,14 @@
 
     public class ValidateManualAccountLinkingDataModel
     {
-        public string __type { set; get; }
-        public string accNum { set; get; }
+        public string __type { set; get; } = string.Empty;
+        public string accNum { set; get; } = string.Empty;
         public bool isLocal { set; get; }
-        public string accountTypeId { set; get; }
-        public string accountStAddress { set; get; }
-        public string icNum { set; get; }
-        public string isOwned { set; get; }
-        public string accountNickName { set; get; }
-        public string accountCategoryId { set; get; }
+        public string accountTypeId { set; get; } = string.Empty;
+        public string accountStAddress { set; get; } = string.Empty;
+        public string icNum { set; get; } = string.Empty;
+        public string isOwned { set; get; } = string.Empty;
+        public string accountNickName { set; get; } = string.Empty;
+        public string accountCategoryId { set; get; } = string.Empty;
     }
 }

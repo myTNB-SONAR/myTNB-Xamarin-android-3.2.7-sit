@@ -173,11 +173,10 @@ namespace myTNB
                 ServiceManager serviceManager = new ServiceManager();
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
-                    email = _email,
-                    deviceId = DataManager.DataManager.SharedInstance.UDID
+                    serviceManager.usrInf,
+                    serviceManager.deviceInf
                 };
-                _submittedFeedback = serviceManager.OnExecuteAPI<SubmittedFeedbackResponseModel>(FeedbackConstants.Service_GetSubmittedFeedbackList, requestParameter);
+                _submittedFeedback = serviceManager.OnExecuteAPIV6<SubmittedFeedbackResponseModel>(FeedbackConstants.Service_GetSubmittedFeedbackList, requestParameter);
             });
         }
     }

@@ -141,5 +141,20 @@ namespace myTNB
                 };
             }
         }
+
+        public object deviceInf
+        {
+            get
+            {
+                return new
+                {
+                    DeviceId = DataManager.DataManager.SharedInstance.UDID,
+                    AppVersion = AppVersionHelper.GetAppShortVersion(),
+                    OsType = TNBGlobal.DEVICE_PLATFORM_IOS,
+                    OsVersion = DeviceHelper.GetOSVersion(),
+                    DeviceDesc = TNBGlobal.APP_LANGUAGE
+                };
+            }
+        }
     }
 }

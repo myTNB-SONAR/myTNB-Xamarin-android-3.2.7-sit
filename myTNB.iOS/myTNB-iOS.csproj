@@ -2024,8 +2024,6 @@
     <Compile Include="Home\More\Find Us\Location Details\LocationDetailsViewController.designer.cs">
       <DependentUpon>LocationDetailsViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\GetLocations\GetLocationsDataModel.cs" />
-    <Compile Include="Model\GetLocations\GetLocationsModel.cs" />
     <Compile Include="Model\GetLocations\GetLocationsResponseModel.cs" />
     <Compile Include="Model\GetLocations\OpeningHoursModel.cs" />
     <Compile Include="Model\GetLocations\ServicesModel.cs" />
@@ -2063,8 +2061,6 @@
     <Compile Include="Model\GetFeedbackCategory\FeedbackCategoryDataModel.cs" />
     <Compile Include="Model\GetFeedbackCategory\FeedbackCategoryModel.cs" />
     <Compile Include="Model\GetFeedbackCategory\FeedbackCategoryResponseModel.cs" />
-    <Compile Include="Model\SubmitFeedback\SubmitFeedbackDataModel.cs" />
-    <Compile Include="Model\SubmitFeedback\SubmitFeedbackModel.cs" />
     <Compile Include="Model\SubmitFeedback\SubmitFeedbackResponseModel.cs" />
     <Compile Include="Model\GetStatesForFeedback\StatesForFeedbackDataModel.cs" />
     <Compile Include="Model\GetBillHistory\BillHistoryResponseModel.cs" />
@@ -2074,8 +2070,6 @@
     <Compile Include="Model\GetOtherFeedbackType\OtherFeedbackTypeDataModel.cs" />
     <Compile Include="Model\GetOtherFeedbackType\OtherFeedbackTypeModel.cs" />
     <Compile Include="Model\GetOtherFeedbackType\OtherFeedbackTypeResponseModel.cs" />
-    <Compile Include="Model\GetSubmittedFeedbackList\SubmittedFeedbackDataModel.cs" />
-    <Compile Include="Model\GetSubmittedFeedbackList\SubmittedFeedbackModel.cs" />
     <Compile Include="Model\GetSubmittedFeedbackList\SubmittedFeedbackResponseModel.cs" />
     <Compile Include="Model\GetSubmittedFeedbackDetails\SubmittedFeedbackDetailsDataModel.cs" />
     <Compile Include="Model\GetSubmittedFeedbackDetails\SubmittedFeedbackDetailsModel.cs" />
