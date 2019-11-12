@@ -200,9 +200,9 @@ namespace myTNB.Registration
             {
                 InvokeOnMainThread(() =>
                 {
-                    if (_validateManualAccountLinkingResponse?.d != null
-                        && _validateManualAccountLinkingResponse?.d?.isError == "false"
-                        && _validateManualAccountLinkingResponse?.d?.status == "success")
+                    if (_validateManualAccountLinkingResponse != null
+                        && _validateManualAccountLinkingResponse.d != null
+                        && _validateManualAccountLinkingResponse.d.IsSuccess)
                     {
                         account = new CustomerAccountRecordModel
                         {
@@ -236,7 +236,7 @@ namespace myTNB.Registration
                     }
                     else
                     {
-                        DisplayServiceError(_validateManualAccountLinkingResponse?.d?.message ?? string.Empty);
+                        DisplayServiceError(_validateManualAccountLinkingResponse?.d?.ErrorMessage ?? string.Empty);
                         ActivityIndicator.Hide();
                     }
                 });
@@ -257,14 +257,14 @@ namespace myTNB.Registration
                 }
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
+                    serviceManager.usrInf,
                     accountNum = _accountNo,
                     accountType = _accountType,
                     userIdentificationNum = icNumber,
                     suppliedMotherName = maidenName,
                     isOwner = isOwner ? "TRUE" : "FALSE"
                 };
-                _validateManualAccountLinkingResponse = serviceManager.OnExecuteAPI<ValidateManualAccountLinkingResponseModel>
+                _validateManualAccountLinkingResponse = serviceManager.OnExecuteAPIV6<ValidateManualAccountLinkingResponseModel>
                     (AddAccountConstants.Service_ValidateManualAccountLinking, requestParameter);
             });
         }

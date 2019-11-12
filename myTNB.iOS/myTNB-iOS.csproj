@@ -1993,13 +1993,11 @@
     <Compile Include="Model\AddMultipleSupplyAccountsToUserReg\AddMultipleSupplyAccountsDataModel.cs" />
     <Compile Include="Model\AddMultipleSupplyAccountsToUserReg\AddMultipleSupplyAccountsModel.cs" />
     <Compile Include="Model\AddMultipleSupplyAccountsToUserReg\AddMultipleSupplyAccountsResponseModel.cs" />
-    <Compile Include="Model\ValidateManualAccountLinking\ValidateManualAccountLinkingModel.cs" />
     <Compile Include="Model\ValidateManualAccountLinking\ValidateManualAccountLinkingResponseModel.cs" />
     <Compile Include="Registration\SuccessfullyAddedAccountCell.cs" />
     <Compile Include="Registration\SuccessfullyAddedAccountCell.designer.cs">
       <DependentUpon>SuccessfullyAddedAccountCell.cs</DependentUpon>
     </Compile>
-    <Compile Include="Model\ValidateManualAccountLinking\ValidateManualAccountLinkingDataModel.cs" />
     <Compile Include="Model\GetAccountDueAmount\DueAmountDataModel.cs" />
     <Compile Include="Model\GetAccountDueAmount\DueAmountResponseModel.cs" />
     <Compile Include="Home\Components\ActivityIndicatorComponent.cs" />

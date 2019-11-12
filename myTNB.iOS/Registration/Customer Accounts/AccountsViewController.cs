@@ -15,17 +15,15 @@ namespace myTNB.Registration.CustomerAccounts
 {
     public partial class AccountsViewController : CustomUIViewController
     {
-        UIButton btnAddAccount;
-        UIButton btnConfirm;
-        UIView _progressView, _footerView;
-        public bool isDashboardFlow = false;
+        public AccountsViewController(IntPtr handle) : base(handle) { }
 
-        public AccountsViewController(IntPtr handle) : base(handle)
-        {
-        }
-        CustomerAccountResponseModel _customerAccountResponseModel = new CustomerAccountResponseModel();
-        CustomerAccountResponseModel _addMultipleSupplyAccountsResponseModel = new CustomerAccountResponseModel();
-        public bool _needsUpdate = false;
+        private UIButton btnAddAccount, btnConfirm;
+        private UIView _progressView, _footerView;
+        public bool isDashboardFlow;
+
+        private CustomerAccountResponseModel _customerAccountResponseModel = new CustomerAccountResponseModel();
+        private CustomerAccountResponseModel _addMultipleSupplyAccountsResponseModel = new CustomerAccountResponseModel();
+        public bool _needsUpdate;
 
         public override void ViewDidLoad()
         {
@@ -41,7 +39,7 @@ namespace myTNB.Registration.CustomerAccounts
             btnConfirm.Hidden = true;
         }
 
-        internal void AddBackButton()
+        private void AddBackButton()
         {
             UIImage backImg = UIImage.FromBundle(AddAccountConstants.IMG_Back);
             UIBarButtonItem btnBack = new UIBarButtonItem(backImg, UIBarButtonItemStyle.Done, (sender, e) =>
@@ -135,18 +133,13 @@ namespace myTNB.Registration.CustomerAccounts
             SetRecordCount();
         }
 
-        internal void ReloadTableViewData()
-        {
-            accountRecordsTableView.ReloadData();
-        }
-
-        internal void SetStaticFields()
+        private void SetStaticFields()
         {
             SetRecordCount();
             lblSubDetails.Text = GetI18NValue(AddAccountConstants.I18N_NoAcctFoundMsg);
         }
 
-        internal void SetRecordCount()
+        private void SetRecordCount()
         {
             int recordCount = (int)(DataManager.DataManager.SharedInstance.AccountRecordsList != null
                                          && DataManager.DataManager.SharedInstance.AccountRecordsList?.d != null
@@ -158,7 +151,7 @@ namespace myTNB.Registration.CustomerAccounts
             lblSubDetails.Hidden = recordCount == 0;
         }
 
-        internal void SetEvents()
+        private void SetEvents()
         {
             btnAddAccount.TouchUpInside += (sender, e) =>
             {
@@ -259,7 +252,7 @@ namespace myTNB.Registration.CustomerAccounts
             btnConfirm.BackgroundColor = isValid ? MyTNBColor.FreshGreen : MyTNBColor.SilverChalice;
         }
 
-        internal bool IsEmptyNicknameExist()
+        private bool IsEmptyNicknameExist()
         {
             for (int i = 0; i < DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d?.Count; i++)
             {
@@ -272,7 +265,7 @@ namespace myTNB.Registration.CustomerAccounts
             return false;
         }
 
-        internal void ExecuteGetCustomerRecordsCall()
+        private void ExecuteGetCustomerRecordsCall()
         {
             GetCustomerRecords().ContinueWith(task =>
             {
@@ -330,7 +323,7 @@ namespace myTNB.Registration.CustomerAccounts
             });
         }
 
-        internal Task GetCustomerRecords()
+        private Task GetCustomerRecords()
         {
             return Task.Factory.StartNew(() =>
             {
@@ -371,21 +364,20 @@ namespace myTNB.Registration.CustomerAccounts
                     }
                 }
 
-                var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
+                UserEntity user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
                     ? DataManager.DataManager.SharedInstance.UserEntity[0] : default(UserEntity);
 
                 object requestParameter = new
                 {
-                    apiKeyID = TNBGlobal.API_KEY_ID,
+                    serviceManager.usrInf,
                     currentLinkedAccounts = currentLinkedAccountNumbers,
-                    email = user?.email,
                     identificationNo = user?.identificationNo
                 };
-                _customerAccountResponseModel = serviceManager.OnExecuteAPI<CustomerAccountResponseModel>("GetCustomerAccountsForICNum", requestParameter);
+                _customerAccountResponseModel = serviceManager.OnExecuteAPIV6<CustomerAccountResponseModel>(AddAccountConstants.Service_GetCustomerAccountsForICNum, requestParameter);
             });
         }
 
-        internal void ExecuteAddMultipleSupplyAccountsToUserReg()
+        private void ExecuteAddMultipleSupplyAccountsToUserReg()
         {
             NetworkUtility.CheckConnectivity().ContinueWith(networkTask =>
             {
@@ -474,48 +466,7 @@ namespace myTNB.Registration.CustomerAccounts
             }
         }
 
-        internal Task AddMultipleSupplyAccountsToUserReg()
-        {
-            return Task.Factory.StartNew(() =>
-            {
-                ServiceManager serviceManager = new ServiceManager();
-
-                List<CustomerAccountRecordModel> accountList = DataManager.DataManager.SharedInstance.AccountsToBeAddedList?.d;
-
-                if (accountList != null)
-                {
-                    List<object> billAccs = new List<object>();
-                    foreach (var item in accountList)
-                    {
-                        billAccs.Add(new
-                        {
-                            accNum = item.accNum ?? string.Empty,
-                            accountTypeId = item.accountTypeId ?? "1",
-                            accountStAddress = item.accountStAddress ?? string.Empty,
-                            icNum = item.icNum ?? string.Empty,
-                            item.isOwned,
-                            accountNickName = item.accountNickName ?? string.Empty,
-                            accountCategoryId = item.accountCategoryId ?? string.Empty
-                        });
-                    }
-
-                    var user = DataManager.DataManager.SharedInstance.UserEntity?.Count > 0
-                        ? DataManager.DataManager.SharedInstance.UserEntity[0] : default(UserEntity);
-
-                    object requestParams = new
-                    {
-                        apiKeyID = TNBGlobal.API_KEY_ID,
-                        sspUserId = DataManager.DataManager.SharedInstance.User?.UserID,
-                        billAccounts = billAccs,
-                        user?.email
-                    };
-                    _addMultipleSupplyAccountsResponseModel = serviceManager.OnExecuteAPI<CustomerAccountResponseModel>("AddMultipleSupplyAccountsToUserReg", requestParams);
-                }
-            });
-
-        }
-
-        internal Task AddAccounts()
+        private Task AddAccounts()
         {
             return Task.Factory.StartNew(() =>
             {
@@ -545,22 +496,13 @@ namespace myTNB.Registration.CustomerAccounts
                         billAccounts = billAccs,
                         serviceManager.usrInf
                     };
-                    _addMultipleSupplyAccountsResponseModel = serviceManager.OnExecuteAPIV6<CustomerAccountResponseModel>("AddAccounts", requestParams);
+                    _addMultipleSupplyAccountsResponseModel = serviceManager.OnExecuteAPIV6<CustomerAccountResponseModel>(AddAccountConstants.Service_AddAccounts, requestParams);
                 }
             });
 
         }
 
-        internal void ShowPrelogin()
-        {
-            UIStoryboard loginStoryboard = UIStoryboard.FromName("Login", null);
-            UIViewController preloginVC = (UIViewController)loginStoryboard.InstantiateViewController("PreloginViewController");
-            preloginVC.ModalTransitionStyle = UIModalTransitionStyle.CrossDissolve;
-            preloginVC.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
-            PresentViewController(preloginVC, true, null);
-        }
-
-        internal void NavigateToPage(string storyboardName, string viewControllerName)
+        private void NavigateToPage(string storyboardName, string viewControllerName)
         {
             UIStoryboard storyBoard = UIStoryboard.FromName(storyboardName, null);
             UIViewController viewController =
@@ -568,7 +510,7 @@ namespace myTNB.Registration.CustomerAccounts
             NavigationController?.PushViewController(viewController, true);
         }
 
-        internal void InitializeViews()
+        private void InitializeViews()
         {
             var addtl = DeviceHelper.IsIphoneXUpResolution() ? GetScaledHeight(20) : 0;
             _footerView = new UIView(new CGRect(0, View.Frame.Height - GetScaledHeight(140) - NavigationController.NavigationBar.Frame.Height - addtl, ViewWidth, GetScaledHeight(126)))
@@ -606,7 +548,7 @@ namespace myTNB.Registration.CustomerAccounts
             accountRecordsTableView.BackgroundColor = MyTNBColor.SectionGrey;
         }
 
-        void DisplayProgessView(int count)
+        private void DisplayProgessView(int count)
         {
             _progressView = new UIView(UIScreen.MainScreen.Bounds)
             {
@@ -660,7 +602,7 @@ namespace myTNB.Registration.CustomerAccounts
             _progressView.Hidden = false;
         }
 
-        void HideProgressView()
+        private void HideProgressView()
         {
             if (_progressView != null)
             {

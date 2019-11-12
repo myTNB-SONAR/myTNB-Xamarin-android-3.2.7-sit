@@ -61,5 +61,7 @@
         public static string I18N_PastBills = "pastBills";
 
         public static string Service_ValidateManualAccountLinking = "ValidateManualAccountLinking";
+        public static string Service_GetCustomerAccountsForICNum = "GetCustomerAccountsForICNum";
+        public static string Service_AddAccounts = "AddAccounts";
     }
 }

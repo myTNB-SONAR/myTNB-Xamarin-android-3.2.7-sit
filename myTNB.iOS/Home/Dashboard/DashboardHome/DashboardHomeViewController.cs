@@ -484,7 +484,7 @@ namespace myTNB
                 OnUpdateTable();
                 bool hasExistingSSMR = false;
                 InvokeInBackground(async () =>
-               {
+                {
                    SSMRAccounts.SetFilteredEligibleAccounts();
                    List<string> contractAccounts = SSMRAccounts.GetFilteredAccountNumberList();
                    if (contractAccounts != null && contractAccounts.Count > 0)
