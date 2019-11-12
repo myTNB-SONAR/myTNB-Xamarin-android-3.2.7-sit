@@ -8,6 +8,7 @@ namespace myTNB
     public partial class GenericSelectorViewController : CustomUIViewController
     {
         public Action<int> OnSelect;
+        public Action<int> OnBack;
         public List<string> Items;
         public int SelectedIndex = -1;
         public bool IsRootPage;
@@ -42,13 +43,21 @@ namespace myTNB
             UIBarButtonItem btnBack = new UIBarButtonItem(UIImage.FromBundle(Constants.IMG_Back)
                 , UIBarButtonItemStyle.Done, (sender, e) =>
             {
-                if (IsRootPage && NavigationController != null)
+                bool isActive = DefaultIndex != SelectedIndex;
+                if (OnBack != null && isActive)
                 {
-                    NavigationController.PopViewController(true);
+                    OnBack.Invoke(SelectedIndex);
                 }
                 else
                 {
-                    DismissViewController(true, null);
+                    if (IsRootPage && NavigationController != null)
+                    {
+                        NavigationController.PopViewController(true);
+                    }
+                    else
+                    {
+                        DismissViewController(true, null);
+                    }
                 }
             });
             NavigationItem.LeftBarButtonItem = btnBack;

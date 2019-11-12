@@ -86,6 +86,7 @@
         public static string Common_ChangeLanguageNo = "changeLanguageNo";
         public static string Common_New = "new";
         public static string Common_SwipeText = "tutorialSwipeText";
+        public static string Common_SaveLanguageMessage = "saveLanguageMessage";
 
         //Error I18N
         public static string Error_RefreshMessage = "refreshMessage";

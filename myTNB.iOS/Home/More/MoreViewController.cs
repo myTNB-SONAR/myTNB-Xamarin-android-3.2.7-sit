@@ -270,6 +270,7 @@ namespace myTNB
                 languageViewController.HasCTA = true;
                 languageViewController.CTATitle = LanguageSettings.CTATitle;
                 languageViewController.OnSelect = OnSelectLanguage;
+                languageViewController.OnBack = OnLanguageBack;
                 languageViewController.SelectedIndex = LanguageSettings.SelectedLanguageIndex;
                 UINavigationController navController = new UINavigationController(languageViewController);
                 navController.ModalPresentationStyle = UIModalPresentationStyle.FullScreen;
@@ -277,17 +278,34 @@ namespace myTNB
             }
         }
 
-        private void OnSelectLanguage(int index)
+        private void OnLanguageBack(int index)
         {
-            Debug.WriteLine("Selected Index: " + index);
-            DisplayCustomAlert(GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageTitle, TNBGlobal.APP_LANGUAGE))
-                  , GetCommonI18NValue(string.Format("{0}_{1}", Constants.Common_ChangeLanguageMessage, TNBGlobal.APP_LANGUAGE))
+            DisplayCustomAlert(GetCommonI18NValue(GetFormattedLangKey(Constants.Common_ChangeLanguageTitle))
+                  , GetCommonI18NValue(GetFormattedLangKey(Constants.Common_SaveLanguageMessage))
                   , new Dictionary<string, Action> {
-                        { GetCommonI18NValue(string.Format("{0}_{1}",Constants.Common_ChangeLanguageNo, TNBGlobal.APP_LANGUAGE)), null}
-                        ,{ GetCommonI18NValue(string.Format("{0}_{1}",Constants.Common_ChangeLanguageYes, TNBGlobal.APP_LANGUAGE))
+                        { GetCommonI18NValue(GetFormattedLangKey(Constants.Common_ChangeLanguageNo))
+                            , ()=>{ DismissViewController(true, null);} }
+                        ,{ GetCommonI18NValue(GetFormattedLangKey(Constants.Common_ChangeLanguageYes))
                             , ()=>{ OnChangeLanguage(index); } } }
                   , UITextAlignment.Center
                   , UITextAlignment.Center);
+        }
+
+        private void OnSelectLanguage(int index)
+        {
+            DisplayCustomAlert(GetCommonI18NValue(GetFormattedLangKey(Constants.Common_ChangeLanguageTitle))
+                  , GetCommonI18NValue(GetFormattedLangKey(Constants.Common_ChangeLanguageMessage))
+                  , new Dictionary<string, Action> {
+                        { GetCommonI18NValue(GetFormattedLangKey(Constants.Common_ChangeLanguageNo)), null}
+                        ,{ GetCommonI18NValue(GetFormattedLangKey(Constants.Common_ChangeLanguageYes))
+                            , ()=>{ OnChangeLanguage(index); } } }
+                  , UITextAlignment.Center
+                  , UITextAlignment.Center);
+        }
+
+        private string GetFormattedLangKey(string key)
+        {
+            return string.Format("{0}_{1}", key, TNBGlobal.APP_LANGUAGE);
         }
 
         /*Todo: Do service calls and set lang
@@ -330,8 +348,8 @@ namespace myTNB
                 {
                     InvokeOnMainThread(() =>
                     {
-                    //Todo: Check success and fail States
-                    ClearCache();
+                        //Todo: Check success and fail States
+                        ClearCache();
                         languageViewController.DismissViewController(true, null);
                         Debug.WriteLine("Change Language Done");
                         NotifCenterUtility.PostNotificationName("LanguageDidChange", new NSObject());

@@ -104,6 +104,7 @@
     "changeLanguageNo_MS": "Tidak",
     "changeLanguageTitle_EN": "Change language to English?",
     "changeLanguageMessage_EN": "Are you sure you want to change the app language to English?",
+    "saveLanguageMessage": "Would you like to save the change you made to your language preference?",
     "changeLanguageYes_EN": "Yes",
     "changeLanguageNo_EN": "No",
     "new": "Baru",

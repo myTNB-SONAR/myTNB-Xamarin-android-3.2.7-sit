@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using CoreGraphics;
 using Foundation;
 using myTNB.Home.Components;
 using myTNB.Model;
