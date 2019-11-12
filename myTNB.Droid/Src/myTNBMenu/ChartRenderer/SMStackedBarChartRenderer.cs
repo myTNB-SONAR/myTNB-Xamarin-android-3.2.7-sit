@@ -713,6 +713,16 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                 // Lin Siong Note: Set Render Text to 10dp
                 // Lin Siong Note: Set text to align center
                 MRenderPaint.Color = new Color(255, 255, 255, 255);
+
+                if (isSelected)
+                {
+                    MRenderPaint.Color = new Color(255, 255, 255, 255);
+                }
+                else
+                {
+                    MRenderPaint.Color = new Color(255, 255, 255, 50);
+                }
+
                 MRenderPaint.TextSize = DPUtils.ConvertDPToPx(10f);
                 MRenderPaint.TextAlign = Paint.Align.Center;
 
@@ -727,7 +737,7 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                     Utility.LoggingNonFatalError(e);
                 }
 
-                float x = left + ((right - left) / 2)  - DPUtils.ConvertDPToPx(10.5f);
+                float x = left + ((right - left) / 2)  - DPUtils.ConvertDPToPx(6.5f);
                 float y = top - DPUtils.ConvertDPToPx(20f);
 
 
@@ -735,22 +745,13 @@ namespace myTNB_Android.Src.myTNBMenu.ChartRenderer
                 {
                     c.DrawBitmap(mdmsBitmap, x, y, MRenderPaint);
 
-                    if (isSelected)
-                    {
-                        MRenderPaint.Color = new Color(255, 255, 255, 255);
-                    }
-                    else
-                    {
-                        MRenderPaint.Color = new Color(255, 255, 255, 50);
-                    }
-
-                    float textX = left + ((right - left) / 2);
+                    /*float textX = left + ((right - left) / 2);
                     float textY = top - DPUtils.ConvertDPToPx(27f);
                     string firstTxt = "Unavailable";
                     c.DrawText(firstTxt, textX, textY, MRenderPaint);
                     string secondTxt = "Currently";
                     textY = top - DPUtils.ConvertDPToPx(41f);
-                    c.DrawText(secondTxt, textX, textY, MRenderPaint);
+                    c.DrawText(secondTxt, textX, textY, MRenderPaint);*/
                 }
             }
             catch (System.Exception e)

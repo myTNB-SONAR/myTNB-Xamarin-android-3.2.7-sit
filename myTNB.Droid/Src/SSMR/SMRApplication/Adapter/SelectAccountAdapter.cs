@@ -40,7 +40,6 @@ namespace myTNB_Android.Src.SSMR.SMRApplication.Adapter
                     vh.imageActionIcon.Visibility = ViewStates.Gone;
                 }
 
-                // Lin Siong TODO
                 vh.accountIcon.Visibility = ViewStates.Gone;
             }
             return convertView;

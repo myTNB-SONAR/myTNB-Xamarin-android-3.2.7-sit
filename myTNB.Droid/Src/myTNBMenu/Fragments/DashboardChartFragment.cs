@@ -51,6 +51,7 @@ using myTNB_Android.Src.myTNBMenu.MVP.Fragment;
 using myTNB_Android.Src.MyTNBService.Model;
 using myTNB_Android.Src.Notifications.Activity;
 using myTNB_Android.Src.SSMR.SubmitMeterReading.MVP;
+using myTNB_Android.Src.SSMR.Util;
 using myTNB_Android.Src.SSMRMeterHistory.MVP;
 using myTNB_Android.Src.Utils;
 using myTNB_Android.Src.Utils.Custom.Charts;
@@ -1573,7 +1574,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 }
             }
 
-            ShowSMStatisticCard();
+            if (GetIsMDMSDown())
+            {
+                HideSMStatisticCard();
+            }
+            else
+            {
+                ShowSMStatisticCard();
+            }
 
             if (isTariffAvailable)
             {
@@ -6176,7 +6184,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                 bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
                                 shadowLayout.SetBackgroundResource(Resource.Drawable.scroll_indicator);
                             }
-                            // Lin Siong TODO: uncomment this once confirm effect
                             if (!isToggleTariff)
                             {
                                 if (isSMAccount || isSMR)
@@ -6317,7 +6324,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
                         shadowLayout.SetBackgroundResource(0);
 
-                        // Lin Siong TODO: uncomment this once confirm effect
                         if (!isToggleTariff)
                         {
                             if (isSMAccount || isSMR)
@@ -6557,7 +6563,6 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         bottomSheetBehavior.State = BottomSheetBehavior.StateHidden;
                     }
 
-                    // Lin Siong TODO: uncomment this once confirm effect
                     if (!isTutorialShow)
                     {
                         if (!isToggleTariff)
@@ -6843,6 +6848,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                             Highlight stackedHigh = new Highlight((int)e.GetX(), 0, stackedIndex);
                             mChart.HighlightValue(stackedHigh, false);
+                        }
+
+                        if (h != null && GetIsMDMSDown())
+                        {
+                            if ((int)e.GetX() == selectedSMHistoryData.ByMonth.Months.Count - 1)
+                            {
+                                OnShowMDMSDownPopup();
+                            }
                         }
                     }
 
@@ -8397,6 +8410,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         {
             isTutorialShow = false;
             bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
+        }
+
+        // Lin Siong TODO: Add message once  backend is ready
+        public void OnShowMDMSDownPopup()
+        {
+            if (selectedSMHistoryData != null)
+            {
+                MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
+                    .SetTitle("Test 123")
+                    .SetMessage("Test 456")
+                    .SetCTALabel("Got It!")
+                    .Build().Show();
+            }
         }
     }
 }
