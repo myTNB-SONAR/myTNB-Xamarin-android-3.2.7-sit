@@ -1,8 +1,5 @@
 Sprint 2 SIT Build
 
-[Bug] 3259 Regression_Sprint2 : Address is truncated on Successful screen after adding account 
-[Bug] 3246 Homepage Redesign_iOS: Account list is not showing after leaving the phone(locked) for a long time
-[Bug] 3265 Homepage : Quick Section box is not loading properly, its fluctuating and blurring while returning to homepage after any other page.
-[Bug] 3288 iOS: [Sprint 2 Design] Itemised Billing - Misalignment in Spacing and Font Style
-[Bug] 3289 iOS: [Sprint 2 Design] SSMR - Misalignment in Spacing and Font Style
-[Bug] 3300 Tutorial Overlay : Tutorial overlay is showing on a wrong page
+[Task] Added Tariff Legend Note
+[Task] Remove peeking of card (SSMR & Smart Meter cards)
+[Task] Usage: Scroll down indicator icon update
