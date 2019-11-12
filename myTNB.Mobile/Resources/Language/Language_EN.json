@@ -64,7 +64,6 @@
     "back": "Back",
     "cards": "Credit / Debit Cards",
     "abort": "Abort",
-    "warning": "Warning",
     "manage": "Manage",
     "update": "Update",
     "logout": "Log Out",
@@ -107,7 +106,8 @@
     "changeLanguageMessage_EN": "Are you sure you want to change the app language to Bahasa Malaysia?",
     "changeLanguageYes_EN": "Yes",
     "changeLanguageNo_EN": "No",
-    "new": "New"
+    "new": "New",
+    "tutorialSwipeText": "Swipe to see more,<br>double tap to dismiss."
   },
   "Hint": {
     "mobileNumber": "Please include the country code of your phone number.",
@@ -134,8 +134,8 @@
     "invalid_mismatchedPassword": "Your new passwords do not match.",
     "invalid_fullname": "Invalid full name",
     "invalid_idnumber": "Invalid IC, ROC or Passport No.",
-    "invalid_mismatchedEmail": "Your email and confirmation email do not match.",
-    "error_duplicateAccountMessage": "This account number is already added on the list",
+    "invalid_mismatchedEmail": "The email addresses you entered do not match.",
+    "error_duplicateAccountMessage": "This account number has already been added to the list.",
     "error_duplicateAccountTitle": "Duplicate Account",
     "invalid_icNumber": "Invalid IC number.",
     "invalid_rocNumber": "Invalid ROC number.",
@@ -145,9 +145,9 @@
     "noDataConnectionMessage": "Please check your internet connection and try again.",
     "defaultErrorTitle": "Error",
     "defaultErrorMessage": "Sorry, something went wrong. Please try again later.",
-    "numberNotAvailable": "Number is not available right now. Please try again later.",
-    "ratingNotAvailable": "Rating is not available right now. Please try again later.",
-    "shareNotAvailable": "Sharing is not available right now. Please try again later."
+    "numberNotAvailable": "We're sorry but we can't find the number. Please try again in a while.",
+    "ratingNotAvailable": "We're sorry but we can't seem to perform this action. Please try again in a while.",
+    "shareNotAvailable": "We're sorry but sharing is currently unavailable. Please try again in a while."
   },
   "DashboardHome": {
     "greeting_afternoon": "Good Afternoon,",
@@ -173,13 +173,25 @@
     "showMore": "Show More",
     "viewAdvice": "View My<br>Advice",
     "viewAdvices": "View My<br>Advices",
-    "viewEBill": "View <br>My e-Bill",
-    "viewEBills": "View <br>My e-Bills",
+    "viewEBill": "View <br>My Bill",
+    "viewEBills": "View <br>My Bills",
     "payBill": "Pay<br>My Bill",
     "payBills": "Pay<br>My Bill",
     "submitFeedback": "Submit<br>Feedback",
     "selfMeterReading": "Self<br>Meter Reading",
-    "viewEBillAndAdvice": "View My<br>e-Bills / Advices"
+    "viewEBillAndAdvice": "View My<br>Bills / Advices",
+    "tutorialAccountTitle": "Your Accounts at a glance.",
+    "tutorialQuickAccessTitle": "Quick account access.",
+    "tutorialQuickActionTitle": "Quick actions.",
+    "tutorialNeedHelpTitle": "Need help?",
+    "tutorialNoAcctDesc": "Add an electricity account to myTNB and you’ll have access to your usage and all services offered.",
+    "tutorialSingleAcctDesc": "View a summary of all your linked electricity accounts here.",
+    "tutorialThreeAcctsDesc": "View a summary of all your linked electricity accounts here. Tap “Add” to link an account to myTNB.",
+    "tutorialMoreAcctsDesc": "View a summary of all your linked electricity accounts here.",
+    "tutorialQuickAccessDesc": "Tap <b>“Add”</b> to link an account to  myTNB. Use <b>“Search”</b> to look for a specific one! Just type in the nickname or account number.",
+    "tutorialQuickActionDesc": "Get all of the services myTNB has to offer. New features are highlighted so you don’t miss out on anything!",
+    "tutorialNeedHelpDesc": "We’ve highlighted some of the most commonly asked questions for you to browse through.",
+    "gotIt": "Got it!"
   },
   "Tabbar": {
     "home": "Home",
@@ -247,7 +259,10 @@
     "enableSSMRDescription": "This electricity account is not enabled for self meter reading yet, tap below to start!",
     "noEligibleAccount": "Looks like your accounts aren’t eligible to start Self Meter Reading service",
     "selectAccountNavTitle": "Select Electricity Account",
-    "noHistoryData": "Looks like you have no meter reading history at the moment."
+    "noHistoryData": "Looks like you have no meter reading history at the moment.",
+    "tutorialHeaderTitle": "Your reading status at a glance.",
+    "tutorialHeaderDesc": "Switch between your accounts and get an overview of your meter reading status here.",
+    "tutorialGotIt": "Got it!"
   },
   "SSMRReadingHistory_selector": {
     "SMREligibiltyPopUpDetails": [
@@ -276,7 +291,10 @@
     "previousMeterReading": "Previous Meter Reading",
     "submitReading": "Submit Reading",
     "takeOrUploadPhoto": "Take Or Upload Photo",
-    "manualInputTitle": "Please enter your meter reading for the unit(s) below."
+    "manualInputTitle": "Please enter your meter reading for the unit(s) below.",
+    "tutorialReadMeterTitle": "Enter your meter reading here.",
+    "tutorialReadMeterDesc": "Enter according to its unit(s). You’ll see your previous month's reading as a reference.",
+    "tutorialReadMeterGotIt": "Got it!"
   },
   "SSMRCaptureMeter": {
     "ocrReading": "Please wait for a moment while we read your photos...",
@@ -363,7 +381,9 @@
     "pay": "Pay",
     "mdmsUnavailable": "Currently Unavailable",
     "mdmsUnavailableMsg": "Your daily usage information is currently unavailable. Check back in a while!",
-    "beenPaidExtra": "I’ve been paid extra"
+    "beenPaidExtra": "I’ve been paid extra",
+    "tutorialSMRTitle": "Your reading status at a glance.",
+    "tutorialSMRDesc": "Get an overview of your reading status here. We’ll also tell you when it’s time to submit your readings."
   },
   "Bills": {
     "title": "Bills",
@@ -378,7 +398,18 @@
     "beenPaidExtra": "I’ve been paid extra",
     "noHistoryData": "Looks like you have no bills yet! Once you do, your bills and payment history will appear here.",
     "bcrmDownMessage": "Looks like your page can’t be loaded at the moment. Come back in a while.",
-    "pay": "Pay"
+    "pay": "Pay",
+    "tutorialBillTitle": "Your bill overview.",
+    "tutorialPayTitle": "Pay without hassle.",
+    "tutorialViewDetailsTitle": "Understand your bill.",
+    "tutorialHistoryTitle": "Keep track of your charges.",
+    "tutorialBillREAcctDesc": "Tap \"...\" to switch between different accounts. You’ll see how much you have earned or if you’ve been paid extra.",
+    "tutorialBillNormalAcctDesc": "Tap \"...\" to switch between different accounts. You’ll see how much is due, if you’ve cleared your bill or if you’ve paid extra.",
+    "tutorialPayDesc": "Tap here to pay your bill.",
+    "tutorialViewDetailsDesc": "\"View Details\" to review your bill breakdown.",
+    "tutorialHistoryNormalAcctDesc": "View and access your bills and payment receipts from the previous six months. Use the filter to see only bills or receipts.",
+    "tutorialHistoryREAcctDesc": "View and access your advices and payment receipts from the previous six months. Use the filter to see only advices or receipts.",
+    "gotIt": "Got it!"
   },
   "Bills_selector": {
     "MandatoryChargesPopUpDetails": [
@@ -411,7 +442,10 @@
     "tooltiptitle2": "Items from your demand letter",
     "tooltipdesc1": "I need to pay|My outstanding charges|My bill this month (electricity usage only)",
     "tooltipdesc2": "Security Deposit|Stamp Duty|Processing Fee|Meter Fee",
-    "pay": "Pay"
+    "pay": "Pay",
+    "tutorialTitle": "View your e-bill",
+    "tutorialDesc": "Tap here to acess the PDF version of your bill.",
+    "gotIt": "Got it!"
   },
   "BillFilter": {
     "title": "Filter Views",
@@ -583,8 +617,8 @@
     "dontHaveAcct": "Don’t have a myTNB account?",
     "registerAcctNow": "Register for an account now.",
     "login": "Log In",
-    "emailRequired": "Email field is required.",
-    "passwordRequired": "Password field is required."
+    "emailRequired": "Please enter an email address.",
+    "passwordRequired": "Please enter a password."
   },
   "ForgotPassword": {
     "title": "Reset Password",
@@ -653,11 +687,13 @@
     "title3": "Bills at Your Fingertips.",
     "title4": "Pay Your Bills Anytime, Anywhere.",
     "title5": "Say Hi to myTNB Rewards!",
+    "title6": "What’s New with myTNB?",
     "description1": "We're excited for all you can do with this app! But first, choose your preferred language.<br><br>Pelbagai manfaat dan kemudahan untuk anda nikmati dengan myTNB! Mulakan dengan menetapkan bahasa pilihan anda.",
     "description2": "Track, monitor and stay on top of your electricity usage!",
     "description3": "Have easy access to the PDF version of your bills for the past 6 months, all in one place!",
     "description4": "Pay your electricity bills while at home, on holiday, on the train – whenever you want to. Say goodbye to late charges and queuing up!",
-    "description5": "That's right, we're bringing you exclusive perks and freebies - all of this just for myTNB users! Check out the new Rewards section to claim something now!"
+    "description5": "That's right, we're bringing you exclusive perks and freebies - all of this just for myTNB users! Check out the new Rewards section to claim something now!",
+    "description6": "We’re now bilingual! You can set your preferred language below.<br><br>Kami kini dalam dwibahasa! Anda boleh tetapkan bahasa pilihan anda di bawah."
   },
   "ManageCards": {
     "title": "Manage Credit / Debit Cards",
@@ -685,15 +721,15 @@
     "invalidCardNumber": "Invalid Card Number",
     "nameOnCard": "Name on Card",
     "invalidName": "Invalid name",
-    "cardExpiry": "Card Expiry",
+    "cardExpiry": "Card Expiration Date",
     "invalidCardExpiry": "Invalid card expiration date.",
-    "hintCardExpiry": "Card Expiry (MM/YY)",
+    "hintCardExpiry": "Card Expiration Date (MM/YY)",
     "cvv": "CVV",
     "invalidCVV": "Invalid CVV.",
     "saveCardMessage": "I want to save this card for future use.",
-    "emptyCardNumberTitle": "Empty Card Number",
-    "emptyCardNumberMessage": "Please enter valid card number and try again.",
-    "savedCardTitle": "Valid card number",
+    "emptyCardNumberTitle": "Card Number Invalid",
+    "emptyCardNumberMessage": "Please enter a valid card number and try again.",
+    "savedCardTitle": "This Card Was Saved Before",
     "savedCardMessage": "Seems like you are paying with an already saved Credit / Debit Card. Do you want to continue?"
   },
   "CardScanner": {
@@ -766,7 +802,7 @@
   "RatingResults": {
     "description": "Your rating will help us serve you better.",
     "thankyou": "Thank you.",
-    "backToDashboard": "Back to Dashboard"
+    "backToHome": "Back to Home"
   },
   "Promotions": {
     "title": "Promotions",
