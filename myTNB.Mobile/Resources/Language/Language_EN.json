@@ -310,7 +310,8 @@
         "mdmsUnavailableMsg": "Your daily usage information is currently unavailable. Check back in a while!",
         "beenPaidExtra": "I’ve been paid extra",
         "tutorialSMRTitle": "Your reading status at a glance.",
-        "tutorialSMRDesc": "Get an overview of your reading status here. We’ll also tell you when it’s time to submit your readings."
+        "tutorialSMRDesc": "Get an overview of your reading status here. We’ll also tell you when it’s time to submit your readings.",
+        "tariffLegendNote": "Note: The coloured blocks above represent your electricity rates. For a detailed breakdown, please refer to your bill."
     },
     "Bills": {
         "navTitle": "Bills",
