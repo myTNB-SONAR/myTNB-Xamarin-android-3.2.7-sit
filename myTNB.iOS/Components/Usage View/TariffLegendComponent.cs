@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CoreGraphics;
+using Foundation;
 using myTNB.Model.Usage;
 using UIKit;
 
@@ -12,6 +13,7 @@ namespace myTNB
         UIView _parentView;
         List<LegendItemModel> _tariffLegendList = new List<LegendItemModel>();
         nfloat _totalHeight;
+        public Func<string, string> GetI18NValue;
 
         public TariffLegendComponent(UIView parentView, List<LegendItemModel> tariffLegendList)
         {
@@ -31,6 +33,10 @@ namespace myTNB
             {
                 _containerView.AddSubview(LegendItemView(i));
             }
+            if (_tariffLegendList.Count > 0)
+            {
+                CreateNote();
+            }
             AdjustContainerHeight();
         }
 
@@ -38,6 +44,37 @@ namespace myTNB
         {
             CreateComponent();
             return _containerView;
+        }
+
+        private void CreateNote()
+        {
+            NSError htmlBodyError = null;
+            NSAttributedString htmlBody = TextHelper.ConvertToHtmlWithFont(GetI18NValue(UsageConstants.I18N_TariffLegendNote)
+                , ref htmlBodyError, TNBFont.FONTNAME_300, (float)GetScaledHeight(10F));
+            NSMutableAttributedString mutableHTMLBody = new NSMutableAttributedString(htmlBody);
+            mutableHTMLBody.AddAttributes(new UIStringAttributes
+            {
+                ForegroundColor = UIColor.White,
+                ParagraphStyle = new NSMutableParagraphStyle
+                {
+                    Alignment = UITextAlignment.Left,
+                    LineSpacing = 3.0f
+                }
+            }, new NSRange(0, htmlBody.Length));
+
+            UITextView note = new UITextView(new CGRect(GetScaledWidth(24f), _totalHeight + GetScaledHeight(5F), _parentView.Frame.Width - (GetScaledWidth(24f) * 2), GetScaledHeight(60F)))
+            {
+                BackgroundColor = UIColor.Clear,
+                Editable = false,
+                ScrollEnabled = false,
+                AttributedText = mutableHTMLBody,
+                UserInteractionEnabled = false,
+                TextContainerInset = UIEdgeInsets.Zero
+            };
+            CGSize cGSize = note.SizeThatFits(new CGSize(note.Frame.Width, GetScaledHeight(500F)));
+            ViewHelper.AdjustFrameSetHeight(note, cGSize.Height);
+            _totalHeight = note.Frame.GetMaxY();
+            _containerView.AddSubview(note);
         }
 
         private UIView LegendItemView(int index)

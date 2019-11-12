@@ -180,6 +180,9 @@ namespace myTNB
 
         protected override void OnSegmentTap(int index)
         {
+            if (_segmentContainer == null)
+                return;
+
             UIImpactFeedbackGenerator selectionFeedback = new UIImpactFeedbackGenerator(UIImpactFeedbackStyle.Heavy);
             selectionFeedback.Prepare();
             selectionFeedback.ImpactOccurred();

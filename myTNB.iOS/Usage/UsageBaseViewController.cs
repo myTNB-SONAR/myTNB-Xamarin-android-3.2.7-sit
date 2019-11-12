@@ -255,8 +255,15 @@ namespace myTNB
             }
             else if (accountIsSSMR)
             {
-                _footerBGImage.Hidden = false;
-                ViewHelper.AdjustFrameSetY(_footerBGImage, GetYPosForBG(_viewSSMR));
+                if (!_viewSSMR.Hidden)
+                {
+                    _footerBGImage.Hidden = false;
+                    ViewHelper.AdjustFrameSetY(_footerBGImage, GetYPosForBG(_viewSSMR));
+                }
+                else
+                {
+                    _footerBGImage.Hidden = true;
+                }
             }
             else
             {
@@ -358,7 +365,7 @@ namespace myTNB
                 else
                 {
                     _viewLegend.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_viewChart.Frame, _legendIsVisible && _tariffList?.Count > 0 ? 16F : 0F)), _viewLegend.Frame.Size);
-                    _viewToggle.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_legendIsVisible ? _viewLegend.Frame : _viewChart.Frame, 16F)), _viewToggle.Frame.Size);
+                    _viewToggle.Frame = new CGRect(new CGPoint(0, GetYLocationFromFrame(_legendIsVisible ? _viewLegend.Frame : _viewChart.Frame, 24F)), _viewToggle.Frame.Size);
                     _lastView = _viewToggle;
                     if (accountIsSSMR)
                     {
@@ -446,6 +453,14 @@ namespace myTNB
             UpdateFooterBGImageYPos();
             _scrollViewContent.ContentSize = new CGSize(ViewWidth, isREAccount ? _viewRE.Frame.GetMaxY() : GetAdditionalHeight(_lastView.Frame.GetMaxY()));
             _smrCardYPos = (nfloat)_viewSSMR?.Frame.Y;
+
+            if (_viewFooter != null)
+            {
+                if (_viewFooter.Frame == _origViewFrame && !_footerIsDocked)
+                {
+                    HideShowBottomCards(true);
+                }
+            }
         }
 
         private nfloat GetAdditionalHeight(nfloat maxYPos)
@@ -634,6 +649,7 @@ namespace myTNB
 
         private void ScrollToTop()
         {
+            Debug.WriteLine("ScrollToTop()");
             CGPoint topOffset = new CGPoint(0, 0);
             _scrollViewContent.SetContentOffset(topOffset, true);
         }
@@ -934,7 +950,10 @@ namespace myTNB
                     {
                         _legend.RemoveFromSuperview();
                     }
-                    TariffLegendComponent tariffLegendComponent = new TariffLegendComponent(View, tariffList);
+                    TariffLegendComponent tariffLegendComponent = new TariffLegendComponent(View, tariffList)
+                    {
+                        GetI18NValue = GetI18NValue
+                    };
                     _legend = tariffLegendComponent.GetUI();
                     _viewLegend.AddSubview(_legend);
                     if (_legendIsVisible)
@@ -961,20 +980,37 @@ namespace myTNB
             UIView.Animate(0.3, 0, UIViewAnimationOptions.CurveEaseIn
                 , () =>
                 {
+                    nfloat addtl = isVisible && _tariffList.Count > 0 ? GetScaledHeight(28F) + GetScaledHeight(20F) : 0;
                     nfloat height = isVisible ? _tariffList.Count * GetScaledHeight(25f) : 0;
-                    ViewHelper.AdjustFrameSetHeight(_viewLegend, height);
+                    ViewHelper.AdjustFrameSetHeight(_viewLegend, height + addtl);
                     SetContentView();
+                    if (!isVisible)
+                    {
+                        ScrollToTop();
+                        if (_viewFooter != null)
+                        {
+                            if (!_footerIsDocked && _viewFooter.Frame != _origViewFrame)
+                            {
+                                AnimateFooterToHideAndShow(false);
+                            }
+                        }
+                    }
                 }
                 , () =>
                 {
                     if (isVisible && _tariffList != null && _tariffList.Count > 0)
                     {
                         _viewLegend.Hidden = false;
+                        if ((_viewToggle.Frame.GetMaxY() + _scrollViewYPos) > _footerYPos + GetScaledHeight(10))
+                        {
+                            AnimateFooterToHideAndShow(true);
+                        }
                     }
                     else
                     {
                         _viewLegend.Hidden = true;
                     }
+                    UpdateFooterBGImageYPos();
                 }
             );
         }
@@ -1558,6 +1594,7 @@ namespace myTNB
                 UIView.Animate(0.3, 0, UIViewAnimationOptions.ShowHideTransitionViews
                 , () =>
                 {
+                    HideShowBottomCards(!isHidden);
                     if (isHidden)
                     {
                         var temp = _origViewFrame;
@@ -1573,6 +1610,32 @@ namespace myTNB
                 }
                 , () => { }
             );
+            }
+        }
+
+        private void HideShowBottomCards(bool isHidden)
+        {
+            if (accountIsSSMR)
+            {
+                if (_viewSSMR != null)
+                {
+                    _viewSSMR.Hidden = isHidden;
+                    if (_footerBGImage != null)
+                    {
+                        _footerBGImage.Hidden = isHidden;
+                    }
+                }
+            }
+            if (isSmartMeterAccount)
+            {
+                if (_viewSmartMeter != null)
+                {
+                    _viewSmartMeter.Hidden = isHidden;
+                    if (_footerBGImage != null)
+                    {
+                        _footerBGImage.Hidden = isHidden;
+                    }
+                }
             }
         }
 
