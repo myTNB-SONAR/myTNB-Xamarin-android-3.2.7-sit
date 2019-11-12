@@ -19,11 +19,12 @@ namespace myTNB
         private readonly RefreshScreenInfoModel _refreshScreenInfoModel = new RefreshScreenInfoModel();
         private readonly TextFieldHelper _textFieldHelper = new TextFieldHelper();
 
-        private UIView _parentView, _headerView, _addAccountView, _searchView;
-        private CustomUIView _footerView;
+        private UIView _parentView, _headerView, _addAccountView, _searchView, _pipeView;
+        private CustomUIView _footerView, searchView, _addView;
         private UILabel _headerTitle, _searchLbl, _addLbl, _moreAcctsLabel, _rearrangeLabel;
         private UITableView _accountListTableView;
         private UITextField _textFieldSearch;
+        private UIImageView _searchIcon, _addIcon;
         private bool _isOnSearchMode;
 
         public override void ViewDidLayoutSubviews()
@@ -48,17 +49,34 @@ namespace myTNB
         protected override void LanguageDidChange(NSNotification notification)
         {
             base.LanguageDidChange(notification);
-            if (_searchLbl != null)
+            if (_searchLbl != null && _addLbl != null)
             {
                 _searchLbl.Text = GetI18NValue(DashboardHomeConstants.I18N_Search);
+                CGSize searchSize = _searchLbl.SizeThatFits(new CGSize(1000F, 1000F));
+                ViewHelper.AdjustFrameSetWidth(_searchLbl, searchSize.Width);
+
+                ViewHelper.AdjustFrameSetWidth(searchView, GetScaledWidth(12F) + _searchIcon.Frame.Width + GetScaledWidth(4F) + _searchLbl.Frame.Width);
+                ViewHelper.AdjustFrameSetX(searchView, _addAccountView.Frame.Width - searchView.Frame.Width - GetScaledWidth(16F));
+
+                ViewHelper.AdjustFrameSetX(_searchLbl, searchView.Frame.Width - _searchLbl.Frame.Width);
+                ViewHelper.AdjustFrameSetX(_searchIcon, _searchLbl.Frame.GetMinX() - GetScaledWidth(4F) - _searchIcon.Frame.Width);
+
+                _pipeView.Frame = new CGRect(new CGPoint(searchView.Frame.GetMinX() - GetScaledWidth(1F), _pipeView.Frame.Y)
+                    , _pipeView.Frame.Size);
+
+                _addLbl.Text = GetI18NValue(DashboardHomeConstants.I18N_Add);
+                CGSize addSize = _addLbl.SizeThatFits(new CGSize(1000F, 1000F));
+                ViewHelper.AdjustFrameSetWidth(_addLbl, addSize.Width);
+
+                ViewHelper.AdjustFrameSetWidth(_addView, _addIcon.Frame.Width + GetScaledWidth(4F) + _addLbl.Frame.Width + GetScaledWidth(_dashboardHomeHelper.HasMoreThanThreeAccts ? 12F : 0F));
+                ViewHelper.AdjustFrameSetX(_addView, _dashboardHomeHelper.HasMoreThanThreeAccts ? _pipeView.Frame.GetMinX() - _addView.Frame.Width : _headerView.Frame.Width - _addView.Frame.Width - BaseMarginWidth16);
+
+                ViewHelper.AdjustFrameSetX(_addIcon, 0);
+                ViewHelper.AdjustFrameSetX(_addLbl, _addIcon.Frame.GetMaxX() + GetScaledWidth(4F));
             }
             if (_headerTitle != null)
             {
                 _headerTitle.Text = GetI18NValue(DashboardHomeConstants.I18N_MyAccts);
-            }
-            if (_addLbl != null)
-            {
-                _addLbl.Text = GetI18NValue(DashboardHomeConstants.I18N_Add);
             }
             if (_textFieldSearch != null)
             {
@@ -173,7 +191,7 @@ namespace myTNB
 
             if (_dashboardHomeHelper.HasAccounts)
             {
-                CustomUIView searchView = new CustomUIView(new CGRect(0, GetScaledHeight(2F), 0, GetScaledHeight(16F)))
+                searchView = new CustomUIView(new CGRect(0, GetScaledHeight(2F), 0, GetScaledHeight(16F)))
                 {
                     BackgroundColor = UIColor.Clear,
                     Hidden = !_dashboardHomeHelper.HasMoreThanThreeAccts
@@ -208,28 +226,28 @@ namespace myTNB
                 ViewHelper.AdjustFrameSetX(_searchLbl, searchView.Frame.Width - _searchLbl.Frame.Width);
                 ViewHelper.AdjustFrameSetX(searchIcon, _searchLbl.Frame.GetMinX() - GetScaledWidth(4F) - searchIcon.Frame.Width);
 
-                UIView pipeView = new UIView(new CGRect(searchView.Frame.GetMinX() - GetScaledWidth(1F), 0, GetScaledWidth(1F), GetScaledHeight(20F)))
+                _pipeView = new UIView(new CGRect(searchView.Frame.GetMinX() - GetScaledWidth(1F), 0, GetScaledWidth(1F), GetScaledHeight(20F)))
                 {
                     BackgroundColor = UIColor.FromWhiteAlpha(1, 0.2F),
                     Hidden = !_dashboardHomeHelper.HasMoreThanThreeAccts
                 };
-                _addAccountView.AddSubview(pipeView);
+                _addAccountView.AddSubview(_pipeView);
 
-                CustomUIView addView = new CustomUIView(new CGRect(0, GetScaledHeight(2F), 0, GetScaledHeight(16F)))
+                _addView = new CustomUIView(new CGRect(0, GetScaledHeight(2F), 0, GetScaledHeight(16F)))
                 {
                     BackgroundColor = UIColor.Clear
                 };
-                addView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
+                _addView.AddGestureRecognizer(new UITapGestureRecognizer(() =>
                 {
                     OnAddAccountAction();
                 }));
-                _addAccountView.AddSubview(addView);
+                _addAccountView.AddSubview(_addView);
 
-                UIImageView addIcon = new UIImageView(new CGRect(0, 0, GetScaledWidth(16F), GetScaledHeight(16F)))
+                _addIcon = new UIImageView(new CGRect(0, 0, GetScaledWidth(16F), GetScaledHeight(16F)))
                 {
                     Image = UIImage.FromBundle(DashboardHomeConstants.Img_AddAcctIconWhite)
                 };
-                addView.AddSubview(addIcon);
+                _addView.AddSubview(_addIcon);
 
                 _addLbl = new UILabel(new CGRect(0, 0, 0, GetScaledHeight(16F)))
                 {
@@ -238,16 +256,16 @@ namespace myTNB
                     Text = GetI18NValue(DashboardHomeConstants.I18N_Add),
                     BackgroundColor = UIColor.Clear
                 };
-                addView.AddSubview(_addLbl);
+                _addView.AddSubview(_addLbl);
 
                 CGSize addSize = _addLbl.SizeThatFits(new CGSize(1000F, 1000F));
                 ViewHelper.AdjustFrameSetWidth(_addLbl, addSize.Width);
 
-                ViewHelper.AdjustFrameSetWidth(addView, addIcon.Frame.Width + GetScaledWidth(4F) + _addLbl.Frame.Width + GetScaledWidth(_dashboardHomeHelper.HasMoreThanThreeAccts ? 12F : 0F));
-                ViewHelper.AdjustFrameSetX(addView, _dashboardHomeHelper.HasMoreThanThreeAccts ? pipeView.Frame.GetMinX() - addView.Frame.Width : _headerView.Frame.Width - addView.Frame.Width - BaseMarginWidth16);
+                ViewHelper.AdjustFrameSetWidth(_addView, _addIcon.Frame.Width + GetScaledWidth(4F) + _addLbl.Frame.Width + GetScaledWidth(_dashboardHomeHelper.HasMoreThanThreeAccts ? 12F : 0F));
+                ViewHelper.AdjustFrameSetX(_addView, _dashboardHomeHelper.HasMoreThanThreeAccts ? _pipeView.Frame.GetMinX() - _addView.Frame.Width : _headerView.Frame.Width - _addView.Frame.Width - BaseMarginWidth16);
 
-                ViewHelper.AdjustFrameSetX(addIcon, 0);
-                ViewHelper.AdjustFrameSetX(_addLbl, addIcon.Frame.GetMaxX() + GetScaledWidth(4F));
+                ViewHelper.AdjustFrameSetX(_addIcon, 0);
+                ViewHelper.AdjustFrameSetX(_addLbl, _addIcon.Frame.GetMaxX() + GetScaledWidth(4F));
             }
         }
 
@@ -260,13 +278,13 @@ namespace myTNB
             };
             _headerView.AddSubview(_searchView);
 
-            UIImageView searchIcon = new UIImageView(new CGRect(BaseMarginWidth16, 0, GetScaledWidth(16F), GetScaledHeight(16F)))
+            _searchIcon = new UIImageView(new CGRect(BaseMarginWidth16, 0, GetScaledWidth(16F), GetScaledHeight(16F)))
             {
                 Image = UIImage.FromBundle(DashboardHomeConstants.Img_SearchActiveIconWhite)
             };
-            _searchView.AddSubview(searchIcon);
+            _searchView.AddSubview(_searchIcon);
 
-            _textFieldSearch = new UITextField(new CGRect(searchIcon.Frame.GetMaxX() + GetScaledWidth(8F), 0, _searchView.Frame.Width - (BaseMarginWidth16 * 2) - (searchIcon.Frame.GetMaxX() + GetScaledWidth(16F)), GetScaledHeight(16F)))
+            _textFieldSearch = new UITextField(new CGRect(_searchIcon.Frame.GetMaxX() + GetScaledWidth(8F), 0, _searchView.Frame.Width - (BaseMarginWidth16 * 2) - (_searchIcon.Frame.GetMaxX() + GetScaledWidth(16F)), GetScaledHeight(16F)))
             {
                 Font = TNBFont.MuseoSans_12_500,
                 TextColor = UIColor.White,
