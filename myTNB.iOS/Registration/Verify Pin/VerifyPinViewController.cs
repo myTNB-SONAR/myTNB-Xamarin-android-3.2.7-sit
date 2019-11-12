@@ -38,6 +38,7 @@ namespace myTNB.Registration
         private Timer timer;
         const double INTERVAL = 1000f;
         private int timerCtr = 30;
+        private int margin = 0;
 
         public override void ViewDidLoad()
         {
@@ -45,6 +46,10 @@ namespace myTNB.Registration
             base.ViewDidLoad();
             // Perform any dditional setup after loading the view, typically from a nib.
             NavigationController.NavigationBar.Hidden = false;
+            if (TNBGlobal.APP_LANGUAGE == "MS")
+            {
+                margin += 60;
+            }
             AddBackButton();
             if (NavigationItem != null)
             {
@@ -363,9 +368,9 @@ namespace myTNB.Registration
 
             CreateTokenField(_commonView);
 
-            int xLocation = ((int)View.Bounds.Width - 140) / 2;
+            int xLocation = ((int)View.Bounds.Width - (140 + margin)) / 2;
             int yLocation = 180;
-            int width = 140;
+            int width = 140 + margin;
             int height = 48;
             _loadingView = new UIView(new CGRect(xLocation, yLocation, width, height))
             {
@@ -377,7 +382,7 @@ namespace myTNB.Registration
             _commonView.AddSubview(_loadingView);
 
             _loadingImage = new UIImageView(new CGRect(14, 13, 24, 24));
-            _resendLabel = new UILabel(new CGRect(41, 15, 100, 20));
+            _resendLabel = new UILabel(new CGRect(41, 15, 100 + margin, 20));
             _segment = new UIView(new CGRect(0, 0, 0, height));
             _segment.Layer.CornerRadius = 5.0f;
             _loadingView.AddSubview(_segment);
@@ -510,7 +515,7 @@ namespace myTNB.Registration
             _loadingImage.RemoveFromSuperview();
             _resendLabel.RemoveFromSuperview();
             _loadingImage = new UIImageView(new CGRect(14, 13, 24, 24));
-            _resendLabel = new UILabel(new CGRect(41, 15, 100, 20));
+            _resendLabel = new UILabel(new CGRect(41, 15, 100 + margin, 20));
             _segment = new UIView(new CGRect(0, 0, 0, 48));
             _loadingView.AddSubview(_segment);
             _loadingView.AddSubview(_loadingImage);
@@ -546,16 +551,16 @@ namespace myTNB.Registration
             timer.Enabled = true;
             UIView.Animate(30, 1, UIViewAnimationOptions.CurveEaseOut, () =>
             {
-                _segment.Frame = new CGRect(0, 0, 140, 48);
+                _segment.Frame = new CGRect(0, 0, 140 + margin, 48);
                 //Fresh green with 24% opacity
                 _segment.BackgroundColor = new UIColor(red: 0.13f, green: 0.74f, blue: 0.30f, alpha: 0.24f);
                 _loadingImage.Image = _loadingImg;
             }, () =>
             {
-                _segment.Frame = new CGRect(0, 0, 140, 48);
+                _segment.Frame = new CGRect(0, 0, 140 + margin, 48);
                 _segment.BackgroundColor = MyTNBColor.FreshGreen;
                 _loadingImage.Frame = new CGRect(25, 13, 24, 24);
-                _resendLabel.Frame = new CGRect(55, 15, 85, 20);
+                _resendLabel.Frame = new CGRect(55, 15, 85 + margin, 20);
                 _resendLabel.Text = GetCommonI18NValue(Constants.Common_Resend);
                 _resendLabel.TextColor = UIColor.White;
                 _loadingImage.Image = _loadedImg;

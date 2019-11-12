@@ -148,7 +148,7 @@ namespace myTNB
                     TextAlignment = UITextAlignment.Center
                 };
 
-                UILabel lblDetails = new UILabel(new CGRect(0, 32, myAccountTableView.Frame.Width, 36))
+                UILabel lblDetails = new UILabel(new CGRect(18, 32, myAccountTableView.Frame.Width - 36, 36))
                 {
                     TextColor = MyTNBColor.TunaGrey(),
                     Font = MyTNBFont.MuseoSans9_300,
@@ -158,7 +158,7 @@ namespace myTNB
                     TextAlignment = UITextAlignment.Center
                 };
 
-                btnAddAccount.Frame = new CGRect(90, 76, myAccountTableView.Frame.Width - 180, 48);
+                btnAddAccount.Frame = new CGRect(18, 76, myAccountTableView.Frame.Width - 36, 48);
                 btnAddAccount.SetTitle(GetCommonI18NValue(Constants.Common_AddAnotherAccount), UIControlState.Normal);
                 viewLogout.Frame = new CGRect(0, 140, View.Frame.Width, 88);
                 viewFooter.AddSubviews(new UIView[] { lblTitle, lblDetails, btnAddAccount, viewLogout });
