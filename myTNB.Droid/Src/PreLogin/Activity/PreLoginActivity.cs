@@ -98,6 +98,19 @@ namespace myTNB_Android.Src.PreLogin.Activity
         [BindView(Resource.Id.img_display)]
         ImageView img_display;
 
+        private void UpdateLabels()
+        {
+            txtWelcome.Text = Utility.GetLocalizedLabel("Prelogin", "welcomeTitle");
+            txtManageAccount.Text = Utility.GetLocalizedLabel("Prelogin", "tagline");
+            btnRegister.Text = Utility.GetLocalizedLabel("Prelogin", "register");
+            btnLogin.Text = Utility.GetLocalizedLabel("Prelogin", "login");
+            txtLikeToday.Text = Utility.GetLocalizedLabel("Prelogin", "quickAccess");
+            txtFindUs.Text = Utility.GetLocalizedLabel("Prelogin", "findUs");
+            txtCallUs.Text = Utility.GetLocalizedLabel("Prelogin", "callUs");
+            txtFeedback.Text = Utility.GetLocalizedLabel("Prelogin", "feedback");
+            txtChangeLanguage.Text = Utility.GetLocalizedLabel("Prelogin", "changeLanguage");
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -108,15 +121,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
                 TextViewUtils.SetMuseoSans300Typeface(txtManageAccount, txtPromotion);
                 TextViewUtils.SetMuseoSans500Typeface(btnLogin, btnRegister);
 
-                txtWelcome.Text = Utility.GetLocalizedLabel("Prelogin","welcomeTitle");
-                txtManageAccount.Text = Utility.GetLocalizedLabel("Prelogin", "tagline");
-                btnRegister.Text = Utility.GetLocalizedLabel("Prelogin", "register");
-                btnLogin.Text = Utility.GetLocalizedLabel("Prelogin", "login");
-                txtLikeToday.Text = Utility.GetLocalizedLabel("Prelogin", "quickAccess");
-                txtFindUs.Text = Utility.GetLocalizedLabel("Prelogin", "findUs");
-                txtCallUs.Text = Utility.GetLocalizedLabel("Prelogin", "callUs");
-                txtFeedback.Text = Utility.GetLocalizedLabel("Prelogin", "feedback");
-                txtChangeLanguage.Text = Utility.GetLocalizedLabel("Prelogin", "changeLanguage");
+                UpdateLabels();
 
                 GenerateTopLayoutLayout();
                 GenerateFindUsCardLayout();
@@ -303,7 +308,7 @@ namespace myTNB_Android.Src.PreLogin.Activity
 
         private void UpdateLanguage()
         {
-            Recreate();
+            UpdateLabels();
         }
 
         public void ShowPreLoginPromotion(bool success)

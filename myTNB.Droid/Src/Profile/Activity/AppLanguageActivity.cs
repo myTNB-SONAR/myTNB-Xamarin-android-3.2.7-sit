@@ -20,6 +20,7 @@ using Android.Support.V4.Content;
 using myTNB;
 using myTNB_Android.Src.myTNBMenu.Activity;
 using Android.Preferences;
+using myTNB_Android.Src.SSMR.Util;
 
 namespace myTNB_Android.Src.Profile.Activity
 {
@@ -38,6 +39,7 @@ namespace myTNB_Android.Src.Profile.Activity
         private SelectItemAdapter selectItemAdapter;
         private List<Item> languageItemList;
         private string savedLanguage;
+        private bool isSelectionChange;
 
         public override string GetPageId()
         {
@@ -92,12 +94,20 @@ namespace myTNB_Android.Src.Profile.Activity
             return langLabel;
         }
 
+        private void UpdateLabels()
+        {
+            SetToolBarTitle(GetLabelCommonByLanguage("setAppLanguage"));
+            appLanguageMessage.Text = GetLabelCommonByLanguage("setAppLanguageDescription");
+            btnSaveChanges.Text = GetLabelCommonByLanguage("saveChanges");
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             TextViewUtils.SetMuseoSans500Typeface(appLanguageMessage,btnSaveChanges);
             savedLanguage = LanguageUtil.GetAppLanguage();
             languageItemList = new List<Item>();
+            isSelectionChange = false;
 
             foreach (string languageName in Enum.GetNames(typeof(Constants.SUPPORTED_LANGUAGES)))
             {
@@ -112,10 +122,7 @@ namespace myTNB_Android.Src.Profile.Activity
 
             selectItemAdapter = new SelectItemAdapter(this, languageItemList);
             languageListView.Adapter = selectItemAdapter;
-
-            SetToolBarTitle(GetLabelCommonByLanguage("setAppLanguage"));
-            appLanguageMessage.Text = GetLabelCommonByLanguage("setAppLanguageDescription");
-            btnSaveChanges.Text = GetLabelCommonByLanguage("saveChanges");
+            UpdateLabels();
             SetSelectedLanguage(null);
         }
 
@@ -141,7 +148,9 @@ namespace myTNB_Android.Src.Profile.Activity
         private void UpdateLanguage()
         {
             LanguageUtil.SetIsLanguageChanged(true);
-            Recreate();
+            savedLanguage = LanguageUtil.GetAppLanguage();
+            UpdateLabels();
+            EnableDisableButton();
         }
 
         public void EnableDisableButton()
@@ -154,11 +163,13 @@ namespace myTNB_Android.Src.Profile.Activity
                 {
                     btnSaveChanges.Enabled = true;
                     btnSaveChanges.Background = ContextCompat.GetDrawable(this, Resource.Drawable.green_button_background);
+                    isSelectionChange = true;
                 }
                 else
                 {
                     btnSaveChanges.Enabled = false;
                     btnSaveChanges.Background = ContextCompat.GetDrawable(this, Resource.Drawable.silver_chalice_button_background);
+                    isSelectionChange = false;
                 }
             }
             catch (Exception e)
@@ -168,6 +179,40 @@ namespace myTNB_Android.Src.Profile.Activity
         }
 
         public override void OnBackPressed()
+        {
+            if (isSelectionChange)
+            {
+                ShowTooltipConfirm();
+            }
+            else
+            {
+                OnBackProceed();
+            }
+        }
+
+        private void ShowTooltipConfirm()
+        {
+            MyTNBAppToolTipBuilder tooltipBuilder = MyTNBAppToolTipBuilder.Create(this, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER_TWO_BUTTON)
+                        .SetTitle(Utility.GetLocalizedLabel("Common", "changeLanguageTitle_" + savedLanguage))
+                        .SetMessage(Utility.GetLocalizedLabel("Common", "changeLanguageMessage_" + savedLanguage))
+                        .SetContentGravity(GravityFlags.Center)
+                        .SetCTALabel(Utility.GetLocalizedLabel("Common", "changeLanguageNo_" + savedLanguage))
+                        .SetSecondaryCTALabel(Utility.GetLocalizedLabel("Common", "changeLanguageYes_" + savedLanguage))
+                        .SetSecondaryCTAaction(() =>
+                        {
+                            Item selectedItem = languageItemList.Find(item => { return item.selected; });
+                            LanguageUtil.SaveAppLanguage(selectedItem.type);
+                            UpdateLanguage();
+                            OnBackProceed();
+                        }).Build();
+            tooltipBuilder.SetCTAaction(() =>
+            {
+                tooltipBuilder.DismissDialog();
+                OnBackProceed();
+            }).Show();
+        }
+
+        public void OnBackProceed()
         {
             SetResult(Result.Ok);
             Finish();
