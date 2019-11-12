@@ -281,7 +281,7 @@ namespace myTNB
         private void OnLanguageBack(int index)
         {
             DisplayCustomAlert(GetCommonI18NValue(GetFormattedLangKey(Constants.Common_ChangeLanguageTitle))
-                  , GetCommonI18NValue(GetFormattedLangKey(Constants.Common_SaveLanguageMessage))
+                  , GetCommonI18NValue(Constants.Common_SaveLanguageMessage)
                   , new Dictionary<string, Action> {
                         { GetCommonI18NValue(GetFormattedLangKey(Constants.Common_ChangeLanguageNo))
                             , ()=>{ DismissViewController(true, null);} }
