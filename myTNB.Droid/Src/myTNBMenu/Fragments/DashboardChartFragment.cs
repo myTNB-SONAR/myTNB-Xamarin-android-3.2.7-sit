@@ -533,6 +533,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
         private Bitmap mdmsBitmap = null;
         private Bitmap missingBitmap = null;
+        private Bitmap dpcBitmap = null;
 
         private static bool isDayViewFirstMove = false;
 
@@ -561,6 +562,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
         private static bool isClickedShowTariff = false;
 
         private static bool isHideBottomSheetShowTariff = false;
+
+        private string MDMSUnavailableTitle = "";
+
+        private string MDMSUnavailableMessage = "";
+
+        private string MDMSUnavailableCTA = "";
 
         ScaleGestureDetector mScaleDetector;
 
@@ -772,6 +779,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 opt.InMutable = true;
                 mdmsBitmap = BitmapFactory.DecodeResource(this.Activity.Resources, Resource.Drawable.mdms_down, opt);
                 missingBitmap = BitmapFactory.DecodeResource(this.Activity.Resources, Resource.Drawable.dashboard_missing_copy, opt);
+                dpcBitmap = BitmapFactory.DecodeResource(this.Activity.Resources, Resource.Drawable.dpc_down, opt);
 
 
                 bottomSheetBehavior = BottomSheetBehavior.From(bottomSheet);
@@ -1460,7 +1468,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         for (int i = 0; i < selectedSMHistoryData.ByMonth.Months.Count; i++)
                         {
-                            if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                            if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0 && !selectedSMHistoryData.ByMonth.Months[i].DPCIndicator)
                             {
                                 bool isFound = false;
 
@@ -1519,7 +1527,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         for (int i = 0; i < selectedHistoryData.ByMonth.Months.Count; i++)
                         {
-                            if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                            if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0 && !selectedHistoryData.ByMonth.Months[i].DPCIndicator)
                             {
                                 bool isFound = false;
 
@@ -1609,7 +1617,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             else
             {
                 tarifToggle.Enabled = false;
-                OnGenerateTariffLegendValue(0, isToggleTariff);
+                if (!isSMAccount)
+                {
+                    OnGenerateTariffLegendValue(selectedHistoryData.ByMonth.Months.Count - 1, isToggleTariff);
+                }
+                else
+                {
+                    OnGenerateTariffLegendValue(selectedSMHistoryData.ByMonth.Months.Count - 1, isToggleTariff);
+                }
                 imgTarifToggle.SetImageResource(Resource.Drawable.eye_disable);
                 txtTarifToggle.Text = "Show Tariff";
                 txtTarifToggle.SetTextColor(ContextCompat.GetColorStateList(this.Activity, Resource.Color.silverChalice));
@@ -1687,6 +1702,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         missingReadingList = missingReadingList,
                         isMDMSDown = isMDMSDown,
                         mdmsBitmap = mdmsBitmap,
+                        dpcBitmap = dpcBitmap,
                         missingBitmap = missingBitmap
                     };
                     mChart.Renderer = smRenderer;
@@ -1705,6 +1721,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         missingReadingList = missingReadingList,
                         isMDMSDown = isMDMSDown,
                         mdmsBitmap = mdmsBitmap,
+                        dpcBitmap = dpcBitmap,
                         missingBitmap = missingBitmap
                     };
                     mChart.Renderer = smRenderer;
@@ -1720,7 +1737,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         selectedHistoryData = selectedHistoryData,
                         currentContext = Activity,
-                        currentActivity = Activity
+                        currentActivity = Activity,
+                        dpcBitmap = dpcBitmap,
+                        currentChartType = ChartType,
+                        currentChartDataType = ChartDataType
                     };
                     mChart.Renderer = renderer;
                 }
@@ -1730,7 +1750,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         selectedHistoryData = selectedHistoryData,
                         currentContext = Activity,
-                        currentActivity = Activity
+                        currentActivity = Activity,
+                        dpcBitmap = dpcBitmap,
+                        currentChartType = ChartType,
+                        currentChartDataType = ChartDataType
                     };
                     mChart.Renderer = renderer;
                 }
@@ -2587,46 +2610,66 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
                         {
-                            List<float> newValList = new List<float>();
-                            for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                            if (selectedHistoryData.ByMonth.Months[i].DPCIndicator)
                             {
-                                float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
+                                float[] valList = new float[1];
+
+                                float val = (float)selectedHistoryData.ByMonth.Months[i].UsageTotal;
                                 if (float.IsPositiveInfinity(val))
                                 {
                                     val = float.PositiveInfinity;
                                 }
-                                if (System.Math.Abs(val) > 0)
-                                {
-                                    newValList.Add(System.Math.Abs(val));
-                                }
-                            }
 
-                            if (newValList.Count > 0)
-                            {
-                                float[] valList = new float[newValList.Count];
-                                for (int j = 0; j < newValList.Count; j++)
-                                {
-                                    valList[j] = newValList[j];
-                                }
-
+                                valList[0] = System.Math.Abs(val);
                                 if (i == barLength - 1)
                                 {
                                     stackIndex = valList.Length - 1;
                                 }
-
                                 yVals1.Add(new BarEntry(i, valList));
                             }
                             else
                             {
-                                float[] valList = new float[1];
-                                valList[0] = 0f;
-
-                                if (i == barLength - 1)
+                                List<float> newValList = new List<float>();
+                                for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
                                 {
-                                    stackIndex = valList.Length - 1;
+                                    float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
+                                    if (float.IsPositiveInfinity(val))
+                                    {
+                                        val = float.PositiveInfinity;
+                                    }
+                                    if (System.Math.Abs(val) > 0)
+                                    {
+                                        newValList.Add(System.Math.Abs(val));
+                                    }
                                 }
 
-                                yVals1.Add(new BarEntry(i, valList));
+                                if (newValList.Count > 0)
+                                {
+                                    float[] valList = new float[newValList.Count];
+                                    for (int j = 0; j < newValList.Count; j++)
+                                    {
+                                        valList[j] = newValList[j];
+                                    }
+
+                                    if (i == barLength - 1)
+                                    {
+                                        stackIndex = valList.Length - 1;
+                                    }
+
+                                    yVals1.Add(new BarEntry(i, valList));
+                                }
+                                else
+                                {
+                                    float[] valList = new float[1];
+                                    valList[0] = 0f;
+
+                                    if (i == barLength - 1)
+                                    {
+                                        stackIndex = valList.Length - 1;
+                                    }
+
+                                    yVals1.Add(new BarEntry(i, valList));
+                                }
                             }
                         }
                         else
@@ -2672,41 +2715,58 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
                             {
-                                for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                                if (selectedHistoryData.ByMonth.Months[i].DPCIndicator)
                                 {
-                                    if (selectedHistoryData.TariffBlocksLegend != null && selectedHistoryData.TariffBlocksLegend.Count > 0)
+                                    listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                }
+                                else
+                                {
+                                    bool isSetColor = false;
+                                    for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
                                     {
-                                        bool isFound = false;
-                                        for (int k = 0; k < selectedHistoryData.TariffBlocksLegend.Count; k++)
+                                        if (selectedHistoryData.TariffBlocksLegend != null && selectedHistoryData.TariffBlocksLegend.Count > 0)
                                         {
-                                            if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedHistoryData.TariffBlocksLegend[k].BlockId)
+                                            bool isFound = false;
+                                            for (int k = 0; k < selectedHistoryData.TariffBlocksLegend.Count; k++)
                                             {
-                                                isFound = true;
+                                                if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedHistoryData.TariffBlocksLegend[k].BlockId)
+                                                {
+                                                    isFound = true;
 
-                                                float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
-                                                if (float.IsPositiveInfinity(val))
-                                                {
-                                                    val = float.PositiveInfinity;
+                                                    float val = (float)selectedHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
+                                                    if (float.IsPositiveInfinity(val))
+                                                    {
+                                                        val = float.PositiveInfinity;
+                                                    }
+                                                    if (System.Math.Abs(val) > 0)
+                                                    {
+                                                        isSetColor = true;
+                                                        listOfColor.Add(Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData));
+                                                    }
+                                                    else if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count == 1)
+                                                    {
+                                                        isSetColor = true;
+                                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                                    }
+                                                    break;
                                                 }
-                                                if (System.Math.Abs(val) > 0)
-                                                {
-                                                    listOfColor.Add(Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData));
-                                                }
-                                                else if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count == 1)
-                                                {
-                                                    listOfColor.Add(Color.Argb(50, 255, 255, 255));
-                                                }
-                                                break;
                                             }
-                                        }
 
-                                        if (!isFound)
+                                            if (!isFound)
+                                            {
+                                                isSetColor = true;
+                                                listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                            }
+
+                                        }
+                                        else
                                         {
+                                            isSetColor = true;
                                             listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                         }
-
                                     }
-                                    else
+
+                                    if (!isSetColor)
                                     {
                                         listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                     }
@@ -2835,46 +2895,66 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
                             {
-                                List<float> newValList = new List<float>();
-                                for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                                if (selectedSMHistoryData.ByMonth.Months[i].DPCIndicator)
                                 {
-                                    float val = (float)selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
+                                    float[] valList = new float[1];
+
+                                    float val = (float)selectedSMHistoryData.ByMonth.Months[i].UsageTotal;
                                     if (float.IsPositiveInfinity(val))
                                     {
                                         val = float.PositiveInfinity;
                                     }
 
-                                    if (System.Math.Abs(val) > 0)
-                                    {
-                                        newValList.Add(System.Math.Abs(val));
-                                    }
-                                }
-
-                                if (newValList.Count > 0)
-                                {
-                                    float[] valList = new float[newValList.Count];
-
-                                    for (int j = 0; j < newValList.Count; j++)
-                                    {
-                                        valList[j] = newValList[j];
-                                    }
-
+                                    valList[0] = System.Math.Abs(val);
                                     if (i == barLength - 1)
                                     {
                                         stackIndex = valList.Length - 1;
                                     }
-
                                     yVals1.Add(new BarEntry(i, valList));
                                 }
                                 else
                                 {
-                                    float[] valList = new float[1];
-                                    valList[0] = 0f;
-                                    if (i == barLength - 1)
+                                    List<float> newValList = new List<float>();
+                                    for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
                                     {
-                                        stackIndex = valList.Length - 1;
+                                        float val = (float)selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
+                                        if (float.IsPositiveInfinity(val))
+                                        {
+                                            val = float.PositiveInfinity;
+                                        }
+
+                                        if (System.Math.Abs(val) > 0)
+                                        {
+                                            newValList.Add(System.Math.Abs(val));
+                                        }
                                     }
-                                    yVals1.Add(new BarEntry(i, valList));
+
+                                    if (newValList.Count > 0)
+                                    {
+                                        float[] valList = new float[newValList.Count];
+
+                                        for (int j = 0; j < newValList.Count; j++)
+                                        {
+                                            valList[j] = newValList[j];
+                                        }
+
+                                        if (i == barLength - 1)
+                                        {
+                                            stackIndex = valList.Length - 1;
+                                        }
+
+                                        yVals1.Add(new BarEntry(i, valList));
+                                    }
+                                    else
+                                    {
+                                        float[] valList = new float[1];
+                                        valList[0] = 0f;
+                                        if (i == barLength - 1)
+                                        {
+                                            stackIndex = valList.Length - 1;
+                                        }
+                                        yVals1.Add(new BarEntry(i, valList));
+                                    }
                                 }
                             }
                             else
@@ -3041,42 +3121,60 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                             {
                                 if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
                                 {
-                                    for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
+                                    if (selectedSMHistoryData.ByMonth.Months[i].DPCIndicator)
                                     {
-                                        if (selectedSMHistoryData.TariffBlocksLegend != null && selectedSMHistoryData.TariffBlocksLegend.Count > 0)
+                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                    }
+                                    else
+                                    {
+                                        bool isSetColor = false;
+
+                                        for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
                                         {
-                                            bool isFound = false;
-                                            for (int k = 0; k < selectedSMHistoryData.TariffBlocksLegend.Count; k++)
+                                            if (selectedSMHistoryData.TariffBlocksLegend != null && selectedSMHistoryData.TariffBlocksLegend.Count > 0)
                                             {
-                                                if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedSMHistoryData.TariffBlocksLegend[k].BlockId)
+                                                bool isFound = false;
+                                                for (int k = 0; k < selectedSMHistoryData.TariffBlocksLegend.Count; k++)
                                                 {
-                                                    isFound = true;
+                                                    if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].BlockId == selectedSMHistoryData.TariffBlocksLegend[k].BlockId)
+                                                    {
+                                                        isFound = true;
 
-                                                    float val = (float)selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
-                                                    if (float.IsPositiveInfinity(val))
-                                                    {
-                                                        val = float.PositiveInfinity;
-                                                    }
+                                                        float val = (float)selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList[j].Usage;
+                                                        if (float.IsPositiveInfinity(val))
+                                                        {
+                                                            val = float.PositiveInfinity;
+                                                        }
 
-                                                    if (System.Math.Abs(val) > 0)
-                                                    {
-                                                        listOfColor.Add(Color.Argb(50, selectedSMHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.BlueData));
+                                                        if (System.Math.Abs(val) > 0)
+                                                        {
+                                                            isSetColor = true;
+                                                            listOfColor.Add(Color.Argb(50, selectedSMHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.BlueData));
+                                                        }
+                                                        else if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count == 1)
+                                                        {
+                                                            isSetColor = true;
+                                                            listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                                        }
+                                                        break;
                                                     }
-                                                    else if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count == 1)
-                                                    {
-                                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
-                                                    }
-                                                    break;
                                                 }
-                                            }
 
-                                            if (!isFound)
+                                                if (!isFound)
+                                                {
+                                                    isSetColor = true;
+                                                    listOfColor.Add(Color.Argb(50, 255, 255, 255));
+                                                }
+
+                                            }
+                                            else
                                             {
+                                                isSetColor = true;
                                                 listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                             }
-
                                         }
-                                        else
+
+                                        if (!isSetColor)
                                         {
                                             listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                         }
@@ -3100,6 +3198,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             if (IndividualDayData.TariffBlocksList != null && IndividualDayData.TariffBlocksList.Count > 0)
                                             {
+                                                bool isSetColor = false;
+
                                                 for (int j = 0; j < IndividualDayData.TariffBlocksList.Count; j++)
                                                 {
                                                     if (selectedSMHistoryData.TariffBlocksLegend != null && selectedSMHistoryData.TariffBlocksLegend.Count > 0)
@@ -3119,10 +3219,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                                                                 if (System.Math.Abs(val) > 0)
                                                                 {
+                                                                    isSetColor = true;
                                                                     listOfColor.Add(Color.Argb(50, selectedSMHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.BlueData));
                                                                 }
                                                                 else if (IndividualDayData.TariffBlocksList.Count == 1)
                                                                 {
+                                                                    isSetColor = true;
                                                                     listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                                                 }
                                                                 break;
@@ -3131,14 +3233,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                                                         if (!isFound)
                                                         {
+                                                            isSetColor = true;
                                                             listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                                         }
 
                                                     }
                                                     else
                                                     {
+                                                        isSetColor = true;
                                                         listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                                     }
+                                                }
+
+                                                if (!isSetColor)
+                                                {
+                                                    listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                                 }
                                             }
                                             else
@@ -3245,9 +3354,16 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             float[] valList = new float[1];
                             float val = (float)selectedSMHistoryData.ByMonth.Months[i].UsageTotal;
-                            if (float.IsPositiveInfinity(val))
+                            if (i == barLength - 1 && GetIsMDMSDown())
                             {
-                                val = float.PositiveInfinity;
+                                val = 0;
+                            }
+                            else
+                            {
+                                if (float.IsPositiveInfinity(val))
+                                {
+                                    val = float.PositiveInfinity;
+                                }
                             }
                             valList[0] = System.Math.Abs(val);
                             yVals1.Add(new BarEntry(i, valList));
@@ -3419,7 +3535,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     List<BarEntry> yVals1 = new List<BarEntry>();
                     for (int i = 0; i < barLength; i++)
                     {
-                        if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                        if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0 && !selectedHistoryData.ByMonth.Months[i].DPCIndicator)
                         {
                             List<float> newValList = new List<float>();
                             for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
@@ -3507,8 +3623,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                         for (int i = 0; i < barLength; i++)
                         {
-                            if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                            if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0 && !selectedHistoryData.ByMonth.Months[i].DPCIndicator)
                             {
+                                bool isSetColor = false;
+
                                 for (int j = 0; j < selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
                                 {
                                     if (selectedHistoryData.TariffBlocksLegend != null && selectedHistoryData.TariffBlocksLegend.Count > 0)
@@ -3528,10 +3646,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                                                 if (System.Math.Abs(val) > 0)
                                                 {
+                                                    isSetColor = true;
                                                     listOfColor.Add(Color.Argb(50, selectedHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedHistoryData.TariffBlocksLegend[k].Color.BlueData));
                                                 }
                                                 else if (selectedHistoryData.ByMonth.Months[i].TariffBlocksList.Count == 1)
                                                 {
+                                                    isSetColor = true;
                                                     listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                                 }
                                                 break;
@@ -3540,14 +3660,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                                         if (!isFound)
                                         {
+                                            isSetColor = true;
                                             listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                         }
 
                                     }
                                     else
                                     {
+                                        isSetColor = true;
                                         listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                     }
+                                }
+
+                                if (!isSetColor)
+                                {
+                                    listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                 }
                             }
                             else
@@ -3595,10 +3722,19 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         float[] valList = new float[1];
                         float val = (float)selectedHistoryData.ByMonth.Months[i].UsageTotal;
-                        if (float.IsPositiveInfinity(val))
+
+                        if (selectedHistoryData.ByMonth.Months[i].DPCIndicator)
                         {
-                            val = float.PositiveInfinity;
+                            val = 0;
                         }
+                        else
+                        {
+                            if (float.IsPositiveInfinity(val))
+                            {
+                                val = float.PositiveInfinity;
+                            }
+                        }
+
                         valList[0] = System.Math.Abs(val);
                         yVals1.Add(new BarEntry(i, valList));
                     }
@@ -3671,7 +3807,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                     {
                         for (int i = 0; i < barLength; i++)
                         {
-                            if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                            if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0 && !selectedSMHistoryData.ByMonth.Months[i].DPCIndicator)
                             {
                                 List<float> newValList = new List<float>();
                                 for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
@@ -3882,8 +4018,10 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             for (int i = 0; i < barLength; i++)
                             {
-                                if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0)
+                                if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList != null && selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count > 0 && !selectedSMHistoryData.ByMonth.Months[i].DPCIndicator)
                                 {
+                                    bool isSetColor = false;
+
                                     for (int j = 0; j < selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count; j++)
                                     {
                                         if (selectedSMHistoryData.TariffBlocksLegend != null && selectedSMHistoryData.TariffBlocksLegend.Count > 0)
@@ -3903,10 +4041,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                                                     if (System.Math.Abs(val) > 0)
                                                     {
+                                                        isSetColor = true;
                                                         listOfColor.Add(Color.Argb(50, selectedSMHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.BlueData));
                                                     }
                                                     else if (selectedSMHistoryData.ByMonth.Months[i].TariffBlocksList.Count == 1)
                                                     {
+                                                        isSetColor = true;
                                                         listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                                     }
                                                     break;
@@ -3915,14 +4055,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                                             if (!isFound)
                                             {
+                                                isSetColor = true;
                                                 listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                             }
 
                                         }
                                         else
                                         {
+                                            isSetColor = true;
                                             listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                         }
+                                    }
+
+                                    if (!isSetColor)
+                                    {
+                                        listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                     }
                                 }
                                 else
@@ -3943,6 +4090,8 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                                         {
                                             if (IndividualDayData.TariffBlocksList != null && IndividualDayData.TariffBlocksList.Count > 0)
                                             {
+                                                bool isSetColor = false;
+
                                                 for (int j = 0; j < IndividualDayData.TariffBlocksList.Count; j++)
                                                 {
                                                     if (selectedSMHistoryData.TariffBlocksLegend != null && selectedSMHistoryData.TariffBlocksLegend.Count > 0)
@@ -3961,10 +4110,12 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                                                                 if (System.Math.Abs(val) > 0)
                                                                 {
+                                                                    isSetColor = true;
                                                                     listOfColor.Add(Color.Argb(50, selectedSMHistoryData.TariffBlocksLegend[k].Color.RedColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.GreenColor, selectedSMHistoryData.TariffBlocksLegend[k].Color.BlueData));
                                                                 }
                                                                 else if (IndividualDayData.TariffBlocksList.Count == 1)
                                                                 {
+                                                                    isSetColor = true;
                                                                     listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                                                 }
                                                                 break;
@@ -3973,14 +4124,21 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                                                         if (!isFound)
                                                         {
+                                                            isSetColor = true;
                                                             listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                                         }
 
                                                     }
                                                     else
                                                     {
+                                                        isSetColor = true;
                                                         listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                                     }
+                                                }
+
+                                                if (!isSetColor)
+                                                {
+                                                    listOfColor.Add(Color.Argb(50, 255, 255, 255));
                                                 }
                                             }
                                             else
@@ -4087,9 +4245,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                         {
                             float[] valList = new float[1];
                             float val = (float)selectedSMHistoryData.ByMonth.Months[i].UsageTotal;
-                            if (float.IsPositiveInfinity(val))
+                            if (i == barLength - 1 && GetIsMDMSDown())
                             {
-                                val = float.PositiveInfinity;
+                                val = 0;
+                            }
+                            else if (selectedSMHistoryData.ByMonth.Months[i].DPCIndicator)
+                            {
+                                val = 0;
+                            }
+                            else
+                            {
+                                if (float.IsPositiveInfinity(val))
+                                {
+                                    val = float.PositiveInfinity;
+                                }
                             }
                             valList[0] = System.Math.Abs(val);
                             yVals1.Add(new BarEntry(i, valList));
@@ -4562,10 +4731,96 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 bool isHighlightNeed = false;
 
+                string message = "Note: The coloured blocks above represent your electricity rates. For a detailed breakdown, please refer to your bill.";
+
+                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                {
+                    txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message, FromHtmlOptions.ModeLegacy);
+                }
+                else
+                {
+                    txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
+                }
+
                 if (!isShow)
                 {
                     tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
                     tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Gone;
+
+                    // Lin Siong TODO: Replace the Message handling
+                    if (ChartType == ChartType.Month && ChartDataType == ChartDataType.kWh && index != -1)
+                    {
+                        if (isSMAccount)
+                        {
+                            if (GetIsMDMSDown())
+                            {
+                                if (index != selectedSMHistoryData.ByMonth.Months.Count - 1 && selectedSMHistoryData.ByMonth.Months[index].DPCIndicator)
+                                {
+                                    tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
+
+                                    message = string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage) ? "Your usage for <strong>" + selectedSMHistoryData.ByMonth.Months[index].Month + " " + selectedSMHistoryData.ByMonth.Months[index].Year + "</strong> could not be displayed due to a previous month’s bill being estimated. You can still find a detailed breakdown in your bill."
+                                        : selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage;
+
+                                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                                    {
+                                        txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message, FromHtmlOptions.ModeLegacy);
+                                    }
+                                    else
+                                    {
+                                        txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
+                                    }
+                                    isChangeVirtualHeightNeed = true;
+                                    SetVirtualHeightParams(6f);
+                                }
+                            }
+                            else
+                            {
+                                if (selectedSMHistoryData.ByMonth.Months[index].DPCIndicator)
+                                {
+                                    tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
+
+                                    message = string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage) ? "Your usage for <strong>" + selectedSMHistoryData.ByMonth.Months[index].Month + " " + selectedSMHistoryData.ByMonth.Months[index].Year + "</strong> could not be displayed due to a previous month’s bill being estimated. You can still find a detailed breakdown in your bill." : selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage;
+
+                                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                                    {
+                                        txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message, FromHtmlOptions.ModeLegacy);
+                                    }
+                                    else
+                                    {
+                                        txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
+                                    }
+                                    isChangeVirtualHeightNeed = true;
+                                    SetVirtualHeightParams(6f);
+                                }
+                            }
+                        }
+                        else if (!isREAccount)
+                        {
+                            if (selectedHistoryData.ByMonth.Months[index].DPCIndicator)
+                            {
+                                tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
+
+                                message = string.IsNullOrEmpty(selectedHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage) ? "Your usage for <strong>" + selectedHistoryData.ByMonth.Months[index].Month + " " + selectedHistoryData.ByMonth.Months[index].Year + "</strong> could not be displayed due to a previous month’s bill being estimated. You can still find a detailed breakdown in your bill." : selectedHistoryData.ByMonth.Months[index].DPCIndicatorUsageMessage;
+
+                                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                                {
+                                    txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message, FromHtmlOptions.ModeLegacy);
+                                }
+                                else
+                                {
+                                    txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
+                                }
+                                isChangeVirtualHeightNeed = true;
+                                SetVirtualHeightParams(6f);
+
+                                if (isSMR)
+                                {
+                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                                }
+                            }
+                        }
+                    }
+
                 }
                 else
                 {
@@ -4799,6 +5054,89 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
 
                     isChangeVirtualHeightNeed = true;
                     SetVirtualHeightParams(6f);
+
+                    // Lin Siong TODO: Replace the Message handling
+                    if (ChartType == ChartType.Month && index != -1)
+                    {
+                        if (isSMAccount)
+                        {
+                            if (GetIsMDMSDown())
+                            {
+                                if (index != selectedSMHistoryData.ByMonth.Months.Count - 1 && selectedSMHistoryData.ByMonth.Months[index].DPCIndicator)
+                                {
+                                    tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
+                                    tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
+
+                                    message = string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage) ? "Your tariff rates for <strong>" + selectedSMHistoryData.ByMonth.Months[index].Month + " "+ selectedSMHistoryData.ByMonth.Months[index].Year + "</strong> could not be displayed due to a previous month’s bill being estimated. You can still find a detailed breakdown in your bill."
+                                        : selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage;
+
+                                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                                    {
+                                        txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message, FromHtmlOptions.ModeLegacy);
+                                    }
+                                    else
+                                    {
+                                        txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
+                                    }
+                                    isChangeVirtualHeightNeed = true;
+                                    SetVirtualHeightParams(6f);
+                                }
+                            }
+                            else
+                            {
+                                if (selectedSMHistoryData.ByMonth.Months[index].DPCIndicator)
+                                {
+                                    tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
+                                    tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
+
+                                    message = string.IsNullOrEmpty(selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage) ? "Your tariff rates for <strong>" + selectedSMHistoryData.ByMonth.Months[index].Month + " " + selectedSMHistoryData.ByMonth.Months[index].Year + "</strong> could not be displayed due to a previous month’s bill being estimated. You can still find a detailed breakdown in your bill."
+                                        : selectedSMHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage;
+
+                                    if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                                    {
+                                        txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message, FromHtmlOptions.ModeLegacy);
+                                    }
+                                    else
+                                    {
+                                        txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
+                                    }
+                                    isChangeVirtualHeightNeed = true;
+                                    SetVirtualHeightParams(6f);
+
+                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                                }
+                            }
+                        }
+                        else if (!isREAccount)
+                        {
+                            if (selectedHistoryData.ByMonth.Months[index].DPCIndicator)
+                            {
+                                tariffBlockLegendRecyclerView.Visibility = ViewStates.Gone;
+                                tariffBlockLegendDisclaimerLayout.Visibility = ViewStates.Visible;
+
+                                message = string.IsNullOrEmpty(selectedHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage) ? "Your tariff rates for <strong>" + selectedHistoryData.ByMonth.Months[index].Month + " " + selectedHistoryData.ByMonth.Months[index].Year + "</strong> could not be displayed due to a previous month’s bill being estimated. You can still find a detailed breakdown in your bill."
+                                    : selectedHistoryData.ByMonth.Months[index].DPCIndicatorTariffMessage;
+
+                                if (Android.OS.Build.VERSION.SdkInt >= Android.OS.BuildVersionCodes.N)
+                                {
+                                    txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message, FromHtmlOptions.ModeLegacy);
+                                }
+                                else
+                                {
+                                    txtTariffBlockLegendDisclaimer.TextFormatted = Html.FromHtml(message);
+                                }
+                                isChangeVirtualHeightNeed = true;
+                                SetVirtualHeightParams(6f);
+
+
+                                if (isSMR)
+                                {
+                                    scrollViewContent.SetBackgroundResource(Resource.Drawable.dashboard_chart_sm_bg);
+                                }
+                            }
+                        }
+                    }
+
                 }
             }
             catch (System.Exception e)
@@ -5105,7 +5443,7 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 TextView btnGotIt = mDialog.FindViewById<TextView>(Resource.Id.txtBtnFirst);
                 txtMessage.MovementMethod = new ScrollingMovementMethod();
 
-                txtMessage.Text = "What does this mean?";
+                txtMessage.Text = this.Activity.GetString(Resource.String.tooltip_what_does_this_link);
                 txtTitle.Text = "Your full usage for this particular day has not been retrieved yet. Check back in a while.";
                 btnGotIt.Text = "Got It!";
 
@@ -6421,7 +6759,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 rmKwhLabel.Text = "kWh";
                 kwhLabel.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
                 rmLabel.SetTextColor(Resources.GetColor(Resource.Color.new_grey));
-                isShowAnimationDisable = true;
+                if (CheckIsDPCIndicatorAvailable())
+                {
+                    isShowAnimationDisable = false;
+                }
+                else
+                {
+                    isShowAnimationDisable = true;
+                }
                 ShowByKwh();
                 FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "kWh Selection Clicked");
             }
@@ -6441,7 +6786,14 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 rmKwhLabel.Text = "RM  ";
                 rmLabel.SetTextColor(Resources.GetColor(Resource.Color.powerBlue));
                 kwhLabel.SetTextColor(Resources.GetColor(Resource.Color.new_grey));
-                isShowAnimationDisable = true;
+                if (CheckIsDPCIndicatorAvailable())
+                {
+                    isShowAnimationDisable = false;
+                }
+                else
+                {
+                    isShowAnimationDisable = true;
+                }
                 ShowByRM();
                 FirebaseAnalyticsUtils.LogFragmentClickEvent(this, "RM Selection Clicked");
 
@@ -6451,6 +6803,42 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
                 Utility.LoggingNonFatalError(ne);
             }
 
+        }
+
+        private bool CheckIsDPCIndicatorAvailable()
+        {
+            bool isFound = false;
+
+            if (isSMAccount)
+            {
+                if (selectedSMHistoryData != null && selectedSMHistoryData.ByMonth != null && selectedSMHistoryData.ByMonth.Months != null && selectedSMHistoryData.ByMonth.Months.Count > 0)
+                {
+                    for (int i = 0; i < selectedSMHistoryData.ByMonth.Months.Count; i++)
+                    {
+                        if (selectedSMHistoryData.ByMonth.Months[i].DPCIndicator)
+                        {
+                            isFound = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            else if (!isREAccount)
+            {
+                if (selectedHistoryData != null && selectedHistoryData.ByMonth != null && selectedHistoryData.ByMonth.Months != null && selectedHistoryData.ByMonth.Months.Count > 0)
+                {
+                    for (int i = 0; i < selectedHistoryData.ByMonth.Months.Count; i++)
+                    {
+                        if (selectedHistoryData.ByMonth.Months[i].DPCIndicator)
+                        {
+                            isFound = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            return isFound;
         }
 
         public void CheckRMKwhSelectDropDown()
@@ -7408,6 +7796,20 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             {
                 StopSMStatisticShimmer();
                 smStatisticContainer.Visibility = ViewStates.Gone;
+                if (GetIsMDMSDown())
+                {
+                    rootView.SetBackgroundResource(0);
+                    scrollViewContent.SetBackgroundResource(0);
+                    try
+                    {
+                        ((DashboardHomeActivity)Activity).SetStatusBarBackground(Resource.Drawable.UsageGradientBackground);
+                        ((DashboardHomeActivity)Activity).UnsetToolbarBackground();
+                    }
+                    catch (System.Exception e)
+                    {
+                        Utility.LoggingNonFatalError(e);
+                    }
+                }
             }
             else
             {
@@ -8412,16 +8814,44 @@ namespace myTNB_Android.Src.myTNBMenu.Fragments
             bottomSheetBehavior.State = BottomSheetBehavior.StateExpanded;
         }
 
-        // Lin Siong TODO: Add message once  backend is ready
         public void OnShowMDMSDownPopup()
         {
-            if (selectedSMHistoryData != null)
+            if (GetIsMDMSDown() && isSMAccount)
             {
                 MyTNBAppToolTipBuilder.Create(this.Activity, MyTNBAppToolTipBuilder.ToolTipType.NORMAL_WITH_HEADER)
-                    .SetTitle("Test 123")
-                    .SetMessage("Test 456")
-                    .SetCTALabel("Got It!")
+                    .SetTitle(MDMSUnavailableTitle)
+                    .SetMessage(MDMSUnavailableMessage)
+                    .SetCTALabel(MDMSUnavailableCTA)
                     .Build().Show();
+            }
+        }
+
+        public void SetMDMSDownMessage(SMUsageHistoryResponse response)
+        {
+            if (response != null && response.Data != null)
+            {
+                if (!string.IsNullOrEmpty(response.Data.DisplayTitle))
+                {
+                    MDMSUnavailableTitle = response.Data.DisplayTitle;
+                }
+                else
+                {
+                    MDMSUnavailableTitle = this.Activity.GetString(Resource.String.tooltip_what_does_this_link);
+                }
+
+                if (!string.IsNullOrEmpty(response.Data.DisplayMessage))
+                {
+                    MDMSUnavailableMessage = response.Data.DisplayMessage;
+                }
+
+                if (!string.IsNullOrEmpty(response.Data.CTA))
+                {
+                    MDMSUnavailableCTA = response.Data.CTA;
+                }
+                else
+                {
+                    MDMSUnavailableCTA = this.Activity.GetString(Resource.String.tooltip_btnLabel);
+                }
             }
         }
     }
